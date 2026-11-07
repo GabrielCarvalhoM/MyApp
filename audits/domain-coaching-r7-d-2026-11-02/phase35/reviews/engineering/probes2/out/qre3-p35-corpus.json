@@ -1,0 +1,5577 @@
+{
+ "corpusRevision": "QRE3-P35-PROBE",
+ "contaminated": true,
+ "derivedFrom": "DEV_CASES_R7D_7 (33d3181)",
+ "cases": [
+  {
+   "caseId": "QH21",
+   "authorIntent": "QRE3-P35 probe: A start time on the wrong day, then a valid one that changes nothing (the holiday reported with its own episodeId; wrong names it by that episodeId, right by its report event id)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH21-hol"
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH21-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "wrong",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH21-hol",
+       "startedAt": "2026-11-17T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "right",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH21-w4d0",
+       "startedAt": "2026-11-16T07:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH22",
+   "authorIntent": "QRE3-P35 probe: A start time on the wrong day, then a valid one that changes nothing (the holiday reported with its own episodeId; wrong names it by its report event id, right by that episodeId)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH22-hol"
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH22-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "wrong",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH22-w4d0",
+       "startedAt": "2026-11-17T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "right",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH22-hol",
+       "startedAt": "2026-11-16T07:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH23",
+   "authorIntent": "QRE3-P35 probe: A start time on the wrong day, then a valid one that changes nothing (the holiday reported with its own episodeId; wrong names it by that episodeId, right by that episodeId)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23-hol"
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH23-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "wrong",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23-hol",
+       "startedAt": "2026-11-17T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "right",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23-hol",
+       "startedAt": "2026-11-16T07:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH23b",
+   "authorIntent": "QRE3-P35 probe: A start time on the wrong day, then a valid one that changes nothing (the holiday reported with its own episodeId; wrong names it by its report event id, right by its report event id)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23b-hol"
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH23b-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "wrong",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23b-w4d0",
+       "startedAt": "2026-11-17T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "right",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH23b-w4d0",
+       "startedAt": "2026-11-16T07:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH24",
+   "authorIntent": "QRE3-P35 probe: After a return read from separate breaks, the latest break reported again with the same dates and no name (the re-send states its last day and length, no first day)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH24-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the same report again re-reads the whole record: the holiday stays its own return",
+    "preferredCoachingBehavior": "the same report again re-reads the whole record: the holiday stays its own return",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH25",
+   "authorIntent": "QRE3-P35 probe: After a return read from separate breaks, the latest break reported again with the same dates and no name (after a named correction to Friday, the corrected dates re-sent)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH25-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "corr",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-18",
+       "days": 5,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH25-brk2"
+      }
+     }
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-18",
+       "days": 5,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the same report again re-reads the whole record: the holiday stays its own return",
+    "preferredCoachingBehavior": "the same report again re-reads the whole record: the holiday stays its own return",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH26",
+   "authorIntent": "QRE3-P35 probe: R07 confirmation first by the same dates (unnamed), then the holiday restated with a start after the lift",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH26-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "conf",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "restate",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH26-w4d0",
+       "startedAt": "2026-11-16T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH26n",
+   "authorIntent": "QRE3-P35 probe: R07 confirmation first by the same dates (named), then the holiday restated with a start after the lift",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH26n-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "late",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 2,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "observedAt": "2026-11-16T19:00:00Z"
+      }
+     ]
+    },
+    {
+     "stepId": "conf",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH26n-brk2"
+      }
+     }
+    },
+    {
+     "stepId": "restate",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "11:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true,
+       "episodeId": "QH26n-w4d0",
+       "startedAt": "2026-11-16T20:00:00Z"
+      }
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "preferredCoachingBehavior": "the wrong day is asked; the valid start supersedes it, and nothing changes",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH27",
+   "authorIntent": "QRE3-P35 probe: After a return read from separate breaks, the latest break reported again with the same dates and no name (the re-send in week 9)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH27-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "sun",
+     "at": {
+      "week": 6,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk7",
+     "at": {
+      "week": 7,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         7
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "wk8",
+     "at": {
+      "week": 8,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         8
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 9,
+      "day": 2,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 9,
+      "day": 2,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the same report again re-reads the whole record: the holiday stays its own return",
+    "preferredCoachingBehavior": "the same report again re-reads the whole record: the holiday stays its own return",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH28",
+   "authorIntent": "QRE3-P35 probe: After a return read from separate breaks, the latest break reported again with the same dates and no name (carried by a weekly review)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "PARTIAL_REENTRY",
+    "LATE_EVIDENCE",
+    "CORRECTION"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH28-brk2"
+      }
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         4
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      },
+      {
+       "each": {
+        "weeks": [
+         5
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "ref": {
+        "week": 5,
+        "sport": "STRENGTH",
+        "day": 4
+       },
+       "completed": false
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 6,
+      "day": 4,
+      "time": "08:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "10:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW",
+      "interruption": {
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 6,
+      "day": 5,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "the same report again re-reads the whole record: the holiday stays its own return",
+    "preferredCoachingBehavior": "the same report again re-reads the whole record: the holiday stays its own return",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH29",
+   "authorIntent": "QRE3-P35 probe: A kept two-week holiday, one easy run, then a separate four-day trip; the one run must not make the holiday disappear (then confirmed with the stop's dates, unnamed)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "TRAINING_BETWEEN_BREAKS"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 5,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-03",
+       "endDate": "2026-12-06",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH29-brk2"
+      }
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "completed": false
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "RUN",
+        "day": 1
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "asPrescribed": true
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-12-06",
+       "days": 21,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk5",
+     "at": {
+      "week": 5,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "one session re-enters nothing: the whole three weeks are the stop",
+    "preferredCoachingBehavior": "one session re-enters nothing: the whole three weeks are the stop",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  },
+  {
+   "caseId": "QH29n",
+   "authorIntent": "QRE3-P35 probe: A kept two-week holiday, one easy run, then a separate four-day trip; the one run must not make the holiday disappear (then confirmed with the stop's dates, named)",
+   "coverageTags": [
+    "DECLARED_BREAK",
+    "MULTIPLE_BREAKS",
+    "TRAINING_BETWEEN_BREAKS"
+   ],
+   "oracleClass": "INVARIANT_ORACLE",
+   "intake": {
+    "version": "R6-INTAKE-1",
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE",
+    "asOf": "2026-11-01",
+    "startDate": "2026-11-02",
+    "weeks": 12,
+    "learningConsent": true,
+    "athlete": {
+     "id": "dev-gen",
+     "ageEligible": true,
+     "eligibility": {
+      "status": "NONCLINICAL_CONFIRMED",
+      "assessedAt": "2026-11-01",
+      "pain": false,
+      "persistentPain": false,
+      "injury": false,
+      "illness": false,
+      "functionalLimitation": false,
+      "clinicalConcern": false
+     },
+     "goals": {
+      "run": "PERFORMANCE",
+      "strength": "GENERAL"
+     },
+     "runExperience": "INTERMEDIATE",
+     "strengthExperience": "INTERMEDIATE",
+     "recent": {
+      "runDaysPerWeek": 3,
+      "runMinutesPerWeek": 150,
+      "longestRunMinutes": 60,
+      "strengthDaysPerWeek": 2
+     },
+     "equipment": [
+      "BARBELL",
+      "RACK",
+      "BENCH",
+      "DUMBBELLS",
+      "KETTLEBELL",
+      "MACHINES",
+      "BANDS",
+      "PULL_UP_BAR"
+     ],
+     "knownExercises": [
+      {
+       "id": "back-squat",
+       "sets": 3,
+       "reps": 5,
+       "load": {
+        "value": 82.5,
+        "unit": "KG",
+        "convention": "TOTAL"
+       },
+       "rir": 2,
+       "current": true,
+       "familiar": true,
+       "tolerated": true,
+       "observedAt": "2026-10-29"
+      }
+     ],
+     "exerciseRotationPreference": "FIXED"
+    },
+    "schedule": {
+     "runDays": [
+      1,
+      3,
+      6
+     ],
+     "strengthDays": [
+      0,
+      4
+     ],
+     "runTurn": "AM",
+     "strengthTurn": "PM",
+     "runMinutes": 60,
+     "strengthMinutes": 60,
+     "longRunDay": 6,
+     "longRunMinutes": 90
+    }
+   },
+   "timeline": [
+    {
+     "stepId": "w0r",
+     "at": {
+      "week": 0,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         0
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w1r",
+     "at": {
+      "week": 1,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     },
+     "observations": [
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "RUN"
+       },
+       "asPrescribed": true,
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      },
+      {
+       "each": {
+        "weeks": [
+         1
+        ],
+        "sport": "STRENGTH"
+       },
+       "asPrescribed": true,
+       "loadsByPattern": {
+        "SQUAT": 20,
+        "HINGE": 20,
+        "LUNGE": 12,
+        "CALF": 12,
+        "PUSH": 14,
+        "PULL": 14,
+        "TRUNK": 0
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       }
+      }
+     ]
+    },
+    {
+     "stepId": "w4d0",
+     "at": {
+      "week": 4,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "SYSTEMIC_FATIGUE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-11-29",
+       "days": 14,
+       "reasonCategory": "VACATION",
+       "reason": "Holiday, no training at all",
+       "nonclinical": true
+      }
+     }
+    },
+    {
+     "stepId": "brk2",
+     "at": {
+      "week": 5,
+      "day": 0,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "LOCAL_FATIGUE",
+      "interruption": {
+       "startDate": "2026-12-03",
+       "endDate": "2026-12-06",
+       "days": 4,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH29n-brk2"
+      }
+     },
+     "observations": [
+      {
+       "ref": {
+        "week": 4,
+        "sport": "STRENGTH",
+        "day": 0
+       },
+       "completed": false
+      },
+      {
+       "ref": {
+        "week": 4,
+        "sport": "RUN",
+        "day": 1
+       },
+       "response": {
+        "performance": "COMPATIBLE",
+        "recovery": "COMPATIBLE",
+        "effort": "ON_TARGET",
+        "nextDayFunction": "NORMAL"
+       },
+       "asPrescribed": true
+      }
+     ]
+    },
+    {
+     "stepId": "plain",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "07:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "dup",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "09:00"
+     },
+     "event": {
+      "kind": "RETURN_AFTER_PAUSE",
+      "interruption": {
+       "startDate": "2026-11-16",
+       "endDate": "2026-12-06",
+       "days": 21,
+       "reasonCategory": "WORK",
+       "reason": "Work trip, no training",
+       "nonclinical": true,
+       "episodeId": "QH29n-brk2"
+      }
+     }
+    },
+    {
+     "stepId": "plain2",
+     "at": {
+      "week": 5,
+      "day": 1,
+      "time": "12:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    },
+    {
+     "stepId": "wk5",
+     "at": {
+      "week": 5,
+      "day": 6,
+      "time": "21:00"
+     },
+     "event": {
+      "kind": "WEEKLY_REVIEW"
+     }
+    }
+   ],
+   "expectedDomainProperties": [],
+   "metamorphicRelations": [],
+   "independentAssessment": {
+    "rationale": "one session re-enters nothing: the whole three weeks are the stop",
+    "preferredCoachingBehavior": "one session re-enters nothing: the whole three weeks are the stop",
+    "acceptableAlternatives": [],
+    "concerns": []
+   },
+   "domainNotes": ""
+  }
+ ]
+}

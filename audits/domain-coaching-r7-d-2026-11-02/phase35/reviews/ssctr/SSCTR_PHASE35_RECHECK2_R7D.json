@@ -1,0 +1,265 @@
+{
+ "recordId": "SSCTR-R7D-P35-RECHECK-r2",
+ "date": "2026-11-07",
+ "kind": "Narrow domain recheck, by a fresh SSCTR instance, of the R7-D Phase 3.5 bounded-cycle candidate (CFP35-01 of SSCTR-R7D-P35-RECHECK-r1, for the runtime and test bytes that changed): the domain side of QRE-P35-01, the closure of SSCTR-P35-F01 by R7D-HARNESS-7 r2, T37, the CFP35-02 disclosures (Δ36) and new numbers. The five SSCTR questions of phase35/reviews/REVIEW_REQUEST_PHASE35_R2.md section 3. A closure check of the bounded cycle, not a new audit and not a re-audit of SSCTR-P34R2-F01, F02 or QRE2-P34-01.",
+ "candidate": "33d3181",
+ "candidateDetail": "Branch claude/domain-coaching-r7-d, commit 33d318185d13868b8d4281bfc674a6d2d8fb3cf3 (supersedes 8e78b8a, never frozen). Runtime of 6203dcf: CoachingCore/src/r6-adaptation.mjs sha256 5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e (8e78b8a: 60d91e22...; 46934a0: c98eb081...; R7D-FREEZE-4: 15e4279b...), r6-composition.mjs 8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8 (unchanged since 1978cc4). git diff 8e78b8a 6203dcf -- CoachingCore/src: one statement in returnAfterPause (+4/-1, three of the added lines comments). Tests: CoachingCore/test/r7d-phase35.test.mjs 03880b41b54775193076729f1c895e90f033041c223a325743838edd6a5922d7 (T36, T37, T38 appended; T31-T35 unchanged). Harness: R7D-HARNESS-7 r2, lib/properties.mjs 09972fa63fdef7b1f570944c28369a87105724924f92bf8f9afee2fc0e11cdca (8e78b8a: 3b4a7b98...), lib/client.mjs unchanged. Policy a75be1aa... unchanged; git diff 8e78b8a 33d3181 -- CoachingCore outside scripts/ touches only those two files. HEAD was 33d3181 for the whole review.",
+ "disposition": "ACCEPT_WITH_CONDITIONS",
+ "dispositionNote": "Does not block R7D-FREEZE-5 of 33d3181. No blocking finding. (1) QRE-P35-01, domain side: on my rebuilds, an unnamed re-send of the latest break with its days, after a return that read the holiday as its own return, now equals the named re-send on every variant probed (plain, days and end only, a week later, another nonclinical reason text): the holiday stays OWN_RETURN and strength reads its own return (back-squat 1x7 ESTABLISH). On 8e78b8a and 46934a0 it dropped the holiday and resumed known loads (back-squat 2x8 at 85 kg); R7D-FREEZE-4 asked. R07 confirmed by the same dates (QH18) equals the named confirmation and the start time stated from the outset (back-squat 1x9 ESTABLISH), with no later ask. That is the right reading: the R7-A duplicate rule already makes such a report a newer report of the latest break, and a newer report reads what its break's return read. The controls keep their meaning: the TRAINING_AFTER row is kept; a single-break duplicate stays SAME_BREAK / DUPLICATE with no separate breaks, identical on all four runtimes; a continuity return re-sent with the trip's days is asked on all four. Clinical first is untouched. No accepted behaviour changed: the r1 probe and the six Phase 3.4 probes reproduce 8e78b8a's outputs exactly, apart from labels and the intended P18(e) reading of SYc1. (2) SSCTR-P35-F01 is closed exactly as its smallestFix states. (3) T37 routes CLINICAL_HUMAN_REQUIRED by every channel, inside and after the re-entry week, and stays clinical. (4) Δ36 records O01, O02 and O03 faithfully in substance, with two omissions and one compression (SSCTR-P35R2-F01, low, non-blocking, carried by CFP35R2-02). (5) No number is new.",
+ "reviewer": {
+  "role": "Sports Science & Concurrent Training Reviewer (SSCTR)",
+  "agent": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY: nonclinical internal sporting judgment only. No human credentials; no clinical, human or empirical validation; no runtime sovereignty; no Product Truth publication.",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "instance": "A fresh SSCTR instance dispatched by the R7-D Phase 3.5 coordinator (task-route owner sports-science-concurrent-training-reviewer, L3, productization). I did not verify whether this was a native project-adapter dispatch or a default-instance fallback, and I did not read the adapter file. No human review occurred.",
+  "nativeDispatch": "not verified"
+ },
+ "independent": true,
+ "independenceNote": "This instance wrote no Phase 3.4 or 3.5 artifact (runtime, tests, harness, PREREG-6, evidence, the review requests) and is not the instance that wrote SSCTR-R7D-P35-RECHECK-r1. It read r1 as a binding input and reran that role's probe read-only. Of QRE-P35-01, -02 and -05 it read only the text in REVIEW_REQUEST_PHASE35_R2.md and the coordinator's brief. It opened no file under phase35/reviews/engineering/. One early `git diff --stat 8e78b8a 33d3181` printed the names of files there, names only. The working tree also shows an untracked engineering/probes2/ folder from the parallel check; it was not opened. Probe outputs are engineering evidence for this domain recheck, never gate, quality or generalization evidence.",
+ "scope": {
+  "questions": "REVIEW_REQUEST_PHASE35_R2.md (sha256 f4543d9b3407e90f160892cd9212c54556bda488ec3015744bf2bc49fb06c997), section 3, SSCTR questions 1-5.",
+  "outOfScope": "The Quality/Reliability questions CQ3-1 to CQ3-5 (code correctness beyond its domain effect, mutation adequacy for Q10/Q15, validation 7 r2 as an instrument suite, the QRE-P35-06 freeze guard, evidence and freeze readiness). Also out of scope: F01, F02 and QRE2-P34-01, already accepted by r1; F08 (F08_OPEN, BLOCKED_BY_AUTHORITY); the Founder decisions D1 and D2; any clinical judgment; product/, canon/, the mission, the ledger and the queue file. This record sets no dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion."
+ },
+ "sourcesRead": [
+  {"path": "governance/agents/sports-science-reviewer/CONSTITUTION.md", "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180", "read": "completely"},
+  {"path": ".agents/skills/sports-science-review/SKILL.md", "sha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf", "read": "completely"},
+  {"path": "CURRENT_MISSION.md", "sha256": "39eadb667cf7b4da806b41612a316f2f7ba912368cefa59557da6cbe5acd3b7d", "read": "the header and the R7-D Phase 3.4 section (the latest); the Phase 3.5 authority is AUTHORIZATION_PHASE35.md. canon/CANONICAL_INDEX.md was not needed: no Product or canon decision is made here."},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/AUTHORIZATION_PHASE35.md", "sha256": "e609b8d1fd932621e12d2f010f7d56474c50e382a120083945fa50c8f64fe66a", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/reviews/REVIEW_REQUEST_PHASE35_R2.md", "sha256": "f4543d9b3407e90f160892cd9212c54556bda488ec3015744bf2bc49fb06c997", "read": "completely"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/reviews/ssctr/SSCTR_PHASE35_RECHECK_R7D.json", "sha256": "c47857a5fede758eddfe8e21f27538218005a343b8bf73e82e13600bfdbb5e14", "read": "completely (the binding r1 record: CFP35-01 to 04, SSCTR-P35-F01 and its smallestFix, O01 to O03)"},
+  {"path": "git diff 8e78b8a 6203dcf -- CoachingCore/src and -- CoachingCore/test", "read": "completely"},
+  {"path": "CoachingCore/src/r6-adaptation.mjs (candidate)", "sha256": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e", "read": "returnAfterPause in full; interruptionEpisode (rules 1-4, the R7-A §9 duplicate) and episodesOf; breakOf; listedBreaks, restates, naming, restating, recordedStop, separateStop, stopOf; kindOf, adverseBeyondConfounding and weekEvidence (systemicConvergence)"},
+  {"path": "CoachingCore/src/r6-learning.mjs", "sha256": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10", "read": "classify"},
+  {"path": "CoachingCore/test/r7d-phase35.test.mjs (candidate)", "sha256": "03880b41b54775193076729f1c895e90f033041c223a325743838edd6a5922d7", "read": "completely (helpers, T31-T38)"},
+  {"path": "git diff 8e78b8a 33d3181 -- audits/domain-coaching-r7-d-2026-11-02/harness/lib", "read": "completely: properties.mjs only (sameBreakNamed, the P17 window end, adverseConvergence, the P18 open-break filter); client.mjs unchanged"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs (candidate)", "sha256": "09972fa63fdef7b1f570944c28369a87105724924f92bf8f9afee2fc0e11cdca", "read": "p18 in full ((a) to (f), NESTED guard), converging, latestReport, adverseConvergence, restatesListed"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_6.md", "sha256": "6d3f348ba9af5b7f4bf8995922b8f3460f44d06423b4f4c552331862f19d3603", "read": "Δ27, Δ31, Δ32, Δ33 and the appended Δ34-Δ37; git diff 8e78b8a 33d3181 of this file deletes no line"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/README.md", "sha256": "24f64c96f5c13ad39c016f606b589720f2f49f4b8c53d24ea48f54e46c2db719", "read": "the P18(e) entries (R7D-HARNESS-7 and the r2 section)"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/build-dev-cases.mjs and run-validation.mjs (candidate)", "read": "DEV-48, DEV-53 to DEV-57; the sensitivity rows for DEV-48 and DEV-53; witnesses W-P18j and W-P17f"},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_7.json", "sha256": "bca54d2f28b9915da21881cad6ea508e6218a451d6376d44678ec35a01dfabaf", "read": "summary rows only: NO_FALSE_BLOCK PASS on 59 cases (DEV-48, DEV-53 to DEV-57 with no fail and nothing not evaluable), the DEV-48 and DEV-53 sensitivity rows DETECTED_AND_CLEAN_ON_CANDIDATE, 23/23 rows, 56/56 witnesses (W-P18j, W-P17f fired), P17 245 and P18 170 units. The instrument suite as such is the quality check's."},
+  {"path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/DIFFERENTIAL_VS_8E78B8A.json", "sha256": "53e82a2ec3328e54b6d248f05db3fc5a81a1ca187497d21bd50f4e49431ea13a", "read": "summary only: 177 cases, 176 same, 1 differing (DEV-53, trigger DUPLICATE), 0 unexplained"},
+  {"path": "CoachingCore/scripts/freeze-r7d-5.mjs (candidate)", "read": "the review gate and the record fields that carry this record (reviews.ssctr.conditions = conditionsForFreeze; disclosures.ssctrFindings = findings); not run"}
+ ],
+ "literatureAccess": {
+  "tools": "This session lists WebSearch and WebFetch as deferred tools. I did not load or use them, and searched no literature.",
+  "why": "This recheck makes no new scientific claim. Its judgments are fidelity to binding readings: the R7-A duplicate rule (interruptionEpisode rule 2, R7-A §9), I1/I3/I6/I9, the Phase 3.4 re-read (recordedStop) and CF-P34-02 (the same facts give the same plan), the direction of SSCTR-P32-F01, BR-Q6 and the reducer's classifier, R-F08-1, and the constitution's clinical boundary (SSCTR-05: suspected illness is CLINICAL_HUMAN_REQUIRED)."
+ },
+ "whatWasRun": {
+  "rebuilds": "A new scratch directory ssctr3-p35-20261107-183701-1170 under the session scratchpad: cand/ (git archive 33d3181), prev/ (8e78b8a), p46/ (46934a0) and d4/ (3edf3c5, R7D-FREEZE-4). Each holds CoachingCore, the five SSCTR authority records named in phase35/probes/phase35-run-evidence.mjs (RECORDS) and the audit folder. prevT2/ holds 8e78b8a's CoachingCore and the five records, with the candidate's r7d-phase35.test.mjs, for the RED check. An earlier prevT/ without the five records only reproduced the bound-repertoire refusal and was not used. Hashes confirmed: r6-adaptation.mjs 5e910f52 (cand), 60d91e22 (prev), c98eb081 (p46), 15e4279b (d4); properties.mjs 09972fa6 (cand, HARNESS-7 r2), 3b4a7b98 (prev, HARNESS-7 r1). Node v24.19.0. Nothing was deleted. Nothing was written to the repository except the new files of this folder listed under validation.",
+  "directedTests": "On my candidate rebuild: r7d-phase35 13/13, r7d-phase34 40/40, r7d-phase33 14/14, r7d-phase32 17/17, r7d-phase31 14/14. On 8e78b8a with the candidate's Phase 3.5 test file (prevT2): 12 pass and only T36 fails. I did not rerun the full suite or the conformance checks; their evidence is the quality check's.",
+  "r1ProbeRerun": "probes/p35-recheck.mjs (the r1 instance's probe, 5bb55148...), run from my candidate rebuild. On 8e78b8a with the HARNESS-7 r1 lib, it reproduces r1's probes/out/p35-recheck.CANDIDATE-8e78b8a.json except the three harnessRoot labels (scratch directory names). On 33d3181 with the HARNESS-7 r1 lib, it equals that output apart from labels. Every AN, MV, MS, RS and SYc runtime result is unchanged. With the candidate's HARNESS-7 r2 lib, only SYc1's P18e_adverseConvergenceOfWeek7 changes, from true to false. SYc0 stays true and SYc2 false.",
+  "phase34Probes": "p34-recheck2, p34-recheck2-detectors, p34-recheck, p34-recheck-detectors (phase34/reviews/ssctr) and p34-ssctr, p34-ceiling (phase34/policy/ssctr-probes), run on 33d3181. Run with the label CANDIDATE-8e78b8a, each was byte-identical to r1's probes/out/*.CANDIDATE-8e78b8a.json. The published outputs carry the label CANDIDATE-33d3181 and differ from r1's only in that label line.",
+  "ownProbes": "probes2/p35-recheck2.mjs (QH17 variants, QH18, the controls CTTA, CTSB, CTCO and CTCOw, T37 by channel and timing) on 33d3181, 8e78b8a, 46934a0 and R7D-FREEZE-4. probes2/p35-recheck2-harness.mjs (DEV-48 and DEV-53 to DEV-57 under HARNESS-7 r2 on the four runtimes and under HARNESS-7 r1 on 33d3181 and 8e78b8a; witness W-P18j rebuilt on the candidate; adverseConvergence against the runtime's classify/kindOf on 288 recovery-ADVERSE combinations). The scripts were copied into the candidate rebuild at this folder's relative path and run from there, and the outputs reproduced byte for byte between two runs.",
+  "notRun": "No full suite, no npm run verify, no verify-r*, freeze-* or integrate-queue* script, no --write, no holdout. validate_records.py was not run: this record follows the shape of the earlier R7-D SSCTR recheck records, not decision.schema.json. Nothing was committed, staged, pushed or merged."
+ },
+ "answers": {
+  "Q1_QRE_P35_01_domainSide": {
+   "verdict": "Yes. Reading the whole stop for an unnamed report with the latest break's days is the right domain reading. The T36 controls keep their domain meaning, and no accepted domain behaviour changed.",
+   "reproduction": "Founders shape: the holiday A is kept on Mon wk4; weeks 4-5 are reported with the Friday lift missed, so A is read as its own return (RUN re-entered 2026-11-30, STRENGTH not); the trip D, Mon-Thu wk6, is named and declared on Fri wk6; the first return, SHORT 4d 2026-12-14..12-17, lists A:OWN_RETURN and D:LATEST. QH17, D re-sent unnamed on Sat wk6. On 8e78b8a it gives SAME_BREAK/DUPLICATE with separateBreaks null: A is dropped, and Mon 2026-12-21 resumes back-squat 2x8@85, db-bench-press and db-row 1x8@22. Sent named, it keeps A:OWN_RETURN with back-squat 1x7 ESTABLISH. 46934a0 gives the same as 8e78b8a, so the defect entered with Phase 3.4: an own-return row leaves the latest return's start on the trip, which makes the trip's days a duplicate. R7D-FREEZE-4 read A as TRAINING_NOT_REESTABLISHED (stop 2026-11-16..12-17), so the same input is no duplicate there: ASK interruption.episodeId. On 33d3181 the unnamed re-send equals the named one, apart from the basis label (DUPLICATE vs EXPLICIT): A:OWN_RETURN, back-squat 1x7 ESTABLISH, every run and strength dose equal over two weeks, and the next review KEEP. This also holds for the variants: days and end only, no start date (the dup test computes the first day as interruptionEpisode does); a week later (Tue wk7); and another nonclinical reason text. QH18 (R07): the late first-day lift asks interruption.startedAt; A restated after the lift asks the I6 confirmation (interruption.episodeId); the confirmation by D's dates, unnamed, gives REESTABLISH. It equals the named confirmation and the start time stated from the outset (back-squat 1x9 ESTABLISH). Later reviews give KEEP, KEEP, ADOPT_LOGGED_LOADS, KEEP, with no ask. On 8e78b8a the same confirmation drops A (back-squat 2x8@85).",
+   "domainReading": "Right, for four reasons. (1) The identity is already decided upstream. interruptionEpisode rule 2 (R7-A §9) reads an unnamed report with exactly the latest interruption's days as a newer report of it (SAME_BREAK, DUPLICATE), and the I6 question offers 'or the same dates' as its confirmation. Once the record treats it as that break's newer report, it must read what a newer report of that break reads: the separate breaks its return read (Phase 3.4 recordedStop). Otherwise the plan depends on whether the athlete typed the name or the dates, against CF-P34-02's equivalence (the same facts give the same plan). (2) The 8e78b8a reading erased the holiday's own return. Strength, which had not re-entered after the holiday, resumed known loads (2x8@85) as if only the 4-day trip had happened. That is the SSCTR-P32-F01 direction (a later report never erases an earlier break's effect), reached through a duplicate. (3) It is no guess. It requires exact equality with the latest interruption's first and last days (I9): touching or overlapping dates are still asked, and so are the trip's days after a continuity return, whose recorded stop starts with the holiday (CTCO). (4) Clinical first is untouched. The screen runs before the re-read: the same-dates report whose reason turns clinical ('Work trip, then the flu with a fever') is CLINICAL_HUMAN_REQUIRED whether named or unnamed, the next review stays clinical, and the result is identical on 8e78b8a. The resulting dose is the more conservative reading (ESTABLISH from the holiday's own return), and no dose rises above the recipe.",
+   "controls": "On 33d3181 against 8e78b8a, 46934a0 and R7D-FREEZE-4. (a) TRAINING_AFTER (weeks 4-5 reported in full): an unnamed re-send keeps A:TRAINING_AFTER reentry 2026-11-30 and D:LATEST, and equals the named re-send. 8e78b8a dropped the row, with the same doses (TRAINING_AFTER is history), so the candidate only keeps the record faithful. (b) Single-break duplicate: SAME_BREAK/DUPLICATE with separateBreaks null, identical on all four runtimes, so the R7-A path is unchanged (recordedStop gives null when a return read no separate break). (c) Continuity return (A, then a run done and the lifts not done between, then the trip Thu-Sun wk4, stop MODERATE 21d 2026-11-16..12-06, A:TRAINING_NOT_REESTABLISHED) re-sent with the trip's days: ASK interruption.episodeId on all four runtimes. The trip's days alone are not the recorded stop's days, so the athlete is asked whether the report corrects the stop or is another break (I9). Extra control (CTCOw): the same return re-sent with the whole recorded stop's days is now a duplicate that is re-read. It gives D:LATEST and A:OVERLAPS, the same 21-day MODERATE stop and every dose equal to 8e78b8a; only the record rows differ, and the holiday is kept on the record instead of dropped.",
+   "acceptedBehaviourUnchanged": "Yes. The r1 probe on 33d3181 equals its 8e78b8a output apart from labels (AN, MV, MS, RS, SYc), and the six Phase 3.4 SSCTR probes match r1's 8e78b8a outputs byte for byte under the same label. In my probe, every named, clinical, single-break, continuity and T37 case equals 8e78b8a. The differences are only in unnamed same-dates shapes (QH17u, du, w7u, xu, QH18u, CTTA unnamed, CTCOw), all of the DUPLICATE trigger. That agrees with the author's differential: 177 cases, only DEV-53 differs, trigger DUPLICATE. Under HARNESS-7 r2, DEV-53 is detected by P18(d) (EARLIER_BREAK_DROPPED_BY_CORRECTION) on 8e78b8a and 46934a0 and is clean on the candidate.",
+   "note": "A re-send one day after the first report re-plans from its own day, named or unnamed: the Sunday long run is waited, and some strength rows change. This is pre-existing R7-A behaviour; see observation SSCTR-P35R2-O01."
+  },
+  "Q2_SSCTR_P35_F01": {
+   "verdict": "Yes. R7D-HARNESS-7 r2 closes SSCTR-P35-F01 exactly as its smallestFix states, and none of P18(a), (c), (d), (f), P02, P03, P06(b) or P08 is weakened.",
+   "predicate": "adverseConvergence now counts a report only if it is complete and not partial, with recovery ADVERSE, and with performance other than OVER or the report confounded. I checked it against the runtime's own classify (r6-learning) and kindOf (r6-adaptation) on all 288 recovery-ADVERSE combinations of performance (OVER, COMPATIBLE, UNDER, absent) x effort (EASIER, ON_TARGET, HARDER, absent) x nextDayFunction (NORMAL, IMPAIRED, absent) x complete/partial/not completed x confounded or not. P18(e) counts 0 reports the reducer does not read ADVERSE and misses 0 that it does. The r1 lib on the same grid counts 12 reports the reducer reads CONFLICTING, every complete, unconfounded report with performance OVER: that was SSCTR-P35-F01. The added actual.completed === true implies nothing beyond the reducer: its partial flag already requires a completed report, and classify reads a report that is not completed as PARTIAL. P18(e) also leaves out superseded and conflicted reports, skipped sessions and reports after the cut, so it counts a subset of what the systemic rule counts and stays a necessary condition.",
+   "controls": "DEV-54 is DEV-48 with {performance OVER, recovery ADVERSE, effort ON_TARGET, nextDayFunction NORMAL} on the strength session and the shakeout, the SYc1 shape. On 33d3181 it gives TRAINING_AFTER reentry 2026-12-21 and P18 PASS: clean. Under the HARNESS-7 r1 lib, the same runtime trace fails P18 with SYSTEMIC_WEEK_REENTERED. So DEV-54 is the false-block control the finding asked for, and r2 removes the false block. DEV-48 stays detected: SYSTEMIC_WEEK_REENTERED on 46934a0 under r2, and clean on the candidate (MODERATE 25d, w7d0:TRAINING_NOT_REESTABLISHED). W-P18j, rebuilt verbatim from run-validation.mjs, fires on the candidate under r2. The r1 probe's SYc0 (recovery ADVERSE only) is still true and SYc2 (next day IMPAIRED) still false: necessary only, as intended. The author's validation 7 r2 reports the same: no false block on 59 cases, the DEV-48 row detected and clean, W-P18j fired.",
+   "wording": "Δ35, appended after Δ33 with no line of PREREG-6 deleted, restates Δ27: P18(e) counts a subset of what the systemic rule counts as adverse, and is therefore a necessary condition. The harness README's r2 section says the same. The JSDoc above adverseConvergence keeps its R7D-HARNESS-7 sentence 'The runtime reads each such report as adverse'. The r2 comment just below it supersedes that sentence (observation SSCTR-P35R2-O02; documentary only).",
+   "notWeakened": "The properties.mjs diff (+10/-3) touches only adverseConvergence, the P17 window end and P18's set of open breaks, and adds the helper sameBreakNamed. P18(c), (d) and (f), P02, P03, P06(b) and P08 are unchanged, and so are restatesListed and client.mjs. QRE-P35-03 makes P17 stricter: a restatement now ends only the window of its own break, so another break's window runs on (W-P17f). QRE-P35-04 leaves a restatement of a listed break out of P18's open breaks. That narrows P18(a)/(b)'s inputs only for a review that repeats every fact of a break the last return listed, apart from its name and start time, which is that break's own report, already accounted for by the return that listed it (INTERFACE-7 §2). Without the restatement, the same trace would not check that break at the next return either. A newer report of the latest break is still checked by P18(d), and a restatement that changes any other fact is still a break of its own (W-P17e). Under HARNESS-7 r1, DEV-55 false-blocked (OLDER_BREAK_DROPPED, RELATION_NOT_ESTABLISHED) on both 33d3181 and 8e78b8a; under r2 it is clean. In domain terms this removes a false block and loosens no safety reading.",
+   "fixPath": "The Chief chose the smallestFix's last option: a harness-only fix before the freeze, with the instrument check repeated. The domain closure is this record; the instrument check is the parallel Quality/Reliability r2."
+  },
+  "Q3_T37": {
+   "verdict": "Yes. The clinical route is read correctly.",
+   "reproduction": "A report of A, the break the latest return listed, that changes only its reason text to 'Holiday, then the flu with a fever'. Its category stays VACATION and nonclinical stays true. I sent it by declaration (LOCAL_FATIGUE), by weekly review and by return report, after the re-entry week (Wed wk8, as T37) and inside it (Sat wk6). Every one gives CLINICAL_HUMAN_REQUIRED: 'The interruption reason is clinical or possibly clinical (flu, fever): qualified assessment is needed; no nonclinical return recipe'. The next review stays CLINICAL_HUMAN_REQUIRED, and no return is applied (still one). The results are identical on 8e78b8a, 46934a0 and R7D-FREEZE-4: T37 pins existing behaviour, and the author says it kills mutant Q10.",
+   "domainReading": "Correct under SSCTR-05: suspected illness (fever, flu) is CLINICAL_HUMAN_REQUIRED / OUT_OF_SCOPE_CLINICAL. The text decides even against a VACATION category and a nonclinical flag: a contradiction resolves toward clinical, never toward a nonclinical recipe. The report is no restatement, because restates compares every fact except the name and the start time, so a changed reason is never consumed as that break's restatement. That keeps the r1 ruling (a clinical change is never consumed as a restatement) and R-F08-1 (any clinical report of an episode keeps it clinical). No dose or generic deload is offered in place of the referral. T38 (an earlier return applied on its own does not change which breaks the latest return listed) passes on my rebuild and is the right reading: listedBreaks reads only the latest return's rows."
+  },
+  "Q4_CFP35_02_disclosures": {
+   "verdict": "Faithful in substance, with two omissions and one compression. This is finding SSCTR-P35R2-F01: low severity, non-blocking, carried by CFP35R2-02.",
+   "O01": "Δ36 states the corrected Δ31 exactly as r1 asked: identical on R7D-FREEZE-4, 46934a0 and the candidate for single-break corrections; in the two-break T32 shape R7D-FREEZE-4 eased the next quality slot, because its correction dropped the earlier break, and 46934a0 and the candidate do not; the candidate is one eased session less conservative than R7D-FREEZE-4 there, since Phase 3.4; the R27 / R7-A.2 slot reading goes to the next Founder-authorized phase. Omitted: r1's last sentence, 'The final holdout's domain judge reads this shape as the disclosed residual.'",
+   "O02": "Δ36 states it faithfully: BR-Q6's second sentence is read 'as the reducer's gates read it', the strength gate holds only on ADVERSE, and a CONFLICTING strength session with its logged target met advances. Omitted: the open question r1 routed, 'Whether a strength session above target with an adverse recovery should hold is an R6 gate question, not reviewed here.' Without it, the reading can look settled when it was not reviewed.",
+   "O03": "Δ36 routes the O-02 wording to the interface owner, as fail-closed with no domain effect. That is faithful, but compressed: it omits why the wording matters (for breaks with weeks of training between, 'as one period' invites the athlete to merge them, which direction A forbids) and r1's direction (name the fact actually needed: the break as first reported, or the change confirmed).",
+   "F01Line": "CFP35-02 also asked that SSCTR-P35-F01 be recorded as open before any final holdout. That is superseded: Δ35 closes it, and this record confirms the closure (Q2)."
+  },
+  "Q5_newNumbers": {
+   "verdict": "Confirmed: none.",
+   "reasoning": "The runtime diff holds only ids (QRE-P35-01, Phase 3.5, R7-A §9, I6) and existing day and index arithmetic: onDate(end,-(days-1)) is the first-day expression returnAfterPause already uses for pauseStart, and .at(-1) picks the latest episode. The harness diff adds no numeric literal; its new predicate uses only the existing response labels. The T36 to T38 tests and DEV-53 to DEV-57 are fixtures of existing recipes; the doses they assert are runtime outputs. The policy (a75be1aa...), catalog, composition and the r5/r6/r7-b0 inputs are unchanged since 8e78b8a. Neither this record's finding nor its observations need a number."
+  }
+ },
+ "findings": [
+  {
+   "id": "SSCTR-P35R2-F01",
+   "class": "DISCLOSURE_FIDELITY (PREREG-6 Δ36 against SSCTR-R7D-P35-RECHECK-r1 O01, O02, O03; CFP35-02)",
+   "severity": "LOW (documentary; no runtime, harness or dose effect)",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "where": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_6.md Δ36",
+   "finding": "Δ36 records O01, O02 and O03 faithfully in substance, but leaves out three things. (a) O01's instruction that the final holdout's domain judge read the O-P35-01 two-break shape as the disclosed residual. (b) O02's statement that whether a strength session above target with an adverse recovery should hold is an R6 gate question, not reviewed. (c) O03's reason: for breaks with weeks of training between, the O-02 wording 'as one period' invites a merge that direction A forbids.",
+   "smallestFix": "Carry (a) to (c) through this record's CFP35R2-02 into the R7D-FREEZE-5 record and the handoff. freeze-r7d-5.mjs copies this record's conditionsForFreeze and findings, so no byte after the candidate other than this review record is needed. Append (a) to (c) in the next PREREG-6 addendum, before any final holdout.",
+   "authority": "CFP35-02 of SSCTR-R7D-P35-RECHECK-r1. No number.",
+   "routeTo": "Chief (freeze record and handoff), then the author of the next PREREG addendum."
+  }
+ ],
+ "observations": [
+  {
+   "id": "SSCTR-P35R2-O01",
+   "blocking": false,
+   "note": "Pre-existing; not changed by this cycle. A re-send of the same facts under a new event id is a newer report, and it re-plans from its own day (R7-A final: the report in force sets the point of its own week). In QH17 (first return Fri 08:00, re-send Sat 11:00) both named and unnamed re-sends wait the Sunday long run and plan the dumbbell rows ESTABLISH instead of FROM_LOG. In the single-break duplicate (CTSB) the Sunday long run is waited and the dumbbell rows change (db-bench-press and db-row from 2x8@24 to 2x12@22, for example), identical on all four runtimes. So a report with no new fact still changes the plan, which is a plan-stability cost (SSCTR-07). It is within the SHORT recipe and not judged here. If wanted, the owner of the R7-A newer-report rule may decide in a later authorized phase whether a newer report whose facts equal those of the report in force should KEEP."
+  },
+  {
+   "id": "SSCTR-P35R2-O02",
+   "blocking": false,
+   "note": "Documentary. In harness/lib/properties.mjs, the JSDoc above adverseConvergence still ends 'The runtime reads each such report as adverse, so this never flags a week the runtime may re-enter'. The R7D-HARNESS-7 r2 comment just below it, the README r2 section and Δ35 supersede that sentence. Correct it in the next harness revision; changing it now would change a harness byte after the candidate."
+  }
+ ],
+ "aeReview": {
+  "1_planAdequate": "Yes on the probed shapes: an unnamed same-dates report now gives the named report's plan, the controls keep their paths, and a clinical change routes clinically.",
+  "2_materialFact": "Yes: the earlier break's declaration and the return's separateBreaks rows are on the append-only record, and the duplicate is demonstrable (exact days).",
+  "3_keepDefensible": "KEEP of 33d3181 as the frozen shadow reference is defensible under the conditions below.",
+  "4_changeNecessary": "No further runtime or harness change before this freeze.",
+  "5_smallestIntervention": "Already applied: one statement that routes the existing duplicate through the existing re-read.",
+  "6_smallerAlternatives": "Leaving 8e78b8a's path erases an earlier break's own return through a duplicate. Asking instead would contradict the accepted duplicate rule and the I6 'or the same dates' answer. Neither is preferable.",
+  "7_priorityAndProgression": "Progression is preserved in the conservative direction: strength reads the holiday's own return (ESTABLISH), never known loads it had not re-established.",
+  "8_evidenceSupportsDose": "No dose is judged here; the R6 recipes and the Phase 3.4 decision are relied on as recorded.",
+  "9_uncertainty": "How often athletes confirm by dates rather than by name is unknown. The re-plan of a re-send with no new fact (O01) is a stability cost, not judged.",
+  "10_askHoldClinical": "ASK for the trip's days after a continuity return (I9) and for the start time (rule 0.8). CLINICAL_HUMAN_REQUIRED for a reason text that turns clinical, by every channel. F08 stays BLOCKED_BY_AUTHORITY."
+ },
+ "newPrescriptiveAuthority": "None. This record adds or approves no dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion. It relies only on the R7-A duplicate rule, I1/I3/I6/I9, the Phase 3.4 re-read, CF-P34-02, BR-Q6, R-F08-1 and SSCTR-05, as recorded.",
+ "conditionsForFreeze": [
+  {
+   "id": "CFP35R2-01",
+   "supersedes": "CFP35-01",
+   "binding": "R7D-FREEZE-5",
+   "condition": "Freeze exactly the bytes checked here: r6-adaptation.mjs 5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e, r6-composition.mjs 8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8, r7d-phase35.test.mjs 03880b41b54775193076729f1c895e90f033041c223a325743838edd6a5922d7 (with T1-T38) and the R7D-HARNESS-7 r2 lib/properties.mjs 09972fa63fdef7b1f570944c28369a87105724924f92bf8f9afee2fc0e11cdca. Any other runtime, test or harness-property byte change returns to a fresh SSCTR instance for the items it touches (CFR2-07 and CFP35-01 carried)."
+  },
+  {
+   "id": "CFP35R2-02",
+   "supersedes": "CFP35-02",
+   "binding": "freeze record, handoff and the next PREREG addendum (before any final holdout)",
+   "condition": "Disclose O-P35-01, SSCTR-P35-O02 and SSCTR-P35-O03 as Δ36 records them, together with the three points of SSCTR-P35R2-F01. (a) The final holdout's domain judge reads the O-P35-01 two-break shape as the disclosed residual. (b) Whether a strength session above target with an adverse recovery should hold is an R6 gate question, not reviewed. (c) The O-02 wording invites merging breaks that have weeks of training between them, which direction A forbids; the interface owner should name the fact needed. Also disclose SSCTR-P35R2-O01 and O02 as non-blocking observations. The record of SSCTR-P35-F01 as open is superseded: it is closed (CFP35R2-03)."
+  },
+  {
+   "id": "CFP35R2-03",
+   "supersedes": "CFP35-03",
+   "binding": "before any final holdout",
+   "condition": "SSCTR-P35-F01 is closed on R7D-HARNESS-7 r2 (Δ35; Q2 of this record). The final holdout uses the frozen R7D-HARNESS-7 r2 bytes. Any change to adverseConvergence, the P17 window end, P18's open-break set or restatesListed reopens this check for a fresh SSCTR instance or the domain judge brief. NOT_EVALUABLE never reads as PASS (Δ27, carried)."
+  },
+  {
+   "id": "CFP35R2-04",
+   "supersedes": "CFP35-04 (carried unchanged)",
+   "binding": "freeze record and queue",
+   "condition": "Carry CFR2-06 and CFP35-04 unchanged: no new numbers; shadow reference only; V1_COACHING_AUTHORITY_READY = NO; no human or empirical validation; F08_OPEN, BLOCKED_BY_AUTHORITY (F08-BLOCK-G04), never resolved; R-F08-1 checked (T37 and QH17cl here route clinically on all four runtimes); the queue stays at 235 with no append, and the Phase 3.4 and 3.5 items stay proposed."
+  }
+ ],
+ "proposedHumanRevalidation": {
+  "status": "PROPOSED_ONLY. Nothing was appended; this instance did not read or touch the queue file. Phase 3.5 authorizes no append (AUTHORIZATION_PHASE35). The owner can append it only in a phase that authorizes it, once a freeze binds 33d3181's runtime. This proposal supersedes SSCTR-R7D-P35-RECHECK-r1's proposal (r1), which itself superseded the proposed HQ-R7D-SSCTR-P34-RECHECK r1/r2. The owner appends one item, not several.",
+  "needed": true,
+  "why": "Freezing 33d3181 has prescriptive impact relative to R7D-FREEZE-4. It brings everything r1 listed: direction A per sport, the re-entry week contract with the race-key path under the systemic rule, the correction re-read, the start-time restatement reading, the first-day question, the ceiling fix and R-F08-1. It adds the duplicate re-read: an unnamed report with the latest break's days reads the separate breaks its return read. No number is new.",
+  "item": {
+   "queue_id": "HQ-R7D-SSCTR-P35-RECHECK (proposed; supersedes the r1 proposal of the same id and the proposed HQ-R7D-SSCTR-P34-RECHECK r1/r2)",
+   "decision_id": "SSCTR-R7D-P35-RECHECK",
+   "decision_revision": "r2",
+   "target": {
+    "project": "MyApp / Vilumo Fit",
+    "scope": "R7-D Phase 3.4 implementation of SSCTR-R7D-P34-DECISION-r1 (direction A per sport, gamma; BR-Q1 to BR-Q6), the SSCTR-P34-F01 ceiling fix, the SSCTR-P34-F02 correction re-read and R-F08-1; the closures of SSCTR-P34R-F01 to F04 and QRE-P34-01 (46934a0) and of SSCTR-P34R2-F01, SSCTR-P34R2-F02 and QRE2-P34-01 (8e78b8a); and QRE-P35-01, the duplicate re-read (6203dcf), with T36 to T38. Instrument: R7D-HARNESS-7 r2, with SSCTR-P35-F01 closed. F08 is not approved.",
+    "runtimeBaseline": "Candidate 33d3181 (runtime 6203dcf: r6-adaptation.mjs 5e910f52..., r6-composition.mjs 8aa5f950...); the coordinator names the freeze that binds it.",
+    "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100"
+   },
+   "approved_scope": "Offline synthetic shadow reference; nonclinical adults; conditional on CFP35R2-01 to CFP35R2-04; no new dose, threshold, count, length, percentage, ceiling, increment, tolerance, cadence, recipe or clinical criterion. Disclosed residuals: SSCTR-P34-F03, F04, SSCTR-P34R-O01, O02, SSCTR-P34R2-O02, O-P35-01 (SSCTR-P35-O01), SSCTR-P35-O02, SSCTR-P35-O03, SSCTR-P35R2-F01 (carried by CFP35R2-02), SSCTR-P35R2-O01 and O02.",
+   "conditions": [
+    "CFP35R2-01 to CFP35R2-04 of SSCTR-R7D-P35-RECHECK-r2 (superseding CFP35-01 to CFP35-04 of r1 as stated)",
+    "CFR2-01 to CFR2-07 of SSCTR-R7D-P34-RECHECK-r2",
+    "CFR-01 to CFR-06 of SSCTR-R7D-P34-RECHECK-r1",
+    "CF-P34-01 to CF-P34-11 of SSCTR-R7D-P34-DECISION-r1"
+   ],
+   "approval_date": null,
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "owner": "Chief / Founder",
+   "human_review": null,
+   "linked": [
+    "HQ-R7D-SSCTR-P34-DECISION (proposed)",
+    "HQ-R7D-SSCTR-P33-RECHECK",
+    "HQ-R7D-SSCTR-P32-RECHECK",
+    "HQ-R7D-SSCTR-P31-RECHECK",
+    "HQ-R7D-SSCTR-P3-RECHECK",
+    "HQ-R7D-SSCTR-F03B"
+   ],
+   "re_review_triggers": [
+    "Any byte change to CoachingCore/src or to a file bound by the freeze that implements this record",
+    "Any change to R7D-HARNESS-7 r2's adverseConvergence, P17 window end, P18 open-break set or restatesListed, or any other change to P17, P18 or P08",
+    "A change to the R7-A duplicate rule (interruptionEpisode), the newer-report re-plan (SSCTR-P35R2-O01) or the correction and restatement rules",
+    "A decision on the R27 / R7-A.2 slot reading (O-P35-01) or on the strength gate for an adverse recovery above target (SSCTR-P35-O02)",
+    "A Founder decision on a partial-adherence criterion, per-sport return classes, the planned-sport reading for unavailable sessions, post-event bounds, or F08",
+    "A change to the reducer's classifier, complete rule, completion rule or systemic rule, the strength gate, the session roles or the race-week composition",
+    "A holdout result touching P03, P18, P02, P06(b), P08, TRAINING_BETWEEN_BREAKS, TRAINING_NOT_REESTABLISHED, OWN_RETURN, WITHIN_OWN_RETURN, reentryWeek, a restatement or a duplicate",
+    "A relevant new systematic review or meta-analysis on detraining, retraining, reduced training, tapering or return to running",
+    "An adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke, with no AI veto)"
+   ]
+  }
+ },
+ "states": {
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "FINAL_HOLDOUT_EXISTS": "NO (none created)",
+  "F08": "F08_OPEN (BLOCKED_BY_AUTHORITY, F08-BLOCK-G04)",
+  "humanQueue": "235 items, no append (not read or touched by this instance)"
+ },
+ "evidenceStatus": "Runtime and harness behaviour reproduced on my own rebuilds of 33d3181, 8e78b8a, 46934a0 and R7D-FREEZE-4 (3edf3c5). r1's probe outputs on 8e78b8a reproduce apart from scratch-directory labels. No new scientific claim.",
+ "confidence": {
+  "runtimeBehaviour": "High: every case comes from my own runs; T36 is RED on 8e78b8a and the only test failing there; outputs reproduce between runs.",
+  "QRE_P35_01_domainReading": "High: it follows from the accepted duplicate rule and the Phase 3.4 re-read, and named and unnamed results are equal on every variant probed.",
+  "SSCTR_P35_F01_closure": "High: the predicate equals the runtime's classifier on an exhaustive grid of recovery-ADVERSE responses, and the DEV-54 / DEV-48 / W-P18j results agree under both harness revisions.",
+  "domainJudgment": "Moderate to high: the judgments are fidelity to binding readings; how often these shapes occur in real use is unknown."
+ },
+ "governance": {
+  "gate": "SSCTR side: ACCEPT_WITH_CONDITIONS for freezing 33d3181 (R7D-FREEZE-5). The freeze also needs the independent Quality/Reliability r2 check to pass; the Chief decides within the Founder's Phase 3.5 limits. This was the phase's one bounded cycle; this record asks for no further cycle.",
+  "publication": "Not published; not Product Truth.",
+  "clinical": "No clinical judgment was made. A clinical reason text stays CLINICAL_HUMAN_REQUIRED by every channel; F08 stays BLOCKED_BY_AUTHORITY.",
+  "closedHere": "The domain side of QRE-P35-01 is accepted; SSCTR-P35-F01 is closed (CFP35-03 met); T37 is accepted; CFP35-02 is met in substance, with SSCTR-P35R2-F01 carried by CFP35R2-02.",
+  "open": "SSCTR-P35R2-F01 (disclosure, carried by the freeze record and the next PREREG addendum); the O-P35-01 reading and the SSCTR-P35-O02 gate question (next authorized phase); SSCTR-P35R2-O01 and O02 (optional)."
+ },
+ "expiry": {
+  "reviewBy": "2027-05-07",
+  "orEarlierOn": [
+   "any runtime byte change",
+   "any change to the R7D-HARNESS-7 r2 property bytes",
+   "a policy or catalog change",
+   "a Founder decision on per-sport classes, partial adherence, the planned-sport reading, post-event bounds, G03 or F08",
+   "a holdout result touching P03, P18, OWN_RETURN, a restatement or a duplicate",
+   "a new SR/MA on detraining, retraining or tapering",
+   "an adverse event",
+   "human revalidation"
+  ],
+  "owner": "Chief / Founder"
+ },
+ "validation": {
+  "validateRecords": "Not run. This record follows the shape of the earlier R7-D SSCTR recheck records, not decision.schema.json.",
+  "probeFiles": {
+   "probes2/p35-recheck2.mjs": "08668a5ab90f1c6d9c248d37c14afe84a67d5915850e654ae2383b8bdfcaf3dc",
+   "probes2/p35-recheck2-harness.mjs": "e5806e49a0ff31cf7af904900b32dd902ab6cc7ce5a2fcf79ae4d8c5ad04ae38"
+  },
+  "probeOutputs": {
+   "probes2/out/p35-recheck2.CANDIDATE-33d3181.json": "3a39b0392443bab5025fc5c6501acbd9335047724e8130e2c1b745036fd891aa",
+   "probes2/out/p35-recheck2.CANDIDATE-8e78b8a.json": "662ee4bfb39fc65d3ab7016e397de2ff8cabf48289aca90764246fde139d0385",
+   "probes2/out/p35-recheck2.CANDIDATE-46934a0.json": "d02833caf82b7af5c94aa19666940a1f5ff9a8cce85aa7f1358955da35d6b2ae",
+   "probes2/out/p35-recheck2.R7D-FREEZE-4.json": "8813a641a1c0f2fcb6d79131f36291295fae536dc020df3b25b287c73658966a",
+   "probes2/out/p35-recheck2-harness.HARNESS-7r2.json": "f5b1f5bfe3287d51ab8ff7889d22846178e6cb3076488d08e90cb60a6e5e4966",
+   "probes2/out/p35-recheck2-harness.HARNESS-7r1.json": "e5a6aa6855a41475c0e8651884d9ff5a8a3ef0a6745528339ca6052684fea89e",
+   "probes2/out/p35-recheck.CANDIDATE-33d3181.json": "51658c3b476bdb52b461a2a1fccb7f97093c3c6fe4f82b0b92c7e3f983f6a3ed",
+   "probes2/out/p35-recheck.CANDIDATE-33d3181.HARNESS-7r1.json": "babdcf962e9021171fe576341e3966f027e8f82d76adfbfc53a64fcd38e04a36",
+   "probes2/out/p35-recheck.CANDIDATE-8e78b8a.reproduction.json": "d982ed969084510558074fc992920e1dc76713b4144fa37ccadb9211875273f9",
+   "probes2/out/p34-recheck2.CANDIDATE-33d3181.json": "30dc420e8e363b2cb884a171a4f40b89a2eb57c293c703ab7df1a028df578be3",
+   "probes2/out/p34-recheck2-detectors.CANDIDATE-33d3181.json": "41f2aaf36e1039970a4ba0817e355ef309d4eb652a3b72844657978d9b5c34e7",
+   "probes2/out/p34-recheck.CANDIDATE-33d3181.json": "5ad22db7bccaac447e8bf50eee707b5d5f7c616590be045bf25b4abf47f1e13d",
+   "probes2/out/p34-recheck-detectors.CANDIDATE-33d3181.json": "de10d01db3715eb7f38c775534a0d0b92523c921ca82dc44c55053cac3b8e66d",
+   "probes2/out/p34-ssctr.CANDIDATE-33d3181.json": "eccbe483207e63850f7d95055953cd3afad4a1349f687bb26a37c5f193797980",
+   "probes2/out/p34-ceiling.CANDIDATE-33d3181.json": "0d176e94b6d7b96e69e8656b91344b7cbecf053dc3b5db6025b164bc844c5e8c"
+  },
+  "usage": "probes2/p35-recheck2.mjs: node <probe> <root holding CoachingCore and the five SSCTR records> --label <name>. probes2/p35-recheck2-harness.mjs: node <probe> --harness <root holding audits/domain-coaching-r7-d-2026-11-02/harness/lib> --dev <DEV_CASES_R7D_7.json> --run <label>=<root> [...]. The r1 probe (probes/p35-recheck.mjs) and the Phase 3.4 probes run as their own headers state, from a scratch root holding the audit folder. Never run any of them on the repository."
+ }
+}

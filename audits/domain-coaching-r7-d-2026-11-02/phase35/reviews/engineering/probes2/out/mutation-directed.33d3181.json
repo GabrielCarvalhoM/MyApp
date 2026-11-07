@@ -1,0 +1,315 @@
+{
+ "probe": "QRE3-P35-MUTATION-1",
+ "mode": "DIRECTED",
+ "root": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre3-p35-20261107-183944-347/rt-33d3181",
+ "work": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre3-p35-20261107-183944-347/mut-directed",
+ "sourceSha256": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e",
+ "results": [
+  {
+   "id": "baseline",
+   "status": 0,
+   "tests": 98,
+   "pass": 98,
+   "fail": 0,
+   "failed": []
+  },
+  {
+   "id": "Q01",
+   "what": "F01 applied to strength too (a systemic week never re-enters strength through the re-entry predicate)",
+   "applied": true,
+   "mutatedSha256": "329751c3388ca529074fa7fc2c4f055651e5ebac12d15d3b2bafccda3401a7f6",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "Q02",
+   "what": "F01 reads the systemic flag of the week after (at(x.j+2))",
+   "applied": true,
+   "mutatedSha256": "a057ab54a6b17ab8315431c2cc14c1442d4e1bcb234a692fb5cda9bb3b60fd1f",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T31 (SSCTR-P34R2-F01): converging adverse responses in a race week without a gated run hold running as they do with a gated r"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "Q03",
+   "what": "F02 exception applied on every path (the fresh head too): the nested own return excepts the latest head",
+   "applied": true,
+   "mutatedSha256": "26c5dec235f4d7a6cae982eef3820eb56b674a27de2a5855619f8da1e40e4a5f",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "Q10",
+   "what": "restates ignores the reason text (a report changing only the reason is consumed)",
+   "applied": true,
+   "mutatedSha256": "971fe9a9e15b914a986742d3a7f8b648bd7edebbc1fd0b7d28ca787a792334e5",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T37 (QRE-P35-05): a report of the listed break whose reason text turns clinical is no restatement: after the re-entry week it"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "Q11",
+   "what": "restates ignores the end date and length (a report changing the days is consumed)",
+   "applied": true,
+   "mutatedSha256": "6482647be82a593fa57b18673fc1ec94b21a33c630ac4efe089fd8ac8eea9d68",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); "
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "Q12",
+   "what": "restates accepts a start time later than the report itself",
+   "applied": true,
+   "mutatedSha256": "e0ae029dae9946210556d433206a679eb0ce65c7e4cbae884c9db57f2006e812",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "Q13",
+   "what": "naming reads reports made before the report the return read",
+   "applied": true,
+   "mutatedSha256": "47421831dd03c78f22cd6ab521819c6f66093f08cc2e6dacef8ac99438bf7aaa",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "Q14",
+   "what": "a timeless restatement keeps the earlier start time in force (newest decides only when it states a time)",
+   "applied": true,
+   "mutatedSha256": "b15660487965b834e2ffd8b34fdbffcee2d77b6830b4e0f8bc3a04ef2155894a",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "Q15",
+   "what": "listedBreaks reads the first return, not the latest",
+   "applied": true,
+   "mutatedSha256": "79a9522776bd6234b08c95d661f377c5c9fdd5c2b747ca7e2a4c364cf65f85a1",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T38 (QRE-P35-05): with an earlier return applied on its own in the history, the restatement still answers the start-time ques"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "Q16",
+   "what": "a restating return report is always kept (the late-evidence re-read skipped)",
+   "applied": true,
+   "mutatedSha256": "56e07de3feee6ff5806bc05a2b4d0df67ba35a61d332d7a5a1b047df3de00f8b",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by t"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "Q17",
+   "what": "consumed reports are excluded only when the review itself restates",
+   "applied": true,
+   "mutatedSha256": "ea7d7640a48cf94439d1d70f36d3e31ccbcc9530c31a9fc0c2bf7301e579588a",
+   "directed": {
+    "tests": 98,
+    "pass": 96,
+    "fail": 2,
+    "failed": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip firs",
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; res"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "N01",
+   "what": "F03 without required(x)",
+   "applied": true,
+   "mutatedSha256": "dd31275de84b88a67852cf49bb23157b613e0934542e0b185115363e946bcfe4",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T35 (QRE CQ2-4, N01): a post-event week whose runs are all optional, none done, re-enters strength only: running continues fr"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "N05",
+   "what": "F04 names the own return's head, not the break that starts its stop",
+   "applied": true,
+   "mutatedSha256": "13772397900057345d8fe71d722b8324620dbb3e02ce33af69b0c58d11c2f17b",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T35 (QRE CQ2-4, N05): with a stop that runs back through an even earlier break, the start-time question names the break that "
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "QF0",
+   "what": "QRE-P35-01 reverted: an unnamed same-dates report re-establishes the latest break alone",
+   "applied": true,
+   "mutatedSha256": "7fc7543467b8ccab111822746844e5278311d3ecac2e82e31045ca59248d0c2d",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "QF1",
+   "what": "the duplicate test drops the end date (the same first day is enough)",
+   "applied": true,
+   "mutatedSha256": "86ce4fe800a6d8086132169b5522c523548ee11c9dabef6175db89a40c2c11d1",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "QF2",
+   "what": "the duplicate test drops the first day (the same last day is enough)",
+   "applied": true,
+   "mutatedSha256": "ba4e7499a36e6c267103ae323d4d10bc3aacfa4ea50e480f3c81cccff3e5d392",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "QF3",
+   "what": "the duplicate test reads only a stated first day (a report giving its last day and length is never a duplicate)",
+   "applied": true,
+   "mutatedSha256": "6a1ab8991109a9ac280b80a90613bb6a2dc54a327f4505ac8dd5de35932ada9e",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "QF4",
+   "what": "every unnamed report re-reads the latest recorded return (no duplicate test)",
+   "applied": true,
+   "mutatedSha256": "a7625290dd639a3c808a27983b91b3d5e94542feb7986af87ac6e32b69ac94dd",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "QF5",
+   "what": "the unnamed re-read reads only a return with an own-return row (a TRAINING_AFTER row is dropped)",
+   "applied": true,
+   "mutatedSha256": "98234f3749bf26a4516145b3ca1acde5972f4bc0e950bc47b8605130bf92af99",
+   "directed": {
+    "tests": 98,
+    "pass": 97,
+    "fail": 1,
+    "failed": [
+     "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation"
+    ]
+   },
+   "killed": true
+  },
+  {
+   "id": "QF6",
+   "what": "a decision of the unnamed re-read (a missing declaration ASK, a clinical route, a question) is ignored: the duplicate is read alone",
+   "applied": true,
+   "mutatedSha256": "bb1d475105b5ce270896faf5120ef0a93c172b9e0fdf68b7d1698b38800f47c8",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  },
+  {
+   "id": "QF7",
+   "what": "the duplicate test compares with the first report of the latest break, not the report in force",
+   "applied": true,
+   "mutatedSha256": "b0cfdc436f66c5183b554ee3115c2b38b33dc37e9c84920d4af31b429a08974f",
+   "directed": {
+    "tests": 98,
+    "pass": 98,
+    "fail": 0,
+    "failed": []
+   },
+   "killed": false
+  }
+ ]
+}

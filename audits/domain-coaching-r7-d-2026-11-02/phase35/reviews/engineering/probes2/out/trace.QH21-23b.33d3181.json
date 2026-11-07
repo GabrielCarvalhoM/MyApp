@@ -1,0 +1,652 @@
+{
+ "probe": "QRE3-P35-TRACE-1",
+ "root": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre3-p35-20261107-183944-347/rt-33d3181",
+ "cases": {
+  "QH21": {
+   "steps": [
+    {
+     "step": "w0r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged; first logged loads wait for confirmation before they become numbers (db-rdl, db-sp"
+    },
+    {
+     "step": "w1r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+    },
+    {
+     "step": "w4d0",
+     "named": "QH21-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-11-30 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "brk2",
+     "named": "QH21-brk2",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-12-18 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "plain",
+     "named": null,
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to"
+    },
+    {
+     "step": "late",
+     "named": null,
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAt"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "A strength session was recorded on 2026-11-16, the day the break reported on 2026-11-30 (episodeId QH21-hol) began, and whether it came before that break change"
+    },
+    {
+     "step": "wrong",
+     "named": "QH21-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAtContradictsStartDate"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "The interruption facts are out of range or contradict each other (interruption.startedAtContradictsStartDate); say when it started and when it ended"
+    },
+    {
+     "step": "right",
+     "named": "QH21-w4d0",
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "step": "sun",
+     "named": null,
+     "action": "GATED_NEXT_STEP",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+    },
+    {
+     "step": "wk7",
+     "named": null,
+     "action": "ADOPT_LOGGED_LOADS",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time"
+    },
+    {
+     "step": "wk8",
+     "named": null,
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed as planned without adverse signal; the planned progression step stands"
+    }
+   ],
+   "P17": {
+    "result": "FAIL",
+    "violations": [
+     {
+      "at": "right",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "sun",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "wk7",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "wk8",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     }
+    ]
+   },
+   "P18": {
+    "result": "PASS",
+    "violations": []
+   }
+  },
+  "QH22": {
+   "steps": [
+    {
+     "step": "w0r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged; first logged loads wait for confirmation before they become numbers (db-rdl, db-sp"
+    },
+    {
+     "step": "w1r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+    },
+    {
+     "step": "w4d0",
+     "named": "QH22-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-11-30 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "brk2",
+     "named": "QH22-brk2",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-12-18 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "plain",
+     "named": null,
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to"
+    },
+    {
+     "step": "late",
+     "named": null,
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAt"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "A strength session was recorded on 2026-11-16, the day the break reported on 2026-11-30 (episodeId QH22-hol) began, and whether it came before that break change"
+    },
+    {
+     "step": "wrong",
+     "named": "QH22-w4d0",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAtContradictsStartDate"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "The interruption facts are out of range or contradict each other (interruption.startedAtContradictsStartDate); say when it started and when it ended"
+    },
+    {
+     "step": "right",
+     "named": "QH22-hol",
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "step": "sun",
+     "named": null,
+     "action": "GATED_NEXT_STEP",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+    },
+    {
+     "step": "wk7",
+     "named": null,
+     "action": "ADOPT_LOGGED_LOADS",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time"
+    },
+    {
+     "step": "wk8",
+     "named": null,
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed as planned without adverse signal; the planned progression step stands"
+    }
+   ],
+   "P17": {
+    "result": "FAIL",
+    "violations": [
+     {
+      "at": "right",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "sun",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "wk7",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     },
+     {
+      "at": "wk8",
+      "issue": "VALID_BEFORE_DECLARED_BREAK_APPLIED",
+      "declaredAt": "wrong"
+     }
+    ]
+   },
+   "P18": {
+    "result": "PASS",
+    "violations": []
+   }
+  },
+  "QH23": {
+   "steps": [
+    {
+     "step": "w0r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged; first logged loads wait for confirmation before they become numbers (db-rdl, db-sp"
+    },
+    {
+     "step": "w1r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+    },
+    {
+     "step": "w4d0",
+     "named": "QH23-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-11-30 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "brk2",
+     "named": "QH23-brk2",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-12-18 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "plain",
+     "named": null,
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to"
+    },
+    {
+     "step": "late",
+     "named": null,
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAt"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "A strength session was recorded on 2026-11-16, the day the break reported on 2026-11-30 (episodeId QH23-hol) began, and whether it came before that break change"
+    },
+    {
+     "step": "wrong",
+     "named": "QH23-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAtContradictsStartDate"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "The interruption facts are out of range or contradict each other (interruption.startedAtContradictsStartDate); say when it started and when it ended"
+    },
+    {
+     "step": "right",
+     "named": "QH23-hol",
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "step": "sun",
+     "named": null,
+     "action": "GATED_NEXT_STEP",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+    },
+    {
+     "step": "wk7",
+     "named": null,
+     "action": "ADOPT_LOGGED_LOADS",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time"
+    },
+    {
+     "step": "wk8",
+     "named": null,
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed as planned without adverse signal; the planned progression step stands"
+    }
+   ],
+   "P17": {
+    "result": "PASS",
+    "violations": []
+   },
+   "P18": {
+    "result": "PASS",
+    "violations": []
+   }
+  },
+  "QH23b": {
+   "steps": [
+    {
+     "step": "w0r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged; first logged loads wait for confirmation before they become numbers (db-rdl, db-sp"
+    },
+    {
+     "step": "w1r",
+     "named": null,
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [],
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+    },
+    {
+     "step": "w4d0",
+     "named": "QH23b-hol",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-11-30 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "brk2",
+     "named": "QH23b-brk2",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.reportedOnItsOwn"
+     ],
+     "rows": [],
+     "reason": "A break in training reported on 2026-12-18 is recorded and not applied yet: a return report or the week’s review applies it, with no need to state the break aga"
+    },
+    {
+     "step": "plain",
+     "named": null,
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to"
+    },
+    {
+     "step": "late",
+     "named": null,
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAt"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "A strength session was recorded on 2026-11-16, the day the break reported on 2026-11-30 (episodeId QH23b-hol) began, and whether it came before that break chang"
+    },
+    {
+     "step": "wrong",
+     "named": "QH23b-w4d0",
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.startedAtContradictsStartDate"
+     ],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "The interruption facts are out of range or contradict each other (interruption.startedAtContradictsStartDate); say when it started and when it ended"
+    },
+    {
+     "step": "right",
+     "named": "QH23b-w4d0",
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "step": "sun",
+     "named": null,
+     "action": "GATED_NEXT_STEP",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation"
+    },
+    {
+     "step": "wk7",
+     "named": null,
+     "action": "ADOPT_LOGGED_LOADS",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed loads differ from the planned known loads; the plan continues from what was lifted, one step at a time"
+    },
+    {
+     "step": "wk8",
+     "named": null,
+     "action": "KEEP",
+     "status": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "rows": [
+      "hol:OWN_RETURN",
+      "brk2:LATEST"
+     ],
+     "reason": "Executed as planned without adverse signal; the planned progression step stands"
+    }
+   ],
+   "P17": {
+    "result": "PASS",
+    "violations": []
+   },
+   "P18": {
+    "result": "PASS",
+    "violations": []
+   }
+  }
+ }
+}

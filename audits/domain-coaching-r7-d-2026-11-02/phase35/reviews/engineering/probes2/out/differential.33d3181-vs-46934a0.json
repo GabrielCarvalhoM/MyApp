@@ -1,0 +1,7082 @@
+{
+ "probe": "QRE3-P35-DIFFERENTIAL-1",
+ "label": "33d3181-vs-46934a0",
+ "corpora": [
+  "R7D_DIAGNOSTIC_CORPUS.json",
+  "R7D_GENERATED_DIAGNOSTIC.json",
+  "DEV_CASES_R7D_7.json",
+  "qre2-p35-harness-corpus.json",
+  "qre3-p35-corpus.json"
+ ],
+ "cases": 211,
+ "same": 179,
+ "differing": 32,
+ "differingStepView": [
+  "DEV-48",
+  "DEV-49",
+  "DEV-51",
+  "DEV-52",
+  "DEV-53",
+  "DEV-55",
+  "DEV-56",
+  "DEV-57",
+  "QH10",
+  "QH11",
+  "QH12",
+  "QH13",
+  "QH14",
+  "DEV-48",
+  "DEV-49",
+  "DEV-51",
+  "DEV-52",
+  "QH17",
+  "QH18",
+  "QH19",
+  "QH20",
+  "QH21",
+  "QH22",
+  "QH23",
+  "QH23b",
+  "QH24",
+  "QH25",
+  "QH26",
+  "QH26n",
+  "QH27",
+  "QH28"
+ ],
+ "differingRecordOnly": [
+  "QH29"
+ ],
+ "errors": [],
+ "differingCases": [
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-48",
+   "first": {
+    "step": "plain",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain",
+    "base": {
+     "start": "2026-12-28",
+     "end": "2026-12-31",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w7d0:OWN_RETURN:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-07",
+     "end": "2026-12-31",
+     "days": 25,
+     "cls": "MODERATE",
+     "rows": [
+      "w7d0:TRAINING_NOT_REESTABLISHED:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-49",
+   "first": {
+    "step": "corr",
+    "base": "REESTABLISH",
+    "candidate": "ASK[observations.unreportedSessions]"
+   },
+   "firstRecord": {
+    "step": "corr",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-13..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [
+    {
+     "step": "corr",
+     "candidate": "ASK[observations.unreportedSessions]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[observations.unreportedSessions]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-51",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-52",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-53",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-55",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain3",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-56",
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-57",
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH10",
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH11",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "restate",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH12",
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH13",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH14",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-48",
+   "first": {
+    "step": "plain",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain",
+    "base": {
+     "start": "2026-12-28",
+     "end": "2026-12-31",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w7d0:OWN_RETURN:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-07",
+     "end": "2026-12-31",
+     "days": 25,
+     "cls": "MODERATE",
+     "rows": [
+      "w7d0:TRAINING_NOT_REESTABLISHED:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-49",
+   "first": {
+    "step": "corr",
+    "base": "REESTABLISH",
+    "candidate": "ASK[observations.unreportedSessions]"
+   },
+   "firstRecord": {
+    "step": "corr",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-13..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [
+    {
+     "step": "corr",
+     "candidate": "ASK[observations.unreportedSessions]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[observations.unreportedSessions]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-51",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-52",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH17",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH18",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH19",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain3",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH20",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:TRAINING_AFTER:2026-11-16..2026-11-29",
+      "trip2:LATEST:2027-01-05..2027-01-07"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH21",
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startedAtContradictsStartDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH22",
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startedAtContradictsStartDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH23",
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH23b",
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH24",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH25",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-18",
+     "days": 5,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-18",
+     "days": 5,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-18"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH26",
+   "first": {
+    "step": "conf",
+    "base": "REESTABLISH",
+    "candidate": "ASK[interruption.startedAt]"
+   },
+   "firstRecord": {
+    "step": "conf",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [
+    {
+     "step": "conf",
+     "candidate": "ASK[interruption.startedAt]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH26n",
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "restate",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH27",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH28",
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH29",
+   "first": null,
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-06",
+     "days": 21,
+     "cls": "MODERATE",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-06",
+     "days": 21,
+     "cls": "MODERATE",
+     "rows": [
+      "brk2:LATEST:2026-11-16..2026-12-06",
+      "w4d0:OVERLAPS:2026-11-16..2026-11-29"
+     ]
+    }
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP",
+     "GATED_NEXT_STEP"
+    ]
+   }
+  }
+ ],
+ "casesWithNewAsks": [
+  "DEV-49",
+  "DEV-49",
+  "QH26"
+ ],
+ "rows": [
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D01",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D02",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D03",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D04",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D05",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D06",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D07",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D08",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D09",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D10",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D11",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D12",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D13",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D14",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D15",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D16",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D17",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_DIAGNOSTIC_CORPUS.json",
+   "caseId": "R7D-D18",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G001",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G002",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G003",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G004",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G005",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G006",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G007",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G008",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G009",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G010",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G011",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G012",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G013",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G014",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G015",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G016",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G017",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G018",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G019",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G020",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G021",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G022",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G023",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G024",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G025",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G026",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G027",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G028",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G029",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G030",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G031",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G032",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G033",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G034",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G035",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G036",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G037",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G038",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G039",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G040",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G041",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G042",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G043",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G044",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G045",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G046",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G047",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G048",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G049",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G050",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G051",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G052",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G053",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G054",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G055",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G056",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G057",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G058",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G059",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G060",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G061",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G062",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G063",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G064",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G065",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G066",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G067",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G068",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G069",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G070",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G071",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G072",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G073",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G074",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G075",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G076",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G077",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G078",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G079",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G080",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G081",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G082",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G083",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G084",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G085",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G086",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G087",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G088",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G089",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G090",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G091",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G092",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G093",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G094",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G095",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G096",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G097",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G098",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G099",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "R7D_GENERATED_DIAGNOSTIC.json",
+   "caseId": "R7D-G100",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-01",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-02",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-03",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-04",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-05",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-06",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-07",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-08",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-09",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-02b",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-10",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": true,
+    "candidate": true
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-11",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-12",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-13",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-14",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-15",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-16",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-17",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-17b",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-18",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-19",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-20",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-21",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-22",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-23",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-24",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-25",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-26",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-27",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-28",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-29",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-30",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-31",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-32",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-33",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-34",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-35",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-36",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-37",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-38",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-39",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-40",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-41",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-42",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-43",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-44",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-45",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-46",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-47",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-48",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "plain",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain",
+    "base": {
+     "start": "2026-12-28",
+     "end": "2026-12-31",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w7d0:OWN_RETURN:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-07",
+     "end": "2026-12-31",
+     "days": 25,
+     "cls": "MODERATE",
+     "rows": [
+      "w7d0:TRAINING_NOT_REESTABLISHED:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-49",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "corr",
+    "base": "REESTABLISH",
+    "candidate": "ASK[observations.unreportedSessions]"
+   },
+   "firstRecord": {
+    "step": "corr",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-13..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[observations.unreportedSessions]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [
+    {
+     "step": "corr",
+     "candidate": "ASK[observations.unreportedSessions]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-50",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-51",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-52",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-53",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-54",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-55",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain3",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-56",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "DEV_CASES_R7D_7.json",
+   "caseId": "DEV-57",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH1",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH4",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH6",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH5",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH10",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH11",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "restate",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-08",
+     "end": "2026-12-18",
+     "days": 11,
+     "cls": "MODERATE",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-08..2026-12-18"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH12",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "plain2",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain2",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH13",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH14",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-46",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-47",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-48",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "plain",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "plain",
+    "base": {
+     "start": "2026-12-28",
+     "end": "2026-12-31",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w7d0:OWN_RETURN:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-07",
+     "end": "2026-12-31",
+     "days": 25,
+     "cls": "MODERATE",
+     "rows": [
+      "w7d0:TRAINING_NOT_REESTABLISHED:2026-12-07..2026-12-20",
+      "brk2:LATEST:2026-12-28..2026-12-31"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "KEEP",
+     "KEEP",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-49",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "corr",
+    "base": "REESTABLISH",
+    "candidate": "ASK[observations.unreportedSessions]"
+   },
+   "firstRecord": {
+    "step": "corr",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-17",
+     "days": 32,
+     "cls": "LONG",
+     "rows": [
+      "w4d0:TRAINING_NOT_REESTABLISHED:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-13..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[observations.unreportedSessions]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [
+    {
+     "step": "corr",
+     "candidate": "ASK[observations.unreportedSessions]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-50",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-51",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "DEV-52",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "plain2",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH15",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH16",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH17",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH18",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "ASK[interruption.episodeId]"
+   },
+   "firstRecord": {
+    "step": "confirm",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.episodeId]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "confirm",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH19",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.episodeId]",
+     "ASK[interruption.episodeId]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "plain3",
+     "base": "ASK[interruption.episodeId]",
+     "candidate": "REESTABLISH"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre2-p35-harness-corpus.json",
+   "caseId": "QH20",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": {
+    "step": "plain3",
+    "base": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:TRAINING_AFTER:2026-11-16..2026-11-29",
+      "trip2:LATEST:2027-01-05..2027-01-07"
+     ]
+    },
+    "candidate": {
+     "start": "2027-01-05",
+     "end": "2027-01-07",
+     "days": 3,
+     "cls": "SHORT",
+     "rows": []
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH21",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startedAtContradictsStartDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH22",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startedAtContradictsStartDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startedAtContradictsStartDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startedAtContradictsStartDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH23",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH23b",
+   "same": false,
+   "sameRecord": true,
+   "first": {
+    "step": "right",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "KEEP"
+   },
+   "firstRecord": null,
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAtContradictsStartDate]",
+     "KEEP",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "right",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "GATED_NEXT_STEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH24",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH25",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-18",
+     "days": 5,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-18",
+     "days": 5,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-18"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH26",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "conf",
+    "base": "REESTABLISH",
+    "candidate": "ASK[interruption.startedAt]"
+   },
+   "firstRecord": {
+    "step": "conf",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [
+    {
+     "step": "conf",
+     "candidate": "ASK[interruption.startedAt]",
+     "base": "REESTABLISH"
+    }
+   ],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH26n",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "restate",
+    "base": "ASK[interruption.startDate,interruption.endDate]",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "restate",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]",
+     "ASK[interruption.startDate,interruption.endDate]"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "ASK[interruption.startedAt]",
+     "ASK[interruption.startedAt]",
+     "REESTABLISH",
+     "KEEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [
+    {
+     "step": "restate",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "REESTABLISH"
+    },
+    {
+     "step": "sun",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    },
+    {
+     "step": "wk7",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "ADOPT_LOGGED_LOADS"
+    },
+    {
+     "step": "wk8",
+     "base": "ASK[interruption.startDate,interruption.endDate]",
+     "candidate": "KEEP"
+    }
+   ],
+   "trailingAsk": {
+    "base": true,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH27",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "GATED_NEXT_STEP",
+     "ADOPT_LOGGED_LOADS",
+     "KEEP",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH28",
+   "same": false,
+   "sameRecord": false,
+   "first": {
+    "step": "dup",
+    "base": "REESTABLISH",
+    "candidate": "REESTABLISH"
+   },
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "rows": [
+      "w4d0:OWN_RETURN:2026-11-16..2026-11-29",
+      "brk2:LATEST:2026-12-14..2026-12-17"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH29",
+   "same": true,
+   "sameRecord": false,
+   "first": null,
+   "firstRecord": {
+    "step": "dup",
+    "base": {
+     "start": "2026-11-16",
+     "end": "2026-12-06",
+     "days": 21,
+     "cls": "MODERATE",
+     "rows": []
+    },
+    "candidate": {
+     "start": "2026-11-16",
+     "end": "2026-12-06",
+     "days": 21,
+     "cls": "MODERATE",
+     "rows": [
+      "brk2:LATEST:2026-11-16..2026-12-06",
+      "w4d0:OVERLAPS:2026-11-16..2026-11-29"
+     ]
+    }
+   },
+   "actions": {
+    "base": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP",
+     "GATED_NEXT_STEP"
+    ],
+    "candidate": [
+     "INSTANTIATE_LOGGED_LOADS",
+     "INSTANTIATE_LOGGED_LOADS",
+     "ASK[interruption.reportedOnItsOwn]",
+     "ASK[interruption.reportedOnItsOwn]",
+     "REESTABLISH",
+     "REESTABLISH",
+     "KEEP",
+     "GATED_NEXT_STEP"
+    ]
+   },
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  },
+  {
+   "corpus": "qre3-p35-corpus.json",
+   "caseId": "QH29n",
+   "same": true,
+   "sameRecord": true,
+   "first": null,
+   "firstRecord": null,
+   "newAsks": [],
+   "goneAsks": [],
+   "trailingAsk": {
+    "base": false,
+    "candidate": false
+   }
+  }
+ ]
+}

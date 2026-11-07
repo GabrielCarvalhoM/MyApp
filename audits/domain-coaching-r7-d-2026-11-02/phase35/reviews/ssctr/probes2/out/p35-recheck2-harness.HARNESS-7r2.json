@@ -1,0 +1,667 @@
+{
+ "harnessRoot": "ssctr3-p35-20261107-183701-1170/cand",
+ "devCorpus": "R7D-HARNESS-DEV-7",
+ "cases": [
+  "DEV-48",
+  "DEV-53",
+  "DEV-54",
+  "DEV-55",
+  "DEV-56",
+  "DEV-57"
+ ],
+ "runs": [
+  {
+   "label": "CANDIDATE-33d3181",
+   "cases": [
+    {
+     "caseId": "DEV-48",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "MODERATE 25d 2026-12-07..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-53",
+     "steps": 7,
+     "stopped": null,
+     "lastReturn": {
+      "at": "dup",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "SAME_BREAK/DUPLICATE",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 8,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-54",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-28..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_AFTER reentry 2026-12-21",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 4,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-55",
+     "steps": 12,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain3",
+      "stop": "SHORT 3d 2027-01-05..2027-01-07",
+      "relation": "NEW/AFTER_REENTRY",
+      "breaks": null
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 11
+     }
+    },
+    {
+     "caseId": "DEV-56",
+     "steps": 11,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 8
+     }
+    },
+    {
+     "caseId": "DEV-57",
+     "steps": 9,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain2",
+      "stop": "MODERATE 11d 2026-12-08..2026-12-18",
+      "relation": "SAME_BREAK/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 9,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 12
+     }
+    }
+   ]
+  },
+  {
+   "label": "CANDIDATE-8e78b8a",
+   "cases": [
+    {
+     "caseId": "DEV-48",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "MODERATE 25d 2026-12-07..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-53",
+     "steps": 7,
+     "stopped": null,
+     "lastReturn": {
+      "at": "dup",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "SAME_BREAK/DUPLICATE",
+      "breaks": null
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "EARLIER_BREAK_DROPPED_BY_CORRECTION"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 6,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-54",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-28..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_AFTER reentry 2026-12-21",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 4,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-55",
+     "steps": 12,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain3",
+      "stop": "SHORT 3d 2027-01-05..2027-01-07",
+      "relation": "NEW/AFTER_REENTRY",
+      "breaks": null
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 11
+     }
+    },
+    {
+     "caseId": "DEV-56",
+     "steps": 11,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 8
+     }
+    },
+    {
+     "caseId": "DEV-57",
+     "steps": 9,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain2",
+      "stop": "MODERATE 11d 2026-12-08..2026-12-18",
+      "relation": "SAME_BREAK/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 9,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 12
+     }
+    }
+   ]
+  },
+  {
+   "label": "CANDIDATE-46934a0",
+   "cases": [
+    {
+     "caseId": "DEV-48",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-28..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:OWN_RETURN reentered RUN 2026-12-21 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SYSTEMIC_WEEK_REENTERED"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-53",
+     "steps": 7,
+     "stopped": null,
+     "lastReturn": {
+      "at": "dup",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "SAME_BREAK/DUPLICATE",
+      "breaks": null
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "EARLIER_BREAK_DROPPED_BY_CORRECTION"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 6,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-54",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-28..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_AFTER reentry 2026-12-21",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 4,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-55",
+     "steps": 12,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 10
+     }
+    },
+    {
+     "caseId": "DEV-56",
+     "steps": 11,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH null",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 8
+     }
+    },
+    {
+     "caseId": "DEV-57",
+     "steps": 9,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "SHORT 4d 2026-12-14..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:OWN_RETURN reentered RUN 2026-11-30 STRENGTH 2026-12-07",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 6,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 11
+     }
+    }
+   ]
+  },
+  {
+   "label": "R7D-FREEZE-4",
+   "cases": [
+    {
+     "caseId": "DEV-48",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "MODERATE 25d 2026-12-07..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-53",
+     "steps": 7,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "LONG 32d 2026-11-16..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SPORT_WEEK_READ_AS_STOP"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 8
+     }
+    },
+    {
+     "caseId": "DEV-54",
+     "steps": 8,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "MODERATE 25d 2026-12-07..2026-12-31",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w7d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [],
+     "P18": {
+      "result": "PASS",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 6
+     }
+    },
+    {
+     "caseId": "DEV-55",
+     "steps": 12,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "LONG 32d 2026-11-16..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SPORT_WEEK_READ_AS_STOP"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 10
+     }
+    },
+    {
+     "caseId": "DEV-56",
+     "steps": 11,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain",
+      "stop": "LONG 32d 2026-11-16..2026-12-17",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SPORT_WEEK_READ_AS_STOP"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 8
+     }
+    },
+    {
+     "caseId": "DEV-57",
+     "steps": 9,
+     "stopped": null,
+     "lastReturn": {
+      "at": "plain2",
+      "stop": "LONG 33d 2026-11-16..2026-12-18",
+      "relation": "NEW/EXPLICIT",
+      "breaks": [
+       "w4d0:TRAINING_NOT_REESTABLISHED",
+       "brk2:LATEST"
+      ]
+     },
+     "fails": [
+      {
+       "property": "P18",
+       "issues": [
+        "SPORT_WEEK_READ_AS_STOP"
+       ],
+       "n": 1
+      }
+     ],
+     "P18": {
+      "result": "FAIL",
+      "units": 5,
+      "notEvaluable": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 11
+     }
+    }
+   ]
+  }
+ ],
+ "witness_W_P18j": {
+  "on": "CANDIDATE-33d3181",
+  "fired": true,
+  "issues": [
+   "SYSTEMIC_WEEK_REENTERED"
+  ]
+ },
+ "adverseConvergenceVsReducer": {
+  "combinations": 288,
+  "harnessTrueWhileReducerNotAdverse": [],
+  "reducerAdverseWhileHarnessFalse": 0,
+  "note": "The second count is expected to be non-zero only for reports the reducer reads ADVERSE for a reason other than recovery ADVERSE alone; every row here has recovery ADVERSE, so it must be zero for P18(e) to equal the reducer on recovery-ADVERSE reports."
+ }
+}

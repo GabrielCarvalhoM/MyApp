@@ -1,0 +1,970 @@
+{
+ "probe": "QRE3-P35-COMPARE-1",
+ "name": "33d3181-vs-8e78b8a",
+ "a": {
+  "file": "runtime-r1probe.8e78b8a.json",
+  "label": "8e78b8a",
+  "probe": "QRE2-P35-RUNTIME-1"
+ },
+ "b": {
+  "file": "runtime-r1probe.33d3181.json",
+  "label": "33d3181",
+  "probe": "QRE2-P35-RUNTIME-1"
+ },
+ "cases": 74,
+ "same": 70,
+ "differing": [
+  {
+   "id": "R07p_confirmation_by_same_dates_unnamed",
+   "where": [
+    "confirmation.reason",
+    "stop.stops",
+    "equalToNamed",
+    "later.steps"
+   ]
+  },
+  {
+   "id": "R07p2_T13_late_fact_confirmation_unnamed",
+   "where": [
+    "unnamed.confirmation",
+    "unnamed.view",
+    "equal"
+   ]
+  },
+  {
+   "id": "R07r_plain_resend_unnamed_ownReturn",
+   "where": [
+    "unnamed.resend",
+    "unnamed.view",
+    "equal",
+    "strengthEqual"
+   ]
+  },
+  {
+   "id": "R07r_plain_resend_unnamed_trainingAfter",
+   "where": [
+    "unnamed.resend",
+    "unnamed.view",
+    "equal"
+   ]
+  }
+ ],
+ "onlyInA": [],
+ "onlyInB": [],
+ "shown": {
+  "R07p_confirmation_by_same_dates_unnamed": {
+   "a": {
+    "answer": {
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.episodeId"
+     ],
+     "question": {
+      "episodeId": "q7r-D",
+      "startDate": "2026-12-14",
+      "endDate": "2026-12-17",
+      "reportedOn": "2026-12-18"
+     },
+     "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7r-D, or the same dates) so its return reads the whole record; not"
+    },
+    "confirmation": {
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "question": null,
+     "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+    },
+    "stop": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "startedAt": null,
+     "runMode": "EASY",
+     "stops": []
+    },
+    "equalToNamed": false,
+    "namedStop": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "startedAt": null,
+     "runMode": "EASY",
+     "stops": [
+      "q7rn-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+      "q7rn-D:LATEST"
+     ]
+    },
+    "later": {
+     "steps": {
+      "wk6plain": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk6sun": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk7": {
+       "a": "INSTANTIATE_LOGGED_LOADS",
+       "m": []
+      },
+      "wk8": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk9": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk10": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk11": {
+       "a": "KEEP",
+       "m": []
+      }
+     },
+     "asks": []
+    }
+   },
+   "b": {
+    "answer": {
+     "action": "ASK",
+     "status": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "missing": [
+      "interruption.episodeId"
+     ],
+     "question": {
+      "episodeId": "q7r-D",
+      "startDate": "2026-12-14",
+      "endDate": "2026-12-17",
+      "reportedOn": "2026-12-18"
+     },
+     "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7r-D, or the same dates) so its return reads the whole record; not"
+    },
+    "confirmation": {
+     "action": "REESTABLISH",
+     "status": "MODIFY",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "missing": [],
+     "question": null,
+     "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return ("
+    },
+    "stop": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "startedAt": null,
+     "runMode": "EASY",
+     "stops": [
+      "q7r-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+      "q7r-D:LATEST"
+     ]
+    },
+    "equalToNamed": true,
+    "namedStop": {
+     "start": "2026-12-14",
+     "end": "2026-12-17",
+     "days": 4,
+     "cls": "SHORT",
+     "startedAt": null,
+     "runMode": "EASY",
+     "stops": [
+      "q7rn-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+      "q7rn-D:LATEST"
+     ]
+    },
+    "later": {
+     "steps": {
+      "wk6plain": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk6sun": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk7": {
+       "a": "ADOPT_LOGGED_LOADS",
+       "m": []
+      },
+      "wk8": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk9": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk10": {
+       "a": "KEEP",
+       "m": []
+      },
+      "wk11": {
+       "a": "KEEP",
+       "m": []
+      }
+     },
+     "asks": []
+    }
+   }
+  },
+  "R07p2_T13_late_fact_confirmation_unnamed": {
+   "a": {
+    "unnamed": {
+     "lateFact": {
+      "action": "ASK",
+      "status": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "question": {
+       "episodeId": "q7tu-D",
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "reportedOn": "2026-12-18"
+      },
+      "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7tu-D, or the same dates) so its return reads the whole record; no"
+     },
+     "confirmation": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": []
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "lateFact": {
+      "action": "ASK",
+      "status": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "question": {
+       "episodeId": "q7tn-D",
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "reportedOn": "2026-12-18"
+      },
+      "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7tn-D, or the same dates) so its return reads the whole record; no"
+     },
+     "confirmation": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7tn-A:TRAINING_AFTER[re 2026-12-07]",
+        "q7tn-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": false,
+    "firstReturnView": null
+   },
+   "b": {
+    "unnamed": {
+     "lateFact": {
+      "action": "ASK",
+      "status": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "question": {
+       "episodeId": "q7tu-D",
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "reportedOn": "2026-12-18"
+      },
+      "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7tu-D, or the same dates) so its return reads the whole record; no"
+     },
+     "confirmation": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7tu-A:TRAINING_AFTER[re 2026-12-07]",
+        "q7tu-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "lateFact": {
+      "action": "ASK",
+      "status": "ASK",
+      "validity": "REQUIRES_RECONCILIATION",
+      "missing": [
+       "interruption.episodeId"
+      ],
+      "question": {
+       "episodeId": "q7tn-D",
+       "startDate": "2026-12-14",
+       "endDate": "2026-12-17",
+       "reportedOn": "2026-12-18"
+      },
+      "reason": "Training before the interruption that began on 2026-12-14 is now recorded, and the return reported on 2026-12-18 did not read it: confirm that interruption again (episodeId q7tn-D, or the same dates) so its return reads the whole record; no"
+     },
+     "confirmation": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7tn-A:TRAINING_AFTER[re 2026-12-07]",
+        "q7tn-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": true,
+    "firstReturnView": null
+   }
+  },
+  "R07r_plain_resend_unnamed_ownReturn": {
+   "a": {
+    "unnamed": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7u9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+       "q7u9-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:1x7@ESTABLISH",
+      "db-bench-press:1x12@FROM_LOG",
+      "db-row:1x12@FROM_LOG",
+      "standing-calf-raise:1x14@BODYWEIGHT",
+      "dead-bug:1x14@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": []
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x8@22",
+       "db-row:1x8@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@ESTABLISH",
+       "db-row:1x8@22",
+       "db-bench-press:1x8@22",
+       "db-split-squat:1x12@ESTABLISH",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7v9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+       "q7v9-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:1x7@ESTABLISH",
+      "db-bench-press:1x12@FROM_LOG",
+      "db-row:1x12@FROM_LOG",
+      "standing-calf-raise:1x14@BODYWEIGHT",
+      "dead-bug:1x14@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return ("
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7v9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+        "q7v9-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:1x7@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "standing-calf-raise:1x14@BODYWEIGHT",
+       "dead-bug:1x14@BODYWEIGHT",
+       "db-rdl:1x10@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-split-squat:1x12@ESTABLISH",
+       "dead-bug:1x14@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": false,
+    "strengthEqual": false
+   },
+   "b": {
+    "unnamed": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7u9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+       "q7u9-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:1x7@ESTABLISH",
+      "db-bench-press:1x12@FROM_LOG",
+      "db-row:1x12@FROM_LOG",
+      "standing-calf-raise:1x14@BODYWEIGHT",
+      "dead-bug:1x14@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return ("
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7u9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+        "q7u9-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:1x7@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "standing-calf-raise:1x14@BODYWEIGHT",
+       "dead-bug:1x14@BODYWEIGHT",
+       "db-rdl:1x10@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-split-squat:1x12@ESTABLISH",
+       "dead-bug:1x14@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7v9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+       "q7v9-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:1x7@ESTABLISH",
+      "db-bench-press:1x12@FROM_LOG",
+      "db-row:1x12@FROM_LOG",
+      "standing-calf-raise:1x14@BODYWEIGHT",
+      "dead-bug:1x14@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17; the break from 2026-11-16 to 2026-11-29 is read as its own return ("
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7v9-A:OWN_RETURN(MODERATE/14,RUN=2026-11-30,STR=null)",
+        "q7v9-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:1x7@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "standing-calf-raise:1x14@BODYWEIGHT",
+       "dead-bug:1x14@BODYWEIGHT",
+       "db-rdl:1x10@ESTABLISH",
+       "db-row:1x12@ESTABLISH",
+       "db-bench-press:1x12@ESTABLISH",
+       "db-split-squat:1x12@ESTABLISH",
+       "dead-bug:1x14@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": true,
+    "strengthEqual": true
+   }
+  },
+  "R07r_plain_resend_unnamed_trainingAfter": {
+   "a": {
+    "unnamed": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7u13-A:TRAINING_AFTER[re 2026-11-30]",
+       "q7u13-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:2x8@85",
+      "db-bench-press:1x8@24",
+      "db-row:1x8@24",
+      "standing-calf-raise:1x16@BODYWEIGHT",
+      "dead-bug:1x16@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "short nonclinical interruption (4 days): resume the last completed doses; no step until execution is observed"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": []
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7v13-A:TRAINING_AFTER[re 2026-11-30]",
+       "q7v13-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:2x8@85",
+      "db-bench-press:1x8@24",
+      "db-row:1x8@24",
+      "standing-calf-raise:1x16@BODYWEIGHT",
+      "dead-bug:1x16@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7v13-A:TRAINING_AFTER[re 2026-11-30]",
+        "q7v13-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": false,
+    "strengthEqual": true
+   },
+   "b": {
+    "unnamed": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7u13-A:TRAINING_AFTER[re 2026-11-30]",
+       "q7u13-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:2x8@85",
+      "db-bench-press:1x8@24",
+      "db-row:1x8@24",
+      "standing-calf-raise:1x16@BODYWEIGHT",
+      "dead-bug:1x16@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "DUPLICATE",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7u13-A:TRAINING_AFTER[re 2026-11-30]",
+        "q7u13-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "named": {
+     "first": {
+      "start": "2026-12-14",
+      "end": "2026-12-17",
+      "days": 4,
+      "cls": "SHORT",
+      "startedAt": null,
+      "runMode": "EASY",
+      "stops": [
+       "q7v13-A:TRAINING_AFTER[re 2026-11-30]",
+       "q7v13-D:LATEST"
+      ]
+     },
+     "firstStrength": [
+      "back-squat:2x8@85",
+      "db-bench-press:1x8@24",
+      "db-row:1x8@24",
+      "standing-calf-raise:1x16@BODYWEIGHT",
+      "dead-bug:1x16@BODYWEIGHT"
+     ],
+     "resend": {
+      "action": "REESTABLISH",
+      "status": "MODIFY",
+      "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+      "missing": [],
+      "question": null,
+      "reason": "Separate breaks on record are applied now (2026-11-16 to 2026-11-29; 2026-12-14 to 2026-12-17), each its own interruption; the stop read runs from 2026-12-14 to 2026-12-17, and a whole week of the plan executed in full after the earlier one"
+     },
+     "relation": "SAME_BREAK",
+     "basis": "EXPLICIT",
+     "view": {
+      "stop": {
+       "start": "2026-12-14",
+       "end": "2026-12-17",
+       "days": 4,
+       "cls": "SHORT",
+       "startedAt": null,
+       "runMode": "EASY",
+       "stops": [
+        "q7v13-A:TRAINING_AFTER[re 2026-11-30]",
+        "q7v13-D:LATEST"
+       ]
+      },
+      "runs": [
+       "EASY:EASY:50",
+       "EASY:EASY:41",
+       "LONG:LONG:65"
+      ],
+      "strength": [
+       "back-squat:2x8@85",
+       "db-bench-press:1x12@22",
+       "db-row:1x12@22",
+       "standing-calf-raise:1x16@BODYWEIGHT",
+       "dead-bug:1x16@BODYWEIGHT",
+       "db-rdl:1x10@22",
+       "db-row:1x12@22",
+       "db-bench-press:1x12@22",
+       "db-split-squat:1x12@22",
+       "dead-bug:1x16@BODYWEIGHT"
+      ]
+     }
+    },
+    "equal": true,
+    "strengthEqual": true
+   }
+  }
+ }
+}

@@ -1,0 +1,6 @@
+--- harness/lib/properties.mjs (33d3181)
++++ harness/lib/properties.mjs (QRE scratch prototype for QRE3-P35-02; not the fix of record)
+-const sameBreakNamed=(s,t)=>{const n=x=>{const i=x.review?.interruption;return typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;},nt=n(t);return !!nt&&(nt===n(s)||nt===s.review?.event?.id);};
++const sameBreakNamed=(s,t)=>{const n=x=>{const i=x.review?.interruption;return typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;},nt=n(t);if(!nt)return false;if(nt===n(s)||nt===s.review?.event?.id)return true;
++ const row=((t.planBefore?.decisions??[]).filter(d=>d.action==='REESTABLISH').at(-1)?.interruption?.separateBreaks??[]).find(b=>b.stop!=='LATEST'&&(b.episode===nt||b.eventId===nt)),names=row?[row.episode,row.eventId]:[];
++ return names.includes(n(s))||names.includes(s.review?.event?.id);};

@@ -1,0 +1,231 @@
+{
+ "recordId": "QRE-R7D-PHASE35-CHECK-r2",
+ "date": "2026-11-07",
+ "kind": "NARROW_QUALITY_RELIABILITY_RECHECK",
+ "candidate": "33d3181",
+ "candidateCommit": "33d3181 (runtime 6203dcf; CoachingCore/src/r6-adaptation.mjs sha256 5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e)",
+ "supersedes": "QRE-R7D-PHASE35-CHECK-r1 (NOT_READY on 8e78b8a; never edited)",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictNote": "QRE-P35-01 is closed. The runtime change is the r1 smallestFix as stated: it equals the r1 FIX-DUP prototype byte for byte apart from a comment, and the r1 runtime probe gives 74/74 identical cases on 33d3181 and on that prototype. The QH17 and QH18 shapes now equal the named reports, with no ask left once the facts are given (through week 11). The TRAINING_AFTER, single-break and continuity controls keep their paths. T36 is RED on 8e78b8a and is the only failing test there (full suite 1004/1005). An independent differential with no trigger filter finds that, on the 177 standard cases, only DEV-53 differs from 8e78b8a. On the probe corpora only duplicate shapes differ. Eighteen runtime shapes of the new branch give the same result for the unnamed and the named form on the candidate. Against R7D-FREEZE-4 and 8e78b8a, nothing regressed on accepted inputs. CQ3-2 to CQ3-4 are met: T37 and T38 kill Q10 and Q15; the three harness fixes do what QRE-P35-02, -03 and -04 state; the silent-drop mutant QH-DROP is now detected (DEV-57, QH10, QH11, QH12); DEV-48, DEV-49 and DEV-53 are still detected, with no false block on the DEV corpus or the regressions; the freeze guard is adequate. No finding blocks. Four non-blocking findings bind later work. QRE3-P35-01: three clauses of the new branch are pinned by no test, although the candidate is correct and HARNESS-7 r2 detects each one on its shape. QRE3-P35-02: the new P17 same-break test compares names literally, which false-blocks a correct runtime when one break is named in two forms. QRE3-P35-03: P18(e) is narrower than its Δ35 text. QRE3-P35-04: freeze-r7d-5.mjs does not bind the probes2 folders.",
+ "reviewer": {"role": "Quality & Reliability Engineer 1.3.0", "model": "claude-opus-5-5", "effort": "xhigh", "nativeAdapterDispatch": "not verified (dispatched as a subagent instance)"},
+ "independence": "This is a fresh instance. It wrote none of the Phase 3.4 or 3.5 runtime, tests, harness, PREREG-6 addenda, evidence or scripts. It reviews against its role's r1 record, which is a binding input. It did not open phase35/reviews/ssctr/. The ssctr paths were excluded when the rebuilds were extracted. The SSCTR's file names appeared only as paths in `git diff --stat` and `git status`, and no content was read. Nothing was delegated. Every run used new scratch copies under qre3-p35-20261107-183944-347. Nothing was deleted. The repository was not edited, staged, committed or pushed, apart from the new files of this record and probes2/. freeze-*, verify-* and npm run verify were not run. freeze-r7d-5.mjs was read only.",
+ "scope": "This is a closure check of the bounded cycle's delta since 8e78b8a. It covers the 6203dcf runtime line, T36 to T38, R7D-HARNESS-7 r2, DEV-53 to DEV-57, W-P17f, validation 7 r2, the mutation and differential probes, the evidence manifest and the freeze-r7d-5.mjs post-review guard. It is not a new audit of the engine. The evidence is engineering evidence on synthetic development fixtures. It is never gate, generalization or human-validation evidence.",
+ "runtimeBytes": {
+  "33d3181": {"r6-adaptation.mjs": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e", "r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8"},
+  "8e78b8a": {"r6-adaptation.mjs": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310", "r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8"},
+  "R7D-FREEZE-4 (record commit 8bbbb8e)": {"r6-adaptation.mjs": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc", "check": "the 129 CoachingCore files of RUNTIME_FREEZE_R7D_4.json match their recorded SHA-256 in the rebuild"},
+  "46934a0": {"r6-adaptation.mjs": "c98eb08180e182f42d0eba0dbc5496d0107f03daf9efcc96200115b0e15127ba"},
+  "delta": "git diff 8e78b8a 6203dcf touches only CoachingCore/src/r6-adaptation.mjs (one line in returnAfterPause and its comment) and CoachingCore/test/r7d-phase35.test.mjs (T36 to T38 appended). No src or test byte differs between 6203dcf and 33d3181. Between 8e78b8a and 33d3181, CoachingCore changes only in scripts/freeze-r7d-5.mjs, src/r6-adaptation.mjs and test/r7d-phase35.test.mjs."
+ },
+ "sourcesRead": [
+  "phase35/reviews/REVIEW_REQUEST_PHASE35_R2.md",
+  "phase35/reviews/engineering/QUALITY_CHECK_R7D_PHASE35.json (r1, binding) and probes/ (r1 probes, rerun unchanged)",
+  "git diff 8e78b8a..33d3181 of CoachingCore/src, CoachingCore/test, CoachingCore/scripts/freeze-r7d-5.mjs, harness/lib/properties.mjs, harness/validation/build-dev-cases.mjs and run-validation.mjs, phase35/probes/phase35-mutation.mjs and phase35-differential.mjs, PREREGISTRATION_R7D_6.md (Δ34-Δ37), evidence/FIDELITY_PHASE35.json and fidelity/",
+  "CoachingCore/src/r6-adaptation.mjs: returnAfterPause, recordedStop, stopOf, separateStop, interruptionEpisode, episodesOf, breakOf, staleReturn (I6 text), kindOf, weekEvidence; r6-learning.mjs classify",
+  "phase35/evidence/EVIDENCE_PHASE35.json, MUTATION_PHASE35.json, DIFFERENTIAL_VS_8E78B8A.json; harness/validation/HARNESS_VALIDATION_R7D_7.json (its DEV digest b0ed75bd... was recomputed and matches DEV_CASES_R7D_7.json)"
+ ],
+ "whatWasRun": [
+  "Four rebuilds: git archive of 33d3181, 8e78b8a, 8bbbb8e (R7D-FREEZE-4) and 46934a0, each with CoachingCore, the five RECORDS and the R7-D audit folder (ssctr excluded), plus CoachingCore/node_modules copied from the worktree.",
+  "The r1 runtime probe (probes/qre2-p35-runtime.mjs, unchanged) on 33d3181, 8e78b8a and R7D-FREEZE-4. The 8e78b8a and R7D-FREEZE-4 runs reproduce the r1 outputs (74/74 identical each).",
+  "The r1 corpus probe (probes/qre2-p35-corpus.mjs, unchanged) with the candidate's HARNESS-7 r2 on 211 cases: the 59 DEV-7 cases, the 18 diagnostic and 100 generated cases, the 22 cases of the r1 QH corpus and the 12 new QH21 to QH29n cases. It ran on 33d3181, 8e78b8a, 46934a0 and R7D-FREEZE-4, on mutants QF0, QF1, QF3, QF6, QF7, QH-DROP and QH-SKIP of the candidate, and on a scratch prototype of the QRE3-P35-02 fix.",
+  "The role's Phase 3.4 runtime probe (phase34/reviews/engineering/probes2/qre2-p34-runtime.mjs, unchanged) on 33d3181: 32/32 identical to the r1 rerun on 8e78b8a.",
+  "The full suite on 33d3181 (1005/1005). The full suite on 8e78b8a source with the candidate's test file (1004/1005; T36 alone fails).",
+  "probes2: the runtime probe of the new branch (N1 to N16b) on three rebuilds and four mutants; directed and full-suite mutation (the r1 mutants plus QF0 to QF7); the T36 RED-reason variants; differentials against three baselines with step and record views; traces of QH21 to QH23b."
+ ],
+ "notRun": [
+  "freeze-r7d-5.mjs (read only), verify-r7d-5.mjs, any verify-r* or freeze-* script, npm run verify",
+  "The author's run-validation.mjs as a whole: it needs nine superseded runtimes. Its no-false-block half was reproduced case by case on the 59 DEV cases with the r1 corpus probe. Its new sensitivity row (DEV-53 on 8e78b8a) and the rows for DEV-48 and DEV-49 on 46934a0 were reproduced. W-P17f was read, and its runtime analogue was run: QH-DROP is detected on DEV-57. The other 20 rows and 55 witnesses were read, not rerun.",
+  "The author's phase35-mutation.mjs as a whole. Its P35-M13 (re-derived as QF0), Q10 and Q15 were reproduced independently.",
+  "The conformance scripts (read in the evidence manifest)"
+ ],
+ "answers": {
+  "Q1_QRE-P35-01_CQ3-1": {
+   "verdict": "Closed. Nothing else reached regresses.",
+   "fixAsStated": "The 6203dcf line equals the r1 smallestFix and FIX-DUP prototype (probes/out/qre2-p35-fixdup-prototype.scratch.diff) byte for byte, apart from the comment. The r1 runtime probe on 33d3181 equals the r1 output on the prototype in 74 of 74 cases (out/cmp.33d3181-vs-r1-proto-FIX-DUP.json).",
+   "QH17": "The plain re-send with the same dates and no name (R07r_plain_resend_unnamed_ownReturn) gives REESTABLISH SAME_BREAK DUPLICATE. The record is [holiday OWN_RETURN (MODERATE/14), trip LATEST]. Strength ahead: back-squat 1x7 ESTABLISH, db-bench-press and db-row 1x12 ESTABLISH. This equals the named re-send in record and doses. On 8e78b8a it gave separateBreaks [] and back-squat 2x8@85.",
+   "QH18": "The R07 flow (late lift, the restatement, then confirmation by the same dates with no name; R07p) gives REESTABLISH, equal to the named confirmation (OWN_RETURN rows). The weeks after it ask nothing through week 11. The same holds for T13's late fact followed by the unnamed confirmation (R07p2): the TRAINING_AFTER row is kept and the doses equal the named confirmation.",
+   "controls": "On the candidate, the unnamed TRAINING_AFTER re-send keeps its row with doses equal to the named re-send (R07r trainingAfter; N14 in week 9). A single-break duplicate stays SAME_BREAK DUPLICATE with no separate breaks and is unchanged against 8e78b8a and R7D-FREEZE-4 (T36 control; N15 in week 9). A continuity return re-sent with the trip's own days still asks interruption.episodeId, unchanged against 8e78b8a (T36 control; N1b). On 8e78b8a with T36's controls alone (scratch variant V5), the single-break and continuity controls pass: they keep paths 8e78b8a already had. The TRAINING_AFTER record control is itself RED there (V4): the row is lost.",
+   "redOn8e78b8a": "On 8e78b8a source with the candidate's tests, the full suite gives 1004/1005; only T36 fails. The 8e78b8a evidence row (12/13 on the 3.5 file) is reproduced. T36 fails there with a TypeError in its stops() helper, because the duplicate's return carries no separateBreaks. That is the defect's own signature, not a crash of the test. Scratch variants that tolerate the missing field show that each shape fails on its own assertion: the stops assertion and then the view assertion for QH17, and the view assertion for QH18 (out/red-check3.8e78b8a.json). All variants pass on 33d3181.",
+   "differential": "The independent differential (probes2/qre3-p35-differential.mjs) compares the step view and the record view of each return, with no trigger filter. Against 8e78b8a, the 177 standard cases (diagnostic 18, generated 100, DEV-7 59) give 176 identical and 1 differing: DEV-53. This reproduces DIFFERENTIAL_VS_8E78B8A.json. On the probe corpora only duplicate shapes differ (QH17, QH18, QH24 to QH28, and QH29 in its record only). Named variants and every other probe case are identical. Against 46934a0: 177/169/8, the same eight cases as the author's (DEV-48, -49, -51, -52, -53, -55, -56, -57). Against R7D-FREEZE-4: 29 of the 177 standard cases differ, r1's 24 plus DEV-53 to DEV-57. The only new ask there is DEV-49's F02 question, as in r1, and no case ends in ASK where R7D-FREEZE-4 did not.",
+   "otherPathsReached": "The new branch also reads, as the named form does, every other duplicate shape probed (out/runtime-qre3.rt-*.json). These are: a continuity return confirmed with the stop's dates, the dates the I6 question names (N1; QH29); a partial client record (N2), which asks actualLedger.interruptionDeclared where 8e78b8a dropped the holiday; a clinical holiday report (N3) and a clinical re-send (N11), clinical on every runtime; a re-send in week 9 (N4); a re-send with a start time (N5), with its last day and length only (N6), after a named correction (N9) or with another nonclinical reason (N10); the weekly-review and declaration channels (N12, N13); and the confirmation-first order of R07 (N16, N16b), which asks interruption.startedAt as the named form does where 8e78b8a dropped the holiday or locked. In all 18 shapes, the candidate gives the same action, missing inputs, record and doses for the unnamed and the named form; only the relation basis differs, DUPLICATE against EXPLICIT, by R7-A's own rule. Non-duplicates are unchanged against 8e78b8a: another last day (N7), another first day (N8) and the trip's own days on a continuity return (N1b) each ask the relation.",
+   "regressionAgainstR7D-FREEZE-4": "None on accepted inputs. In every duplicate shape where R7D-FREEZE-4 asks, the candidate applies its own named path. Those doses are never higher than R7D-FREEZE-4's named answer to the same shape: for example, back-squat 1x7 ESTABLISH against 2x8@85 (N5, N6, N10, N12, N13, R07r). On the r1 probe, the 59 cases that differ from R7D-FREEZE-4 are the same 59 for 33d3181 and 8e78b8a (out/cmp.r1runtime.*-vs-R7D-FREEZE-4.json).",
+   "regressionAgainst8e78b8a": "None. The suite gives 1005/1005. The role's Phase 3.4 runtime probe gives 32/32 identical. On the r1 probe, 70/74 cases are identical. The 4 that differ are the duplicate shapes, each now equal to the named form (out/cmp.r1runtime.33d3181-vs-8e78b8a.json). The fidelity outputs are unchanged apart from paths and the source hash."
+  },
+  "Q2_CQ3-2": {
+   "verdict": "Met.",
+   "detail": "The r1 mutants were re-applied to 33d3181 (probes2/qre3-p35-mutants.mjs imports probes/qre2-p35-mutants.mjs). Q10 is killed by T37 alone (97/1 on the 98 directed tests). Q15 is killed by T38 alone (97/1). QF0, the fix reverted (the author's P35-M13, re-derived), is killed by T36 alone. QF2, QF4 and QF5 are killed by T36. QF1, QF3, QF6 and QF7 survive the directed tests and the full suite (1005/1005): QRE3-P35-01. The r1 survivors Q01, Q03, Q12, Q13 and Q14 still survive 1005/1005, as in r1. They lie outside the bounded cycle and are carried as r1 classed them."
+  },
+  "Q3_CQ3-3": {
+   "verdict": "Met as stated, with two narrower defects in the new instrument code (QRE3-P35-02, -03; non-blocking, binding before any holdout).",
+   "QRE-P35-02_P18e": "P18(e) now counts a report only when it is complete (actual.completed), not partial, has recovery ADVERSE, and is confounded or has performance other than OVER. The runtime reads every such report as ADVERSE (kindOf, classify), so the count is a subset of the systemic rule's and stays a necessary condition. DEV-54 (the QH15/SYc1 shape) shows no false block. The r1 QH15 and QH16 (the gated variant) also pass on 33d3181. DEV-48 is still detected on 46934a0 (SYSTEMIC_WEEK_REENTERED). The code is narrower than Δ35's text: QRE3-P35-03.",
+   "QRE-P35-03_P17": "A restatement now ends only the window of an earlier report of the same break (sameBreakNamed). The window of a kept correction of another break runs on. The silent-drop mutant QH-DROP, built on 33d3181, is now detected on DEV-57, QH10, QH11 and QH12 (VALID_BEFORE_DECLARED_BREAK_APPLIED); r1 found it undetected under HARNESS-7. W-P17f is the trace-level witness on DEV-57. DEV-56 (a wrong-day answer, then a valid one) shows no false block. The same-break test compares names literally, which leaves a false block when one break is named in two forms (QH21, QH22): QRE3-P35-02.",
+   "QRE-P35-04_P18": "P18 now leaves a restatement out of its open breaks. DEV-55 (the QH19 shape) shows no false block, and the r1 QH19 and QH20 pass on 33d3181. DEV-49 is still detected on 46934a0 (UNREPORTED_BETWEEN_BREAKS_APPLIED).",
+   "falseBlock": "On 33d3181, HARNESS-7 r2 shows no false block on the 59 DEV cases, the 18 diagnostic and 100 generated regression cases, or the 22 r1 QH cases, and none on QH23 to QH29n. It fails only QH21 and QH22 (QRE3-P35-02). The four VARIANT author-oracle relation failures on R7D-D02, D06, D14 and D16 occur on every runtime: they are the pre-existing diagnostic relations r1 also saw, not properties.",
+   "sensitivity": "DEV-48 and DEV-49 are detected on 46934a0. DEV-53 is detected on 8e78b8a (EARLIER_BREAK_DROPPED_BY_CORRECTION), as are QH17, QH18 and QH24 to QH28. QF0 behaves as 8e78b8a. QF3, QF6 and QF7 are each detected on their probe shape (QH24, QH26, QH25). QH-SKIP is still detected. HARNESS_VALIDATION_R7D_7 reports 23/23 rows and 56/56 witnesses; the rows reproduced here agree."
+  },
+  "Q4_CQ3-4_evidence": {
+   "verdict": "The guard is adequate. The evidence is adequate, with the disclosures below.",
+   "freezeGuard": "Read, not run. The guard refuses when any byte of CoachingCore/src, CoachingCore/test or the whole harness folder differs from the reviewed commit. It refuses when `git diff --name-status <reviewed> HEAD` lists anything but added (A) files under phase35/reviews/ssctr/ or phase35/reviews/engineering/: modifications, deletions, renames and additions elsewhere are all refused. It refuses when any bound file differs from HEAD (the uncommitted check), and when either review is not a pass or names another candidate. Together these close QRE-P35-06. The one gap is the bound-file list: it holds the r1 probes and probes/out folders but not probes2/ or probes2/out/ (QRE3-P35-04).",
+   "mutation": "18/18 with own witnesses; Q10, Q15 and P35-M13 reproduced. The author's mutant set has no mutant of the new line's clauses other than its revert. This check's QF mutants show three clauses that no test pins: QRE3-P35-01.",
+   "differentials": "Both reproduced exactly by an independent probe with no trigger filter. The author's DUPLICATE trigger requires the same startDate, so a duplicate stated by last day and length would be reported UNEXPLAINED. That direction is fail-safe, and no corpus case has the shape.",
+   "fidelity": "PASS. The fidelity outputs differ from the 8e78b8a run only in their paths and in the r6-adaptation.mjs hash.",
+   "manifest": "EVIDENCE_PHASE35.json reports result PASS with no problems. Its suite count (1005/1005), the RED row on 8e78b8a (only T36) and the RED row on 46934a0 (9 fail, 4 pass) agree with this check's runs or with the evidence probe as read. Validation 7's DEV digest matches the corpus."
+  }
+ },
+ "findings": [
+  {
+   "id": "QRE3-P35-01",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "Three clauses of the bounded cycle's new branch are pinned by no test. Each mutant brings QRE-P35-01's drop back on an accepted input where the candidate is correct.",
+   "evidence": {
+    "QF3": "Here a duplicate is read only from a stated first day. A re-send with its last day and length alone (accepted: readBreak takes the first day its length gives) then drops the holiday. Candidate N6 equals the named form; QF3 gives separateBreaks [] and back-squat 2x8@85. HARNESS-7 r2 detects it on QH24.",
+    "QF6": "Here a decision of the unnamed re-read is ignored. In the confirmation-first order of R07 (late lift, then the trip confirmed by the same dates before the start time), QF6 re-establishes the trip alone (N16b) or locks (N16). With a partial client record it applies instead of asking for the record (N2). The candidate asks interruption.startedAt, or actualLedger.interruptionDeclared, as the named form does. HARNESS-7 r2 detects it on QH26.",
+    "QF7": "Here the duplicate test compares with the latest break's first report, not the report in force. After a named correction, a re-send of the corrected dates then drops the holiday. Candidate N9 equals the named form. HARNESS-7 r2 detects it on QH25.",
+    "survival": "All three survive the 98 directed tests and the full suite (1005/1005; out/mutation-directed.33d3181.json, out/mutation-full.QF.json). QF1 (no end-date clause) is equivalent on every probed shape and corpus, because the later relation test asks anyway.",
+    "scope": "This is a test-adequacy gap, not a behavior defect. T36 pins the QH17 and QH18 shapes that CQ3-1 named, and CQ3-1 is met. The harness properties catch each mutant, but only on this check's probe shapes, which are not in DEV-7 or in any registered corpus."
+   },
+   "smallestFix": "Add directed tests in the next authorized candidate, or before any change to returnAfterPause or recordedStop, whichever comes first. Each must be RED on its mutant and must equal the named form. They are the N16b shape (late first-day lift, then an unnamed same-dates confirmation: asks interruption.startedAt), the N6 shape (an unnamed re-send by last day and length) and the N9 shape (an unnamed re-send of a named correction's dates). The N2 shape (a partial record asks for the record) is optional. No runtime change. Before any holdout, the instrument owner may add QH24 to QH26 as DEV cases.",
+   "route": "ENGINEERING (worker) in the next authorized cycle; Chief / instrument owner for the DEV cases"
+  },
+  {
+   "id": "QRE3-P35-02",
+   "severity": "MEDIUM",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "P17's new same-break test (sameBreakNamed) compares names literally. When the earlier break carries its own episodeId, and the wrong-day answer and the valid answer name it in different forms, a correct runtime is false-blocked.",
+   "evidence": "QH21 and QH22 are DEV-56 with the holiday reported with its own episodeId. The wrong-day answer names it by that episodeId and the valid answer by its report's event id (QH21), or the reverse (QH22). Both forms name the break: restatesListed and the runtime read either, as R07k showed in r1. The runtime's decisions are identical in QH21, QH22, QH23 and QH23b (both answers in one form): wrong is ASK, right is KEEP VALID, and then GATED_NEXT_STEP, ADOPT_LOGGED_LOADS and KEEP follow (out/trace.QH21-23b.33d3181.json). HARNESS-7 r2 fails QH21 and QH22 with P17 VALID_BEFORE_DECLARED_BREAK_APPLIED from 'right' on (declaredAt 'wrong'). QH23 and QH23b pass. This is a false block, the conservative direction, and it would fail a holdout on a correct runtime.",
+   "smallestFix": "In sameBreakNamed, also resolve both names through the separate-break row that t names (its episode or its report's event id): the window ends when s names the same row. A scratch prototype is in out/qre3-p35-samebreak-prototype.scratch.diff; the instrument owner makes the change. On scratch: 33d3181 then fails nothing but the pre-existing VARIANT relations (QH21 and QH22 pass). QH-DROP is still detected on DEV-57, QH10, QH11 and QH12. 8e78b8a is still detected on DEV-53, QH17, QH18 and QH24 to QH28. The change needs an append-only PREREG addendum and a DEV case of the QH21/QH22 shape.",
+   "route": "INSTRUMENT OWNER (Chief / harness author), before any final holdout exists"
+  },
+  {
+   "id": "QRE3-P35-03",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "P18(e) requires actual.completed for a confounded report too. That makes it narrower than the runtime's reading and than Δ35's text.",
+   "evidence": "This was found by inspection. kindOf reads any non-partial confounded report with recovery ADVERSE as ADVERSE, whether completed or not, and weekEvidence counts kind ADVERSE whatever the row status. Δ35 says 'relato concluído, não parcial, com desempenho diferente de OVER, ou relato confundido'. The code reads '!r.partial&&r.actual?.completed===true&&recovery ADVERSE&&(confounded||performance!==OVER)'. The subset stays a necessary condition, so no false block can follow. It misses a corner: a confounded report, not done or not complete, with recovery ADVERSE.",
+   "smallestFix": "Use '!r.partial&&r.response?.recovery==='ADVERSE'&&(r.confounded===true||r.actual?.completed===true&&r.response?.performance!=='OVER')', or restate Δ35 to match the code, in the same addendum as QRE3-P35-02.",
+   "route": "INSTRUMENT OWNER, before any final holdout exists"
+  },
+  {
+   "id": "QRE3-P35-04",
+   "severity": "LOW",
+   "blocking": false,
+   "new": true,
+   "narrow": true,
+   "runtimeOnly": false,
+   "title": "freeze-r7d-5.mjs does not bind the review probes the r2 request places in probes2/ and probes2/out/",
+   "evidence": "The bound-file list holds ls() of phase35/reviews/engineering, its probes and probes/out, and the same ssctr folders, but no probes2 folder. REVIEW_REQUEST_PHASE35_R2 tells both reviewers to write their probes there. The post-review guard admits those files as new files under the review folders, so the freeze commit would carry them bound only through each record's own SHA-256 list. The records themselves are bound. Under its own guard, the script cannot change after 33d3181.",
+   "smallestFix": "None in this phase. At freeze time, check the committed probes2 files against this record's probes.sha256 list (and the SSCTR's own). A later freeze script should list the probes2 folders.",
+   "route": "Chief, when running freeze-r7d-5.mjs"
+  }
+ ],
+ "observations": [
+  "O1 (T36 RED form): T36 is RED on 8e78b8a through a TypeError in stops(). The failure comes from the defect (the dropped separateBreaks), and each shape also fails on its own assertion (scratch variants V1 to V3). No action.",
+  "O2 (inherited named-path behavior): the unnamed form now does what the named form already did on 8e78b8a. (a) Confirming a continuity return with the stop's dates re-records the holiday row as OVERLAPS and the latest row with the whole stop's dates. Before, the rows were TRAINING_NOT_REESTABLISHED and the trip's own days. The doses are identical (N1, QH29). (b) A duplicate re-send weeks after the return re-establishes from the return's entry: in N4, strength goes from 3x9@20 to 1x7 ESTABLISH. That is R7-A's newer-report rule (I3, 0.6), and R7D-FREEZE-4 does the same for single-break duplicates (N15). Both are pre-existing and conservative, and are not judged here. They are domain questions for the SSCTR if anyone raises them.",
+  "O3 (pre-existing): the four VARIANT author-oracle relation failures on R7D-D02, D06, D14 and D16 appear on every runtime, as in r1. The evidence's 'no property violation' refers to properties.",
+  "O4 (record hygiene): out/runtime-qre3.{33d3181,8e78b8a,8bbbb8e}.json came from the first version of qre3-p35-runtime.mjs. That version had no N16/N16b, and its 'equal' flag counted the relation basis. The rt-* files supersede them. N1 to N15 are identical apart from the flags. qre3-p35-mutation.mjs gained its --build-only mode after the directed and full runs; the logic of those runs is unchanged. qre3-p35-red-check.mjs gained the records and V5 before the red-check3 runs it produced. Nothing was deleted."
+ ],
+ "conditionsForFreeze": [
+  {"id": "CQ3-1", "status": "SATISFIED (superseded by this record, Q1)", "condition": "QRE-P35-01 is fixed as its smallestFix stated. T36 is RED on 8e78b8a and the only test failing there. The differential against 8e78b8a is limited to the duplicate shape (DEV-53 on the standard corpora). This independent check names 33d3181."},
+  {"id": "CQ3-2", "status": "SATISFIED", "condition": "T37 kills Q10 and T38 kills Q15. Each mutant fails only its own test."},
+  {"id": "CQ3-3", "status": "SATISFIED as stated; residual items carried as CQ4-2", "condition": "QRE-P35-02, -03 and -04 are applied under an append-only addendum (Δ35). The DEV cases are DEV-53 to DEV-57, with witness W-P17f. There is no false block on the DEV corpus or the regressions. DEV-48, DEV-49 and DEV-53 are detected, and QH-DROP is detected."},
+  {"id": "CQ3-4", "status": "SATISFIED (guard read, not run); disclosure carried as CQ4-3", "condition": "The post-review guard refuses everything after the reviewed commit except new files under the two review folders, and checks the whole harness folder."},
+  {"id": "CQ3-5", "status": "CARRIED unchanged", "condition": "The routed items stay routed: QRE2-P34-01's domain side and the I6 same-dates wording to the SSCTR; the CONFLICTING-week question of QRE-P35-02 to the SSCTR; QRE-P34-03, -05 and -06 to the SSCTR; QRE-P34-07 to PCG. The CQ-6 disclosures are carried too."},
+  {"id": "CQ4-1", "owner": "Engineering worker", "trigger": "the next authorized candidate, or any change to returnAfterPause or recordedStop, whichever comes first", "condition": "Add the directed tests of QRE3-P35-01 (the N16b, N6 and N9 shapes). Each must be shown RED on QF6, QF3 and QF7 respectively. No runtime change.", "evidenceOfResolution": "a mutation run in which QF3, QF6 and QF7 are killed by the new tests"},
+  {"id": "CQ4-2", "owner": "Chief / instrument owner", "trigger": "before any final holdout exists", "condition": "Correct sameBreakNamed (QRE3-P35-02) and either align P18(e) with Δ35 or restate Δ35 (QRE3-P35-03), under an append-only PREREG-6 addendum. Add DEV cases of the QH21/QH22 shape and, per CQ4-1, of QH24 to QH26.", "evidenceOfResolution": "the validation rerun shows no false block, QH-DROP detected, and DEV-53 detected on 8e78b8a"},
+  {"id": "CQ4-3", "owner": "Chief", "trigger": "when running freeze-r7d-5.mjs", "condition": "Run it only on 33d3181 plus new files under the two Phase 3.5 review folders, and only if the SSCTR recheck independently passes (not judged here). Check the committed probes2 files against this record's probes.sha256 list and the SSCTR's own (QRE3-P35-04).", "evidenceOfResolution": "the freeze record's postReview.changedSinceReviewed lists only A lines under the review folders, and the hash check matches"}
+ ],
+ "limitations": [
+  "This is a narrow check of the bounded cycle's delta and the paths its new branch reaches. It uses synthetic development fixtures and the existing corpora, and is engineering evidence only.",
+  "The runtime shapes were followed to week 11 at most.",
+  "QH21 to QH29n are this check's probe cases, not registered corpus cases.",
+  "The QRE3-P35-02 prototype was exercised on scratch only. It is not the fix of record; its owner makes the change.",
+  "QRE3-P35-03 was found by inspection, without a probe case.",
+  "Validation 7's other 20 sensitivity rows and 55 witnesses were read, not rerun. The conformance checks were read.",
+  "No domain or clinical judgement is made. Routed items are not decided."
+ ],
+ "probes": {
+  "folder": "audits/domain-coaching-r7-d-2026-11-02/phase35/reviews/engineering/probes2",
+  "rerunUnchanged": ["probes/qre2-p35-runtime.mjs", "probes/qre2-p35-corpus.mjs", "probes/qre2-p35-mutants.mjs (imported)", "phase34/reviews/engineering/probes2/qre2-p34-runtime.mjs"],
+  "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c105ff3b-197b-42c3-87aa-d64ce29cda8a/scratchpad/qre3-p35-20261107-183944-347 (rt-33d3181, rt-8e78b8a, rt-8bbbb8e, rt-46934a0, red-8e78b8a, mut-directed, mut-full-qf, mut-full-q, mut-harness, red-check*, harness-proto-samebreak, out); nothing deleted",
+  "sha256": {
+   "probes2/qre3-p35-cases.mjs": "9e2e593a1a73af78386c2feb452b9b3fe392f3b902a40bf3f797fdbd7624588c",
+   "probes2/qre3-p35-compare.mjs": "bf96a7bca89f2f8823123f85257122c8b21999663f62ddbd8202541b9eee4d8a",
+   "probes2/qre3-p35-differential.mjs": "3ca985ce31a88eaf419afdad2913eda3fc3348fcbcae3ea755cbddaa65fbc49f",
+   "probes2/qre3-p35-harness-proto.mjs": "69a1e47be02bb3e5303fa548b82ef48bd2f11464a435c8c4f55ec2eba7cf565d",
+   "probes2/qre3-p35-mutants.mjs": "f5a8447f5f0634d7000b70d4dc028aba3bed4fc035cbb5e5a9f11e95384d32bb",
+   "probes2/qre3-p35-mutation.mjs": "d72e17a15923cc890ed65bfe0dde6ef040e36a0a3105b9df5ebc3bd2ad05906b",
+   "probes2/qre3-p35-red-check.mjs": "c88f0394039ded29a753581af304afdf45da013cf9f791f005b0a9d8f4f513d9",
+   "probes2/qre3-p35-runtime.mjs": "c272e5a2453786a194cc2c483abc931bebf28c230c09b71dd4970e84e32a985b",
+   "probes2/qre3-p35-trace.mjs": "52e21520f60b06c1ba7b5f5b9f719728eddaed896af8769d11ac9e8be63cbb9f",
+   "probes2/out/cmp.33d3181-vs-r1-proto-FIX-DUP.json": "e25bc6b945f31271a931e6451c58adc394da0feb21b165f1918186086cdbe3d3",
+   "probes2/out/cmp.p34probe.33d3181-vs-8e78b8a.json": "40c7da72479fa9e6e06179c5de3e4f1f15272aaac94055872bcc858458a16b4e",
+   "probes2/out/cmp.r1runtime.33d3181-vs-8e78b8a.json": "2364a382c0c7971842cbfc4df30735dd6d95ff46e2a12dd394ec3d968c41b1c2",
+   "probes2/out/cmp.r1runtime.33d3181-vs-R7D-FREEZE-4.json": "993257c17a14cb97f4e13e95db95925b9b8bf2bee3e301dcbb73e8cc6e8c4801",
+   "probes2/out/cmp.r1runtime.8e78b8a-vs-R7D-FREEZE-4.json": "b147e626e57774a5f0a59cafa6c55a1dbda006ef4bd30d4aeb289317157ed1a1",
+   "probes2/out/cmp.repro-r1-8e78b8a.json": "3447b24b027c7096ef4f7cf903834844f310051c15e32ae383894857afbbd829",
+   "probes2/out/cmp.repro-r1-R7D-FREEZE-4.json": "7173fe274a84d49ddde183187b752db68ad9ef8204c1546b4e26b38703d2f86d",
+   "probes2/out/corpus.HARNESS-7r2.QF0.json": "f6abb21b81d1f4097aec0ab664c35a86c53ef830de38ea84fa92897707172813",
+   "probes2/out/corpus.HARNESS-7r2.QF1.json": "10986e7152ad8573f4ecae3a86359d8f4dd1ae9180986f91727d0b03903fe99c",
+   "probes2/out/corpus.HARNESS-7r2.QF3.json": "ab38ad2d89edde37dd190d35c3b24ba7144d9753eb0dff5ec3c6942fca46dd8c",
+   "probes2/out/corpus.HARNESS-7r2.QF6.json": "15111114a90e6f83070ed96bb1d8fb2ae3198839f805b2a5cf72a7bcab5941fd",
+   "probes2/out/corpus.HARNESS-7r2.QF7.json": "8a35e5e3a579ee9673c8a2352ae49756b626117addcd696d16be4ee38680286f",
+   "probes2/out/corpus.HARNESS-7r2.QH-DROP.json": "00d0724d17843f180c7f4ee4e6b2d03b254760f8d4a6af46ce3183559abb2210",
+   "probes2/out/corpus.HARNESS-7r2.QH-SKIP.json": "ec65c06d26c134b08ef7849d7797d43d5db158fa192585a63b28e9c6cf58fbeb",
+   "probes2/out/corpus.HARNESS-7r2.rt-33d3181.json": "ce12ce8ca6f018a5c9db04980640b336616c07e6de898aac27d7c78be0738658",
+   "probes2/out/corpus.HARNESS-7r2.rt-46934a0.json": "703b91a00823952241b31e62113e39084583194acc5859b3f39ff86fb77d199c",
+   "probes2/out/corpus.HARNESS-7r2.rt-8bbbb8e.json": "408d3c586edb63a9af9c03b77d8ca72e305d0fdd434f800391ae6a9173864857",
+   "probes2/out/corpus.HARNESS-7r2.rt-8e78b8a.json": "2b59bf737599ff3730f968de803cd501b505c7df9d81f83f5e49d957111d5e0a",
+   "probes2/out/corpus.PROTO-SAMEBREAK.QH-DROP.json": "5d5d99588676e75faa860c36e24b9a4f01d4c45de392073f9a305a5adb3dce30",
+   "probes2/out/corpus.PROTO-SAMEBREAK.rt-33d3181.json": "44cb0c9ae096f7c826f2f0e96daac29597e73bb278db261f961a1875bc7ca961",
+   "probes2/out/corpus.PROTO-SAMEBREAK.rt-8e78b8a.json": "dc948b58bf8e100bbca17d61d7a37f3fb87e03ee0f61abbfb9aa3ce04294f27c",
+   "probes2/out/differential.33d3181-vs-46934a0.json": "7f929ef1c3fa274240c6ce73ba7025936e18eefc556fb9805ebf0ca247661eec",
+   "probes2/out/differential.33d3181-vs-8bbbb8e.json": "6e67f57de83fe7c88817c0247a6c10446df1e4932474a905e654a5d27eacc1ea",
+   "probes2/out/differential.33d3181-vs-8e78b8a.json": "4067bb0c52caeeb4fd342fb4639c8bfe973d9d80653e3def7a1b1fea952af724",
+   "probes2/out/fullsuite.33d3181.txt": "45e1ba55267e9dbf3d5d0f39262acb4f72d5e71890f6f822700bace6856573ea",
+   "probes2/out/fullsuite.red-8e78b8a-with-candidate-tests.txt": "44ccc1530ea41eb16a989510b53b303c5966ae6a2fd2d77a9994aa79ba379eee",
+   "probes2/out/mutation-build.harness.json": "e502379d753b401b7d277271763529cb0130cf3cc46fbd103e13f70d8f43b887",
+   "probes2/out/mutation-directed.33d3181.json": "176670105b4e9b3c32e71bc04ac0e2122f090a66457657b24a83e467f9e25703",
+   "probes2/out/mutation-full.Q.json": "ee1499cfe3f35ccbcfd1cb13b7ae30ddb05ea863f03dc5ac99eec337a40cfc39",
+   "probes2/out/mutation-full.QF.json": "055db429a27b8059224bccd396e0070d883e161e3336f649b9a8c1747b18a6e4",
+   "probes2/out/p34-runtime-rerun.33d3181.json": "f3958b429c099e1af338fe4642d8868ad7c31320bdd3f415e82d82f437b91b79",
+   "probes2/out/qre3-p35-corpus.json": "58987bb3cd884fb96cfb189f0ecf01ec191212639ecac19b26e9f48c80e1be62",
+   "probes2/out/qre3-p35-r1-runtime-r1probe.33d3181.json": "5935a24f8ded8d705501743b11587d48381e02f91499bbdb4ac894a3a19f9863",
+   "probes2/out/qre3-p35-r1-runtime-r1probe.8bbbb8e.json": "f6568f393181c6a2d56b02439205396f90783e529a893c3551f6431410bf3766",
+   "probes2/out/qre3-p35-r1-runtime-r1probe.8e78b8a.json": "6d9cb8ec1f34ff5294dd0618136591677dd4a314c3c12c05bbca5e1bbf07c650",
+   "probes2/out/qre3-p35-samebreak-prototype.scratch.diff": "def7b23040865982d435f47d30c51c0d932e0d635140b9c6f3f63a9528260b28",
+   "probes2/out/red-check3.33d3181.json": "9e9cfc39f9e4438c51a96eb5a1aeb4d8ddca572ecbcdd45910d7740108cf5d38",
+   "probes2/out/red-check3.8e78b8a.json": "2722f374528ff7e88906bd68f1cb42c93a61c302408ae483bb0ef55c52744c6d",
+   "probes2/out/runtime-qre3.33d3181.json": "465b98a85db2492f7bccc9f9cd213c8f42eea518272751ba644e0752e3c8d8d8",
+   "probes2/out/runtime-qre3.8bbbb8e.json": "e0566d7da002637cee05ff541a187d7169c2955332489826b7ea647f2c6b4b24",
+   "probes2/out/runtime-qre3.8e78b8a.json": "6762462a00690a5441ff561037dbf0ab7962df027924c4d30e06b01c4b7a9a2d",
+   "probes2/out/runtime-qre3.QF1.json": "0c066b9e7f9d3a20fd19551cfb86175ee92fd3281cf9200f07c3f78a528cca4a",
+   "probes2/out/runtime-qre3.QF3.json": "03a332cb4377238f158765f4528a0cd414ba15cafec6524a0d69d54edb5e3b2f",
+   "probes2/out/runtime-qre3.QF6.json": "5f393c83f804fd071cbdc46c0c150cecdc88d4eae24f290ed56fde3f0e0303d3",
+   "probes2/out/runtime-qre3.QF7.json": "9f72d87e09378333ba18d1144cfd704eead5589272d475ee8b1c9e89acfdc658",
+   "probes2/out/runtime-qre3.rt-33d3181.json": "5b44bd73e4687c92711d7e2eb46fa054ee341708ae5fedd153e9de68c8221189",
+   "probes2/out/runtime-qre3.rt-8bbbb8e.json": "ebe109d701dbd69404043a1282cb12109cce13d1fcd60fe0d60ce113fe3955c1",
+   "probes2/out/runtime-qre3.rt-8e78b8a.json": "20156fed2d051590714ee3c4aef4aa28f9f2750c2722af64f16761a8f19918ac",
+   "probes2/out/trace.QH21-23b.33d3181.json": "66979a52e6526b9301e1598cb15281fff80727099d74c889fe183aef6f4853f8"
+  },
+  "note": "These are the SHA-256 of every probes2 script and output when this record was written. Ad hoc inspection one-liners (node -e) printed views only. Every claim here is reproduced by a probe listed above or by an r1 probe rerun unchanged. The label 8bbbb8e is R7D-FREEZE-4's record commit (bound files b242237)."
+ },
+ "states": {
+  "qualityGate": "QUALITY_READY_WITH_CONDITIONS for 33d3181, for the scope above",
+  "QRE-P35-01": "CLOSED on 33d3181",
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "FINAL_HOLDOUT_EXISTS": "NO",
+  "F08": "F08_OPEN (not judged)",
+  "humanRevalidationQueue": "235, no append",
+  "proposedHumanRevalidation": null
+ }
+}
