@@ -120,13 +120,17 @@ test('R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed bef
 });
 
 // ---------- T4: incomplete, unconfirmed or conflicting activity between the breaks ----------
-test('R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through',()=>{
- for(const [label,report] of [['the long run not done',(p,s)=>longRun(s)?notDone(p,s):obs(p,s)],['a partial run',(p,s)=>s.sport==='RUN'&&s.date===day(15)?obs(p,s,{actual:{completed:false,minutes:20}}):obs(p,s)],
-  ['every run done, the Friday strength session not done',(p,s)=>s.sport==='STRENGTH'&&s.date===day(18)?notDone(p,s):obs(p,s)]]){
-  const {t,r}=bulk('t4-'+label.replace(/\W+/g,''),[4],5,report),d=lastReturn(t.p);
+test('R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing in the sport it was missed in (R7-D Phase 3.4: the other sport\'s whole week makes the earlier break its own return)',()=>{
+ // R7-D Phase 3.4 (SSCTR-P33-F01, Founder direction A): this assertion encoded "the stop runs through" (MODERATE 25). Each of these weeks completed
+ // the week in one sport, so its days are training: the earlier break is read as its own return and the trip by its own days; the sport with the
+ // shortfall re-enters nothing and continues from that return.
+ for(const [label,report,RUN,mode] of [['the long run not done',(p,s)=>longRun(s)?notDone(p,s):obs(p,s),false,'RETURN'],['a partial run',(p,s)=>s.sport==='RUN'&&s.date===day(15)?obs(p,s,{actual:{completed:false,minutes:20}}):obs(p,s),false,'RETURN'],
+  ['every run done, the Friday strength session not done',(p,s)=>s.sport==='STRENGTH'&&s.date===day(18)?notDone(p,s):obs(p,s),true,'EASY']]){
+  const {t,r}=bulk('t4-'+label.replace(/\W+/g,''),[4],5,report),d=lastReturn(t.p),own=d.separateBreaks[0].ownReturn;
   assert.equal(r.action,'REESTABLISH',`${label}: ${r.reason}`);
-  assert.deepEqual([d.startDate,d.endDate,d.days,d.class],[day(0),day(24),25,'MODERATE'],label);assert.deepEqual(stops(d),['TRAINING_NOT_REESTABLISHED','LATEST'],label);
-  assert.equal(d.entry.run.mode,'RETURN',label+': the moderate re-entry');
+  assert.deepEqual([d.startDate,d.endDate,d.days,d.class],[day(21),day(24),4,'SHORT'],label);assert.deepEqual(stops(d),['OWN_RETURN','LATEST'],label);
+  assert.deepEqual([own.class,own.days,!!own.reentered.RUN,!!own.reentered.STRENGTH],['MODERATE',14,RUN,!RUN],label);
+  assert.equal(d.entry.run.mode,mode,label+(RUN?': running resumes its whole executed week':': running continues from the holiday\'s own return'));
  }
 });
 test('R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done',()=>{
@@ -143,9 +147,11 @@ test('R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are as
  const {t,r:q}=bulk('t4-unk',[],5);
  assert.equal(q.action,'ASK',q.reason);assert.equal(q.question?.kind,'TRAINING_BETWEEN_BREAKS');assert.notEqual(q.planValidity.status,VALID);assert.equal(returns(t.p).length,0);
  assert.deepEqual(q.question.unreported.sessionIds,t.p.weeks[4].sessions.filter(live).map(s=>s.id));
- for(const [label,report,cls] of [['in full',all,'SHORT'],['the long run not done',(p,s)=>longRun(s)?notDone(p,s):obs(p,s),'MODERATE']]){
+ // R7-D Phase 3.4: the long run not done (strength complete) was MODERATE 25 through the stop; strength's whole week now makes the holiday its own
+ // return, so the answer decides the placement, and the trip is classed by its own days.
+ for(const [label,report,cls,stop] of [['in full',all,'SHORT','TRAINING_AFTER'],['the long run not done',(p,s)=>longRun(s)?notDone(p,s):obs(p,s),'SHORT','OWN_RETURN']]){
   const c=copy(t),r=step(c,5,{day:4,hour:'09:00:00',observations:c.p.weeks[4].sessions.filter(live).map(s=>report(c.p,s))});
-  assert.equal(r.action,'REESTABLISH',`${label}: ${r.reason}`);assert.equal(lastReturn(c.p).class,cls,label);
+  assert.equal(r.action,'REESTABLISH',`${label}: ${r.reason}`);assert.equal(lastReturn(c.p).class,cls,label);assert.deepEqual(stops(lastReturn(c.p)),[stop,'LATEST'],label);
  }
  // One session of that week reported done, the others unreported: still asked, since their answer can complete the week.
  const u=base();
@@ -162,20 +168,24 @@ test('R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is ask
  step(t,5,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(21,24),episodeId:'t4c-D'},event:{id:'t4c-D',kind:'LOCAL_FATIGUE'},observations:[...wk.filter(s=>s!==run).map(s=>obs(t.p,s)),done,undone]});
  const q=step(t,5,{day:4,hour:'08:00:00'});
  assert.equal(q.action,'ASK',q.reason);assert.equal(q.question?.kind,'TRAINING_BETWEEN_BREAKS');assert.deepEqual(q.question.unreported.sessionIds,[run.id]);
- for(const [completed,cls] of [[true,'SHORT'],[false,'MODERATE']]){
+ // R7-D Phase 3.4: corrected not done, strength's whole week makes the holiday its own return (was MODERATE through the stop).
+ for(const [completed,cls,stop] of [[true,'SHORT','TRAINING_AFTER'],[false,'SHORT','OWN_RETURN']]){
   const c=copy(t),row=c.ledger.find(o=>o.sessionId===run.id&&o.conflicted);
   const fix={...(completed?obs(c.p,run):notDone(c.p,run)),observedAt:done.observedAt,correctionOf:row.eventId,correctedAt:`${day(25)}T08:30:00Z`};
   const r=step(c,5,{day:4,hour:'09:00:00',observations:[fix]});
-  assert.equal(r.action,'REESTABLISH',`corrected ${completed}: ${r.reason}`);assert.equal(lastReturn(c.p).class,cls,'corrected '+completed);
+  assert.equal(r.action,'REESTABLISH',`corrected ${completed}: ${r.reason}`);assert.equal(lastReturn(c.p).class,cls,'corrected '+completed);assert.deepEqual(stops(lastReturn(c.p)),[stop,'LATEST'],'corrected '+completed);
  }
 });
 
 // ---------- T5: a report that does not show tolerance or recovery ----------
-test('R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through',()=>{
+test('R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing in the sport it was reported in (R7-D Phase 3.4: strength\'s whole week makes the earlier break its own return)',()=>{
+ // R7-D Phase 3.4: this assertion encoded "the stop runs through" (MODERATE 25). The adverse long run holds running; strength completed the week,
+ // so the holiday is read as its own return, the trip by its own days, and running continues from that return with no step.
  for(const response of [{recovery:'ADVERSE'},{nextDayFunction:'IMPAIRED'}]){
-  const {t,r}=bulk('t5-'+Object.keys(response)[0],[4],5,(p,s)=>longRun(s)?obs(p,s,{response}):obs(p,s)),d=lastReturn(t.p);
+  const {t,r}=bulk('t5-'+Object.keys(response)[0],[4],5,(p,s)=>longRun(s)?obs(p,s,{response}):obs(p,s)),d=lastReturn(t.p),own=d.separateBreaks[0].ownReturn;
   assert.equal(r.action,'REESTABLISH',`${JSON.stringify(response)}: ${r.reason}`);
-  assert.deepEqual([d.startDate,d.days,d.class],[day(0),25,'MODERATE'],JSON.stringify(response));assert.deepEqual(stops(d),['TRAINING_NOT_REESTABLISHED','LATEST']);
+  assert.deepEqual([d.startDate,d.days,d.class],[day(21),4,'SHORT'],JSON.stringify(response));assert.deepEqual(stops(d),['OWN_RETURN','LATEST']);
+  assert.deepEqual([own.reentered.RUN,!!own.reentered.STRENGTH],[null,true],JSON.stringify(response));assert.equal(d.entry.run.mode,'RETURN',JSON.stringify(response));
  }
 });
 

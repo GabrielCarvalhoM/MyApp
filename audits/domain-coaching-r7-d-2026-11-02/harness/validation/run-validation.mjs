@@ -13,6 +13,11 @@
 // R7D-HARNESS-VALIDATION-5 (Phase 3.3): also --d3 <root> (R7D-FREEZE-3, superseded): SSCTR-P32-F01 (training between two separate breaks that
 // completes no whole week of the plan ends the earlier break: the return re-enters from the later break alone) is detected by the revised P18(a)
 // on DEV-27, DEV-28, DEV-29 and DEV-31, each clean on the candidate; DEV-30 (a whole week executed) is no false block on either runtime.
+// R7D-HARNESS-VALIDATION-6 (Phase 3.4): also --d4 <root> (R7D-FREEZE-4, superseded): a correction of the latest break that drops a break its
+// return read (P18(d), DEV-37, DEV-38) and a clinical-cause episode restated as nonclinical by name (P02, R-F08-1, DEV-39, DEV-40) are detected,
+// each clean on the candidate; the re-entry week reads only the sessions the contract counts (DEV-32, DEV-33: optional walks) and an earlier break
+// read as its own return is accounted for (DEV-31, DEV-34, DEV-35), with no false block; DEV-36 (both sports partial) keeps the stop through; and the
+// inverse direction, weeks executed as prescribed in one sport read as days of the stop (P18(c), DEV-31, DEV-34), is detected on R7D-FREEZE-4.
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../lib/client.mjs';
@@ -23,7 +28,7 @@ import {digestOf,addDays as addDaysLocal} from '../lib/util.mjs';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const dev=JSON.parse(fs.readFileSync(arg('--dev'),'utf8')),byId=new Map(dev.cases.map(c=>[c.caseId,c]));
-const out={validation:'R7D-HARNESS-VALIDATION-5',harness:'R7D-HARNESS-5',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
+const out={validation:'R7D-HARNESS-VALIDATION-6',harness:'R7D-HARNESS-6',devCorpusSha256:digestOf(dev),runs:[],witnesses:[],coverage:{}};
 
 async function ctxFor(root,record){
  const cc=path.join(root,'CoachingCore');
@@ -72,7 +77,12 @@ const SENS=[
  {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)',cases:['DEV-18','DEV-20'],detect:f=>f.some(x=>x.relation==='INSERT_NEWER_BREAK')},
  {key:'--d2',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json',defect:'SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)',cases:['DEV-25'],detect:f=>f.some(x=>x.property==='P18')},
  // R7D-HARNESS-VALIDATION-5: SSCTR-P32-F01 on R7D-FREEZE-3.
- {key:'--d3',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json',defect:'SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)',cases:['DEV-27','DEV-28','DEV-29','DEV-31'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('OLDER_BREAK_DROPPED'))}
+ {key:'--d3',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json',defect:'SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)',cases:['DEV-27','DEV-28','DEV-29','DEV-31'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('OLDER_BREAK_DROPPED'))},
+ // R7D-HARNESS-VALIDATION-6: the correction and clinical-episode paths on R7D-FREEZE-4.
+ {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'A named correction of the latest break after a return that read separate breaks drops the earlier break (the direction of SSCTR-P32-F01 through a correction)',cases:['DEV-37','DEV-38'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('EARLIER_BREAK_DROPPED_BY_CORRECTION'))},
+ {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'PCG-R7D-F08-F01 (a clinical-cause break restated as nonclinical by name re-enters by the nonclinical recipe, with or without a clearance; R-F08-1)',cases:['DEV-39','DEV-40'],detect:f=>f.some(x=>x.property==='P02'&&x.issues.some(i=>i.startsWith('CLINICAL_EPISODE_')))},
+ {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P33-F01 (weeks executed as prescribed in one sport between two separate breaks read as days of the stop: the class grows to a restart)',cases:['DEV-31','DEV-34'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('SPORT_WEEK_READ_AS_STOP'))},
+ {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P34-F01 (a return planned from its own week counts that week\'s elapsed runs that were not done in the single-run ceiling of the weeks after it)',cases:['DEV-41'],detect:f=>f.some(x=>x.property==='P06'&&x.issues.includes('CEILING_AFTER_OWN_WEEK_RETURN'))}
 ];
 for(const s of SENS){
  const root=arg(s.key);if(!root){out.runs.push({purpose:'SENSITIVITY',defect:s.defect,result:'NOT_RUN'});continue;}
@@ -139,6 +149,12 @@ witnessP('W-P18a','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),p=thaw(s.planAfter
 witnessP('W-P18b','DEV-22','P18',t=>{const s=stepOf(t,'w5d2'),r=thaw(s.review);delete r.interruption.episodeId;s.review=r;return 'the return applied while the trip names no break: the relation never stated';});
 // R7D-HARNESS-5 witness (P18(a), re-entry week): the candidate's own run of DEV-27 made to record the trip alone, the holiday TRAINING_AFTER.
 witnessP('W-P18c','DEV-27','P18',t=>{const s=stepOf(t,'plain'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-12-03';d.interruption.days=4;d.interruption.separateBreaks=d.interruption.separateBreaks.map(b=>b.stop==='LATEST'?b:{...b,stop:'TRAINING_AFTER'});s.planAfter=p;s.adopted=true;return 'the return records the trip alone and lists the holiday TRAINING_AFTER after one isolated run (F01)';});
+// R7D-HARNESS-6 witnesses: P18(a) own return without a whole week in one sport; P18(d) a correction that drops a break its return read; P02 R-F08-1.
+witnessP('W-P18e','DEV-36','P18',t=>{const s=stepOf(t,'plain'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-12-14';d.interruption.days=4;d.interruption.separateBreaks=d.interruption.separateBreaks.map(b=>b.stop==='LATEST'?b:{...b,stop:'OWN_RETURN',ownReturn:{class:'MODERATE',days:14,startDate:b.startDate,endDate:b.endDate,reentered:{RUN:null,STRENGTH:null}}});s.planAfter=p;s.adopted=true;return 'the holiday read as its own return with no week complete in any sport (both partial)';});
+witnessP('W-P18d','DEV-37','P18',t=>{const s=stepOf(t,'corr'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-12-03';d.interruption.days=5;d.interruption.separateBreaks=undefined;s.planAfter=p;s.adopted=true;return 'the correction of the trip records the trip alone: the holiday its return read dropped';});
+witnessP('W-P18f','DEV-34','P18',t=>{const s=stepOf(t,'plain'),p=thaw(s.planAfter),d=p.decisions.findLast(x=>x.action==='REESTABLISH');d.interruption.startDate='2026-11-16';d.interruption.days=32;d.interruption.separateBreaks=d.interruption.separateBreaks.map(b=>b.stop==='LATEST'?b:{...b,stop:'TRAINING_NOT_REESTABLISHED',ownReturn:undefined});s.planAfter=p;s.adopted=true;return 'the holiday listed TRAINING_NOT_REESTABLISHED (the stop run through it) after two weeks with every run executed as prescribed';});
+witnessP('W-P06b','DEV-41','P06',t=>{const s=stepOf(t,'ret'),p=thaw(s.planAfter);for(const x of p.weeks[s.weekIndex+1].sessions)if(x.sport==='RUN'&&x.role!=='RACE'&&x.prescription&&Number.isFinite(x.prescription.durationMinutes))x.prescription.durationMinutes=45;s.planAfter=p;return 'the week after a mid-week return planned at 45 minutes a run from no completed run';});
+witnessP('W-P02e','DEV-39','P02',t=>{const s=stepOf(t,'w4d3'),p=thaw(s.planBefore);p.decisions=[...p.decisions,{action:'REESTABLISH',eventId:'witness',asOf:s.asOf,fromWeek:s.weekIndex,interruption:{episode:'DEV-39-w4d0',class:'MODERATE',days:14}}];s.result={...s.result,status:'MODIFY',action:'REESTABLISH',proposal:p,planValidity:{status:'VALID_WITHIN_CURRENT_BOUNDED_SCOPE'}};s.planAfter=p;s.adopted=true;return 'the injury restated as a holiday re-enters by the nonclinical recipe';});
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};

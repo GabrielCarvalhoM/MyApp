@@ -1,0 +1,57 @@
+# R7-D — pré-registro do gate final, versão 6 (`R7D-PREREG-6`)
+
+**Status:** registrado na Fase 3.4 (2026-11-07), antes de existir qualquer holdout final, autor final ou seed final.
+- Substitui o `R7D-PREREG-5` (`PREREGISTRATION_R7D_5.md`) para o gate da Fase 4. PREREG-1 a PREREG-5 não são editados.
+- **Tudo o que o PREREG-5 (e, por ele, os anteriores) diz e este arquivo não altera continua valendo**, palavra por palavra: critérios de sucesso, protocolo selado, regra de não-tuning, P18 inclusive, salvo o que os Δ abaixo substituem.
+
+**Fontes do delta:**
+- decisões do Founder na Fase 3.4 (`phase34/AUTHORIZATION_PHASE34.md`): direção A para o SSCTR-P33-F01; contrato da semana de retomada (QE-R7D-P33-01); F08 com benchmark e fronteira clínica;
+- `phase34/policy/SSCTR_P34_DECISION_R7D.json` (SSCTR-R7D-P34-DECISION-r1, leituras vinculantes BR-Q1 a BR-Q5);
+- `phase34/policy/PCG_F08_AUTHORITY_R7D.json` (PCG-R7D-F08-r1: F08 BLOCKED_BY_AUTHORITY; R-F08-1);
+- o runtime candidato e seus testes dirigidos (`CoachingCore/test/r7d-phase34.test.mjs`);
+- `harness/validation/HARNESS_VALIDATION_R7D_6.json` (validação 6).
+
+## Instrumentos vinculados
+
+| Instrumento | Versão | Onde |
+|---|---|---|
+| Runtime avaliado | `R7D-FREEZE-5`, o freeze da Fase 3.4. R7D-FREEZE-1 a -4 ficam superados, não editados | `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json` |
+| Harness | `R7D-HARNESS-6` (padrão: o registro do R7D-FREEZE-5) | `harness/`; validação em `harness/validation/HARNESS_VALIDATION_R7D_6.json` |
+| Interface do autor | `R7D-INTERFACE-6` = INTERFACE-1 + deltas 2 a 5 e `author/INTERFACE_DELTA_R7D_6.md` (o mais novo prevalece) | `author/` |
+| Esquema e checador | `R7D-CASE-1`, `check-corpus.mjs`, sem mudança | `author/` |
+| Gerador | `R7D-GENERATOR-1`, sem mudança. Seed do H2: `sha256('R7D-SAMPLE\|FINAL\|' + manifestDigest do R7D-FREEZE-5)` | `harness/generate-sample.mjs` |
+| Brief final | `R7D-AUTHOR-BRIEF-FINAL-5` (`author/AUTHOR_BRIEF_FINAL_R7D_5.md`); o `-4` fica como registro da Fase 3.3 | `author/` |
+
+## Delta PREREG-5 → PREREG-6
+
+**Nenhum critério de sucesso é afrouxado.** O P18 continua sem envelope: uma violação é bloqueio.
+
+| Δ | Mudança | Origem | Efeito |
+|---|---|---|---|
+| Δ1 | **P18(a), contrato da semana de retomada (resolve o QE-R7D-P33-01).** As sessões que contam são as do contrato: corridas EASY, LONG, QUALITY e WALK_JOG, o RACE_TOUCH e a RACE, e toda sessão de força. Caminhada opcional (WALK), RECOVERY_EASY, SHAKEOUT e strides opcionais **não contam**: feitas ou não, nunca decidem uma semana. Uma sessão no primeiro dia da parada conta como entre as pausas quando a parada declara hora de início e o relato executado é anterior a ela.<br>Substitui o "toda sessão viva" do Δ1 e o conflito Δ9 do PREREG-5. A frase retirada no Δ9 ("nunca bloqueia") volta a valer para o contrato: o P18(a) é condição necessária da regra do runtime | SSCTR BR-Q4, BR-Q5; checagem de qualidade P33 C1 | Correção do instrumento. O DEV-32/DEV-33 (forma QH-1) não bloqueiam mais |
+| Δ2 | **A regra pública (runtime), direção A.** Entre duas pausas separadas não aplicadas, por modalidade:<br>• semana inteira entre elas completa em **todo** esporte que planeja → re-entrada (`TRAINING_AFTER`), inalterado;<br>• completa em **um** esporte só → a pausa anterior é lida como **seu próprio retorno** (`OWN_RETURN`): classe pelos próprios dias, receita R6 inalterada, sem demonstração, no dia seguinte ao fim dela; o esporte com a semana completa lê o executado; o outro continua desse retorno; a pausa mais nova é classificada pelos próprios dias;<br>• nenhuma semana completa em esporte algum → a parada atravessa a pausa anterior (`TRAINING_NOT_REESTABLISHED`), inalterado.<br>Sessões não relatadas continuam perguntadas primeiro. Com um retorno já aplicado entre elas, nada é reconstruído | Founder Fase 3.4 (direção A); SSCTR BR-Q1, BR-Q3 | Correção do P33-F01. Nenhum número novo |
+| Δ3 | **P18(c), direção inversa (novo).** Uma pausa listada `TRAINING_NOT_REESTABLISHED` não pode ter, entre ela e a pausa seguinte, uma semana inteira que o cliente lê como executada conforme prescrita em um esporte (toda sessão que conta relatada concluída, sem parcial, conflito ou confusão, todas as respostas nominais, minutos ≥ prescritos; força com séries, repetições e RIR ≥ prescritos e carga em kg). Senão: SPORT_WEEK_READ_AS_STOP.<br>A condição é **suficiente**, mais estrita que os gates do runtime: nunca sinaliza uma semana que o runtime leu corretamente como incompleta | SSCTR CF-P34-05; recomendação do SSCTR para o holdout | Mais estrito. No PREREG-5 nenhum instrumento detectava o P33-F01 |
+| Δ4 | **P18(d), correção (novo).** Um relato mais novo da última pausa (SAME_BREAK) depois de um retorno que leu pausas separadas relê todas elas: cada pausa anterior listada por aquele retorno volta a ser listada ou fica coberta pela nova parada. Senão: EARLIER_BREAK_DROPPED_BY_CORRECTION, SAFETY_BLOCKER (é a direção do SSCTR-P32-F01) | SSCTR-P34-F02 (pré-existente no R7D-FREEZE-4) | Mais estrito |
+| Δ5 | **Cobertura crítica (acréscimo ao Δ3 do PREREG-5).** O H1 avaliado precisa de pelo menos 2 casos base independentes, cada, com:<br>• duas pausas separadas e uma semana completa em **um** esporte só entre elas;<br>• uma correção nomeada da pausa mais nova depois de um retorno que leu pausas separadas;<br>• um retorno relatado no meio da semana depois de sessões dessa semana não feitas.<br>E pelo menos 1 caso com: uma semana de prova entre duas pausas, com toque de prova ou prova perdidos; sessões opcionais não feitas numa semana de retomada; uma pausa de causa clínica reafirmada pelo nome como não clínica.<br>Unidades obrigatórias: P18 ≥ 2 nos dois primeiros grupos.<br>Faltando qualquer um: INVALID_HOLDOUT, substituído por corpus novo e independente | Founder Fase 3.4 (testes obrigatórios); SSCTR CF-P34-06 | Mais estrito |
+| Δ6 | **P02, R-F08-1 (novo).** Depois que uma pausa com categoria clínica é declarada, nenhuma decisão posterior aplica retorno daquele episódio (CLINICAL_EPISODE_RETURNED), um relato que o nomeia é roteado a humano (CLINICAL_EPISODE_RESTATED_NOT_ROUTED) e nenhuma decisão sai da rota clínica com prescrição (CLINICAL_EPISODE_LEFT_WITHOUT_CLEARANCE), inclusive depois de uma liberação. Passos com elegibilidade desconhecida continuam do P02 (ASK).<br>Substitui a exceção de correção do INTERFACE-4 §1 e o resíduo Δ12 do PREREG-4 | PCG-R7D-F08-r1 (R-F08-1, C03) | SAFETY_BLOCKER, sem envelope |
+| Δ7 | **P06(b), teto depois de um retorno que re-planeja a própria semana (novo).** A semana seguinte não passa da maior corrida concluída na janela, ou das corridas da própria semana a partir do retorno, mais o passo. Senão: CEILING_AFTER_OWN_WEEK_RETURN | SSCTR-P34-F01 (pré-existente no R7D-FREEZE-4) | SAFETY_BLOCKER, como o P06 |
+| Δ8 | **Sensibilidade.** No R7D-FREEZE-4: o P33-F01 pelo P18(c) (DEV-31, DEV-34), o F02 pelo P18(d) (DEV-37, DEV-38), o PCG-R7D-F08-F01 pelo P02 (DEV-39, DEV-40) e o P34-F01 pelo P06(b) (DEV-41). Todos limpos no candidato. As linhas anteriores continuam detectadas nos seus runtimes | Validação 6 | Registro |
+| Δ9 | **Resíduos, sem envelope:**<br>• **X2 (SSCTR-P34-F03):** semanas com as **duas** modalidades parciais em todas as semanas ainda atravessam a parada e podem dar RESTART. Separá-las de treino isolado exigiria um critério de adesão parcial (limiar novo, G03). Também o acoplamento do gatilho: com a força completa a corrida lê RETURN; com as duas parciais, RESTART, para a mesma corrida;<br>• **F04:** um esporte sem treino entre as pausas, sob o gatilho do outro, é lido como sessões perdidas depois do retorno próprio da pausa anterior (a regra de episódio existente); limitado pelo teto corrigido;<br>• **Alinhamento por semana do plano**, **semana revisada não basta** e **pergunta a mais (O-01)**, inalterados do PREREG-5 Δ6;<br>• **QE-R7D-P33-03:** com um retorno aplicado entre as pausas, nada é reconstruído e a pergunta existente fica;<br>• **QE-R7D-P33-04:** `reentryWeek` com três ou mais pausas, inalterado;<br>• **R-F08-1, R1/R2 (PCG):** uma entrada clínica por engano, ou um falso positivo do texto livre, prende o atleta até existir um responsável G04 | SSCTR P34 F03, F04, O-01; PCG | Divulgação. O P33-F01 do Δ7 do PREREG-5 fica fechado fora do caminho X2 |
+| Δ10 | **Julgamento do holdout (recomendação do SSCTR ao Founder, CF-P33-03):** um RESTART no caminho exato do X2 **não** é falha de domínio (resíduo divulgado); um RESTART quando algum esporte teve semana completa entre as pausas **é** falha. O Founder pode reclassificar antes da Fase 4 | SSCTR-P34-F03 | Registro; decisão do Founder pendente apenas se ele quiser outra leitura |
+| Δ11 | **Condições de consumidor (acréscimo ao Δ5 e ao Δ11 do PREREG-5):**<br>• explicar `OWN_RETURN` em palavras simples: a pausa anterior conta como pausa própria e as semanas depois dela contam como treino; dizer qual esporte retomou o executado e qual continua o retorno;<br>• nunca oferecer "mudar o motivo" ou "começar um plano novo" como saída de uma rota clínica; nunca descartar o estado clínico de continuação; nunca mostrar o plano antigo sob ela;<br>• registrar repetições, RIR e carga de toda série; uma falta segura só a força | SSCTR CF-P34-07; PCG C04, C06 | Precisão |
+| Δ12 | **F08.** `F08_OPEN`, BLOCKED_BY_AUTHORITY (F08-BLOCK-G04): sem entrada de liberação, sem S5/S6; Security e G07 antes de qualquer entrada. `QUALIFIED_CLEARANCE` continua convenção de avaliação, nunca mecanismo de produto. Um caso do holdout que espere um retorno depois de uma liberação clínica é julgado como fora da autoridade | PCG-R7D-F08-r1; SSCTR Q8 NEEDS_AUTHORITY | Registro |
+| Δ13 | **Fila de revalidação humana.** HQ-R7D-SSCTR-P33-RECHECK é acrescentado (234 → 235) pelo dono autorizado, com o conteúdo científico inalterado, nomeando o R7D-FREEZE-4, o freeze que o registro dele julgou. Os itens propostos na Fase 3.4 (HQ-R7D-SSCTR-P34-DECISION e o da recheck) ficam só propostos. A revalidação provisória por IA não é validação humana financiada | Founder Fase 3.4 | Registro |
+
+## Fechado nesta fase (sujeito às duas checagens)
+
+- **SSCTR-P33-F01, fora do caminho X2:** semanas completas em uma modalidade nunca viram dias de parada.
+- **QE-R7D-P33-01:** runtime, P18(a), este pré-registro e a interface leem o mesmo contrato.
+- **QE-R7D-P33-02:** a sessão do primeiro dia antes da hora de início conta.
+- **SSCTR-P34-F01 e SSCTR-P34-F02**, pré-existentes, corrigidos.
+- **PCG-R7D-F08-F01** (o caminho de reclassificação), fechado pela R-F08-1. O **F08 continua aberto**.
+
+## O que este pré-registro não contém
+
+- Casos finais.
+- A seed final: só a regra, que depende do digest do R7D-FREEZE-5.
+- Qualquer decisão sobre `V1_COACHING_AUTHORITY_READY`.

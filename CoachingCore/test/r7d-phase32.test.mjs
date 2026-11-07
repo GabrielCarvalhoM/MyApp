@@ -224,12 +224,16 @@ test('R7-D Phase 3.2 T5: while the relation is unresolved a clinical flag, a pai
   const sticky=step(c,5,W5D2);assert.equal(sticky.status,'CLINICAL_HUMAN_REQUIRED',label+': the clinical reference stands');
  }
 });
-test('R7-D Phase 3.2 T5 (F08 unchanged, characterization): a clinical-cause kept break stays clinical; only a report that names it corrects its facts, as in R7D-FREEZE-2',()=>{
+test('R7-D Phase 3.2 T5 (F08 unchanged, characterization): a clinical-cause kept break stays clinical; a report that names it corrects its facts but never its clinical cause (R7-D Phase 3.4: R-F08-1)',()=>{
+ // R7-D Phase 3.4 (PCG-R7D-F08-r1, R-F08-1): this assertion encoded "a report that names the clinical break and restates its reason as nonclinical
+ // re-enters the athlete by the nonclinical recipe" (REESTABLISH). The clinical status belongs to the episode: the restated report is recorded as
+ // the athlete's statement, with no return, and the route stands also after the clearance.
  const inj={...A(),reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false},t=base();
  step(t,4,{...W4D0,interruption:inj,event:{id:'p32-A',kind:'WEEKLY_REVIEW'}});clear(t);
  assert.equal(step(copy(t),5,W5D1).status,'CLINICAL_HUMAN_REQUIRED');
  const r=step(t,5,{...W5D1,kind:'RETURN_AFTER_PAUSE',interruption:{...A(),episodeId:'p32-A'}});
- assert.equal(r.action,'REESTABLISH',r.reason);assert.equal(returns(t.p).at(-1).interruption.episode,'p32-A');
+ assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',r.reason);assert.equal(r.proposal,null);assert.equal(returns(t.p).length,0,'no return for a clinical-cause episode');
+ assert.deepEqual(r.actualLedger.filter(o=>o.fact==='INTERRUPTION_DECLARED').map(o=>o.interruption.reasonCategory),['INJURY','VACATION'],'both reports stay on the record, append-only');
 });
 
 // ---------- T6: applied breaks, no regression; a correction across a kept break ----------

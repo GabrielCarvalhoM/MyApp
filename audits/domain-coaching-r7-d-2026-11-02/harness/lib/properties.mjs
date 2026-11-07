@@ -22,7 +22,7 @@ export const PROPERTY_META={
  P14:{name:'Learning inside its envelope',type:'AUTOMATED (consent) + metamorphic',blocking:'GENERALIZATION_BLOCKER'},
  P16:{name:'Load round trip and no fabricated machine load (R7D-PREREG-2)',type:'AUTOMATED',blocking:'GENERALIZATION_BLOCKER (DIRECT_RUNTIME_DELTA)'},
  P17:{name:'Interruption fact persistence (R7D-PREREG-3)',type:'AUTOMATED + metamorphic (RESTATE_DECLARED_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a plan is VALID while a stated break is not applied)'},
- P18:{name:'Unresolved interruption relation (R7D-PREREG-4; (a) re-entry week, R7D-PREREG-5)',type:'AUTOMATED + metamorphic (INSERT_NEWER_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a return drops an open stated break or is applied before an unnamed newer break\'s relation is stated)'}
+ P18:{name:'Unresolved interruption relation (R7D-PREREG-4; (a) re-entry week, R7D-PREREG-5; (a) counted sessions and own return, (d) correction of a separate-breaks return, R7D-PREREG-6)',type:'AUTOMATED + metamorphic (INSERT_NEWER_BREAK)',blocking:'BLOCKER, no envelope (SAFETY_BLOCKER when a return drops an open stated break, a correction drops a break its return read, or a return is applied before an unnamed newer break\'s relation is stated)'}
 };
 const PENDING=['ASK','HOLD','UNSUPPORTED','CLINICAL_HUMAN_REQUIRED'];
 const VALID='VALID_WITHIN_CURRENT_BOUNDED_SCOPE',RECON='REQUIRES_RECONCILIATION';
@@ -101,6 +101,28 @@ function p02(trace){
   const sub=s.review.substitution;
   if(sub&&(yes(sub.pain)||yes(sub.injury)))unit(p,r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.proposal,{at:s.stepId,issue:'PAINFUL_SUBSTITUTION_NOT_ROUTED',status:r.status});
  }
+ // R7D-HARNESS-6 (R7D-PREREG-6; PCG-R7D-F08-r1, R-F08-1; F08 stays BLOCKED_BY_AUTHORITY): the clinical status of a stated break belongs to its
+ // episode. Once a break with a clinical category is stated, no later decision applies a return of that episode, a later report that names it is
+ // routed to a human, and no decision leaves the clinical route with a prescription, whatever is restated and also after a clearance (no clearance
+ // input exists: S5/S6 are not authorized). Steps with unknown eligibility are P02's own above (ASK, never CLINICAL).
+ const episodes=new Map();
+ trace.steps.forEach((s,k)=>{
+  const i=s.review.interruption,id=s.review.event?.id??null,name=typeof i?.episodeId==='string'?i.episodeId:null;
+  const clinicalBreak=!!i&&(CLINICAL_CATEGORIES.includes(String(i.reasonCategory??'').toUpperCase())||i.clinicalReason===true);
+  const names=e=>name&&(name===e.identity||e.eventIds.has(name));
+  for(const e of episodes.values()){
+   if(k<=e.from)continue;
+   const r=s.result,returned=addedDecisions(s).some(d=>d.action==='REESTABLISH'&&(d.interruption?.episode===e.identity||e.eventIds.has(d.interruption?.episode)));
+   unit(p,!returned,{at:s.stepId,issue:'CLINICAL_EPISODE_RETURNED',episode:e.identity,since:e.since});
+   if(classifyEligibility(s.review.eligibility)==='UNKNOWN')continue;
+   if(names(e))unit(p,r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.proposal,{at:s.stepId,issue:'CLINICAL_EPISODE_RESTATED_NOT_ROUTED',episode:e.identity,status:r.status});
+   unit(p,!r.proposal||r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.proposal,{at:s.stepId,issue:'CLINICAL_EPISODE_LEFT_WITHOUT_CLEARANCE',episode:e.identity,status:r.status,...(s.clearance?{clearance:s.clearance}:{})});
+  }
+  if(clinicalBreak&&statedBreak(s)){
+   const known=[...episodes.values()].find(names);
+   if(known)known.eventIds.add(id);else episodes.set(name??id,{identity:name??id,eventIds:new Set([id].filter(Boolean)),from:k,since:s.stepId});
+  }else if(statedBreak(s)&&name){const known=[...episodes.values()].find(names);if(known&&id)known.eventIds.add(id);}
+ });
  return finish(p);
 }
 // ---------- P03 unknown is neither executed nor zero ----------
@@ -201,10 +223,23 @@ function p06(trace,ctx){
   for(const s of runs)unit(p,s.prescription.durationMinutes<=c.ceiling,{at,week,sessionId:s.id,role:s.role,minutes:s.prescription.durationMinutes,ceiling:c.ceiling,reference:c.reference});
  };
  if(trace.generation?.program)check('GENERATE',-1,trace.generation.program,0,null);
+ // (b) R7D-HARNESS-6 (SSCTR-P34-F01): a return that re-plans its own week plans the week after it from the runs completed in the window and the
+ // runs of its own week from the return's day on (the conditional plan counts those as executed), never from that week's elapsed sessions.
+ const C=policy.operational.run.singleRunCeiling;
+ const afterReturn=(at,stepIndex,plan,week,ahead)=>{
+  const w=plan.weeks[week];if(!w)return;
+  const runs=w.sessions.filter(capped);if(!runs.length)return;
+  const from=addDays(w.startDate,-C.windowDays),to=addDays(w.startDate,-1),refs=[...runRefs(trace,stepIndex).filter(r=>r.date>=from&&r.date<=to),...ahead.filter(r=>r.date>=from&&r.date<=to)];
+  if(!refs.length){p.notEvaluable.push({at,week,reason:'NO_RUN_REFERENCE_IN_WINDOW'});return;}
+  const best=refs.reduce((a,b)=>b.minutes>a.minutes?b:a),ceiling=best.minutes+C.stepMinutes;
+  for(const s of runs)unit(p,s.prescription.durationMinutes<=ceiling,{at,week,sessionId:s.id,role:s.role,minutes:s.prescription.durationMinutes,ceiling,reference:best,issue:'CEILING_AFTER_OWN_WEEK_RETURN'});
+ };
  trace.steps.forEach((s,i)=>{
   if(s.result.planValidity?.status!==VALID)return;
   check(s.stepId,i,s.planAfter,s.weekIndex,s.asOfLocal);
   if(s.kind==='WEEKLY_REVIEW'&&s.asOfLocal>=addDays(s.planAfter.weeks[s.weekIndex].startDate,6))check(s.stepId,i,s.planAfter,s.weekIndex+1,null);
+  const ret=s.adopted?(s.planAfter.decisions??[]).slice((s.planBefore.decisions??[]).length).find(d=>d.action==='REESTABLISH'):null;
+  if(ret&&ret.fromWeek===s.weekIndex){const own=s.planAfter.weeks[s.weekIndex]?.sessions??[];afterReturn(s.stepId,i,s.planAfter,s.weekIndex+1,own.filter(x=>capped(x)&&x.date>=s.asOfLocal).map(x=>({date:x.date,minutes:x.prescription.durationMinutes,source:'PLANNED_FROM_THE_RETURN'})));}
  });
  return finish(p);
 }
@@ -525,9 +560,45 @@ function p17(trace){
 // R7D-HARNESS-5 (R7D-PREREG-5; SSCTR-P32-F01, Founder direction B): training after a break accounts for it only when a whole week of the plan
 // between the break and the stop was executed: every live session of that week falls after the break's last day and before the stop's first day,
 // and each has an executed report (completed, not conflicted, not superseded). An isolated session, sessions in no such week, or an aborted one
-// account for nothing: the stop must then cover the break. The runtime's own rule is stricter (every gate ADVANCE or EARNED, no adverse response);
-// this is the part a client reads from the plan and the record, a necessary condition, so it never blocks a runtime that applies the stricter rule.
-export const executedWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[]).some(w=>{const ss=w.sessions.filter(live);return ss.length>0&&ss.every(s=>s.date>after&&s.date<before&&ledger.some(r=>r.sessionId===s.id&&!r.superseded&&!r.conflicted&&r.actual?.completed===true));});
+// account for nothing: the stop must then cover the break.
+// R7D-HARNESS-6 (R7D-PREREG-6; QE-R7D-P33-01 and the SSCTR re-entry week contract, SSCTR-R7D-P34-DECISION-r1 Q4/Q5): the sessions a week needs are
+// the ones the contract counts (COUNTED: the gated run roles and every strength session); an optional or ungated session the contract does not
+// count never decides a week either way, so this necessary condition never blocks a runtime that applies the contract. A session on the stop's first
+// day counts as between when the stop states its start time (startedAt) and it was executed before it. With `sport`, the week is read in that
+// sport alone (the SSCTR-P33-F01 direction A trigger: a whole week executed in one sport).
+// The re-entry week contract (SSCTR-R7D-P34-DECISION-r1, BR-Q4): the gated runs (EASY, LONG, QUALITY, WALK_JOG), the race touch and the race, and
+// every strength session. Optional walks, recovery runs, shakeouts and strides are not counted: they never decide a week.
+export const COUNTED_RUN_ROLES=['EASY','LONG','QUALITY','WALK_JOG','RACE_TOUCH','RACE'];
+export const counted=s=>s.sport==='STRENGTH'||COUNTED_RUN_ROLES.includes(s.role);
+// R7D-HARNESS-6, P18(c) (SSCTR-P33-F01, the inverse direction; SSCTR CF-P34-05): a sufficient reading of "executed as prescribed" that a client takes
+// from the plan and the record alone, stricter than the runtime's gates, so it never flags a week the runtime rightly read as incomplete: the
+// session's report completed, not partial, conflicted, confounded or superseded, every response field stated and nominal, the run's minutes at
+// least the prescribed ones; for strength, every prescribed exercise logged with at least its sets, each set at least its reps, a stated reps in
+// reserve not below the prescribed one and a load in a known unit (the prescribed value when the row states one).
+const NOMINAL={performance:'COMPATIBLE',recovery:'COMPATIBLE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
+function executedNominal(ledger,s){
+ const r=ledger.filter(o=>o.sessionId===s.id&&!o.superseded&&!o.conflicted).at(-1);
+ if(!r||r.actual?.completed!==true||r.partial||r.confounded||!Object.entries(NOMINAL).every(([k,v])=>r.response?.[k]===v))return false;
+ if(s.sport==='RUN')return Number(r.actual.minutes)>=Number(s.prescription?.durationMinutes??Infinity);
+ const logged=new Map((r.actual.exercises??[]).map(e=>[e.id,e]));
+ return (s.prescription?.exercises??[]).every(e=>{const l=logged.get(e.id);if(!l||(l.sets??[]).length<(e.sets??1))return false;
+  return l.sets.every(x=>Number(x.reps)>=Number(e.reps??0)&&Number.isFinite(x.rir)&&x.rir>=Number(e.rir??0)&&x.load?.unit==='KG'&&(e.load?.mode!=='KNOWN'||x.load.value===e.load.value));});
+}
+/** P18(c): a whole week of the plan between `after` and `before` that a client reads as executed as prescribed in `sport` (every counted session). */
+export const nominalSportWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[]).some(w=>{
+ const ss=w.sessions.filter(live);
+ if(!ss.length||!ss.every(s=>s.date>after&&s.date<before))return false;
+ return ['RUN','STRENGTH'].some(sport=>{const need=ss.filter(s=>s.sport===sport&&counted(s));return need.length>0&&need.every(s=>executedNominal(ledger,s));});
+});
+const executedBefore=(ledger,s,until)=>ledger.some(r=>r.sessionId===s.id&&!r.superseded&&!r.conflicted&&r.actual?.completed===true&&(!until||Date.parse(r.observedAt)<Date.parse(until)));
+export const executedWeekBetween=(plan,ledger,after,before,{sport=null,startedAt=null}={})=>(plan?.weeks??[]).some(w=>{
+ const ss=w.sessions.filter(live);
+ if(!ss.length||!ss.every(s=>s.date>after&&(s.date<before||!!startedAt&&s.date===before)))return false;
+ const need=ss.filter(s=>counted(s)&&(!sport||s.sport===sport));
+ return need.length>0&&need.every(s=>executedBefore(ledger,s,s.date===before?startedAt:null));
+});
+/** The direction A trigger as a client reads it: some sport with a whole week of the plan between the break and the stop executed in that sport. */
+export const sportWeekBetween=(plan,ledger,after,before,startedAt=null)=>['RUN','STRENGTH'].some(sport=>executedWeekBetween(plan,ledger,after,before,{sport,startedAt}));
 const breakFacts=i=>{const {episodeId,...x}=i;return canonicalJson(x);};
 const nameOfBreak=i=>typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;
 function p18(trace){
@@ -552,10 +623,33 @@ function p18(trace){
    if(!start||!end){p.notEvaluable.push({at:t.stepId,break:live.s.stepId,reason:'BREAK_WITHOUT_DATES'});return;}
    const covered=typeof ret.startDate==='string'&&typeof ret.endDate==='string'&&ret.startDate<=start&&end<=ret.endDate;
    const listed=(ret.separateBreaks??[]).find(b=>b.startDate===start&&b.endDate===end);
-   const trainedAfter=listed?.stop==='TRAINING_AFTER'&&executedWeekBetween(t.planBefore,ledger,end,ret.startDate);
+   const trainedAfter=listed?.stop==='TRAINING_AFTER'&&executedWeekBetween(t.planBefore,ledger,end,ret.startDate,{startedAt:ret.startedAt??null});
+   // R7D-HARNESS-6 (SSCTR-P33-F01, direction A): an earlier break read as its own return is accounted for when the training between it and the stop
+   // holds a whole week executed in one sport, and the own return the record states ends with it; a break inside that own return's stop is accounted
+   // for by that stop, or by its own placement there (a whole week after it, in every sport for TRAINING_AFTER, in one for OWN_RETURN).
+   const ownReturn=listed?.stop==='OWN_RETURN'&&sportWeekBetween(t.planBefore,ledger,end,ret.startDate,ret.startedAt??null)&&listed.ownReturn?.endDate===end&&typeof listed.ownReturn?.startDate==='string'&&listed.ownReturn.startDate<=start;
+   const inOwn=listed?.stop==='WITHIN_OWN_RETURN'?(ret.separateBreaks??[]).find(b=>b.stop==='OWN_RETURN'&&b.episode===listed.ownReturnOf)??null:null;
+   const withinOwn=!!inOwn&&(inOwn.ownReturn.startDate<=start&&end<=inOwn.ownReturn.endDate||listed.stopInOwnReturn==='TRAINING_AFTER'&&executedWeekBetween(t.planBefore,ledger,end,inOwn.startDate)||listed.stopInOwnReturn==='OWN_RETURN'&&sportWeekBetween(t.planBefore,ledger,end,inOwn.startDate));
    const refused=(ret.notApplied??[]).some(x=>g.some(r=>r.eventId===x.eventId))&&g.some(r=>r.name&&applied.has(r.name));
-   unit(p,covered||trainedAfter||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
+   unit(p,covered||trainedAfter||ownReturn||withinOwn||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
   });
+  // (c) R7D-HARNESS-6 (SSCTR-P33-F01, the inverse direction; SSCTR CF-P34-05): a break the return ran its stop through after training
+  // (TRAINING_NOT_REESTABLISHED) has no whole week of the plan between it and the next break executed as prescribed in one sport, as a client reads
+  // it (nominalSportWeekBetween); otherwise weeks of training were read as days of the stop (SPORT_WEEK_READ_AS_STOP).
+  const rows=ret.separateBreaks??[],byStart=[...rows].sort((a,b)=>a.startDate<b.startDate?-1:a.startDate>b.startDate?1:0);
+  for(const b of rows.filter(x=>x.stop==='TRAINING_NOT_REESTABLISHED')){const next=byStart.find(x=>x.startDate>b.endDate);if(next)unit(p,!nominalSportWeekBetween(t.planBefore,ledger,b.endDate,next.startDate),{at:t.stepId,issue:'SPORT_WEEK_READ_AS_STOP',break:b.episode,breakDays:[b.startDate,b.endDate],until:next.startDate});}
+ });
+ // (d) R7D-HARNESS-6: a newer report of an interruption whose return read separate breaks (a return applied with relation SAME_BREAK, superseding
+ // a report whose return listed separateBreaks) reads every one of them again: each earlier break that return listed is listed again by its report,
+ // or covered by the new stop. Otherwise the correction dropped it (EARLIER_BREAK_DROPPED_BY_CORRECTION: the direction of SSCTR-P32-F01).
+ trace.steps.forEach(t=>{
+  for(const d of addedDecisions(t).filter(x=>x.action==='REESTABLISH'&&x.interruption?.relation==='SAME_BREAK'&&x.interruption?.supersedes)){
+   const ret=d.interruption,prev=(t.planBefore.decisions??[]).find(x=>x.action==='REESTABLISH'&&x.eventId===ret.supersedes)?.interruption;
+   for(const b of (prev?.separateBreaks??[]).filter(x=>x.stop!=='LATEST')){
+    const again=(ret.separateBreaks??[]).some(x=>x.eventId===b.eventId),covered=typeof ret.startDate==='string'&&ret.startDate<=b.startDate&&b.endDate<=ret.endDate;
+    unit(p,again||covered,{at:t.stepId,issue:'EARLIER_BREAK_DROPPED_BY_CORRECTION',break:b.episode,breakDays:[b.startDate,b.endDate],returnDays:[ret.startDate??null,ret.endDate??null]});
+   }
+  }
  });
  return finish(p);
 }

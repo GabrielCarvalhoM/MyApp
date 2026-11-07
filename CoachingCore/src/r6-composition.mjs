@@ -351,7 +351,12 @@ export function composeWeeks(ctx,next,{fromWeek,start=null,startAuthority:startA
  const credited=uncredited.length?{...first,week:{...first.week,sessions:first.week.sessions.filter(s=>!uncredited.includes(s.id))}}:first;
  const nextStart=rebased?{runState:clone(rebased.run),strengthState:clone(rebased.strength)}:fromEvidence?evidence({...next,weeks,stateTrace},skn):conditionalNext(ctx,skn,fromWeek,credited,returned(fromWeek));
  const nextAuthority=rebased?next.weeks[fromWeek+1].startAuthority:fromEvidence?anchoredStart(WEEK_START.WEEK_EVIDENCE,by):projectedStart(first.week,by);
- const rest=projectWeeks(sk,fromWeek+1,nextStart,[...next.weeks.slice(0,fromWeek),first.week],{completedRuns:[...completedRuns,...runsOf(credited.week)]});
+ // R7-D Phase 3.4 (SSCTR-P34-F01): the single-run ceiling of the weeks after a return's own week counts that week's runs as the conditional plan
+ // counts them for the transition (conditionalNext; C3, C5): the sessions dated before the return belong to the plan before the break and are no
+ // projection, so they never count as executed (policy run.singleRunCeiling: completed runs, and earlier projected weeks); the ones the athlete
+ // executed are in the completed-work ledger already.
+ const beforeRet=beforeReturn(next,returned(fromWeek)),projected={...credited.week,sessions:credited.week.sessions.filter(s=>!beforeRet(s))};
+ const rest=projectWeeks(sk,fromWeek+1,nextStart,[...next.weeks.slice(0,fromWeek),first.week],{completedRuns:[...completedRuns,...runsOf(projected)]});
  for(const [k,wk] of rest.weeks.entries()){weeks[fromWeek+1+k]=wk;const r=place(fromWeek+1+k,wk.sessions,rest.states[k],k===0?nextAuthority:projectedStart(rest.weeks[k-1],by));if(r.ask)return r;}
  return {weeks,stateTrace,sk};
 }
