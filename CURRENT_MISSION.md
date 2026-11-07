@@ -1256,3 +1256,35 @@ No Phase 4, no final holdout, no change to V1 authority, no push or merge, and n
 - **Next:** the Founder's decisions, then Phase 4 on its own authorization.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE33_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261107-phase34-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3.4 (direction A, the re-entry week contract, F08 under control) CLOSED_NOT_READY / 2026-11-07
+
+A direct Founder request authorizes **R7-D Phase 3.4 only**:
+- fix SSCTR-P33-F01 by direction A: the earlier break is read as its own return, and weeks of training between are never days of the stop;
+- align the runtime, P18(a), the pre-registration and the public contract on one re-entry week contract (QE-R7D-P33-01);
+- for F08: a benchmark, the state machine and the clinical boundary, implemented only with authority;
+- integrate HQ-R7D-SSCTR-P33-RECHECK into the queue;
+- freeze only coherent, approved and verified changes.
+
+No Phase 4, no final holdout, no change to V1 authority, no push or merge, and no recursive deletion. Summary of the authorization: `audits/domain-coaching-r7-d-2026-11-02/phase34/AUTHORIZATION_PHASE34.md`.
+
+- **States:** R7D_PHASE34_STATUS = CLOSED_NOT_READY; FINAL_HOLDOUT_EXISTS = NO; V1_COACHING_AUTHORITY_READY = NO; F08 = F08_OPEN (BLOCKED_BY_AUTHORITY, F08-BLOCK-G04).
+- **Runtime:** no new freeze; R7D-FREEZE-4 stays the last frozen state. Candidate `46934a0` is on the branch, unfrozen (runtime `77768e6`, instruments `0b502b1`). `freeze-r7d-5.mjs` and `verify-r7d-5.mjs` are prepared and were not run.
+- **Decisions:**
+  - SSCTR-R7D-P34-DECISION-r1, ACCEPT_WITH_CONDITIONS: direction A as variant γ, BR-Q1 to BR-Q6;
+  - PCG-R7D-F08-r1: F08 BLOCKED_BY_AUTHORITY, and R-F08-1 required. R-F08-1 is implemented: a clinical-cause episode stays clinical.
+- **Gates:**
+  - first reviews, of `1978cc4`: SSCTR-R7D-P34-RECHECK-r1 BLOCK (SSCTR-P34R-F01 to F04) and QRE-R7D-PHASE34-CHECK-r1 NOT_READY (QRE-P34-01). All closed in the one bounded cycle;
+  - narrow rechecks, of `46934a0`: SSCTR-R7D-P34-RECHECK-r2 BLOCK (SSCTR-P34R2-F01, F02) and QRE-R7D-PHASE34-CHECK-r2 NOT_READY (QRE2-P34-01).
+- **Evidence on `46934a0`:**
+  - suite 992/992; directed 40/40, 14/14, 17/17 and 14/14;
+  - mutation 23/23;
+  - harness validation 6: 49 cases, 20/20 sensitivity rows, 52/52 witnesses;
+  - differential: 0 unexplained; decomposition PASS.
+- **Instruments:** R7D-HARNESS-6 r2, R7D-PREREG-6 with addenda Δ14–Δ25, the R7D-INTERFACE-6 delta, final brief 5.
+- **Queue:** 234 → 235 (HQ-R7D-SSCTR-P33-RECHECK, naming R7D-FREEZE-4). The Phase 3.4 items stay proposed only.
+- **Open before any freeze:** SSCTR-P34R2-F01, SSCTR-P34R2-F02 and QRE2-P34-01 (PREREG-6 Δ22). **Before any holdout:** PREREG-6 Δ23.
+- **Next:** the Founder's authorization of a narrow Phase 3.5 that closes the three blockers, reruns both rechecks and freezes R7D-FREEZE-5; then Phase 4 on its own authorization.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE34_CHECKPOINT.md).

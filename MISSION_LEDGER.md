@@ -1188,3 +1188,24 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Queue:** 233 → 234 (HQ-R7D-SSCTR-P32-RECHECK, naming R7D-FREEZE-3); HQ-R7D-SSCTR-P33-RECHECK proposed only.
 - **Open:** SSCTR-P33-F01 and QE-R7D-P33-01, for the Founder before the holdout; F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY.
 - **Unchanged:** policy, catalog, records, product and canon unchanged; final holdout not created; V1 authority NO; nothing merged or pushed; nothing deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE33_CHECKPOINT.md`.
+
+<!-- DCR7D-20261107-phase34-r1 -->
+2026-11-07 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3.4 **CLOSED_NOT_READY**.
+- **Direction A (SSCTR-P33-F01):** a plan week between two separate breaks executed completely in one sport reads the earlier break as its own return. Its class comes from its own days, with the unchanged recipe, the day after it ended. The re-entered sport reads what it executed, the other continues from that return, and the later break is classed by its own days.
+  - The Founder's case goes from LONG 32 RESTART to SHORT 4, with running resuming its executed doses and strength earning no step.
+  - No new number. Isolated training and the X2 residual are unchanged.
+- **Contract:** the re-entry week contract (BR-Q4/BR-Q5) is one reading across the runtime, P18(a), PREREG-6 and INTERFACE-6.
+  - **R-F08-1** (PCG-R7D-F08-r1) is implemented.
+  - **F08** is BLOCKED_BY_AUTHORITY (F08-BLOCK-G04) and stays F08_OPEN, after a benchmark of Runna, TrainerRoad, Gentler Streak, Garmin and the IOC/Bern consensus (abstract only).
+- **Reviews:**
+  - first reviews of `1978cc4`: SSCTR recheck r1 BLOCK (F01 to F04) and QRE r1 NOT_READY (QRE-P34-01), fixed in the one bounded cycle (`77768e6`);
+  - rechecks of `46934a0`: SSCTR recheck r2 BLOCK (SSCTR-P34R2-F01 is a race week without a gated run that ignores the systemic signal; SSCTR-P34R2-F02 is a correction re-read masking uncovered sessions, a restart in CU3) and QRE r2 NOT_READY (QRE2-P34-01: the start-time question of a re-read cannot be answered, a persistent ASK).
+- **Verification on `46934a0`:**
+  - suite 992/992; mutation 23/23;
+  - harness R7D-HARNESS-6 r2, validation 6: no false block, 20/20 sensitivity, 52/52 witnesses;
+  - regressions with no property violation;
+  - differential against R7D-FREEZE-4: 0 unexplained; decomposition PASS.
+- **Freeze:** none; R7D-FREEZE-4 stays the last frozen state.
+- **Queue:** 234 → 235 (HQ-R7D-SSCTR-P33-RECHECK, naming R7D-FREEZE-4); the Phase 3.4 items are proposed only.
+- **Open:** the three blockers before any freeze (PREREG-6 Δ22) and the instrument items before any holdout (Δ23).
+- **Unchanged:** policy, catalog, records, product and canon. The final holdout was not created; V1 authority is NO; nothing was merged, pushed or deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE34_CHECKPOINT.md`.

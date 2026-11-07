@@ -33,7 +33,7 @@ No length, count, percentage or threshold is added.
 
 ## 2. Later decisions (new)
 
-- **A newer report of the latest break** (its `episodeId`), after a return that read separate breaks, reads those breaks again as that return did, with the newer report's own facts. A correction never drops an earlier break. It may give its length and last day, or only its length: its first day is read from them.
+- **A newer report of the latest break** (its `episodeId`), after a return that read separate breaks, reads those breaks again as that return did, with the newer report's own facts. A correction never drops an earlier break. It may give its length and last day, or only its length: its first day is read from them. With no last day, it ended the day before the review that reports it, as a first report does.
 - **A strength session on the earlier break's first day without a stated start time** is asked about when strength is read from that break's own return and the order would change the state the return starts from: the coach asks for that break's start time (`missingInputs: ['interruption.startedAt']`, `question.episodeId` naming the break). Report that break again with its `episodeId` and `startedAt`. When strength resumed by its own week, nothing is asked.
 - **A later review** after such a return is not asked to confirm the break again because of it. A genuine late fact about the training before the break (a correction, a report that arrives late) is still asked, as before.
 - **A report that names the earlier break** after such a return (its `episodeId`, other dates) is asked: the coach does not re-read a break a return already read through another one.
