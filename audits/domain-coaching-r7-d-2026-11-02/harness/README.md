@@ -180,3 +180,53 @@ Results:
 - **Withdrawn claim (QE-R7D-P33-01, open, binding before any final holdout, author or seed):** "this check never blocks a runtime that applies the stricter rule" (above, and in the `lib/properties.mjs` comment) does not hold for sessions the runtime's weekly gates do not read. Those are optional WALK, RECOVERY_EASY and SHAKEOUT, and race-week RACE_TOUCH and RACE. For them the runtime's rule is not stricter: a re-entry week with optional walks not done is `TRAINING_AFTER` on the runtime, and P18(a) reports `OLDER_BREAK_DROPPED` (the check's probes QH-1 and QH-2).
 - **Not reached by validation 5:** no development case has optional or race-week sessions in a re-entry week.
 - **Resolution, before Phase 4:** the SSCTR judges which sessions a re-entry week needs, then Chief/Founder chooses an instrument revision (P18(a) restricted to the sessions that count, with a QH-1-style development case) or a runtime change in a new authorized mission.
+
+## R7D-HARNESS-6 (R7-D Phase 3.4: SSCTR-P33-F01 under direction A, QE-R7D-P33-01, R-F08-1)
+
+R7D-HARNESS-5 is commit `3edf3c5`. R7D-HARNESS-6 is pre-registered as `R7D-PREREG-6` (`../PREREGISTRATION_R7D_6.md`). It reads the SSCTR decision `SSCTR-R7D-P34-DECISION-r1` and the PCG record `PCG-R7D-F08-r1` (`../phase34/policy/`).
+
+| Change | Where |
+|---|---|
+| **P18(a), re-entry week contract (QE-R7D-P33-01).** Only the sessions the contract counts decide a week: EASY, LONG, QUALITY and WALK_JOG runs, the race touch and the race, and every strength session. Optional walks, recovery runs, shakeouts and strides never do. A session on the stop's first day counts as between when the stop states `startedAt` and it was done before it. The Phase 3.3 withdrawn claim holds again: P18(a) is a necessary condition of the runtime's rule (DEV-32/DEV-33, the QH-1/QH-2 forms, pass) | `lib/properties.mjs` (`counted`, `executedWeekBetween`) |
+| **P18(a), own return.** A break listed `OWN_RETURN` is accounted for by a whole week executed in one sport between it and the stop, with the own return its record states. A break listed `WITHIN_OWN_RETURN` is accounted for by that own return's stop or by its own placement there | `lib/properties.mjs` (`sportWeekBetween`) |
+| **P18(c) (new), the inverse direction.** A break listed with a continuity reading (`TRAINING_NOT_REESTABLISHED`, `NO_TRAINING_BETWEEN`) has no whole week between it and the next break that a client reads as executed as prescribed in one sport. Otherwise `SPORT_WEEK_READ_AS_STOP`. The reading is sufficient, so it never flags a week the runtime rightly read as incomplete: completed, no partial, conflicted or confounded report, every response nominal, minutes at least prescribed; strength sets, reps and reps in reserve at least prescribed, with the prescribed load (a bodyweight row logged as bodyweight) | `lib/properties.mjs` (`nominalSportWeekBetween`) |
+| **P18(d) (new), correction.** A newer report of the latest break (`SAME_BREAK`) after a return that read separate breaks lists each earlier break again, or covers it. Otherwise `EARLIER_BREAK_DROPPED_BY_CORRECTION` | `lib/properties.mjs` |
+| **P02, R-F08-1 (new).** After a break with a clinical category, no later decision applies a return of that episode, a report naming it is routed to a human, and no decision leaves the clinical route with a prescription, also after a clearance (`CLINICAL_EPISODE_RETURNED`, `_RESTATED_NOT_ROUTED`, `_LEFT_WITHOUT_CLEARANCE`). Steps with unknown eligibility stay P02's ASK | `lib/properties.mjs` |
+| **P06(b) (new), the ceiling after a return that re-plans its own week (SSCTR-P34-F01).** The week after it never exceeds the longest run completed in the window, or the own week's runs from the return, plus the step. Otherwise `CEILING_AFTER_OWN_WEEK_RETURN` | `lib/properties.mjs` |
+| **P08, stated start time.** A run on the break's first day done before its stated `startedAt` counts as executed before the break (BR-Q5). A run with no time on that day stays outside. The DEV-44 control found this gap; it was pre-existing and reached by no earlier case | `lib/properties.mjs` |
+| Default freeze record `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json` | `r7d-harness.mjs` |
+
+Validation 6: `validation/DEV_CASES_R7D_6.json` and `validation/HARNESS_VALIDATION_R7D_6.json`. The dev cases come from `build-dev-cases.mjs` and are contaminated by construction. DEV-32 to DEV-45 are added. DEV-31 changed in its assessment text only, and DEV-01 to DEV-30 are byte-identical to `DEV_CASES_R7D_5.json`.
+```
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_6.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4
+```
+`$D/rt-d4` is `git archive 3edf3c5 CoachingCore` (R7D-FREEZE-4's runtime) plus the R6 and B0 records, and the three R3/R4/R5 records for the whole suite, with `CoachingCore/node_modules` copied in. The other runtimes are as above. Rebuild every runtime into a new, empty, uniquely named directory; nothing needs deleting.
+
+The new cases:
+- DEV-32, DEV-33: optional walks unreported or not done in a re-entry week (QH-1, QH-2);
+- DEV-34: the Founder's case (two weeks with every run done, the Friday strength missed each week);
+- DEV-35: strength complete, an easy run missed each week;
+- DEV-36: both sports partial (the disclosed X2 residual);
+- DEV-37, DEV-38: a named correction of the trip after a continuity return and after an own return;
+- DEV-39, DEV-40: a clinical-cause break restated as a holiday by name, after a clearance and while eligibility is asked;
+- DEV-41: a return reported mid-week after elapsed runs not done;
+- the false-block controls of SSCTR CF-P34-05:
+  - DEV-42: a race week with its race touch missed;
+  - DEV-43: strength logged without reps in reserve;
+  - DEV-44, DEV-45 (S1, S2): a stated start on the Sunday, after or before the long run.
+
+Results:
+- no false block on the candidate (47 cases);
+- 19/19 sensitivity rows. The new rows are all on R7D-FREEZE-4, each clean on the candidate:
+  - SSCTR-P33-F01 by P18(c) (DEV-31, DEV-34, DEV-35, DEV-43);
+  - the correction path, by P18(d) (DEV-37, DEV-38);
+  - PCG-R7D-F08-F01 by P02 (DEV-39, DEV-40);
+  - SSCTR-P34-F01 by P06(b) (DEV-41);
+  - the race keys (SSCTR-P34-F05) by P18(a) (DEV-42).
+  The SSCTR-P32-F01 row stays detected on R7D-FREEZE-3;
+- coverage: CARRIER_CLINICAL 7, CARRIER_HOLD 1, RESEND 44, RESTATE 51 and INSERT_NEWER_BREAK 21 units; P17 147; P18 65;
+- 50/50 witnesses. Added: W-P18d (correction), W-P18e (an own return with no complete week), W-P18f and W-P18g (each continuity label after run-complete weeks), W-P06b, W-P02e and W-P08c (a run after the stated start still binds).
+
+**Residuals (instrument):**
+- P18(c) is a sufficient reading, so it can miss an inverse defect on weeks it cannot read as nominal: unknown responses, a partial report, or a load the row does not state.
+- The differential's triggers are necessary conditions. `../phase34/probes/phase34-decomposition.mjs` separates the two source changes through a hybrid runtime instead: 6 cases change by the ceiling fix alone and 11 by the adaptation change alone, with none changed by both.

@@ -1,0 +1,394 @@
+{
+ "mutation": "R7D-PHASE34-MUTATION-1",
+ "testFile": "CoachingCore/test/r7d-phase34.test.mjs",
+ "testFileSha256": "0e7d47463746f20ba3c03ef0e068e3a679ccc0b7d75ecf4b3b283bd8a634bfcb",
+ "sources": {
+  "CoachingCore/src/r6-adaptation.mjs": "1163e105005134afbe12edf5a6e2f1873873268d2a8e6cb8df4c12f4f4a94771",
+  "CoachingCore/src/r6-composition.mjs": "8aa5f950dff697bf80425f364462fdfde9cfad937027ab8a4cf2640af7cc18a8"
+ },
+ "scratchRestored": true,
+ "baseline": {
+  "status": 0,
+  "selected": 22,
+  "pass": 22,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "P34-M1",
+   "defect": "the R7D-FREEZE-4 reading: weeks complete in one sport count as days of the stop (SSCTR-P33-F01 itself)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 12,
+    "pass": 12,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 18,
+    "pass": 6,
+    "fail": 6,
+    "failedTests": [
+     "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+     "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
+     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
+     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
+    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return",
+    "R7-D Phase 3.4 T6: unreported sessions between the breaks are asked first, also when a sport has a whole week executed; the answer decides",
+    "R7-D Phase 3.4 T7: the late form (weeks reviewed at the time, the holiday declared later) reads the same way; timely reporting (weekly reviews; the holiday applied when stated) is unchanged",
+    "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
+    "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+    "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
+    "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M2",
+   "defect": "any executed session between the breaks reads the earlier break as its own return (isolated training in a long gap shortens the stop)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T4: isolated sessions",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T4: isolated sessions in no whole week, in either sport, still run the stop through the earlier break, exactly as R7D-FREEZE-4"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T4: isolated sessions in no whole week, in either sport, still run the stop through the earlier break, exactly as R7D-FREEZE-4",
+    "R7-D Phase 3.4 T4 (disclosed residual): weeks with both sports partial (an easy run and a strength session missed each week) complete no week in any sport: the stop still runs through the earlier break",
+    "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
+    "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M3",
+   "defect": "no per-sport reading: a sport with its own whole complete week still continues from the earlier break's own return",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T2: one week with every run done",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M4",
+   "defect": "the per-sport reading crossed: the sport that completed the week continues from the own return and the other resumes its history",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T2: strength executed in full",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
+    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M5",
+   "defect": "the earlier break read as its own return is recorded as history (TRAINING_AFTER): the record hides the own return",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 12,
+    "pass": 12,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 17,
+    "pass": 7,
+    "fail": 5,
+    "failedTests": [
+     "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
+     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
+    "R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return",
+    "R7-D Phase 3.4 T6: unreported sessions between the breaks are asked first, also when a sport has a whole week executed; the answer decides",
+    "R7-D Phase 3.4 T7: the late form (weeks reviewed at the time, the holiday declared later) reads the same way; timely reporting (weekly reviews; the holiday applied when stated) is unchanged",
+    "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
+    "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+    "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week",
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it",
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M6",
+   "defect": "the late-evidence check recomputes a return without the earlier break's own return: a spurious question after the return",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T10: after a return",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M7",
+   "defect": "a named correction of the latest break reads it alone: the earlier break its return read is dropped (F01 through a correction)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T10",
+   "applied": true,
+   "cleanRun": {
+    "selected": 2,
+    "pass": 2,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 4,
+    "pass": 0,
+    "fail": 2,
+    "failedTests": [
+     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+     "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+    "R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses)"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M8",
+   "defect": "R-F08-1 dropped in the clinical screen: the report in force alone decides (a restated clinical break re-enters by the nonclinical recipe)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated as a holiday by name never ends the clinical route, with or without a clearance, and opens no nonclinical return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated as a holiday by name never ends the clinical route, with or without a clearance, and opens no nonclinical return",
+    "R7-D Phase 3.4 T12 (R-F08-1): a later trip, a schedule change or a weekly review never makes the clinical-cause episode nonclinical, and no other event's change is applied with the route; the record keeps every report"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M9",
+   "defect": "R-F08-1 dropped in the episode: only the latest report of an episode is screened",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated as a holiday by name never ends the clinical route, with or without a clearance, and opens no nonclinical return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated as a holiday by name never ends the clinical route, with or without a clearance, and opens no nonclinical return",
+    "R7-D Phase 3.4 T12 (R-F08-1): a later trip, a schedule change or a weekly review never makes the clinical-cause episode nonclinical, and no other event's change is applied with the route; the record keeps every report"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M10",
+   "defect": "the stop still runs through the earlier break while its own return is read (training days counted as stop days in the class)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T1",
+   "applied": true,
+   "cleanRun": {
+    "selected": 12,
+    "pass": 12,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 16,
+    "pass": 8,
+    "fail": 4,
+    "failedTests": [
+     "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+     "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+     "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
+     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing",
+    "R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn)",
+    "R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives",
+    "R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week",
+    "R7-D Phase 3.4 T6: unreported sessions between the breaks are asked first, also when a sport has a whole week executed; the answer decides",
+    "R7-D Phase 3.4 T7: the late form (weeks reviewed at the time, the holiday declared later) reads the same way; timely reporting (weekly reviews; the holiday applied when stated) is unchanged",
+    "R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each",
+    "R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing",
+    "R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again",
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M11",
+   "defect": "the race touch and the race are not required: a race week with them missed re-enters running (SSCTR BR-Q4)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T14: a race week",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M12",
+   "defect": "a session on the later break's first day never counts as between, even when executed before its stated start (QE-R7D-P33-02)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T15",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P34-M13",
+   "defect": "the single-run ceiling after a return planned from its own week counts the elapsed runs of that week that were not done (SSCTR-P34-F01)",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "witness": "R7-D Phase 3.4 T16",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 13,
+  "killed": 13,
+  "survived": []
+ }
+}
