@@ -86,8 +86,10 @@ After sealing, change nothing and stop.
    - at least one with a whole week of the plan executed in full between them, every session done as prescribed and well tolerated, so that the athlete has clearly resumed;
    - at least one where a whole week was executed in full **in one sport only**: every run of the week done, a strength session missed (or the reverse), over one or more weeks;
    - at least one whose week between them holds **optional sessions** (for example optional walks) left undone, and at least one whose week between them is a **race week** with its race touch or race missed;
-   - at least one whose week between them has its strength **logged without reps in reserve**, and at least one where the later break **states a start time** (`startedAt`) on the day of that week's last session.
-12. **A correction of the later break by name** (its `episodeId`, other dates), after the coach returned the athlete from two separate breaks.
+   - at least one whose week between them has its strength **logged without reps in reserve**, and at least one where the later break **states a start time** (`startedAt`) on the day of that week's last session;
+   - at least one whose race week between them holds only the **race touch, an optional shakeout and the race**, and at least one with the **race touch done at half its minutes**;
+   - at least one with a **strength session on the earlier break's first day**, reported without a start time, where the athlete then misses strength between the breaks.
+12. **A correction of the later break by name** (its `episodeId`, other dates), after the coach returned the athlete from two separate breaks. Include at least one that **moves its start later**, and at least one that gives **only its length and last day**.
 13. **A return reported in the middle of its week** (Wednesday or later), after sessions of that week dated before the report that were not done.
 
 Also vary everything the diagnostic brief listed:

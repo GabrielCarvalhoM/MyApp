@@ -118,7 +118,8 @@ function p02(trace){
    if(names(e))unit(p,r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.proposal,{at:s.stepId,issue:'CLINICAL_EPISODE_RESTATED_NOT_ROUTED',episode:e.identity,status:r.status});
    unit(p,!r.proposal||r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.proposal,{at:s.stepId,issue:'CLINICAL_EPISODE_LEFT_WITHOUT_CLEARANCE',episode:e.identity,status:r.status,...(s.clearance?{clearance:s.clearance}:{})});
   }
-  if(clinicalBreak&&statedBreak(s)){
+  // R7D-HARNESS-6 r2 (QRE-P34-08): a review the runtime refused unread records no declaration, so it opens no episode (as P17 and P18 read it).
+  if(clinicalBreak&&statedBreak(s)&&!refusedUnread(s)){
    const known=[...episodes.values()].find(names);
    if(known)known.eventIds.add(id);else episodes.set(name??id,{identity:name??id,eventIds:new Set([id].filter(Boolean)),from:k,since:s.stepId});
   }else if(statedBreak(s)&&name){const known=[...episodes.values()].find(names);if(known&&id)known.eventIds.add(id);}
@@ -596,7 +597,10 @@ export const nominalSportWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[
  if(!ss.length||!ss.every(s=>s.date>after&&s.date<before))return false;
  return ['RUN','STRENGTH'].some(sport=>{const need=ss.filter(s=>s.sport===sport&&counted(s));return need.length>0&&need.every(s=>executedNominal(ledger,s));});
 });
-const executedBefore=(ledger,s,until)=>ledger.some(r=>r.sessionId===s.id&&!r.superseded&&!r.conflicted&&r.actual?.completed===true&&(!until||Date.parse(r.observedAt)<Date.parse(until)));
+// R7D-HARNESS-6 r2 (SSCTR-R7D-P34-RECHECK-r1 CFR-05, SSCTR-P34R-F02): an executed report counts only under the existing completion rule, never
+// partial (a race's duration is its event window, so a finished race is complete). The runtime's gates hold a partial gated row, and its race keys
+// read the same rule, so this stays a necessary condition.
+const executedBefore=(ledger,s,until)=>ledger.some(r=>r.sessionId===s.id&&!r.superseded&&!r.conflicted&&r.actual?.completed===true&&!r.partial&&(!until||Date.parse(r.observedAt)<Date.parse(until)));
 export const executedWeekBetween=(plan,ledger,after,before,{sport=null,startedAt=null}={})=>(plan?.weeks??[]).some(w=>{
  const ss=w.sessions.filter(live);
  if(!ss.length||!ss.every(s=>s.date>after&&(s.date<before||!!startedAt&&s.date===before)))return false;
@@ -637,6 +641,12 @@ function p18(trace){
    const inOwn=listed?.stop==='WITHIN_OWN_RETURN'?(ret.separateBreaks??[]).find(b=>b.stop==='OWN_RETURN'&&b.episode===listed.ownReturnOf)??null:null;
    const withinOwn=!!inOwn&&(inOwn.ownReturn.startDate<=start&&end<=inOwn.ownReturn.endDate||listed.stopInOwnReturn==='TRAINING_AFTER'&&executedWeekBetween(t.planBefore,ledger,end,inOwn.startDate)||listed.stopInOwnReturn==='OWN_RETURN'&&sportWeekBetween(t.planBefore,ledger,end,inOwn.startDate));
    const refused=(ret.notApplied??[]).some(x=>g.some(r=>r.eventId===x.eventId))&&g.some(r=>r.name&&applied.has(r.name));
+   // R7D-HARNESS-6 r2 (QRE-P34-02, QRE-P34-03): a break at the second level of a chain of own returns (stopInOwnReturn WITHIN_OWN_RETURN: inside an own
+   // return that is itself inside the top-level own return's stop) cannot be checked from the record, which names neither that inner own return's
+   // days nor the break's place in its stop. It is not evaluable when the record lists such an inner own return after it in the same chain; without
+   // one, the row accounts for nothing.
+   const nested=listed?.stop==='WITHIN_OWN_RETURN'&&listed.stopInOwnReturn==='WITHIN_OWN_RETURN'&&(ret.separateBreaks??[]).some(b=>b!==listed&&b.stop==='WITHIN_OWN_RETURN'&&b.ownReturnOf===listed.ownReturnOf&&b.stopInOwnReturn==='OWN_RETURN'&&b.startDate>end);
+   if(nested&&!(covered||trainedAfter||ownReturn||withinOwn||refused)){p.notEvaluable.push({at:t.stepId,break:live.s.stepId,reason:'NESTED_OWN_RETURN_RECORD',source:'QRE-P34-02'});return;}
    unit(p,covered||trainedAfter||ownReturn||withinOwn||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
   });
   // (c) R7D-HARNESS-6 (SSCTR-P33-F01, the inverse direction; SSCTR CF-P34-05): a break the return ran its stop through, a continuity reading

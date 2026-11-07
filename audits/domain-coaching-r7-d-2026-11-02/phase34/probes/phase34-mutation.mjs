@@ -1,4 +1,5 @@
-// R7-D Phase 3.4 mutation adequacy (SSCTR-P33-F01 under direction A; the correction and late-evidence re-reads; R-F08-1): each mutant removes or
+// R7-D Phase 3.4 mutation adequacy (SSCTR-P33-F01 under direction A; the correction and late-evidence re-reads; R-F08-1; since the bounded cycle,
+// SSCTR-P34R-F01..F04, QRE-P34-01 and the QRE CQ-2 survivors Q02, Q03, Q09, Q10, Q12): each mutant removes or
 // weakens one part of the phase's rule in a scratch copy of the runtime, and must be killed by its own witness test in
 // CoachingCore/test/r7d-phase34.test.mjs; the whole directed file is also run to record every test that catches it. STOP_WHEN adequate.
 //   node phase34-mutation.mjs --out <file> --work-parent <scratch dir>
@@ -18,12 +19,12 @@ const sha=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const TEST='test/r7d-phase34.test.mjs',F='src/r6-adaptation.mjs';
 const MUTANTS=[
  {id:'P34-M1',defect:'the R7D-FREEZE-4 reading: weeks complete in one sport count as days of the stop (SSCTR-P33-F01 itself)',file:F,
-  from:"if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start)){",
+  from:"if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start,H.g.identity)){",
   to:"if(false){",
   witness:'R7-D Phase 3.4 T1'},
  {id:'P34-M2',defect:'any executed session between the breaks reads the earlier break as its own return (isolated training in a long gap shortens the stop)',file:F,
-  from:"if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start)){",
-  to:"if(trainedBetween(ctx,x.end,start)&&!appliedBetween(ctx,x.end,start)){",
+  from:"if((by.sport.RUN||by.sport.STRENGTH)&&!appliedBetween(ctx,x.end,start,H.g.identity)){",
+  to:"if(trainedBetween(ctx,x.end,start)&&!appliedBetween(ctx,x.end,start,H.g.identity)){",
   witness:'R7-D Phase 3.4 T4: isolated sessions'},
  {id:'P34-M3',defect:'no per-sport reading: a sport with its own whole complete week still continues from the earlier break\'s own return',file:F,
   from:"if(!re.RUN&&!re.STRENGTH)return withOwn;",
@@ -58,8 +59,8 @@ const MUTANTS=[
   to:"place.set(x.g,'OWN_RETURN');start=x.start;startedAt=x.startedAt;break;",
   witness:'R7-D Phase 3.4 T1'},
  {id:'P34-M11',defect:'the race touch and the race are not required: a race week with them missed re-enters running (SSCTR BR-Q4)',file:F,
-  from:"return d?{RUN:d.RUN===true&&raced(x),STRENGTH:d.STRENGTH===true}:null;",
-  to:"return d?{RUN:d.RUN===true,STRENGTH:d.STRENGTH===true}:null;",
+  from:"return d?{RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x),STRENGTH:d.STRENGTH===true}:null;",
+  to:"return d?{RUN:required(x)&&(!gated(x)||d.RUN===true),STRENGTH:d.STRENGTH===true}:null;",
   witness:'R7-D Phase 3.4 T14: a race week'},
  {id:'P34-M12',defect:'a session on the later break\'s first day never counts as between, even when executed before its stated start (QE-R7D-P33-02)',file:F,
   from:"const between=s=>s.date>after&&(s.date<before||!!startedAt&&s.date===before);",
@@ -68,7 +69,49 @@ const MUTANTS=[
  {id:'P34-M13',defect:'the single-run ceiling after a return planned from its own week counts the elapsed runs of that week that were not done (SSCTR-P34-F01)',file:'src/r6-composition.mjs',
   from:"{completedRuns:[...completedRuns,...runsOf(projected)]}",
   to:"{completedRuns:[...completedRuns,...runsOf(credited.week)]}",
-  witness:'R7-D Phase 3.4 T16'}
+  witness:'R7-D Phase 3.4 T16'},
+ // The one bounded runtime-only cycle (SSCTR-R7D-P34-RECHECK-r1, CFR-01): one mutant per finding, each killed by its own directed test.
+ {id:'P34-M14',defect:'SSCTR-P34R-F01: the guard counts the corrected break\'s own earlier report as a return between the breaks (a correction that moves the trip later restarts)',file:F,
+  from:"some(e=>e.id!==except&&e.live.end>after&&e.live.start<before)",
+  to:"some(e=>e.live.end>after&&e.live.start<before)",
+  witness:'R7-D Phase 3.4 T22 (SSCTR-P34R-F01)'},
+ {id:'P34-M15',defect:'SSCTR-P34R-F02: a partial race touch or race (the existing completion rule) re-enters running',file:F,
+  from:"o.actual?.completed===true&&!o.partial&&!['ADVERSE','CONFLICTING'].includes(kindOf(o))",
+  to:"o.actual?.completed===true&&!['ADVERSE','CONFLICTING'].includes(kindOf(o))",
+  witness:'R7-D Phase 3.4 T23 (SSCTR-P34R-F02)'},
+ {id:'P34-M16',defect:'SSCTR-P34R-F03: running re-enters only through a week holding a gated run (a race week of touch, shakeout and race never does)',file:F,
+  from:"RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x)",
+  to:"RUN:d.RUN===true&&raced(x)",
+  witness:'R7-D Phase 3.4 T24 (SSCTR-P34R-F03)'},
+ {id:'P34-M17',defect:'SSCTR-P34R-F04: a strength session on the earlier break\'s first day with no start time is ordered by default, never asked, when strength reads from its own return',file:F,
+  from:"if(r.material&&!by.sport.STRENGTH){",
+  to:"if(false){",
+  witness:'R7-D Phase 3.4 T25 (SSCTR-P34R-F04)'},
+ {id:'P34-M23',defect:'QRE-P34-01: a named correction without its first day re-reads its stop from no date (Invalid time value: every later review holds)',file:F,
+  from:"const first=head.start??onDate(head.end,-(head.days-1));",
+  to:"const first=head.start;",
+  witness:'R7-D Phase 3.4 T26 (QRE-P34-01)'},
+ // QRE-R7D-PHASE34-CHECK-r1 CQ-2: the QRE survivors with an observable effect (its probes/qre-p34-mutation.mjs Q02, Q03, Q09, Q10, Q12).
+ {id:'P34-M18',defect:'QRE Q02: a race touch or race with an adverse or conflicting response still re-enters running (BR-Q4)',file:F,
+  from:"o.actual?.completed===true&&!o.partial&&!['ADVERSE','CONFLICTING'].includes(kindOf(o))",
+  to:"o.actual?.completed===true&&!o.partial",
+  witness:'R7-D Phase 3.4 T27 (QRE CQ-2)'},
+ {id:'P34-M19',defect:'QRE Q03: a race observed only after the later stop began still re-enters running (BR-Q4, BR-Q5)',file:F,
+  from:"rows=(ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted&&Date.parse(o.observedAt)<cut);",
+  to:"rows=(ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted);",
+  witness:'R7-D Phase 3.4 T27 (QRE CQ-2)'},
+ {id:'P34-M20',defect:'QRE Q09: a correction re-read silently drops an earlier break whose declaration is missing from the record sent (no question)',file:F,
+  from:"if(!x||x.inputHash!==b.inputHash)return {decision:",
+  to:"if(!x)continue;if(x.inputHash!==b.inputHash)return {decision:",
+  witness:'R7-D Phase 3.4 T28 (QRE CQ-2)'},
+ {id:'P34-M21',defect:'QRE Q12: a session on the later break\'s first day counts as between even without a stated start time (BR-Q5)',file:F,
+  from:"const between=s=>s.date>after&&(s.date<before||!!startedAt&&s.date===before);",
+  to:"const between=s=>s.date>after&&s.date<=before;",
+  witness:'R7-D Phase 3.4 T29 (QRE CQ-2, characterization)'},
+ {id:'P34-M22',defect:'QRE Q10: a break inside an own return loses its place there in the record (stopInOwnReturn, CF-P34-05)',file:F,
+  from:"stopInOwnReturn:own.within.get(x.g.identity)??null",
+  to:"stopInOwnReturn:null",
+  witness:'R7-D Phase 3.4 T30 (QRE CQ-2)'}
 ];
 fs.cpSync(path.join(REPO,'CoachingCore'),path.join(work,'CoachingCore'),{recursive:true,filter:p=>!/[\\/]\.git([\\/]|$)/.test(p)});
 for(const rec of ['audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json','audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json']){fs.mkdirSync(path.dirname(path.join(work,rec)),{recursive:true});fs.copyFileSync(path.join(REPO,rec),path.join(work,rec));}

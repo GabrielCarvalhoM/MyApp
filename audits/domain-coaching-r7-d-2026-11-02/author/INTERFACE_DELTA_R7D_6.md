@@ -11,11 +11,13 @@ Separate breaks stay two facts with their own identities, and their days are nev
 | Session | Counts for the week |
 |---|---|
 | Easy runs, long runs, quality sessions, walk/jog steps | yes |
-| The race touch and the race of a race week | yes: done and finished |
+| The race touch and the race of a race week | yes: done as prescribed and finished (a race touch done at half its minutes is not done; a finished race is done however fast) |
 | Every strength exercise | yes, logged with reps, reps in reserve and a load in a known unit |
 | Optional brisk walks, recovery runs, shakeouts, optional strides | **no**: done or not, they never decide a week |
 
-A sport counts a week only through a week that holds at least one of its counted sessions. A session on the later break's first day counts as between when that break states its start time (`startedAt`) and the session was done before it (its `observedAt`); otherwise that session's sport does not count that week. The same session also counts as training done before the break when the return is measured against what was executed.
+A sport counts a week only through a week that holds at least one of its counted sessions. A race week whose runs are only the race touch, an optional shakeout and the race counts for running when the touch and the race are done; a week whose running is only optional never does.
+
+A session on the later break's first day counts as between only when that break states its start time (`startedAt`) and the session was done before it (its `observedAt`). With a stated start time, a session done after it holds that session's sport for that week. Without one, a week holding a session on that day is not a week between the breaks: no sport counts it. A session done before the stated start also counts as training done before the break when the return is measured against what was executed.
 
 Then:
 - **A week that counts in every sport it plans re-enters the athlete** (unchanged): the earlier break is history (`TRAINING_AFTER`, with `reentryWeek`) and the return is classed by the later break alone, from what was executed.
@@ -24,14 +26,15 @@ Then:
   - The other sport continues from the earlier break's own return, and gets no step it did not earn. A missing strength log or a missed lift holds strength only, never running.
 - **Training in no counting week** (one session of either sport, a partial or aborted session, sessions in no whole week, weeks with both sports short) is a fact of the stop, as before: the stop runs through the earlier break (`TRAINING_NOT_REESTABLISHED`). One isolated session is never taken as proof that capacity is restored, and it never shortens a long stop.
   - Weeks with **both** sports short are read the same way, so they can still make the stop long enough for the long-break return. That is a disclosed residual: no authorized adherence criterion separates them from isolated training.
-- If a return was already applied between the two breaks, the earlier break is never read as its own return across it; the existing questions stand.
+- If a return of another break was already applied between the two breaks, the earlier break is never read as its own return across it; the existing questions stand. The latest break's own earlier report, which a correction reads again, is never such a return.
 - Planned sessions between them with no report at all are still asked about first (`TRAINING_BETWEEN_BREAKS`).
 
 No length, count, percentage or threshold is added.
 
 ## 2. Later decisions (new)
 
-- **A newer report of the latest break** (its `episodeId`), after a return that read separate breaks, reads those breaks again as that return did, with the newer report's own facts. A correction never drops an earlier break.
+- **A newer report of the latest break** (its `episodeId`), after a return that read separate breaks, reads those breaks again as that return did, with the newer report's own facts. A correction never drops an earlier break. It may give its length and last day, or only its length: its first day is read from them.
+- **A strength session on the earlier break's first day without a stated start time** is asked about when strength is read from that break's own return and the order would change the state the return starts from: the coach asks for that break's start time (`missingInputs: ['interruption.startedAt']`, `question.episodeId` naming the break). Report that break again with its `episodeId` and `startedAt`. When strength resumed by its own week, nothing is asked.
 - **A later review** after such a return is not asked to confirm the break again because of it. A genuine late fact about the training before the break (a correction, a report that arrives late) is still asked, as before.
 - **A report that names the earlier break** after such a return (its `episodeId`, other dates) is asked: the coach does not re-read a break a return already read through another one.
 - **A return reported in the middle of its week** plans the weeks after it from the runs the athlete completed. Sessions of that week dated before the report that were not done, or that fell inside the break, never count as done for the longest-run limit.

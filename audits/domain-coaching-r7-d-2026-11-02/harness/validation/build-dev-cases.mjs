@@ -261,5 +261,26 @@ cases.push({caseId:'DEV-44',authorIntent:'A kept holiday, a week executed in ful
 cases.push({caseId:'DEV-45',authorIntent:'The same with the trip starting at 07:00, before the long run reported at 08:00',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','SAME_DAY_START'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
  timeline:separateLater('DEV-45',keptHoliday,TRIPsun('2026-12-06T07:00:00Z'),{week:5,day:3,time:'07:00'},sundayWeek,{week:5,day:3,time:'08:00'}),
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('the long run falls inside the trip: that week is not a whole week between the breaks; running re-enters nothing by it'),domainNotes:''});
+// R7D-HARNESS-DEV-6 r2 (the bounded cycle, before the rechecks; instrument only).
+// DEV-46 (SSCTR CFR-05, SSCTR-P34R-F02): a run-only 10K plan, a kept holiday, a race week with the easy run and the race done and the race touch
+// completed at half its minutes (partial by the completion rule), then a separate trip: running never re-enters by that week.
+const RACE10o=intake('dev-race10o',{goals:{run:{kind:'RACE',event:{kind:'10K',date:'2026-12-27'}},strength:'NONE'},equipment:FULL,recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:60,strengthDaysPerWeek:0},schedule:{strengthDays:[]}});
+cases.push({caseId:'DEV-46',authorIntent:'Five weeks executed, a kept two-week holiday, a race week with the race touch done at half its minutes, then a separate four-day trip (run-only plan)',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','REENTRY_WEEK','RACE_WEEK','PARTIAL_SESSION'],oracleClass:'INVARIANT_ORACLE',intake:RACE10o,
+ timeline:[...[0,1,2,3,4].map(w=>review(w,[{each:{weeks:[w],sport:'RUN'},asPrescribed:true,response:OK}])),{stepId:'w7d0',at:{week:7,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:VAC14r}},
+  {stepId:'brk2',at:{week:8,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:{...TRIP4r,episodeId:'DEV-46-brk2'}},observations:[{each:{weeks:[7],sport:'RUN',roles:['EASY','RACE']},asPrescribed:true,response:OK},{each:{weeks:[7],sport:'RUN',roles:['RACE_TOUCH']},completed:true,fraction:0.5,response:OK}]},
+  {stepId:'plain',at:{week:8,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('a half-length race touch is no race touch done as prescribed: the race week re-enters nothing and the stop runs from the holiday'),domainNotes:''});
+// DEV-47 (QRE-P34-02, its probe QH1; no false block): four separate unapplied breaks, a run-complete week (the Friday strength missed) between
+// each pair: the trip's return reads x as its own return, y inside x's own stop and z inside y's (a two-level chain).
+const W7=w=>{const d=new Date(Date.parse('2026-11-02T00:00:00Z')+7*w*864e5);return d.toISOString().slice(0,10);};
+const brkW=(w,days,x={})=>({startDate:W7(w),endDate:new Date(Date.parse(W7(w)+'T00:00:00Z')+(days-1)*864e5).toISOString().slice(0,10),days,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true,...x});
+const runWeekFriMissed=w=>[{each:{weeks:[w],sport:'RUN'},asPrescribed:true,response:OK},{ref:{week:w,sport:'STRENGTH',day:0},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:w,sport:'STRENGTH',day:4},completed:false}];
+cases.push({caseId:'DEV-47',authorIntent:'Four separate breaks with a run-complete week between each pair (a two-level chain of own returns)',coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','PARTIAL_REENTRY','NESTED_OWN_RETURN'],oracleClass:'INVARIANT_ORACLE',intake:GEN,
+ timeline:[...twoWeeks,{stepId:'z',at:{week:3,day:0,time:'07:00'},event:{kind:'SYSTEMIC_FATIGUE',interruption:brkW(2,7,{reasonCategory:'VACATION',reason:'Holiday'})}},
+  {stepId:'y',at:{week:5,day:0,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:brkW(4,7,{episodeId:'DEV-47-y'})},observations:runWeekFriMissed(3)},
+  {stepId:'x',at:{week:7,day:0,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:brkW(6,7,{episodeId:'DEV-47-x'})},observations:runWeekFriMissed(5)},
+  {stepId:'h',at:{week:8,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:brkW(8,4,{episodeId:'DEV-47-h'})},observations:runWeekFriMissed(7)},
+  {stepId:'plain',at:{week:8,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}],
+ expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess('each break is its own return in turn; the trip by its own days; running resumes what it executed'),domainNotes:''});
 fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-6',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

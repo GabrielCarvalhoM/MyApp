@@ -230,3 +230,9 @@ Results:
 **Residuals (instrument):**
 - P18(c) is a sufficient reading, so it can miss an inverse defect on weeks it cannot read as nominal: unknown responses, a partial report, or a load the row does not state.
 - The differential's triggers are necessary conditions. `../phase34/probes/phase34-decomposition.mjs` separates the two source changes through a hybrid runtime instead: 6 cases change by the ceiling fix alone and 11 by the adaptation change alone, with none changed by both.
+
+**After the two reviews of `1978cc4` (R7D-HARNESS-6 r2, in the one bounded cycle; PREREG-6 addendum Δ15–Δ17):**
+- **P18(a)** counts an executed report only under the existing completion rule, never partial (SSCTR CFR-05). It stays a necessary condition. DEV-46 (a run-only race week with its race touch done at half its minutes) is detected on R7D-FREEZE-4; witness W-P18h.
+- **P18(a), two-level chains** (QRE-P34-02): a break listed `WITHIN_OWN_RETURN` with `stopInOwnReturn` = `WITHIN_OWN_RETURN` is NOT_EVALUABLE when the record lists the inner own return after it in the same chain; without one, it accounts for nothing. The record gives neither that inner own return's days nor the break's place in its stop (QRE-P34-03). DEV-47 (the QRE's QH1 chain) shows no false block, and R7D-FREEZE-4 is detected there by P18(c); witness W-P18i.
+- **P02** opens no clinical episode from a review refused unread (QRE-P34-08), as P17 and P18 read it.
+- **Validation 6** was re-run on the corrected runtime with 49 development cases.

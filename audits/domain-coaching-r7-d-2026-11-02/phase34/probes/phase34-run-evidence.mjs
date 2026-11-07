@@ -5,7 +5,9 @@
 // differential versus R7D-FREEZE-4 and its decomposition through a hybrid runtime) and checks the authorities the phase leaves untouched. It writes one JSON manifest and nothing else in the
 // repository. No deletion of any kind: R7D-FREEZE-4 and the candidate are each copied into a NEW directory under --work-parent (mkdtemp); --d4 is
 // only read.
-//   node phase34-run-evidence.mjs --d4 <R7D-FREEZE-4 root> --out <file> --work-parent <scratch dir>
+// Since the bounded cycle (SSCTR-R7D-P34-RECHECK-r1 CFR-01, QRE-R7D-PHASE34-CHECK-r1 CQ-1/CQ-2) it also runs the Phase 3.4 directed tests on a copy of the
+// reviewed candidate 1978cc4 (--reviewed-candidate, checked against git): T22-T26 (one per finding) must fail there, T27-T30 (adequacy) must pass.
+//   node phase34-run-evidence.mjs --d4 <R7D-FREEZE-4 root> --reviewed-candidate <1978cc4 runtime root> --out <file> --work-parent <scratch dir>
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -13,7 +15,7 @@ import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
-const out=arg('--out'),d4=arg('--d4'),parent=arg('--work-parent');if(!out||!d4||!parent)throw Error('--d4 <R7D-FREEZE-4 root> --out <file> --work-parent <scratch dir>');
+const out=arg('--out'),d4=arg('--d4'),parent=arg('--work-parent'),rc=arg('--reviewed-candidate');if(!out||!d4||!parent||!rc)throw Error('--d4 <R7D-FREEZE-4 root> --reviewed-candidate <1978cc4 runtime root> --out <file> --work-parent <scratch dir>');
 const AUD=path.resolve(import.meta.dirname,'../..'),REPO=path.resolve(AUD,'../..'),CC=path.join(REPO,'CoachingCore'),D4=path.join(path.resolve(d4),'CoachingCore');
 if(!fs.statSync(parent).isDirectory()||path.resolve(parent).startsWith(REPO))throw Error('--work-parent must be an existing directory outside the repository');
 const fresh=tag=>fs.mkdtempSync(path.join(path.resolve(parent),`r7d-p34-ev-${tag}-`));
@@ -46,7 +48,7 @@ for(const f of [T34,T33,T32])fs.copyFileSync(path.join(CC,f),path.join(redCC,f))
 // --test-name-pattern reads a regular expression: titles are escaped so a parenthesis matches itself.
 const pattern=t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const UPDATED=[[T33,'R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial'],[T33,'R7-D Phase 3.3 T4: unreported sessions in a week between the breaks'],[T33,'R7-D Phase 3.3 T4: a conflicted report in a week between the breaks'],[T33,'R7-D Phase 3.3 T5'],[T32,'R7-D Phase 3.2 T5 (F08 unchanged, characterization)']];
-const CHARACTERIZATION=['R7-D Phase 3.4 T4: isolated sessions','R7-D Phase 3.4 T4 (disclosed residual)','R7-D Phase 3.4 T9','R7-D Phase 3.4 T11','R7-D Phase 3.4 T12 (R-F08-1, control)','R7-D Phase 3.4 T14: optional walks','R7-D Phase 3.4 T18 (X6, characterization)','R7-D Phase 3.4 T19 (characterization)','R7-D Phase 3.4 T20 (characterization)'];
+const CHARACTERIZATION=['R7-D Phase 3.4 T4: isolated sessions','R7-D Phase 3.4 T4 (disclosed residual)','R7-D Phase 3.4 T9','R7-D Phase 3.4 T11','R7-D Phase 3.4 T12 (R-F08-1, control)','R7-D Phase 3.4 T14: optional walks','R7-D Phase 3.4 T18 (X6, characterization)','R7-D Phase 3.4 T19 (characterization)','R7-D Phase 3.4 T20 (characterization)','R7-D Phase 3.4 T29 (QRE CQ-2, characterization)'];
 const r4=counts(run(['--test',T34],redCC));
 const red={directedOnFreeze4:{tests:r4.tests,pass:r4.pass,fail:r4.fail,failed:r4.failed,passing:r4.tests-r4.fail},
  updatedAssertions:UPDATED.map(([file,title])=>{const x=counts(run(['--test','--test-name-pattern',pattern(title),file],redCC)),c=counts(run(['--test','--test-name-pattern',pattern(title),file]));return {file:'CoachingCore/'+file,test:title,updatedOnFreeze4:{tests:x.tests,fail:x.fail},updatedOnCandidate:{tests:c.tests,fail:c.fail}};})};
@@ -59,6 +61,16 @@ const candCC=copyRuntime(CC,REPO,'cand');
 for(const f of [T33,T32]){const old=git(['show',`${f4.commit}:CoachingCore/${f}`]).stdout;need(old.length>0,'the test file at R7D-FREEZE-4: '+f);fs.writeFileSync(path.join(candCC,f),old);}
 red.assertionsAsAtFreeze4=UPDATED.map(([file,title])=>{const x=counts(run(['--test','--test-name-pattern',pattern(title),file],candCC));return {file:'CoachingCore/'+file,atCommit:f4.commit,test:title,onCandidate:{tests:x.tests,fail:x.fail}};});
 need(red.assertionsAsAtFreeze4.every(a=>a.onCandidate.tests>=1&&a.onCandidate.fail>=1),'each assertion as it stood at R7D-FREEZE-4 fails on the candidate');
+// 3b. The bounded cycle on the reviewed candidate 1978cc4: each finding's test fails there; the adequacy tests pass there (each fails on its mutant).
+const REVIEWED='1978cc4',RCC=path.join(path.resolve(rc),'CoachingCore');
+need(Object.keys(src).every(p=>{const b=git(['show',`${REVIEWED}:${p}`]).stdout;return b.length>0&&fs.existsSync(path.join(path.resolve(rc),p))&&sha(path.join(path.resolve(rc),p))===createHash('sha256').update(b).digest('hex');}),'--reviewed-candidate does not hold the 1978cc4 source bytes');
+const revCC=copyRuntime(RCC,path.resolve(rc),'reviewed');
+fs.copyFileSync(path.join(CC,T34),path.join(revCC,T34));
+const rv=counts(run(['--test',T34],revCC)),CYCLE_RED=['R7-D Phase 3.4 T22','R7-D Phase 3.4 T23','R7-D Phase 3.4 T24','R7-D Phase 3.4 T25','R7-D Phase 3.4 T26'],CYCLE_ADEQUACY=['R7-D Phase 3.4 T27','R7-D Phase 3.4 T28','R7-D Phase 3.4 T29','R7-D Phase 3.4 T30'];
+red.boundedCycleOnReviewed={candidate:REVIEWED,tests:rv.tests,fail:rv.fail,failed:rv.failed,findingTestsFail:CYCLE_RED.map(w=>({test:w,failsOnReviewed:rv.failed.some(x=>x.startsWith(w))})),adequacyTestsPass:CYCLE_ADEQUACY.map(w=>({test:w,passesOnReviewed:!rv.failed.some(x=>x.startsWith(w))}))};
+need(red.boundedCycleOnReviewed.findingTestsFail.every(x=>x.failsOnReviewed),'each bounded-cycle finding test fails on 1978cc4');
+need(red.boundedCycleOnReviewed.adequacyTestsPass.every(x=>x.passesOnReviewed),'each adequacy test passes on 1978cc4');
+need(rv.failed.every(x=>CYCLE_RED.some(w=>x.startsWith(w))),'on 1978cc4 only the bounded-cycle finding tests fail: '+rv.failed.join(' | '));
 // 4. Outputs the phase produced on these bytes.
 const outputs={witnessRed:'phase34/probes/out/p34-witness.R7D-FREEZE-4.json',witnessCandidate:'phase34/probes/out/p34-witness.candidate.json',mutation:'phase34/evidence/MUTATION_PHASE34.json',validation:'harness/validation/HARNESS_VALIDATION_R7D_6.json',
  diagnosticRegression:'phase34/regression/diagnostic/RUN_REPORT.json',generatedRegression:'phase34/regression/generated/RUN_REPORT.json',differential:'phase34/evidence/DIFFERENTIAL_VS_R7D_FREEZE_4.json',decomposition:'phase34/evidence/DECOMPOSITION_VS_R7D_FREEZE_4.json'};
