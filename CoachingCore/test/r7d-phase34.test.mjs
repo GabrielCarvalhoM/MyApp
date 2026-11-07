@@ -455,3 +455,35 @@ test('R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Frida
   const r=step(t,7,{day:d,hour:'21:00:00',kind:'RETURN_AFTER_PAUSE',interruption:brk(14,34)});assert.equal(r.action,'REESTABLISH',r.reason);return [runsOfWeek(t.p,8),runsOfWeek(t.p,9)];};
  assert.deepEqual(plan(4),plan(0),'G3 equals G1 (R7D-FREEZE-4 planned 30/30/45 from the elapsed runs)');
 });
+
+// ---------- T21: a named correction of the latest break is the fresh re-read (SSCTR CF-P34-02) ----------
+/** The Founder's case with the trip `D`; the plain review at `plainAt` (Fri wk6 08:00 by default). */
+function foundersCase(id,D,plainAt={day:4,hour:'08:00:00'}){
+ const t=base();
+ step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:id+'-A',kind:'SYSTEMIC_FATIGUE'}});
+ const o=[4,5].flatMap(w=>t.p.weeks[w].sessions.filter(live).map(s=>miss(friStrength)(t.p,s)));
+ step(t,6,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...D,episodeId:id+'-D'},event:{id:id+'-D',kind:'LOCAL_FATIGUE'},observations:o});
+ return {t,r:step(t,6,plainAt)};
+}
+test('R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first',()=>{
+ const at={day:5,hour:'10:00:00'},from=t=>addDays(t.p.weeks[6].startDate,6);
+ const view=t=>{const d=lastReturn(t.p);return {stop:[d.startDate,d.endDate,d.days,d.class,stops(d).join()],runs:runsAhead(t.p,6,from(t)),strength:strengthAhead(t.p,6,from(t))};};
+ const correct=(t,id,D2)=>step(t,6,{...at,kind:'RETURN_AFTER_PAUSE',interruption:{...D2,episodeId:id+'-D'},event:{id:id+'-D2',kind:'RETURN_AFTER_PAUSE'}});
+ for(const [label,D2] of [['one day longer',trip(28,32)],['touching the holiday',trip(14,31)],['overlapping the holiday',trip(10,31)]]){
+  const a=foundersCase('t21a',trip(28,31));assert.equal(a.r.action,'REESTABLISH',a.r.reason);
+  const rc=correct(a.t,'t21a',D2),f=foundersCase('t21f',D2,at);
+  assert.equal(rc.action,'REESTABLISH',`${label}: ${rc.reason}`);assert.equal(f.r.action,'REESTABLISH',`${label}, fresh: ${f.r.reason}`);
+  assert.equal(lastReturn(a.t.p).relation,'SAME_BREAK',label);
+  assert.deepEqual(view(a.t),view(f.t),label+': the corrected return is the fresh re-read (R7D-FREEZE-4 dropped the holiday)');
+ }
+ // A whole week moved out (the trip corrected to start Mon wk5): week 5's reported sessions fall inside it: asked, exactly as a fresh report.
+ const o=foundersCase('t21o',trip(28,31)),n=returns(o.t.p).length,ro=correct(o.t,'t21o',trip(21,31)),fo=foundersCase('t21of',trip(21,31),at);
+ assert.equal(ro.action,'ASK',ro.reason);assert.equal(fo.r.action,'ASK',fo.r.reason);assert.deepEqual(ro.missingInputs,fo.r.missingInputs);assert.equal(returns(o.t.p).length,n,'nothing applied');
+ // A whole week moved in: one week between, the trip Mon-Thu wk5 applied, then corrected to Mon-Thu wk6: week 5, unreported, is asked first.
+ const w=base();
+ step(w,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t21w-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(w,5,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(21,24),episodeId:'t21w-D'},event:{id:'t21w-D',kind:'LOCAL_FATIGUE'},observations:w.p.weeks[4].sessions.filter(live).map(s=>miss(friStrength)(w.p,s))});
+ assert.equal(step(w,5,{day:4,hour:'08:00:00'}).action,'REESTABLISH');
+ const m=returns(w.p).length,rw=step(w,6,{day:4,hour:'10:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{...trip(28,31),episodeId:'t21w-D'},event:{id:'t21w-D2',kind:'RETURN_AFTER_PAUSE'}});
+ assert.equal(rw.action,'ASK',rw.reason);assert.equal(rw.question?.kind,'TRAINING_BETWEEN_BREAKS');assert.equal(returns(w.p).length,m,'nothing applied before the answer');
+});
