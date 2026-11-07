@@ -273,3 +273,56 @@ test('R7-D Phase 3.5 T35 (QRE CQ2-4, N05): with a stop that runs back through an
  const ctl=chain('t35c',brk(0,6,{startedAt:after()}));assert.equal(ctl.r.action,'REESTABLISH',ctl.r.reason);
  assert.deepEqual(view(x.t,7),view(ctl.t,7));
 });
+
+// ---------- T36-T38: the one bounded cycle after QRE-R7D-PHASE35-CHECK-r1 (QRE-P35-01 blocking; QRE-P35-05) ----------
+const liftOf=t=>obs(t.p,t.p.weeks[2].sessions.find(s=>live(s)&&s.sport==='STRENGTH'&&s.date===day(0)));
+/** The holiday reported again by name with `extra` facts (no start time), by one channel. */
+const restateWith=(t,id,extra,channel,when,w)=>{const i={...A(),...extra,episodeId:id+'-A'},e={id:`${id}-A-x-${channel}-${when.hour}`};
+ return channel==='declaration'?step(t,w,{...when,kind:'LOCAL_FATIGUE',interruption:i,event:{...e,kind:'LOCAL_FATIGUE'}})
+  :channel==='weekly review'?step(t,w,{...when,interruption:i,event:{...e,kind:'WEEKLY_REVIEW'}}):step(t,w,{...when,kind:'RETURN_AFTER_PAUSE',interruption:i,event:{...e,kind:'RETURN_AFTER_PAUSE'}});};
+test('R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break\'s days (the duplicate rule; the I6 "or the same dates" confirmation) re-reads the separate breaks its return read, exactly as the named report does; a single-break duplicate and a continuity return keep their paths',()=>{
+ const send=(x,id,named,when={day:5,hour:'11:00:00'})=>step(x.t,6,{...when,kind:'RETURN_AFTER_PAUSE',interruption:named?{...trip(28,31),episodeId:id+'-D'}:trip(28,31),event:{id:`${id}-re-${when.hour}`,kind:'RETURN_AFTER_PAUSE'}});
+ // (a) the plain re-send after a return that read the holiday as its own return (QH17).
+ const u=founders('t36u'),n=founders('t36n');const ru=send(u,'t36u',false),rn=send(n,'t36n',true);
+ assert.equal(ru.action,'REESTABLISH',ru.reason);assert.equal(rn.action,'REESTABLISH',rn.reason);
+ assert.deepEqual(stops(lastReturn(u.t.p)),['OWN_RETURN','LATEST'],'8e78b8a re-established the trip alone (separateBreaks dropped)');
+ assert.deepEqual(view(u.t,6),view(n.t,6),'the unnamed re-send equals the named one (8e78b8a: back-squat 2x8@85 against 1x7 ESTABLISH)');
+ // (b) the R07 flow answered as the coach asks, then confirmed by the same dates (QH18): equal to the named confirmation; no later review asks.
+ const flow=(id,named)=>{const x=founders(id);step(x.t,6,{day:5,hour:'09:00:00',observations:[liftOf(x.t)]});restate(x.t,id,after(),'weekly review');return {x,c:send(x,id,named)};};
+ const fu=flow('t36fu',false),fn=flow('t36fn',true);
+ assert.equal(fu.c.action,'REESTABLISH',fu.c.reason);assert.deepEqual(view(fu.x.t,6),view(fn.x.t,6),'8e78b8a confirmed the trip alone (3x10 at week 8)');
+ noLaterAsk(fu.x.t,'confirmation by the same dates');
+ // Controls: the TRAINING_AFTER variant keeps its row; a single-break duplicate is not re-read; a continuity return re-sent with the trip's days is asked.
+ const ut=founders('t36t',{report:all});send(ut,'t36t',false);assert.deepEqual(stops(lastReturn(ut.t.p)),['TRAINING_AFTER','LATEST']);
+ const sb=base();for(const w of [2,3,4,5])step(sb,w,{observations:weekObs(sb.p,w)});assert.equal(step(sb,6,{day:4,hour:'08:00:00',kind:'RETURN_AFTER_PAUSE',interruption:trip(28,31),event:{id:'t36s-1',kind:'RETURN_AFTER_PAUSE'}}).action,'REESTABLISH');
+ const rs=step(sb,6,{day:5,hour:'11:00:00',kind:'RETURN_AFTER_PAUSE',interruption:trip(28,31),event:{id:'t36s-2',kind:'RETURN_AFTER_PAUSE'}}),ds=lastReturn(sb.p);
+ assert.equal(rs.action,'REESTABLISH',rs.reason);assert.deepEqual([ds.relation,ds.basis,ds.separateBreaks??null],['SAME_BREAK','DUPLICATE',null],'a single-break duplicate keeps the R7-A path');
+ const c=base();step(c,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:'t36c-A',kind:'SYSTEMIC_FATIGUE'}});
+ const gap=c.p.weeks[4].sessions.filter(s=>live(s)&&s.date>=day(14)&&s.date<=day(16));
+ step(c,5,{day:0,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(17,20),episodeId:'t36c-D'},event:{id:'t36c-D',kind:'LOCAL_FATIGUE'},observations:gap.map(s=>s.sport==='RUN'?obs(c.p,s):notDone(c.p,s))});
+ assert.equal(step(c,5,{day:1,hour:'07:00:00'}).action,'REESTABLISH');const k=returns(c.p).length;
+ const rc=step(c,5,{day:1,hour:'09:00:00',kind:'RETURN_AFTER_PAUSE',interruption:trip(17,20),event:{id:'t36c-re',kind:'RETURN_AFTER_PAUSE'}});
+ assert.equal(rc.action,'ASK',rc.reason);assert.equal(returns(c.p).length,k,'a continuity return records the stop from the holiday: the trip\'s days alone are no duplicate');
+});
+test('R7-D Phase 3.5 T37 (QRE-P35-05): a report of the listed break whose reason text turns clinical is no restatement: after the re-entry week it routes clinically, by every channel, never consumed',()=>{
+ for(const channel of CHANNELS){
+  const id='t37'+channel[0],x=founders(id);assert.equal(x.r.action,'REESTABLISH',x.r.reason);
+  step(x.t,6,{day:6,hour:'21:00:00'});step(x.t,7,{observations:weekObs(x.t.p,7)});
+  const a=restateWith(x.t,id,{reason:'Holiday, then the flu with a fever'},channel,{day:2,hour:'10:00:00'},8);
+  assert.equal(a.status,'CLINICAL_HUMAN_REQUIRED',`${channel}: the changed reason is screened, never read as a restatement: ${a.reason}`);
+ }
+});
+test('R7-D Phase 3.5 T38 (QRE-P35-05): with an earlier return applied on its own in the history, the restatement still answers the start-time question of the latest return and the confirmation applies it; no later review asks',()=>{
+ const id='t38',t={p:program({...GEN,id:'r7d-p35-prior'}),ledger:[],ref:null};
+ step(t,0,{observations:weekObs(t.p,0)});const w1=t.p.weeks[1].startDate;
+ const pr=step(t,1,{day:3,hour:'07:00:00',kind:'RETURN_AFTER_PAUSE',interruption:{startDate:addDays(w1,1),endDate:addDays(w1,2),days:2,reasonCategory:'WORK',reason:'Work trip',nonclinical:true},event:{id:id+'-P',kind:'RETURN_AFTER_PAUSE'},observations:t.p.weeks[1].sessions.filter(s=>live(s)&&s.date===w1).map(s=>obs(t.p,s))});
+ assert.equal(pr.action,'REESTABLISH',pr.reason);
+ step(t,1,{observations:t.p.weeks[1].sessions.filter(s=>live(s)&&s.date>addDays(w1,2)).map(s=>obs(t.p,s))});
+ step(t,4,{day:0,hour:'07:00:00',kind:'SYSTEMIC_FATIGUE',interruption:A(),event:{id:id+'-A',kind:'SYSTEMIC_FATIGUE'}});
+ step(t,6,{day:4,hour:'07:00:00',kind:'LOCAL_FATIGUE',interruption:{...trip(28,31),episodeId:id+'-D'},event:{id:id+'-D',kind:'LOCAL_FATIGUE'},observations:[4,5].flatMap(w=>weekObs(t.p,w,miss(friStrength)))});
+ assert.equal(step(t,6,{day:4,hour:'08:00:00'}).action,'REESTABLISH');assert.deepEqual(stops(lastReturn(t.p)),['OWN_RETURN','LATEST']);
+ assert.ok(isAsk(step(t,6,{day:5,hour:'09:00:00',observations:[liftOf(t)]}),['interruption.startedAt']));
+ const a=restate(t,id,after(),'weekly review');assert.ok(isAsk(a,['interruption.episodeId'])&&!ONE_PERIOD.test(a.reason),`the restatement is read: ${a.reason}`);
+ assert.equal(correct(t,id,trip(28,31),{when:{day:5,hour:'11:00:00'}}).action,'REESTABLISH');
+ noLaterAsk(t,'an earlier applied return in the history');
+});

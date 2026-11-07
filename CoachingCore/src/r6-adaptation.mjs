@@ -1963,7 +1963,10 @@ function returnAfterPause(ctx){
  // facts (recordedStop): a correction of the latest break never drops an earlier one (the direction of SSCTR-P32-F01, through a correction).
  let sep=null;
  if(ctx.separate){sep=separateStop(ctx,{start,end,days,startedAt});if(sep.decision)return sep.decision;}
- else if(named){const last=episodesOf(program).at(-1),r=last&&(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId))?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;if(r?.decision)return r.decision;sep=r?.stop?{...r.stop,reread:true}:null;}
+ // R7-D Phase 3.5 bounded cycle (QRE-P35-01): so does an unnamed report with the latest interruption's days (R7-A §9's demonstrable duplicate,
+ // which the I6 question offers: "or the same dates"): it re-reads that return as the named report does. A return that read no separate break is
+ // unchanged (recordedStop gives null).
+ else{const last=episodesOf(program).at(-1),dup=!named&&!!last&&(start??onDate(end,-(days-1)))===last.live.start&&end===last.live.end,r=last&&(named?(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId)):dup)?recordedStop(ctx,last.live.eventId,{start,end,days,startedAt}):null;if(r?.decision)return r.decision;sep=r?.stop?{...r.stop,reread:true}:null;}
  if(sep)({start,end,days,startedAt}=sep);
  const assessedDay=dayOf(review.eligibility?.assessedAt);
  if(!assessedDay||dayGap(end,assessedDay)<0)return {action:'ASK',reason:'Eligibility must be assessed on or after the interruption ended',missingInputs:['eligibility.assessedOnOrAfterInterruptionEnd']};
