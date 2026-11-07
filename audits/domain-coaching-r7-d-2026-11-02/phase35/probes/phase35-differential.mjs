@@ -6,9 +6,10 @@
 //    week whose reports could converge adversely (performance UNDER, recovery ADVERSE, effort HARDER or next day IMPAIRED in two sports or three
 //    sessions: a superset of the runtime's systemic rule);
 //  - CORRECTION (SSCTR-P34R2-F02): a newer report (SAME_BREAK) of an interruption whose return read separate breaks, applied or asked;
-//  - RESTATEMENT (QRE2-P34-01): a review stating a break that names an earlier break the latest return listed (its episode or report event id).
+//  - RESTATEMENT (QRE2-P34-01): a review stating a break that names an earlier break the latest return listed (its episode or report event id);
+//  - DUPLICATE (QRE-P35-01, the bounded cycle): an unnamed review stating the latest return's own days, after a return that read separate breaks.
 // Anything else is UNEXPLAINED and fails. The report records runtime labels, never local paths.
-//   node phase35-differential.mjs --c46 <46934a0 root> --out <file>
+//   node phase35-differential.mjs --c46 <baseline root> --out <file> [--baseline-label <name>]   (the baseline is 46934a0 unless labelled otherwise)
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../../harness/lib/client.mjs';
@@ -19,7 +20,7 @@ const srcOf=cc=>Object.fromEntries(fs.readdirSync(path.join(cc,'src')).filter(f=
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
 const AUD=path.resolve(import.meta.dirname,'../..'),REPO=path.resolve(AUD,'../..');
-const c46=arg('--c46'),out=arg('--out');if(!c46||!out)throw Error('--c46 <root> --out <file>');
+const c46=arg('--c46'),out=arg('--out'),baselineLabel=arg('--baseline-label')??'46934a0 (the Phase 3.4 candidate; never frozen)';if(!c46||!out)throw Error('--c46 <root> --out <file>');
 const B=await loadRuntime(path.join(c46,'CoachingCore')),C=await loadRuntime(path.join(REPO,'CoachingCore'));
 const corpora=[['DIAGNOSTIC_REGRESSION','diagnostic/R7D_DIAGNOSTIC_CORPUS.json'],['GENERATED_REGRESSION','diagnostic/generated/R7D_GENERATED_DIAGNOSTIC.json'],['HARNESS_DEV_7','harness/validation/DEV_CASES_R7D_7.json']];
 const view=t=>({gen:generationView(t),steps:t.steps.map(s=>({id:s.stepId,...stepView(s,{scope:'ALL'})})),stopped:t.stopped});
@@ -37,6 +38,7 @@ function triggers(t){
   if(name&&(last?.separateBreaks??[]).some(b=>b.stop!=='LATEST'&&(b.episode===name||b.eventId===name)))out.push({i,id:s.stepId,kind:'RESTATEMENT'});
   // CORRECTION (asked or applied): a named report of the latest interruption whose return read separate breaks.
   if(name&&last&&(last.separateBreaks??[]).length>1&&(last.episode===name||eps.at(-1).eventId===name))out.push({i,id:s.stepId,kind:'CORRECTION'});
+  if(i0&&!name&&last&&(last.separateBreaks??[]).length>1&&i0.startDate===last.startDate&&i0.endDate===last.endDate)out.push({i,id:s.stepId,kind:'DUPLICATE'});
   const dec=added(s).filter(d=>d.action==='REESTABLISH').at(-1),ret=dec?.interruption;if(!ret?.separateBreaks)return;
   if(ret.relation==='SAME_BREAK'&&ret.supersedes)out.push({i,id:s.stepId,kind:'CORRECTION'});
   for(const b of ret.separateBreaks){
@@ -61,9 +63,9 @@ for(const [label,file] of corpora){
  }
 }
 const differing=rows.filter(r=>!r.same),unexplained=rows.filter(r=>!r.explained||r.error);
-const report={probe:'R7D-PHASE35-DIFFERENTIAL-1',candidateSource:srcOf(path.join(REPO,'CoachingCore')),baselineSource:srcOf(path.join(c46,'CoachingCore')),baseline:'46934a0 (the Phase 3.4 candidate; never frozen)',candidate:'the working tree runtime',cases:rows.length,same:rows.filter(r=>r.same).length,differing:differing.length,unexplained:unexplained.map(r=>r.caseId),
+const report={probe:'R7D-PHASE35-DIFFERENTIAL-1',candidateSource:srcOf(path.join(REPO,'CoachingCore')),baselineSource:srcOf(path.join(c46,'CoachingCore')),baseline:baselineLabel,candidate:'the working tree runtime',cases:rows.length,same:rows.filter(r=>r.same).length,differing:differing.length,unexplained:unexplained.map(r=>r.caseId),
  differingCases:differing.map(r=>({corpus:r.corpus,caseId:r.caseId,first:r.firstDifference,trigger:r.trigger,kinds:r.kindsAtOrBeforeFirst})),
- byTrigger:Object.fromEntries(['SYSTEMIC','CORRECTION','RESTATEMENT'].map(k=>[k,differing.filter(r=>r.kindsAtOrBeforeFirst?.includes(k)).map(r=>r.caseId)])),rows};
+ byTrigger:Object.fromEntries(['SYSTEMIC','CORRECTION','RESTATEMENT','DUPLICATE'].map(k=>[k,differing.filter(r=>r.kindsAtOrBeforeFirst?.includes(k)).map(r=>r.caseId)])),rows};
 fs.writeFileSync(out,JSON.stringify(report,null,1)+'\n');
 console.log(JSON.stringify({cases:report.cases,same:report.same,differing:report.differing,unexplained:report.unexplained,byTrigger:report.byTrigger},null,1));
 process.exitCode=unexplained.length?1:0;

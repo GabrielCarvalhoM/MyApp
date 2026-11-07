@@ -4,6 +4,8 @@
 //    separate-breaks return; R-F08-1 of PCG-R7D-F08-r1. Its candidate 46934a0 was never frozen.
 //  - Phase 3.5: the three blockers its narrow rechecks found closed (SSCTR-P34R2-F01, SSCTR-P34R2-F02, QRE2-P34-01) and the instrument items of
 //    R7D-PREREG-6 Δ23. F08 stays OPEN, blocked by authority; the Founder's Phase 3.5 product decisions are recorded, not applied.
+//  - Phase 3.5 bounded cycle (after QRE-R7D-PHASE35-CHECK-r1 NOT_READY on 8e78b8a, never frozen): QRE-P35-01 closed in r6-adaptation.mjs; tests
+//    T36-T38; R7D-HARNESS-7 r2 and validation 7 r2 (QRE-P35-02/-03/-04, SSCTR-P35-F01); this guard (QRE-P35-06).
 // Lean form of scripts/freeze-r7d-4.mjs. It binds by SHA-256 the committed bytes of:
 //  - every file R7D-FREEZE-4 bound, at its current bytes;
 //  - every source and test file;
@@ -24,7 +26,8 @@
 //  - the diagnostic corpus, PREREG-1 to PREREG-5, the R7D-FREEZE-1/-2/-3/-4 records or the Phase 3 to 3.4 folders changed; PREREG-6 is not
 //    append-only since the Phase 3.4 checkpoint (a8dbc57);
 //  - CURRENT_MISSION.md or MISSION_LEDGER.md is not append-only since the Phase 3.4 checkpoint;
-//  - either review is not a pass, judged another candidate, or a source, test or harness byte differs from the reviewed candidate;
+//  - either review is not a pass or judged another candidate, or the commits after the reviewed candidate do anything but add new files under the two
+//    Phase 3.5 review folders (QRE-P35-06: the reviewers' own records are the only bytes allowed after the candidate they judged);
 //  - a final holdout exists.
 // One record, never overwritten. It writes only CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json.
 //   node scripts/freeze-r7d-5.mjs --evidence <EVIDENCE_PHASE35.json> --ssctr <recheck.json> --engineering <check.json> --reviewed <commit>
@@ -96,7 +99,10 @@ const ev=json(evPath);
 if(ev.result!=='PASS'||ev.problems?.length)refuse('the evidence manifest is not a PASS');
 if(Object.entries(ev.runtimeSource).some(([p,h])=>srcFiles[p]!==h)||Object.keys(srcFiles).some(p=>ev.runtimeSource[p]!==srcFiles[p]))refuse('the evidence was made on other source bytes');
 for(const [k,o] of Object.entries(ev.outputs))if(shaRepo(o.path)!==o.sha256)refuse('evidence output changed: '+k);
-if(!quiet(reviewed,'HEAD',['CoachingCore/src','CoachingCore/test',`${AUD}/harness/lib`,`${AUD}/harness/r7d-harness.mjs`]))refuse('a source, test or harness byte differs from the reviewed candidate ('+reviewed+')');
+if(!quiet(reviewed,'HEAD',['CoachingCore/src','CoachingCore/test',`${AUD}/harness`]))refuse('a source, test or harness byte differs from the reviewed candidate ('+reviewed+')');
+const REVIEW_DIRS=[`${P35}/reviews/ssctr/`,`${P35}/reviews/engineering/`],afterReview=git('diff','--name-status',reviewed,'HEAD').split('\n').filter(Boolean);
+const notReviewRecords=afterReview.filter(l=>!(l.startsWith('A\t')&&REVIEW_DIRS.some(d=>l.slice(2).startsWith(d))));
+if(notReviewRecords.length)refuse('after the reviewed candidate only new files under the two Phase 3.5 review folders are allowed (QRE-P35-06): '+notReviewRecords.slice(0,10).join(', '));
 const ss=json(ssPath),en=json(enPath);
 if(!['ACCEPT','ACCEPT_WITH_CONDITIONS'].includes(ss.disposition))refuse('the SSCTR recheck disposition is '+ss.disposition);
 if(!['READY','READY_WITH_CONDITIONS'].includes(en.verdict))refuse('the quality/reliability check verdict is '+en.verdict);
@@ -110,7 +116,7 @@ const p34=(()=>{const s1=`${P34}/reviews/ssctr/SSCTR_PHASE34_RECHECK_R7D.json`,q
   boundedCycle:{runtimeCommit:'77768e6',instrumentsCommit:'0b502b1',closed:['SSCTR-P34R-F01','SSCTR-P34R-F02','SSCTR-P34R-F03','SSCTR-P34R-F04','QRE-P34-01']},
   rechecks:{candidate:PHASE34_CANDIDATE,ssctr:{recordId:json(s2).recordId,path:s2,sha256:shaRepo(s2),disposition:json(s2).disposition},qualityReliability:{recordId:json(q2).recordId,path:q2,sha256:shaRepo(q2),verdict:json(q2).verdict},blockers:['SSCTR-P34R2-F01','SSCTR-P34R2-F02','QRE2-P34-01']},
   routed:[{id:'QRE-P34-03',to:'SSCTR'},{id:'QRE-P34-05',to:'SSCTR'},{id:'QRE-P34-06',to:'SSCTR'},{id:'QRE-P34-07',to:'PCG'},{id:'QRE2-P34-01 (domain side)',to:'SSCTR'}]};})();
-const record={revision,mission:'DOMAIN_COACHING_R7-D Phases 3.4 and 3.5 (SSCTR-P33-F01 under direction A; QE-R7D-P33-01; corrections of a separate-breaks return; R-F08-1; the three Phase 3.4 recheck blockers closed; R7D-PREREG-6 Δ23; F08 open)',commit:head,
+const record={revision,mission:'DOMAIN_COACHING_R7-D Phases 3.4 and 3.5 (SSCTR-P33-F01 under direction A; QE-R7D-P33-01; corrections of a separate-breaks return; R-F08-1; the three Phase 3.4 recheck blockers closed; R7D-PREREG-6 Δ23; QRE-P35-01 closed in the one bounded cycle; F08 open)',commit:head,
  predecessor:{...PRED,commit:predCommit,sha256:shaRepo(PRED.record),note:'Superseded, not edited. Its verifier (verify-r7d-4.mjs) now fails files-current by design: r6-adaptation.mjs, r6-composition.mjs, two test files and the harness files changed.'},
  created:new Date().toISOString(),delta:{...delta,updatedTests:UPDATED_TESTS},files,sourceDigest,manifestDigest,tests,conformance,
  evidence:{path:evPath,sha256:shaRepo(evPath),outputs:ev.outputs,results:ev.results,red:ev.red,suite:ev.suite,directed:ev.directed,authority:ev.authority},
@@ -121,8 +127,11 @@ const record={revision,mission:'DOMAIN_COACHING_R7-D Phases 3.4 and 3.5 (SSCTR-P
  reviews:{ssctr:{recordId:ss.recordId,path:ssPath,sha256:shaRepo(ssPath),disposition:ss.disposition,conditions:ss.conditionsForFreeze??ss.conditions??[]},qualityReliability:{recordId:en.recordId,path:enPath,sha256:shaRepo(enPath),verdict:en.verdict,conditions:en.conditionsForFreeze??en.conditions??[]},postReview},
  disclosures:{ssctrFindings:ss.findings??null,engineeringFindings:en.findings??null},
  phase34:p34,
- phase35:{closed:['SSCTR-P34R2-F01','SSCTR-P34R2-F02','QRE2-P34-01'],runtimeCommit:'5839f83',testsCommit:'f8cf12e',instruments:'R7D-PREREG-6 Δ26-Δ31 (R7D-HARNESS-7, validation 7, R7D-INTERFACE-7, final brief 6)'},
- instruments:{harness:'R7D-HARNESS-7',prereg:{path:`${AUD}/PREREGISTRATION_R7D_6.md`,sha256:shaRepo(`${AUD}/PREREGISTRATION_R7D_6.md`),revision:'R7D-PREREG-6 (with the Phase 3.4 addenda Δ14-Δ25 and the Phase 3.5 addendum Δ26-Δ31)'},interface:'R7D-INTERFACE-7 (INTERFACE_ONLY_R7D.md + INTERFACE_DELTA_R7D_2.md to INTERFACE_DELTA_R7D_7.md)',finalBrief:`${AUD}/author/AUTHOR_BRIEF_FINAL_R7D_6.md`,validation:`${AUD}/harness/validation/HARNESS_VALIDATION_R7D_7.json`},
+ phase35:(()=>{const s1=`${P35}/reviews/ssctr/SSCTR_PHASE35_RECHECK_R7D.json`,q1=`${P35}/reviews/engineering/QUALITY_CHECK_R7D_PHASE35.json`;
+  return {closed:['SSCTR-P34R2-F01','SSCTR-P34R2-F02','QRE2-P34-01'],runtimeCommit:'5839f83',testsCommit:'f8cf12e',instruments:'R7D-PREREG-6 Δ26-Δ33 (R7D-HARNESS-7, validation 7, R7D-INTERFACE-7, final brief 6)',
+   firstCandidate:'8e78b8a',firstReviews:{ssctr:{recordId:json(s1).recordId,path:s1,sha256:shaRepo(s1),disposition:json(s1).disposition},qualityReliability:{recordId:json(q1).recordId,path:q1,sha256:shaRepo(q1),verdict:json(q1).verdict,blocker:'QRE-P35-01'}},
+   boundedCycle:{runtimeCommit:'6203dcf',closed:['QRE-P35-01'],tests:'T36 (RED on 8e78b8a), T37 and T38 (QRE-P35-05)',instruments:'R7D-HARNESS-7 r2 and validation 7 r2 (QRE-P35-02, QRE-P35-03, QRE-P35-04 = SSCTR-P35-F01), R7D-PREREG-6 Δ34-Δ37',freezeGuard:'QRE-P35-06'}};})(),
+ instruments:{harness:'R7D-HARNESS-7',prereg:{path:`${AUD}/PREREGISTRATION_R7D_6.md`,sha256:shaRepo(`${AUD}/PREREGISTRATION_R7D_6.md`),revision:'R7D-PREREG-6 (with the Phase 3.4 addenda Δ14-Δ25 and the Phase 3.5 addenda Δ26-Δ37)'},interface:'R7D-INTERFACE-7 (INTERFACE_ONLY_R7D.md + INTERFACE_DELTA_R7D_2.md to INTERFACE_DELTA_R7D_7.md)',finalBrief:`${AUD}/author/AUTHOR_BRIEF_FINAL_R7D_6.md`,validation:`${AUD}/harness/validation/HARNESS_VALIDATION_R7D_7.json`},
  authorization:{path:`${P35}/AUTHORIZATION_PHASE35.md`,sha256:shaRepo(`${P35}/AUTHORIZATION_PHASE35.md`),phase34:{path:`${P34}/AUTHORIZATION_PHASE34.md`,sha256:shaRepo(`${P34}/AUTHORIZATION_PHASE34.md`)}},
  humanRevalidationQueue:{path:QUEUE,sha256:shaRepo(QUEUE),items:q.items.length,added:[QUEUE_ITEM],integration:{path:QUEUE_RECORD,sha256:shaRepo(QUEUE_RECORD)},proposed,note:`The Founder's Phase 3.4 authorization appended ${QUEUE_ITEM}, naming R7D-FREEZE-4 (the freeze its SSCTR record judged); Phase 3.5 authorizes no append. Every item proposed in Phases 3.4 and 3.5 stays proposed.`},
  bindingConditions:{inherited:{from:PRED.revision,record:PRED.record,note:'Every binding condition of R7D-FREEZE-4 travels unchanged with this runtime, except where a Phase 3.4 or 3.5 record supersedes it explicitly.'},added:['The conditions of the Phase 3.4 SSCTR decision and PCG F08 authority form, of the Phase 3.4 rechecks (carried), and of the two Phase 3.5 reviews, listed under decisions, phase34 and reviews']},

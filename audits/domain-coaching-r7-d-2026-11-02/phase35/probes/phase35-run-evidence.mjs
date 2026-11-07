@@ -1,11 +1,14 @@
 // R7-D Phase 3.5 evidence manifest (consumed by the reviews and by CoachingCore/scripts/freeze-r7d-5.mjs). On the committed runtime bytes it runs the
 // whole suite, the R7-D directed tests (Phases 3.5, 3.4, 3.3, 3.2, 3.1) and the three R7-B conformance checks (read-only); it runs the Phase 3.5
-// directed tests on a copy of candidate 46934a0 (RED: exactly the seven finding tests fail there, the three adequacy tests pass); and it binds the
+// directed tests on a copy of candidate 46934a0 (RED: exactly the finding tests fail there, nine since the bounded cycle; the adequacy tests, four, pass); and it binds the
 // outputs the phase produced on the same source bytes (mutation, harness validation 7, the diagnostic and generated regressions, the differential
 // against 46934a0, the fidelity of the Phase 3.4 rechecks' pinned probes), checking that each one names these bytes. It also checks the authorities
 // the phase leaves untouched. It writes one JSON manifest and nothing else in the repository. No deletion of any kind: copies go into NEW directories
 // under --work-parent (mkdtemp); --c46 is only read.
-//   node phase35-run-evidence.mjs --c46 <46934a0 root> --out <file> --work-parent <scratch dir>
+// Since the bounded cycle (QRE-R7D-PHASE35-CHECK-r1 NOT_READY, QRE-P35-01) it also runs the Phase 3.5 directed tests on a copy of 8e78b8a, the
+// candidate the first checks judged: exactly T36 fails there, every other test passes; and it binds the differential against 8e78b8a, where only
+// the DUPLICATE trigger explains a difference.
+//   node phase35-run-evidence.mjs --c46 <46934a0 root> --c8e <8e78b8a root> --out <file> --work-parent <scratch dir>
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -13,7 +16,7 @@ import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 
 const arg=k=>{const i=process.argv.indexOf(k);return i>=0?process.argv[i+1]:null;};
-const out=arg('--out'),c46=arg('--c46'),parent=arg('--work-parent');if(!out||!c46||!parent)throw Error('--c46 <46934a0 root> --out <file> --work-parent <scratch dir>');
+const out=arg('--out'),c46=arg('--c46'),c8e=arg('--c8e'),parent=arg('--work-parent');if(!out||!c46||!c8e||!parent)throw Error('--c46 <46934a0 root> --c8e <8e78b8a root> --out <file> --work-parent <scratch dir>');
 const AUD=path.resolve(import.meta.dirname,'../..'),REPO=path.resolve(AUD,'../..'),CC=path.join(REPO,'CoachingCore'),P35=path.join(AUD,'phase35');
 if(!fs.statSync(parent).isDirectory()||path.resolve(parent).startsWith(REPO))throw Error('--work-parent must be an existing directory outside the repository');
 const fresh=tag=>fs.mkdtempSync(path.join(path.resolve(parent),`r7d-p35-ev-${tag}-`));
@@ -41,7 +44,7 @@ need(suite.tests>0&&suite.fail===0&&suite.pass===suite.tests,'suite '+JSON.strin
 const T={p35:'test/r7d-phase35.test.mjs',p34:'test/r7d-phase34.test.mjs',p33:'test/r7d-phase33.test.mjs',p32:'test/r7d-phase32.test.mjs',p31:'test/r7d-phase31.test.mjs'};
 const fileRow=(f,c)=>({file:'CoachingCore/'+f,sha256:sha(path.join(CC,f)),tests:c.tests,pass:c.pass,fail:c.fail});
 const directed=Object.fromEntries(Object.entries(T).map(([k,f])=>[k,fileRow(f,counts(run(['--test',f])))]));
-for(const [k,n] of [['p35',10],['p34',40],['p33',14],['p32',17],['p31',14]])need(directed[k].tests===n&&directed[k].fail===0,`${k} directed tests `+JSON.stringify(directed[k]));
+for(const [k,n] of [['p35',13],['p34',40],['p33',14],['p32',17],['p31',14]])need(directed[k].tests===n&&directed[k].fail===0,`${k} directed tests `+JSON.stringify(directed[k]));
 need(['p34','p33','p32','p31'].every(k=>git(['diff','--quiet','46934a0','HEAD','--','CoachingCore/'+T[k]]).status===0),'an existing directed test file changed since 46934a0');
 // 2. Conformance (R7-B, R7-B.1, R7-B.2), read-only.
 const conformance=Object.fromEntries(['conformance-r7b','conformance-r7b1','conformance-r7b2'].map(s=>{const r=run([`scripts/${s}.mjs`]);let j=null;try{j=JSON.parse(r.stdout);}catch{}need(j?.result==='PASS',s+': '+(j?JSON.stringify(j.problems).slice(0,300):'no JSON'));return [s,{result:j?.result??null,sha256:sha(path.join(CC,'scripts',s+'.mjs'))}];}));
@@ -50,14 +53,21 @@ const C46=path.join(path.resolve(c46),'CoachingCore');
 need(Object.keys(src).every(p=>{const h=at46(p);return !!h&&fs.existsSync(path.join(path.resolve(c46),p))&&sha(path.join(path.resolve(c46),p))===h;}),'--c46 does not hold the 46934a0 source bytes');
 const redRoot=copyRuntime(C46,path.resolve(c46),'c46'),redCC=path.join(redRoot,'CoachingCore');fs.copyFileSync(path.join(CC,T.p35),path.join(redCC,T.p35));
 const rv=counts(run(['--test',T.p35],redCC));
-const FINDING=['R7-D Phase 3.5 T31','R7-D Phase 3.5 T32','R7-D Phase 3.5 T33'],ADEQUACY=['R7-D Phase 3.5 T34','R7-D Phase 3.5 T35'];
+const FINDING=['R7-D Phase 3.5 T31','R7-D Phase 3.5 T32','R7-D Phase 3.5 T33','R7-D Phase 3.5 T36','R7-D Phase 3.5 T38'],ADEQUACY=['R7-D Phase 3.5 T34','R7-D Phase 3.5 T35','R7-D Phase 3.5 T37'];
 const red={on46934a0:{tests:rv.tests,pass:rv.pass,fail:rv.fail,failed:rv.failed},
- findingTestsFail:rv.failed.length===7&&rv.failed.every(x=>FINDING.some(w=>x.startsWith(w))),adequacyTestsPass:!rv.failed.some(x=>ADEQUACY.some(w=>x.startsWith(w)))&&rv.pass===3};
-need(red.findingTestsFail,'exactly the seven finding tests (T31, T32 x3, T33 x3) fail on 46934a0: '+rv.failed.join(' | '));
-need(red.adequacyTestsPass,'the three adequacy tests (T34, T35 x2) pass on 46934a0');
+ findingTestsFail:rv.failed.length===9&&rv.failed.every(x=>FINDING.some(w=>x.startsWith(w))),adequacyTestsPass:!rv.failed.some(x=>ADEQUACY.some(w=>x.startsWith(w)))&&rv.pass===4};
+need(red.findingTestsFail,'exactly the nine finding tests (T31, T32 x3, T33 x3, T36, T38) fail on 46934a0: '+rv.failed.join(' | '));
+need(red.adequacyTestsPass,'the four adequacy tests (T34, T35 x2, T37) pass on 46934a0');
+// 3b. The bounded cycle: on 8e78b8a (the candidate the first checks judged) exactly T36 (QRE-P35-01) fails.
+const at8e=p=>{const r=spawnSync('git',['show',`8e78b8a:${p}`],{cwd:REPO,encoding:'buffer',maxBuffer:1<<28});return r.status===0?createHash('sha256').update(r.stdout).digest('hex'):null;};
+need(Object.keys(src).every(p=>{const h=at8e(p);return !!h&&fs.existsSync(path.join(path.resolve(c8e),p))&&sha(path.join(path.resolve(c8e),p))===h;}),'--c8e does not hold the 8e78b8a source bytes');
+const cyRoot=copyRuntime(path.join(path.resolve(c8e),'CoachingCore'),path.resolve(c8e),'c8e'),cyCC=path.join(cyRoot,'CoachingCore');fs.copyFileSync(path.join(CC,T.p35),path.join(cyCC,T.p35));
+const cy=counts(run(['--test',T.p35],cyCC));
+red.boundedCycleOn8e78b8a={tests:cy.tests,pass:cy.pass,fail:cy.fail,failed:cy.failed,onlyT36Fails:cy.fail===1&&cy.failed.length===1&&cy.failed[0].startsWith('R7-D Phase 3.5 T36')};
+need(red.boundedCycleOn8e78b8a.onlyT36Fails,'exactly T36 fails on 8e78b8a: '+cy.failed.join(' | '));
 // 4. Outputs the phase produced on these bytes; each must name them.
 const outputs={mutation:'phase35/evidence/MUTATION_PHASE35.json',validation:'harness/validation/HARNESS_VALIDATION_R7D_7.json',devCases:'harness/validation/DEV_CASES_R7D_7.json',
- diagnosticRegression:'phase35/regression/diagnostic/RUN_REPORT.json',generatedRegression:'phase35/regression/generated/RUN_REPORT.json',differential:'phase35/evidence/DIFFERENTIAL_VS_46934A0.json',fidelity:'phase35/evidence/FIDELITY_PHASE35.json'};
+ diagnosticRegression:'phase35/regression/diagnostic/RUN_REPORT.json',generatedRegression:'phase35/regression/generated/RUN_REPORT.json',differential:'phase35/evidence/DIFFERENTIAL_VS_46934A0.json',differentialVs8e78b8a:'phase35/evidence/DIFFERENTIAL_VS_8E78B8A.json',fidelity:'phase35/evidence/FIDELITY_PHASE35.json'};
 const O={};for(const [k,p] of Object.entries(outputs)){const f=path.join(AUD,p);need(fs.existsSync(f),'missing '+p);if(fs.existsSync(f))O[k]={path:rel(f),sha256:sha(f),json:read(f)};}
 const sameSrc=files=>!!files&&Object.keys(src).every(p=>files[p]===src[p]);
 const mu=O.mutation?.json,va=O.validation?.json,dg=O.diagnosticRegression?.json,gr=O.generatedRegression?.json,df=O.differential?.json,fi=O.fidelity?.json;
@@ -66,6 +76,8 @@ need(sameSrc(va?.runs?.[0]?.runtime?.source?.files)&&va?.summary?.noFalseBlock==
 need(va?.devCorpusSha256&&O.devCases,'the development corpus of validation 7');
 for(const [k,r] of [['diagnostic',dg],['generated',gr]])need(sameSrc(r?.runtimeSource?.files)&&r?.harness==='R7D-HARNESS-7'&&Object.values(r?.summary?.properties??{}).every(p=>p.violations===0)&&r?.summary?.harnessErrors===0,k+' regression on these bytes with no property violation');
 need(sameSrc(df?.candidateSource)&&df?.unexplained?.length===0,'differential against 46934a0 on these bytes: nothing unexplained');
+const d8=O.differentialVs8e78b8a?.json;
+need(sameSrc(d8?.candidateSource)&&d8?.unexplained?.length===0&&(d8?.differingCases??[]).every(r=>(r.kinds??[]).includes('DUPLICATE')),'differential against 8e78b8a on these bytes: every difference explained by the DUPLICATE trigger');
 need(sameSrc(fi?.runtimeSource)&&fi?.result==='PASS','fidelity of the pinned Phase 3.4 probes on these bytes');
 // 5. Authorities the phase leaves untouched: the policy, catalog and records since R7D-FREEZE-4; the human queue since the Phase 3.4 append (235
 // items, QUEUE_INTEGRATION_R7D_P34.json: this phase authorizes no append); product/ and canon/; the earlier freeze records.
@@ -88,7 +100,7 @@ need(!fs.existsSync(path.join(AUD,'final')),'no final holdout folder exists');
 const report={evidence:'R7D-PHASE35-EVIDENCE-1',created:new Date().toISOString(),commit:git(['rev-parse','HEAD']).stdout.trim(),runtimeSource:src,changedFromFreeze4:changedSource,changedFrom46934a0:changedSince46,suite,directed,conformance,red,
  outputs:Object.fromEntries(Object.entries(O).map(([k,o])=>[k,{path:o.path,sha256:o.sha256}])),
  results:{mutation:mu?.summary??null,validation:va?.summary?{noFalseBlock:va.summary.noFalseBlock,coverage:va.summary.coverage,p17Units:va.summary.p17Units,p18Units:va.summary.p18Units,witnesses:`${va.summary.witnessesFired}/${va.summary.witnesses}`,sensitivity:`${va.summary.sensitivity.filter(r=>r.result==='DETECTED_AND_CLEAN_ON_CANDIDATE').length}/${va.summary.sensitivity.length}`,notEvaluableOnCandidate:va.summary.notEvaluableOnCandidate}:null,
-  regressions:{diagnostic:dg?{cases:dg.corpus.cases,corpusErrors:dg.summary.corpusErrors}:null,generated:gr?{cases:gr.corpus.cases,corpusErrors:gr.summary.corpusErrors}:null},differential:df?{cases:df.cases,same:df.same,differing:df.differing,unexplained:df.unexplained,byTrigger:df.byTrigger}:null,fidelity:fi?{result:fi.result,probes:Object.fromEntries(Object.entries(fi.probes).map(([k,v])=>[k,{cases:v.cases,expectedClosure:v.expectedClosure,instrumentOnly:v.instrumentOnly}]))}:null},
+  regressions:{diagnostic:dg?{cases:dg.corpus.cases,corpusErrors:dg.summary.corpusErrors}:null,generated:gr?{cases:gr.corpus.cases,corpusErrors:gr.summary.corpusErrors}:null},differential:df?{cases:df.cases,same:df.same,differing:df.differing,unexplained:df.unexplained,byTrigger:df.byTrigger}:null,differentialVs8e78b8a:d8?{cases:d8.cases,same:d8.same,differing:d8.differing,unexplained:d8.unexplained,byTrigger:d8.byTrigger}:null,fidelity:fi?{result:fi.result,probes:Object.fromEntries(Object.entries(fi.probes).map(([k,v])=>[k,{cases:v.cases,expectedClosure:v.expectedClosure,instrumentOnly:v.instrumentOnly}]))}:null},
  authority,finalHoldoutExists:fs.existsSync(path.join(AUD,'final')),problems,result:problems.length?'FAIL':'PASS'};
 fs.writeFileSync(out,JSON.stringify(report,null,1)+'\n');
 console.log(JSON.stringify({result:report.result,problems,suite,directed:Object.fromEntries(Object.entries(directed).map(([k,v])=>[k,`${v.pass}/${v.tests}`])),red:red.on46934a0},null,1));

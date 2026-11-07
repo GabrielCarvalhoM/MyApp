@@ -31,6 +31,11 @@
 // session it never asks about (SSCTR-P34R2-F02, DEV-49) by P18(f), each clean on the candidate (witnesses W-P18j, W-P18k). DEV-48 on the candidate is
 // also the false-block control that found P18(c) reading a week the systemic rule holds; DEV-50 (QH4) is no false block. Units not evaluable are
 // listed per case on the candidate, whatever the property's result (QRE2-P34-03, CQ2-3).
+// R7D-HARNESS-VALIDATION-7 r2 (the Phase 3.5 bounded cycle): also --c8e <root> (candidate 8e78b8a, which the first Phase 3.5 checks judged; never
+// frozen): an unnamed same-dates report of the latest break drops the earlier break its return read (QRE-P35-01, DEV-53), detected by P18(d), clean on
+// the candidate. DEV-54 (conflicting responses: P18(e) reads only what the runtime reads as adverse), DEV-55 (P18 leaves a restatement out of its open
+// breaks), DEV-56 (a restatement ends only its own break's P17 window) and DEV-57 (a kept correction applied after a restatement) are false-block
+// controls; witness W-P17f shows P17 still follows a kept correction past a restatement of another break.
 import fs from 'node:fs';
 import path from 'node:path';
 import {loadRuntime,runCase} from '../lib/client.mjs';
@@ -103,7 +108,8 @@ const SENS=[
  {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'A race touch done at half its minutes (partial by the completion rule) re-enters running (SSCTR CFR-05; SSCTR-P34R-F02, BR-Q4.1)',cases:['DEV-46'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('OLDER_BREAK_DROPPED'))},
  // R7D-HARNESS-VALIDATION-7: the two SSCTR-P34R2 blockers on candidate 46934a0 (never frozen: its bytes are read from the root, with no record).
  {key:'--c46',record:null,unfrozen:'46934a0 (the Phase 3.4 candidate; never frozen)',defect:'SSCTR-P34R2-F01 (a race week without a gated run re-enters running through converging adverse responses across sports: the systemic rule is not read on the race-key path)',cases:['DEV-48'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('SYSTEMIC_WEEK_REENTERED'))},
- {key:'--c46',record:null,unfrozen:'46934a0 (the Phase 3.4 candidate; never frozen)',defect:'SSCTR-P34R2-F02 (a named correction re-read masks the days of the report it supersedes: a session it uncovers is never asked about, and the return reads it as missed, a restart)',cases:['DEV-49'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('UNREPORTED_BETWEEN_BREAKS_APPLIED'))}
+ {key:'--c46',record:null,unfrozen:'46934a0 (the Phase 3.4 candidate; never frozen)',defect:'SSCTR-P34R2-F02 (a named correction re-read masks the days of the report it supersedes: a session it uncovers is never asked about, and the return reads it as missed, a restart)',cases:['DEV-49'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('UNREPORTED_BETWEEN_BREAKS_APPLIED'))},
+ {key:'--c8e',record:null,unfrozen:'8e78b8a (the Phase 3.5 candidate of the first checks; never frozen)',defect:'QRE-P35-01 (an unnamed report of the latest break with its days, R7-A §9 duplicate, re-establishes it alone after a return that read an earlier break as its own return)',cases:['DEV-53'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('EARLIER_BREAK_DROPPED_BY_CORRECTION'))}
 ];
 for(const s of SENS){
  const root=arg(s.key);if(!root){out.runs.push({purpose:'SENSITIVITY',defect:s.defect,result:'NOT_RUN'});continue;}
@@ -186,6 +192,8 @@ witness('W-P18k','DEV-49',t=>{const s=stepOf(t,'ans'),sun=s.planBefore.weeks[5].
 // R7D-HARNESS-7 (R7D-INTERFACE-7 §2): a report of the listed break that changes another fact (here its last day) is no restatement: it opens its own
 // P17 window, so the candidate's VALID plan after it fires.
 witness('W-P17e','DEV-51',t=>{const s=stepOf(t,'restate');s.review={...thaw(s.review),interruption:{...thaw(s.review.interruption),endDate:'2026-11-28',days:13}};return 'the restating review states another last day: a break of its own, never applied';},['VALID_BEFORE_DECLARED_BREAK_APPLIED']);
+// R7D-HARNESS-7 r2 (QRE-P35-03): the kept correction of DEV-57 left unapplied after the restatement of another break: its P17 window runs on and fires.
+witness('W-P17f','DEV-57',t=>{const s=stepOf(t,'plain2');s.result={...s.result,status:'KEEP',action:'KEEP',proposal:null,planValidity:{status:'VALID_WITHIN_CURRENT_BOUNDED_SCOPE'}};s.planAfter=s.planBefore;s.adopted=false;return 'the weekly review keeps the plan VALID and never applies the kept correction after the restatement';},['VALID_BEFORE_DECLARED_BREAK_APPLIED']);
 // P06 and P08 violations carry no issue label (unit records): count any violation of the property.
 for(const w of out.witnesses)if(w.expects[0]==='__P06__'||w.expects[0]==='__P08__'){
  const id=w.expects[0]==='__P06__'?'P06':'P08',kase=byId.get(w.caseId),base=runCase(F4.rt,kase),t={...base,steps:base.steps.map(s=>({...s}))};

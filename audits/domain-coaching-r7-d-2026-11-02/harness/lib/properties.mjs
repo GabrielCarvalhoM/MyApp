@@ -297,6 +297,8 @@ const declaresBreak=s=>{const i=s.review?.interruption;return !!i&&typeof i==='o
  * separateBreaks row other than LATEST, by its episode or the event id of the report that return read) and states every fact of that report again,
  * its name and start time apart (no start time, or one on that break's first day), restates that break. It is that break's report, never a break of
  * its own: it opens no window of its own (P17) and no return is measured from it (P08). A later report of any kind still ends an earlier window. */
+/** Whether review t names the break review s stated (t's episodeId is s's own name, or the event id of s's report). */
+const sameBreakNamed=(s,t)=>{const n=x=>{const i=x.review?.interruption;return typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;},nt=n(t);return !!nt&&(nt===n(s)||nt===s.review?.event?.id);};
 const restatesListed=s=>{
  const i=s.review?.interruption,name=typeof i?.episodeId==='string'&&i.episodeId.trim()!==''?i.episodeId:null;if(!i||typeof i!=='object'||!name)return false;
  const last=(s.planBefore?.decisions??[]).filter(d=>d.action==='REESTABLISH').at(-1)?.interruption,row=(last?.separateBreaks??[]).find(b=>b.stop!=='LATEST'&&(b.episode===name||b.eventId===name));if(!row)return false;
@@ -552,7 +554,9 @@ function p17(trace){
   // The window: this decision and the later ones until one applies a return, or a later review states a break of its own (the window of that
   // break then takes over; the older break stays open, and P18 checks it at the return: R7D-PREREG-4).
   for(let k=i;k<trace.steps.length;k++){
-   const t=trace.steps[k];if(k>i&&statedBreak(t))break;
+   // R7D-HARNESS-7 r2 (QRE-P35-03): a restatement ends only the window of an earlier report of the same break (it is that break's newer report);
+   // the window of another break (a kept correction of the latest break, say) runs on past it.
+   const t=trace.steps[k];if(k>i&&statedBreak(t)&&!(restatesListed(t)&&!sameBreakNamed(s,t)))break;
    const r=t.result,applies=appliesReturn(t),kind=KIND_ALIASES[t.kind]??t.kind,added=addedDecisions(t).map(d=>d.action);
    unit(p,applies||r.planValidity?.status!==VALID,{at:t.stepId,issue:'VALID_BEFORE_DECLARED_BREAK_APPLIED',declaredAt:s.stepId,status:r.status,action:r.action});
    if(r.status!=='CLINICAL_HUMAN_REQUIRED'&&!RETURN_CARRIERS.includes(kind))unit(p,added.every(a=>a==='REPLAN_FROM_EVIDENCE'),{at:t.stepId,issue:'EVENT_APPLIED_OVER_DECLARED_BREAK',declaredAt:s.stepId,kind:t.kind,added});
@@ -620,7 +624,9 @@ export const nominalSportWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[
 /** P18(e), R7D-HARNESS-7 (SSCTR-P34R2-F01): a week whose reports a client reads as converging adversely by a reading inside the runtime's systemic
  * rule: a complete (not partial) report with recovery ADVERSE, in both sports or in three or more sessions, observed before `cut`. The runtime reads
  * each such report as adverse, so this never flags a week the runtime may re-enter. */
-export const adverseConvergence=(week,ledger,cut)=>converging(week.sessions.filter(live).flatMap(s=>{const r=latestReport(ledger,s,cut);return r&&!r.partial&&r.response?.recovery==='ADVERSE'?[s.sport]:[];}));
+// R7D-HARNESS-7 r2 (SSCTR-P35-F01, QRE-P35-02): a recovery ADVERSE with performance OVER is CONFLICTING for the runtime (r6-learning classify), never
+// ADVERSE, unless the report is confounded: only what the runtime reads as ADVERSE counts here, so the reading stays inside the systemic rule.
+export const adverseConvergence=(week,ledger,cut)=>converging(week.sessions.filter(live).flatMap(s=>{const r=latestReport(ledger,s,cut);return r&&!r.partial&&r.actual?.completed===true&&r.response?.recovery==='ADVERSE'&&(r.confounded===true||r.response?.performance!=='OVER')?[s.sport]:[];}));
 // R7D-HARNESS-6 r2 (SSCTR-R7D-P34-RECHECK-r1 CFR-05, SSCTR-P34R-F02): an executed report counts only under the existing completion rule, never
 // partial (a race's duration is its event window, so a finished race is complete). The runtime's gates hold a partial gated row, and its race keys
 // read the same rule, so this stays a necessary condition.
@@ -642,7 +648,8 @@ function p18(trace){
  trace.steps.forEach((t,k)=>{
   if(!appliesReturn(t))return;
   const reports=[];
-  for(let j=from;j<=k;j++){const s=trace.steps[j],i=statedBreak(s),id=s.review.event?.id??null;if(i&&!refusedUnread(s)&&!(id!=null&&firstAt.get(id)<j))reports.push({s,i,eventId:id,key:breakFacts(i),name:nameOfBreak(i)});}
+  // R7D-HARNESS-7 r2 (QRE-P35-04): a restatement of a listed break is that break's report, never an open break of its own (R7D-INTERFACE-7 §2).
+  for(let j=from;j<=k;j++){const s=trace.steps[j],i=statedBreak(s),id=s.review.event?.id??null;if(i&&!refusedUnread(s)&&!restatesListed(s)&&!(id!=null&&firstAt.get(id)<j))reports.push({s,i,eventId:id,key:breakFacts(i),name:nameOfBreak(i)});}
   from=k+1;
   const parent=reports.map((_,n)=>n),find=n=>parent[n]===n?n:(parent[n]=find(parent[n])),join=(a,b)=>{a=find(a);b=find(b);if(a!==b)parent[Math.max(a,b)]=Math.min(a,b);};
   for(let a=0;a<reports.length;a++)for(let b=0;b<reports.length;b++)if(a!==b&&(reports[a].key===reports[b].key||reports[a].name&&(reports[a].name===reports[b].eventId||reports[a].name===reports[b].name)))join(a,b);

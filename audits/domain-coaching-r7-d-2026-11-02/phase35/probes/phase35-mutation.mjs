@@ -20,7 +20,8 @@ const F='src/r6-adaptation.mjs',T35='test/r7d-phase35.test.mjs',T34='test/r7d-ph
 const FILES=[T35,T34,'test/r7d-phase33.test.mjs','test/r7d-phase32.test.mjs','test/r7d-phase31.test.mjs'];
 const W={F01:'R7-D Phase 3.5 T31',CU3:'R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3)',CU1:'R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU1, LC1, CU2)',LATER:'R7-D Phase 3.5 T32 (SSCTR-P34R2-F02): a correction that moves the trip a week later',
  R07:'R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift',R07b:'R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift',R04:'R7-D Phase 3.5 T33 (QRE2-P34-01, R04)',
- T34:'R7-D Phase 3.5 T34',N01:'R7-D Phase 3.5 T35 (QRE CQ2-4, N01)',N05:'R7-D Phase 3.5 T35 (QRE CQ2-4, N05)',C3:'R7-D Phase 3.4 T20 (characterization)'};
+ T34:'R7-D Phase 3.5 T34',N01:'R7-D Phase 3.5 T35 (QRE CQ2-4, N01)',N05:'R7-D Phase 3.5 T35 (QRE CQ2-4, N05)',C3:'R7-D Phase 3.4 T20 (characterization)',
+ T36:'R7-D Phase 3.5 T36',T37:'R7-D Phase 3.5 T37',T38:'R7-D Phase 3.5 T38'};
 const MUTANTS=[
  {id:'P35-M01',defect:'SSCTR-P34R2-F01 reverted: a race week without a gated run re-enters running whatever the systemic rule holds',edits:[['&&raced(x)&&!h.systemic','&&raced(x)']],witness:W.F01},
  {id:'P35-M02',defect:'SSCTR-P34R2-F02 reverted in unreportedBetween: the superseded report masks the days a correction uncovers',edits:[['unreportedBetween(ctx,from,through,H.g.identity)','unreportedBetween(ctx,from,through)']],witness:W.CU3},
@@ -36,6 +37,10 @@ const MUTANTS=[
  {id:'P35-M12',defect:'QRE2-P34-01: the oldest report of a listed break decides, not the newest',edits:[['const n=naming(x,rows).at(-1);','const n=naming(x,rows)[0];']],witness:W.R07b},
  {id:'N01',defect:'QRE2-P34-04: F03 without required(x): a week with only optional runs re-enters running',edits:[['RUN:required(x)&&(!gated(x)||d.RUN===true)&&raced(x)','RUN:(!gated(x)||d.RUN===true)&&raced(x)']],witness:W.N01},
  {id:'N05',defect:'QRE2-P34-04: F04 names the own return\'s head, not the break that starts its stop',edits:[['startedAt,startBreak:at,continuous','startedAt,startBreak:H,continuous']],witness:W.N05},
+ // The bounded cycle (QRE-R7D-PHASE35-CHECK-r1): QRE-P35-01 reverted, and the QRE-P35-05 survivors Q10 and Q15.
+ {id:'P35-M13',defect:'QRE-P35-01 reverted: an unnamed same-dates report of the latest break re-establishes it alone, dropping the breaks its return read',edits:[['r=last&&(named?(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId)):dup)?recordedStop(','r=last&&named&&(last.id===i.episodeId||last.reports.some(b=>b.eventId===i.episodeId))?recordedStop(']],witness:W.T36},
+ {id:'Q10',defect:'QRE-P35-05: a report changing the reason text of a listed break is read as a restatement (the clinical screen skipped)',edits:[['const factsBesideStart=i=>{const {episodeId,startedAt,...x}=i;return hash(x);};','const factsBesideStart=i=>{const {episodeId,startedAt,reason,...x}=i;return hash(x);};']],witness:W.T37},
+ {id:'Q15',defect:'QRE-P35-05: the listed breaks are read from the first return, not the latest',edits:[['const last=episodesOf(program).at(-1),d=last?program.decisions.find(','const last=episodesOf(program)[0],d=last?program.decisions.find(']],witness:W.T38},
  {id:'DEPTH2',defect:'QRE2-P34-03: an own return at depth 2 or more reads its stop without its earlier breaks',edits:[['const r=ownReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));','const r=ownReturnOf({...ctx,__depth:(ctx.__depth??0)+1},x,sorted.slice(k+1).filter(y=>!place.has(y.g)));'],['sub=stopOf(ctx,x,earlier);','sub=stopOf(ctx,x,(ctx.__depth??0)>1?[]:earlier);']],witness:W.T34}
 ];
 const LEAN=['CoachingCore/src','CoachingCore/test','CoachingCore/r7/b','CoachingCore/r7/b0','CoachingCore/r6/fixtures','CoachingCore/r6/PROGRAM_POLICY_R6.json','CoachingCore/r5/PROGRAM_POLICY_R5.json',

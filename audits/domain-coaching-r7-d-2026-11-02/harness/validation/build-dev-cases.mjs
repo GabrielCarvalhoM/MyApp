@@ -330,5 +330,39 @@ for(const [caseId,startedAt,confirm] of [['DEV-51','2026-11-16T07:00:00Z',false]
   ...(confirm?[{stepId:'confirm',at:{week:6,day:5,time:'11:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{...TRIPw6,episodeId:`${caseId}-brk2`}}}]:[]),
   {stepId:'plain2',at:{week:6,day:5,time:'13:00'},event:{kind:'WEEKLY_REVIEW'}}],
  expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess(confirm?'the lift counts before the holiday: the coach asks to confirm the trip, and the confirmation re-reads the return':'the lift falls inside the holiday, as the return read it: nothing changes'),domainNotes:''});
+// R7D-HARNESS-7 r2 (the Phase 3.5 bounded cycle; QRE-R7D-PHASE35-CHECK-r1 and SSCTR-R7D-P35-RECHECK-r1). The Founder's case as in DEV-51 (the holiday
+// weeks 2-3 read as its own return, weeks 4-5 with every run done and the Friday lift missed, the trip Mon-Thu wk6), then:
+const restateHol=(id,x={})=>({...VAC14,episodeId:`${id}-w4d0`,startedAt:'2026-11-16T20:00:00Z',...x});
+const founders=(id,obs=runsDoneFriMissed([4,5]),{lift=false}={})=>[...twoWeeks,{...keptHoliday,...(lift?{observations:[lateLift]}:{})},
+ {stepId:'brk2',at:{week:6,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:{...TRIPw6,episodeId:`${id}-brk2`}},observations:obs},{stepId:'plain',at:{week:6,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}];
+const after7=[{stepId:'sun',at:{week:6,day:6,time:'21:00'},event:{kind:'WEEKLY_REVIEW'}},{stepId:'wk7',at:{week:7,day:6,time:'21:00'},event:{kind:'WEEKLY_REVIEW'},observations:allDone(7)},{stepId:'wk8',at:{week:8,day:6,time:'21:00'},event:{kind:'WEEKLY_REVIEW'},observations:allDone(8)}];
+const caseR=(caseId,authorIntent,timeline,note)=>({caseId,authorIntent,coverageTags:['DECLARED_BREAK','MULTIPLE_BREAKS','PARTIAL_REENTRY','LATE_EVIDENCE','CORRECTION'],oracleClass:'INVARIANT_ORACLE',intake:GEN,timeline,expectedDomainProperties:[],metamorphicRelations:[],independentAssessment:assess(note),domainNotes:''});
+// DEV-53 (QRE-P35-01, the QRE probe QH17; P18(d) sensitivity on 8e78b8a): the trip reported again with the same dates and no episodeId (R7-A §9's duplicate).
+cases.push(caseR('DEV-53','After a return read from separate breaks, the latest break reported again with the same dates and no name',[...founders('DEV-53'),
+ {stepId:'dup',at:{week:6,day:5,time:'10:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:TRIPw6}},{stepId:'plain2',at:{week:6,day:5,time:'12:00'},event:{kind:'WEEKLY_REVIEW'}}],'the same report again re-reads the whole record: the holiday stays its own return'));
+// DEV-54 (SSCTR-P35-F01, QRE-P35-02, the QRE probe QH15; no false block): DEV-48 with the strength session and the shakeout reported performance OVER
+// with recovery ADVERSE, which the runtime reads CONFLICTING (never ADVERSE): the systemic rule does not hold the week.
+{const k=JSON.parse(JSON.stringify(cases.find(c=>c.caseId==='DEV-48'))),CONF={performance:'OVER',recovery:'ADVERSE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
+ k.caseId='DEV-54';k.authorIntent='DEV-48 with conflicting responses (performance over, recovery adverse) on the strength session and the shakeout';
+ const b=k.timeline.find(s=>s.stepId==='brk2');b.event.interruption.episodeId='DEV-54-brk2';for(const o of b.observations)if(o.each?.sport==='STRENGTH'||o.each?.roles?.includes('SHAKEOUT'))o.response=CONF;
+ k.independentAssessment=assess('conflicting responses are no converging adverse signal: they hold their own gates only');cases.push(k);}
+// DEV-55 (QRE-P35-04, the QRE probe QH19; no false block): the late lift answered with a start before it (nothing changes), weeks 7-8 done, then a new trip
+// Tue-Thu of week 9 with no name: the return reads the new trip alone; the restatement is no open break of its own.
+cases.push(caseR('DEV-55','A restatement that changes nothing, then a later unnamed trip',[...founders('DEV-55'),{stepId:'late',at:{week:6,day:5,time:'09:00'},event:{kind:'WEEKLY_REVIEW'},observations:[lateLift]},
+ {stepId:'restate',at:{week:6,day:5,time:'10:00'},event:{kind:'WEEKLY_REVIEW',interruption:restateHol('DEV-55',{startedAt:'2026-11-16T07:00:00Z'})}},...after7,
+ {stepId:'trip2',at:{week:9,day:4,time:'07:00'},event:{kind:'LOCAL_FATIGUE',interruption:{startDate:'2027-01-05',endDate:'2027-01-07',days:3,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true}}},
+ {stepId:'plain3',at:{week:9,day:4,time:'08:00'},event:{kind:'WEEKLY_REVIEW'}}],'the new trip is read alone; the restatement was the holiday\'s report'));
+// DEV-56 (P17 and a restatement of the same break; no false block): the late lift answered first with a start time on another day (asked), then with
+// a valid start before the lift (nothing changes); weeks after it.
+cases.push(caseR('DEV-56','A start time on the wrong day, then a valid one that changes nothing',[...founders('DEV-56'),{stepId:'late',at:{week:6,day:5,time:'09:00'},event:{kind:'WEEKLY_REVIEW'},observations:[lateLift]},
+ {stepId:'wrong',at:{week:6,day:5,time:'10:00'},event:{kind:'WEEKLY_REVIEW',interruption:restateHol('DEV-56',{startedAt:'2026-11-17T20:00:00Z'})}},
+ {stepId:'right',at:{week:6,day:5,time:'11:00'},event:{kind:'WEEKLY_REVIEW',interruption:restateHol('DEV-56',{startedAt:'2026-11-16T07:00:00Z'})}},...after7],'the wrong day is asked; the valid start supersedes it, and nothing changes'));
+// DEV-57 (QRE-P35-03 base, the R04 declaration channel; no false block; witness W-P17f): the lift reported with the holiday; the trip corrected to start
+// on Tuesday of week 5 (asked: the holiday's start time); the holiday restated with an event of another kind (recorded); the week's review applies it.
+cases.push(caseR('DEV-57','A correction asked the earlier break\'s start time; the answer sent with another kind of event; the week\'s review applies the correction',[...founders('DEV-57',[{each:{weeks:[4],sport:'RUN'},asPrescribed:true,response:OK},{ref:{week:4,sport:'STRENGTH',day:0},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:4,sport:'STRENGTH',day:4},completed:false},
+  {ref:{week:5,sport:'STRENGTH',day:0},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:5,sport:'STRENGTH',day:4},asPrescribed:true,loadsByPattern:LOADS,response:OK},{ref:{week:5,sport:'RUN',day:1},completed:false},{ref:{week:5,sport:'RUN',day:3},asPrescribed:true,response:OK},{ref:{week:5,sport:'RUN',day:6},asPrescribed:true,response:OK}],{lift:true}),
+ {stepId:'corr',at:{week:6,day:5,time:'10:00'},event:{kind:'RETURN_AFTER_PAUSE',interruption:{startDate:'2026-12-08',endDate:'2026-12-18',days:11,reasonCategory:'WORK',reason:'Work trip, no training',nonclinical:true,episodeId:'DEV-57-brk2'}}},
+ {stepId:'restate',at:{week:6,day:5,time:'11:00'},event:{kind:'LOCAL_FATIGUE',interruption:restateHol('DEV-57')}},{stepId:'plain2',at:{week:6,day:5,time:'12:00'},event:{kind:'WEEKLY_REVIEW'}},
+ {stepId:'sun',at:{week:6,day:6,time:'21:00'},event:{kind:'WEEKLY_REVIEW'}}],'the correction is applied with the holiday\'s start time; nothing is asked after it'));
 fs.writeFileSync(process.argv[2],JSON.stringify({corpusRevision:'R7D-HARNESS-DEV-7',contaminated:true,cases},null,1)+'\n');
 console.log('dev cases',cases.length);

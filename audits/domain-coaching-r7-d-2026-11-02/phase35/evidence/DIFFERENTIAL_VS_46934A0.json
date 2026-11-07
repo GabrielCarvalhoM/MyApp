@@ -27,7 +27,7 @@
   "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
   "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
   "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
-  "CoachingCore/src/r6-adaptation.mjs": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310",
+  "CoachingCore/src/r6-adaptation.mjs": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e",
   "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
   "CoachingCore/src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
   "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
@@ -94,9 +94,9 @@
  },
  "baseline": "46934a0 (the Phase 3.4 candidate; never frozen)",
  "candidate": "the working tree runtime",
- "cases": 172,
- "same": 168,
- "differing": 4,
+ "cases": 177,
+ "same": 169,
+ "differing": 8,
  "unexplained": [],
  "differingCases": [
   {
@@ -146,6 +146,55 @@
    "kinds": [
     "RESTATEMENT"
    ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-53",
+   "first": "dup",
+   "trigger": {
+    "at": "dup",
+    "kind": "DUPLICATE"
+   },
+   "kinds": [
+    "DUPLICATE"
+   ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-55",
+   "first": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "kinds": [
+    "RESTATEMENT"
+   ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-56",
+   "first": "right",
+   "trigger": {
+    "at": "wrong",
+    "kind": "RESTATEMENT"
+   },
+   "kinds": [
+    "RESTATEMENT"
+   ]
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-57",
+   "first": "plain2",
+   "trigger": {
+    "at": "corr",
+    "kind": "CORRECTION"
+   },
+   "kinds": [
+    "CORRECTION",
+    "RESTATEMENT"
+   ]
   }
  ],
  "byTrigger": {
@@ -153,11 +202,18 @@
    "DEV-48"
   ],
   "CORRECTION": [
-   "DEV-49"
+   "DEV-49",
+   "DEV-57"
   ],
   "RESTATEMENT": [
    "DEV-51",
-   "DEV-52"
+   "DEV-52",
+   "DEV-55",
+   "DEV-56",
+   "DEV-57"
+  ],
+  "DUPLICATE": [
+   "DEV-53"
   ]
  },
  "rows": [
@@ -2213,6 +2269,200 @@
       "status": "ASK",
       "signal": false
      }
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-53",
+   "same": false,
+   "firstDifference": "dup",
+   "trigger": {
+    "at": "dup",
+    "kind": "DUPLICATE"
+   },
+   "triggers": [
+    {
+     "at": "dup",
+     "kind": "DUPLICATE"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "DUPLICATE"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-54",
+   "same": true,
+   "firstDifference": null,
+   "trigger": null,
+   "triggers": [
+    {
+     "at": "plain",
+     "kind": "SYSTEMIC"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [],
+   "explained": true,
+   "atFirst": null
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-55",
+   "same": false,
+   "firstDifference": "restate",
+   "trigger": {
+    "at": "restate",
+    "kind": "RESTATEMENT"
+   },
+   "triggers": [
+    {
+     "at": "restate",
+     "kind": "RESTATEMENT"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "RESTATEMENT"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    },
+    "candidate": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-56",
+   "same": false,
+   "firstDifference": "right",
+   "trigger": {
+    "at": "wrong",
+    "kind": "RESTATEMENT"
+   },
+   "triggers": [
+    {
+     "at": "wrong",
+     "kind": "RESTATEMENT"
+    },
+    {
+     "at": "right",
+     "kind": "RESTATEMENT"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "RESTATEMENT"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    },
+    "candidate": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
+    }
+   }
+  },
+  {
+   "corpus": "HARNESS_DEV_7",
+   "caseId": "DEV-57",
+   "same": false,
+   "firstDifference": "plain2",
+   "trigger": {
+    "at": "corr",
+    "kind": "CORRECTION"
+   },
+   "triggers": [
+    {
+     "at": "corr",
+     "kind": "CORRECTION"
+    },
+    {
+     "at": "restate",
+     "kind": "RESTATEMENT"
+    }
+   ],
+   "kindsAtOrBeforeFirst": [
+    "CORRECTION",
+    "RESTATEMENT"
+   ],
+   "explained": true,
+   "atFirst": {
+    "c46": {
+     "status": "ASK",
+     "action": "ASK",
+     "validity": "REQUIRES_RECONCILIATION",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": {
+      "status": "ASK",
+      "signal": false
+     }
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "validity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
+     "question": null,
+     "gates": null,
+     "offers": [],
+     "pending": null
     }
    }
   }

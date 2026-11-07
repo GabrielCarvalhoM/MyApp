@@ -257,3 +257,23 @@ node validation/build-dev-cases.mjs validation/DEV_CASES_R7D_7.json
 node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_7.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46
 ```
 - **P17 and P08 read a restatement** (R7D-INTERFACE-7 §2; Δ32). A review whose break names an earlier break the latest applied return listed, stating its facts again apart from its name and start time, is that break's report. It opens no P17 window of its own, and P08 measures no return from it. A report that changes another fact still opens its own window (witness W-P17e). DEV-51 and DEV-52 (the R07 shape) are the false-block controls.
+
+## R7D-HARNESS-7 r2 (the Phase 3.5 bounded cycle; R7D-PREREG-6 Δ35, Δ37)
+
+Three harness-only fixes, as the first Phase 3.5 checks stated them:
+- **P18(e)** (SSCTR-P35-F01 = QRE-P35-02): a report counts only when the reducer reads it ADVERSE given recovery ADVERSE. It must be complete and not partial, with performance other than OVER, or confounded (`kindOf`, `classify`). With performance OVER, recovery ADVERSE is CONFLICTING, and the systemic rule does not count it. P18(e) therefore counts a subset of what the systemic rule counts, which makes it a necessary condition. DEV-54 (the SYc1 shape) is its false-block control.
+- **P17** (QRE-P35-03): a restatement ends only the window of an earlier report of the same break. The window of another break runs on past it: witness W-P17f, controls DEV-56 and DEV-57.
+- **P18** (QRE-P35-04): a restatement of a listed break is not one of its open breaks (DEV-55).
+- **Validation 7 r2:**
+  - 59 cases, with DEV-53 to DEV-57 added;
+  - no false block;
+  - 23/23 sensitivity rows; the new row is DEV-53 (QRE-P35-01), detected by P18(d) on `8e78b8a` and clean on the candidate;
+  - 56/56 witnesses;
+  - P17 has 245 units and P18 has 170.
+
+To reproduce it, also add `rt-c8e`, built the same way as `rt-c46` but from `git archive 8e78b8a`:
+
+```
+node validation/build-dev-cases.mjs validation/DEV_CASES_R7D_7.json
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_7.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46 --c8e $D/rt-c8e
+```
