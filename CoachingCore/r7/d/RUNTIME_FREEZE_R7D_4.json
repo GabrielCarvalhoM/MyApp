@@ -1,0 +1,1435 @@
+{
+ "revision": "R7D-FREEZE-4",
+ "mission": "DOMAIN_COACHING_R7-D Phase 3.3 (narrow closure of SSCTR-P32-F01: known training between two separate breaks)",
+ "commit": "b2422376b04e444acd64504d9798db47ac0e079a",
+ "predecessor": {
+  "revision": "R7D-FREEZE-3",
+  "commit": "aeafc833745fec8bf2d41c1aa0a4dce511d52777",
+  "recordCommit": "c938b53",
+  "record": "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json",
+  "sha256": "6c27126e21c9111b063d833a498b9fed035c45ba9e4e0b70fe41f292ab9cabd8",
+  "note": "Superseded, not edited. Its verifier (verify-r7d-3.mjs) now fails files-current by design: r6-adaptation.mjs, the Phase 3.2 test file and the harness files changed."
+ },
+ "created": "2026-11-07T02:33:10.275Z",
+ "delta": {
+  "src": [
+   "M\tCoachingCore/src/r6-adaptation.mjs"
+  ],
+  "test": [
+   "M\tCoachingCore/test/r7d-phase32.test.mjs",
+   "A\tCoachingCore/test/r7d-phase33.test.mjs"
+  ],
+  "updatedTests": [
+   "CoachingCore/test/r7d-phase32.test.mjs"
+  ]
+ },
+ "files": {
+  "CoachingCore/package-lock.json": "a6ea7b32bb5071e05f41f5e92cb81e06bdf1c74bc9bd87808fbbad4f57735417",
+  "CoachingCore/package.json": "9e2c8a8aab0bfd4c523d3c4094fe6d5387bfb675bccf8c0012a1f023d4890828",
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "CoachingCore/r6/fixtures/dev-authority.mjs": "7b0dbcd49777436b56980afdc36308d22a088125fa8c9cfe9595df3ca2ca3d2b",
+  "CoachingCore/r6/fixtures/profiles.mjs": "d36d0e6d1336648d4bd27946d90981666446c2328ac98dfebf48aa91b89a354d",
+  "CoachingCore/r6/holdout/R6_INDEPENDENT_HOLDOUT.json": "49a85b8c3c413a0d2f5a7fabbdf212b629ef1b66613420d08e494e5a04bf0708",
+  "CoachingCore/r7/b/fixtures/helpers.mjs": "33caefbf5aff2f93e7ad21785d65a8ebf07c4521216d689954f04d9011161241",
+  "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+  "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json": "51dc4c71981e241ffa8d887aeead8cf11b5d0513d05d2b81324398d97f454f78",
+  "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json": "d7346212c643afade4d5e5c5580d43e96063e68c9a27de882c611ccf8e09f43e",
+  "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json": "6c27126e21c9111b063d833a498b9fed035c45ba9e4e0b70fe41f292ab9cabd8",
+  "CoachingCore/r7/d/VERIFICATION_R7D_3.json": "da49c374a683e70090cfb9a52c260bb19d2346ddeb50b9b4e70d2cb0e73d8223",
+  "CoachingCore/scripts/conformance-r7b.mjs": "6ffcba1ea0b1feaa7ebf2d61d1491a9cac8ae9dbdd1bd3e554650e4aa4fba2e6",
+  "CoachingCore/scripts/conformance-r7b1.mjs": "52cbcac64067885a6f1406c8448e9fecf7affb191011b55b886181e2fe36ecc6",
+  "CoachingCore/scripts/conformance-r7b2.mjs": "1033cea8fef5836f41cb863317e7f17b3797da20bf8e7e51c6c2962ab15eb7a7",
+  "CoachingCore/scripts/evaluate-holdout-r6.mjs": "6d08d2021cb5aba597821b6544d6472b96a341f74a450229f2d12a07e2b2ce4c",
+  "CoachingCore/scripts/freeze-r7c.mjs": "3ef1b9bc20b4aedb3e138de1455977bb50d2346c35fd928b12549ea497976f4b",
+  "CoachingCore/scripts/freeze-r7d-2.mjs": "6cc600fbecb27ee48c90b493f7d4cf7f3b0972a6abd28fde7da13b6b706b84e1",
+  "CoachingCore/scripts/freeze-r7d-3.mjs": "003dbb0fd994a3217573b1e1f74daabbac7f0892d79436589aa9c029559ff4a2",
+  "CoachingCore/scripts/freeze-r7d-4.mjs": "8001d562a2e459fa0c8d41a4c4e454464142cd92ebc64093964993fee0f65fbc",
+  "CoachingCore/scripts/freeze-r7d.mjs": "30ffd18cc48ed35a6c49f8efc16899f15ebac3e62f1572deb0812ec244ef18c2",
+  "CoachingCore/scripts/neighbors-r7b2.mjs": "a6d995c105a85ff84eb263f3187b2ab9d2759b2ae72c3c070e3fa08d588c3b23",
+  "CoachingCore/scripts/regress-r7b2.mjs": "e094034789776bf101580c65541c490d2de210da37bf3f404c2d140a3ff4669b",
+  "CoachingCore/scripts/verify-r7c.mjs": "82825e3c02a88c3e26f007e2acb905d293cb40d708c3161bce36e265abed6e62",
+  "CoachingCore/scripts/verify-r7d-2.mjs": "b02c7567cb4c2a9c3adee0a685cc04bc9c93ca88adea00ae572a2b250f2e9f69",
+  "CoachingCore/scripts/verify-r7d-3.mjs": "9916a921c0e5919111a35bd01d085c6d1d235313c2c4acdd08ecb35706c546f9",
+  "CoachingCore/scripts/verify-r7d-4.mjs": "9e6a9c6030f3b8b9236b525e28c8340dba08eb69edb41ed7a54c123d1c71c0d4",
+  "CoachingCore/scripts/verify-r7d.mjs": "9c162ac0ca07090e7490dfdde2c8a9d6a1052d73b41a0e7c2a86e9116b69e212",
+  "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+  "CoachingCore/src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
+  "CoachingCore/src/r2-fixtures.mjs": "2c57aa5b9a9e473843790e17532108001b7bf600d1b07c091794a0dc9c95e302",
+  "CoachingCore/src/r2-runtime.mjs": "2dc76442339fadf3ddfbf0fb1f67dd2e9d6101cb2eb785a02171b70ad45902c8",
+  "CoachingCore/src/r3-consumption.mjs": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398",
+  "CoachingCore/src/r3-index.mjs": "7476017a5a9f4b21ce9cf546ecbf611751cc6e4a21b0887bd0e98ca6e90e50dc",
+  "CoachingCore/src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+  "CoachingCore/src/r3-runtime.mjs": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7",
+  "CoachingCore/src/r4-athlete-model.mjs": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8",
+  "CoachingCore/src/r4-authority.mjs": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9",
+  "CoachingCore/src/r4-candidates.mjs": "d963de2ebb9700eb87cce4ed0a86e8a07b3c4fe5e1926e541928bf6296b0ab11",
+  "CoachingCore/src/r4-context.mjs": "f7873e30333a34335e8f315ea29cabcefff6e2c5277d46cda73e8c8d39b0282c",
+  "CoachingCore/src/r4-index.mjs": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e",
+  "CoachingCore/src/r4-runtime.mjs": "557efc5b96c0fcaff70f1cf296f69b294129525d5519950a63741c1c096591af",
+  "CoachingCore/src/r5-adaptation.mjs": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+  "CoachingCore/src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+  "CoachingCore/src/r5-contract.mjs": "39b2ce74a199bd269ce507a74de87b7d375f9d996488f43dd1c242f633735c77",
+  "CoachingCore/src/r5-index.mjs": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+  "CoachingCore/src/r5-learning.mjs": "a78b220c6d140418a8f9f5401e616496f7a2042c06bdabf274302e01918af334",
+  "CoachingCore/src/r5-observation.mjs": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+  "CoachingCore/src/r5-program.mjs": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+  "CoachingCore/src/r5-review-context.mjs": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+  "CoachingCore/src/r5-schedule.mjs": "600d0f67bda6b9e57f3aab65f0e77deac1961676ceef0e940d43d83bb09a90e6",
+  "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+  "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+  "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
+  "CoachingCore/src/r6-adaptation.mjs": "15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc",
+  "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
+  "CoachingCore/src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
+  "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
+  "CoachingCore/src/r6-clinical.mjs": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681",
+  "CoachingCore/src/r6-composition.mjs": "ff965eb6730614c417cea6948c01ac94c39228210a3256eba06779ae7107fe1a",
+  "CoachingCore/src/r6-index.mjs": "8316ff218814b39060b17b1720fca08349bbac8e7c954327424f4df691ceb098",
+  "CoachingCore/src/r6-intake.mjs": "8becd1c6dcfa357c4e7f957068265d3a0cad5036f74a0d23b78711d3936e3c56",
+  "CoachingCore/src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+  "CoachingCore/src/r6-legacy.mjs": "4312aeef7fa1fee67bc9a617ee7d189bd14da7486f0a3a47b38275306d9ca36b",
+  "CoachingCore/src/r6-prescription.mjs": "f5e0f5defa0a1f211bad1d63747641ce325aad9d61cc938e7472757fecea4a5f",
+  "CoachingCore/src/r6-program.mjs": "2fd46f8ded66b84068e1c07cf4043fa8b3eba1a55382abd33dca9af18ddd7678",
+  "CoachingCore/src/r6-provenance.mjs": "2b9c5ccc023e80a698c3f155acd6873ee2a9c3407e66f491c3a90baf90fb9419",
+  "CoachingCore/src/r6-simulator.mjs": "8a78e3015f834801e3a88eca7c42376ce04bd6b648029bb86bd37386a41c7f0f",
+  "CoachingCore/src/r7b-repertoire.mjs": "e8f1689520e159836a4c2c005c1405e683629202bd6da6dbdfdc031bc73c3733",
+  "CoachingCore/src/runtime.mjs": "b52b1bbe9c8742a5a27eee9cec548cc06ac33d312713a02be6c24730737ebe9c",
+  "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+  "CoachingCore/src/value.mjs": "5bd765f68aa9e1f39ff0ce1366c7ac08e4b092bf281b49e2caa12c7c4bdb3a3b",
+  "CoachingCore/test/conformance.test.mjs": "3360a7cf9e814f1c9b7389e33c6c45d0eda508316382267748255acce8830692",
+  "CoachingCore/test/r2.test.mjs": "d4ce81b0c42fdfd40ea7445e55c730b2f4df21bc5eabe97a27be7969154a1dc7",
+  "CoachingCore/test/r3-input.test.mjs": "a18b3aeb12e3fe9179967fb8df1990aa7974ea5056d3f4e8337a481801d4305d",
+  "CoachingCore/test/r3-runtime.test.mjs": "5f6a9bd3041658aa932a59a0078ecc43d00368abc55bfd73b483c61fc29fa856",
+  "CoachingCore/test/r4-coaching.test.mjs": "c16f531e33dd21d8501c1fcac96e4f877c73df29fa905079cc4a8e0e308a6992",
+  "CoachingCore/test/r5-adaptation.test.mjs": "29597a5bf91adad29a99b8c13db753e71579de707f544d06424342da67d769ca",
+  "CoachingCore/test/r5-learning.test.mjs": "d89ab51b6865f4fc34f9c9dc1066ac168dda79a3b4a3e1a7cac196e3b226f3ef",
+  "CoachingCore/test/r5-program.test.mjs": "ab6dd148fe75d65880ce3e8ae6b8153a38829d3726c53c4a813976198eda4385",
+  "CoachingCore/test/r5-simulation.test.mjs": "329b25a4b7157f561218dc3f52293bc5f8e155362692909c37bd94b88beb0496",
+  "CoachingCore/test/r6-adaptation.test.mjs": "4c82c0d7ebdc6b2df1ab1d0f184a87bb7a74ca1f41badaad3cc47862afcaa5cb",
+  "CoachingCore/test/r6-balanced-provenance.test.mjs": "cbeaa21e9aecf347f118b89761a5912b2f96e946b979f082b3f8ec26317f7762",
+  "CoachingCore/test/r6-engineering-fixes.test.mjs": "e2963d56397b12de9bd6dc805832fb1794d605f708b759db58543fbdb8869680",
+  "CoachingCore/test/r6-holdout-runner.test.mjs": "061211c0f54e5a24848ea58e09e408326367bf3519ce5d0258169b7282e97bb5",
+  "CoachingCore/test/r6-intake-program.test.mjs": "ec471a004a7bb3927cec7d36c2b402662ae62aa2b396abddcd84e2de0fdbe5d8",
+  "CoachingCore/test/r6-r5-regression.test.mjs": "1340c9e6dc1ebbcf0b870f6975da8a36acc7a870f95d75a7ed04c446e1d5aca1",
+  "CoachingCore/test/r6-simulation.test.mjs": "6fdb75bd3720e8141a108f7256543e01375949f061a4bdab1b0adce06bb59e86",
+  "CoachingCore/test/r6-ssctr-r10-fixes.test.mjs": "ccf4683d0232e774033d4d0c300ca49be777fbef6e4525acd71f9035aa9a4de0",
+  "CoachingCore/test/r6-ssctr-r11-fixes.test.mjs": "4d2e6114bb4b725b0482564acc9e8313ba01a11b71701bc560fa2cf32742efde",
+  "CoachingCore/test/r6-ssctr-r7-fixes.test.mjs": "f9c645cedd29b1f0e0f7c8456139806dc1629f98bfd5f24220fbe005782aa0fa",
+  "CoachingCore/test/r6-ssctr-r8-fixes.test.mjs": "3c91926fadfefbc91c52e492d8a79f34f2be4402e9b1ae71457fc16b9bb1dd16",
+  "CoachingCore/test/r6-ssctr-r9-fixes.test.mjs": "244a07a07159a488b1c4a2aa9d53c7871335c01dd0b03da5b8ba45da7c53309e",
+  "CoachingCore/test/r6-ssctr-revision.test.mjs": "35630df7398fd0802a83788b66302084aaedb896c73614ad1e3ffc86c6b7f89a",
+  "CoachingCore/test/r7a-cycle2.test.mjs": "f373f253db1aefeb77817a0a2049a518a55f744cbb8d6951216e8b99c500e3d2",
+  "CoachingCore/test/r7a-semantic-core.test.mjs": "1f1497c5c48f9e6b465d959816ba59cf586283d9badf1c58a5b35d0b4cbbe311",
+  "CoachingCore/test/r7a1-composition.test.mjs": "ee134ac70f831068f6126301ed569d8a3c4933288c1ba1b84853d8653bccfd7d",
+  "CoachingCore/test/r7a1-correction.test.mjs": "d4d8e0407cdc8d4c9c48152ddd1ba1d9133aa250ac05130ba55fe06bbb451f09",
+  "CoachingCore/test/r7a2-interruption.test.mjs": "d852d6ad8c6cb22131807c1de526e56cc7d5840af8c4cc05e610f90bec542262",
+  "CoachingCore/test/r7ab-week-start-authority.test.mjs": "8b5cceb74fa5097be5cca19610adf70c52cf3478657b916625d718c2f3bb8dd0",
+  "CoachingCore/test/r7ada-decision-authority.test.mjs": "ca1bf152c0f32da028490a3316076efd0ce16675cd69afc08b542000d16b5cd2",
+  "CoachingCore/test/r7af-episode-identity.test.mjs": "3e087d898a6dd5499553d1654c1720432fcc4327d7f9f74c7475c8372d2dec3f",
+  "CoachingCore/test/r7ara-residual-authority.test.mjs": "91e5c9255fe56ff0ed3e69a47daf4811c712e157e0992b63f88810177ef3e687",
+  "CoachingCore/test/r7asc-state-consumer.test.mjs": "5f7dc1fdcb49b3255ad8758760681fca6c917c0bc34d9f11c298b06609846f71",
+  "CoachingCore/test/r7ase-state-evidence.test.mjs": "3f17dc136bd519e80403f4d68e3a46ad12bb5557f01fc0bd6ca90025e49804bb",
+  "CoachingCore/test/r7asm-state-model.test.mjs": "2ccb33cf9430d16cb588b7e0cc2459cd9377901237353fc51975e7422c38ba95",
+  "CoachingCore/test/r7b-binding.test.mjs": "1d58b0d1fcdbec3295a000e3d87a73dd02a72a2079d3edd0f03968755299a0c0",
+  "CoachingCore/test/r7b-conditions.test.mjs": "9f3b276e9a4ff1a2b45deb3003396437682df74375332e5bfc8b0facaf4f60d0",
+  "CoachingCore/test/r7b-hybrid-program.test.mjs": "49fc1de1003422523636e5def14d3becd57773ec31548f503ae09dc5304ae14f",
+  "CoachingCore/test/r7b-review-fixes.test.mjs": "03fdf64a582625cff3c3f4013f1cbc352caf10a628aa7d10cb2d8e6bf6f4bc94",
+  "CoachingCore/test/r7b-running.test.mjs": "1b57df6f65712034c27a3520d644ce3b9544358bd464c331703972e7e538cb5d",
+  "CoachingCore/test/r7b-strength.test.mjs": "eec6e937f6db73b4813d6abe5167a3221650efff469f7130e16342e031063281",
+  "CoachingCore/test/r7b1-correction-cycle.test.mjs": "7b3c838ccb472e8c59bec97790d26f86443779d81d62dd80a383c4cc521882cf",
+  "CoachingCore/test/r7b1-residual-closure.test.mjs": "b645e164fabb2901b7e139d80d800576609bb0d2bc4d072ccc1c2b29a26d5e90",
+  "CoachingCore/test/r7b2-clinical-precedence.test.mjs": "03568fb3237543002744d8456fb82642b0aebf7a8a894f0c20c1638374f81649",
+  "CoachingCore/test/r7c-longitudinal.test.mjs": "6a383a18712a2ce84de0363ed29df113cf021e2d461ca8cf7dab6ac3b926ee21",
+  "CoachingCore/test/r7c-phase4.test.mjs": "004f52291894cb4948478e5329317b0bb2e5ae2904dae5bc02e133f6ab363066",
+  "CoachingCore/test/r7c-phase5-cc.test.mjs": "70dcdccc74850552f33885c5ee62c216f701326c6a3db3aa4c14286b55195596",
+  "CoachingCore/test/r7c-phase5.test.mjs": "b31e720a8d0fe6505b8962170d8173f3fc71818172d9ef820c04d3652ef23ed2",
+  "CoachingCore/test/r7c-phase6.test.mjs": "57d8357eb219036b81ab0f221d35180ef434698fc4497295323d558d08e8d049",
+  "CoachingCore/test/r7c-phase7.test.mjs": "08be00404528652a4c11b779bff5dc8e15036f119cc7d3c606bed342589203b5",
+  "CoachingCore/test/r7d-phase3.test.mjs": "2058f0281c0d1e98fd1255ffbefb97e3449b3b3a63abe9076be2e9a7550a5b9a",
+  "CoachingCore/test/r7d-phase31.test.mjs": "45018b32c391f8f2e6cab26ad105c705a5519feda6d84da26aa36e7fe9da29c3",
+  "CoachingCore/test/r7d-phase32.test.mjs": "2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f",
+  "CoachingCore/test/r7d-phase33.test.mjs": "99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578",
+  "CoachingCore/test/review-regressions.test.mjs": "62b66be420a3bd02b94bac99c64d51a099bd2562cf21cce99ea17d399416b7c6",
+  "CoachingCore/test/runtime.test.mjs": "852f8a33acef87f20cecdef3ce60c20e2ccc96b38bbaa725c0eee5106d66aa6e",
+  "CoachingCore/test/schema.test.mjs": "512ae0be79134a9f669d7528470841ef3f4615d9c507ed9b3c9a789f5918457b",
+  "CoachingCore/test/semantics.test.mjs": "33260e584b4aa802cc9bc9d122a2015e504ca3397fdc74c871202c1cf4b2d769",
+  "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70",
+  "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/adversarial-r7b1.mjs": "3ae5e9cc4f1d97ae06902e3b58b1496267ae43c891a8ca1cb483b78f9ece912b",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/b2-inventory.mjs": "43c87135cd0bb40742417222374c01313266d9d6855231e35e5e0217a4bc696e",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/k6-stale-return-clinical.mjs": "0917988c9dda54dc1d2551b8556231fb989352a14555b81e093d820d9305ee71",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/k6b-stale-return-two-step.mjs": "f21b811d751851ca9aa38abb30b1580fafe8154a3a223902309d34d013ffc1a7",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/b2-copy/lib.mjs": "922bf59bb66bc953aa654a00a659570f174a0b12dd8100170c5e4bf1279b0885",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/make-r7a-probe-copy.mjs": "a572a1ab64d878dad005686f0af26532280f7fa383110bdc49a71db200f3f4fa",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase2-rebaseline.mjs": "4291d9617709078741393fa9d99f9f2d24cf7b5f74b02c73aa8c3506ec9c4ec3",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-adversarial-g01.mjs": "3fa13e7bddef888dfe9b8c7a801dd0f34a065d22d416d087229f3e5eabdf19b8",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-adversarial-g02.mjs": "e68c85bb835d0e4ee5981709e8fad4a4a6a06a1d53577db6d24999747346eb00",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-current-week-credit.mjs": "a748548bcd465675adfd8a6ecad996ab66a54ba9a90c22cbe5c8f3ec24a8097d",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-history-finding.mjs": "951b2ecce8cfdcb43ed9493aa0bee37764651f0b1eb6df1e05be192704684b79",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-holdout-expiry.mjs": "d9f28122c97193e614b413d2c0e0cf358ecab2d6c5a6135aa300a8a154e9f2a4",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-holdout.mjs": "d0d6a25dc6a3312d1d5c3d0e6273d0c57a51cba4ac2b36c439b0f01628b20161",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-lib.mjs": "8724ba618652a1dabbec931b7661957ac0ac7411d7443507611f5d4b9f16178b",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-mutation.mjs": "3579a85e6e2816fe35c2f968da08067a04476a4cd3b89d66e8c40a9e6ef21973",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-relabel-reason.mjs": "612d14f56e7c17c8f55de98c8f30864281261594eb4d5901739caa1af49e5e24",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase3-suite-dispositions.mjs": "9b04ddb09a25a8775175bc2942ae0630cf8be3f945ac9a06ccb54c1444535549",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-adversarial-g01.mjs": "ea8882229ad2a880ce14c87636a9b26eb0a2dd5ab81defd70783c3baa3058394",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-full-suite.mjs": "938f5e4ae61de2f5678bacb52965e7c2daba35176a787a4822896cc74bd0e2b4",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-mutation.mjs": "4039396b3545953c8371fbd3ec1fee0cf242600c15c04c3af3a453013a8773a7",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase4-verify-sd01.mjs": "8b3b21740414adc23cec8ea0dfb7f7de882bf3ea45f3faa0fbcde3094570a649",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-adversarial-sd.mjs": "0d45bdc491918392c96cc458b01fec361694302c35a79c8b476d0613ffbecfea",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-cc-differential.mjs": "f40e35e7afb90c8ad430812a51431c8ccf90f8bf49a379b10863f0d2445fce33",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-mutation.mjs": "bf070c478dc9f07e5ec0c5773a43068b8518dc84e1ca8eea4852b76c4ae3555b",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase5-run-evidence.mjs": "fed260606589435c9093ed7eadb3857434e9bf83a2544b7058d451cb2c748a18",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-differential.mjs": "fc34da0b844a39abba3a2fa794c0531376ff70fb4cc4b035699b2e7f9585e896",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-mutation.mjs": "d44edbb7894aa7053f086d1761dd15d68c8541cf4d4aa0ae4fbbd98d472165ee",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase6-run-evidence.mjs": "7e55c113c3588f0dc7451aea94de21fed3732b17ba4b574810d822953d688799",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-differential.mjs": "d0247b575ea93185846f81b36788c6568f5bee992c52d2de467b3a26644a72f5",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-mutation.mjs": "f289499b7b31ea2c708dd8b89e26350486bf6dc98ebd04b46864270f49eb24f7",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-regress-r7b2-stamp-neutral.mjs": "566f86d45d60f11dfb622d9ad60d9c5235031575b6038674b9c317437db0ca89",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/phase7-run-evidence.mjs": "4867e5107cb23dd1eecf547fab3d048d902682ead62e4738039b54bcf1996376",
+  "audits/domain-coaching-r7-c-2026-11-01/probes/r18-running-strength-probe.mjs": "799e23cd873c9476c1e60182f209feda91b9d4dc76098698f029de6d508f0986",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-i-cell.mjs": "4ae9cc276fac1295a0741b963b8246e86510115ee957a355d06545363514306a",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-i-instrument.mjs": "a0f2a08a7185536bc302c7642b79838ff1bce895eea1f8ca36faa541699116d3",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-lib.mjs": "e8492578806d25705d923d09239fd778d82d585de7c41e0049db5aa52d6857f7",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-m-mutants.mjs": "7089807a2690a4cb7daa099db062e33a07ea7b0596a3ed428e36448ff32d8510",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-m-witness.mjs": "ed58c406b0ef79e8cada35fd0f6b9da6409a2fc9954103412bfdde1d757d9260",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x1-trajectory-independence.mjs": "7357e87465761ab0b7baecb083657bcee81fdf827c3a3a622a59c471226bc24c",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x2-reach.mjs": "a24f771b4aa2effaf9b853cf0f61ee4f78da37542ecdda5479c5ff872482664d",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x2b-reviewed-reference.mjs": "ac77950b97e0a00973f9edd47eec0738e3a9c17a0688b67fdbd154473d182ae4",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x3-edge.mjs": "a3137f17988abbfb9ff782803f8bad46839e0dbcdbddffe34985e2cc2fff4742",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x4-late-reporter.mjs": "a10901e23987e0cda3fa020fb217f762ad11165a84de203e441b686eb3d79799",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x5-short-answer.mjs": "fcd4def2eaabfb31e1f6b1e5d92120f7312cd40a04de847ede387df311070b0d",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x6-history.mjs": "8b191286cc86bffd941063e32d9038f8a81650bab5e126a01344a210bf25306d",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/phase6/p6-x7-direct-refire.mjs": "fe2844f37a8352f96971d50e0f6d5a5591c782a325cb5d87d872932ed4181c6a",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e1-answer-in-carried-record.mjs": "83561f008a4052dbdf09df6b04789126ca35d9285daaf9701457e45fcca86732",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2-held-signal-lifecycle.mjs": "045df7655a760f01a45faf78508e720c04af47bcf5452fe8fda28ff494ef25e0",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e2b-signal-week-boundary.mjs": "0af7e63a781d9667cdc581df6b6b4d4728a4d0146b4ef40842e24c0d1136db2d",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3-r1-next-week-projection.mjs": "3ac3f2ef69575aba044970be1398d1c13c3a199d7cb64fd1b0275e300e1b29cd",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e3b-r1-first-decision-next-week.mjs": "0dcd09ac01d3ed75313bb1aeb8c071c7d3508d31f3f11c6662893c637987ea76",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-e4-lifecycle-clinical-determinism.mjs": "465f71a0c369789f40be1f82f90d43f29683cffe5ceb6ba53bf571a992d82ef3",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-lib.mjs": "e003a3aac92b413b1e9a9bc34e4c426ac55a2c7aa3f4ecaf402f64ec45c21384",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/qe-mutation.mjs": "557e2bc6f23360ee86f12cbf3b947fb195e36408801d4c53e074c042239bd21e",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-instrument.mjs": "63041d4a34e7585d625e8852989e76880d87db2f2ab731034deb229e41af007a",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-lib.mjs": "d7f6311e3168839e34368716010eb57db110e83b44af305d86a2435d8873e3ab",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-mutants.mjs": "84f5364748b8d23d3afce2afc34a6a91feb62626ae1d5818f54ec9daa321e983",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p1-return-next-week.mjs": "4ab3a9e01f4c6daaba2bc04a5476341a97e6234127a5d79e811ebb9c162bcb46",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p2-reach-grid.mjs": "6161dae2e32562a557a659e1ccb058e65a43afb2bd7d4a5bd9a1c40f2ed25513",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p3-r7a-cycle2-and-strength.mjs": "c6173d61a6298133e951b1bde3d1ee0b13f7cf024f85e4fa13816ff39353250c",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p4-recorder-independence.mjs": "242ece5380e872e0f17f008989d38f39a5d6183689d0152c286721496a195bff",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p4b-mechanism.mjs": "418cee98f5aefb417fa8a25996978e4b562281855a265148479f4052c71f2fa8",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/engineering/probes/recheck/rc-p5-uncredited-premise.mjs": "31fdd771590afc9406acf6def3441dd22ec5c8617c95585d032190369a5fd16b",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc-lib.mjs": "7736eb0981a60f2a6a0a7a2e17f742a00abfc27490800e09c3d5ceef69b48f25",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc1-r1-skipped-review.mjs": "cb9412151e04b3ee5554c450f5718c8e00771ad18cfc098adf2c07171704d79e",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc2-answer-after-refusal.mjs": "1fb7721755a82bd1f9e9c808b148b0541c9716bb111222fa1d1623e3ec3c9c07",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc3-r1-handler-routes.mjs": "ea2c897ea542048306647d160dcf2b04ffa8f9126250bc45d57f40183459ac44",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc4-ceiling-population.mjs": "299ba396219468fb27128b418368f24ff238c6fc48359c10d02d65a428318e86",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc5-held-signal.mjs": "015e4c7f88d4ba5492bd92c75b6e4e980fa95634f1fca4289a8aa1e35f9eb44f",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc6-exec-quality-step.mjs": "072d2dde469820834e3aa0b988eb45e293aaa2864c202b8916acd2ffa71ea229",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc7-reentry-partial-week.mjs": "f51537b6fbc0b42c41f13cc7ff33cff87680e0dd95ded7fdd4784d20be884196",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/cc/cc8-r7a-cycle2-111.mjs": "acfe7dbb0912e9b462deafc898c3f5c36d9c28da4910b1319d8a93f4094a943b",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-direct-check.mjs": "0cd49e11ae8059ac9e73c7cb545c1fdfd60f04b8bc210396526970b65bd656af",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-mixed-diagnose.mjs": "ce555d54c1a569ce02832b321d45b98a4758a5f3b2a21851d9318d93e117268c",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-mixed-scope.mjs": "fde81c3967f254638ed1816fc5a9b31c58db8a93dae079445b647f8499491d77",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-reach-adverse-trace.mjs": "f501e2ccbaa856ab80ae31a477aaa313c2e76adb07b63a29bb40bc67e160b8b5",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-reach.mjs": "d41105d6c5c1033c81b323480c0f863ec2c90c0525840540550f4fd6aea7a1a1",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-timely-midweek.mjs": "f43ccff6b8eb067f8a73c4be41d38f26e21a7d435e21ddf55a4c8eb4579e3f70",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/phase6/p6-timely-quality-detail.mjs": "ed8988d11b29e214cdaa5862a9d8504e21211fbbe18295ba63f77fd327802fea",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd-probe.mjs": "ac3e4f2f61652d02b3278bd516ce512b834c15d81638497ee96fd52265322527",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd7-answer-midweek.mjs": "ec9aad72bc9be6c08b00c0afc3117322cb797722c981b01ca7a6dcd6445b91d2",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd8-controls.mjs": "3b8dbf1127f86171ff1cc2e08e638a678c77ffd89a23d1d930eaca04064dab55",
+  "audits/domain-coaching-r7-c-2026-11-01/reviews/ssctr/probes/sd/sd9-test-fixture-week7.mjs": "0b0cc328797ec7ff8e04b9f1bb04b867b9eb1bffccae3976987e8bfbaf8f60a1",
+  "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D.md": "fefb532a3ef876a152bae95ee26bf564c8fb4bd118fd4b8154dcd5bd6bb447c6",
+  "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_2.md": "b33a2302fa8f025d0a913794c589c6282902fda74a561a2ef25920302b9aea6a",
+  "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_3.md": "8e00cf4544f97b120346ad4c0ecbfd9a8437a1ca400de8327b2c0130ca94a067",
+  "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_4.md": "0bbc96d537e8d4bfa947b0a9616a235dc0bb755e75236fdb4f21c91b50f505ec",
+  "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md": "205335f61637fe64687a7e76f3888204299884dfe68b861be045f1eac9ed3709",
+  "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D.md": "a599dfeb892074a53992bbe6bbfff953911888ecd073274017a0bb25e4a83c41",
+  "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_2.md": "a2974ca88fa220ec6574f94273070f8cf2e6e2dc100879d7ed21c6241465f6b9",
+  "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_3.md": "59170655925c5fb4d95139d25a9edc79106a58805eb249dfae6edbea11c37558",
+  "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_4.md": "033a0b49391d9afff22b136c46b76413763e8c2eed2b613516fed16099ef8cef",
+  "audits/domain-coaching-r7-d-2026-11-02/author/CASE_SCHEMA_R7D.json": "2d5d64be8c507dfc525e335cc2da1aa1ddc066c814aacb11bf2b53eb1bd31940",
+  "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_2.md": "18c59b60325f77ca2c37f0d011c6d61444d688a2876c85f0506c0b859530fb10",
+  "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_3.md": "1d700de665ac2f3b5d9739f517c45df366c6554723f7a14050dc910534a7edda",
+  "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_4.md": "431b8005663b02d9f47687d38bee01a5691cfc5900c2e70694bbefd53773c964",
+  "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_5.md": "91631f442ecf58cf77b28d7c78c3b364cfb169b654532ab6d78bb50830f081a5",
+  "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md": "728d64961d53d701c0224bf242f25c61218b3532309e3ec46a30de6adda764ef",
+  "audits/domain-coaching-r7-d-2026-11-02/author/check-corpus.mjs": "306cd546909a6d5f5faf60981399e652cf509f880924eccebe1d14ead057e8ed",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/README.md": "8c14f0133eff6db4329a493a43db6fff7379aac5d50e02143978f006c737d185",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/generate-sample.mjs": "bc5ac305a11487125a5f34d4d9c1d9b8bd149519cfebdfe657328547da6037bd",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/canonical.mjs": "1cdc6dc3eb097fecbd6b4b054ee5718fb07cf7e297969b661decca5acc78b675",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/client.mjs": "deb16b58754ccdaee37149ad109bd6b3296be0d493bf6c2ed29069fc29d2e17d",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/expectations.mjs": "4f785b167ccf393c58eee6a6d969ad8b2d9904831f0d2f1967a4553a535ceb93",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/metamorphic.mjs": "6a2717610e9bed8cdf826ac9e1cbdade6cb6fcad7ebb7a40d0857d840a96d2fc",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/properties.mjs": "e7567bbff5d35caa3b09414963273c89d798e28755b2da8f84dbcac1d9347281",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/report.mjs": "b049b62335e37a8f10ed1f41b0dc34a08409e138c91e73d0b7a8645474168f2d",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/lib/util.mjs": "313c27971d08d75bb5c648c170fe55e5cd849dc20141610fafceae40cc8fa149",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/r7d-harness.mjs": "31521a20ce31b31217b47e6a71642f0bf96887c9171131409f5a21fb9f6a87ce",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/seal-corpus.mjs": "086e2551fed811c88894600861a3aa6c10afc8ae3441d83ece2b42a08763b366",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_2.json": "c91e9110c0d2b3c8c52f795bc531de39ac60eb17ce22c78861fa1aa4dd8b4fdc",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_3.json": "1ecff33848ea71288a3a2cd1bdc6e259861af769a62299fd19d2eddc338b73dc",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_4.json": "590abd43a7d708d733f8d7dfdb5f9d64ae2517e8a66fab0fbc0370d3dfb57874",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_5.json": "73a66b2f95958c4f82b0b297e8342c824944f4f8b3a040380e0059258a88bd70",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_2.json": "062d540650ada5c6f4e640b42d371bab7734b761cde2f8581c4bb283e51813fc",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_3.json": "665ab8c75bb9637f15dc98ef1585c59bdf0129454eca5c4d890fff1f97e19131",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_4.json": "a9ef435e8d98f3fb22feed0f7b1e26f71b327b0cc01c883265d37d71052449e3",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json": "9f1cd47e653e6c3ed49c66dbde679705ae705840787f5ba54963d892765432c4",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/build-dev-cases.mjs": "9fe4180a9aeb61e487323e63bae48b93b768fa5f9b78743831d9d61c89bb0309",
+  "audits/domain-coaching-r7-d-2026-11-02/harness/validation/run-validation.mjs": "bfa39cc887a98be6ccf9ab6075e8feac576925675397d06cd6b2963d9acd4cdd",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/AUTHORIZATION_PHASE3.md": "99da5ff67cbeff4105609dad313a264f1c6351ef6249be6a46114732d4cd20d3",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/F03B_DECISION_REQUEST.md": "d0f2ce6f85224bccad3c57a93531e715382db2f9294b4771d059d4f7d88f3e92",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.json": "5e25b1580d9d74d9b73204a290d3c02e5237fef86b2fda097d4b681ecc3212c6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/PCG_F03B_AUTHORITY_R7D.md": "cb99f7f33834b25fefc66b5f0550dc12a94d036cdd43b41234a13a0134ab2e30",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.json": "5eda3d816360f807ce096939bade3ba58c2703ae206e5f83c49637c682c12ec0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/policy/SSCTR_F03B_DECISION_R7D.md": "7012579af14b51d806d5a6f0a0e70eb36fd9cd9f17b1996d13d8bf1d1ea539df",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/f03-machine-witness.mjs": "8109be24dcd21c581e1106fca0bd42a49c3f2e26d2eb39da41c5ce0c98ffcb00",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/f03b-athlete-probe.mjs": "c863f561635e1ee214863d372991a75307cc51c2f8994e9b1233173995309142",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-differential.mjs": "d7b7eaa535c59fafa34115a44fa44218bcf7cf276aef0854a107a69dc448f710",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-mutation.mjs": "6c73b8b4ab2f9349e5fe406f0a974d96046df060753fb9e32b50bf6d036040ca",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/probes/phase3-run-evidence.mjs": "4585e27b3dfa5de15e794768abe5a17c0b6009271f2430b21095fb495e2bc216",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/REVIEW_REQUEST_PHASE3.md": "b9c808714bc43e1dd2c8a726ec7e6bae164fa4dd207947f195327d8c4d09dec0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE3.json": "ba6dbe21caf8baf3eb251a75cb219da3d89eb234d91a5e73d86befc1a8d5cefe",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE3.md": "4a7cc183cff48596e86d98ad6db8b858665c044561e101a89b78a615cf419b85",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-consent.mjs": "0cb2281eec1699d17d21418ab105065bcf09119e4be8985e0171cb5fbd7b4530",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-differential-attribution.mjs": "2821272e764cb14f4169a2f78d8fea3366bbf05806dd549123b6198a8cca0e95",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-dx01.mjs": "2a010dbc03b703cabb20d73a15dfc92e019fc98bdc4cdaed1bd531681ec7b2f2",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-dx02.mjs": "647f9f81f07af906457a183f756bd826b4ff067ce01b0ca0d2d8c75bdf35ffb1",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-f03.mjs": "6b2c0f37b670fd8ab4122b93ab033669624541895d9ae7af001f3d5cc113d687",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-f03b-edges.mjs": "fcc0e2fc8160c51d8f06ea95cbb23346d2ec66265ca76a1a19174d7df4020804",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/engineering/probes/qe-mutation.mjs": "1dc31fb791e4bdf463020fe5e5b0f2db4a2275c6c996bb75cddf1a1e83d01c61",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/SSCTR_PHASE3_RECHECK_R7D.json": "b8fd92f8478a132f9f391e438ef3766eaa0d0bc686adbeb8956f0e0bc52cba2c",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/SSCTR_PHASE3_RECHECK_R7D.md": "f9df424209d4c635a1f739ab5b611084280735a123f9c44fbc7f64d246bb2651",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-equiv.mjs": "701451893d334413a05b9a7dc279a3890f0c6d3061491205b087df9aca951a52",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-paths.mjs": "ae940e89b645f0b747fdd601454176fb43738258cd0a65d993ee6f6f4a328b11",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/dx02-sticky-rtp.mjs": "b110cf5edc4ca6a9708ab7c0336648bf797cc458353ee386a8bcba43f02999f5",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-cadence-hold.mjs": "407078cd4f609475ab7f4dd2489f0c638877702fedb68784e783f2bc46c98b71",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-rows-week.mjs": "a092f1cf890ccf324c29067430d05ebc1e99bc52a7360d4fe705532af4ea078f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-trace-machine.mjs": "fdd149cbfe910dfe849a8bd4f255724d0ee2656ba7eec928517e82485bd7a2d2",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f03b-verify-gap.mjs": "a6c4fe80669a49d2211fe6f3eca05df9b4c6092180f585e1a2b821d5d588c04d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase3/reviews/ssctr/probes/f04-matrix.mjs": "517645a41337ab2a715734aea18b171ee4496c3184d390fd4f3f861d5e006e7d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/AUTHORIZATION_PHASE31.md": "d2aa95653200c70663cd561036e8c3ab303a2d04dcb98b1275a5734a60380b63",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/QUEUE_INTEGRATION_R7D.json": "d4b587c1a58c9f45a4eca4aa7bf3510c598b9b6f227427624c78fd11bd20d0e5",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/DIFFERENTIAL_VS_R7D_FREEZE_1.json": "3fe9f930a0427b2519785e0a1232c45cab885ea20d836efce4d1d83eaf7a8072",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/EVIDENCE_PHASE31.json": "e95d8638c0ab86db8026d8004b72741bbdfece852344f8d0b11163f379d6b300",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/evidence/MUTATION_PHASE31.json": "a5409a42b5dbd75b4535ccc5214383a9465b9cfea143c9413b02f85c010f5559",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/integrate-queue-r7d.mjs": "0397c2bde1e36f87c5d165d45bb63d964b8bfa45c39580503c00ae2de7e8d27f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-differential.mjs": "19a45f57dc3a9c320909fb4f12a13874800e7146bbc5f081bf5202a2d6096f06",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-mutation.mjs": "c1f28e13a5818313dae382f27f7ca151d4802bb0a29a73b0963a89d61baba779",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/probes/phase31-run-evidence.mjs": "0be0c6a77e776335113338d4a016d04a873852dc1996b42d03e1ab32322277b0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/DOMAIN_PACKET.json": "c30ea1ee131eb561744fd4a2bf41aa72960c92629bd34642abf284586d77b129",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/DOMAIN_PACKET.md": "2af89ed29f75a5a485e6227350122ce4146f160e4e495fd10fbd6ff463b1e0a4",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/RUN_REPORT.json": "ecea628bf67b548995021ab2ddb42b7e21808e1a16554e11e1126517cc9899b1",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/diagnostic/SUMMARY.md": "b7d84a0b69ce9912f35bd0c9c82fd50ca8279985f8b37233750576069dc82ad1",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/DOMAIN_PACKET.json": "6e75fca4399b3098973f96bae4df71e55f494f4252df2b7d8e40a35a4737b4f6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/DOMAIN_PACKET.md": "df42fe9f8079fdea038a27f77df969c204e982df4a7095126b85c415debf6857",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/RUN_REPORT.json": "b61a6e6bd380358d1b55c1026a936b53fa75785b3fabcf57e2637f304d18f235",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/regression/generated/SUMMARY.md": "a05823e5b88942c69fcfbd77bd61435ffc1373382f06a168beb7df2cce4cf18a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/REVIEW_REQUEST_PHASE31.md": "ebc560f652b78a45245dfb0258225fb28c07ffd58d9207146d03cce55c2dda4b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE31.json": "43d02ed855fff54a2724c1ffb60ab96973b5d59324a401605cd62ecb5ebb8426",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE31.md": "929075926fabff0aafd25669db5ba102b1ff1f8c18f3701aae387c1c415a3b45",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-differential-attribution.mjs": "d95c2d4d57f9119177d8e12660ee96fa74bdcb5e02ef31a40e8593f1361726ad",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-instruments.mjs": "972197f8e7a5104ccd5dde4445fb992f50b0a0509d56aba9bc013fdbc264f70c",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-make-mutant-runtimes.mjs": "7fb099a52baadbf13887c83e09b7aa9b7596216c91a80d5cd2aa3eea5125567b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-malformed-and-resend.mjs": "695a2c3e13dd19c51008ed359ec6148c08ea2b7240a60e81156e5fa02ccb4a85",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-mutation.mjs": "fa1e9294a7eef761f5d33bd9bf51fbba5899dc1b6187f1d8ae7f308e3f1e6f15",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-persistence.mjs": "217ff6438cc75c5ddef15486cb01cf2017b9d705820fc389b668e7fd0623f8f9",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-post-race.mjs": "1347489cc4d31d099093775286e5ea88685e48a6f2d8069fceccd04fe862b055",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/engineering/probes/qe31-row-diff.mjs": "101175f5af998b36fcce1e0ddc74236fa58af7ab1b2a3a30231cbc19521e4f15",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.json": "304eedd62bea7d769ade0db533e62434273624858ea23935a6a70fbd9dd2380b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/SSCTR_PHASE31_RECHECK_R7D.md": "fddd93811c15ee2ff9d6aa4129b87b00fa8fced1180f99d1c25c4e5f37d68c73",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/common.mjs": "5275950baa100818821c0d801f7269f32a3435c1d1f1bd922c5048b499989bee",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p1-reentry.mjs": "3fc4ee4d8fe88c6fa51d90f33e200391ae952a4da64bd6012e33ce9541c3f91b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p1b-held-after-end.mjs": "daf56f9e19bcb1539e2c549ca52dee1949ef04bfc53591ad6065b68c08e8e8fc",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p2-clinical-cause.mjs": "329b14dadbac307666887badcbdf987a09748b2f6e744e263cb0e3d434c35951",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p3-other-kinds.mjs": "88f64467802574c92766a75061a455dc9d3b09d7c7d220747da8c5931fc3d45f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p4-newer-replaces.mjs": "a88339a0d3d28470ab45849c46cb3b48cea326a9058074ba87ccc1f40c0b7d99",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p4b-correction-ends-kept.mjs": "0bf8fe512ec661a4aef2c5bd7fd0c3df5368a77def66aab57e0885bb538a312f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p5-not-kept.mjs": "3ae8d74e56daa831fab58f0a48d73981774dc61716b190cd347533cbbbadf506",
+  "audits/domain-coaching-r7-d-2026-11-02/phase31/reviews/ssctr/probes/p6-record-on-early-returns.mjs": "77be9579fed5eb10346119872a57a2d002f746e0a8145ac509470114293b5745",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/AUTHORIZATION_PHASE32.md": "ea849ae03e4a613b3d63c41a927d3e3f5cbd19670754ba9039e5e4a97f492273",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/DIFFERENTIAL_VS_R7D_FREEZE_2.json": "6c75a20296cc30ef29139ca3b640223a605cd87603a4b5383577bf42caf7d128",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/EVIDENCE_PHASE32.json": "ccef42410e1093b13eb7d7e97df52ae55efe61b03fb632d17bb03d74c25c722a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/evidence/MUTATION_PHASE32.json": "95ed9a6d1d304e835aebc9b93333f7951b976800dbe6d34c91e838f9496a4c5f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/f02-witness.mjs": "64eee00225950afd6f88d7b1f1862f0d43f95108e933203a9a4eadc552c770c1",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/out/f02-witness.R7D-FREEZE-2.json": "d503ca437dceec166c5783df4a1cf83803c0cb8e6a94866ee7400d4c75d2b77d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/out/f02-witness.candidate.json": "417c038f2771a5e0c62495f7547128f98c25277042afe5e0dab867d7f36f3208",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-differential.mjs": "b56acfdc296ac52f23d5702ec64ecc5e0fe4a920f94674d8c7f7b3ff365481d4",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-mutation.mjs": "95c26a081cd03ad53844fc636f16cdbc0ffe0be1606d7abf24dac2a0426a543b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/probes/phase32-run-evidence.mjs": "f99e4f0d30da17ccf19c49ad3acd665b6c11cdb223f5a5a6c820f272f6ae2957",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/DOMAIN_PACKET.json": "349ccb32f25636b27949cc98e9d7e382f4d4fa47578833eb8bde7bceacb28ee3",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/DOMAIN_PACKET.md": "f2c301b8e227a1744a36b855bb1d8aaf383abab3b26147dd60e3c5e77c095176",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/RUN_REPORT.json": "c2e44adab0f3b2ec6922c1f12d832fd5094ac6591009f4d0a78525111408bd91",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/diagnostic/SUMMARY.md": "ca3167bd89f321e6b7d5f04997de93691067b7af9e08303b6d757c5cdecd60a8",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/DOMAIN_PACKET.json": "f9b6574546f201f418a5aa0a70d29e917372cd7345000a71ce709d0574072c51",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/DOMAIN_PACKET.md": "4972f8db031248d5ba78335b0e3664f456171a3714e32cab02024714a5f9e004",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/RUN_REPORT.json": "b37f9e7162e72944153752efb9d063cff4dadbee0fb3d8481e816cb773cb6aa6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/regression/generated/SUMMARY.md": "71be5debac1e49244a064009372b2b3c9f9ae2c1149d6659abb2be68f6f92442",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/REVIEW_REQUEST_PHASE32.md": "865bd5da85e32b193839a2eda9ba6d7ba387450589cb4b9ba23eaeba30511a25",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE32.json": "2c74d0d27813cf263c777121383b06b5cb55f69cd7af0c7b239b583ebb8b519f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/ENGINEERING_CHECK_R7D_PHASE32.md": "8d826768ce5f04518d4da1c79546d04cfea9186197ed8af19f45fa70b9f160a5",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-author-mutation-rerun.json": "95ed9a6d1d304e835aebc9b93333f7951b976800dbe6d34c91e838f9496a4c5f",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-correction-across.candidate.json": "d76ebae48a3771085eb7c5194f5f3d821f9e0ceb19dd759cf524a1df7f49a70e",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-mutants.candidate.json": "a96e4e39354e0540edb3297bb0d5023a7c243059c26067c8b6ef510eae73a4cb",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-p18-false-block.candidate.json": "48964343ab9a26b214e93b38c17f3e7afe209ad8ee071b548f09248077f366a0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-probes.R7D-FREEZE-2.json": "2939f601f5706a9439634a881789a72f68c0588ad905e922e6b0a749213d6408",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-probes.candidate.json": "e3faa21618039d4ef64133b7d1c8070fb4aa9d99fe68d84cc689fb500b404231",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-restate-fb2.R7D-FREEZE-2.json": "c74bf0381da65e72004c702126f1390c086b029a6c5b824a8a58e3b4c508883e",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/out-restate-fb2.candidate.json": "a640c3d472546e311f72949a8927bb791db6484431adffa54f79636b223130fd",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-correction-across.mjs": "21d879e2e1b195e9028951e793b0e78e4adc0b4a7cc787f873206739a51ad71a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-mutants.mjs": "554a65b525a63671552571cb1fa253e1dff8fb6fbc7205aa76a45022ec69e762",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-p18-false-block.mjs": "db426ab3987d3fc1aeecd8e8030801da2d07957e8bb40d44700a7389438f6274",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-probes.mjs": "4f86dca02e9b98cd581069498d810f0d5a294158e7f2cd964dc8e6421d1fa481",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/engineering/probes/qe-p32-restate-fb2.mjs": "6b5e3a6f6585a186f39cf4eb2b58275bafcd72b605c9df929c0f9a7503624993",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.json": "4aff9fa6bc67b7b25fe7613145172c2f6245d239fcabee5350b0532682c03edc",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.md": "f014e430a24f01ec49be40cd90458db74b1ab6fb2af1183850f3ca63af0421e1",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/common.mjs": "0307e8f31e43f5f1a9b67d145fddb2906211351edfaebfd064421f2e54775844",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q1.R7D-FREEZE-2.json": "13186a9d90baef95e19d3bb9a30f4d77da59fe58df7ed9a4fdd4dc005c46da94",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q1.candidate.json": "13a9d6c6c03bbccae9dea7363a986f88b34b694c7c258462f36b428fd47262f7",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4.R7D-FREEZE-2.json": "b20ad2b2cf793a5567f30fcf47bba171d0ef9f219c89f7562a0df63230b2d313",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4.candidate.json": "cf6d2b4ee62c4076c2c7807416c87b852351b1305737b867a805cad0e13860f6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4b.R7D-FREEZE-2.json": "232caa9e208f77c4458efaa6a0b28b3e0efa5f98ddd151b786eb9c7b8f644d71",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q4b.candidate.json": "f4e4787ba2a82c629e411344f2ffed37cf48e98dd7799a61106e09d0754cf749",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q5.R7D-FREEZE-2.json": "9ce97ed623f8a3a13bdfff1ac6fc1ef33f1ef2912e63dd31a071769e3aee232a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q5.candidate.json": "aa6ef23554d53f3d01e9c3ea04c0d2f47ed390e8aaa39bbd6cdd9a1aadf34925",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q6.R7D-FREEZE-2.json": "c32491722cf207104bf0359a4b330aece9d69fae580c038eb5255ed4207aef76",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/out/q6.candidate.json": "fdbf5553e7d145dd4178100461fa2cd2bc729fe7d1ab5a9e7e38360b37275d84",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q1-f02-preservation.mjs": "8c63c6d76acc10e7febdb746fff6212a4f42de8b806c37ef4fb602a4b18b95a8",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q4-between-breaks.mjs": "5e362f5e173928047a6afc59ce87df75991ac51c56b4a914e247586d91c3b7a5",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q4b-long-then-session.mjs": "7c3566d323051357afbcff6323225a41fedef0f6292018f3e18b852c8d8df360",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q5-clinical-f08.mjs": "c660533ceeaf0ea3fefe14e009c1405644110014bd8bd29b481614cb2ca9c92b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/probes/q6-i9-replay.mjs": "b8e6d2a59771ee6d5dd4e81e4e38bcddad3c79eaff0fb02f63ba25d765efbc98",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/AUTHORIZATION_PHASE33.md": "305309b12ce2a5d4d7c1e13c4e101bcec27c2a0383ae2fc7c2cd797c39272a79",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/QUEUE_INTEGRATION_R7D_P33.json": "dd34ff2ae1639ef5b126d0e3dcd9fd2d2f9e4150f66ab5672f7b71f493b86f5c",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/DIFFERENTIAL_VS_R7D_FREEZE_3.json": "4cd6cb06115e4420992a46cce9a4c0022c6aab8459545c3c32dac124ab93910c",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/EVIDENCE_PHASE33.json": "d2f339ef1abe466f8260b05899027c5f7dd8f07c3906033a55f2396288e99e4b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/MUTATION_PHASE33.json": "8a738cca589a5946942f5373a46194916232dca4812c096b8579640f0686b010",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/integrate-queue-r7d-p32.mjs": "c097e59fcb0e501ba14f832a211080e73d5d2afbb785895cefcc04d896fb4026",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/f01-witness.mjs": "73a54ca8e328e576503091f0ee5502f4207db454a758c2293b9437bad75f1a46",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.R7D-FREEZE-3.json": "99a2ed9306030d951601dc24e7905b63b9af08b2f77a7a2015348cb6580661e0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.candidate.json": "7adc6ecc1851b4de9f6beaa3a0fcfd9aa194d69a091edb85cfbc7eafff32ea0e",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-differential.mjs": "37ac3fc274f58298ea7da46754241de3ef9c3602662b2338b62ee588472d7746",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-mutation.mjs": "6e32cef700e923eebe7b77fdcbb3998d22463182490d199d4f6e45b00166f2ce",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/phase33-run-evidence.mjs": "f7caace3dd43d5cfe922e9ef26260051b53931589af098d46d8ece800bcd4320",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.json": "d2fbec773027de5ca115d3b921be6377229d862c604bcfe58a285b75fc6da1a0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.md": "d9801ff7763b203ca89394d1d69cd61b53f65b175c1be0cf084bdccf5a0ecf21",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/RUN_REPORT.json": "cf36760561dcf6d3eac5bb2055ff9ef46fd34f7822d890f5fe790cfe94e339c6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/SUMMARY.md": "2ec2bce18fc4db3a5ef804d7102c1a8396457e7218cab94e6868449834bb712a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.json": "e94a13e81195700f78eea9aab18ca8feacff89d09737bd5fda85a4ccf16d27f4",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.md": "17d4bee6242ca0caf1d99b4058b9aecc2d1273474632e9f3c2d83c2f21cfe268",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/RUN_REPORT.json": "7505361f8e23412c84e4eca2087f4c3a5db6590ad5b74945db6de3afb9ebb8b0",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/SUMMARY.md": "34c2e91cb471a32e938eb2a082708179c222f229881ffbaff7afb4132f9b62b6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/REVIEW_REQUEST_PHASE33.md": "1b1555f4bbd01f18d8cf59a3184746f76d6bb9c3c46db87e5470fb940eb31bcf",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.json": "c353a1a0284a3ad8c8201ace49a4a26e81fb273e2f5f930578da28bb9ffeab7d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.md": "024caa9352e071b49e00d4c48378e4d716b4298e57aaf6b0a83653cb6e9ee588",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.R7D-FREEZE-3.json": "489cdd0eafd841428a8a28ba49a67914529341a58c2e0852cb2b82ec1eec0439",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.candidate.json": "d42c452ccef2533d88306f4680381d9871325a3fe87722cc76e9fc8d6061c42b",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/harness-probe.candidate.json": "0f27e7adf1bbd6dd7a3bc2a877c56d359882eca284fc0aa1c04006234ee29d0d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/mutation.qre.json": "f6c0a0d7b05648cb88de4223fa97912a51000c7c654a480f242d486b453dd72d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/reruns.summary.json": "b6f5bf8943fdbfedae33de965b5b178c1c6a7f8f6b87b2470ff65f25f74878cf",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.R7D-FREEZE-3.json": "e6884f7be926fd77f05a03ef5893411447b8e9a0cab5cb0bc15090f0fa81e691",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.candidate.json": "66677a28663137aa7e275b4f53d4cee2bae51e4c5efd507ba5d54659559d5996",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-applied-between.mjs": "fd2614322be31506eb66431cc444397047f770a093272e414bdca62066d06eb4",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-harness-probes.mjs": "bb1e3bc759d7382566ba0cd943af035c8a725d57dccea7e2edccec80606213d6",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-mutation.mjs": "b79b86e3c2a5197023e020dee43c8ad4b9874d160d2060c487b93c76fe3adefd",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-runtime-probes.mjs": "6f4e356c29b918f15be78ebf89964e6f71afd90b7652193f0837816da043f502",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.json": "f5c7c571f542b731f54ded422bc667a7607f6f85556070d0eb5572ca3b332581",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.md": "934a3cc624041504df6364224ac85c9f20ca8574263c03e1817c087cf2ff44e4",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/common.mjs": "96ebe1784363bdd4829557fe91042c3f8af86a710e2aa1954f5126ed90306d79",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.R7D-FREEZE-3.json": "a27ed020d947763df5b4faf1349d9206a93431569de1f23fd980037fe8438d6d",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.candidate.json": "35bc763c06d8f2157901f519344bee28b80444138d8f49864234d55e9d208cf7",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.R7D-FREEZE-3.json": "a14e07910da32daec6d182d11a7aa8d42acc06cbb1c50ac4c15248304309749a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.candidate.json": "583e7d7c9e0a1ceefce7b57b62ed8481ea8bc5f5c823e95a45f4af220bfbfd2a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.R7D-FREEZE-3.json": "466ae5c8b3e5561ca776406b4a60aea1598008e520ed2a1ea55d86ae5138dc38",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.candidate.json": "3cdf7e0bb9cc0fe3b1ba69d45aefcba2f3cea50dc922236e3a0c12726f24e038",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.R7D-FREEZE-3.json": "eb727e7cde2cb0f51451f9ab6c8f88425c432e2a8aafca67c5b8e70c556f94e9",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.candidate.json": "282cf3d3d420988b7dc625f4a4c6499cae7e8f22c22fe538bf7b94ffbdf756e2",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s1-isolated-paths.mjs": "82adcc13e9e598061db2a5c5887cd0082b6316b97822953e8b84589d87d5ae6a",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2-inverse-defect.mjs": "832426afd29b09b9bc7623ae374eff48f8957f4e884dd7b4ca25b6c3713604fb",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2b-single-break-baseline.mjs": "194f93c1cf22326b3762d66fa7b1788a9b53c1234ecb6ee474854e8684972c82",
+  "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s3-clinical-unknown-order.mjs": "a481f3c2d0d1558c0f2841dabf7bc47ae498ca9929b6bb71264c519ad2345e58",
+  "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json": "d79dbcd099dfca2562020f92c7e13a69cef756cc03a521064f959f9b60c94138"
+ },
+ "sourceDigest": "754d42a4856fce6aaa563d48ee67c991fa15c7091290ed9169d86982c97ded8c",
+ "manifestDigest": "e41418da91f212ef4f803242049cbeb9a939e9a936f2402532aae608db6a10ba",
+ "tests": {
+  "count": 952,
+  "pass": 952,
+  "fail": 0,
+  "durationMs": 130048,
+  "node": "v24.19.0"
+ },
+ "conformance": {
+  "conformance-r7b": {
+   "result": "PASS",
+   "sha256": "8937dca3181a7ad317ddccbbe7afe61616e10e8ba3501e4fb4a9f49618c2504c"
+  },
+  "conformance-r7b1": {
+   "result": "PASS",
+   "sha256": "48ed62be2927d8a43d91c19a4ee5f512e554c99897486fcc2d9d9bed2f40f766"
+  },
+  "conformance-r7b2": {
+   "result": "PASS",
+   "sha256": "fd127a1d959dbc1d2c79171e3ddb01ac9ddb4635c7279c454978b16873bf08c9"
+  }
+ },
+ "evidence": {
+  "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/EVIDENCE_PHASE33.json",
+  "sha256": "d2f339ef1abe466f8260b05899027c5f7dd8f07c3906033a55f2396288e99e4b",
+  "outputs": {
+   "witnessRed": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.R7D-FREEZE-3.json",
+    "sha256": "99a2ed9306030d951601dc24e7905b63b9af08b2f77a7a2015348cb6580661e0"
+   },
+   "witnessCandidate": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.candidate.json",
+    "sha256": "7adc6ecc1851b4de9f6beaa3a0fcfd9aa194d69a091edb85cfbc7eafff32ea0e"
+   },
+   "mutation": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/MUTATION_PHASE33.json",
+    "sha256": "8a738cca589a5946942f5373a46194916232dca4812c096b8579640f0686b010"
+   },
+   "validation": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json",
+    "sha256": "9f1cd47e653e6c3ed49c66dbde679705ae705840787f5ba54963d892765432c4"
+   },
+   "diagnosticRegression": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/RUN_REPORT.json",
+    "sha256": "cf36760561dcf6d3eac5bb2055ff9ef46fd34f7822d890f5fe790cfe94e339c6"
+   },
+   "generatedRegression": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/RUN_REPORT.json",
+    "sha256": "7505361f8e23412c84e4eca2087f4c3a5db6590ad5b74945db6de3afb9ebb8b0"
+   },
+   "differential": {
+    "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/evidence/DIFFERENTIAL_VS_R7D_FREEZE_3.json",
+    "sha256": "4cd6cb06115e4420992a46cce9a4c0022c6aab8459545c3c32dac124ab93910c"
+   }
+  },
+  "results": {
+   "witness": {
+    "freeze3": {
+     "F1": true,
+     "F2": true,
+     "F3": true,
+     "F4": true,
+     "F5": true,
+     "F6": true,
+     "reentryRecognized": {
+      "E1": true,
+      "E2": true,
+      "E3": true
+     },
+     "incompleteWeekE4": true,
+     "RED": true
+    },
+    "candidate": {
+     "F1": false,
+     "F2": false,
+     "F3": false,
+     "F4": false,
+     "F5": false,
+     "F6": false,
+     "reentryRecognized": {
+      "E1": true,
+      "E2": true,
+      "E3": true
+     },
+     "incompleteWeekE4": false,
+     "RED": false
+    }
+   },
+   "mutation": {
+    "mutants": 8,
+    "killed": 8,
+    "survived": []
+   },
+   "validation": {
+    "noFalseBlock": "PASS",
+    "coverage": "COVERED",
+    "carrierUnits": {
+     "CARRIER_CLINICAL": 7,
+     "CARRIER_HOLD": 1,
+     "RESEND": 30,
+     "RESTATE_DECLARED_BREAK": 24,
+     "INSERT_NEWER_BREAK": 10
+    },
+    "p17Units": 74,
+    "p18Units": 24,
+    "sensitivity": [
+     {
+      "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "DX-02 (a break declared in a weekly review with no pending question is ignored, VALID)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "F03 (a machine load logged as prescribed is refused; machine settings fabricated by +1 kg)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "F04 (confounded masks an adverse recovery and an impaired next day; the long run advances)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "QE-R7C-10 (shortened answer recorded by a clinical route stays unapplied)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "R7C-G01 (unknown training planned without a question: unreported weeks read as a stop, entry dose VALID)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "D54 (a strength row not done for more than 28 days ignores the race-window dose)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "QE-R7D-P3-01(a) (a break declared with another event is asked and then lost: the next plain review is VALID on the pre-break plan)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "QE-R7D-P3-01(b) (a break declared with a clinical flag is lost across qualified clearance: the next plain review is VALID on the pre-break plan)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     },
+     {
+      "defect": "SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)",
+      "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+     }
+    ],
+    "witnessesFired": 43,
+    "witnesses": 43,
+    "notFired": []
+   },
+   "diagnosticRegression": {
+    "properties": {
+     "P01": {
+      "result": "PASS",
+      "units": 15,
+      "violations": 0
+     },
+     "P02": {
+      "result": "PASS",
+      "units": 10,
+      "violations": 0
+     },
+     "P03": {
+      "result": "PASS",
+      "units": 7971,
+      "violations": 0
+     },
+     "P04": {
+      "result": "PASS",
+      "units": 13,
+      "violations": 0
+     },
+     "P05": {
+      "result": "PASS",
+      "units": 14,
+      "violations": 0
+     },
+     "P06": {
+      "result": "PASS",
+      "units": 338,
+      "violations": 0
+     },
+     "P07": {
+      "result": "PASS",
+      "units": 189,
+      "violations": 0
+     },
+     "P08": {
+      "result": "PASS",
+      "units": 5,
+      "violations": 0
+     },
+     "P09": {
+      "result": "PASS",
+      "units": 839,
+      "violations": 0
+     },
+     "P10": {
+      "result": "PASS",
+      "units": 11223,
+      "violations": 0
+     },
+     "P11": {
+      "result": "PASS",
+      "units": 29228,
+      "violations": 0
+     },
+     "P12": {
+      "result": "PASS",
+      "units": 5001,
+      "violations": 0
+     },
+     "P13": {
+      "result": "PASS",
+      "units": 3633,
+      "violations": 0
+     },
+     "P14": {
+      "result": "PASS",
+      "units": 138,
+      "violations": 0
+     },
+     "P16": {
+      "result": "PASS",
+      "units": 790,
+      "violations": 0
+     },
+     "P17": {
+      "result": "PASS",
+      "units": 9,
+      "violations": 0
+     },
+     "P18": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     }
+    },
+    "relations": {
+     "DETERMINISM": {
+      "units": 17,
+      "violations": 0,
+      "failingCases": []
+     },
+     "PERMUTE_OBSERVATIONS": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "DUPLICATE_SECOND_SOURCE": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "RENAME_OPAQUE_IDS": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "LOAD_CONVENTION_EQUIVALENT": {
+      "units": 3,
+      "violations": 0,
+      "failingCases": []
+     },
+     "RESEND": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "CARRIER_CLINICAL": {
+      "units": 0,
+      "violations": 0,
+      "failingCases": []
+     },
+     "CARRIER_HOLD": {
+      "units": 0,
+      "violations": 0,
+      "failingCases": []
+     },
+     "RESTATE_DECLARED_BREAK": {
+      "units": 3,
+      "violations": 0,
+      "failingCases": []
+     },
+     "INSERT_NEWER_BREAK": {
+      "units": 0,
+      "violations": 0,
+      "failingCases": []
+     },
+     "CONSENT_OFF": {
+      "units": 0,
+      "violations": 0,
+      "failingCases": []
+     },
+     "CLOCKLESS_CONTROL": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "CALENDAR_SHIFT": {
+      "units": 14,
+      "violations": 0,
+      "failingCases": []
+     },
+     "VARIANT": {
+      "units": 12,
+      "violations": 4,
+      "failingCases": [
+       "R7D-D02",
+       "R7D-D06",
+       "R7D-D14",
+       "R7D-D16"
+      ]
+     }
+    },
+    "corpusErrors": 1
+   },
+   "generatedRegression": {
+    "properties": {
+     "P01": {
+      "result": "PASS",
+      "units": 8,
+      "violations": 0
+     },
+     "P02": {
+      "result": "PASS",
+      "units": 42,
+      "violations": 0
+     },
+     "P03": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P04": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P05": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P06": {
+      "result": "PASS",
+      "units": 57,
+      "violations": 0
+     },
+     "P07": {
+      "result": "PASS",
+      "units": 109,
+      "violations": 0
+     },
+     "P08": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P09": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P10": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P11": {
+      "result": "PASS",
+      "units": 25128,
+      "violations": 0
+     },
+     "P12": {
+      "result": "PASS",
+      "units": 4147,
+      "violations": 0
+     },
+     "P13": {
+      "result": "PASS",
+      "units": 186,
+      "violations": 0
+     },
+     "P14": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P16": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P17": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     },
+     "P18": {
+      "result": "NOT_EVALUABLE",
+      "units": 0,
+      "violations": 0
+     }
+    }
+   },
+   "differential": {
+    "cases": 151,
+    "same": 147,
+    "differing": 4,
+    "unexplained": [],
+    "differingCases": [
+     {
+      "corpus": "HARNESS_DEV_5",
+      "caseId": "DEV-27",
+      "first": "plain",
+      "trigger": {
+       "at": "plain",
+       "break": "2026-11-16..2026-11-29",
+       "stop": "2026-12-03..2026-12-06"
+      }
+     },
+     {
+      "corpus": "HARNESS_DEV_5",
+      "caseId": "DEV-28",
+      "first": "plain",
+      "trigger": {
+       "at": "plain",
+       "break": "2026-11-16..2026-11-29",
+       "stop": "2026-12-03..2026-12-06"
+      }
+     },
+     {
+      "corpus": "HARNESS_DEV_5",
+      "caseId": "DEV-29",
+      "first": "plain",
+      "trigger": {
+       "at": "plain",
+       "break": "2026-11-16..2026-12-15",
+       "stop": "2026-12-19..2026-12-22"
+      }
+     },
+     {
+      "corpus": "HARNESS_DEV_5",
+      "caseId": "DEV-31",
+      "first": "plain",
+      "trigger": {
+       "at": "plain",
+       "break": "2026-11-16..2026-11-29",
+       "stop": "2026-12-07..2026-12-10"
+      }
+     }
+    ],
+    "casesWithF01Trigger": [
+     "DEV-27",
+     "DEV-28",
+     "DEV-29",
+     "DEV-31"
+    ],
+    "reentryControls": [
+     {
+      "caseId": "DEV-30",
+      "same": true
+     }
+    ]
+   }
+  },
+  "red": {
+   "directedOnFreeze3": {
+    "tests": 14,
+    "pass": 3,
+    "fail": 11,
+    "failed": [
+     "R7-D Phase 3.3 T1 (F01 witness): a long break, one isolated session and a short break: the session re-enters nothing, the stop runs through the earlier break and the return is the whole stop's",
+     "R7-D Phase 3.3 T1: thirty days, one run and four days re-enter as the thirty-seven days declared once (a restart), not as the four days alone",
+     "R7-D Phase 3.3 T3: a whole week of the plan executed in full between the breaks re-enters the athlete: the later break alone, from what was executed, never a conservative re-entry",
+     "R7-D Phase 3.3 T3: the late form: a week executed in full and reviewed before the earlier break was declared re-enters the athlete; one session in a reviewed week does not",
+     "R7-D Phase 3.3 T4: a week between the breaks with a session missed or partial re-enters nothing: the stop runs through",
+     "R7-D Phase 3.3 T4: a week that holds days of the earlier break never re-enters the athlete, even with every one of its sessions reported done",
+     "R7-D Phase 3.3 T4: unreported sessions in a week between the breaks are asked first; the answer decides whether that week re-entered the athlete",
+     "R7-D Phase 3.3 T4: a conflicted report in a week between the breaks is asked as unreported; corrected, the week re-enters the athlete only when every session was executed",
+     "R7-D Phase 3.3 T5: a week executed in full but with an adverse response (recovery adverse or next-day function impaired) re-enters nothing: the stop runs through",
+     "R7-D Phase 3.3 T6: a named correction of the earlier break is read with its corrected facts, the isolated session between still re-enters nothing, and a replay changes nothing",
+     "R7-D Phase 3.3 T9: the same facts give the same decision: the same review twice is byte-identical, and either order of declaration gives the same stop, entry and plan"
+    ],
+    "passing": 3
+   },
+   "updatedAssertions": [
+    {
+     "file": "CoachingCore/test/r7d-phase32.test.mjs",
+     "test": "R7-D Phase 3.2 T4: separate breaks with nothing trained between them",
+     "now": "the two sessions between the breaks: the whole stop, TRAINING_NOT_REESTABLISHED",
+     "updatedOnFreeze3": {
+      "tests": 1,
+      "fail": 1
+     },
+     "updatedOnCandidate": {
+      "tests": 1,
+      "fail": 0
+     }
+    },
+    {
+     "file": "CoachingCore/test/r7d-phase32.test.mjs",
+     "test": "R7-D Phase 3.2 T4: separate breaks with unreported training between them",
+     "now": "answered done: MODERATE either way, the answer decides the record",
+     "updatedOnFreeze3": {
+      "tests": 1,
+      "fail": 1
+     },
+     "updatedOnCandidate": {
+      "tests": 1,
+      "fail": 0
+     }
+    }
+   ],
+   "assertionsAsAtFreeze3": [
+    {
+     "file": "CoachingCore/test/r7d-phase32.test.mjs",
+     "atCommit": "aeafc833745fec8bf2d41c1aa0a4dce511d52777",
+     "test": "R7-D Phase 3.2 T4: separate breaks with nothing trained between them",
+     "onCandidate": {
+      "tests": 1,
+      "fail": 1
+     }
+    },
+    {
+     "file": "CoachingCore/test/r7d-phase32.test.mjs",
+     "atCommit": "aeafc833745fec8bf2d41c1aa0a4dce511d52777",
+     "test": "R7-D Phase 3.2 T4: separate breaks with unreported training between them",
+     "onCandidate": {
+      "tests": 1,
+      "fail": 1
+     }
+    }
+   ]
+  },
+  "suite": {
+   "tests": 952,
+   "pass": 952,
+   "fail": 0,
+   "failed": []
+  },
+  "directed": {
+   "file": "CoachingCore/test/r7d-phase33.test.mjs",
+   "sha256": "99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578",
+   "tests": 14,
+   "pass": 14,
+   "fail": 0
+  },
+  "directed32": {
+   "file": "CoachingCore/test/r7d-phase32.test.mjs",
+   "sha256": "2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f",
+   "tests": 17,
+   "pass": 17,
+   "fail": 0
+  },
+  "directed31": {
+   "file": "CoachingCore/test/r7d-phase31.test.mjs",
+   "sha256": "45018b32c391f8f2e6cab26ad105c705a5519feda6d84da26aa36e7fe9da29c3",
+   "tests": 14,
+   "pass": 14,
+   "fail": 0
+  },
+  "authority": {
+   "policy": {
+    "path": "CoachingCore/r6/PROGRAM_POLICY_R6.json",
+    "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+    "canonicalHash": "18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c",
+    "boundariesEnabled": 10
+   },
+   "catalog": {
+    "path": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json",
+    "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+   },
+   "r6Records": {
+    "path": "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json",
+    "sha256": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70"
+   },
+   "b0Records": {
+    "path": "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json",
+    "sha256": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885"
+   },
+   "humanQueue": {
+    "path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+    "sha256": "667e1ff033e978d409aef0419537407d32e511eb45f5266dd5bb08bfa2c1f9ae",
+    "items": 233
+   },
+   "productAndCanonUnchangedSinceFreeze3": true
+  }
+ },
+ "rule": {
+  "id": "R7D-P33-REENTRY-WEEK",
+  "text": "Training recorded between two separate breaks (each later one named on its own) re-enters the athlete after the earlier break only when a whole week of the plan lying wholly between them (every session it plans after the earlier break's last day and before the stop's first day) was executed completely in every sport it plans: every session executed as prescribed and every gate ADVANCE or EARNED, with a usable log for every exercise (the evidence reducer's COMPLETED_SESSIONS rule, SSCTR S-A and E3, R7-A final P5; a review that closed the week does not make it one). Then the earlier break is history (TRAINING_AFTER, with reentryWeek) and the return reads the later break alone from what was executed. Training short of that (an isolated session of either sport, a partial or aborted one, sessions in no complete week, a week with a session missed, partial, unreported, conflicted or adverse) is a fact of the stop, not a re-entry: the stop runs back through the earlier break as with nothing trained between (TRAINING_NOT_REESTABLISHED), classed by the unchanged return classes. Unreported sessions between them are asked first (TRAINING_BETWEEN_BREAKS). Identities, relations, the replay and correction rules, clinical first and F08 are unchanged; no break is merged and no duration added.",
+  "founder": "Phase 3.3 (phase33/AUTHORIZATION_PHASE33.md): direction B, restrict what counts as known training between two interruptions; an isolated execution is not a resumption; a proven resumption stays recognized; no new threshold, clinical criterion or dose"
+ },
+ "noNewNumber": "Phase 3.3 adds no dose, threshold, count, length, increment, tolerance, cadence, return recipe, taper, race, strength or learning authority: the week is the plan's own and the completeness test is the evidence reducer's existing rule; the return is the unchanged R6-NONCLINICAL-RETURN recipe, classed by the stop the facts establish. Offline synthetic shadow reference only; V1_COACHING_AUTHORITY_READY stays NO.",
+ "closedDefect": {
+  "id": "SSCTR-P32-F01",
+  "status": "CLOSED in R7-D Phase 3.3 on the paths the rule names (isolated training of either sport, partial or aborted sessions, sessions in no whole executed week; the late form through a reviewed week); disclosed residuals of the rule below",
+  "witness": "audits/domain-coaching-r7-d-2026-11-02/phase33/probes/f01-witness.mjs",
+  "before": {
+   "F1": true,
+   "F2": true,
+   "F3": true,
+   "F4": true,
+   "F5": true,
+   "F6": true,
+   "reentryRecognized": {
+    "E1": true,
+    "E2": true,
+    "E3": true
+   },
+   "incompleteWeekE4": true,
+   "RED": true
+  },
+  "after": {
+   "F1": false,
+   "F2": false,
+   "F3": false,
+   "F4": false,
+   "F5": false,
+   "F6": false,
+   "reentryRecognized": {
+    "E1": true,
+    "E2": true,
+    "E3": true
+   },
+   "incompleteWeekE4": false,
+   "RED": false
+  },
+  "measured": "P18(a) re-entry week (R7D-HARNESS-5, R7D-PREREG-5 Δ1)"
+ },
+ "disclosures": {
+  "f08": {
+   "ids": [
+    "QE-R7D-P31-01",
+    "SSCTR-P31-F03",
+    "SSCTR-P32-F02"
+   ],
+   "status": "KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY",
+   "owner": "After R7-D and before any consumer or V1 coaching authority: Founder/PCG with qualified SSCTR/clinical-domain review (G04 owners, G03)",
+   "text": "Unchanged by Phase 3.3 (the R7D-FREEZE-3 text stands): fail-closed while a kept break's stated reason is clinical; an explicit named correction of the reason to nonclinical is the athlete's statement, not clearance. No runtime expansion."
+  },
+  "residuals": [
+   "Plan-week alignment (R7D-PREREG-5 Δ6): re-entry is read per plan week, as every step is; seven or more days executed across two plan weeks with neither whole one complete do not re-enter (conservative).",
+   "Every sport (R7D-PREREG-5 Δ6): a week with every run done but a strength session missed does not re-enter; per-sport re-entry is not modelled (the NF-R7AB-1 / R40 family; conservative).",
+   "Imperfect adherence over a long gap (R7D-PREREG-5 Δ6): weeks of training between two breaks with no single complete week are read as one stop, more conservative than either break alone (the existing rule that no incomplete week earns a step).",
+   "A reviewed week is not a re-entry by itself (R7D-PREREG-5 Δ6): a week a review closed before the earlier break was declared counts only if executed completely.",
+   "Extra question (R7D-PREREG-5 Δ6, O-01 extended): unreported sessions between the breaks are still asked when no whole week fits between them.",
+   "The R7D-FREEZE-3 residuals other than SSCTR-P32-F01 stand unchanged (SSCTR-P32-F03, SSCTR-P32-F04, QE-R7D-P32-02, -04, -05, QE-R7D-P32-01 as reconciled)."
+  ],
+  "ssctrFindings": [
+   {
+    "id": "SSCTR-P33-F01",
+    "class": "DOMAIN_RESIDUAL_NON_BLOCKING (inverse direction, material)",
+    "new": "The outcome is new: R7D-FREEZE-3 erased the earlier break on these paths (SHORT 4). The related single-break behaviour is pre-existing (B1-B4).",
+    "runtimeOnly": false,
+    "safetyRelevant": "No: it lowers doses (progression and adherence cost, possible loss of trust). Nonclinical.",
+    "finding": "When an earlier separate break is still unapplied and the training between it and a later break completes no plan week in every sport, the candidate reads the whole span as one stop. That covers imperfect adherence, a strength session missed each week, missing reps in reserve and plan-week straddling. The training days are counted as stop days, so the class rises with the length of the training span. With a 14-day earlier break and a 4-day later one, any gap of 11 days or more without a complete plan week turns a MODERATE-sized pair into a LONG restart. That is more conservative than each break alone and than the existing episode rule (the earlier break applied when stated, then the later break from its return state).",
+    "reproduction": "probes/s2-inverse-defect.mjs and s2b-single-break-baseline.mjs. V1: weeks 4-5 with every run executed (long and quality included) and the Friday strength session missed each week, then a 4-day trip. Candidate: LONG 32d RESTART, EASY 15/20/20/20, back-squat 1x7 ESTABLISH. Episode rule: SHORT 4 RETURN, LONG 45, EASY 45/34, LONG 50. R7D-FREEZE-3: SHORT 4, LONG 75, EASY 50/41, LONG 65. V2 (a Tuesday easy run missed each week): LONG 32 RESTART. V3 (three weeks): LONG 39 RESTART. V5 (the late form, weeks 4-5 reviewed at the time): LONG 34 RESTART. B5 (the trip declared by a return report): LONG 32. V4 (a weekly review at the end of each week) never reaches the path: the first review applies the holiday (MODERATE 14), then the trip is SHORT 4 RETURN, identical on both runtimes. Pre-existing on both runtimes, without the trip: the holiday applied late after two imperfect or two complete weeks gives MODERATE 14, LONG 20 (B1-B4).",
+    "assessment": "Weeks of near-full training are not physiologically a stop (claim 3, SUPPORTED_WITH_LIMITS), so on this path the outcome is over-conservative. It is the inverse defect the Founder asked to avoid, on a path narrower than the ones the evidence tests. Why it does not block: (a) the direction is conservative and nonclinical, with no dose above executed capacity; (b) it needs three things together: an earlier break left unapplied across weeks of training (a bulk sync without review, or a late declaration of a past break), no plan week complete in every sport, and a later separate break; normal weekly reviews avoid it (V4); (c) the PREREG-5 Δ6 'adesao imperfeita longa' bullet discloses it, though it understates it (F03); (d) every remedy needs authority the Founder has not given: a per-sport re-entry (an architectural decision per NF-R7AB-1/R40), a partial-adherence criterion (a new count or threshold), or a combination rule; (e) blocking would keep R7D-FREEZE-3's F01, which errs on the riskier side on every F01 path.",
+    "routeTo": "Founder/PCG, before the final holdout is commissioned (CF-P33-03). Then SSCTR for any policy that results, and the runtime author with Product/UX and Data for an R40-style per-sport reading. Options to decide, not decided here, no number: (a) on the non-re-entry branch, read the later break from the state the earlier break's own return would have set, so training days never count as stop days; (b) per-sport re-entry, with the return class per sport (R40); (c) keep the candidate's reading and accept the restart on this path as the authorized conservative behaviour. The related single-break question (B1-B4: whether training after an unapplied break is read when it is applied) belongs to the same decision."
+   },
+   {
+    "id": "SSCTR-P33-F02",
+    "class": "CONSUMER_CONDITION (G03 with Data)",
+    "new": "The consequence is new: re-entry depends on it. The gate rule is pre-existing.",
+    "runtimeOnly": false,
+    "safetyRelevant": "No (it errs conservative).",
+    "finding": "A week executed in full whose strength sets lack reps in reserve (or reps) never re-enters the athlete, for running too. The strength gates HOLD ('reps in reserve not logged; the dose holds'), so complete(STRENGTH) is false.",
+    "reproduction": "probes/s1-isolated-paths.mjs. I5 (bulk): MODERATE 25 RETURN, where the same week with reps in reserve logged gives SHORT 4 at LONG 70 (I5 control). I4 (late form, week reviewed): MODERATE 27. R7D-FREEZE-3 gave SHORT 4 on both.",
+    "routeTo": "G03 and Data, with the interface owner: a consumer must capture reps and reps in reserve for every strength exercise, or tell the athlete that a week without them cannot re-enter them. CF-P33-04."
+   },
+   {
+    "id": "SSCTR-P33-F03",
+    "class": "DISCLOSURE_CORRECTION",
+    "new": "New wording (PREREG-5, INTERFACE-5, the code comment and the review request).",
+    "runtimeOnly": false,
+    "safetyRelevant": "No",
+    "finding": "Three wordings misstate the candidate's behaviour. (1) PREREG-5 Δ6 calls the long imperfect-adherence reading 'mais conservadora que cada pausa sozinha; e a regra existente de que nenhuma semana incompleta ganha passo'. The existing rule holds an incomplete week's dose; it never counts its days as a stop. And the outcome can be a LONG restart whose class grows with the training span, below the existing episode rule. (2) INTERFACE-5 §1 says 'the one by which any executed week ever counts for the coach's history', and the review request and the reestablishedBetween comment say the same. It is the rule by which an unreviewed week releases a step: reviewed weeks are history by their review, and unreviewed incomplete weeks by their facts. (3) 'No duration added' (review request, Q6) is exact only where the training between is isolated.",
+    "routeTo": "Freeze record, handoff and a post-review addendum to PREREG-5 (CF-P33-02). INTERFACE-5 to be qualified before any holdout if it is amended."
+   }
+  ],
+  "engineeringFindings": [
+   {
+    "id": "QE-R7D-P33-01",
+    "severity": "MAJOR",
+    "title": "The runtime's 'week executed completely' reads only gated sessions; INTERFACE-5, PREREG-5 Delta 2 and P18(a) require every session, so P18(a) blocks the candidate",
+    "finding": "reestablishedBetween reads complete(sport), the reducer's gate predicate. weeklyGates gates only the run roles of RUN_GATE_ROLE (EASY, LONG, QUALITY, WALK_JOG) and strength exercises. Planned, prescribed sessions with other roles hold no gate: WALK (optional brisk walks when more run days are chosen than current running supports, and in walk/jog or restart), RECOVERY_EASY and SHAKEOUT (optional, around a race), RACE_TOUCH (key) and RACE (key, essential). A week with any of them missed or unreported re-enters the athlete when the gated sessions are complete. The public rule says otherwise: INTERFACE-5 section 1 ('every session that week plans ... every one was reported done as prescribed'), PREREG-5 Delta 2 ('toda sessao executada como prescrita'), the runtime comment ('so no session was missed') and the freeze-r7d-4.mjs rule text. P18(a) follows the public rule (every live session with an executed report), so on a correct-by-its-own-rule TRAINING_AFTER it reports OLDER_BREAK_DROPPED, a P18 blocker without envelope (SAFETY_BLOCKER class). The README and PREREG-5 Delta 1 claim that P18(a) is a necessary condition that never blocks the runtime's stricter rule; for these roles the runtime's rule is not stricter. Validation 5 has no plan with optional or race-week sessions in a re-entry week, so its no-false-block result does not reach this. Dose direction on the runtime side is the lighter reading (a SHORT return); for skipped optional walks this is plausibly acceptable, for a missed race touch or race wholly between two breaks it is a domain question.",
+    "reproduction": "probes/qre-p33-harness-probes.mjs --rt <candidate scratch root> --harness audits/domain-coaching-r7-d-2026-11-02/harness --out probes/out/harness-probe.candidate.json: intake with run days Mon/Tue/Wed/Fri/Sun and low recent running (EASY, LONG and two optional WALK sessions a week), weeks 0-1 reviewed, VAC14 kept on w4d0, TRIP4b named and declared w5d4 with week 4 reported: QH-1 (walks unreported) and QH-2 (walks reported not done): REESTABLISH, VALID, the trip alone 4 days SHORT, the holiday TRAINING_AFTER; executedWeekBetween false; P18 FAIL OLDER_BREAK_DROPPED. QH-3 (walks done): P18 PASS. Runtime side: probes/qre-p33-runtime-probes.mjs Q2 (same plan, three report variants, all SHORT TRAINING_AFTER with reentryWeek 2026-11-30). Code: r6-adaptation.mjs RUN_GATE_ROLE (line 20), weeklyGates (lines 221-230), complete (line 1318).",
+    "newAndRuntimeOnly": false,
+    "newNote": "New in Phase 3.3: the rule, its public text and P18(a) are all new; the gate coverage they disagree about is the reducer's existing one.",
+    "routedTo": "SSCTR (which sessions a re-entry week needs: optional WALK, RECOVERY_EASY, SHAKEOUT; race-week RACE_TOUCH, RACE) then Chief/Founder: instrument-side (PREREG addendum + harness revision + a development case of the QH-1 form) or runtime-side (a new authorized mission). No runtime byte in this phase."
+   },
+   {
+    "id": "QE-R7D-P33-02",
+    "severity": "MINOR",
+    "title": "Inverse-defect residual: a whole week executed before a later break that begins later the same day (startedAt) is not a re-entry",
+    "finding": "The week selection requires every session date < the stop's first day, while the history it reads is cut at startedAt. A plan week whose last session is on the stop's first day, executed before the stated start time, is never wholly between the breaks, so the stop runs through the earlier break. R7D-FREEZE-3 recognized this re-entry. Conservative direction (a longer stop, a MODERATE re-entry), narrow (a stated start time on a day holding the week's last session), but it is a proven resumption the rule fails to recognize, against the Founder's 'never create the inverse defect', and it is not among the PREREG-5 Delta 6 residuals (plan-week alignment there concerns executed days split across two plan weeks). Without startedAt the first day is read as wholly inside the break (0.8), so only the startedAt form is affected.",
+    "reproduction": "probes/qre-p33-runtime-probes.mjs Q5: A days 0-13 kept Mon wk4; week 4 executed in full, its Sunday long run at 08:00Z; D from Sun wk4 18:00Z (startedAt) to Wed wk5, named, declared Fri wk5; plain review. Candidate: REESTABLISH, stop 2026-11-16 to 2026-12-09, 24 days MODERATE, RETURN mode, TRAINING_NOT_REESTABLISHED. R7D-FREEZE-3: D alone, 4 days SHORT. probes/qre-p33-mutation.mjs EXP-1 (a session on the stop's first day counts as before it when the stop has a stated start time): Q5 becomes 4 days SHORT, TRAINING_AFTER with reentryWeek 2026-11-30, confirming the cause. Outputs: probes/out/runtime-probes.{candidate,R7D-FREEZE-3}.json, probes/out/mutation.qre.json.",
+    "newAndRuntimeOnly": true,
+    "newNote": "New in Phase 3.3 (the wholly-between test).",
+    "routedTo": "SSCTR (acceptability as a conservative residual), then the next authorized runtime mission; disclosed in this freeze"
+   },
+   {
+    "id": "QE-R7D-P33-03",
+    "severity": "MINOR",
+    "title": "An applied break between two separate breaks: reading the stop through isolated training gives a relation question that restating the later break does not end",
+    "finding": "When the earlier break A is declared after a return already applied a later break E, A is not applied and A and H are separate breaks with E between them. With no whole executed week between A and H, the stop now runs from A's first day through H, across the applied E, and interruptionEpisode asks whether H corrects E (missingInputs interruption.episodeId). Restating H under its own name asks again. R7D-FREEZE-3 asked the same question with nothing trained between them, so the dead end is pre-existing; Phase 3.3 extends it to isolated training between, where R7D-FREEZE-3 re-entered from H alone (the F01 form itself). Fail-closed (no prescription), so not unsafe; a usability dead end on a rare path (a break declared after a later one's return).",
+    "reproduction": "probes/qre-p33-applied-between.mjs: weeks 2-3 reported not done, week 4 with its Tue run only (or nothing), E Mon-Thu wk5 applied by a return report on Fri wk5, A (weeks 2-3) declared Mon wk6, H Wed-Sat wk6 named and declared Sun wk6. Candidate, both variants: ASK interruption.episodeId, and ASK again after H is restated. R7D-FREEZE-3: one run between, REESTABLISH (H alone SHORT, A TRAINING_AFTER); nothing between, the same ASK. Outputs: probes/out/applied-between.{candidate,R7D-FREEZE-3}.json.",
+    "newAndRuntimeOnly": false,
+    "newNote": "Pre-existing on R7D-FREEZE-3 for nothing trained between; extended by Phase 3.3.",
+    "routedTo": "Chief/Founder for the next runtime or interface mission (for example, a separate stop that ends at an applied return between the breaks, or a question the athlete can answer)"
+   },
+   {
+    "id": "QE-R7D-P33-04",
+    "severity": "OBSERVATION",
+    "title": "reentryWeek with three or more separate breaks names the week after the latest earlier break for every earlier break",
+    "finding": "Once a re-entry week is found after break B, every earlier unplaced break, A included, is TRAINING_AFTER with that same reentryWeek, although B came between A and that week and A's own re-entry was never read. INTERFACE-5 section 3 asks clients to tell the athlete 'which week re-entered them'; for A that text would point past B. No dose effect (the stop is H alone either way).",
+    "reproduction": "probes/qre-p33-runtime-probes.mjs Q3b: A days 0-13, one run (Tue wk4), B days 17-20, week 5 in full, H days 28-31: candidate separateBreaks TRAINING_AFTER@2026-12-07 / TRAINING_AFTER@2026-12-07 / LATEST, 4 days SHORT.",
+    "routedTo": "Interface owner (record wording: reentryWeek read as 'after the latest break before it')"
+   },
+   {
+    "id": "QE-R7D-P33-05",
+    "severity": "TEST_GAP",
+    "title": "Directed tests miss several shapes of the new rule; four reviewer mutants survive the tests",
+    "finding": "Surviving the Phase 3.3 and 3.2 directed files: QM2 (a session on the stop's first day counts), QM4 (both sports required whatever the week plans: run-only and strength-only weeks never re-enter), QM5 (reentryWeek also on LATEST and placed rows), QM8 (any unreported session suppresses a whole executed week); each is killed by a reviewer probe (Q5; Q1; Q1-Q6; Q2 and Q6). Surviving everything: QM1 (a session on the earlier break's last day counts), QM3 (the empty-week guard dropped), QM9 (SKIPPED sessions kept in the wholly-between test); QM6 (history without startedAt) is equivalent while the selection is day-granular. No directed test has a run-only or strength-only plan, three separate breaks, a re-entry week followed by unreported sessions, a SKIPPED or moved session in the gap, a session on either boundary day, or optional or race-week sessions in a re-entry week.",
+    "reproduction": "probes/qre-p33-mutation.mjs --rt <candidate scratch root> --work-parent <scratch> --baseline probes/out/runtime-probes.candidate.json --out probes/out/mutation.qre.json (restored true).",
+    "routedTo": "The next authorized runtime mission (tests only; the reviewer probes are available as seeds)"
+   },
+   {
+    "id": "QE-R7D-P33-06",
+    "severity": "MINOR",
+    "title": "The queue item states a supersession that does not exist yet, and the queue write is not atomic",
+    "finding": "integrate-queue-r7d-p32.mjs writes target.artifact_revision '... superseded by R7D-FREEZE-4 in R7-D Phase 3.3 ...', and the freeze requires the append before it runs. If the freeze is then refused (a review not passing, a suite failure), the append-only queue keeps a statement about a freeze that was never made. The script also rewrites the queue file and checks append-only afterwards; on a failed check it throws with the file already rewritten (no deletion; content preserved by the prior round-trip check).",
+    "reproduction": "Scratch clone dry run (probes/out/reruns.summary.json, freezeDryRun): the appended item's target.artifact_revision text; integrate-queue-r7d-p32.mjs line 40 (artifact_revision) and lines 67-71 (write, then the append-only check).",
+    "routedTo": "Chief (the coordinator running the integration)"
+   },
+   {
+    "id": "QE-R7D-P33-07",
+    "severity": "OBSERVATION",
+    "title": "freeze-r7d-4.mjs takes --reviewed on trust and refuses post-review changes only in CoachingCore/src and test",
+    "finding": "The reviewed commit is not cross-checked against the review records' candidate field, and a post-review change to the harness lib, PREREG-5, the interface delta, the brief or the scripts would be bound without refusal. The record does list every path changed since --reviewed (postReview.changedSinceReviewed), so it is visible, not prevented.",
+    "reproduction": "freeze-r7d-4.mjs: the quiet(reviewed,'HEAD',['CoachingCore/src','CoachingCore/test']) check and postReview; scratch clone dry run with --reviewed 3228a70 (postReview lists only added evidence, review and queue-record files and the modified queue).",
+    "routedTo": "Chief (the coordinator running the freeze)"
+   },
+   {
+    "id": "QE-R7D-P33-08",
+    "severity": "OBSERVATION",
+    "title": "Containment evidence is mostly by construction, and the differential's explainer shares the rule's day-granular test",
+    "finding": "Of the 151 differential cases, 12 state two or more breaks and 5 ever record a TRAINING_AFTER return; the other 139 are identical by construction because the change is reachable only through separate breaks. The explainer classifies a TRAINING_AFTER return without a whole week wholly before the stop's first day as F01, so a Q5-shaped case (a proven re-entry lost) would be counted as explained. The reviewer probes (17 cases on both runtimes) supply the missing reach.",
+    "reproduction": "Re-run of phase33-differential.mjs on scratch copies (rows equal to the committed file); counts from its rows and the three corpora; Q5 reasoning against executedWeekBetween.",
+    "routedTo": "Record only"
+   }
+  ]
+ },
+ "routed": [
+  {
+   "ids": [
+    "SSCTR-P32-F01 residuals of the rule (R7D-PREREG-5 Δ6)"
+   ],
+   "to": "Founder, then the next authorized runtime or interface mission"
+  },
+  {
+   "ids": [
+    "SSCTR-P32-F02",
+    "QE-R7D-P31-01"
+   ],
+   "to": "Founder/PCG with the G04 owners and G03 (F08), unchanged"
+  },
+  {
+   "ids": [
+    "SSCTR-P32-F03",
+    "SSCTR-P32-F04",
+    "QE-R7D-P32-02",
+    "QE-R7D-P32-04",
+    "QE-R7D-P32-05"
+   ],
+   "to": "as routed by R7D-FREEZE-3, unchanged"
+  }
+ ],
+ "testGaps": {
+  "inherited": "The R7D-FREEZE-3 test gaps (QE-R7D-P32-06 first) stand; Phase 3.3 adds tests only for its own rule"
+ },
+ "reviews": {
+  "ssctr": {
+   "recordId": "SSCTR-R7D-P33-RECHECK-r1",
+   "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.json",
+   "sha256": "f5c7c571f542b731f54ded422bc667a7607f6f85556070d0eb5572ca3b332581",
+   "disposition": "ACCEPT_WITH_CONDITIONS",
+   "conditions": [
+    {
+     "id": "CF-P33-01",
+     "condition": "Bind this record by sha256 in R7D-FREEZE-4. It accepts only these runtime bytes of 3228a70: CoachingCore/src/r6-adaptation.mjs sha256 15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc, with every other source file equal to R7D-FREEZE-3. It also covers r7d-phase33.test.mjs (99865332448eb6e155b7b74cfda578a1dd680c80f732952d9a60727f38854578) and the two updated T4 assertions in r7d-phase32.test.mjs (2f4cdc44d5e050609cc8ccd816e6b28ebac7c19a9b463031ba4577d03d95115f). Any runtime byte change needs a new recheck."
+    },
+    {
+     "id": "CF-P33-02",
+     "condition": "Disclose SSCTR-P33-F01 with no envelope in the freeze record, the handoff and a post-review addendum to PREREG-5. Give the quantified example: V1 gives LONG 32 RESTART (EASY 15/20), against SHORT 4 at LONG 45 by the existing episode rule and SHORT 4 at LONG 75 on R7D-FREEZE-3. State that the class grows with the training span, and that a single break applied late already ignores training after it (B1-B4). Correct the three wordings of SSCTR-P33-F03. Do not describe F01 as closed with no residual in the inverse direction."
+    },
+    {
+     "id": "CF-P33-03",
+     "condition": "Before the final holdout is commissioned, tell the Founder four things. First, SSCTR-P32-F01 is closed on every path probed. Second, P33-F01 exists, no instrument detects it, and a holdout case of 'break, weeks of imperfect training, break' will be judged on domain grounds without envelope. Third, the Founder should decide beforehand whether a restart on that path counts as a domain failure. Fourth, every remedy needs the Founder's authority (options in P33-F01; no number proposed)."
+    },
+    {
+     "id": "CF-P33-04",
+     "condition": "Consumer conditions (G03 with Data), adding to CF-P31-04, CF-P32-05 and PREREG-5 Δ5. (a) Let the week's review apply a declared break; never leave a declared break unapplied across weeks of training. When past weeks are synced in bulk, run the plain review that applies kept breaks before a newer break is added. (b) Invite the athlete to state a break when it happens, not weeks later. (c) Capture reps and reps in reserve for every strength exercise (P33-F02), or say that a week without them cannot re-enter the athlete. (d) Present reentryWeek as 'training resumed at the doses you executed', never as restored fitness (O-04). (e) For TRAINING_NOT_REESTABLISHED, say in plain words that the earlier break still counts; add no number."
+    },
+    {
+     "id": "CF-P33-05",
+     "condition": "State that Phase 3.3 adds no new dose, threshold, count, length, increment, tolerance, cadence, return recipe or clinical authority. Shadow reference only; V1 authority stays NO; no human or empirical validation."
+    },
+    {
+     "id": "CF-P33-06",
+     "condition": "Queue. Only HQ-R7D-SSCTR-P32-RECHECK is appended in this phase: by its authorized owner, with its content unchanged, naming R7D-FREEZE-3, after checking it is not already present (it was not, at 233 items). The item proposed below names R7D-FREEZE-4 and is appended only in a later phase that authorizes it, by its owner. Never by this instance."
+    },
+    {
+     "id": "CF-P33-07",
+     "condition": "Routing. P33-F01, with the related single-break question B1-B4, goes to the Founder/PCG before the holdout. P33-F02 goes to G03 and Data. P33-F03 goes to the freeze record and the interface owner. SSCTR-P32-F02 (F08 disclosure), F03 and F04 stay routed as in SSCTR-R7D-P32-RECHECK-r1, and F08 stays with Founder/PCG."
+    }
+   ]
+  },
+  "qualityReliability": {
+   "recordId": "R7D-QUALITY-PHASE33-CHECK-1",
+   "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.json",
+   "sha256": "c353a1a0284a3ad8c8201ace49a4a26e81fb273e2f5f930578da28bb9ffeab7d",
+   "verdict": "READY_WITH_CONDITIONS",
+   "conditions": [
+    {
+     "id": "C1",
+     "finding": "QE-R7D-P33-01",
+     "condition": "Binding before any final holdout, final author or final seed exists (the Phase 4 gate), with no runtime byte changed in this phase: reconcile the re-entry rule's treatment of ungated sessions across the runtime, INTERFACE-5 section 1, PREREG-5 Delta 1 and Delta 2 and P18(a). The SSCTR judges which sessions a re-entry week needs (optional WALK, RECOVERY_EASY, SHAKEOUT; race-week RACE_TOUCH, RACE). Then either instrument-side (a pre-registration addendum and a harness revision that restricts P18(a) to the sessions the runtime gates, or excludes the ones the domain says do not count, with a development case of the QH-1 form showing no false block and the SSCTR-P32-F01 sensitivity rows still detected) or runtime-side in a new authorized mission. Until then the freeze record and the closing checkpoint list QE-R7D-P33-01 as an open instrument/interface conflict, owner Chief/Founder, and drop or qualify the claim that P18(a) never blocks the runtime's rule. If the coordinator can make the instrument-only change in this phase before the freeze, that is preferred, re-validated and re-recorded; it is not required for the freeze."
+    },
+    {
+     "id": "C2",
+     "finding": "QE-R7D-P33-02, QE-R7D-P33-03, QE-R7D-P33-04",
+     "condition": "The closing checkpoint and the freeze record disclose them as residuals of the Phase 3.3 rule (the record embeds these findings through engineeringFindings; the checkpoint adds owner and trigger): QE-R7D-P33-02 to the SSCTR for acceptability and to the next runtime mission; QE-R7D-P33-03 and -04 to Chief/Founder for the next runtime or interface mission. The consumer conditions of PREREG-5 Delta 5 add: when a later break has a stated start time on a day the athlete trained, the re-entry week may not be recognized (QE-R7D-P33-02)."
+    },
+    {
+     "id": "C3",
+     "finding": "QE-R7D-P33-06",
+     "condition": "Run integrate-queue-r7d-p32.mjs --write only after both Phase 3.3 reviews pass, immediately before freeze-r7d-4.mjs, and commit the queue, the integration record and the freeze record in that sequence. If the freeze is refused after the append, record that in a later queue addendum (never rewrite the item)."
+    },
+    {
+     "id": "C4",
+     "finding": "QE-R7D-P33-07",
+     "condition": "Pass --reviewed 3228a70 (the candidate both reviews judged; this record's candidate field). Before running, confirm that CoachingCore/src, CoachingCore/test and the harness lib and r7d-harness.mjs are unchanged since 3228a70 and the freeze, verifier and integration scripts unchanged since f74bb82, and check after the freeze that postReview.changedSinceReviewed lists only added evidence, review and queue-record files and the queue."
+    },
+    {
+     "id": "C5",
+     "finding": "QE-R7D-P33-05",
+     "condition": "Record the test gaps in the freeze record or closing checkpoint, owner the next authorized runtime mission: directed tests for run-only and strength-only weeks, three separate breaks and their record rows, a re-entry week followed by unreported sessions, SKIPPED or moved sessions in the gap, sessions on both boundary days with and without startedAt, and optional or race-week sessions in a re-entry week."
+    },
+    {
+     "id": "C6",
+     "finding": null,
+     "condition": "Commit this folder (the two records, probes/ and probes/out/, .mjs and .json only) before the freeze runs; the freeze binds it and refuses uncommitted bound files."
+    }
+   ]
+  },
+  "postReview": {
+   "reviewedRuntime": "3228a705d52aa699747872490a332bc19dc55b25",
+   "changedSinceReviewed": [
+    "A\tCoachingCore/scripts/freeze-r7d-4.mjs",
+    "A\tCoachingCore/scripts/verify-r7d-4.mjs",
+    "M\taudits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md",
+    "M\taudits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_5.md",
+    "M\taudits/domain-coaching-r7-d-2026-11-02/harness/README.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/QUEUE_INTEGRATION_R7D_P33.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/evidence/DIFFERENTIAL_VS_R7D_FREEZE_3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/evidence/EVIDENCE_PHASE33.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/evidence/MUTATION_PHASE33.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/integrate-queue-r7d-p32.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/probes/out/f01-witness.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/DOMAIN_PACKET.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/RUN_REPORT.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/diagnostic/SUMMARY.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/DOMAIN_PACKET.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/RUN_REPORT.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/regression/generated/SUMMARY.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/REVIEW_REQUEST_PHASE33.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/QUALITY_CHECK_R7D_PHASE33.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/applied-between.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/harness-probe.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/mutation.qre.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/reruns.summary.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/out/runtime-probes.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-applied-between.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-harness-probes.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-mutation.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/engineering/probes/qre-p33-runtime-probes.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.md",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/common.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s1.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s2b.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.R7D-FREEZE-3.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/out/s3.candidate.json",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s1-isolated-paths.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2-inverse-defect.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s2b-single-break-baseline.mjs",
+    "A\taudits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/probes/s3-clinical-unknown-order.mjs",
+    "M\treviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json"
+   ]
+  }
+ },
+ "instruments": {
+  "harness": "R7D-HARNESS-5",
+  "prereg": {
+   "path": "audits/domain-coaching-r7-d-2026-11-02/PREREGISTRATION_R7D_5.md",
+   "sha256": "205335f61637fe64687a7e76f3888204299884dfe68b861be045f1eac9ed3709",
+   "revision": "R7D-PREREG-5"
+  },
+  "interface": "R7D-INTERFACE-5 (INTERFACE_ONLY_R7D.md + INTERFACE_DELTA_R7D_2.md + INTERFACE_DELTA_R7D_3.md + INTERFACE_DELTA_R7D_4.md + INTERFACE_DELTA_R7D_5.md)",
+  "finalBrief": "audits/domain-coaching-r7-d-2026-11-02/author/AUTHOR_BRIEF_FINAL_R7D_4.md",
+  "validation": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_5.json"
+ },
+ "authorization": {
+  "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/AUTHORIZATION_PHASE33.md",
+  "sha256": "305309b12ce2a5d4d7c1e13c4e101bcec27c2a0383ae2fc7c2cd797c39272a79"
+ },
+ "humanRevalidationQueue": {
+  "path": "reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json",
+  "sha256": "d79dbcd099dfca2562020f92c7e13a69cef756cc03a521064f959f9b60c94138",
+  "items": 234,
+  "added": [
+   "HQ-R7D-SSCTR-P32-RECHECK"
+  ],
+  "integration": {
+   "path": "audits/domain-coaching-r7-d-2026-11-02/phase33/QUEUE_INTEGRATION_R7D_P33.json",
+   "sha256": "dd34ff2ae1639ef5b126d0e3dcd9fd2d2f9e4150f66ab5672f7b71f493b86f5c"
+  },
+  "proposed": [
+   "HQ-R7D-SSCTR-P33-RECHECK (proposed)"
+  ],
+  "note": "The Founder's Phase 3.3 authorization appended HQ-R7D-SSCTR-P32-RECHECK, naming R7D-FREEZE-3 (the freeze its SSCTR record judged), by its owner (Chief / Founder); every earlier item is unchanged. Any item proposed by the Phase 3.3 reviews stays proposed: this phase authorizes no other append."
+ },
+ "bindingConditions": {
+  "inherited": {
+   "from": "R7D-FREEZE-3",
+   "record": "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json",
+   "note": "Every binding condition of R7D-FREEZE-3 travels unchanged with this runtime."
+  },
+  "added": [
+   "The conditions of the two Phase 3.3 reviews, listed under reviews",
+   "R7D-PREREG-5 Δ5 consumer conditions: report every planned session between two breaks; never present one session as proof of resumption; say why an earlier break still counts or which week re-entered the athlete, with no number of the consumer's own"
+  ]
+ },
+ "testChanges": {
+  "updatedAssertions": [
+   "CoachingCore/test/r7d-phase32.test.mjs"
+  ],
+  "why": "Two Phase 3.2 T4 assertions encoded \"recorded training between two separate breaks leaves the latest break alone\" (SSCTR-P32-F01): the two sessions between the breaks now re-enter nothing, so the stop runs through (MODERATE 21 instead of SHORT 4). Each is marked \"R7-D Phase 3.3\"; each as it stood at R7D-FREEZE-3 fails on this runtime, and each as updated fails on R7D-FREEZE-3 (evidence red)."
+ },
+ "finalHoldoutExists": false,
+ "V1_COACHING_AUTHORITY_READY": "NO",
+ "verifier": "node CoachingCore/scripts/verify-r7d-4.mjs (read-only; --suite also re-runs the suite and the conformance checks; --write writes only CoachingCore/r7/d/VERIFICATION_R7D_4.json)"
+}
