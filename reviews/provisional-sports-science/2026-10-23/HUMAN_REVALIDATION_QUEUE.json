@@ -9128,6 +9128,42 @@
         "An adverse event or runtime inconsistency",
         "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
       ]
+    },
+    {
+      "queue_id": "HQ-R7D-SSCTR-P32-RECHECK",
+      "decision_id": "SSCTR-R7D-P32-RECHECK",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "scope": "R7-D Phase 3.2 acceptance (SSCTR-P31-F02, Founder 2026-11-02). A newer declared break replaces a kept, unapplied one only when it names it (episodeId). Identical facts are one declaration. Otherwise INTERRUPTION_RELATION is asked before any return. Separate breaks are read as one continuous stop when their days touch or overlap or nothing was trained between; the later break alone after recorded training (F01); unknown training between is asked (TRAINING_BETWEEN_BREAKS). Clinical first unchanged. F08 is KNOWN_FAIL_CLOSED_AUTHORITY_BOUNDARY, with the named-correction exit disclosed (F02).",
+        "runtimeBaseline": "R7D-FREEZE-3 (named by the coordinator; proposal text: R7D-FREEZE-3 (to be named by the coordinator). Runtime source bytes of dfd87791e9ba995332696ed93cbc2b34529932a7, CoachingCore/src/r6-adaptation.mjs sha256 faa3bc12a329941e6df228e553a8166f43ddaefce9cca80165c369f59a309e3a)",
+        "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+        "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+        "artifact": "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json",
+        "artifact_revision": "R7D-FREEZE-3 (record CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json sha256 6c27126e21c9111b063d833a498b9fed035c45ba9e4e0b70fe41f292ab9cabd8, record commit c938b5301c643579c61369b5b39842506a940d60, bound files aeafc833745fec8bf2d41c1aa0a4dce511d52777, reviewed runtime dfd87791e9ba995332696ed93cbc2b34529932a7, source digest 1ee8585ec8b0ff805fc58892504bf3f36233bb954fb1be1915a053ae8d1aecb4; superseded by R7D-FREEZE-4 in R7-D Phase 3.3, which changes r6-adaptation.mjs only, for SSCTR-P32-F01)"
+      },
+      "approved_scope": "Offline synthetic shadow reference; nonclinical adults; no new dose, threshold, increment, tolerance, cadence or recipe; residuals F01-F04 disclosed.",
+      "conditions": [
+        "CF-P32-01 to CF-P32-08 of SSCTR-R7D-P32-RECHECK-r1"
+      ],
+      "approval_date": "2026-11-03",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "linked": [
+        "HQ-R7D-SSCTR-P31-RECHECK",
+        "HQ-R7D-SSCTR-P3-RECHECK",
+        "HQ-R7D-SSCTR-F03B"
+      ],
+      "re_review_triggers": [
+        "Any byte change to CoachingCore/src or to a file bound by R7D-FREEZE-3",
+        "A Founder decision on F01 (training between separate breaks) or on F08",
+        "A change to the exact-replay rule or to undated breaks (F03)",
+        "A holdout result touching P18, INSERT_NEWER_BREAK, TRAINING_BETWEEN_BREAKS, CARRIER_CLINICAL or P08",
+        "A relevant new systematic review or meta-analysis on detraining, reduced training or return to running",
+        "An adverse event or runtime inconsistency",
+        "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+      ]
     }
   ],
   "current_addendum": {
@@ -9510,6 +9546,25 @@
     ],
     "unit": "SSCTR-proposed R7-D items (F03-B rule; Phase 3 recheck; Phase 3.1 recheck), bound to R7D-FREEZE-2; no generated-workout rows",
     "ownerNormalized": "Every field verbatim from the SSCTR proposals except queue_id (without \"(proposed)\"), the runtime named in target (left to the coordinator by the proposals) and owner (Chief / Founder, as the queue policy requires)",
+    "fundingStateUnchanged": true,
+    "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
+  },
+  "r7d_p33_queue_addendum": {
+    "revision": "DCR7D-HRQ-P33-r1",
+    "previousItems": 233,
+    "addedItems": 1,
+    "r7dItems": [
+      "HQ-R7D-SSCTR-P32-RECHECK"
+    ],
+    "sources": [
+      {
+        "file": "audits/domain-coaching-r7-d-2026-11-02/phase32/reviews/ssctr/SSCTR_PHASE32_RECHECK_R7D.json",
+        "sha256": "4aff9fa6bc67b7b25fe7613145172c2f6245d239fcabee5350b0532682c03edc",
+        "recordId": "SSCTR-R7D-P32-RECHECK-r1"
+      }
+    ],
+    "unit": "The SSCTR-proposed R7-D Phase 3.2 recheck item, bound to R7D-FREEZE-3; no generated-workout rows",
+    "ownerNormalized": "Every field verbatim from the SSCTR proposal except queue_id (without \"(proposed)\"), the runtime named in target (left to the coordinator by the proposal) and owner (Chief / Founder, as the queue policy requires)",
     "fundingStateUnchanged": true,
     "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
   }
