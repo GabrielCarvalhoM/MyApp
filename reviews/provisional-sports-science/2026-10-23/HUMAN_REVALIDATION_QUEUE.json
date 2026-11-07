@@ -9164,6 +9164,43 @@
         "An adverse event or runtime inconsistency",
         "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
       ]
+    },
+    {
+      "queue_id": "HQ-R7D-SSCTR-P33-RECHECK",
+      "decision_id": "SSCTR-R7D-P33-RECHECK",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "scope": "R7-D Phase 3.3 acceptance (SSCTR-P32-F01, Founder direction B, 2026-11-06). Training between two separate, unapplied breaks re-enters the athlete only when a whole plan week lying wholly between them was executed completely in every sport it plans: every gate ADVANCE or EARNED, with usable logs (the reducer's COMPLETED_SESSIONS test). The earlier break is then TRAINING_AFTER with reentryWeek. Anything less is TRAINING_NOT_REESTABLISHED, and the stop runs through the earlier break. Unknown training between is still asked. Clinical first and F08 are unchanged. Residuals disclosed: P33-F01 (weeks of imperfect training read as stop days; a possible restart), P33-F02 (strength logs), plan-week alignment, every sport.",
+        "runtimeBaseline": "R7D-FREEZE-4 (named by the coordinator; proposal text: R7D-FREEZE-4 (to be named by the coordinator). Runtime source bytes of 3228a705d52aa699747872490a332bc19dc55b25, CoachingCore/src/r6-adaptation.mjs sha256 15e4279baae4b79a5f61081539fa1f46b37930454f93894eab17118a248f97bc)",
+        "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+        "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+        "artifact": "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json",
+        "artifact_revision": "R7D-FREEZE-4 (record CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json sha256 bee62152348c8ff0d97034fda778c2d5526d78cfa38b745bef6f40cf40859df3, record commit 8bbbb8e5dba0774257cd26e46c4a6abaf71202eb, bound files b2422376b04e444acd64504d9798db47ac0e079a, reviewed runtime 3228a705d52aa699747872490a332bc19dc55b25, source digest 754d42a4856fce6aaa563d48ee67c991fa15c7091290ed9169d86982c97ded8c; the runtime this item's SSCTR record judged)"
+      },
+      "approved_scope": "Offline synthetic shadow reference; nonclinical adults; no new dose, threshold, count, length, increment, tolerance, cadence or recipe; residuals P33-F01 to P33-F03 disclosed.",
+      "conditions": [
+        "CF-P33-01 to CF-P33-07 of SSCTR-R7D-P33-RECHECK-r1"
+      ],
+      "approval_date": "2026-11-06",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "linked": [
+        "HQ-R7D-SSCTR-P32-RECHECK (its trigger 'a Founder decision on F01' fired with direction B; this item re-reviews it)",
+        "HQ-R7D-SSCTR-P31-RECHECK",
+        "HQ-R7D-SSCTR-P3-RECHECK",
+        "HQ-R7D-SSCTR-F03B"
+      ],
+      "re_review_triggers": [
+        "Any byte change to CoachingCore/src or to a file bound by R7D-FREEZE-4",
+        "A Founder decision on P33-F01 (what training after an unapplied break proves; per-sport re-entry) or on F08",
+        "A change to the evidence reducer's complete rule, the strength log requirements or the plan-week structure",
+        "A holdout result touching P18, TRAINING_BETWEEN_BREAKS, TRAINING_NOT_REESTABLISHED, reentryWeek or P08",
+        "A relevant new systematic review or meta-analysis on detraining, retraining or return to running",
+        "An adverse event or runtime inconsistency",
+        "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+      ]
     }
   ],
   "current_addendum": {
@@ -9564,6 +9601,25 @@
       }
     ],
     "unit": "The SSCTR-proposed R7-D Phase 3.2 recheck item, bound to R7D-FREEZE-3; no generated-workout rows",
+    "ownerNormalized": "Every field verbatim from the SSCTR proposal except queue_id (without \"(proposed)\"), the runtime named in target (left to the coordinator by the proposal) and owner (Chief / Founder, as the queue policy requires)",
+    "fundingStateUnchanged": true,
+    "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
+  },
+  "r7d_p34_queue_addendum": {
+    "revision": "DCR7D-HRQ-P34-r1",
+    "previousItems": 234,
+    "addedItems": 1,
+    "r7dItems": [
+      "HQ-R7D-SSCTR-P33-RECHECK"
+    ],
+    "sources": [
+      {
+        "file": "audits/domain-coaching-r7-d-2026-11-02/phase33/reviews/ssctr/SSCTR_PHASE33_RECHECK_R7D.json",
+        "sha256": "f5c7c571f542b731f54ded422bc667a7607f6f85556070d0eb5572ca3b332581",
+        "recordId": "SSCTR-R7D-P33-RECHECK-r1"
+      }
+    ],
+    "unit": "The SSCTR-proposed R7-D Phase 3.3 recheck item, bound to R7D-FREEZE-4; no generated-workout rows",
     "ownerNormalized": "Every field verbatim from the SSCTR proposal except queue_id (without \"(proposed)\"), the runtime named in target (left to the coordinator by the proposal) and owner (Chief / Founder, as the queue policy requires)",
     "fundingStateUnchanged": true,
     "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
