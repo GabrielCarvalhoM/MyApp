@@ -1,6 +1,9 @@
 # R7-D Phase 3.5 — request for the narrow independent checks of the candidate
 
-**Candidate:** the commit that adds this file (named `CANDIDATE` below).
+**Candidate:** the commit that updates this file to name it (`CANDIDATE` below; it supersedes `9736718`).
+
+> A first dispatch on `9736718` was stopped by the Chief a few minutes in, before either check wrote anything. The author had found a harness false block (P17, P08) on a restatement that changes nothing (Δ32 below). The runtime and tests are unchanged since `9736718`: `5839f83` and `f8cf12e`.
+
 - Runtime: `5839f83` changes only `CoachingCore/src/r6-adaptation.mjs` from `46934a0`. Its sha256 is `60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310`. `r6-composition.mjs` is unchanged since `1978cc4`.
 - Tests: `f8cf12e` adds `CoachingCore/test/r7d-phase35.test.mjs` (T31 to T35). No existing test changed since `46934a0`.
 - Instruments, records and evidence: the commits after these, up to `CANDIDATE`.
@@ -41,11 +44,12 @@ The freeze (`CoachingCore/scripts/freeze-r7d-5.mjs`, prepared and not run) runs 
 - **P18(c) restored as sufficient.** It never reads a week the systemic rule may hold (a superset). DEV-48 exposed a latent false block: an adverse optional shakeout was not counted.
 - **The NESTED guard** reads "after it" by first days (QH4 → DEV-50, NOT_EVALUABLE).
 - **Not-evaluable units are listed** per case in the summary and in validation 7, whatever the case result. The Δ30 adjudication text says the judge recomputes the inner own return.
+- **P17 and P08 read a restatement** (Δ32, INTERFACE-7 §2): it opens no window of its own and P08 measures no return from it. A report changing another fact still opens its window (witness W-P17e). DEV-51 and DEV-52 (the R07 shape) are the false-block controls.
 
 **Validation 7:**
-- 52 DEV cases, with DEV-48 to DEV-50 added; no false block;
+- 54 DEV cases, with DEV-48 to DEV-52 added; no false block;
 - 22/22 sensitivity rows, the two new ones on `46934a0`;
-- 54/54 witnesses.
+- 55/55 witnesses.
 
 **Interface and brief:** INTERFACE-7 (`author/INTERFACE_DELTA_R7D_7.md`) and brief 6, with the coverage items of Δ29.
 
@@ -58,7 +62,7 @@ The freeze (`CoachingCore/scripts/freeze-r7d-5.mjs`, prepared and not run) runs 
 - mutation 15/15, each killed by its own witness;
 - validation 7;
 - regressions: diagnostic 18 and generated 100 cases, with no property violation; the only corpus error is R7D-D11, which is pre-existing and identical in Phase 3.4;
-- differential against `46934a0`: 170 cases, 168 identical, 2 differing (DEV-48 SYSTEMIC, DEV-49 CORRECTION), 0 unexplained;
+- differential against `46934a0`: 172 cases, 168 identical, 4 differing (DEV-48 SYSTEMIC, DEV-49 CORRECTION, DEV-51 and DEV-52 RESTATEMENT), 0 unexplained;
 - **fidelity** (`FIDELITY_PHASE35.json`): every pinned Phase 3.4 recheck probe rerun. Only the stated closure cases changed. `qre2-p34-harness` changes only in its own result fields under HARNESS-7; steps, returns and doses are identical.
 
 ## 4. Questions
