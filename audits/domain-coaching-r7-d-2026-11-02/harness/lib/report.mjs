@@ -94,6 +94,9 @@ export function summaryMarkdown(r){
  for(const [k,p] of Object.entries(r.summary.properties))L.push(`| ${k} | ${p.result} | ${p.units} | ${p.violations} | ${p.notEvaluableUnits} | ${p.failingCases.join(', ')} |`);
  L.push('','| Relation | Applicable cases | Units | Violations | Failing cases | Non-blocking differences |','|---|---|---|---|---|---|');
  for(const [k,x] of Object.entries(r.summary.relations))L.push(`| ${k} | ${x.applicableCases} | ${x.units} | ${x.violations} | ${x.failingCases.join(', ')} | ${x.differenceCases.join(', ')} |`);
+ // R7D-HARNESS-7 (CQ2-3): units not evaluable are listed per case, whatever the property's result there; each goes to the domain judge.
+ const ne=Object.entries(r.summary.properties).flatMap(([k,p])=>(p.notEvaluableCases??[]).map(x=>`- ${k} ${x.caseId} (case result ${x.result}): ${x.units} unit(s) not evaluable, ${x.reasons.join(', ')}; domain judge (R7D-PREREG-6 Δ16, Δ27)`));
+ if(ne.length)L.push('','Units not evaluable (never counted as a pass):',...ne);
  L.push('',`Author expectations: ${JSON.stringify(r.summary.expectations)}.`);
  if(r.corpusErrors.length)L.push('','Corpus errors:',...r.corpusErrors.map(e=>`- ${e.caseId}: ${JSON.stringify(e.errors).slice(0,400)}`));
  if(r.harnessErrors.length)L.push('','Harness errors:',...r.harnessErrors.map(e=>`- ${e.caseId}: ${JSON.stringify(e.error).slice(0,400)}`));

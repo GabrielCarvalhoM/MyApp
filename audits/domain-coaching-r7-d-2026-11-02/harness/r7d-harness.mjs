@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// R7D-HARNESS-7 (Phase 3.5, R7D-PREREG-6 Δ26-Δ28): P18(e) a sport re-entered through a week whose reports converge adversely; P18(f) a break placed
+// by the training after it with sessions between left unreported; P18(c) never reads a week the systemic rule may hold; the NESTED guard reads
+// "after it" by first days (QH4); not-evaluable units are listed per case in the summary, whatever the property's result.
 // R7-D Fresh Generalization harness (R7D-HARNESS-6, Phase 3.4: P18(a) reads the re-entry week contract's counted sessions and accounts for an earlier
 // break read as its own return; P18(c) the inverse direction; P18(d) a correction of a separate-breaks return; P02 R-F08-1. R7D-HARNESS-5 is commit
 // 3edf3c5 (Phase 3.3: P18(a) accepts training after a break only as a whole executed week of the plan);
@@ -20,7 +23,7 @@ import {evaluateExpectations} from './lib/expectations.mjs';
 import {domainPacket,summaryMarkdown} from './lib/report.mjs';
 import {checkCorpus} from '../author/check-corpus.mjs';
 
-export const HARNESS_VERSION='R7D-HARNESS-6';
+export const HARNESS_VERSION='R7D-HARNESS-7';
 // The runtime the final gate evaluates: the R7-D Phase 3.4 freeze (R7D-FREEZE-5; R7D-HARNESS-5 named R7D-FREEZE-4, R7D-HARNESS-4 R7D-FREEZE-3,
 // R7D-HARNESS-3 R7D-FREEZE-2, R7D-HARNESS-2 R7D-FREEZE-1). Before it exists, a development
 // run names a record and passes --allow-runtime-diff; its report then lists the differing files and the evaluated bytes (runtimeSource), never a
@@ -114,17 +117,19 @@ async function main(){
 
 function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,runtimeSource=null,allowRuntimeDiff=false,freshness,structure,rows,startedAt,finishedAt,firstEvaluation,label}){
  const props={},rel={},exp={PASS:0,FAIL:0,NOT_EVALUABLE:0,JUDGED:0,CORPUS_ERROR:0};
- for(const id of [...Object.keys(PROPERTY_META)])props[id]={...PROPERTY_META[id],cases:{PASS:0,FAIL:0,NOT_EVALUABLE:0,NOT_APPLICABLE:0},units:0,violations:0,notEvaluableUnits:0,failingCases:[]};
+ for(const id of [...Object.keys(PROPERTY_META)])props[id]={...PROPERTY_META[id],cases:{PASS:0,FAIL:0,NOT_EVALUABLE:0,NOT_APPLICABLE:0},units:0,violations:0,notEvaluableUnits:0,failingCases:[],notEvaluableCases:[]};
  for(const r of Object.keys(RELATIONS))rel[r]={...RELATIONS[r],applicableCases:0,units:0,violations:0,failingCases:[],differenceCases:[]};
  for(const row of rows){
   if(!row.properties)continue;
-  for(const [id,p] of Object.entries(row.properties)){const t=props[id];t.cases[p.result]++;t.units+=p.units;t.violations+=p.violations.length;t.notEvaluableUnits+=p.notEvaluable.length;if(p.result==='FAIL')t.failingCases.push(row.caseId);}
+  // R7D-HARNESS-7 (QRE2-P34-03, CQ2-3): a not-evaluable unit is listed with its case whatever the property's result there (a PASS of other units
+  // never hides it); it goes to the domain judge (R7D-PREREG-6 Δ16, Δ27), never counted as a pass.
+  for(const [id,p] of Object.entries(row.properties)){const t=props[id];t.cases[p.result]++;t.units+=p.units;t.violations+=p.violations.length;t.notEvaluableUnits+=p.notEvaluable.length;if(p.result==='FAIL')t.failingCases.push(row.caseId);if(p.notEvaluable.length)t.notEvaluableCases.push({caseId:row.caseId,result:p.result,units:p.notEvaluable.length,reasons:[...new Set(p.notEvaluable.map(x=>x.reason))]});}
   for(const [id,r] of Object.entries(row.relations??{})){const t=rel[id];if(!t)continue;if(r.applicable)t.applicableCases++;t.units+=r.units??0;t.violations+=(r.violations??[]).length;if((r.violations??[]).length)t.failingCases.push(row.caseId);if((r.differences??[]).length)t.differenceCases.push(row.caseId);}
   for(const e of row.expectations)exp[e.result]=(exp[e.result]??0)+1;
  }
  // P05 is evaluated through its relations (CARRIER_CLINICAL, CARRIER_HOLD, RESEND); P13 adds its relations to the record-clock checks.
  const fromRel=(ids,target)=>{const t=props[target];for(const id of ids){t.units+=rel[id].units;t.violations+=rel[id].violations;t.failingCases.push(...rel[id].failingCases);}t.failingCases=[...new Set(t.failingCases)];};
- props.P05={...PROPERTY_META.P05,cases:null,units:0,violations:0,notEvaluableUnits:0,failingCases:[]};fromRel(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND'],'P05');
+ props.P05={...PROPERTY_META.P05,cases:null,units:0,violations:0,notEvaluableUnits:0,failingCases:[],notEvaluableCases:[]};fromRel(['CARRIER_CLINICAL','CARRIER_HOLD','RESEND'],'P05');
  fromRel(['DETERMINISM','PERMUTE_OBSERVATIONS','DUPLICATE_SECOND_SOURCE','RENAME_OPAQUE_IDS','LOAD_CONVENTION_EQUIVALENT'],'P13');
  fromRel(['CONSENT_OFF'],'P14');
  // R7D-HARNESS-3: P17 adds its relation (no repetition is ever needed) to its own checks.
@@ -139,7 +144,7 @@ function buildReport({corpus,corpusPath,corpusSha,manifest,runtime,runtimeSource
   corpus:{path:path.relative(REPO,path.resolve(corpusPath)).split(path.sep).join('/'),revision:corpus.corpusRevision??null,sha256:corpusSha,cases:corpus.cases.length},
   manifest:manifest?{sealDigest:manifestSealDigest(manifest),evaluationBefore:manifest.evaluation??null}:null,
   runtime,runtimeSource,allowRuntimeDiff,freshness,structure,
-  summary:{cases:rows.length,evaluated:rows.filter(r=>r.base).length,corpusErrors:corpusErrors.length,harnessErrors:harnessErrors.length,properties:Object.fromEntries(Object.entries(props).map(([k,t])=>[k,{result:t.result,units:t.units,violations:t.violations,notEvaluableUnits:t.notEvaluableUnits,failingCases:t.failingCases}])),relations:Object.fromEntries(Object.entries(rel).map(([k,t])=>[k,{applicableCases:t.applicableCases,units:t.units,violations:t.violations,failingCases:t.failingCases,differenceCases:t.differenceCases}])),expectations:exp},
+  summary:{cases:rows.length,evaluated:rows.filter(r=>r.base).length,corpusErrors:corpusErrors.length,harnessErrors:harnessErrors.length,properties:Object.fromEntries(Object.entries(props).map(([k,t])=>[k,{result:t.result,units:t.units,violations:t.violations,notEvaluableUnits:t.notEvaluableUnits,failingCases:t.failingCases,notEvaluableCases:t.notEvaluableCases??[]}])),relations:Object.fromEntries(Object.entries(rel).map(([k,t])=>[k,{applicableCases:t.applicableCases,units:t.units,violations:t.violations,failingCases:t.failingCases,differenceCases:t.differenceCases}])),expectations:exp},
   corpusErrors,harnessErrors,cases:caseRows};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===path.resolve(import.meta.filename))main().catch(e=>{console.error(e.stack??e.message);process.exitCode=1;});

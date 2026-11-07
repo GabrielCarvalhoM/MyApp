@@ -591,12 +591,24 @@ function executedNominal(ledger,s){
   const load=x=>e.load?.mode==='BODYWEIGHT'?x.load?.unit==='BODYWEIGHT':x.load?.unit==='KG'&&(e.load?.mode!=='KNOWN'||x.load.value===e.load.value);
   return l.sets.every(x=>Number(x.reps)>=Number(e.reps??0)&&Number.isFinite(x.rir)&&x.rir>=Number(e.rir??0)&&load(x));});
 }
-/** P18(c): a whole week of the plan between `after` and `before` that a client reads as executed as prescribed in `sport` (every counted session). */
+/** P18(c): a whole week of the plan between `after` and `before` that a client reads as executed as prescribed in `sport` (every counted session).
+ * R7D-HARNESS-7 (found with DEV-48, the SSCTR-P34R2-F01 shape): never a week the runtime's systemic rule may hold. That rule reads every session of
+ * the week, counted or not (an optional shakeout included), and holds both sports; so a week whose reports could converge adversely (mayConverge) is
+ * never read here as executed as prescribed, and the reading stays sufficient, as Δ3 of R7D-PREREG-6 registered it. */
+const latestReport=(ledger,s,cut=null)=>ledger.filter(o=>o.sessionId===s.id&&!o.superseded&&!o.conflicted&&(!cut||Date.parse(o.observedAt)<Date.parse(cut))).at(-1)??null;
+/** A report the runtime may read as adverse (a superset of its rule: performance UNDER, recovery ADVERSE, effort HARDER, next day IMPAIRED). */
+const mayBeAdverse=r=>!!r&&(r.response?.performance==='UNDER'||r.response?.recovery==='ADVERSE'||r.response?.effort==='HARDER'||r.response?.nextDayFunction==='IMPAIRED');
+const converging=sports=>new Set(sports).size>1||sports.length>=3;
+const mayConverge=(w,ledger)=>(w.adaptations??[]).some(a=>a.kind==='SYSTEMIC_SIGNAL')||converging(w.sessions.filter(live).flatMap(s=>mayBeAdverse(latestReport(ledger,s))?[s.sport]:[]));
 export const nominalSportWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[]).some(w=>{
  const ss=w.sessions.filter(live);
- if(!ss.length||!ss.every(s=>s.date>after&&s.date<before))return false;
+ if(!ss.length||!ss.every(s=>s.date>after&&s.date<before)||mayConverge(w,ledger))return false;
  return ['RUN','STRENGTH'].some(sport=>{const need=ss.filter(s=>s.sport===sport&&counted(s));return need.length>0&&need.every(s=>executedNominal(ledger,s));});
 });
+/** P18(e), R7D-HARNESS-7 (SSCTR-P34R2-F01): a week whose reports a client reads as converging adversely by a reading inside the runtime's systemic
+ * rule: a complete (not partial) report with recovery ADVERSE, in both sports or in three or more sessions, observed before `cut`. The runtime reads
+ * each such report as adverse, so this never flags a week the runtime may re-enter. */
+export const adverseConvergence=(week,ledger,cut)=>converging(week.sessions.filter(live).flatMap(s=>{const r=latestReport(ledger,s,cut);return r&&!r.partial&&r.response?.recovery==='ADVERSE'?[s.sport]:[];}));
 // R7D-HARNESS-6 r2 (SSCTR-R7D-P34-RECHECK-r1 CFR-05, SSCTR-P34R-F02): an executed report counts only under the existing completion rule, never
 // partial (a race's duration is its event window, so a finished race is complete). The runtime's gates hold a partial gated row, and its race keys
 // read the same rule, so this stays a necessary condition.
@@ -645,7 +657,9 @@ function p18(trace){
    // return that is itself inside the top-level own return's stop) cannot be checked from the record, which names neither that inner own return's
    // days nor the break's place in its stop. It is not evaluable when the record lists such an inner own return after it in the same chain; without
    // one, the row accounts for nothing.
-   const nested=listed?.stop==='WITHIN_OWN_RETURN'&&listed.stopInOwnReturn==='WITHIN_OWN_RETURN'&&(ret.separateBreaks??[]).some(b=>b!==listed&&b.stop==='WITHIN_OWN_RETURN'&&b.ownReturnOf===listed.ownReturnOf&&b.stopInOwnReturn==='OWN_RETURN'&&b.startDate>end);
+   // R7D-HARNESS-7 (QRE2-P34-02, CQ2-2): "after it" is read by first days, so a second-level break that touches or overlaps the inner own return's
+   // break (QH4, DEV-50) is not evaluable either, as in the disjoint chain.
+   const nested=listed?.stop==='WITHIN_OWN_RETURN'&&listed.stopInOwnReturn==='WITHIN_OWN_RETURN'&&(ret.separateBreaks??[]).some(b=>b!==listed&&b.stop==='WITHIN_OWN_RETURN'&&b.ownReturnOf===listed.ownReturnOf&&b.stopInOwnReturn==='OWN_RETURN'&&b.startDate>start);
    if(nested&&!(covered||trainedAfter||ownReturn||withinOwn||refused)){p.notEvaluable.push({at:t.stepId,break:live.s.stepId,reason:'NESTED_OWN_RETURN_RECORD',source:'QRE-P34-02'});return;}
    unit(p,covered||trainedAfter||ownReturn||withinOwn||refused,{at:t.stepId,issue:'OLDER_BREAK_DROPPED',break:live.s.stepId,breakDays:[start,end],returnDays:[ret.startDate??null,ret.endDate??null]});
   });
@@ -665,6 +679,32 @@ function p18(trace){
    for(const b of (prev?.separateBreaks??[]).filter(x=>x.stop!=='LATEST')){
     const again=(ret.separateBreaks??[]).some(x=>x.eventId===b.eventId),covered=typeof ret.startDate==='string'&&ret.startDate<=b.startDate&&b.endDate<=ret.endDate;
     unit(p,again||covered,{at:t.stepId,issue:'EARLIER_BREAK_DROPPED_BY_CORRECTION',break:b.episode,breakDays:[b.startDate,b.endDate],returnDays:[ret.startDate??null,ret.endDate??null]});
+   }
+  }
+ });
+ // (e), (f) R7D-HARNESS-7 (R7D-PREREG-6 Δ26, SSCTR CFR2-04): every return applied with separate breaks, whichever report applied it (a first report,
+ // a newer report of the latest break, a confirmation).
+ trace.steps.forEach(t=>{
+  for(const d of addedDecisions(t).filter(x=>x.action==='REESTABLISH'&&(x.interruption?.separateBreaks??[]).length>1)){
+   const ret=d.interruption,rows=ret.separateBreaks,plan=t.planBefore,ledger=t.result.actualLedger??t.ledgerBefore??[],tz=plan.timezoneOffsetMinutes??0;
+   const cut=ret.startedAt??(ISO.test(ret.startDate??'')?new Date(Date.parse(ret.startDate+'T00:00:00Z')-tz*60000).toISOString():null);
+   // (e) SSCTR-P34R2-F01: no sport re-enters through a week whose reports converge adversely (adverseConvergence): its re-entry week (TRAINING_AFTER)
+   // or the week each sport re-entered by (OWN_RETURN). Otherwise: SYSTEMIC_WEEK_REENTERED.
+   for(const b of rows){
+    const weeks=b.stop==='TRAINING_AFTER'?[b.reentryWeek]:b.stop==='OWN_RETURN'?[b.ownReturn?.reentered?.RUN,b.ownReturn?.reentered?.STRENGTH]:[];
+    for(const ws of [...new Set(weeks.filter(x=>typeof x==='string'))]){const wk=(plan.weeks??[]).find(w=>w.startDate===ws);if(wk)unit(p,!adverseConvergence(wk,ledger,cut),{at:t.stepId,issue:'SYSTEMIC_WEEK_REENTERED',break:b.episode,week:ws});}
+   }
+   // (f) SSCTR-P34R2-F02 (R7-C G01): a break placed by the training after it (its own return, or the stop run through it) has no planned session
+   // between it and the next break without a report: unknown training is asked first. Days inside another episode's recorded stop are known stops;
+   // the report a newer report of the same interruption supersedes is not. Otherwise: UNREPORTED_BETWEEN_BREAKS_APPLIED.
+   const gone=new Set((plan.decisions??[]).filter(x=>x.action==='REESTABLISH').map(x=>x.interruption?.supersedes).filter(Boolean)),inForce=new Map();
+   for(const x of (plan.decisions??[]).filter(x=>x.action==='REESTABLISH'&&!gone.has(x.eventId)))inForce.set(x.interruption?.episode??x.eventId,x.interruption??{});
+   const known=[...inForce].filter(([e])=>e!==ret.episode).map(([,i])=>[i.startDate,i.endDate]).filter(([a,z])=>ISO.test(a??'')&&ISO.test(z??''));
+   const byStart=[...rows].sort((a,b)=>a.startDate<b.startDate?-1:a.startDate>b.startDate?1:0);
+   for(const b of rows.filter(x=>['OWN_RETURN','TRAINING_NOT_REESTABLISHED','NO_TRAINING_BETWEEN'].includes(x.stop))){
+    const until=b.stop==='OWN_RETURN'?ret.startDate:byStart.find(x=>x.startDate>b.endDate)?.startDate;if(!ISO.test(until??''))continue;
+    const unknown=(plan.weeks??[]).flatMap(w=>w.sessions).filter(s=>live(s)&&s.date>b.endDate&&s.date<until&&!known.some(([a,z])=>s.date>=a&&s.date<=z)&&!ledger.some(o=>o.sessionId===s.id&&!o.conflicted));
+    unit(p,!unknown.length,{at:t.stepId,issue:'UNREPORTED_BETWEEN_BREAKS_APPLIED',break:b.episode,between:[b.endDate,until],sessions:unknown.map(s=>s.id)});
    }
   }
  });

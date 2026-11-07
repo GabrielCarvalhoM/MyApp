@@ -236,3 +236,23 @@ Results:
 - **P18(a), two-level chains** (QRE-P34-02): a break listed `WITHIN_OWN_RETURN` with `stopInOwnReturn` = `WITHIN_OWN_RETURN` is NOT_EVALUABLE when the record lists the inner own return after it in the same chain; without one, it accounts for nothing. The record gives neither that inner own return's days nor the break's place in its stop (QRE-P34-03). DEV-47 (the QRE's QH1 chain) shows no false block, and R7D-FREEZE-4 is detected there by P18(c); witness W-P18i.
 - **P02** opens no clinical episode from a review refused unread (QRE-P34-08), as P17 and P18 read it.
 - **Validation 6** was re-run on the corrected runtime with 49 development cases.
+
+## R7D-HARNESS-7 (Phase 3.5; R7D-PREREG-6 Δ26–Δ31)
+
+- **P18(e)** (SSCTR-P34R2-F01): no sport re-enters, by `TRAINING_AFTER` or by a re-entered sport of an `OWN_RETURN`, through a week whose complete reports carry an adverse recovery in both sports or in three or more sessions, observed before the stop (`SYSTEMIC_WEEK_REENTERED`). The reading sits inside the runtime's systemic rule, so it is a necessary condition.
+- **P18(f)** (SSCTR-P34R2-F02, R7-C G01): a break placed by the training after it (`OWN_RETURN`, `TRAINING_NOT_REESTABLISHED`, `NO_TRAINING_BETWEEN`) has no planned session without a report between it and the next break (`UNREPORTED_BETWEEN_BREAKS_APPLIED`). It is checked on every return applied with separate breaks, including corrections and confirmations. Another episode's recorded stop is a known stop; the superseded report of the same episode is not.
+- **P18(c)** is a sufficient reading again. It never reads as executed as prescribed a week that the systemic rule may hold: one with UNDER, ADVERSE, HARDER or IMPAIRED in two sports or three sessions, or a recorded SYSTEMIC_SIGNAL. DEV-48 found the gap: an adverse optional shakeout was not counted.
+- **NESTED guard:** "after it" is read by first days, so the overlapping two-level chain (QH4, DEV-50) is NOT_EVALUABLE rather than a false block.
+- **Not evaluable never reads as a pass:** the run summary lists each property's not-evaluable units by case (`notEvaluableCases`), whatever the case result. `SUMMARY.md` lists them under "Units not evaluable". Each one goes to the domain judge, who for a nested own return recomputes the inner own return from the case timeline (Δ30).
+- **Validation 7** (`validation/HARNESS_VALIDATION_R7D_7.json`, `DEV_CASES_R7D_7.json` with DEV-48 to DEV-50, 52 cases):
+  - no false block on the candidate;
+  - 22/22 sensitivity rows, including DEV-48 (P18(e)) and DEV-49 (P18(f)) on `46934a0`;
+  - 54/54 witnesses (W-P18j, W-P18k added);
+  - P17 has 188 units and P18 has 126.
+
+To reproduce it from this worktree's root, add `rt-c46` (`git archive 46934a0 CoachingCore` plus the five review records, with `CoachingCore/node_modules` copied in) to the runtimes listed above. Rebuild every runtime into a new, uniquely named directory; nothing needs deleting.
+
+```
+node validation/build-dev-cases.mjs validation/DEV_CASES_R7D_7.json
+node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_7.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46
+```
