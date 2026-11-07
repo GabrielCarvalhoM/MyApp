@@ -76,7 +76,7 @@ const authority={policy:{path:'CoachingCore/r6/PROGRAM_POLICY_R6.json',sha256:sh
  catalog:{path:'CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json',sha256:sha(path.join(CC,'r7/b0/REPERTOIRE_CATALOG_B0.json'))},
  r6Records:{path:RECORDS[0],sha256:sha(path.join(REPO,RECORDS[0]))},b0Records:{path:RECORDS[1],sha256:sha(path.join(REPO,RECORDS[1]))},
  humanQueue:{path:QUEUE,sha256:sha(path.join(REPO,QUEUE)),items:read(path.join(REPO,QUEUE)).items.length,integration:{path:'audits/domain-coaching-r7-d-2026-11-02/phase34/QUEUE_INTEGRATION_R7D_P34.json',queueSha256After:qi.queueSha256After}},
- productAndCanonUnchangedSinceFreeze4:quiet(['product','canon']),earlierFreezeRecordsUnchanged:quiet(['CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json'])};
+ productAndCanonUnchangedSinceFreeze4:quiet(['product','canon']),earlierFreezeRecordsUnchanged:git(['diff','--quiet','3edf3c5','HEAD','--','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_2.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_3.json','CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json','CoachingCore/r7/d/VERIFICATION_R7D_4.json']).status===0};
 need(authority.policy.sha256==='a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100','policy bytes changed');
 need(authority.policy.canonicalHash==='18ec48f34768a7eebb2aede618db65a77385efebbda0a38d6f03135e5cd96b4c'&&authority.policy.boundariesEnabled===10,'policy canonical hash or R6 boundaries');
 need(authority.catalog.sha256==='ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9','catalog bytes changed');
