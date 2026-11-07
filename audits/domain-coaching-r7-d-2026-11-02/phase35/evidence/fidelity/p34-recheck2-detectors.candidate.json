@@ -1,0 +1,50 @@
+{
+ "runtime": "candidate",
+ "cases": {
+  "SY0_strengthAdverseOnly_control": {
+   "action": "REESTABLISH",
+   "stops": [
+    "OWN_RETURN",
+    "LATEST"
+   ],
+   "ret": "SHORT 4d",
+   "P18a_RUN": true,
+   "P18a_STRENGTH": true,
+   "P18c_nominalSportWeek": true,
+   "P18c_flags": false
+  },
+  "SY1_strengthAndShakeoutAdverse_systemic": {
+   "action": "REESTABLISH",
+   "stops": [
+    "TRAINING_NOT_REESTABLISHED",
+    "LATEST"
+   ],
+   "ret": "MODERATE 25d",
+   "P18a_RUN": true,
+   "P18a_STRENGTH": true,
+   "P18c_nominalSportWeek": false,
+   "P18c_flags": false
+  },
+  "CU3_correctionUncoversSundayUnreported": {
+   "action": "ASK",
+   "stops": null,
+   "ret": null,
+   "P18a_RUN": false,
+   "P18a_STRENGTH": false,
+   "P18c_nominalSportWeek": false,
+   "P18c_flags": false
+  },
+  "CU3a_correctionWithSundayReportedDone_control": {
+   "action": "REESTABLISH",
+   "stops": [
+    "OWN_RETURN",
+    "LATEST"
+   ],
+   "ret": "SHORT 4d",
+   "P18a_RUN": true,
+   "P18a_STRENGTH": false,
+   "P18c_nominalSportWeek": true,
+   "P18c_flags": false
+  }
+ }
+}

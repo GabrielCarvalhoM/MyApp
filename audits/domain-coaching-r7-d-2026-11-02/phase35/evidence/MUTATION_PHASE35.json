@@ -1,0 +1,430 @@
+{
+ "mutation": "R7D-PHASE35-MUTATION-1",
+ "testFiles": [
+  {
+   "file": "CoachingCore/test/r7d-phase35.test.mjs",
+   "sha256": "0be0fb45576f217e8243bf5155e4ddc47ee85d3efc8150692f7147f4297ec2b5"
+  },
+  {
+   "file": "CoachingCore/test/r7d-phase34.test.mjs",
+   "sha256": "5ed6f8d39162b457236df003dedd98be21f3b95f47df83964e3b7d4fa5e9e9a1"
+  },
+  {
+   "file": "CoachingCore/test/r7d-phase33.test.mjs",
+   "sha256": "7587bf35e0f6638e76c1d4f1be5ce3b34c53b013d853f6a7adcf635afcbf9729"
+  },
+  {
+   "file": "CoachingCore/test/r7d-phase32.test.mjs",
+   "sha256": "a46832cf3c6de6872fe1c0507056a6c08fa9cf5f171501adff43e84a7a58e8a2"
+  },
+  {
+   "file": "CoachingCore/test/r7d-phase31.test.mjs",
+   "sha256": "45018b32c391f8f2e6cab26ad105c705a5519feda6d84da26aa36e7fe9da29c3"
+  }
+ ],
+ "source": {
+  "file": "CoachingCore/src/r6-adaptation.mjs",
+  "sha256": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310"
+ },
+ "scratchRestored": true,
+ "baseline": {
+  "status": 0,
+  "selected": 95,
+  "pass": 95,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "P35-M01",
+   "defect": "SSCTR-P34R2-F01 reverted: a race week without a gated run re-enters running whatever the systemic rule holds",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T31",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T31 (SSCTR-P34R2-F01): converging adverse responses in a race week without a gated run hold running as they do with a gated run: no own return, the stop runs through the earlier break (SY1 = SY1g); one adverse sport is not systemic and the week in full re-enters, unchanged"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T31 (SSCTR-P34R2-F01): converging adverse responses in a race week without a gated run hold running as they do with a gated run: no own return, the stop runs through the earlier break (SY1 = SY1g); one adverse sport is not systemic and the week in full re-enters, unchanged"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M02",
+   "defect": "SSCTR-P34R2-F02 reverted in unreportedBetween: the superseded report masks the days a correction uncovers",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3): a correction that uncovers the Sunday long run, left unreported, asks about it as a fresh report does, never a restart; answered done it gives the fresh report's return; sent again it changes nothing"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3): a correction that uncovers the Sunday long run, left unreported, asks about it as a fresh report does, never a restart; answered done it gives the fresh report's return; sent again it changes nothing",
+    "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU1, LC1, CU2): the sessions a correction uncovers are asked about exactly as a fresh report of the corrected break asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M03",
+   "defect": "SSCTR-P34R2-F02 reverted in the re-entry history: the weeks between are read from the superseded return",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02): a correction that moves the trip a week later",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02): a correction that moves the trip a week later reads the week it leaves between the breaks from the record, never from the return it supersedes: the fresh report's re-entry"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02): a correction that moves the trip a week later reads the week it leaves between the breaks from the record, never from the return it supersedes: the fresh report's re-entry"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M04",
+   "defect": "SSCTR-P34R2-F02: the exception names the earlier break, not the break being read",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU1, LC1, CU2)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU1, LC1, CU2): the sessions a correction uncovers are asked about exactly as a fresh report of the corrected break asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3): a correction that uncovers the Sunday long run, left unreported, asks about it as a fresh report does, never a restart; answered done it gives the fresh report's return; sent again it changes nothing",
+    "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU1, LC1, CU2): the sessions a correction uncovers are asked about exactly as a fresh report of the corrected break asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M05",
+   "defect": "QRE2-P34-01: the re-read reads only the report its return listed, never a restatement of that break",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M06",
+   "defect": "QRE2-P34-01: a restatement on record is kept as a break of its own",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R04)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M07",
+   "defect": "QRE2-P34-01: the restating review is decided as if it stated a break of its own",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M08",
+   "defect": "QRE2-P34-01: a re-read does not read the restatement the deciding review carries",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R04)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M09",
+   "defect": "QRE2-P34-01: a return report that only restates a listed break is decided by the return handler (it asks the reason)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M10",
+   "defect": "QRE2-P34-01: a report changing another fact of a listed break is read as a restatement",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.4 T20 (characterization)",
+   "witnessFile": "CoachingCore/test/r7d-phase34.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02)"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02)"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M11",
+   "defect": "QRE2-P34-01: a start time on another day than the break's first day is read",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "P35-M12",
+   "defect": "QRE2-P34-01: the oldest report of a listed break decides, not the newest",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N01",
+   "defect": "QRE2-P34-04: F03 without required(x): a week with only optional runs re-enters running",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T35 (QRE CQ2-4, N01)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T35 (QRE CQ2-4, N01): a post-event week whose runs are all optional, none done, re-enters strength only: running continues from the earlier break's own return"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T35 (QRE CQ2-4, N01): a post-event week whose runs are all optional, none done, re-enters strength only: running continues from the earlier break's own return"
+   ],
+   "killed": true
+  },
+  {
+   "id": "N05",
+   "defect": "QRE2-P34-04: F04 names the own return's head, not the break that starts its stop",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T35 (QRE CQ2-4, N05)",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T35 (QRE CQ2-4, N05): with a stop that runs back through an even earlier break, the start-time question names the break that starts that stop, and its answer gives the return the start time stated from the outset gives"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T35 (QRE CQ2-4, N05): with a stop that runs back through an even earlier break, the start-time question names the break that starts that stop, and its answer gives the return the start time stated from the outset gives"
+   ],
+   "killed": true
+  },
+  {
+   "id": "DEPTH2",
+   "defect": "QRE2-P34-03: an own return at depth 2 or more reads its stop without its earlier breaks",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "witness": "R7-D Phase 3.5 T34",
+   "witnessFile": "CoachingCore/test/r7d-phase35.test.mjs",
+   "applied": true,
+   "cleanRun": {
+    "selected": 1,
+    "pass": 1,
+    "fail": 0
+   },
+   "witnessRun": {
+    "selected": 2,
+    "pass": 0,
+    "fail": 1,
+    "failedTests": [
+     "R7-D Phase 3.5 T34 (QRE CQ2-3): four separate breaks with a run-complete week between each pair: the inner own return reads its own earlier break (two levels), and the doses ahead are pinned"
+    ]
+   },
+   "caughtBy": [
+    "R7-D Phase 3.5 T34 (QRE CQ2-3): four separate breaks with a run-complete week between each pair: the inner own return reads its own earlier break (two levels), and the doses ahead are pinned"
+   ],
+   "killed": true
+  }
+ ],
+ "summary": {
+  "mutants": 15,
+  "killed": 15,
+  "survived": []
+ }
+}
