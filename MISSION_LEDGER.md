@@ -1209,3 +1209,39 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Queue:** 234 → 235 (HQ-R7D-SSCTR-P33-RECHECK, naming R7D-FREEZE-4); the Phase 3.4 items are proposed only.
 - **Open:** the three blockers before any freeze (PREREG-6 Δ22) and the instrument items before any holdout (Δ23).
 - **Unchanged:** policy, catalog, records, product and canon. The final holdout was not created; V1 authority is NO; nothing was merged, pushed or deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE34_CHECKPOINT.md`.
+
+<!-- DCR7D-20261107-phase35-r1 -->
+2026-11-07 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 3.5 **COMPLETE** (R7D-FREEZE-5).
+- **Closed:**
+  - **SSCTR-P34R2-F01:** a race week without a gated run now holds running under the systemic signal (SY1 = SY1g).
+  - **SSCTR-P34R2-F02:** a correction no longer masks the days it uncovers. CU3 asks about the Sunday long run, and CU1, LC1 and CU2 ask what a fresh report asks.
+  - **QRE2-P34-01:** the start-time question of a re-read is answered by restating the break, for R07 and R04 by every channel.
+  - **QRE-P35-01**, in the one bounded cycle: an unnamed same-dates report is re-read like a named one, so the back-squat stays at 1x7 ESTABLISH instead of 2x8@85.
+  - The runtime change is in `r6-adaptation.mjs` only (`5839f83`, `6203dcf`). No new number.
+- **Instruments:**
+  - R7D-HARNESS-7 r2:
+    - P18(e) counts only what the reducer reads as ADVERSE;
+    - P18(f) is new;
+    - P18(c) is sufficient again;
+    - the NESTED guard;
+    - not-evaluable units are listed and never counted as a pass;
+    - P17 and P08 read restatements.
+  - Validation 7 r2, R7D-INTERFACE-7, final brief 6 and PREREG-6 Δ26–Δ37.
+- **Reviews:**
+  - first checks of `8e78b8a`: SSCTR r1 ACCEPT_WITH_CONDITIONS and QRE r1 NOT_READY (QRE-P35-01);
+  - rechecks of `33d3181`: SSCTR r2 ACCEPT_WITH_CONDITIONS (a fresh instance) and QRE r2 READY_WITH_CONDITIONS.
+- **Verification:**
+  - suite 1005/1005;
+  - mutation 18/18;
+  - validation 7 r2: no false block, 23/23 sensitivity, 56/56 witnesses;
+  - differentials with 0 unexplained cases; fidelity PASS.
+- **Freeze:** R7D-FREEZE-5 on `7272e9a` (record commit `20c099d`, record sha256 956da5c2…).
+  - Source digest 578450b5…, manifest digest ce3fe8e1…, 649 files.
+  - verify-r7d-5 --suite: 34/34 PASS.
+- **Founder decisions:** D1 (V1 positioning) and D2 (F08 direction) are recorded, not applied. The product is unchanged. F08 stays F08_OPEN, with its minimal delta and short mission prepared.
+- **Open:**
+  - before any holdout: CQ4-2 and CFP35R2-02;
+  - by the next candidate: the CQ4-1 tests;
+  - before launch: F08;
+  - the queue stays at 235; the Phase 3.5 items are proposed only.
+- **Unchanged:** policy, catalog, records, product and canon. The final holdout was not created, and V1 authority is NO. Nothing was merged, pushed or deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE35_CHECKPOINT.md`.

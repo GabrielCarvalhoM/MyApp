@@ -1288,3 +1288,51 @@ No Phase 4, no final holdout, no change to V1 authority, no push or merge, and n
 - **Next:** the Founder's authorization of a narrow Phase 3.5 that closes the three blockers, reruns both rechecks and freezes R7D-FREEZE-5; then Phase 4 on its own authorization.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE34_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261107-phase35-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 3.5 (technical closure of the engine, the Founder's V1 decisions, holdout preparation) COMPLETE, R7D-FREEZE-5 / 2026-11-07
+
+A direct Founder request authorizes **R7-D Phase 3.5 only**:
+- close SSCTR-P34R2-F01, SSCTR-P34R2-F02 and QRE2-P34-01 in the runtime;
+- resolve the PREREG-6 Δ23 instrument items;
+- record two Founder product decisions without changing the product:
+  - D1, V1 positioning;
+  - D2, F08 direction;
+- prepare a short F08 mission;
+- run fresh SSCTR and quality rechecks;
+- create R7D-FREEZE-5 only if both pass.
+
+The authorization allows no Phase 4, no final holdout, no change to V1 authority, no push or merge, and no recursive deletion. It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase35/AUTHORIZATION_PHASE35.md`.
+
+- **States:** R7D_PHASE35_STATUS = COMPLETE, with R7D-FREEZE-5 created and verified. FINAL_HOLDOUT_EXISTS = NO. V1_COACHING_AUTHORITY_READY = NO. F08 = F08_OPEN (BLOCKED_BY_AUTHORITY, F08-BLOCK-G04).
+- **Runtime:** only `CoachingCore/src/r6-adaptation.mjs` changed, first in `5839f83` and then in the one bounded cycle, `6203dcf` (sha256 5e910f52…). No new number.
+- **Freeze:** R7D-FREEZE-5 is `CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json`, committed in `20c099d`.
+  - It binds commit `7272e9a`: the reviewed candidate `33d3181` plus the r2 review records, added files only.
+  - Source digest 578450b5…, manifest digest ce3fe8e1…, 649 files.
+  - Suite 1005/1005; conformance R7-B, R7-B.1 and R7-B.2 PASS.
+  - Verifier 34/34 PASS.
+  - R7D-FREEZE-4 is superseded, not edited.
+- **Gates:**
+  - **first checks, of `8e78b8a`:** SSCTR-R7D-P35-RECHECK-r1 ACCEPT_WITH_CONDITIONS, with SSCTR-P35-F01. QRE-R7D-PHASE35-CHECK-r1 NOT_READY on QRE-P35-01: an unnamed same-dates report dropped the earlier break. Both were closed in the one bounded cycle;
+  - **rechecks, of `33d3181`:** SSCTR-R7D-P35-RECHECK-r2 ACCEPT_WITH_CONDITIONS, from a fresh instance, and QRE-R7D-PHASE35-CHECK-r2 READY_WITH_CONDITIONS. No blocking finding.
+- **Evidence on `33d3181`:**
+  - suite 1005/1005; directed tests 13/40/14/17/14;
+  - RED on `46934a0` (the 9 finding tests) and on `8e78b8a` (T36 only);
+  - mutation 18/18;
+  - harness validation 7 r2: 59 cases, no false block, 23/23 sensitivity rows, 56/56 witnesses;
+  - differentials: 0 unexplained; fidelity PASS.
+- **Founder decisions, recorded but not applied:**
+  - **D1:** the V1 offers automated, personalized training suggestions from a literature-based algorithm. It makes no claim of human follow-up or of validation not performed. The product does not change. The commercial framing check is a separate administrative dependency.
+  - **D2:** the F08 direction, inspired by Runna's functional patterns, with three situations and a per-sport hybrid reduction. It is trigger T2 of PCG-R7D-F08-r1. F08 stays open. The minimal authority delta and a short F08 mission are prepared in `phase35/f08/F08_MINIMAL_DELTA_AND_MISSION.md`.
+- **Queue:** 235 items, no append. HQ-R7D-SSCTR-P35-RECHECK (r2) and HQ-R7D-SSCTR-P34-DECISION are proposed only.
+- **Open:**
+  - before any holdout, under an append-only addendum: CQ4-2 (QRE3-P35-02, -03) and CFP35R2-02 (the three disclosure points of SSCTR-P35R2-F01);
+  - by the next candidate: the CQ4-1 tests;
+  - before launch: F08.
+- **Next:** the Founder's decisions:
+  - Phase 4, the holdout, on its own authorization;
+  - the F08 mission;
+  - the queue append;
+  - the commercial framing check.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE35_CHECKPOINT.md).
