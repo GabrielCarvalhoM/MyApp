@@ -578,7 +578,8 @@ export const counted=s=>s.sport==='STRENGTH'||COUNTED_RUN_ROLES.includes(s.role)
 // from the plan and the record alone, stricter than the runtime's gates, so it never flags a week the runtime rightly read as incomplete: the
 // session's report completed, not partial, conflicted, confounded or superseded, every response field stated and nominal, the run's minutes at
 // least the prescribed ones; for strength, every prescribed exercise logged with at least its sets, each set at least its reps, a stated reps in
-// reserve not below the prescribed one and a load in a known unit (the prescribed value when the row states one).
+// reserve not below the prescribed one and the prescribed load: a bodyweight row logged as bodyweight; otherwise a load in kilograms (the
+// prescribed value when the row states one).
 const NOMINAL={performance:'COMPATIBLE',recovery:'COMPATIBLE',effort:'ON_TARGET',nextDayFunction:'NORMAL'};
 function executedNominal(ledger,s){
  const r=ledger.filter(o=>o.sessionId===s.id&&!o.superseded&&!o.conflicted).at(-1);
@@ -586,7 +587,8 @@ function executedNominal(ledger,s){
  if(s.sport==='RUN')return Number(r.actual.minutes)>=Number(s.prescription?.durationMinutes??Infinity);
  const logged=new Map((r.actual.exercises??[]).map(e=>[e.id,e]));
  return (s.prescription?.exercises??[]).every(e=>{const l=logged.get(e.id);if(!l||(l.sets??[]).length<(e.sets??1))return false;
-  return l.sets.every(x=>Number(x.reps)>=Number(e.reps??0)&&Number.isFinite(x.rir)&&x.rir>=Number(e.rir??0)&&x.load?.unit==='KG'&&(e.load?.mode!=='KNOWN'||x.load.value===e.load.value));});
+  const load=x=>e.load?.mode==='BODYWEIGHT'?x.load?.unit==='BODYWEIGHT':x.load?.unit==='KG'&&(e.load?.mode!=='KNOWN'||x.load.value===e.load.value);
+  return l.sets.every(x=>Number(x.reps)>=Number(e.reps??0)&&Number.isFinite(x.rir)&&x.rir>=Number(e.rir??0)&&load(x));});
 }
 /** P18(c): a whole week of the plan between `after` and `before` that a client reads as executed as prescribed in `sport` (every counted session). */
 export const nominalSportWeekBetween=(plan,ledger,after,before)=>(plan?.weeks??[]).some(w=>{

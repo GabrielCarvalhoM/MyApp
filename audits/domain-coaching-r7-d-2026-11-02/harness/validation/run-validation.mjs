@@ -17,7 +17,7 @@
 // return read (P18(d), DEV-37, DEV-38) and a clinical-cause episode restated as nonclinical by name (P02, R-F08-1, DEV-39, DEV-40) are detected,
 // each clean on the candidate; the re-entry week reads only the sessions the contract counts (DEV-32, DEV-33: optional walks) and an earlier break
 // read as its own return is accounted for (DEV-31, DEV-34, DEV-35), with no false block; DEV-36 (both sports partial) keeps the stop through; and the
-// inverse direction, weeks executed as prescribed in one sport read as days of the stop (P18(c), DEV-31, DEV-34, DEV-43), is detected on R7D-FREEZE-4.
+// inverse direction, weeks executed as prescribed in one sport read as days of the stop (P18(c), DEV-31, DEV-34, DEV-35, DEV-43), is detected on R7D-FREEZE-4.
 // The false-block controls of SSCTR CF-P34-05 (added before any review): DEV-42 (a race week with its race touch missed never re-enters running; on
 // R7D-FREEZE-4 it did, detected by P18(a)), DEV-43 (strength logged without reps in reserve: running re-enters alone), DEV-44 and DEV-45 (S1, S2: a
 // stated start time on the Sunday of a week executed in full, after or before the long run). P08 reads a run on the break's first day done before its
@@ -85,7 +85,7 @@ const SENS=[
  // R7D-HARNESS-VALIDATION-6: the correction and clinical-episode paths on R7D-FREEZE-4.
  {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'A named correction of the latest break after a return that read separate breaks drops the earlier break (the direction of SSCTR-P32-F01 through a correction)',cases:['DEV-37','DEV-38'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('EARLIER_BREAK_DROPPED_BY_CORRECTION'))},
  {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'PCG-R7D-F08-F01 (a clinical-cause break restated as nonclinical by name re-enters by the nonclinical recipe, with or without a clearance; R-F08-1)',cases:['DEV-39','DEV-40'],detect:f=>f.some(x=>x.property==='P02'&&x.issues.some(i=>i.startsWith('CLINICAL_EPISODE_')))},
- {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P33-F01 (weeks executed as prescribed in one sport between two separate breaks read as days of the stop: the class grows to a restart)',cases:['DEV-31','DEV-34','DEV-43'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('SPORT_WEEK_READ_AS_STOP'))},
+ {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P33-F01 (weeks executed as prescribed in one sport between two separate breaks read as days of the stop: the class grows to a restart)',cases:['DEV-31','DEV-34','DEV-35','DEV-43'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('SPORT_WEEK_READ_AS_STOP'))},
  {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P34-F01 (a return planned from its own week counts that week\'s elapsed runs that were not done in the single-run ceiling of the weeks after it)',cases:['DEV-41'],detect:f=>f.some(x=>x.property==='P06'&&x.issues.includes('CEILING_AFTER_OWN_WEEK_RETURN'))},
  {key:'--d4',record:'CoachingCore/r7/d/RUNTIME_FREEZE_R7D_4.json',defect:'SSCTR-P34-F05 (a race week with its race touch missed re-enters running: the re-entry predicate omits the race touch and the race, BR-Q4)',cases:['DEV-42'],detect:f=>f.some(x=>x.property==='P18'&&x.issues.includes('OLDER_BREAK_DROPPED'))}
 ];

@@ -2,7 +2,7 @@
 // whole suite, the Phase 3.4, 3.3, 3.2 and 3.1 directed tests and the three R7-B conformance checks (read-only). It runs the Phase 3.4 directed tests
 // and the assertions updated in this phase on R7D-FREEZE-4 (RED), and the updated assertions as they stood at R7D-FREEZE-4 on a copy of the candidate.
 // It reads the outputs the phase produced on the same bytes (witness, mutation, harness validation 6, diagnostic and generated regressions,
-// differential versus R7D-FREEZE-4) and checks the authorities the phase leaves untouched. It writes one JSON manifest and nothing else in the
+// differential versus R7D-FREEZE-4 and its decomposition through a hybrid runtime) and checks the authorities the phase leaves untouched. It writes one JSON manifest and nothing else in the
 // repository. No deletion of any kind: R7D-FREEZE-4 and the candidate are each copied into a NEW directory under --work-parent (mkdtemp); --d4 is
 // only read.
 //   node phase34-run-evidence.mjs --d4 <R7D-FREEZE-4 root> --out <file> --work-parent <scratch dir>
@@ -61,9 +61,9 @@ red.assertionsAsAtFreeze4=UPDATED.map(([file,title])=>{const x=counts(run(['--te
 need(red.assertionsAsAtFreeze4.every(a=>a.onCandidate.tests>=1&&a.onCandidate.fail>=1),'each assertion as it stood at R7D-FREEZE-4 fails on the candidate');
 // 4. Outputs the phase produced on these bytes.
 const outputs={witnessRed:'phase34/probes/out/p34-witness.R7D-FREEZE-4.json',witnessCandidate:'phase34/probes/out/p34-witness.candidate.json',mutation:'phase34/evidence/MUTATION_PHASE34.json',validation:'harness/validation/HARNESS_VALIDATION_R7D_6.json',
- diagnosticRegression:'phase34/regression/diagnostic/RUN_REPORT.json',generatedRegression:'phase34/regression/generated/RUN_REPORT.json',differential:'phase34/evidence/DIFFERENTIAL_VS_R7D_FREEZE_4.json'};
+ diagnosticRegression:'phase34/regression/diagnostic/RUN_REPORT.json',generatedRegression:'phase34/regression/generated/RUN_REPORT.json',differential:'phase34/evidence/DIFFERENTIAL_VS_R7D_FREEZE_4.json',decomposition:'phase34/evidence/DECOMPOSITION_VS_R7D_FREEZE_4.json'};
 const O={};for(const [k,p] of Object.entries(outputs)){const f=path.join(AUD,p);need(fs.existsSync(f),'missing '+p);if(fs.existsSync(f))O[k]={path:rel(f),sha256:sha(f),json:read(f)};}
-const wr=O.witnessRed?.json,wc=O.witnessCandidate?.json,mu=O.mutation?.json,va=O.validation?.json,dg=O.diagnosticRegression?.json,gr=O.generatedRegression?.json,df=O.differential?.json;
+const wr=O.witnessRed?.json,wc=O.witnessCandidate?.json,mu=O.mutation?.json,va=O.validation?.json,dg=O.diagnosticRegression?.json,gr=O.generatedRegression?.json,df=O.differential?.json,dc=O.decomposition?.json;
 need(wr?.verdict?.RED===true&&wc?.verdict?.RED===false,'the witness is RED on R7D-FREEZE-4 and not on the candidate');
 need(wr?.verdict?.controlsHold===true&&wc?.verdict?.controlsHold===true,'the witness controls hold on both runtimes');
 need(mu&&mu.summary.killed===mu.summary.mutants&&mu.summary.mutants>=8&&mu.mutants.every(m=>m.killed)&&mu.scratchRestored===true,'every mutant killed by its own witness');
@@ -77,6 +77,8 @@ for(const [k,r] of [['diagnosticRegression',dg],['generatedRegression',gr]]){
 const variant=dg?.summary.relations.VARIANT;need(variant&&variant.failingCases.every(c=>['R7D-D02','R7D-D06','R7D-D14','R7D-D16'].includes(c)),'diagnostic VARIANT failures outside the triaged set');
 need(dg&&Object.entries(dg.summary.relations).filter(([k])=>k!=='VARIANT').every(([,v])=>v.violations===0),'diagnostic regression: a metamorphic violation');
 need(df&&df.unexplained.length===0,'differential: a difference outside the phase\'s triggers');
+// The decomposition separates the two source changes through a hybrid runtime (R7D-FREEZE-4 plus the candidate composition only).
+need(dc&&dc.result==='PASS'&&dc.problems.length===0&&dc.differFromFreeze4===df?.differing&&Object.entries(dc.hybridSource).filter(([p])=>p!=='CoachingCore/src/r6-adaptation.mjs').every(([p,h])=>src[p]===h),'decomposition: a difference not explained by its own source change, or another runtime');
 // 5. Authorities the phase leaves untouched.
 const {r6Authority}=await import(pathToFileURL(path.join(CC,'src/r6-authority.mjs')).href),A=r6Authority();
 const queuePath=path.join(REPO,'reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json');
@@ -99,7 +101,8 @@ const report={evidence:'R7D-PHASE34-EVIDENCE-1',created:new Date().toISOString()
  results:{witness:{freeze4:wr?.verdict??null,candidate:wc?.verdict??null},mutation:mu?.summary??null,validation:va?.summary??null,
   diagnosticRegression:dg?{properties:Object.fromEntries(Object.entries(dg.summary.properties).map(([k,p])=>[k,{result:p.result,units:p.units,violations:p.violations}])),relations:Object.fromEntries(Object.entries(dg.summary.relations).map(([k,v])=>[k,{units:v.units,violations:v.violations,failingCases:v.failingCases}])),corpusErrors:dg.summary.corpusErrors}:null,
   generatedRegression:gr?{properties:Object.fromEntries(Object.entries(gr.summary.properties).map(([k,p])=>[k,{result:p.result,units:p.units,violations:p.violations}]))}:null,
-  differential:df?{cases:df.cases,same:df.same,differing:df.differing,unexplained:df.unexplained,differingCases:df.differingCases,byTrigger:df.byTrigger}:null},
+  differential:df?{cases:df.cases,same:df.same,differing:df.differing,unexplained:df.unexplained,differingCases:df.differingCases,byTrigger:df.byTrigger}:null,
+  decomposition:dc?{result:dc.result,differFromFreeze4:dc.differFromFreeze4,ceilingOnly:dc.ceilingOnly.map(r=>r.caseId),adaptationOnly:dc.adaptationOnly.map(r=>r.caseId),both:dc.both}:null},
  authority,finalHoldoutExists:fs.existsSync(path.join(AUD,'final')),problems,result:problems.length?'FAIL':'PASS'};
 fs.writeFileSync(out,JSON.stringify(report,null,1)+'\n');
 console.log(JSON.stringify({result:report.result,problems,suite,directed,conformance:Object.fromEntries(Object.entries(conformance).map(([k,v])=>[k,v.result])),red:{directedOnFreeze4:red.directedOnFreeze4.fail+'/'+red.directedOnFreeze4.tests+' fail',updatedOnFreeze4:red.updatedAssertions.map(u=>u.updatedOnFreeze4.fail),asAtFreeze4OnCandidate:red.assertionsAsAtFreeze4.map(a=>a.onCandidate.fail)}},null,1));
