@@ -1,0 +1,135 @@
+diff --git a/CoachingCore/src/r6-adaptation.mjs b/CoachingCore/src/r6-adaptation.mjs
+index df8ede1..9e11044 100644
+--- a/CoachingCore/src/r6-adaptation.mjs
++++ b/CoachingCore/src/r6-adaptation.mjs
+@@ -1640,6 +1640,18 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
+ /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
+  * from it, its last executed count the ceiling (SSCTR D49). */
+ const returnStrength=(cls,strength)=>cls==='SHORT'?clone(strength):{...clone(strength),exercises:Object.fromEntries(Object.entries(strength.exercises).map(([id,ex])=>[id,startStrengthReturn(clone(ex))]))};
++/** The entry a return of class `cls` sets from the state at its interruption (R6-NONCLINICAL-RETURN): strength by returnStrength; the run resumed
++ * after a short break, re-entered after a moderate one (from the current demonstration's minutes or the reviewed entry dose, the prior tolerated
++ * doses its target), restarted after a long one (runs before the break no longer count as reached, so the race statement (SSCTR D47) and the
++ * taper, race-week, race-day and next-block doses come only from runs executed after it). A walk/jog athlete keeps the ladder's own recipe. */
++function returnEntry(R,cls,prior,demoMinutes=null){
++ let runState=clone(prior.run);const strengthState=returnStrength(cls,prior.strength);
++ if(cls==='MODERATE'){
++  if(runState.mode==='EASY'){const entry=Math.max(R.entryRunMinutes,demoMinutes??R.entryRunMinutes);runState={...runState,mode:'RETURN',returnStep:0,returnFrom:{easy:Math.min(entry,runState.easy??entry),long:runState.long!==null?Math.min(runState.long,entry+5):null},returnTo:{mode:'EASY',easy:runState.easy,long:runState.long,walks:runState.walks,qualityStep:runState.qualityStep,specificStep:runState.specificStep}};}
++  else if(runState.mode==='WALK_JOG')runState.walkStep=Math.max(0,runState.walkStep-1);
++ }else if(cls==='LONG')runState={...runState,mode:runState.mode==='WALK_JOG'?'WALK_JOG':'RESTART',restart:demoMinutes??R.entryRunMinutes,walkStep:0,longestContinuous:0,achieved:{long:null,easy:null,quality:null,strides:0}};
++ return {runState,strengthState};
++}
+ /**
+  * Late evidence (R7-A final I6; Founder 0.7): training before the latest interruption that the record now shows, which its return did not read,
+  * can change the state that return started from. While that return still sets the plan (until its re-entry week is over), nothing else is
+@@ -1694,11 +1706,37 @@ function unreportedBetween(ctx,from,through){
+  * any sessions in no such week, a partial, aborted or conflicted report re-enter nothing; they stay facts. No count, length or threshold of its own.
+  * The weeks are read on the history the return reading `before` reads (stateAtBreak). Returns the first such week, or null.
+  */
+-function reestablishedBetween(ctx,after,before,startedAt=null){
+- const weeks=ctx.program.weeks.map((x,j)=>({j,startDate:x.startDate,sessions:x.sessions.filter(s=>s.prescription&&s.status!=='SKIPPED')})).filter(x=>x.sessions.length&&x.sessions.every(s=>s.date>after&&s.date<before));
+- if(!weeks.length)return null;
+- const at=stateAtBreak(ctx,{start:before,startedAt}).history;
+- return weeks.find(x=>{const done=at(x.j+1)?.complete;return !!done&&[...new Set(x.sessions.map(s=>s.sport))].every(sport=>done[sport]===true);})??null;
++// PROTOTYPE SWITCHES (scratch only, never committed): P34_TRIGGER=SPORT_WEEK|ANY, P34_PER_SPORT=1|0, P34_RACE_KEYS=1|0, P34_SAME_DAY=1|0.
++const P34={trigger:process.env.P34_TRIGGER??'SPORT_WEEK',perSport:process.env.P34_PER_SPORT!=='0',raceKeys:process.env.P34_RACE_KEYS==='1',sameDay:process.env.P34_SAME_DAY==='1'};
++function reentryBySport(ctx,after,before,startedAt=null){
++ const inside=s=>s.date>after&&(s.date<before||P34.sameDay&&!!startedAt&&s.date===before);
++ const weeks=ctx.program.weeks.map((x,j)=>({j,startDate:x.startDate,sessions:x.sessions.filter(s=>s.prescription&&s.status!=='SKIPPED')})).filter(x=>x.sessions.length&&x.sessions.every(inside));
++ if(!weeks.length)return {full:null,sport:{RUN:null,STRENGTH:null}};
++ const at=stateAtBreak(ctx,{start:before,startedAt}).history,ex=new Set((ctx.fullLedger??ctx.ledger).filter(o=>!o.conflicted&&o.actual?.completed===true).map(o=>o.sessionId));
++ const keys=x=>!P34.raceKeys||x.sessions.filter(s=>s.sport==='RUN'&&['RACE','RACE_TOUCH'].includes(s.role)).every(s=>ex.has(s.id));
++ const done=x=>{const d=at(x.j+1)?.complete;return d?{RUN:d.RUN===true&&keys(x),STRENGTH:d.STRENGTH===true}:null;},plans=x=>[...new Set(x.sessions.map(s=>s.sport))];
++ const full=weeks.find(x=>{const d=done(x);return !!d&&plans(x).every(s=>d[s]);})??null;
++ return {full,sport:Object.fromEntries(['RUN','STRENGTH'].map(S=>[S,weeks.find(x=>{const d=done(x);return !!d&&plans(x).includes(S)&&d[S];})??null]))};
++}
++const reestablishedBetween=(ctx,after,before,startedAt=null)=>reentryBySport(ctx,after,before,startedAt).full;
++const classOfDays=(R,days)=>days<=R.shortMaxDays?'SHORT':days<=R.moderateMaxDays?'MODERATE':'LONG';
++const appliedBetween=(ctx,after,before)=>episodesOf(ctx.program).some(e=>e.live.end>after&&e.live.start<before);
++/** Direction A (prototype): the return a separate earlier break would have had if applied when the athlete came back (the day after its end). */
++function virtualReturnOf(ctx,x,earlier){
++ const R=ctx.sk.op.return,tz=ctx.program.timezoneOffsetMinutes??0,sub=stopOf(ctx,x,earlier);
++ if(sub.decision)return sub;
++ const cls=classOfDays(R,sub.days),st=stopState(ctx,{start:sub.start,startedAt:sub.startedAt,episode:x.g.identity,cls},sub.partial);
++ const {runState,strengthState}=returnEntry(R,cls,st.state,null),day=onDate(x.end,1),asOf=new Date(Date.parse(day+'T00:00:00Z')-tz*60000).toISOString();
++ const fromWeek=Math.max(0,Math.min(ctx.program.weeks.length-1,Math.floor(dayGap(ctx.program.startDate,day)/7)));
++ return {virtual:{action:'REESTABLISH',eventId:x.g.live.eventId,asOf,fromWeek,interruption:{days:sub.days,class:cls,startDate:sub.start,endDate:x.end,...(sub.startedAt?{startedAt:sub.startedAt}:{}),episode:x.g.identity,inputHash:hash(x.g.live.i),entry:{run:clone(runState),strength:clone(strengthState)},reconstructed:true}},cls,sub};
++}
++function stopState(ctx,args,partial){
++ if(!partial)return stateAtBreak(ctx,args);
++ const withV=stateAtBreak({...ctx,program:{...ctx.program,decisions:[...ctx.program.decisions,partial.virtual]}},args);
++ if(!P34.perSport)return withV;
++ const re=partial.reentered;if(!re.RUN&&!re.STRENGTH)return withV;
++ const full=stateAtBreak(ctx,args);
++ return {...withV,state:{run:re.RUN?full.state.run:withV.state.run,strength:re.STRENGTH?full.state.strength:withV.state.strength},material:withV.material||full.material};
+ }
+ /**
+  * R7-D Phase 3.2 (Founder F02 §3): the stop a return reads when separate breaks are on record and not applied (ctx.separate: each later one named on
+@@ -1724,20 +1762,33 @@ function separateStop(ctx,head){
+   if(f.days===null)return {decision:{action:'ASK',reason:`${who} has no length: report it again with its episodeId and its start and end dates`,missingInputs:['interruption.days']}};
+   list.push({g,start:f.start??onDate(f.end,-(f.days-1)),end:f.end,days:f.days,startedAt:f.startedAt});
+  }
+- const H={g:headG,start:head.start??onDate(head.end,-(head.days-1)),end:head.end,days:head.days,startedAt:head.startedAt},place=new Map([[headG,'LATEST']]);
+- let start=H.start,startedAt=H.startedAt,at=H,reentry=null;
+- for(const x of [...list].sort((a,b)=>a.end<b.end?1:a.end>b.end?-1:a.start<b.start?1:a.start>b.start?-1:0)){
++ const H={g:headG,start:head.start??onDate(head.end,-(head.days-1)),end:head.end,days:head.days,startedAt:head.startedAt};
++ return stopOf(ctx,H,list);
++}
++function stopOf(ctx,H,list){
++ const tz=ctx.program.timezoneOffsetMinutes??0,day=g=>localDate(g.first.declaredAt,tz),place=new Map([[H.g,'LATEST']]);
++ let start=H.start,startedAt=H.startedAt,at=H,reentry=null,partial=null,inner=null;
++ const sorted=[...list].sort((a,b)=>a.end<b.end?1:a.end>b.end?-1:a.start<b.start?1:a.start>b.start?-1:0);
++ for(let k=0;k<sorted.length;k++){
++  const x=sorted[k];
+   if(x.end>=onDate(start,-1)){place.set(x.g,x.end>=start?'OVERLAPS':'TOUCHES');if(x.start<start){start=x.start;startedAt=x.startedAt;at=x;}else if(x.start===start&&x.startedAt&&(!startedAt||Date.parse(x.startedAt)<Date.parse(startedAt)))startedAt=x.startedAt;continue;}
+-  reentry=reestablishedBetween(ctx,x.end,start,startedAt);
+-  if(reentry)break;
++  const by=reentryBySport(ctx,x.end,start,startedAt);
++  if(by.full){reentry=by.full;break;}
+   const from=onDate(x.end,1),through=onDate(start,-1),unknown=unreportedBetween(ctx,from,through),n=unknown.length;
+   if(n)return {decision:{action:'ASK',reason:`The breaks reported on ${day(x.g)} (${x.start} to ${x.end}) and on ${day(at.g)} (${at.start} to ${at.end}) are separate, and ${n} planned session${n>1?'s':''} between them (${from} to ${through}) ha${n>1?'ve':'s'} no report: say what was done (report the sessions, done or not done); training that is only unreported counts neither as done nor as not done, and the return depends on it`,missingInputs:['observations.unreportedSessions'],question:{kind:'TRAINING_BETWEEN_BREAKS',unreported:{from,through,sessionIds:unknown.map(s=>s.id)},breaks:[{episodeId:x.g.identity,startDate:x.start,endDate:x.end},{episodeId:at.g.identity,startDate:at.start,endDate:at.end}]}}};
+-  place.set(x.g,trainedBetween(ctx,x.end,start)?'TRAINING_NOT_REESTABLISHED':'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
++  const trained=trainedBetween(ctx,x.end,start),some=P34.trigger==='ANY'?trained:!!(by.sport.RUN||by.sport.STRENGTH);
++  if(some&&!appliedBetween(ctx,x.end,start)){
++   const v=virtualReturnOf(ctx,x,sorted.slice(k+1).filter(y=>!place.has(y.g)));
++   if(v.decision)return v;
++   partial={episode:x.g.identity,reentered:{RUN:by.sport.RUN?.startDate??null,STRENGTH:by.sport.STRENGTH?.startDate??null},virtual:v.virtual,cls:v.cls,days:v.sub.days};
++   inner=v.sub;place.set(x.g,'OWN_RETURN');break;
++  }
++  place.set(x.g,trained?'TRAINING_NOT_REESTABLISHED':'NO_TRAINING_BETWEEN');start=x.start;startedAt=x.startedAt;at=x;
+  }
+- const all=[H,...list].sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0);
+- return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,continuous:start!==H.start,
+-  declared:[{start,end:H.end},...list.filter(x=>!place.has(x.g)).map(x=>({start:x.start,end:x.end}))],
+-  record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,stop:place.get(x.g)??'TRAINING_AFTER',...(!place.has(x.g)&&reentry?{reentryWeek:reentry.startDate}:{})}))};
++ const all=[H,...list].sort((a,b)=>a.start<b.start?-1:a.start>b.start?1:0),innerOf=new Map((inner?.record??[]).map(r=>[r.episode,r.stop]));
++ return {start,end:H.end,days:start===H.start?H.days:dayGap(start,H.end)+1,startedAt,continuous:start!==H.start,partial,
++  declared:[{start,end:H.end},...list.filter(x=>!place.has(x.g)||place.get(x.g)==='OWN_RETURN').map(x=>({start:x.start,end:x.end}))],
++  record:all.map(x=>({episode:x.g.identity,eventId:x.g.live.eventId,declaredAt:x.g.live.declaredAt,inputHash:hash(x.g.live.i),startDate:x.start,endDate:x.end,days:x.days,stop:place.get(x.g)??(partial?'WITHIN_OWN_RETURN':'TRAINING_AFTER'),...(!place.has(x.g)&&reentry?{reentryWeek:reentry.startDate}:{}),...(place.get(x.g)==='OWN_RETURN'?{ownReturn:{class:partial.cls,days:partial.days,reentered:partial.reentered}}:{}),...(!place.has(x.g)&&partial?{ownReturnStop:innerOf.get(x.g.identity)??null}:{})}))};
+ }
+ /** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
+ function returnAfterPause(ctx){
+@@ -1775,22 +1826,12 @@ function returnAfterPause(ctx){
+  // A new interruption starts from the latest one's return, so that return must have read the training before it (I6, confirmation-first).
+  const stale=ep.relation==='NEW'?staleReturn(ctx):null;
+  if(stale)return {...stale,screen};
+- const at=stateAtBreak(ctx,{start:pauseStart,startedAt,episode:ep.episode,cls});
++ const at=stopState(ctx,{start:pauseStart,startedAt,episode:ep.episode,cls},sep?.partial??null);
+  // A strength session on the first day without a stated start time, whose order changes the state the return starts from: asked (0.8).
+  if(at.material)return {action:'ASK',reason:`A strength session was recorded on ${pauseStart}, the day the interruption began, and whether it came before the interruption changes the state the return starts from: say the time the interruption began (interruption.startedAt)`,missingInputs:['interruption.startedAt'],screen};
+  const prior=at.state;
+- // Strength: a short interruption resumes the last completed doses (the next step waits for observed execution); a moderate or long one
+- // starts the return steps (returnStrength).
+- let runState=clone(prior.run);const strengthState=returnStrength(cls,prior.strength);
+  const demoMinutes=demoOk&&Number.isFinite(demo.minutes??demo.prescription?.durationMinutes)?Math.min(demo.minutes??demo.prescription.durationMinutes,prior.run.easy??R.entryRunMinutes*2):null;
+- if(cls==='MODERATE'){
+-  if(runState.mode==='EASY'){const entry=Math.max(R.entryRunMinutes,demoMinutes??R.entryRunMinutes);runState={...runState,mode:'RETURN',returnStep:0,returnFrom:{easy:Math.min(entry,runState.easy??entry),long:runState.long!==null?Math.min(runState.long,entry+5):null},returnTo:{mode:'EASY',easy:runState.easy,long:runState.long,walks:runState.walks,qualityStep:runState.qualityStep,specificStep:runState.specificStep}};}
+-  else if(runState.mode==='WALK_JOG')runState.walkStep=Math.max(0,runState.walkStep-1);
+- }else if(cls==='LONG'){
+-  // A restart begins from current capacity: runs before the break no longer count as reached, so the race statement (SSCTR D47) and the
+-  // taper, race-week, race-day and next-block doses come only from runs executed after it (author-found with D47).
+-  runState={...runState,mode:runState.mode==='WALK_JOG'?'WALK_JOG':'RESTART',restart:demoMinutes??R.entryRunMinutes,walkStep:0,longestContinuous:0,achieved:{long:null,easy:null,quality:null,strides:0}};
+- }
++ const {runState,strengthState}=returnEntry(R,cls,prior,demoMinutes);
+  const returnRuns=[...ctx.completedRuns,...(demoMinutes?[{date:demoDay,minutes:demo.minutes??demoMinutes,source:'CURRENT_DEMONSTRATION'}]:[])];
+  const ahead=ctx.ahead,futureThisWeek=program.weeks[w].sessions.filter(s=>s.prescription&&ahead(s)).length,fromWeek=futureThisWeek>=2||w+1>=program.weeks.length?w:w+1;
+  // A newer report of the same break replaces the adaptations its earlier report recorded on these weeks (R7-A.1 C5); a separate break's
