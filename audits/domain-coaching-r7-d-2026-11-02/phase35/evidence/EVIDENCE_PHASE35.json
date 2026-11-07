@@ -1,7 +1,7 @@
 {
  "evidence": "R7D-PHASE35-EVIDENCE-1",
- "created": "2026-11-07T19:56:15.148Z",
- "commit": "5f5e4f36ddd584c56edfef3b5f645bdb714443e6",
+ "created": "2026-11-07T21:33:50.393Z",
+ "commit": "6652b10156a5a0d8b56cc540c6cbcc2e9b5159f0",
  "runtimeSource": {
   "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
   "CoachingCore/src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
@@ -29,7 +29,7 @@
   "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
   "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
   "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
-  "CoachingCore/src/r6-adaptation.mjs": "60d91e2259bd3bf41d5f01b085a9b230e0f01c9979c7239a15fec0c7c4a9e310",
+  "CoachingCore/src/r6-adaptation.mjs": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e",
   "CoachingCore/src/r6-authority.mjs": "916b601ade47966557bafc29f134a45f7497380949c584e9be773f4beba63f69",
   "CoachingCore/src/r6-balanced.mjs": "e50fd557a1a7d2de3126adfbbec24ac69bb4fad1b7f709a6bee1d3b30967ac00",
   "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
@@ -56,17 +56,17 @@
   "CoachingCore/src/r6-adaptation.mjs"
  ],
  "suite": {
-  "tests": 1002,
-  "pass": 1002,
+  "tests": 1005,
+  "pass": 1005,
   "fail": 0,
   "failed": []
  },
  "directed": {
   "p35": {
    "file": "CoachingCore/test/r7d-phase35.test.mjs",
-   "sha256": "0be0fb45576f217e8243bf5155e4ddc47ee85d3efc8150692f7147f4297ec2b5",
-   "tests": 10,
-   "pass": 10,
+   "sha256": "03880b41b54775193076729f1c895e90f033041c223a325743838edd6a5922d7",
+   "tests": 13,
+   "pass": 13,
    "fail": 0
   },
   "p34": {
@@ -114,9 +114,9 @@
  },
  "red": {
   "on46934a0": {
-   "tests": 10,
-   "pass": 3,
-   "fail": 7,
+   "tests": 13,
+   "pass": 4,
+   "fail": 9,
    "failed": [
     "R7-D Phase 3.5 T31 (SSCTR-P34R2-F01): converging adverse responses in a race week without a gated run hold running as they do with a gated run: no own return, the stop runs through the earlier break (SY1 = SY1g); one adverse sport is not systemic and the week in full re-enters, unchanged",
     "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02, CU3): a correction that uncovers the Sunday long run, left unreported, asks about it as a fresh report does, never a restart; answered done it gives the fresh report's return; sent again it changes nothing",
@@ -124,55 +124,70 @@
     "R7-D Phase 3.5 T32 (SSCTR-P34R2-F02): a correction that moves the trip a week later reads the week it leaves between the breaks from the record, never from the return it supersedes: the fresh report's re-entry",
     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): after a late first-day lift asks the holiday's start time, restating the holiday with it is read by the re-read: by any channel the confirmation question follows (never the \"as one period\" lock), the trip's confirmation applies the return, and no later review asks",
     "R7-D Phase 3.5 T33 (QRE2-P34-01, R07): a start time before the lift keeps the return as it is (nothing to confirm); confirming the trip first asks the start time again, and the restatement then applies the return",
-    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks"
+    "R7-D Phase 3.5 T33 (QRE2-P34-01, R04): a correction that leaves strength reading the holiday's own return asks the holiday's start time; restating it, by any channel, applies the correction as with the start time stated from the outset, and no later review asks",
+    "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation) re-reads the separate breaks its return read, exactly as the named report does; a single-break duplicate and a continuity return keep their paths",
+    "R7-D Phase 3.5 T38 (QRE-P35-05): with an earlier return applied on its own in the history, the restatement still answers the start-time question of the latest return and the confirmation applies it; no later review asks"
    ]
   },
   "findingTestsFail": true,
-  "adequacyTestsPass": true
+  "adequacyTestsPass": true,
+  "boundedCycleOn8e78b8a": {
+   "tests": 13,
+   "pass": 12,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 3.5 T36 (QRE-P35-01): an unnamed report with the latest break's days (the duplicate rule; the I6 \"or the same dates\" confirmation) re-reads the separate breaks its return read, exactly as the named report does; a single-break duplicate and a continuity return keep their paths"
+   ],
+   "onlyT36Fails": true
+  }
  },
  "outputs": {
   "mutation": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/MUTATION_PHASE35.json",
-   "sha256": "4d435755a5adfcb6bce10f26f6b44909e93df292df338d0d994eed7e62b5e277"
+   "sha256": "a32938770f319c7f18e21eea6ee4c604acb47469adfdd1f34c5328becf12964f"
   },
   "validation": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/HARNESS_VALIDATION_R7D_7.json",
-   "sha256": "a97482f7cafbaf28f760bd9621ddeae6c9f4922b6c3492335ba29bc542a9be88"
+   "sha256": "bca54d2f28b9915da21881cad6ea508e6218a451d6376d44678ec35a01dfabaf"
   },
   "devCases": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/harness/validation/DEV_CASES_R7D_7.json",
-   "sha256": "cef1e1c7bd85b7930620e0f2eb89865e0ffd0bf76f5b3a1af67635d3138dc9e8"
+   "sha256": "1fb1958364a4845f132a33f9de67d25f6767e534c47ac77cc0e1f8ea59539ddc"
   },
   "diagnosticRegression": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/regression/diagnostic/RUN_REPORT.json",
-   "sha256": "457ed92d14720f6b292af1e3a3716c137687a39c1ad5e40d2f1b3f08f8266332"
+   "sha256": "8556aec3fd383a60535ecc8feb0cbea2ad872938ac546b902e10151e394a8c5e"
   },
   "generatedRegression": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/regression/generated/RUN_REPORT.json",
-   "sha256": "4d2863deeeed66938626bef66e43c8277f5bdac3f98955d7c3e06b4c6db59065"
+   "sha256": "dea5436db0129716cbe56d36ff340c72b6101361491bea4ad6a8d1418ff606a3"
   },
   "differential": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/DIFFERENTIAL_VS_46934A0.json",
-   "sha256": "d25ade5047325bd8596be54e100d9661b5a9fb6854038a0d75aaeacc527965c7"
+   "sha256": "b60e3c50e90806333fe08f09a1a11bb8c8b374029fd714df25afd7d173222950"
+  },
+  "differentialVs8e78b8a": {
+   "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/DIFFERENTIAL_VS_8E78B8A.json",
+   "sha256": "53e82a2ec3328e54b6d248f05db3fc5a81a1ca187497d21bd50f4e49431ea13a"
   },
   "fidelity": {
    "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/evidence/FIDELITY_PHASE35.json",
-   "sha256": "bd11a99aa1dfa3873b89902dfbaa0b353d3ef1968690f54900c8adb86704ccc7"
+   "sha256": "961cc9e9bbce48a5ffa47a7f0a2cfc4dbe6d3240c5fcad55cbb70e6ccb77c8cd"
   }
  },
  "results": {
   "mutation": {
-   "mutants": 15,
-   "killed": 15,
+   "mutants": 18,
+   "killed": 18,
    "survived": []
   },
   "validation": {
    "noFalseBlock": "PASS",
    "coverage": "COVERED",
-   "p17Units": 202,
-   "p18Units": 142,
-   "witnesses": "55/55",
-   "sensitivity": "22/22",
+   "p17Units": 245,
+   "p18Units": 170,
+   "witnesses": "56/56",
+   "sensitivity": "23/23",
    "notEvaluableOnCandidate": [
     {
      "caseId": "DEV-17",
@@ -252,20 +267,41 @@
    }
   },
   "differential": {
-   "cases": 172,
-   "same": 168,
-   "differing": 4,
+   "cases": 177,
+   "same": 169,
+   "differing": 8,
    "unexplained": [],
    "byTrigger": {
     "SYSTEMIC": [
      "DEV-48"
     ],
     "CORRECTION": [
-     "DEV-49"
+     "DEV-49",
+     "DEV-57"
     ],
     "RESTATEMENT": [
      "DEV-51",
-     "DEV-52"
+     "DEV-52",
+     "DEV-55",
+     "DEV-56",
+     "DEV-57"
+    ],
+    "DUPLICATE": [
+     "DEV-53"
+    ]
+   }
+  },
+  "differentialVs8e78b8a": {
+   "cases": 177,
+   "same": 176,
+   "differing": 1,
+   "unexplained": [],
+   "byTrigger": {
+    "SYSTEMIC": [],
+    "CORRECTION": [],
+    "RESTATEMENT": [],
+    "DUPLICATE": [
+     "DEV-53"
     ]
    }
   },
