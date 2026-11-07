@@ -33,6 +33,7 @@ No length, count, percentage or threshold is added.
 
 - **A newer report of the latest break** (its `episodeId`), after a return that read separate breaks, reads those breaks again as that return did, with the newer report's own facts. A correction never drops an earlier break.
 - **A later review** after such a return is not asked to confirm the break again because of it. A genuine late fact about the training before the break (a correction, a report that arrives late) is still asked, as before.
+- **A report that names the earlier break** after such a return (its `episodeId`, other dates) is asked: the coach does not re-read a break a return already read through another one.
 - **A return reported in the middle of its week** plans the weeks after it from the runs the athlete completed. Sessions of that week dated before the report that were not done, or that fell inside the break, never count as done for the longest-run limit.
 
 ## 3. Clinical-cause breaks (replaces the "one exception" of §1 of the version-4 delta; PCG-R7D-F08-r1, R-F08-1)
@@ -52,5 +53,5 @@ A clinical route that comes from an episode's earlier clinical report carries `e
 ## 5. What a client does (adds to §3 of the version-5 delta)
 
 - Report every planned session between two breaks, done or not done. A re-entry, and an own return, are read from whole weeks, per sport.
-- Present `OWN_RETURN` in plain words: the earlier break counts as its own break, and the weeks after it count as training. Say which sport resumed what it executed and which continues its return. Never present it as restored fitness. Add no number of your own.
+- Present `OWN_RETURN` in plain words: the earlier break applied when the athlete came back (its own break), and the weeks after it counted as training. Say, per sport, which one resumed at the doses it executed and from which week (`reentered`), and which one resumed from the earlier break's own return. Never say the earlier break "did not count", and never present it as restored fitness. Add no number of your own.
 - Never offer "change the reason" or "start a new plan" as a way out of a clinical route. Never drop the clinical continuation state, and never show the stale plan under it.
