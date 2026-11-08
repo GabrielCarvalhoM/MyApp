@@ -1275,3 +1275,33 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing merged, pushed or deleted.
 - **Next:** the Founder's decision, (A) one bounded correction cycle or (B) close NOT_READY now. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE4_CHECKPOINT.md`.
+
+<!-- DCR7D-20261108-phase5-r1 -->
+2026-11-08 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 5 (final corrective cycle) **COMPLETE**, final status **READY_WITH_CONDITIONS**; R7-D is concluded.
+- **Runtime (`240f151`, `dc6fe1d`),** no new number:
+  - SSCTR-P4-F01: the return entry stays ahead until an exercise in use holds a state, so never-executed exercises follow D49;
+  - R7D-FC-01: band and assisted logs are evidence;
+  - QRE-P4-F01: the unreported-training question reads a projected start's credit, in any phase.
+- **Instruments and evidence (`c7c72e5`):**
+  - R7D-HARNESS-9 (K03: QRE-P4-H01 to -H03), client-9, INTERFACE-8, brief 8, check-corpus-8, seal-final-2 and PREREG-8 Δ47–Δ58;
+  - validation 9: 74 DEV cases, no false block, 28/28 sensitivity, reachability REACHED, 60/60 witnesses;
+  - suite 1014/1014, with exactly T42–T45 RED on FREEZE-5;
+  - mutation 10/10, CQ4-1 4/4, differential 0 unexplained.
+- **Reviews (`d569ef2`):** SSCTR r2 ACCEPT_WITH_CONDITIONS; Quality READY_WITH_CONDITIONS.
+- **Freeze:** R7D-FREEZE-6 (`40daadd`; binds `d569ef2`, 727 files); verification 25/25 (`aedcd5c`).
+- **Holdout:**
+  - written by an independent author: H1 has 39 cases and 130 steps; H2 has 300 intakes;
+  - sealed in `56df0a1` and evaluated once in `0ab7bc4`;
+  - no violation; 28 H1 units and 47 H2 units are NOT_EVALUABLE.
+- **Judgments (`1958005`):** both READY_WITH_CONDITIONS, with no blocking finding.
+  - Rubric: 23 BEST_SUPPORTED, 14 ACCEPTABLE_ALTERNATIVE, 2 SUBOPTIMAL (authority scope).
+  - Runtime failures 0, CORPUS_ERROR 0, HARNESS_GAP 0.
+  - Both Phase 4 blockers hold on the new cases.
+- **Reading dependency:** PREREG-6 Δ5 (c) is met by 3 cases under its source's reading. Under the Phase 4 quality record's narrower reading, only 1 counts, and the holdout would be INVALID_HOLDOUT.
+- **Unchanged:**
+  - policy, catalog, product, canon and Figma;
+  - the Phase 4 holdout and its records;
+  - F08_OPEN, and V1 authority NO;
+  - the queue stays at 235;
+  - nothing merged, pushed or deleted.
+- **Next:** the Founder's decision on the next functional mission. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE5_CHECKPOINT.md`.

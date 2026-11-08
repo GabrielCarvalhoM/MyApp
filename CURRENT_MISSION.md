@@ -1397,3 +1397,83 @@ It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase4/AUTHORIZATION
   F08, the plan presentation and the Figma × Motor audit stay separate missions.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE4_CHECKPOINT.md).
+
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 5 (final corrective cycle after Phase 4) COMPLETE, READY_WITH_CONDITIONS / 2026-11-08
+
+The Founder chose option A of `PHASE4_CHECKPOINT.md`: one single corrective cycle, the last one dedicated to R7-D. It authorizes:
+- fixing the two Phase 4 blockers (SSCTR-P4-F01, QRE-P4-F01), with directed tests and no new number;
+- treating prospectively the instrument gaps the Phase 4 quality judgment proved (K03), with independent review and a new pre-registration before the next holdout is authored. The Phase 4 holdout, its evaluation and its criteria stay unchanged;
+- a new freeze and a new independent holdout, evaluated once and judged independently.
+
+The authorization allows none of the following:
+- F08, the coach profiles, or the volume and difficulty controls;
+- Figma work, a change of commercial positioning, or a catalog change without proven need;
+- a new dose, threshold or recipe, a refactor of stable parts, competitive research, or reopening closed scientific decisions;
+- an automatic new R7-D round;
+- a push or a merge.
+
+It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase5/AUTHORIZATION_PHASE5.md`.
+
+- **States:**
+  - R7D_PHASE5_STATUS = COMPLETE.
+  - R7D_FINAL_STATUS = READY_WITH_CONDITIONS, compiled mechanically from the two judgments (PREREG-1 §4; PREREG-8 Δ55). R7-D is concluded, and no new R7-D round opens (Δ57).
+  - R7D-FREEZE-6 is the final frozen state of R7-D.
+  - V1_COACHING_AUTHORITY_READY = NO.
+  - F08 = F08_OPEN.
+- **Runtime** (`240f151`, `dc6fe1d`; PREREG-8 Δ47), no new number:
+  - **SSCTR-P4-F01:** a moderate or long return keeps its entry week ahead (`returnEntry`) until a week's transition leaves an exercise in use with a state. Exercises never executed before the break enter at `strengthEntryWeek` and follow D49, with the normal count as ceiling and no block credited;
+  - **R7D-FC-01**, found on that path: band and assisted logs are evidence;
+  - **QRE-P4-F01:** UNREPORTED_TRAINING also reads the credit of a projected start, in any phase. A start anchored on evidence is never read as credit.
+- **Evidence** (`c7c72e5`):
+  - suite 1014/1014;
+  - T42–T47, with exactly T42–T45 RED on R7D-FREEZE-5;
+  - T39–T41 in the suite (CQ4-1 4/4);
+  - mutation 10/10;
+  - differential: 192 cases, 8 differing, 0 unexplained;
+  - conformance R7-B, R7-B.1 and R7-B.2 PASS.
+- **K03 instruments** (`c7c72e5`, new files only):
+  - R7D-HARNESS-9 (QRE-P4-H01, -H02 with its P06 twin, -H03);
+  - the client-9 substitution by pattern;
+  - R7D-INTERFACE-8, brief 8, check-corpus-8, seal-final-2 and PREREG-8 (Δ47–Δ58);
+  - validation 9: 74 DEV cases, no false block, 28/28 sensitivity, reachability REACHED, 60/60 witnesses.
+
+  The Phase 4 H1 stays INVALID_HOLDOUT.
+- **Reviews** (`d569ef2`), no blocking finding:
+  - SSCTR r2: ACCEPT_WITH_CONDITIONS. P8 and P9 fall inside D49, D52 and D55. Freeze conditions CF1 and CFD-1 to CFD-5;
+  - Quality: READY_WITH_CONDITIONS. K-P5-F1 is met and K-P5-F2 set; K-P5-1 to -3 are carried.
+- **Freeze:**
+  - R7D-FREEZE-6 (`40daadd`) binds `d569ef2`: 727 files, manifest digest be0765b6…e928;
+  - verify-r7d-6 --suite: 25/25 (`aedcd5c`).
+- **New holdout:**
+  - a fresh independent author worked from brief 8, interface 8 and the schema only;
+  - H1 R7D-FINAL-2 holds 39 cases and 130 steps (24df5704…), check-corpus 0/0; H2 holds 300 intakes (b29dd52a…);
+  - sealed in `56df0a1` before any execution, and evaluated once in `0ab7bc4` (evaluationCount 1, runtime 727/727);
+  - H1 results: 0 corpus errors, 0 harness errors, no property or relation violation; 28 units NOT_EVALUABLE, never counted as a pass. Author expectations: 191 PASS, 11 FAIL, 70 JUDGED;
+  - H2 results: no violation;
+  - the author disclosed host-injected session context (the CLAUDE.md files and the memory index). The quality judge ruled it has no effect on validity, with process condition K-QRE-P5H-07.
+- **Judgments** (`1958005`), by fresh instances in parallel:
+  - **SSCTR-R7D-FINAL-HOLDOUT-2-r1: READY_WITH_CONDITIONS.**
+    - 23 BEST_SUPPORTED, 14 ACCEPTABLE_ALTERNATIVE, and 2 SUBOPTIMAL attributed to authority scope: H07 (the free-text clinical screen) and H28 (the BR-Q4.4 edge).
+    - None of the 11 failed expectations is a runtime failure.
+    - SSCTR-P4-F01 and QRE-P4-F01 hold on the new cases. The F13 mixed shape, CFD-3 and CFD-4 rest on tests.
+  - **QRE-R7D-FINAL-HOLDOUT-2-r1: READY_WITH_CONDITIONS.** Freeze and protocol PASS, instrument reliable, K-P5-2 = 0, determinism recomputed.
+  - **Tallies,** the same on both sides:
+    - runtime failures 0;
+    - CORPUS_ERROR 0;
+    - HARNESS_GAP units 0;
+    - NOT_EVALUABLE: 28 H1 units and 47 H2 units.
+- **Coverage:** met on both sides, with one reading dependency. PREREG-6 Δ5 (c), a mid-week return after that week's sessions not done:
+  - met by H06, H08 and H11 under the reading of its source;
+  - under the Phase 4 quality record's narrower reading, only H06 counts, and the holdout would be INVALID_HOLDOUT.
+- **Conditions,** routed and not fixed here:
+  - consumer conditions (SSCTR r2 C1, CND5-1, K-QRE-P5H-09);
+  - question and correction contracts (K-QRE-P5H-01 to -03, O01), to the interface owner with G03/PCG;
+  - an explicit last-week rule (K-QRE-P5H-06), for the internal error behind the R4 HOLD in H05;
+  - the K-P5-1 tests and K-QRE-P5H-04, in the next registered harness;
+  - O02 to O04, to the policy owner.
+- **Queue:** 235, no append. HQ-R7D-SSCTR-P5-HOLDOUT-2-JUDGMENT is proposed only.
+- **Next:** the Founder's decision on the next functional mission.
+  - F08, the coach profiles, the volume and difficulty controls, the plan presentation and the Figma × Motor audit stay separate missions.
+  - Nothing was pushed, merged or deleted.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE5_CHECKPOINT.md).
