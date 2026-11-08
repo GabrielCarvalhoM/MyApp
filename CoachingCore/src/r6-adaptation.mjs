@@ -157,7 +157,7 @@ export function phaseClassOf(policy,phase,mode){
 }
 /** Dose key: family plus ladder and step for quality, family for other runs, the planned prescription for strength. */
 export const doseKeyOf=s=>!s?.prescription?null:s.sport==='RUN'?(s.role==='QUALITY'?`${s.prescription.family}:${s.progression?.ladder??'-'}:${s.progression?.value??'-'}`:s.prescription.family):s.plannedPrescriptionHash??null;
-const modeOf=(program,s)=>s.sport==='RUN'?program.stateTrace[s.weekIndex]?.run?.mode??'EASY':Object.values(program.stateTrace[s.weekIndex]?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))?'RETURN':'NORMAL';
+const modeOf=(program,s)=>s.sport==='RUN'?program.stateTrace[s.weekIndex]?.run?.mode??'EASY':program.stateTrace[s.weekIndex]?.strength?.returnEntry===true||Object.values(program.stateTrace[s.weekIndex]?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))?'RETURN':'NORMAL';
 function bindObservations(program,accepted,hybrid,policy){
  const sessions=new Map(program.weeks.flatMap(w=>w.sessions.map(s=>[s.id,{s,w}]))),bound=[],unbound=[];
  for(const o of accepted){
@@ -265,7 +265,9 @@ export function learnedInterference(ledger,asOf,{windowDays=28,minAdverse=2,minC
 // The week's last usable log of an exercise decides; an earlier one in the same week travels with it as `earlier`, and an athlete
 // confirmation in the planned convention replaces the logged value (SSCTR D45). A conflicted report is no evidence until it is
 // corrected: it neither sets nor confirms a load (QRE-R6-14; author-found with SSCTR D52).
-const loggedLoads=(ev,confirmations={})=>{const out={};for(const r of ev.rows.filter(x=>x.status!=='CONFLICTED'))for(const [id,l] of Object.entries(r.logs??{})){const c=confirmationFor(confirmations,id,l),earlier=Number.isFinite(out[id]?.load)?out[id].load:null;if(c)out[id]={load:c.kg,convention:l.convention,reps:l.reps,confirmed:true,earlier,sessionId:r.sessionId};else if(Number.isFinite(l.load)||!l.unitUnknown&&l.convention==='BODYWEIGHT')out[id]={load:Number.isFinite(l.load)?l.load:null,convention:l.convention,reps:l.reps,earlier,sessionId:r.sessionId};}return out;};
+// R7-D (R7D-FC-01, on the SSCTR-P4-F01 path): a band or assistance row, like a bodyweight one, carries no kilogram (B0-C04): its readable log,
+// its repetitions, is the evidence its progression and its return steps read, never a load.
+const loggedLoads=(ev,confirmations={})=>{const out={};for(const r of ev.rows.filter(x=>x.status!=='CONFLICTED'))for(const [id,l] of Object.entries(r.logs??{})){const c=confirmationFor(confirmations,id,l),earlier=Number.isFinite(out[id]?.load)?out[id].load:null;if(c)out[id]={load:c.kg,convention:l.convention,reps:l.reps,confirmed:true,earlier,sessionId:r.sessionId};else if(Number.isFinite(l.load)||!l.unitUnknown&&NO_KG_CONVENTIONS.includes(l.convention))out[id]={load:Number.isFinite(l.load)?l.load:null,convention:l.convention,reps:l.reps,earlier,sessionId:r.sessionId};}return out;};
 /**
  * Completed runs for the single-run ceiling (R6-PLANNED-PROGRESSION): executed runs from the completed-work ledger and,
  * while it is recent, the longest current run the athlete reported at intake. Walk/jog counts its jogging minutes.
@@ -662,7 +664,7 @@ function blockBoundary(ctx,gates){
  const boundary=next!==undefined&&program.blocks.some(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1);
  const choices=choicesOf(review);ctx.out.choicesHandled=true;
  if(!boundary){if(choices.some(c=>['LADDER_STEP','MAIN_CHANGE'].includes(c.type)))return {ask:{action:'ASK',reason:'Exercise changes for a block are made at a block boundary review; this week does not end a block',missingInputs:['choices']}};return out;}
- const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
+ const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=base?.strength?.returnEntry===true||Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
  const nextDeferred=ROTATION_DEFERRED_PHASES.includes(next)||!DEV_FAMILIES.includes(next)&&next!=='CONSOLIDATION';
  let graduation=null;const selections=[],reached=[],invalid=[],notes=[];
  // B0-C01: graduation of a WALK_JOG-, RESTART- or EASY_LOW-started athlete, from executed evidence only, under every R6 quality gate.
@@ -1667,8 +1669,10 @@ function stateAtBreak(ctx,{start,startedAt=null,episode=null,cls=null}){
  return {state:{run:run&&(ctx.program.capability?.run?.familiarBouts??[]).length?{...run,familiarBoutsLapsed:true}:run,strength:base.strength},material,point:{...point,authority,values:clone(H.values),executed:[...new Set([...H.executed,...Object.keys(base.performed)])].sort(),...(late?{reportedAfterStart:true}:{}),...(other?{sameDay:other}:{})},history:at};
 }
 /** The strength start of a return from the state at its interruption: a short one resumes it; a moderate or long one starts the return steps
- * from it, its last executed count the ceiling (SSCTR D49). */
-const returnStrength=(cls,strength)=>cls==='SHORT'?clone(strength):{...clone(strength),exercises:Object.fromEntries(Object.entries(strength.exercises).map(([id,ex])=>[id,startStrengthReturn(clone(ex))]))};
+ * from it, its last executed count the ceiling (SSCTR D49), and its entry week is ahead (returnEntry): an exercise the athlete never executed
+ * before the break has no state to start them from, so it enters at the entry dose and follows the return steps like the others, with the normal
+ * count as its ceiling and no block credited for weeks it was not executed (strengthEntryWeek, strengthReturnSets; SSCTR-P4-F01). */
+const returnStrength=(cls,strength)=>cls==='SHORT'?clone(strength):{...clone(strength),returnEntry:true,exercises:Object.fromEntries(Object.entries(strength.exercises).map(([id,ex])=>[id,startStrengthReturn(clone(ex))]))};
 /** The return class an interruption's length gives (the unchanged R6 table, policy operational.return). */
 const returnClass=(R,days)=>days<=R.shortMaxDays?'SHORT':days<=R.moderateMaxDays?'MODERATE':'LONG';
 /**

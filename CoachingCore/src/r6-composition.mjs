@@ -213,15 +213,33 @@ function unknownRunWindow(ctx,next,fromWeek,{first,completedRuns,start,sports,de
  // ceiling, so with the window unreported an empty peak plans them as never run (the minimum easy run, no long run, quality or touch) and the
  // entry trims nothing; the same week planned with the window's unreported sessions counted as run as prescribed shows whether they decide it.
  // A run whose prescription the peaks do not change (the days after the race, say) does not depend on them and is not asked about.
+ // (3) R7-D (QRE-P4-F01): the progression state, see creditDecides.
  const free=weekAsPlanned(ctx,next,fromWeek,{start,sports,completedRuns:[...completedRuns,{date:onDate(startDate,-1),minutes:Infinity}]});
  const minutes=wk=>new Map(wk.sessions.filter(s=>s.sport==='RUN'&&s.prescription).map(s=>[s.id,runMinutesOf(s)]));
  const capped=minutes(first.week),uncapped=minutes(free.week);
- if(![...capped].some(([id,m])=>m<(uncapped.get(id)??m))&&!peaksDecide(ctx,next,fromWeek,{free,start,sports,completedRuns,unknown,startDate}))return null;
+ if(![...capped].some(([id,m])=>m<(uncapped.get(id)??m))&&!peaksDecide(ctx,next,fromWeek,{free,start,sports,completedRuns,unknown,startDate})&&!creditDecides(ctx,next,fromWeek,{capped,sports,completedRuns,unknown}))return null;
  const ran=record.filter(o=>!o.conflicted&&o.context?.sport==='RUN'&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)).sort((a,b)=>a.localDate<b.localDate?-1:a.localDate>b.localDate?1:0).at(-1);
  const from=unknown[0].date,through=unknown.at(-1).date,n=unknown.length;
  return {ask:`No run is recorded in the ${C.windowDays} days before ${startDate}, the reference for the runs planned from then, and ${n} planned run session${n>1?'s':''} from ${from} to ${through} ha${n>1?'ve':'s'} no report: say what was done (report the sessions) or that training stopped (the break and its reason) before runs are planned; training that is only unreported counts neither as done nor as not done`,
   missingInputs:['observations.unreportedSessions|interruption'],
   question:{kind:'UNREPORTED_TRAINING',dependentScope:'RUN_DOSE',fromWeek,referenceWindow:{from:onDate(startDate,-C.windowDays),through:onDate(startDate,-1)},unreported:{from,through,sessionIds:unknown.map(s=>s.id)},lastRecordedRun:ran?{date:ran.localDate,sessionId:ran.sessionId}:null}};
+}
+/**
+ * R7-D (QRE-P4-F01): whether the week's runs depend on the window's unreported run sessions through the progression state. The start the facts give
+ * holds an unreported week at its dose (no step without executed evidence): the zero reading of unknown training, already inside both readings of
+ * test (1). The plan's projection, every planned session assumed executed, is the credit reading. The same week planned from the start the
+ * projection holds for it, with the window's unreported runs counted as run as prescribed (they set its ceiling), against the week as planned
+ * now: when that week plans any run longer, the dose depends on what the athlete did, whatever the week's phase or dose. A consolidation, deload or
+ * event week that its phase plans short in the zero reading no longer hides the dependence (an entry that trims nothing); a week both readings plan
+ * alike does not depend on the unknown and is not asked about. Only a projected start (CONDITIONAL_PLAN) is that credit: a start a decision anchored
+ * on evidence (the intake, a review's week evidence, a return's entry on its interruption's facts and current demonstration, which the record does
+ * not keep) assumed nothing about the unreported sessions. A projection held in another mode is not a credit of easy running and is not read.
+ */
+function creditDecides(ctx,next,fromWeek,{capped,sports,completedRuns,unknown}){
+ const st=next.stateTrace[fromWeek];if(next.weeks[fromWeek]?.startAuthority?.RUN?.provenance!==WEEK_START.CONDITIONAL_PLAN||st?.run?.mode!=='EASY'||!st.strength)return false;
+ const counted=[...completedRuns,...unknown.map(s=>({date:s.date,minutes:runMinutesOf(s)})).filter(x=>x.minutes>0)];
+ const credit=weekAsPlanned(ctx,next,fromWeek,{start:{runState:st.run,strengthState:st.strength},sports,completedRuns:counted});
+ return credit.week.sessions.some(s=>s.sport==='RUN'&&s.prescription&&capped.has(s.id)&&capped.get(s.id)<runMinutesOf(s));
 }
 /**
  * R7-C P3-01: whether the week's runs derived from the executed peaks depend on the window's unreported run sessions. The peaks are counted as the

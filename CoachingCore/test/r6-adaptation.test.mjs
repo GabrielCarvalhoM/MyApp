@@ -127,7 +127,11 @@ test('Adaptation: nonclinical return is staged from current evidence; clinical o
  // exercise never performed is established by effort (SSCTR D52), never at a load or count the plan only assumed.
  const at=moderate.proposal.decisions.at(-1).interruption.stateAt;
  assert.deepEqual([at.kind,at.week,at.authority,at.executed],['WEEK_START',0,{RUN:'INTAKE',STRENGTH:'INTAKE'},[]]);
- assert.ok(entry.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).every(s=>s.prescription.exercises.every(e=>e.load.mode!=='KNOWN'&&(e.exposure?.kind==='FIRST_ESTABLISH'||e.load.mode==='BODYWEIGHT'))));
+ // R7-D (SSCTR-P4-F01; SSCTR-R7D-P4-FINAL-HOLDOUT-r1 CND-2; policy strengthEntryWeek, strengthReturnSets): the first week of a moderate return
+ // is a return-entry week whatever was executed before the break, so an exercise never performed enters at the entry dose, still established by
+ // effort and never at a known load (was: FIRST_ESTABLISH, outside the entry dose and the return steps).
+ const RT=opts.authority.policy.operational.return;
+ assert.ok(entry.sessions.filter(s=>s.sport==='STRENGTH'&&s.prescription).every(s=>s.prescription.exercises.every(e=>e.load.mode!=='KNOWN'&&e.exposure?.kind==='RETURN_ENTRY'&&e.sets===RT.strengthEntrySets&&e.rir>=RT.strengthEntryMinimumRir)));
  // Once weeks are executed and reviewed, the strength return enters at one set with more reps in reserve.
  let q=p,ledger=[];for(let i=0;i<3;i++){const r=evaluateProgram(q,review(q,i,'WEEKLY_REVIEW',{observations:all(q,i),actualLedger:ledger}),opts);ledger=r.actualLedger;if(r.proposal)q=r.proposal;}
  const logged=evaluateProgram(q,review(q,w,'RETURN_AFTER_PAUSE',{interruption:{days:18,reasonCategory:'TRAVEL',nonclinical:true},actualLedger:ledger}),opts);

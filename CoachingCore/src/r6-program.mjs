@@ -629,8 +629,16 @@ export const heldKnownLoad=ex=>ex?.mode==='KNOWN'&&Number.isFinite(ex.load);
  * step 0, return step 2 is step 1, any other row a dose beyond the return steps. The highest one, so a week that reached a step is read at it. */
 const RETURN_DOSE={RETURN_ENTRY:0,RETURN_STEP:1};
 const doseStep=xs=>{const v=xs.filter(x=>!x.practice).map(x=>RETURN_DOSE[x.kind]??Infinity);return v.length?Math.max(...v):Infinity;};
-const entryWeekOf=(ss0,used)=>typeof ss0.entryWeek==='boolean'?ss0.entryWeek:used.some(x=>!x.practice&&ss0.exercises[x.id]?.returnStep===0);
+const entryWeekOf=(ss0,used)=>typeof ss0.entryWeek==='boolean'?ss0.entryWeek:ss0.returnEntry===true||used.some(x=>!x.practice&&ss0.exercises[x.id]?.returnStep===0);
 const returningWeekOf=(ss0,used)=>used.some(x=>!x.practice&&Number.isInteger(ss0.exercises[x.id]?.returnStep));
+/** R7-D (SSCTR-P4-F01; SSCTR D49, strengthEntryWeek): a moderate or long return's entry week is still ahead (`returnEntry`, set by the return)
+ * until a week's transition (advanceStrength) reads an exposure of an exercise in use executed (a conditional projection assumes the planned ones)
+ * and that exercise then holds a state. From then on the exercises in use carry their own return steps (one first set up in the entry week starts
+ * them there), so the marker ends; an exercise in use only planned before the break, never executed, has no state to be at the entry step and is
+ * entered by the marker. Time alone never ends it: a week without strength, or whose exposures were not executed or established nothing, keeps it
+ * (R7-A boundary I1/I3). The facts read at a later break (strengthAtBreak) move no return step and keep it too. `performed`: the exercises the
+ * transition read executed. */
+const endReturnEntry=(ss,performed)=>{if(ss.returnEntry===true&&[...performed].some(id=>ss.exercises[id]))delete ss.returnEntry;};
 const byExercise=used=>{const m=new Map();for(const x of used){if(!m.has(x.id))m.set(x.id,[]);m.get(x.id).push(x);}return m;};
 /**
  * EARNED_PROGRESS (R42; state model, audits/domain-coaching-r7a-state-model-2026-10-28/STATE_MODEL_CONTRACT.md): a load tick counts the
@@ -775,7 +783,7 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  const entryWeek=entryWeekOf(ss0,used);delete ss.entryWeek;let finished=false;
  // SSCTR D55: an exercise first set up while an exercise in use is in the return steps earns no block-boundary set for the block of the
  // return (strengthReturnSets: the block in progress at the break earns no set), and its count rises at most one set per executed week.
- const returningWeek=returningWeekOf(ss0,used);
+ const returningWeek=returningWeekOf(ss0,used),entered=new Set();
  for(const [id,rows] of byExercise(used)){
   // Read as executed evidence (a review or the evidence reducer, not a conditional projection), an exercise the start does not hold with a known
   // load is set up or adopted only by what was executed, never by what its rows prescribed (asEstablishment; QE-R7ASM-01, QE-R7ASC-01): a KNOWN
@@ -799,6 +807,7 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
   if(fresh){if(!assumeLogged&&!u.practice&&ex.mode==='FROM_LOG'&&!adoption?.adopted&&!adoption?.pending)continue;ss.exercises[u.id]=ex;}
   if(on&&!(ex.lastPerformed>=on))ex.lastPerformed=on;
   if(u.practice)continue;
+  if(on)entered.add(id);
   // A log of an exposure that prescribed a known load, at that load or a lighter one, is progression evidence: its repetition target is the
   // gate's (HOLD and REGRESS repeat it, ADVANCE takes the logged repetitions). Only an establishment exposure sets its target from the
   // repetitions it was established with (R7-A; R7-A.1 QE-R7A-12, SSCTR R25).
@@ -869,6 +878,7 @@ export function advanceStrength(sk,ss0,w,used,gate={},logged={},{assumeLogged=fa
  // The return ends with the exercises in use: one not used during it carries no return step once they complete theirs, so rotation
  // resumes on its cadence and later new exercises start normally (SSCTR D51).
  if(finished&&!used.some(u=>Number.isInteger(ss.exercises[u.id]?.returnStep)))for(const e of Object.values(ss.exercises))if(Number.isInteger(e.returnStep)){delete e.returnStep;delete e.returnInBlock;delete e.setCeiling;delete e.returnLogged;}
+ endReturnEntry(ss,entered);
  // B0-C08: the novice cap releases at a block boundary only on executed evidence: every exercise of the week's last exposures ADVANCE or EARNED
  // (no repeated adverse response) and every loaded one established with a usable load (adopted from a log, or known). Otherwise it holds and
  // is re-assessed at the next boundary. A conditional projection assumes the planned evidence, as it does for every step.
@@ -893,7 +903,7 @@ export function slotsInUse(sk,w,ss,id){
 }
 /** The exercise each slot of a template uses in week w: rotation applies outside a return (SSCTR D51). One resolution for every reader. */
 function slotEntries(sk,template,w,ss){
- const returning=Object.values(ss.exercises).some(e=>Number.isInteger(e.returnStep)),rotation=returning?{}:sk.rotation(w,template);
+ const returning=ss.returnEntry===true||Object.values(ss.exercises).some(e=>Number.isInteger(e.returnStep)),rotation=returning?{}:sk.rotation(w,template);
  return template.rows.map(r=>({r,entry:catalogueEntry(rotation[r.slot]??r.entry.id)??r.entry}));
 }
 /**
@@ -1060,8 +1070,9 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
  // A return-entry week is one in which an exercise in use this week is at the entry step; a rotated-out exercise still parked at
  // that step does not make one (R7-A).
  const inUse=new Set(roles.filter(x=>x.sport==='STRENGTH').flatMap(x=>{const t=templatesOn(onDate(c.startDate,w*7+x.day))[x.templateIndex];return t?slotEntries(sk,t,w,ss).map(y=>y.entry.id):[];}));
- // A week planned as a return-entry week stays one when its remaining days are rebuilt (R7-A QE-R7A-15).
- const entryWeek=ss.entryWeek===true||[...inUse].some(id=>ss.exercises[id]?.returnStep===0);
+ // A week planned as a return-entry week stays one when its remaining days are rebuilt (R7-A QE-R7A-15). So is a week while a moderate or
+ // long return's entry is still ahead (returnEntry, SSCTR-P4-F01): every exposure is at the entry dose, whatever exercises it uses.
+ const entryWeek=ss.entryWeek===true||ss.returnEntry===true||[...inUse].some(id=>ss.exercises[id]?.returnStep===0);
  for(const r of roles.sort((a,b)=>a.day-b.day||a.backToBackOrder-b.backToBackOrder)){
   const common={id:`w${w}-${r.sport==='RUN'?'run':'str'}-d${r.day}`,weekIndex:w,day:r.day,date:onDate(c.startDate,w*7+r.day),turn:r.turn??null,sport:r.sport,backToBackOrder:r.backToBackOrder,blockId};
   if(r.sport==='RUN'){
