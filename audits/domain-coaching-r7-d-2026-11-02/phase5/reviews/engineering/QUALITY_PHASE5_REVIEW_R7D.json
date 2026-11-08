@@ -1,0 +1,191 @@
+{
+ "recordId": "QRE-R7D-PHASE5-REVIEW-r1",
+ "date": "2026-11-08",
+ "kind": "INDEPENDENT_QUALITY_RELIABILITY_GATE",
+ "gate": "R7-D Phase 5 candidate before R7D-FREEZE-6",
+ "judge": "fresh Quality & Reliability Engineer instance (constitution 1.3.0); did not write the runtime, harness or instruments; will not author or judge the coming holdout; did not read phase5/reviews/ssctr/",
+ "candidate": "c7c72e5",
+ "candidateFull": "c7c72e52c74138dcc4bd4c00344872162c6d2088",
+ "baseline": "R7D-FREEZE-5 (record CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json; bytes of cc0b56f)",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictNote": "The three runtime corrections are correct and causal on the paths their tests pin, with no regression found (suite, RED, conformance, differential, retroactive and idempotence probes). The K03 instruments remove only the proven false FAILs and change no Phase 4 result. Two conditions bind the freeze. (1) SSCTR must rule on the domain question in QRE-P5-F02. (2) The freeze must bind this folder. One material test gap (QRE-P5-F01) is carried to the next candidate: the runtime behaves correctly today, but no test pins that behaviour.",
+ "claimsVerified": [
+  {"claim": "suite 1014/1014", "result": "CONFIRMED", "how": "node --test on a git-archive copy of c7c72e5: tests 1014, pass 1014, fail 0 (node v24.19.0)"},
+  {"claim": "RED on R7D-FREEZE-5 exactly T42-T45", "result": "CONFIRMED", "how": "R7D_P5_ROOT=<copy of cc0b56f> node --test test/r7d-phase5.test.mjs: T42-T45 fail, T46-T47 pass. Each fails for the defect: T42 'box-squat-bodyweight: a return-entry week dose'; T43 'goblet-squat: entry reserve 3'; T44 'band-row 10 -> 10 reps'; T45 'F13 s1' not ASK"},
+  {"claim": "T42-T47 and T39-T41 green on the candidate", "result": "CONFIRMED", "how": "9/9"},
+  {"claim": "10 runtime mutants killed by the suite", "result": "CONFIRMED", "how": "probes/qre-p5-mutation.mjs on a new copy, the author's from/to strings read from phase5/probes/phase5-mutation.mjs: 10/10 killed (M4, M5, M8 by the full suite; the others by the directed and legacy files, a subset of the suite); bytes restored and checked by hash"},
+  {"claim": "QF3/QF7/QF6/QF0 killed by T39/T40/T41 inside the suite", "result": "CONFIRMED", "how": "QF3 only T39, QF7 only T40, QF6 only T41, QF0 all three"},
+  {"claim": "conformance R7-B/B.1/B.2 PASS", "result": "CONFIRMED", "how": "run in the scratch copy (those scripts write files; never run in the repository)"},
+  {"claim": "differential 192 cases, 8 differing, 0 unexplained", "result": "CONFIRMED", "how": "phase5-differential.mjs re-run against my own FREEZE-5 copy: rows byte-identical to DIFFERENTIAL_PHASE5.json; the 8 inspected: F02 DEV-67, DEV-68 (asks at the silent review); FC01 R7D-D08, D12, D15, D16, DEV-69 (only band rows differ); F01 DEV-72 (only the three never-executed exercises of a restart return)"},
+  {"claim": "evidence manifest runtimeSource = candidate source", "result": "CONFIRMED", "how": "44/44 src hashes equal"},
+  {"claim": "PREREG-8 instrument hashes", "result": "CONFIRMED", "how": "the 12 sha256 prefixes/suffixes listed in PREREG-8 match the committed files"},
+  {"claim": "validation 9: no false block, instrumentFix9 FALSE_BLOCKS_REMOVED, reachability REACHED, coverage COVERED, 60/60 witnesses", "result": "CONFIRMED", "how": "run-validation-9.mjs re-run on my copies. The candidate cases, coverage, witnesses, instrumentFix9 and reachability blocks are byte-identical to HARNESS_VALIDATION_R7D_9.json"},
+  {"claim": "28/28 sensitivity rows", "result": "PARTLY_REPRODUCED (12/28), the rest taken from the record", "how": "12 rows reproduced and identical to the record, each DETECTED_AND_CLEAN_ON_CANDIDATE: QRE-P4-F01 on FREEZE-5; QE-R7C-10 on R7C-FREEZE-3; QE-R7D-P3-01(a), (b) and P3-F01 on R7D-FREEZE-1; R7C-G01 on R7B2-FREEZE-1; six R7D-FREEZE-4 rows (incl. SSCTR-P34-F01 by P06). This covers every row read by P03, P06 or the carriers, the readings HARNESS-9 changed. The 16 others rest on properties HARNESS-9 does not change and are taken from the record"},
+  {"claim": "client-9 changes no reference that resolved before", "result": "CONFIRMED on the DEV-9 and diagnostic corpora", "how": "probes/qre-p5-client-diff.mjs: only DEV-70 differs (a CORPUS_ERROR under client.mjs, resolved under client-9)"}
+ ],
+ "findings": [
+  {
+   "id": "QRE-P5-F01",
+   "class": "TEST_GAP",
+   "origin": "NEW",
+   "severity": "MAJOR",
+   "blocking": false,
+   "subject": "SSCTR-P4-F01 correction: a missed or unreported entry week must keep the returnEntry marker",
+   "evidence": {
+    "rule": "When a week's strength establishes no state, the marker stays (endReturnEntry ends it only when an exercise in use holds a state; the code comment says 'A week without strength, or whose exposures established nothing, keeps it').",
+    "mutant": "J3 replaces that condition with any planned strength exposure, `if(ss.returnEntry===true&&used.length)`. It survives the whole suite (1014/1014).",
+    "consequence": "J3 brings SSCTR-P4-F01 back on the F13 athlete:",
+    "paths": [
+     "P2 (entry week reported not done): week 9 is 2x10@3 BODYWEIGHT instead of 1x10@4 RETURN_ENTRY.",
+     "P1 (entry week's strength left unreported at the week-8 review, reported late at week 9): the same; week 10 is 2x10 instead of return step 2."
+    ],
+    "candidate": "On the candidate both paths are correct: marker kept, entry repeated, then return step 2 after the late report. See probes/QRE_P5_PATHS_CANDIDATE.out.json P1, P2 and probes/QRE_P5_PATHS_J3_MUTANT.out.json.",
+    "whyMajor": "This is the property the correction rests on. Nothing in the suite would catch a regression of it."
+   },
+   "smallestChange": "Not required for this freeze: the bytes are frozen, and the holdout exercises the path. To close it, add a directed test of the P2 shape (and of the P1 late report) to the next authorized candidate. It kills J3. This is carried like QRE-P4-K04."
+  },
+  {
+   "id": "QRE-P5-F02",
+   "class": "OBSERVATION (domain question routed to SSCTR; it extends disclosure 2)",
+   "origin": "PRE_EXISTING (FREEZE-5 gives the same doses on these rows)",
+   "severity": "MAJOR if SSCTR rules it outside D49/D55, else none",
+   "blocking": false,
+   "subject": "The entry marker is week-level, so it covers only the first week back",
+   "evidence": {
+    "mechanism": "Once any exercise in use holds a state, the marker ends. From then on, an exercise with no state takes the normal first-establishment dose (strengthCandidate: `!ex&&entryWeek` no longer applies), whatever its history before the break. It is not held to the entry dose or the D49 steps.",
+    "P8": "W-D49 arm A (F14, no strength before a 25-day break). Week 4: runs and the day-0 strength session done as prescribed; the day-4 session not done. Week 5: glute-bridge 2x8@3 BODYWEIGHT, reverse-lunge 2x10@3 BODYWEIGHT and db-biceps-curl 2x10@3 FIRST_ESTABLISH (never executed, before or after the break). Only dead-bug (executed) is in the return steps, at 1x8@3 RETURN_STEP. FREEZE-5 gives the same doses for those rows.",
+    "P9": "T43's own arm A, where the client leaves the chosen loads out. The loaded rows executed in the entry week are not set up (D52), and they stay FIRST_ESTABLISH 2x8@3 in weeks 5 and 6, identical to FREEZE-5. Only bodyweight rows take return step 2. T43's title says the exercises 'take return step 2', but its week-5 bound (sets <= strengthEntrySets + 1 = 2, RIR >= 3) is also met by FIRST_ESTABLISH 2x8@3, so it does not separate the two paths.",
+    "P10": "The same arm A with a usable load logged: every row takes return step 2 in week 5, then 3x8 KNOWN and 3x10 KNOWN. FREEZE-5 gave 4x8 in week 5. The correction works when the entry week establishes every exercise.",
+    "probes": "probes/qre-p5-paths.mjs; outputs in probes/QRE_P5_PATHS_CANDIDATE.out.json and QRE_P5_PATHS_FREEZE5.out.json, P8 to P10",
+    "authorityText": "AUTHORIZATION_PHASE5 §1 and PREREG-8 Δ47: 'um exercício planejado e nunca executado antes da pausa entra na dose de entrada, segue os passos da D49'. Read strictly, the skipped day-4 exercises do not follow D49. Read as D55 ('an exercise first set up while an exercise in use is in the return steps ... rises at most one set per executed week'), they may be compliant. That ruling belongs to SSCTR, and disclosure 2 asks it only for the no-usable-load path, not for a skipped session."
+   },
+   "smallestChange": "If SSCTR rules the P8/P9 doses inside D49/D55: none (a disclosed residual for the holdout judges). If it rules them outside: no narrow change exists. The one-line candidate (end the marker only when every non-practice exercise in use holds a state) has side effects. A loaded row that is never logged with a load would repeat RETURN_ENTRY indefinitely. It would also suppress rotation (slotEntries) indefinitely. It would change the D52 path that disclosure 2 describes. A correct fix needs an exercise-level entry state, with T42-T47, mutation and differential re-run. Under AUTHORIZATION_PHASE5 that would close R7-D NOT_READY with this blocker named."
+  },
+  {
+   "id": "QRE-P5-F03",
+   "class": "HARNESS_GAP (accounting)",
+   "origin": "NEW",
+   "severity": "MINOR",
+   "blocking": false,
+   "subject": "The P06 twin of QRE-P4-H02 drops some units without listing them",
+   "evidence": "properties-9 p06 check(): a capped run on or after the decision's own date that the step's record reports is removed from `runs`. It is listed as P06_SESSION_REPORTED_BY_THIS_DECISION only when no run of that week is left. When later runs of the week remain (a mid-week review reporting that day's run), the reported session's unit disappears with no NOT_EVALUABLE entry. That falls short of the letter of PREREG-8 Δ48 ('volta como NOT_EVALUABLE'). Measured on DEV-9 (probes/QRE_P5_K03_UNITS_DEV9.out.json): 0 such drops, and 0 HARNESS-8 violations dropped without a listing. The semantics are right (a reported session is history, not a dose the decision plans; witnesses in probes/QRE_P5_TWIN_WITNESS.out.json: the same session left unreported and inflated still fails P06, and kept reported it is not read).",
+   "smallestChange": "One instrument line, if the coordinator chooses to spend the narrow adjustment on it (not recommended): push the P06_SESSION_REPORTED_BY_THIS_DECISION entry whenever `today.length`, not only when `!runs.length`; validation 9 then has to be re-run. Otherwise this is a condition on the holdout quality judge (K-P5-2)."
+  },
+  {
+   "id": "QRE-P5-F04",
+   "class": "TEST_GAP",
+   "origin": "NEW",
+   "severity": "MINOR",
+   "blocking": false,
+   "subject": "Other surviving mutants and one test title",
+   "evidence": {
+    "J1": "A SHORT return also sets the marker. It survives the suite; the SHORT branch is unchanged from FREEZE-5 and stays unpinned. Its effect is limited to exercises with no state after a short break (P6 unchanged; probes/QRE_P5_PATHS_J1_MUTANT.out.json).",
+    "J5": "creditDecides without the projection-mode guard. It survives but is equivalent in practice: unknownRunWindow already returns when the facts' start is not EASY.",
+    "T46": "The title names 'a restart recipe' control that its body does not contain.",
+    "equivalent": [
+     "J4: practice rows: there are no practice rows in an entry week, because RETURN_ENTRY precedes PRACTICE in strengthCandidate.",
+     "J8: the credit and capped weeks have the same session ids.",
+     "J9: a no-kg convention never carries unitUnknown.",
+     "J10: the strength state does not decide run minutes.",
+     "J11: buildWeek's entryWeek already includes the marker.",
+     "J12: test (1) short-circuits whenever capped differs from uncapped."
+    ]
+   },
+   "smallestChange": "None before the freeze. In the next candidate, add a SHORT-return test with a never-executed exercise (kills J1) and the restart-recipe control that T46's title promises."
+  },
+  {
+   "id": "QRE-P5-F05",
+   "class": "OBSERVATION",
+   "origin": "NEW",
+   "severity": "TRIVIAL",
+   "blocking": false,
+   "subject": "Instrument bookkeeping",
+   "evidence": {
+    "duplicateWitnessId": "Validation 9 holds two witnesses named W-P06b: DEV-41 (from validation 8) and DEV-63 (new). The 60/60 count is right; the name is ambiguous.",
+    "H01OnP03": "H01 also reaches P03(d), through ceilingFor/runRefs. An intake longest run of 0 no longer counts as a window reference that skips the unit, so P03(d) reads more units: stricter, not looser.",
+    "differentialClassifier": "The F01 class accepts any strength difference while a return is in force, and only the first difference is classified. The single F01 case (DEV-72) was inspected and is consistent."
+   },
+   "smallestChange": "None needed."
+  }
+ ],
+ "conditionsForFreeze": [
+  {"id": "K-P5-F1", "condition": "SSCTR's ruling on disclosure 2 must explicitly cover QRE-P5-F02. That means the skipped-entry-session path (P8) and the no-usable-load loaded rows of W-D49-A (P9), both of which take FIRST_ESTABLISH at 2 sets @RIR3 after the marker ends. If SSCTR rules either outside D49/D55, this READY_WITH_CONDITIONS lapses, because the SSCTR-P4-F01 correction is then incomplete, and QRE-P5-F02 becomes blocking with no narrow change.", "owner": "SSCTR (ruling); coordinator (check before running freeze-r7d-6.mjs)", "evidenceOfResolution": "the SSCTR Phase 5 record names this path as inside D49/D55, or a coordinator escalation to the Founder"},
+  {"id": "K-P5-F2", "condition": "The freeze binds this folder as left (record, MD, probes and their outputs), and no byte under CoachingCore/src, CoachingCore/test, harness/, author/ or PREREG-8 changes after c7c72e5. freeze-r7d-6.mjs already enforces both. Any narrow adjustment re-opens this review for its delta.", "owner": "coordinator", "evidenceOfResolution": "RUNTIME_FREEZE_R7D_6.json reviews.qualityReliability.sha256 and postReview.changedSinceReviewed limited to the two review folders"}
+ ],
+ "conditions": [
+  {"id": "K-P5-1", "condition": "Carried tests (QRE-P5-F01, -F04), like QRE-P4-K04: in the next authorized candidate, directed tests for a missed entry week and a late-reported entry week (they kill J3), a SHORT return with a never-executed exercise (kills J1), and T46's restart-recipe control.", "owner": "Engineering worker of the next functional mission", "trigger": "next authorized candidate, or any change to returnStrength or endReturnEntry", "evidenceOfResolution": "J3 and J1 killed inside the suite"},
+  {"id": "K-P5-2", "condition": "The holdout's quality judge accounts for the P06 units HARNESS-9 drops without listing (QRE-P5-F03). Run a read-only accounting like probes/qre-p5-k03-units.mjs on the evaluated H1 traces. Classify by hand every same-day reported session dropped while later runs remained; one above its ceiling is a HARNESS_GAP finding, not a pass.", "owner": "holdout QRE judge", "trigger": "the R7D-FINAL-2 judgment", "evidenceOfResolution": "a count of such units, or 0, in the judgment record"},
+  {"id": "K-P5-3", "condition": "The holdout judges read P8/P9-shaped steps (exercises with no state after a return's first week) as SSCTR rules under K-P5-F1. T43's week-5 bound does not separate a return step from a first establishment.", "owner": "holdout SSCTR and QRE judges", "trigger": "the R7D-FINAL-2 judgment"}
+ ],
+ "disclosureRulings": {
+  "4": {"ruling": "ACCEPTED (QRE side)", "basis": [
+   "The question is added only inside the existing trigger: facts' start EASY, no completed run in the 30-day window, elapsed unreported runs outside a stated break. It also requires a CONDITIONAL_PLAN projected start in EASY mode whose credit reading plans a longer run.",
+   "It is answerable, and it is not repeated after an answer:",
+   "P4a, every listed session reported done: VALID, no question at the next review.",
+   "P4b, every listed session reported not done: VALID with the zero reading, no question.",
+   "T46: a stated break, a known miss and a reported run in the window ask nothing.",
+   "An empty review re-sent an hour later asks the same question with the same 13 run sessions (P5). That is an unanswered question persisting, not repetition.",
+   "The question lists only run sessions, and never a reported one (P03 QUESTION_ASKS_ABOUT_REPORTED_SESSION unit, validation 9).",
+   "With no run left to plan, creditDecides cannot fire, because it compares only the planned week's runs.",
+   "Whether this is the SSCTR-SD-R7C-r2 semantics is SSCTR's ruling; it matches P03(d) as registered."]},
+  "5": {"ruling": "ACCEPTED", "basis": "The replaced assertion required FIRST_ESTABLISH, which is the defect itself (CND-2). The new one is stricter on the entry: RETURN_ENTRY at strengthEntrySets with RIR >= strengthEntryMinimumRir, never a KNOWN load. It fails on FREEZE-5 (P5-M1 and P5-M2 kill it). No other existing test changed, which freeze-r7d-6.mjs enforces."},
+  "6": {"ruling": "INSIDE_K03, with QRE-P5-F03 as an accounting condition", "basis": "The P06 twin is the same proven predicate as QRE-P4-H02, in the second property that reads it. Correcting P03 alone would leave the instrument inconsistent. The trigger is a development case (DEV-65), not a Phase 4 output. The one Phase 4 unit involved (F21's P06 unit) was already NOT_EVALUABLE for NO_RUN_REFERENCE_IN_WINDOW, so no Phase 4 result changes (PREREG-1 §9). Witnesses: unreported and inflated, the session fails; reported, it is not read. The unit is never a PASS."},
+  "7": {"ruling": "ACCEPTED", "basis": "W-CARRIER's trigger (no reference state at the author's next step after clearance) cannot occur once the probe carries the clearance. W-CARRIER9 (DEV-65) and W-CARRIER9b (DEV-02) flip the probe decision after a clinical route and fire. Both CARRIER_CLINICAL sensitivity rows were reproduced under HARNESS-9 and detected, clean on the candidate: QE-R7C-10 on R7C-FREEZE-3, P3-F01 on R7D-FREEZE-1. A new not-applicable reason (NEXT_STEP_WITHIN_A_MINUTE_OF_THE_ANSWER) never yields a PASS."},
+  "8": {"ruling": "ACCEPTED: no runtime output leaks", "basis": [
+   "§4 and §5 describe session kinds, days and question conditions that come from the policy (race-week touch spacing, optional walks, the re-entry recipes, the 30-day window). They give no dose, no expected output and no implementation.",
+   "§6 discloses the harness's H02 reading and the probe, which the author needs so the next step comes more than a minute after the answer. That gives no advantage on any oracle.",
+   "Whether the rules are true to the domain is SSCTR's ruling. Reachability was reproduced against the candidate: CARRIER_HOLD units on DEV-66, the pattern substitution resolved on DEV-70, the touch/shakeout/race week on DEV-71, the optional walk in a re-entry week on DEV-72.",
+   "Coverage reachable through INTERFACE-8 and brief 8 without runtime output:",
+   "PREREG-2 Δ9: §5 recipes; the carriers; machine logs and confounded runs are unchanged from interface 1.",
+   "PREREG-3 Δ6: an eligibility flag, or a pattern substitution, then clearance.",
+   "PREREG-4 Δ5 and PREREG-5 Δ3: loadsByPattern for a week executed in full; DEV-30 shows it with P18 units.",
+   "PREREG-6 Δ5, Δ18 and Δ29: optional sessions and the race-week shape per §4; fraction 0.5 with the bulk form; adverse responses are writable facts; DEV-48 shows the converging-adverse race week.",
+   "PREREG-7 Δ44: athlete levels are intake fields.",
+   "Caveat: the brief forbids CoachingCore/, so the author never sees T42-T47's synthetic F13/F14/F25 intakes. The holdout must still be authored independently of the spent final/."]}
+ },
+ "k03": {
+  "ruling": "H01, H02 (with its P06 twin) and H03 remove only the proven false FAILs, and no Phase 4 result changes.",
+  "units": [
+   "Every property unit H01/H02 stops reading is listed NOT_EVALUABLE, never a PASS, with the single unlisted case recorded as QRE-P5-F03 (0 occurrences in DEV-9).",
+   "Across all 74 DEV-9 cases, HARNESS-8 vs HARNESS-9 on the same runs: P03 and P06 change only by the listed NOT_EVALUABLE units; the four instrumentFix9 rows go FAIL to non-FAIL; CARRIER_CLINICAL changes only on DEV-65 and DEV-68; runtime outputs are identical except DEV-70 (the client change)."
+  ],
+  "h03": "H03 is a re-measurement, not an unread unit. The carriers now compare at a probe one minute after the answer, then at the author's later steps, so a corrected carrier unit can PASS or FAIL on a new corpus. That is a correct measurement, not a conversion of a NOT_EVALUABLE into approval, because no Phase 4 unit is re-graded (PREREG-8 Δ48; K03_PHASE4_UNITS.json is a development reading). Sensitivity is kept: two carrier rows reproduced, and W-CARRIER9/9b and W-HOLD9 fire.",
+  "limitation": "The K03 reading of the three Phase 4 units (F07, F21, F12) was not re-run here, because the dispatch forbids re-grading final/ cases. DEV-63, DEV-64 and DEV-65 reproduce the three mechanisms, and validation 9 was reproduced on them."
+ },
+ "scriptsReviewed": {
+  "freeze-r7d-6.mjs": "Read, not run. It refuses on these conditions:\n- a source delta other than the three files;\n- an existing test changed other than r6-adaptation.test.mjs, or a test file added other than the two;\n- any change to inputs, earlier instruments, freezes or final/ since FREEZE-5 or cc0b56f;\n- final2/ present;\n- evidence made on other source bytes;\n- either review not a pass, or naming another candidate;\n- any post-review commit that is not a new file under the two review folders.\nIt binds review folders and probes, the suite, and the conformance checks. No defect found.",
+  "verify-r7d-6.mjs": "Read, not run. It is read-only without --write, and --write writes only VERIFICATION_R7D_6.json. Its checks cover files, digests, bound records, authorities, an append-only queue, F08 open, V1 NO and no-new-holdout.",
+  "seal-final-2.mjs": "Differs from seal-final.mjs only in: FREEZE-6, HARNESS-9 and its files, PREREG-8, R7D-FINAL-2, its file name, 34-40 cases, and the author inputs incl. interface 8, brief 8 and check-corpus-8. The H2 seed rule is unchanged.",
+  "r7d-harness-9.mjs": "Differs from harness 8 only in its version, the default freeze record and the three lib imports.",
+  "check-corpus-8.mjs": "Advisory only: base errors and warnings word for word, plus re-plan reference warnings. It imports no runtime.",
+  "prereg8": "Against PREREG-1:\n- §3 (HARNESS_GAP returns cases as not evaluated, never in the runtime's favour) holds for H01/H02; H03 re-measures on a new corpus only.\n- §8: the sealed protocol is kept and made stricter (Δ53-Δ55).\n- §9: the harness changes answer the Phase 4 holdout outputs, which §9 forbids; the Founder's K03 decision authorizes them prospectively, with a new registration before any new holdout, and no Phase 4 result is changed.\n- No success criterion is loosened; P17/P18 have no envelope."
+ },
+ "reproduction": {
+  "environment": "Windows 11, node v24.19.0, worktree clean at c7c72e5. Every runtime copy is a git archive of CoachingCore plus the authority records, extracted into new scratch directories with node_modules copied. Nothing was deleted, and no verify-r* --write, freeze, --first-evaluation, npm run verify or write under final/ was run.",
+  "runtimes": [
+   "c7c72e5 (candidate)",
+   "cc0b56f (R7D-FREEZE-5)",
+   "08c6db3 (R7C-FREEZE-3)",
+   "4cabd18 (R7D-FREEZE-1)",
+   "1a1c728 (R7B2-FREEZE-1)",
+   "b242237 (R7D-FREEZE-4)",
+   "mutant copies J1 and J3 of the candidate"
+  ],
+  "commands": [
+   "node --test (candidate copy): 1014/1014",
+   "R7D_P5_ROOT=<FREEZE-5 copy> node --test test/r7d-phase5.test.mjs: T42-T45 fail, T46-T47 pass",
+   "node --test test/r7d-phase5.test.mjs test/r7d-phase4-cq41.test.mjs (candidate): 9/9",
+   "node scripts/conformance-r7b{,1,2}.mjs (candidate copy): PASS x3",
+   "node phase5/reviews/engineering/probes/qre-p5-mutation.mjs --quick: author M1-M10 and QF0/3/6/7 (all killed as claimed); judge J1-J12 (J2, J6, J7 killed; J1 and J3 survive and are not equivalent; the others are equivalent or near-equivalent). Outputs: probes/QRE_P5_MUTATION_*.out.json",
+   "node harness/validation/run-validation-9.mjs --candidate <cand> --f5 --f3 --d1, and again with --b2 --d4. Outputs: probes/QRE_P5_VALIDATION9_RERUN_{A,B}.summary.json",
+   "node phase5/probes/phase5-differential.mjs --base <FREEZE-5 copy> --out <scratch>: identical to the record. Output: probes/QRE_P5_DIFFERENTIAL_RERUN.summary.json",
+   "node probes/qre-p5-paths.mjs on the candidate, FREEZE-5, J1 and J3: retroactive, late, missed and partial entry weeks, named correction, answers, re-sent question, short break after a return, control B with rotation",
+   "node probes/qre-p5-k03-units.mjs (DEV-9, HARNESS-8 vs -9 unit accounting)",
+   "node probes/qre-p5-twin-witness.mjs",
+   "node probes/qre-p5-client-diff.mjs"
+  ]
+ },
+ "escalations": [
+  "QRE-P5-F02 / K-P5-F1 goes to the SSCTR ruling, through the coordinator. It is a domain question with no narrow runtime change if ruled outside D49/D55. Nothing has been done about it."
+ ]
+}

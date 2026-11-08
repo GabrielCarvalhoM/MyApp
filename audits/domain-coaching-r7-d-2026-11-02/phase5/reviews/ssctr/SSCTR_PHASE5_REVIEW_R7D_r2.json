@@ -1,0 +1,316 @@
+{
+  "recordId": "SSCTR-R7D-P5-REVIEW-r2",
+  "date": "2026-11-08",
+  "candidate": "c7c72e5",
+  "candidateFull": "c7c72e52c74138dcc4bd4c00344872162c6d2088",
+  "baseline": "R7D-FREEZE-5 (bytes of cc0b56f)",
+  "role": {
+    "agent": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0",
+    "skill": "sports-science-review 1.0.0",
+    "evidenceProtocol": "EVIDENCE_PROTOCOL 1.0.0",
+    "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY (nonclinical)",
+    "instance": "fresh SSCTR instance dispatched by the R7-D Phase 5 coordinator (L2, productization), model claude-opus-5-5, effort high; inherited tools and permissions; no specialist delegation",
+    "independence": "This instance did not write the runtime, the harness, the instruments, the interface or the brief, and will not author or judge the coming holdout.",
+    "notClaimed": "No human, clinical or empirical validation; no credentials; no gate closure, publication or Product Truth promotion; no V1 coaching authority."
+  },
+  "inputsVerified": {
+    "headEqualsCandidate": true,
+    "sha256AtCandidate": {
+      "CoachingCore/src/r6-adaptation.mjs": "8a5cfb5c84770561250ab4129a96ee50b8a06cd3b587735ec6aaf0030ee06062",
+      "CoachingCore/src/r6-composition.mjs": "c9adba61413298ce5f68057877d85ce0fe3141ee930d0a250adedfa379d4f3d5",
+      "CoachingCore/src/r6-program.mjs": "05fe3ec428d9c49d6b3c35ef620e018e4a7e3d283758b050297fa04c1bc85870",
+      "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+      "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+      "CoachingCore/test/r7d-phase5.test.mjs": "011b2e711b73acce49cace336c6ac3800903ef73de6ab9bb5b577b13640c7956",
+      "audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_DELTA_R7D_8.md": "f3a9819b15dbfffdbf057d2402ca1b6bdf6c03ab56264606dedf8c4c520a58d0"
+    },
+    "policyAndCatalogUnchangedSinceFreeze5": true,
+    "runtimeDiff": "3 files, +40/-9 (git diff cc0b56f c7c72e5 -- CoachingCore/src); no number added (policy and catalog bytes unchanged)."
+  },
+  "reproduction": [
+    "node --test test/r7d-phase5.test.mjs on the candidate: 6/6 pass.",
+    "Same file on a scratch copy of cc0b56f (git archive of CoachingCore plus the five ../../audits review files the authority reads, node_modules copied): T42, T43, T44, T45 fail, T46 and T47 pass: the RED is exactly T42-T45, as EVIDENCE_PHASE5 states.",
+    "node --test (whole CoachingCore suite) on the candidate: 1014/1014; working tree unchanged apart from phase5/reviews/.",
+    "probes/ssctr-p5-trajectories.mjs on both runtimes (outputs trajectories-*.json): F13 long return then six executed weeks; W-D49-A with loaded rows logged and unlogged; W-D49-B extended; a break after week 0's practice session only; an entry week with strength not done; the disclosure-2 path; a known-load intermediate (R7D-F20's intake, read only, not evaluated as a case) with a moderate break before any exposure; F13 with ten weeks of normal reporting.",
+    "probes/ssctr-p5-unlogged-stall.mjs and ssctr-p5-unlogged-stall-control.mjs on both runtimes: loaded rows performed without a load and bodyweight rows unreported after a return, without and with a valid pre-break history.",
+    "Read: REVIEW_REQUEST_PHASE5, AUTHORIZATION_PHASE5, the Phase 4 SSCTR record (json, md), strengthEntryWeek and strengthReturnSets, the runtime diff and the surrounding strengthCandidate/advanceStrength code, T42-T47, the amended legacy assertion, WITNESS_GRID_PHASE5 summary, DIFFERENTIAL_PHASE5, HARNESS_VALIDATION_R7D_9 carrier witnesses, properties-9 P06 twin, PREREGISTRATION_R7D_8 Δ47-Δ58, INTERFACE_DELTA_R7D_8, SSCTR-SD-R7C-r1/r2, B0 catalog band conventions, policy event block.",
+    "The skill's validate_records.py was not run: Python is not installed in this environment (the launcher reports it missing). Record consistency is therefore not machine-validated.",
+    "r2: read QUALITY_PHASE5_REVIEW_R7D.json (QRE-P5-F02 with P8, P9, P10, its authority text and smallestChange; K-P5-F1, K-P5-F2) and CoachingCore/scripts/freeze-r7d-6.mjs. The script copies conditionsForFreeze (or conditions) into reviews.ssctr.conditions and findings into disclosures.ssctrFindings, and binds the review folders by SHA-256.",
+    "r2: re-ran the QRE probe engineering/probes/qre-p5-paths.mjs read-only on the candidate and on the FREEZE-5 copy (outputs probes/rerun-qre-p5-paths-*.out.json). P8 on the candidate is byte-identical to the QRE output; P8, P9 and P10 are as the QRE states them.",
+    "r2: probes/ssctr-p5-p8-extended.mjs on both runtimes (outputs probes/p8-extended-*.json). P8 extended with weeks 5-9 executed and logged, in two arms: the entry week day-0 loads logged, and not logged (the QRE P8).",
+    "r2: read the approved D55 text (audits/domain-coaching-r7a-2026-10-27/reviews/ssctr-r7a-recheck-queue-items.json) and the R7-A SSCTR review (ssctr-r7a-review.json), which holds strengthReturnSets to cover an exercise first set up after the entry week."
+  ],
+  "disposition": "ACCEPT_WITH_CONDITIONS",
+  "dispositionBasis": "The three runtime corrections apply the approved texts as written and add no number. SSCTR-P4-F01 is closed on F13, on W-D49-A and on two further shapes; exercises with a valid pre-break history (W-D49-B, a known-load intermediate) are byte-identical to R7D-FREEZE-5; the run side is unchanged by the strength correction; FC-01 is inside B0-C04 and bounded; the QRE-P4-F01 question follows the accepted R7-C unknown-training semantics. No SCIENTIFIC_BLOCKER, no UNSAFE step, no added number. The conditions are disclosures and bindings for the freeze, not runtime changes; no narrow adjustment is requested. r2: QRE-P5-F02 paths P8 and P9 are inside strengthEntryWeek, D52 and D55, and are carried as covering disclosures CFD-3 and CFD-2. The disposition is unchanged, and no narrow adjustment is requested.",
+  "questionAnswers": {
+    "a_D49_for_never_executed": {
+      "answer": "Yes. F13: week 8 at 1x10 RIR4 RETURN_ENTRY for box-squat-bodyweight, incline-push-up and band-row (was 1x10 RIR3); week 9 at 1x10 RIR3 RETURN_STEP (was 3x10, 3x10, 2x10); then 2 sets from week 10, never above the normal count 2, one set per executed week, consolidation reduction on top (week 12 at 1 set), no blocksDone credited. W-D49-A (loads logged): week 4 all 1 set RIR4; week 5 step 2 at 2 sets for normal-3 rows and 1 set for normal-2 rows (was up to 4x8); week 6 at 3 and 2; never above 3 through week 10. Break after week 0's practice-only session: same as W-D49-A (FREEZE-5 gave 4x8). Entry strength not done: the entry repeats before step 2 (FREEZE-5 progressed to 2x8 and then 3x10). Valid history unchanged: W-D49-B byte-identical (weeks 4-9, loads logged), the known-load intermediate byte-identical (weeks 1-11), and W-D49-B is itself a mixed case (goblet-squat, db-calf-raise and dead-bug never executed before the break) that the R6-POLICY-4 entry-week rule already handled. Differential: 184/192 identical, 8 explained (F01 1, FC-01 5, QRE-P4-F01 2), 0 unexplained.",
+      "evidenceStatus": "Conformance to strengthEntryWeek and strengthReturnSets (approved R6-POLICY-5 text, SSCTR D49): WELL_SUPPORTED as conformance (verified on both runtimes).",
+      "confidence": "HIGH for the shapes probed; not a proof over all shapes (the holdout tests generalization)."
+    },
+    "b_FC01_band_progression": {
+      "answer": "Correct and bounded. A band or assistance row now counts its repetitions and reserve as evidence (NO_KG_CONVENTIONS), exactly as a bodyweight row. It progresses by repetitions only, capped at the top of the goal's repetition range for ordinal-resistance entries (F13 band-row 10 -> 12 and then holds at 12 with the note that a harder level is the athlete's choice; a bodyweight row may go to the top + 4, unchanged); it is never read as a load and never asked about as a load (T44). After a return it takes its return steps (F13 week 9 RETURN_STEP) instead of repeating the entry. B0-C04 and the B0 catalog say band tension is an ordinal level, progression by reps, never kilograms; the correction makes the runtime match that. Elastic and conventional resistance give similar strength gains in pooled trials (Lopes 2019), which supports treating a band row as a progressable stimulus; the literature does not give a band progression rule, so no rule is added and none is needed.",
+      "evidenceStatus": "Conformance to B0-C04: WELL_SUPPORTED. Band as an effective stimulus: SUPPORTED_WITH_LIMITS (8 small heterogeneous trials, unstandardized band load)."
+    },
+    "c_run_side_and_coordination": {
+      "answer": "Unchanged. In every strength scenario probed the run rows are identical on both runtimes (F13 weeks 8-14 EASY 15/20/25 then 30-35, W-D49-A/B, the intermediate's RESTART recipe after a long break); the differential reports runRowsSame for every F01 and FC-01 case. The strength correction only lowers strength in return weeks and suppresses rotation while the entry is ahead; it cannot add lower-body demand next to a run, so the interference handling judged in Phase 4 is untouched. Run rows change only where QRE-P4-F01 replaces a VALID plan by the question (DEV-67, DEV-68, F13 s1)."
+    },
+    "d_QRE_P4_F01_semantics": {
+      "answer": "Yes, this is SSCTR-SD-R7C-r1/r2: unreported training counts neither as done nor as not done, and where a run dose depends on it the dose is asked, not planned; non-response never silently defaults to credit or to zero. On FREEZE-5 the zero reading (held doses) decided F13's consolidation week silently: the credit reading would have planned EASY 20/20; the candidate tests both readings and asks when they differ. A start anchored on evidence (intake, week evidence, a return's entry) is not credit, so answered breaks, known misses and a reported run ask nothing (T46). See disclosure 4."
+    },
+    "f_blockers": "No SCIENTIFIC_BLOCKER, no UNSAFE step, no number added."
+  },
+  "aeQuestions": {
+    "scope": "The SSCTR-P4-F01 return dose (the material adaptive decision changed by this candidate).",
+    "1_planAdequate": "The FREEZE-5 return plan was not adequate for its own policy: it skipped the entry and step 2 for never-executed exercises.",
+    "2_materialFact": "Yes: a moderate or long nonclinical break with provenance (the interruption facts) and the exercises' executed history (none).",
+    "3_keepDefensible": "No: KEEP would keep RIR3 entry and credited 3-4 set counts.",
+    "4_changeNecessary": "Yes, against the comparator of the approved return steps (strengthEntryWeek, strengthReturnSets).",
+    "5_smallestIntervention": "Apply the existing return steps to exercises without a pre-break state (the returnEntry marker); no new number or step.",
+    "6_smallerAlternativesInsufficient": "Leaving the entry to exercises with a state (FREEZE-5) leaves F13 and W-D49-A outside D49; marking only the entry week would still credit unexecuted blocks at step 2.",
+    "7_priorityAndProgression": "Progression is preserved: the normal count comes back one set per executed week; no run dose is touched.",
+    "8_evidenceSupportsDose": "The doses are the approved D49 doses; literature qualifies applicability only (repeated-bout protection from a first low-intensity bout; low-volume maintenance).",
+    "9_uncertainty": "The optimal return dose by break length is not established in the literature (as SSCTR-SD-R7C-r2 R2 already recorded); D49 stays a conservative internal rule.",
+    "10_askHoldClinical": "Nonclinical breaks only; clinical routing unchanged (pain, illness, R-F08-1). Missing loads are not asked (O02, routed)."
+  },
+  "findings": [
+    {
+      "id": "SSCTR-P5-O01",
+      "class": "ACCEPTABLE_ALTERNATIVE (disclosure 2 path; not a D49 deviation)",
+      "origin": "PRE_EXISTING (the week-5 rows are identical on R7D-FREEZE-5)",
+      "evidence": "W-D49-A with the loaded rows reported without a load (the evaluation client's asPrescribed leaves a chosen load out): the bodyweight rows are set up at the entry and take step 2 (dead-bug 1x8, glute-bridge 2x8, reverse-lunge 1x8 RIR3); the marker ends; the dumbbell rows, executed at the entry but without a usable load, establish nothing (D52) and take the effort-guided first establishment at week 5: 2x8 RIR3 for the main rows (equal to step 2) and 2x10 RIR3 for db-calf-raise and db-biceps-curl, whose normal count 2 would give step 2 at 1 set. Once a load is logged (week 5) they are set up under D55 (returnInBlock, regainCap) and reach the normal count at week 6, the same count the logged D49 path reaches (probe DISCLOSURE2_UNLOGGED_ENTRY).",
+      "domainReading": "Inside the D52/D55 envelope: an exposure without a usable load establishes nothing, and the next one is the approved effort-guided establishment (effortGuidedLoad: 2 sets, RIR >= 3), whose FIRST_ESTABLISH row is also the only coherent row for an exercise with no logged load (a RETURN_STEP row would say 'use the load you logged at the return entry'). The exercise did perform its entry exposure a week earlier: a single low-intensity bout confers repeated-bout protection that is present at 1 week (Chen, Nosaka, Chen 2012), which is the purpose of the entry. Magnitude: at most one accessory set at RIR >= 3 for one week; main rows equal step 2.",
+      "evidenceStatus": "Conformance to D52/D55 and effortGuidedLoad: WELL_SUPPORTED. Harm: PLAUSIBLE_BUT_UNCERTAIN in the negative (low load, isolation accessories, prior bout).",
+      "blocking": false,
+      "routing": "Next runtime mission (optional refinement): an exercise executed at a return entry without a usable load could take the step-2 set count at its next establishment. Not required for this gate."
+    },
+    {
+      "id": "SSCTR-P5-O02",
+      "class": "OBSERVATION (progression stall that the athlete can resolve; G03 and Product routing)",
+      "origin": "PRE_EXISTING semantics, now uniform",
+      "evidence": "After a moderate return, when every loaded row is performed without a load and no bodyweight row is reported, no exercise is set up: the entry (1 set RIR >= 4) repeats every week (weeks 5-8 in the probe) and no load question is asked. With a valid pre-break history R7D-FREEZE-5 does exactly the same (control probe: the entry repeats weeks 4-8), because a return step moves only on logged evidence. On FREEZE-5 the never-executed path instead repeated a 2x8 RIR3 first establishment without end.",
+      "domainReading": "Not unsafe (the lowest dose), and consistent with 'no progression without evidence'. Kept for long, it undertrains: one set per exercise per week at RIR >= 4 keeps some stimulus, but the minimal-dose literature that reports one set per week maintaining strength assumes the relative load is kept (Spiering 2021), and RIR >= 4 with an unlogged load does not show that. Unlike the band case (FC-01), a log is possible here, so it is not a structural impossibility.",
+      "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN (adherence and undertraining cost); no rule proposed.",
+      "blocking": false,
+      "routing": "G03 / Product-UX and the next runtime mission: say on the entry row that the next step needs the load used, and consider a load question after a second unlogged entry. No dose change requested."
+    },
+    {
+      "id": "SSCTR-P5-O03",
+      "class": "OBSERVATION",
+      "origin": "NEW (consequence of F01)",
+      "evidence": "A never-executed accessory row enters at the goal's base repetitions (W-D49-A db-calf-raise and reverse-lunge 1x8 at RIR4, where a normal accessory row and a history row carry 10).",
+      "domainReading": "Fewer repetitions at the entry reserve: lower demand, neutral to conservative. No action.",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P5-O04",
+      "class": "INSTRUMENT NOTE (for the Quality judge)",
+      "origin": "NEW (K03)",
+      "evidence": "properties-9 P06 twin: the comment says 'a session of the decision's own day that its record already reports', and the predicate excludes reported sessions dated on or after the decision date (s.date >= fromDate && reported.has(s.id)).",
+      "domainReading": "The domain reading is right: a session the decision's own record reports is history, not a dose it plans (SSCTR-P4-O04, interface 8 §6). It is equivalent to 'own day' only if no session dated after the decision can be in the record at that decision. Quality confirms.",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P5-O05",
+      "class": "POLICY_QUESTION carried (SSCTR-P4-O03)",
+      "origin": "PRE_EXISTING",
+      "evidence": "The candidate asks when the credit and zero readings differ, and not otherwise. Whether a long silence should prompt a reason screen when no dose can depend on it remains open.",
+      "domainReading": "Not required by the Founder's mandate (QRE-P4-F01 concerns dependence). Remains with the policy owner and PCG; no rule added.",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P5-O06",
+      "class": "ACCEPTABLE_ALTERNATIVE (QRE-P5-F02 path P8: a session skipped in the return-entry week; inside strengthEntryWeek and D55 with D52)",
+      "origin": "PRE_EXISTING: the week-5 doses equal R7D-FREEZE-5. Later weeks are more conservative than FREEZE-5: no block credited, never above the normal count.",
+      "evidence": "F14, no strength before a 25-day nonclinical break. In the entry week (week 4), every exercise in use was planned at 1x8 RIR4 RETURN_ENTRY. The runs and the day-0 session were done (loaded rows without a load); the day-4 session was not done. In week 5, a return-step week, the never-executed day-4 exercises take the effort-guided first establishment: glute-bridge 2x8@3, reverse-lunge 2x10@3, db-biceps-curl 2x10@3. They then rise at most one set per executed week, up to the normal count, with no block through week 9. On FREEZE-5 this path credits blocks and reaches 4 sets in week 9. When the day-0 loads are logged, the whole entry week repeats before step 2.",
+      "domainReading": "See qreP5F02Ruling.P8. It is not the F01 defect. The difference from entry-then-steps counted from the first exposure is at most one set and one RIR at that first exposure.",
+      "evidenceStatus": "Conformance: WELL_SUPPORTED. Harm: PLAUSIBLE_BUT_UNCERTAIN in the negative.",
+      "blocking": false,
+      "routing": "Next functional mission, optional. If the policy owner later wants the entry dose to follow a skipped exercise to its first exposure, that is a policy reading with an exercise-level entry state, not this gate."
+    }
+  ],
+  "blockingFindings": [],
+  "conditions": [
+    {
+      "id": "C1",
+      "text": "Phase 4 CND-4 consumer conditions stay binding for the new holdout and any handoff: C2 (a REQUIRES_RECONCILIATION projection is never presented as a prescription), C3 with R5 (reports sent under an eligibility clinical flag are re-sent or re-asked after clearance), the P12 same-turn confirmation, and the G03 wording of the reason-screen question and of the R4 HOLD."
+    },
+    {
+      "id": "C2",
+      "text": "SSCTR-P5-O02 (the unlogged entry repeating with no load question) and SSCTR-P5-O05 / SSCTR-P4-O03 (reason screening of a long silence) go to the next functional mission and to G03 / Product-UX. They are not fixed in this cycle and do not count as new holdout failures. r2: the same applies to SSCTR-P5-O06, an optional exercise-level entry reading for the policy owner."
+    },
+    {
+      "id": "C3",
+      "text": "This acceptance is domain-only. It does not rule on the instruments' correctness, the seal, the freeze or verifier scripts, or PREREG-8 against PREREG-1. Those belong to the Quality judge, and a Quality NOT_READY stands on its own."
+    },
+    {
+      "id": "C4",
+      "text": "No V1 coaching authority, no human, empirical or clinical validation, and no G01-G04 closure follow from this record."
+    }
+  ],
+  "conditionsForFreeze": [
+    {
+      "id": "CF1",
+      "text": "R7D-FREEZE-6 binds exactly the reviewed runtime bytes: CoachingCore/src at c7c72e5 (r6-adaptation.mjs 8a5cfb5c...6062, r6-composition.mjs c9adba61...d3f5, r6-program.mjs 05fe3ec4...5870), with the policy and catalog unchanged. Any runtime change voids SSCTR-R7D-P5-REVIEW-r2 for the changed path until it is rechecked. This includes a narrow adjustment for another reviewer's finding."
+    },
+    {
+      "id": "CFD-1",
+      "kind": "COVERING_DISCLOSURE",
+      "text": "Step-2 arithmetic (disclosure 1). For an exercise with no executed or known pre-break count, return step 2 is max(1, min(normal count - 1, strengthEntrySets + 1)) sets at RIR 3. The normal count is the ceiling, and no block is credited for weeks not executed (strengthReturnSets as written). R7D-F13's rows, at normal count 2, take 1 set. The Phase 4 illustration \"2, 2 and 1\" (SSCTR-R7D-P4-FINAL-HOLDOUT-r1) is superseded."
+    },
+    {
+      "id": "CFD-2",
+      "kind": "COVERING_DISCLOSURE",
+      "text": "An exercise performed at a return entry, or in a later return week, without a usable load establishes nothing (D52). While it holds no state, each exposure takes the effort-guided first establishment (operational.establishment.effortGuidedLoad: at most its sets, at its minimum reps in reserve or more, load by effort), and it does not rise without a logged load. Once a load is logged it is set up under D55. This covers QRE-P5-F02 path P9 and SSCTR-P5-O01. Holdout judges read it as ACCEPTABLE_ALTERNATIVE inside D52/D55, not as a D49 deviation."
+    },
+    {
+      "id": "CFD-3",
+      "kind": "COVERING_DISCLOSURE",
+      "text": "An exercise planned at the entry dose in a return-entry week, whose session the athlete did not perform, establishes nothing (D52). Its first exposure after the break may fall in a later week while an exercise in use is in the return steps. It is then first set up under D55. That first exposure takes the effort-guided first establishment, or the bodyweight establishment row: at most 2 sets at reps in reserve 3 or more. It earns no block-boundary set for the block of the return, and its count rises at most one set per executed week up to its normal count, with phase reductions on top. If no exercise in use left the entry week with a state, the entry week repeats for every exercise (strengthEntryWeek). This covers QRE-P5-F02 path P8 and SSCTR-P5-O06. Holdout judges read it as ACCEPTABLE_ALTERNATIVE inside strengthEntryWeek and D55, not as a D49 deviation. A credited block, a count above the normal count, or a rise of more than one set in a week on this path is a D55 deviation."
+    },
+    {
+      "id": "CFD-4",
+      "kind": "COVERING_DISCLOSURE",
+      "text": "After a moderate or long return, no exercise in use may hold a state: every loaded row is performed without a usable load and nothing else is reported. The return entry then repeats each week, and no load question is asked. With a valid pre-break history, R7D-FREEZE-5 did the same (SSCTR-P5-O02). Holdout judges read it as a known residual (the lowest dose; a progression stall the athlete resolves by logging a load), routed to G03 / Product-UX and the next functional mission. It is not a new failure."
+    },
+    {
+      "id": "CFD-5",
+      "kind": "COVERING_DISCLOSURE",
+      "text": "R7D-INTERFACE-8 §5 says the unreported-training question is not asked \"while running follows a re-entry recipe\". Its domain acceptability rests on the disclosed CC-F05 (an unreported restart week progresses on credit; R7C_HANDOFF C7), which the holdout judges apply as before."
+    }
+  ],
+  "disclosureRulings": [
+    {
+      "n": 1,
+      "topic": "Step-2 arithmetic",
+      "ruling": "ACCEPTED. The candidate is right, and the Phase 4 illustration is superseded. strengthReturnSets sets the ceiling as the last executed count, else the known count, else the normal count. It allows a count above that ceiling only through a completed, executed development block. An exercise never executed has no executed or known count, and no block can be credited to it, so its ceiling is the normal count: 2 for F13's rows in the novice's first development block. Step 2 is then max(1, min(2-1, 2)) = 1 set. The Phase 4 record computed 2, 2 and 1 from the planned 3, 3 and 2, which held the very unexecuted credit the same finding excluded. That was an arithmetic slip in the illustration, not the rule. One set at RIR3 after a one-set entry, for a novice back from 47 days off, is the conservative end of the approved range. Low volume for one week costs nothing measurable when intensity is kept (Spiering 2021, abstract level)."
+    },
+    {
+      "n": 2,
+      "topic": "Executed at the entry without a usable load",
+      "ruling": "INSIDE D52/D55, ACCEPTABLE_ALTERNATIVE, non-blocking (SSCTR-P5-O01). D52 makes such an exposure establish nothing. The next exposure is the approved effort-guided establishment (at most 2 sets at RIR >= 3), and D55 governs the set-up once a load is logged: no block set for the return's block, and the count rises at most one set per executed week. Compared with D49 step 2, main rows are equal, and accessory rows whose normal count is 2 carry one set more for one week, after a prior entry bout. Conditioned on CF2 (disclosed before the seal). r2: extended explicitly to every week the exercise holds no state (QRE-P5-F02 P9) and to an entry-week session not performed (QRE-P5-F02 P8, under D55). Both are carried as CFD-2 and CFD-3, which replace CF2."
+    },
+    {
+      "n": 3,
+      "topic": "R7D-FC-01",
+      "ruling": "INSIDE B0-C04 and inside the F01 mandate. B0-C04 and the catalog define BAND_TENSION and ASSISTED_BODYWEIGHT as ordinal, progression by repetitions, never kilograms. FREEZE-5 never read such a log, so a band row never progressed. On the F01 path, the correction would also have repeated the return entry without end (the Founder authorized fixing what F01's path requires). The progression is bounded at the top of the goal range, never becomes a load, and is never asked as a load. It adds no number."
+    },
+    {
+      "n": 4,
+      "topic": "The question asks more often",
+      "ruling": "ACCEPTED as the SSCTR-SD-R7C-r1/r2 semantics. The added questions arise only where the credit reading plans a longer run than the zero reading, which means the dose depends on the unknown. On FREEZE-5 such a case was planned silently by the zero reading, which is the default to zero those records forbid. Answering the question is always possible: report the sessions, or state that training stopped and why. Answering closes it (T46: an answered break, known misses and a reported run ask nothing; T47: a resent answer changes nothing). Re-asking a never-reporting athlete at each decision is the accepted r1 semantics, not repetition of an answered question. SSCTR-P4-O03 asked a different question: a reason screen when no dose can depend. It stays open (SSCTR-P5-O05). The candidate does not ask in that case, which is the conservative choice of adding no rule."
+    },
+    {
+      "n": 5,
+      "topic": "Legacy assertion amendment (test/r6-adaptation.test.mjs)",
+      "ruling": "ACCEPTED. The removed clause required FIRST_ESTABLISH in a moderate return's entry week, which is the defect itself (CND-2). The amended clause keeps the D52 guarantee: never a KNOWN load, established by effort. It adds the entry dose (RETURN_ENTRY, strengthEntrySets, RIR >= strengthEntryMinimumRir). This strengthens the assertion and weakens nothing."
+    },
+    {
+      "n": 6,
+      "topic": "K03's P06 twin (QRE)",
+      "ruling": "Domain reading CORRECT and INSIDE K03. A run that the decision's own record reports executed on that day is history to the decision, not a dose it plans. The previous judgment proved this gap: SSCTR-P4-O04 on F21's unit, and the false P06 SAFETY_BLOCKER that validation 9 found on DEV-65. The unit returns NOT_EVALUABLE, never a pass, which is right. The Quality judge confirms the predicate's date scope (SSCTR-P5-O04)."
+    },
+    {
+      "n": 7,
+      "topic": "W-CARRIER retired (QRE)",
+      "ruling": "No domain objection. Clinical-carrier detection is kept: W-CARRIER9 (DEV-65) and W-CARRIER9b (DEV-02) fire, and the CARRIER_CLINICAL sensitivity rows stay detected in validation 9. Whether the replacement is equivalent as an instrument is for the Quality judge."
+    },
+    {
+      "n": 8,
+      "topic": "Interface 8 composition rules",
+      "ruling": "TRUE TO THE DOMAIN and consistent with the approved policy. Race week matches the event policy and the evidence on tapering (Bosquet 2007, abstract): the race on its date; an optional shakeout the day before; at most one touch, on the run day closest to the race that is at least three days out (raceWeekTouchMinDaysBeforeRace), and only after executed harder sessions (achievedPeakBasis); short easy runs otherwise; rest or easy recovery after. Strength is at most one light session three or more days before the race (raceWeekStrengthMinDaysBeforeRace, preRaceStrengthGapHours). Optional sessions never decide a week. Returns follow the class recipes, with strength at a light entry. No leak beyond a product description: no dose numbers, no internal field or session id, no expected output. The only number repeated, three days, is existing public policy. One statement in §5 rests on a disclosed residual: 'not asked while running follows a re-entry recipe'. It is accurate as a description, but its domain acceptability rests on CC-F05 (an unreported restart week progresses on credit, disclosed C7), and the next holdout's judges should read it so."
+    }
+  ],
+  "literature": {
+    "access": "WebSearch and WebFetch available and used. PubMed pages returned a cookie wall; abstracts were read through the Europe PMC REST API; PMC full text was reachable.",
+    "queries": [
+      "repeated bout effect low-intensity eccentric first bout attenuates muscle damage subsequent maximal eccentric exercise",
+      "Spiering 2021 maintaining physical performance minimal dose of exercise needed to preserve endurance and strength over time",
+      "Lopes 2019 elastic bands resistance training versus conventional resistance training systematic review meta-analysis strength gains"
+    ],
+    "sources": [
+      {
+        "id": "L1",
+        "citation": "Chen HL, Nosaka K, Chen TC. Muscle damage protection by low-intensity eccentric contractions remains for 2 weeks but not 3 weeks. Eur J Appl Physiol 2012;112(2):555-565. doi:10.1007/s00421-011-1999-8. PMID 21611825.",
+        "access": "ABSTRACT_ONLY (Europe PMC)",
+        "usedFor": "A single low-intensity eccentric bout protects against damage from later maximal eccentric work. The protection is present at 2 days and 1 week, attenuated between 1 and 2 weeks, and gone by 3 weeks. This supports the purpose of a return entry exposure and the reading of disclosure 2 (next exposure one week after the entry).",
+        "limits": "Untrained young men, elbow flexors, maximal eccentric challenge; not multi-joint training, not detrained trained athletes; no dose rule follows."
+      },
+      {
+        "id": "L2",
+        "citation": "Spiering BA, Mujika I, Sharp MA, Foulis SA. Maintaining physical performance: the minimal dose of exercise needed to preserve endurance and strength over time. J Strength Cond Res 2021;35(5):1449-1458. doi:10.1519/JSC.0000000000003964. PMID 33629972.",
+        "access": "ABSTRACT_ONLY (Europe PMC); per-population figures from search summaries are not relied on",
+        "usedFor": "Intensity, not volume, is the key variable for maintenance. This is why one week at one set (disclosure 1) costs nothing material, and why an indefinitely repeated low-intensity entry with no load evidence (O02) is not shown to maintain strength.",
+        "limits": "Narrative review; general and military populations; maintenance, not return-to-training dose."
+      },
+      {
+        "id": "L3",
+        "citation": "Lopes JSS, Machado AF, Micheletti JK, de Almeida AC, Cavina AP, Pastre CM. Effects of training with elastic resistance versus conventional resistance on muscular strength: a systematic review and meta-analysis. SAGE Open Med 2019;7:2050312119831116. doi:10.1177/2050312119831116. PMC6383082.",
+        "access": "FULL_TEXT (PMC)",
+        "usedFor": "Elastic and conventional resistance give similar strength gains. Pooled SMD upper limb -0.11 (95% CI -0.40 to 0.19); lower limb 0.09 (-0.18 to 0.35). This supports progressing band rows as real training stimulus (FC-01).",
+        "limits": "Small number of heterogeneous trials, moderate quality, fixed-effect model, unstandardized band load; it gives no progression rule. The study count is inconsistent within the article."
+      },
+      {
+        "id": "L4",
+        "citation": "Bosquet L, Montpetit J, Arvisais D, Mujika I. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc 2007;39(8):1358-1365. PMID 17762369.",
+        "access": "ABSTRACT_ONLY, as cited in the Phase 4 SSCTR record; not re-read in this review",
+        "usedFor": "Race-week coherence of interface 8 §4: volume reduced, intensity kept, a short sharpening touch.",
+        "limits": "Competitive athletes; not individual prediction."
+      }
+    ],
+    "negativeOrMissing": "There is no study of return-to-training set counts by break length for recreational hybrid athletes. SSCTR-SD-R7C-r2 R2 already recorded that the evidence supports re-entry but not an optimal retraining dose. D49 remains an internal conservative rule, and the literature only qualifies applicability. The unknown-training question is an epistemic and data rule (G01/G03), not a physiological claim, so no literature is needed for it.",
+    "limits": "Three of the four sources were read at abstract level. None is the sole basis of a prescriptive rule, and no rule or number is created here."
+  },
+  "confidence": "HIGH that the candidate conforms to strengthEntryWeek, strengthReturnSets, B0-C04 and the R7-C unknown-training semantics on the shapes verified. MODERATE on generalization to unprobed shapes, which is what the new holdout tests.",
+  "reReviewTrigger": "Any change to CoachingCore/src before R7D-FREEZE-6. A holdout finding on a return, a band or assisted row, or the UNREPORTED_TRAINING question. A change to D49, D52, D55, B0-C04 or the event policy. A new systematic review on return-to-training dosing after detraining. Owner: the R7-D coordinator, then the next functional mission. r2: also a holdout unit on a skipped entry session, or on an unlogged loaded row, that falls outside CFD-2 or CFD-3.",
+  "proposedHumanRevalidation": [
+    {
+      "id": "HQ-R7D-SSCTR-P5-REVIEW",
+      "status": "PROPOSED_ONLY",
+      "names": "candidate c7c72e5 (future R7D-FREEZE-6)",
+      "content": "Future funded-human revalidation of this provisional domain review. It covers: applying D49 / strengthEntryWeek to exercises never executed before a moderate or long break (F01 closure); the step-2 arithmetic ruling (disclosure 1); the D52/D55 reading for an entry executed without a usable load (SSCTR-P5-O01); band and assisted rows progressing by repetitions (FC-01); the dependence test of the UNREPORTED_TRAINING question (QRE-P4-F01); the interface 8 domain ruling. r2: also the QRE-P5-F02 rulings (P8 under D55, P9 under D52/D55) and the covering disclosures CFD-1 to CFD-5.",
+      "note": "This phase authorizes no append; the queue is not changed by this record."
+    }
+  ],
+  "publication": "None. This record decides no gate, publishes nothing and changes no Product Truth; the coordinator commits this folder.",
+  "supersedes": {
+    "recordId": "SSCTR-R7D-P5-REVIEW-r1",
+    "path": "phase5/reviews/ssctr/SSCTR_PHASE5_REVIEW_R7D.json",
+    "sha256": "dc29c1e14012351627b022a7d2359f73be3624bf66c7dc998a373eb0b8a9f3f4",
+    "scope": "r2 supersedes r1 only by what it adds: the QRE-P5-F02 ruling (paths P8 and P9), the CF2 ruling on how the freeze carries the disclosures, finding SSCTR-P5-O06, and conditionsForFreeze rewritten so that every covering disclosure reaches the freeze record word for word. Every other r1 field, ruling and condition is carried unchanged. r1 stays as history."
+  },
+  "trigger": "Coordinator follow-up after QRE-R7D-PHASE5-REVIEW-r1 (READY_WITH_CONDITIONS), whose freeze condition K-P5-F1 makes that verdict depend on an explicit SSCTR ruling on QRE-P5-F02 paths P8 and P9.",
+  "qreP5F02Ruling": {
+    "question": "Are the doses of QRE-P5-F02 paths P8 and P9 inside D49/D55 (with D52)?",
+    "authorityRead": {
+      "strengthEntryWeek": "Every strength exposure in a return-entry week is at the entry dose; an exercise first set up in a return-entry week then follows the return steps like the others.",
+      "strengthReturnSets": "The return steps: entry, step 2, then at most one set per executed week up to the ceiling. Without an executed or known count, the ceiling is the normal count. A block with a return exposure earns no set.",
+      "D55": "An exercise first set up while the exercises in use are in the return steps of a moderate or long return earns no block-boundary set for the block of the return. After the return steps its count rises at most one set per executed week, up to its normal count (its ceiling under strengthReturnSets), with phase reductions on top. This is the approved text of the R7-A recheck. The R7-A SSCTR review holds that strengthReturnSets already covers an exercise first set up after the entry week. At R7A-FREEZE-2, first exposures in return step 2 at 2x8 then 3x8 were accepted.",
+      "D52": "A prescription that was not executed establishes nothing. An exposure performed without a usable load establishes nothing, and the next one is chosen by effort.",
+      "mandate": "AUTHORIZATION_PHASE5 §1 and PREREG-8 Δ47: an exercise planned and never executed before the break enters at the entry dose and follows the D49 steps (within the limits D49 and strengthEntryWeek already define)."
+    },
+    "P8": {
+      "ruling": "INSIDE strengthEntryWeek and D55 (with D52). ACCEPTABLE_ALTERNATIVE; a disclosed residual, non-blocking.",
+      "verified": "Week 4, the entry week, planned every exercise in use at the entry dose (1x8 RIR4 RETURN_ENTRY), including the day-4 session the athlete skipped. The plan therefore met strengthEntryWeek and Δ47. The skipped exercises were never executed, so by D52 they have no state. Their first exposure after the break falls in week 5, a return-step week (dead-bug at RETURN_STEP 1x8@3), which is D55's case. They take the effort-guided first establishment: glute-bridge 2x8@3, reverse-lunge 2x10@3, db-biceps-curl 2x10@3. Probe p8-extended (arm ENTRY_UNLOGGED) carried the path through week 9 with every week executed and logged. They rise at most one set per executed week: glute-bridge goes 2, 3, 3, then 2 under the consolidation reduction, then 3, 3; reverse-lunge goes 2, 2, 2, 1, then rotates out. They never exceed the normal count (3 main, 2 accessory) and earn no block (blocksDone empty in the state of every week up to week 10). On FREEZE-5 the same path credits blocks and reaches 4x14 and 4x8 in week 9, so the candidate applies the D55 limits here where FREEZE-5 did not. When the day-0 loads are logged (arm ENTRY_LOGGED), the whole entry week repeats in week 5, skipped exercises included, before step 2.",
+      "whyInside": "Physiologically, an exercise planned before the break and never executed is the same as one first introduced during the return steps: it has no exposure to protect and no capacity reference. The approved rule for an exercise whose first post-break exposure comes after the entry week is D55. Its first dose is the approved effort-guided establishment (at most 2 sets at RIR 3 or more, load by effort), and D55 then bounds the rise, the ceiling and the block credit. Δ47 is met: the exercise was planned at the entry dose and, from its first exposure, follows the limits D49 and D55 define. The plan cannot make a skipped session executed. Reading Δ47 as \"the entry dose follows the exercise until it is performed\" is not in the approved text. It would be a new rule, and it would create the indefinite entry repeats noted in SSCTR-P5-O02.",
+      "differenceFromStrictReading": "Compared with entry-then-steps counted from the first exposure, the path differs in three ways. It is one week earlier. At the first exposure it is at most one set more and one RIR less (2 sets at RIR3 against 1 at RIR4). Normal-2 accessories reach their normal count one week earlier. It never exceeds the normal count, is never credited, and rises at most one set per week. This is not the F01 defect, which was a RIR3 entry week and credited counts above the normal count (3x10, 4x8).",
+      "evidenceStatus": "Conformance to strengthEntryWeek, D52 and D55: WELL_SUPPORTED, verified on both runtimes. Harm: PLAUSIBLE_BUT_UNCERTAIN in the negative. The dose is the novice establishment dose, autoregulated by effort, for an athlete who re-entered strength and running the week before. A first exposure to a new exercise has no repeated-bout protection either way (L1: the protection is exercise-specific in its tested form), so the strict reading would only move that first exposure from 2 sets to 1.",
+      "blocking": false
+    },
+    "P9": {
+      "ruling": "INSIDE D52 and D55. ACCEPTABLE_ALTERNATIVE; a disclosed residual, non-blocking. This is SSCTR-P5-O01, here made explicit for every week until a load is logged.",
+      "verified": "T43 arm A with the chosen loads left out. The loaded rows performed at the entry without a usable load are not set up (D52). They take the effort-guided first establishment in week 5 and again in week 6 (2x8@3; 2x10@3 for the normal-2 accessories), identical to FREEZE-5, and never rise without a logged load. Once a load is logged they are set up under D55 (week 7 at 3x8 FROM_LOG, at most one set above the last). The bodyweight rows take return step 2. With loads logged (P10) every row takes return step 2, where FREEZE-5 gave 4x8.",
+      "whyInside": "D52: an exposure without a usable load establishes nothing, and the next exposure is chosen by effort. The effort-guided establishment row is the only coherent row for an exercise with no logged load. D55 governs the set-up once a load is logged. The dose never exceeds the establishment cap and is never credited.",
+      "blocking": false
+    },
+    "T43note": "The QRE notes that T43's week-5 bound (sets <= strengthEntrySets + 1, RIR >= 3) is also met by FIRST_ESTABLISH 2x8@3, so it does not separate P9 from return step 2. The domain consequence is none, since both are inside the authority and T42 and P10 pin the return-step path. Recorded only; no test change is requested.",
+    "narrowChange": "None is required, because both paths are inside. I agree with the QRE that the one-line candidate (end the marker only when every non-practice exercise in use holds a state) is not a narrow change, for three reasons. It would contradict D55 for exercises first exposed after the entry week. It would repeat RETURN_ENTRY indefinitely for a loaded row never logged (SSCTR-P5-O02). It would suppress rotation while it did. An exercise-level entry state would be a new policy reading, not a runtime correction of this candidate.",
+    "resultForQualityK_P5_F1": "K-P5-F1 is satisfied by this record. P8 and P9 are named here as inside D49/D55 (with D52), and they are carried to the freeze record as covering disclosures CFD-3 and CFD-2."
+  },
+  "cf2Ruling": {
+    "ruling": "CARRIED, on two terms. (1) The coordinator passes this r2 record as --ssctr. (2) The covering disclosures are written as the freeze conditions themselves (conditionsForFreeze below), not as instructions to amend PREREG-8, which K-P5-F2 keeps unchanged.",
+    "how": "freeze-r7d-6.mjs copies this record's conditionsForFreeze verbatim into RUNTIME_FREEZE_R7D_6.json reviews.ssctr.conditions, and copies its findings verbatim into disclosures.ssctrFindings. It also binds this folder (r1, r2, MDs, probes and outputs) by SHA-256. The seal binds R7D-FREEZE-6, so the disclosures reach the holdout judges through a sealed input. r1's CF2 named \"the freeze record or PREREG-8 Δ56\": the freeze record is the vehicle, and PREREG-8 is not changed.",
+    "coordinatorCheck": "After the freeze, check two things. reviews.ssctr.recordId must be SSCTR-R7D-P5-REVIEW-r2. reviews.ssctr.conditions must equal this record's conditionsForFreeze. The judgment requests of the new holdout must also name CFD-1 to CFD-5 as covering disclosures the judges read."
+  }
+}

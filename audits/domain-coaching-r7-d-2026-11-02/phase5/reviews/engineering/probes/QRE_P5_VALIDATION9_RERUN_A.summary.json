@@ -1,0 +1,488 @@
+{
+ "validation": "R7D-HARNESS-VALIDATION-9",
+ "devCorpusSha256": "054d8abb080d420db33677b47bb2361e2491ea76c9c5b161a611f3695e53e37e",
+ "summary": {
+  "instrumentFix": "FALSE_BLOCK_REMOVED",
+  "instrumentFix9": "FALSE_BLOCKS_REMOVED",
+  "reachability": "REACHED",
+  "noFalseBlock": "PASS",
+  "coverage": "COVERED",
+  "carrierUnits": {
+   "CARRIER_CLINICAL": 10,
+   "CARRIER_HOLD": 2,
+   "RESEND": 67,
+   "RESTATE_DECLARED_BREAK": 102,
+   "INSERT_NEWER_BREAK": 41
+  },
+  "p17Units": 286,
+  "p18Units": 207,
+  "sensitivity": [
+   {
+    "defect": "DX-01 (a same-day day-precision report drops out of the record at the next decision)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "DX-02 (a break declared in a weekly review with no pending question is ignored, VALID)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "F03 (a machine load logged as prescribed is refused; machine settings fabricated by +1 kg)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "F04 (confounded masks an adverse recovery and an impaired next day; the long run advances)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QE-R7C-10 (shortened answer recorded by a clinical route stays unapplied)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   },
+   {
+    "defect": "R7C-G01 (unknown training planned without a question: unreported weeks read as a stop, entry dose VALID)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "D54 (a strength row not done for more than 28 days ignores the race-window dose)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QE-R7D-P3-01(a) (a break declared with another event is asked and then lost: the next plain review is VALID on the pre-break plan)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   },
+   {
+    "defect": "QE-R7D-P3-01(b) (a break declared with a clinical flag is lost across qualified clearance: the next plain review is VALID on the pre-break plan)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   },
+   {
+    "defect": "P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   },
+   {
+    "defect": "SSCTR-P31-F02 (a newer break that names none replaces a kept one: the next review re-enters from the newer break alone; a correction of an applied break ends a kept one, the p4b path)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P31-F02, metamorphic (a newer break stated in the review that applies a kept one re-enters from the newer break alone)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P31-F03 path (a newer nonclinical break replaces a kept clinical-cause break: a nonclinical return)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P32-F01 (training between two separate breaks that completes no whole week of the plan, one run, an aborted run or a week with a session missed, ends the earlier break: the return re-enters from the later break alone)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "A named correction of the latest break after a return that read separate breaks drops the earlier break (the direction of SSCTR-P32-F01 through a correction)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "PCG-R7D-F08-F01 (a clinical-cause break restated as nonclinical by name re-enters by the nonclinical recipe, with or without a clearance; R-F08-1)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P33-F01 (weeks executed as prescribed in one sport between two separate breaks read as days of the stop: the class grows to a restart)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P34-F01 (a return planned from its own week counts that week's elapsed runs that were not done in the single-run ceiling of the weeks after it)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P34-F05 (a race week with its race touch missed re-enters running: the re-entry predicate omits the race touch and the race, BR-Q4)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "A race touch done at half its minutes (partial by the completion rule) re-enters running (SSCTR CFR-05; SSCTR-P34R-F02, BR-Q4.1)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P34R2-F01 (a race week without a gated run re-enters running through converging adverse responses across sports: the systemic rule is not read on the race-key path)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "SSCTR-P34R2-F02 (a named correction re-read masks the days of the report it supersedes: a session it uncovers is never asked about, and the return reads it as missed, a restart)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QRE-P35-01 (an unnamed report of the latest break with its days, R7-A §9 duplicate, re-establishes it alone after a return that read an earlier break as its own return)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QH-DROP (a restatement on record drops a kept correction of the latest break: the correction is never applied and the plan stays VALID)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QF3 (the duplicate test reads only a stated first day: an unnamed re-send by last day and length drops the earlier break)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QF6 (a decision of the unnamed re-read is ignored: the R07 confirmation-first duplicate re-establishes the latest break alone)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QF7 (the duplicate test compares with the first report of the latest break: after a named correction, a re-send of the corrected dates drops the earlier break)",
+    "result": "NOT_RUN"
+   },
+   {
+    "defect": "QRE-P4-F01 (seven weeks without any report, the empty review before a low-dose CONSOLIDATION week trims the run doses to the entry VALID and asks no UNREPORTED_TRAINING question)",
+    "result": "DETECTED_AND_CLEAN_ON_CANDIDATE"
+   }
+  ],
+  "witnessesFired": 60,
+  "witnesses": 60,
+  "retired": [
+   {
+    "witness": "W-CARRIER",
+    "retiredBy": "W-CARRIER9b"
+   }
+  ],
+  "notFired": []
+ },
+ "sensitivityRun": [
+  {
+   "runtime": "R7C-FREEZE-3",
+   "defect": "QE-R7C-10 (shortened answer recorded by a clinical route stays unapplied)",
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE",
+   "cases": [
+    {
+     "caseId": "DEV-02",
+     "detected": true
+    },
+    {
+     "caseId": "DEV-02b",
+     "detected": true
+    }
+   ]
+  },
+  {
+   "runtime": "R7D-FREEZE-1",
+   "defect": "QE-R7D-P3-01(a) (a break declared with another event is asked and then lost: the next plain review is VALID on the pre-break plan)",
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE",
+   "cases": [
+    {
+     "caseId": "DEV-18",
+     "detected": true
+    },
+    {
+     "caseId": "DEV-20",
+     "detected": true
+    }
+   ]
+  },
+  {
+   "runtime": "R7D-FREEZE-1",
+   "defect": "QE-R7D-P3-01(b) (a break declared with a clinical flag is lost across qualified clearance: the next plain review is VALID on the pre-break plan)",
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE",
+   "cases": [
+    {
+     "caseId": "DEV-19",
+     "detected": true
+    }
+   ]
+  },
+  {
+   "runtime": "R7D-FREEZE-1",
+   "defect": "P3-F01 (a break answering UNREPORTED_TRAINING through a clinical route is not retained across clearance: asked again)",
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE",
+   "cases": [
+    {
+     "caseId": "DEV-17",
+     "detected": true
+    },
+    {
+     "caseId": "DEV-17b",
+     "detected": true
+    }
+   ]
+  },
+  {
+   "runtime": "R7D-FREEZE-5",
+   "defect": "QRE-P4-F01 (seven weeks without any report, the empty review before a low-dose CONSOLIDATION week trims the run doses to the entry VALID and asks no UNREPORTED_TRAINING question)",
+   "result": "DETECTED_AND_CLEAN_ON_CANDIDATE",
+   "cases": [
+    {
+     "caseId": "DEV-67",
+     "detected": true
+    }
+   ]
+  }
+ ],
+ "instrumentFix9": {
+  "findings": [
+   "QRE-P4-H01",
+   "QRE-P4-H02",
+   "QRE-P4-H03"
+  ],
+  "rows": [
+   {
+    "runtime": "candidate",
+    "caseId": "DEV-63",
+    "check": "P06",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 6,
+     "issues": [
+      "EASY"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "NOT_EVALUABLE",
+     "units": 0,
+     "issues": [],
+     "notEvaluable": [
+      "NO_RUN_REFERENCE_IN_WINDOW",
+      "NO_RUN_REFERENCE_IN_WINDOW"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "candidate",
+    "caseId": "DEV-64",
+    "check": "P03",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 21,
+     "issues": [
+      "RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 20,
+     "issues": [],
+     "notEvaluable": [
+      "P03D_SESSION_REPORTED_BY_THIS_DECISION"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "candidate",
+    "caseId": "DEV-65",
+    "check": "P06",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 11,
+     "issues": [
+      "LONG"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 9,
+     "issues": [],
+     "notEvaluable": [
+      "P06_SESSION_REPORTED_BY_THIS_DECISION",
+      "P06_SESSION_REPORTED_BY_THIS_DECISION"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "candidate",
+    "caseId": "DEV-65",
+    "check": "CARRIER_CLINICAL",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 1,
+     "issues": [
+      "FIRST_ELIGIBLE_DECISION_DIFFERS"
+     ]
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 1,
+     "issues": []
+    },
+    "removed": true
+   },
+   {
+    "runtime": "candidate",
+    "caseId": "DEV-68",
+    "check": "CARRIER_CLINICAL",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 1,
+     "issues": [
+      "FIRST_ELIGIBLE_DECISION_DIFFERS"
+     ]
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 1,
+     "issues": []
+    },
+    "removed": true
+   },
+   {
+    "runtime": "R7D-FREEZE-5",
+    "caseId": "DEV-63",
+    "check": "P06",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 6,
+     "issues": [
+      "EASY"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "NOT_EVALUABLE",
+     "units": 0,
+     "issues": [],
+     "notEvaluable": [
+      "NO_RUN_REFERENCE_IN_WINDOW",
+      "NO_RUN_REFERENCE_IN_WINDOW"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "R7D-FREEZE-5",
+    "caseId": "DEV-64",
+    "check": "P03",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 21,
+     "issues": [
+      "RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 20,
+     "issues": [],
+     "notEvaluable": [
+      "P03D_SESSION_REPORTED_BY_THIS_DECISION"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "R7D-FREEZE-5",
+    "caseId": "DEV-65",
+    "check": "P06",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 11,
+     "issues": [
+      "LONG"
+     ],
+     "notEvaluable": []
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 9,
+     "issues": [],
+     "notEvaluable": [
+      "P06_SESSION_REPORTED_BY_THIS_DECISION",
+      "P06_SESSION_REPORTED_BY_THIS_DECISION"
+     ]
+    },
+    "removed": true
+   },
+   {
+    "runtime": "R7D-FREEZE-5",
+    "caseId": "DEV-65",
+    "check": "CARRIER_CLINICAL",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "FAIL",
+     "units": 1,
+     "issues": [
+      "FIRST_ELIGIBLE_DECISION_DIFFERS"
+     ]
+    },
+    "harness9": {
+     "result": "PASS",
+     "units": 1,
+     "issues": []
+    },
+    "removed": true
+   },
+   {
+    "runtime": "R7D-FREEZE-5",
+    "caseId": "DEV-68",
+    "check": "CARRIER_CLINICAL",
+    "sameRuntimeOutputs": true,
+    "harness8": {
+     "result": "NOT_EVALUABLE",
+     "units": 0,
+     "issues": []
+    },
+    "harness9": {
+     "result": "NOT_EVALUABLE",
+     "units": 0,
+     "issues": []
+    },
+    "removed": false,
+    "notApplicable": true
+   }
+  ],
+  "result": "FALSE_BLOCKS_REMOVED"
+ },
+ "reachability": {
+  "CARRIER_HOLD": {
+   "caseId": "DEV-66",
+   "units": 1,
+   "violations": 0,
+   "notApplicable": [],
+   "result": "REACHED"
+  },
+  "SUBSTITUTION_BY_PATTERN": {
+   "caseId": "DEV-70",
+   "harness8Client": {
+    "stopped": "CORPUS_ERROR",
+    "corpusErrors": [
+     "substitution.exerciseRef: no PUSH exercise in w1-str-d0"
+    ]
+   },
+   "harness9Client": {
+    "stopped": null,
+    "resolution": {
+     "kind": "SUBSTITUTION",
+     "sessionId": "w1-str-d2",
+     "exerciseId": "db-bench-press"
+    },
+    "status": "MODIFY"
+   },
+   "result": "RESOLVED"
+  },
+  "RACE_WEEK_TOUCH_SHAKEOUT_RACE": {
+   "caseId": "DEV-71",
+   "raceWeek": 6,
+   "runRoles": [
+    "RACE_TOUCH",
+    "SHAKEOUT",
+    "RACE"
+   ],
+   "result": "REACHED"
+  },
+  "REENTRY_WEEK_OPTIONAL": {
+   "caseId": "DEV-72",
+   "returnAction": "REESTABLISH",
+   "week": 7,
+   "mode": "RESTART",
+   "optionalRuns": [
+    "WALK"
+   ],
+   "result": "REACHED"
+  },
+  "result": "REACHED"
+ }
+}

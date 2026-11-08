@@ -1,0 +1,262 @@
+{
+ "probe": "QRE-P5-MUTATION-1",
+ "src": "scratch copy of git archive c7c72e5 (CoachingCore + the five authority records), node_modules copied",
+ "results": [
+  {
+   "id": "baseline",
+   "status": 0,
+   "tests": 1014,
+   "pass": 1014,
+   "fail": 0,
+   "failed": []
+  },
+  {
+   "id": "P5-M1",
+   "kind": "AUTHOR",
+   "what": "SSCTR-P4-F01 reverted at its source: a moderate or long return sets no returnEntry marker",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 26,
+   "fail": 4,
+   "newFailures": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause ",
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break ",
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any s",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M2",
+   "kind": "AUTHOR",
+   "what": "the planner ignores the marker: a week is an entry week only through an exercise in use at the entry step",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 26,
+   "fail": 4,
+   "newFailures": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause ",
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break ",
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any s",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M3",
+   "kind": "AUTHOR",
+   "what": "the transition ignores the marker when the week states no entry flag (the evidence reducer's own reading)",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 29,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break "
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M4",
+   "kind": "AUTHOR",
+   "what": "the marker never ends: every later week is a return-entry week",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "scope": "full",
+   "tests": 1014,
+   "pass": 1010,
+   "fail": 4,
+   "newFailures": [
+    "SSCTR D52: after a return, an exercise first prescribed in a session dated inside the paus",
+    "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its",
+    "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its",
+    "R7-A state composition (C11): an exercise not in use carries no weight in the return-entry"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M5",
+   "kind": "AUTHOR",
+   "what": "the facts read at a later break (strengthAtBreak) also end the marker",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "scope": "full",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never ma"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M6",
+   "kind": "AUTHOR",
+   "what": "R7D-FC-01 reverted: only a bodyweight log without a kilogram is evidence (band and assistance logs are not)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 28,
+   "fail": 2,
+   "newFailures": [
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break ",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M7",
+   "kind": "AUTHOR",
+   "what": "QRE-P4-F01 reverted: the credit reading never decides the question",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 29,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T45 (QRE-P4-F01, the R7D-F13 shape and the judge's witness grid): after more "
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M8",
+   "kind": "AUTHOR",
+   "what": "the credit reading also reads a start anchored on evidence (a return's entry, a review's week evidence), not only a projection",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "scope": "full",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planne"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M9",
+   "kind": "AUTHOR",
+   "what": "rotation ignores the marker (a return whose exercises hold no return step yet rotates its slots)",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 29,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any s"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M10",
+   "kind": "AUTHOR",
+   "what": "the learning mode label of a return-entry week ignores the marker",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "quick",
+   "tests": 30,
+   "pass": 29,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any s"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "QF3",
+   "kind": "CQ41",
+   "what": "the duplicate test reads only a stated first day (a report giving its last day and length is never a duplicate)",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "cq41",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T39 (QRE3-P35-01, N6; kills QF3): an unnamed re-send of the latest break by i"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T39"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF7",
+   "kind": "CQ41",
+   "what": "the duplicate test compares with the first report of the latest break, not the report in force",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "cq41",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T40 (QRE3-P35-01, N9; kills QF7): after a named correction of the trip, an un"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T40"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF6",
+   "kind": "CQ41",
+   "what": "a decision of the unnamed re-read (a missing declaration ASK, a clinical route, a question) is ignored: the duplicate is read alone",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "cq41",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T41 (QRE3-P35-01, N16b and N2; kills QF6): a decision of the unnamed re-read "
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF0",
+   "kind": "CQ41",
+   "what": "QRE-P35-01 reverted: an unnamed same-dates report re-establishes the latest break alone",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "scope": "cq41",
+   "tests": 3,
+   "pass": 0,
+   "fail": 3,
+   "newFailures": [
+    "R7-D Phase 4 T39 (QRE3-P35-01, N6; kills QF3): an unnamed re-send of the latest break by i",
+    "R7-D Phase 4 T40 (QRE3-P35-01, N9; kills QF7): after a named correction of the trip, an un",
+    "R7-D Phase 4 T41 (QRE3-P35-01, N16b and N2; kills QF6): a decision of the unnamed re-read "
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T39",
+    "R7-D Phase 4 T40",
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  }
+ ],
+ "summary": {
+  "baseline": "1014/1014",
+  "survived": [],
+  "notApplied": [],
+  "allRestored": true
+ },
+ "ran": "2026-11-08T13:40:23.088Z",
+ "node": "v24.19.0"
+}
