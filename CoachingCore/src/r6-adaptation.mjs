@@ -664,7 +664,7 @@ function blockBoundary(ctx,gates){
  const boundary=next!==undefined&&program.blocks.some(b=>DEV_FAMILIES.includes(b.family)&&b.endWeekExclusive===w+1);
  const choices=choicesOf(review);ctx.out.choicesHandled=true;
  if(!boundary){if(choices.some(c=>['LADDER_STEP','MAIN_CHANGE'].includes(c.type)))return {ask:{action:'ASK',reason:'Exercise changes for a block are made at a block boundary review; this week does not end a block',missingInputs:['choices']}};return out;}
- const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=base?.strength?.returnEntry===true||Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
+ const c=program.canonical,goal=program.goal,cap=program.capability,base=ctx.base,returning=Object.values(base?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))||base?.run?.mode==='RETURN';
  const nextDeferred=ROTATION_DEFERRED_PHASES.includes(next)||!DEV_FAMILIES.includes(next)&&next!=='CONSOLIDATION';
  let graduation=null;const selections=[],reached=[],invalid=[],notes=[];
  // B0-C01: graduation of a WALK_JOG-, RESTART- or EASY_LOW-started athlete, from executed evidence only, under every R6 quality gate.

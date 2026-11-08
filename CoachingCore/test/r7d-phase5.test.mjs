@@ -62,12 +62,14 @@ const step2=normal=>Math.max(1,Math.min(normal-1,RT.strengthEntrySets+1));
 
 /** F13: week 0 executed; nothing reported after one run of week 1; the empty week-7 review (s1); the same evening the athlete answers with the
  * break, 2026-11-24 to 2027-01-09, work (s2); the week-8 review with week 8 executed as prescribed (s3). */
-function f13({answer=true,s3=true}={}){
+function f13({answer=true,s3=true,s4=false}={}){
  const t=timeline(F13);const normal=Object.fromEntries(rows(t.p,1).map(e=>[e.id,e.sets]));
  const s1=t.step({week:7,day:6,time:'20:00'});
  const s2=answer?t.step({week:7,day:6,time:'20:40'},{observations:p=>[...sessions(p,0).map(s=>asPrescribed(p,s)),asPrescribed(p,sessions(p,1,'RUN').find(s=>s.day===0))],interruption:{startDate:'2026-11-24',endDate:'2027-01-09',reasonCategory:'WORK',reason:'night shifts for seven weeks, no training at all',nonclinical:true}}):null;
  const s3r=answer&&s3?t.step({week:8,day:6,time:'20:00'},{observations:p=>sessions(p,8).map(s=>asPrescribed(p,s))}):null;
- return {t,s1,s2,s3:s3r,normal};
+ // s4: the week-9 review, week 9 executed as prescribed; its start is read from history (the evidence reducer reads the return-entry week).
+ const s4r=s3r&&s4?t.step({week:9,day:6,time:'20:00'},{observations:p=>sessions(p,9).map(s=>asPrescribed(p,s))}):null;
+ return {t,s1,s2,s3:s3r,s4:s4r,normal};
 }
 
 test('R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break and never executed enter at the return entry, take return step 2 with the normal count as ceiling, then one set per executed week; no block is credited for weeks never executed',()=>{
@@ -91,12 +93,18 @@ test('R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned befo
  assert.equal(s3.planValidity.status,'VALID_WITHIN_CURRENT_BOUNDED_SCOPE',s3.reason);
  // Running is unchanged by the strength correction (the approved RESTART recipe after a long stop).
  assert.deepEqual([8,9,10].map(w=>runs(P2,w)),[['EASY:15','EASY:15','EASY:15'],['EASY:20','EASY:20','EASY:20'],['EASY:25','EASY:25','EASY:25']]);
+ // History keeps the return: after the week-9 review (its start read by the evidence reducer from the executed entry week), the counts still come
+ // back at most one set per executed week and no block is credited for the return's weeks.
+ const {t:u,s4}=f13({s4:true});assert.equal(s4.planValidity.status,'VALID_WITHIN_CURRENT_BOUNDED_SCOPE',s4.reason);
+ const w10=new Map(rows(u.p,10).map(e=>[e.id,e.sets]));
+ for(const id of ids){assert.ok(w10.get(id)<=step2(normal[id])+1,`${id}: week 10 at ${w10.get(id)} sets after step 2 (the history reading lost the return steps)`);const st=u.p.stateTrace[10].strength.exercises[id];assert.ok(st&&!(st.blocksDone>0),`${id}: no block credited through the return (blocksDone ${st?.blocksDone})`);}
+ for(const e of rows(u.p,11))assert.ok(e.sets<=(w10.get(e.id)??0)+1,`${e.id}: week 11 rises at most one set`);
 });
 
 /** W-D49 (SSCTR-R7D-P4-FINAL-HOLDOUT-r1): F14's athlete; a moderate family break declared at the week-3 review, then week 4 executed. Arm A: the break
  * from week 0 day 0, before any strength exposure; control arm B: week 0 executed, the break from 2026-12-21. Both end 2027-01-08. */
-function wd49(arm){
- const t=timeline(F14);
+function wd49(arm,input=F14){
+ const t=timeline(input);
  const r1=t.step({week:3,day:6,time:'20:00'},{observations:arm==='B'?p=>sessions(p,0).map(s=>asPrescribed(p,s)):[],interruption:{startDate:arm==='B'?'2026-12-21':'2026-12-14',endDate:'2027-01-08',reasonCategory:'FAMILY',reason:'family visit abroad',nonclinical:true}});
  const r2=t.step({week:4,day:6,time:'20:00'},{observations:p=>sessions(p,4).map(s=>asPrescribed(p,s))});
  return {t,r1,r2,P1:r1.proposal};
@@ -110,6 +118,13 @@ test('R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a br
  for(const e of wk5){assert.ok(e.sets<=RT.strengthEntrySets+1,`A ${e.id}: week 5 at ${e.sets} sets (was up to 4x8)`);assert.ok(e.rir>=3,`A ${e.id}: week 5 reserve`);}
  const by=new Map(wk5.map(e=>[e.session.split('-').at(-1)+':'+e.id,e.sets]));
  for(const e of rows(A.t.p,6)){const k=e.session.split('-').at(-1)+':'+e.id;if(by.has(k))assert.ok(e.sets<=by.get(k)+1,`A ${k}: week 6 rises at most one set`);}
+ // The entry week is a return week for every reader: the record labels its strength reports RETURN (learning comparability), and slots do not
+ // rotate in it, so the exercises entered are the ones that take return step 2 (rotation applies outside a return, SSCTR D51).
+ const modes=[...new Set(A.t.ledger.filter(o=>o.context?.sport==='STRENGTH'&&o.context?.weekIndex===4).map(o=>o.context.mode))];
+ assert.deepEqual(modes,['RETURN'],'the entry week\'s strength reports are recorded in the RETURN mode');
+ const R=wd49('A',{...F14,athlete:{...F14.athlete,exerciseRotationPreference:'EVERY_2_WEEKS'}}),slots=(P,w)=>rows(P,w).map(e=>e.session.split('-').at(-1)+':'+e.id);
+ assert.deepEqual(slots(R.P1,4),slots(R.t.p,5),'with rotation every two weeks the entry week enters the exercises return step 2 continues');
+
  // Control (W-D49-B, valid history): the outputs the frozen runtime gave, unchanged (SSCTR record; R7D-FREEZE-4 and R7D-FREEZE-5 alike).
  const B=wd49('B');assert.equal(B.r1.action,'REESTABLISH',B.r1.reason);
  assert.deepEqual(doses(B.P1,4),['w4-str-d0:goblet-squat:1x8@4','w4-str-d0:db-floor-press:1x8@4','w4-str-d0:db-row:1x8@4','w4-str-d0:db-calf-raise:1x8@4','w4-str-d0:dead-bug:1x8@4','w4-str-d4:glute-bridge:1x8@4','w4-str-d4:db-row:1x8@4','w4-str-d4:db-floor-press:1x8@4','w4-str-d4:reverse-lunge:1x10@4','w4-str-d4:db-biceps-curl:1x8@4']);
