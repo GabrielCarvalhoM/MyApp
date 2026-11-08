@@ -1245,3 +1245,33 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - before launch: F08;
   - the queue stays at 235; the Phase 3.5 items are proposed only.
 - **Unchanged:** policy, catalog, records, product and canon. The final holdout was not created, and V1 authority is NO. Nothing was merged, pushed or deleted. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE35_CHECKPOINT.md`.
+
+<!-- DCR7D-20261108-phase4-r1 -->
+2026-11-08 · DOMAIN_COACHING_R7-D — Fresh Generalization Gate, Phase 4 **COMPLETE**, final status **NOT_READY**; the holdout is INVALID_HOLDOUT for lost coverage.
+- **Instruments (`58d6766`), new files only:**
+  - R7D-HARNESS-8: the P17 window ends by row name (Δ38), and P18(e) is aligned (Δ39);
+  - validation 8: 64 cases, no false block, `FALSE_BLOCK_REMOVED`, 27/27 sensitivity, 56/56 witnesses;
+  - the CQ4-1 tests T39–T41, with QF3, QF7 and QF6 each killed by its own test;
+  - brief 7, the athlete-level coverage (Δ44) and PREREG-7 Δ38–Δ46.
+- **Holdout:**
+  - authored independently: H1 has 35 cases and 98 steps, and check-corpus reports 0 errors; H2 has 300 intakes;
+  - sealed in `14c7ec8`;
+  - evaluated once, in `87d0978`;
+  - H1 RUN_REPORT c6278b29…, H2 d5bcbd10….
+- **Judgments (`1b3c93c`):** both INVALID_HOLDOUT, each with a confirmed structural blocker on a valid case:
+  - **SSCTR-P4-F01:** the D49 return limits are skipped for strength exercises never executed before the break.
+  - **QRE-P4-F01:** P03(d), no UNREPORTED_TRAINING question before a low-dose CONSOLIDATION week.
+  - Both are PRE_EXISTING. There is no safety or scientific blocker.
+- **Rubric:** 31 cases are evaluable: 15 BEST_SUPPORTED, 15 ACCEPTABLE_ALTERNATIVE and 1 SUBOPTIMAL (F13). The other 4 cases are CORPUS_ERROR.
+- **Harness gaps:** three, returned NOT_EVALUABLE. Whether they may carry forward (K03, PREREG-1 §3 against §9) is the Founder's decision.
+- **Verification:**
+  - freeze intact: verify-r7d-5 29/30 read-only, and 33/34 with --suite; only no-final-holdout fails, by design;
+  - protocol PASS;
+  - determinism recomputed: 35 + 300 cases.
+- **Unchanged:**
+  - runtime bytes, policy, catalog, records, product, canon and Figma;
+  - no new freeze and no repeated holdout;
+  - F08_OPEN, and V1 authority NO;
+  - the queue stays at 235;
+  - nothing merged, pushed or deleted.
+- **Next:** the Founder's decision, (A) one bounded correction cycle or (B) close NOT_READY now. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE4_CHECKPOINT.md`.

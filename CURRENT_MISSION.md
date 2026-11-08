@@ -1336,3 +1336,64 @@ The authorization allows no Phase 4, no final holdout, no change to V1 authority
   - the commercial framing check.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE35_CHECKPOINT.md).
+
+<!-- DOMAIN_COACHING_R7D: DCR7D-20261108-phase4-r1 -->
+## DOMAIN_COACHING_R7-D — Fresh Generalization Gate — Phase 4 (independent final holdout, final judgment, controlled closure) COMPLETE, NOT_READY / 2026-11-08
+
+A direct Founder request authorizes **R7-D Phase 4 only**:
+- resolve the Phase 3.5 pending conditions, in instruments only;
+- run the independent final holdout once, under the repository protocol;
+- obtain two separate judgments, Sports Science / Domain and Quality / Reliability;
+- record the final state.
+
+The authorization allows:
+- no change to a runtime byte bound by R7D-FREEZE-5, and no new freeze;
+- no repeat of the holdout;
+- no F08 implementation, and no Figma or app change;
+- no Phase 4.1 or other round opened on its own;
+- no push or merge, and no recursive deletion.
+
+It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase4/AUTHORIZATION_PHASE4.md`.
+
+- **States:**
+  - R7D_PHASE4_STATUS = COMPLETE.
+  - R7D_FINAL_STATUS = NOT_READY. The holdout itself is INVALID_HOLDOUT, for lost coverage.
+  - R7-D is not concluded: its closure criterion (no open blocker in scope) fails, and the minimal decision returns to the Founder.
+  - V1_COACHING_AUTHORITY_READY = NO.
+  - F08 = F08_OPEN.
+- **Pending conditions,** resolved in instruments only (`58d6766`; PREREG-7 Δ38–Δ46):
+  - the P17 false block (QRE3-P35-02) is fixed in R7D-HARNESS-8;
+  - P18(e) is aligned with the code (QRE3-P35-03);
+  - the CFP35R2-02 disclosures are recorded;
+  - the CQ4-1 tests T39–T41 are written, with mutation evidence;
+  - CFP35R2-03 went to the domain judge, who accepted the reading; no unit depends on it.
+- **Holdout:**
+  - a fresh independent author worked from brief 7;
+  - H1 holds 35 cases and 98 steps (sha256 2f2a5d27…); H2 holds 300 generated intakes (b69fa543…);
+  - both were sealed in `14c7ec8`, before any execution;
+  - each had one first evaluation, in `87d0978`; both manifests show evaluationCount 1;
+  - runtime 649/649, runtimeDiff [].
+- **Judgments** (`1b3c93c`), by fresh instances working in parallel:
+  - SSCTR-R7D-P4-FINAL-HOLDOUT-r1: INVALID_HOLDOUT, with blocking finding SSCTR-P4-F01;
+  - QRE-R7D-FINAL-HOLDOUT-r1: INVALID_HOLDOUT, with blocking finding QRE-P4-F01;
+  - both findings are GENERALIZATION_BLOCKER, PRE_EXISTING and structural. There is no SAFETY or SCIENTIFIC blocker and no UNSAFE step.
+- **The two blocking findings:**
+  - **SSCTR-P4-F01:** after a moderate or long return, strength exercises never executed before the break skip the D49 return limits. Shown in F13, with a witness and a control; identical on R7D-FREEZE-4.
+  - **QRE-P4-F01** (P03(d)): an empty review after more than a month without reports comes back VALID, trims the dose and asks no UNREPORTED_TRAINING question when the next planned week is a low-dose CONSOLIDATION week. Shown in F13, with a witness on F25; identical on R7D-FREEZE-4 and R7C-FREEZE-4.
+- **Coverage and evidence:**
+  - seven registered coverage items are missing without ambiguity, CARRIER_HOLD = 0 among them. The causes are mostly corpus and interface; one is QRE-P4-F01 itself;
+  - four cases are CORPUS_ERROR (F22, F32, F33, F34);
+  - three units are HARNESS_GAP (F07 P06, F21 P03, F12 P05/CARRIER_CLINICAL) and return as NOT_EVALUABLE.
+- **Freeze at close:** verify-r7d-5, read-only, gives 29/30; with --suite, in the quality judgment, 33/34. Only no-final-holdout fails, by design. No bound byte changed.
+- **Queue:** 235 items, no append. HQ-R7D-SSCTR-P4-HOLDOUT-JUDGMENT is proposed only.
+- **Next:** the Founder's decision.
+  - **(A), recommended:** one bounded correction cycle:
+    - the two runtime fixes, with directed tests and no new number;
+    - a new freeze;
+    - a new independent holdout whose brief and interface make the missing items reachable;
+    - K03 (the harness corrections) decided before that holdout exists.
+  - **(B):** close R7-D NOT_READY now and carry the two blockers to the next coaching mission.
+
+  F08, the plan presentation and the Figma × Motor audit stay separate missions.
+
+  [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE4_CHECKPOINT.md).
