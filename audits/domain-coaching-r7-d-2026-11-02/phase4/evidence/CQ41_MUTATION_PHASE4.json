@@ -1,0 +1,87 @@
+{
+ "evidence": "R7D-PHASE4-CQ41-MUTATION",
+ "condition": "CQ4-1 (QRE-R7D-PHASE35-CHECK-r2; QRE3-P35-01)",
+ "test": {
+  "path": "audits/domain-coaching-r7-d-2026-11-02/phase4/tests/r7d-phase4-cq41.test.mjs",
+  "sha256": "22673475cf90b3ce7aa9808054e65367a1860edc6287d91fc59391609744ca0f"
+ },
+ "mutantsFrom": "phase35/reviews/engineering/probes2/qre3-p35-mutants.mjs (exact text edits of the bounded cycle line; built with qre3-p35-mutation.mjs --build-only)",
+ "frozen": {
+  "root": "this worktree (R7D-FREEZE-5)",
+  "sourceSha256": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e",
+  "boundSha256": "5e910f52e1454c07662001bc66dd574bfc8bea4fa1876bd09e434d00c74e035e",
+  "tests": 3,
+  "pass": 3,
+  "fail": 0,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "QF3",
+   "what": "the duplicate test reads only a stated first day (a report giving its last day and length is never a duplicate)",
+   "mutatedSha256": "6a1ab8991109a9ac280b80a90613bb6a2dc54a327f4505ac8dd5de35932ada9e",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 4 T39"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T39"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF7",
+   "what": "the duplicate test compares with the first report of the latest break, not the report in force",
+   "mutatedSha256": "b0cfdc436f66c5183b554ee3115c2b38b33dc37e9c84920d4af31b429a08974f",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 4 T40"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T40"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF6",
+   "what": "a decision of the unnamed re-read (a missing declaration ASK, a clinical route, a question) is ignored: the duplicate is read alone",
+   "mutatedSha256": "bb1d475105b5ce270896faf5120ef0a93c172b9e0fdf68b7d1698b38800f47c8",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "failed": [
+    "R7-D Phase 4 T41"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF0",
+   "what": "QRE-P35-01 reverted: an unnamed same-dates report re-establishes the latest break alone",
+   "mutatedSha256": "7fc7543467b8ccab111822746844e5278311d3ecac2e82e31045ca59248d0c2d",
+   "tests": 3,
+   "pass": 0,
+   "fail": 3,
+   "failed": [
+    "R7-D Phase 4 T39",
+    "R7-D Phase 4 T40",
+    "R7-D Phase 4 T41"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T39",
+    "R7-D Phase 4 T40",
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  }
+ ],
+ "result": "PASS",
+ "ran": "2026-11-08T02:17:15.136Z",
+ "node": "v24.19.0"
+}
