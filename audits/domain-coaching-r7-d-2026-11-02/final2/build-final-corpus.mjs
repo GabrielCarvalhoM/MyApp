@@ -1,0 +1,1205 @@
+// R7-D final holdout H1 (R7D-FINAL-2), protocol R7D-AUTHOR-BRIEF-FINAL-8, written against R7D-FREEZE-6.
+// Independent case author. Plain Node only (node:fs, node:path, node:crypto); nothing is imported from the repository.
+// Every athlete, date, load and answer below is invented for this corpus. Assessments were written before any runtime output exists.
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+
+const OUT_DIR = path.dirname(path.resolve(process.argv[1]));
+const DAY = 86400000;
+const addDays = (iso, n) => new Date(Date.parse(iso + 'T00:00:00Z') + n * DAY).toISOString().slice(0, 10);
+const offStr = (m) => { const a = Math.abs(m); return (m < 0 ? '-' : '+') + String(Math.floor(a / 60)).padStart(2, '0') + ':' + String(a % 60).padStart(2, '0'); };
+// Calendar of one athlete: d(week, day) is a local date, ts(week, day, 'HH:MM') a local timestamp with the athlete's offset.
+const cal = (start, tz = 0) => ({ d: (w, d) => addDays(start, 7 * w + d), ts: (w, d, hm) => `${addDays(start, 7 * w + d)}T${hm}:00${offStr(tz)}` });
+const at = (week, day, time) => ({ week, day, time });
+const ELIG = (date, o = {}) => ({ status: 'NONCLINICAL_CONFIRMED', assessedAt: date, pain: false, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false, ...o });
+
+function intake(o) {
+  const x = { version: 'R6-INTAKE-1', synthetic: true, purpose: 'SHADOW_REFERENCE', asOf: o.asOf, startDate: o.start, weeks: o.weeks };
+  if (o.consent !== undefined) x.learningConsent = o.consent;
+  if (o.tz) x.timezoneOffsetMinutes = o.tz;
+  x.athlete = { id: o.id, ...(o.age ? { ageYears: o.age } : { ageEligible: true }), eligibility: o.elig || ELIG(o.asOf), goals: o.goals, ...o.ath };
+  x.schedule = o.schedule;
+  if (o.history) x.history = o.history;
+  return x;
+}
+
+// Facts. B: bulk form over the plan in force. R: one session by day (only where the day is fixed) or by role.
+const OK = { performance: 'COMPATIBLE', recovery: 'COMPATIBLE', effort: 'ON_TARGET', nextDayFunction: 'NORMAL' };
+const done = (extra = {}) => ({ completed: true, asPrescribed: true, response: { ...OK }, ...extra });
+const NOT = { completed: false };
+const B = (weeks, sport, roles, f) => ({ each: roles ? { weeks, sport, roles } : { weeks, sport }, ...f });
+const R = (week, sport, dayOrRole, f) => ({ ref: typeof dayOrRole === 'number' ? { week, sport, day: dayOrRole } : { week, sport, role: dayOrRole }, ...f });
+const runs = (weeks, f = done()) => B(weeks, 'RUN', null, f);
+const lifts = (weeks, loads, f = {}) => B(weeks, 'STRENGTH', null, done({ ...(loads ? { loadsByPattern: loads } : {}), ...f }));
+const brk = (from, to, cat, reason, extra = {}) => ({ ...(from ? { startDate: from } : {}), endDate: to, reasonCategory: cat, nonclinical: true, reason, ...extra });
+const RUN_COUNTED = ['EASY', 'LONG', 'QUALITY', 'WALK_JOG'];
+const RUN_OPTIONAL = ['WALK', 'RECOVERY_EASY', 'SHAKEOUT'];
+
+// Plausible loads (kg) by pattern for whole-week reports; a pattern the week does not hold is ignored.
+const LDB = { SQUAT: 22, HINGE: 18, LUNGE: 12, CALF: 16, PUSH: 14, PULL: 18 };
+const LDB2 = { SQUAT: 16, HINGE: 14, LUNGE: 8, CALF: 12, PUSH: 10, PULL: 12 };
+const LKB = { SQUAT: 16, HINGE: 24, LUNGE: 12, CALF: 12, PUSH: 12, PULL: 16 };
+const LGYM = { SQUAT: 80, HINGE: 75, LUNGE: 16, CALF: 20, PUSH: 62.5, PULL: 55 };
+const LGYM2 = { SQUAT: 110, HINGE: 120, LUNGE: 24, CALF: 30, PUSH: 85, PULL: 75 };
+
+// Expectations.
+const E = (id, atStep, assert, oracle, rationale) => ({ expectationId: id, atStep, oracleClass: oracle, assert, rationale });
+const S = (...oneOf) => ({ type: 'STATUS_IN', oneOf });
+const V = (value) => ({ type: 'VALIDITY_IS', value });
+const Q = (value) => ({ type: 'QUESTION_KIND_IS', value });
+const NP = { type: 'NO_PRESCRIPTION' };
+const RA = (weeks, sport, roles) => ({ type: 'ROLE_ABSENT', weeks, sport, roles });
+const RP = (weeks, sport, roles) => ({ type: 'ROLE_PRESENT', weeks, sport, roles });
+const PH = (week, ...oneOf) => ({ type: 'PHASE_IS', week, oneOf });
+const RMC = (role, week, op, otherWeek) => ({ type: 'ROLE_MINUTES_COMPARE', sport: 'RUN', role, week, op, otherWeek });
+const J = (statement) => ({ type: 'JUDGED', statement });
+const INV = 'INVARIANT_ORACLE', DOM = 'DOMAIN_ORACLE', MET = 'METAMORPHIC_ORACLE', NED = 'NOT_EVALUABLE_DOMAIN';
+const VALID = 'VALID_WITHIN_CURRENT_BOUNDED_SCOPE', RECON = 'REQUIRES_RECONCILIATION';
+
+const st = (stepId, atv, event, more = {}) => ({ stepId, at: atv, event, ...more });
+const cases = [];
+function add(n, o) {
+  cases.push({
+    caseId: `R7D-H${String(n).padStart(2, '0')}`, authorIntent: o.intent, coverageTags: o.tags, oracleClass: o.oracle,
+    intake: o.intake, timeline: o.timeline || [], expectedDomainProperties: o.exp, metamorphicRelations: o.rel || [],
+    independentAssessment: { rationale: o.ia[0], preferredCoachingBehavior: o.ia[1], acceptableAlternatives: o.ia[2], concerns: o.ia[3] },
+    domainNotes: o.notes || '',
+  });
+}
+const DAYNOTE = 'Day-specific references here name sessions on the athlete\'s own chosen days in weeks that no adopted decision re-planned: before them came only routine reviews, decisions that asked or routed and adopted nothing, or adopted decisions made after that week\'s named sessions had already taken place. Those days are truly fixed, so any check-corpus-8 warning on them is kept for that reason.';
+
+// ---------- H01: run-first half marathon, 12 weeks, taper response, same-day report ----------
+{ const c = cal('2026-11-09', 0); const race = c.d(10, 6);
+  add(1, { intent: 'Cold start of an intermediate runner toward a half marathon in 12 weeks, carried through the build, a taper-week fatigue report, the race and the week after; also a same-day long-run report with day precision.',
+    tags: ['COLD_START', 'RUN_FIRST', 'RACE_HALF', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'TAPER', 'RACE_WEEK', 'POST_RACE', 'FATIGUE_LOCAL', 'SKIPPED_REVIEW', 'OFFERS'], oracle: DOM,
+    intake: intake({ id: 'ath-h01-marisol', asOf: '2026-11-07', start: '2026-11-09', weeks: 12, goals: { run: { kind: 'RACE', event: { kind: 'HALF_MARATHON', date: race, timeGoalMinutes: 125 } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: 'HALF_MARATHON', date: race, timeGoalMinutes: 125 }, runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 160, longestRunMinutes: 75, strengthDaysPerWeek: 1 },
+        performanceAnchors: [{ kind: 'RACE_RESULT', distance: '10K', minutes: 54, date: '2026-11-04' }],
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'EASY', durationMinutes: 45 }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-05' }, { prescription: { modality: 'RUN', family: 'LONG', durationMinutes: 75 }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-07' }],
+        equipment: ['BODYWEIGHT', 'DUMBBELLS', 'BENCH'], sex: 'F' },
+      schedule: { runDays: [1, 3, 6], strengthDays: [0, 4], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 40, longRunDay: 6, longRunMinutes: 110 } }),
+    timeline: [
+      st('s1', at(0, 6, '19:30'), { kind: 'WEEKLY_REVIEW' }, { observations: [R(0, 'RUN', 1, done()), R(0, 'RUN', 3, done()), R(0, 'RUN', 6, done({ occurrenceDate: c.d(0, 6), reportedAt: c.ts(0, 6, '11:40') })), lifts([0], LDB)] }),
+      st('s2', at(5, 6, '19:30'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([1, 2, 3, 4, 5]), lifts([1, 2, 3, 4, 5], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT', LADDER_STEP: 'ACCEPT' } }),
+      st('s3', at(9, 3, '07:00'), { kind: 'LOCAL_FATIGUE', signals: { region: 'LOWER' } }, { note: 'Calves heavy and tight two days into the taper week; no pain.' }),
+      st('s4', at(10, 6, '15:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([6, 7, 8, 9]), B([10], 'RUN', ['RACE'], done()), B([10], 'RUN', ['EASY', 'QUALITY', 'RACE_TOUCH', 'SHAKEOUT'], done()), lifts([6, 7, 8, 9, 10], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT', LADDER_STEP: 'ACCEPT' } }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'An eligible intermediate runner with a realistic 12-week horizon should get a program.'),
+      E('e2', 'GENERATE', PH(10, 'RACE_WEEK'), DOM, 'The race falls in week 10.'),
+      E('e3', 'GENERATE', RP([10], 'RUN', ['RACE']), INV, 'The race is planned on its own date.'),
+      E('e4', 'GENERATE', RMC('LONG', 9, '<', 7), DOM, 'The week before race week tapers the long run below the late-build long run.'),
+      E('e5', 's2', J('The week-0 long run reported on its own day with only a date and an earlier report time is part of the record used at s2 (not lost or treated as unknown).'), INV, 'Day-precision same-day reports are valid and persist (delta 2 section 2).'),
+      E('e6', 's3', S('KEEP', 'MODIFY'), DOM, 'Ordinary lower-body fatigue in the taper adapts the plan; it is not a clinical stop.'),
+      E('e7', 's3', RP([10], 'RUN', ['RACE']), DOM, 'The race stays on its date after a nonclinical fatigue report.'),
+      E('e8', 's3', J('After the fatigue report no taper-week run dose is increased and lower-body strength in the next two days is reduced, removed or kept light.'), DOM, 'Fatigue in the taper calls for less, never more.'),
+      E('e9', 's4', PH(11, 'POST_EVENT', 'NEXT_BLOCK'), DOM, 'The week after the race is recovery or the next block.'),
+      E('e10', 's4', RA([11], 'RUN', ['QUALITY']), DOM, 'No hard running in the week right after a half marathon.'),
+    ],
+    rel: [{ relation: 'CALENDAR_SHIFT', rationale: 'The same athlete starting a week later should get the same structure.' }],
+    ia: ['An intermediate runner (about 160 min a week, 75-minute long run) has a realistic 12-week path to a half marathon; strength supports running and must not compete with the long run or the taper.',
+      'Build the long run gradually from 75 minutes toward race-specific length, keep harder running limited and familiar, keep strength away from the day before the long run, taper over the last one to two weeks with lower volume, ease lower-body strength after the taper calf fatigue while keeping the race, and make the week after the race easy.',
+      ['Keep the taper as planned after the fatigue report and only lighten the next lower-body strength session', 'A KEEP decision at the fatigue report that tells the athlete to keep the remaining taper runs easy'],
+      ['Adding volume or a hard session in the taper after fatigue', 'Moving or dropping the race for ordinary local fatigue', 'Quality running in the week after the half marathon', 'Losing the same-day long-run report because it has no clock time']],
+    notes: 'Reviews are skipped between week 0, week 5 and the race week; reports for those weeks arrive in bulk at s2 and s4.' }); }
+
+// ---------- H02: close 10K (under 6 weeks); race week between two separate breaks with convergent adverse responses ----------
+{ const c = cal('2026-11-10', -300); const race = c.d(5, 5);
+  add(2, { intent: 'A close 10K for an intermediate runner, then a work trip in the taper week and a family visit after the race; the race week between them holds touch, shakeout and race, and both the strength session and the shakeout report adverse recovery.',
+    tags: ['COLD_START', 'RUN_FIRST', 'RACE_10K', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'START_NON_MONDAY', 'TIMEZONE', 'RACE_WEEK', 'POST_RACE', 'ADVERSE_RESPONSE', 'RETURN_MODERATE', 'OFFERS'], oracle: DOM,
+    intake: intake({ id: 'ath-h02-oduya', asOf: '2026-11-08', start: '2026-11-10', weeks: 8, tz: -300, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race, timeGoalMinutes: 50 } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: '10K', date: race, timeGoalMinutes: 50 }, runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 60, strengthDaysPerWeek: 1 },
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'THRESHOLD', durationMinutes: 45, warmupMinutes: 15, cooldownMinutes: 10, work: { repetitions: 4, workMinutes: 5, recoveryMinutes: 2 }, effort: 'comfortably hard' }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-05' }, { prescription: { modality: 'RUN', family: 'EASY', durationMinutes: 40 }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-07' }],
+        equipment: ['BODYWEIGHT', 'DUMBBELLS'] },
+      schedule: { runDays: [1, 4, 5], strengthDays: [0, 3], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 35, longRunDay: 5, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s2', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([2, 3]), lifts([2, 3], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s3', at(4, 2, '21:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(4, 0), c.d(4, 6), 'WORK', 'work trip abroad the whole week, no training possible') }),
+      st('s4', at(6, 5, '18:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(6, 0), c.d(6, 4), 'FAMILY', 'family visit after the race', { episodeId: 'h02-family' }) }, { observations: [
+        B([5], 'RUN', ['RACE_TOUCH'], done()), B([5], 'RUN', ['SHAKEOUT'], done({ response: { ...OK, recovery: 'ADVERSE' } })), B([5], 'RUN', ['RACE'], done()),
+        B([5], 'RUN', ['EASY', 'QUALITY', 'LONG'], done()), lifts([5], LDB, { response: { ...OK, recovery: 'ADVERSE' } })] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A close but realistic 10K for an intermediate runner.'),
+      E('e2', 'GENERATE', PH(5, 'RACE_WEEK'), DOM, 'The race is in week 5.'),
+      E('e3', 'GENERATE', RP([5], 'RUN', ['RACE']), INV, 'The race is planned on its date.'),
+      E('e4', 's3', S('ASK'), INV, 'A break still under way at its review is asked about, not applied.'),
+      E('e5', 's3', NP, INV, 'While a stated break is kept and not applied, no plan is valid.'),
+      E('e6', 's4', S('MODIFY'), DOM, 'Both breaks are known and separate (the later one carries its own name), so a return is planned.'),
+      E('e7', 's4', V(VALID), DOM, 'Nothing is left to ask: every session between the breaks is reported.'),
+      E('e8', 's4', J('The race week is not a re-entry week: its strength session and its shakeout both report adverse recovery, so the return is read from the stop that starts on the work trip first day (8 Dec) and ends on the family visit last day (26 Dec), not from the 5-day visit alone; the running dose ahead is not above what was executed before the trip.'), DOM, 'Adverse responses converging across sports hold the whole week (delta 7 section 1).'),
+      E('e9', 's4', RA([7], 'RUN', ['QUALITY']), DOM, 'No harder running in the first full week after a stop of almost three weeks with adverse signals.'),
+    ],
+    ia: ['A close 10K leaves no room for a long build. The race week sits between a work trip and a family visit; the touch and the race went well, but the strength session and the shakeout both recovered badly.',
+      'Plan a short sharpening block toward 20 Dec. While the trip is under way, ask and plan nothing. On return, keep the two breaks separate, refuse to treat the race week as a clean re-entry because two sports reported adverse recovery, and plan a conservative return from the combined stop with easy running and light strength first.',
+      ['Ask about the race-week responses before planning the return', 'A first week back of easy running only, with strength at a light entry'],
+      ['Classing the return by the 5-day family visit alone', 'Treating the finished race as proof that capacity is restored and resuming quality', 'Adding the two breaks days together instead of reading the stop', 'Prescribing during the trip from the stale plan']] }); }
+
+// ---------- H03: strength-first lifter on machines with known stack settings ----------
+{ const c = cal('2026-11-17', 60); const MS = (value, reps, rir) => ({ reps, load: { value, unit: 'KG', convention: 'MACHINE_STACK' }, rir });
+  const known = (id, kg, reps) => ({ id, sets: 3, reps, load: { value: kg, unit: 'KG', convention: 'MACHINE_STACK' }, rir: 2, current: true, familiar: true, tolerated: true, observedAt: '2026-11-13' });
+  const W3 = { SQUAT: 130 };
+  add(3, { intent: 'Strength-first intermediate lifter on gym machines with known stack settings: logs exactly as prescribed, then the athlete\'s own heavier leg-press setting, its confirmation and an equal second log, and a heavier chest-press attempt that missed its target.',
+    tags: ['COLD_START', 'STRENGTH_FIRST', 'GYM', 'H12', 'STR_EXP_INTERMEDIATE', 'RUN_EXP_NOVICE', 'NON_RACE', 'LOAD_CONFIRMATION', 'START_NON_MONDAY', 'TIMEZONE'], oracle: DOM,
+    intake: intake({ id: 'ath-h03-kasimir', asOf: '2026-11-15', start: '2026-11-17', weeks: 12, tz: 60, goals: { run: 'GENERAL', strength: 'STRENGTH' },
+      ath: { runExperience: 'NOVICE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 1, runMinutesPerWeek: 25, longestRunMinutes: 25, strengthDaysPerWeek: 3 },
+        knownExercises: [known('leg-press', 120, 8), known('lat-pulldown', 55, 10), known('seated-cable-row', 50, 10), known('machine-chest-press', 45, 10)],
+        equipment: ['MACHINES', 'BODYWEIGHT'], strengthPreferences: { emphasis: ['LOWER', 'PULL'] } },
+      schedule: { runDays: [1, 5], strengthDays: [0, 2, 4], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 30, strengthMinutes: 60 } }),
+    timeline: [
+      st('s1', at(1, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1])], note: 'Machine rows logged exactly as their rows state them.' }),
+      st('s2', at(2, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([2]), lifts([2], { SQUAT: 130 })], note: 'Own heavier leg-press setting, every set at target with the reserve shown.' }),
+      st('s3', at(3, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { confirmPendingLoads: true, observations: [runs([3]), R(3, 'STRENGTH', 0, done({ loadsByPattern: W3 })), R(3, 'STRENGTH', 2, done({ loadsByPattern: W3 })),
+        R(3, 'STRENGTH', 4, { completed: true, exercises: [{ id: 'machine-chest-press', sets: [MS(55, 5, 0), MS(55, 4, 0), MS(55, 4, 0)] }, { id: 'leg-press', sets: [MS(130, 8, 2), MS(130, 8, 2), MS(130, 8, 2)] }], response: { performance: 'UNDER', recovery: 'COMPATIBLE', effort: 'HARDER' } })],
+        note: 'Confirms the week-2 setting; on Saturday tries 55 kg on the chest press and misses the reps with no reserve.' }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A complete strength-first program fits this athlete.'),
+      E('e2', 'GENERATE', J('Known machine rows are prescribed in kilograms in the MACHINE_STACK convention at the known settings; the coach states no machine number of its own, and the small easy running dose does not precede the heaviest lower-body session.'), DOM, 'Delta 2 section 3: the coach never computes a machine setting.'),
+      E('e3', 's2', J('The 130 kg leg-press setting logged once without confirmation is not yet the reference: one load question is asked (loadQuestions) and the earlier settings are kept.'), INV, 'A heavier setting becomes the reference only after a confirmation or an equal second log.'),
+      E('e4', 's3', J('After the confirmation 130 kg is the leg-press reference; the 55 kg chest-press attempt that missed its repetitions with no reserve does not become the chest-press reference and no heavier chest-press setting is prescribed from it.'), DOM, 'Only a session that met its target can set a heavier reference.'),
+      E('e5', 's3', S('KEEP', 'MODIFY'), DOM, 'Ordinary progression decision.'),
+    ],
+    rel: [{ relation: 'LOAD_CONVENTION_EQUIVALENT', rationale: 'Equivalent load conventions must not change the plan.' }],
+    ia: ['An intermediate lifter whose priority is strength, with known machine stack settings, and a small general running goal.',
+      'Prescribe the known machine settings in kilograms as stated, progress a machine by asking for its next heavier setting rather than computing one, adopt a heavier setting only after the athlete confirms it or logs it again from a session that met target, and ignore a heavier attempt that missed its target.',
+      ['Keep the known settings for the first weeks and progress repetitions first', 'Ask a question about the failed chest-press attempt before progressing that row'],
+      ['Inventing a stack number such as +5 kg on a machine', 'Adopting a single unconfirmed heavier log as the reference', 'Raising the chest press after sets with no reserve and missed repetitions']],
+    notes: 'Heavier settings are stated only for the squat pattern, whose only loaded option with this equipment is the leg press; the explicit Saturday log names the known machine ids. ' + DAYNOTE }); }
+
+// ---------- H04: balanced hybrid on shared days split by turn; duplicates, corrections and a re-send; double conflict ----------
+{ const c = cal('2026-11-12', 600);
+  const thuPhone = R(0, 'RUN', 0, done({ eventId: 'h04-w0-thu-phone', source: { provider: 'phone-app', quality: 'MANUAL' } }));
+  add(4, { intent: 'Balanced intermediate hybrid with running in the morning and strength in the evening on shared days; probes duplicate phone and watch reports, an in-time and a late correction, an exact re-send and a one-day double conflict confirmed in the same turn.',
+    tags: ['COLD_START', 'BALANCED_HYBRID', 'SHARED_DAYS', 'SAME_TURN', 'DOUBLE_CONFLICT', 'GYM', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'DUPLICATE_SOURCES', 'CORRECTION', 'START_NON_MONDAY', 'TIMEZONE', 'WEARABLE_FULL'], oracle: DOM,
+    intake: intake({ id: 'ath-h04-tamsin', asOf: '2026-11-10', start: '2026-11-12', weeks: 8, tz: 600, goals: { run: 'REGULAR', strength: 'HYPERTROPHY' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 65, strengthDaysPerWeek: 3 },
+        equipment: ['BARBELL', 'RACK', 'BENCH', 'DUMBBELLS', 'MACHINES'],
+        wearableCapabilities: { provider: 'wristwatch', activityAvailable: true, heartRateAvailable: true, exerciseIdentityAvailable: false, setsRepsLoadAvailable: false, subjectiveEffortAvailable: false, completeness: 'PARTIAL', historyWeeks: 0 } },
+      schedule: { runDays: [0, 2, 4], strengthDays: [0, 4, 5], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 60, longRunDay: 2, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(0, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [thuPhone, R(0, 'RUN', 0, done({ eventId: 'h04-w0-thu-watch', observedAt: c.ts(0, 0, '06:10'), source: { provider: 'wristwatch', activityId: 'ww-77310', quality: 'WEARABLE_FULL' } })),
+        R(0, 'RUN', 2, { completed: true, minutes: 60, response: { ...OK }, eventId: 'h04-w0-long' }), R(0, 'RUN', 4, done()), lifts([0], LGYM)] }),
+      st('s2', at(1, 5, '07:00'), { kind: 'DOUBLE_CONFLICT', changes: { from: c.d(2, 4), to: c.d(2, 4), runTurn: 'PM', strengthTurn: 'PM', sameTurnConfirmed: true } }, { note: 'Early meeting next Monday: both sessions after work, the run first.' }),
+      st('s3', at(1, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [
+        R(1, 'RUN', 0, { completed: true, minutes: 40, response: { ...OK }, eventId: 'h04-w1-thu' }),
+        R(1, 'RUN', 0, { completed: true, minutes: 30, response: { ...OK }, eventId: 'h04-w1-thu-fix', correctionOf: 'h04-w1-thu', correctedAt: c.ts(1, 6, '19:50') }),
+        R(1, 'RUN', 2, done()), R(1, 'RUN', 4, done()), lifts([1], LGYM),
+        R(0, 'RUN', 2, { completed: true, minutes: 45, response: { ...OK }, eventId: 'h04-w0-long-fix', correctionOf: 'h04-w0-long', correctedAt: c.ts(1, 6, '19:55') }),
+        thuPhone] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A balanced hybrid fits this athlete.'),
+      E('e2', 'GENERATE', J('On Thursday and Monday the run is in the morning and strength in the evening as chosen; no day puts both sports in the same turn without the athlete\'s confirmation.'), INV, 'Same-turn sessions need confirmation (interface 1 section 1).'),
+      E('e3', 's1', J('The phone and watch reports of the week-0 Thursday run are one session, counted once.'), INV, 'A second device never doubles a session.'),
+      E('e4', 's2', S('MODIFY', 'KEEP'), DOM, 'A confirmed one-day same-turn change is acceptable.'),
+      E('e5', 's2', J('Only Monday of week 2 puts both sessions in the evening, as confirmed; the other days keep their turns.'), DOM, 'The conflict is bounded to one date.'),
+      E('e6', 's3', J('Week-1 Thursday counts as 30 minutes (the in-time correction); the week-0 long run counts as 45 minutes for future dosing without rewriting what week 0 decided; the re-sent phone report is not counted again; the next long run is not progressed from the uncorrected 60 minutes.'), INV, 'Corrections change the future, never history; re-sends record nothing new.'),
+    ],
+    rel: [{ relation: 'DUPLICATE_SECOND_SOURCE', rationale: 'A second device must not change the plan.' }, { relation: 'RESEND', rationale: 'An exact re-send records nothing new.' }, { relation: 'PERMUTE_OBSERVATIONS', rationale: 'Report order inside a review must not matter.' }],
+    ia: ['A balanced intermediate hybrid sharing two days split by turn. The data are messy in ordinary ways: two devices, a corrected duration, a late correction of a long run and a re-sent report.',
+      'Keep runs in the morning and strength in the evening on shared days; count the Thursday run once; use the corrected 30 minutes for week 1 and the corrected 45-minute week-0 long run for what comes next while leaving earlier decisions untouched; ignore the re-send; accept the confirmed Monday same-turn day only for that date.',
+      ['Ask the athlete which week-0 long-run duration is right before progressing it', 'Keep the plan unchanged at the double conflict and simply move next Monday\'s turns'],
+      ['Counting the duplicate or the re-send as extra training', 'Progressing the long run from 60 minutes after the correction', 'Rewriting the week-0 decision', 'Applying the same-turn change to other Mondays']],
+    notes: 'The double conflict concerns Monday of week 2 and is sent on Tuesday of week 1, after every week-1 session named at s3 had taken place. ' + DAYNOTE }); }
+
+// ---------- H05: 4-week general block; substitution without pain, then with pain and a break, clearance, last-week schedule change ----------
+{ const c = cal('2026-11-13', 330);
+  add(5, { intent: 'A 4-week general block for a novice: a skill-mismatch substitution, then a pain substitution named by pattern that also states a travel break, a qualified clearance, a review that does not restate the break, and a schedule change in the last week.',
+    tags: ['COLD_START', 'GENERAL_FITNESS', 'H4', 'RUN_EXP_NOVICE', 'STR_EXP_NOVICE', 'NON_RACE', 'START_NON_MONDAY', 'TIMEZONE', 'SUBSTITUTION', 'SUBSTITUTION_PAIN_CLEARANCE', 'CLINICAL_SIGNAL', 'CLINICAL_PAUSE', 'SCHEDULE_CHANGE', 'RETURN_SHORT', 'TRAVEL'], oracle: INV,
+    intake: intake({ id: 'ath-h05-priyanka', asOf: '2026-11-11', start: '2026-11-13', weeks: 4, tz: 330, goals: { run: 'GENERAL', strength: 'GENERAL' },
+      ath: { runExperience: 'NOVICE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 2, runMinutesPerWeek: 50, longestRunMinutes: 30, strengthDaysPerWeek: 1 }, equipment: ['BODYWEIGHT', 'DUMBBELLS'] },
+      schedule: { runDays: [1, 4], strengthDays: [0, 3], runMinutes: 35, strengthMinutes: 40 } }),
+    timeline: [
+      st('s1', at(1, 0, '18:00'), { kind: 'EXERCISE_SUBSTITUTION', substitution: { exerciseRef: { week: 1, pattern: 'SQUAT' }, reason: 'SKILL_MISMATCH', text: 'heels lift and the knees cave in, cannot keep steady technique' } }),
+      st('s2', at(2, 3, '18:30'), { kind: 'EXERCISE_SUBSTITUTION', substitution: { exerciseRef: { week: 2, pattern: 'SQUAT' }, reason: 'NONCLINICAL_DISCOMFORT_OR_PREFERENCE', pain: true, text: 'sharp pain at the front of the knee on squats today' },
+        interruption: brk(c.d(1, 5), c.d(2, 2), 'TRAVEL', 'trip to a wedding, no training') }),
+      st('s3', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { clearance: 'QUALIFIED_CLEARANCE', observations: [runs([0, 1]), lifts([0, 1], LDB2)], note: 'A physiotherapist saw the knee and cleared ordinary training.' }),
+      st('s4', at(3, 1, '08:00'), { kind: 'SCHEDULE_CHANGE', changes: { runDays: [1, 5] } }, { note: 'Wants to move the Tuesday run to Wednesday in the final week.' }),
+      st('s5', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([3]), lifts([3], LDB2)] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A short general block fits a novice.'),
+      E('e2', 'GENERATE', RA([0, 1, 2, 3], 'RUN', ['RACE', 'RACE_TOUCH']), INV, 'No race goal, no race sessions.'),
+      E('e3', 's1', S('MODIFY'), DOM, 'A skill mismatch is solved by a same-pattern exercise of lower skill.'),
+      E('e4', 's1', J('The replacement is a squat-pattern exercise of lower technical demand within bodyweight or dumbbells; nothing outside the catalog or the equipment is invented.'), DOM, 'Repertoire bounds.'),
+      E('e5', 's2', S('CLINICAL_HUMAN_REQUIRED'), INV, 'Pain routes to a qualified human first, before the stated break is considered.'),
+      E('e6', 's2', NP, INV, 'Nothing is prescribed while the clinical route stands.'),
+      E('e7', 's3', S('MODIFY'), DOM, 'After clearance the review applies the kept travel break: a short return.'),
+      E('e8', 's3', V(VALID), DOM, 'Nothing is pending after the clearance and the return.'),
+      E('e9', 's3', J('The kept 5-day travel break is applied without the athlete stating it again, as a short return; the plan from before the break is not reused as if nothing happened, and the squat substitution from week 1 is kept.'), INV, 'Delta 3 section 1: after clearance the next review applies the kept break.'),
+      E('e10', 's4', S('HOLD'), INV, 'A schedule change in the program\'s last week is refused (delta 2 section 7).'),
+      E('e11', 's5', S('KEEP', 'MODIFY'), DOM, 'The last review closes the block.'),
+      E('e12', 's5', J('The travel break is not applied again and no clinical route reopens without a new clinical signal.'), INV, 'A kept break is applied once; clearance stands until a new signal.'),
+    ],
+    rel: [{ relation: 'CARRIER_CLINICAL', rationale: 'Clinical route then clearance must leave the same plan as the same facts without the route.' }],
+    ia: ['A novice in a 4-week general block. A squat that cannot be done with steady technique is a skill issue; knee pain on squats a week later is clinical, and the athlete also mentions a wedding trip.',
+      'Swap the squat for an easier squat variant; on the pain report route to a qualified human and prescribe nothing; after the physiotherapist clears, apply the 5-day travel break as a short return without asking the athlete to state it again; refuse the last-week schedule change.',
+      ['At s3, ask a short question about the knee before planning, as long as the clinical route is not reopened without a clinical signal', 'At s4, keep the plan and explain that the block ends this week'],
+      ['Treating the knee pain as a preference and swapping the exercise', 'Planning around the travel break while the pain route stands', 'Requiring the athlete to state the trip again after clearance', 'Accepting a schedule change in the last week as a new plan']],
+    notes: 'The substitutions name their exercise by pattern only (delta 8 section 2). The week-2 reference resolves to the first week-2 strength session holding a squat-pattern exercise.' }); }
+
+// ---------- H06: absolute beginner, bodyweight only; short break reported on a Thursday after missed sessions ----------
+{ const c = cal('2026-11-15', -480);
+  add(6, { intent: 'An absolute beginner with bodyweight only returns on a Thursday from a one-week family break, after reporting that the Monday to Wednesday sessions of that week were not done.',
+    tags: ['COLD_START', 'GENERAL_FITNESS', 'BODYWEIGHT_ONLY', 'H8', 'RUN_EXP_NONE', 'STR_EXP_NONE', 'WALK_JOG', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'LOW_DATA'], oracle: DOM,
+    intake: intake({ id: 'ath-h06-bertrand', asOf: '2026-11-13', start: '2026-11-15', weeks: 8, tz: -480, age: 52, goals: { run: 'GENERAL', strength: 'GENERAL' },
+      ath: { runExperience: 'NONE', strengthExperience: 'NONE', equipment: ['BODYWEIGHT'], sex: 'M' },
+      schedule: { runDays: [1, 3, 5], strengthDays: [2, 4], runMinutes: 30, strengthMinutes: 30 } }),
+    timeline: [
+      st('s1', at(1, 6, '18:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1])] }),
+      st('s2', at(3, 4, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(2, 0), c.d(2, 6), 'FAMILY', 'visiting my daughter, no exercise that week') }, { observations: [R(3, 'RUN', 1, NOT), R(3, 'STRENGTH', 2, NOT), R(3, 'RUN', 3, NOT)] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'An eligible adult beginner gets a gentle program.'),
+      E('e2', 'GENERATE', RP([0], 'RUN', ['WALK_JOG', 'WALK']), DOM, 'An absolute beginner starts from walking or walk/jog.'),
+      E('e3', 'GENERATE', RA([0, 1, 2, 3, 4, 5, 6, 7], 'RUN', ['QUALITY']), DOM, 'No harder running for an absolute beginner in eight weeks.'),
+      E('e4', 's2', S('MODIFY'), DOM, 'A short nonclinical return is planned.'),
+      E('e5', 's2', V(VALID), DOM, 'Every elapsed session of the return week is reported.'),
+      E('e6', 's2', J('The Monday to Wednesday sessions are not credited; the walk/jog dose ahead is not above the last completed week-1 dose, and bodyweight strength resumes at a light entry.'), DOM, 'Delta 6 section 2: sessions before a mid-week return that were not done never count as done.'),
+    ],
+    ia: ['A 52-year-old with no running or strength background, bodyweight only. A week away and three more days off are a short stop for a beginner whose base is two weeks old.',
+      'Start with walking or walk/jog and simple bodyweight patterns; on the Thursday return, credit nothing from Monday to Wednesday, resume walk/jog at or slightly below the last completed level and strength at a light entry.',
+      ['Repeat week 1 exactly', 'Resume at the last completed level if the athlete reports feeling normal'],
+      ['Progressing as if weeks 2 and 3 had been done', 'Continuous running or harder running for this athlete', 'Compressing the missed sessions into the rest of the week']] }); }
+
+// ---------- H07: walk/jog beginner toward a 10K in 16 weeks; a full week between two breaks with optional walks left undone ----------
+{ const c = cal('2026-11-11', 0); const race = c.d(15, 4);
+  add(7, { intent: 'A non-runner builds from walk/jog toward a 10K over 16 weeks; a fully executed week sits between a family break and a run of night shifts, with the optional brisk walks of that week left undone.',
+    tags: ['COLD_START', 'RACE_10K', 'H16', 'RUN_EXP_NONE', 'STR_EXP_NOVICE', 'WALK_JOG', 'START_NON_MONDAY', 'RETURN_SHORT', 'BODYWEIGHT_ONLY', 'FREQ_HIGH'], oracle: DOM,
+    intake: intake({ id: 'ath-h07-ines', asOf: '2026-11-09', start: '2026-11-11', weeks: 16, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: '10K', date: race }, runExperience: 'NONE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 0, runMinutesPerWeek: 0, strengthDaysPerWeek: 1 }, equipment: ['BODYWEIGHT', 'BANDS'], sex: 'F' },
+      schedule: { runDays: [0, 2, 4, 5], strengthDays: [1, 6], runMinutes: 40, strengthMinutes: 30, longRunDay: 4, longRunMinutes: 50 } }),
+    timeline: [
+      st('s1', at(3, 4, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 0), c.d(3, 6), 'FAMILY', 'caring for my mother after her operation') }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2])] }),
+      st('s2', at(5, 6, '18:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(5, 0), c.d(5, 5), 'WORK', 'six night shifts covering a colleague', { episodeId: 'h07-shifts' }) },
+        { observations: [B([4], 'RUN', RUN_COUNTED, done()), B([4], 'RUN', RUN_OPTIONAL, NOT), lifts([4])] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'Sixteen weeks from walk/jog to a 10K is a realistic beginner goal.'),
+      E('e2', 'GENERATE', RP([0], 'RUN', ['WALK_JOG', 'WALK']), DOM, 'A non-runner starts from walk/jog or walking.'),
+      E('e3', 'GENERATE', RA([0, 1, 2, 3, 4, 5], 'RUN', ['QUALITY']), DOM, 'No harder running in the first six weeks for a non-runner.'),
+      E('e4', 'GENERATE', RP([15], 'RUN', ['RACE']), INV, 'The race is on its date.'),
+      E('e5', 's1', NP, INV, 'A break still under way is kept and asked about; no plan is valid.'),
+      E('e6', 's2', S('MODIFY'), DOM, 'Two separate breaks, every session between them reported: a return is planned.'),
+      E('e7', 's2', V(VALID), DOM, 'Nothing is left to ask.'),
+      E('e8', 's2', J('Week 4 counts as a re-entry week in both sports: every walk/jog session and every strength session was done as prescribed and tolerated, and the undone optional walks do not decide the week. The family break is history; the return is classed by the 6-day shift break alone and continues walk/jog from what was executed, without a jump to continuous running.'), DOM, 'Delta 6 section 1 and delta 8 section 4: optional sessions never decide a week.'),
+    ],
+    ia: ['A woman with no running background aims at a 10K in 16 weeks with four chosen run days; walk/jog fills some days and optional brisk walks the others. Between a family break and night shifts she did every walk/jog and strength session of week 4 but skipped the optional walks.',
+      'Build walk/jog gradually with optional walks on the extra days; while the family break is under way, plan nothing; on return read week 4 as a full week executed in both sports, treat the earlier break as history, and resume walk/jog from the week-4 doses after a short-break return.',
+      ['Repeat the week-4 walk/jog step once before progressing', 'Ask how the night shifts affected sleep before choosing the first dose'],
+      ['Treating the skipped optional walks as missed training that blocks re-entry', 'Reading the stop from the family break\'s first day', 'Progressing to continuous running right after the return']] }); }
+
+// ---------- H08: experienced in both; four separate breaks, the first two touching, one-sport weeks between ----------
+{ const c = cal('2026-11-09', 0);
+  const kx = (id, kg, sets, reps, conv = 'TOTAL') => ({ id, sets, reps, load: { value: kg, unit: 'KG', convention: conv }, rir: 2, current: true, familiar: true, tolerated: true, observedAt: '2026-11-06' });
+  add(8, { intent: 'An athlete experienced in both sports states four separate breaks before any return: a trade fair touching client meetings, then a family emergency, then a quarter-end close; the week between the second and third holds only strength done in full, the week between the third and fourth only running.',
+    tags: ['COLD_START', 'BALANCED_HYBRID', 'RUN_EXP_EXPERIENCED', 'STR_EXP_EXPERIENCED', 'GYM', 'H16', 'FREQ_HIGH', 'NON_RACE', 'RETURN_SHORT', 'OFFERS', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h08-ravindra', asOf: '2026-11-07', start: '2026-11-09', weeks: 16, goals: { run: 'PERFORMANCE', strength: 'STRENGTH' },
+      ath: { runExperience: 'EXPERIENCED', strengthExperience: 'EXPERIENCED', recent: { runDaysPerWeek: 4, runMinutesPerWeek: 260, longestRunMinutes: 100, strengthDaysPerWeek: 3 },
+        performanceAnchors: [{ kind: 'TIME_TRIAL', distance: '5K', minutes: 18.5, date: '2026-11-04' }],
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'THRESHOLD', durationMinutes: 60, warmupMinutes: 15, cooldownMinutes: 15, work: { repetitions: 3, workMinutes: 10, recoveryMinutes: 2 } }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-05' }, { prescription: { modality: 'RUN', family: 'LONG', durationMinutes: 100 }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-08' }],
+        knownExercises: [kx('back-squat', 130, 4, 5), kx('barbell-rdl', 120, 3, 6), kx('bench-press', 90, 4, 5), kx('barbell-row', 80, 3, 8), { id: 'pull-up', sets: 4, reps: 6, load: { value: 0, unit: 'KG', convention: 'BODYWEIGHT' }, rir: 2, current: true, familiar: true, tolerated: true, observedAt: '2026-11-06' }],
+        equipment: ['BARBELL', 'RACK', 'BENCH', 'DUMBBELLS', 'PULL_UP_BAR'] },
+      schedule: { runDays: [0, 2, 4, 6], strengthDays: [1, 3, 5], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 60, strengthMinutes: 75, longRunDay: 6, longRunMinutes: 110 } }),
+    timeline: [
+      st('s1', at(3, 2, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 0), c.d(3, 3), 'TRAVEL', 'trade fair abroad', { episodeId: 'h08-a' }) }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LGYM2)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT', LADDER_STEP: 'DECLINE' } }),
+      st('s2', at(3, 5, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 4), c.d(3, 6), 'WORK', 'stayed on for client meetings', { episodeId: 'h08-b' }) }),
+      st('s3', at(5, 3, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(5, 0), c.d(5, 6), 'FAMILY', 'family emergency at home, no training', { episodeId: 'h08-c' }) }, { observations: [lifts([4], LGYM2), runs([4], NOT)] }),
+      st('s4', at(7, 3, '06:30'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(7, 0), c.d(7, 2), 'WORK', 'quarter-end close, three very long days', { episodeId: 'h08-d' }) },
+        { observations: [runs([6]), B([6], 'STRENGTH', null, { completed: true, firstExercises: 2, loadsByPattern: LGYM2, response: { ...OK } })] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'An experienced hybrid athlete gets a full program.'),
+      E('e2', 'GENERATE', RP([0, 1, 2, 3], 'RUN', ['QUALITY']), DOM, 'An experienced runner with a current, tolerated threshold session gets harder running early.'),
+      E('e3', 's2', NP, INV, 'Two kept breaks, neither applied: no plan is valid.'),
+      E('e4', 's3', NP, INV, 'Three kept breaks, none applied: no plan is valid.'),
+      E('e5', 's4', S('MODIFY'), DOM, 'All four breaks carry their own names and every session between them is reported: a return is planned.'),
+      E('e6', 's4', V(VALID), DOM, 'Nothing is left to ask.'),
+      E('e7', 's4', J('The four breaks stay separate and their days are not added up. The trade fair and the client meetings touch and read as one continuous stop (30 Nov to 6 Dec). Week 4 counts for strength only and week 6 for running only, so no week re-enters both sports: running and strength resume from different references, each sport gets no step it did not earn, and the partial strength week 6 does not advance strength.'), DOM, 'Delta 6 section 1 per-sport reading with a chain of breaks.'),
+      E('e8', 's4', RMC('LONG', 8, '<=', 2), DOM, 'After four interruptions the long run is not above the pre-break long run.'),
+    ],
+    ia: ['An experienced runner and lifter whose month is cut by four interruptions. The pattern of what was trained between them is uneven: strength fully in week 4 with no running, running fully in week 6 with half-finished lifting.',
+      'Keep each break as stated and never add their days. Read the first two as one continuous stop because they touch; read week 4 as strength training and week 6 as running training; resume each sport from what it actually executed, with strength not advanced past week 4 and running not credited for week 4, and keep doses at or below the pre-break levels.',
+      ['Ask a confirming question about the partial strength week before planning strength', 'A slightly more conservative strength entry because the latest strength week was partial'],
+      ['Summing the breaks into one long break and restarting both sports', 'Treating week 6 as a full re-entry in both sports', 'Raising strength from the partial week-6 logs', 'Prescribing while any break is kept and unapplied']] }); }
+
+// ---------- H09: kettlebell-only; a full week between two breaks, the later break with a start time on the day of that week's last session; correction moving it later ----------
+{ const c = cal('2026-11-14', 60);
+  add(9, { intent: 'A kettlebell-only hybrid executes a whole week in both sports between a ski week and a family trip that began on the afternoon of that week\'s last session; later the athlete corrects the family trip by name to start the next day.',
+    tags: ['COLD_START', 'KETTLEBELL', 'BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'START_NON_MONDAY', 'TIMEZONE', 'RETURN_SHORT', 'CORRECTION', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h09-lucjan', asOf: '2026-11-12', start: '2026-11-14', weeks: 12, tz: 60, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 130, longestRunMinutes: 55, strengthDaysPerWeek: 2 },
+        knownExercises: [{ id: 'kb-goblet-squat', sets: 3, reps: 10, load: { value: 16, unit: 'KG', convention: 'SINGLE_IMPLEMENT' }, rir: 3, current: true, familiar: true, tolerated: true, observedAt: '2026-11-11' }, { id: 'kb-deadlift', sets: 3, reps: 10, load: { value: 24, unit: 'KG', convention: 'SINGLE_IMPLEMENT' }, rir: 3, current: true, familiar: true, tolerated: true, observedAt: '2026-11-11' }],
+        equipment: ['KETTLEBELL', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [2, 6], runTurn: 'AM', strengthTurn: 'AM', runMinutes: 45, strengthMinutes: 35, longRunDay: 1, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(2, 5, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 0), c.d(2, 6), 'VACATION', 'ski week, no running or kettlebell') }, { observations: [runs([0, 1]), lifts([0, 1], LKB)] }),
+      st('s2', at(5, 0, '10:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(3, 6), c.d(4, 6), 'FAMILY', 'flew to my parents after the Friday morning session', { episodeId: 'h09-family', startedAt: c.ts(3, 6, '12:30') }) },
+        { observations: [runs([3]), R(3, 'STRENGTH', 2, done({ loadsByPattern: LKB })), R(3, 'STRENGTH', 6, done({ loadsByPattern: LKB, observedAt: c.ts(3, 6, '07:00') }))] }),
+      st('s3', at(5, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(4, 0), c.d(4, 6), 'FAMILY', 'the flight was on Saturday, not Friday', { episodeId: 'h09-family' }) }, { observations: [runs([5]), lifts([5], LKB)] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A kettlebell hybrid fits this athlete.'),
+      E('e2', 'GENERATE', J('Strength uses only kettlebell and bodyweight exercises, and the known kettlebell loads are used in their single-implement convention.'), INV, 'Repertoire stays within the equipment.'),
+      E('e3', 's1', S('ASK'), INV, 'A break still under way is asked about.'),
+      E('e4', 's2', S('MODIFY'), DOM, 'A return is planned.'),
+      E('e5', 's2', V(VALID), DOM, 'Every session between the breaks is reported.'),
+      E('e6', 's2', J('Week 3 re-enters the athlete in both sports: every run and both strength sessions were done as prescribed with loads, the Friday session at 07:00 before the stated 12:30 start of the family trip. The ski week is history and the return is classed by the family trip alone, from the doses executed in week 3.'), DOM, 'Delta 6 section 1: a session on the later break\'s first day counts as between when the break states a later start time.'),
+      E('e7', 's3', S('KEEP', 'MODIFY'), DOM, 'The correction by name re-reads the breaks with the new dates.'),
+      E('e8', 's3', J('After the correction the family trip runs from Saturday; week 3 still re-enters, nothing is asked about uncovered sessions (the uncovered Friday is already reported), and the plan ahead is not lowered by the shorter break.'), DOM, 'A correction of the latest break re-reads the separate breaks with its own facts (delta 6 section 2).'),
+    ],
+    rel: [{ relation: 'RENAME_OPAQUE_IDS', rationale: 'Renaming the episode and event ids must not change the plan.' }],
+    ia: ['An intermediate runner who lifts with two kettlebells. Between a ski week and a family trip he trained every session of week 3, including Friday morning, and left at lunchtime that Friday.',
+      'Plan kettlebell and bodyweight strength only. On return, read week 3 as a whole week executed in both sports because the Friday session came before the stated start time, treat the ski week as history and plan a short return from week-3 doses; after the correction, re-read with the trip starting Saturday and keep the same or a slightly higher plan.',
+      ['Ask for the Friday session time if the start time were missing', 'Keep the return plan unchanged after the correction'],
+      ['Ignoring the start time and treating week 3 as not between the breaks', 'Reading the stop from the ski week\'s first day', 'Asking about the already reported Friday session after the correction', 'Barbell or machine exercises for a kettlebell-only athlete']],
+    notes: 'The Friday strength session needs its own observedAt, so week-3 strength is reported by chosen day. ' + DAYNOTE }); }
+
+// ---------- H10: partial wearable history (strength by type and duration only); an athlete who always reports a week late ----------
+{ const c = cal('2026-12-02', -300); const hist = [];
+  ['2026-11-03', '2026-11-10', '2026-11-17', '2026-11-24'].forEach((w, i) => {
+    [[0, 'RUN', 40], [1, 'STRENGTH', 45], [2, 'RUN', 45], [4, 'STRENGTH', 40], [5, 'RUN', 60]].forEach(([o, sport, min]) => hist.push({ activityId: `gw-${i}-${o}`, provider: 'gpswatch', sport, startedAt: `${addDays(w, o)}T06:30:00-05:00`, durationMinutes: min, completeness: sport === 'RUN' ? 'FULL' : 'PARTIAL' }));
+  });
+  const wsrc = { source: { provider: 'gpswatch', quality: 'WEARABLE_FULL' } };
+  add(10, { intent: 'Onboarding from four weeks of watch history in which strength is known only by type and duration, then an athlete whose reports always arrive at the next week\'s review.',
+    tags: ['COLD_START', 'WEARABLE_PARTIAL', 'LOW_DATA', 'BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'START_NON_MONDAY', 'TIMEZONE', 'LATE_REPORTER', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h10-dagny', asOf: '2026-11-30', start: '2026-12-02', weeks: 12, tz: -300, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'],
+        wearableCapabilities: { provider: 'gpswatch', activityAvailable: true, heartRateAvailable: true, exerciseIdentityAvailable: false, setsRepsLoadAvailable: false, subjectiveEffortAvailable: false, completeness: 'PARTIAL', historyWeeks: 4 } },
+      schedule: { runDays: [1, 4, 6], strengthDays: [0, 3], runMinutes: 50, strengthMinutes: 45, longRunDay: 4, longRunMinutes: 70 }, history: hist }),
+    timeline: [
+      st('s1', at(1, 6, '21:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0], done(wsrc)), lifts([0], LDB, { source: { provider: 'manual-log', quality: 'MANUAL' } })], note: 'Only week 0 is synced; week 1 is not.' }),
+      st('s2', at(2, 6, '21:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([1], done(wsrc)), lifts([1], LDB, { source: { provider: 'manual-log', quality: 'MANUAL' } })], note: 'Week 1 arrives a week late; week 2 is not synced yet.' }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED', 'ASK'), DOM, 'The history is enough to plan running; asking for a missing fact is also acceptable.'),
+      E('e2', 'GENERATE', J('Running starts near the observed volume (about 145 minutes a week, longest about 60 minutes), not above it; strength loads are found by effort and logged (ESTABLISH), never derived from the type-and-duration rows.'), DOM, 'Strength rows without exercises give no load.'),
+      E('e3', 's1', J('The unreported week-1 sessions are unknown, neither missed nor done; nothing is reduced for them and nothing is progressed from them.'), INV, 'A session with no report is unknown (interface 1 section 1).'),
+      E('e4', 's2', S('KEEP', 'MODIFY'), DOM, 'Ordinary progression with lagging data.'),
+      E('e5', 's2', J('The late week-1 reports are used from s2 on; the coach does not ask an unreported-training question (the silence is far shorter than a month) and the progression stays conservative while the current week is still unreported.'), DOM, 'Delta 8 section 5.'),
+    ],
+    ia: ['An intermediate runner with a watch that records runs fully but strength only as a workout with a duration; she always syncs a week late.',
+      'Anchor running on the four observed weeks; ask the athlete to find and log strength loads by effort; treat each current week as unknown until its reports arrive and progress conservatively from what is known.',
+      ['Ask for running or strength experience details before planning', 'Hold progression one week while reports lag'],
+      ['Inventing strength loads from the watch history', 'Treating the unsynced week as missed and cutting the plan', 'Progressing as if the unsynced week was done']],
+    notes: 'History rows fall inside the date window (3 Nov to 29 Nov 2026).' }); }
+
+// ---------- H11: more chosen run days than current running supports; a full week between two breaks with optional walks undone ----------
+{ const c = cal('2026-11-24', -360);
+  add(11, { intent: 'A novice who runs about 50 minutes a week chooses five run days; between a work crunch and an exam week she completes every counted session of a week and skips its optional walks.',
+    tags: ['COLD_START', 'TOO_MANY_DAYS', 'FREQ_HIGH', 'H8', 'RUN_EXP_NOVICE', 'STR_EXP_NOVICE', 'START_NON_MONDAY', 'TIMEZONE', 'RETURN_SHORT', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h11-yesenia', asOf: '2026-11-22', start: '2026-11-24', weeks: 8, tz: -360, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'NOVICE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 2, runMinutesPerWeek: 50, longestRunMinutes: 30, strengthDaysPerWeek: 0 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 1, 3, 4, 5], strengthDays: [2, 6], runMinutes: 40, strengthMinutes: 35, longRunDay: 5, longRunMinutes: 45 } }),
+    timeline: [
+      st('s1', at(2, 4, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 0), c.d(2, 6), 'WORK', 'year-end inventory, twelve-hour days') }, { observations: [runs([0, 1]), lifts([0, 1], LDB2)] }),
+      st('s2', at(4, 4, '08:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(4, 0), c.d(4, 3), 'STUDY', 'final exams', { episodeId: 'h11-exams' }) },
+        { observations: [B([3], 'RUN', RUN_COUNTED, done()), B([3], 'RUN', RUN_OPTIONAL, NOT), lifts([3], LDB2)] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'The athlete is eligible; the extra days are handled inside the plan.'),
+      E('e2', 'GENERATE', J('With five chosen run days but about 50 minutes a week of current running, the extra days hold optional walks or rest rather than five real runs, and week-0 counted running stays close to the current volume.'), DOM, 'Delta 8 section 4: optional walks on run days beyond what current running supports.'),
+      E('e3', 's1', NP, INV, 'A break under way is kept and asked; no plan is valid.'),
+      E('e4', 's2', S('MODIFY'), DOM, 'A return is planned.'),
+      E('e5', 's2', V(VALID), DOM, 'Every counted and optional session between the breaks is reported.'),
+      E('e6', 's2', J('Week 3 re-enters the athlete in both sports although its optional walks were not done; the work crunch is history and the return is classed by the 4-day exam break alone, from the week-3 doses.'), DOM, 'Optional sessions never decide a week (delta 6 section 1).'),
+    ],
+    ia: ['A novice runner choosing more run days than her running supports: the competent answer is fewer real runs and optional walks, not five runs.',
+      'Plan two or three easy runs a week near her current volume, with optional walks or rest on the other chosen days; on return, read week 3 as fully executed in both sports, keep the optional walks out of the decision, and resume from week 3 after a short-break return.',
+      ['Ask the athlete to reduce the run days before planning', 'Plan three short easy runs and two optional walks'],
+      ['Five real runs a week for a 50-minute-a-week novice', 'Blocking re-entry because optional walks were skipped', 'Reading the stop from the work crunch']] }); }
+
+// ---------- H12-H14: safety and scope at onboarding ----------
+{ const c = cal('2026-11-16', 60); const race = c.d(6, 6);
+  add(12, { intent: 'Eligibility not confirmed: the athlete answered only the pain question. The coach must ask, neither clearing her nor presuming illness.',
+    tags: ['COLD_START', 'ELIGIBILITY_UNKNOWN', 'RACE_10K', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'TIMEZONE'], oracle: INV,
+    intake: intake({ id: 'ath-h12-solveig', asOf: '2026-11-14', start: '2026-11-16', weeks: 8, tz: 60, elig: { status: 'UNKNOWN', assessedAt: '2026-11-14', pain: false }, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: '10K', date: race }, runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 120, longestRunMinutes: 50 }, equipment: ['BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 6], strengthDays: [2], runMinutes: 45, strengthMinutes: 30, longRunDay: 6 } }),
+    exp: [
+      E('e1', 'GENERATE', S('ASK'), INV, 'Unknown eligibility is a question.'),
+      E('e2', 'GENERATE', NP, INV, 'Nothing is prescribed before eligibility is known.'),
+      E('e3', 'GENERATE', J('The coach asks for the unanswered eligibility items; it neither clears the athlete nor routes her to a clinician as if a clinical signal existed.'), INV, 'Unknown is never clearance and never presumed illness.'),
+    ],
+    ia: ['A runner who left most eligibility questions unanswered.', 'Ask for the missing answers and plan nothing until they arrive.', ['Ask and show which answers are missing'], ['Planning anyway', 'Routing to a clinician without any clinical signal', 'Treating the single pain:false answer as full clearance']] }); }
+{ const c = cal('2026-11-18', -180);
+  add(13, { intent: 'Persistent pain declared at onboarding: the coach must route to a qualified human and prescribe nothing.',
+    tags: ['COLD_START', 'CLINICAL_SIGNAL', 'BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'START_NON_MONDAY', 'TIMEZONE'], oracle: INV,
+    intake: intake({ id: 'ath-h13-teodoro', asOf: '2026-11-16', start: '2026-11-18', weeks: 12, tz: -180, elig: ELIG('2026-11-16', { status: 'CLINICAL', pain: true, persistentPain: true }), goals: { run: 'PERFORMANCE', strength: 'STRENGTH' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['BARBELL', 'RACK', 'BENCH', 'DUMBBELLS'] },
+      schedule: { runDays: [0, 2, 5], strengthDays: [1, 4], runMinutes: 50, strengthMinutes: 60, longRunDay: 5 } }),
+    exp: [
+      E('e1', 'GENERATE', S('CLINICAL_HUMAN_REQUIRED'), INV, 'Pain routes to a qualified human.'),
+      E('e2', 'GENERATE', NP, INV, 'Nothing is prescribed while the clinical route stands.'),
+      E('e3', 'GENERATE', J('Whether the pain allows training is a clinical judgment the coach does not make.'), NED, 'Clinical adequacy is not evaluable as a domain answer.'),
+    ],
+    ia: ['A hybrid athlete with persistent pain.', 'Route to a qualified human, plan nothing, and say why.', ['Route and offer to plan once a qualified human clears the athlete'], ['A modified plan around the pain', 'A rehabilitation program', 'Asking the athlete to rate the pain and planning anyway']] }); }
+{ const c = cal('2026-11-21', 0); const race = c.d(9, 0);
+  add(14, { intent: 'A 16-year-old asks for a 10K plan: adolescents are outside V1 scope, so the coach must not plan.',
+    tags: ['COLD_START', 'OUT_OF_SCOPE', 'RACE_10K', 'H12', 'RUN_EXP_NOVICE', 'START_NON_MONDAY'], oracle: INV,
+    intake: intake({ id: 'ath-h14-junior', asOf: '2026-11-19', start: '2026-11-21', weeks: 12, age: 16, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race } }, strength: 'NONE' },
+      ath: { event: { kind: '10K', date: race }, runExperience: 'NOVICE', specialPopulation: ['ADOLESCENT'], recent: { runDaysPerWeek: 2, runMinutesPerWeek: 60, longestRunMinutes: 35 } },
+      schedule: { runDays: [0, 2, 4], strengthDays: [], runMinutes: 40 } }),
+    exp: [
+      E('e1', 'GENERATE', S('UNSUPPORTED'), INV, 'Adolescents are out of scope.'),
+      E('e2', 'GENERATE', NP, INV, 'An out-of-scope request is not planned.'),
+    ],
+    ia: ['A minor asking for race training.', 'Decline as outside the V1 scope, plan nothing, and say why.', ['Decline and suggest the athlete look for age-appropriate coaching'], ['Planning a reduced adult program', 'Treating the request as clinical']] }); }
+
+// ---------- H15: more than a month unreported, an empty review on the last week's first evening, answered with a declared break ----------
+{ const c = cal('2026-12-07', 60);
+  add(15, { intent: 'An experienced runner stops reporting for five weeks; an empty review on the last week\'s first evening raises the unreported-training question, answered next with a declared work break, then the last review.',
+    tags: ['UNREPORTED_WEEKS', 'LATE_ANSWER', 'EMPTY_REVIEW', 'SKIPPED_REVIEW', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_EXPERIENCED', 'STR_EXP_NOVICE', 'TIMEZONE', 'RETURN_LONG', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h15-aurelio', asOf: '2026-12-05', start: '2026-12-07', weeks: 8, tz: 60, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'EXPERIENCED', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 180, longestRunMinutes: 80, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [2, 4], runTurn: 'PM', strengthTurn: 'PM', runMinutes: 55, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 90 } }),
+    timeline: [
+      st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1], LDB)] }),
+      st('s2', at(7, 0, '20:30'), { kind: 'WEEKLY_REVIEW' }, { note: 'Empty review: the athlete opens the app again.' }),
+      st('s3', at(7, 0, '21:15'), { kind: 'WEEKLY_REVIEW' }, { answer: { declareBreak: brk(c.d(2, 0), c.d(6, 6), 'WORK', 'year-end project, no training at all') } }),
+      st('s4', at(7, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([7]), lifts([7], LDB)] }),
+    ],
+    exp: [
+      E('e1', 's2', Q('UNREPORTED_TRAINING'), INV, 'Over a month with no reported run while planned runs elapsed unreported, and run doses ahead depend on it (delta 8 section 5).'),
+      E('e2', 's2', NP, INV, 'Run doses ahead are not a prescription while the question stands.'),
+      E('e3', 's3', S('MODIFY'), DOM, 'The declared five-week break is applied as a return in the last week.'),
+      E('e4', 's3', V(VALID), DOM, 'The answer resolves the question.'),
+      E('e5', 's3', RMC('LONG', 7, '<', 1), DOM, 'After five weeks without running the last long run is below the week-1 long run.'),
+      E('e6', 's3', RA([7], 'RUN', ['QUALITY']), DOM, 'No harder running straight after five weeks off.'),
+      E('e7', 's4', S('KEEP', 'MODIFY'), DOM, 'The last review closes the program without a new question.'),
+    ],
+    rel: [{ relation: 'CARRIER_CLINICAL', rationale: 'The answer through a pain substitution and clearance must end at the same plan.' }, { relation: 'CARRIER_HOLD', rationale: 'The answer through a refused last-week schedule change must end at the same plan.' }],
+    ia: ['An experienced runner went silent for five weeks; asked, he says he stopped completely for a work project. A five-week stop matters more than his experience.',
+      'Ask what happened before planning the last week; on the answer, apply the break as a long-ish return: easy running clearly below week-1 doses, no quality, light strength, and say plainly that the five weeks are a stop, not missing data.',
+      ['A restart with walk/jog elements for the first days', 'A short easy week with every run below 40 minutes'],
+      ['Continuing the week-6 projection as if training had happened', 'Treating the five unreported weeks as missed sessions to make up', 'Asking the same question again after the answer']],
+    notes: 'The empty review and the answer are 45 minutes apart, so the evaluation\'s one-minute probe fits between them; runs of the last week fall on days 1, 3 and 5 in the evening, after the answer. Strength sessions on days 2 and 4 follow the answer day.' }); }
+
+// ---------- H16: logs lifts with machine settings but no runs for over a month; unavailable-day event on the last week's first evening ----------
+{ const c = cal('2026-11-13', -300);
+  const known = (id, kg, reps) => ({ id, sets: 3, reps, load: { value: kg, unit: 'KG', convention: 'MACHINE_STACK' }, rir: 2, current: true, familiar: true, tolerated: true, observedAt: '2026-11-10' });
+  add(16, { intent: 'A strength-first hybrid keeps logging machine work (a heavier leg-press setting, then an equal second log) but stops reporting runs for five weeks; an unavailable-day request on the last week\'s first evening raises the question, answered next: no runs were done.',
+    tags: ['UNREPORTED_WEEKS', 'LATE_ANSWER', 'STRENGTH_FIRST', 'GYM', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'UNAVAILABLE_DAY', 'LOAD_CONFIRMATION', 'START_NON_MONDAY', 'TIMEZONE', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h16-wendell', asOf: '2026-11-11', start: '2026-11-13', weeks: 8, tz: -300, goals: { run: 'REGULAR', strength: 'HYPERTROPHY' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 120, longestRunMinutes: 50, strengthDaysPerWeek: 3 },
+        knownExercises: [known('leg-press', 100, 10), known('lat-pulldown', 50, 10), known('machine-chest-press', 40, 10), known('seated-cable-row', 45, 10)], equipment: ['MACHINES', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 2, 4], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 45, strengthMinutes: 60, longRunDay: 1, longRunMinutes: 60 } }),
+    timeline: [
+      st('s1', at(2, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1]), lifts([2], { SQUAT: 110 })], note: 'Week-2 leg press at the athlete\'s own heavier setting, every set at target with the reserve shown; week-2 runs not reported.' }),
+      st('s2', at(4, 6, '20:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [lifts([3, 4], { SQUAT: 110 })], note: 'Same leg-press setting logged again; no confirmation; runs still not reported.' }),
+      st('s3', at(7, 0, '19:30'), { kind: 'UNAVAILABLE_DAY', changes: { unavailableDates: [c.d(7, 3)] } }),
+      st('s4', at(7, 0, '21:00'), { kind: 'WEEKLY_REVIEW' }, { answer: { report: { completed: false } }, note: 'Has not run since late November; only lifted.' }),
+      st('s5', at(7, 0, '21:15'), { kind: 'UNAVAILABLE_DAY', changes: { unavailableDates: [c.d(7, 3)] } }),
+      st('s6', at(7, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([7]), lifts([7], { SQUAT: 110 })] }),
+    ],
+    exp: [
+      E('e1', 's1', J('The 110 kg leg-press setting logged once is not yet the reference: one load question is asked and the 100 kg setting is kept.'), INV, 'Delta 2 section 3.'),
+      E('e2', 's2', J('The equal second log at another session makes 110 kg the leg-press reference without a confirmation.'), INV, 'Delta 2 section 3.'),
+      E('e3', 's3', Q('UNREPORTED_TRAINING'), INV, 'No run reported done for more than 30 days while planned runs elapsed unreported.'),
+      E('e4', 's3', NP, INV, 'Run doses are not a prescription while the question stands.'),
+      E('e5', 's4', S('MODIFY'), DOM, 'Five weeks without running change the running plan.'),
+      E('e6', 's4', V(VALID), DOM, 'The answer resolves the question.'),
+      E('e7', 's4', RA([7], 'RUN', ['QUALITY']), DOM, 'No harder running after five weeks without runs.'),
+      E('e8', 's4', J('Running in week 7 restarts clearly below the week-1 doses because the listed runs were not done, while strength continues from its logged machine references (110 kg leg press); the strength record is not discarded because running stopped.'), DOM, 'The two sports are read from their own facts.'),
+      E('e9', 's5', S('MODIFY', 'KEEP'), DOM, 'The unavailable Monday is handled once the question is answered.'),
+    ],
+    rel: [{ relation: 'CARRIER_CLINICAL', rationale: 'Same answer through a pain substitution and clearance.' }, { relation: 'CARRIER_HOLD', rationale: 'Same answer through a refused last-week schedule change.' }],
+    ia: ['A lifter who kept logging the gym but never logged a run after week 1; asked, he says he did not run at all. Strength history is real; running stopped five weeks ago.',
+      'Adopt the heavier leg-press setting after the equal second log; when the silence is noticed, ask before planning; after the answer, rebuild running from a low easy dose with no quality, keep strength progressing from its references, and respect the unavailable Monday.',
+      ['Ask once more how much running is realistic before choosing the first dose', 'Keep strength at its current references for the last week rather than progressing'],
+      ['Assuming the unreported runs were done because lifting was logged', 'Cutting strength because running stopped', 'Computing a machine setting instead of using the logged one']],
+    notes: 'The unavailable-day request asked at s3 is sent again at s5, after the answer. Strength sessions on days 0, 2 and 4 of the last week fall on and after the answer day.' }); }
+
+// ---------- H17: unreported weeks; equipment change for a trip on the last week's first evening; answered with all runs done except two long runs ----------
+{ const c = cal('2026-11-15', 60);
+  add(17, { intent: 'An intermediate hybrid whose watch broke reports nothing for five weeks; a travel equipment change on the last week\'s first evening raises the question, answered next morning: every run done except two long runs.',
+    tags: ['UNREPORTED_WEEKS', 'LATE_ANSWER', 'PARTIAL_ANSWER', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'EQUIPMENT_CHANGE', 'TRAVEL', 'START_NON_MONDAY', 'TIMEZONE', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h17-giedre', asOf: '2026-11-13', start: '2026-11-15', weeks: 8, tz: 60, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 60, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 6], strengthDays: [2, 5], runTurn: 'PM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 45, longRunDay: 6, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1], LDB)] }),
+      st('s2', at(7, 0, '20:00'), { kind: 'EQUIPMENT_CHANGE', changes: { equipment: ['BODYWEIGHT'], from: c.d(7, 1), to: c.d(7, 6) } }, { note: 'Business trip, hotel without weights.' }),
+      st('s3', at(7, 1, '06:45'), { kind: 'WEEKLY_REVIEW' }, { answer: { report: { completed: true, asPrescribed: true }, overrides: [R(4, 'RUN', 'LONG', NOT), R(5, 'RUN', 'LONG', NOT)] }, note: 'The watch was broken; every run was done except the long runs of weeks 4 and 5.' }),
+      st('s4', at(7, 1, '07:00'), { kind: 'EQUIPMENT_CHANGE', changes: { equipment: ['BODYWEIGHT'], from: c.d(7, 1), to: c.d(7, 6) } }),
+      st('s5', at(7, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([7]), lifts([7])] }),
+    ],
+    exp: [
+      E('e1', 's2', Q('UNREPORTED_TRAINING'), INV, 'More than 30 days with no reported run while planned runs elapsed unreported.'),
+      E('e2', 's2', NP, INV, 'Run doses are not a prescription while the question stands.'),
+      E('e3', 's3', S('KEEP', 'MODIFY'), DOM, 'The answer gives known facts for every listed run.'),
+      E('e4', 's3', V(VALID), DOM, 'The question is resolved.'),
+      E('e5', 's3', J('The two long runs are known misses and the other runs known done; the last week continues near the planned doses without a long run above the longest long run actually done, and no make-up session is added.'), DOM, 'Known facts replace unknowns; misses are not compensated.'),
+      E('e6', 's4', S('MODIFY'), DOM, 'The trip window changes the strength sessions.'),
+      E('e7', 's4', J('From Monday to Saturday strength uses bodyweight exercises only.'), INV, 'Repertoire stays within the equipment of the window.'),
+    ],
+    rel: [{ relation: 'CARRIER_CLINICAL', rationale: 'Same answer through a pain substitution and clearance.' }, { relation: 'CARRIER_HOLD', rationale: 'Same answer through a refused last-week schedule change.' }],
+    ia: ['An intermediate hybrid with a broken watch; she trained but logged nothing. Asked, she says every run was done except two long runs.',
+      'Ask before planning the last week; on the answer, keep the plan roughly as projected, cap the last long run at what was actually done, and switch the trip-week strength to bodyweight.',
+      ['A modest reduction of the last long run because two long runs were missed', 'Asking about strength sessions as well'],
+      ['Planning the last week before asking', 'Treating the unreported weeks as all missed', 'Adding a make-up long run', 'Dumbbell exercises during the hotel week']],
+    notes: 'Answer at 06:45, fifteen minutes before the re-sent equipment change and before the Monday evening run; strength sessions on days 2 and 5 follow the answer day. The two long runs are named by role in weeks no adopted decision re-planned.' }); }
+
+// ---------- H18: break stated with a pain flag in the eligibility; clearance; later reviews do not restate it ----------
+{ const c = cal('2026-11-14', -300);
+  add(18, { intent: 'A 12-day road-trip break is stated in a review whose eligibility carries new knee pain; after a qualified clearance the next reviews apply and then leave the break without restating it.',
+    tags: ['CLINICAL_SIGNAL', 'CLINICAL_PAUSE', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'NON_RACE'], oracle: INV,
+    intake: intake({ id: 'ath-h18-halvard', asOf: '2026-11-12', start: '2026-11-14', weeks: 8, tz: -300, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 135, longestRunMinutes: 60, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runMinutes: 45, strengthMinutes: 40, longRunDay: 0, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 0), c.d(3, 4), 'VACATION', 'road trip with friends') }, { eligibility: ELIG(c.d(3, 6), { status: 'CLINICAL', pain: true }),
+        observations: [runs([0, 1]), lifts([0, 1], LDB), R(3, 'STRENGTH', 5, NOT)], note: 'Knee pain on stairs since the end of the trip.' }),
+      st('s2', at(4, 0, '08:00'), { kind: 'WEEKLY_REVIEW' }, { clearance: 'QUALIFIED_CLEARANCE', note: 'A physiotherapist examined the knee yesterday and cleared ordinary training.' }),
+      st('s3', at(4, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([4]), lifts([4], LDB)] }),
+    ],
+    exp: [
+      E('e1', 's1', S('CLINICAL_HUMAN_REQUIRED'), INV, 'A pain flag routes to a qualified human before the break is considered.'),
+      E('e2', 's1', NP, INV, 'Nothing is prescribed under the clinical route.'),
+      E('e3', 's2', S('MODIFY'), DOM, 'After clearance the review applies the kept break without it being stated again (delta 3 section 1).'),
+      E('e4', 's2', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e5', 's2', J('The return reflects a stop of about two weeks (the 12-day trip plus the Thursday session not done after it): running and strength resume below the week-1 doses, and the plan from before the trip is not reused as if nothing happened.'), DOM, 'The kept break is a fact the clearance does not erase.'),
+      E('e6', 's3', S('KEEP', 'MODIFY'), DOM, 'An ordinary review after the return.'),
+      E('e7', 's3', J('The break is not applied a second time and the plan progresses from the executed week 4.'), INV, 'A kept break is applied once.'),
+    ],
+    ia: ['A hybrid athlete reports a road trip together with new knee pain. Pain comes first; the trip is a fact the coach keeps.',
+      'Route to a qualified human and prescribe nothing; after the physiotherapist clears, apply the trip as a short return at the next review without asking the athlete to state it again, then continue normally.',
+      ['At s2, a brief check of how the knee feels on easy runs, without reopening a clinical route', 'A slightly more conservative first week than the stop length alone suggests'],
+      ['Planning the return while the pain route stands', 'Forgetting the trip after clearance and continuing the pre-trip plan', 'Asking the athlete to state the trip again', 'Applying the trip twice']],
+    notes: DAYNOTE }); }
+
+// ---------- H19: break stated in a return report with an illness flag; clearance; later reviews do not restate it ----------
+{ const c = cal('2026-11-12', 60);
+  add(19, { intent: 'A novice back from an offshore work rotation reports the break in a return report while the eligibility now shows an illness; a qualified clearance, then reviews that do not restate the break.',
+    tags: ['CLINICAL_SIGNAL', 'CLINICAL_PAUSE', 'GENERAL_FITNESS', 'H12', 'RUN_EXP_NOVICE', 'STR_EXP_NONE', 'BODYWEIGHT_ONLY', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE'], oracle: INV,
+    intake: intake({ id: 'ath-h19-moana', asOf: '2026-11-10', start: '2026-11-12', weeks: 12, tz: 60, goals: { run: 'GENERAL', strength: 'GENERAL' },
+      ath: { runExperience: 'NOVICE', strengthExperience: 'NONE', recent: { runDaysPerWeek: 2, runMinutesPerWeek: 60, longestRunMinutes: 30 }, equipment: ['BODYWEIGHT', 'BANDS'] },
+      schedule: { runDays: [0, 3, 5], strengthDays: [1, 4], runMinutes: 35, strengthMinutes: 30, longRunDay: 3 } }),
+    timeline: [
+      st('s1', at(3, 4, '18:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(2, 0), c.d(3, 3), 'WORK', 'offshore work rotation') }, { eligibility: ELIG(c.d(3, 4), { status: 'CLINICAL', illness: true }),
+        observations: [runs([0, 1]), lifts([0, 1])], note: 'Came back with a chest infection and a temperature.' }),
+      st('s2', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { clearance: 'QUALIFIED_CLEARANCE', note: 'The doctor says the infection has cleared.' }),
+      st('s3', at(4, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([4]), lifts([4])] }),
+    ],
+    exp: [
+      E('e1', 's1', S('CLINICAL_HUMAN_REQUIRED'), INV, 'An illness flag routes to a qualified human first.'),
+      E('e2', 's1', NP, INV, 'Nothing is prescribed under the clinical route.'),
+      E('e3', 's2', S('MODIFY'), DOM, 'After clearance the weekly review applies the kept break.'),
+      E('e4', 's2', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e5', 's2', J('The 11-day work break is applied as a short return for a novice: easy running and bodyweight strength at or below the week-1 level, no progression from the unexecuted weeks.'), DOM, 'The kept break is a fact the clearance does not erase.'),
+      E('e6', 's3', S('KEEP', 'MODIFY'), DOM, 'Ordinary review after the return.'),
+    ],
+    ia: ['A novice who had just started is away for 11 days for work and comes back ill. Illness comes first; the work break is a nonclinical fact the coach keeps.',
+      'Route to a qualified human and prescribe nothing; once cleared, apply the kept work break as a short return at the next review, gently for a novice, then continue.',
+      ['Repeating week 1 after clearance', 'Asking how the athlete feels on the first easy session before progressing'],
+      ['Planning a return while the illness route stands', 'Treating the infection as the break reason and holding the athlete forever', 'Losing the work break after clearance']] }); }
+
+// ---------- H20: a break stated while still under way; return reported on a Thursday ----------
+{ const c = cal('2026-11-30', 60);
+  add(20, { intent: 'A break stated in a weekly review while still under way is kept and asked about; the athlete then sends a plain return report on Thursday, after the Monday to Wednesday sessions fell inside the break.',
+    tags: ['BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'RETURN_SHORT', 'TIMEZONE', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h20-fenna', asOf: '2026-11-28', start: '2026-11-30', weeks: 8, tz: 60, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 65, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 3], runTurn: 'PM', strengthTurn: 'AM', runMinutes: 50, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 4), c.d(3, 2), 'VACATION', 'long weekend in the mountains, back on Wednesday') },
+        { observations: [runs([0, 1]), lifts([0, 1], LDB), R(2, 'STRENGTH', 0, done({ loadsByPattern: LDB })), R(2, 'RUN', 1, done()), R(2, 'RUN', 3, done()), R(2, 'STRENGTH', 3, done({ loadsByPattern: LDB }))] }),
+      st('s2', at(3, 3, '07:00'), { kind: 'RETURN_AFTER_PAUSE' }, { note: 'Plain return report: back since Wednesday night, no break restated.' }),
+    ],
+    exp: [
+      E('e1', 's1', S('ASK'), INV, 'A break whose end is after its review is kept and asked about, not applied.'),
+      E('e2', 's1', NP, INV, 'No plan is valid while a kept break is not applied.'),
+      E('e3', 's2', S('MODIFY'), DOM, 'The return report applies the kept break.'),
+      E('e4', 's2', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e5', 's2', J('The kept break is applied without being stated again; the week-2 Saturday long run and the Monday to Wednesday sessions of week 3 fell inside the break and are not counted; the weeks after are planned from the runs completed before it.'), DOM, 'Delta 6 section 2: a mid-week return plans from the runs completed.'),
+      E('e6', 's2', RMC('LONG', 4, '<=', 1), DOM, 'The next long runs are not above the last long run actually completed (week 1).'),
+    ],
+    ia: ['A short mountain break, stated on Sunday while still under way, and a Thursday return.', 'Keep the break and plan nothing while it is under way; on the Thursday return report apply it, count nothing inside it, and resume from the doses completed before it, with the long run capped by the week-1 long run.', ['Resume the remaining week-3 sessions unchanged if two or more are still ahead', 'Ask whether the athlete trained in the mountains'], ['Applying the break at the Sunday review as if it had ended', 'Counting the Saturday long run inside the break', 'Requiring the break to be restated']],
+    notes: DAYNOTE }); }
+
+// ---------- H21: two breaks stated before any return, the later short one starting the day after the earlier long one; relation answered: separate ----------
+{ const c = cal('2026-11-16', -360);
+  add(21, { intent: 'A three-week overseas trip, stated while under way, is followed the next day by a 3-day house move reported in a return report; a plain review then states none, and the athlete says the move is a separate break.',
+    tags: ['BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'RETURN_MODERATE', 'TIMEZONE', 'NON_RACE', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h21-cosimo', asOf: '2026-11-14', start: '2026-11-16', weeks: 12, tz: -360, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 3], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 45, longRunDay: 5, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 0), c.d(5, 2), 'VACATION', 'three weeks with family overseas') }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB)] }),
+      st('s2', at(5, 6, '17:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(5, 3), c.d(5, 5), 'FAMILY', 'helped my brother move house right after the trip') }),
+      st('s3', at(5, 6, '18:00'), { kind: 'WEEKLY_REVIEW' }),
+      st('s4', at(5, 6, '18:30'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(5, 3), c.d(5, 5), 'FAMILY', 'helped my brother move house right after the trip', { episodeId: 'R7D-H21-s2' }) }, { note: 'Answer: another break, not a correction of the trip.' }),
+    ],
+    exp: [
+      E('e1', 's2', Q('INTERRUPTION_RELATION'), INV, 'A newer break that names no kept break is asked about before any return (delta 4 section 1).'),
+      E('e2', 's2', NP, INV, 'No plan is valid while the relation is open.'),
+      E('e3', 's3', Q('INTERRUPTION_RELATION'), INV, 'A review that states none does not resolve the relation.'),
+      E('e4', 's4', S('MODIFY'), DOM, 'The relation is answered; a return is planned.'),
+      E('e5', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e6', 's4', J('The move touches the trip, so the separate breaks read as one continuous stop from 7 Dec to 26 Dec (20 days); the return is that of a stop of almost three weeks, not of the 3-day move, and the two breaks\' days are not summed beyond that stop.'), DOM, 'Delta 4 section 1: touching separate breaks form one stop.'),
+      E('e7', 's4', RMC('LONG', 6, '<', 2), DOM, 'After a 20-day stop the next long run is below the week-2 long run.'),
+    ],
+    ia: ['A long family trip and a short house move back to back. The move alone would be a short break; together they are almost three weeks without training.',
+      'Ask how the two breaks relate before planning; once the athlete says the move is a separate break, read the stop from the first day of the trip to the last day of the move and plan the return for about three weeks off.',
+      ['A short question about whether any training happened during the trip', 'A return slightly more conservative because strength was also stopped'],
+      ['Classing the return by the 3-day move alone', 'Treating the move as replacing the trip', 'Planning before the relation is answered']] }); }
+
+// ---------- H22: two breaks with days between; the athlete says the later one corrects the earlier one ----------
+{ const c = cal('2026-11-09', 120);
+  add(22, { intent: 'A conference trip stated as starting that night is postponed; the athlete trains Monday to Thursday, travels Friday to Sunday, reports that trip, and when asked says it corrects the earlier report.',
+    tags: ['BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'RETURN_SHORT', 'CORRECTION', 'TIMEZONE', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h22-nadira', asOf: '2026-11-07', start: '2026-11-09', weeks: 8, tz: 120, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 130, longestRunMinutes: 55, strengthDaysPerWeek: 1 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 2], runMinutes: 45, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 6), c.d(3, 2), 'WORK', 'conference abroad, flying out tonight') }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB2)] }),
+      st('s2', at(4, 0, '19:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(3, 4), c.d(3, 6), 'WORK', 'conference: the flight was moved, the trip was Friday to Sunday') }),
+      st('s3', at(4, 0, '19:20'), { kind: 'WEEKLY_REVIEW' }, { observations: [R(3, 'STRENGTH', 0, done({ loadsByPattern: LDB2 })), R(3, 'RUN', 1, done()), R(3, 'STRENGTH', 2, done({ loadsByPattern: LDB2 })), R(3, 'RUN', 3, done())] }),
+      st('s4', at(4, 0, '19:40'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 4), c.d(3, 6), 'WORK', 'conference: the flight was moved, the trip was Friday to Sunday', { episodeId: 'R7D-H22-s1' }) }, { note: 'Answer: the same trip, corrected.' }),
+    ],
+    exp: [
+      E('e1', 's2', Q('INTERRUPTION_RELATION'), INV, 'The relation of a newer break that names none is asked.'),
+      E('e2', 's2', NP, INV, 'No plan is valid while the relation is open.'),
+      E('e3', 's3', Q('INTERRUPTION_RELATION'), INV, 'A review that states none leaves the relation open.'),
+      E('e4', 's4', S('MODIFY'), DOM, 'The relation is answered; a short return is planned.'),
+      E('e5', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e6', 's4', J('The later report corrects the earlier one: the break is the 3-day trip from Friday to Sunday. The Monday to Thursday sessions done that week are training, the first dates are not days of a stop, and the return is a short one close to the pre-trip doses.'), DOM, 'Delta 4 section 1: a correction replaces the earlier facts.'),
+    ],
+    ia: ['A trip announced as starting that night was postponed; the athlete kept training and travelled later. The second report is a correction of the first.',
+      'Ask how the reports relate; once the athlete says it is the same trip corrected, use only the Friday to Sunday break, count the Monday to Thursday training, and plan a short return close to the pre-trip doses.',
+      ['Continue the pre-trip plan with no return step for a 3-day break'],
+      ['Reading a stop from the first reported date to the last day of the trip', 'Keeping both reports as two breaks after the athlete said it was one', 'Ignoring the Monday to Thursday sessions']],
+    notes: DAYNOTE }); }
+
+// ---------- H23: two separate breaks with days between; sessions between reported only when asked; one isolated run ----------
+{ const c = cal('2026-11-13', -300);
+  const tl = (answer) => [
+    st('s1', at(2, 3, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 0), c.d(2, 4), 'FAMILY', 'family wedding abroad') }, { observations: [runs([0, 1]), lifts([0, 1], LDB2)] }),
+    st('s2', at(5, 0, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(4, 0), c.d(4, 6), 'WORK', 'stocktaking week at the shop') }),
+    st('s3', at(5, 0, '07:20'), { kind: 'WEEKLY_REVIEW' }),
+    st('s4', at(5, 0, '07:40'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(4, 0), c.d(4, 6), 'WORK', 'stocktaking week at the shop', { episodeId: 'R7D-H23-s2' }) }, { note: 'Answer: another break.' }),
+    st('s5', at(5, 0, '08:00'), { kind: 'WEEKLY_REVIEW' }, { answer }),
+  ];
+  add(23, { intent: 'A novice states a wedding break while under way, then a stocktaking week; asked, she says it is a separate break; asked about the sessions between, she reports that only one Saturday run was done.',
+    tags: ['BALANCED_HYBRID', 'H12', 'RUN_EXP_NOVICE', 'STR_EXP_NOVICE', 'RETURN_MODERATE', 'START_NON_MONDAY', 'TIMEZONE', 'PARTIAL_ANSWER', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h23-lorna', asOf: '2026-11-11', start: '2026-11-13', weeks: 12, tz: -300, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'NOVICE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 90, longestRunMinutes: 40, strengthDaysPerWeek: 1 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 6], strengthDays: [2, 5], runMinutes: 35, strengthMinutes: 35, longRunDay: 1, longRunMinutes: 50 } }),
+    timeline: tl({ report: { completed: false }, overrides: [R(3, 'RUN', 1, done())] }),
+    exp: [
+      E('e1', 's2', Q('INTERRUPTION_RELATION'), INV, 'A newer break naming none is asked about.'),
+      E('e2', 's3', Q('INTERRUPTION_RELATION'), INV, 'A review stating none leaves the relation open.'),
+      E('e3', 's3', NP, INV, 'No plan is valid while the relation is open.'),
+      E('e4', 's4', Q('TRAINING_BETWEEN_BREAKS'), INV, 'Planned sessions between the separate breaks have no report (delta 4 section 1).'),
+      E('e5', 's4', NP, INV, 'No return dose is chosen before the sessions between are known.'),
+      E('e6', 's5', S('MODIFY'), DOM, 'All facts are known; a return is planned.'),
+      E('e7', 's5', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e8', 's5', J('One run in the gap is a fact of the stop, not a re-entry: the stop runs from the wedding\'s first day (27 Nov) to the end of stocktaking (17 Dec), and the return is that of about three weeks off, not of the 7-day work break; the single run is not taken as proof that capacity is restored.'), DOM, 'Delta 6 section 1: training in no counting week.'),
+      E('e9', 's5', RMC('LONG', 6, '<=', 1), DOM, 'The long run after the return is not above the week-1 long run.'),
+    ],
+    rel: [{ relation: 'VARIANT', variant: { timeline: tl({ report: { completed: true, asPrescribed: true, loadsByPattern: LDB2, response: { ...OK } } }) }, compareAtStep: 's5', expect: 'NOT_LOWER_RUN_LOAD', rationale: 'If every session between the breaks had been done and tolerated, the run load after the return could not be lower than with one isolated run.' }],
+    ia: ['A novice with two breaks a week and a half apart; between them she ran once. One run in three weeks is not a training block.',
+      'Ask how the breaks relate, then ask what happened between them; with only one run done, read the stop from the wedding to the end of stocktaking and plan a gentle return for about three weeks off.',
+      ['Ask whether the Saturday run felt normal before choosing the first dose', 'A first week with fewer sessions than chosen'],
+      ['Reading the return from the 7-day work break alone because one run happened', 'Counting the unreported sessions as done or not done before the athlete says so', 'Adding the two breaks\' days together while ignoring the gap']],
+    notes: DAYNOTE }); }
+
+// ---------- H24: an earlier clinical-cause break and a later nonclinical one; clearance; the clinical break later restated as nonclinical ----------
+{ const c = cal('2026-11-10', 0); const flu = { startDate: c.d(2, 1), endDate: c.d(2, 6), reasonCategory: 'ILLNESS', clinicalReason: true, reason: 'flu with fever' };
+  add(24, { intent: 'A flu break is stated, then an audit-week break before any return; the clinical cause keeps routing to a human through a qualified clearance and through a later restatement of the flu break by name as a nonclinical cold.',
+    tags: ['CLINICAL_PAUSE', 'CLINICAL_SIGNAL', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'START_NON_MONDAY', 'NON_RACE'], oracle: INV,
+    intake: intake({ id: 'ath-h24-ezinne', asOf: '2026-11-08', start: '2026-11-10', weeks: 8, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 60, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 5], strengthDays: [1, 4], runMinutes: 45, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: flu }, { observations: [runs([0, 1]), lifts([0, 1], LDB), R(2, 'RUN', 0, done())] }),
+      st('s2', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 3), c.d(3, 6), 'WORK', 'audit week, long days') }),
+      st('s3', at(4, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { clearance: 'QUALIFIED_CLEARANCE' }),
+      st('s4', at(5, 2, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: { startDate: c.d(2, 1), endDate: c.d(2, 6), reasonCategory: 'OTHER_NONCLINICAL', nonclinical: true, reason: 'it was only a heavy cold in the end, no fever', episodeId: 'R7D-H24-s1' } }),
+    ],
+    exp: [
+      E('e1', 's1', S('CLINICAL_HUMAN_REQUIRED'), INV, 'A break with a clinical reason routes to a qualified human.'),
+      E('e2', 's1', NP, INV, 'Nothing is prescribed.'),
+      E('e3', 's2', S('CLINICAL_HUMAN_REQUIRED'), INV, 'Clinical first: no relation question and no dose while a kept break has a clinical reason (delta 4 section 1).'),
+      E('e4', 's2', J('No INTERRUPTION_RELATION question is asked and no return dose is chosen; the later nonclinical break does not make the flu break nonclinical.'), INV, 'Delta 4 section 1.'),
+      E('e5', 's3', S('CLINICAL_HUMAN_REQUIRED'), INV, 'A break whose reason is clinical goes to a human also after a qualified clearance (F08 open).'),
+      E('e6', 's3', NP, INV, 'No nonclinical return is planned for a clinical cause.'),
+      E('e7', 's4', S('CLINICAL_HUMAN_REQUIRED'), INV, 'A restated nonclinical reason never ends the clinical route of the episode (delta 6 section 3).'),
+      E('e8', 's4', NP, INV, 'Nothing is prescribed.'),
+      E('e9', 's4', J('Whether the athlete can train after the flu is a clinical judgment.'), NED, 'Clinical adequacy is not evaluable.'),
+    ],
+    ia: ['A flu with fever is a clinical cause; a later work week does not change that, a clearance in this evaluation does not plan a return for a clinical cause, and relabelling the flu as a cold is the athlete\'s statement, not a clinical decision.',
+      'Route to a qualified human at every decision of this case; do not ask the relation question or choose a dose; record the restatement without ending the route.',
+      ['Route while explaining that only a qualified human can resolve the flu episode'],
+      ['Planning a nonclinical return once the audit week is reported', 'Treating the clearance as permission to plan a return for the flu', 'Accepting the restated cold as a way out of the clinical route', 'Asking the relation question before the clinical route']],
+    notes: 'The flu break is named by the identity of the review that first stated it (R7D-H24-s1). ' + DAYNOTE }); }
+
+// ---------- H25: break stated with a schedule change; a fatigue report before the next review; both events sent again after the return ----------
+{ const c = cal('2026-11-15', -480);
+  const sched = { runDays: [0, 2, 4], longRunDay: 0 };
+  add(25, { intent: 'A sales-conference break is stated inside a schedule change; a systemic fatigue report follows before the weekly review; the review applies the kept break without restating it, then the schedule change and the fatigue report are sent again. Also a same-day long-run report with day precision.',
+    tags: ['SCHEDULE_CHANGE', 'FATIGUE_SYSTEMIC', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h25-callum', asOf: '2026-11-13', start: '2026-11-15', weeks: 8, tz: -480, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 65, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [2, 4, 6], strengthDays: [1, 5], runMinutes: 45, strengthMinutes: 40, longRunDay: 6, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0]), lifts([0, 1], LDB), R(1, 'RUN', 2, done()), R(1, 'RUN', 4, done()), R(1, 'RUN', 6, done({ occurrenceDate: c.d(1, 6), reportedAt: c.ts(1, 6, '10:40') }))] }),
+      st('s2', at(2, 4, '07:00'), { kind: 'SCHEDULE_CHANGE', changes: sched, interruption: brk(c.d(2, 0), c.d(2, 3), 'WORK', 'four-day sales conference') }, { note: 'Wants the long run on Sundays from now on; mentions the conference.' }),
+      st('s3', at(2, 5, '20:00'), { kind: 'SYSTEMIC_FATIGUE', signals: { region: 'ALL' } }, { note: 'Drained after the conference, sleeping badly.' }),
+      st('s4', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [R(2, 'RUN', 'LONG', NOT)] }),
+      st('s5', at(2, 6, '19:30'), { kind: 'SCHEDULE_CHANGE', changes: sched }),
+      st('s6', at(2, 6, '19:45'), { kind: 'SYSTEMIC_FATIGUE', signals: { region: 'ALL' } }, { note: 'Still tired on Saturday evening.' }),
+    ],
+    exp: [
+      E('e1', 's2', S('ASK'), INV, 'A break that comes with another kind of event is asked about on its own; nothing of the schedule change is applied (delta 3 section 1).'),
+      E('e2', 's2', NP, INV, 'No plan is valid while the stated break is kept.'),
+      E('e3', 's3', S('ASK'), INV, 'Another kind of event while a kept break is not applied is asked about and not applied.'),
+      E('e4', 's3', J('The fatigue report is not applied while the break is kept; the coach says the break is recorded and asks for a weekly review or return report.'), INV, 'Delta 3 section 1.'),
+      E('e5', 's4', S('MODIFY'), DOM, 'The plain review applies the kept 4-day break.'),
+      E('e6', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e7', 's4', J('The Saturday long run reported the day it happened in week 1, with only its date, is still in the record and informs the return.'), INV, 'Same-day day-precision reports persist (delta 2 section 2).'),
+      E('e8', 's5', S('MODIFY'), DOM, 'The schedule change sent again after the return is applied.'),
+      E('e9', 's5', J('From the next planned week the runs are on Sunday, Tuesday and Thursday with the long run on Sunday; strength stays on Monday and Friday.'), DOM, 'Chosen days receive their sport.'),
+      E('e10', 's6', S('MODIFY', 'KEEP'), DOM, 'Systemic fatigue adapts the next days.'),
+      E('e11', 's6', J('After systemic fatigue the next sessions are reduced or made easy, with no harder running and no added volume.'), DOM, 'Fatigue calls for less.'),
+    ],
+    ia: ['An intermediate runner mixes three things in one message: a new schedule, a conference that interrupted training, and then fatigue.',
+      'Record the break and ask for it on its own; apply nothing of the schedule change or the fatigue until a weekly review applies the break; then apply the new days and ease the next sessions for the fatigue.',
+      ['Apply the schedule change from the week after next if the current week is already planned', 'Answer the re-sent fatigue with a KEEP and easy guidance'],
+      ['Applying the schedule change together with the break', 'Applying the fatigue report while the break is kept', 'Requiring the athlete to state the conference again', 'Increasing load after the return despite fatigue']],
+    notes: DAYNOTE }); }
+
+// ---------- H26: break stated with a goal change to a 10K; the goal change sent again after the return; then the race date moves ----------
+{ const c = cal('2026-11-11', 330); const race = c.d(10, 4); const goal = { goals: { run: { kind: 'RACE', event: { kind: '10K', date: race } }, strength: 'MAINTAIN' }, event: { kind: '10K', date: race } };
+  add(26, { intent: 'A regular runner switches to a 10K goal in the same message that reports a wedding-week break; after the review applies the break the goal change is sent again, and later the organiser moves the race a week.',
+    tags: ['GOAL_CHANGE', 'EVENT_DATE_CHANGE', 'RACE_10K', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE'], oracle: DOM,
+    intake: intake({ id: 'ath-h26-anaya', asOf: '2026-11-09', start: '2026-11-11', weeks: 12, tz: 330, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 130, longestRunMinutes: 60, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runMinutes: 45, strengthMinutes: 40, longRunDay: 4, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(2, 6, '20:00'), { kind: 'GOAL_CHANGE', changes: goal, interruption: brk(c.d(2, 1), c.d(2, 5), 'FAMILY', 'my sister\'s wedding week') }),
+      st('s2', at(2, 6, '20:30'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1], LDB), R(2, 'RUN', 0, done())] }),
+      st('s3', at(2, 6, '20:45'), { kind: 'GOAL_CHANGE', changes: goal }),
+      st('s4', at(3, 2, '09:00'), { kind: 'EVENT_DATE_CHANGE', changes: { eventDate: c.d(11, 4) } }, { note: 'The organiser moved the race one week later.' }),
+    ],
+    exp: [
+      E('e1', 's1', S('ASK'), INV, 'A break that comes with a goal change is asked about on its own; the goal change is not applied.'),
+      E('e2', 's1', NP, INV, 'No plan is valid while the stated break is kept.'),
+      E('e3', 's2', S('MODIFY'), DOM, 'The review applies the kept wedding break as a short return.'),
+      E('e4', 's2', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e5', 's3', S('MODIFY'), DOM, 'The goal change sent again after the return is applied.'),
+      E('e6', 's3', PH(10, 'RACE_WEEK'), DOM, 'The new race falls in week 10.'),
+      E('e7', 's3', RP([10], 'RUN', ['RACE']), INV, 'The race is planned on its date.'),
+      E('e8', 's4', S('MODIFY'), DOM, 'The moved race date re-plans the end of the program.'),
+      E('e9', 's4', RP([11], 'RUN', ['RACE']), INV, 'The race is on its new date in week 11.'),
+      E('e10', 's4', RA([10], 'RUN', ['RACE']), INV, 'Nothing is left on the old race date.'),
+    ],
+    ia: ['A regular runner commits to a 10K after a wedding week; later the organiser moves the race. The goal change must wait until the break is applied.',
+      'Ask for the break on its own; apply it as a short return at the review; then turn the plan into a 10K build toward the race date; when the date moves, shift the taper and race week by one week.',
+      ['Keep the current block as a base and start race-specific work after the return'],
+      ['Applying the goal change together with the break', 'Keeping a race session on the old date', 'Compressing the build because of the 5-day break']],
+    notes: DAYNOTE }); }
+
+// ---------- H27: 10K race week between two breaks; race touch done at half its minutes; race cancelled ----------
+{ const c = cal('2026-11-16', -240); const race = c.d(7, 5);
+  add(27, { intent: 'An intermediate runner\'s 10K race week falls between a two-week holiday and a site visit: the race touch is cut to half its minutes, the shakeout and the light strength session are done, and the race is cancelled by a storm.',
+    tags: ['RACE_10K', 'RACE_WEEK', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'SHORTENED_RUNS', 'MIXED_EXECUTION', 'RETURN_MODERATE', 'TIMEZONE', 'OFFERS', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h27-bastien', asOf: '2026-11-14', start: '2026-11-16', weeks: 12, tz: -240, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race, timeGoalMinutes: 47 } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: '10K', date: race, timeGoalMinutes: 47 }, runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 65, strengthDaysPerWeek: 2 },
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'TEN_K_SPECIFIC', durationMinutes: 50, warmupMinutes: 15, cooldownMinutes: 10, work: { repetitions: 5, workMinutes: 4, recoveryMinutes: 2 } }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-12' }],
+        equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 4, 5], strengthDays: [0, 3], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s2', at(4, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([3, 4]), lifts([3, 4], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s3', at(6, 2, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(5, 0), c.d(6, 6), 'VACATION', 'two weeks of holiday, no running') }),
+      st('s4', at(8, 5, '09:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(8, 0), c.d(8, 4), 'WORK', 'site visit abroad', { episodeId: 'h27-site' }) }, { observations: [
+        B([7], 'RUN', ['RACE_TOUCH'], { completed: true, fraction: 0.5, response: { ...OK } }), B([7], 'RUN', ['SHAKEOUT'], done()), B([7], 'RUN', ['RACE'], NOT),
+        B([7], 'RUN', ['EASY', 'QUALITY', 'LONG'], done()), lifts([7], LDB)], note: 'The race was cancelled because of a storm.' }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A realistic 10K plan.'),
+      E('e2', 'GENERATE', PH(7, 'RACE_WEEK'), DOM, 'The race is in week 7.'),
+      E('e3', 'GENERATE', RP([7], 'RUN', ['RACE']), INV, 'The race is on its date.'),
+      E('e4', 's3', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e5', 's4', S('MODIFY'), DOM, 'Both breaks are known, separate and all sessions between are reported.'),
+      E('e6', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e7', 's4', J('Week 7 does not count for running (the race touch at half its minutes is not done and the race was not run) but counts for strength. The holiday is read as its own return: running resumes from that own return with no step it did not earn, strength from the light week-7 session; the cancelled race is not treated as a race done.'), DOM, 'Delta 6 section 1: per-sport counting week; a race touch at half its minutes is not done.'),
+    ],
+    ia: ['A runner whose race week came straight after two weeks off: he cut the touch short, did the shakeout and the light lift, and the race was cancelled. Running in that week shows little; strength was done in full.',
+      'Treat the race week as strength training only; read the holiday as its own return for running, resume strength from its race-week dose, and plan a conservative post-race-week return for running with no race credit.',
+      ['Ask whether the athlete ran the course alone after the cancellation', 'A slightly more conservative strength entry because the race-week session was light'],
+      ['Counting the half touch or the cancelled race as done running', 'Reading the return by the 5-day site visit alone for running', 'Planning a recovery week as if a race had been run']] }); }
+
+// ---------- H28: half-marathon race week between two breaks; strength and shakeout adverse, touch and race fine ----------
+{ const c = cal('2026-11-11', 180); const race = c.d(8, 3);
+  add(28, { intent: 'A half-marathon race week sits between a family holiday and an inventory week; the race week holds race touch, optional shakeout and race; the light strength session and the shakeout both recover badly while the touch and the race go well.',
+    tags: ['RACE_HALF', 'RACE_WEEK', 'POST_RACE', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'SHARED_DAYS', 'ADVERSE_RESPONSE', 'RETURN_MODERATE', 'START_NON_MONDAY', 'TIMEZONE', 'OFFERS'], oracle: DOM,
+    intake: intake({ id: 'ath-h28-zainab', asOf: '2026-11-09', start: '2026-11-11', weeks: 12, tz: 180, goals: { run: { kind: 'RACE', event: { kind: 'HALF_MARATHON', date: race, timeGoalMinutes: 115 } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: 'HALF_MARATHON', date: race, timeGoalMinutes: 115 }, runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 170, longestRunMinutes: 85, strengthDaysPerWeek: 1 },
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'THRESHOLD', durationMinutes: 50, warmupMinutes: 15, cooldownMinutes: 10, work: { repetitions: 3, workMinutes: 8, recoveryMinutes: 2 } }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-07' }],
+        equipment: ['DUMBBELLS', 'BODYWEIGHT'], sex: 'F' },
+      schedule: { runDays: [0, 2, 3], strengthDays: [0, 5], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 55, strengthMinutes: 35, longRunDay: 3, longRunMinutes: 110 } }),
+    timeline: [
+      st('s1', at(2, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s2', at(5, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([3, 4, 5]), lifts([3, 4, 5], LDB)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' } }),
+      st('s3', at(7, 4, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(7, 0), c.d(7, 6), 'VACATION', 'family holiday the week before the race') }, { observations: [runs([6]), lifts([6], LDB)] }),
+      st('s4', at(9, 4, '18:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(9, 0), c.d(9, 3), 'WORK', 'year-start inventory', { episodeId: 'h28-inventory' }) }, { observations: [
+        B([8], 'RUN', ['RACE_TOUCH'], done()), B([8], 'RUN', ['SHAKEOUT'], done({ response: { ...OK, recovery: 'ADVERSE' } })), B([8], 'RUN', ['RACE'], done()),
+        B([8], 'RUN', ['EASY', 'QUALITY', 'LONG'], done()), lifts([8], LDB, { response: { ...OK, recovery: 'ADVERSE' } })] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', S('PROPOSED'), DOM, 'A realistic half-marathon plan.'),
+      E('e2', 'GENERATE', PH(8, 'RACE_WEEK'), DOM, 'The race is in week 8.'),
+      E('e3', 'GENERATE', RP([8], 'RUN', ['RACE']), INV, 'The race is on its date.'),
+      E('e4', 's3', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e5', 's4', S('MODIFY'), DOM, 'A return is planned.'),
+      E('e6', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e7', 's4', J('The adverse recovery after the strength session and after the shakeout converge across sports, so the race week re-enters neither sport even though touch and race went well; the return is read from the stop running from the holiday\'s first day to the inventory\'s last day, and the first week back holds easy running and light strength only.'), DOM, 'Delta 7 section 1.'),
+      E('e8', 's4', RA([10], 'RUN', ['QUALITY']), DOM, 'No harder running in the first full week after a half marathon followed by a stop.'),
+    ],
+    ia: ['A half-marathon runner who raced well between two breaks, but whose body signalled poor recovery in two sports that week.',
+      'Do not read a good race as restored capacity; with adverse recovery in strength and in the shakeout, read the stop through the race week, plan easy running and light strength after the inventory week, and add no quality yet.',
+      ['Ask how the athlete recovered after the race before planning', 'Plan the post-race week as recovery running only'],
+      ['Resuming the pre-holiday build because the race was finished', 'Classing the return by the 4-day inventory alone', 'Ignoring the shakeout\'s adverse recovery because the shakeout is optional']] }); }
+
+// ---------- H29: strength session on the earlier break's first day without a start time; strength missed between the breaks ----------
+{ const c = cal('2026-11-12', 660); const trip = brk(c.d(3, 1), c.d(3, 6), 'TRAVEL', 'flew to a friend\'s wedding on Friday', { episodeId: 'h29-trip' });
+  add(29, { intent: 'The earlier break starts on a strength day and that day\'s session is reported done with no start time for the break; between the breaks every run of a week is done but strength is missed, so strength is read from the earlier break\'s own return and the order matters.',
+    tags: ['BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'MIXED_EXECUTION', 'NON_RACE', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h29-ruairi', asOf: '2026-11-10', start: '2026-11-12', weeks: 12, tz: 660, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runTurn: 'AM', strengthTurn: 'AM', runMinutes: 50, strengthMinutes: 45, longRunDay: 2, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(3, 4, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: trip }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB), R(3, 'RUN', 0, done()), R(3, 'STRENGTH', 1, done({ loadsByPattern: LDB }))] }),
+      st('s2', at(6, 0, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(5, 0), c.d(5, 6), 'WORK', 'product launch week', { episodeId: 'h29-launch' }) }, { observations: [runs([4]), B([4], 'STRENGTH', null, NOT)] }),
+      st('s3', at(6, 0, '07:40'), { kind: 'RETURN_AFTER_PAUSE', interruption: { ...trip, startedAt: c.ts(3, 1, '13:00') } }, { note: 'Answer: the flight left at one in the afternoon; the session was that morning.' }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', S('ASK', 'MODIFY'), DOM, 'Either asking the trip\'s start time or planning without crediting the Friday session is acceptable.'),
+      E('e3', 's2', J('Week 4 counts for running only, so the trip is read as its own return; strength is read from that own return, and with a strength session on the trip\'s first day and no start time the coach does not decide on its own whether the session came before the trip: it asks for the start time, or plans strength without crediting that session. Running resumes from the week-4 doses.'), DOM, 'Delta 6 section 2.'),
+      E('e4', 's3', S('MODIFY'), DOM, 'The start time resolves the order; the return is planned.'),
+      E('e5', 's3', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e6', 's3', J('With the 13:00 start the Friday strength session counts as training before the trip; strength resumes from the trip\'s own return at a light entry with no step it did not earn, and running from week 4.'), DOM, 'The answer is read as the trip\'s report, not as a new break (delta 7 section 2).'),
+    ],
+    ia: ['A hybrid athlete who lifted on Friday morning and flew out at lunchtime, then ran a full week but skipped strength before a launch week. Strength depends on the Friday order; running does not.',
+      'Resume running from week 4; for strength, ask when the trip began or credit nothing uncertain; once the start time is given, count the Friday session before the trip and resume strength gently from the trip\'s own return.',
+      ['Plan strength from the trip\'s own return without the Friday session and say so', 'Ask the start time and the session time together'],
+      ['Assuming the Friday session came after the trip began', 'Advancing strength from the run-only week 4', 'Treating the start-time answer as a third break']],
+    notes: DAYNOTE }); }
+
+// ---------- H30: strength logged without reps in reserve between two breaks; correction of the later break by length and last day uncovering an unreported run ----------
+{ const c = cal('2026-11-10', -480); const T = (kg, reps) => ({ reps, load: { value: kg, unit: 'KG', convention: 'TOTAL' } });
+  const kx = (id, kg, reps) => ({ id, sets: 3, reps, load: { value: kg, unit: 'KG', convention: 'TOTAL' }, rir: 2, current: true, familiar: true, tolerated: true, observedAt: '2026-11-06' });
+  const noRir = [{ id: 'back-squat', sets: [T(80, 5), T(80, 5), T(80, 5)] }, { id: 'barbell-rdl', sets: [T(70, 6), T(70, 6), T(70, 6)] }, { id: 'bench-press', sets: [T(60, 6), T(60, 6), T(60, 6)] }, { id: 'barbell-row', sets: [T(50, 8), T(50, 8), T(50, 8)] }];
+  add(30, { intent: 'Between a house move and a conference every run of a week is done but strength is logged with sets, reps and loads and no reps in reserve; after the return the athlete corrects the conference by length and last day, which uncovers a Tuesday run that was never reported.',
+    tags: ['BALANCED_HYBRID', 'GYM', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'CORRECTION', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'PARTIAL_ANSWER', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h30-imogen', asOf: '2026-11-08', start: '2026-11-10', weeks: 12, tz: -480, goals: { run: 'REGULAR', strength: 'STRENGTH' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 60, strengthDaysPerWeek: 2 },
+        knownExercises: [kx('back-squat', 80, 5), kx('barbell-rdl', 70, 6), kx('bench-press', 60, 6), kx('barbell-row', 50, 8)], equipment: ['BARBELL', 'RACK', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 60, longRunDay: 4, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(3, 5, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 0), c.d(3, 6), 'MOVING', 'moving apartments') }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LGYM)] }),
+      st('s2', at(5, 5, '18:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(5, 0), c.d(5, 4), 'WORK', 'conference in another city', { episodeId: 'h30-conf' }) },
+        { observations: [runs([4]), B([4], 'STRENGTH', null, { completed: true, exercises: noRir, response: { ...OK } })], note: 'The gym app logged sets, reps and loads but no reps in reserve.' }),
+      st('s3', at(5, 6, '19:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: { episodeId: 'h30-conf', days: 4, endDate: c.d(5, 4), reasonCategory: 'WORK', nonclinical: true, reason: 'the conference trip started on Wednesday morning' } }),
+      st('s4', at(5, 6, '19:30'), { kind: 'WEEKLY_REVIEW' }, { answer: { report: done() }, note: 'Ran the Tuesday session as planned before flying.' }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', S('MODIFY'), DOM, 'A return is planned.'),
+      E('e3', 's2', J('Week 4 counts for running only: strength logged without reps in reserve does not count, so the move is read as its own return; strength continues from it with no step it did not earn, running from the week-4 runs.'), DOM, 'Delta 6 section 1 and delta 8 section 3.'),
+      E('e4', 's3', Q('TRAINING_BETWEEN_BREAKS'), INV, 'The corrected dates uncover a planned run between the breaks with no report (delta 7 section 2).'),
+      E('e5', 's3', NP, INV, 'No return is re-read before the uncovered session is known.'),
+      E('e6', 's3', J('The correction gives only the length and the last day; the conference is read from Wednesday, the report it replaces is not read as days of the stop, and the earlier break is not dropped.'), INV, 'Delta 6 section 2.'),
+      E('e7', 's4', S('MODIFY', 'KEEP'), DOM, 'The answer completes the facts.'),
+      E('e8', 's4', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e9', 's4', J('The Tuesday run is training between the breaks but completes no week, so the reading stays per sport as before; strength still does not advance from the logs without reserve.'), DOM, 'One session is never a re-entry.'),
+    ],
+    ia: ['A gym-going hybrid whose app dropped the reps-in-reserve field for a week; the runs of that week were complete. She later remembers she flew on Wednesday, not Tuesday.',
+      'Count week 4 for running only; resume strength cautiously from the move\'s own return; when the conference dates are corrected, ask about the uncovered Tuesday run before re-reading, then keep the per-sport reading.',
+      ['Ask the athlete for the missing reserve values before deciding strength', 'Keep strength at the pre-move loads for the first week back'],
+      ['Advancing strength from logs without reserve', 'Re-reading the return without asking about the uncovered Tuesday run', 'Treating the correction as a third break']],
+    notes: 'The correction states the length and last day only, as the brief asks; its first day is read from them. The explicit strength logs name the known barbell exercises.' }); }
+
+// ---------- H31-H33: late report of a strength session on the earlier break's first day, after a return from two separate breaks ----------
+{ const c = cal('2026-11-13', 330); const A = brk(c.d(3, 0), c.d(3, 6), 'TRAVEL', 'road trip to the coast', { episodeId: 'h31-trip' });
+  add(31, { intent: 'After a return that read a road trip and an audit as separate breaks (runs done in full between them, strength missed), the athlete reports late that she lifted on the trip\'s first day, with no start time for the trip; she answers in a return report.',
+    tags: ['BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'LATE_REPORTER', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'NON_RACE', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h31-kavya', asOf: '2026-11-11', start: '2026-11-13', weeks: 12, tz: 330, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 130, longestRunMinutes: 60, strengthDaysPerWeek: 1 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 4], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 45, strengthMinutes: 40, longRunDay: 1, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(3, 3, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: A }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB2)] }),
+      st('s2', at(6, 0, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(5, 0), c.d(5, 6), 'WORK', 'audit at a client site', { episodeId: 'h31-audit' }) }, { observations: [runs([4]), B([4], 'STRENGTH', null, NOT)] }),
+      st('s3', at(6, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([6]), lifts([6], LDB2), R(3, 'STRENGTH', 0, done({ loadsByPattern: LDB2 }))], note: 'Found the trip-day lifting session in her notebook.' }),
+      st('s4', at(7, 0, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: { ...A, startedAt: c.ts(3, 0, '16:00') } }, { note: 'Answer: the trip began at four in the afternoon.' }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', S('MODIFY'), DOM, 'Separate named breaks, every session between reported: a return.'),
+      E('e3', 's2', J('Week 4 counts for running only; the road trip is read as its own return; strength resumes from that own return and running from week 4.'), DOM, 'Delta 6 section 1.'),
+      E('e4', 's3', S('ASK', 'MODIFY'), DOM, 'A genuine late fact about training before the break may be asked about.'),
+      E('e5', 's3', J('The late Friday session is not silently placed before or after the trip: the coach asks for the trip\'s start time (or first asks to confirm the latest break), and the executed week 6 stays in the record.'), DOM, 'Delta 6 section 2 and delta 7 section 2.'),
+      E('e6', 's4', S('MODIFY', 'KEEP', 'ASK'), DOM, 'The start time is recorded; a further confirmation question is acceptable.'),
+      E('e7', 's4', J('The start-time report is read as the road trip\'s own report, never as a new break; the Friday session counts as training before the trip; no strength dose ahead is above what was executed.'), INV, 'Delta 7 section 2.'),
+    ],
+    ia: ['A runner who lifts occasionally; her notebook shows a lifting session on the morning the road trip began. The start time decides whether it is before the trip.',
+      'Ask for the trip\'s start time rather than guess; once given, credit the session before the trip and keep strength cautious; running is unaffected.',
+      ['Asking first to confirm the audit break, then the start time', 'Keeping the current plan while the question is open'],
+      ['Assuming the session was after the trip started', 'Treating the restated trip as a third break', 'Raising strength because of one late session']],
+    notes: DAYNOTE }); }
+{ const c = cal('2026-11-23', -300); const A = brk(c.d(3, 0), c.d(3, 6), 'WORK', 'trade show, on my feet all week', { episodeId: 'h32-a' }); const Bk = brk(c.d(5, 0), c.d(5, 4), 'FAMILY', 'family visit', { episodeId: 'h32-b' });
+  add(32, { intent: 'After a return from a trade show and a family visit (runs complete between them, strength missed), a late report shows a Monday 06:30 lift on the trade show\'s first day; the athlete first confirms the later break, then gives the trade show\'s start time in the week\'s review.',
+    tags: ['BALANCED_HYBRID', 'GYM', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'LATE_REPORTER', 'RETURN_SHORT', 'TIMEZONE', 'NON_RACE', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h32-osvaldo', asOf: '2026-11-21', start: '2026-11-23', weeks: 12, tz: -300, goals: { run: 'REGULAR', strength: 'STRENGTH' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 60, strengthDaysPerWeek: 2 }, equipment: ['BARBELL', 'RACK', 'BENCH', 'DUMBBELLS'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 4], runTurn: 'PM', strengthTurn: 'AM', runMinutes: 50, strengthMinutes: 60, longRunDay: 5, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(3, 3, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: A }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LGYM)] }),
+      st('s2', at(5, 5, '08:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: Bk }, { observations: [runs([4]), B([4], 'STRENGTH', null, NOT)] }),
+      st('s3', at(6, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([6]), lifts([6], LGYM), R(3, 'STRENGTH', 0, done({ loadsByPattern: LGYM, observedAt: c.ts(3, 0, '06:30') }))], note: 'The gym app synced an old Monday session.' }),
+      st('s4', at(6, 6, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: Bk }, { note: 'Confirms the family visit as reported.' }),
+      st('s5', at(7, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: { ...A, startedAt: c.ts(3, 0, '09:15') } }, { observations: [runs([7]), lifts([7], LGYM)], note: 'Gives the trade show\'s start time in the week\'s review.' }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', S('MODIFY'), DOM, 'A return reading two separate breaks.'),
+      E('e3', 's3', S('ASK', 'MODIFY'), DOM, 'A late fact about training before a break may be asked about.'),
+      E('e4', 's4', J('Restating the family visit with the same facts records nothing new and applies nothing twice; if the trade show\'s start time is still needed it is asked again.'), INV, 'Delta 4 section 1 and delta 7 section 2.'),
+      E('e5', 's5', S('MODIFY', 'KEEP'), DOM, 'The start time resolves the order.'),
+      E('e6', 's5', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e7', 's5', J('With the 09:15 start, the 06:30 Monday session counts as training before the trade show; strength resumes from the trade show\'s own return with no step it did not earn, and the running record of weeks 4, 6 and 7 stands.'), DOM, 'Delta 6 section 2.'),
+    ],
+    ia: ['A barbell hybrid whose app synced an old Monday lift weeks later; the session was before the trade show began, but the coach cannot know that without the start time.',
+      'Accept the late fact; confirm the later break if asked; ask for the trade show\'s start time and, once given, credit the Monday session before the trade show while keeping strength gated by its own return.',
+      ['Ask for the start time first, then confirm the family visit'],
+      ['Re-planning strength upward from the late session before the order is known', 'Applying the confirmed family visit a second time', 'Reading the start-time restatement as a new break']],
+    notes: DAYNOTE }); }
+{ const c = cal('2026-11-15', -180); const A = brk(c.d(2, 0), c.d(2, 6), 'FAMILY', 'helping my parents after a flood at their house', { episodeId: 'h33-a' });
+  add(33, { intent: 'A strength beginner with bodyweight only reports late a Sunday session on the first day of a family break, after a return from two separate breaks; she gives the break\'s start time together with a generic recovered message, and the next review applies it.',
+    tags: ['BALANCED_HYBRID', 'BODYWEIGHT_ONLY', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NONE', 'LATE_REPORTER', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h33-renata', asOf: '2026-11-13', start: '2026-11-15', weeks: 8, tz: -180, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NONE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 120, longestRunMinutes: 55 }, equipment: ['BODYWEIGHT', 'BANDS'] },
+      schedule: { runDays: [1, 3, 6], strengthDays: [0, 4], runTurn: 'AM', strengthTurn: 'AM', runMinutes: 45, strengthMinutes: 30, longRunDay: 6, longRunMinutes: 70 } }),
+    timeline: [
+      st('s1', at(2, 4, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: A }, { observations: [runs([0, 1]), lifts([0, 1])] }),
+      st('s2', at(4, 6, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(4, 0), c.d(4, 5), 'WORK', 'inventory at the warehouse', { episodeId: 'h33-b' }) }, { observations: [runs([3]), B([3], 'STRENGTH', null, NOT)] }),
+      st('s3', at(5, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([5]), lifts([5]), R(2, 'STRENGTH', 0, done({ observedAt: c.ts(2, 0, '07:00') }))], note: 'Remembers the bodyweight session on the morning she drove to her parents.' }),
+      st('s4', at(6, 1, '07:00'), { kind: 'RECOVERED', interruption: { ...A, startedAt: c.ts(2, 0, '11:00') } }, { note: 'Says she feels fine and that she left at eleven.' }),
+      st('s5', at(6, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([6]), lifts([6])] }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', S('MODIFY'), DOM, 'A return reading two separate breaks.'),
+      E('e3', 's3', S('ASK', 'MODIFY'), DOM, 'A late fact about training before a break may be asked about.'),
+      E('e4', 's4', J('The restated break with its start time, sent with a generic recovered message, is recorded as the family break\'s report (not a new break) and nothing is planned from the recovered label itself; the next weekly review applies what is pending.'), INV, 'Delta 7 section 2.'),
+      E('e5', 's5', S('MODIFY', 'KEEP'), DOM, 'The review applies the pending report.'),
+      E('e6', 's5', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e7', 's5', J('With the 11:00 start the Sunday session counts as training before the break; strength resumes from the family break\'s own return at a light bodyweight entry, and running from what it executed.'), DOM, 'Delta 6 section 2.'),
+    ],
+    ia: ['A runner new to strength training who did one bodyweight session before driving to her parents; she reports it weeks later.',
+      'Treat the late session as a fact whose order needs the break\'s start time; accept the start time from any channel, apply it at the next review, and keep strength progression gentle for a strength beginner.',
+      ['Keep strength unchanged after the start time is known', 'Ask for the session time as well'],
+      ['Treating the recovered message as an answer or a clearance', 'Treating the restated break as a new break', 'Progressing strength because of one late session']],
+    notes: DAYNOTE }); }
+
+// ---------- H34: three separate breaks in a chain, a one-sport week between each pair ----------
+{ const c = cal('2026-11-12', 540);
+  add(34, { intent: 'Three separate breaks are stated before any return; between the first and second only running is done in full, between the second and third only strength.',
+    tags: ['BALANCED_HYBRID', 'H16', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'RETURN_SHORT', 'START_NON_MONDAY', 'TIMEZONE', 'MIXED_EXECUTION', 'NON_RACE', 'SKIPPED_REVIEW'], oracle: DOM,
+    intake: intake({ id: 'ath-h34-haruki', asOf: '2026-11-10', start: '2026-11-12', weeks: 16, tz: 540, goals: { run: 'REGULAR', strength: 'HYPERTROPHY' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 65, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BENCH', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runMinutes: 45, strengthMinutes: 50, longRunDay: 2, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(3, 4, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(3, 0), c.d(3, 6), 'WORK', 'business trip to Osaka', { episodeId: 'h34-a' }) }, { observations: [runs([0, 1, 2]), lifts([0, 1, 2], LDB)] }),
+      st('s2', at(5, 4, '20:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(5, 0), c.d(5, 6), 'FAMILY', 'a new baby in the family', { episodeId: 'h34-b' }) }, { observations: [runs([4]), B([4], 'STRENGTH', null, NOT)] }),
+      st('s3', at(7, 5, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(7, 0), c.d(7, 4), 'TRAVEL', 'year-end trip home', { episodeId: 'h34-c' }) }, { observations: [lifts([6], LDB), runs([6], NOT)] }),
+    ],
+    exp: [
+      E('e1', 's1', NP, INV, 'A break under way is kept; no plan is valid.'),
+      E('e2', 's2', NP, INV, 'Two kept breaks, neither applied: no plan is valid.'),
+      E('e3', 's3', S('MODIFY'), DOM, 'All breaks named, all sessions between reported: a return.'),
+      E('e4', 's3', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e5', 's3', J('The three breaks stay separate and their days are never summed. Week 4 counts for running only and week 6 for strength only, so no week re-enters both sports; each sport resumes from what it executed in its own counting week, with no step it did not earn, and no dose is above the pre-trip level.'), DOM, 'Delta 6 section 1 read across a chain.'),
+      E('e6', 's3', RMC('LONG', 8, '<=', 2), DOM, 'The long run after the chain is not above the pre-trip long run.'),
+    ],
+    ia: ['A hybrid athlete with a work trip, a family event and a year-end trip, each a week or less, with one sport trained between each pair.',
+      'Keep the breaks separate; credit running from week 4 and strength from week 6 only; plan a short return for the last trip with each sport starting from its own executed reference.',
+      ['A slightly lower running entry because running has not been done for three weeks', 'A slightly lower strength entry because strength skipped week 4'],
+      ['Adding the breaks into one long stop and restarting both sports', 'Crediting running from week 6 or strength from week 4', 'Treating the chain as one return that ignores the trained weeks']] }); }
+
+// ---------- H35: 10K with a moderate break early (stated after it ended, no question pending), build, taper response, race, after ----------
+{ const c = cal('2026-11-09', 60); const race = c.d(10, 6);
+  add(35, { intent: 'A 17-day moving break is declared in a weekly review after it ended, with no question pending; the 10K build resumes, a flat quality session is reported in the taper week, then the race and the week after.',
+    tags: ['RACE_10K', 'TAPER', 'RACE_WEEK', 'POST_RACE', 'RETURN_MODERATE', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'SKIPPED_REVIEW', 'TIMEZONE', 'OFFERS', 'MIXED_EXECUTION'], oracle: DOM,
+    intake: intake({ id: 'ath-h35-mirela', asOf: '2026-11-07', start: '2026-11-09', weeks: 12, tz: 60, goals: { run: { kind: 'RACE', event: { kind: '10K', date: race, timeGoalMinutes: 52 } }, strength: 'RUNNING_SUPPORT' },
+      ath: { event: { kind: '10K', date: race, timeGoalMinutes: 52 }, runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 135, longestRunMinutes: 60, strengthDaysPerWeek: 2 },
+        knownRuns: [{ prescription: { modality: 'RUN', family: 'THRESHOLD', durationMinutes: 45, warmupMinutes: 15, cooldownMinutes: 10, work: { repetitions: 4, workMinutes: 5, recoveryMinutes: 2 } }, current: true, familiar: true, tolerated: true, observedAt: '2026-11-05' }],
+        equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [2, 4, 6], strengthDays: [0, 3], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 40, longRunDay: 6, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(4, 6, '19:00'), { kind: 'WEEKLY_REVIEW', interruption: brk(c.d(2, 0), c.d(4, 2), 'MOVING', 'moving to a new city, no training') },
+        { observations: [runs([0, 1]), lifts([0, 1], LDB), R(4, 'STRENGTH', 3, done({ loadsByPattern: LDB })), R(4, 'RUN', 4, done()), R(4, 'RUN', 6, NOT)], respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' }, note: 'First review of the program: weeks 0 and 1 were trained but not reviewed.' }),
+      st('s2', at(9, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([5, 6, 7, 8]), lifts([5, 6, 7, 8, 9], LDB),
+        B([9], 'RUN', ['QUALITY'], { completed: true, asPrescribed: true, response: { performance: 'UNDER', recovery: 'COMPATIBLE', effort: 'HARDER', nextDayFunction: 'NORMAL' } }), B([9], 'RUN', ['EASY', 'LONG', 'WALK', 'RECOVERY_EASY'], done())],
+        respondToOffers: { RUN_QUALITY_GRADUATION: 'ACCEPT' }, note: 'The taper-week quality session felt flat and hard.' }),
+      st('s3', at(10, 6, '16:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [B([10], 'RUN', ['RACE'], done()), B([10], 'RUN', ['EASY', 'QUALITY', 'RACE_TOUCH', 'SHAKEOUT'], done()), lifts([10], LDB)] }),
+    ],
+    exp: [
+      E('e1', 'GENERATE', PH(10, 'RACE_WEEK'), DOM, 'The race is in week 10.'),
+      E('e2', 's1', S('MODIFY'), DOM, 'A finished break declared in a review without a pending question is applied as a return (delta 2 section 1).'),
+      E('e3', 's1', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e4', 's1', RMC('LONG', 5, '<=', 1), DOM, 'After a 17-day stop the next long run is not above the pre-break long run.'),
+      E('e5', 's1', J('The 17-day move is applied as a moderate return; the Sunday long run not done after the move is a known miss, not made up, and the race date is kept.'), DOM, 'Return recipe and race window.'),
+      E('e6', 's2', S('KEEP', 'MODIFY'), DOM, 'One flat taper session is handled inside the plan.'),
+      E('e7', 's2', RP([10], 'RUN', ['RACE']), DOM, 'The race stays on its date.'),
+      E('e8', 's2', J('A flat, harder-than-planned quality session in the taper does not lead to extra work in race week; race week stays light.'), DOM, 'Taper response.'),
+      E('e9', 's3', PH(11, 'POST_EVENT', 'NEXT_BLOCK'), DOM, 'The week after the race is recovery or the next block.'),
+      E('e10', 's3', RA([11], 'RUN', ['QUALITY']), DOM, 'No hard running right after the race.'),
+    ],
+    ia: ['An intermediate runner who lost two and a half weeks to a move early in a 10K build, then trained well until one flat taper session.',
+      'Apply the move as a moderate return with a lower long run, rebuild to the race, keep the taper light after the flat session, run the race and recover the week after.',
+      ['Shorten the build target after the move', 'Replace the next taper quality session with easy running'],
+      ['Continuing the pre-move build as if nothing happened', 'Adding a make-up long run', 'Adding work in race week after a flat taper session']],
+    notes: DAYNOTE }); }
+
+// ---------- H36: long break of seven weeks; restart with four chosen run days; a short demonstration before the return ----------
+{ const c = cal('2026-11-10', -300);
+  add(36, { intent: 'After a seven-week project abroad with no training, an intermediate runner with four chosen run days returns with one easy 20-minute demonstration run.',
+    tags: ['RETURN_LONG', 'RESTART', 'BALANCED_HYBRID', 'H16', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'FREQ_HIGH', 'START_NON_MONDAY', 'TIMEZONE', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h36-tobias', asOf: '2026-11-08', start: '2026-11-10', weeks: 16, tz: -300, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 4, runMinutesPerWeek: 170, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4, 5], strengthDays: [1, 3], runMinutes: 45, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 80 } }),
+    timeline: [
+      st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([0, 1]), lifts([0, 1], LDB2)] }),
+      st('s2', at(9, 0, '07:00'), { kind: 'RETURN_AFTER_PAUSE', interruption: brk(c.d(2, 0), c.d(8, 5), 'WORK', 'seven-week project abroad, no training'),
+        currentDemonstration: { observedAt: c.ts(8, 6, '18:00'), sport: 'RUN', family: 'EASY', minutes: 20, completed: true, effort: 'CONVERSATIONAL', response: 'COMPATIBLE', ordinaryFunction: 'COMPATIBLE', nextDayFunction: 'NORMAL' } }),
+    ],
+    exp: [
+      E('e1', 's2', S('MODIFY'), DOM, 'A long nonclinical return is planned.'),
+      E('e2', 's2', V(VALID), DOM, 'Nothing remains pending.'),
+      E('e3', 's2', RA([9, 10], 'RUN', ['QUALITY']), DOM, 'No harder running in the first two weeks after seven weeks off.'),
+      E('e4', 's2', RMC('LONG', 10, '<', 1), DOM, 'The long run two weeks after the return is still below the pre-break long run.'),
+      E('e5', 's2', J('A seven-week stop is a long break: running restarts with short easy or walk/jog sessions, the extra chosen run days hold optional walks or rest rather than full runs, strength returns at a light entry; the 20-minute demonstration informs the start but does not restore the pre-break doses.'), DOM, 'Delta 8 section 4: a restart with four run days.'),
+    ],
+    ia: ['An intermediate runner who did nothing for seven weeks; one easy 20-minute run went fine.',
+      'Restart running gently from about the demonstrated level, with fewer real runs than chosen days and optional walks on the others, light strength, and build back over several weeks.',
+      ['Start from walk/jog for the first week despite the demonstration', 'Use three of the four chosen days for short easy runs'],
+      ['Resuming the pre-break plan', 'Taking the demonstration as proof of restored capacity', 'Quality sessions in the first two weeks']] }); }
+
+// ---------- H37: shortened, mixed and adverse runs; a confounded heat run with adverse recovery against a confounded trail run that went fine; repeated local fatigue ----------
+{ const c = cal('2026-11-12', -180);
+  const heat = (resp) => R(1, 'RUN', 2, { completed: true, asPrescribed: true, confounded: true, response: resp });
+  const tl = (heatResp) => [
+    st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [
+      R(0, 'RUN', 0, { completed: true, fraction: 0.6, response: { ...OK } }), R(0, 'RUN', 2, done({ confounded: true })), R(0, 'RUN', 4, done()), lifts([0], LDB2),
+      R(1, 'RUN', 0, done()), heat(heatResp), R(1, 'RUN', 4, NOT), R(1, 'STRENGTH', 1, done({ loadsByPattern: LDB2 })), R(1, 'STRENGTH', 5, { completed: true, firstExercises: 2, response: { ...OK } })],
+      note: 'Week 0: Thursday run cut short by a work call; Saturday long run on a hilly trail, fine. Week 1: Saturday long run in 34 C heat, then Monday run skipped.' }),
+    st('s2', at(2, 2, '20:00'), { kind: 'LOCAL_FATIGUE', signals: { region: 'LOWER' } }, { note: 'Thighs heavy after the long run.' }),
+    st('s3', at(3, 2, '20:00'), { kind: 'LOCAL_FATIGUE', signals: { region: 'LOWER' } }, { note: 'Same heaviness again after this week\'s long run.' }),
+  ];
+  const adverse = { performance: 'UNDER', recovery: 'ADVERSE', effort: 'HARDER', nextDayFunction: 'IMPAIRED' };
+  add(37, { intent: 'Shortened, missed and partial sessions; a long run in heat flagged as confounded but followed by adverse recovery and an impaired next day, against a confounded hilly long run that went fine; then lower-body fatigue reported twice.',
+    tags: ['SHORTENED_RUNS', 'MIXED_EXECUTION', 'ADVERSE_RESPONSE', 'FATIGUE_LOCAL', 'REPEATED_SIGNAL', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'START_NON_MONDAY', 'TIMEZONE', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h37-iolanda', asOf: '2026-11-10', start: '2026-11-12', weeks: 8, tz: -180, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 70, strengthDaysPerWeek: 1 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [0, 2, 4], strengthDays: [1, 5], runMinutes: 45, strengthMinutes: 40, longRunDay: 2, longRunMinutes: 80 } }),
+    timeline: tl(adverse),
+    exp: [
+      E('e1', 's1', S('KEEP', 'MODIFY'), DOM, 'An ordinary review with mixed facts.'),
+      E('e2', 's1', RMC('LONG', 2, '<=', 1), DOM, 'After a long run with adverse recovery and an impaired next day, the next long run is not longer.'),
+      E('e3', 's1', J('The heat run\'s adverse recovery and impaired next day stay adverse although the run is confounded (only its performance and effort are hard to read); the confounded trail run that went fine is not read as a warning; the shortened, skipped and partial sessions are known facts; nothing is progressed from the week.'), INV, 'Delta 2 section 4.'),
+      E('e4', 's2', S('KEEP', 'MODIFY'), DOM, 'Local fatigue adapts the plan.'),
+      E('e5', 's3', S('MODIFY'), DOM, 'A repeated lower-body fatigue signal changes the plan.'),
+      E('e6', 's3', J('The second lower-body fatigue report a week later is treated as a repeated signal: lower-body strength and running load are reduced at least as much as after the first, with no harder running added; without pain it is not a clinical route.'), DOM, 'Repeated signals weigh more than one.'),
+    ],
+    rel: [{ relation: 'VARIANT', variant: { timeline: tl({ ...OK }) }, compareAtStep: 's1', expect: 'NOT_LOWER_RUN_LOAD', rationale: 'If the heat run had recovered normally, the run load after the week-1 review could not be lower than with adverse recovery and an impaired next day.' }],
+    ia: ['An intermediate runner with an ordinary messy fortnight and a hot long run that hurt her recovery, then heavy thighs twice in a row.',
+      'Credit what was done, keep the heat run\'s adverse recovery as adverse, hold the long run, then cut lower-body load and keep running easy when the fatigue repeats.',
+      ['Ask how the athlete slept and hydrated before the next long run', 'Swap the next long run for two shorter easy runs'],
+      ['Discarding the adverse recovery because the run was hot', 'Treating the fine trail run as a warning', 'Progressing the long run after the heat run', 'Ignoring the repetition of the fatigue signal']],
+    notes: DAYNOTE }); }
+
+// ---------- H38: duplicates across devices, a contradiction, corrections, out-of-order arrival, a clock in the future, travel across time zones ----------
+{ const c = cal('2026-11-16', -300); const eu = (w, d, hm) => `${c.d(w, d)}T${hm}:00+01:00`;
+  const phoneW0 = R(0, 'RUN', 1, done({ eventId: 'h38-w0-tue-phone', observedAt: eu(0, 1, '07:10'), source: { provider: 'phone-app', quality: 'MANUAL' } }));
+  add(38, { intent: 'An athlete living at UTC-5 travels to Europe: reports carry +01:00 clocks, a phone and a watch duplicate, a phone and watch contradiction, an in-time and a late correction, a report that arrives out of order, a device clock in the future and an exact re-send.',
+    tags: ['DUPLICATE_SOURCES', 'CONTRADICTION', 'CORRECTION', 'OUT_OF_ORDER', 'CLOCK_SKEW', 'TIMEZONE', 'TRAVEL', 'BALANCED_HYBRID', 'H8', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_NOVICE', 'WEARABLE_FULL', 'NON_RACE'], oracle: INV,
+    intake: intake({ id: 'ath-h38-sunniva', asOf: '2026-11-14', start: '2026-11-16', weeks: 8, tz: -300, goals: { run: 'REGULAR', strength: 'GENERAL' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'NOVICE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 140, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'],
+        wearableCapabilities: { provider: 'wristwatch', activityAvailable: true, heartRateAvailable: true, exerciseIdentityAvailable: false, setsRepsLoadAvailable: false, subjectiveEffortAvailable: false, completeness: 'FULL', historyWeeks: 0 } },
+      schedule: { runDays: [1, 3, 5], strengthDays: [0, 3], runTurn: 'AM', strengthTurn: 'PM', runMinutes: 50, strengthMinutes: 40, longRunDay: 5, longRunMinutes: 75 } }),
+    timeline: [
+      st('s1', at(0, 6, '21:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [phoneW0, R(0, 'RUN', 1, done({ eventId: 'h38-w0-tue-watch', observedAt: eu(0, 1, '07:10'), source: { provider: 'wristwatch', activityId: 'ww-55120', quality: 'WEARABLE_FULL' } })),
+        R(0, 'RUN', 5, { completed: true, minutes: 70, response: { ...OK }, eventId: 'h38-w0-long' }), lifts([0], LDB)], note: 'In Europe all week; the Thursday run is not synced yet.' }),
+      st('s2', at(1, 6, '21:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [
+        R(1, 'RUN', 1, { completed: true, minutes: 45, response: { ...OK }, eventId: 'h38-w1-tue' }),
+        R(1, 'RUN', 1, { completed: true, minutes: 35, response: { ...OK }, eventId: 'h38-w1-tue-fix', correctionOf: 'h38-w1-tue', correctedAt: c.ts(1, 6, '20:50') }),
+        R(1, 'RUN', 3, { completed: false, eventId: 'h38-w1-thu-phone', source: { provider: 'phone-app', quality: 'MANUAL' } }),
+        R(1, 'RUN', 3, { completed: true, minutes: 40, response: { ...OK }, eventId: 'h38-w1-thu-watch', observedAt: eu(1, 3, '18:30'), source: { provider: 'wristwatch', activityId: 'ww-55188', quality: 'WEARABLE_FULL' } }),
+        R(1, 'RUN', 5, done({ eventId: 'h38-w1-long', observedAt: `${c.d(2, 0)}T08:00:00-05:00`, source: { provider: 'wristwatch', activityId: 'ww-55201', quality: 'WEARABLE_FULL' } })),
+        R(0, 'RUN', 3, done({ eventId: 'h38-w0-thu', observedAt: eu(0, 3, '07:05'), reportedAt: c.ts(1, 6, '20:55') })), lifts([1], LDB)],
+      note: 'The watch clock jumped ahead: the Saturday long run is stamped Monday morning; the week-0 Thursday run finally syncs.' }),
+      st('s3', at(2, 6, '21:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [runs([2]), lifts([2], LDB),
+        R(1, 'RUN', 3, { completed: true, minutes: 40, response: { ...OK }, eventId: 'h38-w1-thu-fix', correctionOf: 'h38-w1-thu-phone', correctedAt: c.ts(2, 6, '20:40') }),
+        R(0, 'RUN', 5, { completed: true, minutes: 55, response: { ...OK }, eventId: 'h38-w0-long-fix', correctionOf: 'h38-w0-long', correctedAt: c.ts(2, 6, '20:45') }), phoneW0] }),
+    ],
+    exp: [
+      E('e1', 's1', J('The phone and watch reports of the week-0 Tuesday run are one session, counted once, at its +01:00 clock.'), INV, 'A second device never doubles a session; explicit offsets are honoured.'),
+      E('e2', 's2', J('The phone "not done" and watch "done 40 minutes" reports of the week-1 Thursday run are not both credited and neither is silently chosen: the coach asks, holds or keeps the session conflicted; the Saturday report stamped after the decision is not treated as a future session; the week-0 Thursday run arriving late is recorded without rewriting week 0; Tuesday counts as the corrected 35 minutes.'), INV, 'Contradiction, clock skew, out-of-order arrival and in-time correction.'),
+      E('e3', 's3', S('KEEP', 'MODIFY'), DOM, 'Once the contradiction is corrected the plan continues.'),
+      E('e4', 's3', J('After the correction the week-1 Thursday run counts as 40 minutes; the week-0 long run counts as 55 minutes for future dosing without rewriting past decisions; the re-sent phone report adds nothing.'), INV, 'Corrections change the future; re-sends record nothing.'),
+    ],
+    rel: [{ relation: 'PERMUTE_OBSERVATIONS', rationale: 'Report order inside a review must not matter.' }, { relation: 'DUPLICATE_SECOND_SOURCE', rationale: 'A further device copy must not matter.' }, { relation: 'RESEND', rationale: 'Re-sending changes nothing.' }, { relation: 'CALENDAR_SHIFT', rationale: 'A shifted calendar keeps the same reading.' }],
+    ia: ['Real device data while travelling: two devices, a disagreement, a wrong clock and late syncs.',
+      'Count each session once at its own clock, keep the conflicting Thursday out of the record until it is resolved (or ask), ignore the impossible future stamp as a time without dropping the run, use corrections for the future only, and ignore the re-send.',
+      ['HOLD the week-1 review until the Thursday conflict is resolved', 'Ask the athlete which Thursday report is right'],
+      ['Crediting both Thursday reports or picking one silently', 'Counting the duplicate or the re-send', 'Planning a session at the future clock', 'Rewriting week 0 from late reports']],
+    notes: 'All three steps are routine reviews, so every chosen day is fixed. The future stamp (Monday 08:00, UTC-5) is within the date window.' }); }
+
+// ---------- H39: learning with consent (pattern versus noise), then consent revoked ----------
+{ const c = cal('2026-11-14', 0); const easyLong = (w) => R(w, 'RUN', 1, { completed: true, asPrescribed: true, response: { performance: 'OVER', recovery: 'COMPATIBLE', effort: 'EASIER', nextDayFunction: 'NORMAL' } });
+  const week = (w, extra = []) => [easyLong(w), R(w, 'RUN', 3, done()), R(w, 'RUN', 5, done()), ...extra];
+  const tl = [
+    st('s1', at(1, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [...week(0), easyLong(1), R(1, 'RUN', 3, { completed: true, asPrescribed: true, response: { performance: 'UNDER', recovery: 'COMPATIBLE', effort: 'HARDER', nextDayFunction: 'NORMAL' } }), R(1, 'RUN', 5, done()), lifts([0, 1], LDB)], note: 'Week-1 Tuesday felt hard after a bad night.' }),
+    st('s2', at(3, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { observations: [...week(2), ...week(3), lifts([2, 3], LDB)] }),
+    st('s3', at(5, 6, '19:00'), { kind: 'WEEKLY_REVIEW' }, { learningConsent: false, observations: [...week(4), ...week(5), lifts([4, 5], LDB)], note: 'The athlete turns learning off.' }),
+  ];
+  add(39, { intent: 'With learning consent, every long run is reported easier than planned (a repeated pattern) while one hard Tuesday run is noise; consent is later revoked.',
+    tags: ['LEARNING_PATTERN', 'LEARNING_NOISE', 'CONSENT_REVOKED', 'NO_CONSENT', 'BALANCED_HYBRID', 'H12', 'RUN_EXP_INTERMEDIATE', 'STR_EXP_INTERMEDIATE', 'START_NON_MONDAY', 'SKIPPED_REVIEW', 'NON_RACE'], oracle: DOM,
+    intake: intake({ id: 'ath-h39-florin', asOf: '2026-11-12', start: '2026-11-14', weeks: 12, consent: true, goals: { run: 'REGULAR', strength: 'MAINTAIN' },
+      ath: { runExperience: 'INTERMEDIATE', strengthExperience: 'INTERMEDIATE', recent: { runDaysPerWeek: 3, runMinutesPerWeek: 150, longestRunMinutes: 70, strengthDaysPerWeek: 2 }, equipment: ['DUMBBELLS', 'BODYWEIGHT'] },
+      schedule: { runDays: [1, 3, 5], strengthDays: [2, 4], runMinutes: 45, strengthMinutes: 40, longRunDay: 1, longRunMinutes: 90 } }),
+    timeline: tl,
+    exp: [
+      E('e1', 's1', S('KEEP', 'MODIFY'), DOM, 'Ordinary review.'),
+      E('e2', 's1', J('The single hard Tuesday run after a bad night is noise: it does not lower the plan or start a learned adjustment.'), DOM, 'Noise should not change decisions.'),
+      E('e3', 's2', S('KEEP', 'MODIFY'), DOM, 'Ordinary review.'),
+      E('e4', 's2', J('With consent, the repeated easier-than-planned long-run response may lead to a modest, bounded adjustment of the long-run dose; any adjustment stays within normal progression limits.'), DOM, 'Learning within limits.'),
+      E('e5', 's3', J('After consent is revoked no new learned adjustment is applied; the plan follows the facts with the unlearned rules.'), INV, 'No learning without consent.'),
+    ],
+    rel: [{ relation: 'CONSENT_OFF', rationale: 'Without consent no learned adjustment may appear.' }, { relation: 'VARIANT', variant: { intakePatch: { learningConsent: false } }, compareAtStep: 's2', expect: 'NOT_HIGHER_RUN_LOAD', rationale: 'Without consent the run load after s2 cannot be higher than with a consented learned adjustment.' }],
+    ia: ['An intermediate runner whose long runs always feel easier than planned; one bad Tuesday is just a bad night.',
+      'Ignore the one-off; with consent, nudge the long run modestly after the pattern repeats; once consent is revoked, stop learning and plan from the facts alone.',
+      ['Make no learned adjustment at all and progress normally', 'Ask the athlete whether the long runs feel too easy'],
+      ['Lowering the plan after one hard run', 'A large jump in long-run duration from the pattern', 'Keeping a learned adjustment active after consent is revoked']],
+    notes: 'Every step is a routine review, so the chosen days are fixed.' }); }
+
+// ---------- assembly ----------
+{ const ids = new Set();
+  for (const k of cases) {
+    if (ids.has(k.caseId)) throw new Error('duplicate case ' + k.caseId); ids.add(k.caseId);
+    const steps = new Set(k.timeline.map((s) => s.stepId));
+    if (steps.size !== k.timeline.length) throw new Error('duplicate step id in ' + k.caseId);
+    for (const e of k.expectedDomainProperties) if (e.atStep !== 'GENERATE' && !steps.has(e.atStep)) throw new Error(`${k.caseId} ${e.expectationId} names a missing step`);
+    for (const r of k.metamorphicRelations) if (r.compareAtStep && r.compareAtStep !== 'GENERATE' && !steps.has(r.compareAtStep)) throw new Error(`${k.caseId} relation names a missing step`);
+  } }
+cases.sort((a, b) => a.caseId.localeCompare(b.caseId));
+const text = JSON.stringify({ corpusRevision: 'R7D-FINAL-2', cases }, null, 1) + '\n';
+fs.writeFileSync(path.join(OUT_DIR, 'R7D_FINAL_HOLDOUT_2.json'), text);
+console.log(JSON.stringify({ cases: cases.length, steps: cases.reduce((n, k) => n + k.timeline.length, 0), bytes: Buffer.byteLength(text), sha256: crypto.createHash('sha256').update(text).digest('hex') }));
