@@ -1,0 +1,380 @@
+{
+  "record": "SSCTR-R7D-P4-FINAL-HOLDOUT-r1",
+  "role": {
+    "agent": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0",
+    "skill": "sports-science-review 1.0.0",
+    "evidenceProtocol": "EVIDENCE_PROTOCOL 1.0.0",
+    "instance": "fresh instance, Phase 4 domain judge; did not author the runtime, harness, instruments, corpus, or any earlier R7-D record",
+    "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY (nonclinical only). No human credentials, no human or empirical validation, no clinical judgment, no runtime sovereignty, no new number.",
+    "model": "claude-opus-5-5 (inherited from the caller)",
+    "dispatch": "Task-routed subagent of the coordinator; no specialist delegation; no access expansion.",
+    "date": "2026-11-08"
+  },
+  "inputsVerified": {
+    "freezeRecord": {"path": "CoachingCore/r7/d/RUNTIME_FREEZE_R7D_5.json", "sha256": "956da5c23c3499fd85af532e384e9302be15158fbc85a309e3d50c8721456dd8", "match": true},
+    "prereg7": {"path": "PREREGISTRATION_R7D_7.md", "sha256": "2ccceb18ab5f7fde2b9479b75dc927f0618ed29b3205f2fb8da3bc59cec23ab6", "match": true},
+    "h1Corpus": {"path": "final/R7D_FINAL_HOLDOUT.json", "sha256": "2f2a5d270c96117dfa5a8ef3c9b8a8ba2d380c7ec27c0835a7af8a4834b63b18", "match": true},
+    "h2Corpus": {"path": "final/generated/R7D_GENERATED_FINAL.json", "sha256": "b69fa543c7bac184c7f3cc0af67a2d6b33f6adf4b368e881a16a9cc752edba69", "match": true},
+    "h1RunReport": {"path": "final/evaluation/RUN_REPORT.json", "sha256": "c6278b293b0ff87e9b8ecc15236e3bb5de0720b303b1b2264a3fac6585f77d62", "match": true},
+    "h2RunReport": {"path": "final/generated/evaluation/RUN_REPORT.json", "sha256": "d5bcbd100893b84b8e33af5871f6d9bf9add6d7ee9c209a06185f89ed56192a0", "match": true},
+    "read": ["governance/agents/sports-science-reviewer/CONSTITUTION.md", ".agents/skills/sports-science-review/SKILL.md", "CURRENT_MISSION.md (R7-D sections)", "canon/CANONICAL_INDEX.md (head, authority filter)", "phase4/JUDGMENT_REQUEST_PHASE4.md", "phase4/AUTHORIZATION_PHASE4.md", "phase4/AUTHOR_REPORT_PHASE4.md", "PREREGISTRATION_R7D.md and _2 to _7 (all)", "final/evaluation/SUMMARY.md, DOMAIN_PACKET.md (all 35 cases), RUN_REPORT.json", "final/generated/evaluation/SUMMARY.md, DOMAIN_PACKET.json (P06 not-evaluable cases)", "CoachingCore/r6/PROGRAM_POLICY_R6.json (run.singleRunCeiling, run.restart, return, establishment, event)", "CoachingCore/r7/c/R7C_HANDOFF.md (C3, R4, R5, CC-F05, B-family)", "phase34/policy/SSCTR_P34_DECISION_R7D.json (BR-Q1, BR-Q3, BR-Q4)", "author/INTERFACE_ONLY_R7D.md and INTERFACE_DELTA_R7D_2.md (facts, machine loads)", "harness/lib/properties-8.mjs (P03, P06), harness/lib/metamorphic.mjs (carriers), harness/lib/client.mjs (fact expansion)"],
+    "notRead": ["final/judgment/quality/ (by rule)"]
+  },
+  "literatureAccess": {
+    "tools": "WebSearch and WebFetch available and used; PubMed Central full text reachable.",
+    "queries": [
+      "Frandsen Nielsen 2025 BJSM single running session spike longest run 30 days injury 5200 runners",
+      "Bosquet 2007 effects of tapering on performance meta-analysis",
+      "Murlasits 2018 concurrent training sequence meta-analysis"
+    ],
+    "sources": [
+      {"id": "S1", "citation": "Frandsen JSB, et al. How much running is too much? Identifying high-risk running sessions in a 5200-person cohort study. Br J Sports Med 2025;59(17):1203-1210. doi:10.1136/bjsports-2024-109380. PMC12421110.", "access": "FULL_TEXT (PMC)", "used_for": "Single-session spike relative to the longest run in the previous 30 days; a zero denominator is 'not possible to calculate' (NP state), not a zero ceiling; observational; mostly experienced male adults; HRR NP 0.80 (0.40-1.61), not significant."},
+      {"id": "S2", "citation": "Bosquet L, Montpetit J, Arvisais D, Mujika I. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc 2007;39(8):1358-1365. PMID 17762369.", "access": "ABSTRACT_ONLY", "used_for": "Taper coherence (about two weeks, volume reduced 41-60%, intensity and frequency kept). Competitive athletes; not individual prediction."},
+      {"id": "S3", "citation": "Murlasits Z, Kneffel Z, Thalib L. The physiological effects of concurrent strength and endurance training sequence: a systematic review and meta-analysis. J Sports Sci 2018;36(11):1212-1219. PMID 28783467.", "access": "ABSTRACT_ONLY", "used_for": "Order on a shared day: strength first favours lower-body 1RM gains; no effect of order on VO2max."}
+    ],
+    "limits": "Two of three sources were read at abstract level only; none is used as the sole basis of a prescriptive rule. Every blocking or non-blocking conclusion below rests on the approved authorities (R6-POLICY-5 policy text, SSCTR D49, BR-Q readings, F03B-MACHINE-STEP-r1, the registered pre-registrations); the literature only qualifies applicability. No number is added."
+  },
+  "verdict": "INVALID_HOLDOUT",
+  "verdictBasis": "Nine registered coverage items are not met by valid, evaluable H1 cases after the four corpus errors (PREREG-2 Δ9 x2, PREREG-3 Δ6 x1, PREREG-5 Δ3 x1, PREREG-6 Δ5 x2, Δ18 x2, Δ29 x1). Each clause states that a missing item makes the holdout INVALID_HOLDOUT, replaced by a new and independent corpus. Independently of the invalidity, the valid cases show one confirmed structural domain blocker (SSCTR-P4-F01, GENERALIZATION_BLOCKER): had the holdout been valid, the domain side would be NOT_READY. No SCIENTIFIC_BLOCKER and no UNSAFE step.",
+  "blockingFindings": [
+    {"id": "SSCTR-P4-F01", "class": "GENERALIZATION_BLOCKER", "line": "After a moderate or long nonclinical return, strength exercises the athlete never executed before the break bypass the SSCTR D49 return (entry 1 set at RIR >= 4, step 2 at most min(ceiling-1, 2) sets, no credited block): F13 plans 1x10 at RIR3 then 3x10 / 3x10 / 2x10; reproduced on a different athlete (witness W-D49-A: up to 4x8 in step 2)."}
+  ],
+  "conditions": [
+    {"id": "CND-1", "text": "Replace H1 with a new, independent corpus (PREREG-1 §4.5, §7). Its brief must make the nine missing items reachable through the interface: a last-week UNREPORTED_TRAINING answer before the final sessions elapse (CARRIER_HOLD); two direct UNREPORTED_TRAINING answers; two clinical-flag or pain-substitution breaks with clearance and a later plain review; a re-entry week with explicit loads, reps and RIR on every strength row (BR-Q4.3), including ESTABLISH rows; race weeks whose runs are only touch, shakeout and race, with the touch done at half, the race missed, and adverse strength and shakeout; optional sessions actually planned in a re-entry week; session references only to sessions the plan in force holds."},
+    {"id": "CND-2", "text": "SSCTR-P4-F01 needs a runtime correction under its own Founder authorization before the next holdout: in a return-entry week every strength exposure at the entry dose (strengthEntryWeek), and for an exercise with no executed pre-break exposure the D49 steps with the normal count as the ceiling and no block credited for unexecuted weeks; directed tests on F13's shape and the witness. No number changes."},
+    {"id": "CND-3", "text": "The automated FAILs are ruled by the Quality judge (criterion 1). My domain readings for them (F07 P06, F12 CARRIER_CLINICAL, F13 and F21 P03) are given below; any unit Quality confirms as a runtime violation blocks on its own."},
+    {"id": "CND-4", "text": "Consumer conditions that the valid cases rely on stay binding: C3 with R5 (reports sent with an eligibility clinical flag are re-sent or asked again after clearance: F21), C2 (a REQUIRES_RECONCILIATION projection is never presented as a prescription: F21 week 5, F12 carried arm), P12 same-turn confirmation (H2, 587 observations), G03 wording of the reason-screen question (F15, F30) and of the R4 HOLD (F04)."}
+  ],
+  "residualLimitations": [
+    "Provisional internal software judgment; no human, clinical or empirical validation; V1_COACHING_AUTHORITY_READY is unchanged by this gate.",
+    "H1 gives no evidence on all-sport re-entry (TRAINING_AFTER), on race-week re-entry rules (touch, race, shakeout), on CARRIER_HOLD, on consented learning influence, or on dumbbell load progression (no case logged a dumbbell load).",
+    "F30's intended mechanisms (mid-week return dosing, own-return strength, late lift with start time) were never exercised: its return stayed on an unanswered reason question.",
+    "The D49 witness uses F14's intake with a synthetic timeline, run only in scratch on R7D-FREEZE-5 and R7D-FREEZE-4 bytes; it is a mechanism witness, not an incidence estimate.",
+    "Literature read at abstract level for S2 and S3; S1 full text. Applicability limits recorded per claim."
+  ],
+  "findings": [
+    {
+      "id": "SSCTR-P4-F01",
+      "class": "GENERALIZATION_BLOCKER",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F13"],
+      "steps": ["R7D-F13:s2", "R7D-F13:s3"],
+      "evidence": "F13: a novice (strength NOVICE, run NOVICE) executed only week 0's practice rows (sit-to-stand, wall-pushup, prone-row-practice 1x5); her break ran 2026-11-24 to 2027-01-09, before the first exposure to box-squat-bodyweight, incline-push-up and band-row (week 1 day 3, 2026-11-26). s2 applies a long nonclinical return (47 days, REESTABLISH, VALID). The return state (returnStep 0) is attached only to the three practice exercises; the three planned exercises carry no return state (stateTrace week 9: box-squat-bodyweight status ESTABLISHED, source PLANNED_ESTABLISHMENT, blocksDone 1, no returnStep). Week 8 (return-entry week) prescribes box-squat-bodyweight, incline-push-up and band-row 1x10 at RIR3 (strengthEntryWeek requires the entry dose at RIR >= 4). s3 (week-8 review, entry week executed) is KEEP VALID with week 9 at box-squat-bodyweight 3x10, incline-push-up 3x10, band-row 2x10 at RIR3; D49 step 2 is max(1, min(ceiling-1, 2)) sets with the normal count as ceiling for an exercise with no executed pre-break count: 2, 2 and 1 sets. Witness W-D49-A (scratch, F14's intake, break 2026-12-14 to 2027-01-08 declared at the week-3 review, then an executed week): week 4 strength at 1 set RIR3; week 5 glute-bridge 4x8, reverse-lunge 3x10, dead-bug 3x10, others 2 sets at RIR3. Control W-D49-B (same athlete, week 0 executed, break 2026-12-21 to 2027-01-08): week 4 at 1 set RIR4 and week 5 at 1 set, exactly D49. W-D49-A and W-D49-B give identical outputs on R7D-FREEZE-4 bytes (8bbbb8e), so the mechanism predates the Phase 3.4 and 3.5 changes. Not inside any registered envelope or disclosure: D49-LIMITS (R7-A) records only the slower-than-normal side, and the R7-A cycle-2 fix covers exercises first set up during a return, not exercises planned before the break and never executed.",
+      "attribution": "RUNTIME",
+      "structural": true,
+      "structuralBasis": "1 base case (F13) with the mechanism reproduced by the judge in a minimal witness on a different athlete (W-D49-A), with a control (W-D49-B) that isolates the cause (PREREG-1 §3).",
+      "rubricClass": "SUBOPTIMAL",
+      "cause": "A return's strength entry and step limits key on an executed pre-break exposure of the exercise; an exercise only planned before the break falls through, and its credited development blocks (never executed) raise its set count after the return.",
+      "concreteImpact": "Bodyweight and dumbbell rows at RIR3, one to two sets above the approved return steps in the week after the entry week, and the entry week one RIR closer to failure than the approved entry. No run dose is affected; P08 (run) passes.",
+      "evidenceStatus": "Authority conformance (SSCTR D49 and strengthEntryWeek, approved R6-POLICY-5 text): WELL_SUPPORTED as a deviation. Magnitude of harm: PLAUSIBLE_BUT_UNCERTAIN (low absolute load, healthy adults); this is why it is SUBOPTIMAL and not UNSAFE.",
+      "coveringDisclosure": null,
+      "blocking": true,
+      "blockingBasis": "PREREG-1 §4.4: SUBOPTIMAL attributable to the runtime, in a valid case, not corpus ambiguity, within the authority the runtime must cover (nonclinical return); structural, hence GENERALIZATION_BLOCKER (FAILURE_TAXONOMY)."
+    },
+    {
+      "id": "SSCTR-P4-O01",
+      "class": "HARNESS_GAP (proposed to the Quality judge)",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F07"],
+      "steps": ["R7D-F07:GENERATE", "R7D-F07:s1"],
+      "evidence": "The four P06 FAIL units in F07 (week 0 EASY 15 x3, week 1 EASY 20 at s1, each against ceiling 5) take the intake longestRunMinutes 0 (asOf 2026-11-28) as a completed run of 0 minutes. Domain reading: a stated longest run of 0 minutes is no completed run. PREREG-1 P06 says 'Sem referencia na janela: NOT_EVALUABLE'; the policy's singleRunCeiling says that with no completed run in the window the reviewed entry (return.entryRunMinutes 15) is the ceiling; and the evidence the ceiling rests on (S1) classes a zero denominator as not calculable, not as a zero ceiling. The athlete (once intermediate, 0 weekly minutes after a 14-week nonclinical WORK pause) is classed RESTART by the reviewed RUN_CLASS_THRESHOLDS binding and starts at the R6 entry (EASY 15). The week-1 EASY 20 at s1 rests on an unreported restart week 0: CC-F05 (C7, disclosed).",
+      "attribution": "AUTHORITY_SCOPE / instrument reading",
+      "structural": false,
+      "domainResult": "GENERATE week 0 at the entry dose: conforms to the policy's no-reference clause. s1 week 1: inside CC-F05. If Quality confirms the HARNESS_GAP, the four units return as not evaluated, never as a pass.",
+      "rubricClass": "ACCEPTABLE_ALTERNATIVE (author preferred walk/jog; the approved RESTART recipe gives continuous 15-minute easy runs)",
+      "coveringDisclosure": "CC-F05 (R7C_HANDOFF C7) for the s1 unit",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O02",
+      "class": "HARNESS_GAP (proposed to the Quality judge)",
+      "origin": "NEW",
+      "cases": ["R7D-F12"],
+      "steps": ["R7D-F12:s2", "R7D-F12:s3"],
+      "evidence": "The CARRIER_CLINICAL unit compares the first eligible decision, which is s3, a week after the answer. In the carried arm week 5 stays under the clinical route and the s1 projection (EASY 40, EASY 35, LONG 60); s3's bulk facts 'each week 5 RUN/STRENGTH asPrescribed' resolve against each arm's own plan, so the carried athlete is reported to have run 40/35/60 and the direct athlete 35/35/46. The two arms do not receive the same facts. Rerun in scratch with s3's facts made explicit and identical in both arms (35/35/46 and the same strength sets): the carried arm plans week 6 LONG 50 and dead-bug 2x10, the direct arm LONG 51 and 3x12; validity equal (VALID); the difference comes from week 5 elapsing under different plans (clinical route vs applied answer), which no runtime could avoid. Neither arm exceeds the single-run ceiling for its own facts (identical facts: ceiling 51).",
+      "attribution": "instrument premise (same facts at the comparison point not met)",
+      "structural": false,
+      "domainResult": "No failure to apply the recorded answer is shown; the carried arm is slightly more conservative. If Quality confirms the HARNESS_GAP the unit returns as not evaluated. CARRIER_CLINICAL > 0 still rests on F21's unit.",
+      "coveringDisclosure": "C2 (the carried arm's week 5 is REQUIRES_RECONCILIATION and never a prescription)",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O03",
+      "class": "POLICY_QUESTION (non-safety)",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F13", "R7D-F11"],
+      "steps": ["R7D-F13:s1", "R7D-F11:s1"],
+      "evidence": "F13 s1: after seven weeks with no report, the week-7 review is MODIFY VALID with week 8 at EASY 15, EASY 15, LONG 15 and no question. The runtime's G01 rule (r6-composition unknownRunWindow) asks only when the reviewed entry would trim a planned run or the peaks decide the week; here the held doses equal the entry, so nothing is asked. The same doses follow the athlete's later answer (s2: EASY 15 x3). P03(d) reports RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING (13 runs). F11 s1: final-week KEEP 'record outcomes for the next program', no question, nothing left to prescribe.",
+      "attribution": "AUTHORITY_SCOPE",
+      "structural": false,
+      "domainResult": "Dose impact nil (the entry floor, equal to the answered return). The only consequence is that the reason for a long silence (training, a nonclinical stop, or a clinical one) is not screened until the athlete reports. Question for the SSCTR policy owner with the PCG: should a long silence trigger the question even when the dose cannot depend on it? Whether P03(d)'s text, broader than the reviewed G01 rule, makes this a runtime violation is the Quality judge's ruling (criterion 1).",
+      "rubricClass": "ACCEPTABLE_ALTERNATIVE",
+      "coveringDisclosure": null,
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O04",
+      "class": "OBSERVATION (domain reading for the Quality judge)",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F21"],
+      "steps": ["R7D-F21:s1", "R7D-F21:s2", "R7D-F21:s3"],
+      "evidence": "s1 (eligibility CLINICAL with a travel break) records only the INTERRUPTION_DECLARED row; the three week-2 reports it received are not recorded (R5: an eligibility clinical flag returns before reports are read). s2 (after clearance) asks UNREPORTED_TRAINING for 8 sessions from 2027-01-31 to 2027-02-21, including the two week-2 runs reported at s1. s3's P03(d) unit and P06 not-evaluable unit concern w5-run-d6, LONG 65 on 2027-03-07: the session the same review reports done at 65 minutes; the athlete ran week 5 from s2's REQUIRES_RECONCILIATION projection (C2).",
+      "attribution": "consumer and disclosed runtime residual",
+      "structural": false,
+      "domainResult": "No prescriptive content in the s3 unit (an executed session of the review day). The re-asking at s2 is R5 / C3, disclosed.",
+      "coveringDisclosure": "R5 and C3 (R7C_HANDOFF); C2",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O05",
+      "class": "OBSERVATION",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F15", "R7D-F30"],
+      "steps": ["R7D-F15:s1", "R7D-F15:s2", "R7D-F30:s2", "R7D-F30:s3", "R7D-F30:s4"],
+      "evidence": "screenInterruptionReason (scratch probe): 'trip to see family, back next Wednesday' -> ASK, AMBIGUOUS_REASON, matched 'back'; 'two-day off-site' -> ASK, matched 'off'. 'home next Wednesday' and 'two-day offsite' -> NONCLINICAL. The approved reasonScreen reads body parts and ambiguous words as ASK.",
+      "attribution": "AUTHORITY_SCOPE (approved lexicon rule), corpus did not answer",
+      "structural": false,
+      "domainResult": "Fail-closed (no dose, no clinical route); a usability cost that also kept F15's and F30's breaks unapplied for the rest of the corpus. Route to the interface and G03 owners: say which word was ambiguous and offer a one-step clarification.",
+      "coveringDisclosure": "reasonScreen policy text (ambiguous words are ASK)",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O06",
+      "class": "KNOWN_DISCLOSED_RESIDUAL",
+      "origin": "KNOWN_R7C_RESIDUAL",
+      "cases": ["R7D-F04"],
+      "steps": ["R7D-F04:s2"],
+      "evidence": "A schedule change in the program's last week returns HOLD REQUIRES_RECONCILIATION with the reason 'Malformed review facts: Cannot read properties of undefined (reading 'sessions')'. Nothing is applied, nothing is added.",
+      "attribution": "RUNTIME (disclosed)",
+      "structural": false,
+      "domainResult": "Domain-safe; the reason text exposes an internal error message and is a G03 and Engineering wording item.",
+      "coveringDisclosure": "HOLD do R4 (PREREG-1 §6; R7C_HANDOFF R4)",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O07",
+      "class": "KNOWN_DISCLOSED_RESIDUAL",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F21", "R7D-F28"],
+      "steps": ["R7D-F21:s3", "R7D-F28:s4"],
+      "evidence": "F21 s3 applies the kept 6-day break after a fully executed week 5 (41/40/65) and plans week 6 at EASY 35/35, LONG 55 and strength 1x8. F28 s4 re-reads the named correction and restarts the moderate entry for week 6 (EASY 15/15, LONG 20) although week 5's entry was executed.",
+      "attribution": "RUNTIME (disclosed families)",
+      "structural": false,
+      "domainResult": "Conservative cost of one week, never a dose above the executed record.",
+      "coveringDisclosure": "B1-B4 (PREREG-1 §6, C7; PREREG-5 Δ7) and SSCTR-P35R2-O01 (PREREG-7 Δ40)",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O08",
+      "class": "CORPUS_ERROR / AMBIGUITY (interface)",
+      "origin": "NEW",
+      "cases": ["R7D-F11", "R7D-F16", "R7D-F17", "R7D-F29", "R7D-F33"],
+      "steps": ["R7D-F11:s2", "R7D-F16:s2", "R7D-F16:s3", "R7D-F17:s2", "R7D-F29:s2", "R7D-F33:s2"],
+      "evidence": "(a) asPrescribed on a KNOWN machine row copies the prescribed load and ignores loadsByPattern (client.mjs): F16's 150 kg / 55 kg and F17's 130 kg / 115 kg own settings at s2 never reached the runtime. (b) asPrescribed on an ESTABLISH or last-logged row carries no load: F29's db-calf-raise and bulgarian-split-squat-db rows had no load, so by BR-Q4.3 strength did not count and the 'whole week in both sports' became a running-only week (OWN_RETURN). (c) The UNREPORTED_TRAINING answer shorthand needs a pending question: F11 s2's run answer (80 % of planned time, week 3 not done) was not delivered (ANSWER_WITHOUT_PENDING_QUESTION). (d) The race-week make-up is the coach's: F33's half-marathon race week had gated EASY runs and no touch or shakeout, so the adverse shakeout never existed.",
+      "attribution": "CORPUS / AMBIGUITY",
+      "structural": false,
+      "domainResult": "The runtime's decisions on the facts actually delivered are judged in the rubric; the undelivered intentions are NOT_EVALUABLE_DOMAIN and do not count for coverage.",
+      "coveringDisclosure": "Author interface gaps 1, 3, 4, 6 (manifest interfaceGapsNoted)",
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O09",
+      "class": "CORPUS_ERROR",
+      "origin": "NEW",
+      "cases": ["R7D-F22", "R7D-F32", "R7D-F33", "R7D-F34"],
+      "steps": ["R7D-F22:s1", "R7D-F32:s3", "R7D-F33:s3", "R7D-F34:s4"],
+      "evidence": "F22 s1 references a SQUAT exercise in w1-str-d2, a STRENGTH_UPPER session (the squat is in day 0). F32 s3, F33 s3 and F34 s4 reference a run or a strength session on a post-event day the plan in force holds as REST_BY_DESIGN (week 5 day 6, week 4 day 6, week 7 day 4). Confirmed as corpus errors (PREREG-1 §7, 'referencia de sessao sem correspondencia no plano'); none is a runtime loss: a rest-by-design day in a post-event week is a defensible composition.",
+      "attribution": "CORPUS",
+      "structural": false,
+      "domainResult": "The four cases leave the numerator and coverage. What stays readable: F22 onboarding only; F32 s1-s2, F33 s1-s2, F34 s1-s3 (read below as information, not evidence). 4/35 = 11.4 %, above the 10 % ceiling the incorporated FAILURE_TAXONOMY proposes for INTEGRITY_BLOCKER; that ceiling is marked 'proposta', so its force is for the Quality judge and the coordinator.",
+      "coveringDisclosure": null,
+      "blocking": false
+    },
+    {
+      "id": "SSCTR-P4-O10",
+      "class": "OBSERVATION",
+      "origin": "PRE_EXISTING",
+      "cases": ["R7D-F06"],
+      "steps": ["R7D-F06:s1"],
+      "evidence": "After the bodyweight window, kb-goblet-squat returns at the known 16 kg but kb-deadlift returns as ESTABLISH (2x8) instead of the known 20 kg (22 kg planned in week 1).",
+      "attribution": "RUNTIME",
+      "structural": false,
+      "domainResult": "Conservative (load by effort), minor loss of a known reference. Route to the next runtime mission.",
+      "coveringDisclosure": null,
+      "blocking": false
+    }
+  ],
+  "caseRubric": [
+    {"caseId": "R7D-F01", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Confounded long run with ADVERSE recovery and IMPAIRED next day: LONG HOLD (55); fine week: LONG 60, EASY 40; race moved: phases re-planned, no catch-up."},
+    {"caseId": "R7D-F02", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE", "s3": "BEST_SUPPORTED"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "s2: taper LOWER fatigue removes only the optional calf raise; goblet squat 1x8 RIR3 stays the same day (author preferred reducing or dropping lower-body strength); race and touch kept; post-event recovery-easy only."},
+    {"caseId": "R7D-F03", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Shared confirmed AM day: lower strength with an easy run (S3: strength-first order protects lower-body strength; easy running only); conflict: ASK, nothing moved to unchosen days."},
+    {"caseId": "R7D-F04", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "Walk/jog and walks within capacity; unreported days not credited (HOLD); s2 R4 HOLD (SSCTR-P4-O06)."},
+    {"caseId": "R7D-F05", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE", "s2": "BEST_SUPPORTED", "s3": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "s1: one HARDER easy run holds EASY (not cut; author preferred ignoring it). s3: the repeated LOWER fatigue is handled per report; nothing learned with consent (P14 influence not exercised)."},
+    {"caseId": "R7D-F06", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "Bodyweight substitutes inside the window, kettlebell after, runs unchanged; kb-deadlift loses its known load (SSCTR-P4-O10)."},
+    {"caseId": "R7D-F07", "steps": {"GENERATE": "ACCEPTABLE_ALTERNATIVE", "s1": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "RESTART entry (EASY 15) instead of the author's walk/jog; completion race correct; unavailable day skipped without debt; week-1 EASY 20 on credit is CC-F05 (SSCTR-P4-O01)."},
+    {"caseId": "R7D-F08", "steps": {"GENERATE": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Unknown eligibility: ASK, no plan, no clinical presumption."},
+    {"caseId": "R7D-F09", "steps": {"GENERATE": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Routing judged: CLINICAL_HUMAN_REQUIRED, nothing prescribed. Clinical content: CLINICAL_OUT_OF_SCOPE."},
+    {"caseId": "R7D-F10", "steps": {"GENERATE": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Age 16: UNSUPPORTED, no partial plan."},
+    {"caseId": "R7D-F11", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE", "s2": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "Final-week KEEP without asking (nothing left to prescribe; SSCTR-P4-O03); s2's run answer not delivered (SSCTR-P4-O08 c): that part NOT_EVALUABLE_DOMAIN."},
+    {"caseId": "R7D-F12", "steps": {"GENERATE": "ACCEPTABLE_ALTERNATIVE", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "GENERATE: LONG 50 against a 60-69 minute watch history (conservative, within the ceiling); strength by type only stays ESTABLISH. s1 ASK; s2 answer: LONG 46 = longest completed 41 + 5, EASY HOLD; strength stays at the establishment dose because no load is ever logged."},
+    {"caseId": "R7D-F13", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE", "s2": "SUBOPTIMAL", "s3": "SUBOPTIMAL"}, "caseClass": "SUBOPTIMAL", "note": "s1: entry floor without asking (SSCTR-P4-O03). s2: running correct (long restart, EASY 15); strength bypasses D49 (SSCTR-P4-F01). s3: week 9 at 3x10 / 3x10 / 2x10 (SSCTR-P4-F01).", "subOptimal": {"cause": "SSCTR-P4-F01", "attribution": "RUNTIME", "structural": true}},
+    {"caseId": "R7D-F14", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Date-only same-day report kept; 9-day family break stated in a review applied as a short return."},
+    {"caseId": "R7D-F15", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE", "s2": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "Walk/jog step 0 and beginner bodyweight strength; the break is kept but asked for its reason ('back', SSCTR-P4-O05) and never applied in the corpus."},
+    {"caseId": "R7D-F16", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Machine KNOWN kg in MACHINE_STACK; logs as prescribed read; 3x10 -> 3x12 -> 'next machine setting above' with fallback reps, no computed number (F03B). The own-setting intention was not delivered (SSCTR-P4-O08 a): NOT_EVALUABLE_DOMAIN."},
+    {"caseId": "R7D-F17", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "s3: one load question for the 130 kg log on the FROM_LOG row, 120 kg kept in consolidation (F03B). s2's heavier and lighter settings were not delivered (SSCTR-P4-O08 a)."},
+    {"caseId": "R7D-F18", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Duplicate counted once; missed easy without debt; in-time and late corrections applied forward; completion race correct."},
+    {"caseId": "R7D-F19", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "ACCEPTABLE_ALTERNATIVE", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "s1: device contradiction held (EASY HOLD) rather than asked; s2: future-clocked long run not counted (LONG HOLD); s3: correction resolves, first threshold introduced in a consolidation week from the executed record."},
+    {"caseId": "R7D-F20", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "BEST_SUPPORTED", "s5": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "Break kept and events asked on their own; Thursday return ignores Monday/Tuesday not done; swap from next week; systemic fatigue reduces strength to 1 set RIR4 and keeps LONG 50 at easy effort."},
+    {"caseId": "R7D-F21", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "s1 routing judged (clinical content CLINICAL_OUT_OF_SCOPE); s2 the kept break is not dropped after clearance, unreported weeks asked (R5); s3 late short return after an executed week (SSCTR-P4-O04, -O07)."},
+    {"caseId": "R7D-F22", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "CORPUS_ERROR"}, "caseClass": "CORPUS_ERROR", "note": "Stopped at s1 (SSCTR-P4-O09); only onboarding readable (walk/jog for a 30-minute-a-week novice runner, strength-first hypertrophy)."},
+    {"caseId": "R7D-F23", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Routing judged: illness break CLINICAL; the newer work break neither replaces it nor triggers a relation question; the nonclinical restatement after clearance stays CLINICAL (R-F08-1; F08 boundary). Clinical content: CLINICAL_OUT_OF_SCOPE."},
+    {"caseId": "R7D-F24", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Touching separate breaks read as one 12-day stop: moderate return from entry (EASY 15, LONG 20), 2 conditional steps; strength 1x8 RIR4."},
+    {"caseId": "R7D-F25", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Overlapping break named as a correction replaces the first dates; 6-day short return; sessions after the trip read."},
+    {"caseId": "R7D-F26", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Relation asked, sessions between asked, all not done: 13-day moderate return."},
+    {"caseId": "R7D-F27", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Taper about 40 % lower volume with a short threshold kept (S2); one UNDER/HARDER taper run: KEEP; post-event recovery-easy only."},
+    {"caseId": "R7D-F28", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "An isolated run does not end the 21-day stop; the correction that starts the trip later uncovers sessions and asks; s4 re-read restarts the entry (SSCTR-P4-O07)."},
+    {"caseId": "R7D-F29", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE", "s3": "BEST_SUPPORTED"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "s2: running re-entered through week 3 (07:30 long run before the 15:00 start counted, BR-Q5); strength not, because two rows carried no load (BR-Q4.3, SSCTR-P4-O08 b), so OWN_RETURN with strength at 3x6 72.5 kg; s3: correction by length and last day read from 2027-02-01."},
+    {"caseId": "R7D-F30", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE", "s3": "ACCEPTABLE_ALTERNATIVE", "s4": "ACCEPTABLE_ALTERNATIVE"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "From s2 the return stays on the reason question ('off', SSCTR-P4-O05); its intended mechanisms are NOT_EVALUABLE_DOMAIN."},
+    {"caseId": "R7D-F31", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "ACCEPTABLE_ALTERNATIVE", "s4": "BEST_SUPPORTED", "s5": "BEST_SUPPORTED", "s6": "BEST_SUPPORTED"}, "caseClass": "ACCEPTABLE_ALTERNATIVE", "note": "OWN_RETURN: running re-entered, strength from the move's own return (4x8 80 kg, executed); RIR-less week does not count. s3: no start-time question for the late lift; the F04 rule asks only when the state would change, and week 5's strength was already executed. s5 start time recorded as that break's report; s6 applies it."},
+    {"caseId": "R7D-F32", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE", "s3": "CORPUS_ERROR"}, "caseClass": "CORPUS_ERROR", "note": "Information only: the half-done touch and a load-less race-week strength log leave both sports partial, the exact X2 shape, read as one 18-day moderate stop (continuity, PREREG-6 Δ10/Δ19)."},
+    {"caseId": "R7D-F33", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "ACCEPTABLE_ALTERNATIVE", "s3": "CORPUS_ERROR"}, "caseClass": "CORPUS_ERROR", "note": "Information only: race week had gated easy runs, no touch or shakeout; running re-entered, adverse strength held strength only; next block LONG 50 eight days after the half."},
+    {"caseId": "R7D-F34", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "ACCEPTABLE_ALTERNATIVE", "s4": "CORPUS_ERROR"}, "caseClass": "CORPUS_ERROR", "note": "Information only: chain-1 OWN_RETURN through a running week; chain-2, the race week (race missed, load-less strength) and chain-3 read as one 25-day moderate stop (X2 continuity)."},
+    {"caseId": "R7D-F35", "steps": {"GENERATE": "BEST_SUPPORTED", "s1": "BEST_SUPPORTED", "s2": "BEST_SUPPORTED", "s3": "BEST_SUPPORTED", "s4": "BEST_SUPPORTED"}, "caseClass": "BEST_SUPPORTED", "note": "Touching breaks read as one 10-day stop; walk/jog week re-enters running only; strength from its own return (2x10); walk/jog ladder resumes."}
+  ],
+  "rubricSummary": {"cases": 35, "corpusError": 4, "evaluable": 31, "BEST_SUPPORTED": 15, "ACCEPTABLE_ALTERNATIVE": 15, "SUBOPTIMAL": 1, "INSUFFICIENT_INFORMATION": 0, "SCOPE_MISROUTED": 0, "CLINICAL_OUT_OF_SCOPE_contentOnly": ["R7D-F09", "R7D-F21", "R7D-F23"], "UNSAFE": 0, "EXPECTATION_OUTSIDE_AUTHORITY": 0, "NOT_EVALUABLE_DOMAIN_parts": ["R7D-F11:s2 run answer", "R7D-F16:s2-s3 own settings", "R7D-F17:s2 own settings", "R7D-F30:s2-s4 intended return mechanisms", "R7D-F15:s2 intended return"]},
+  "domainJudgedUnits": {
+    "P07_completionRaceWithoutStrides": [
+      {"case": "R7D-F07", "step": "GENERATE", "result": "PASS", "basis": "w14-race completion (restart history): conversational effort, walk breaks, no strides or surges; EVENT_AMBITIOUS_FOR_CURRENT_RUNNING carried; the day-before shakeout has 3 optional strides, which the policy allows once strides are executed."},
+      {"case": "R7D-F18", "step": "GENERATE", "result": "PASS", "basis": "w11-race completion: 'no strides and no surges', walk breaks, no promised time; negotiation carried."}
+    ],
+    "P08_strengthAndBreakIdentity": [
+      {"case": "R7D-F13", "step": "s2", "result": "PASS (safety) with the D49 deviation recorded under SSCTR-P4-F01", "basis": "Identity: the declared answer's break (2026-11-24 to 2027-01-09). First return week strength 1 set; no exceedance of any executed dose; RIR3 instead of the entry RIR >= 4 is part of SSCTR-P4-F01."},
+      {"case": "R7D-F14", "step": "s2", "result": "PASS", "basis": "9-day family break; strength resumes last completed at consolidation 1 set."},
+      {"case": "R7D-F20", "step": "s3", "result": "PASS", "basis": "The kept 5-day break, applied mid-week; strength resumes the last completed loads (back squat 92.5 kg, RDL 80 kg)."},
+      {"case": "R7D-F21", "step": "s3", "result": "PASS", "basis": "The kept travel break (not the clinical flag) is the return's identity; strength entry 1x8."},
+      {"case": "R7D-F24", "step": "s3", "result": "PASS", "basis": "Two separate touching breaks read as one 12-day stop; strength 1x8 RIR4."},
+      {"case": "R7D-F25", "step": "s3", "result": "PASS", "basis": "The named correction replaces the first dates; strength consolidation 1x8."},
+      {"case": "R7D-F26", "step": "s4", "result": "PASS", "basis": "13-day stop; strength 1x10 RIR4."},
+      {"case": "R7D-F28", "step": "s2", "result": "PASS", "basis": "Stop through the holiday despite one run; strength 1x10 RIR4."},
+      {"case": "R7D-F28", "step": "s4", "result": "PASS", "basis": "Corrected trip re-read; strength 1x10 RIR4."},
+      {"case": "R7D-F29", "step": "s2", "result": "PASS", "basis": "Site visit as own return; strength continues from it at 3x6 72.5 kg."},
+      {"case": "R7D-F29", "step": "s3", "result": "PASS", "basis": "Correction by length and last day; site visit not reopened."},
+      {"case": "R7D-F31", "step": "s2", "result": "PASS", "basis": "Move as own return; strength 4x8 80 kg = executed week-0 dose."},
+      {"case": "R7D-F31", "step": "s4", "result": "PASS", "basis": "Identical restatement applies nothing new."},
+      {"case": "R7D-F35", "step": "s3", "result": "PASS", "basis": "Touching v1+v2 as one stop, own return; strength 2x10."}
+    ],
+    "P09_stepSize": [
+      {"cases": ["R7D-F01", "R7D-F05", "R7D-F12", "R7D-F18", "R7D-F19", "R7D-F27"], "result": "PASS", "basis": "Run steps of 5 minutes under D18, response-gated; holds on adverse, contradictory or late facts."},
+      {"cases": ["R7D-F24", "R7D-F26", "R7D-F28"], "result": "PASS", "basis": "Moderate returns: entry then two conditional steps to the prior tolerated dose, within the 30-day ceiling (S1 measures spikes against the 30-day longest run)."},
+      {"cases": ["R7D-F05", "R7D-F06", "R7D-F16", "R7D-F17", "R7D-F29", "R7D-F31"], "result": "PASS", "basis": "Strength: +2.5 kg barbell, rep steps at fixed load, machine 'next setting above' without a computed number."},
+      {"cases": ["R7D-F13"], "step": "s3", "result": "FAIL (domain)", "basis": "SSCTR-P4-F01: 1 -> 3 sets the week after a return entry, above D49 step 2."}
+    ],
+    "P12_interference": [
+      {"case": "R7D-F03", "result": "PASS", "basis": "Confirmed same AM: lower strength with an easy run (S3); conflict asked."},
+      {"case": "R7D-F05", "result": "PASS", "basis": "Threshold run 72 h after heavy lower and after an upper day; heavy lower the day after the long run."},
+      {"case": "R7D-F20", "step": "s4", "result": "PASS", "basis": "After the swap, lower strength on the athlete's Friday before the Saturday long run at RIR3: a constraint of chosen days, already present before the swap."},
+      {"cases": ["R7D-F02", "R7D-F27", "R7D-F21"], "result": "PASS", "basis": "Race-week strength reduced, RIR4, at least four days before the race."}
+    ],
+    "P14_influenceWithConsent": [
+      {"case": "R7D-F05", "result": "NOT_EVALUABLE_DOMAIN", "basis": "Consent true, no learned pattern at any step (learnedPatterns null): influence with consent was not exercised; CONSENT_OFF equal."},
+      {"case": "R7D-F16", "result": "PASS", "basis": "Consent false: purposeAllowed false, nothing learned."}
+    ],
+    "P06_notEvaluableUnits_H1": [
+      {"case": "R7D-F13", "at": "s1", "week": 8, "result": "PASS (domain)", "basis": "No completed run in the window: the policy ceiling is the reviewed entry (15); week 8 plans 15/15/15."},
+      {"case": "R7D-F13", "at": "s2", "week": 8, "result": "PASS (domain)", "basis": "Same: EASY 15 x3 at the entry."},
+      {"case": "R7D-F21", "at": "s3", "week": 5, "result": "NOT_EVALUABLE (domain)", "basis": "The only session is w5-run-d6, LONG 65 on the review day, which this review reports done; no prescription (SSCTR-P4-O04). Stays in the denominator."}
+    ],
+    "P08_notEvaluableUnits_H1": [
+      {"case": "R7D-F21", "at": "s3", "result": "PASS (domain)", "basis": "First return week (week 6) longest 55 minutes, below the intake-declared longest (60) and the 65 executed after the break; week-2 runs 35 reported at s1 (not recorded, R5). Response fields UNKNOWN, none adverse."}
+    ],
+    "P18_nestedOwnReturnRecord": {"units": 0, "note": "No NESTED_OWN_RETURN_RECORD unit in H1 or H2 (0 matches in both RUN_REPORTs); nothing to recompute."},
+    "H2_P06_notEvaluable_informational": {"units": 28, "result": "PASS (domain) on all 28", "basis": "Every week-0 run is within intake longest + 5, or at 15 minutes when exposure is unknown; the units are not evaluable because the generated intake's asOf equals the start date (reference not before the week) or the longest run is unknown. Outside the request's H1 scope; recorded for completeness."}
+  },
+  "cfp35r2_03": {
+    "ruling": "ACCEPT",
+    "reading": "R7D-HARNESS-8 (PREREG-7 Δ38): a P17 window of a report ends at a later report that restates a listed break when both name the same break, now also when the two names lead to the same separate-break row of the latest applied return (its episode or its report's event id; never the LATEST row; a missing name never matches).",
+    "rationale": "A break's name is an opaque id the athlete gives (PREREG-4 Δ3, Δ7); the episode name and the id of the report that declared it designate the same factual break, and PREREG-4 Δ1 already treats reports that name each other this way as one break. The two exclusions keep the reading from merging distinct or unnamed breaks or reaching the current stop. It removes a false block (QH21, QH22) and widens nothing else (restatesListed, the P18 open set and adverseConvergence unchanged).",
+    "observationsJudged": {"H1": 0, "H2": 0, "note": "No WINDOW_ENDED_BY_ROW_NAME observation in either run; in fact no property observation of any kind in H1 (H2 holds 587 P12 SAME_TURN_CONFIRMATION_REQUESTED observations, none of P17). The coordinator's count is confirmed."},
+    "consequence": "No unit becomes HARNESS_GAP through this reading.",
+    "condition": "If a later case lists a window ended by row name where the two reports state different periods, the domain judge reviews that unit."
+  },
+  "bindingReadingsApplied": {
+    "X2": "Not reclassified by the Founder (PREREG-6 Δ10, Δ19). Shown only in corpus-error cases F32 (s2) and F34 (s3): continuity readings, MODERATE, no RESTART; consistent with the disclosed residual. No valid case reached the X2 path.",
+    "F08": "F08_OPEN; D2 not implemented. No H1 author expectation asks for a planned return after a clinical-cause break or a temporary reduction for a clinical complaint, so no step is EXPECTATION_OUTSIDE_AUTHORITY. Routing judged: F09, F21 s1, F23 s1-s3 correct.",
+    "O-P35-01": "The two-break correction shape over a lightened quality slot does not occur in any valid case (F28 and F29 corrections plan no quality in the affected weeks)."
+  },
+  "coverageValidity": {
+    "overall": "NOT_MET",
+    "consequence": "INVALID_HOLDOUT (each failing clause: substituted by a new, independent corpus).",
+    "afterCorpusErrors": "F22, F32, F33, F34 excluded.",
+    "items": [
+      {"clause": "PREREG-2 Δ9", "item": ">= 2 base cases with a declared break and no pending question", "met": true, "validCases": ["R7D-F13", "R7D-F14", "R7D-F15", "R7D-F20", "R7D-F24", "R7D-F26", "R7D-F28", "R7D-F29", "R7D-F31", "R7D-F35"]},
+      {"clause": "PREREG-2 Δ9", "item": ">= 2 base cases with an UNREPORTED_TRAINING question answered directly", "met": false, "validCases": ["R7D-F12"], "note": "F11 and F13 were never asked; F21 s3 reports week 5 and makes the question moot without answering the asked sessions. If F21 were counted the item would be met; the verdict would not change."},
+      {"clause": "PREREG-2 Δ9", "item": ">= 2 base cases with a machine exercise logged", "met": true, "validCases": ["R7D-F16", "R7D-F17"]},
+      {"clause": "PREREG-2 Δ9", "item": ">= 1 case with a confounded run and adverse recovery or impaired next day", "met": true, "validCases": ["R7D-F01"]},
+      {"clause": "PREREG-2 Δ9", "item": "CARRIER_CLINICAL > 0", "met": true, "validCases": ["R7D-F21"], "note": "F12's unit is proposed as HARNESS_GAP (SSCTR-P4-O02); Quality rules on unit validity."},
+      {"clause": "PREREG-2 Δ9", "item": "CARRIER_HOLD > 0", "met": false, "validCases": [], "note": "0 applicable cases: F11's final-week review asked nothing (nothing left to prescribe), so no last-week answer existed."},
+      {"clause": "PREREG-2 Δ9", "item": "P08 >= 2", "met": true, "validCases": ["R7D-F13", "R7D-F14", "R7D-F20", "R7D-F24", "R7D-F25", "R7D-F26", "R7D-F28", "R7D-F29", "R7D-F31"]},
+      {"clause": "PREREG-3 Δ6", "item": ">= 2 base cases: break declared with another event kind, later decision without restating it", "met": true, "validCases": ["R7D-F20", "R7D-F24", "R7D-F26", "R7D-F28", "R7D-F29", "R7D-F31", "R7D-F35"]},
+      {"clause": "PREREG-3 Δ6", "item": ">= 2 base cases: break with a clinical flag (or a pain substitution), qualified clearance, next review without restating it", "met": false, "validCases": ["R7D-F21"], "note": "F22 lost to CORPUS_ERROR at s1; F23's clearance comes with a restatement and no review follows."},
+      {"clause": "PREREG-3 Δ6", "item": ">= 1 case with a clinical-reason break, then clearance", "met": true, "validCases": ["R7D-F23"]},
+      {"clause": "PREREG-3 Δ6", "item": "P17 >= 4 and RESTATE_DECLARED_BREAK > 0", "met": true, "validCases": ["P17: 70 units in valid cases", "RESTATE: 23 units"]},
+      {"clause": "PREREG-4 Δ5", "item": ">= 2 base cases with two or more breaks before the first is applied, with the sub-items (touching/shorter, overlap, days between, separate and correction answers, sessions asked, earlier clinical)", "met": true, "validCases": ["R7D-F23", "R7D-F24", "R7D-F25", "R7D-F26"], "note": "Touching F24, overlap F25, days between and sessions asked F26, separate F24/F26, correction F25, earlier clinical F23."},
+      {"clause": "PREREG-4 Δ5", "item": "P18 >= 2 and INSERT_NEWER_BREAK > 0", "met": true, "validCases": ["P18: 42 units in valid cases", "INSERT_NEWER_BREAK: F20, F21, F26, F28"]},
+      {"clause": "PREREG-5 Δ3", "item": ">= 2 base cases with two separate breaks and training reported between", "met": true, "validCases": ["R7D-F28", "R7D-F29", "R7D-F30", "R7D-F31", "R7D-F35"]},
+      {"clause": "PREREG-5 Δ3", "item": ">= 1 with isolated training between", "met": true, "validCases": ["R7D-F28"]},
+      {"clause": "PREREG-5 Δ3", "item": ">= 1 with a whole plan week executed completely between the breaks (inverse-defect control)", "met": false, "validCases": [], "note": "No valid case reached a week complete in every sport (TRAINING_AFTER): F29's strength rows carried no load (BR-Q4.3), so running only."},
+      {"clause": "PREREG-5 Δ3", "item": "P18 >= 2 in these cases", "met": true, "validCases": ["R7D-F28", "R7D-F29", "R7D-F31", "R7D-F35"]},
+      {"clause": "PREREG-6 Δ5", "item": ">= 2 base cases with a week complete in one sport only between two separate breaks", "met": true, "validCases": ["R7D-F29", "R7D-F31", "R7D-F35"], "note": "F30 intended but never applied."},
+      {"clause": "PREREG-6 Δ5", "item": ">= 2 base cases with a named correction of the newer break after a separate-breaks return", "met": true, "validCases": ["R7D-F28", "R7D-F29"]},
+      {"clause": "PREREG-6 Δ5", "item": ">= 2 base cases with a mid-week return after sessions of that week not done", "met": true, "validCases": ["R7D-F20", "R7D-F30"], "note": "Met by the letter; only F20 exercises the return dose, F30 stays on the reason question."},
+      {"clause": "PREREG-6 Δ5", "item": ">= 1 race week between two breaks with the race touch or race missed", "met": false, "validCases": [], "note": "Only F32 and F34, both CORPUS_ERROR."},
+      {"clause": "PREREG-6 Δ5", "item": ">= 1 with optional sessions not done in a re-entry week", "met": false, "validCases": [], "note": "No valid re-entry week holds a planned optional session (F35's plan had no WALK sessions)."},
+      {"clause": "PREREG-6 Δ5", "item": ">= 1 with strength logged without RIR in a re-entry week", "met": true, "validCases": ["R7D-F31"]},
+      {"clause": "PREREG-6 Δ5", "item": ">= 1 later break with a start time on the day of a week's last session", "met": true, "validCases": ["R7D-F29"]},
+      {"clause": "PREREG-6 Δ5", "item": ">= 1 clinical-cause break restated by name as nonclinical", "met": true, "validCases": ["R7D-F23"]},
+      {"clause": "PREREG-6 Δ5", "item": "P18 >= 2 in the first two groups", "met": true, "validCases": ["R7D-F28", "R7D-F29", "R7D-F31", "R7D-F35"]},
+      {"clause": "PREREG-6 Δ18", "item": ">= 1 named correction moving the last break's start later or omitting its first day", "met": true, "validCases": ["R7D-F28", "R7D-F29"]},
+      {"clause": "PREREG-6 Δ18", "item": ">= 1 race week whose runs are only the touch, an optional shakeout and the race", "met": false, "validCases": [], "note": "No race week in any case had that make-up (author gap 3)."},
+      {"clause": "PREREG-6 Δ18", "item": ">= 1 race touch done at half its minutes", "met": false, "validCases": [], "note": "Only F32 (13 of 25 minutes), CORPUS_ERROR."},
+      {"clause": "PREREG-6 Δ18", "item": ">= 1 strength session on the earlier break's first day, no start time, strength read from its own return", "met": true, "validCases": ["R7D-F31"], "note": "F30 by shape only (its return was never applied)."},
+      {"clause": "PREREG-6 Δ29", "item": ">= 1 race week without a gated run whose strength and shakeout report adverse recovery", "met": false, "validCases": [], "note": "F33 (CORPUS_ERROR) had gated easy runs and no touch or shakeout."},
+      {"clause": "PREREG-6 Δ29", "item": ">= 1 named correction that uncovers a planned, never-reported session between the breaks", "met": true, "validCases": ["R7D-F28"]},
+      {"clause": "PREREG-6 Δ29", "item": ">= 1 late strength report on the earlier break's first day after an own-return return, answered through different channels", "met": true, "validCases": ["R7D-F31"]},
+      {"clause": "PREREG-6 Δ29", "item": ">= 1 chain of three or four separate breaks with the first two overlapping or touching", "met": true, "validCases": ["R7D-F35"]},
+      {"clause": "PREREG-7 Δ44", "item": ">= 2 beginners and >= 2 intermediates in the longitudinal, break, return, correction or race-week material", "met": true, "validCases": ["beginners: R7D-F11, F13, F15, F25, F35", "intermediates: R7D-F12, F24, F26, F28, F29, F31"]},
+      {"clause": "PREREG-1 §7", "item": "every safety stratum keeps >= 2 evaluable base cases; no H1 stratum at zero", "met": true, "validCases": ["clinical and scope: F08, F09, F10, F21, F23", "return: F13, F14, F20, F24, F25, F26", "race transition: F01, F02, F27", "longitudinal with answer: F11, F12, F13"]}
+    ],
+    "failingItems": [
+      "PREREG-2 Δ9 UNREPORTED_TRAINING answered directly (1 of 2)",
+      "PREREG-2 Δ9 CARRIER_HOLD > 0 (0)",
+      "PREREG-3 Δ6 clinical-flag or pain-substitution break, clearance, plain review (1 of 2)",
+      "PREREG-5 Δ3 whole week executed in every sport between breaks (0 of 1)",
+      "PREREG-6 Δ5 race week between breaks with touch or race missed (0 of 1)",
+      "PREREG-6 Δ5 optional sessions not done in a re-entry week (0 of 1)",
+      "PREREG-6 Δ18 race week of only touch, shakeout and race (0 of 1)",
+      "PREREG-6 Δ18 race touch at half its minutes (0 of 1)",
+      "PREREG-6 Δ29 race week without gated run, adverse strength and shakeout (0 of 1)"
+    ]
+  },
+  "founderDomainQuestions": [
+    {"question": "Coherence of the running progression", "answer": "Coherent. Single-run steps of 5 minutes are response-gated and held after adverse, contradictory, late or future-clocked facts; tapers keep intensity with about 40 % less volume and a race touch; post-event weeks are recovery only. One restart limit: a once-intermediate runner with zero current running starts continuous 15-minute runs (the approved RESTART recipe), not walk/jog. Evidence SUPPORTED_WITH_LIMITS (S1 observational; S2 competitive athletes).", "cases": ["R7D-F01", "R7D-F02", "R7D-F05", "R7D-F07", "R7D-F12", "R7D-F18", "R7D-F19", "R7D-F27"]},
+    {"question": "Coherence of the strength progression", "answer": "Coherent where loads are known: known barbell, kettlebell and machine loads are used in their convention, +2.5 kg or rep steps, machine 'next setting above' with one question and no computed number, RIR-less logs never count. Unknown loads stay at the establishment dose and are never invented. Not coherent after a return for exercises never executed before the break (SSCTR-P4-F01, blocking). Dumbbell load progression is not exercised by this holdout.", "cases": ["R7D-F05", "R7D-F06", "R7D-F12", "R7D-F13", "R7D-F16", "R7D-F17", "R7D-F29", "R7D-F31"]},
+    {"question": "Interference between the two", "answer": "Handled within the athlete's chosen days: lower strength paired only with easy running on a shared turn, strength first (S3); quality kept away from heavy lower work; race-week strength reduced and early; systemic fatigue removes the hard suffix in both sports. Where the chosen days put lower strength before the long run, the plan keeps it at RIR3 rather than moving days. Overlap was never treated as interference by itself.", "cases": ["R7D-F02", "R7D-F03", "R7D-F05", "R7D-F20", "R7D-F27"]},
+    {"question": "Response to fatigue and recovery", "answer": "Proportionate: one adverse or harder execution holds rather than cuts; a confounded run with adverse recovery and an impaired next day holds the long run; local fatigue removes optional local work; systemic fatigue reduces strength and keeps easy running; an adverse strength session in a race week holds strength only. Repeated fatigue with consent produced no learned arrangement (not exercised).", "cases": ["R7D-F01", "R7D-F02", "R7D-F05", "R7D-F20", "R7D-F27", "R7D-F33"]},
+    {"question": "Preservation of demonstrated capacity", "answer": "Preserved: short returns resume the last completed doses; a one-sport complete week re-enters that sport at executed doses (OWN_RETURN); moderate returns climb back to the prior tolerated dose in two conditional steps; the executed record replaces earlier projections. The cost is conservative: a late-applied break or a re-read correction can repeat an entry week (disclosed B1-B4, SSCTR-P35R2-O01).", "cases": ["R7D-F14", "R7D-F19", "R7D-F21", "R7D-F24", "R7D-F28", "R7D-F29", "R7D-F31", "R7D-F35"]},
+    {"question": "Safety of the return after breaks", "answer": "Running returns are safe: P08 passes 36 units and no return run exceeds the pre-break executed longest; separate breaks are related by asking, sessions between are asked, an isolated run never ends a stop; clinical routing holds (pain, illness, R-F08-1). Two limits: strength after a return is above the approved steps for never-executed exercises (SSCTR-P4-F01, not unsafe in magnitude, blocking as a pattern), and ambiguous reason words fail closed and can stall a return (SSCTR-P4-O05).", "cases": ["R7D-F09", "R7D-F13", "R7D-F15", "R7D-F21", "R7D-F23", "R7D-F24", "R7D-F25", "R7D-F26", "R7D-F28", "R7D-F30"]},
+    {"question": "No progression without evidence", "answer": "Held in the cases where it was tested: unreported sessions are neither credited nor zeroed, the coach asks before planning runs on unknown training when the dose depends on it, loads are never invented, machine settings never computed, a heavier setting waits for confirmation. Exceptions: credited development blocks raise strength sets after a return (SSCTR-P4-F01); an unreported restart week progresses on credit (CC-F05, disclosed); a long silence at the entry floor is not asked (SSCTR-P4-O03, dose unaffected).", "cases": ["R7D-F04", "R7D-F07", "R7D-F12", "R7D-F13", "R7D-F16", "R7D-F17"]},
+    {"question": "Compatibility with the R6 policy, the B0 catalog, F03B-MACHINE-STEP-r1 and the BR-Q readings", "answer": "Compatible except SSCTR D49 (R6-POLICY-5 strengthEntryWeek and strengthReturnSets) in SSCTR-P4-F01. R6: D18 ceiling, return recipes, walk/jog ladder, completion-race semantics and race-week strength limits hold. B0: P11 passes 29,891 units; equipment substitution stays in the catalog. F03B: no computed machine load, next-setting rows, one question. BR-Q: direction A (OWN_RETURN per sport, F29, F31, F35), BR-Q4.3 (strength needs reps, RIR and a known load), BR-Q5 (a session before the stated start counts, F29). BR-Q4.1's race-week rules were not reachable in valid cases.", "cases": ["R7D-F06", "R7D-F07", "R7D-F13", "R7D-F16", "R7D-F17", "R7D-F18", "R7D-F29", "R7D-F31", "R7D-F35"]}
+  ],
+  "automatedResultsConfirmed": {
+    "H1": "P03 FAIL in F13 and F21; P05 and CARRIER_CLINICAL FAIL in F12; P06 FAIL in F07; CARRIER_HOLD 0 applicable cases; four structural corpus errors (F22 s1, F32 s3, F33 s3, F34 s4); harness errors 0; property observations 0 (WINDOW_ENDED_BY_ROW_NAME 0). Domain readings: SSCTR-P4-O01, -O02, -O03, -O04, -O09.",
+    "H2": "300 cases, no automated FAIL; 28 P06 units not evaluable (domain PASS, informational); 587 P12 same-turn confirmation observations (CONSUMER_CONDITION)."
+  },
+  "scientificBlockers": {"SCIENTIFIC_BLOCKER": [], "UNSAFE": []},
+  "queueProposals": [
+    {"id": "HQ-R7D-SSCTR-P4-HOLDOUT-JUDGMENT", "status": "PROPOSED_ONLY", "names": "R7D-FREEZE-5", "content": "Future funded-human revalidation of this provisional domain judgment: SSCTR-P4-F01 (D49 return for exercises never executed before a break) and its blocking class; the CFP35R2-03 acceptance; the domain readings for F07 P06, F12 CARRIER_CLINICAL and F13/F21 P03; the POLICY_QUESTION SSCTR-P4-O03. Phase 4 authorizes no append; the queue stays at 235."}
+  ],
+  "publication": "Not Product Truth; no gate closed by this record alone; the coordinator compiles the final status from the two judgments (PREREG-1 §4). No runtime, harness, corpus, criterion or other repository file was changed; reproductions ran only in the scratch directory p4-ssctr/j1-20261108."
+}

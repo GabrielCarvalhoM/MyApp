@@ -1,0 +1,431 @@
+{
+ "recordId": "QRE-R7D-FINAL-HOLDOUT-r1",
+ "date": "2026-11-08",
+ "kind": "QUALITY_RELIABILITY_FINAL_HOLDOUT_JUDGMENT",
+ "gate": "DOMAIN_COACHING_R7-D final gate (R7D-PREREG-1 §4, §8.7; R7D-PREREG-7 Δ46)",
+ "judge": {
+  "role": "Quality & Reliability Engineer, constitution 1.3.0",
+  "instance": "fresh instance (model claude-opus-5-5); did not write the runtime, the harness, the instruments or the corpus; did not read final/judgment/ssctr/",
+  "authority": "quality side of PREREG-1 §4: integrity, harness, properties, instrument, coverage units",
+  "writes": "only this file and QUALITY_FINAL_HOLDOUT_R7D.md beside it; no repository file edited; no git command that changes state; no deletion"
+ },
+ "evaluated": {
+  "runtime": "R7D-FREEZE-5 (record 956da5c23c3499fd85af532e384e9302be15158fbc85a309e3d50c8721456dd8, runtime commit 7272e9ad5cc550d05bce3be761e3ac8cf6adf03b, 649 files)",
+  "harness": "R7D-HARNESS-8 (r7d-harness-8.mjs 2b5f26d1…32a6, lib/properties-8.mjs 2e5cf021…acc7; every other module the R7D-HARNESS-7 r2 file the freeze binds)",
+  "preregistration": "R7D-PREREG-1 to -7; PREREG-7 2ccceb18ab5f7fde2b9479b75dc927f0618ed29b3205f2fb8da3bc59cec23ab6 prevails",
+  "H1": "final/R7D_FINAL_HOLDOUT.json 2f2a5d270c96117dfa5a8ef3c9b8a8ba2d380c7ec27c0835a7af8a4834b63b18 (35 cases, 98 steps); RUN_REPORT c6278b293b0ff87e9b8ecc15236e3bb5de0720b303b1b2264a3fac6585f77d62",
+  "H2": "final/generated/R7D_GENERATED_FINAL.json b69fa543c7bac184c7f3cc0af67a2d6b33f6adf4b368e881a16a9cc752edba69 (300 intakes); RUN_REPORT d5bcbd100893b84b8e33af5871f6d9bf9add6d7ee9c209a06185f89ed56192a0",
+  "H1M": "the PREREG-1 §2 relations run on H1 inside the H1 RUN_REPORT",
+  "commits": {"instruments": "58d6766", "seal": "14c7ec8", "evaluation": "87d0978", "request": "05908f3"},
+  "allInputHashesMatchTheRequest": true
+ },
+ "verdict": "INVALID_HOLDOUT",
+ "verdictNote": "Freeze and protocol are intact and the instrument is reliable on its validation and on everything reproduced here. The holdout is invalid because registered critical coverage is missing: CARRIER_HOLD has 0 units (PREREG-2 Δ9), no H1 race week holds only the race touch, an optional shakeout and the race (PREREG-6 Δ18, Δ29), no re-entry week has an optional session left undone (PREREG-6 Δ5), no case delivers a whole plan week executed in full in both sports between two breaks (PREREG-5 Δ3), and the clinical-flag break with clearance (PREREG-3 Δ6) and the directly answered UNREPORTED_TRAINING question (PREREG-2 Δ9) each have one evaluable case where two are required, the first after losing R7D-F22 to a CORPUS_ERROR. Each clause names INVALID_HOLDOUT as its consequence. The invalidity hides one confirmed blocker on a valid case: QRE-P4-F01 (P03(d), R7D-F13), a structural GENERALIZATION_BLOCKER, pre-existing since R7C-FREEZE-4. So the valid evidence already excludes READY, independently of the invalidity. The other three automated FAIL units are HARNESS_GAP and return as not evaluated, never as PASS.",
+ "blockingFindings": [
+  {
+   "id": "QRE-P4-F01",
+   "class": "GENERALIZATION_BLOCKER",
+   "property": "P03(d)",
+   "summary": "R7D-F13 s1: a weekly review with no report, after seven weeks with nothing ever reported, is VALID and trims the run doses to the reviewed entry (the zero reading of unreported training) without asking UNREPORTED_TRAINING, while 13 elapsed planned runs in the 30-day window have no report and no declared break.",
+   "structural": true,
+   "origin": "PRE_EXISTING"
+  },
+  {
+   "id": "QRE-P4-I01",
+   "class": "INVALID_HOLDOUT",
+   "summary": "Registered critical coverage missing (CARRIER_HOLD 0; PREREG-6 Δ18 and Δ29 race-week shapes absent; PREREG-6 Δ5 optional sessions undone in a re-entry week absent; PREREG-5 Δ3 whole-week control absent as received; PREREG-3 Δ6 and PREREG-2 Δ9 items at 1 of 2). The holdout is replaced by a new independent corpus (PREREG-1 §4.5).",
+   "origin": "NEW"
+  }
+ ],
+ "conditions": [
+  {
+   "id": "QRE-P4-K01",
+   "condition": "A new, independent final holdout (new author instance, new seal, single first evaluation) that meets every registered coverage clause, in particular the ones listed in coverageUnits with met=false. Fix nothing in the runtime in response to a CORPUS_ERROR (PREREG-1 §4.5).",
+   "owner": "Founder decision; then Chief",
+   "trigger": "before any claim that R7-D closes READY",
+   "evidenceOfResolution": "a sealed holdout whose evaluated cases meet every coverage clause, judged by fresh instances"
+  },
+  {
+   "id": "QRE-P4-K02",
+   "condition": "QRE-P4-F01 needs a runtime correction. That requires a new authorization, a new freeze and a new independent holdout (PREREG-1 §9; PREREG-7 Δ46). Nothing here authorizes it.",
+   "owner": "Founder (authorization); Engineering worker (fix); a fresh quality judge (recheck)",
+   "trigger": "next authorized runtime mission",
+   "evidenceOfResolution": "a directed test of the F13 shape (no question asked, VALID entry trim with an unreported window, first planned week a low-dose CONSOLIDATION week) RED on R7D-FREEZE-5 and green on the candidate, plus the witness grid of this record re-run"
+  },
+  {
+   "id": "QRE-P4-K03",
+   "condition": "The three HARNESS_GAP defects (QRE-P4-H01, -H02, -H03) are corrected in a newly registered harness version with development cases, before a new holdout exists. PREREG-1 §3 says the harness is corrected; PREREG-1 §9 says a harness change never answers a final-holdout output. Whether a correction found here may be carried into the replacement holdout's harness is a Founder decision, routed as an escalation; until then the affected units stay NOT_EVALUABLE.",
+   "owner": "Founder (legitimacy under §9); Chief / instrument owner (version, pre-registration delta)",
+   "trigger": "before a replacement holdout is authored",
+   "evidenceOfResolution": "a validation run showing the three false FAILs removed, no other change, and every sensitivity row still detected"
+  },
+  {
+   "id": "QRE-P4-K04",
+   "condition": "CQ4-1 carried: move T39, T40 and T41 into the CoachingCore suite at the next authorized candidate (PREREG-7 Δ41).",
+   "owner": "Engineering worker",
+   "trigger": "next authorized candidate, or any change to returnAfterPause or recordedStop",
+   "evidenceOfResolution": "the suite count changes accordingly and QF3, QF6, QF7 are killed inside it"
+  }
+ ],
+ "residualLimitations": [
+  "Author independence and the inputs the author opened are self-reported in the manifest; the input hashes match 58d6766, but reading behaviour cannot be verified.",
+  "Commit timestamps are committer-clock metadata; the order seal (14c7ec8) → evaluation outputs (87d0978) is also confirmed by ancestry.",
+  "Validation 8's sensitivity rows on superseded runtimes were taken from the record, not rerun, except the three new mutant rows (QF3, QF6, QF7), the no-false-block run and the CQ4-1 kills, which were reproduced.",
+  "The code-level root cause of QRE-P4-F01 is not localized; the behaviour, its scope on the H1 intakes and its presence on R7D-FREEZE-4 and R7C-FREEZE-4 are shown by witnesses.",
+  "H2 exercises intake-level properties only; P03, P04, P05, P08, P09, P10, P14, P16, P17 and P18 have no H2 unit by design.",
+  "The harness runs no H1-M relation on a case with a CORPUS_ERROR (R7D-F22, -F32, -F33, -F34): their variants are not evaluated.",
+  "The start-time question of QRE2-P34-01 was never raised in H1 (R7D-F31 s3 to s6 ask nothing; R7D-F30 never applies a return), so that answer path has no holdout evidence.",
+  "Domain adequacy, the rubric, CFP35R2-03 and the NESTED units belong to the SSCTR judge and are not judged here."
+ ],
+ "freezeIntegrity": {
+  "result": "PASS",
+  "runReportRuntimeBlocks": {
+   "H1": {"revision": "R7D-FREEZE-5", "commit": "7272e9ad5cc550d05bce3be761e3ac8cf6adf03b", "recordSha256": "956da5c23c3499fd85af532e384e9302be15158fbc85a309e3d50c8721456dd8", "files": 649, "same": 649, "changed": 0, "absent": 0, "runtimeDiff": [], "allowRuntimeDiff": false},
+   "H2": {"revision": "R7D-FREEZE-5", "commit": "7272e9ad5cc550d05bce3be761e3ac8cf6adf03b", "recordSha256": "956da5c23c3499fd85af532e384e9302be15158fbc85a309e3d50c8721456dd8", "files": 649, "same": 649, "changed": 0, "absent": 0, "runtimeDiff": [], "allowRuntimeDiff": false}
+  },
+  "verifier": {
+   "command": "node CoachingCore/scripts/verify-r7d-5.mjs --suite (read-only, no --write), run 2026-11-08 from the worktree root",
+   "result": "33 of 34 checks pass; failed: [\"no-final-holdout\"] only",
+   "note": "no-final-holdout fails by design now that final/ exists. The suite check (1005 tests, 0 failures, as recorded) and the three conformance checks (r7b, r7b1, r7b2) pass. The worktree was clean before and after (git status --porcelain empty)."
+  },
+  "harnessFilesBoundByFreeze": "client, canonical, expectations, metamorphic, properties (HARNESS-7 r2), report, util, generate-sample and author/check-corpus.mjs hash as R7D-FREEZE-5 records them; r7d-harness-8.mjs, properties-8.mjs and seal-final.mjs are new files the freeze does not bind",
+  "preregistrations1to6EqualToFreeze": true
+ },
+ "protocolIntegrity": {
+  "result": "PASS",
+  "checks": [
+   {"check": "H1 corpus bytes = seal = seal commit", "result": "PASS", "evidence": "2f2a5d27…3b18 now, in SEAL.json and at 14c7ec8"},
+   {"check": "H2 corpus bytes = seal = seal commit", "result": "PASS", "evidence": "b69fa543…a192 now, in SEAL.json and at 14c7ec8"},
+   {"check": "manifest seal digests (manifest without its evaluation block)", "result": "PASS", "evidence": "H1 a0b6d7d8…0641 and H2 2b396d89…8e3e83 recomputed now and at 14c7ec8; each RUN_REPORT's manifest.sealDigest equals its seal"},
+   {"check": "manifest body unchanged between seal and evaluation", "result": "PASS", "evidence": "only the evaluation block differs between 14c7ec8 and 87d0978, for both manifests"},
+   {"check": "authorStartedAt after the freeze and after the instrument commit", "result": "PASS", "evidence": "H1 2026-11-08T02:22:52.247Z; freeze created 2026-11-07T22:29:32.639Z; 58d6766 committed 2026-11-08T02:21:24Z (88 s earlier). H2 2026-11-08T03:56:45.521Z"},
+   {"check": "seal commit precedes the evaluation", "result": "PASS", "evidence": "14c7ec8 at 2026-11-08T03:56:55Z; H1 evaluation started 03:57:13.619Z, H2 03:57:59.950Z; 87d0978 is a child of 14c7ec8"},
+   {"check": "evaluationCount 1 and report hash named", "result": "PASS", "evidence": "both manifests: evaluationCount 1, firstEvaluationReport evaluation/RUN_REPORT.json, firstEvaluationReportSha256 equal to the file bytes (c6278b29…7d62, d5bcbd10…92a0); evaluationBefore in each report is {evaluationCount:0, firstEvaluationAt:null}"},
+   {"check": "written once, with --first-evaluation, in new directories", "result": "PASS", "evidence": "both reports firstEvaluation:true, allowRuntimeDiff:false, freshness [], harness R7D-HARNESS-8; firstEvaluationAt equals startedAt; each evaluation file appears in exactly one commit (87d0978); the first-evaluation path refuses an existing --out and writes with flag wx"},
+   {"check": "harness and pre-registration bound by the seal are those committed in 58d6766", "result": "PASS", "evidence": "all 12 harness files and PREREG-7 hash equal at 58d6766, in SEAL.json and now; commitAtSeal 58d6766; final/ absent at 58d6766; the 9 author inputs equal at 58d6766"},
+   {"check": "H2 seed rule", "result": "PASS", "evidence": "sha256('R7D-SAMPLE|FINAL|ce3fe8e1…168e') = 9072a6b1…ba06, as the manifest and seal state; 300 intakes"},
+   {"check": "sizes", "result": "PASS", "evidence": "H1 35 cases (32–36), 98 steps (70–100); H2 300 (250–300)"}
+  ]
+ },
+ "instrumentReliability": {
+  "result": "RELIABLE_WITH_HARNESS_GAPS",
+  "harness8VsHarness7r2": {
+   "result": "CONFORMS to PREREG-7 Δ38 and Δ39",
+   "evidence": "diff r7d-harness.mjs r7d-harness-8.mjs: header comment, the import of properties-8.mjs and HARNESS_VERSION only. diff properties.mjs properties-8.mjs: a header comment; sameBreakNamed returns 'LITERAL' for the old literal match and 'ROW' when both names resolve to one non-LATEST separateBreaks row of the latest REESTABLISH (Δ38); the P17 window loop pushes WINDOW_ENDED_BY_ROW_NAME when it ends a window by 'ROW'; the JSDoc above adverseConvergence (Δ39, comment only). sameBreakNamed has no other caller; adverseConvergence, restatesListed and P18's open-break set are byte-identical."
+  },
+  "validation8": {
+   "result": "CONFIRMED",
+   "record": "HARNESS_VALIDATION_R7D_8.json: noFalseBlock PASS on R7D-FREEZE-5 (649/649), instrumentFix FALSE_BLOCK_REMOVED (DEV-58, DEV-59), 27/27 sensitivity rows DETECTED_AND_CLEAN_ON_CANDIDATE, 56/56 witnesses fired, notFired [], carriers CC 7 / CH 1 / RESEND 61 / RESTATE 102 / INSERT 41, P17 286, P18 207",
+   "reproducedHere": "harness-8 development run (no --first-evaluation, output in scratch) on DEV_CASES_R7D_8 with the frozen runtime: 64/64 evaluated, 0 property and 0 relation violations, CC 7, CH 1, RESEND 61, RESTATE 102, INSERT 41, P17 388 = 286 + 102, P18 248 = 207 + 41. On lean mutant copies rebuilt here: QF3 detected on DEV-60, QF6 on DEV-62, QF7 on DEV-61, each by P18(d) EARLIER_BREAK_DROPPED_BY_CORRECTION"
+  },
+  "cq41": {
+   "result": "CONFIRMED",
+   "evidence": "node --test phase4/tests/r7d-phase4-cq41.test.mjs on the frozen bytes: 3/3 pass. Mutants rebuilt here with probes2/qre3-p35-mutation.mjs --build-only (new scratch directory): QF3 fails only T39, QF6 only T41, QF7 only T40, QF0 all three; mutant r6-adaptation.mjs hashes equal the evidence file (6a1ab899…, bb1d4751…, b0cfdc43…, 7fc75434…)"
+  },
+  "determinism": "every H1 (35) and H2 (300) stepsDigest recomputed in a fresh process equals the sealed RUN_REPORT",
+  "harnessGapsFound": ["QRE-P4-H01", "QRE-P4-H02", "QRE-P4-H03"],
+  "harnessGapEffect": "all three are false FAILs: the units return as NOT_EVALUABLE, never in the runtime's favour (PREREG-1 §3). None hides a violation found here."
+ },
+ "automatedFailures": [
+  {
+   "id": "AF-1",
+   "split": "H1",
+   "property": "P03(d) RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING",
+   "case": "R7D-F13",
+   "step": "s1",
+   "unit": "week 8, mode EASY, 13 unreported runs (w3-run-d5 … w7-run-d5) in the window 2026-12-12..2027-01-10",
+   "classification": "RUNTIME_VIOLATION",
+   "finding": "QRE-P4-F01",
+   "mechanism": "s1 is a WEEKLY_REVIEW at w7 d6 20:00 with no observation; the record is empty (nothing reported since the start). Gates read the reviewed week as MISSED (HOLD, 'repeat the dose'); with no completed run in the 30-day window the reviewed entry (15 min) becomes the ceiling, and the plan is trimmed from EASY 20/EASY 20/LONG 15 to 15/15/15 (week 8, CONSOLIDATION) and from 20/20/25 to 15/15/20 (week 9), VALID, with no question. runGapInForce reads only the decision's own week, which has no run left on Sunday evening, and the composition's dependence test did not fire for this week."
+  },
+  {
+   "id": "AF-2",
+   "split": "H1",
+   "property": "P03(d) RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING",
+   "case": "R7D-F21",
+   "step": "s3",
+   "unit": "week 5, mode EASY, 8 unreported runs before week 5",
+   "classification": "HARNESS_GAP",
+   "finding": "QRE-P4-H02",
+   "mechanism": "s3 is the week-5 review on its last day (2027-03-07 20:00). The only week-5 run on or after the decision date is w5-run-d6 (LONG 65), which s3's own observations report completed (65 min). The decision plans from week 6 (REESTABLISH fromWeek 6), whose window holds the week-5 completed runs (41, 40, 65), and that unit passes. The harness counts a session the same decision records as executed as if it were a run dose still planned."
+  },
+  {
+   "id": "AF-3",
+   "split": "H1-M (reported under P05 and CARRIER_CLINICAL)",
+   "property": "P05 / CARRIER_CLINICAL FIRST_ELIGIBLE_DECISION_DIFFERS",
+   "case": "R7D-F12",
+   "step": "s2 (answer), compared at s3",
+   "unit": "1",
+   "classification": "HARNESS_GAP",
+   "finding": "QRE-P4-H03",
+   "mechanism": "The variant replaces s2, which is both the answer and the week-4 WEEKLY_REVIEW, with a pain EXERCISE_SUBSTITUTION, and compares at s3, the week-5 review a week later. So the carried run (1) never reviews week 4, (2) spends week 5 under the pre-answer plan (EASY 40/35/LONG 60; a clinical route adopts nothing) while the direct run had week 5 re-planned to 35/35/46, and (3) receives different facts at s3, because s3's bulk asPrescribed reports expand against each run's plan in force (carried: 40/35/60 run minutes, 51/50 strength minutes; direct: 35/35/46, 33/31). The plans then differ (w5d6 LONG 60 vs 46, both already executed; w6 LONG 55 vs 51; dead-bug 2 vs 3 sets). The recorded answer rows (weeks 3–4) are identical in both ledgers. With the first eligible decision placed before any session elapses (the harness's own probe form, w4 d6 23:30), carried and direct are identical in plan, validity and question."
+  },
+  {
+   "id": "AF-4",
+   "split": "H1",
+   "property": "P06 (single-run ceiling)",
+   "case": "R7D-F07",
+   "step": "GENERATE (3 units) and s1 (1 unit)",
+   "unit": "w0-run-d0, w0-run-d2, w0-run-d5 EASY 15 against ceiling 5; w1-run-d5 EASY 20 against ceiling 5; reference INTAKE_LONGEST 0 min on 2026-11-28",
+   "classification": "HARNESS_GAP",
+   "finding": "QRE-P4-H01",
+   "mechanism": "The intake states recent.longestRunMinutes 0 after a 14-week stop. The harness pushes it as an INTAKE_LONGEST reference of 0 minutes (Number.isFinite(0)), so the ceiling is 0 + 5 = 5, below the policy's minimumSessionMinutes (15): no run could ever pass. The policy reads no completed run in the window as 'the reviewed entry (return.entryRunMinutes = 15) is the ceiling'. With the field absent, the runtime output is byte-identical and the harness gives NOT_EVALUABLE (NO_RUN_REFERENCE_IN_WINDOW) for the same two weeks."
+  }
+ ],
+ "automatedFailuresH2": "none: every property PASS or NOT_EVALUABLE, every relation 0 violations; 587 observations, all P12 SAME_TURN_CONFIRMATION_REQUESTED (the registered consumer condition); LOAD_CONVENTION_EQUIVALENT differences on R7D-G020, -G060, -G140, -G245 are the HV-01 exception, non-blocking",
+ "observationsH1": "0 property observations of any kind, as the coordinator counted; in particular no P17 WINDOW_ENDED_BY_ROW_NAME",
+ "corpusErrors": [
+  {
+   "case": "R7D-F22",
+   "step": "s1",
+   "harnessMessage": "substitution.exerciseRef: no SQUAT exercise in w1-str-d2",
+   "ruling": "CORPUS_ERROR (PREREG-1 §7: a session reference with no match in the plan). In the plan in force at s1 (the generated plan), w1-str-d2 is STRENGTH_UPPER (db-bench-press, db-row, db-lateral-raise, db-biceps-curl, dead-bug); the SQUAT is on d0. The client resolved the session correctly; neither the runtime nor the harness is at fault.",
+   "remainsEvaluable": "the generation only (intake to program): P11 376 and P12 40 units. s1, s2 and s3 are lost, and no H1-M relation runs.",
+   "coverageLost": "the skill-mismatch substitution; the pain substitution carrying a break, then clearance (the second case of PREREG-3 Δ6, clinical flag or pain substitution); the only EXERCISE_SUBSTITUTION event of the events stratum"
+  },
+  {
+   "case": "R7D-F32",
+   "step": "s3",
+   "harnessMessage": "fact 0 matches no session: {week:5, sport:RUN, day:6}",
+   "ruling": "CORPUS_ERROR. The return adopted at s2 (RETURN_AFTER_PAUSE at w5 d5) re-planned w5 d6 to REST_BY_DESIGN with no prescription; the author then reports that run 'as prescribed'. The client resolves against the plan in force, as C3 requires.",
+   "remainsEvaluable": "generation, s1 and s2, including the separate-breaks return over the race week (P17 2, P18 5, P08 3, P06 3, P03 76 units). Lost: s3 and every H1-M relation of the case.",
+   "coverageLost": "the review after the return; the case's variants (RESTATE, INSERT_NEWER_BREAK, RESEND, …)"
+  },
+  {
+   "case": "R7D-F33",
+   "step": "s3",
+   "harnessMessage": "fact 0 matches no session: {week:4, sport:RUN, day:6}",
+   "ruling": "CORPUS_ERROR. Same mechanism: the return adopted at s2 (w4 d5) made w4 d6 REST_BY_DESIGN.",
+   "remainsEvaluable": "generation, s1 and s2 (P17 2, P18 5, P08 3 units). Lost: s3 and every H1-M relation of the case.",
+   "coverageLost": "as R7D-F32"
+  },
+  {
+   "case": "R7D-F34",
+   "step": "s4",
+   "harnessMessage": "fact 0 matches no session: {week:7, sport:STRENGTH, day:4}",
+   "ruling": "CORPUS_ERROR. w7 d4 strength is REST_BY_DESIGN with no prescription in the generated plan and in every later plan; the s3 return also made w7 d6 REST_BY_DESIGN.",
+   "remainsEvaluable": "generation and s1 to s3, including the three-break return (P17 4, P18 9, P08 3 units). Lost: s4 and every H1-M relation of the case.",
+   "coverageLost": "the review after the chain's return; the case's variants"
+  },
+  {
+   "note": "4 of 35 cases (11.4 %) carry a CORPUS_ERROR; 1 (R7D-F22) is lost entirely. The Phase 1 FAILURE_TAXONOMY, incorporated by PREREG-1 §3, lists 'CORPUS_ERROR above the ceiling (proposed: 10 %)' as an INTEGRITY_BLOCKER. Since the number is marked as a proposal, this record does not rest the verdict on it; under the reading that adopts it, it is a further ground for INVALID_HOLDOUT."
+  }
+ ],
+ "coverageUnits": [
+  {"clause": "PREREG-2 Δ9: CARRIER_CLINICAL > 0", "reported": 2, "counted": 1, "cases": "R7D-F21 (valid); R7D-F12 lost to HARNESS_GAP QRE-P4-H03", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: CARRIER_HOLD > 0", "reported": 0, "counted": 0, "cases": "none: the relation needs an UNREPORTED_TRAINING answer in the program's last week; the only last-week case (R7D-F11) has no question, because its last week has no run dose left to plan", "met": false, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: P08 >= 2", "reported": 36, "counted": 36, "countedFullyValidCasesOnly": 27, "notEvaluable": "1 (R7D-F21 s3)", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-3 Δ6: P17 >= 4", "reported": 78, "counted": 78, "countedFullyValidCasesOnly": 70, "composition": "55 property units + 23 RESTATE units", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-3 Δ6: RESTATE_DECLARED_BREAK > 0", "reported": 23, "counted": 23, "cases": "12 cases (F15, F20, F21, F23, F24, F25, F26, F28, F29, F30, F31, F35)", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-4 Δ5: P18 >= 2", "reported": 61, "counted": 61, "countedFullyValidCasesOnly": 42, "composition": "57 property units + 4 INSERT units", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-4 Δ5: INSERT_NEWER_BREAK > 0", "reported": 4, "counted": 4, "cases": "R7D-F20, -F21, -F26, -F28", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-5 Δ3: P18 >= 2 in its cases", "counted": 15, "cases": "R7D-F28 7 (isolated run), R7D-F29 8", "met": true, "note": "the units exist; the case shape of the whole-week control is not delivered (see the case-level clause below)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: P18 >= 2 in group (a), one sport complete between two breaks", "counted": 15, "cases": "R7D-F31 8, R7D-F35 7 (R7D-F34 9 from evaluated steps)", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: P18 >= 2 in group (b), named correction after a separate-breaks return", "counted": 15, "cases": "R7D-F28 7, R7D-F29 8", "met": true, "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-1 §7: every safety stratum keeps >= 2 evaluable base cases", "met": true, "cases": "clinical and scope F08, F09, F10, F21, F23 (F22 lost); return F13, F14, F20, F21, F24, F25, F26, F28, F29, F31, F35; race transition F02, F27; longitudinal with response F01, F04, F11, F12, F13, F18, F19, F27", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-1 §7: no H1 stratum with zero evaluable cases", "met": true, "note": "every stratum has evaluable cases; the events stratum's substitution element has none (R7D-F22 lost)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: >= 2 cases with a declared break and no pending question", "met": true, "cases": "R7D-F14, -F15, -F21, -F23, -F24, -F26, -F28, -F29, -F31, -F35", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: >= 2 cases with an UNREPORTED_TRAINING question answered directly", "met": false, "counted": 1, "cases": "R7D-F12 (asked s1, answered s2). R7D-F11: not asked (no dose left in the last week). R7D-F13: not asked (QRE-P4-F01 itself). R7D-F21: asked at s2, never answered. TRAINING_BETWEEN_BREAKS answers (F26 s4, F28 s4) are another question kind", "readingDependent": "met only if TRAINING_BETWEEN_BREAKS answers are counted, which the clause's wording does not do", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: >= 2 cases with a machine exercise logged", "met": true, "cases": "R7D-F16 (6 MACHINE_STACK rows, P16 136 units), R7D-F17 (5 rows, P16 236 units)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-2 Δ9: >= 1 case with a confounded run and adverse recovery or impaired next day", "met": true, "cases": "R7D-F01 s1 (w1 LONG confounded, UNDER/HARDER/ADVERSE/IMPAIRED), with its s2 control", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-3 Δ6: >= 2 cases with a break stated with another event kind, later reviews not restating it", "met": true, "cases": "R7D-F20, -F24, -F25, -F26, -F28, -F29, -F31, -F33, -F34, -F35 (and F30, F32)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-3 Δ6: >= 2 cases with a break under a clinical flag or pain substitution, qualified clearance, a later review not restating it", "met": false, "counted": 1, "cases": "R7D-F21 only; R7D-F22, the second, is lost to CORPUS_ERROR at s1. R7D-F23 (clinical-reason break) restates its break by name after clearance, so it does not have this shape", "consequenceIfMissing": "INVALID_HOLDOUT (critical coverage lost to a CORPUS_ERROR)"},
+  {"clause": "PREREG-3 Δ6: >= 1 case with a clinical-reason break, then clearance", "met": true, "cases": "R7D-F23 (s1 ILLNESS, s3 clearance)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-4 Δ5: >= 2 cases with two or more breaks stated before the first is applied, followed by a review that states none", "met": true, "cases": "R7D-F24, -F25, -F26, -F28, -F30, -F31, -F35", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-4 Δ5 sub-items", "met": "PARTIAL", "detail": "newer shorter and touching F24, overlapping F25; days between F26, F28, F30, F31; answered separate F24, F26, answered as a correction F25; sessions between asked F26, F28. Earlier break clinical: only R7D-F23, which has no later review that states none (s3 restates by name)", "readingDependent": "the clinical sub-item is met only if R7D-F23 counts without the closing review that states none", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-5 Δ3: >= 2 cases with two separate breaks and training reported between them", "met": true, "cases": "R7D-F28, -F29, -F31, -F35 (and F32, F33, F34 on evaluated steps)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-5 Δ3: >= 1 with isolated training between the breaks", "met": true, "cases": "R7D-F28 (one run, w4 d1; TRAINING_NOT_REESTABLISHED)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-5 Δ3: >= 1 with a whole plan week executed in full between the breaks (the inverse-defect control)", "met": false, "counted": 0, "cases": "R7D-F29 intends it, but its week-3 strength sessions arrive without loads on the FROM_LOG rows (db-calf-raise, bulgarian-split-squat-db): the client's asPrescribed sends no load for a row with no known value. The runtime reads OWN_RETURN with RUN re-entered (2027-01-25) and STRENGTH null. No other case delivers a week complete in both sports", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5 (a): >= 2 cases, two separate breaks with a week complete in one sport only between them", "met": true, "cases": "R7D-F31, -F35 (R7D-F34 on evaluated steps); R7D-F30 never applies its return", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5 (b): >= 2 cases, a named correction of the later break after a separate-breaks return", "met": true, "cases": "R7D-F28 s3, R7D-F29 s3", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5 (c): >= 2 cases, a return reported mid-week after sessions of that week not done", "met": false, "counted": 1, "cases": "R7D-F20 s3 (Thursday, Mon run and Tue strength not done; applied). R7D-F30 s2 (Friday, w4 Thu run not done) has the input, but the return is never applied: s2 to s4 ASK on the reason screen of work-1's free text and the timeline never answers. Other mid-week returns follow sessions done (F28, F29) or inside the break (F32, F33, F34)", "readingDependent": "met if a return report the runtime asks about, and never applies, counts as exercising the clause", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: >= 1 race week between two breaks with the race touch or the race missed", "met": true, "cases": "R7D-F34 (race not done, w6; s3 evaluated)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: >= 1 re-entry week with optional sessions not done", "met": false, "counted": 0, "cases": "none. R7D-F35's week 5 holds only WALK_JOG runs and strength (no WALK session), so its 'WALK not done' bulk fact expands to nothing; R7D-F32's race week has no shakeout. In every between-breaks window of F26, F28, F29, F31, F32, F33, F34, F35 the only optional parts are EASY runs with strides, all reported done", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: >= 1 re-entry week with strength logged without RIR", "met": true, "cases": "R7D-F31 (w3 strength, explicit sets without rir)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: >= 1 later break with a start time on the day of a week's last session", "met": true, "cases": "R7D-F29 (trip-b startedAt 2027-01-31T15:00, LONG observed 07:30 that day)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ5: >= 1 clinical-cause break restated by name as nonclinical", "met": true, "cases": "R7D-F23 s3 (CLINICAL_HUMAN_REQUIRED, R-F08-1)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ18: >= 1 named correction moving the start of the latest break later, or omitting its first day", "met": true, "cases": "R7D-F28 s3 (01-07 to 01-09), R7D-F29 s3 (end date and days only: 02-01 instead of 01-31)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ18: >= 1 race week whose runs are only the touch, an optional shakeout and the race", "met": false, "counted": 0, "cases": "none. Race weeks as planned: F32 w4 EASY d1 + RACE_TOUCH d3 + RACE d6 (no shakeout); F33 w3 EASY d1 + EASY d3 + RACE d6 (no touch, no shakeout); F34 w6 EASY d1 + RACE_TOUCH d3 + RACE d6; F02 and F27 hold EASY runs too. The author's role-based bulk facts expand to nothing for an absent role (interface gap 3)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ18: >= 1 race touch done at half its minutes", "met": true, "cases": "R7D-F32 s2 (w4-run-d3 13 of 25 min, partial)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ18: >= 1 strength session on the earlier break's first day, no start time, strength read from its own return", "met": true, "cases": "R7D-F31 (w1-str-d1 on 2026-12-03, move-1's first day, reported at s3; OWN_RETURN with STRENGTH null)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ29: >= 1 race week without a gated run whose strength and shakeout report adverse recovery", "met": false, "counted": 0, "cases": "none. R7D-F33's race week holds two gated EASY runs and no touch or shakeout; only its strength reports ADVERSE", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ29: >= 1 named correction uncovering a planned session between the breaks, never reported", "met": true, "cases": "R7D-F28 s3 (w4 d3 strength and d4 run uncovered, asked as TRAINING_BETWEEN_BREAKS, answered s4)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ29: >= 1 late lift on the earlier break's first day, no time, after an own-return return, then the athlete's answers by different channels", "met": false, "counted": 0, "cases": "R7D-F31 has the late lift and later reports by a return report (s4), another event (s5, startedAt) and the weekly review (s6), but the coach asks nothing at s3 to s6, so no answer path exists. R7D-F30 never applies a return", "readingDependent": "met if the later reports count as answers without a question", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-6 Δ29: >= 1 chain of three or four separate breaks, the first two overlapping or touching", "met": true, "cases": "R7D-F35 (v1 02-07..02-10, v2 02-11..02-16, v3)", "consequenceIfMissing": "INVALID_HOLDOUT"},
+  {"clause": "PREREG-7 Δ44: >= 2 beginners and >= 2 intermediates in the longitudinal, break, return, correction or race-week material", "met": true, "cases": "beginners R7D-F11, -F13, -F15, -F25, -F35; intermediates R7D-F12, -F24, -F26, -F28, -F29, -F31", "consequenceIfMissing": "INVALID_HOLDOUT"}
+ ],
+ "coverageSummary": {
+  "unambiguousMisses": ["CARRIER_HOLD > 0 (0)", "PREREG-2 Δ9 UNREPORTED_TRAINING answered directly (1 of 2)", "PREREG-3 Δ6 clinical flag or pain substitution with clearance (1 of 2, R7D-F22 lost to CORPUS_ERROR)", "PREREG-5 Δ3 whole plan week executed in full (0)", "PREREG-6 Δ5 re-entry week with optional sessions not done (0)", "PREREG-6 Δ18 race week of touch, optional shakeout and race only (0)", "PREREG-6 Δ29 race week without gated run with adverse strength and shakeout (0)"],
+  "readingDependentMisses": ["PREREG-6 Δ5 (c) mid-week return (1 exercised of 2)", "PREREG-6 Δ29 late lift with answers by different channels (no question asked)", "PREREG-4 Δ5 earlier-clinical sub-item (R7D-F23 lacks the closing review)", "Phase 1 proposed 10 % CORPUS_ERROR ceiling (11.4 %)"]
+ },
+ "notEvaluableUnits": [
+  {"split": "H1", "property": "P06", "case": "R7D-F13", "units": 2, "steps": "s1 week 8, s2 week 8", "reason": "NO_RUN_REFERENCE_IN_WINDOW", "goesTo": "domain judge"},
+  {"split": "H1", "property": "P06", "case": "R7D-F21", "units": 1, "steps": "s3 week 5", "reason": "NO_RUN_REFERENCE_IN_WINDOW", "goesTo": "domain judge"},
+  {"split": "H1", "property": "P08", "case": "R7D-F21", "units": 1, "steps": "s3", "reason": "NO_EXECUTED_TOLERATED_RUN", "goesTo": "domain judge"},
+  {"split": "H1", "property": "P06", "case": "R7D-F07", "units": 4, "steps": "GENERATE w0 (3), s1 w1 (1)", "reason": "HARNESS_GAP QRE-P4-H01 (returned as not evaluated)", "goesTo": "domain judge"},
+  {"split": "H1", "property": "P03(d)", "case": "R7D-F21", "units": 1, "steps": "s3 week 5", "reason": "HARNESS_GAP QRE-P4-H02 (returned as not evaluated)", "goesTo": "domain judge"},
+  {"split": "H1-M", "property": "P05 / CARRIER_CLINICAL", "case": "R7D-F12", "units": 1, "steps": "s2, compared at s3", "reason": "HARNESS_GAP QRE-P4-H03 (returned as not evaluated)", "goesTo": "instrument owner"},
+  {"split": "H1", "property": "all", "case": "R7D-F22", "units": "every step unit", "steps": "s1, s2, s3", "reason": "CORPUS_ERROR at s1"},
+  {"split": "H1", "property": "all", "case": "R7D-F32, -F33, -F34", "units": "every unit of the step", "steps": "F32 s3, F33 s3, F34 s4", "reason": "CORPUS_ERROR"},
+  {"split": "H1-M", "property": "every relation", "case": "R7D-F22, -F32, -F33, -F34", "units": "not run", "reason": "the harness runs no relation on a case with a CORPUS_ERROR"},
+  {"split": "H1", "property": "P18 NESTED_OWN_RETURN_RECORD", "case": "none", "units": 0, "reason": "no H1 unit of this kind (R7D-F35's v1 is WITHIN_OWN_RETURN with stopInOwnReturn TOUCHES and is evaluated)"},
+  {"split": "H2", "property": "P06", "cases": ["R7D-G025", "R7D-G032", "R7D-G033", "R7D-G034", "R7D-G049", "R7D-G082", "R7D-G083", "R7D-G112", "R7D-G115", "R7D-G130", "R7D-G135", "R7D-G137", "R7D-G141", "R7D-G152", "R7D-G156", "R7D-G160", "R7D-G166", "R7D-G171", "R7D-G175", "R7D-G202", "R7D-G205", "R7D-G220", "R7D-G222", "R7D-G249", "R7D-G264", "R7D-G278", "R7D-G295", "R7D-G299"], "units": 28, "steps": "GENERATE", "reason": "NO_RUN_REFERENCE_IN_WINDOW"},
+  {"split": "H2", "property": "P03, P04, P05, P08, P09, P10, P14, P16, P17, P18", "units": 0, "reason": "intake-only sample, by design (PHASE1 SEALED_HOLDOUT)"},
+  {"split": "H2", "relations": "PERMUTE_OBSERVATIONS, DUPLICATE_SECOND_SOURCE, RESEND, CARRIER_CLINICAL, CARRIER_HOLD, RESTATE_DECLARED_BREAK, INSERT_NEWER_BREAK, CONSENT_OFF, CLOCKLESS_CONTROL, VARIANT", "units": 0, "reason": "no timeline"},
+  {"note": "NOT_EVALUABLE is never PASS: every unit above stays in its denominator."}
+ ],
+ "propertiesAndRelations": {
+  "dataIntegrity": "PASS. H1 and H2: 0 integrity issues (input not mutated, applied=false, no official effect), 0 runtime errors, 0 harness errors; P13 PASS (H1 1342 units with its relations, H2 533); P03(a) every record row from a client report, P03 RECORD_ROW_WITHOUT_REPORT and DECLARED_ROW_FACTS_WRONG pass; P16 PASS (372 units).",
+  "decisionConsistency": "PASS on the valid cases. P01 6, P02 13, P04 33, P07 248, P17 78 units, 0 violations; F21's kept break waits through CLINICAL (s1) and the post-clearance ASK (s2) and is applied once at s3; F23's restated clinical break routes CLINICAL (R-F08-1).",
+  "idempotence": "PASS. RESEND 25/25 and DUPLICATE_SECOND_SOURCE 25/25 units without violation; corpus re-sends and duplicates: F18 (phone + watch duplicate of w0-run-d1, exact re-send at s3, in-time and late corrections), F19 (contradiction, out-of-order, re-sent long run with another clock) give no P10 or P13 violation; F31 s4 restates fam-2 with the same facts and re-reads the return without loss (SSCTR-P35R2-O01, disclosed in PREREG-7 Δ40).",
+  "recordCorrections": "PASS. P10 3481 units without violation (rows never dropped or rewritten, supersession only by a sent correction, firstRecordedAt never advances); F18 and F19 corrections and the named break corrections of F25, F28, F29 are read.",
+  "determinism": "PASS. DETERMINISM 31/31 (H1) and 300/300 (H2); PERMUTE 25/25, RENAME 28/28 and 218/218, CALENDAR_SHIFT 28 and 218 without difference; every H1 and H2 stepsDigest recomputed in a fresh process equals the sealed report.",
+  "questionsWithNoExit": "No ASK without an exit the interface allows was found. R7D-F15 (s1, s2) and R7D-F30 (s2 to s4) ask 'the interruption reason is unclear' (missingInputs interruption.reasonCategory) because their free text holds a word the R6 reason screen treats as ambiguous ('back next Wednesday'; 'two-day off-site'). Witnesses show the exit: re-sending the break by name with plain text, or with the category and no free text, applies it (F15 s2 MODIFY; F30 s2 to s4 MODIFY, MODIFY, KEEP). In the holdout these questions were left unanswered by the timeline (QRE-P4-O01). The one state without a true exit is the disclosed F08 boundary (R7D-F23; QRE-P4-R02). R7D-F21's UNREPORTED_TRAINING question (s2) is left by evidence: week 5's completed runs make the week-6 dose independent of the unknown window.",
+  "silentStateChanges": "P10 PASS. P03: one confirmed silent change, QRE-P4-F01 (R7D-F13 s1: the plan is trimmed to the entry, VALID, with no question). The other P03 FAIL (R7D-F21) is QRE-P4-H02.",
+  "regressionsAndPropertyViolations": "No regression against the Phase 3.5 state: the frozen bytes pass validation 8 and the CQ4-1 tests; the F13 behaviour is identical on R7D-FREEZE-4 and R7C-FREEZE-4. Confirmed property violations on valid cases: 1 (QRE-P4-F01). Metamorphic violations confirmed: 0 (the one reported is QRE-P4-H03)."
+ },
+ "findings": [
+  {
+   "id": "QRE-P4-F01",
+   "class": "GENERALIZATION_BLOCKER",
+   "origin": "PRE_EXISTING",
+   "structural": true,
+   "property": "P03(d)",
+   "cases": ["R7D-F13"],
+   "steps": ["s1"],
+   "evidence": {
+    "decision": "WEEKLY_REVIEW 2027-01-10T20:00-05:00 (w7 d6), 0 observations, empty record → MODIFY GATED_NEXT_STEP, VALID_WITHIN_CURRENT_BOUNDED_SCOPE, question null; gates LONG/EASY HOLD ('not executed as planned this week (MISSED); repeat the dose'); week 8 (CONSOLIDATION) EASY 20/EASY 20/LONG 15 → 15/15/15; week 9 20/20/25 → 15/15/20; week 10 20/20/30 → 15/15/20",
+    "propertyUnit": "P03 RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING at s1, week 8, 13 unreported runs w3-run-d5 … w7-run-d5, no declared break, no completed run in 2026-12-12..2027-01-10",
+    "authority": "PREREG-1 P03(d); accepted semantics SSCTR-SD-R7C-r2 (R7C_HANDOFF): where a run dose depends on unknown training the engine asks UNREPORTED_TRAINING and plans neither the projection (credit) nor zero. The trim from 20 to 15 shows the dose depends on the unknown window.",
+    "authorOracle": "f13-e1 QUESTION_KIND_IS UNREPORTED_TRAINING and f13-e2 NO_PRESCRIPTION at s1 fail (domain-judged; consistent with this finding)",
+    "witnesses": "scratch p4-quality/witness-f13-20261108d: the same silent athlete is asked UNREPORTED_TRAINING when the next week is a DEVELOPMENT week (review at w5 or w6 end), and is trimmed VALID without a question when the first planned week is the CONSOLIDATION week (review at w7 end, or WEEKLY_REVIEW at w8 d0 07:00, REPLAN_FROM_EVIDENCE); a strength report does not change it. Reproduced on R7D-F25's independent intake (same result, P03 FAIL). On the other H1 intakes with a consolidation week (F01, F03, F05, F06, F12, F14, F20, F26, F28, F29, F30, F31, F34; higher doses) the question is asked. Identical on R7D-FREEZE-4 (b242237) and R7C-FREEZE-4 (a9654c8), extracted read-only with git show.",
+    "impact": "the coach plans entry-level doses (15 min) VALID after seven unknown weeks without asking: the zero reading. Doses fall, never rise, so it is not a SAFETY_BLOCKER (P03 class: SAFETY only if the dose rises); the athlete who trained gets a silent 20 % to 33 % cut (EASY 20 to 15, LONG 25 or 30 to 20) and no chance to report."
+   },
+   "coveringDisclosure": "none. Not QE-R7C-08/CC-F04 (credit at non-review decisions), CC-F05 (restart and walk/jog on credit), B1/B2 (need a known anchor run in the window) or P6-F03/F04 (roles held in never-reviewed weeks)."
+  },
+  {
+   "id": "QRE-P4-I01",
+   "class": "INVALID_HOLDOUT",
+   "origin": "NEW",
+   "cases": ["R7D-F11", "R7D-F12", "R7D-F13", "R7D-F21", "R7D-F22", "R7D-F29", "R7D-F32", "R7D-F33", "R7D-F34", "R7D-F35"],
+   "evidence": "coverageSummary.unambiguousMisses; each clause in coverageUnits with met=false names INVALID_HOLDOUT. Causes: the coach's week composition (race weeks with EASY runs; a walk/jog re-entry week with no WALK session), which the author cannot force (interface gap 3), the client's asPrescribed shorthand with FROM_LOG rows (interface gap 6, QRE-P4-O03), a last-week question with no dose left (R7D-F11), one runtime defect (QRE-P4-F01 removes F13's question), and one CORPUS_ERROR (R7D-F22)",
+   "coveringDisclosure": "none"
+  },
+  {
+   "id": "QRE-P4-H01",
+   "class": "HARNESS_GAP",
+   "origin": "NEW",
+   "property": "P06",
+   "cases": ["R7D-F07"],
+   "steps": ["GENERATE", "s1"],
+   "evidence": "lib/properties.mjs runRefs (unchanged in properties-8.mjs) pushes INTAKE_LONGEST whenever Number.isFinite(recent.longestRunMinutes), so 0 becomes a 0-minute completed-run reference and the ceiling 5 min, below minimumSessionMinutes 15. Witness scratch p4-quality/witness-f07-20261108g: longest 0 → FAIL 4 units; longest absent → runtime output byte-identical (digest 5ca2dbb6758e), P06 NOT_EVALUABLE (2 NO_RUN_REFERENCE_IN_WINDOW). Policy operational.run.singleRunCeiling: with no completed run in the window the reviewed entry (15) is the ceiling.",
+   "effect": "the 4 units return as NOT_EVALUABLE",
+   "substance": "see QRE-P4-R01",
+   "coveringDisclosure": "none (instrument defect)"
+  },
+  {
+   "id": "QRE-P4-H02",
+   "class": "HARNESS_GAP",
+   "origin": "NEW",
+   "property": "P03(d)",
+   "cases": ["R7D-F21"],
+   "steps": ["s3"],
+   "evidence": "p03 checks the current week's capped runs with date >= asOfLocal; for a review on the week's last day this includes w5-run-d6 (2027-03-07), which s3's own observations report completed (65 min). The decision's re-plan starts at week 6 (REESTABLISH fromWeek 6), and the week-6 unit, whose window holds the week-5 completed runs, passes.",
+   "effect": "the unit returns as NOT_EVALUABLE",
+   "coveringDisclosure": "none (instrument defect)"
+  },
+  {
+   "id": "QRE-P4-H03",
+   "class": "HARNESS_GAP",
+   "origin": "NEW",
+   "relation": "CARRIER_CLINICAL (P05)",
+   "cases": ["R7D-F12"],
+   "steps": ["s2", "s3"],
+   "evidence": "lib/metamorphic.mjs carrier(): the variant replaces the whole answer step with an EXERCISE_SUBSTITUTION even when that step is the answer week's WEEKLY_REVIEW, and uses the next timeline step (a week later) with plan-relative facts as the first eligible decision. Witnesses scratch p4-quality/carrier-f12-20261108e: c.mjs shows the different facts sent at s3; c2.mjs shows the plans still differ with identical facts, because week 5 elapsed under different plans in force and the week-4 review is missing; c3.mjs shows carried = direct (plan, validity, question) with the probe form at w4 d6 23:30, and only a strength-gate difference (dead-bug sets) at w5 d0 07:00, from the skipped week-4 review.",
+   "effect": "the unit returns as NOT_EVALUABLE; CARRIER_CLINICAL keeps one valid unit (R7D-F21)",
+   "coveringDisclosure": "none (instrument defect)"
+  },
+  {
+   "id": "QRE-P4-C01",
+   "class": "CORPUS_ERROR",
+   "origin": "NEW",
+   "cases": ["R7D-F22"],
+   "steps": ["s1"],
+   "evidence": "see corpusErrors",
+   "coveringDisclosure": "PREREG-1 §7 (a session reference with no match in the plan)"
+  },
+  {
+   "id": "QRE-P4-C02",
+   "class": "CORPUS_ERROR",
+   "origin": "NEW",
+   "cases": ["R7D-F32", "R7D-F33", "R7D-F34"],
+   "steps": ["F32 s3", "F33 s3", "F34 s4"],
+   "evidence": "see corpusErrors; the author reports sessions the adopted return made REST_BY_DESIGN, or a strength day that was never prescribed (interface gaps 2 and 3)",
+   "coveringDisclosure": "PREREG-1 §7"
+  },
+  {
+   "id": "QRE-P4-R01",
+   "class": "KNOWN_DISCLOSED_RESIDUAL",
+   "origin": "KNOWN_R7C_RESIDUAL",
+   "cases": ["R7D-F07"],
+   "steps": ["s1"],
+   "evidence": "after QRE-P4-H01 the s1 week-1 unit (EASY 20 after an unreported restart week 0) has no automated reading. With a real reference (longest 10, witness) it would exceed 15: it is a restart progressing on credit over an unreported week. The GENERATE units (EASY 15) equal the policy entry ceiling.",
+   "coveringDisclosure": "CC-F05 (PREREG-1 §6 envelope via R7C_HANDOFF C7: never-reported restart and walk/jog progress on credit, outside the unknown window by design)"
+  },
+  {
+   "id": "QRE-P4-R02",
+   "class": "KNOWN_DISCLOSED_RESIDUAL",
+   "origin": "PRE_EXISTING",
+   "cases": ["R7D-F23"],
+   "steps": ["s1", "s2", "s3"],
+   "evidence": "a clinical-cause break (ILLNESS) is kept, a newer unnamed nonclinical break does not convert it (s2 CLINICAL_HUMAN_REQUIRED), and its restatement by name as nonclinical after clearance routes to a human (s3 CLINICAL_HUMAN_REQUIRED): a state without a true exit, fail-closed, no prescription",
+   "coveringDisclosure": "F08 boundary: PREREG-3 residual F08, PREREG-4 Δ8 and Δ12, PREREG-6 Δ6 (R-F08-1), Δ9 (R1/R2), Δ12, PREREG-7 Δ45 (F08_OPEN, BLOCKED_BY_AUTHORITY)"
+  },
+  {
+   "id": "QRE-P4-O01",
+   "class": "OBSERVATION",
+   "origin": "PRE_EXISTING",
+   "cases": ["R7D-F15", "R7D-F30"],
+   "steps": ["F15 s1, s2", "F30 s2, s3, s4"],
+   "evidence": "the reason-screen ASK names missingInputs interruption.reasonCategory, a field the athlete already gave (TRAVEL, WORK), while the exit is to restate the free text; INTERFACE-1 §6 says only that free text alone, or a flag alone, is asked about. Fail-closed: nothing prescribed. Consequence for the holdout: F15's break is never applied and F30 never applies a return.",
+   "coveringDisclosure": "behaviour by policy (R6 reasonScreen: body parts and ambiguous words are ASK); the pointer and interface wording are not disclosed. Route: interface owner (consumer text), as PREREG-7 Δ40 (c) routes the O-02 wording"
+  },
+  {
+   "id": "QRE-P4-O02",
+   "class": "OBSERVATION",
+   "origin": "NEW",
+   "cases": ["R7D-F11", "R7D-F13"],
+   "steps": ["F11 s2", "F13 s2"],
+   "evidence": "the evaluation client expands an answer only against a pending UNREPORTED_TRAINING question; with none pending it records the trace note ANSWER_WITHOUT_PENDING_QUESTION and drops the answer's report and overrides (F11's 80 % runs never reach the runtime; F13's declared break is still sent). No property reads the dropped facts; the runtime result is not favoured (F11 has no dose left).",
+   "coveringDisclosure": "none; instrument behaviour consistent with C3, routed to the instrument owner for the next brief"
+  },
+  {
+   "id": "QRE-P4-O03",
+   "class": "OBSERVATION",
+   "origin": "NEW",
+   "cases": ["R7D-F29", "R7D-F32"],
+   "steps": ["F29 s2", "F32 s2"],
+   "evidence": "the client's asPrescribed sends no load for a strength row with no known value (ESTABLISH, or FROM_LOG never logged), so a strength week reported 'as prescribed' can never be complete for the runtime unless the author gives explicit loads (interface gap 6). F29's whole-week control and F32's strength week reach the runtime incomplete. Consistent with the disclosed consumer condition 'record reps, RIR and load of every set' (PREREG-6 Δ11).",
+   "coveringDisclosure": "PREREG-6 Δ11 consumer condition (runtime side); the instrument consequence for coverage is not disclosed"
+  }
+ ],
+ "escalations": [
+  "QRE-P4-F01 needs a runtime change: Founder authorization, new freeze and new independent holdout (PREREG-1 §9). Not done here.",
+  "QRE-P4-I01: the holdout is replaced by a new independent corpus (PREREG-1 §4.5): Founder decision.",
+  "QRE-P4-H01 to -H03 need harness changes; PREREG-1 §3 asks for the correction, §9 forbids a harness change in response to a final-holdout output. Founder decides whether they are carried into a replacement holdout's registered harness. Not done here."
+ ],
+ "reproduction": {
+  "scratchRoot": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c96df10b-0316-4fb4-b0ae-5089ebe1d97e/scratchpad/p4-quality/",
+  "directories": {
+   "integrity-20261108a": "integrity.mjs (seals, digests, timing, bindings), corpus-errors.mjs, trace-case.mjs, all-cases.mjs, asks.mjs, raceweeks.mjs, sepb.mjs, f31.mjs, f35.mjs, optional.mjs, machine.mjs, determinism.mjs, f13-s1.mjs",
+   "cq41-mutants-20261108b": "QF0, QF3, QF6, QF7 lean mutant copies",
+   "val8-rerun-20261108c": "harness-8 development runs (frozen DEV corpus; QF mutants on DEV-60/61/62)",
+   "witness-f13-20261108d": "w.mjs, w2.mjs, w3.mjs, w4.mjs",
+   "carrier-f12-20261108e": "c.mjs, c2.mjs, c3.mjs",
+   "noexit-20261108f": "n.mjs",
+   "witness-f07-20261108g": "w.mjs",
+   "oldrt-R7D4-20261108h / oldrt-R7C4-20261108h": "R7D-FREEZE-4 and R7C-FREEZE-4 runtimes extracted with git show"
+  },
+  "neverDone": "no --first-evaluation, no --write, no output under final/ except this folder, no npm run verify, no deletion"
+ }
+}
