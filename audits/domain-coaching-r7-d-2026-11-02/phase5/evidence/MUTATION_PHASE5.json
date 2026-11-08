@@ -1,0 +1,290 @@
+{
+ "evidence": "R7D-PHASE5-MUTATION",
+ "mode": "FULL_SUITE on one full copy (sequential; original bytes restored and checked by hash)",
+ "source": {
+  "CoachingCore/src/r6-adaptation.mjs": "8a5cfb5c84770561250ab4129a96ee50b8a06cd3b587735ec6aaf0030ee06062",
+  "CoachingCore/src/r6-program.mjs": "05fe3ec428d9c49d6b3c35ef620e018e4a7e3d283758b050297fa04c1bc85870",
+  "CoachingCore/src/r6-composition.mjs": "c9adba61413298ce5f68057877d85ce0fe3141ee930d0a250adedfa379d4f3d5"
+ },
+ "results": [
+  {
+   "id": "baseline",
+   "status": 0,
+   "tests": 1014,
+   "pass": 1014,
+   "fail": 0,
+   "failed": []
+  },
+  {
+   "id": "P5-M1",
+   "what": "SSCTR-P4-F01 reverted at its source: a moderate or long return sets no returnEntry marker",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "fe87a27d2f4c625a4c08d4ae9d456e4ab5847561e540cb7edda693bc0d91716e",
+   "tests": 1014,
+   "pass": 1010,
+   "fail": 4,
+   "newFailures": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break and never executed enter at the return entry, take return step 2 with the normal count as ceiling, then one set per executed week; no block is credited for weeks never executed",
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any strength exposure enters at the return entry and takes return step 2, and an athlete with an executed week 0 is unchanged",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses by repetitions like a bodyweight row, earns its return steps, and is never read as a load"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M2",
+   "what": "the planner ignores the marker: a week is an entry week only through an exercise in use at the entry step",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "mutatedSha256": "e7d5655c63a5642a3813d2701baeeb01e90d2e5f33a9795184a8192d59ed4ab0",
+   "tests": 1014,
+   "pass": 1010,
+   "fail": 4,
+   "newFailures": [
+    "Adaptation: nonclinical return is staged from current evidence; clinical or unknown cause is never given a recipe",
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break and never executed enter at the return entry, take return step 2 with the normal count as ceiling, then one set per executed week; no block is credited for weeks never executed",
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any strength exposure enters at the return entry and takes return step 2, and an athlete with an executed week 0 is unchanged",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses by repetitions like a bodyweight row, earns its return steps, and is never read as a load"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M3",
+   "what": "the transition ignores the marker when the week states no entry flag (the evidence reducer's own reading)",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "mutatedSha256": "bb2173febd0f26285e81de4b347d243714daa320026cb373ca4539faf0c29d06",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break and never executed enter at the return entry, take return step 2 with the normal count as ceiling, then one set per executed week; no block is credited for weeks never executed"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M4",
+   "what": "the marker never ends: every later week is a return-entry week",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "mutatedSha256": "abf16526d3abbcb9c6bc874fbd8e78e8644ca8f91a598aa22367fd5c6641573f",
+   "tests": 1014,
+   "pass": 1010,
+   "fail": 4,
+   "newFailures": [
+    "SSCTR D52: after a return, an exercise first prescribed in a session dated inside the pause establishes by effort, and one last done more than 28 days earlier re-establishes (strength)",
+    "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (every 2 weeks)",
+    "SSCTR D51: after a return the strength state leaves the return and rotation resumes on its cadence (coach decides)",
+    "R7-A state composition (C11): an exercise not in use carries no weight in the return-entry decision"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M5",
+   "what": "the facts read at a later break (strengthAtBreak) also end the marker",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "mutatedSha256": "089bdfa8885d172297a3b21229979d6c854152b7f9dade817391f01d55fd56ed",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-A boundary I1/I3 (family H, P5): time alone, a week boundary or a stored field never makes a projection history"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M6",
+   "what": "R7D-FC-01 reverted: only a bodyweight log without a kilogram is evidence (band and assistance logs are not)",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "4d807bbc9a599068f4d2090fce348b8cece739c67504329bf16ef998ab417fb9",
+   "tests": 1014,
+   "pass": 1012,
+   "fail": 2,
+   "newFailures": [
+    "R7-D Phase 5 T42 (SSCTR-P4-F01, the R7D-F13 shape): exercises planned before a long break and never executed enter at the return entry, take return step 2 with the normal count as ceiling, then one set per executed week; no block is credited for weeks never executed",
+    "R7-D Phase 5 T44 (R7D-FC-01): a band row reported as prescribed is evidence: it progresses by repetitions like a bodyweight row, earns its return steps, and is never read as a load"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M7",
+   "what": "QRE-P4-F01 reverted: the credit reading never decides the question",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "mutatedSha256": "ede6a8d61cf604ec6d3049cc46d6dc82c7201880022eefe7e2bd895665e0a86a",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T45 (QRE-P4-F01, the R7D-F13 shape and the judge's witness grid): after more than a month without a reported run the coach asks before a low-dose CONSOLIDATION week as before a DEVELOPMENT week, and plans neither the trim nor the projection"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M8",
+   "what": "the credit reading also reads a start anchored on evidence (a return's entry, a review's week evidence), not only a projection",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-composition.mjs",
+   "mutatedSha256": "d73a719cdc73c9f367fe73fa1df58f2cd77d95de4058fe9232c207e4d3643af7",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M9",
+   "what": "rotation ignores the marker (a return whose exercises hold no return step yet rotates its slots)",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-program.mjs",
+   "mutatedSha256": "2dccc61926a877a8b2da60d7456746a215986c58238ad85f7ac5443a05a32a05",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any strength exposure enters at the return entry and takes return step 2, and an athlete with an executed week 0 is unchanged"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "P5-M10",
+   "what": "the learning mode label of a return-entry week ignores the marker",
+   "kind": "PHASE5",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "3f647ec545454fb424da80adf15688a8213b0d6dbd223008d1d455d8abf54ed0",
+   "tests": 1014,
+   "pass": 1013,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 5 T43 (SSCTR-P4-F01, witness W-D49-A and control W-D49-B): a break before any strength exposure enters at the return entry and takes return step 2, and an athlete with an executed week 0 is unchanged"
+   ],
+   "killed": true,
+   "restored": true
+  },
+  {
+   "id": "QF3",
+   "what": "the duplicate test reads only a stated first day (a report giving its last day and length is never a duplicate)",
+   "kind": "CQ41",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "7dded7e8dd4672662529ecf4f3143a926f399ee0b6bcd8d0c53b6ba52eea1c04",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T39 (QRE3-P35-01, N6; kills QF3): an unnamed re-send of the latest break by its last day and length only is its duplicate: the holiday stays its own return and the doses equal the named re-send"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T39"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T39"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF7",
+   "what": "the duplicate test compares with the first report of the latest break, not the report in force",
+   "kind": "CQ41",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "c24d5923424da82f1e56855402e7607168892f2c84a7217778529615f3969d3a",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T40 (QRE3-P35-01, N9; kills QF7): after a named correction of the trip, an unnamed re-send of the corrected dates is a duplicate of the report in force: the holiday stays its own return and the doses equal the named re-send"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T40"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T40"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF6",
+   "what": "a decision of the unnamed re-read (a missing declaration ASK, a clinical route, a question) is ignored: the duplicate is read alone",
+   "kind": "CQ41",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "d1c9128070ce374cbd2eaec56a545cb0b1f0e6b405d4078f2ca64ce0199ff7c6",
+   "tests": 3,
+   "pass": 2,
+   "fail": 1,
+   "newFailures": [
+    "R7-D Phase 4 T41 (QRE3-P35-01, N16b and N2; kills QF6): a decision of the unnamed re-read is the athlete's answer exactly as for the named report: the confirmation-first order asks the holiday's start time, and a partial record asks for the record"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T41"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  },
+  {
+   "id": "QF0",
+   "what": "QRE-P35-01 reverted: an unnamed same-dates report re-establishes the latest break alone",
+   "kind": "CQ41",
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "mutatedSha256": "44c3e3c8ca1a24eaae5135acba4a0accf8c9e36a063c343edb720f338d80ba45",
+   "tests": 3,
+   "pass": 0,
+   "fail": 3,
+   "newFailures": [
+    "R7-D Phase 4 T39 (QRE3-P35-01, N6; kills QF3): an unnamed re-send of the latest break by its last day and length only is its duplicate: the holiday stays its own return and the doses equal the named re-send",
+    "R7-D Phase 4 T40 (QRE3-P35-01, N9; kills QF7): after a named correction of the trip, an unnamed re-send of the corrected dates is a duplicate of the report in force: the holiday stays its own return and the doses equal the named re-send",
+    "R7-D Phase 4 T41 (QRE3-P35-01, N16b and N2; kills QF6): a decision of the unnamed re-read is the athlete's answer exactly as for the named report: the confirmation-first order asks the holiday's start time, and a partial record asks for the record"
+   ],
+   "killed": true,
+   "restored": true,
+   "failedShort": [
+    "R7-D Phase 4 T39",
+    "R7-D Phase 4 T40",
+    "R7-D Phase 4 T41"
+   ],
+   "expectedFailing": [
+    "R7-D Phase 4 T39",
+    "R7-D Phase 4 T40",
+    "R7-D Phase 4 T41"
+   ],
+   "killedAsExpected": true
+  }
+ ],
+ "summary": {
+  "baseline": "1014/1014",
+  "baselineFailing": [],
+  "phase5": {
+   "mutants": 10,
+   "killed": 10,
+   "survived": [],
+   "notApplied": []
+  },
+  "cq41": {
+   "mutants": 4,
+   "killedAsExpected": 4
+  },
+  "allRestored": true
+ },
+ "ran": "2026-11-08T13:18:18.146Z",
+ "node": "v24.19.0"
+}

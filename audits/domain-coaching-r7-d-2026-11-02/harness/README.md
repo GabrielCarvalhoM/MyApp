@@ -277,3 +277,27 @@ To reproduce it, also add `rt-c8e`, built the same way as `rt-c46` but from `git
 node validation/build-dev-cases.mjs validation/DEV_CASES_R7D_7.json
 node validation/run-validation.mjs --dev validation/DEV_CASES_R7D_7.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46 --c8e $D/rt-c8e
 ```
+
+## R7D-HARNESS-8 (Phase 4) and R7D-HARNESS-9 (Phase 5; R7D-PREREG-8 Δ48–Δ50)
+
+R7D-HARNESS-8 is `r7d-harness-8.mjs` with `lib/properties-8.mjs` (R7D-PREREG-7 Δ38–Δ39), the harness of the Phase 4 holdout; it stays as that record.
+
+R7D-HARNESS-9 adds new files only and is the harness of the Phase 5 holdout. Under the Founder's K03 decision it corrects, prospectively, the three gaps the Phase 4 quality judgment proved; the Phase 4 results are unchanged:
+
+| Gap | Change | File |
+|---|---|---|
+| QRE-P4-H01 | P06 reads no intake longest run of 0 minutes as a run reference | `lib/properties-9.mjs` |
+| QRE-P4-H02 | P03(d), and P06's check of the decision's own week (the same predicate), never read a session of the decision's own day that its record already reports as a dose ahead; when it is the week's only run left, the unit is NOT_EVALUABLE | `lib/properties-9.mjs` |
+| QRE-P4-H03 | CARRIER_CLINICAL and CARRIER_HOLD compare at a probe one minute after the answer, in both runs, then at the author's later steps | `lib/metamorphic-9.mjs` |
+| Authoring (R7D-INTERFACE-8 §2) | A substitution's `exerciseRef:{week, pattern}` with no day names the first session of that week that holds the pattern | `lib/client-9.mjs` |
+
+`r7d-harness-9.mjs` reads those three modules and defaults to the R7D-FREEZE-6 record; `seal-final-2.mjs` (R7D-SEAL-FINAL-2) seals the Phase 5 holdout in `final2/`.
+
+Validation 9: `validation/DEV_CASES_R7D_9.json` (from `validation/build-dev-cases-9.mjs`: DEV-63 to DEV-72 added) and `validation/HARNESS_VALIDATION_R7D_9.json` (from `validation/run-validation-9.mjs`). It shows the gaps removed (`instrumentFix9`), the new sensitivity row (QRE-P4-F01 on R7D-FREEZE-5, DEV-67), the reachability of the coverage the Phase 4 holdout lost (CARRIER_HOLD, the substitution by pattern, a race week of only touch, shakeout and race, optional walks in a re-entry week) and the witnesses. W-CARRIER is retired: the probe now carries the clearance, so its trigger no longer occurs; W-CARRIER9 and W-CARRIER9b replace it.
+
+To reproduce it, rebuild every runtime of the validation 8 command into a new, uniquely named directory (`git archive` of each commit with the R6, B0, R3, R4 and R5 records, `CoachingCore/node_modules` copied in; the four mutants from R7D-FREEZE-5 with the exact edits of `phase35/reviews/engineering/probes/qre2-p35-mutants.mjs` and `probes2/qre3-p35-mutants.mjs`), add `rt-f5` (`git archive cc0b56f`, the R7D-FREEZE-5 bytes), and run:
+
+```
+node validation/build-dev-cases-9.mjs validation/DEV_CASES_R7D_8.json <new DEV file>
+node validation/run-validation-9.mjs --dev validation/DEV_CASES_R7D_9.json --out <file> --candidate <worktree root> --f4 $D/rt-f4 --f3 $D/rt-f3 --b2 $D/rt-b2 --prer7a $D/rt-prer7a --d1 $D/rt-d1 --d2 $D/rt-d2 --d3 $D/rt-d3 --d4 $D/rt-d4 --c46 $D/rt-c46 --c8e $D/rt-c8e --qhdrop $D/rt-qhdrop --qf3 $D/rt-qf3 --qf6 $D/rt-qf6 --qf7 $D/rt-qf7 --f5 $D/rt-f5
+```

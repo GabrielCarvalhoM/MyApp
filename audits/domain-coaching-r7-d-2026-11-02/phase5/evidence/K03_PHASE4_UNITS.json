@@ -1,0 +1,220 @@
+{
+ "probe": "R7D-PHASE5-K03-UNITS-1",
+ "note": "Development reading of the three Phase 4 HARNESS_GAP units; the Phase 4 evaluation, its reports and its judgments are unchanged and are never re-graded by this reading.",
+ "corpus": {
+  "path": "audits/domain-coaching-r7-d-2026-11-02/final/R7D_FINAL_HOLDOUT.json",
+  "sha256": "2f2a5d270c96117dfa5a8ef3c9b8a8ba2d380c7ec27c0835a7af8a4834b63b18"
+ },
+ "rows": [
+  {
+   "runtime": "R7D-FREEZE-5",
+   "caseId": "R7D-F07",
+   "check": "P06",
+   "finding": "QRE-P4-H01",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 4,
+    "violations": [
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "s1",
+      "issue": "EASY",
+      "week": 1
+     }
+    ],
+    "notEvaluable": []
+   },
+   "harness9": {
+    "result": "NOT_EVALUABLE",
+    "units": 0,
+    "violations": [],
+    "notEvaluable": [
+     {
+      "at": "GENERATE",
+      "week": 0,
+      "reason": "NO_RUN_REFERENCE_IN_WINDOW"
+     },
+     {
+      "at": "s1",
+      "week": 1,
+      "reason": "NO_RUN_REFERENCE_IN_WINDOW"
+     }
+    ]
+   }
+  },
+  {
+   "runtime": "R7D-FREEZE-5",
+   "caseId": "R7D-F21",
+   "check": "P03",
+   "finding": "QRE-P4-H02",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 38,
+    "violations": [
+     {
+      "at": "s3",
+      "issue": "RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING",
+      "week": 5
+     }
+    ],
+    "notEvaluable": []
+   },
+   "harness9": {
+    "result": "PASS",
+    "units": 37,
+    "violations": [],
+    "notEvaluable": [
+     {
+      "at": "s3",
+      "week": 5,
+      "reason": "P03D_SESSION_REPORTED_BY_THIS_DECISION"
+     }
+    ]
+   }
+  },
+  {
+   "runtime": "R7D-FREEZE-5",
+   "caseId": "R7D-F12",
+   "check": "CARRIER_CLINICAL",
+   "finding": "QRE-P4-H03",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 1,
+    "violations": [
+     {
+      "at": "s2",
+      "issue": "FIRST_ELIGIBLE_DECISION_DIFFERS"
+     }
+    ]
+   },
+   "harness9": {
+    "result": "PASS",
+    "units": 1,
+    "violations": []
+   }
+  },
+  {
+   "runtime": "candidate",
+   "caseId": "R7D-F07",
+   "check": "P06",
+   "finding": "QRE-P4-H01",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 4,
+    "violations": [
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "GENERATE",
+      "issue": "EASY",
+      "week": 0
+     },
+     {
+      "at": "s1",
+      "issue": "EASY",
+      "week": 1
+     }
+    ],
+    "notEvaluable": []
+   },
+   "harness9": {
+    "result": "NOT_EVALUABLE",
+    "units": 0,
+    "violations": [],
+    "notEvaluable": [
+     {
+      "at": "GENERATE",
+      "week": 0,
+      "reason": "NO_RUN_REFERENCE_IN_WINDOW"
+     },
+     {
+      "at": "s1",
+      "week": 1,
+      "reason": "NO_RUN_REFERENCE_IN_WINDOW"
+     }
+    ]
+   }
+  },
+  {
+   "runtime": "candidate",
+   "caseId": "R7D-F21",
+   "check": "P03",
+   "finding": "QRE-P4-H02",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 38,
+    "violations": [
+     {
+      "at": "s3",
+      "issue": "RUN_DOSE_PLANNED_ON_UNKNOWN_TRAINING",
+      "week": 5
+     }
+    ],
+    "notEvaluable": []
+   },
+   "harness9": {
+    "result": "PASS",
+    "units": 37,
+    "violations": [],
+    "notEvaluable": [
+     {
+      "at": "s3",
+      "week": 5,
+      "reason": "P03D_SESSION_REPORTED_BY_THIS_DECISION"
+     }
+    ]
+   }
+  },
+  {
+   "runtime": "candidate",
+   "caseId": "R7D-F12",
+   "check": "CARRIER_CLINICAL",
+   "finding": "QRE-P4-H03",
+   "sameRuntimeOutputs": true,
+   "harness8": {
+    "result": "FAIL",
+    "units": 1,
+    "violations": [
+     {
+      "at": "s2",
+      "issue": "FIRST_ELIGIBLE_DECISION_DIFFERS"
+     }
+    ]
+   },
+   "harness9": {
+    "result": "PASS",
+    "units": 1,
+    "violations": []
+   }
+  }
+ ],
+ "result": "GAPS_REMOVED_ON_R7D_FREEZE_5",
+ "ran": "2026-11-08T13:20:41.518Z"
+}
