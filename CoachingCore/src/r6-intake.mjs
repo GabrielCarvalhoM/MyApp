@@ -1,7 +1,7 @@
 import {clone,freeze,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {ordinalResistance,allowsCandidate,DEFAULT_REPERTOIRE} from './r7b-repertoire.mjs';
-import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
+import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
 
 export const INTAKE_VERSION='R6-INTAKE-1';
 export const isoDay=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value+'T00:00:00Z'))&&new Date(value+'T00:00:00Z').toISOString().slice(0,10)===value;
@@ -176,7 +176,8 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  const pause=P?{nonclinical:P.nonclinical===true,weeks:typeof P.weeks==='number'&&Number.isFinite(P.weeks)&&P.weeks>=0?P.weeks:null,reason:P.reason??null,reasonCategory:P.reasonCategory??null,screen:screenInterruptionReason({reason:P.reason,reasonCategory:P.reasonCategory,nonclinical:P.nonclinical??null,clinicalReason:P.clinicalReason??null})}:null;
  // Any clinical pause reason routes to a human regardless of flags; an unclear or missing reason is asked.
  if(pause?.screen.status==='CLINICAL')uncertainty.push(unknown('pause.reason','CLINICAL_OUT_OF_SCOPE','The pause reason is clinical or possibly clinical; qualified assessment, no nonclinical restart',{matched:pause.screen.matched}));
- if(pause?.screen.status==='ASK'){uncertainty.push(unknown('pause.reason','ASK_REQUIRED','Say what interrupted training (travel, work, family, illness, injury...) before a nonclinical restart'));missing.push('athlete.pause.reasonCategory');}
+ // V1CP A1 (QRE-P5H-F01): only what is missing is asked (reasonQuestion); a missing or unrecognized reason asks the category, as before.
+ if(pause?.screen.status==='ASK'){const q=reasonQuestion(pause.screen,P,'athlete.pause.');uncertainty.push(unknown('pause.reason','ASK_REQUIRED',q.changed?q.text[0].toUpperCase()+q.text.slice(1)+' before a nonclinical restart':'Say what interrupted training (travel, work, family, illness, injury...) before a nonclinical restart'));missing.push(...q.missingInputs);}
  if(pause&&pause.screen.status!=='CLINICAL'&&pause.weeks===null){uncertainty.push(unknown('pause.weeks','ASK_REQUIRED','How many weeks the pause lasted decides whether training restarts from current capacity'));missing.push('athlete.pause.weeks');}
  const prefs=a.strengthPreferences&&typeof a.strengthPreferences==='object'?a.strengthPreferences:{},listOf=(v,name)=>{if(v===undefined||v===null)return [];if(Array.isArray(v))return v;errors.push(name);return [];};
  const emphasis=listOf(prefs.emphasis??a.strengthDevelopmentPreferences,'strengthPreferences.emphasis'),movementPriorities=listOf(prefs.movementPriorities??a.movementPriorities,'strengthPreferences.movementPriorities');

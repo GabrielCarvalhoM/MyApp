@@ -8,7 +8,7 @@ import {aheadOf,usedInWeek,rebasedNext,returnOf,beforeReturn,moveCandidates,choo
 import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFor,preferredArrangement,classify} from './r6-learning.mjs';
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
-import {screenInterruptionReason,isYes} from './r6-clinical.mjs';
+import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
 import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
@@ -1064,9 +1064,22 @@ function contextAfter(ctx,base,start,{canonical:change=null,goals=false,athleteS
  trace.contexts.push(...contexts);
  return {canonical,goal,phases:mergedPhases,blocks,templates,...(noviceTemplates?{noviceTemplates}:{}),arrangementSessions:{...base.arrangementSessions,...arrangementSessions}};
 }
+/**
+ * V1CP A2 (QRE-P5H-F04, K-QRE-P5H-06; holdout shape R7D-H05 s4): the explicit last-week rule. A change re-planned from the week after this one
+ * (a schedule, shift or goal change sent in the program's last week) has no week of this program to apply to: the current weeks keep their days,
+ * shifts and doses, as for a change dated after the program, and the next program starts from the athlete's facts with the change. A session
+ * this week can still be moved by reporting its day unavailable. Before, the re-plan read a week past the horizon and the review reached the error
+ * path ("Malformed review facts").
+ */
+function lastWeekKeep(ctx,action){
+ const what=action==='REARRANGE_FUTURE_WEEKS'?'new chosen days or shifts apply':/GOAL|EVENT/.test(String(action??ctx.kind))||['GOAL_CHANGE','EVENT_DATE_CHANGE'].includes(ctx.kind)?'the new goal applies':'the change applies';
+ return {action:'KEEP',reason:`This is the last week of the program: ${what} from the next week, and this program has no week after this one, so the current week keeps its days, shifts and doses; the next program starts from the athlete's facts with the change. To move one of this week's sessions, report its day as unavailable`,counterfactuals:[counter('KEEP','KEEP',true,'No week of this program falls after this one',{selected:true}),counter(action??'REPLAN','REPLAN',false,'Re-planning a week the program does not have is impossible; moving this week\'s sessions onto other days is the unavailable-day report')]};
+}
 /** Re-plans the weeks from `fromWeek` after an agenda, goal or learned-arrangement change: the new context from that week (C2), then the one
  * composition (C1–C6) with the same state machines. */
 function rebuild(ctx,{canonical=null,goals=false,fromWeek=ctx.w+1,reason,action,athleteSeverity=null}){
+ // V1CP A2 (QRE-P5H-F04, K-QRE-P5H-06): a change that re-plans from a week this program does not have keeps the current weeks (lastWeekKeep).
+ if(fromWeek>=ctx.program.weeks.length)return lastWeekKeep(ctx,action);
  const {program,authority,review}=ctx,trace={traces:{},choices:{},contexts:[]};
  const changed=withContextChange(ctx,program,fromWeek,(base,start,changeStart)=>contextAfter(ctx,base,start,{canonical,goals,athleteSeverity,trace},changeStart));
  if(changed.ask)return changed.ask;
@@ -1861,7 +1874,7 @@ function recordedStop(ctx,eventId,head,{onlyOwnReturn=false}={}){
   const reports=[...decl.values()].filter(r=>r.eventId===b.episode||nameOf(r.interruption)===b.episode||r.eventId===b.eventId).sort((a,c)=>Date.parse(a.declaredAt)-Date.parse(c.declaredAt)).map(r=>({eventId:r.eventId,declaredAt:r.declaredAt,i:r.interruption}));
   const cause=reports.find(r=>interruptionScreen(r.i).clinical)??null;
   if(cause)return {decision:episodeClinical({identity:b.episode,clinicalCause:cause,live:reports.at(-1)},tz)};
-  if(screen.status==='ASK')return {decision:{action:'ASK',reason:`The break from ${b.startDate} to ${b.endDate} (episodeId ${b.episode}): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId`,missingInputs:['interruption.reasonCategory'],screen}};
+  if(screen.status==='ASK'){const q=reasonQuestion(screen,i);return {decision:{action:'ASK',reason:`The break from ${b.startDate} to ${b.endDate} (episodeId ${b.episode}): ${q.changed?q.text:'its reason is unclear; say what it was and confirm it involved no pain, injury or illness'}; report it again with its episodeId`,missingInputs:q.missingInputs,screen}};}
   // R7-D Phase 3.5 (QRE2-P34-01): the start time in force is that of the newest report restating this break (restates), else that of the report the
   // return read: the answer to the start-time question a re-read asks is read on every re-read path (late evidence, a correction, a confirmation).
   const newer=restating(ctx.program,{row:b,decl:x},[...decl.values()])??x;
@@ -1898,7 +1911,7 @@ function separateStop(ctx,head){
   const i=g.live.i,who=`The break reported on ${day(g)} (episodeId ${g.identity})`,{screen,clinical}=interruptionScreen(i);
   if(clinical)return {decision:clinical};
   if(g.clinicalCause)return {decision:episodeClinical(g,tz)};
-  if(screen.status==='ASK')return {decision:{action:'ASK',reason:`${who}: ${screen.basis==='MISSING_REASON'?'say what interrupted training (for example travel, work, family, illness or injury)':'its reason is unclear; say what it was and confirm it involved no pain, injury or illness'}; report it again with its episodeId`,missingInputs:['interruption.reasonCategory'],screen}};
+  if(screen.status==='ASK'){const q=reasonQuestion(screen,i);return {decision:{action:'ASK',reason:`${who}: ${screen.basis==='MISSING_REASON'?'say what interrupted training (for example travel, work, family, illness or injury)':q.changed?q.text:'its reason is unclear; say what it was and confirm it involved no pain, injury or illness'}; report it again with its episodeId`,missingInputs:q.missingInputs,screen}};}
   const f=readBreak(ctx,i);
   if(f.invalid)return {decision:{action:'ASK',reason:`${who}: its facts are out of range or contradict each other (${f.invalid.join(', ')}); report it again with its episodeId and when it started and ended`,missingInputs:f.invalid}};
   if(f.days===null)return {decision:{action:'ASK',reason:`${who} has no length: report it again with its episodeId and its start and end dates`,missingInputs:['interruption.days']}};
@@ -1955,7 +1968,8 @@ function returnAfterPause(ctx){
  const {screen,clinical}=interruptionScreen(i);
  if(clinical)return clinical;
  if(!allows(ctx.authority,'R6-NONCLINICAL-RETURN'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Nonclinical return authority unavailable'};
- if(screen.status==='ASK')return {action:'ASK',reason:screen.basis==='MISSING_REASON'?'Say what interrupted training (for example travel, work, family, illness or injury) before a nonclinical restart':'The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness',missingInputs:['interruption.reasonCategory'],screen};
+ // V1CP A1 (QRE-P5H-F01): the question names only what is missing, so answering it is its exit (reasonQuestion).
+ if(screen.status==='ASK'){const q=reasonQuestion(screen,i);return {action:'ASK',reason:screen.basis==='MISSING_REASON'?'Say what interrupted training (for example travel, work, family, illness or injury) before a nonclinical restart':q.changed?`Before a nonclinical restart, ${q.text}${screen.matched?.length?' (the reason mentions: '+screen.matched.join(', ')+')':''}`:'The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness',missingInputs:q.missingInputs,screen};}
  // Interruption facts out of range or contradicting each other are asked, never resolved to the least conservative class (QRE-R6-06).
  const f=readBreak(ctx,i);
  if(f.invalid)return {action:'ASK',reason:'The interruption facts are out of range or contradict each other ('+f.invalid.join(', ')+'); say when it started and when it ended',missingInputs:f.invalid,screen};

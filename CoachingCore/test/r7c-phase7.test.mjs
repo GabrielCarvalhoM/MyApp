@@ -90,10 +90,14 @@ function cells(V,{onTime=null,modes=['RV','NR'],key=V}={}){
 }
 function independent(V,opt){
  let n=0;
- for(const {label,c,r,plan,runs,reference} of cells(V,opt)){
+ for(const {label,carrier,c,r,plan,runs,reference} of cells(V,opt)){
   n++;
-  assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
-  assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');
+  // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier's HOLD was the internal TypeError of a
+  // schedule change in the program's last week. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer
+  // itself and is no longer a refusal; the clinical-route carrier still records and applies nothing. The property below is unchanged.
+  if(carrier==='R4')assert.ok(c.status!=='HOLD'&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status);
+  else{assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
+  assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');}
   assert.deepEqual(runs,reference.runs,label+': the runs ahead follow the facts, as the direct answer');
   assert.deepEqual(plan,reference.plan,label+': the plan in force equals the direct answer\'s');
   assert.equal(r.planValidity?.status,reference.validity,label+': same validity');
@@ -230,9 +234,13 @@ test('R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts chan
  // Answers whose every gap session has an executed report: no session is credited, so the ceiling re-plan cannot act and the recorded-answer
  // re-plan alone reconciles (RV weeks closed with HOLD gates, NR weeks projected).
  let replanned=0;const modes=new Set();
- for(const V of ['SHORT60','SHORT80','LONGSHORT','SHORT_ADVERSE','ALL_ADVERSE'])for(const {label,r,reference,before,b} of cells(V)){
+ for(const V of ['SHORT60','SHORT80','LONGSHORT','SHORT_ADVERSE','ALL_ADVERSE'])for(const {label,carrier,c,r,reference,before,b} of cells(V)){
   if(JSON.stringify(reference.plan)===JSON.stringify(planFrom(before,b,3)))continue;
   replanned++;modes.add(label.split(' ').find(x=>x==='RV'||x==='NR'));
+  // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier (a schedule change in the program's last
+  // week) no longer refuses with the internal TypeError: it applies the answer it carries itself, as the direct answer does on day 2, so the
+  // reconciliation is its own decision and the next one has nothing left to re-plan. The clinical-route carrier is unchanged.
+  if(carrier==='R4'){assert.equal(c.action,reference.d2.action,label+': '+c.reason);continue;}
   assert.equal(r.action,'REPLAN_FROM_EVIDENCE',label+': '+r.reason);assert.match(r.reason,RECORDED,label);
  }
  assert.ok(replanned>=40&&modes.has('RV')&&modes.has('NR'),'cells where the facts change the plan: '+replanned+' '+[...modes]);

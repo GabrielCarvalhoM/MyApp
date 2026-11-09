@@ -74,10 +74,14 @@ function cells(V){
 const grid=(V,visit)=>cells(V).forEach(visit);
 function independent(V){
  let n=0;
- grid(V,({label,c,r,plan,runs,reference})=>{
+ grid(V,({label,carrier,c,r,plan,runs,reference})=>{
   n++;
-  assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
-  assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');
+  // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier's HOLD was the internal TypeError of a
+  // schedule change in the program's last week. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer
+  // itself and is no longer a refusal; the clinical-route carrier still records and applies nothing. The property below is unchanged.
+  if(carrier==='R4')assert.ok(c.status!=='HOLD'&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status);
+  else{assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
+  assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');}
   assert.deepEqual(runs,reference.runs,label+': the runs ahead follow the facts, as the direct answer');
   assert.deepEqual(plan,reference.plan,label+': the plan in force equals the direct answer\'s');
   assert.equal(r.planValidity?.status,reference.validity,label+': same validity');
@@ -145,11 +149,14 @@ test('R7-C QE-R7C-07: the same record, program, clock and safety state give the 
  const viaR4=copy(B);carry(viaR4,b,'R4',facts);
  const viaClin=clear((()=>{const t=copy(B);carry(t,b,'CLIN',facts);return t;})());
  const rev=review(viaR4.p,b,AT(3)),decide=t=>evaluateProgram(t.p,{...rev,actualLedger:t.ledger},opts);
- const a=decide(viaR4),a2=decide(viaR4),c=decide(viaClin);
+ const a=decide(viaR4),a2=decide(viaR4),c=decide(viaClin),c2=decide(viaClin);
  assert.equal(hash(a),hash(a2),'the same input decides the same');
- assert.equal(hash(viaR4.p),hash(viaClin.p),'neither carrier changed the program');
- assert.equal(a.status,c.status);assert.equal(a.action,c.action);assert.equal(hash(a.proposal),hash(c.proposal),'the carrier\'s identity never enters the decision');
- assert.deepEqual(runsFrom(a.proposal,b,3),['EASY:20','RACE:75'],'race week after a mixed answer: no race touch, as the direct answer');
+ assert.equal(hash(c),hash(c2),'the same input decides the same');
+ // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier was the last-week schedule change's internal
+ // TypeError. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer itself: its record is the re-planned
+ // program, no longer the clinical route's unchanged one. Determinism is asserted per path, and both paths end on the direct answer's race week.
+ assert.deepEqual(runsFrom(a.proposal??viaR4.p,b,3),['EASY:20','RACE:75'],'race week after a mixed answer: no race touch, as the direct answer');
+ assert.deepEqual(runsFrom(c.proposal,b,3),['EASY:20','RACE:75'],'race week after a mixed answer: no race touch, as the direct answer');
 });
 
 test('R7-C QE-R7C-07: the re-plan of a recorded answer never rewrites history: every session dated before the decision keeps its row',()=>{

@@ -56,6 +56,61 @@ const DAMAGE=words(`
  broke broken break breaking snapped cracked quebrei quebrou quebrado quebrada quebrar trinquei trincou rompi rompio roto rota rompe parti partio
  burned burnt cut queimei queimou cortei cortou queme corte
 `);
+// V1CP A1 (QRE-P5H-F01, SSCTR-P5H-O01; holdout shapes R7D-H20, H32): a body word used in a non-body sense is not a body mention. "back" as an
+// adverb ("back on Wednesday", "got back from the trip", "back home"), the idioms "on my feet" and "em pé / de pé / a pé", "head to/out/home…"
+// and "on the other hand" / "by hand". A body word after a possessive or a body adjective ("my back", "lower back") is always the body.
+const BODY_DETERMINERS=new Set(['my','the','lower','upper','mid','middle','your','his','her','our','their','sore','bad','stiff','tight','achy','aching','hurt','hurting','painful']);
+const BACK_PREV=new Set(['came','come','comes','coming','got','get','gets','getting','went','go','goes','going','gone','flew','fly','flies','flying','drove','drive','drives','driving','travel','travels','traveled','travelled','traveling','travelling','be','been','being','was','were','is','are','am','im','way','head','headed','heading','walked','walk','walking','moved','move','moving','bounce','bounced','welcome','just','arrived','arrive','returned','return','returning','brought','bring','sent']);
+const BACK_NEXT=new Set(['from','home','to','at','in','on','into','after','again','by','soon','today','tomorrow','tonight','monday','tuesday','wednesday','thursday','friday','saturday','sunday','next','this','later','now']);
+const IDIOM_POSSESSIVES=new Set(['my','our','your','his','her','their']);
+const HEAD_NEXT=new Set(['to','out','home','off','back','over','up','down','straight','north','south','east','west','into']);
+function nonBodyUse(t,i){
+ const w=t[i],prev=t[i-1],next=t[i+1];
+ if(w==='back'){if(prev==='to'&&t[i-2]==='back')return true;if(BODY_DETERMINERS.has(prev))return false;return BACK_PREV.has(prev)||BACK_NEXT.has(next);}
+ if(w==='feet')return t[i-2]==='on'&&IDIOM_POSSESSIVES.has(prev);
+ if(w==='pe')return ['em','de','a'].includes(prev);
+ if(w==='head')return HEAD_NEXT.has(next);
+ if(w==='hand'||w==='hands')return prev==='by'||prev==='other'&&t[i-2]==='the'&&t[i-3]==='on';
+ return false;
+}
+/** Whether token i is a body word used for the body. */
+const bodyAt=(t,i)=>BODY.has(t[i])&&!nonBodyUse(t,i);
+// V1CP A1 (holdout shape R7D-H07): who a clause is about. SELF: a first-person singular marker (I, me, myself, eu, mim, comigo, yo, conmigo, a
+// first-person verb form) or a first-person possessive with a body part ("my knee", "meu joelho", "mi rodilla"). OTHER: another person named by a
+// relation or a third-person pronoun or possessive ("my mother", "her operation", "minha mãe", "mi hijo"). SHARED: a first-person plural with no
+// one else named ("we", "nosotros"). NONE: no subject is stated (the athlete's own report, as before). SELF wins over every other marker, so a
+// clause that mixes the athlete and someone else ("my son had the flu and I caught it") stays the athlete's.
+const SELF_MARKERS=new Set(['i','im','ive','id','me','myself','eu','mim','comigo','yo','conmigo','tive','tenho','estou','estive','fiquei','senti','sinto','fui','sou','tuve','tengo','estoy','estuve','quede','siento','soy','adoeci','machuquei','torci','lesionei','gripei','desmaiei','fraturei','quebrei','operei','lastime','lesione','enferme','resfrie','desmaye','rompi','cai','cortei','queimei','tropecei','escorreguei','peguei','contagie']);
+const FIRST_POSSESSIVES=new Set(['my','meu','minha','meus','minhas','mi','mis']);
+const OTHER_PEOPLE=words(`
+ mother mothers mom moms mum mums mommy father fathers dad dads daddy parent parents son sons daughter daughters kid kids child children
+ wife wifes wives husband husbands partner partners boyfriend girlfriend fiance fiancee sister sisters brother brothers
+ grandmother grandmothers grandma grandmas grandfather grandfathers grandpa grandpas grandparents aunt aunts uncle uncles cousin cousins niece
+ nephew friend friends colleague colleagues coworker coworkers boss family inlaws he she they him them his her hers their theirs
+ mae maes pai pais filho filhos filha filhas filhinho filhinha crianca criancas esposa marido namorado namorada noivo noiva irma irmas
+ irmao irmaos avo avos tia tias tio tios prima primas primo primos sobrinha sobrinho amigo amiga amigos amigas colega colegas chefe
+ familia sogra sogro companheiro companheira ela ele elas eles dela dele delas deles
+ madre madres mama papa padre padres hijo hijos hija hijas nino nina ninos ninas esposo novio novia hermana hermanas hermano hermanos abuela
+ abuelo abuelos tio tia companero companera jefe suegra suegro pareja ella ellos ellas su sus
+`);
+const SHARED_MARKERS=new Set(['we','us','our','ours','ourselves','nosotros','nosotras','nuestra','nuestro','nuestras','nuestros','nossa','nosso','nossas','nossos']);
+// A baby is someone else only when a possessive names whose it is ("my baby", "our baby", "minha bebê"): "had a baby" with no subject stays the
+// athlete's own clinical mention (SSCTR R7: "Had a baby" is clinical).
+const BABY=new Set(['baby','babies','bebe','bebes']),BABY_OWNERS=new Set(['my','our','his','her','their','your','minha','meu','nossa','nosso','sua','seu','mi','mis','nuestra','nuestro','su','sus']);
+// Animals are never someone else: an animal is named as the source of an injury ("dog bite", "mordedura de perro"), so it never moves a clinical
+// word away from the athlete (SSCTR R7).
+// Someone named as the agent or the source of what happened to the athlete ("bitten by a dog", "caught it from my son", "mordido pelo cachorro")
+// does not make the clause about them (SSCTR R7: "Bitten by a dog" is clinical).
+const AGENT=new Set(['by','from','por','pelo','pela','pelos','pelas']);
+const agentAt=(t,i)=>AGENT.has(t[i-1])||AGENT.has(t[i-2])&&(BABY_OWNERS.has(t[i-1])||['a','an','the','o','a','um','uma','el','la','un','una'].includes(t[i-1]));
+const otherAt=(t,i)=>(OTHER_PEOPLE.has(t[i])||BABY.has(t[i])&&BABY_OWNERS.has(t[i-1]))&&!agentAt(t,i);
+function attribution(t){
+ if(t.some(x=>SELF_MARKERS.has(x)))return 'SELF';
+ for(let i=0;i<t.length;i++)if(FIRST_POSSESSIVES.has(t[i])&&!otherAt(t,i+1)&&(bodyAt(t,i+1)||bodyAt(t,i+2)&&!otherAt(t,i+2)))return 'SELF';
+ if(t.some((x,i)=>otherAt(t,i)))return 'OTHER';
+ if(t.some(x=>SHARED_MARKERS.has(x)))return 'SHARED';
+ return 'NONE';
+}
 // Negated damage ("No broken bones", "Didn't break my leg", "nenhum osso quebrado") is asked about, not named clinical (SSCTR R7).
 // Only a local negation counts: the nearest word before the damage verb, past articles, possessives, clitics, auxiliaries and
 // body parts, must be a negation, so "couldn't run because I broke my leg" stays clinical.
@@ -67,8 +122,9 @@ function damageMentions(clauses){
  const clinical=[],negated=[];
  for(const c of clauses){
   const t=c.split(' '),at=t.map((x,i)=>DAMAGE.has(x)?i:-1).filter(i=>i>=0);
-  if(!at.length||!t.some(x=>BODY.has(x)))continue;
-  (at.every(i=>damageNegated(t,i))?negated:clinical).push(t.filter(x=>DAMAGE.has(x)||BODY.has(x)).join(' '));
+  // V1CP A1: only a body word used for the body counts ("came back with a broken ankle": the ankle, never "back").
+  if(!at.length||!t.some((x,i)=>bodyAt(t,i)))continue;
+  (at.every(i=>damageNegated(t,i))?negated:clinical).push(t.filter((x,i)=>DAMAGE.has(x)||bodyAt(t,i)).join(' '));
  }
  return {clinical,negated};
 }
@@ -110,7 +166,8 @@ const DISJUNCTIONS=new Set(['or','nor','ou','nem','o','ni']);
 const normalize=t=>String(t??'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 /** Clauses: punctuation, dashes, slashes and contrastive conjunctions start a new clause. */
 // Hyphenated compounds that the clause split would cut in two are joined first (SSCTR R11: C-section, recém-nascido).
-const joinCompounds=t=>String(t??'').replace(/\bc\s*-?\s*section/gi,'csection').replace(/rec[eé]m\s*-?\s*nascid[oa]s?/gi,'recemnascido');
+// V1CP A1: the contraction "I'll" is "I will"; with its apostrophe removed it would be the clinical word "ill".
+const joinCompounds=t=>String(t??'').replace(/\bi\s*['’]\s*ll\b/gi,'i will').replace(/\bc\s*-?\s*section/gi,'csection').replace(/rec[eé]m\s*-?\s*nascid[oa]s?/gi,'recemnascido');
 const clausesOf=t=>joinCompounds(t).split(/[,;:.!?()\[\]\/–—-]+|\s(?:but|however|although|though|mas|porem|porém|entretanto|pero|aunque)\s|\bsin embargo\b/i).map(normalize).filter(Boolean);
 /** Removes explicitly denied clinical words inside one clause. A denial is honoured only while no earlier unconsumed
  * negation or inability word in the clause makes it an affirmation; it then absorbs further clinical words joined by
@@ -141,21 +198,43 @@ const flagWord=v=>typeof v==='string'?v.trim().normalize('NFD').replace(/[̀-ͯ]
 export const isYes=v=>{const f=flagWord(v);return f===true||f===1||['TRUE','YES','Y','SIM','SI','1'].includes(f);};
 /** A flag that means no in any form: false, 0, no, n, não or nao. */
 export const isNo=v=>{const f=flagWord(v);return f===false||f===0||['FALSE','NO','N','NAO','0'].includes(f);};
+const categoryOf=v=>typeof v==='string'?v.trim().toUpperCase().replace(/[\s-]+/g,'_'):null;
+/**
+ * V1CP A1 (QRE-P5H-F01): the inputs the screen's question needs, and only those, so that answering it is its exit. A break with a structured
+ * nonclinical category whose free text is ambiguous (or about someone else) needs one yes/no confirmation (`clinicalReason`); with no category
+ * both are asked in one question; a missing or unrecognized reason needs the category, as before (`changed` false: callers keep their text).
+ */
+export function reasonQuestion(screen,{reasonCategory=null}={},prefix='interruption.'){
+ const category=categoryOf(reasonCategory),structured=!!category&&NONCLINICAL_CATEGORIES.includes(category),cat=prefix+'reasonCategory',confirm=prefix+'clinicalReason';
+ const own='your own pain, injury, illness or a medical reason';
+ if(screen?.basis==='AMBIGUOUS_REASON')return structured?{changed:true,missingInputs:[confirm],text:`say whether this break involved ${own} (yes or no)`}:{changed:true,missingInputs:[cat,confirm],text:`say what interrupted training (for example travel, work or family) and whether it involved ${own} (yes or no)`};
+ if(screen?.basis==='CONTRADICTORY_FLAGS')return {changed:true,missingInputs:[...(structured?[]:[cat]),prefix+'nonclinical'],text:'the break is marked as not nonclinical although what was given describes a nonclinical reason: correct the mark'+(structured?'':' and say what interrupted training')};
+ if(screen?.basis==='INVALID_CLINICAL_FLAG')return {changed:true,missingInputs:[confirm],text:`answer yes or no: did this break involve ${own}`};
+ return {changed:false,missingInputs:[cat],text:'say what interrupted training (for example travel, work, family, illness or injury)'};
+}
 /**
  * @returns {{status:'CLINICAL'|'NONCLINICAL'|'ASK', basis:string, matched:string[]}}
  */
 export function screenInterruptionReason({reason=null,reasonCategory=null,nonclinical=null,clinicalReason=null}={}){
- const category=typeof reasonCategory==='string'?reasonCategory.trim().toUpperCase().replace(/[\s-]+/g,'_'):null;
+ const category=categoryOf(reasonCategory);
  if(category&&CLINICAL_CATEGORIES.includes(category))return {status:'CLINICAL',basis:'CLINICAL_CATEGORY',matched:[category]};
  // A clinical flag that means yes in any form routes to a human; one that is neither yes nor no is asked (QRE-R6-06).
  if(isYes(clinicalReason))return {status:'CLINICAL',basis:'CLINICAL_FLAG',matched:[]};
  if(clinicalReason!==null&&clinicalReason!==undefined&&!isNo(clinicalReason))return {status:'ASK',basis:'INVALID_CLINICAL_FLAG',matched:[String(clinicalReason)]};
- const clauses=clausesOf(reason).map(c=>stripNegations(c.split(' ')).join(' ')).filter(Boolean),tokens=clauses.flatMap(c=>c.split(' '));
- const damage=damageMentions(clauses);
- const clinical=[...tokens.filter(t=>CLINICAL.has(t)),...clauses.flatMap(c=>hasPhrase(c,CLINICAL_PHRASES)),...damage.clinical];
+ // V1CP A1: each clause keeps who it is about (attribution, read on its words before denials are removed).
+ const parts=clausesOf(reason).map(c=>({who:attribution(c.split(' ')),text:stripNegations(c.split(' ')).join(' ')})).filter(p=>p.text),clauses=parts.map(p=>p.text),tokens=clauses.flatMap(c=>c.split(' '));
+ const own=parts.filter(p=>p.who==='SELF'||p.who==='NONE'),others=parts.filter(p=>p.who==='OTHER'||p.who==='SHARED');
+ const mentions=list=>{const c=list.map(p=>p.text),t=c.flatMap(x=>x.split(' '));return [...t.filter(x=>CLINICAL.has(x)),...c.flatMap(x=>hasPhrase(x,CLINICAL_PHRASES)),...damageMentions(c).clinical];};
+ const clinical=mentions(own);
  if(clinical.length)return {status:'CLINICAL',basis:'CLINICAL_MENTION',matched:[...new Set(clinical)]};
- const ambiguous=[...tokens.filter(t=>AMBIGUOUS.has(t)||t==='__mid_clause_denial__').map(t=>t==='__mid_clause_denial__'?'denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)':t),...clauses.flatMap(c=>hasPhrase(c,AMBIGUOUS_PHRASES)),...damage.negated.map(m=>'negated damage: '+m)];
- if(ambiguous.length)return {status:'ASK',basis:'AMBIGUOUS_REASON',matched:[...new Set(ambiguous)]};
+ // A clinical word in a clause about someone else, or shared with others ("we"), is never the athlete's clinical mention: it is asked once.
+ const aboutOthers=others.flatMap(p=>mentions([p]).map(m=>(p.who==='OTHER'?'about someone else: ':'shared with others: ')+m));
+ const ambiguousWord=(t,i)=>t[i]==='__mid_clause_denial__'||AMBIGUOUS.has(t[i])&&(!BODY.has(t[i])||bodyAt(t,i));
+ const ambiguous=[...aboutOthers,...clauses.flatMap(c=>{const t=c.split(' ');return t.filter((x,i)=>ambiguousWord(t,i));}).map(t=>t==='__mid_clause_denial__'?'denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)':t),...clauses.flatMap(c=>hasPhrase(c,AMBIGUOUS_PHRASES)),...damageMentions(clauses).negated.map(m=>'negated damage: '+m)];
+ // V1CP A1 (QRE-P5H-F01): the athlete's explicit answer to the screen's question, that the break involved no pain, injury, illness or medical
+ // reason of their own (clinicalReason no), resolves an ambiguity when the break has a structured nonclinical category. It never resolves a
+ // clinical category, flag or mention of the athlete's own (handled above), and without a category the category is still asked (reasonScreen).
+ if(ambiguous.length)return category&&NONCLINICAL_CATEGORIES.includes(category)&&nonclinical!==false&&isNo(clinicalReason)?{status:'NONCLINICAL',basis:'NONCLINICAL_CATEGORY_CONFIRMED',matched:[category]}:{status:'ASK',basis:'AMBIGUOUS_REASON',matched:[...new Set(ambiguous)]};
  const contradicted=nonclinical===false;
  if(category&&NONCLINICAL_CATEGORIES.includes(category))return contradicted?{status:'ASK',basis:'CONTRADICTORY_FLAGS',matched:[category]}:{status:'NONCLINICAL',basis:'NONCLINICAL_CATEGORY',matched:[category]};
  // Free text can only add a clinical or an ask outcome: without a structured nonclinical category the category is asked.
