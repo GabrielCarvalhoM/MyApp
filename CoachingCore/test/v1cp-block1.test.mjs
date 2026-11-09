@@ -98,8 +98,10 @@ test('A3 (H28 shape; SSCTR-P5H-O02): a sport with no session planned between two
 // ---------------- A1: the reason screen ----------------
 const S=(reason,reasonCategory,extra={})=>screenInterruptionReason({reason,reasonCategory,nonclinical:reasonCategory?true:null,...extra});
 
-test('A1-1 (H20, H32): a body word used in a non-body sense is not a body mention',()=>{
- assert.equal(S('long weekend in the mountains, back on Wednesday','VACATION').status,'NONCLINICAL');
+test('A1-1 (H32; SSCTR-V1CP Q01 (c), QRE-V1CP-01): only the approved collocations are no body mention; every other use is still asked',()=>{
+ // Outside the approved list (QRE-V1CP-01): asked, as before V1CP, never read as the adverb by guess.
+ for(const r of ['long weekend in the mountains, back on Wednesday','banged my head into the door frame','knocked my head into a beam at work','back at the clinic again','was back in the er','back in a brace for two weeks','back in bed for days','head over the handlebars at the trip'])assert.equal(S(r,'WORK').status,'ASK',r);
+ for(const r of ['I will be back home soon','got back from the trip','flew back to the city','estuve de pie todo el dia'])assert.equal(S(r,'TRAVEL').status,'NONCLINICAL',r);
  assert.equal(S('trade show, on my feet all week','WORK').status,'NONCLINICAL');
  assert.equal(S('got back from the trip on Sunday','TRAVEL').status,'NONCLINICAL');
  assert.equal(S('feira de negócios, em pé o dia todo','WORK').status,'NONCLINICAL');

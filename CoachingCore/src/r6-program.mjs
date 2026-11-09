@@ -1,5 +1,5 @@
 import {clone,freeze,hash} from './value.mjs';
-import {canonicalizeIntake,onDate,dayGap} from './r6-intake.mjs';
+import {canonicalizeIntake,onDate,dayGap,RESTART_FACTS} from './r6-intake.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {volumeOf,difficultyOf,rangePoint,d1Higher,coachingDisclosures} from './v1-coaching.mjs';
@@ -22,7 +22,7 @@ export function assessCapability(c,op=null){
  // The run-class thresholds are the reviewed runtime constants, exposed with their provenance (B0-F05); never changed or re-invented here.
  const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,screened=['NONCLINICAL','READINESS_DECLARED'].includes(pause?.screen?.status);
  // V1CP Situation 3 (SSCTR-V1CP Q08): per sport the pause is the record's, when it carries one (bySportDays); otherwise the stated weeks.
- const daysOf=sp=>Number.isInteger(pause?.bySportDays?.[sp])?pause.bySportDays[sp]:Number.isFinite(pause?.weeks)?pause.weeks*7:0,longFor=sp=>screened&&(Number.isInteger(pause?.bySportDays?.[sp])?pause.bySportDays[sp]>=T.longPauseWeeksAtLeast*7:(pause?.weeks??0)>=T.longPauseWeeksAtLeast);
+ const daysOf=sp=>Math.max(Number.isInteger(pause?.bySportDays?.[sp])?pause.bySportDays[sp]:0,Number.isFinite(pause?.weeks)?pause.weeks*7:0),longFor=sp=>screened&&(pause?.bySportDays?daysOf(sp)>=T.longPauseWeeksAtLeast*7:(pause?.weeks??0)>=T.longPauseWeeksAtLeast);
  const longPause=longFor('RUN'),rs=c.restart??null,held=sp=>Array.isArray(rs?.notReady)&&rs.notReady.includes(sp);
  // C-Q08-2: a new plan from the record never starts a sport above the in-program return of the same pause (past the short class: the entry), and
  // after a clinical hold never above the readiness restart (the MODERATE floor).
@@ -227,7 +227,7 @@ export function initialRunState(sk){
   else{
    const W0=cap.run.weeklyMinutes,avg=W0/runDays.length,share=runDays.length>=3?Math.max(avg,W0*R.longRunShareOfWeeklyMinutesMax):W0;
    // Week-1 long run never exceeds the longest current run; rounding goes down.
-   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??cap.run.longestFromRace??avg,share))):null;
+   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??(Number.isFinite(cap.run.longestFromRace)?Math.max(cap.run.longestFromRace,R.minimumSessionMinutes):avg),share))):null;
    // A current familiar quality task in week 1 counts inside the reported weekly minutes, otherwise it waits a week.
    const fq=cls==='QUALITY_FAMILIAR'&&plan.establishmentWeeks===0?familiarQualityMinutes(sk):null;
    // The ladder continues from the athlete's familiar level: the familiar task stands at the highest step it covers.
@@ -1362,7 +1362,7 @@ export function rotationFor(sk,w,template){
 /** Generates a complete conditional program from onboarding-like input. Never requires a prebuilt week or a static priority. */
 export function generateProgram(input,options={}){
  // The repertoire authority is read at the intake's date (each SSCTR record's review-by date applies), and travels with the R6 authority.
- const authority0=r6Authority(options),repertoire=authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf.slice(0,10):null}),intake=canonicalizeIntake(input,{repertoire}),authority={...authority0,repertoire},op=authority.policy?.operational;
+ const authority0=r6Authority(options),repertoire=authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf.slice(0,10):null}),intake=canonicalizeIntake(input,{repertoire,restartFacts:options?.[RESTART_FACTS]??null}),authority={...authority0,repertoire},op=authority.policy?.operational;
  const base={runtimeVersion:'R6-1',mode:'SHADOW',inputHash:hash(input??null),program:null,applied:false,officialPlanState:clone(input?.officialPlanState??null),appliedState:clone(input?.officialPlanState??null),completedWork:clone(input?.completedWork??[]),missingInputs:[...intake.missing],errors:[...intake.errors],uncertainty:clone(intake.uncertainty),negotiation:clone(intake.negotiation),horizonsConsidered:['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'],qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'}};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  if(intake.status==='CLINICAL_HUMAN_REQUIRED')return reject('CLINICAL_HUMAN_REQUIRED','Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted');
@@ -1402,7 +1402,7 @@ export function generateProgram(input,options={}){
   if(choice.askRequired)return reject('ASK','Genuine run/strength arrangement trade-off with equal worst-case joint harm; a temporary preference is needed',{missingInputs:['schedule.temporaryPreference'],question:choice.question,trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace}});
   sk.arrangement[key]=choice.selected;if(!capped)previousId=choice.selected?.id??previousId;choices[key]=choice;
  }
- const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??cap.run.longestFromRace??null:null});
+ const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??(Number.isFinite(cap.run.longestFromRace)?Math.max(cap.run.longestFromRace,op.run.minimumSessionMinutes,Number.isFinite(cap.run.weeklyMinutes)&&s.runDays.length?Math.floor(cap.run.weeklyMinutes/s.runDays.length):0):null):null});
  // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
  const weeks0=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
  // V1CP F08 Situation 3 (DR-148, RC-11): the restrictions a readiness declaration left in force carry into the new plan as hard caps, recorded on

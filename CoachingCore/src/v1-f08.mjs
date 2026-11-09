@@ -13,7 +13,7 @@
 // collection (C-Q05-8, SEC-V1CP-02); they are FUTURE_G04_REVALIDATION. This module validates and shapes the inputs and their record facts.
 import {clone,hash} from './value.mjs';
 
-export const WELLBEING_DECLARED='WELLBEING_DECLARED',READINESS_DECLARED='READINESS_DECLARED',WELLBEING_CHECKED='WELLBEING_CHECKED';
+export const WELLBEING_DECLARED='WELLBEING_DECLARED',READINESS_DECLARED='READINESS_DECLARED',WELLBEING_CHECKED='WELLBEING_CHECKED',CLINICAL_HOLD='CLINICAL_HOLD';
 export const CONDITIONS=Object.freeze(['MILD_INDISPOSITION','UNUSUAL_FATIGUE','MILD_ILLNESS','MINOR_DISCOMFORT','NEED_REST']);
 /** Systemic conditions affect every programmed sport (Q05); the local ones affect the sports the athlete states, both when unstated (RC-13). */
 export const SYSTEMIC_CONDITIONS=Object.freeze(['MILD_INDISPOSITION','UNUSUAL_FATIGUE','MILD_ILLNESS']);
@@ -43,6 +43,7 @@ const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().
 const gap=(a,b)=>(Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/864e5;
 const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
 const unknownKeys=(o,allowed)=>Object.keys(o).filter(k=>!allowed.includes(k));
+const unrecognized=(prefix,keys)=>({ask:{action:'ASK',reason:`${keys.length} answer${keys.length>1?'s are':' is'} not part of this form and ${keys.length>1?'are':'is'} not read; free text is never read here`,missingInputs:[prefix+'.unrecognized']}});
 const ask=(missingInputs,reason)=>({ask:{action:'ASK',reason,missingInputs}});
 const human=list=>list.map(k=>k.replace(/([A-Z])/g,' $1').toLowerCase()).join(', ');
 /** The clinical route of a warning sign (RF-3): the hold for every sport, a professional assessment, the record kept; never a diagnosis (RF-4). */
@@ -50,7 +51,7 @@ export const signRoute=(yes,{lead='You reported'}={})=>({action:'CLINICAL_HUMAN_
 /** Reads a group of booleans: the keys answered yes (any key of the group, asked or not), the asked keys not answered no, and keys outside it. */
 function readBooleans(o,asked,group,prefix){
  const x=isObj(o)?o:{},yes=group.filter(k=>x[k]===true),missing=asked.filter(k=>x[k]!==false&&x[k]!==true).map(k=>prefix+'.'+k);
- return {yes,missing,bad:[...unknownKeys(x,group).map(k=>prefix+'.'+k),...group.filter(k=>k in x&&typeof x[k]!=='boolean').map(k=>prefix+'.'+k)],answered:isObj(o)};
+ return {yes,missing,bad:[...(unknownKeys(x,group).length?[prefix+'.unrecognized']:[]),...group.filter(k=>k in x&&typeof x[k]!=='boolean').map(k=>prefix+'.'+k)],answered:isObj(o)};
 }
 
 /**
@@ -61,7 +62,7 @@ function readBooleans(o,asked,group,prefix){
 export function readWellbeing(w,{today,programmed}){
  if(!isObj(w))return ask(['wellbeing'],'Say how you are: the condition, the warning signs, what you want to do and for how many days');
  const extra=unknownKeys(w,['condition','sports','region','warningSigns','intent','days','startDate','endDate','returnSpeed']);
- if(extra.length)return ask(extra.map(k=>'wellbeing.'+k),'These answers are not part of this report and are not read: '+extra.join(', ')+'; free text is never read here');
+ if(extra.length)return unrecognized('wellbeing',extra);
  const known=CONDITIONS.includes(w.condition),signs=readBooleans(w.warningSigns,known?signsFor(w.condition):ALL_W,ALL_W,'wellbeing.warningSigns');
  // Any warning sign routes to the clinical hold at once, whatever else is missing (clinical first, RC-01, RC-04).
  if(signs.yes.length)return {clinical:signRoute(signs.yes)};
@@ -90,32 +91,37 @@ export function readWellbeing(w,{today,programmed}){
  if(missing.length)return ask(missing,'Answer every item: the condition, each warning sign (yes or no), what you want to do and for how many days');
  if(!sports.length)return ask(['wellbeing.sports'],'What you reported affects no sport your plan has: say which sport it affects');
  const region=w.region==='UPPER_BODY'?'UPPER':w.region==='LOWER_BODY'?'LOWER':null;
+ if(region&&!sports.includes('STRENGTH'))return ask(['wellbeing.region'],'A body region limits strength rows only: this report does not affect strength');
  return {value:{condition:w.condition,systemic,sports,region,intent:w.intent,rung:INTENT_RUNG[w.intent],returnSpeed:w.returnSpeed??'BALANCED',startDate:start,endDate:addDays(start,days-1),days}};
 }
 /** The record row of a Situation 1 report (append-only; its own channel, never a declared break: RC-07, C-Q05-6). */
-export const wellbeingFact=(program,review,asOf,value)=>({fact:WELLBEING_DECLARED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,wellbeing:clone(value),inputHash:hash(review.wellbeing),provenance:{firstRecordedAt:asOf}});
+/** SEC-V1CPI-04: every F08 row carries the digest of its own content; a row whose content no longer matches it is never read. */
+export const sealed=row=>({...row,rowHash:hash(row)});
+const intact=o=>{const {rowHash,...x}=o;return typeof rowHash==='string'&&rowHash===hash(x);};
+export const wellbeingFact=(program,review,asOf,value)=>sealed({fact:WELLBEING_DECLARED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,wellbeing:clone(value),inputHash:hash(review.wellbeing),provenance:{firstRecordedAt:asOf}});
 
 /**
  * A check inside a Situation 1 episode (`c` = review.wellbeingCheck): the warning signs of the episode's condition, re-answered (C-Q05-4); the
  * exercise-response items when `exercise` (sessions executed or an adverse one reported); whether the condition resolved or clearly improved when
  * `improved` (the window-end check, C-Q05-1); a change of return speed only while `speed` (before the return starts, Q06). {clinical} on any yes.
  */
-export function readCheck(c,{condition,improved=false,exercise=false,speed=false,signs=null,xsigns=null}){
+export function readCheck(c,{condition,improved=false,allowImproved=false,exercise=false,speed=false,signs=null,xsigns=null}){
  if(!isObj(c))return ask(['wellbeingCheck'],`Tell us how you are: each warning sign (yes or no)${exercise?', how your sessions felt (each exercise-response item)':''}${improved?', and whether it has passed or clearly improved':''}`);
  const extra=unknownKeys(c,['warningSigns','exerciseResponse','improved','returnSpeed']);
- if(extra.length)return ask(extra.map(k=>'wellbeingCheck.'+k),'These answers are not part of this check and are not read: '+extra.join(', '));
+ if(extra.length)return unrecognized('wellbeingCheck',extra);
  const asked=signs??signsFor(condition),xasked=xsigns??exerciseSignsFor(condition),s=readBooleans(c.warningSigns,asked,ALL_W,'wellbeingCheck.warningSigns'),x=readBooleans(c.exerciseResponse,exercise?xasked:[],ALL_X,'wellbeingCheck.exerciseResponse');
  if(s.yes.length||x.yes.length)return {clinical:signRoute([...s.yes,...x.yes])};
  const missing=[...s.missing,...x.missing],bad=[...s.bad,...x.bad];
  if(improved&&typeof c.improved!=='boolean')(c.improved===undefined?missing:bad).push('wellbeingCheck.improved');
- if(!improved&&c.improved!==undefined)bad.push('wellbeingCheck.improved');
+ if(!improved&&!allowImproved&&c.improved!==undefined)bad.push('wellbeingCheck.improved');
+ if(allowImproved&&c.improved!==undefined&&typeof c.improved!=='boolean')bad.push('wellbeingCheck.improved');
  if(c.returnSpeed!==undefined&&!RETURN_SPEEDS.includes(c.returnSpeed))bad.push('wellbeingCheck.returnSpeed');
  else if(c.returnSpeed!==undefined&&!speed)return ask(['wellbeingCheck.returnSpeed'],'Your return has started: its speed no longer changes. The plan keeps following what you execute');
  if(bad.length)return ask(bad,'Some answers are outside the options ('+bad.join(', ')+'): each item yes or no');
  if(missing.length)return ask(missing,`Answer every item: each warning sign (yes or no)${exercise?' and each exercise-response item':''}${improved?', and whether it has passed or clearly improved':''}`);
- return {value:{improved:improved?c.improved:null,returnSpeed:c.returnSpeed??null,warningSigns:Object.fromEntries(asked.map(k=>[k,false])),...(exercise?{exerciseResponse:Object.fromEntries(xasked.map(k=>[k,false]))}:{})}};
+ return {value:{improved:improved||allowImproved?c.improved??null:null,returnSpeed:c.returnSpeed??null,warningSigns:Object.fromEntries(asked.map(k=>[k,false])),...(exercise?{exerciseResponse:Object.fromEntries(xasked.map(k=>[k,false]))}:{})}};
 }
-export const checkFact=(program,review,asOf,episode,value,kind)=>({fact:WELLBEING_CHECKED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,episode,check:{...clone(value),kind},inputHash:hash(review.wellbeingCheck),provenance:{firstRecordedAt:asOf}});
+export const checkFact=(program,review,asOf,episode,value,kind)=>sealed({fact:WELLBEING_CHECKED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,episode,check:{...clone(value),kind},inputHash:hash(review.wellbeingCheck),provenance:{firstRecordedAt:asOf}});
 
 /**
  * Situation 2 entry: the athlete's readiness declaration (`r` = review.readiness). Every warning sign is answered (any yes keeps the hold for every
@@ -126,21 +132,25 @@ export const checkFact=(program,review,asOf,episode,value,kind)=>({fact:WELLBEIN
 export function readReadiness(r,{programmed}){
  if(!isObj(r))return ask(['readiness'],'Tell us, sport by sport, whether you are ready to train again, and answer each warning sign');
  const extra=unknownKeys(r,['hold','declaredRecovered','sports','warningSigns','returnSpeed']);
- if(extra.length)return ask(extra.map(k=>'readiness.'+k),'These answers are not part of the readiness declaration and are not read: '+extra.join(', '));
+ if(extra.length)return unrecognized('readiness',extra);
  const signs=readBooleans(r.warningSigns,READINESS_SIGNS,ALL_W,'readiness.warningSigns');
  if(signs.yes.length)return {clinical:signRoute(signs.yes)};
  const missing=[...signs.missing],bad=[...signs.bad];
  if(r.declaredRecovered!==true)(r.declaredRecovered===undefined?missing:bad).push('readiness.declaredRecovered');
  if(r.returnSpeed!==undefined&&!['BALANCED','CONSERVATIVE'].includes(r.returnSpeed))bad.push('readiness.returnSpeed');
  const sports=isObj(r.sports)?r.sports:{},out={};
- for(const k of unknownKeys(sports,['RUN','STRENGTH']))bad.push('readiness.sports.'+k);
+ if(unknownKeys(sports,['RUN','STRENGTH']).length)bad.push('readiness.sports.unrecognized');
  const lowerAvoided=Array.isArray(sports.STRENGTH?.restrictions)&&sports.STRENGTH.restrictions.includes('AVOID_LOWER_BODY_STRENGTH');
+ // SEC-V1CPI-09: a sport the plan does not program is still validated when sent (its answers are not used).
+ for(const s of ['RUN','STRENGTH'].filter(x=>!programmed.includes(x)&&sports[x]!==undefined)){const x=sports[s];if(!isObj(x)||unknownKeys(x,s==='RUN'?['ready','runningNotRestricted']:['ready','restrictions']).length||x.ready!==undefined&&typeof x.ready!=='boolean'||s==='STRENGTH'&&x.restrictions!==undefined&&(!Array.isArray(x.restrictions)||x.restrictions.some(c=>!RESTRICTIONS.includes(c))))bad.push(`readiness.sports.${s}`);}
  for(const s of programmed){
   const x=sports[s];
   if(!isObj(x)){missing.push(`readiness.sports.${s}.ready`);continue;}
-  for(const k of unknownKeys(x,s==='RUN'?['ready','runningNotRestricted']:['ready','restrictions']))bad.push(`readiness.sports.${s}.${k}`);
+  if(unknownKeys(x,s==='RUN'?['ready','runningNotRestricted']:['ready','restrictions']).length)bad.push(`readiness.sports.${s}.unrecognized`);
   if(typeof x.ready!=='boolean'){missing.push(`readiness.sports.${s}.ready`);continue;}
   if(s==='STRENGTH'){
+   // SEC-V1CPI-05: restrictions are answered too (an empty list is the answer "none"); never read as none by default (RC-08).
+   if(x.ready&&x.restrictions===undefined){missing.push('readiness.sports.STRENGTH.restrictions');continue;}
    const list=x.restrictions===undefined?[]:x.restrictions;
    if(!Array.isArray(list)||list.some(c=>!RESTRICTIONS.includes(c))){bad.push('readiness.sports.STRENGTH.restrictions');continue;}
    out[s]={ready:x.ready,restrictions:[...new Set(list)].sort()};continue;
@@ -150,7 +160,8 @@ export function readReadiness(r,{programmed}){
    if(typeof x.runningNotRestricted!=='boolean'){(x.runningNotRestricted===undefined?missing:bad).push('readiness.sports.RUN.runningNotRestricted');continue;}
    out[s]={ready:x.runningNotRestricted===true,...(x.runningNotRestricted?{}:{heldBy:'RUNNING_RESTRICTED'})};continue;
   }
-  if(x.runningNotRestricted!==undefined&&typeof x.runningNotRestricted!=='boolean')bad.push('readiness.sports.RUN.runningNotRestricted');
+  // SEC-V1CPI-09: running stated as restricted is asked, never ignored.
+  if(x.runningNotRestricted!==undefined&&x.runningNotRestricted!==true)bad.push('readiness.sports.RUN.runningNotRestricted');
   out[s]={ready:x.ready};
  }
  const hold=isObj(r.hold)?r.hold:null;
@@ -159,8 +170,21 @@ export function readReadiness(r,{programmed}){
  if(missing.length)return ask(missing,'Answer every item: each warning sign, that you recovered, for each sport whether you are ready to train again'+(lowerAvoided?', and whether running itself is restricted':''));
  return {value:{declaredRecovered:true,sports:out,returnSpeed:r.returnSpeed??'BALANCED',warningSigns:Object.fromEntries(READINESS_SIGNS.map(k=>[k,false])),hold:hold?clone(hold):null}};
 }
-export const readinessFact=(program,review,asOf,value,hold)=>({fact:READINESS_DECLARED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,readiness:{...clone(value),hold:clone(hold)},inputHash:hash(review.readiness),provenance:{firstRecordedAt:asOf}});
-export const isF08Fact=o=>isObj(o)&&(o.fact===WELLBEING_DECLARED||o.fact===READINESS_DECLARED||o.fact===WELLBEING_CHECKED);
+export const readinessFact=(program,review,asOf,value,hold)=>sealed({fact:READINESS_DECLARED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,readiness:{...clone(value),hold:clone(hold)},inputHash:hash(review.readiness),provenance:{firstRecordedAt:asOf}});
+/** SEC-V1CPI-03: a clinical hold a decision opens is a fact of the record (no reason text: minimisation, SEC-V1CP-01), so a new plan reads every
+ * standing hold from the record, never only from a reference state the client keeps; a readiness declaration after it releases it. */
+export const holdFact=(program,eventId,asOf,eventKind)=>sealed({fact:CLINICAL_HOLD,eventId,athleteId:program.athleteId,declaredAt:asOf,eventKind:eventKind??null,provenance:{firstRecordedAt:asOf}});
+export const isF08Fact=o=>isObj(o)&&[WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD].includes(o.fact);
+const shapeOk=o=>o.fact===WELLBEING_DECLARED?isObj(o.wellbeing)&&CONDITIONS.includes(o.wellbeing.condition)&&isoDay(o.wellbeing.startDate)&&isoDay(o.wellbeing.endDate):o.fact===WELLBEING_CHECKED?typeof o.episode==='string'&&isObj(o.check):o.fact===READINESS_DECLARED?isObj(o.readiness)&&o.readiness.declaredRecovered===true&&isObj(o.readiness.sports):o.fact===CLINICAL_HOLD;
+/**
+ * SEC-V1CPI-04: the F08 rows a decision reads: this athlete's, declared by the decision's clock (`at`, epoch ms), of their type's shape and intact;
+ * a check only with the report of its own episode. Every row still travels with the record unchanged (append-only); an unreadable one is never read.
+ */
+export function readableF08(rows,{athleteId,at}){
+ const ok=o=>isF08Fact(o)&&o.athleteId===athleteId&&typeof o.eventId==='string'&&typeof o.declaredAt==='string'&&Number.isFinite(Date.parse(o.declaredAt))&&Date.parse(o.declaredAt)<=at&&intact(o)&&shapeOk(o);
+ const first=(Array.isArray(rows)?rows:[]).filter(ok),episodes=new Set(first.filter(o=>o.fact===WELLBEING_DECLARED).map(o=>o.eventId));
+ return first.filter(o=>o.fact!==WELLBEING_CHECKED||episodes.has(o.episode));
+}
 
 // ---------- Situation 3 (DR-148 path 3; PCG-V1CP-F08 RC-11, RC-14; SSCTR-V1CP Q08): a new plan after a long interruption ----------
 const CLINICAL_CATEGORIES_F08=['ILLNESS','INJURY','PAIN','MEDICAL','SURGERY','PREGNANCY','POSTPARTUM','CLINICAL'];
@@ -179,18 +203,25 @@ const executed=o=>o&&!o.fact&&!o.conflicted&&(o.actual?.completed===true||Number
  *   set: after a clinical hold, never above the readiness restart's MODERATE floor (`restart.minimumClass`), with the restrictions in force and
  *   the sports not declared ready left out of the plan (RC-11, C-Q08-3).
  */
-export function restartIntake({intake,record=[],referenceState=null,asOf,screen}){
- const rows=Array.isArray(record)?record:[],readiness=rows.filter(o=>o?.fact===READINESS_DECLARED).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt)).at(-1)??null;
+export function restartIntake({intake,record=[],referenceState=null,asOf,screen,athleteId=null}){
+ const all=Array.isArray(record)?record:[],day0=String(asOf??intake?.asOf??'').slice(0,10),at=isoDay(day0)?Date.parse(day0+'T23:59:59Z')+14*3600e3:Date.now();
+ // Only this athlete's readable F08 rows are read (SEC-V1CPI-04); every row travels with the record.
+ const owner=athleteId??intake?.athlete?.id??null,f08=readableF08(all,{athleteId:owner,at}),rows=[...all.filter(o=>!isF08Fact(o)),...f08];
+ const readiness=rows.filter(o=>o?.fact===READINESS_DECLARED).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt)).at(-1)??null;
  const after=t=>!readiness||Date.parse(t)>Date.parse(readiness.declaredAt);
  const clinicalBreak=rows.find(o=>o?.fact==='INTERRUPTION_DECLARED'&&after(o.declaredAt)&&(CLINICAL_CATEGORIES_F08.includes(String(o.interruption?.reasonCategory??'').toUpperCase())||screen?.(o.interruption)?.status==='CLINICAL'));
  const continuation=referenceState?.pending?.status==='CLINICAL_HUMAN_REQUIRED';
- if(continuation||clinicalBreak)return {status:'CLINICAL_HUMAN_REQUIRED',reason:'A clinical hold is on record: before a new plan, tell us, sport by sport, that you are ready to train again (readiness declaration); your record keeps being kept',missingInputs:['readiness']};
+ // SEC-V1CPI-03, QRE-V1CP-03: a clinical hold the record holds after the latest declaration blocks the new plan, whatever reference is sent.
+ const heldOnRecord=rows.some(o=>o?.fact===CLINICAL_HOLD&&after(o.declaredAt));
+ if(continuation||clinicalBreak||heldOnRecord)return {status:'CLINICAL_HUMAN_REQUIRED',reason:'A clinical hold is on record: before a new plan, tell us, sport by sport, that you are ready to train again (readiness declaration); your record keeps being kept',missingInputs:['readiness']};
  const next=clone(intake),a=next.athlete??(next.athlete={});
  const day=String(asOf??next.asOf??'').slice(0,10),done=rows.filter(executed).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort();
  const lastBy=s=>rows.filter(o=>executed(o)&&sportOf(o)===s).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort().at(-1)??null;
  const daysSince=d=>d?gap(d,day):null,byDays={RUN:daysSince(lastBy('RUN')),STRENGTH:daysSince(lastBy('STRENGTH'))},any=daysSince(done.at(-1)??null);
- // The athlete may state the pause's reason; its length per sport comes from the record whenever the intake does not state it.
- if((a.pause===undefined||isObj(a.pause)&&a.pause.weeks===undefined)&&any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any),weeks=Math.floor(days/7);if(days>0)a.pause={...(isObj(a.pause)?a.pause:{}),weeks,...(readiness?{readinessDeclared:true}:{}),bySportDays:clone(byDays)};}
+ // The record's pause, per sport (Q08), as restart facts: a stated pause never shortens it (QRE-V1CP-06); a stated cause is screened as stated.
+ const facts={pause:null,restart:null};
+ if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness?{readinessDeclared:true}:{})};}
+ else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},readinessDeclared:true};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
  const from=isoDay(day)?addDays(day,-28):null,runRows=rows.filter(o=>executed(o)&&sportOf(o)==='RUN'&&from&&dayOfRow(o)>from&&dayOfRow(o)<=day);
  const shown={minutes:Math.round(runRows.reduce((n,o)=>n+(Number(o.actual?.minutes)||Number(o.context?.runMinutes)||0),0)/4),days:Math.min(7,Math.ceil(new Set(runRows.map(dayOfRow)).size/4))},bounded=[];
@@ -200,7 +231,7 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen}
  }
  const strength=readiness?.readiness?.sports?.STRENGTH,restrictions=strength?.ready?strength.restrictions??[]:[];
  const notReady=readiness?Object.entries(readiness.readiness.sports??{}).filter(([,x])=>!x.ready).map(([s])=>s):[];
- a.restart=readiness?{readinessEventId:readiness.eventId,strengthRestrictions:clone(restrictions),notReady:clone(notReady),minimumClass:'MODERATE',fromRecord:true}:{readinessEventId:null,strengthRestrictions:[],fromRecord:true};
+ facts.restart=readiness?{readinessEventId:readiness.eventId,strengthRestrictions:clone(restrictions),notReady:clone(notReady),minimumClass:'MODERATE',fromRecord:true,asOf:day0}:{readinessEventId:null,strengthRestrictions:[],fromRecord:true,asOf:day0};
  const prior={lastExecutedDay:done.at(-1)??null,lastExecutedBySport:{RUN:lastBy('RUN'),STRENGTH:lastBy('STRENGTH')},observations:rows.filter(o=>o&&!o.fact).length};
- return {status:'READY',intake:next,carried:{record:clone(rows),priorCapacity:prior,boundedByRecord:bounded,note:'History and prior capacity are context only: the new plan starts from current capacity (the cold start), never from prior doses'}};
+ return {status:'READY',intake:next,facts,carried:{record:clone(all),priorCapacity:prior,boundedByRecord:bounded,note:'History and prior capacity are context only: the new plan starts from current capacity (the cold start), never from prior doses'}};
 }

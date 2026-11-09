@@ -20,7 +20,7 @@ const ELIG=(d,x={})=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,pe
 const addDays=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
 const NO=c=>Object.fromEntries(F.signsFor(c).map(k=>[k,false])),XNO=c=>Object.fromEntries(F.exerciseSignsFor(c).map(k=>[k,false]));
 const RNO=()=>Object.fromEntries(F.READINESS_SIGNS.map(k=>[k,false])),S6NO=()=>({warningSigns:Object.fromEntries(F.READINESS_SIGNS.slice(0,9).map(k=>[k,false])),exerciseResponse:Object.fromEntries(Object.values(F.EXERCISE_SIGNS).map(k=>[k,false]))});
-const READY=(sports={RUN:{ready:true},STRENGTH:{ready:true}},x={})=>({declaredRecovered:true,warningSigns:RNO(),sports,...x});
+const READY=(sports={RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}},x={})=>({declaredRecovered:true,warningSigns:RNO(),sports,...x});
 const FORBIDDEN=/\b(cleared|clearance granted|liberad[oa]|libera[çc][ãa]o|approved by|released|fit to train|safe to (train|run)|apto|alta m[eé]dica)\b/i;
 function timeline(input=HYBRID()){
  const t={p:generateProgram(input).program,ledger:[],ref:null,n:0,results:[]};
@@ -57,7 +57,7 @@ test('S1-1 (C-Q05-9, SEC-V1CP-02/03): any warning sign yes routes to the clinica
  const t=timeline();
  for(const k of F.signsFor('MILD_ILLNESS')){const s={...NO('MILD_ILLNESS')};delete s[k];const r=t.step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MILD_ILLNESS'),warningSigns:s}});assert.equal(r.status,'ASK');assert.deepEqual(r.missingInputs,['wellbeing.warningSigns.'+k]);}
  assert.ok(t.step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MILD_ILLNESS'),warningSigns:{...NO('MILD_ILLNESS'),[W.W1]:'no'}}}).missingInputs.includes('wellbeing.warningSigns.'+W.W1),'a non-boolean answer is unknown, never no');
- for(const [x,key] of [[{days:2},'wellbeing.days'],[{days:15},'wellbeing.days'],[{text:'flu'},'wellbeing.text'],[{professionalSeen:true},'wellbeing.professionalSeen'],[{condition:'COVID'},'wellbeing.condition'],[{intent:'TRAIN_HARDER'},'wellbeing.intent'],[{region:'LEFT_KNEE'},'wellbeing.region'],[{sports:['SWIM']},'wellbeing.sports'],[{startDate:t.day(1,3)},'wellbeing.startDate']]){
+ for(const [x,key] of [[{days:2},'wellbeing.days'],[{days:15},'wellbeing.days'],[{text:'flu'},'wellbeing.unrecognized'],[{professionalSeen:true},'wellbeing.unrecognized'],[{condition:'COVID'},'wellbeing.condition'],[{intent:'TRAIN_HARDER'},'wellbeing.intent'],[{region:'LEFT_KNEE'},'wellbeing.region'],[{sports:['SWIM']},'wellbeing.sports'],[{startDate:t.day(1,3)},'wellbeing.startDate']]){
   const r=t.step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MINOR_DISCOMFORT'),...x}});assert.equal(r.status,'ASK',JSON.stringify(x));assert.ok(r.missingInputs.includes(key),JSON.stringify(r.missingInputs));
  }
  const stale=t.step(1,1,'NOT_FEELING_100',{wellbeing:wb('MINOR_DISCOMFORT'),eligibility:ELIG(t.day(0,6))});assert.deepEqual(stale.missingInputs,['eligibility.assessedToday'],'the screen is answered with the report (Q4 scoping)');
@@ -141,7 +141,9 @@ test('S1-6 (C-Q06-3): each window and speed climbs its rungs one week each; none
  for(const [intent,speed,days,want] of cases){
   const {t,from}=windowThenCheck({condition:'UNUSUAL_FATIGUE',intent,speed,days});
   const got=[];for(let w=from;w<from+want.length;w++)got.push(ladder(t.p,w)?.RUN??'-');
-  assert.deepEqual(got,want,`${intent} ${speed} ${days}`);assert.equal(ladder(t.p,from+want.length),null,`${intent} ${speed}: the plan moves on after the last step`);
+  assert.deepEqual(got,want,`${intent} ${speed} ${days}`);assert.equal(ladder(t.p,from+want.length)?.RUN,undefined,`${intent} ${speed}: running moves on after the last step`);
+  // Strength may hold one more week at R4 when the next week would add more than one set (D49, QRE-V1CP-05); never another rung.
+  for(let w=from+want.length;w<8&&ladder(t.p,w);w++)assert.deepEqual(ladder(t.p,w),{STRENGTH:'R4'},`${intent} ${speed} week ${w}`);
   const firstHeld=want.findIndex(r=>r==='R4');if(firstHeld===0)assert.ok(intent==='REDUCE_LIGHT'&&speed==='FASTER','only FASTER after an easier window resumes the held doses at once (FP-4)');
  }
 });
@@ -178,14 +180,21 @@ test('S1-9 (Q06): the speed changes until the return starts, never after',()=>{
  const late=t.step(1,5,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),returnSpeed:'CONSERVATIVE'}},'07:00');assert.equal(late.status,'ASK');assert.match(late.reason,/no longer changes/);
 });
 
-test('S1-10 (C-Q05-2, C-Q05-4): a new report during the return opens no window and holds the rung; again a week later routes to assessment; an adverse session asks the items',()=>{
- const {t,from}=windowThenCheck({condition:'MILD_ILLNESS',intent:'REDUCE_SUBSTANTIAL',speed:'BALANCED',days:5});
+test('S1-10 (C-Q05-2 with SSCTR-V1CPI-01, C-Q05-4): a report during the return supersedes it with its own window and coverage; again a week later routes to assessment; an adverse session asks the items',()=>{
+ const {t,from}=windowThenCheck({condition:'MINOR_DISCOMFORT',sports:['RUN'],intent:'REDUCE_SUBSTANTIAL',speed:'BALANCED',days:5});
+ assert.equal(ladder(t.p,from)?.STRENGTH,undefined,'the running-only episode leaves strength alone');
  const wb={condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:5};
- const r=t.step(from,1,'NOT_FEELING_100',{wellbeing:wb},'08:00');assert.equal(r.action,'WELLBEING_RUNG_HELD',r.reason);
- assert.equal(facts(t,'WELLBEING_DECLARED').filter(x=>!x.wellbeing.chained).length,1,'no new window');
- t.step(from,6,'WEEKLY_REVIEW',{observations:doneWeek(t,from),check:{warningSigns:NO('MILD_ILLNESS'),exerciseResponse:XNO('MILD_ILLNESS')}});
- assert.equal(ladder(t.p,from+1)?.RUN,'R2','the rung the report held repeats');
+ const r=t.step(from,1,'NOT_FEELING_100',{wellbeing:wb},'08:00');assert.equal(r.action,'WELLBEING_REDUCTION',r.reason);assert.match(r.reason,/replaces what you reported before/);
+ const win=sessionsIn(t.p,t.day(from,1),t.day(from,5));assert.ok(win.every(s=>!live(s)),'the illness covers both sports: every session of its window rests (B4)');
+ const last=facts(t,'WELLBEING_DECLARED').at(-1);assert.equal(last.wellbeing.supersedes,facts(t,'WELLBEING_DECLARED')[0].eventId);
+ assert.ok(t.p.weeks[from+1].adaptations.every(a=>a.episode!==facts(t,'WELLBEING_DECLARED')[0].eventId),'the superseded episode leaves the weeks ahead');
  const again=t.step(from+1,1,'NOT_FEELING_100',{wellbeing:wb},'08:00');assert.equal(again.status,'CLINICAL_HUMAN_REQUIRED');assert.match(again.reason,/professional assessment/);
+ // Within the 14 days a continuous window may last: during a window, a new report that would pass them is asked.
+ const c=timeline();c.step(0,6,'WEEKLY_REVIEW',{observations:doneBefore(c.p,1)});c.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:10}},'08:00');
+ const over=c.step(1,4,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:14}},'08:00');assert.equal(over.status,'ASK');assert.deepEqual(over.missingInputs,['wellbeing.days']);
+ // A local report in a scope the open episode does not touch is asked (I-06).
+ const n=windowThenCheck({condition:'MINOR_DISCOMFORT',sports:['RUN'],intent:'REDUCE_LIGHT',speed:'BALANCED',days:5});
+ const other=n.t.step(n.from,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',sports:['STRENGTH'],warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:3}},'08:00');assert.equal(other.status,'ASK');assert.match(other.reason,/one reduction is open at a time/);
  // An adverse session during the return asks the warning signs and the exercise-response items before anything else.
  const u=windowThenCheck({condition:'MILD_ILLNESS',intent:'REDUCE_SUBSTANTIAL',speed:'BALANCED',days:5}),w=u.from,s0=u.t.p.weeks[w].sessions.find(s=>live(s)&&s.date<=u.t.day(w,2)&&s.sport==='STRENGTH');
  const obs=doneWeek(u.t,w,{adverse:[s0.id]}).filter(o=>o.sessionId===s0.id);
@@ -217,7 +226,7 @@ test('S2-1 (C-Q07-4, SEC-V1CP-22): no declaration stays clinical; any warning si
  assert.deepEqual(t.step(3,2,'READINESS_DECLARATION',{readiness:READY(),eligibility:ELIG(t.day(3,1))}).missingInputs,['eligibility.assessedToday']);
  assert.ok(t.step(3,2,'READINESS_DECLARATION',{readiness:READY(undefined,{returnSpeed:'FASTER'})}).missingInputs.includes('readiness.returnSpeed'),'no FASTER after a clinical hold');
  const r=t.step(3,2,'READINESS_DECLARATION',{readiness:READY({RUN:{ready:true},STRENGTH:{ready:false}})});
- assert.equal(r.action,'REESTABLISH',r.reason);assert.doesNotMatch(r.reason,FORBIDDEN);assert.match(r.reason,/not a medical clearance/);
+ assert.equal(r.action,'REESTABLISH',r.reason);assert.doesNotMatch(r.reason,FORBIDDEN);assert.match(r.reason,/makes no medical judgment/);
  const d=t.p.decisions.at(-1).interruption;assert.equal(d.cause,'CLINICAL');assert.equal(d.restart,'READINESS_DECLARED');assert.ok(['MODERATE','LONG'].includes(d.classBySport.RUN));
  assert.ok(sessionsIn(t.p,t.day(3,3),t.day(5,6),'STRENGTH').every(s=>!live(s)),'strength held');
  assert.equal(facts(t,'INTERRUPTION_DECLARED')[0].interruption.reasonCategory,'ILLNESS','the clinical cause stays on record');

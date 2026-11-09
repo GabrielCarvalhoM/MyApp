@@ -1,0 +1,803 @@
+{
+ "recordId": "QRE-V1CP-IMPL-r1",
+ "date": "2026-11-09",
+ "role": "Quality & Reliability Engineer (constitution 1.3.0), independent judge of the V1CP implementation candidate",
+ "independence": "Authored none of the candidate, its design, tests or decision records (worker != judge). Edited no code, test, canon, product document, mission or ledger; committed, pushed, merged and froze nothing. Mutations ran only in new scratch copies outside the repository; no recursive deletion was used.",
+ "hostContextDisclosure": {
+  "note": "This instance received host context injected by the runtime; disclosed for audit, not used as evidence about the candidate.",
+  "sha256": {
+   "~/.claude/CLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+   "MyApp/CLAUDE.md": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+   "projects/.../memory/MEMORY.md": "297106c45293395e3d162cec5148d40fd79480e1f4ff25e9641251396dedcbdd",
+   "agent-system/protocols/CORE.md": "ef427fdf103ace88bd47e14ac7904bd9d061dbff904b98ab17f506b4e608f16a",
+   "agent-system/evals/QUALITY.md": "f966c72bfaabff598c8240b5f0070874309ab0e00632df982f844c9631d07f51"
+  }
+ },
+ "candidate": {
+  "commit": "fa3985bc664139870cb0f02de4b171bd79e813c1",
+  "branch": "claude/v1-coaching-productization",
+  "worktree": ".claude/worktrees/v1-coaching-productization",
+  "coachingCoreChangesVsHead": 0,
+  "notJudged": "Untracked files written by others during this review (INTEGRATION_CONTRACT_V1CP.md, evidence/f08-scenarios.mjs, security-impl/) are not part of the candidate and were not judged."
+ },
+ "baseline": {
+  "name": "R7D-FREEZE-6",
+  "commit": "32b5ce3900bf33c58b16efe624ed6a5fae5a6dcf",
+  "worktree": ".claude/worktrees/domain-coaching-r7-d",
+  "touched": false
+ },
+ "bindingRecords": {
+  "ssctr/SSCTR_V1CP_DECISION.json": "0898c59a8b9f025732af062fd034f05178a95dcf381ba9b3db748b736fa8a166",
+  "security/SECURITY_V1CP_F08.json": "b570fc7053f819b8e0d24dff1ed2352b90af86cfbd30daa649610d726c72d0f2",
+  "pcg/PCG_V1CP_F08.json": "fb9f3026db3c0d7ca222e797bfa6dc608b90b0641f721b36643c99cdb7747806",
+  "DESIGN_V1CP.md": "7ac633c41bb3430b94814e719d34c0671dfba187d24df270a0d587a016272b41",
+  "matchesReviewRequest": true
+ },
+ "environment": {
+  "os": "Windows 11 Pro 10.0.26200",
+  "node": "v24.19.0",
+  "shell": "Git Bash",
+  "browserOrDevice": "N/A (core runtime; no UI in scope)"
+ },
+ "verdict": "NOT_READY",
+ "qualityGate": "QUALITY_BLOCKED",
+ "verdictScope": "This candidate as an executable reference runtime at fa3985b. Not V1 authority, not a clinical or sporting validation.",
+ "verdictBasis": "Two BLOCKING findings. QRE-V1CP-01: on the default path a head-impact break reason with a structured nonclinical category now screens NONCLINICAL and applies a nonclinical return without any question (FREEZE-6 asked); the lexicon goes beyond the SSCTR-approved closed list. QRE-V1CP-02: after a clinical hold raised inside a Situation 1 window, the readiness restart (S6, MODERATE floor) is replaced by the stale Situation 1 ladder from the pre-window doses (RC-04, Q07). Six MAJOR findings and four MINOR ones follow; test adequacy is MAJOR (9 non-equivalent surviving mutants).",
+ "regression": {
+  "suite": {
+   "command": "cd CoachingCore && node --test",
+   "tests": 1058,
+   "pass": 1058,
+   "fail": 0,
+   "durationMs": 127082,
+   "trackedFilesChanged": 0
+  },
+  "differentialShipped": {
+   "command": "node audits/v1-coaching-productization-2026-11-08/evidence/differential.mjs ../domain-coaching-r7-d . <scratch>/diff.json (from the candidate root; output outside the repository)",
+   "h1": {
+    "cases": 39,
+    "steps": 130,
+    "differingSteps": 13
+   },
+   "h2": {
+    "intakes": 300,
+    "differing": 0
+   },
+   "note": "Reproduces the request exactly. It compares a per-step summary (status, action, proposal hash, missing inputs, question kind, malformed errors), not the full result."
+  },
+  "differentialFullResult": {
+   "method": "Hash of every field of every step result and of every generation output, base vs candidate, same harness (client-9) and corpus (final2), read-only.",
+   "h1": {
+    "steps": 130,
+    "byteIdentical": 116,
+    "differing": 14
+   },
+   "generations": {
+    "identical": 39,
+    "differing": 0
+   },
+   "h2": {
+    "intakes": 300,
+    "byteIdentical": 300
+   },
+   "extraStep": "R7D-H05 s5 differs only in inputHash and trace (carried from s4's changed referenceState); its decision is identical."
+  },
+  "thirteenSteps": [
+   {
+    "step": "R7D-H05 s4",
+    "base": "HOLD malformed:TypeError",
+    "candidate": "KEEP (last-week rule)",
+    "decision": "A2",
+    "isApprovedBlock1Decision": true
+   },
+   {
+    "step": "R7D-H07 s1-s2",
+    "base": "CLINICAL (operation)",
+    "candidate": "ASK interruption.clinicalReason (third-party mention)",
+    "decision": "A1 Q01(b); C-Q01-4 says H07 becomes ASK",
+    "isApprovedBlock1Decision": true
+   },
+   {
+    "step": "R7D-H20 s1-s2",
+    "base": "ASK reasonCategory (\"back on Wednesday\" read as a body word)",
+    "candidate": "s1 ASK endAfterThisReview, s2 MODIFY REESTABLISH (no question about the text)",
+    "decision": "A1 lexicon",
+    "isApprovedBlock1Decision": false,
+    "why": "\"back on\" is not one of the collocations Q01(c) approves (back from, came/got/went/flew/drove back, back home, back to, be back). Under the approved list s1/s2 would ask interruption.clinicalReason once, whose answer is its own exit. See QRE-V1CP-01; SSCTR to rule."
+   },
+   {
+    "step": "R7D-H28 s4",
+    "base": "REESTABLISH (one stop for both sports)",
+    "candidate": "REESTABLISH with strength's own 18-day stop",
+    "decision": "A3 Q02 option A",
+    "isApprovedBlock1Decision": true
+   },
+   {
+    "step": "R7D-H32 s1-s5",
+    "base": "ASK reasonCategory (\"on my feet\" read as a body word)",
+    "candidate": "the break is read; later steps ask startedAt and apply the returns",
+    "decision": "A1 Q01(c) \"on my feet\"",
+    "isApprovedBlock1Decision": true
+   },
+   {
+    "step": "R7D-H34 s2-s3",
+    "base": "ASK reasonCategory (\"baby\")",
+    "candidate": "ASK interruption.clinicalReason with the pregnancy/childbirth wording",
+    "decision": "A1 Q01 modification (1)",
+    "isApprovedBlock1Decision": true
+   }
+  ],
+  "defaultPathConclusion": "On the spent corpora the default path (no coaching key, no F08 event) is byte-identical to FREEZE-6 apart from the 13 disclosed steps and the H05 s5 carry-over; 12 of the 13 are approved Block 1 decisions, H20 s1-s2 is not. Outside the corpus the A1 widening changes default-path behaviour in a fail-open direction (QRE-V1CP-01)."
+ },
+ "fuzz": {
+  "method": "Seeded random timelines (400 seeds, 9,684 steps) on the 8-week hybrid fixture, 40% with a 10K race: weekly reviews with and without checks, NOT_FEELING_100 (every condition, allowed intents, 3-14 days, speeds, sports, regions, 5% with a sign yes), WELLBEING_CHECK, READINESS_DECLARATION (sports, restrictions, speeds), RETURN_AFTER_PAUSE (nonclinical and ILLNESS), SCHEDULE_CHANGE, UNAVAILABLE_DAY, PREFERENCE_CHANGE, EVENT_DATE_CHANGE; 10% adverse and 8% unreported sessions. Each review evaluated twice; 35% replayed after adoption.",
+  "statuses": {
+   "MODIFY": 2110,
+   "KEEP": 2489,
+   "ASK": 2525,
+   "CLINICAL_HUMAN_REQUIRED": 2560
+  },
+  "results": {
+   "exceptions": 0,
+   "caughtTypeErrors": 0,
+   "nonDeterministic": 0,
+   "f08ReplayChangedPlan": 0,
+   "clearanceWording": 0,
+   "stickyClinicalLost": 0,
+   "d49BreachInsideLadderWeeks": 0,
+   "liveSessionInsideAffectedWait": 0
+  },
+  "limits": "The invariants checked D49 only inside ladder weeks (QRE-V1CP-05 sits at the exit) and the clinical hold only until a readiness declaration (QRE-V1CP-02 sits after it); both were found by directed scenarios."
+ },
+ "findings": [
+  {
+   "id": "QRE-V1CP-01",
+   "severity": "BLOCKING",
+   "title": "A1 lexicon wider than the SSCTR-approved closed list: head-impact and care-place texts screen NONCLINICAL on the default path",
+   "location": [
+    "CoachingCore/src/r6-clinical.mjs:64-77 (BACK_PREV, BACK_NEXT, HEAD_NEXT, nonBodyUse)",
+    "CoachingCore/src/r6-clinical.mjs:73 (\"head\" ignores the possessive rule the comment at :60-62 states)",
+    "CoachingCore/src/r6-clinical.mjs:79 (idiomAllowed blocks only damage verbs and clinical words)"
+   ],
+   "failureScenario": "RETURN_AFTER_PAUSE, break week 2 Tue-Sun, interruption {reasonCategory:\"WORK\", nonclinical:true, reason:\"banged my head into the door frame\"} (same for \"knocked my head into a beam at work\", \"back at the clinic again\", \"was back in the er\", \"back in a brace for two weeks\", \"back in bed for days\", \"head over the handlebars at the trip\"). FREEZE-6: ASK, reason unclear. Candidate: screen NONCLINICAL_CATEGORY, decision MODIFY REESTABLISH \"short nonclinical interruption (6 days): resume the last completed doses\", no question.",
+   "expected": "Q01(c) approves only \"back from, came/got/went/flew/drove back, back home, back to, be back\" and \"on my/our/his/her feet\"; C-Q01-2 makes the lexicon closed and versioned; the re-review trigger is any lexicon change; free text may only add CLINICAL or ASK. A body word outside the approved idioms stays ambiguous and is asked once (interruption.clinicalReason).",
+   "rawEvidence": "Probe on screenInterruptionReason, base vs candidate, category WORK, 25 texts: 10 change from ASK to NONCLINICAL, and only one of them (\"on my feet\") rests on an approved idiom; \"hit my head on the cabinet\", \"fell and hit my head into the wall\" and \"came back with a sore back\" stay ASK; every clinical-word text stays CLINICAL. End to end via evaluateProgram on three of them: base ASK x3, candidate MODIFY REESTABLISH x3.",
+   "alsoAffects": "Regression check: R7D-H20 s1-s2 rely on \"back on Wednesday\", outside the approved list.",
+   "escalation": {
+    "to": "SSCTR",
+    "why": "Lexicon content is SSCTR boundary content (Q01, re-review trigger); task contract ESCALATE_IF \"a relevant sign being ignored\"."
+   },
+   "fixScope": "Narrow, runtime-only: restrict the collocation and idiom sets to the approved list, apply the determiner/possessive rule to every body word, and add negative directed tests (impact texts with a structured category stay ASK)."
+  },
+  {
+   "id": "QRE-V1CP-02",
+   "severity": "BLOCKING",
+   "title": "A superseded Situation 1 episode stays open in its superseding week and comes back over a readiness restart or a declared break's return",
+   "location": [
+    "CoachingCore/src/r6-adaptation.mjs:1310 (endF08Marks keeps this week's markers with endDate the day before, even below their startDate)",
+    "CoachingCore/src/r6-adaptation.mjs:1072-1074 (marksOf/openEpisode count any marker, empty-range ones included)",
+    "callers CoachingCore/src/r6-adaptation.mjs:1399 (readinessRestart) and :2446 (returnAfterPause)"
+   ],
+   "failureScenario": "A (clinical): MILD_ILLNESS, REST, 5-day window from week 1 Tue; week 1 Thu WELLBEING_CHECK with feverOrChills yes -> CLINICAL_HUMAN_REQUIRED; week 2 Tue 07:00 READINESS_DECLARATION, all signs no, both sports ready -> READINESS_RESTART (week 3 runs 15/15/20, RETURN mode, entry held in week 4). The truncated WAIT marker (2026-11-23..2026-11-23) keeps the episode open: the week-2 weekly review refuses the S6 check (W1-W9, X1-X4) and asks the Situation 1 window-end items W10-W15 and improved. Answered with improved true, the S1 ladder R2, R3, R4 is placed from week 3 with FIXED pre-window starts over the restart: week 3 runs 35/35/35 (S6: 15/15/20), week 5 35/35/50 (S6: 25/25/35), run mode EASY instead of RETURN; the restart's RETURN_HOLD starts stay on weeks 3-4 but the ladder's FIXED starts, placed after them, override them. B (declared break): NEED_REST REST 3-day window; week 2 Mon RETURN_AFTER_PAUSE (travel Fri-Sun) -> REESTABLISH; the week-2 weekly review then asks the Situation 1 window-end check, and improved true places R2, R3, R4 over the declared return.",
+   "expected": "RC-04: after an S3 exit a later no never returns the episode to Situation 1; Q07: MODERATE is the floor after a clinical hold; I-15 / endF08Marks: the restart or the declared return ends the episode from its week; RC-07: never converted.",
+   "rawEvidence": "Directed scenario on the candidate; M11 (endF08Marks no-op) also survives the suite (QRE-V1CP-09).",
+   "escalation": {
+    "to": null,
+    "why": "Runtime defect; SSCTR informed through this record (RC-04, Q07)."
+   },
+   "fixScope": "Narrow, runtime-only: remove (or flag ended) the episode's markers in the superseding week and exclude superseded episodes in openEpisode/f08Guard; directed tests for both callers."
+  },
+  {
+   "id": "QRE-V1CP-03",
+   "severity": "MAJOR",
+   "title": "The S3 hold from Situation 1 rests only on the client-carried referenceState; a new plan from the record alone bypasses it",
+   "location": [
+    "CoachingCore/src/v1-f08.mjs:185-187 (restartIntake reads only INTERRUPTION_DECLARED breaks and referenceState.pending)",
+    "CoachingCore/src/r6-index.mjs:33 (referenceState defaults to null)",
+    "CoachingCore/src/r6-adaptation.mjs:1181 with CoachingCore/src/v1-f08.mjs:67 (an entry with a warning sign yes records no fact)"
+   ],
+   "failureScenario": "Situation 1 window, then WELLBEING_CHECK with feverOrChills yes (CLINICAL; the record holds WELLBEING_CHECKED with signsYes). restartProgram({intake with pause {reasonCategory:\"TRAVEL\", nonclinical:true}, record}) with no referenceState -> PROPOSED (RESTART class); with the referenceState -> CLINICAL_HUMAN_REQUIRED. An entry report with chestPainPressureOrTightness yes records 0 F08 facts, so nothing in the record carries that hold.",
+   "expected": "SEC-V1CP-23 (enforced in the core, not only in the UI), RC-11 (after a clinical hold only with a valid declaration), RC-15/C07 (never by a client dropping the continuation state), RC-14 (append-only record of reports).",
+   "escalation": {
+    "to": "Security",
+    "why": "SEC-V1CP-23 core boundary; whether the entry route should be recorded (minimisation vs R-F08-1)."
+   },
+   "fixScope": "Runtime: read the hold from the record (WELLBEING_CHECKED signsYes, the chained and persistence routes, and a recorded entry route) with no later READINESS_DECLARED."
+  },
+  {
+   "id": "QRE-V1CP-04",
+   "severity": "MAJOR",
+   "title": "An adverse session reported after a check but dated before it is never asked (C-Q05-4)",
+   "location": [
+    "CoachingCore/src/r6-adaptation.mjs:1340-1342 (f08Guard compares observedAt, the session's own time, with the last check's time)"
+   ],
+   "failureScenario": "Return ladder week 2 (R2). Thu 07:00 WELLBEING_CHECK -> KEEP. Fri 07:00 mid-week WEEKLY_REVIEW carrying Tuesday's run reported ADVERSE -> KEEP, no warning sign or exercise-response item asked. The same Friday report with no check in between -> ASK wellbeingCheck.",
+   "expected": "C-Q05-4: the warning signs and the exercise-response items with any session reported ADVERSE or CONFLICTING in a window, ladder or S6 restart.",
+   "fixScope": "Runtime: compare the report's arrival (provenance.firstRecordedAt / reportedAt) with the last check, or track the observation ids a check covered."
+  },
+  {
+   "id": "QRE-V1CP-05",
+   "severity": "MAJOR",
+   "title": "D49 broken at the ladder exit: strength sets jump by two on the first week after R4",
+   "location": [
+    "CoachingCore/src/r6-composition.mjs:145-151 (ladderCap applies only inside a WELLBEING_REDUCTION rung week; the first week after R4 has no cap)"
+   ],
+   "failureScenario": "Intake with known 5-set doses (db-bench-press, db-row: 5x8 at 20 kg, RIR 2). NEED_REST, REDUCE_SUBSTANTIAL, 3-day window opened Monday 07:00 of week 1, FASTER; every week executed. Sets on those rows: week 1 (R2) 1, week 2 (R3) 2, week 3 (R4) 3, week 4 (back to the plan) 5.",
+   "expected": "returnLadder.transitionRule: strength sets come back at most one set per executed week whatever the rung (D49); C-Q06-3: never more than one per executed week across the return.",
+   "rawEvidence": "Not reachable with the fixture's rows of at most 3 sets, which is why the suite and the fuzz D49 invariant (ladder weeks only) did not see it.",
+   "escalation": {
+    "to": "SSCTR",
+    "why": "Confirm the D49 reading at the R5 exit; the fix itself is Engineering (carry the cap until the held count is reached)."
+   }
+  },
+  {
+   "id": "QRE-V1CP-06",
+   "severity": "MAJOR",
+   "title": "Situation 3: a stated pause overrides the record, so strength starts above the return entry",
+   "location": [
+    "CoachingCore/src/v1-f08.mjs:193 (the record's per-sport pause is read only when the intake states no pause weeks)",
+    "CoachingCore/src/r6-program.mjs:25-29 (longFor/floorFor read the stated weeks)"
+   ],
+   "failureScenario": "Record shows no session for 37 days (run) and 38 days (strength). Intake pause {reasonCategory:\"TRAVEL\", nonclinical:true, weeks:1} (or weeks:0): week-0 strength rows at 2 sets; with the pause unstated: 1 set (return entry). Running stays RESTART only because the 28-day exposure bound reads 0 minutes.",
+   "expected": "Q08 approvedRule: per sport the pause is computed from the record; C-Q08-2: the new plan never starts a sport above the start the in-program return of the same record pause would set.",
+   "fixScope": "Runtime: pause per sport = the longer of the stated and the recorded one.",
+   "escalation": {
+    "to": "SSCTR",
+    "why": "I-18 reads C-Q08-2 only on the record path; this case is inside it."
+   }
+  },
+  {
+   "id": "QRE-V1CP-07",
+   "severity": "MAJOR",
+   "title": "A race after the window stays live while every other session waits for the window-end check",
+   "location": [
+    "CoachingCore/src/r6-composition.mjs:164 (the WAIT never applies to the race)",
+    "CoachingCore/src/r6-adaptation.mjs:1186 (the race is asked only when it falls inside the window's own days)"
+   ],
+   "failureScenario": "10K on 2026-12-19. MILD_ILLNESS, REST, 3-day window from 2026-12-15 (ends 12-17). From 12-18 every session waits for the check; the race on 12-19 is the only live session, with an informational RACE_DURING_RETURN disclosure. If the athlete has not answered the window-end check, the race is the first effort back with no warning sign re-answered.",
+   "expected": "C-Q05-1: the return starts only after the structured answers; C-Q05-3 intent: the coach does not plan a race while the athlete is unwell. I-17 discloses and never changes the race.",
+   "escalation": {
+    "to": "SSCTR",
+    "why": "I-17 adjudication; whether an unanswered window-end check asks about the race (as C-Q05-3 does inside the window)."
+   }
+  },
+  {
+   "id": "QRE-V1CP-08",
+   "severity": "MAJOR",
+   "title": "Situation 3: the new plan re-routes the historic clinical episode at its first review, so a second declaration is needed",
+   "location": [
+    "CoachingCore/src/v1-f08.mjs:205 and CoachingCore/src/r6-index.mjs:33-38 (the record is carried unchanged; the new program has no decision applying the historic clinical-cause episode)",
+    "CoachingCore/src/r6-adaptation.mjs:470 and :529 (a kept clinical-cause episode not applied takes the episode route)"
+   ],
+   "failureScenario": "ILLNESS break -> READINESS_DECLARATION (REESTABLISH) -> weeks reviewed with S6 checks -> restartProgram (record and referenceState) PROPOSED. On the new plan, with the record carried as RC-14 requires, the first review returns CLINICAL_HUMAN_REQUIRED (\"The interruption reason is clinical or possibly clinical (ILLNESS)\"), sticky afterwards; a new READINESS_DECLARATION restarts it (MODIFY REESTABLISH) and replaces the new plan's own start. Without the record every review is KEEP.",
+   "expected": "C-Q08-3: the intake reads the declaration instead of re-routing the historic episode; RC-11; RC-14 (nothing erased by a new plan).",
+   "escalation": {
+    "to": "PCG and SSCTR",
+    "why": "Which declaration binds a new plan, and how the carried episode is marked applied."
+   }
+  },
+  {
+   "id": "QRE-V1CP-09",
+   "severity": "MAJOR",
+   "title": "Test adequacy: 11 of 54 targeted mutants survive, 9 of them shown non-equivalent; one directed assertion is vacuous",
+   "location": [
+    "CoachingCore/test/v1cp-levers.test.mjs:90-95 (C-Q12-2 with no loads logged: D1 HIGHER cannot apply)",
+    "CoachingCore/test/v1cp-f08.test.mjs:156 (D49 assertion only on the MODERATE-recipe path with rows of at most 3 sets)",
+    "CoachingCore/test/v1cp-f08.test.mjs (no test for C-Q06-2, I-04, I-06, I-15, I-16, ownStart, the R2 quality conversion)"
+   ],
+   "failureScenario": "See mutations[]. Survivors: M01 (D49 cap), M07 (R4 RIR clamp), M11 (endF08Marks), M12 (ownStart), M26 (first quality slot after a window), M29 (entryRegions, undetermined), M33 (I-16 regression), M34 (likely equivalent), M37 (I-04), M51 (I-06), M54 (R2 quality). Of the seven the caller named: drop the WAIT, accept an unanswered sign, skip the shift on a missed rung, drop the MODERATE floor and drop the region limit are caught; drop the D49 cap and drop the R4 RIR clamp survive.",
+   "expected": "Each approved F08 rule has a test that fails when the rule is removed (C-Q05-9, C-Q06-3, C-Q07-4, C-Q12-2)."
+  },
+  {
+   "id": "QRE-V1CP-10",
+   "severity": "MINOR",
+   "title": "The Situation 1 state is split between program markers and record facts; a record without them leaves a wait the check cannot end",
+   "location": [
+    "CoachingCore/src/r6-adaptation.mjs:1071-1074 (episodesF08/openEpisode read only the record)"
+   ],
+   "failureScenario": "Window open; the client sends the program but actualLedger without the F08 facts. WELLBEING_CHECK -> KEEP \"nothing to check\"; the weekly review keeps week 2 entirely waiting (0 live sessions). Only a declared break or a new plan ends it. Fails closed.",
+   "fixScope": "Runtime: read the episode from the program decisions too, or ask when markers and record disagree."
+  },
+  {
+   "id": "QRE-V1CP-11",
+   "severity": "MINOR",
+   "title": "The A2 amendment weakens three legacy R7-C tests to \"not HOLD and not malformed\"",
+   "location": [
+    "CoachingCore/test/r7c-phase5-cc.test.mjs:60-63",
+    "CoachingCore/test/r7c-phase6.test.mjs:79-84 and :155-159",
+    "CoachingCore/test/r7c-phase7.test.mjs:95-100 (phase7 :240-243 pins the action)"
+   ],
+   "failureScenario": "The new assertions accept any status other than HOLD for the R4 carrier (an ASK or a CLINICAL route would pass), and the QE-R7C-07 property \"the carrier's identity never enters the decision\" is dropped for that path.",
+   "expected": "Pin the expected status and action, as phase7 does at :243. A2 itself is accepted: H05 s4 goes from the TypeError to KEEP, the A2 tests cover every review kind in the last week, and the fuzz met no malformed path in 9,684 steps."
+  },
+  {
+   "id": "QRE-V1CP-12",
+   "severity": "MINOR",
+   "title": "The shipped differential compares a per-step summary, not the result",
+   "location": [
+    "audits/v1-coaching-productization-2026-11-08/evidence/differential.mjs:17"
+   ],
+   "failureScenario": "A full-result differential finds 14 differing H1 steps, not 13: R7D-H05 s5 differs in inputHash and trace only (carried from s4's referenceState). Fields such as reason, disclosures, gates or the record are not compared by the shipped script.",
+   "expected": "Byte-level claims (\"byte-identical to FREEZE-6\") rest on a full-result comparison."
+  },
+  {
+   "id": "QRE-V1CP-13",
+   "severity": "MINOR",
+   "title": "The readiness declaration's hold reference is shaped but never checked against the holds on record",
+   "location": [
+    "CoachingCore/src/v1-f08.mjs:156-157 and :160",
+    "CoachingCore/src/r6-adaptation.mjs:1370 (readinessRestart binds to every hold on record)"
+   ],
+   "failureScenario": "READINESS_DECLARATION with hold {episodeId:\"another-athletes-episode\", eventId:\"not-on-record\"} -> MODIFY REESTABLISH; the recorded references are the holds on record. Not a bypass (it binds this athlete's own holds), but a mismatched reference is ignored instead of asked.",
+   "escalation": {
+    "to": "Security",
+    "why": "SEC-V1CP-22 / SEC-V1CP-02 fail-closed reading."
+   }
+  }
+ ],
+ "mutations": [
+  {
+   "id": "QRE-V1CP-M01",
+   "mutation": "drop the D49 cap (ladderCap)",
+   "file": "src/r6-composition.mjs",
+   "caught": "no",
+   "requestedByCaller": "drop the D49 cap",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. Known 5-set doses, window opened Monday 07:00 covering the 5-set session: pristine 1 -> 2 -> 3 sets on the R2/R3/R4 weeks, mutant 1 -> 4 -> 4. The suite never exercises the cap: its D49 assertion (v1cp-f08.test.mjs:156) runs the MODERATE-recipe path with rows of at most 3 sets."
+  },
+  {
+   "id": "QRE-V1CP-M02",
+   "mutation": "drop the WAIT (sessions after the window run before the check)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "requestedByCaller": "drop the WAIT",
+   "killedBy": "S1-3, S1-5"
+  },
+  {
+   "id": "QRE-V1CP-M03",
+   "mutation": "accept an unanswered sign (undefined read as no)",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "requestedByCaller": "accept an unanswered sign",
+   "killedBy": "S1-1, S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M04",
+   "mutation": "skip the shift on a missed rung (rung always advances)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "requestedByCaller": "skip the shift on a missed rung",
+   "killedBy": "S1-8, S1-10"
+  },
+  {
+   "id": "QRE-V1CP-M05",
+   "mutation": "drop the MODERATE floor (S6)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "requestedByCaller": "drop the MODERATE floor",
+   "killedBy": "S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M06",
+   "mutation": "drop the region limit (S1 strength rows)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "requestedByCaller": "drop the region limit",
+   "killedBy": "S1-3"
+  },
+  {
+   "id": "QRE-V1CP-M07",
+   "mutation": "drop the R4 RIR clamp (C-Q12-2)",
+   "file": "src/r6-composition.mjs",
+   "caught": "no",
+   "requestedByCaller": "drop the R4 RIR clamp",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. With loads logged before the window and D1 HIGHER, the mutant puts the db-biceps-curl row at RIR 2 in the R4 week (pristine 3). The C-Q12-2 assertion (v1cp-levers.test.mjs:90-95) logs no loads, so D1 HIGHER can never apply there and the assertion is vacuous."
+  },
+  {
+   "id": "QRE-V1CP-M08",
+   "mutation": "disable eachHold (CONSERVATIVE 11-14d each step held)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S1-7"
+  },
+  {
+   "id": "QRE-V1CP-M09",
+   "mutation": "ignore REPEAT starts in fixedStartOf",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S1-7, S2-1, S2-2"
+  },
+  {
+   "id": "QRE-V1CP-M10",
+   "mutation": "remove the evidence-reducer FIXED/REPEAT override (loadReference)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-7, S2-2"
+  },
+  {
+   "id": "QRE-V1CP-M11",
+   "mutation": "endF08Marks no-op",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. A declared break returned during the wait for the window-end check: pristine weeks 3-4 carry 5 live sessions each, mutant 0 (the WAIT continues after the return). No test covers I-15."
+  },
+  {
+   "id": "QRE-V1CP-M12",
+   "mutation": "ignore ownStart (a marker overrides a return start)",
+   "file": "src/r6-composition.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. A 14-day travel break (MODERATE) reported on the Monday of a ladder week: pristine week starts RETURN mode, return step 0, strength 1-set entry rows; mutant starts from the ladder's held EASY state with 2-set rows (2221122211). No test covers ownStart."
+  },
+  {
+   "id": "QRE-V1CP-M13",
+   "mutation": "no step hold in window/ladder/hold weeks (weeklyGates)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-4"
+  },
+  {
+   "id": "QRE-V1CP-M14",
+   "mutation": "persistence: chained report again never routes S3",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-10"
+  },
+  {
+   "id": "QRE-V1CP-M15",
+   "mutation": "AVOID_LOWER: running restarts without its own answer",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S2-2"
+  },
+  {
+   "id": "QRE-V1CP-M16",
+   "mutation": "adverse session in window/ladder/S6 not asked (f08Guard)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-10, S2-3"
+  },
+  {
+   "id": "QRE-V1CP-M17",
+   "mutation": "S3: record bound on stated exposure removed (C-Q08-1)",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S3-2"
+  },
+  {
+   "id": "QRE-V1CP-M18",
+   "mutation": "S3: floorFor always false (C-Q08-2)",
+   "file": "src/r6-program.mjs",
+   "caught": "yes",
+   "killedBy": "S3-1, S3-2"
+  },
+  {
+   "id": "QRE-V1CP-M19",
+   "mutation": "S1 entry without a screen dated today (I-20)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-1"
+  },
+  {
+   "id": "QRE-V1CP-M20",
+   "mutation": "speed change accepted after the return started",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-9"
+  },
+  {
+   "id": "QRE-V1CP-M21",
+   "mutation": "illness-type conditions may choose REDUCE_LIGHT",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S1-2"
+  },
+  {
+   "id": "QRE-V1CP-M22",
+   "mutation": "not improved at window end does not route (KEEP)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-5"
+  },
+  {
+   "id": "QRE-V1CP-M23",
+   "mutation": "reduced window not executed not read as rest (C-Q05-5)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-8"
+  },
+  {
+   "id": "QRE-V1CP-M24",
+   "mutation": "R3 keeps the full long run",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S1-3"
+  },
+  {
+   "id": "QRE-V1CP-M25",
+   "mutation": "race inside the window not asked (C-Q05-3)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-4"
+  },
+  {
+   "id": "QRE-V1CP-M26",
+   "mutation": "first quality slot after a window not eased (C-Q06-2)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. 10K athlete, REDUCE_LIGHT window then FASTER: in the R4 week pristine eases the first quality slot (E34), mutant keeps it as QUALITY (Q34). C-Q06-2 has no test."
+  },
+  {
+   "id": "QRE-V1CP-M27",
+   "mutation": "a sport not declared ready is not held (S2)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S2-1, S2-2"
+  },
+  {
+   "id": "QRE-V1CP-M28",
+   "mutation": "restriction rows not removed in re-plans (S2)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S2-2"
+  },
+  {
+   "id": "QRE-V1CP-M29",
+   "mutation": "restriction end: new region rows not at the entry (entryRegions)",
+   "file": "src/r6-program.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "UNDETERMINED. The scenario that would expose it (new lower-body rows after a restriction ends on a Situation 3 plan) is blocked by QRE-V1CP-08 (the new plan re-routes clinical at its first review)."
+  },
+  {
+   "id": "QRE-V1CP-M30",
+   "mutation": "S6 weekly check not asked",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S2-3"
+  },
+  {
+   "id": "QRE-V1CP-M31",
+   "mutation": "S1 report replay applied twice (replayOf removed)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-4"
+  },
+  {
+   "id": "QRE-V1CP-M32",
+   "mutation": "a sign yes at a check does not route S3",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S1-5, S1-10, S2-3"
+  },
+  {
+   "id": "QRE-V1CP-M33",
+   "mutation": "repeated-adverse regression not carried into the ladder (I-16)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. Adverse responses on every session of two ladder weeks (REGRESS gates): the held start of weeks 4 and 5 differs between pristine and mutant. I-16 has no test."
+  },
+  {
+   "id": "QRE-V1CP-M34",
+   "mutation": "R2/R3 ladder weeks release steps (holdOf false)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "LIKELY_EQUIVALENT. Three ladder scenarios (REDUCE_SUBSTANTIAL BALANCED 5d, REST CONSERVATIVE 12d, REST BALANCED 12d) give byte-identical plans: every R2/R3 week is followed by a FIXED start, which replaces whatever the review steps."
+  },
+  {
+   "id": "QRE-V1CP-M35",
+   "mutation": "the window weeks release steps (WINDOW hold removed)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-4"
+  },
+  {
+   "id": "QRE-V1CP-M36",
+   "mutation": "later window weeks start from the projection (no FIXED)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-4"
+  },
+  {
+   "id": "QRE-V1CP-M37",
+   "mutation": "window rung not repeated after a partly executed window (I-04)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. A REDUCE_SUBSTANTIAL window with one run not done: pristine ladder R2, R2, R3, R4 (window rung repeated, I-04), mutant R2, R3, R4. No test."
+  },
+  {
+   "id": "QRE-V1CP-M38",
+   "mutation": "partial check week not repeated (I-02)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S1-5, S1-9"
+  },
+  {
+   "id": "QRE-V1CP-M39",
+   "mutation": "CONSERVATIVE readiness not one class up",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M40",
+   "mutation": "S6 first-step hold removed (RETURN_HOLD)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M41",
+   "mutation": "S3: clinical hold on record not enforced (SEC-V1CP-23)",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S3-1"
+  },
+  {
+   "id": "QRE-V1CP-M42",
+   "mutation": "S3: a sport not declared ready is programmed",
+   "file": "src/r6-program.mjs",
+   "caught": "yes",
+   "killedBy": "S3-1"
+  },
+  {
+   "id": "QRE-V1CP-M43",
+   "mutation": "readiness with a warning sign yes accepted",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M44",
+   "mutation": "readiness without a screen dated today",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "S2-1"
+  },
+  {
+   "id": "QRE-V1CP-M45",
+   "mutation": "A1: idiom exceptions also in clauses with damage or clinical words",
+   "file": "src/r6-clinical.mjs",
+   "caught": "yes",
+   "killedBy": "A1-3b"
+  },
+  {
+   "id": "QRE-V1CP-M46",
+   "mutation": "A1: contagion rule removed (my son had flu, I caught it)",
+   "file": "src/r6-clinical.mjs",
+   "caught": "yes",
+   "killedBy": "A1-3b"
+  },
+  {
+   "id": "QRE-V1CP-M47",
+   "mutation": "A3: per-sport stop removed",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "A3"
+  },
+  {
+   "id": "QRE-V1CP-M48",
+   "mutation": "A2: last-week keep removed",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "yes",
+   "killedBy": "A2-1, A2-3:, P0-2:"
+  },
+  {
+   "id": "QRE-V1CP-M49",
+   "mutation": "S1 window up to 21 days",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S1-1"
+  },
+  {
+   "id": "QRE-V1CP-M50",
+   "mutation": "systemic condition may be limited to one sport",
+   "file": "src/v1-f08.mjs",
+   "caught": "yes",
+   "killedBy": "S1-3"
+  },
+  {
+   "id": "QRE-V1CP-M51",
+   "mutation": "chained report in a non-overlapping scope opens nothing but is not asked (overlap always true)",
+   "file": "src/r6-adaptation.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. Open RUN-only MINOR_DISCOMFORT window, then a STRENGTH-only report: pristine ASK (I-06), mutant KEEP as a chained report. No test."
+  },
+  {
+   "id": "QRE-V1CP-M52",
+   "mutation": "R2 strength not at entry sets (keeps sets)",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S1-3, Envelope"
+  },
+  {
+   "id": "QRE-V1CP-M53",
+   "mutation": "R2/R3 strength RIR floor removed",
+   "file": "src/r6-composition.mjs",
+   "caught": "yes",
+   "killedBy": "S1-3, Envelope"
+  },
+  {
+   "id": "QRE-V1CP-M54",
+   "mutation": "R2 keeps quality sessions",
+   "file": "src/r6-composition.mjs",
+   "caught": "no",
+   "killedBy": null,
+   "survivorCheck": "NON_EQUIVALENT. 10K athlete, MILD_ILLNESS REDUCE_SUBSTANTIAL window over a week with a quality session: pristine turns it easy (E34), mutant keeps Q34 in an R2 week. No test has a quality session inside an R2 week."
+  }
+ ],
+ "mutationMethod": {
+  "base": "A pristine copy of src/, the policy and review files it reads, the harness lib, the final2 holdout file and the v1cp test files, in a new scratch directory outside the repository (src byte-identical to the worktree: 0 hash mismatches); control run 43/43 pass.",
+  "perMutant": "A fresh copy per mutant, one targeted edit (applied only when its text occurs exactly as declared), then node --test on the five v1cp test files (43 tests).",
+  "notRun": "The 1,015 legacy tests were not run per mutant: they create no F08 markers or facts, so they cannot observe these edits.",
+  "survivorChecks": "Each survivor was run on a scenario on the pristine copy and on the mutant; a difference shows it is not equivalent."
+ },
+ "interpretations": {
+  "withinQreAuthority": "Behaviour and reliability only; sporting adjudication is the SSCTR's.",
+  "items": {
+   "I-01": "Behaviour as described (0 live sessions in an affected wait over 9,684 fuzz steps), except the race (QRE-V1CP-07).",
+   "I-02": "As described; the mutant removing it is caught (M38).",
+   "I-03": "As described; the R2/R3 hold flags are redundant with the FIXED starts (M34 likely equivalent).",
+   "I-04": "Implemented but untested (M37 survives).",
+   "I-05": "As described; tested (M14 caught).",
+   "I-06": "Implemented but untested (M51 survives).",
+   "I-07": "As described; tested (M20 caught).",
+   "I-08 to I-12": "Sporting content: SSCTR. Behaviour as described; M39 and M40 caught.",
+   "I-13": "No finding.",
+   "I-14": "As described; tested (M10 caught).",
+   "I-15": "Not met as implemented (QRE-V1CP-02); untested (M11 survives).",
+   "I-16": "Implemented but untested (M33 survives).",
+   "I-17": "Route to SSCTR (QRE-V1CP-07).",
+   "I-18": "A stated pause escapes it (QRE-V1CP-06).",
+   "I-19": "No finding.",
+   "I-20": "As described; tested (M19 caught).",
+   "I-21": "The clamp works but its test is vacuous (QRE-V1CP-09, M07)."
+  }
+ },
+ "conditions": [
+  {
+   "id": "QRE-V1CP-C1",
+   "for": "QRE-V1CP-01",
+   "owner": "Engineering, with the SSCTR lexicon ruling",
+   "stop": "Lexicon limited to the approved list (or extended by an SSCTR record), negative directed tests in place, both differentials re-run."
+  },
+  {
+   "id": "QRE-V1CP-C2",
+   "for": "QRE-V1CP-02",
+   "owner": "Engineering",
+   "stop": "The superseded episode no longer opens in its week; directed tests for the readiness and declared-break callers; M11 killed."
+  },
+  {
+   "id": "QRE-V1CP-C3",
+   "for": "QRE-V1CP-03 to QRE-V1CP-08",
+   "owner": "Engineering, with Security (03, 13), SSCTR (05, 06, 07) and PCG/SSCTR (08)",
+   "stop": "Each fixed with a directed test, or carried as a named blocker with its owner."
+  },
+  {
+   "id": "QRE-V1CP-C4",
+   "for": "QRE-V1CP-09",
+   "owner": "Engineering",
+   "stop": "Tests that kill M01, M07, M11, M12, M26, M33, M37, M51 and M54; the C-Q12-2 assertion logs loads."
+  },
+  {
+   "id": "QRE-V1CP-C5",
+   "for": "re-review",
+   "owner": "Chief",
+   "stop": "Full suite and full-result differential re-run on the fixed revision, then one narrow QRE re-review of that revision only."
+  }
+ ],
+ "cycleNote": "The task contract allows at most one bounded fix cycle for a new, narrow, runtime-only blocker. Both BLOCKING findings are narrow and runtime-only (r6-clinical.mjs lexicon sets; endF08Marks/openEpisode). Whether the MAJOR findings ride that cycle or close as named blockers is the Chief's decision.",
+ "evidenceLocation": "Probe, fuzz, differential and mutation scripts and outputs live in this session's scratchpad (outside the repository, not persisted with it); every finding states its scenario inline so it can be reproduced from the candidate.",
+ "notDone": [
+  "Full legacy suite per mutant (reason in mutationMethod.notRun).",
+  "UI, device or browser checks (no UI in scope).",
+  "Sporting fidelity rulings (SSCTR) and Security boundary rulings (Security)."
+ ]
+}

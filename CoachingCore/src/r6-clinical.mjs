@@ -57,21 +57,20 @@ const DAMAGE=words(`
  broke broken break breaking snapped cracked quebrei quebrou quebrado quebrada quebrar trinquei trincou rompi rompio roto rota rompe parti partio
  burned burnt cut queimei queimou cortei cortou queme corte
 `);
-// V1CP A1 (QRE-P5H-F01, SSCTR-P5H-O01; holdout shapes R7D-H20, H32): a body word used in a non-body sense is not a body mention. "back" as an
-// adverb ("back on Wednesday", "got back from the trip", "back home"), the idioms "on my feet" and "em pé / de pé / a pé", "head to/out/home…"
-// and "on the other hand" / "by hand". A body word after a possessive or a body adjective ("my back", "lower back") is always the body.
+// V1CP A1 (SSCTR-V1CP Q01 (c), C-Q01-2; lexicon V1CP-A1-LEX-2, closed): a body word in an approved non-body collocation is not a body mention, for
+// the matched token only: "back" in "back from", "back home", "back to", "came/got/went/flew/drove back" and "be back"; "on my/our/his/her
+// feet"; PT "em pé" and ES "de pie". Nothing else is: a body word after a possessive, an article or a modifier ("my back", "the back", "lower
+// back") is the body, and any other use ("back on Wednesday", "back in bed", "head into", "by hand") is still asked (QRE-V1CP-01).
 const BODY_DETERMINERS=new Set(['my','the','lower','upper','mid','middle','your','his','her','our','their','sore','bad','stiff','tight','achy','aching','hurt','hurting','painful']);
-const BACK_PREV=new Set(['came','come','comes','coming','got','get','gets','getting','went','go','goes','going','gone','flew','fly','flies','flying','drove','drive','drives','driving','travel','travels','traveled','travelled','traveling','travelling','be','been','being','was','were','is','are','am','im','way','head','headed','heading','walked','walk','walking','moved','move','moving','bounce','bounced','welcome','just','arrived','arrive','returned','return','returning','brought','bring','sent']);
-const BACK_NEXT=new Set(['from','home','to','at','in','on','into','after','again','by','soon','today','tomorrow','tonight','monday','tuesday','wednesday','thursday','friday','saturday','sunday','next','this','later','now']);
-const IDIOM_POSSESSIVES=new Set(['my','our','your','his','her','their']);
-const HEAD_NEXT=new Set(['to','out','home','off','back','over','up','down','straight','north','south','east','west','into']);
+const BACK_PREV=new Set(['came','got','went','flew','drove','be']);
+const BACK_NEXT=new Set(['from','home','to']);
+const IDIOM_POSSESSIVES=new Set(['my','our','his','her']);
 function nonBodyUse(t,i){
  const w=t[i],prev=t[i-1],next=t[i+1];
- if(w==='back'){if(prev==='to'&&t[i-2]==='back')return true;if(BODY_DETERMINERS.has(prev))return false;return BACK_PREV.has(prev)||BACK_NEXT.has(next);}
+ if(w==='back'){if(BODY_DETERMINERS.has(prev))return false;return BACK_PREV.has(prev)||BACK_NEXT.has(next);}
  if(w==='feet')return t[i-2]==='on'&&IDIOM_POSSESSIVES.has(prev);
- if(w==='pe')return ['em','de','a'].includes(prev);
- if(w==='head')return HEAD_NEXT.has(next);
- if(w==='hand'||w==='hands')return prev==='by'||prev==='other'&&t[i-2]==='the'&&t[i-3]==='on';
+ if(w==='pe')return prev==='em';
+ if(w==='pie')return prev==='de';
  return false;
 }
 /** Whether token i is a body word used for the body. An idiom is never read as one in a clause with a damage verb or a clinical word (SSCTR-V1CP
@@ -234,7 +233,10 @@ export function screenInterruptionReason({reason=null,reasonCategory=null,noncli
  if(isYes(clinicalReason))return {status:'CLINICAL',basis:'CLINICAL_FLAG',matched:[]};
  if(clinicalReason!==null&&clinicalReason!==undefined&&!isNo(clinicalReason))return {status:'ASK',basis:'INVALID_CLINICAL_FLAG',matched:[String(clinicalReason)]};
  // V1CP A1: each clause keeps who it is about (attribution, read on its words before denials are removed).
- const parts=clausesOf(reason).map(c=>({who:attribution(c.split(' ')),text:stripNegations(c.split(' ')).join(' ')})).filter(p=>p.text),clauses=parts.map(p=>p.text),tokens=clauses.flatMap(c=>c.split(' '));
+ // SSCTR-V1CPI-10: "me too", "eu também", "yo también" in a clause of their own say the athlete shares what the other clause names: SELF.
+ const ELLIPSES=['me too','me also','me as well','i too','i did too','so did i','same here','eu tambem','tambem eu','comigo tambem','yo tambien','tambien yo','a mi tambien'];
+ const parts0=clausesOf(reason).map(c=>({who:attribution(c.split(' ')),text:stripNegations(c.split(' ')).join(' ')})).filter(p=>p.text),shared=parts0.some(p=>ELLIPSES.includes(p.text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()));
+ const parts=shared?parts0.map(p=>p.who==='OTHER'?{...p,who:'SELF'}:p):parts0,clauses=parts.map(p=>p.text),tokens=clauses.flatMap(c=>c.split(' '));
  const own=parts.filter(p=>p.who==='SELF'||p.who==='NONE'),others=parts.filter(p=>p.who==='OTHER');
  const mentions=list=>{const c=list.map(p=>p.text),t=c.flatMap(x=>x.split(' '));return [...t.filter(x=>CLINICAL.has(x)),...c.flatMap(x=>hasPhrase(x,CLINICAL_PHRASES)),...damageMentions(c).clinical];};
  const clinical=mentions(own);

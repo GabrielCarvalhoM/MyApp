@@ -162,7 +162,9 @@ const RUNG_TEXT={R2:'Much lighter while you get back: fewer sets, more reps in r
  * the return ladder), by the rung it records for each sport. A region (UPPER or LOWER) limits the strength rung to that region's rows. */
 export function wellbeingSessions(env,sessions,a){
  const inRange=s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.role!=='RACE'&&s.date>=a.startDate&&(!a.endDate||s.date<=a.endDate)&&!!a.rungs?.[s.sport];
+ const raceWaits=s=>s.role==='RACE'&&s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&a.rungs?.RUN==='WAIT'&&s.date>=a.startDate&&(!a.endDate||s.date<=a.endDate);
  return sessions.map(s=>{
+  if(raceWaits(s))return {...s,waitsForCheck:true,explanation:'Your race waits for your check: tell us how you are before it'};
   if(!inRange(s))return s;
   const rung=a.rungs[s.sport];
   if(s.sport==='RUN')return RUN_RUNGS[rung]?.(env,s,sessions)??s;
@@ -176,11 +178,17 @@ export function wellbeingSessions(env,sessions,a){
 }
 /** The starts F08 markers fix for week i, per sport in `sports` (returnLadder; SSCTR-V1CP Q07 holds): FIXED (the held pre-window state, or a
  * return recipe's entry, stored with the marker) or REPEAT (the start of the week before). Null when the week fixes none. */
+/** SSCTR-V1CPI-02 (I-14 as modified): a fixed strength start keeps the held doses and takes the execution facts (when each exercise was last
+ * performed) from the current state, so the clock of D52 moves with the exposures the return weeks hold. */
+export function withExecutionFacts(fixed,current){
+ const out=clone(fixed);for(const [id,e] of Object.entries(out.exercises??{})){const lp=[e.lastPerformed,current?.exercises?.[id]?.lastPerformed].filter(x=>typeof x==='string').sort().at(-1);if(lp)e.lastPerformed=lp;}
+ return out;
+}
 export function fixedStartOf(weeks,stateTrace,i,sports){
  const out={};
- for(const a of weeks[i]?.adaptations??[])if(['WELLBEING_REDUCTION','RETURN_HOLD'].includes(a.kind)&&a.starts)for(const [s,rule] of Object.entries(a.starts)){
+ for(const a of weeks[i]?.adaptations??[])if(['WELLBEING_REDUCTION','RETURN_HOLD'].includes(a.kind)&&a.starts&&!a.endedBy)for(const [s,rule] of Object.entries(a.starts)){
   if(!sports.includes(s))continue;
-  if(rule==='FIXED'&&a.fixed?.[s])out[s]={state:clone(a.fixed[s]),a};
+  if(rule==='FIXED'&&a.fixed?.[s])out[s]={state:s==='STRENGTH'?withExecutionFacts(a.fixed[s],stateTrace[i]?.strength):clone(a.fixed[s]),a};
   else if(rule==='REPEAT'&&i>0&&stateTrace[i-1])out[s]={state:clone(stateTrace[i-1][s==='RUN'?'run':'strength']),a};
  }
  return Object.keys(out).length?out:null;
@@ -191,7 +199,7 @@ const stillReturning=(state,s,ref)=>s==='RUN'?state?.run?.mode==='RETURN'||state
  * weeks with those markers added, or null. */
 function eachHold(weeks,stateTrace,i,sports){
  if(i+1>=weeks.length)return null;
- const prev=(weeks[i-1]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&a.each);if(!prev)return null;
+ const prev=(weeks[i-1]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&a.each&&!a.endedBy);if(!prev)return null;
  let out=weeks;
  const mine=(k,s)=>(out[k].adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.episode===prev.episode&&a.phase==='LADDER'&&(!s||a.rungs?.[s]));
  const add=sports.filter(s=>prev.starts?.[s]==='REPEAT'&&prev.rungs?.[s]==='M'&&!mine(i,s)&&stillReturning(stateTrace[i],s,prev.ref));
@@ -200,6 +208,22 @@ function eachHold(weeks,stateTrace,i,sports){
  const put=(k,s,start)=>{const x=out[k],m=mine(k,null),base=m?clone(m):(({starts,fixed,...p})=>({...clone(p),startDate:x.startDate,endDate:onDate(x.startDate,6),rungs:{},hold:{},step:(prev.step??0)+(k-i+1)}))(prev);
   const n={...clone(base),rungs:{...base.rungs,[s]:'M'},hold:{...base.hold,[s]:!start},...(start?{starts:{...(base.starts??{}),[s]:start}}:{})};out[k]={...x,adaptations:[...(x.adaptations??[]).filter(a=>a!==m),n]};};
  for(const s of add){put(i,s,null);put(i+1,s,'REPEAT');}
+ return out;
+}
+/** V1CP F08 (SSCTR-V1CP returnLadder.transitionRule, QRE-V1CP-05): strength sets come back at most one set per executed week whatever the rung, so
+ * when week i, after an episode's last held strength week (R4), would add more than one set to an exercise, week i is one more held week (the
+ * R4 cap applies again). Returns the weeks with that marker, or null. */
+function d49Hold(weeks,i,sports){
+ if(!sports.includes('STRENGTH'))return null;
+ const prev=(weeks[i-1]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&!a.endedBy&&a.rungs?.STRENGTH==='R4'&&a.fixed?.STRENGTH);if(!prev)return null;
+ if((weeks[i].adaptations??[]).some(a=>a.kind==='WELLBEING_REDUCTION'&&a.episode===prev.episode&&!a.endedBy&&a.rungs?.STRENGTH))return null;
+ const sets=w=>{const o={};for(const s of w.sessions.filter(x=>x.sport==='STRENGTH'&&x.prescription&&x.status!=='SKIPPED'))for(const e of s.prescription.exercises??[])o[e.id]=Math.max(o[e.id]??0,e.sets);return o;};
+ const a=sets(weeks[i-1]),b=sets(weeks[i]);if(!Object.keys(b).some(id=>a[id]!==undefined&&b[id]>a[id]+1))return null;
+ const out=weeks.map(x=>x),x=out[i],m=(x.adaptations??[]).find(z=>z.kind==='WELLBEING_REDUCTION'&&z.episode===prev.episode&&z.phase==='LADDER'&&!z.endedBy);
+ const base=m?clone(m):(({starts,fixed,each,ref,...p})=>({...clone(p),startDate:x.startDate,endDate:onDate(x.startDate,6),rungs:{},hold:{},step:(prev.step??0)+1}))(prev);
+ const n={...base,rungs:{...base.rungs,STRENGTH:'R4'},hold:{...base.hold,STRENGTH:false},starts:{...(base.starts??{}),STRENGTH:'FIXED'},fixed:{...(base.fixed??{}),STRENGTH:clone(prev.fixed.STRENGTH)},d49:true};
+ out[i]={...x,adaptations:[...(x.adaptations??[]).filter(z=>z!==m),n]};
+ out[i-1]={...out[i-1],adaptations:out[i-1].adaptations.map(z=>z===prev?{...z,hold:{...z.hold,STRENGTH:true}}:z)};
  return out;
 }
 /** The authority of a fixed start: a return's entry, by the decision that recorded the marker; a sport it does not fix keeps its own. */
@@ -424,7 +448,7 @@ export function composeWeeks(ctx,next,options){
  // V1CP F08 (SSCTR-V1CP returnLadder, Q07): a later week whose start a Situation 1 return or a readiness restart's hold fixes, for a sport in scope,
  // is placed again from that start, so no projection carries a step into it (every handler re-plans through here, so every re-plan keeps it).
  const sports=options.sports??SPORTS,N=placed.weeks.length;
- for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
+ for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
   const s0=placed.stateTrace[i],by={eventId:ctx.review?.event?.id??null,asOf:ctx.asOf??null};
   return composeWeeks(ctx,{...next,weeks:placed.weeks,stateTrace:placed.stateTrace},{...options,fromWeek:i,start:{runState:f.RUN?.state??clone(s0.run),strengthState:f.STRENGTH?.state??clone(s0.strength)},startAuthority:fixedAuthority(f,projectedStart(placed.weeks[i-1],by)),returnDay:null,evidence:null,uncredited:[],ownStart:true});}
  return placed;

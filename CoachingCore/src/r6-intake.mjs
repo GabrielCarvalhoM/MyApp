@@ -73,7 +73,10 @@ function historySummary(history,asOf,capabilities){
 }
 /** Canonical intake deliberately has no required static priority, known dose or perfect history. */
 // The repertoire authority is the planner's own (QE-R7B-11): the 5K fallback (B0-C10) follows the records the program is planned under.
-export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
+/** V1CP Situation 3 (SEC-V1CPI-01): the record's restart facts reach a new plan only from restartProgram, under this key of the call's options;
+ * intake data can never carry them (a symbol has no JSON form). */
+export const RESTART_FACTS=Symbol('V1CP restart facts');
+export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE,restartFacts=null}={}){
  const source=clone(input??{}),a=source.athlete??source.onboarding??{},s=source.schedule??a.schedule??{},errors=[],missing=[],uncertainty=[],negotiation=[];
  if(source.version!==INTAKE_VERSION||source.synthetic!==true||source.purpose!=='SHADOW_REFERENCE')errors.push('offlineSyntheticContract');
  const asOf=typeof source.asOf==='string'?source.asOf.slice(0,10):null,startDate=source.startDate;
@@ -200,9 +203,14 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  if(event&&recentRun.longestRunMinutes===null)uncertainty.push(unknown('recent.longestRunMinutes','LEARN_DURING_FIRST_SESSIONS','Long-run start follows current easy exposure; event trajectory stays conditional'));
  if(event?.timeGoalMinutes)uncertainty.push(unknown('event.timeGoalMinutes','SAFE_CONSERVATIVE_ESTABLISHMENT','Time goal is context only; training intensity comes from current effort anchors, never from the goal time'));
  if(a.pause!==undefined&&a.pause!==null&&(typeof a.pause!=='object'||Array.isArray(a.pause)))errors.push('athlete.pause.object');
- const P=a.pause&&typeof a.pause==='object'&&!Array.isArray(a.pause)?a.pause:null;
+ const P=a.pause&&typeof a.pause==='object'&&!Array.isArray(a.pause)?a.pause:null,RF=restartFacts?.pause??null;
+ // SEC-V1CPI-01: the record's facts are never intake data.
+ for(const k of ['readinessDeclared','bySportDays'])if(P&&P[k]!==undefined)errors.push('athlete.pause.'+k);
+ // SEC-V1CPI-02: a cause the athlete states is always screened (clinical first); the declaration on record is read only when none is stated.
+ const stated=!!P&&['reason','reasonCategory','clinicalReason','nonclinical'].some(k=>P[k]!==undefined&&P[k]!==null);
+ const weeks0=P&&typeof P.weeks==='number'&&Number.isFinite(P.weeks)&&P.weeks>=0?P.weeks:null,weeksAll=Number.isFinite(RF?.weeks)?Math.max(weeks0??0,RF.weeks):weeks0;
  // A pause length that is not a number is asked, never read as no pause; any length of four weeks or more restarts (QRE-R6-12).
- const pause=P?{nonclinical:P.nonclinical===true,weeks:typeof P.weeks==='number'&&Number.isFinite(P.weeks)&&P.weeks>=0?P.weeks:null,reason:P.reason??null,reasonCategory:P.reasonCategory??null,screen:P.readinessDeclared===true?{status:'READINESS_DECLARED',basis:'READINESS_DECLARATION',matched:[]}:screenInterruptionReason({reason:P.reason,reasonCategory:P.reasonCategory,nonclinical:P.nonclinical??null,clinicalReason:P.clinicalReason??null}),...(P.readinessDeclared===true?{readinessDeclared:true}:{}),...(P.bySportDays&&typeof P.bySportDays==='object'&&Object.entries(P.bySportDays).every(([k,v])=>['RUN','STRENGTH'].includes(k)&&(v===null||Number.isInteger(v)&&v>=0))?{bySportDays:clone(P.bySportDays)}:{})}:null;
+ const pause=P||RF?{nonclinical:P?.nonclinical===true,weeks:weeksAll,reason:P?.reason??null,reasonCategory:P?.reasonCategory??null,screen:RF?.readinessDeclared===true&&!stated?{status:'READINESS_DECLARED',basis:'READINESS_DECLARATION',matched:[]}:screenInterruptionReason({reason:P?.reason,reasonCategory:P?.reasonCategory,nonclinical:P?.nonclinical??null,clinicalReason:P?.clinicalReason??null}),...(RF?.readinessDeclared===true?{readinessDeclared:true}:{}),...(RF?.bySportDays?{bySportDays:clone(RF.bySportDays)}:{})}:null;
  // Any clinical pause reason routes to a human regardless of flags; an unclear or missing reason is asked.
  if(pause?.screen.status==='CLINICAL')uncertainty.push(unknown('pause.reason','CLINICAL_OUT_OF_SCOPE','The pause reason is clinical or possibly clinical; qualified assessment, no nonclinical restart',{matched:pause.screen.matched}));
  // V1CP A1 (QRE-P5H-F01): only what is missing is asked (reasonQuestion); a missing or unrecognized reason asks the category, as before.
@@ -216,11 +224,12 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  // canonical intake has no such key (R7D-FREEZE-6 behaviour); a value outside the vocabulary is an input error, never ignored.
  const coachingErrors=[],coaching=canonicalCoaching(a.coaching??source.coaching,coachingErrors);errors.push(...coachingErrors);
  // V1CP F08 Situation 3 (DR-148, RC-11): a new plan after a readiness declaration carries the restrictions in force (closed vocabulary only).
- const RX={AVOID_LOWER_BODY_STRENGTH:'LOWER',AVOID_UPPER_BODY_STRENGTH:'UPPER'},rs=a.restart;
+ const RX={AVOID_LOWER_BODY_STRENGTH:'LOWER',AVOID_UPPER_BODY_STRENGTH:'UPPER'},rs=restartFacts?.restart??undefined;
+ if(a.restart!==undefined)errors.push('athlete.restart');
  // V1CP Situation 3 (SSCTR-V1CP Q08): the restart of a new plan from the record (fromRecord), the sports not declared ready, and the MODERATE floor.
  const restartOk=rs&&typeof rs==='object'&&(typeof rs.readinessEventId==='string'||rs.readinessEventId===null&&rs.fromRecord===true)&&Array.isArray(rs.strengthRestrictions??[])&&(rs.strengthRestrictions??[]).every(c=>RX[c])&&(rs.notReady===undefined||Array.isArray(rs.notReady)&&rs.notReady.every(x=>['RUN','STRENGTH'].includes(x)))&&(rs.minimumClass===undefined||rs.minimumClass==='MODERATE')&&(rs.fromRecord===undefined||typeof rs.fromRecord==='boolean');
  if(rs!==undefined&&!restartOk)errors.push('athlete.restart');
- const restart=restartOk?{readinessEventId:rs.readinessEventId,strengthRegions:[...new Set((rs.strengthRestrictions??[]).map(c=>RX[c]))].sort(),...(rs.notReady?.length?{notReady:[...new Set(rs.notReady)].sort()}:{}),...(rs.minimumClass?{minimumClass:rs.minimumClass}:{}),...(rs.fromRecord===true?{fromRecord:true}:{})}:null;
+ const restart=restartOk?{readinessEventId:rs.readinessEventId,strengthRegions:[...new Set((rs.strengthRestrictions??[]).map(c=>RX[c]))].sort(),...(rs.notReady?.length?{notReady:[...new Set(rs.notReady)].sort()}:{}),...(rs.minimumClass?{minimumClass:rs.minimumClass}:{}),...(rs.fromRecord===true?{fromRecord:true}:{}),...(isoDay(rs.asOf)?{asOf:rs.asOf}:{})}:null;
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
   athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runStated!==null,strength:strengthStated!==null},...(Object.keys(experienceBasis).length?{experienceBasis}:{}),recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
   goals:{run:runGoal,strength:strengthGoal,event,...(contextEvent?{contextEvent}:{})},

@@ -3,6 +3,7 @@ import {evaluateProgram as evaluateColdProgram} from './r6-adaptation.mjs';
 import {generateLegacyProgram,evaluateLegacyProgram,validLegacyProgram,LEGACY_PROGRAM_VERSION} from './r6-legacy.mjs';
 import {hash,clone,freeze} from './value.mjs';
 import {restartIntake} from './v1-f08.mjs';
+import {RESTART_FACTS} from './r6-intake.mjs';
 import {screenInterruptionReason} from './r6-clinical.mjs';
 export {canonicalizeIntake} from './r6-intake.mjs';
 export {programHash,PROGRAM_VERSION} from './r6-program.mjs';
@@ -33,6 +34,6 @@ export function sessionContext(program,session){
 export function restartProgram({intake,record=[],referenceState=null,asOf=null},options={}){
  const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
  if(r.status!=='READY')return freeze({runtimeVersion:'R6-1',mode:'SHADOW',status:r.status,reason:r.reason,missingInputs:r.missingInputs??[],program:null,applied:false,carriedRecord:clone(Array.isArray(record)?record:[])});
- const g=generateProgram(r.intake,options);
+ const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts});
  return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
 }
