@@ -1,0 +1,193 @@
+{
+ "recordId": "QRE-V1CPFF-RECHECK-CYCLE-r1",
+ "date": "2026-11-09",
+ "role": "Quality & Reliability Engineer (constitution 1.3.0), fresh independent instance: the single narrow recheck of the V1CP Fix-Forward fix cycle (QRE part)",
+ "supersedes": "nothing; QRE_FF_RECHECK.json (round 1) stays as written. This is the recheck dispatched once before (2026-11-09 ~13:01) and stopped at a usage limit before any record; leftover scratch folders of that dispatch were not used as evidence.",
+ "independence": "Authored none of the candidate, the fix cycle, its tests or its evidence (worker != judge). Edited no runtime, test, canon, product, Figma, mission, ledger or other record; wrote only this file and its .md; committed, pushed, merged and froze nothing. Every run was on git-archive extracts of the commits in a new scratch folder (qre-ffc2-1794246465) outside the repository; mutants ran on a sandbox copy restored and hash-checked after each mutant, and on four mutant roots (own src copy, read-only junctions to the 0950b0a extract for everything else). No recursive deletion; npm run verify and verify-r* not run; synthetic data only. Not read (independence): SEC_FF_RECHECK_CYCLE.*, SSCTR_FF_RECHECK_CYCLE.* and pcg/PCG_V1CPFF_CFOBS1.*, which appeared untracked in the worktree during this recheck. Round-1 records of Security and SSCTR were read only where cited.",
+ "hostContextDisclosure": {
+  "note": "Host context injected by the runtime (CLAUDE.md files and the memory index, which summarises earlier findings); disclosed for audit, not used as evidence about the candidate.",
+  "sha256": {
+   "~/.claude/CLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+   "MyApp/CLAUDE.md": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+   "projects/.../memory/MEMORY.md": "785a6e89067a61c8fb3d4569ee0924f681d49d242e2a5a8c8f4654e09bcddeb6",
+   "agent-system/protocols/CORE.md": "ef427fdf103ace88bd47e14ac7904bd9d061dbff904b98ab17f506b4e608f16a"
+  }
+ },
+ "judged": {
+  "fixCycle": "0950b0ae481baa19f3310a81cd217e8c15ef35bf",
+  "candidate": "4630bca016d022d08a0bf537647b0a0c70965278",
+  "attributionBaselines": {"lastReviewedRuntime": "5ee9dec7aac8dc8bebaf8423a53f170ecd147220", "R7D-FREEZE-6": "32b5ce3900bf33c58b16efe624ed6a5fae5a6dcf (record 40daadd0f98af364340635fb15f1f983920fc2a1), read-only, not touched"},
+  "cycleSourceSha256AtFixCycle": {
+   "CoachingCore/src/r6-adaptation.mjs": "91978d1d5899b81dd592b84e968d7aeac8e958214c9804b69e9485b05c6d79fd",
+   "CoachingCore/src/r6-composition.mjs": "8beb71c1abee5a2a767b6c48e8cdcdea565292bb21dbd2b839716b9602e91ea3",
+   "CoachingCore/src/v1-f08.mjs": "1d4543b86147bc6d4381868a95165e864950eadb81b7e363842e7060fbc6acb0",
+   "CoachingCore/test/v1cp-ff.test.mjs": "675b1ab405ad2370c7e0581ba10faaf61f0d2336f0528c3f0271f9097c0b93cb"
+  },
+  "inputsRead": {
+   "reviews/quality/QRE_FF_RECHECK.json (round 1, prevails)": "83ef2c5169784cedae02a9c80c35dd3276d65da3099f33afb2bd22705cf8b3bc",
+   "FIX_CYCLE_FF.md": "97255c66f8739540ebf7a96e5c1bfa27102c8a6afe6d6363e99fff19763f81ba",
+   "TASK_CONTRACT_FF.md": "16be9fb219dea9fe8c9cd38229a6fed7073b0b04e09c03b20fca59bc55da050f",
+   "REVIEW_REQUEST_FF.md": "b23b24805c8c3da83fa8f73879173490ff9c3697904d45b48a4eb584c97ad015",
+   "evidence/RED_CYCLE_ON_4630bca.txt": "88649bfda218348d0ce4143e95bd64d7c9fa98bcf969213e0f608f791b3294f5",
+   "evidence/MUTATION_CYCLE.json": "e9c27c12097abaa375f00c03a0e006ed42aed1e3b58af45f57c9225b0423e62b",
+   "evidence/FUZZ_QRE_CYCLE.json": "c606e84a698de4b6667753197dd4f3052293c4c7d1ab32cf441471efef841993",
+   "evidence/GREEN_FULL_SUITE.txt": "30acbf8fa69baa2b7b2b050a2510ed60e5dea01ab2a4941297b8c2691a194d50",
+   "evidence/DIFFERENTIAL_FF_vs_FREEZE6.json": "dab69632980946f14e8666f2decf3ffaf8eb3875c0dce6c257f1f9e0ca69e358",
+   "evidence/DIFFERENTIAL_FF_vs_5ee9dec.json": "bba6a891340fced269d242416cc6e0e6fed49b6f8bd7ced3fab80b9c49be4985",
+   "evidence/JOURNEYS_FF.json": "d8eb8a0b750ce820d0686927246f2b5abe1983497d5ffd1fe4e3763a57bf10f9",
+   "../v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md (sections 1, 3, 4.5, 4.6, 5)": "935126b7c5b2cbdf036d478526abbcf0b3aac3b9bc517ce3746597dfbb55f463",
+   "CF-OBS-1 trial patch and its suite (Chief scratch, read only)": "cycle-c.json entry 2; full-dev-1.txt (1104/1132, 28 failures listed)"
+  }
+ },
+ "environment": {"os": "Windows 11 Pro 10.0.26200", "node": "v24.19.0", "shell": "Git Bash (PowerShell only to create read-only junctions)", "browserOrDevice": "N/A (core runtime; no UI in scope)", "dependency": "git archive carries no node_modules; ajv 8.20.0 was copied from the worktree's CoachingCore/node_modules into each extract (without it 8 legacy test files fail to load: 930 tests, 8 file failures, unrelated to the cycle)."},
+
+ "verdict": "NOT_READY",
+ "qualityGate": "QUALITY_BLOCKED",
+ "verdictScope": "Fix cycle 0950b0a as an executable shadow reference runtime for the Fix-Forward scope. Not V1 authority, not a sporting, clinical or security validation.",
+ "verdictBasis": "The fix cycle does what it claims: QRE-FF-01, QRE-FF-02 (a) and (b) and QRE-FF-03 are CLOSED by reproduction of the round-1 scenarios and their close variants; the 11 cycle tests are RED on 4630bca (8, each for the stated reason) and GREEN on 0950b0a; the full suite is 1143/1143; both differentials and the journeys are byte-identical to the shipped evidence; the shipped fuzz numbers reproduce exactly; the cycle mutation claims are confirmed. But the residual classification the Founder asked for finds that one of the seven remaining d49Executed steps (fuzz seed 544) is not a checker limit: it is a real, dose-relevant D49 violation on the candidate's per-sport chain (NB-1), present identically at 4630bca and 0950b0a and absent at 5ee9dec for the same report sequence. Round 1 misattributed this seed to OBS-QRE-FF-4. Under the round-1 criteria (a regression on the candidate's own new mechanism, reachable in an ordinary flow, dose-relevant) it is BLOCKING: QRE-FFC-01. The bound allows no further fix cycle, so the mission closes NOT_READY with this named blocker; CF-OBS-1 and QRE-FF-06 stay named integration blockers.",
+
+ "namedItems": [
+  {"id": "QRE-FF-01", "ruling": "CLOSED",
+   "evidence": "Round-1 scenarios and variants rebuilt on 0950b0a (probes pnew1-4, pc01, pc01b). After an unchecked S1 ladder week, a sign hold + declaration (READINESS_RESTART), a clinical break 'flu' + declaration (REESTABLISH) or a TRAVEL break (REESTABLISH), followed the next day by MISSED_SESSION, SCHEDULE_CHANGE (run days 0,2,4), PREFERENCE_CHANGE (DEMANDING) or by the week's WEEKLY_REVIEW: 0 Situation 1 markers of the superseded episode in weeks 3-6 in all 12 variants and no 'had no review with your check' text; doses equal 5ee9dec (sign hold: week 3-4 15/15/20 and 1x8 RIR 4; travel: 35/35/45 and 2x8 RIR 3). 4630bca: S1 R2 ladder re-laid in 9 of 12 (e.g. Thursday run 15 -> 35, week 4 2x8 RIR 3, week 5 4x8). The weekly-review variants of the clinical routes hold the entry one more week (QRE-FF-05, conservative, unchanged). Fuzz s1AfterRestart 78 -> 0 (600 seeds)."},
+  {"id": "QRE-FF-02 (a)", "ruling": "CLOSED",
+   "evidence": "Race 2026-12-19 inside the CONSERVATIVE recipe's held step (NEED_REST REST 12 days): via the week-2 review and via a Saturday window-end check, week 5 holds LADDER M 'each' and the race is the athlete's own event, EASY 15 or 20 min at the week's easy duration, no EVENT_AMBITIOUS_FOR_CURRENT_RUNNING item (4630bca and 5ee9dec: RACE 75 min with the item). Same race on 12-05, 12-12, 12-26: own event EASY 15. Fuzz raceAtEffortInScope 1 -> 0."},
+  {"id": "QRE-FF-02 (b)", "ruling": "CLOSED",
+   "evidence": "Known 6x8, 10K 12-26 moved to 12-05 during a CONSERVATIVE REDUCE_LIGHT return: week 5 plans 2/2 sets right after the date change (4630bca: 6/6), then 2 and 3 after each review, with or without the week-4 review, as 5ee9dec. The 12-race-scope sequences of pd49z are identical at 4630bca and 0950b0a (no regression). The FF-02 mechanism's fuzz seeds (66, 110) no longer flag."},
+  {"id": "QRE-FF-03", "ruling": "CLOSED",
+   "evidence": "Fuzz noGuidance 6 -> 0 (seeds 131, 227, 366: the sticky clinical path on a READINESS_DECLARATION now carries PROFESSIONAL_ASSESSMENT). Reverting the order (mutant QC-FF03) brings back exactly those 6 steps in those 3 seeds, so the fix is effective; but no test kills that mutant (see QRE-FFC-02)."}
+ ],
+
+ "regression": {
+  "suite": {"command": "cd <extract 0950b0a>/CoachingCore && node --test test/*.test.mjs (V1CP_ROOT unset)", "tests": 1143, "pass": 1143, "fail": 0, "exit": 0, "candidate4630bca": "1132/1132 on its own extract, same command"},
+  "cycleTests": {
+   "red": {"command": "V1CP_ROOT=<extract 4630bca, C:/ path> node --test --test-name-pattern='^Cycle ' test/v1cp-ff.test.mjs (0950b0a's file)", "tests": 11, "pass": 3, "fail": 8, "passing": ["FF-Q1 DT4", "QRE-V1CPR-05 (a) / CF-OBS-2", "QRE-V1CPR-06 residual (M12, known rows)"], "failureReasons": "each for the stated reason: FFR-01 'R4' !== 'R3'; FFR-02 FASTER read the last window alone (R3,R4, 4 days); FFR-06 the stale-return ASK; SEC-FFR-01 the echoed key; SEC-FFR-02 no URGENT level; QRE-FF-01 the 'had no review with your check' text; QRE-FF-02 (a) 'the athlete's own event'; QRE-FF-02 (b) 'week 5 plans 6 sets after 1'", "matchesShipped": "yes (RED_CYCLE_ON_4630bca.txt)"},
+   "green": {"tests": 11, "pass": 11, "fail": 0}
+  },
+  "differentialFreeze6": {"command": "node <0950b0a>/audits/v1-coaching-productization-2026-11-08/evidence/differential.mjs <extract 32b5ce3> <extract 0950b0a> <out>", "h1": {"cases": 39, "steps": 130, "differingSteps": 13, "fullIdentical": 104}, "generations": "39/39", "h2": "300/300, 0 differing", "matchesShipped": "byte-identical to DIFFERENTIAL_FF_vs_FREEZE6.json", "steps": "H05 s4, H07 s1-s2, H20 s1-s2, H28 s4, H32 s1-s5, H34 s2-s3 (the same 13 as round 1)"},
+  "differential5ee9dec": {"h1": {"differingSteps": 0, "fullIdentical": 116}, "generations": "39/39", "h2": "300/300", "matchesShipped": "byte-identical to DIFFERENTIAL_FF_vs_5ee9dec.json"},
+  "journeys": {"command": "node evidence/f08-journeys.mjs <extract 0950b0a> <out>", "result": "A-G 7/7 run; identical to JOURNEYS_FF.json except the root path"},
+  "cycleMutation": {
+   "method": "Sandbox copy of 0950b0a, one exact single-occurrence edit at a time, the 8 V1CP test files (129 tests), restore and hash check; control 129/129 before and after. Survivors were then run through a behavioural differential: the same 600 fuzz seeds on the pristine root and on a mutant root, comparing a key-order-independent hash of every decision.",
+   "mutants": [
+    {"id": "QC-FF01", "what": "behind(k) removed (QRE-FF-01)", "killed": true, "by": "Cycle QRE-FF-01"},
+    {"id": "QC-FF02b", "what": "the composeWeeks re-placement of an extension-marked week removed (= MC-QRE02b)", "killed": true, "by": "Cycle QRE-FF-02 (a), (b)"},
+    {"id": "QC-FFR01", "what": "a checked week counts as done", "killed": true},
+    {"id": "QC-FFR02", "what": "an unexecuted return stretch stops the chain scan", "killed": true},
+    {"id": "QC-FFR06", "what": "staleReturn uses the break's own class", "killed": true},
+    {"id": "QC-SEC01", "what": "an unknown improvement key echoed", "killed": true},
+    {"id": "QC-SEC02", "what": "no level from signs during a standing dependency", "killed": true},
+    {"id": "QF-M12 (round 1)", "what": "ownStart ignored", "killed": true, "by": "Cycle QRE-V1CPR-06 residual (M12, known rows)"},
+    {"id": "QF-D3-scope (round 1)", "what": "a race in an S1 scope keeps its race prescription", "killed": true, "by": "9 tests, including Cycle QRE-FF-02 (a) and Cycle QRE-V1CPR-05 (a) / CF-OBS-2"},
+    {"id": "QF-NB6-cap (round 1)", "what": "D49 counts prescribed sets", "killed": true},
+    {"id": "QC-FF02a", "what": "composeReturn's each loop recomposes from i+1 (= shipped MC-QRE02a)", "killed": false, "classification": "COVERED_ELSEWHERE confirmed: 0 differing decisions in 600 fuzz seeds and identical outputs in the 18 directed race scenarios (prace-m, prace-m2); the composeWeeks-level re-placement covers it."},
+    {"id": "QC-D3-strength", "what": "race day keeps strength in an S1 scope (line 206; = shipped MF-D3-strength)", "killed": false, "classification": "EQUIVALENT_IN_PRACTICE confirmed: 0 differing decisions in 600 seeds; 42 date-change routes (pd3s) and 24 routes with strength scheduled on the race weekday (pd3s2: strength days 0/5, 1/5, 2/5, races 12-12 and 12-19, four windows) leave no live strength on race day with or without the guard, because the race-week rules already rest it."},
+    {"id": "QC-FF03", "what": "default guidance derived before withReference (QRE-FF-03 reverted)", "killed": false, "classification": "NOT EQUIVALENT: 3 seeds differ (131, 227, 366), noGuidance 0 -> 6; no directed test (QRE-FFC-02)."},
+    {"id": "QC-FF01-boundary", "what": ">= to > in behind(k)", "killed": false, "classification": "EQUIVALENT_IN_PRACTICE: 0 differing decisions in 600 seeds; a restart dated on a ladder week's first day ends that week's markers itself (endF08Marks), so the boundary is not reachable through missedLadderWeek."}
+   ],
+   "shippedClaims": {"MC-QRE02a covered elsewhere": "CONFIRMED", "MF-D3-strength equivalent in practice": "CONFIRMED", "8 of 10 killed": "REPRODUCED (7 of the 7 cycle mutants I share with it are killed; MF-M12 killed)"}
+  }
+ },
+
+ "fuzz": {
+  "tool": "round-1 fuzz.mjs and h.mjs unchanged (sha256 8a31631a..., 78f163cf...), seeds 0-600; variants fuzz2 (adds an executed-dose D49 invariant), fuzz-rt (splits jsonRoundTripProgram by input stability), fuzz-trace (decision hashes), fuzz-cf1 (CF-OBS-1 property with random reference drops)",
+  "c0950b0a": {"seeds": 600, "steps": 6905, "evaluations": 20267, "viol": {"programNotJsonStable": 1172, "jsonRoundTripProgram": 415, "d49Executed": 7}, "otherInvariants": "0 exceptions, 0 non-deterministic, 0 review round-trip changes, 0 replay F08 rows, 0 zero-day questions, 0 noGuidance, 0 raceAtEffortInScope, 0 liveInWaitOrR0, 0 s1AfterRestart", "matchesShipped": "exactly FUZZ_QRE_CYCLE.json 'cycle'"},
+  "c4630bca": {"seeds": 600, "steps": 6902, "evaluations": 20260, "viol": {"programNotJsonStable": 1175, "jsonRoundTripProgram": 418, "s1AfterRestart": 78, "d49Executed": 25, "noGuidance": 6, "raceAtEffortInScope": 1}, "matchesShipped": "exactly FUZZ_QRE_CYCLE.json 'candidate_4630bca'"},
+  "c5ee9dec": {"seeds": 600, "steps": 6912, "evaluations": 19722, "viol": {"raceAtEffortInScope": 1022, "liveInWaitOrR0": 614, "programNotJsonStable": 1089, "jsonRoundTripProgram": 414, "noGuidance": 450, "replayAddsF08": 313, "zeroDays": 36, "d49Executed": 1}},
+  "executedDoseD49": {"definition": "a strength row logged in a week whose (then current) S1 LADDER marker is R2-R4, with more sets than the latest row of the same exercise logged in the 14 days before that week + 1", "c0950b0a": "14 steps in seeds 43, 207, 387, 544", "c4630bca": "14 steps, same seeds", "c5ee9dec": "8 steps in seeds 207, 387"},
+  "note": "Round-1 totals differ slightly (6904 steps, 1184 programNotJsonStable) because the tool gained the jsonRoundTripProgram check after round 1; the shipped cycle numbers were produced with the current tool and reproduce exactly."
+ },
+
+ "residualClassification": [
+  {"class": "d49Executed (7 steps in 5 seeds at 0950b0a)",
+   "asserts": "For every week carrying an unended S1 LADDER marker at R2-R4 for strength, each live strength exercise dated after the decision day has at most one set more than the latest row of that exercise logged in the 14 days before the week (or, when the week before is still ahead, than its planned maximum).",
+   "subclasses": [
+    {"seeds": "130, 153 (x2), 43", "steps": 4, "reading": "Stale projection after a CLINICAL_HUMAN_REQUIRED (130, 153) or an ASK (43): no decision re-planned the week; the projection is not in force (status clinical: no dependent prescription; ASK: planValidity REQUIRES_RECONCILIATION). In 130 the next adopted decision (the declaration's REESTABLISH) re-plans the week before it is reached.",
+     "classification": "(ii) checker limitation: the checker evaluates projections whatever the plan's validity. (iv) integration risk: a client that shows or lets the athlete execute a projection under ASK or CLINICAL breaks the contract; the fuzz's simulated client does exactly that in seed 43 (executed 4 after 2 under ASK).",
+     "blocks": {"shadowClose": "no", "integrationReadiness": "no by itself; the client rule 'nothing is prescribed while status is ASK/HOLD/CLINICAL or planValidity is REQUIRES_RECONCILIATION' must be in the client contract tests", "realUse": "only through that client rule"}},
+    {"seeds": "207", "steps": 1, "reading": "OBS-QRE-FF-4: the week's executed count is the maximum over its sessions, so a 5-set session executed before a mid-week window counts; the checker uses the last session (1 set). Same flag at 5ee9dec (measured: seed 207, 1 step; executed-dose check 5 after 1 at 5ee9dec too).",
+     "classification": "(ii) checker approximation against a domain reading the SSCTR owns, and (iii) present before the candidate (5ee9dec).",
+     "blocks": {"shadowClose": "no", "integrationReadiness": "no", "realUse": "only if the SSCTR rules that D49 counts the sets at the rung; owner SSCTR (reading), trigger before real use"}},
+    {"seeds": "544", "steps": 2, "reading": "Real D49 violation on the per-sport chain: see QRE-FFC-01. Minimal reproduction below.",
+     "classification": "(i) real runtime defect, introduced by the candidate (NB-1 per-sport chaining; identical at 4630bca and 0950b0a; at 5ee9dec the same report sequence plans R2 1 set then 2), not by the cycle; dose-relevant (the fuzz's athlete executed 4 sets after a week at 1).",
+     "blocks": {"shadowClose": "YES (BLOCKING under the round-1 criteria)", "integrationReadiness": "yes", "realUse": "yes"}}
+   ],
+   "alsoSeen": "Executed-dose check only: seed 387 (4 after 2) is a checker limit at all three commits: weeks 5 and 6 were both logged by the week-6 review (week 5 had no review), so the checker's prior is week 4; the true sequence is 2, 3, 4."},
+  {"class": "programNotJsonStable (1172 steps in 222 seeds at 0950b0a)",
+   "asserts": "An adopted proposal holds no undefined value and no -0 anywhere, i.e. JSON.parse(JSON.stringify(p)) is equal to p.",
+   "minimalReproduction": "generateProgram(HYBRID()); SCHEDULE_CHANGE {runDays:[0,2,4]} -> MODIFY/REARRANGE_FUTURE_WEEKS whose proposal has contextBefore[0].noviceTemplates === undefined (probe pjson). Every path seen in 600 seeds (fuzz-paths): /contextBefore/#/noviceTemplates (1328 occurrences) and /weeks/#/adaptations/#/fixed (19 occurrences, an F08 marker with fixed: undefined); no -0 values.",
+   "classification": "(i) real runtime defect, not a checker limitation: CoachingCore/src/value.mjs canonical() writes a key whose value is undefined as \"key\":undefined, while JSON drops the key, so the program's integrity hash depends on whether it was serialised. (iii) Present before the candidate: same undefined key and same HOLD at 32b5ce3 (FREEZE-6), 5ee9dec, 4630bca and 0950b0a (pjson, measured). (iv) Integration risk: the contract makes the client the store of the program.",
+   "blocks": {"shadowClose": "no (in-memory shadow use is unaffected; fail-closed)", "integrationReadiness": "YES (QRE-FF-06)", "realUse": "YES"}},
+  {"class": "jsonRoundTripProgram (415 steps in 187 seeds at 0950b0a, sampled at 25%)",
+   "asserts": "evaluateProgram on JSON round-tripped copies of the program and the review gives the same status and the same proposal hash as on the in-memory objects.",
+   "minimalReproduction": "The same: the next WEEKLY_REVIEW on the SCHEDULE_CHANGE proposal as kept is KEEP/INSTANTIATE_LOGGED_LOADS; on JSON.parse(JSON.stringify(proposal)) it is HOLD 'Program integrity or version is invalid'.",
+   "classification": "The effect of the programNotJsonStable cause, not a separate defect: all 415 flagged steps had an undefined value in the program or review sent (fuzz-rt: 415 unstable-input, 0 stable-input). (i) real, (iii) pre-existing since FREEZE-6, (iv) integration risk; fail-closed (HOLD), so no undue prescription, but the athlete's plan stops after any JSON store or transport.",
+   "blocks": {"shadowClose": "no", "integrationReadiness": "YES (QRE-FF-06)", "realUse": "YES"}}
+ ],
+
+ "newFindings": [
+  {"id": "QRE-FFC-01", "severity": "BLOCKING", "level": "MAJOR",
+   "title": "D49 is not applied across a per-sport chain: a later report with a rest window, then FASTER, restarts strength at R3 from the held pre-window doses after a week executed at 1 set",
+   "minimalReproduction": "Hybrid with known 6x8 rows (db-bench-press, db-row). Week 0 reviewed. Week 1 Mon 07:00 NOT_FEELING_100 MILD_ILLNESS REDUCE_SUBSTANTIAL 10 days (strength R2: 1 set, executed Mon and Thu); week-1 review with the check, all no. Week 2 Wed 07:00 NOT_FEELING_100 NEED_REST REST 2 days, returnSpeed FASTER (Monday's 1 set reported). Week 2 Sun review with the check, improved {MILD_ILLNESS:true, NEED_REST:true}: MODIFY/GATED_NEXT_STEP, 'your return (faster) starts now'; week 3 R3 plans 4/4 sets, week 4 5/5 (probe pd49m). The same with NEED_REST REST 4 days or UNUSUAL_FATIGUE REST 3 days: 4 sets. With the second report REDUCE_LIGHT or REDUCE_SUBSTANTIAL: 2 sets (capped); BALANCED: R2 1 set; CONSERVATIVE: M 1 set. Fuzz seed 544 is this shape (MINOR_DISCOMFORT UPPER_BODY REDUCE_SUBSTANTIAL 11 days, then MILD_INDISPOSITION REST 3 days, then NEED_REST REDUCE_LIGHT 2 days FASTER: week 7 R3 4/4 after weeks at 1 set; the simulated athlete executed 4 sets on 12-28). At 5ee9dec the 544-shape sequence plans R2 1/1 (pd49c), and the minimal sequence with one improved answer plans R2 1 then 2.",
+   "cause": "ladderCap (r6-composition.mjs) applies the cap only when the week before carries an R2-R4 strength rung of the same episode, and lastExecutedSets reads only that episode's rung weeks. Under NB-1 the later report is a new episode whose first week before the ladder is a REST (R0) window, so the cap is Infinity and R3 takes the held 6 sets minus the consolidation reduction; the 1-set count executed under the earlier report of the same chain is never read.",
+   "expected": "returnLadder.transitionRule / D49 as the runtime itself states it ('strength sets come back at most one set per executed week whatever the rung'; NB-6 'D49 on executed sets, on the rungs and in the first week after the ladder'), the property QRE-V1CPR-04 closed for a single episode. With 1 set executed the week before, the first R3 week is at most 2 sets.",
+   "introducedBy": "the candidate 4630bca (NB-1 per-sport chaining with FASTER honoured from the later report); not the fix cycle; absent at 5ee9dec for the same report sequence. Missed by round 1, which classed seed 544 under OBS-QRE-FF-4.",
+   "smallestFixDirection": "Not tried. Read the last executed count at a rung across the sport's chain (the reports chainReportsFor gives for strength), and apply the cap to the first ladder week after a chained rest or wait window as on any rung. Directed tests: the minimal reproduction (FASTER after REST 2 and 4 days, UNUSUAL_FATIGUE REST 3 days) and the 544 shape, RED on 0950b0a.",
+   "nextTreatment": "Not in this mission (no further cycle). Named blocker of the V1CP Fix-Forward closure, carried to the next runtime mission: owner Engineering; SSCTR rules whether a chained later report keeps the chain's executed count as the D49 base (the runtime's own D49 text says yes); QRE re-gates with the directed tests and the executed-dose fuzz invariant at 0."},
+  {"id": "QRE-FFC-02", "severity": "NON_BLOCKING", "level": "MINOR",
+   "title": "The QRE-FF-03 fix has no directed test",
+   "evidence": "Mutant QC-FF03 (guidance derived before withReference) survives the 8 V1CP test files (129/129); only the fuzz (seeds 131, 227, 366) sees it.",
+   "condition": "A directed test: a clinical route at a weekly review, then a READINESS_DECLARATION the sticky reference turns into CLINICAL_HUMAN_REQUIRED, carries guidance PROFESSIONAL_ASSESSMENT. Owner Engineering; trigger the next runtime mission or a freeze."}
+ ],
+ "observations": [
+  {"id": "OBS-QRE-FFC-1", "note": "Correction of my role's round-1 record: fuzz seed 544 was classed under OBS-QRE-FF-4 (pre-window session counted in the week); it is QRE-FFC-01. Seeds 43, 130, 153 (checker) and 207 (OBS-QRE-FF-4) were classed correctly."},
+  {"id": "OBS-QRE-FFC-2", "note": "For Security (CF-OBS-1, custody): the reference state's hash is the public canonical sha256 (value.mjs), so it detects corruption, not alteration: a kept reference with pending removed and the hash recomputed is accepted as valid (ALTERED rows in pcf2), while a broken hash is HOLD."},
+  {"id": "OBS-QRE-FFC-3", "note": "The integration contract (section 3, status table) already states that CLINICAL_HUMAN_REQUIRED's only exit is a readiness declaration; the runtime has a second, implicit exit (a review without, with a stale or with an altered reference state). The contract and the runtime disagree; CF-OBS-1 is that disagreement."}
+ ],
+
+ "oneLine": {
+  "QRE-FF-04": "OPEN, NON_BLOCKING, unchanged: the QRE-V1CPR-01 scenario still returns interruption.class SHORT and the headline 'short nonclinical interruption (7 days)' while classBySport is MODERATE for both sports and week 7 is 15/15/20 and 1x8 RIR 4 (p01); before integration (Engineering, Product/UX copy).",
+  "QRE-FF-05": "OPEN, NON_BLOCKING, unchanged: after a mid-week clinical restart, the week's review still says 'your first week back was not done as planned, so it repeats once more' when only post-restart sessions are reported (pnew3 B, C); SSCTR reading, Product/UX copy.",
+  "QRE-FF-06": "OPEN, NON_BLOCKING for the shadow, BLOCKING for integration readiness: see the two JSON residual classes (pre-existing since FREEZE-6).",
+  "QRE-V1CPR-05": "CLOSED: its last open route was QRE-FF-02 (a), now closed; the date-change route has its directed test (Cycle QRE-V1CPR-05 (a) / CF-OBS-2), which kills the D3-scope mutant.",
+  "QRE-V1CPR-06": "CLOSED: the M12 guard now runs on known rows (Cycle QRE-V1CPR-06 residual) and kills the ownStart mutant (QF-M12).",
+  "CF-OBS-2 test": "PRESENT and adequate: it builds the round-1 scenario (MILD_ILLNESS REDUCE_SUBSTANTIAL 5 days, improved at the week-1 review, EVENT_DATE_CHANGE on 11-24 to 12-05 in the R3 week), passes at 4630bca and 0950b0a as a coverage test, and kills QF-D3-scope."
+ },
+
+ "cfObs1": {
+  "reproduction": "pcf2 at 0950b0a and 5ee9dec: after a W7 sign route (CLINICAL_HOLD row on record), nine review kinds sent with the reference state KEPT, ABSENT, STALE (the valid reference from before the hold), ALTERED (pending removed, public hash recomputed), BROKEN (hash zeroed), and with the record omitted but the reference kept (NO_LEDGER), plus restartProgram under each. KEPT and NO_LEDGER: CLINICAL_HUMAN_REQUIRED with guidance on all eight non-declaration kinds; BROKEN: HOLD on all. ABSENT, STALE and ALTERED behave identically: WEEKLY_REVIEW GATED_NEXT_STEP with 30 live sessions ahead, SYSTEMIC_FATIGUE REDUCE (32), SCHEDULE_CHANGE (32), PREFERENCE_CHANGE (32), RETURN_AFTER_PAUSE travel REESTABLISH 'short nonclinical interruption' (30), NOT_FEELING_100 a new window, MISSED_SESSION and WELLBEING_CHECK KEEP; READINESS_DECLARATION restarts (the record is read: SB-4/QRE-V1CPR-08); restartProgram CLINICAL under all six. 5ee9dec is identical except the declaration (KEEP 'nothing to restart' without the reference). Fuzz property (fuzz-cf1, 300 seeds, 3384 steps, the reference dropped on 30% of steps): while a record hold stood, 34 steps in 27 seeds were not clinical with the reference dropped, 23 adopted proposals with live sessions ahead with the reference dropped, and 11 more with the reference sent as received, all 11 in seeds where an earlier review had dropped it. Persistence (pcf3, identical at 5ee9dec): after a W7 hold, one MISSED_SESSION sent without the reference returns a reference with pending null; the next WEEKLY_REVIEW, sent with that reference exactly as received, is GATED_NEXT_STEP with a proposal, and so is every later one, with the CLINICAL_HOLD row still unreleased on record. One lost reference launders the hold for good: a client that is compliant from then on cannot recover it.",
+  "Q1": "The record row is the source of truth: a CLINICAL_HOLD row in the append-only actualLedger, under server custody, and its release only by a later recorded release fact. referenceState is a derived continuation cache (its own scope says it never authorizes plan effects): it may add stickiness (fail closed), never remove it. When they disagree, the stricter wins.",
+  "Q2": "One function, used by every entry point (evaluateProgram on every kind, restartProgram, the declaration handler): a hold stands when a readable CLINICAL_HOLD row of this athlete (readableF08: same athlete, intact, not later than the decision clock) has no readable release fact of this athlete dated after it, or when a valid reference carries a CLINICAL pending; an unreadable or foreign F08 row is HOLD (SB-3), never 'no hold'. This is the rule withHoldFact and restartProgram already use; the gap is only that the review kinds do not call it.",
+  "Q3": "Absent reference: the record decides; a standing hold gives CLINICAL_HUMAN_REQUIRED on every kind except the readiness declaration (which is evaluated as the release attempt); a declared break (RETURN_AFTER_PAUSE, clinical or travel) is recorded and stays clinical; NOT_FEELING_100 and WELLBEING_CHECK stay clinical, with the guidance their yes answers set (SEC-FFR-02). Invalid reference (hash, athlete, future clock): HOLD as today. Stale reference (valid but older than the newest F08 row, or without the pending the record implies): treated as absent, so the record decides. Record absent while F08 facts exist: the engine cannot know; the server must refuse the review (Q5). Both present and consistent: today's behaviour.",
+  "Q4": "A valid READINESS_DECLARATION (screen dated after the hold, every sign no, per sport, hold named on record when sent) records READINESS_DECLARED and releases from then on; the record carries the release, so later reviews plan normally whether or not the reference is sent (no over-blocking). Nothing else releases a hold: not a weekly review, elapsed time, a declared break, a new plan request, a changed preference, or a missing, stale or altered reference. A qualified clinical clearance, if PCG, Security and SSCTR decide one exists, must be its own typed, recorded fact under custody. 'The next review sent without the reference state' is never an admissible representation of a release or a clearance: it cannot be told apart from data loss, a client bug, a second device or tampering, and the contract itself says CLINICAL_HUMAN_REQUIRED's only exit is a readiness declaration and a review that omits the state loses facts.",
+  "Q5": "Server: custody of program, record and reference (RECORD-CUSTODY; append-only, ordered, per athlete); the server sends its own copies to the engine, never only the client's; once any F08 fact exists it refuses (or holds) a review that lacks the record or carries a record older than the server's head; it binds athlete and clock; integrity beyond the public hash (OBS-QRE-FFC-2) is Security's. Client: sends the last record and reference exactly as received; never drops, edits or reorders rows; shows no prescription while status is CLINICAL_HUMAN_REQUIRED, ASK or HOLD or planValidity is REQUIRES_RECONCILIATION; offers only the readiness path while a hold stands; never models a clearance by omitting state. Engine: derives the standing hold from the record on every kind (Q2), the reference only as an additive guard.",
+  "Q6": "Negative tests (before integration readiness): every review kind (WEEKLY_REVIEW, MISSED_SESSION, SYSTEMIC_FATIGUE, NOT_FEELING_100 with and without signs, WELLBEING_CHECK, RETURN_AFTER_PAUSE travel and clinical, SCHEDULE_CHANGE, PREFERENCE_CHANGE, GOAL_CHANGE, EVENT_DATE_CHANGE, UNAVAILABLE_DAY, EXERCISE_SUBSTITUTION, RECOVERED) and restartProgram, crossed with reference KEPT / ABSENT / STALE / ALTERED / BROKEN / foreign / future, and record kept / hold row removed / hold row altered / a release row forged, dated before the hold or of another athlete / rows later than the clock; oracle: no proposal with live sessions, status CLINICAL_HUMAN_REQUIRED (HOLD for integrity), guidance present, a declared break recorded and not releasing. A metamorphic property: while a record hold stands, the decision without the reference is never less restrictive than with it. A fuzz property: no adopted proposal with live sessions while a record hold stands, with the reference randomly dropped, at 0 (it is not 0 today, see the reproduction). Positive tests: a valid declaration releases under every reference variant, and after release a review without the reference plans normally. Mutation: removing the record read on any kind must be killed. The 28 qualified-clearance tests encode the unsafe representation (clear(t) = t.ref = null) as their clearance step; under the corrected rule they must fail, and that failure is expected, not a regression. They are migrated in the same change, never deleted or weakened: (a) their pre-clearance assertions stay; (b) clear(t) becomes the recorded release fact the decision picks; (c) their post-clearance assertions (recorded facts applied with no re-send, recorder independence, determinism) are kept, and any expected value the new release changes is ruled by its owner (SSCTR for doses) and recorded; (d) each gains a negative twin: the same sequence with only the reference dropped stays CLINICAL_HUMAN_REQUIRED. RED first: the 28 fail under the rule with the old clearance for the right reason (CLINICAL), then pass with the recorded release. The spent R7-D holdout steps that model clearance the same way (H18, H19, H24) will then differ from FREEZE-6 by design; they are recorded as intended differences, and the holdout is not re-evaluated.",
+  "Q7": "Yes, the shadow candidate can be closed separately with CF-OBS-1 recorded as a named integration blocker, because (1) it is measured pre-existing (5ee9dec identical on every kind but the declaration, which the candidate made stricter), (2) under the documented contract (reference kept) every kind is fail-closed, (3) a shadow reference runtime has no store, no client and no athlete, and (4) the fix needs a decision outside this mission (the release representation) and changes 28 legacy tests by design. It blocks integration readiness, real use (authorization for real athletes), V1 coaching authority and app publication; none of these may be declared while a review without, with a stale or with an altered reference state can plan over a standing hold. Owners: Security (record-enforced rule or mandatory reference, RECORD-CUSTODY), PCG (the release or clearance form), SSCTR (only the readiness declaration releases; doses after migration), Engineering (rule, migration, negative suite), QRE (gate on the negative suite and the fuzz property at 0). Trigger: before any integration work or integration-readiness claim. Note: this closure is in any case NOT_READY in this recheck because of QRE-FFC-01, which is unrelated to CF-OBS-1."
+ },
+
+ "conditions": [
+  {"id": "QRE-FFC-C1", "for": "QRE-FFC-01", "owner": "Engineering (SSCTR rules the D49 base over a chain)", "stop": "Directed tests (FASTER after a chained REST window of 2 and 4 days; the 544 shape) RED on 0950b0a and GREEN after; executed-dose D49 fuzz invariant with no step outside the checker limits; QRE-V1CPR-04's single-episode property unchanged."},
+  {"id": "QRE-FFC-C2", "for": "QRE-FFC-02", "owner": "Engineering", "stop": "A directed test kills mutant QC-FF03."},
+  {"id": "QRE-FFC-C3", "for": "CF-OBS-1", "owner": "Security (decision), PCG (release form), SSCTR, Engineering; QRE gate", "stop": "Q2 rule on every entry point; the Q6 negative suite and fuzz property at 0; the 28 tests migrated as in Q6; contract section 3 and the runtime agree."},
+  {"id": "QRE-FFC-C4", "for": "QRE-FF-06 (both JSON classes)", "owner": "Engineering", "stop": "Before integration readiness: programs and reviews survive a JSON round trip with the same decision (canonical() never serialises an undefined value, or no undefined value is ever produced); fuzz programNotJsonStable and jsonRoundTripProgram at 0."},
+  {"id": "QRE-FFC-C5", "for": "d49 checker-limit subclasses", "owner": "QRE (checker), SSCTR (OBS-QRE-FF-4 reading)", "stop": "The checker skips projections under ASK/CLINICAL/REQUIRES_RECONCILIATION and counts rows of the prior week logged in the same review; the client contract test that nothing is executed under those statuses."},
+  {"id": "QRE-FF-04/05", "owner": "Engineering, Product/UX, SSCTR", "stop": "as in round 1 (unchanged)."}
+ ],
+
+ "states": {
+  "implementationDone": "YES for the fix cycle as delivered (0950b0a)",
+  "technicalValidation": "NOT PASSED (QRE NOT_READY: QRE-FFC-01 BLOCKING); the cycle's own claims verified",
+  "integrationReadiness": "NOT READY (QRE-FFC-01, CF-OBS-1, QRE-FF-06, QRE-FF-04; Security/G07 pendings unchanged)",
+  "authorizationForRealAthletes": "NO",
+  "appPublicationReadiness": "NO",
+  "f08": "F08_OPEN",
+  "v1CoachingAuthorityReady": "NO"
+ },
+ "evidenceLocation": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/eaed4c4d-aa7d-4e9a-9671-d3738a2444e6/scratchpad/qre-ffc2-1794246465 (extracts c0950b0a, c4630bca, c5ee9dec, c32b5ce3; sandbox sb0950b0a; mutant roots mFF02a, mD3s, mFF03, mFF01b; tools/ with the round-1 tools and the new probes pc01, pc01b, pcf2, pcf3, fuzz-paths, pd49c, pd49m, pd49m2, pd3s2, fuzz2, fuzz-trace, fuzz-rt, fuzz-cf1, cmp-trace, mutants-cycle.json; out/ with every log and JSON). Outside the repository; every finding states its scenario inline, reproducible from the commits with git archive.",
+ "notDone": [
+  "No fix hypothesis for QRE-FFC-01 was tried (bounded recheck; direction only).",
+  "The full legacy suite per mutant (mutants ran against the 8 V1CP files; survivors through the 600-seed behavioural differential instead).",
+  "UI, device or browser checks (no UI in scope).",
+  "Sporting, clinical and trust-boundary rulings (SSCTR, Security, PCG).",
+  "Reading this recheck's Security, SSCTR and PCG records (independence)."
+ ]
+}

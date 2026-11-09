@@ -1,0 +1,223 @@
+{
+ "recordId": "SSCTR-V1CPFF-RECHECK-CYCLE-r1",
+ "date": "2026-11-09",
+ "mission": "V1CP Fix-Forward (V1CPFF-TC-r1): the single narrow recheck after the single fix cycle, sporting judge",
+ "kind": "Fresh-instance narrow sporting recheck of fix cycle 0950b0a against SSCTR-V1CPFF-RECHECK-r1 (round 1, on 4630bca): SSCTR-FFR-01, -02, -06; regressions on the paths the cycle touched; the SEC-FFR-02 ruling routed to SSCTR; one-line status of FFR-03..05, C-4..C-10, O-1..O-3; CF-OBS-1 line",
+ "relation": "The same recheck that was dispatched once before (2026-11-09 ~13:01) and stopped at a usage limit before any record was written; not a new round. No leftover scratch of that dispatch was used.",
+ "reviewer": {
+  "role": "Sports Science & Concurrent Training Reviewer",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "protocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+  "escalationPolicy": "SSCTR-HR-1.0.0 (sha256 12ae588e7691b7864a1f0354dadfa7e27277ac2b893df6aaf47730142450f446)",
+  "skill": ".agents/skills/sports-science-review/SKILL.md 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "nativeAdapter": ".claude/agents/sports-science-concurrent-training-reviewer.md exists (sha256 021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d); whether this run was a native dispatch of it is not verifiable from inside the run. The role was loaded by reading the constitution and skill from the worktree.",
+  "actorType": "AI_AGENT",
+  "instance": "fresh instance launched by the Chief for this recheck; model claude-opus-5-5, effort high (route L3 material_other, mode productization)",
+  "humanCredentialsClaimed": false,
+  "independence": "Authored none of the candidate, the fix cycle, SSCTR-V1CPFF-DECISION-r1, SSCTR-V1CPFF-RECHECK-r1, the tests or the evidence. Every q-probe here was written and run by this instance; the p-probes are the round-1 instance's scripts, read before reuse and pointed at this instance's extracts.",
+  "delegation": "none"
+ },
+ "authority": {
+  "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, nonclinical sporting content only",
+  "scope": "Sporting conformance of fix cycle 0950b0a to the round-1 findings and to SSCTR-V1CPFF-DECISION-r1; sporting classification of new defects on the touched paths; the sporting reading of SEC-FFR-02 under D5 / FF-Q9. Not V1 authority, not a gate closure, not publication.",
+  "notProvided": "No clinical judgment, diagnosis, clearance or assessment of any person. No new dose, threshold, count or percentage. Clinical content stays CLINICAL_HUMAN_REQUIRED; warning-sign content and urgent wording stay INTERIM_PENDING_G04 / FUTURE_G04_REVALIDATION."
+ },
+ "hostContextDisclosure": {
+  "note": "The host injected the global and project CLAUDE.md and the project MEMORY.md (earlier mission outcomes and finding labels). They were not used as evidence; every ruling rests on the files and executions listed here. Other roles' *_RECHECK_CYCLE* files were seen only as names in git status and were not read.",
+  "sha256": {
+   "C:/Users/carva/.claude/CLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+   "C:/Users/carva/Desktop/myApp/MyApp/CLAUDE.md (injected)": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+   "C:/Users/carva/.claude/projects/C--Users-carva-Desktop-myApp-MyApp/memory/MEMORY.md": "785a6e89067a61c8fb3d4569ee0924f681d49d242e2a5a8c8f4654e09bcddeb6"
+  }
+ },
+ "candidate": {
+  "commit": "0950b0ae481baa19f3310a81cd217e8c15ef35bf",
+  "reviewedBase": "4630bca016d022d08a0bf537647b0a0c70965278 (round 1: BLOCK on SSCTR-FFR-01, -02, -06)",
+  "lastReviewedRuntimeBefore": "5ee9dec7aac8dc8bebaf8423a53f170ecd147220",
+  "branch": "claude/v1cp-fix-forward",
+  "worktree": ".claude/worktrees/v1-coaching-productization (HEAD 0950b0a before and after; untracked files of other roles appeared during the run and were not read)",
+  "cycleDiff": "4630bca..0950b0a: src/r6-adaptation.mjs (missedLadderWeek, sportPlan, staleReturn, breakOf, evaluateProgram finish and clinical guard), src/r6-composition.mjs (composeWeeks re-placing an extended week), src/v1-f08.mjs (readCheck unknown key), 11 'Cycle' tests in test/v1cp-ff.test.mjs",
+  "fileSha256At0950b0a": {
+   "CoachingCore/src/r6-adaptation.mjs": "91978d1d5899b81dd592b84e968d7aeac8e958214c9804b69e9485b05c6d79fd",
+   "CoachingCore/src/r6-composition.mjs": "8beb71c1abee5a2a767b6c48e8cdcdea565292bb21dbd2b839716b9602e91ea3",
+   "CoachingCore/src/v1-f08.mjs": "1d4543b86147bc6d4381868a95165e864950eadb81b7e363842e7060fbc6acb0",
+   "CoachingCore/test/v1cp-ff.test.mjs": "675b1ab405ad2370c7e0581ba10faaf61f0d2336f0528c3f0271f9097c0b93cb"
+  }
+ },
+ "inputs": {
+  "round1Record": {"path": "audits/v1cp-fix-forward-2026-11-09/reviews/ssctr/SSCTR_FF_RECHECK.json", "sha256": "ccec34514caa2538be021c815475aaf54761cb9b44fb918a36cc41b052d73844", "read": "in full (findings, scenarios, conditions C-1..C-10, observations O-1..O-3, CF-OBS-1/2)"},
+  "bindingDecision": {"path": "audits/v1cp-fix-forward-2026-11-09/ssctr-decision/SSCTR_FF_DECISION.json", "sha256": "b41e6d5991c29a3eee0f52ea207640ea72daccaa2d42a68e0f626a02d90ff845", "read": "FF-Q1, FF-Q2 (a)-(e), FF-Q6, FF-Q7 readings (i)-(vii) and CH-r2-1..10, FF-Q9, SSCTR-FF-N1"},
+  "fixCycle": {"path": "audits/v1cp-fix-forward-2026-11-09/FIX_CYCLE_FF.md", "sha256": "97255c66f8739540ebf7a96e5c1bfa27102c8a6afe6d6363e99fff19763f81ba", "read": "in full"},
+  "taskContract": {"path": "audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md", "sha256": "16be9fb219dea9fe8c9cd38229a6fed7073b0b04e09c03b20fca59bc55da050f", "read": "not re-read beyond the round-1 record's quotes"},
+  "reviewRequest": {"path": "audits/v1cp-fix-forward-2026-11-09/REVIEW_REQUEST_FF.md", "sha256": "b23b24805c8c3da83fa8f73879173490ff9c3697904d45b48a4eb584c97ad015", "read": "in full"},
+  "mission": {"path": "CURRENT_MISSION.md", "sha256": "4bc6119522b328e56a3d2b58d54e1d36f86352b22fe55ed2fafe0cd9ddc58e3b", "read": "not re-read; the dispatch states the bound"},
+  "canonicalIndex": {"path": "canon/CANONICAL_INDEX.md", "sha256": "8d189630254967bb8322f524669feff7b694082ac638feb3b6cbd25e8d10780b", "read": "not re-read (no canonical question arises in a narrow recheck)"},
+  "runtimeRead": "The full 4630bca..0950b0a source diff; executionOf, sessionsIn, speedPlan and sportPlan at 0950b0a; signsYesIn and signRoute in v1-f08.mjs."
+ },
+ "literatureAccess": {
+  "tools": "WebSearch and WebFetch are listed as deferred tools in this session; they were not loaded or used.",
+  "used": "None. This recheck adds no physiological claim, dose or number; every ruling applies rules the binding decision already sources (returnLadder.transitionRule, CH-r2-7 and reading (vi), C-Q05-5 as precised in FF-Q3, SSCTR-FF-N1, I-15, FF-Q2 (d), FF-Q9) or compares the runtime with them and with its own earlier outputs.",
+  "gap": "No literature was re-read; the decision record's full-text readings (S06) stand as their own provenance."
+ },
+ "executableEvidence": {
+  "folder": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/eaed4c4d-aa7d-4e9a-9671-d3738a2444e6/scratchpad/ssctr-ffc2-1794246511 (new, checked absent before creation)",
+  "extracts": "git archive <commit> CoachingCore audits for 0950b0a, 4630bca and 5ee9dec into c0950b0a, c4630bca, c5ee9dec; node_modules (ajv, untracked in git) copied from the worktree into each extract",
+  "probes": "probes/ (round-1 p-scripts and h.mjs copied and read; q01-q08 written here); outputs in out/ and q0*.txt",
+  "suite": "node --test test/*.test.mjs from c0950b0a/CoachingCore, V1CP_ROOT unset, Node v24.19.0: 1143 tests, 1143 pass, 0 fail (93 s); the 11 'Cycle' tests pass.",
+  "differential": "Round-1 differential.mjs (read-only, final2/ holdout) 5ee9dec vs 0950b0a: H1 39 cases, 130 steps, 0 differing summary steps, 116 fully identical (the other 14 differ by the guidance field and record rows, as in round 1); H2 300 intakes 300 identical; generations 39/39. The default path is unchanged by the cycle, including the composeWeeks re-placing (QRE-FF-02) that reaches d49Hold.",
+  "roundOneProbesRerun": "p1-chain-sweep, p2-race, p5-nb5, p6-nb6, p8-cfobs1, p9-cfobs2, p10-d4, p11b-speeds, p12-d6, p13-n1, p14-empty, p15-faster-wait, p16-race-ref, p17-d5 run on 4630bca and 0950b0a: all 14 outputs byte-identical. The round-1 rulings they support (NB-1 chaining invariant P1, NB-2/D3, NB-5, NB-6, D2, D4, D6, N1 boundaries, FF-Q9 surfaces, CF-OBS-1, CF-OBS-2) still hold as recorded, with no change in their noted exceptions.",
+  "probes": {
+   "p4b, p4 (FFR-01 round-1 scenarios)": "0950b0a: the off-review Saturday check no longer counts an unexecuted week: week 3 repeats R3 (1-2 sets at RIR 4, long 35), as without the check; (c) week 2 not done, checked off-review: rungs R2,R3,R4 kept with the repeat. 4630bca: KEEP R4 at held doses.",
+   "q01 (FFR-01 variants)": "FASTER REST, BALANCED REST, BALANCED and CONSERVATIVE REDUCE_SUBSTANTIAL: nothing executed with an off-review check on each day Monday-Sunday and the Monday after: the rung repeats in all 32 cases (4630bca stepped by calendar in 28). Partly executed: repeats. Fully executed with a Saturday check (sessions reported at the Monday review) and with its own Sunday review: advances. Fully executed with one adverse run: running repeats, strength advances (per sport). Running executed, strength not: running advances, strength repeats.",
+   "q02, q03 (no prescribed session of a sport in the ladder week)": "Journey-F set-up (8 weeks, MILD_ILLNESS REDUCE_SUBSTANTIAL the week before the race; race week has no strength session): an off-review check moves strength's rung R2 to R3 while the weekly-review path carries R2 (SSCTR-FFC-03). On a 12-week set-up with KNOWN rows the race week keeps strength sessions and the sub-case does not arise; no dose effect was observed.",
+   "p7b, p7c (FFR-02 round-1 scenarios)": "0950b0a: 14 days without training read as 14: MODERATE (FASTER NONE, BALANCED FIRST; next runs 15/15/20); with 6 waited days 20: MODERATE; the return with its sessions executed: R3,R4 as before. 4630bca: 4 and 10 days, R3,R4.",
+   "q04 (FFR-02 variants)": "(a) CONSERVATIVE MODERATE/EACH, 14 d. (b) Per sport: the return's strength session executed and its run not: RUN 14 d MODERATE, STRENGTH 4 d R3,R4. (d) An earlier REDUCE_SUBSTANTIAL 7-day window with no executed session, a return with no executed session, then REST 4: 14 days without training read as 7: FASTER R3,R4, BALANCED R2,R3,R4 (SSCTR-FFC-01). (e) A contiguous chain (REDUCE_SUBSTANTIAL 10 with none executed, REST 4 from day 9): read as 4 d, R3,R4 (SSCTR-FFC-01). (e') The same REDUCE window alone: READ_AS_REST, MODERATE.",
+   "q05 (chain less conservative than its first report)": "REDUCE_SUBSTANTIAL 12 days from week-1 Monday, nothing executed, week reviewed with its check; check on week-3 Monday (14 days without training). Alone: MODERATE at every speed (week 3 runs 15/15/20, strength 5 sets at RIR 4). With a REST 3 report on day 10 (UNUSUAL_FATIGUE): REST row read as 4 days: FASTER R3,R4 (week 3 easy 35/35, long 35, 7 sets at RIR 4; week 4 long 55, 12 sets at RIR 3), BALANCED R2,R3,R4. Identical at 4630bca.",
+   "p3, p3d-p3g (FFR-06 round-1 scenarios)": "0950b0a: the six NB-3 per-sport classes unchanged (MODERATE where required); the check in the emptied week answers 'nothing to check' (FFR-04, as at 5ee9dec); weekly reviews of weeks 6-9 KEEP or loads, no confirmation question; confirming again is never needed and does not loop. The week-6 'not 100%' report now takes the CH-r2-9 / reading (vi) persistence route (14-day count from 12-07 across the declared break), CLINICAL_HUMAN_REQUIRED with the professional assessment; 5ee9dec planned a reduction, 4630bca asked in a loop.",
+   "q06 (FFR-06 variants, QRE-FF-01)": "RUN-only, STRENGTH-only and both-sport REST windows before a break: a check, a report and the week-6 and week-7 reviews are never stale (4630bca: stale for STRENGTH-only and both). A genuinely stale return (week-3 training reported late) asks once; confirming it ends the question at the next review and in week 7 (4630bca: kept asking after confirming in the window-plus-break case). QRE-FF-01 path: see q07.",
+   "q07 (a short declared break after an unexecuted return week)": "REST 5 from week-1 Tuesday, check improved on Sunday, the first return week with no executed session and no review, a 2-day TRAVEL break week-3 Monday-Tuesday reported Wednesday; last executed session 11-14, 17 days without training. 0950b0a and 5ee9dec: class SHORT, 'resume the last completed doses': week 3 easy 35, 10 strength sets at RIR 3, long 40; week 4 the held doses (14 sets at RIR 3, long 50). 4630bca: week 4 was re-laid at R3 (9 sets at RIR 4, long 45) by the missed-ladder repeat that the cycle's QRE-FF-01 skip now removes. The same days with no answered check (waited): per-sport MODERATE (15/15/20, 5 sets at RIR 4) at 0950b0a and 4630bca (NB-3). BALANCED (R2 week) identical to FASTER at 0950b0a (SSCTR-FFC-02).",
+   "q08 (SEC-FFR-02)": "During a W7 hold and during a W2 hold: a report, a check or a readiness declaration answering W2, W3, W4, W5 or X1 yes: URGENT_CARE_ADVISED with the urgent wording; W1 or W7 yes: PROFESSIONAL_ASSESSMENT, no 'emergency'; no item answered: PROFESSIONAL_ASSESSMENT with the standing-dependency text; status CLINICAL_HUMAN_REQUIRED in every case, 0 sessions planned, one hold row on record. A readiness declaration with every item no still restarts as before (READINESS_RESTART). Without the reference state a W2 report also advises urgent care. 4630bca: the standing route hid the urgent level for every new item except at a readiness declaration."
+  }
+ },
+ "findingsRechecked": [
+  {
+   "id": "SSCTR-FFR-01",
+   "namedBlocker": "NB-4 residual",
+   "ruling": "CLOSED",
+   "evidence": "Cycle test passes; p4b and p4 (c)/(d); q01: 32 unexecuted weeks with an off-review check on any day repeat their rung at every speed and intent; a partly executed week repeats; a fully executed and checked week advances; an adverse session repeats that sport only; per-sport execution is read per sport. 4630bca stepped by calendar in each off-review case.",
+   "residual": "SSCTR-FFC-03 (NON_BLOCKING): the vacuous case of a week with no prescribed session of a sport."
+  },
+  {
+   "id": "SSCTR-FFR-02",
+   "namedBlocker": "NB-1 residual",
+   "ruling": "CLOSED (its scenario and the earlier REST/LIGHT windows it names)",
+   "evidence": "Cycle test passes; p7b/p7c: 14 days read as 14 (MODERATE at every speed with its holds), 20 with the wait; the executed variant unchanged (R3,R4, 4 days); q04 (a) CONSERVATIVE, (b) per sport.",
+   "residual": "SSCTR-FFC-01 (BLOCKING): the same principle fails when the chain's earlier window is a REDUCE window with no executed session (C-Q05-5 reads it as rest), both across the cycle's new return-stretch scan and in a contiguous chain. NB-1 therefore stays OPEN on that residual."
+  },
+  {
+   "id": "SSCTR-FFR-06",
+   "namedBlocker": "introduced by NB-3",
+   "ruling": "CLOSED",
+   "evidence": "Cycle test passes; p3d-p3g and q06: no review, check or report after the NB-3 return asks to confirm the break, for both sports and for RUN-only and STRENGTH-only windows; a genuinely stale return asks once and confirming ends it; the reviews match 5ee9dec's KEEP decisions. staleReturn compares the strength entry with strength's own recorded class (classBySport.STRENGTH), which is the only entry it compares."
+  }
+ ],
+ "namedBlockers": {
+  "NB-1": "OPEN (narrow residual SSCTR-FFC-01)",
+  "NB-2": "CLOSED (unchanged: p2, p9, p16 identical)",
+  "NB-3": "CLOSED for its defect and for FFR-06; SSCTR-FFC-02 is a residual of its principle (I-15, days without training before a single declared break) reached through the cycle's QRE-FF-01 skip",
+  "NB-4": "CLOSED (FFR-01 closed; FFC-03 non-blocking)",
+  "NB-5": "CLOSED (p5 identical)",
+  "NB-6": "CLOSED (p6 identical; its noted post-ladder HOLD lines unchanged and outside D49's scope as round 1 recorded)"
+ },
+ "regressionsOnTouchedPaths": [
+  {"path": "missedLadderWeek: execution test", "result": "Holds (q01). Vacuous sub-case SSCTR-FFC-03."},
+  {"path": "missedLadderWeek: skip behind a READINESS_RESTART or REESTABLISH (QRE-FF-01)", "result": "Behind a readiness restart: the cycle test holds. Behind a declared break's REESTABLISH: it removes the R3 repeat that 4630bca re-laid after an unexecuted return week, and the break's SHORT return then reaches the held doses after 17 days without training: SSCTR-FFC-02 (BLOCKING)."},
+  {"path": "sportPlan backward scan", "result": "FFR-02 scenarios hold; SSCTR-FFC-01 (BLOCKING) on unexecuted REDUCE windows."},
+  {"path": "staleReturn / breakOf (classBySport)", "result": "Holds (q06)."},
+  {"path": "composeWeeks / composeReturn re-placing an extended week (QRE-FF-02)", "result": "Holds: both Cycle QRE-FF-02 tests pass; p2, p6, p9, p16 identical to 4630bca; the R7-D holdout differential shows the default path unchanged."},
+  {"path": "clinical guard setting the guidance level during a standing dependency", "result": "Holds (q08): the level follows FF-Q9; the hold is never lowered."},
+  {"path": "round-1 sweeps and spot checks", "result": "NB-1 chained-report sweep P1 (168 reports), NB-6 checks P6, D2 speed cases P11b and P13/P15, FF-Q1 DT7 at review level (now holds: FFR-01 closed), D3 P2/P9/P16, D4 P10, D5 P17, D6 P12: identical to 4630bca; each still holds as round 1 recorded it."}
+ ],
+ "newFindings": [
+  {
+   "id": "SSCTR-FFC-01",
+   "severity": "MAJOR",
+   "classification": "BLOCKING (residual of NB-1: CH-r2-7 with C-Q05-5 as precised in FF-Q3 and SSCTR-FF-N1; pre-existing at 4630bca; also reached through the cycle's new return-stretch scan)",
+   "title": "A REDUCE window with no executed session, chained with a REST report, loses its days: the chain plans less conservatively than its first report alone",
+   "location": "CoachingCore/src/r6-adaptation.mjs sportPlan: when the chain holds an R0/R1 rung the row is REST and days = rest + waited; R2/R3 window days are counted as 'reduce' and C-Q05-5's READ_AS_REST is applied only when the row is not already REST",
+   "scenario": "HYBRID with known rows (4 sets). NEED_REST REDUCE_SUBSTANTIAL 12 days from week-1 Monday (11-16..11-27), returnSpeed FASTER; nothing executed; week 1 reviewed with its check (all no). Week-2 Thursday 11-26: UNUSUAL_FATIGUE REST 3 days (allowance 4). Week-3 Monday check, both improved (14 days without training). Plan: RUN and STRENGTH 'REST row, 4 days', R3 then R4: week 3 easy 35/35, long 35, 7 sets at RIR 4; week 4 long 55, 12 sets at RIR 3 (held doses). The REDUCE report alone with the same check: READ_AS_REST, 14 days, the MODERATE recipe (15/15/20, 5 sets at RIR 4). BALANCED: R2,R3,R4 against MODERATE/FIRST. Variant through the cycle's scan: REDUCE_SUBSTANTIAL 7 with none executed, its return with none executed, REST 4: 14 days read as 7, FASTER R3,R4.",
+   "expected": "CH-r2 'never less conservative than any report'; CH-r2-7 reads the row with C-Q05-5 as precised in FF-Q3 (a REDUCE window with planned sessions of the sport and none executed is rest of its days); SSCTR-FF-N1: days without training are days without training. Here at least 11 days: the MODERATE recipe with the speed's holds, never less than the first report alone.",
+   "minimalCorrection": "In sportPlan, per sport, when the row is REST, read as rest the days of each chain window at R2/R3 whose planned sessions of that sport were none executed (C-Q05-5), adding them to the rest days; a REDUCE window with an executed session, or with no planned session of the sport (FF-Q3), is unchanged. No new number. Directed tests: the scenario above at every speed (MODERATE with its holds, never below the REDUCE report alone); the 7 + return + 4 variant (14 days, MODERATE); the same chain with the REDUCE window executed (unchanged).",
+   "runtimeOnly": true,
+   "owner": "Engineering in a future mission's narrow runtime cycle, then a narrow SSCTR recheck (no further cycle in this mission)"
+  },
+  {
+   "id": "SSCTR-FFC-02",
+   "severity": "MAJOR",
+   "classification": "BLOCKING (residual of NB-3's principle, I-15 with SSCTR-FF-N1; pre-existing at 5ee9dec; the cycle's QRE-FF-01 skip removed the R3 repeat that 4630bca re-laid, so the held doses now follow at once)",
+   "title": "A short declared break after a return week with no executed session resumes the held doses after 17 days without training, while the same days spent waiting give the MODERATE recipe",
+   "location": "CoachingCore/src/r6-adaptation.mjs returnAfterPause's per-sport class (the NB-3 reading counts R0/R1 window days and waited days right before the break, not the superseded episode's return-ladder days with no executed session); missedLadderWeek now skips those ladder weeks behind the REESTABLISH (QRE-FF-01)",
+   "scenario": "HYBRID with known rows. NEED_REST REST 5 days from week-1 Tuesday, FASTER; WELLBEING_CHECK on week-1 Sunday, improved: R3 week 2, R4 week 3. No session of week 2 executed and no review. TRAVEL break week-3 Monday-Tuesday, reported Wednesday 07:00: REESTABLISH, class SHORT (2 days), 'resume the last completed doses': week 3 from Wednesday easy 35, 10 strength sets at RIR 3, long 40; week 4 planned at the held doses (14 sets at RIR 3, long 50) and kept after the week-3 review. Last executed session 11-14: 17 days without training. BALANCED (R2 week) gives the same. Without the answered check (waited days) the same break gives per-sport MODERATE (15/15/20, 5 sets at RIR 4). 4630bca re-laid R3 in week 4 (9 sets at RIR 4, long 45); 5ee9dec equals 0950b0a.",
+   "expected": "I-15 and NB-3: a combination of a Situation 1 episode and a declared break is never less conservative than either; the episode alone repeats R3 (q06 noBreak: 7 sets at RIR 4, long 35, then R3 again). SSCTR-FF-N1: days without training are days without training, whether rest, waited or an unexecuted return week; 11-28 days: the MODERATE recipe. Answering 'improved' and then not training must not return the athlete faster than not answering.",
+   "minimalCorrection": "In the declared break's per-sport reading (NB-3), count as days without training, right before the break, the superseded episode's return-ladder days of that sport with no executed session (the same stretch rule SSCTR-FFR-02 now applies in sportPlan; an executed session stops it), then apply the R6 class bounds. QRE-FF-01's skip may stay once the break's return reads those days. No new number. Directed tests: the scenario at FASTER and BALANCED (per-sport MODERATE, equal to the waited variant); a return stretch with an executed session keeps SHORT.",
+   "runtimeOnly": true,
+   "owner": "Engineering in a future mission's narrow runtime cycle, then a narrow SSCTR recheck"
+  },
+  {
+   "id": "SSCTR-FFC-03",
+   "severity": "MINOR",
+   "classification": "NON_BLOCKING (vacuous sub-case of FFR-01; unchanged from 4630bca; no dose effect observed)",
+   "title": "A checked ladder week with no prescribed session of a sport counts as done for that sport, so its rung steps after an off-review check",
+   "location": "missedLadderWeek done(s): '!own.some(prescribed) || executionOf(...).all' (the round-1 correction used executionOf(...).all, which is false for no rows)",
+   "scenario": "Journey-F set-up: 8-week HYBRID, 10K on 12-26, MILD_ILLNESS REDUCE_SUBSTANTIAL 5 days the week before; the race week holds no strength session; nothing executed, a WELLBEING_CHECK on its Thursday, no review; the next Monday review: running repeats R2, strength steps to R3 (the weekly-review path carries R2 for both). The following week has no strength session, so no dose changes.",
+   "expected": "FF-Q2 (d): a week in which a sport has only optional sessions is not a ladder week for that sport; its rung carries to the next week.",
+   "minimalCorrection": "Drop the vacuous clause so such a week carries the sport's rung, with SSCTR-FFR-05's wording fix (the rung carried, not 'not done as planned').",
+   "runtimeOnly": true,
+   "owner": "Engineering, next eligible change; G03 for the wording"
+  }
+ ],
+ "secFfr02Ruling": {
+  "question": "Security C3 (SEC-FFR-02): the guidance level while a clinical reference stands",
+  "ruling": "YES. Under D5 / SSCTR-FF-Q9 the level is derived only from the items the review answers yes, on every clinical route a warning sign or an exercise-response item causes, Situation 2 included; a standing clinical dependency does not suppress the level of a newly answered item. The cycle's application conforms (q08): W2-W5 and X1 give URGENT_CARE_ADVISED, other items PROFESSIONAL_ASSESSMENT, no item the default PROFESSIONAL_ASSESSMENT.",
+  "holdNeverLowered": "Confirmed: status CLINICAL_HUMAN_REQUIRED in every case, no session planned, the hold row unchanged; only a readiness declaration with every item no releases it, as before.",
+  "limits": "Nonclinical reading only; the urgent wording stays INTERIM_PENDING_G04 (C-9) and FUTURE_G04_REVALIDATION. Observation O-4 below is for G03/G04, not a defect against FF-Q9."
+ },
+ "roundOneItems": {
+  "SSCTR-FFR-03": "Unchanged (p15 identical): FASTER's R4 shortcut after up to 10 waited days; NON_BLOCKING; C-5 stands.",
+  "SSCTR-FFR-04": "Unchanged (p3d identical): the week a superseded wait emptied keeps the wait text and the return starts next week; NON_BLOCKING; C-6 stands.",
+  "SSCTR-FFR-05": "Unchanged on the weekly-review path ('not done as planned' for a week with no strength session, dose carried); the off-review path now differs (SSCTR-FFC-03); NON_BLOCKING; C-7 stands.",
+  "C-4": "Partly met: the cycle added FF-Q1 DT4 and the QRE-V1CPR-05 (a) / CF-OBS-2 date-change test; the other listed directed tests remain covered only by probes (P2, P10, P12, P17, still identical). Stands, non-blocking.",
+  "C-5": "Stands (FFR-03).",
+  "C-6": "Stands (FFR-04).",
+  "C-7": "Stands (FFR-05, with FFC-03).",
+  "C-8": "Stands (D6: DEMANDING prescribes as BALANCED; p12 identical).",
+  "C-9": "Stands (urgent wording INTERIM_PENDING_G04; now also on routes during a standing hold).",
+  "C-10": "Stands (the decision's conditions C-FF1..C-FF9 unchanged).",
+  "O-1": "Stands (recurrence matched by condition name across strength regions; P1 identical).",
+  "O-2": "Stands (the emergency-number sentence; now also reachable during a standing hold).",
+  "O-3": "Stands (recurrence detection ends with the chain reset)."
+ },
+ "observations": [
+  "O-4 (G03, G04): at a later review of a standing hold that began with an urgent item and with no new item answered, the guidance level is the default PROFESSIONAL_ASSESSMENT and the text is the standing-dependency text. This follows FF-Q9 as written; whether the earlier urgent advice should stay visible is a wording question for G03/G04 before real use.",
+  "O-5 (pre-existing, errs conservative): a fully executed ladder week reported at the following Monday's weekly review with its check (and no WELLBEING_CHECK) repeats its rung; a Saturday or Monday WELLBEING_CHECK with the same report advances it. Same at 4630bca. A D1 precision for the next eligible change, not a blocker."
+ ],
+ "cfObs1": {
+  "c3": "C-3 stands unchanged: p8 output is identical at 0950b0a (without the reference state, a weekly review after a W2 or W7 hold plans the full doses next week).",
+  "blocks": "Integration readiness and any real-athlete use. It does not by itself block the closure of this shadow candidate, which plans for no real athlete; the technical decision is Security's, QRE's and PCG's and is not redone here."
+ },
+ "disposition": "BLOCK",
+ "dispositionRationale": "SSCTR-FFR-01, -02 and -06 are closed with evidence, the touched paths keep the default path and the round-1 sweeps unchanged, and SEC-FFR-02 conforms to FF-Q9 without lowering the hold. Two MAJOR residuals remain on the touched paths, each meeting the round-1 criterion (a return planned above what the record's days without training call for, inside a named blocker's defect class): SSCTR-FFC-01 (NB-1: an unexecuted REDUCE window's days dropped in a chain, making the chain less conservative than its first report alone) and SSCTR-FFC-02 (NB-3's principle: after an unexecuted return week, a short declared break returns to the held doses after 17 days without training; the cycle's QRE-FF-01 skip removed 4630bca's partial protection). Under the bounded-cycle rule no further cycle follows: the mission closes NOT_READY with these named blockers, for a future mission's narrow runtime cycle and a narrow SSCTR recheck.",
+ "conditions": [
+  "C-11 (BLOCKING, NB-1): correct SSCTR-FFC-01 as stated, with its directed tests red on 0950b0a.",
+  "C-12 (BLOCKING, NB-3 principle): correct SSCTR-FFC-02 as stated, with its directed tests red on 0950b0a.",
+  "C-13 (non-blocking): SSCTR-FFC-03 with C-7 at the next eligible change.",
+  "C-3 (CF-OBS-1), C-4..C-10 and O-1..O-3 stand as in SSCTR-V1CPFF-RECHECK-r1; O-4 and O-5 are added."
+ ],
+ "aeReview": [
+  {"q": 1, "question": "Is the current plan still adequate?", "answer": "On the closed paths, yes. On the two residual paths the plan exceeds what the record's days without training support."},
+  {"q": 2, "question": "Is there a sufficient material fact, with provenance?", "answer": "Yes: the record holds no executed session over the days the runtime drops (q05, q07)."},
+  {"q": 3, "question": "Is KEEP defensible, and what is unknown?", "answer": "KEEP of 0950b0a is not defensible on FFC-01 and FFC-02; the rest may stand. Unknown: individual response, as in the decision."},
+  {"q": 4, "question": "Is change really necessary, relative to a comparator?", "answer": "Yes: the first report alone (FFC-01) and the waited variant and the Situation 1 path alone (FFC-02) are the comparators, both more conservative on the same record."},
+  {"q": 5, "question": "What is the smallest sufficient intervention?", "answer": "Two runtime corrections (sportPlan's REST-row day count; the declared break's per-sport reading of unexecuted return days), with directed tests; no new number."},
+  {"q": 6, "question": "Why are relevant smaller alternatives insufficient?", "answer": "A copy or disclosure would still plan the held doses; reverting QRE-FF-01 alone would leave week 3 of FFC-02 at the last completed doses (as at 4630bca and 5ee9dec)."},
+  {"q": 7, "question": "Does the trade-off protect the stated priority and progression?", "answer": "Yes: only steps the record does not support are removed; executed weeks still progress at the chosen speed."},
+  {"q": 8, "question": "Does applicable evidence support the conclusion and dose?", "answer": "The conclusions apply decided rules (CH-r2, C-Q05-5, FF-N1, I-15, the R6 classes). No dose is added."},
+  {"q": 9, "question": "What material uncertainty remains?", "answer": "The internal combination logic is unvalidated empirically (as in the decision); real-use readiness also waits on CF-OBS-1, G03 and G04."},
+  {"q": 10, "question": "Is ASK, HOLD or CLINICAL_HUMAN_REQUIRED needed?", "answer": "No new route. Clinical routes stay CLINICAL_HUMAN_REQUIRED; warning-sign wording stays pending G04."}
+ ],
+ "states": {
+  "implementationDone": "The fix cycle is implemented at 0950b0a (suite 1143/1143).",
+  "technicalValidation": "Not complete for the sporting scope: NOT_READY on SSCTR-FFC-01 and SSCTR-FFC-02.",
+  "integrationReadiness": "NO (FFC-01, FFC-02, CF-OBS-1 / C-3, and the conditions above).",
+  "authorizationForRealAthletes": "NO (nothing here is clearance or human validation; G03/G04 and clinical content remain open).",
+  "appPublicationReadiness": "NO.",
+  "F08": "F08_OPEN",
+  "V1_COACHING_AUTHORITY_READY": "NO",
+  "clinical": "CLINICAL_HUMAN_REQUIRED stays with qualified humans."
+ },
+ "humanQueue": "No prescriptive approval is made here, so no queue entry is created; the human queue stays at 235 (nothing appended).",
+ "escalations": "None to the Founder: no clinical judgment, no new number and no product decision is needed. The next treatment is a future mission's narrow runtime cycle under the existing rules.",
+ "validation": "The skill's validate_records.py was not run (Python is not available on this machine: the python command resolves to the Microsoft Store alias). This record was checked as parseable JSON with Node. Consistency of this record is not citation or safety verification.",
+ "expiry": "Valid for commit 0950b0a only. Any runtime change on these paths, a new SSCTR decision on CH-r2-7, C-Q05-5, FF-N1 or NB-3, or a funded human review invalidates it."
+}

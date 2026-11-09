@@ -1,0 +1,199 @@
+{
+ "record": "SEC_FF_RECHECK_CYCLE",
+ "revision": "r1",
+ "date": "2026-11-09",
+ "role": "security-privacy-abuse-architect",
+ "instance": "fresh independent judge instance; author of none of 4630bca, 0950b0a, the cycle tests, its evidence or FIX_CYCLE_FF.md; not the round-1 instance (SEC_FF_RECHECK is its criteria, not re-judged); no delegation; the other roles' *_RECHECK_CYCLE* records and the untracked pcg/PCG_V1CPFF_CFOBS1.* files were not read",
+ "model": "claude-opus-5-5",
+ "effort": "high",
+ "level": "L3",
+ "mode": "productization; the single narrow recheck after the single fix cycle (bounded-cycle rule). It replaces the dispatch of ~13:01 that stopped at a usage limit before any record; that dispatch's scratch folders were not used as evidence.",
+ "reviewed": {
+  "commit": "0950b0ae481baa19f3310a81cd217e8c15ef35bf",
+  "comparedWith": "4630bca (round-1 candidate)",
+  "branch": "claude/v1cp-fix-forward",
+  "immutableReference": "git archive 0950b0a CoachingCore audits and git archive 4630bca CoachingCore audits, extracted into the new folder C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/eaed4c4d-aa7d-4e9a-9671-d3738a2444e6/scratchpad/sec-ffc2-1794246484 (created fresh; c0950b0a/, c4630bca/). node_modules (ajv 8.20.0, matching package-lock) copied from the worktree, since git archive does not carry it. The worktree's CoachingCore and audits trees equal 0950b0a (git diff --quiet); its only untracked files are another role's PCG records.",
+  "diffReviewed": "git diff 4630bca 0950b0a -- CoachingCore/src (r6-adaptation: evaluateProgram finish/guided and the clinical guard, missedLadderWeek, sportPlan, composeReturn, breakOf, staleReturn; r6-composition: composeWeeks; v1-f08: readCheck)",
+  "files_sha256": {
+   "CoachingCore/src/r6-adaptation.mjs": "91978d1d5899b81dd592b84e968d7aeac8e958214c9804b69e9485b05c6d79fd",
+   "CoachingCore/src/r6-composition.mjs": "8beb71c1abee5a2a767b6c48e8cdcdea565292bb21dbd2b839716b9602e91ea3",
+   "CoachingCore/src/v1-f08.mjs": "1d4543b86147bc6d4381868a95165e864950eadb81b7e363842e7060fbc6acb0",
+   "CoachingCore/test/v1cp-ff.test.mjs": "675b1ab405ad2370c7e0581ba10faaf61f0d2336f0528c3f0271f9097c0b93cb"
+  }
+ },
+ "criteria": {
+  "audits/v1cp-fix-forward-2026-11-09/reviews/security/SEC_FF_RECHECK.json (round 1: SEC-FFR-01..05, C1-C7, SEC-V1CPI-06, pendings)": "85d2fd0dd2fce038bc2bc14ce745e611d40cd4eee4fda67ce40e91aedf6cccc5",
+  "audits/v1cp-fix-forward-2026-11-09/FIX_CYCLE_FF.md": "97255c66f8739540ebf7a96e5c1bfa27102c8a6afe6d6363e99fff19763f81ba",
+  "audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md": "16be9fb219dea9fe8c9cd38229a6fed7073b0b04e09c03b20fca59bc55da050f",
+  "audits/v1cp-fix-forward-2026-11-09/REVIEW_REQUEST_FF.md": "b23b24805c8c3da83fa8f73879173490ff9c3697904d45b48a4eb584c97ad015",
+  "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md (sections 1, 3, 4.5, 5, 10)": "935126b7c5b2cbdf036d478526abbcf0b3aac3b9bc517ce3746597dfbb55f463",
+  "attempted CF-OBS-1 rule": "second entry of C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/cycle-c.json and its suite full-dev-1.txt (read only; not re-applied)"
+ },
+ "executed": {
+  "suite": "node --test test/*.test.mjs from c0950b0a/CoachingCore, V1CP_ROOT unset: 1143 tests, 1143 pass, 0 fail (a first run without node_modules failed 8 files on ERR_MODULE_NOT_FOUND 'ajv' only; rerun after copying the locked dependency). The two cycle tests 'Cycle SEC-FFR-01' and 'Cycle SEC-FFR-02 (D5)' pass.",
+  "probes": {
+   "location": "sec-ffc2-1794246484/probes/ (round-1 lib.mjs and p1-p6 copied from the round-1 folder and read before running; p7-p11 written for this recheck; each .mjs run against c0950b0a and, where compared, c4630bca; outputs *.c0950b0a.out / *.c4630bca.out)",
+   "probe_sha256": {
+    "lib.mjs": "19e63b06f0573c5e847236cd5b6404f90f4a5e04e372579d129eaf0db730594b",
+    "p1-restart.mjs": "823bef6995267c96573e4136e77f6bdc0679aea223dbe1e68e5ac8b760fa151f",
+    "p2-reviews.mjs": "39ce22382b41ed50a591122c634142998d8ca6b62b67732dacddb1cddeaaca48",
+    "p3-minimisation.mjs": "2b8525d6446b6aaa0d18332c547484e89abb2c89ff7fd506e1ce0762c94863bc",
+    "p4-cfobs-lex.mjs": "f6f0dc1cb402617345e3513a7faef488e0d0043138041cd642cbb9379010f716",
+    "p5-obs.mjs": "832e9c8ff227ec545b8c54c168dfebafec1d0a92c992526b357587e364b8c3b3",
+    "p6-replay-sign.mjs": "80f770fbe71b725d6cfde0c8000369ff1898c08a5cb6e114c14d5a1f5b19af79",
+    "p7-cycle.mjs": "5b5d30044fd6c0e3f9bdfa9e88b22a5c460eca6c71388b600d6557e72bf29498",
+    "p8-nohold-sign.mjs": "760fc7ffc456420efbb2ab66e0cca4b38029cdb47cbdfd6bc65d84035894c86a",
+    "p9-ledger-field.mjs": "5d2670b021f04c893fe2a9be11749cace512d74e12b56398add75f026580a6a5",
+    "p10-stale-ref.mjs": "c9aaaafc704c0cd9d22fa2a7f6b16ee74914a97522eda6e68e18e51fa8f280df",
+    "p11-forged-ref.mjs": "219465a4cbe46b993dcfec2497f5711b736bc1ea9c87aeea8210239d2fb0c109"
+   },
+   "results": {
+    "p1-restart (SB-1, SB-5)": "0950b0a 25/0; 4630bca 25/0 (identical output)",
+    "p2-reviews (SB-2, SB-3, SB-4)": "0950b0a 42/1; 4630bca 42/1; the one FAIL is the round-1 probe's own chronology error (documented in round 1). Only change: SB-4d (stale clinical reference + W2) is now URGENT_CARE_ADVISED with the sign wording (was PROFESSIONAL_ASSESSMENT); the hold is still written (1 to 2).",
+    "p3-minimisation": "0950b0a 41/0; 4630bca 40/1 (the canary FAIL is gone; W2 during a standing hold with the reference now URGENT_CARE_ADVISED; all other lines identical, including 'guidance never in a record row / reference state', append-only and sealed)",
+    "p4-cfobs-lex": "0950b0a 20/0, identical to 4630bca (CF-OBS-1 unchanged)",
+    "p5-obs": "0950b0a 11/0, identical to 4630bca",
+    "p6-replay-sign": "0950b0a 4/0: the replay with the reference is now URGENT_CARE_ADVISED; the unknown improved key is no longer echoed",
+    "p7-cycle (new)": "0950b0a 81 pass / 8 'fail'; 4630bca 63/26. On 0950b0a the 8 are assertion choices of mine, not defects: 7 'parity' lines where the no-reference case differs (NOT_FEELING_100 cases differ only by the extra output field warningSigns; WELLBEING_CHECK W5, WEEKLY_REVIEW check X1, MISSED_SESSION W4 and an all-no report are KEEP/MODIFY without the reference, i.e. CF-OBS-1, the defective side being the no-reference path) and 1 SB-4 scan line counting 16 guard-path clinical decisions that return no actualLedger field (pre-existing, identical on 4630bca; p9).",
+    "p8-nohold-sign (new)": "identical on both commits: a wellbeingCheck sent with a review that has no open episode is not read (KEEP), whether or not a hold sits on the record without the reference",
+    "p9-ledger-field (new)": "identical on both commits: a clinical decision through the reference guard returns no actualLedger field; the client's kept record still holds the hold",
+    "p10-stale-ref (new)": "0950b0a: a valid but stale reference (from before the hold) behaves exactly as an absent one: WEEKLY_REVIEW KEEP, MISSED_SESSION and SYSTEMIC_FATIGUE MODIFY, RETURN_AFTER_PAUSE REESTABLISH, 30 live sessions ahead, with the hold on record",
+    "p11-forged-ref (new)": "0950b0a: a reference re-sealed by the client with pending null (the digest is keyless sha256) gives KEEP with 30 live sessions over the record hold; restartProgram with the same forged reference still reads the hold (CLINICAL_HUMAN_REQUIRED)"
+   },
+   "fixture": "the synthetic hybrid athlete of test/v1cp-fixtures.mjs, timezone -03:00; synthetic data only"
+  },
+  "notRun": "npm run verify and verify-r* scripts (prohibited); the attempted CF-OBS-1 rule was not re-applied (its result full-dev-1.txt was read: 1104/1132, 28 failures, all in the R7-B.2, R7-C and R7-D qualified-clearance tests). No server, client, logging, analytics or share surface exists here or was verified."
+ },
+ "verdict": {
+  "result": "PASS_WITH_CONDITIONS",
+  "gate": "SECURITY_READY_WITH_CONDITIONS",
+  "scope": "the offline shadow core boundary at 0950b0a only",
+  "summary": "Both items the cycle owed Security are closed at their cause. Unknown keys of the per-condition improved object are reported once as wellbeingCheck.improved.unrecognized and never echoed, across nine shapes on two review kinds; nothing reaches the decision, the reference state or the record. During a standing clinical reference, a sign answered yes now sets the guidance level and wording exactly as without the reference (same status, level and reason); the hold is never lowered and nothing is planned. The cycle introduced no echo path, collected no new field, kept rows append-only and sealed, and left SB-2 to SB-5 intact; guidance never enters a row or the reference state. The sign answered during a standing hold is not recorded (decision only); that is a non-blocking condition (C8) before real use. CF-OBS-1 is unchanged and stays a named integration blocker; it does not block closing this shadow candidate.",
+  "blockingFindings": [],
+  "statesKeptDistinct": {
+   "implementationDone": "YES for the fix-forward scope at 0950b0a",
+   "technicalValidation": "security part of the offline core: passed with conditions (this record)",
+   "integrationReadiness": "NO: CF-OBS-1 (C2) is a named integration blocker; C7 and RECORD-CUSTODY also bind",
+   "authorizationForRealAthletes": "NO: CF-OBS-1, SEC-V1CPI-06 (named blocker), C3/C8 wording (G04) and the SEC-V1CP pendings stand",
+   "appPublicationReadiness": "NO",
+   "F08": "F08_OPEN",
+   "V1_COACHING_AUTHORITY_READY": "NO",
+   "INTEGRATION_READY": "NO; may not be declared while a real path can skip a safety hold (CF-OBS-1)"
+  },
+  "noLegalClaim": "No legal, regulatory or clinical compliance determination is made or implied. The sporting or clinical reading of the urgent level is the SSCTR's.",
+  "invalidatedBy": "any change to readCheck, signsYesIn, signRoute, guidanceOf, previousValidity, withHoldFact, withReference, the evaluateProgram guard or finish, readableF08/unreadableF08, restartIntake/restartProgram, the F08 handlers, or the integration contract sections 1, 3, 4.5, 5"
+ },
+ "items": [
+  {
+   "id": "SEC-FFR-01 (C1)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "readCheck (v1-f08.mjs) now counts keys outside the open conditions and pushes one 'wellbeingCheck.improved.unrecognized'; a key that is an open condition with a non-boolean value pushes 'wellbeingCheck.improved.<open key>' (closed vocabulary, never the value). No other dynamic key reaches bad/missing in readCheck; signsYesIn and signRoute read only ALL_W/ALL_X names with === true.",
+    "p7 on WEEKLY_REVIEW and WELLBEING_CHECK, nine shapes (2,000-character canary key, 300 unknown keys with text, a nested object under an unknown key, an open key with a string, an object or an array value, a JSON '__proto__' key, a 'constructor' key, only an unknown key): ASK, missingInputs exactly ['wellbeingCheck.improved.unrecognized'] (once) or ['wellbeingCheck.improved.MILD_ILLNESS']; the canary is absent from the whole decision, referenceState, missingInputs and the record; no row is written; the next review is clean; no exception. On 4630bca 12 of these 18 echo the key.",
+    "p3/p6: the round-1 canary and ZEBRA probes now pass; directed test 'Cycle SEC-FFR-01' passes."
+   ]
+  },
+  {
+   "id": "SEC-FFR-02 (C3)",
+   "ruling": "CLOSED for the guidance level and wording; residual record-of-the-sign carried as C8 (NON_BLOCKING)",
+   "evidence": [
+    "evaluateProgram: when previousValidity returns CLINICAL_HUMAN_REQUIRED, signsYesIn of review.wellbeing, review.wellbeingCheck and review.readiness is read and signRoute sets reason, guidance and warningSigns; the status stays CLINICAL_HUMAN_REQUIRED and withReference keeps prior.pending unchanged (clinicalSticky).",
+    "p7, W7 hold open, reference sent: NOT_FEELING_100 W2 -> URGENT_CARE_ADVISED; W3+W9 -> URGENT; W9 only -> PROFESSIONAL_ASSESSMENT with the sign wording; WELLBEING_CHECK W5, WEEKLY_REVIEW check X1, MISSED_SESSION carrying a W4 report -> URGENT; READINESS_DECLARATION W3 -> URGENT; all-no -> generic PROFESSIONAL_ASSESSMENT. Every one: proposal null, referenceState.pending byte-identical to the prior pending (never lowered).",
+    "Parity with the no-reference case: for NOT_FEELING_100 (W2, W3+W9, W9) and READINESS_DECLARATION the status, level and reason are identical; the reference path adds an output field warningSigns (closed sign names; C4). For WELLBEING_CHECK, the weekly check and MISSED_SESSION the no-reference case is KEEP with the sign unread (CF-OBS-1 and OBS-FFC-02): the cycle's outcome is the safer side.",
+    "After the urgent answer is accepted: the next review is still CLINICAL_HUMAN_REQUIRED with nothing planned, and restartProgram from the record is CLINICAL_HUMAN_REQUIRED (p7).",
+    "Record of the sign: neither the record nor the reference state keeps it (no row appended, pending.reason keeps the W7 wording; p7 'traceable anywhere' false), with or without the reference, because a hold already stands and withHoldFact adds none. Outside a hold the same W2 at entry writes only a CLINICAL_HOLD row without sign names (SEC-V1CPR-06 design), with the sign names only in pending.reason; a check outside a hold writes WELLBEING_CHECKED.check.signsYes."
+   ],
+   "recordOfTheSign": {
+    "classification": "NON_BLOCKING; condition C8 before real use",
+    "why": "No trust boundary fails: the hold stands on the record and in the reference, nothing is prescribed, and the only release (the readiness declaration) re-asks every warning sign W1-W15 at that moment, so the release does not depend on the earlier sign being stored. The athlete gets the urgent guidance in the decision itself. What is lost is accountability: no durable trace that an urgent sign was reported during the hold, for the athlete's history, a later professional review, an incident review or a subject-access export. Adding it is new health-data collection, so the form (which row, which fields, closed vocabulary only, retention, tombstone) is a joint decision, not a silent runtime change."
+   }
+  }
+ ],
+ "regressionsOnTouchedPaths": {
+  "freeTextEcho": "none new: readCheck fixed; the guard path emits only closed sign names (signRoute/human()); an unknown sign key set true during a hold is ignored, not echoed (p7 SB-5 line)",
+  "newCollectedField": "none; the guard path reads existing review fields only. New output field on the guard path: decision.warningSigns (closed names), added to C4",
+  "appendOnlyAndSealed": "p7 scans over 50 results and p3: 0 earlier rows dropped or changed, 0 unsealed F08 rows",
+  "SB-3 unreadable holds fail closed": "p2 identical to 4630bca; p7: altered hold row with the clinical reference and W2 -> CLINICAL (urgent, no plan); without the reference -> HOLD record.f08Unreadable",
+  "SB-2 clinical first before an id conflict": "p2 identical; p7: reused hold id + W2 with the reference -> CLINICAL URGENT, no duplicate hold row",
+  "SB-4 every clinical decision records its hold": "p2/p3 identical (SB-4a-e); under a standing hold no new row is due and the kept record still holds it (p9). A guard-path clinical decision returns no actualLedger field at all (pre-existing, identical on 4630bca): OBS-FFC-01",
+  "SB-5 no exception": "p1 identical; p7: nine malformed payload shapes under a hold (strings, arrays, 'true'/1 for W2, null check, numeric readiness) -> CLINICAL_HUMAN_REQUIRED, no proposal, no exception, no echo",
+  "guidanceNeverInRowOrReference": "p3 and p7 scans: 0 occurrences of a guidance key or URGENT_CARE_ADVISED in any row or referenceState",
+  "nonSecurityCycleChanges": "missedLadderWeek, sportPlan, composeReturn/composeWeeks, breakOf/staleReturn change sporting composition only (no input read, no output field, no record write); their correctness is the SSCTR's and QRE's"
+ },
+ "newFindings": [
+  {
+   "id": "OBS-FFC-01",
+   "classification": "NON_BLOCKING (pre-existing at 4630bca; folded into C7)",
+   "title": "A clinical decision through the reference guard returns no actualLedger field",
+   "evidence": "p9: generic guard and sign-under-guard decisions have no actualLedger key; the no-reference path returns the record. Harmless only if the client keeps its record when the field is absent.",
+   "requirement": "The integration contract states that an absent actualLedger means 'record unchanged'; the server never replaces a stored record with an absent or shorter one (prefix check)."
+  },
+  {
+   "id": "OBS-FFC-02",
+   "classification": "NON_BLOCKING for this candidate (pre-existing; routed to SSCTR and QRE); part of CF-OBS-1 when a hold is on record",
+   "title": "A sign answered yes in a payload the review does not read is ignored",
+   "evidence": "p8: with no open episode, WELLBEING_CHECK W5 -> KEEP 'nothing to check'; WEEKLY_REVIEW with wellbeingCheck X1 or W2 -> KEEP; identical with a hold on record and no reference. p7: a reference whose integrity is refused plus W2 -> HOLD with no guidance (HOLD path untouched by the cycle).",
+   "requirement": "Before real collection: either the client contract never sends sign items outside the forms that read them (and the server rejects such payloads), or the core screens signsYesIn on every review as the cycle now does under a clinical reference. The sporting/clinical choice is the SSCTR's."
+  }
+ ],
+ "conditions": [
+  {"id": "C1", "status": "CLOSED", "evidence": "SEC-FFR-01 above"},
+  {"id": "C2", "status": "OPEN, unchanged in code; sharpened", "what": "CF-OBS-1, answered under cfObs1 below. Sharpened: 'referenceState mandatory' alone is not a mitigation, because the reference digest is keyless and a client can re-seal a clean reference (p11) and a stale one behaves as absent (p10); the record hold must govern in the core, with the reference and record held by the server.", "blocks": "integration readiness, real use, V1 authority; not the closure of this shadow candidate"},
+  {"id": "C3", "status": "CLOSED (urgent level and wording under a standing clinical reference); residual moved to C8", "note": "the wording itself stays INTERIM_PENDING_G04 under SEC-V1CP-21 before real use"},
+  {"id": "C4", "status": "OPEN, unchanged; extended", "what": "inventory and egress rule for guidance, referenceState.pending.reason, the race row fields, WELLBEING_REDUCTION markers, RACE_IN_RETURN, decision.wellbeing, plus decision.warningSigns on the guard path", "blocks": "exposure"},
+  {"id": "C5", "status": "OPEN, unchanged", "what": "inputHash and rowHash treated as payload or keyed under custody", "blocks": "exposure"},
+  {"id": "C6", "status": "OPEN, unchanged", "what": "SEC-V1CPI-06 tombstone extended to cross-row references", "blocks": "erasure path, real collection, exposure"},
+  {"id": "C7", "status": "OPEN, unchanged; extended by OBS-FFC-01", "what": "RECORD-CUSTODY and server schema: opaque server-assigned bounded ids, non-array record -> HOLD, server-bound athlete id and clock, absent actualLedger = unchanged record", "blocks": "integration"},
+  {"id": "C8", "status": "NEW, OPEN, NON_BLOCKING for this candidate", "what": "A warning sign answered during a standing clinical hold leaves a durable, minimised trace (closed sign names, event id, time; no free text) or the decision is recorded otherwise, as decided by SSCTR/PCG with Security; it enters the SEC-V1CP-01 inventory and the C6 tombstone.", "trigger": "before real use of F08 (with G04)", "owner": "SSCTR and PCG for the form; Engineering; Security re-verifies"}
+ ],
+ "namedBlockerCarried": {
+  "id": "SEC-V1CPI-06",
+  "status": "OPEN, unchanged (p2 on 0950b0a: deleting the CLINICAL_HOLD row still gives PROPOSED on restart); acceptable as a named blocker of real collection and erasure, not of this shadow candidate"
+ },
+ "pending": "Unchanged and still pending (SEC_V1CP_IMPL, SEC_V1CP_RECHECK, SEC_FF_RECHECK): RECORD-CUSTODY; SEC-V1CP-01 inventory; -02 server schema; -03 client; -06..-13; -14 / SEC-V1CPI-06 erasure (named blocker); -15..-20; -21 catalog and the D5 interim wording (G04 before real use); -22/-23 server parts; -24, -26, -27; SEC-V1CPI-07 conditions; E1-E2-INTAKE-FIELDS. None blocks the closure of this shadow candidate; all bind integration, real collection or exposure.",
+ "cfObs1": {
+  "facts": [
+   "Reproduced on 0950b0a (p4, p10, p11): with a W7 hold on the record, a review without the reference, with a stale pre-hold reference, or with a client-re-sealed clean reference plans over the hold (WEEKLY_REVIEW KEEP, MISSED_SESSION and SYSTEMIC_FATIGUE MODIFY, RETURN_AFTER_PAUSE REESTABLISH; 30 live sessions ahead). restartProgram and READINESS_DECLARATION read the hold from the record in every variant.",
+   "The attempted narrow core rule (cycle-c.json, second entry) breaks 28 tests (full-dev-1.txt); r7d-phase31.test.mjs line 21 states the model: 'Qualified clearance as C3 models it: the client drops the clinical continuation state and keeps the record'; r7c-phase5-cc.test.mjs line 32 likewise sets ref:null to clear.",
+   "INTEGRATION_CONTRACT_V1CP section 3 already says the clinical hold's only exit is a readiness declaration, and that restartProgram reads standing holds from the record, never only from referenceState."
+  ],
+  "Q1_sourceOfTruth": "The record: a readable CLINICAL_HOLD row of this athlete (sealed, intact, string id, not foreign or orphan, dated at or before the decision clock), held under server custody. referenceState is a derived continuation cache: it may add restriction (sticky clinical pending) but can never establish that no hold stands. On disagreement the more restrictive reading wins.",
+  "Q2_standingHold": "One predicate, shared by evaluateProgram, withHoldFact, restartIntake and the server: the hold is standing when such a row exists and no later readable READINESS_DECLARED of this athlete that validly answers it (all signs no, declaredRecovered, eligibility after the hold, named hold matching when named) follows it. Any unreadable F08 row means HOLD (SB-3), never 'no hold'. Computed from the record on every call, whatever reference is sent.",
+  "Q3_absentInvalidStale": {
+   "invalid (digest, ownership, future clock)": "HOLD as today, no plan; the server never forwards it (and the client gets 'send the stored state').",
+   "absent or stale (valid but older than the record's latest F08 fact, or contradicted by it)": "read the hold from the record. If it stands: READINESS_DECLARATION is evaluated by its handler (the release path); RETURN_AFTER_PAUSE and NOT_FEELING_100 / WELLBEING_CHECK facts are screened (clinical first, D5 guidance) and recorded append-only but never release and prescribe nothing; every other kind (WEEKLY_REVIEW, MISSED_SESSION, SYSTEMIC_FATIGUE, SCHEDULE_CHANGE, GOAL_CHANGE, EVENT_DATE_CHANGE, ...) returns CLINICAL_HUMAN_REQUIRED with no proposal. If no hold stands, proceed; whether a non-clinical pending question lost with a stale reference must be re-asked is QRE's (Security only requires that it never lowers a clinical hold).",
+   "restartProgram": "already reads the record; keep it."
+  },
+  "Q4_release": "A legitimate resumption is preserved because the release is itself a recorded fact: after a valid READINESS_DECLARED the predicate of Q2 reads the hold as released, with or without the reference, so the next review plans normally. Nothing else releases a hold unless the competent authority defines another explicit release fact (for example a qualified clearance by a professional, if PCG/SSCTR and the Founder ever want one): recorded, attributable to an authenticated actor, server-timestamped, naming the hold, in the inventory. 'The next review sent without the reference state' is never an admissible representation of a release or a clearance: absence of state is indistinguishable from data loss, a new or restored device, a client bug, a rollback, an attacker or the athlete bypassing the hold, and the reference digest is keyless so even a 'clean' reference proves nothing (p11). The 28 qualified-clearance tests encode that representation; when CF-OBS-1 is fixed they must be migrated to an explicit release fact (their owners decide how; R7-D stays closed and is not reopened by this record).",
+  "Q5_integrationContract": {
+   "server": [
+    "Custody: the server stores the authoritative append-only record and the latest reference state per athlete and program; ids and timestamps are server-assigned; the review input is composed from the stored copies (or the client's copies are accepted only when their hashes equal the stored heads).",
+    "Concurrency: a review against a record head, program hash or reference that is not the latest stored is refused (no evaluation), so a stale device cannot plan over a later hold.",
+    "Append-only on store: a returned record must extend the stored one (prefix equality); an absent actualLedger means unchanged (OBS-FFC-01).",
+    "Defence in depth until the core rule exists: the server evaluates the Q2 predicate itself and delivers no prescription (plan sync, notifications, calendar, watch or Health export) while a hold stands, whatever the engine returned.",
+    "Release only through the readiness-declaration endpoint (or a future explicit release fact), authenticated as the athlete, audited.",
+    "No health-derived field in logs, analytics, crash reports or OS surfaces (C4, C5)."
+   ],
+   "client": [
+    "Never builds, edits, re-seals or drops referenceState or the record; sends exactly what the server holds.",
+    "Shows the decision's guidance immediately; shows no prescription while the status is CLINICAL_HUMAN_REQUIRED; on HOLD shows nothing new.",
+    "Offline evaluation, if any, is provisional and never shows prescriptions while the stored record holds a standing hold."
+   ]
+  },
+  "Q6_testing": [
+   "A negative matrix: every review kind x reference {current, absent, stale pre-hold, invalid digest, foreign athlete, future clock, client-re-sealed clean} x record {standing hold, released by a valid declaration, hold row altered, unsealed, deleted, record absent, record not an array}. Oracle: while a hold stands, no decision carries a proposal with live prescriptions (CLINICAL_HUMAN_REQUIRED or HOLD only), signs still set the guidance, the record stays append-only and sealed.",
+   "A monotonicity property (fuzz, QRE harness): replacing the current reference by absent, stale or re-sealed never yields a less restrictive outcome while the record holds a standing hold; mutation tests must kill a mutant that drops the record check.",
+   "Release parity: a valid readiness declaration releases with and without the reference, and the next review plans; invalid declarations (a sign yes, a screen before the hold, a wrong named hold) never release.",
+   "A test that dropping the reference never releases, replacing the 'qualified clearance by ref:null' model in the migrated tests.",
+   "Integration-level tests: the server refuses stale heads, absent or re-sealed references, non-prefix records; no prescription leaves the server during a hold. Synthetic data and canaries only."
+  ],
+  "Q7_separateClosure": {
+   "answer": "YES",
+   "why": "The defect needs a client or server that omits, keeps stale or forges state, and no such path exists in this offline shadow repository; the record keeps the hold and the restart and readiness paths read it; the cycle did not change it (p4 identical); and the fix needs a decision on the explicit release form plus migration of 28 R7-era tests, which is integration-design work, not a narrow runtime fix.",
+   "blocks": "INTEGRATION_READY (any integration build, any server or device path that can submit reviews), any real use or real athletes, and V1_COACHING_AUTHORITY_READY; none of these may be declared YES while CF-OBS-1 is open. It does not block closing this shadow candidate's technical validation.",
+   "namedBlocker": "CF-OBS-1: a standing CLINICAL_HOLD on the record is not enforced by evaluateProgram when the reference state is absent, stale or client-re-sealed; owner Engineering with Security and QRE (SSCTR/PCG for any release form beyond the readiness declaration); trigger before any integration; evidence of resolution: the Q6 matrix and property green with the server contract of Q5."
+  }
+ },
+ "escalations": "None to the Founder from Security. If a release form other than the athlete's readiness declaration is wanted (the R7 'qualified clearance'), that is a PCG/SSCTR decision, possibly Founder-owned; Security's requirement is only that it be an explicit recorded fact.",
+ "notDone": "No code, test, canon, product document, mission, ledger, freeze or other record was edited; nothing committed, pushed or frozen; no npm run verify or verify-r* script; no recursive deletion. The only repository files written are this record and SEC_FF_RECHECK_CYCLE.md."
+}

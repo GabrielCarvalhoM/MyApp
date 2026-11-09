@@ -1,0 +1,230 @@
+{
+  "record": "PCG-V1CPFF-CFOBS1-r1",
+  "role": "Product Constitution & Governance 1.2.0 (fresh instance)",
+  "date": "2026-11-09",
+  "status": "GOVERNANCE_READY_FOR_REVIEW",
+  "authorStatusNote": "A normative reading of decided sources, within PCG authority (source of truth, authority, admissible representations). No doctrine change, no new DR, no canon edit. Consolidation: Chief, with the Security and QRE answers to the same questions. Self-check is delivery, not approval.",
+  "trigger": "The Founder's 2026-11-09 request for an explicit technical decision on CF-OBS-1 from Security, QRE and PCG (Chief dispatch, route L3 productization).",
+  "prevails": "This JSON prevails over PCG_V1CPFF_CFOBS1.md.",
+  "revisions": {
+    "artifact_revision": "r1",
+    "inputs_revision": "worktree claude/v1cp-fix-forward at 0950b0a (clean); reverted scratch patch cycle-c.json sha256 d11bd73bf0e62b68…, suite with it full-dev-1.txt sha256 7dff00e512c55858… (28 failures)",
+    "contract_revision": "audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md at 0950b0a",
+    "sourceBlobs": {
+      "product/PRODUCT_DECISION_REGISTER.md": "f9604e104fc3",
+      "product/ADAPTIVE_ENGINE_CONTRACT.md": "588e0c191d8c",
+      "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md": "1af8791a78a1",
+      "canon/CANONICAL_INDEX.md": "7498f21b8641",
+      "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md": "c567b74516ed",
+      "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.json": "a94887ca5521",
+      "audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.json": "163563cc8cdd"
+    }
+  },
+  "fact": "CF-OBS-1 (Chief observation, reproduced by SSCTR, QRE and Security in round 1; pre-existing at 5ee9dec). Every clinical decision appends a CLINICAL_HOLD row to actualLedger (SB-4); restartProgram and READINESS_DECLARATION read standing holds from the record. Every other review keeps the clinical route only through referenceState.pending (withReference: clinicalSticky requires a valid prior reference). With the reference state omitted (or invalid, which the runtime treats as absent), a weekly review plans over an unreleased hold (Security: KEEP with 30 live sessions; MISSED_SESSION / SYSTEMIC_FATIGUE MODIFY; SSCTR: full doses after a chest-pain hold, then a 'not 100%' window as if no hold existed; QRE: a declared travel break after a sign route gives a full REESTABLISH).",
+  "sources": [
+    {"id": "S1", "ref": "product/PRODUCT_DECISION_REGISTER.md DR-148 (PDR-1.14)", "authority": "Founder, DECIDED / CURRENT_PRODUCT_DECISION", "quotes": [
+      "(1) Diagnosis, clearance, clinical restriction and urgency stay outside the software. The app never diagnoses, never issues, suggests or validates a medical clearance or document",
+      "(3) A warning sign, a current clinical flag or a clinical cause recommends professional assessment, without diagnosis, and holds the prescription. When the person actively declares, in structured answers with a current clear screen, that they have recovered and are ready for a sport, the product offers a conservative sporting restart of that sport. The declaration is the person's statement: never a clearance and never shown as one. No certificate upload is required.",
+      "(4) After a clinical hold, only once readiness is declared.",
+      "(5) After a clinical hold the restart stays conservative",
+      "(7) The history ... interruption episodes ... and the coach's decisions with their state and reasons are preserved. A clinical cause is never relabelled (R-F08-1).",
+      "Protections (MUST): The clinical screen comes first at every decision. A warning sign, a clinical flag or a clinical mention the screen attributes to the person routes to the clinical hold at any time, during a reduction or a restart too.",
+      "An unanswered sign is ASK, never no.",
+      "AEOS rule 4 is unchanged: the app asks readiness and current signs, never clearance."
+    ]},
+    {"id": "S2", "ref": "product/PRODUCT_DECISION_REGISTER.md DR-149 (PDR-1.15)", "authority": "Founder, DECIDED / CURRENT_PRODUCT_DECISION", "quotes": [
+      "Clinical first applies at every check, the early one included; an unanswered sign stays ASK.",
+      "(5) For a potentially serious sign ...: urgent care proportional to the risk.",
+      "Kept: DR-148 in full"
+    ]},
+    {"id": "S3", "ref": "product/PRODUCT_DECISION_REGISTER.md DR-99 (partly superseded by DR-148)", "authority": "Founder", "quotes": [
+      "Clinical injury/illness return, persistent pain/pathology/contraindications/clearance stay CLINICAL_HUMAN_REQUIRED.",
+      "DR-148: Partly supersedes DR-99, only so that 'clinical injury/illness return … CLINICAL_HUMAN_REQUIRED' no longer forbids the declared-readiness restart (3) or the new plan after it (4)"
+    ]},
+    {"id": "S4", "ref": "product/PRODUCT_DECISION_REGISTER.md §5 G04 row with the DR-148 delta", "authority": "PDR gate table", "quotes": [
+      "Antes de coletar/classificar/atuar nesses casos, liberar hold ou prescrever retorno. Confirmação/score/LLM não dão clearance.",
+      "Exceção DR-148: ... a declaração ativa de prontidão da pessoa, com triagem atual, que abre um recomeço esportivo conservador. Nenhuma das duas é liberação."
+    ]},
+    {"id": "S5", "ref": "product/ADAPTIVE_ENGINE_CONTRACT.md §7 (hold table) and the F08 overlay V1CP-F08-r1", "authority": "AEC, current under DR-148", "quotes": [
+      "Cada hold conserva classe de causa, escopo afetado, provenance privada mínima, ..., próximo passo, owner de resolução e evidência/condição de saída.",
+      "Confiança favorável não limpa hold.",
+      "Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco. Reavaliar futuro, sem clearance retroativo.",
+      "Overlay: The person's active readiness declaration (current screening answers, not a checkbox) can open a conservative sporting restart, sport by sport. It is not a clearance ... Any new sign returns to the clinical hold.",
+      "Overlay: The competent professional's assessment and clearance stay outside the product."
+    ]},
+    {"id": "S6", "ref": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md line 108 (rule 4)", "authority": "AEOS", "quotes": ["4. Se faltar aprovação/receita, HOLD/review do owner; não perguntar ao usuário por clearance."]},
+    {"id": "S7", "ref": "audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.json P-2-r2", "authority": "PCG formalization of Founder D2 (DR-148)", "quotes": [
+      "The READINESS_DECLARATION (P-2-r2) is the only act that opens the sporting restart for it; it does not edit, end or reclassify the episode and is not a clearance. Every other item of C02 still opens nothing, a Situation 1 report included.",
+      "C02 items (PCG-R7D-F08-r1 P-2): 'I feel fine', 'I am ready', RECOVERED, an eligibility re-answer, a checkbox, a correction or a later report"
+    ]},
+    {"id": "S8", "ref": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.json / .md (PCG-R7D-F08-r1)", "authority": "PCG, R7-D (historical record; its P-2/P-3/C01/C02/C06 re-ruled by P-2-r2 etc. only for the readiness path)", "quotes": [
+      "P-1: NOT_IMPLEMENTABLE_UNDER_CURRENT_AUTHORITY for S5 and S6, in whole and in part, including an inert, record-only clearance fact",
+      "C06: Consumer: never drop the clinical continuation state; no stale plan",
+      "PCG-F08-C07: The interface's QUALIFIED_CLEARANCE step stays an evaluation-client convention modelling a qualified human in synthetic shadow cases (I-F08-2). It is not a product mechanism, not a runtime input and not evidence that an exit exists.",
+      "PCG-F08-O02: The evaluation client's QUALIFIED_CLEARANCE is unverifiable by the runtime (probe P4: discarding the continuation state without any clearance gives the same result). Acceptable inside the synthetic shadow evaluation ...; it is not a product clearance mechanism."
+    ]},
+    {"id": "S9", "ref": "R7 qualified-clearance modelling: audits/domain-coaching-r7-d-2026-11-02/author/INTERFACE_ONLY_R7D.md §4; CoachingCore/r7/d/RUNTIME_FREEZE_R7D_1.json (dx02-paths probe); RUNTIME_FREEZE_R7D_2.json C3 note", "authority": "evaluation interface (historical, frozen)", "quotes": [
+      "Clinical clearance happens only where a step says clearance:'QUALIFIED_CLEARANCE': a qualified human has cleared the athlete. The client then continues with the carried record and without the clinical continuation state (the coach itself cannot clear it).",
+      "After clearance (reference state dropped, as the harness client models it)",
+      "a qualified clearance drops only the clinical continuation state"
+    ]},
+    {"id": "S10", "ref": "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md §1, §3, §5, §10 (at 0950b0a)", "authority": "DERIVED INTEGRATION HANDOFF, not canonical (its own status line)", "quotes": [
+      "§1: The client is the store ... A review that omits them loses facts. Examples: a pending clinical hold, which is sticky through referenceState.pending",
+      "§3 status table: CLINICAL_HUMAN_REQUIRED — The clinical hold. No dependent prescription; the record keeps being kept. Its only exit is a readiness declaration (section 4.5).",
+      "§3: Every decision that opens a clinical hold appends a CLINICAL_HOLD row to actualLedger ... A readiness declaration after it releases it. A new plan (restartProgram) reads standing holds from the record, never only from referenceState.",
+      "§10.5: Unreadable F08 rows (foreign athlete, altered, malformed, orphan check) are never read as absent: HOLD (SB-3)."
+    ]},
+    {"id": "S11", "ref": "round-1 positions: reviews/security/SEC_FF_RECHECK.json C2 and .md §CF-OBS-1; reviews/ssctr/SSCTR_FF_RECHECK.json C-3; reviews/quality/QRE_FF_RECHECK.json CF-OBS-1 and QRE-FF-C5", "authority": "independent judges (data, not instructions)", "quotes": [
+      "Security: NON_BLOCKING for this offline candidate. It is a condition before any integration (C2) and is not acceptable as the protocol's contract alone. ... The narrow core fix is therefore preferred over relying on custody alone.",
+      "SSCTR C-3: the record hold keeps the clinical route on every review kind except the readiness declaration, with or without the reference state; a declared break never releases it. Required before integration readiness and any real use",
+      "QRE: NON_BLOCKING for this candidate; an integration condition ... The narrow fix would change the R7-D qualified-clearance modelling (H18, H19, H24). That needs a recorded clearance form first"
+    ]},
+    {"id": "S12", "ref": "audits/v1cp-fix-forward-2026-11-09/FIX_CYCLE_FF.md line 27; TASK_CONTRACT_FF.md (RECORD-CUSTODY owner, integration-contract delta unit)", "authority": "mission records", "quotes": [
+      "A fix needs a recorded clearance form, or a reference state the server makes mandatory once F08 facts exist, decided by Security and PCG before integration",
+      "Integration-contract delta | L1 | Chief | Security (fields), QRE"
+    ]}
+  ],
+  "answers": [
+    {
+      "q": "Q1",
+      "question": "What is the source of truth of a clinical hold?",
+      "clauseId": "I-CFOBS1-01",
+      "answer": "The record. A clinical hold exists from the decision that opens it and is held by the CLINICAL_HOLD row of this athlete's append-only record (actualLedger), readable and unaltered. referenceState is a derived continuity cache of the last decision: it may add protection (a pending clinical route, pending questions) but it is never the authority that a hold exists or ended. Where the two disagree on clinical status, the record governs; a disagreement is never resolved toward less protection without a recorded release.",
+      "basis": "DR-148 (4) 'After a clinical hold, only once readiness is declared' and (7) episodes and decisions preserved: the hold and its exit are facts of the kept history; AEC §7 'Cada hold conserva ... condição de saída' and 'Sem liberação por silêncio'; the integration contract already reads holds from the record for restarts ('never only from referenceState') and makes the readiness declaration the only exit (§3). A state that disappears when a client omits a field is not a hold in the sense of AEC §7.",
+      "classification": {"epistemic": "INFERRED (reading of DECIDED sources S1, S5, S10)", "normative": "application of CURRENT_PRODUCT_DECISION DR-148 and AEC §7; no new doctrine"}
+    },
+    {
+      "q": "Q2",
+      "question": "How must a standing (unreleased) hold be identified?",
+      "clauseId": "I-CFOBS1-02",
+      "answer": "A hold stands when the record holds, for this athlete, a readable CLINICAL_HOLD row dated at or before the decision clock and no later valid release for the sport in question. A valid release is only a READINESS_DECLARED row that the runtime recorded on accepting a readiness declaration made after that hold (current screen dated that day and after the hold, every warning sign actively answered no, declaredRecovered). Release is per sport: a sport not declared ready, or declared with a restriction, stays held or capped as the recorded declaration states (DR-148 (3), (6); protections). A new sign, flag or clinical mention after a release opens a new hold. Unreadable rows (foreign, altered, malformed, orphan, later than the clock) are never read as absence of a hold (SB-3 rule, §10.5). Nothing else is a release: a reference state without pending, an omitted reference state, elapsed time, executed sessions, an eligibility re-answer, RECOVERED, 'I feel fine', a Situation 1 report or check, a declared break, a correction, a coach or speed choice, or a professional clearance relayed into the app.",
+      "basis": "DR-148 (3)-(6) and Protections; DR-149 'Clinical first applies at every check'; P-2-r2 and its C02 list; AEC §7 'Sem liberação por silêncio, tempo, score ... ou checkbox'; G04 row 'Confirmação/score/LLM não dão clearance'.",
+      "silentOrGap": "The CLINICAL_HOLD row carries no sport scope and no cause class (minimisation, SEC). Reading the row as holding the whole prescription is the conservative reading DR-148 (3) supports ('holds the prescription'); per-sport release is then read from the recorded declaration (readiness.sports). AEC §7's per-hold fields 'escopo afetado ... owner de resolução ... condição de saída' are therefore derived from the fact class rather than stored. Engineering verifies that the release test is per sport from the record, not 'any later declaration' for every sport (the reverted patch and withHoldFact use the latest declaration time for all sports; whether the program's held sports survive an omitted or stale program is a RECORD-CUSTODY question).",
+      "classification": {"epistemic": "INFERRED (reading of DECIDED sources)", "normative": "application of DR-148; identification rule for consumers and tests"}
+    },
+    {
+      "q": "Q3",
+      "question": "What must happen when the reference state is absent, invalid or stale, on each review kind?",
+      "clauseId": "I-CFOBS1-03",
+      "answer": {
+        "rule": "With a standing record hold, the outcome of every review is at least as protective as the same review with the reference state sent intact and current. Absence, invalidity (hash mismatch, another athlete, malformed) or staleness (built before the latest F08 row or before the decision it should continue) never lowers protection and never releases.",
+        "byKind": [
+          {"kinds": "WEEKLY_REVIEW, MISSED_SESSION, PARTIAL_SESSION, UNDERPERFORMANCE, OVERPERFORMANCE, PROGRESSION_NOT_TOLERATED, PROGRESSION_TOO_EASY, LOCAL_FATIGUE, SYSTEMIC_FATIGUE", "must": "CLINICAL_HUMAN_REQUIRED: no dependent prescription, no proposal with doses, no KEEP that presents the pre-hold sessions as the current plan (C06 'no stale plan'). Reports and facts are recorded (the record keeps being kept) and are read after a valid release by the restart rules."},
+          {"kinds": "SCHEDULE_CHANGE, UNAVAILABLE_DAY, DOUBLE_CONFLICT, EQUIPMENT_CHANGE, GOAL_CHANGE, EVENT_DATE_CHANGE, EVENT_WEEK_CONFLICT, EXERCISE_SUBSTITUTION, PREFERENCE_CHANGE", "must": "The fact may be recorded; no prescription follows while the hold stands. A registered race stays the athlete's own event (DR-149 (3)) and is never turned into authorization."},
+          {"kinds": "RETURN_AFTER_PAUSE (declared break)", "must": "Recorded; screened as stated (a clinical reason adds a route, a nonclinical one removes none); never releases, never a REESTABLISH dose while the hold stands (DR-148 (4))."},
+          {"kinds": "RECOVERED", "must": "Never a release (C02); the clinical route stands and the readiness declaration is the path offered."},
+          {"kinds": "NOT_FEELING_100, WELLBEING_CHECK", "must": "Never open a reduction, a window or a return (P-2-r2: 'a Situation 1 report included'). Clinical first: signs answered yes still set the D5 guidance level; an urgent sign during a hold gets urgent-care guidance, never a downgraded generic message (DR-149 (5); SEC-FFR-02 is the related finding)."},
+          {"kinds": "READINESS_DECLARATION", "must": "The only review that can release. It is evaluated against the record (the hold it answers must be on record; screen after it, dated that day), with or without the reference state; a missing item keeps the hold (§4.5)."},
+          {"kinds": "restartProgram (Situation 3)", "must": "Already reads the record; unchanged: CLINICAL_HUMAN_REQUIRED with missingInputs ['readiness'] while a hold stands."},
+          {"kinds": "any review with no standing record hold", "must": "Outside CF-OBS-1. The general rule still applies that missing continuity never silently lowers protection; the other facts §1 lists as lost on omission (a declared break, a check) are RECORD-CUSTODY and R7-D residual questions (R-DX02-1), not ruled here."}
+        ],
+        "staleReleaseCase": "If the record holds a valid release but a stale reference state still shows the clinical route, the reference state may not keep the athlete held indefinitely: DR-148 promises 'a legitimate way back'. The decision may fail closed for that review and name the mismatch (send the current state), but the recorded release stays reachable. Mechanics: Engineering and Security."
+      },
+      "basis": "DR-148 Protections ('first at every decision ... at any time'), (4), (7); AEC §7 'Sem liberação por silêncio'; PCG-F08-C06; P-2-r2; DR-149 (3), (5); integration contract §3 status table.",
+      "classification": {"epistemic": "INFERRED (reading of DECIDED sources)", "normative": "application of CURRENT_PRODUCT_DECISION; which outcome object and copy the client receives is Engineering, Product/UX and G03"}
+    },
+    {
+      "q": "Q4",
+      "question": "How is a legitimate resumption preserved, what else may release a hold, and is the R7 qualified-clearance modelling admissible?",
+      "clauseId": "I-CFOBS1-04",
+      "answer": {
+        "legitimateResumption": "Preserved by the READINESS_DECLARATION, recorded as READINESS_DECLARED, read from the record with or without the reference state: it releases the declared-ready sports into the conservative restart (DR-148 (3), (5)); sports not ready stay held; restrictions cap; the clinical cause stays on record (R-F08-1); the facts recorded during the hold are kept and read by the restart rules (DR-148 (7)). Situation 3 (restartProgram) follows it. Low friction per DR-149 (1): no certificate, exam or watch.",
+        "otherReleases": "None under current authority. DR-148 (1) keeps clearance outside the software and forbids the app to validate one; P-1 (PCG-R7D-F08-r1) rules even an inert record-only clearance fact NOT_IMPLEMENTABLE while no G04 owner exists; G04 'Confirmação/score/LLM não dão clearance'; AEC §7 forbids release by silence, time, score or checkbox. A professional's clearance obtained outside the app reaches the product only as the athlete's own readiness declaration.",
+        "omissionAsRelease": "No. 'The next review sent without the reference state' is never an admissible representation of a release or a clearance. It is release by silence (AEC §7), is unverifiable (PCG-F08-O02: 'discarding the continuation state without any clearance gives the same result'), and is exactly what any client can do by accident or design.",
+        "r7Modelling": "Not consistent with DR-148 (1) and (3) or AEOS rule 4 as a product path. It was admissible only as an evaluation-client convention modelling a qualified human in synthetic shadow cases (PCG-F08-C07, I-F08-2), was never a product mechanism, and the consumer rule already forbade dropping the clinical continuation state (PCG-F08-C06). DR-148 replaced the exit after a clinical hold with the readiness declaration; the convention therefore has no product meaning in the V1CP runtime. The recorded form it needs is the READINESS_DECLARATION, not a clearance form.",
+        "testsConsequence": "The 28 current-suite tests that model 'after qualified clearance' by omitting the reference state (R7-B.2 QE-R7B1-04; R7-C QE-R7C-01, -07, -10, P6-F01; R7-D Phase 3.1 T2/T3, Phase 3.4 T12) encode the historical evaluation convention. When the fix lands they are re-expressed with a READINESS_DECLARATION as the release; their still-current invariants are kept (nothing prescribed while the route stands; recorded facts survive the hold and are read after the release with no re-send; determinism and recorder independence). Expected plans after the release are the conservative restart the SSCTR rules for, not 'the direct answer's plan' where that exceeds DR-148 (5). Each assertion change is a marked update accepted by SSCTR and QRE. R7 freeze records, final holdouts and R7 closure states stay unchanged and are not re-evaluated."
+      },
+      "basis": "S1 (1), (3), (5), (7); S4; S5; S6; S7 P-2-r2; S8 P-1, C06, C07, O02; S9.",
+      "classification": {"epistemic": "INFERRED (reading of DECIDED sources and earlier PCG records)", "normative": "application of CURRENT_PRODUCT_DECISION DR-148; no new doctrine"}
+    },
+    {
+      "q": "Q5",
+      "question": "Which contract must the integration layer guarantee, and which artifact carries it, with which owner?",
+      "clauseId": "I-CFOBS1-05",
+      "answer": {
+        "guarantee": "On every real path, a standing clinical hold on the record is enforced on every review until a valid readiness declaration releases it, per sport, whatever the client sends or omits; the record's hold and release rows are complete, append-only, bound to the athlete and the clock, and their absence or alteration is never read as 'no hold'. The reference state is a cache that can only add protection.",
+        "layers": "Two layers are both needed, because a pure core cannot detect a deleted row or an omitted record: (a) the core reads standing holds from the record on every review kind (Security's preferred narrow fix, SSCTR C-3); (b) custody guarantees the record is whole (RECORD-CUSTODY). A server that only makes referenceState mandatory covers absence but not a stale or replayed reference state; if chosen instead of (a), it must also refuse or reconcile any reference state older than the record. The choice of mechanism belongs to Security and Engineering; the guarantee above is the normative floor.",
+        "artifacts": [
+          {"artifact": "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md, appended section (e.g. §11 'Clinical holds: record custody and enforcement')", "owner": "Chief (unit owner per TASK_CONTRACT_FF) with Engineering as author; Security (fields) and QRE judge", "why": "It is the derived handoff the app consumes; §1 currently presents the loss of a pending clinical hold on omission as an accepted consequence (finding PCG-CFOBS1-F02)."},
+          {"artifact": "RECORD-CUSTODY (Security condition carried since SEC-V1CP recheck; server appends rows, stores the reference state, binds athlete id and clock)", "owner": "Engineering; Security re-verifies; G07 for health-data custody", "why": "Completeness of the record cannot be proven by the pure core."},
+          {"artifact": "No DR delta required", "owner": "PCG", "why": "DR-148 (3), (4), Protections, AEC §7 and P-2-r2 already decide the rule; this record is the reading. An optional pointer clause (below) may be added to DR-148's Protections at the next authorized canon sync through the product_doctrine branch."}
+        ]
+      },
+      "classification": {"epistemic": "INFERRED", "normative": "allocation of an existing obligation to its carrying artifacts; mechanism is DESIGN_SPACE for Security and Engineering"}
+    },
+    {
+      "q": "Q6",
+      "question": "What must the tests prove, normatively?",
+      "clauseId": "I-CFOBS1-06",
+      "answer": [
+        "N1 Absence never prescribes: for each review kind in Q3, with a standing record hold and no reference state, nothing dependent is prescribed and no pre-hold plan is presented as current; each such case is red on 0950b0a before it is green.",
+        "N2 Alteration never prescribes: an invalid, foreign, malformed, replayed or stale reference state, and altered or later-dated record rows, never give a less protective outcome than the intact case; row deletion and record omission are proven at the custody layer, not claimed from the core.",
+        "N3 Parity: for every kind, the reference-absent outcome is never more permissive than the reference-present outcome.",
+        "N4 Legitimate release still works: a valid readiness declaration releases, per sport, into the conservative restart, with and without the reference state; a sport not declared ready stays held; restrictions cap; the cause stays clinical on record; facts recorded during the hold are kept and read; a new sign after release re-holds.",
+        "N5 Nothing else releases: elapsed time, executed sessions, an eligibility re-answer, RECOVERED, a Situation 1 report or check, a declared break, a correction, a coach or speed choice, an omitted or emptied reference state, and the evaluation QUALIFIED_CLEARANCE convention each leave the hold standing.",
+        "N6 Clinical first during a hold: signs answered yes still set the D5 guidance level (urgent where the instrument says so).",
+        "N7 The re-expressed R7 tests keep their current invariants (Q4 testsConsequence) under a readiness-declaration release; assertion changes are marked updates accepted by SSCTR and QRE.",
+        "Test mechanics, fixtures and mutation coverage: QRE."
+      ],
+      "classification": {"epistemic": "INFERRED", "normative": "acceptance outcomes derived from DR-148; mechanics DESIGN_SPACE for QRE"}
+    },
+    {
+      "q": "Q7",
+      "question": "Can this shadow candidate be closed separately with CF-OBS-1 named as an integration blocker, and what does it block?",
+      "clauseId": "I-CFOBS1-07",
+      "answer": "Yes. The candidate is an offline synthetic shadow reference (mode SHADOW, applied false, V1_COACHING_AUTHORITY_READY = NO, F08_OPEN); the gap is pre-existing at 5ee9dec, is not introduced by the Fix-Forward, and with the reference state sent as returned the hold is enforced; the in-product exit exists. A closure state is not a readiness claim, and fixing the rule now would rewrite 28 tests whose release form needs the SSCTR and QRE checks above, which the single bounded cycle does not hold. Conditions: the closure names CF-OBS-1 as a specific BLOCKING integration blocker (not a soft condition), cites this record, and states that the integration contract's §1 omission sentence does not describe acceptable behaviour for clinical holds. It blocks: INTEGRATION_READY; any authorization for real athletes (and any real collection, already blocked by Security/G07); app publication readiness; F08 leaving F08_OPEN (DR-148: 'until the runtime implements these paths and its reviews pass'); V1_COACHING_AUTHORITY_READY = YES. It does not invalidate the round's other verdicts. Technical validation of the hold path may be claimed only qualified: 'with the reference state sent as returned'. No state may be declared INTEGRATION_READY or V1_COACHING_AUTHORITY_READY = YES while a real path can skip a safety hold.",
+      "classification": {"epistemic": "INFERRED", "normative": "gate reading; the closure decision itself is the Chief's"}
+    }
+  ],
+  "findings": [
+    {"id": "PCG-CFOBS1-F01", "type": "DOWNSTREAM_VIOLATION", "state": "DOWNSTREAM_VIOLATION", "where": "CoachingCore runtime at 0950b0a (pre-existing at 5ee9dec): withReference keeps the clinical route only from a valid prior reference state; review handlers do not read standing CLINICAL_HOLD rows.", "violates": "DR-148 (4) and Protections; AEC §7 'Sem liberação por silêncio'; P-2-r2; PCG-F08-C06.", "impact": "A real client that omits or corrupts the reference state plans over a clinical hold (round-1 reproductions).", "dependentsSuspended": "integration readiness, real use, F08 closure, V1 authority", "owner": "Engineering (fix), QRE and SSCTR (re-expressed tests), Security (re-verify)", "decider": "Chief", "smallestResolution": "The record rule of Q1-Q3 in the core plus RECORD-CUSTODY, with N1-N7."},
+    {"id": "PCG-CFOBS1-F02", "type": "DOWNSTREAM_VIOLATION (documentary)", "state": "DOWNSTREAM_VIOLATION", "where": "INTEGRATION_CONTRACT_V1CP.md §1 ('A review that omits them loses facts. Examples: a pending clinical hold, which is sticky through referenceState.pending') against its own §3 ('Its only exit is a readiness declaration').", "violates": "AEC §7 'Sem liberação por silêncio'; DR-148 (4).", "impact": "An integrator can read the fail-open as the protocol's contract.", "owner": "Chief (integration-contract unit), Engineering author; Security and QRE judge", "smallestResolution": "Append the PROPOSED §11 text below; sections 1-10 kept as history."},
+    {"id": "PCG-CFOBS1-F03", "type": "INTERPRETIVE_CONFLICT", "state": "resolved by reading (no Founder decision needed)", "sourceA": "FIX_CYCLE_FF.md line 27 and QRE round 1: 'A fix needs a recorded clearance form' / 'That needs a recorded clearance form first'.", "sourceB": "DR-148 (1) 'never issues, suggests or validates a medical clearance'; PCG-R7D-F08-r1 P-1 (even an inert clearance fact NOT_IMPLEMENTABLE), C01, C07; AEOS rule 4.", "incompatibility": "Read literally, A would introduce a clearance input or field the authorities exclude.", "resolution": "The recorded form is the READINESS_DECLARATION (DR-148 (3)); no clearance form, field, flag or event kind is introduced. A professional clearance form stays BLOCKED on G04 (Q-1 to Q-8).", "decider": "PCG (reading); the Chief applies it."},
+    {"id": "PCG-CFOBS1-F04", "type": "PRODUCT_DRIFT_WARNING (latent)", "state": "open, non-blocking for the shadow closure", "where": "The current CoachingCore suite carries the R7 evaluation convention ('clearance' = drop the reference state) as asserted behaviour in 28 tests.", "risk": "Keeping these tests green as-is would, over time, make release by omission look like the product's contract.", "owner": "QRE with SSCTR and Engineering in the mission that implements F01", "resolution": "Q4 testsConsequence."}
+  ],
+  "silences": [
+    "Per-sport scope of the CLINICAL_HOLD row and AEC §7's per-hold fields (cause class, affected scope, exit condition) are not stored; the conservative whole-prescription reading applies (Q2).",
+    "No source states how a disagreement between the record and the reference state is resolved; this record reads it (Q1, Q3 staleReleaseCase).",
+    "No source binds the latest program's custody (an older program sent with the record); RECORD-CUSTODY should cover it.",
+    "Multi-device ordering and offline queues of reviews are not addressed; Security and Engineering under RECORD-CUSTODY."
+  ],
+  "conflicts": "No THESIS_CONFLICT. DR-148, DR-149, AEC §7, AEOS rule 4, the G04 row and P-2-r2 agree; DR-99 is superseded only as DR-148 states. The conflicts are downstream (F01-F04).",
+  "founderQuestion": "None. The exit after a clinical hold (the readiness declaration only) and the exclusion of in-app clearance are already decided by DR-148 (1), (3), (4) and kept by DR-149. Founder visibility only: once fixed, an athlete who was cleared by a professional outside the app still resumes in the app through the low-friction readiness declaration, never by the app accepting the clearance.",
+  "proposedText": [
+    {
+      "id": "PROP-CFOBS1-IC11",
+      "status": "PROPOSED",
+      "targetArtifact": "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md (append-only new section after §10)",
+      "owner": "Chief (integration-contract unit) with Engineering as author; Security (fields) and QRE judge",
+      "when": "In the mission that implements the fix, or earlier as a warning-only note at the candidate's closure",
+      "text": "## 11. Clinical holds: the record is the source of truth (CF-OBS-1; PCG-V1CPFF-CFOBS1-r1)\n- A clinical hold stands from the CLINICAL_HOLD row of this athlete's record until a later READINESS_DECLARED row releases it, per declared-ready sport. The reference state is a cache: it may add protection, never remove it.\n- Every review kind other than READINESS_DECLARATION returns CLINICAL_HUMAN_REQUIRED while a hold stands on the record, with or without the reference state; facts are recorded, nothing dependent is prescribed and no pre-hold plan is shown as current. A declared break, a 'not 100%' report, a check, RECOVERED, an eligibility re-answer, elapsed time or executed sessions never release it.\n- An absent, invalid or stale reference state never releases a hold. Omitting the reference state is never a representation of a release or a clearance; the product has no clearance input.\n- Custody (RECORD-CUSTODY): the server keeps the record whole and append-only, binds athlete and clock, and refuses or reconciles a review whose record or reference state is missing, altered or older than the record.\n- Section 1's sentence 'a review that omits them loses facts' does not apply to clinical holds."
+    },
+    {
+      "id": "PROP-CFOBS1-DR148P",
+      "status": "PROPOSED, optional (editorial pointer, not required for closure or integration)",
+      "targetArtifact": "product/PRODUCT_DECISION_REGISTER.md DR-148 'Protections (MUST)'",
+      "owner": "PCG, at the next authorized canon sync, through the product_doctrine branch (Research audit, Product/UX interpretability, Chief consolidation)",
+      "text": "A clinical hold is read from the athlete's kept record. Missing, altered or stale continuity state never releases it; only the readiness declaration does (AEC §7: sem liberação por silêncio)."
+    }
+  ],
+  "statesKeptDistinct": {
+    "implementationDone": "Not affected for the candidate's named scope; no CF-OBS-1 fix is implemented in this mission.",
+    "technicalValidation": "Hold path validated only with the reference state sent as returned.",
+    "integrationReadiness": "NO: blocked by CF-OBS-1 (and the judges' other conditions).",
+    "authorizationForRealAthletes": "NO.",
+    "appPublicationReadiness": "NO.",
+    "F08": "F08_OPEN",
+    "V1_COACHING_AUTHORITY_READY": "NO"
+  },
+  "reviewsAndInvalidation": {
+    "judges": "Chief consolidation with the Security and QRE CF-OBS-1 answers (route). SSCTR owns the sporting expectations of N4/N7.",
+    "invalidatedBy": "A change to DR-148, DR-149, AEC §7, the G04 row or AEOS rule 4; an appointed G04 owner or an approved professional-clearance form (Q-1 to Q-8); a change to the record or reference-state semantics of the runtime; a Founder decision on the exit after a clinical hold."
+  },
+  "selfCheck": {
+    "rubric": "C:/Users/carva/.claude/agent-system/evals/PRODUCT_GOVERNANCE.md (not re-read in full; applied: sources quoted with paths, epistemic and normative axes separate, no hypothesis promoted, no strategy chosen, mechanics left to Security/Engineering/QRE, sporting content to SSCTR, no canon edit, no Founder decision invented)",
+    "deterministicChecks": "Inputs read at 0950b0a with git show; blob ids recorded; scratch patch and suite hashed; failing test list read from full-dev-1.txt (fail 28). Other roles' *_RECHECK_CYCLE* files not read.",
+    "note": "Self-check is delivery, not approval."
+  },
+  "writes": ["audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_CFOBS1.json", "audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_CFOBS1.md"],
+  "notChanged": "canon/, product/, the PDR, the integration contract, every other record, the runtime and tests; no commit, no push."
+}
