@@ -2,6 +2,7 @@ import {clone,freeze,hash} from './value.mjs';
 import {canonicalizeIntake,onDate,dayGap} from './r6-intake.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
+import {volumeOf,difficultyOf,rangePoint,d1Higher,coachingDisclosures} from './v1-coaching.mjs';
 import {walkPrescription,walkJogPrescription,easyPrescription,qualityPrescription,racePrescription,exerciseRow,fitStrengthSession,strengthPrescription,validateR6Prescription,roundTo5,reducedWork,restrictStrengthSession} from './r6-prescription.mjs';
 import {chooseBalanced,hourOf} from './r6-balanced.mjs';
 import {admitted,repertoireAuthority,DEFAULT_REPERTOIRE,repertoireOf,repertoireBinding,allowsCandidate,buildTemplates,templateTypesFor,noviceTemplateTypes,PRACTICE_FOR,RUN_CLASS_THRESHOLDS,archetypeOf,noExternalLoad,ordinalResistance,incrementFor,kgText,pullCoverageDisclosure,lowerStimulusDisclosure,runRepertoireOf,ROTATION_DEFERRED_PHASES,rotationEligibility,configurationOf,novelOrEccentricLower,I11_PROTECTED_FAMILIES,demandRank,familiarRunCategory,familiarBoutsInputs,laterGateRunItem,laterGateItem,CONFIGURATIONS,TEMPLATE_DEFS,REASON_BASED_SUBSTITUTION,admissibleAlternative,followsSkillMismatch,skillRank} from './r7b-repertoire.mjs';
@@ -305,7 +306,8 @@ export function advanceRun(sk,st0,w,gate={}){
     smallReferenceStep=st.long!==longBefore&&longBefore<50&&!held;waitLong=held&&st.long!==longBefore&&longBefore<50;
     // One easy session steps at a time (rotating), so weekly volume rises by about one step, never all easy runs at once.
     const running=Math.max(1,st.nEasy-st.walks);
-    if(!smallReferenceStep&&st.easy!==null&&(g('EASY')==='EARNED'||g('EASY')==='ADVANCE'&&st.devCount%R.easyStepEveryDevelopmentWeeks===0)&&st.easy+R.easyStepMinutes<=Math.min(budget,(st.long??budget+5)-5)){st.easyExtra=(st.easyExtra??0)+1;if(st.easyExtra>=running){st.easy+=R.easyStepMinutes;st.easyExtra=0;}otherStep=true;}
+    // V1CP V4' (SSCTR-V1CP Q10): lower running volume: easy-run durations take no step (neither ADVANCE nor EARNED); long, quality and walks unchanged.
+    if(volumeOf(sk.c,'RUN')!=='LOWER'&&!smallReferenceStep&&st.easy!==null&&(g('EASY')==='EARNED'||g('EASY')==='ADVANCE'&&st.devCount%R.easyStepEveryDevelopmentWeeks===0)&&st.easy+R.easyStepMinutes<=Math.min(budget,(st.long??budget+5)-5)){st.easyExtra=(st.easyExtra??0)+1;if(st.easyExtra>=running){st.easy+=R.easyStepMinutes;st.easyExtra=0;}otherStep=true;}
    }
    if(P.quality&&done('QUALITY')&&!smallReferenceStep&&!bouts){
     if(phase==='SPECIFIC'&&st.thresholdDone>=R.specificRequiresCompatibleThresholdSessions)st.specificStep++;
@@ -413,7 +415,7 @@ function distributeRun(sk,row,roles,{ceiling=null,firstWeek=false,previousLong=n
  for(const r of easyRoles){
   if(walkSet.has(r.id)){out[r.id]={role:'WALK',prescription:walkPrescription(Math.min(fullBudget,op.establishment.walkSessionMinutes[0]),{reason:'More chosen run days than current weekly running supports: this day keeps a brisk walk so running load is spread, not added'}),optional:true,converted:'TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE'};continue;}
   const minutes=(row.easy??R.minimumSessionMinutes)+(extended.has(r.id)?R.easyStepMinutes:0);
-  out[r.id]={role:'EASY',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{cue,strides:r===stridesDay?{repetitions:row.strides,workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...(optionalStrides?{optional:true}:{})}:null}),essential:false,key:false,progression:{dimension:'EASY_MINUTES',value:minutes}};
+  out[r.id]={role:'EASY',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{cue,strides:r===stridesDay&&!(optionalStrides&&difficultyOf(sk.c,'RUN')==='LOWER')?{repetitions:row.strides,workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...(optionalStrides?{optional:true,...(difficultyOf(sk.c,'RUN')==='HIGHER'?{presentation:'IN_SESSION'}:{})}:{})}:null}),essential:false,key:false,progression:{dimension:'EASY_MINUTES',value:minutes}};
  }
  // Long-run share: with three or more running sessions the long run stays within the declared share, never below the typical easy run.
  const long=longRole?out[longRole.id]:null,running=Object.values(out).filter(x=>x.prescription&&x.role!=='WALK');
@@ -466,7 +468,8 @@ function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}
  let normal=ex?.sets??(main?g.sets:Math.max(1,g.sets-1));
  const firstDevBlock=sk.blocks.find(b=>['BUILD','DEVELOPMENT'].includes(b.family));
  if(cap.strength.class==='NONE'&&firstDevBlock&&w>=firstDevBlock.startWeek&&w<firstDevBlock.endWeekExclusive)normal=Math.min(normal,2);
- if(S.addSetAtBlockBoundary&&(ex?.blocksDone??0)>0&&g.mode!=='HOLD')normal=Math.max(normal,Math.min(main?g.maxSets:Math.max(1,g.maxSets-1),normal+1));
+ // V1CP V2 (SSCTR-V1CP Q10): lower strength volume keeps the base sets (no block-boundary set).
+ if(S.addSetAtBlockBoundary&&(ex?.blocksDone??0)>0&&g.mode!=='HOLD'&&volumeOf(sk.c,'STRENGTH')!=='LOWER')normal=Math.max(normal,Math.min(main?g.maxSets:Math.max(1,g.maxSets-1),normal+1));
  if(ex&&Number.isInteger(ex.returnStep)){
   if(ex.returnStep===0)return {kind:'RETURN_ENTRY',basis:R.strengthEntrySets,rirBase:R.strengthEntryMinimumRir,rirFloor:R.strengthEntryMinimumRir,row:bodyweight?{reps:ex.reps??g.reps,mode:'BODYWEIGHT'}:{reps:inRange(ex.reps??g.reps),mode:'ESTABLISH',establishment:true,note:ex.load!==null&&ex.load!==undefined?'Return entry: choose a load that leaves at least '+R.strengthEntryMinimumRir+' reps in reserve; do not exceed the previous '+ex.load+' and do not restore it because days have passed':'Return entry: effort-guided load with at least '+R.strengthEntryMinimumRir+' reps in reserve'}};
   // Step 2 comes from the count before the break (the return ceiling), never from the base count (SSCTR D49).
@@ -493,9 +496,16 @@ function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}
  if(ex.unlogged&&ex.mode==='FROM_LOG')return {kind:'UNLOGGED',...counts,cap:e.sets,rirFloor:e.minimumRir,row:{reps:inRange(ex.reps??reps),mode:'ESTABLISH',establishment:true,note:`No usable load was logged last time: establish the load by effort again${Number.isFinite(ex.ceiling)?`; do not exceed ${ex.ceiling} ${ex.convention==='PER_HAND'?'kg per hand':'kg'}`:''}`}};
  // R7-D F03-B (F03B-MACHINE-STEP-r1, P2): a machine step due is the athlete's next setting above R, a numberless row at the step's repetitions with R
  // (at the dose held before the step) as the fallback; never in a phase that holds the load.
+ // V1CP D1 (SSCTR-V1CP Q11): the strength difficulty on development rows with a known or logged load. HIGHER: an eligible hypertrophy accessory
+ // row is prescribed at targetRir (2) with the instruction threshold 1, an eligible general accessory row keeps its RIR with the threshold
+ // targetRir - 1 (d1Higher); LOWER: the threshold is startRir (its tolerance-0 gate is weeklyGates'). The instruction is never below the gate's
+ // acceptance bound (C-Q11-1); establishment, re-establishment, unlogged, return and event-phase rows returned above, unchanged.
+ const dHigh=d1Higher(sk,{role:slot.role,kind:ex.mode==='KNOWN'?'KNOWN':'FROM_LOG',loaded:!bodyweight&&!ordinalResistance(entry),region:entry.region,phase});
+ const thr=difficultyOf(sk.c,'STRENGTH')==='LOWER'?g.startRir:dHigh==='HYPERTROPHY'?g.targetRir-1:dHigh==='GENERAL'?g.targetRir-1:g.targetRir;
+ if(dHigh==='HYPERTROPHY')counts.rirBase=g.targetRir;
  if(ex.mode==='KNOWN'&&ex.convention==='MACHINE_STACK'&&ex.stepDue&&!hold)return {kind:'KNOWN',...counts,rirFloor:2,row:{reps:Math.min(ex.stepDue.reps??ex.reps,hi),mode:'FROM_LOG',convention:ex.convention,nextSetting:{aboveKg:ex.load,fallbackReps:Math.min(ex.stepDue.heldReps??ex.reps,hi)},note:null}};
  if(ex.mode==='KNOWN')return {kind:'KNOWN',...counts,rirFloor:2,row:{reps:Math.min(ex.reps,hi),mode:'KNOWN',value:ex.load,convention:ex.convention,note:hold?'No load increase in this phase':null}};
- const pending=Number.isFinite(ex.pendingLoad),rule=pending?PENDING_RULE:ex.ceiling!=null&&ex.source==='RE_ESTABLISHED'?`Use the load you established last time; never above the previous ${ex.ceiling} until a new log supports it`:hold?'Use the last logged load; no increase in this phase':g.mode==='LOAD'?`If every set reached ${g.reps} reps with at least ${g.targetRir} in reserve, add the smallest available increment; otherwise repeat`:g.mode==='HOLD'?'Keep the logged load while reps in reserve hold':`Add ${S.repStep} reps per set while at least ${g.targetRir} reps stay in reserve, up to ${hi}; then add the smallest increment and return to ${lo}`;
+ const pending=Number.isFinite(ex.pendingLoad),rule=pending?PENDING_RULE:ex.ceiling!=null&&ex.source==='RE_ESTABLISHED'?`Use the load you established last time; never above the previous ${ex.ceiling} until a new log supports it`:hold?'Use the last logged load; no increase in this phase':g.mode==='LOAD'?`If every set reached ${g.reps} reps with at least ${thr} in reserve, add the smallest available increment; otherwise repeat`:g.mode==='HOLD'?'Keep the logged load while reps in reserve hold':`Add ${S.repStep} reps per set while at least ${thr} reps stay in reserve, up to ${hi}; then add the smallest increment and return to ${lo}`;
  return {kind:'FROM_LOG',...counts,row:{reps:inRange(ex.reps??reps),mode:'FROM_LOG',rule,...(pending?{pending:true}:{})}};
 }
 /**
@@ -972,7 +982,7 @@ export function dayPhaseOf(sk,w,day){
 function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState=null}={}){
  const {c,op,goal}=sk,R=op.run,E=op.event,ev=goal.run.event,out={},ed=eventDays(sk),cue=R.effortCues.EASY_CONVERSATIONAL;
  const capped=x=>ceiling===null?x:Math.min(x,ceiling),budget=capped(c.schedule.runMinutes),qualityOk=allows(sk.authority,'R6-RUN-QUALITY');
- const runs=roles.filter(r=>r.sport==='RUN').sort((a,b)=>a.day-b.day),strides=qualityOk&&(achieved.strides??0)>0,optionalStrides=stridesOptional(sk,runState)?{optional:true}:{};
+ const runs=roles.filter(r=>r.sport==='RUN').sort((a,b)=>a.day-b.day),optStr=stridesOptional(sk,runState),dRun=difficultyOf(sk.c,'RUN'),strides=qualityOk&&(achieved.strides??0)>0&&!(optStr&&dRun==='LOWER'),optionalStrides=optStr?{optional:true,...(dRun==='HIGHER'?{presentation:'IN_SESSION'}:{})}:{};
  // Walk/jog, restart and return athletes keep or reduce what they have reached; never a continuous run they have not done (SSCTR D43).
  const mode=runState?.mode??'EASY',ladder=op.establishment.walkJogLadder,entry=op.return.entryRunMinutes;
  const exposures=mode==='EASY'?null:spacedExposures(op,runs),walkSet=mode==='EASY'?walkDays(roles,walks):new Set(runs.filter(r=>!exposures.has(r.id)).map(r=>r.id));
@@ -984,7 +994,8 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
  const kindOf=family=>family==='TEN_K_SPECIFIC'?'TEN_K':family==='HALF_MARATHON_SPECIFIC'?'HALF_MARATHON':'THRESHOLD';
  // The touch is the run day closest to the race that is still at least raceWeekTouchMinDaysBeforeRace days before it.
  const touchDay=mode==='EASY'&&qualityOk&&achieved.quality?runs.filter(r=>!walkSet.has(r.id)&&ed.windowB(r.day)>=E.raceWeekTouchMinDaysBeforeRace).sort((a,b)=>ed.windowB(a.day)-ed.windowB(b.day))[0]?.day??null:null;
- const taperVolume=ev.kind==='10K'?E.taperWeekRunVolumeRange[1]:mid(E.taperWeekRunVolumeRange);
+ // V1CP V3 (SSCTR-V1CP Q10): taper and race-week running fractions at the bounds of the approved ranges for LOWER and HIGHER volume.
+ const vRun=volumeOf(sk.c,'RUN'),taperVolume=rangePoint(E.taperWeekRunVolumeRange,vRun,ev.kind==='10K'?E.taperWeekRunVolumeRange[1]:mid(E.taperWeekRunVolumeRange)),raceWeekVolume=rangePoint(E.raceWeekRunVolumeRange,vRun,mid(E.raceWeekRunVolumeRange)),taperLong=rangePoint(E.taperWeekLongRunRange,vRun,mid(E.taperWeekLongRunRange));
  for(const r of runs){
   const b=ed.before(w,r.day);
   if(b===0)continue;
@@ -997,17 +1008,17 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
   if(walkSet.has(r.id)){out[r.id]=walk();continue;}
   if(b<=ed.windowDays){
    if(mode==='WALK_JOG'){out[r.id]=b===1?{role:'WALK',prescription:walkPrescription(Math.min(c.schedule.runMinutes,E.keptWalkMinutes),{reason:'Day before the race: an easy walk if you like; no running'}),optional:true,converted:'RACE_EVE_WALK'}:walkJog(runState.walkStep-1,'Final days before the race: an easier walk/jog than your current step');continue;}
-   if(mode!=='EASY'){out[r.id]=b===1?{role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0],current),{family:'SHAKEOUT',cue}),optionalByDesign:true},optional:true,explanation:'Optional short easy run the day before the race'}:{role:'EASY',prescription:easyPrescription(heldMinutes(mid(E.raceWeekRunVolumeRange)),{cue}),explanation:'Final days before the race: shorter than your current runs'};continue;}
+   if(mode!=='EASY'){out[r.id]=b===1?{role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0],current),{family:'SHAKEOUT',cue}),optionalByDesign:true},optional:true,explanation:'Optional short easy run the day before the race'}:{role:'EASY',prescription:easyPrescription(heldMinutes(raceWeekVolume),{cue}),explanation:'Final days before the race: shorter than your current runs'};continue;}
    if(b===1){out[r.id]={role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0]),{family:'SHAKEOUT',cue,strides:strides?{repetitions:Math.min(E.shakeoutStrideRepetitions,achieved.strides),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null}),optionalByDesign:true},optional:true,explanation:'Optional short shakeout the day before the race'};continue;}
    if(r.day===touchDay){const p=qualityPrescription('TOUCH',E.raceWeekTouch[ev.kind],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,touchCue:ev.kind==='10K'?'TEN_K_EFFORT':'HALF_MARATHON_EFFORT'});if(p){out[r.id]={role:'RACE_TOUCH',prescription:p,key:true,essential:false,explanation:'Brief race-effort touch to stay sharp; only work already done in the build'};continue;}}
-   out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(mid(E.raceWeekRunVolumeRange)),{cue}),explanation:'Final days before the race: short and easy'};
+   out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(raceWeekVolume),{cue}),explanation:'Final days before the race: short and easy'};
    continue;
   }
   if(mode==='WALK_JOG'){out[r.id]=walkJog(runState.walkStep,'Taper: hold your current walk/jog step; nothing new before the race');continue;}
   if(mode!=='EASY'){out[r.id]={role:'EASY',prescription:easyPrescription(heldMinutes(1),{cue}),explanation:'Taper: hold your current easy runs; nothing longer before the race'};continue;}
   // R10: the taper long run is never shorter than that week's easy run.
-  if(r.role==='LONG'&&achieved.long){const minutes=Math.max(roundTo5(achieved.long*mid(E.taperWeekLongRunRange)),easyMinutes(taperVolume));out[r.id]={role:'LONG',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{family:'LONG',cue}),key:true,essential:true,explanation:'Taper: shorter long run relative to the achieved peak, never shorter than the easy runs'};continue;}
-  if(r.role==='QUALITY'&&qualityOk&&achieved.quality?.work){const q=achieved.quality,work=reducedWork(q.work,E.taperQualityWorkRange,E.reducedWorkMinimums);const p=qualityPrescription(kindOf(q.family),{repetitions:work.repetitions,workMinutes:work.workMinutes,recoveryMinutes:q.work.recoveryMinutes},{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget});if(p){out[r.id]={role:'QUALITY',prescription:p,key:true,essential:true,explanation:'Taper: same effort, less work than the achieved peak session'};continue;}}
+  if(r.role==='LONG'&&achieved.long){const minutes=Math.max(roundTo5(achieved.long*taperLong),easyMinutes(taperVolume));out[r.id]={role:'LONG',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{family:'LONG',cue}),key:true,essential:true,explanation:'Taper: shorter long run relative to the achieved peak, never shorter than the easy runs'};continue;}
+  if(r.role==='QUALITY'&&qualityOk&&achieved.quality?.work){const q=achieved.quality,work=reducedWork(q.work,((r,l)=>l==='STANDARD'?r:[rangePoint(r,l),rangePoint(r,l)])(E.taperQualityWorkRange,difficultyOf(sk.c,'RUN')),E.reducedWorkMinimums);const p=qualityPrescription(kindOf(q.family),{repetitions:work.repetitions,workMinutes:work.workMinutes,recoveryMinutes:q.work.recoveryMinutes},{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget});if(p){out[r.id]={role:'QUALITY',prescription:p,key:true,essential:true,explanation:'Taper: same effort, less work than the achieved peak session'};continue;}}
   out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(taperVolume),{cue,strides:strides?{repetitions:Math.max(R.strides.entryRepetitions,achieved.strides-1),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null})};
  }
  return out;
@@ -1091,10 +1102,10 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
   const firstOfWeek=firstStrength||!!t?.densityCapped&&t?.type==='CORE',built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
   // What stood in for, or was left out of, an event-week slot (QE-R7B-OBS-04) travels with the session, so the plan states it: a reason-based slot
   // always; another slot only when the session without the rule would have prescribed it (a row the time fit leaves out anyway is no change).
-  let kept=null;const stood=(built.standIns??[]).filter(g=>{if(g.setAside)return true;if(!kept){const plain=strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek,guard:false}),fit=plain.rows.length?fitStrengthSession(plain.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,plain.rows.length)}):null;kept=new Set((fit??[]).map(e=>e.id));}return kept.has(g.selected);});
+  let kept=null;const stood=(built.standIns??[]).filter(g=>{if(g.setAside)return true;if(!kept){const plain=strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek,guard:false}),fit=plain.rows.length?fitStrengthSession(plain.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35||volumeOf(sk.c,'STRENGTH')==='LOWER'?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,plain.rows.length)}):null;kept=new Set((fit??[]).map(e=>e.id));}return kept.has(g.selected);});
   const standIns=stood.length?{eventStandIns:stood}:{};
   if(!built.rows.length&&built.standIns?.length){sessions.push({...restByDesign(common,'No new exercise in the taper, race or post-event weeks: the exercises of this session start '+(plan.phases.lastIndexOf('POST_EVENT')===plan.phases.length-1?'after this program':'after the post-event week')),...standIns});continue;}
-  let fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
+  let fitted=built.rows.length?fitStrengthSession(built.rows,{budget:s.strengthMinutes,warmup:op.strength.warmupMinutes,cooldown:op.strength.cooldownMinutes,secondsPerRep:op.strength.secondsPerRep,maxExercises:s.strengthMinutes<35||volumeOf(sk.c,'STRENGTH')==='LOWER'?op.strength.maxExercises.MAIN_ONLY_BUDGET:op.strength.maxExercises.DEFAULT,minimumExercises:Math.min(2,built.rows.length)}):null;
   if(!fitted){sessions.push(restByDesign(common,'The chosen time cannot hold a supported strength session; more time on this day is needed'));continue;}
   // B0-C11 / CMP.P04: under a RUN lead, a non-MAIN HIGH-eccentric lower row in a session within about a day before the long run or the week's
   // quality run falls by content (one set fewer, a planned reduction), disclosed; the arrangement came first (CMP.I11 ranking), MAIN rows keep
@@ -1404,6 +1415,8 @@ export function generateProgram(input,options={}){
  negotiation.push(...arrangementDisclosures(choices));
  if(s.sharedDays.length&&(!s.runTurn||!s.strengthTurn||s.runTurn===s.strengthTurn)&&!s.sameTurnConfirmed)negotiation.push({id:'BACK_TO_BACK_CONFIRMATION',blocking:false,days:s.sharedDays,detail:'Run and strength share a shift on these days and are planned back to back; confirm the order or change one shift'});
  negotiation.push(...repertoireNegotiation(sk,{templates,noviceTemplates}));
+ // V1CP (SSCTR-V1CP Q09-Q11): what the athlete's coaching choices change, and where a choice equals standard; none for the default path.
+ negotiation.push(...coachingDisclosures(c));
  // The time fit leaves accessories out before main sets lose any (R6); stated, never silent.
  const fitFirst=weeks.find(w=>DEVELOPMENT.includes(w.phase))??weeks[0],lost=[];for(const x of (fitFirst?.sessions??[]).filter(x=>x.sport==='STRENGTH'&&x.prescription)){const t=templates.find(t=>t.type===x.templateType);if(t)for(const r of t.rows)if(!x.prescription.exercises.some(e=>e.id===r.entry.id)&&r.role!=='MAIN')lost.push(r.entry.id);}
  if(lost.length)negotiation.push({id:'STRENGTH_TIME_LIMITS_SESSION',blocking:false,exercises:[...new Set(lost)],detail:'The chosen time per strength session keeps the main lifts and leaves some accessories out',options:['More time on strength days','Keep the shorter sessions']});

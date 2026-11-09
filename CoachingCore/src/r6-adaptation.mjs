@@ -9,7 +9,7 @@ import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFo
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
-import {coachingOf,mergeCoaching,describeCoaching} from './v1-coaching.mjs';
+import {coachingOf,mergeCoaching,describeCoaching,profileOf,difficultyOf,coachingDisclosures} from './v1-coaching.mjs';
 import {readWellbeing,wellbeingFact,readReadiness,readinessFact,isF08Fact,WELLBEING_DECLARED,READINESS_DECLARED} from './v1-f08.mjs';
 import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
@@ -212,6 +212,8 @@ const later=(a,b)=>!a?b:!b?a:Date.parse(a)>=Date.parse(b)?a:b;
  * prescribed RIR minus one; without a log the dose holds.
  */
 function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
+ // V1CP (SSCTR-V1CP Q09, Q11): the coach profile and the strength difficulty act here only as holds (C-Q09-1).
+ const conservative=profileOf(sk.c)==='CONSERVATIVE',lowerStrength=difficultyOf(sk.c,'STRENGTH')==='LOWER';
  const L=sk.op.learning,SG=sk.op.strength.gates,gates={},reasons=[],phase=sk.plan.phases[w],nearEvent=['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT'].includes(sk.plan.phases[w+1])||['TAPER','RACE_WEEK','POST_EVENT'].includes(phase);
  // One verdict per gate key, whatever order its roles or rows are read in (decision authority closure, QE-R7ASC-03): the most restrictive one
  // stands, so a role or row that holds or steps back a dose is never overwritten by one read after it. In RETURN and RESTART every run role gates
@@ -229,6 +231,9 @@ function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
   if(rows.some(x=>['MISSED','NOT_REPORTED','PARTIAL','CONFLICTED','PENDING'].includes(x.status))){setGate(gateKey,'HOLD',`${role}: not executed as planned this week (${rows.map(x=>x.status).join(',')}); repeat the dose, no debt`);continue;}
   if(r.adverse>=L.repeatedAdverseForRegression){setGate(gateKey,'REGRESS',`${role}: ${r.adverse} comparable adverse responses within ${L.repeatedAdverseWindowDays} days`);continue;}
   if(rows.some(x=>x.kind==='ADVERSE'||x.kind==='CONFLICTING')){setGate(gateKey,'HOLD',`${role}: one adverse or conflicting response is a signal, not a trend; repeat the dose`);continue;}
+  // V1CP P2 (SSCTR-V1CP Q09): the conservative coach holds an EASY-mode development step after a completed run with no reported response (never REGRESS,
+  // never adverse: unknown is not adverse); WALK_JOG, RESTART and RETURN keep their recipes.
+  if(conservative&&mode==='EASY'&&DEVELOPMENT.includes(phase)&&rows.some(x=>x.kind==='COMPLETED_NO_RESPONSE')){setGate(gateKey,'HOLD',`${role}: completed with no reported effort and recovery; the conservative coach waits for them before a step`);continue;}
   if(!noEarned&&s21.surplus>=L.earnedProgressionSessions&&s21.span>=7&&!s21.adverse&&!s21.conflicting&&DEVELOPMENT.includes(phase)&&!nearEvent){setGate(gateKey,'EARNED',`${role}: ${s21.surplus} comparable easier-than-target executions over ${Math.round(s21.span)} days; one extra step`);continue;}
   setGate(gateKey,'ADVANCE',`${role}: executed without adverse signal`);
  }
@@ -247,6 +252,9 @@ function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
   if(!below(log)&&row.kind!=='ADVERSE'&&log.repsMet===null){setGate(id,'HOLD',`${id}: repetitions not logged; the dose holds (missing repetitions are not a missed target)`);continue;}
   if(!below(log)&&row.kind!=='ADVERSE'&&!Number.isFinite(log.minRir)){setGate(id,'HOLD',`${id}: reps in reserve not logged; the dose holds (missing effort is not an adverse signal)`);continue;}
   if(below(log)||row.kind==='ADVERSE'){setGate(id,'HOLD',`${id}: target not met with at least the prescribed reserve minus one; repeat`);continue;}
+  // V1CP D1 LOWER (SSCTR-V1CP Q11): a development step needs the logged reserve at the prescribed RIR or more (tolerance 0); the regression bound stays
+  // the prescribed RIR minus one, so a set one short holds and never regresses. Returns and event phases are unchanged.
+  if(lowerStrength&&!returning&&DEVELOPMENT.includes(phase)&&Number.isFinite(log.minRir)&&Number.isFinite(log.plannedRir)&&log.minRir<log.plannedRir){setGate(id,'HOLD',`${id}: lower difficulty needs every set at the prescribed reps in reserve or more for a step; repeat`);continue;}
   if(!returning&&easy>=SG.earnedComparableExposures&&DEVELOPMENT.includes(phase)&&!nearEvent){setGate(id,'EARNED',`${id}: target met with at least ${SG.earnedLoggedRirAbovePrescribed} more reps in reserve than prescribed, ${easy} times`);continue;}
   setGate(id,'ADVANCE',`${id}: logged target met with the prescribed reserve`);
  }
@@ -254,6 +262,8 @@ function weeklyGates(program,sk,w,ev,ledger,asOf,{systemic=false,base=null}={}){
  // planned ones, and the state stays where it was held; the return follows the athlete's speed (notFeeling100).
  const reduced=(program.weeks[w]?.adaptations??[]).filter(a=>a.kind==='WELLBEING_REDUCTION');
  if(reduced.length){const sports=new Set(reduced.flatMap(a=>a.sports??[])),runKeys=new Set(Object.values(RUN_GATE_ROLE));for(const k of Object.keys(gates))if(sports.has(runKeys.has(k)?'RUN':'STRENGTH')&&(gates[k]==='ADVANCE'||gates[k]==='EARNED'))gates[k]='HOLD';reasons.push({key:'ALL',gate:'HOLD',why:'A temporary reduction (not 100%) covers this week: no step for the reduced sports'});}
+ // V1CP P1 (SSCTR-V1CP Q09): the conservative coach counts EARNED as ADVANCE (the planned cadence only: no early release, no consolidation skip).
+ if(conservative)for(const k of Object.keys(gates))if(gates[k]==='EARNED'){gates[k]='ADVANCE';reasons.push({key:k,gate:'ADVANCE',why:'Conservative coach: progress on the planned cadence, no early step'});}
  if(systemic){for(const k of Object.keys(gates))if(gates[k]==='ADVANCE'||gates[k]==='EARNED')gates[k]='HOLD';reasons.push({key:'ALL',gate:'HOLD',why:'Converging adverse signals across sessions: hold every step this week'});}
  return {gates,reasons};
 }
@@ -734,6 +744,10 @@ function blockBoundary(ctx,gates){
   for(const k of ['long','easy','qualityStep']){const a=first.run?.[k],b=base.run?.[k];if(Number.isFinite(a)&&Number.isFinite(b))(a===b?held:moved).push('run.'+k);}
   out.disclosures.push({id:'BLOCK_REVIEW',blocking:false,informational:true,block:ending.id,moved,held,detail:held.length?'Some doses held through the whole block; that can be the right dose. At a block boundary a main lift can change for a stated reason, or an exercise can step back on its ladder':'Every dose moved during the block',options:['Keep the plan','Change a main lift with a reason','Step back on a skill ladder']});}
  out.disclosures.push(...notes);
+ // V1CP P4 (SSCTR-V1CP Q09): the coach profile's advice on the harder options (graduation, ladder steps); the athlete decides, the offer stays
+ // evidence-gated as today and declining is never penalized or pressured (DR-125). The balanced coach gives no advice field.
+ const advice={CONSERVATIVE:'KEEP_BUILDING',DEMANDING:'ACCEPT'}[profileOf(c)]??null;
+ if(advice){for(const o of out.offers)if(o.type==='LADDER_STEP')o.recommendation=advice;for(const d of out.disclosures)if(d.id==='RUN_QUALITY_INTRODUCED')d.recommendation=advice;}
  if(!graduation&&!selections.length)return out;
  out.changes=x=>({...x,athlete:{...x.athlete,...(graduation?{runGraduation:graduation}:{}),...(selections.length?{strengthSelections:[...(x.athlete.strengthSelections??[]),...selections],ladderReached:[...new Set([...(x.athlete.ladderReached??[]),...reached])]}:{})}});
  out.action=graduation&&selections.length?'BLOCK_BOUNDARY_CHANGES':graduation?'RUN_QUALITY_GRADUATION':'BLOCK_EXERCISE_CHANGES';
@@ -1306,7 +1320,8 @@ function preferenceChange(ctx){
  const inForce=coachingOf((ctx.sk.at(ctx.w+1)??ctx.sk).c),errors=[],next=mergeCoaching(inForce,ch,errors);
  if(errors.length)return {action:'ASK',reason:'The coaching choices have values the plan cannot use ('+errors.join(', ')+'); nothing changes until they are corrected',missingInputs:errors.map(e=>'changes.'+e)};
  if(hash(next)===hash(inForce))return {action:'KEEP',reason:'These coaching choices are already in force; nothing changes',counterfactuals:[counter('KEEP','KEEP',true,'The same choices again',{selected:true})]};
- return rebuild(ctx,{canonical:c=>({...c,coaching:next}),fromWeek:ctx.w+1,reason:`New coaching choices from next week (${describeCoaching(next)}): the weeks ahead are re-planned from the current state; executed sessions and this week's sessions stay as they are`,action:'PREFERENCE_CHANGE'});
+ const changed=rebuild(ctx,{canonical:c=>({...c,coaching:next}),fromWeek:ctx.w+1,reason:`New coaching choices from next week (${describeCoaching(next)}): the weeks ahead are re-planned from the current state; executed sessions and this week's sessions stay as they are`,action:'PREFERENCE_CHANGE'});
+ return changed.proposal?{...changed,disclosures:[...(changed.disclosures??[]),...coachingDisclosures({coaching:next})]}:changed;
 }
 function unavailableDay(ctx){
  const {program,sk,w,review}=ctx,dates=new Set(Array.isArray(review.changes?.unavailableDates)?review.changes.unavailableDates:[]),week=program.weeks[w];

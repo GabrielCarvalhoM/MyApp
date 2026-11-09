@@ -112,8 +112,27 @@ test('A1-3 (H07): a clinical word about another person is asked once, never the 
  // H34: a baby in the family is asked once (postpartum is a clinical category for the person who gave birth), then resolved by the answer.
  assert.equal(S('a new baby in the family','FAMILY').status,'ASK');
  assert.equal(S('a new baby in the family','FAMILY',{clinicalReason:false}).status,'NONCLINICAL');
- // A shared subject ("we") is asked once too.
- assert.equal(S('we were all sick at home','FAMILY').status,'ASK');
+ // A first-person plural is the athlete (SSCTR-V1CP Q01): "we" stays clinical.
+ assert.equal(S('we were all sick at home','FAMILY').status,'CLINICAL');
+});
+
+test('A1-3b (SSCTR-V1CP C-Q01-4): the directed cases, in the three V1 languages',()=>{
+ const cases=[
+  ['my son had the flu, I caught it','FAMILY','CLINICAL'],['my wife and I had covid','FAMILY','CLINICAL'],['we all got sick','FAMILY','CLINICAL'],['visiting my dad in hospital','FAMILY','ASK'],
+  ['got back pain','WORK','CLINICAL'],['back from hospital','TRAVEL','CLINICAL'],['my back was killing me','WORK','ASK'],['cut on my feet','WORK','CLINICAL'],
+  ['meu filho teve gripe, eu peguei','FAMILY','CLINICAL'],['minha esposa e eu tivemos covid','FAMILY','CLINICAL'],['todos nós ficamos doentes','FAMILY','CLINICAL'],['visitando meu pai no hospital','FAMILY','ASK'],
+  ['voltei do hospital','TRAVEL','CLINICAL'],['minhas costas estavam me matando','WORK','ASK'],['cortei o pé','WORK','CLINICAL'],
+  ['mi hijo tuvo gripe, me contagió','FAMILY','CLINICAL'],['visitando a mi padre en el hospital','FAMILY','ASK'],['nos enfermamos todos','FAMILY','CLINICAL'],
+  ['Had a baby','OTHER_NONCLINICAL','CLINICAL'],['Bitten by a dog','OTHER_NONCLINICAL','CLINICAL'],['mordedura de perro','OTHER_NONCLINICAL','CLINICAL'],['Dog bite','OTHER_NONCLINICAL','ASK']];
+ for(const [r,c,e] of cases)assert.equal(S(r,c).status,e,r);
+ // H07 becomes NONCLINICAL only on the structured no; a conditioned denial is never resolved by it, and its question names the way out.
+ assert.equal(S('caring for my mother after her operation','FAMILY',{clinicalReason:false}).status,'NONCLINICAL');
+ const cond=S("didn't feel any pain until I ran",'TRAVEL',{clinicalReason:false});assert.equal(cond.status,'ASK');assert.equal(cond.basis,'CONDITIONED_DENIAL');
+ // The confirmation names pregnancy and recent childbirth (asked for a new baby).
+ const g=generateProgram(structuredClone(R1)),p=g.program,ask=evaluateProgram(p,review(p,{week:2,day:0,time:'19:00'},'RETURN_AFTER_PAUSE',{interruption:{startDate:addDays(p.startDate,8),endDate:addDays(p.startDate,13),reasonCategory:'FAMILY',nonclinical:true,reason:'a new baby in the family'}}));
+ assert.deepEqual(ask.missingInputs,['interruption.clinicalReason']);assert.match(ask.reason,/pregnancy or recent childbirth/);
+ // Portuguese 'no' before a place of care is 'in the', never a denial.
+ assert.equal(S('fui no médico','WORK').status,'CLINICAL');assert.equal(S('no pain, just work','WORK').status,'NONCLINICAL');
 });
 
 test('A1-4: signs that are the athlete\'s own are never resolved by the confirmation',()=>{

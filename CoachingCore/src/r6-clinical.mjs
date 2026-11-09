@@ -27,7 +27,8 @@ const CLINICAL=words(`
  cancer tumor tumour oncology chemo chemotherapy radiotherapy radiation cardiac stroke appendicitis appendix hernia shingles dengue malaria zika
  chikungunya mono mononucleosis diabetes diabetic hypertension depression nausea nauseous nauseated headache headaches stitches stitched sutures
  bleeding bled operation biopsy mri rupture ruptured dislocated dislocation poisoning seizure seizures epilepsy faint arrhythmia anemia anaemia
- diagnosed diagnosis vomit vomited concussed fractures
+ diagnosed diagnosis vomit vomited concussed fractures adoecemos enfermamos
+ doentes enfermos enfermas gripados gripadas machucados machucadas lesionados lesionadas resfriados resfriadas
  quimio quimioterapia radioterapia cardiaco cardiaca infarto avc apendicite hernia herpes mononucleose hipertensao depressao nauseas enjoo enjoada
  enjoado enxaqueca sutura sangramento fraturei fraturou fraturado fraturada luxacao intoxicacao convulsao diagnosticado diagnosticada
  tumor quimioterapia ictus apendicitis mononucleosis hipertension depresion cefalea jaqueca sangrado fractura fracturado fracturada luxacion
@@ -73,43 +74,48 @@ function nonBodyUse(t,i){
  if(w==='hand'||w==='hands')return prev==='by'||prev==='other'&&t[i-2]==='the'&&t[i-3]==='on';
  return false;
 }
-/** Whether token i is a body word used for the body. */
-const bodyAt=(t,i)=>BODY.has(t[i])&&!nonBodyUse(t,i);
-// V1CP A1 (holdout shape R7D-H07): who a clause is about. SELF: a first-person singular marker (I, me, myself, eu, mim, comigo, yo, conmigo, a
-// first-person verb form) or a first-person possessive with a body part ("my knee", "meu joelho", "mi rodilla"). OTHER: another person named by a
-// relation or a third-person pronoun or possessive ("my mother", "her operation", "minha mãe", "mi hijo"). SHARED: a first-person plural with no
-// one else named ("we", "nosotros"). NONE: no subject is stated (the athlete's own report, as before). SELF wins over every other marker, so a
-// clause that mixes the athlete and someone else ("my son had the flu and I caught it") stays the athlete's.
-const SELF_MARKERS=new Set(['i','im','ive','id','me','myself','eu','mim','comigo','yo','conmigo','tive','tenho','estou','estive','fiquei','senti','sinto','fui','sou','tuve','tengo','estoy','estuve','quede','siento','soy','adoeci','machuquei','torci','lesionei','gripei','desmaiei','fraturei','quebrei','operei','lastime','lesione','enferme','resfrie','desmaye','rompi','cai','cortei','queimei','tropecei','escorreguei','peguei','contagie']);
-const FIRST_POSSESSIVES=new Set(['my','meu','minha','meus','minhas','mi','mis']);
+/** Whether token i is a body word used for the body. An idiom is never read as one in a clause with a damage verb or a clinical word (SSCTR-V1CP
+ * C-Q01-4: "cut on my feet" stays a damage mention). */
+const idiomAllowed=t=>!t.some(x=>DAMAGE.has(x)||CLINICAL.has(x))&&!CLINICAL_PHRASES.some(ph=>(" "+t.join(" ")+" ").includes(" "+ph+" "));
+const bodyAt=(t,i)=>BODY.has(t[i])&&!(idiomAllowed(t)&&nonBodyUse(t,i));
+// V1CP A1 (SSCTR-V1CP Q01; holdout shape R7D-H07): who a clause is about, from closed, versioned lexicons (lexicon V1CP-A1-LEX-1).
+// SELF, the athlete: a first-person marker, singular or plural (I, me, myself, we, us, our(s); eu, me, mim, comigo, nos, a gente, nosso/nossa;
+// yo, me, conmigo, nosotros/nosotras, nuestro/nuestra), a first-person form of a verb, or a first-person possessive with a body part ("my knee",
+// "meu joelho", "mi rodilla"). OTHER: another person named by a possessive or an article and a noun of the closed list (family member, partner,
+// child, friend, pet: "my mother", "a friend", "minha mãe", "mi hijo"), never as the agent or source of what happened to the athlete ("bitten by a
+// dog", "caught it from my son"). NONE: no subject is stated: the athlete own report, as before. SELF wins, so a clause that mixes the athlete and
+// someone else ("my son had the flu and I caught it", "my wife and I had covid") stays the athlete own.
+const SELF_MARKERS=new Set(["i","im","ive","id","me","myself","we","us","our","ours","ourselves","eu","mim","comigo","nos","nosso","nossa","nossos","nossas","yo","conmigo","nosotros","nosotras","nuestro","nuestra","nuestros","nuestras","tive","tivemos","tenho","estou","estive","estivemos","fiquei","ficamos","senti","sinto","fui","fomos","sou","tuve","tuvimos","tengo","estoy","estuve","estuvimos","quede","siento","soy","adoeci","adoecemos","machuquei","torci","lesionei","gripei","desmaiei","fraturei","quebrei","operei","lastime","lesione","enferme","enfermamos","resfrie","desmaye","rompi","cai","cortei","queimei","tropecei","escorreguei","peguei","pegamos","contagie"]);
+const FIRST_POSSESSIVES=new Set(["my","meu","minha","meus","minhas","mi","mis"]);
 const OTHER_PEOPLE=words(`
- mother mothers mom moms mum mums mommy father fathers dad dads daddy parent parents son sons daughter daughters kid kids child children
- wife wifes wives husband husbands partner partners boyfriend girlfriend fiance fiancee sister sisters brother brothers
+ mother mothers mom moms mum mums mommy father fathers dad dads daddy parent parents son sons daughter daughters kid kids child children baby babies
+ wife wifes wives husband husbands partner partners boyfriend girlfriend fiance fiancee sister sisters brother brothers family inlaws
  grandmother grandmothers grandma grandmas grandfather grandfathers grandpa grandpas grandparents aunt aunts uncle uncles cousin cousins niece
- nephew friend friends colleague colleagues coworker coworkers boss family inlaws he she they him them his her hers their theirs
- mae maes pai pais filho filhos filha filhas filhinho filhinha crianca criancas esposa marido namorado namorada noivo noiva irma irmas
- irmao irmaos avo avos tia tias tio tios prima primas primo primos sobrinha sobrinho amigo amiga amigos amigas colega colegas chefe
- familia sogra sogro companheiro companheira ela ele elas eles dela dele delas deles
+ nephew friend friends dog dogs cat cats pet pets puppy
+ mae maes pai pais filho filhos filha filhas filhinho filhinha crianca criancas bebe bebes esposa marido namorado namorada noivo noiva irma irmas
+ irmao irmaos avo avos tia tias tio tios prima primas primo primos sobrinha sobrinho amigo amiga amigos amigas familia sogra sogro companheiro
+ companheira cachorro cachorra cao gato gata
  madre madres mama papa padre padres hijo hijos hija hijas nino nina ninos ninas esposo novio novia hermana hermanas hermano hermanos abuela
- abuelo abuelos tio tia companero companera jefe suegra suegro pareja ella ellos ellas su sus
+ abuelo abuelos tio tia companero companera suegra suegro pareja perro perra mascota
 `);
-const SHARED_MARKERS=new Set(['we','us','our','ours','ourselves','nosotros','nosotras','nuestra','nuestro','nuestras','nuestros','nossa','nosso','nossas','nossos']);
-// A baby is someone else only when a possessive names whose it is ("my baby", "our baby", "minha bebê"): "had a baby" with no subject stays the
-// athlete's own clinical mention (SSCTR R7: "Had a baby" is clinical).
-const BABY=new Set(['baby','babies','bebe','bebes']),BABY_OWNERS=new Set(['my','our','his','her','their','your','minha','meu','nossa','nosso','sua','seu','mi','mis','nuestra','nuestro','su','sus']);
-// Animals are never someone else: an animal is named as the source of an injury ("dog bite", "mordedura de perro"), so it never moves a clinical
-// word away from the athlete (SSCTR R7).
+// The possessive or article that names a person of the list ("my mother", "a friend", "da minha mãe", "la hija"); the first-person plural ones are
+// SELF markers already, so a clause naming "our son" stays the athlete own (SSCTR-V1CP Q01).
+const NAMERS=new Set(["my","your","his","her","their","the","a","an","meu","minha","meus","minhas","seu","sua","seus","suas","o","a","os","as","um","uma","do","da","dos","das","no","na","mi","mis","tu","tus","su","sus","el","la","los","las","un","una","del","al"]);
 // Someone named as the agent or the source of what happened to the athlete ("bitten by a dog", "caught it from my son", "mordido pelo cachorro")
-// does not make the clause about them (SSCTR R7: "Bitten by a dog" is clinical).
-const AGENT=new Set(['by','from','por','pelo','pela','pelos','pelas']);
-const agentAt=(t,i)=>AGENT.has(t[i-1])||AGENT.has(t[i-2])&&(BABY_OWNERS.has(t[i-1])||['a','an','the','o','a','um','uma','el','la','un','una'].includes(t[i-1]));
-const otherAt=(t,i)=>(OTHER_PEOPLE.has(t[i])||BABY.has(t[i])&&BABY_OWNERS.has(t[i-1]))&&!agentAt(t,i);
+// does not make the clause about them (SSCTR R7: "Bitten by a dog" is clinical); "mordedura de perro" names no one (no possessive or article).
+const AGENT=new Set(["by","from","por","pelo","pela","pelos","pelas"]);
+const agentAt=(t,i)=>AGENT.has(t[i-1])||AGENT.has(t[i-2])&&NAMERS.has(t[i-1]);
+// A baby is someone else only after a possessive ("my baby", "minha bebê"): "had a baby" stays the athlete own clinical mention (SSCTR R7).
+const BABY=new Set(['baby','babies','bebe','bebes']),POSSESSIVE_NAMERS=new Set(['my','your','his','her','their','meu','minha','meus','minhas','seu','sua','seus','suas','mi','mis','tu','tus','su','sus']);
+const namedAt=(t,i,set)=>set.has(t[i-1])||set.has(t[i-2])&&!OTHER_PEOPLE.has(t[i-1]);
+const otherAt=(t,i)=>OTHER_PEOPLE.has(t[i])&&namedAt(t,i,BABY.has(t[i])?POSSESSIVE_NAMERS:NAMERS)&&!agentAt(t,i);
+// A first-person contagion verb ("I caught it", "peguei", "me contagió") makes another person's illness named in the report the athlete own.
+const CONTAGION=new Set(['caught','catch','catching','peguei','pegamos','contagie','contagiei','contagio','contagiou','contagiaron','contagiado','contagiada','contagiados']);
 function attribution(t){
- if(t.some(x=>SELF_MARKERS.has(x)))return 'SELF';
- for(let i=0;i<t.length;i++)if(FIRST_POSSESSIVES.has(t[i])&&!otherAt(t,i+1)&&(bodyAt(t,i+1)||bodyAt(t,i+2)&&!otherAt(t,i+2)))return 'SELF';
- if(t.some((x,i)=>otherAt(t,i)))return 'OTHER';
- if(t.some(x=>SHARED_MARKERS.has(x)))return 'SHARED';
- return 'NONE';
+ if(t.some((x,i)=>SELF_MARKERS.has(x)||x==="gente"&&t[i-1]==="a"))return "SELF";
+ for(let i=0;i<t.length;i++)if(FIRST_POSSESSIVES.has(t[i])&&!otherAt(t,i+1)&&(bodyAt(t,i+1)||bodyAt(t,i+2)&&!otherAt(t,i+2)))return "SELF";
+ if(t.some((x,i)=>otherAt(t,i)))return "OTHER";
+ return "NONE";
 }
 // Negated damage ("No broken bones", "Didn't break my leg", "nenhum osso quebrado") is asked about, not named clinical (SSCTR R7).
 // Only a local negation counts: the nearest word before the damage verb, past articles, possessives, clitics, auxiliaries and
@@ -175,6 +181,7 @@ const clausesOf=t=>joinCompounds(t).split(/[,;:.!?()\[\]\/–—-]+|\s(?:but|how
  * contrast condition (until, before, except...); both leave an ambiguity marker and the screen asks. */
 const governs=(tokens,j)=>{while(j<tokens.length&&FILLERS.has(tokens[j]))j++;return {j,clinical:j<tokens.length&&(CLINICAL.has(tokens[j])||['clinical','medical','clinico','clinica','medico','medica'].includes(tokens[j]))};};
 const consume=(tokens,j)=>{j++;for(;;){while(j<tokens.length&&FILLERS.has(tokens[j]))j++;if(j+1<tokens.length&&DISJUNCTIONS.has(tokens[j])){let k=j+1;while(k<tokens.length&&FILLERS.has(tokens[k]))k++;if(k<tokens.length&&CLINICAL.has(tokens[k])){j=k+1;continue;}}return j;}};
+const NO_CARE_PLACES=new Set(['hospital','medico','medica','clinica','fisio','fisioterapia','fisioterapeuta','consultorio','emergencia','ps','pronto']);
 function stripNegations(tokens){
  const out=[];let negated=false;const conditioned=conditional(tokens);
  for(let i=0;i<tokens.length;i++){
@@ -186,6 +193,9 @@ function stripNegations(tokens){
   }
   if(!NEGATORS.has(t)){if(INABILITY.has(t))negated=true;out.push(t);continue;}
   const g=governs(tokens,i+1);
+  // V1CP A1 (SSCTR-V1CP C-Q01-4): Portuguese 'no' is also 'in the' (em + o): before a place or professional of care it never denies it
+  // ('visitando meu pai no hospital', 'fui no médico'), so the word stays a clinical mention; an English 'no doctor' is then asked, never passed.
+  if(t==='no'&&NO_CARE_PLACES.has(tokens[g.j])){out.push(t);continue;}
   if(!g.clinical||negated){if(!g.clinical)negated=true;out.push(t);continue;}
   if(PREPOSITIONAL.has(t)&&i>0||conditioned)out.push('__mid_clause_denial__');
   i=consume(tokens,g.j)-1;
@@ -206,8 +216,10 @@ const categoryOf=v=>typeof v==='string'?v.trim().toUpperCase().replace(/[\s-]+/g
  */
 export function reasonQuestion(screen,{reasonCategory=null}={},prefix='interruption.'){
  const category=categoryOf(reasonCategory),structured=!!category&&NONCLINICAL_CATEGORIES.includes(category),cat=prefix+'reasonCategory',confirm=prefix+'clinicalReason';
- const own='your own pain, injury, illness or a medical reason';
+ const own='your own pain, injury, illness, pregnancy or recent childbirth, or another medical reason';
  if(screen?.basis==='AMBIGUOUS_REASON')return structured?{changed:true,missingInputs:[confirm],text:`say whether this break involved ${own} (yes or no)`}:{changed:true,missingInputs:[cat,confirm],text:`say what interrupted training (for example travel, work or family) and whether it involved ${own} (yes or no)`};
+ // The note itself contradicts the answer (a conditioned denial): the note is restated, or the answer changed (its exit is either).
+ if(screen?.basis==='CONDITIONED_DENIAL')return {changed:true,missingInputs:[prefix+'reason',confirm],text:`your note says something appeared under a condition (for example 'until I ran'), and you answered that this break involved none of ${own}: restate the note, or answer yes if it did`};
  if(screen?.basis==='CONTRADICTORY_FLAGS')return {changed:true,missingInputs:[...(structured?[]:[cat]),prefix+'nonclinical'],text:'the break is marked as not nonclinical although what was given describes a nonclinical reason: correct the mark'+(structured?'':' and say what interrupted training')};
  if(screen?.basis==='INVALID_CLINICAL_FLAG')return {changed:true,missingInputs:[confirm],text:`answer yes or no: did this break involve ${own}`};
  return {changed:false,missingInputs:[cat],text:'say what interrupted training (for example travel, work, family, illness or injury)'};
@@ -223,18 +235,23 @@ export function screenInterruptionReason({reason=null,reasonCategory=null,noncli
  if(clinicalReason!==null&&clinicalReason!==undefined&&!isNo(clinicalReason))return {status:'ASK',basis:'INVALID_CLINICAL_FLAG',matched:[String(clinicalReason)]};
  // V1CP A1: each clause keeps who it is about (attribution, read on its words before denials are removed).
  const parts=clausesOf(reason).map(c=>({who:attribution(c.split(' ')),text:stripNegations(c.split(' ')).join(' ')})).filter(p=>p.text),clauses=parts.map(p=>p.text),tokens=clauses.flatMap(c=>c.split(' '));
- const own=parts.filter(p=>p.who==='SELF'||p.who==='NONE'),others=parts.filter(p=>p.who==='OTHER'||p.who==='SHARED');
+ const own=parts.filter(p=>p.who==='SELF'||p.who==='NONE'),others=parts.filter(p=>p.who==='OTHER');
  const mentions=list=>{const c=list.map(p=>p.text),t=c.flatMap(x=>x.split(' '));return [...t.filter(x=>CLINICAL.has(x)),...c.flatMap(x=>hasPhrase(x,CLINICAL_PHRASES)),...damageMentions(c).clinical];};
  const clinical=mentions(own);
  if(clinical.length)return {status:'CLINICAL',basis:'CLINICAL_MENTION',matched:[...new Set(clinical)]};
- // A clinical word in a clause about someone else, or shared with others ("we"), is never the athlete's clinical mention: it is asked once.
- const aboutOthers=others.flatMap(p=>mentions([p]).map(m=>(p.who==='OTHER'?'about someone else: ':'shared with others: ')+m));
+ // A clinical word in a clause about someone else is never the athlete's clinical mention: it is asked once (SSCTR-V1CP Q01).
+ const aboutOthers=others.flatMap(p=>mentions([p]).map(m=>'about someone else: '+m));
+ if(aboutOthers.length&&parts.some(p=>p.who==='SELF'&&p.text.split(' ').some(x=>CONTAGION.has(x))))return {status:'CLINICAL',basis:'CLINICAL_MENTION',matched:[...new Set(aboutOthers.map(m=>m.replace('about someone else: ','')))]};
  const ambiguousWord=(t,i)=>t[i]==='__mid_clause_denial__'||AMBIGUOUS.has(t[i])&&(!BODY.has(t[i])||bodyAt(t,i));
  const ambiguous=[...aboutOthers,...clauses.flatMap(c=>{const t=c.split(' ');return t.filter((x,i)=>ambiguousWord(t,i));}).map(t=>t==='__mid_clause_denial__'?'denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)':t),...clauses.flatMap(c=>hasPhrase(c,AMBIGUOUS_PHRASES)),...damageMentions(clauses).negated.map(m=>'negated damage: '+m)];
  // V1CP A1 (QRE-P5H-F01): the athlete's explicit answer to the screen's question, that the break involved no pain, injury, illness or medical
  // reason of their own (clinicalReason no), resolves an ambiguity when the break has a structured nonclinical category. It never resolves a
  // clinical category, flag or mention of the athlete's own (handled above), and without a category the category is still asked (reasonScreen).
- if(ambiguous.length)return category&&NONCLINICAL_CATEGORIES.includes(category)&&nonclinical!==false&&isNo(clinicalReason)?{status:'NONCLINICAL',basis:'NONCLINICAL_CATEGORY_CONFIRMED',matched:[category]}:{status:'ASK',basis:'AMBIGUOUS_REASON',matched:[...new Set(ambiguous)]};
+ // A denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition: "didn't feel any pain until I ran") is never
+ // resolved by the answer: the text and the answer disagree, so the note is asked again (SSCTR-V1CP Q01: a contradiction is ASK).
+ const conditioned=tokens.includes('__mid_clause_denial__'),structured=category&&NONCLINICAL_CATEGORIES.includes(category)&&nonclinical!==false;
+ if(ambiguous.length&&structured&&isNo(clinicalReason)&&conditioned)return {status:'ASK',basis:'CONDITIONED_DENIAL',matched:[...new Set(ambiguous)]};
+ if(ambiguous.length)return structured&&isNo(clinicalReason)?{status:'NONCLINICAL',basis:'NONCLINICAL_CATEGORY_CONFIRMED',matched:[category]}:{status:'ASK',basis:'AMBIGUOUS_REASON',matched:[...new Set(ambiguous)]};
  const contradicted=nonclinical===false;
  if(category&&NONCLINICAL_CATEGORIES.includes(category))return contradicted?{status:'ASK',basis:'CONTRADICTORY_FLAGS',matched:[category]}:{status:'NONCLINICAL',basis:'NONCLINICAL_CATEGORY',matched:[category]};
  // Free text can only add a clinical or an ask outcome: without a structured nonclinical category the category is asked.
