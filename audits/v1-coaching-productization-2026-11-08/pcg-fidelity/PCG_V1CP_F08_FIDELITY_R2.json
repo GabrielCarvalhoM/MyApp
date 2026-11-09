@@ -1,0 +1,78 @@
+{
+  "recordId": "PCG-V1CP-F08-FIDELITY-r2",
+  "date": "2026-11-08",
+  "addendumTo": "PCG_V1CP_F08_FIDELITY.json (r1, sha256 123012c8bad971f05bac63d3b21f3012a2263b99c306cd5b4bf799c78dcb7b1d)",
+  "scope": "One narrow re-check of the r2 changed lines and record fields only (the single bounded cycle). Not a new review: every r1 verdict on unchanged text stands.",
+  "judge": "Same fresh PCG instance that wrote r1; author of none of the reviewed texts; no edit outside pcg-fidelity/, no commit, no delegation.",
+  "inputs": {
+    "product/PRODUCT_DECISION_REGISTER.md": { "r1": "575f598dab116f90a9a807957dbe718571b25f1695b52e2929d0ec63a1b5136a", "r2": "b66e0b6c4d8680f4d608c96b1ad5b9cf5eab43b85c28a5f7e0479ff6b73944fb", "verifiedOnDisk": true },
+    "product/ADAPTIVE_ENGINE_CONTRACT.md": { "r1": "29118f8bfbb59ce21579d1bd40f5ed5b329a30d7af15d9795cbcf6e8c7e67157", "r2": "04e877493f471eb42a7299fff382a1b83e06baa365e14d3e67885498c9ddbd92", "verifiedOnDisk": true },
+    "canon/CANONICAL_INDEX.md": { "r2": "3454c37d8f6d7414971edf43dc49834c23c853cd3d4ece73e47c562e18a5773d", "unchangedFromR1": true },
+    "audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md": { "sha256": "4164a5227960ee8030de4fb969216b769caf3bc2ae322047410a3795280b7a8b", "note": "working tree; B4 and B5 now quoted verbatim" },
+    "record": "audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.json, revision r2, block revisionR2"
+  },
+  "mechanicalChecks": [
+    { "check": "word diff ecad12d..working tree on product/: only PDR lines 8, 13, 399 and AEC lines 270, 272 change", "result": "PASS" },
+    { "check": "restoring revisionR2.productLineChanges 'before' texts reproduces the ecad12d bytes of both product files", "result": "PASS" },
+    { "check": "each revisionR2.recordFieldChanges 'after' text is present at its path in the record", "result": "PASS (7/7)" },
+    { "check": "record top-level keys changed: rulings, supersedes, findings, runtimeConditions, status; added: revision, revisionR2", "result": "PASS (consistent with the declared changes)" },
+    { "check": "record deltas[] keeps the r1 texts; the MD says r1 is in deltas and r2 in revisionR2.productLineChanges", "result": "PASS (history kept, no rewrite)" },
+    { "check": "no change to governance/, AEOS, canon/ or the DR-99 row", "result": "PASS" }
+  ],
+  "corrections": [
+    { "id": "TC-1", "required": true, "verdict": "FAITHFUL", "applied": "Clause (6): 'considered together. Each sport's capacities and restrictions are assessed separately, along with systemic recovery. One sport can be reduced or held without suspending the other, and neither is preserved when the available information shows a relevant systemic restriction.'", "founderSource": "D2.2: 'corrida e força são consideradas juntas; uma modalidade pode ser reduzida sem suspender a outra.' B4: 'O motor deve avaliar separadamente as capacidades e restrições específicas, além da recuperação sistêmica. Não suspender automaticamente corrida e força juntas quando não houver motivo para isso. Não preservar uma modalidade se a informação disponível indicar uma restrição sistêmica relevante.'", "note": "The B4 additions go beyond TC-1 but are B4's own content, and the systemic clause is protective." },
+    { "id": "TC-2", "required": true, "verdict": "FAITHFUL", "applied": "'reduce the difficulty, substantially reduce the sessions, only compatible light activities, or rest'", "founderSource": "D2.1 row 1: 'reduzir a dificuldade; só atividades leves compatíveis; reduzir bastante as sessões; ou descansar'." },
+    { "id": "TC-3", "required": true, "verdict": "FAITHFUL", "applied": "'\"suspected illness\" (SSCTR-05, cited by DR-99)'; supersession of 'contraindications … CLINICAL_HUMAN_REQUIRED' and of the AEC 'Restrição declarada' exit owner, limited to ending a restriction the person reported by their structured statement, 'never a clearance or a clinical determination'.", "founderSource": "§1 left column (adopted by D2.6): 'até o atleta informar que acabou'; D2.3; B3." },
+    { "id": "TC-4", "required": false, "verdict": "FAITHFUL", "applied": "The speeds are attached to the return after a Situation 1 window; after a clinical hold the restart stays conservative, with any speed there being SSCTR content within that bound.", "founderSource": "D2.1 row 1; G1 ('recomeço esportivo conservador')." },
+    { "id": "TC-5", "required": true, "verdict": "FAITHFUL", "applied": "'achievements' in clause (7)", "founderSource": "D2.1 row 3: 'Histórico, recordes e conquistas são preservados.'" },
+    { "id": "TC-6", "required": true, "verdict": "FAITHFUL", "applied": "G04 column 4: 'Exceção DR-148: a redução temporária com todos os sinais de alerta respondidos não, e a declaração ativa de prontidão da pessoa, com triagem atual, que abre um recomeço esportivo conservador. Nenhuma das duas é liberação.'", "note": "The sentence lists the exceptions without a main verb; the meaning is unambiguous. No change required." },
+    { "id": "TC-7", "required": false, "verdict": "FAITHFUL", "applied": "AEC overlay line 1: 'On the DR-148 paths, in the paragraph above, this replaces only …'" },
+    { "id": "TC-8", "required": true, "verdict": "FAITHFUL", "applied": "'states, in a structured answer, that it ended' in PDR protection 3 and AEC overlay bullet 2" },
+    { "id": "TC-9", "required": true, "verdict": "FAITHFUL", "applied": "Q4 (f): 'The scoping never covers a warning-sign item or a systemic sign (illness, fever and the like): any warning sign answered yes routes the clinical hold for every sport, whatever the declaration carries. It covers only a localized issue …'; the MD Q4 row matches.", "founderSource": "D2.1 row 2: 'Restrições existentes e sinais relevantes não são ignorados.' B4 (systemic restriction)." },
+    { "id": "TC-10", "required": false, "verdict": "FAITHFUL", "applied": "RF-1: 'a Founder-decided narrowing (B1) of the illness and pain questions, limited to the reported condition and compensated by the warning-sign instrument; every other screen is unchanged'" },
+    { "id": "TC-11", "required": true, "verdict": "FAITHFUL", "applied": "C05 supersession: '… and only when no common recovery situation remains in which the person cannot legitimately return to training (B6)'", "founderSource": "B6: 'Não declarar F08 concluído enquanto existir uma situação comum de recuperação na qual o usuário não consiga legitimamente voltar a treinar.'" },
+    { "id": "TC-12", "required": true, "verdict": "FAITHFUL", "applied": "F02 reading I-V1CP-2 and RC-12: 'The speed choice is never itself evidence for restoring prior loads or paces (B2), and the return is gradual at every speed (D2.1 row 1).' F02's decider now carries the FP-4 Founder question.", "founderSource": "B2; D2.1 row 1: 'a retomada é gradual'." }
+  ],
+  "authorAdditions": [
+    {
+      "id": "AUTH-1",
+      "where": "DR-148 clause (7)",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "text": "'The history of executed training, records, achievements, prior capacity (kept distinct from current capacity), interruption episodes, availability changes and the coach's decisions with their state and reasons are preserved.'",
+      "founderSource": "B5: 'O F08 deve preservar: Histórico de treinos executados. Recordes. Dados de capacidade anterior, devidamente diferenciados da capacidade atual. Episódios de interrupção. Alterações de disponibilidade. Estado e justificativas das decisões do treinador. Evitar replanejamento caótico a cada atualização.' D2.1 row 3: 'Histórico, recordes e conquistas são preservados.'",
+      "conditions": [
+        "B5's list is a floor, not a ceiling. Replacing r1's generic 'History' and 'episodes' with B5's items must not narrow preservation: clause (7) is read with clause (4) ('with the history kept'), D2.1 row 3's generic 'Histórico' and RC-14 (episodes, Situation 1 reports, readiness declarations, restriction ends and decisions are append-only), and clinical episodes are among the 'interruption episodes'.",
+        "'Evitar replanejamento caótico a cada atualização' is left out of DR-148 as existing stability doctrine (stable-by-default, SSCTR-07). It stays binding on the F08 paths through that doctrine; omitting it from DR-148 does not relax it."
+      ],
+      "textChangeNeeded": false
+    },
+    {
+      "id": "AUTH-2",
+      "where": "DR-148 clause (5)",
+      "verdict": "FAITHFUL",
+      "text": "'choosing a faster return is never itself authorization to restore them'",
+      "founderSource": "B2: 'Uma retomada mais rápida não é autorização para restaurar automaticamente cargas e ritmos anteriores.'",
+      "note": "It carries B2's sense into the DR. 'itself' keeps it at B2's strength: the choice alone authorizes nothing, and evidence is still the condition (D2.1 row 3)."
+    },
+    {
+      "id": "AUTH-3",
+      "where": "record F05",
+      "verdict": "FAITHFUL",
+      "note": "B1-B6 are now quoted on disk, which closes the r1 provenance item on B4 and B5."
+    }
+  ],
+  "acceptedConditions": "The author's revisionR2.acceptedJudgeConditions reproduce the r1 conditions (FP-1, Q4-b, FP-2, FP-3, FP-5) without dilution. They stay binding on the runtime, the SSCTR and the Chief's gate; none needs a further text change in product/ or canon/.",
+  "observation": "The overlay markers and the G04 row label still read 'V1CP-F08-r1'. They identify the overlay; its revision is traced in the record (revision r2, revisionR2). No change needed.",
+  "backToFounder": [
+    { "item": "PCG-V1CP-F02", "text": "Only if the SSCTR keeps a FASTER row that reaches the full pre-window dose in one step at the window's end: does 'gradual' admit it?", "blocking": "that speed row only" },
+    { "item": "PCG-V1CP-F03", "text": "Interim urgency wording for warning signs, already routed.", "blocking": "final consumer copy" },
+    { "item": "FP-2 visibility", "text": "In the product, a restriction a professional set now ends on the athlete's own structured statement; the closure summary must state it.", "blocking": false },
+    { "item": "D1.5", "text": "Legal service model, including the earlier T2's 'with legal review'.", "blocking": "commercial release" }
+  ],
+  "resolvedSinceR1": [ "Provenance of B4 and B5 (now quoted verbatim)" ],
+  "overall": {
+    "verdict": "FAITHFUL_WITH_CONDITIONS",
+    "meaning": "All nine required corrections and the three recommended ones are applied as intended. AUTH-2 is faithful. AUTH-1 is faithful with two reading conditions that need no text change. No further text change is required; the cycle is closed for fidelity.",
+    "notClaimed": "No DOCTRINE_EVIDENCE_REVIEWED, DOCTRINE_INTERPRETABLE, PRODUCT_CONSTITUTION_READY or canonization; the Chief's gate decides. F08 = F08_OPEN; V1_COACHING_AUTHORITY_READY = NO."
+  }
+}

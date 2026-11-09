@@ -1,0 +1,281 @@
+{
+  "recordId": "PCG-V1CP-F08-FIDELITY-r1",
+  "date": "2026-11-08",
+  "role": "Product Constitution & Governance (constitution 1.2.0), fresh instance acting as independent fidelity judge. Authored none of the reviewed record, deltas, task contract, design, Founder record, minimal delta or PCG-R7D-F08-r1. Authors nothing normative; edits no repository file outside this folder; no commit; no delegation.",
+  "runtimeContext": {
+    "model": "claude-opus-5-5 (inherited, as dispatched)",
+    "effort": "high (as dispatched)",
+    "tools": "Read, Bash read-only (git show/diff/log, grep, sha256sum), one scratch node script, Write (these two files only)",
+    "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d024db0a-e798-4d00-a3e5-d6bad7704647/scratchpad/pcg-fidelity-judge-1794189074-709/check.mjs",
+    "notOpened": "the Security record content (not in scope), any SSCTR record of this mission, any review folder, final/, final2/"
+  },
+  "reviewed": {
+    "record": "audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.json (prevails) and .md, as committed in ecad12d",
+    "commit": "ecad12d",
+    "base": "4c3f6dc",
+    "fileHashesAtEcad12d": {
+      "product/PRODUCT_DECISION_REGISTER.md": "575f598dab116f90a9a807957dbe718571b25f1695b52e2929d0ec63a1b5136a",
+      "product/ADAPTIVE_ENGINE_CONTRACT.md": "29118f8bfbb59ce21579d1bd40f5ed5b329a30d7af15d9795cbcf6e8c7e67157",
+      "canon/CANONICAL_INDEX.md": "3454c37d8f6d7414971edf43dc49834c23c853cd3d4ece73e47c562e18a5773d"
+    },
+    "hashesMatchAuthorRecord": true
+  },
+  "decidingSources": {
+    "D2": "audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md (Chief record of the Founder's decision; 'reproduz a substância ... e não amplia')",
+    "request20261108": "audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md: summary plus verbatim B1, B2, B3, B6 (added in ecad12d). B4 and B5 are cited by the author but not quoted on disk.",
+    "earlierRecord": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.md/.json",
+    "preparedDelta": "audits/domain-coaching-r7-d-2026-11-02/phase35/f08/F08_MINIMAL_DELTA_AND_MISSION.md (Chief-prepared; adopted by D2.6 as the next step, not itself Founder wording)"
+  },
+  "deltas": [
+    {
+      "id": "D-1",
+      "target": "product/PRODUCT_DECISION_REGISTER.md, block F08_RECOVERY_RETURN (DR-148 / PDR-1.14)",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "clauses": [
+        {
+          "clause": "(1) clinical judgment outside the software; never diagnose, issue/suggest/validate clearance or document, prescribe against a known restriction",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.3: 'nenhum diagnóstico; nenhuma liberação médica fictícia; nenhum exercício contrário a uma contraindicação conhecida.' B3: 'Não tratar uma simples declaração do usuário como liberação médica emitida pelo software. Não permitir que uma contraindicação conhecida seja ignorada.' (G1/§1 left column: 'nunca emite nem sugere liberação médica, nunca valida documento')"
+        },
+        {
+          "clause": "(2) Situation 1: the five reports, 3-14 days, per affected sport, four intents, engine sets the dose",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "B1: 'O usuário deve conseguir comunicar: Indisposição leve. Fadiga acima do habitual. Doença leve. Pequenos desconfortos. Necessidade de descansar temporariamente. O sistema deve permitir redução temporária por 3 a 14 dias.' D2.1 row 1: 'reduzir a dificuldade; só atividades leves compatíveis; reduzir bastante as sessões; ou descansar.'",
+          "issue": "The four intents are renamed. 'Light reduction' is not 'reduzir a dificuldade': D1.4 names difficulty as its own axis ('os controles independentes de volume e de dificuldade'), so the rename loses the axis the Founder chose. 'Substantial reduction' drops 'as sessões'; 'light activity only' drops 'compatíveis'.",
+          "correction": "TC-2"
+        },
+        {
+          "clause": "(3) Situation 2: professional-assessment recommendation without diagnosis; structured readiness declaration with current clear screen opens a conservative per-sport restart; never a clearance; no certificate upload required",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.1 row 2: 'O produto recomenda avaliação profissional, sem diagnosticar. Quando o atleta informa que se recuperou e está pronto, há um caminho utilizável de recomeço esportivo, sem upload universal de atestado. A declaração do atleta nunca é apresentada como liberação médica emitida pelo app. Restrições existentes e sinais relevantes não são ignorados.' B3: 'Não exigir universalmente upload de atestado.' G1: 'com triagem atual ... recomeço esportivo conservador, que não é liberação'.",
+          "note": "'No certificate upload is required' is within B3 ('not universally'). It is not a Founder ban on any case-specific or optional upload; that question stays with the Founder (already routed by the author)."
+        },
+        {
+          "clause": "(4) Situation 3: new plan from updated assessment; after a clinical hold only once readiness is declared",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.1 row 3: 'Novo plano, com avaliação atualizada de objetivos, experiência recente, capacidade e disponibilidade.' The 'after a clinical hold, only with readiness' part is a protective inference (prevents the onboarding bypass the earlier P-3 forbade); it narrows, never widens."
+        },
+        {
+          "clause": "(5) Return: gradual at chosen speed, within engine limits, never restoring prior loads or paces automatically; speeds are not the coach profiles",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.1 row 1: 'Depois, a retomada é gradual, no ritmo conservador, equilibrado ou mais rápido, sempre dentro das regras de segurança do motor.' D2.2: 'a preferência de velocidade de retomada não substitui os limites seguros do motor; os três perfis permanentes de treinador não são as três velocidades temporárias de retomada.' B2: 'Uma retomada mais rápida não é autorização para restaurar automaticamente cargas e ritmos anteriores.' D2.1 row 3: 'Cargas e ritmos antigos não voltam sem evidência.'",
+          "issue": "D2 attaches the three speeds to Situation 1; (5) applies them to every return, while (3) calls the post-hold restart 'conservative'. See flagged point 4 for 'automatically'.",
+          "correction": "TC-4 (recommended), TC-12 (required)"
+        },
+        {
+          "clause": "(6) 'Running and strength are judged separately: one can be reduced or held without suspending the other.'",
+          "verdict": "UNFAITHFUL",
+          "founderSource": "D2.2: 'corrida e força são consideradas juntas; uma modalidade pode ser reduzida sem suspender a outra.' D1.4 preserves 'planejamento híbrido e adaptação entre modalidades'.",
+          "issue": "The Founder's first bullet ('considered together', the hybrid differentiator) is dropped and replaced by its opposite framing. The per-sport hold half is faithful. Wording defect only; the fix needs no Founder decision.",
+          "correction": "TC-1"
+        },
+        {
+          "clause": "(7) history, records, prior capacity, episodes and decisions preserved; R-F08-1",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.1 row 3: 'Histórico, recordes e conquistas são preservados.'",
+          "issue": "'conquistas' (achievements) omitted.",
+          "correction": "TC-5"
+        },
+        {
+          "clause": "Scope column: partial supersession of DR-99",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "issue": "(a) 'suspected illness' is SSCTR-05's phrase (cited from DR-99's scope column), not DR-99 row text; the record JSON says 'through SSCTR-05', the DR text does not. (b) The supersession list omits the restriction-end rule (flagged point 2), which touches DR-99 'contraindications ... stay CLINICAL_HUMAN_REQUIRED' and AEC 'Restrição declarada: resolução pelo responsável competente'; with 'The rest of DR-99 stands', protection 3 and DR-99 read as contradictory.",
+          "correction": "TC-3"
+        },
+        {
+          "clause": "Protections (MUST), Premise (ASSUMED), Open/owner, F08_OPEN, V1_COACHING_AUTHORITY_READY = NO",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.5: 'F08 continua F08_OPEN ... até a mudança de autoridade ser aprovada e implementada.' D2.1 row 2: 'sinais relevantes não são ignorados.'",
+          "issue": "Protection 3 says 'until the person states that it ended' without 'structured'; the author's own reading (RC-09) requires a structured statement, and free text must never end a restriction.",
+          "correction": "TC-8"
+        }
+      ]
+    },
+    {
+      "id": "D-2",
+      "target": "product/PRODUCT_DECISION_REGISTER.md §5 G04 row (columns 2 and 4 appended)",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "G4 (minimal delta, adopted by D2.6): 'G04 mantém o clínico. As proteções do caminho de prontidão (triagem, vocabulário fechado de restrições esportivas, gatilhos, entrada) entram no escopo não clínico do SSCTR e voltam à revalidação humana financiada.' D2.5 and B6 make an exit mandatory.",
+      "issue": "Column 2 moves the Situation 1 reduction protections to SSCTR scope as well (flagged point 3), but the column 4 'Exceção DR-148' names only the readiness restart. Column 4's original 'Antes de coletar/classificar/atuar nesses casos' then still gates the Situation 1 warning-sign screen on G04, which leaves Situation 1 without authority (contrary to B6). Original text kept; delta inline-labelled 'Delta DR-148' / 'Exceção DR-148' (no HTML markers) and removable (verified).",
+      "correction": "TC-6"
+    },
+    {
+      "id": "D-3",
+      "target": "product/ADAPTIVE_ENGINE_CONTRACT.md §7.1 overlay F08_RECOVERY_RETURN_OVERLAY",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "G2 (minimal delta): 'Uma restrição conhecida limita a prescrição e nunca é ignorada. A declaração ativa de prontidão (respostas de triagem, não uma caixa de seleção) abre um recomeço conservador e não é liberação. O resto do §7 fica.' D2.1 row 2; B3.",
+      "issue": "(a) The replacement of 'restrição clínica exige resolução competente' is not scoped to the DR-148 paths, while DR-148 supersedes only in part and the index says 'for those paths only'. (b) 'until the person states that it ended' lacks 'structured' (TC-8). The R-F08-1 restatement, 'Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco' and 'sem clearance retroativo' are kept: no protection lost.",
+      "correction": "TC-7 (recommended), TC-8 (required)"
+    },
+    {
+      "id": "D-4",
+      "target": "canon/CANONICAL_INDEX.md pointer F08_RECOVERY_RETURN_INDEX",
+      "verdict": "FAITHFUL",
+      "founderSource": "D2.1 rows 1-3; D2.5.",
+      "note": "Qualifies the SSCTR-AUTH-r1 'clinical return' phrase for the DR-148 paths only, clearance unchanged, text of SSCTR-AUTH-r1 unchanged. States author status and F08_OPEN. 'DECIDED / CURRENT_PRODUCT_DECISION' describes the Founder decision; the formalization becomes canonical only after the Chief's gate (READY is not CANONICAL)."
+    }
+  ],
+  "flaggedPoints": [
+    {
+      "id": "FP-1",
+      "subject": "Q4: MILD_ILLNESS is a Situation 1 fact of its own; while it stands the `illness` question asks about another or worse illness",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "B1: 'Doença leve.' ... 'O sistema deve permitir redução temporária por 3 a 14 dias.' D2.1 row 1. Against: DR-99/SSCTR-05 'suspected illness ... CLINICAL_HUMAN_REQUIRED' and §1 left column 'Sinal atual relevante (dor, doença, ...) leva à recomendação de avaliação profissional'. The later, specific Founder words (B1) prevail narrowly (PCG-V1CP-F01).",
+      "conditions": [
+        "The scoping is a Founder-decided narrowing of the `illness` question for the reported condition. RF-1's sentence 'not a relaxation of any screen' is inaccurate and must say so honestly (TC-10).",
+        "For the scoped condition, the warning-sign instrument is the only screen left; the SSCTR must state which items detect a mild illness turning relevant (worsening, systemic signs, persistence past the window).",
+        "`illness: true` stays clinical at every decision; no conversion between channels; no chaining past 14 days (RC-06, RC-07)."
+      ],
+      "subpoints": [
+        {
+          "id": "Q4-b",
+          "subject": "MINOR_DISCOMFORT against `pain`",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "B1: 'Pequenos desconfortos.' D2.1 row 1: 'pequenos desconfortos'.",
+          "classification": "PCG extension (INFERRED from B1 by the same necessity as Q4), not Founder wording.",
+          "conditions": [
+            "`persistentPain` is never scoped; pain with a substitution routes clinical.",
+            "A discomfort still present at the window's end, or recurring, is not re-windowed without an SSCTR rule and is asked against `persistentPain`.",
+            "The instrument covers pain that changes movement and swelling (as the author states); the SSCTR confirms."
+          ]
+        },
+        {
+          "id": "Q4-c",
+          "subject": "readiness 'current screen' asks about signs other than or worse than what the declaration carries",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.2: 'uma modalidade pode ser reduzida sem suspender a outra.' D2.1 row 2: 'Restrições existentes e sinais relevantes não são ignorados.' §1 right column: 'Suspender as duas modalidades quando a restrição é de uma só' is excessive.",
+          "issue": "As written, the scoping could cover a warning-sign item or a systemic sign the declaration 'carries' (for example a sport declared not ready because of chest pain), letting the other sport restart with a warning sign current. That would weaken a clinical protection.",
+          "correction": "TC-9 (required)"
+        }
+      ]
+    },
+    {
+      "id": "FP-2",
+      "subject": "A restriction ends only when the athlete states, in a structured way, that it ended",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "§1 left column (Chief-prepared, adopted by D2.6 as the indispensable protections): 'Contraindicação ou restrição conhecida limita a prescrição até o atleta informar que acabou.' Founder words that bound it: D2.3 'nenhum exercício contrário a uma contraindicação conhecida'; B3 'Não permitir que uma contraindicação conhecida seja ignorada'; D2.1 row 2 (recovery declared by the athlete, no universal certificate); D2 closing line 'nem bloqueio permanente nem ausência de segurança'.",
+      "classification": "INFERRED from D2 through the adopted §1; 'structured' is a protective addition of the author.",
+      "conditions": [
+        "The normative texts (DR-148 protection 3, AEC overlay) must say 'structured' (TC-8); free text, time, training, silence or a score never end a restriction.",
+        "The end statement is append-only, forward-only, scope-bound and accompanied by a current screen; the restricted scope restarts by the restart rules, never at prior loads (RC-09).",
+        "The supersession of DR-99 'contraindications' and of the AEC 'Restrição declarada' exit owner must be explicit (TC-3)."
+      ],
+      "founderVisibility": "Non-blocking: in-product, a restriction a professional set now ends on the athlete's own structured statement. This follows D2, but the Founder should see it stated in the closure summary."
+    },
+    {
+      "id": "FP-3",
+      "subject": "G4 transfer of triage (warning-sign screen) to SSCTR nonclinical scope, its extension to the Situation 1 entry screen, and RF-1 to RF-8",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "G4 (adopted by D2.6) for the readiness path. For the extension: B1 (mild illness and minor discomfort must reach the reduction), B3 ('Não permitir que uma contraindicação conhecida seja ignorada'), B6 ('Não declarar F08 concluído enquanto existir uma situação comum de recuperação na qual o usuário não consiga legitimamente voltar a treinar'), D2.1 row 1 ('sempre dentro das regras de segurança do motor'), §1 left column ('Sinal atual relevante ... a qualquer momento').",
+      "reasoning": "Readiness path: within G4 and necessary under D2.5/B6. Extension: without a screen B1 cannot separate mild from relevant, and with G04 as owner (none exists) Situation 1 would stay blocked against B6; the extension is a necessary consequence, labelled as the author's reading R-2 (INFERRED), not Founder wording. The 'not G04 approval, not medical screening' wording mirrors SSCTR-05 ('not service-model legal approval or medical screening').",
+      "rfAdmissibility": "RF-1 to RF-8 are admissible and protective (additive only; each item answered; unknown is ASK; any yes routes the clinical hold; all-no is never 'safe'; narrowing is a re-review trigger; same or stricter instrument during S2w and S6; urgency stays G04).",
+      "conditions": [
+        "RF-1 text correction (TC-10).",
+        "G04 column 4 must carry the Situation 1 exception too (TC-6).",
+        "Urgency wording (PCG-V1CP-F03) stays with the Founder for interim acceptance; it blocks final copy.",
+        "The earlier T2 text said 'with legal review'; that review is not performed here and stays routed to D1.5 (Founder with legal support). Record it as routed, not done."
+      ]
+    },
+    {
+      "id": "FP-4",
+      "subject": "PCG-V1CP-F02: 'automatically' read as 'by date or elapsed time alone'",
+      "verdict": "FAITHFUL_WITH_CONDITIONS",
+      "founderSource": "B2: 'Uma retomada mais rápida não é autorização para restaurar automaticamente cargas e ritmos anteriores.' D2.1 row 3: 'Cargas e ritmos antigos não voltam sem evidência.' D2.1 row 1: 'a retomada é gradual, no ritmo conservador, equilibrado ou mais rápido'. D2.2: 'a preferência de velocidade de retomada não substitui os limites seguros do motor'.",
+      "ruling": "The text supports 'automatically' = without evidence: D2.1 row 3 sets evidence as the contrast. B2 also says the faster choice itself is no authorization, so the speed choice is never evidence. 'Never in one step' is not B2's wording. But D2.1 row 1 makes the return gradual at every speed, faster included, and the author's reading I-V1CP-2 and RC-12 leave 'gradual' out.",
+      "correction": "TC-12 (required)",
+      "founderClarificationNeeded": "Only if the SSCTR keeps a FASTER row that returns to the full prior dose at the first post-window session: DESIGN 'Resume the held state: the pre-window doses' (after REDUCE_LIGHT/REDUCE_SUBSTANTIAL) and SHORT 'resume the last completed doses'. Those restore prior doses at a date (the window's end) with no executed evidence at that dose, which fails even the author's reading unless the SSCTR shows the executed reduced-dose window or the existing approved SHORT recipe is that evidence. Question for the Founder: does 'gradual' admit a faster return that reaches the pre-window dose in one step after a short window?"
+    },
+    {
+      "id": "FP-5",
+      "subject": "What the deltas supersede in PCG-R7D-F08-r1",
+      "items": [
+        {
+          "part": "P-1, S6 part (S6 NOT_IMPLEMENTABLE); S5 stays",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.4: 'Ela reabre a forma de autoridade do F08 para a parte do recomeço declarado pelo atleta.'"
+        },
+        {
+          "part": "F08-BLOCK-G04, for the DR-148 paths",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.5: 'F08 continua F08_OPEN (BLOCKED_BY_AUTHORITY, F08-BLOCK-G04) até a mudança de autoridade ser aprovada e implementada.' D2.4: 'o G04 e a governança vigente continuam como estão até a alteração ser aprovada e implementada'.",
+          "condition": "Takes effect only when the authority change is approved (Chief's gate), not on authoring; until then the status stays BLOCKED_BY_AUTHORITY. G04 keeps clearance and clinical content."
+        },
+        {
+          "part": "C05 ('never declared resolved')",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.5: 'Resolver isso é obrigatório antes do lançamento.' B6: 'Não declarar F08 concluído enquanto existir uma situação comum de recuperação na qual o usuário não consiga legitimamente voltar a treinar.'",
+          "issue": "The supersession text makes resolution depend on the DR-148 paths being implemented and both reviews approving, but omits B6's criterion.",
+          "correction": "TC-11"
+        },
+        {
+          "part": "C08 (SSCTR Q8 answer as offline proposal awaiting G04)",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "G4/G6 (adopted by D2.6); D2.4.",
+          "condition": "Binding only through a current SSCTR decision under DR-148 (G6) in this mission; the Phase 3.4 Q8 answer is not promoted retroactively. C08's conflict clause (a conflict returns to PCG and the Chief; neither silently prevails) stays."
+        },
+        {
+          "part": "PCG-F08-Q05 (whether post-clearance clinical return enters V1)",
+          "verdict": "FAITHFUL_WITH_CONDITIONS",
+          "founderSource": "D2.5 ('A V1 não é funcionalmente completa enquanto um atleta recuperado puder ficar permanentemente impedido ...'); D2.1 row 2; B3 'Não exigir universalmente upload de atestado'.",
+          "condition": "Answered as: V1's return after a clinical hold is the declared-readiness restart; a post-clearance S5 is not in V1 and not required. It does not mean a professional clearance can never be admitted (T1 stays live)."
+        },
+        {
+          "part": "T2 consumed",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.4: 'Esta decisão é o gatilho T2 do PCG-R7D-F08-r1.'",
+          "condition": "T1, T3, T4, T5 (at once) and T6 stay live; T2's 'with legal review' is routed to D1.5 (FP-3)."
+        },
+        {
+          "part": "R-F08-R1/R2 mitigated",
+          "verdict": "FAITHFUL",
+          "founderSource": "D2.1 row 2 (a usable restart path); D2.5.",
+          "note": "Mitigated, not resolved: the clinical label stays on record (R-F08-1). For a false-positive entry, the readiness copy must not force a false statement (Product/UX)."
+        },
+        {
+          "part": "P-2, P-3, C01 (S6 part), C02, C06 re-rulings (not flagged, checked)",
+          "verdict": "FAITHFUL",
+          "founderSource": "G5 (adopted by D2.6): 'P-2, P-3 e C02 cedem só para o caminho de prontidão. C01 fica, porque a entrada nova não é clearance (sem emissor, sem verificação, sem \"liberado\"). R-F08-1 fica. C06 passa a oferecer o recomeço.' §1 right column: 'Proibir um plano novo (avaliação atualizada) como saída' is excessive."
+        }
+      ]
+    }
+  ],
+  "unchangedChecks": [
+    { "item": "DR-99 row text", "result": "UNCHANGED", "evidence": "'| DR-99 |' line identical at 4c3f6dc and ecad12d (scratch check)" },
+    { "item": "AEOS rule 4 (and HC03, PS04)", "result": "UNCHANGED", "evidence": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md has no diff 32b5ce3..ecad12d; rule 4 still 'não perguntar ao usuário por clearance'" },
+    { "item": "SSCTR constitution", "result": "UNCHANGED", "evidence": "governance/ and .agents/ have no diff 32b5ce3..ecad12d" },
+    { "item": "R-F08-1", "result": "KEPT", "evidence": "earlier record unchanged on disk; DR-148 (7) and the AEC overlay restate it; the new application to a Situation 1 episode that routed clinical is stricter, not looser" },
+    { "item": "C07", "result": "KEPT", "evidence": "QUALIFIED_CLEARANCE stays an evaluation-client convention; the added harness rule is protective" },
+    { "item": "clinical-first precedence", "result": "KEPT", "evidence": "DR-148 protection 1; RC-01" },
+    { "item": "never diagnose / never clear / never prescribe against a known restriction", "result": "KEPT", "evidence": "DR-148 (1); AEC overlay bullet 2; G04 row column 4" },
+    { "item": "CoachingCore, R7-D records, freezes", "result": "UNCHANGED in ecad12d", "evidence": "git diff --quiet 4c3f6dc ecad12d on CoachingCore and audits/domain-coaching-r7-d-2026-11-02" },
+    { "item": "overlays marked and removable", "result": "YES", "evidence": "D-1, D-3, D-4 between HTML START/END markers; D-2 inline-labelled 'Delta DR-148' / 'Exceção DR-148'. Removing D-1/D-3/D-4 and restoring the G04 row's replacedText reproduces the 4c3f6dc bytes of all three files (independent scratch check); JSON delta texts equal the committed blocks" },
+    { "item": "DR-148 number", "result": "NO COLLISION", "evidence": "origin/chore/v1-healthkit-workoutkit-evidence ends at DR-147; DR-148 appears only on this branch" }
+  ],
+  "corrections": [
+    { "id": "TC-1", "required": true, "where": "DR-148 clause (6)", "text": "Replace 'Running and strength are judged separately: one can be reduced or held without suspending the other.' with 'Running and strength are considered together; one can be reduced or held without suspending the other.'" },
+    { "id": "TC-2", "required": true, "where": "DR-148 clause (2)", "text": "Replace 'with one intent: light reduction, substantial reduction, light activity only or rest' with 'with one intent: reduce the difficulty, substantially reduce the sessions, only compatible light activities, or rest' (D2.1 row 1). If an unquoted part of the 2026-11-08 request names the intents differently, quote it instead." },
+    { "id": "TC-3", "required": true, "where": "DR-148 scope column", "text": "Write '\"suspected illness\" (SSCTR-05, cited by DR-99)'. Add to the partial supersession: 'and \"contraindications … CLINICAL_HUMAN_REQUIRED\" (with the AEC §7.1 \"Restrição declarada\" exit owner) no longer require competent resolution to end a restriction the person reported: its end is the person's structured statement, never a clearance or a clinical determination.'" },
+    { "id": "TC-4", "required": false, "where": "DR-148 clause (5)", "text": "State that D2 attaches the three speeds to Situation 1; after a clinical hold the restart stays conservative and any speed offered there is SSCTR content within that bound." },
+    { "id": "TC-5", "required": true, "where": "DR-148 clause (7)", "text": "'History, records, achievements, prior capacity …' (D2.1 row 3 'conquistas')." },
+    { "id": "TC-6", "required": true, "where": "PDR §5 G04 row, column 4", "text": "Extend the exception: 'Exceção DR-148: a redução temporária com todos os sinais de alerta respondidos não e a declaração ativa de prontidão da pessoa, com triagem atual, …'." },
+    { "id": "TC-7", "required": false, "where": "AEC overlay, first sentence", "text": "'On the DR-148 paths, in the paragraph above, this replaces only …', matching DR-148's partial supersession and the index 'for those paths only'." },
+    { "id": "TC-8", "required": true, "where": "DR-148 protection 3 and AEC overlay bullet 2", "text": "'until the person states, in a structured answer, that it ended'." },
+    { "id": "TC-9", "required": true, "where": "record JSON Q4 (f) (Q4-c)", "text": "Add: 'The scoping never covers a warning-sign item or a systemic sign (illness, fever and the like): any warning sign answered yes routes the clinical hold for every sport, whatever the declaration carries. It covers only a localized issue that the closed restriction vocabulary expresses or for which a sport is declared not ready.'" },
+    { "id": "TC-10", "required": false, "where": "record JSON RF-1", "text": "Replace 'not a relaxation of any screen' with 'a Founder-decided narrowing (B1) of the illness and pain questions, limited to the reported condition and compensated by the warning-sign instrument; every other screen is unchanged'." },
+    { "id": "TC-11", "required": true, "where": "record JSON supersedes, C05", "text": "Add B6: 'and only when no common recovery situation remains in which the person cannot legitimately return to training.'" },
+    { "id": "TC-12", "required": true, "where": "record JSON PCG-V1CP-F02 reading I-V1CP-2 and RC-12", "text": "Add: 'The speed choice is never itself evidence for restoring prior loads or paces (B2), and the return is gradual at every speed (D2.1 row 1).'" }
+  ],
+  "backToFounder": [
+    { "item": "PCG-V1CP-F02 clarification", "condition": "only if the SSCTR keeps a FASTER row that returns to the full prior dose in one step (FP-4)", "blocking": "for that speed row only" },
+    { "item": "PCG-V1CP-F03 interim urgency wording for warning signs (already routed)", "blocking": "final consumer copy" },
+    { "item": "Visibility: a reported restriction ends on the athlete's structured statement (FP-2)", "blocking": false },
+    { "item": "Provenance: B4 and B5 are cited by the author but not quoted on disk; D2.2 covers their use here", "blocking": false },
+    { "item": "Legal service model (D1.5), including T2's 'with legal review'", "blocking": "commercial release, not the form" }
+  ],
+  "escalation": "None required. No delta changes doctrine the Founder did not decide in substance. Clause (6) is a wording defect the author can fix. One reading (Q4-c) could weaken a clinical protection as written; TC-9 closes it within PCG.",
+  "overall": {
+    "verdict": "FAITHFUL_WITH_CONDITIONS",
+    "meaning": "The deltas carry D2 and B1/B2/B3/B6 and keep every listed protection. They cannot be consolidated as-is: the required corrections TC-1, TC-2, TC-3, TC-5, TC-6, TC-8, TC-9, TC-11 and TC-12 go back to the PCG author (REQUEST_CHANGES on text). Then one narrow fidelity re-check of the changed lines only (one bounded cycle).",
+    "notClaimed": "No DOCTRINE_EVIDENCE_REVIEWED, DOCTRINE_INTERPRETABLE, PRODUCT_CONSTITUTION_READY or canonization. F08 stays F08_OPEN; V1_COACHING_AUTHORITY_READY = NO."
+  }
+}
