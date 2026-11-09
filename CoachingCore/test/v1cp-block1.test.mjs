@@ -77,6 +77,24 @@ test('A2-3: every review kind sent in the last week decides without the error pa
  assert.deepEqual(failures,[],'no review kind in the last week may reach the error path');
 });
 
+// ---------------- A3: per-sport stop (SSCTR-V1CP Q02, option A) ----------------
+test('A3 (H28 shape; SSCTR-P5H-O02): a sport with no session planned between two separate breaks reads its own stop; the other keeps today\'s',async()=>{
+ const fs=await import('node:fs');
+ const client=await import(pathToFileURL(path.join(ROOT,'audits/domain-coaching-r7-d-2026-11-02/harness/lib/client-9.mjs')).href);
+ const rt=await client.loadRuntime(path.join(ROOT,'CoachingCore'));
+ // The spent holdout is read only, as a regression shape (never evaluated again, nothing written under final2/).
+ const H=JSON.parse(fs.readFileSync(path.join(ROOT,'audits/domain-coaching-r7-d-2026-11-02/final2/R7D_FINAL_HOLDOUT_2.json'),'utf8'));
+ const t=client.runCase(rt,H.cases.find(c=>c.caseId==='R7D-H28')),s4=t.steps.find(s=>s.stepId==='s4'),d=s4.result.proposal.decisions.at(-1).interruption;
+ assert.equal(d.class,'SHORT','running reads the 4-day inventory stop');
+ assert.deepEqual(d.classBySport,{RUN:'SHORT',STRENGTH:'MODERATE'});assert.deepEqual(d.stopBySport,{STRENGTH:{start:'2026-12-30',days:18}});
+ const next=s4.result.proposal.weeks.flatMap(w=>w.sessions).filter(s=>s.sport==='STRENGTH'&&live(s)&&s.date>='2027-01-17').slice(0,2);
+ assert.ok(next.length===2&&next.every(s=>s.prescription.exercises.every(e=>e.sets===1&&e.rir>=4)),'strength enters at the return-entry dose (1 set, RIR 4 or more), then D49');
+ assert.match(s4.result.reason,/strength had no session planned between the breaks/);
+ // Only lengthens (C-Q02-1): across the corpus no sport's own class is shorter than the stop's class.
+ const order=['SHORT','MODERATE','LONG'];
+ for(const k of H.cases){const tr=client.runCase(rt,k);for(const st of tr.steps){const dd=st.result?.proposal?.decisions?.at(-1)?.interruption;if(dd?.classBySport)for(const c of Object.values(dd.classBySport))assert.ok(order.indexOf(c)>=order.indexOf(dd.class),k.caseId+' '+st.stepId);}}
+});
+
 // ---------------- A1: the reason screen ----------------
 const S=(reason,reasonCategory,extra={})=>screenInterruptionReason({reason,reasonCategory,nonclinical:reasonCategory?true:null,...extra});
 

@@ -22,7 +22,7 @@ export function assessCapability(c,op=null){
  // The run-class thresholds are the reviewed runtime constants, exposed with their provenance (B0-F05); never changed or re-invented here.
  const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=['NONCLINICAL','READINESS_DECLARED'].includes(pause?.screen?.status)&&(pause.weeks??0)>=T.longPauseWeeksAtLeast;
  const current=a.knownRuns.filter(t=>t.current&&!t.implausible);
- const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
+ const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,...(Number.isFinite(r.longestFromRace)?{longestFromRace:r.longestFromRace}:{}),familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
   // B0-C02 / B0-C10: other current familiar tasks by category; they never change the run class (classification equals the reviewed binding).
   familiarBouts:current.filter(t=>familiarRunCategory(t)==='VO2_STYLE').map(t=>({task:clone(t),missing:familiarBoutsInputs(t)})),laterGateTasks:current.filter(t=>familiarRunCategory(t)==='LATER_GATE').map(t=>({task:clone(t),laterGate:laterGateRunItem(t)})),ambiguousTasks:current.filter(t=>familiarRunCategory(t)==='AMBIGUOUS').map(t=>clone(t))};
  // Current running below the minimum easy session (longest run or weekly total) cannot hold a continuous easy run: walk/jog (QRE-R6-09).
@@ -220,7 +220,7 @@ export function initialRunState(sk){
   else{
    const W0=cap.run.weeklyMinutes,avg=W0/runDays.length,share=runDays.length>=3?Math.max(avg,W0*R.longRunShareOfWeeklyMinutesMax):W0;
    // Week-1 long run never exceeds the longest current run; rounding goes down.
-   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??avg,share))):null;
+   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??cap.run.longestFromRace??avg,share))):null;
    // A current familiar quality task in week 1 counts inside the reported weekly minutes, otherwise it waits a week.
    const fq=cls==='QUALITY_FAMILIAR'&&plan.establishmentWeeks===0?familiarQualityMinutes(sk):null;
    // The ladder continues from the athlete's familiar level: the familiar task stands at the highest step it covers.
@@ -1394,7 +1394,7 @@ export function generateProgram(input,options={}){
   if(choice.askRequired)return reject('ASK','Genuine run/strength arrangement trade-off with equal worst-case joint harm; a temporary preference is needed',{missingInputs:['schedule.temporaryPreference'],question:choice.question,trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace}});
   sk.arrangement[key]=choice.selected;if(!capped)previousId=choice.selected?.id??previousId;choices[key]=choice;
  }
- const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
+ const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??cap.run.longestFromRace??null:null});
  // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
  const weeks0=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
  // V1CP F08 Situation 3 (DR-148, RC-11): the restrictions a readiness declaration left in force carry into the new plan as hard caps, recorded on

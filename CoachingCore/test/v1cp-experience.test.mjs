@@ -40,6 +40,34 @@ test('E3: declared equipment and a readable convention remove the disclosure, an
  const squat=rows.find(e=>e.id==='back-squat');assert.ok(squat,'the known squat is planned');assert.equal(squat.load.mode,'ESTABLISH');assert.ok((squat.instructions??[]).some(x=>/20 KG.*starting hint/.test(x)),JSON.stringify(squat.instructions));
 });
 
+test('E1 (SSCTR-V1CP Q03): ten months of regular training is INTERMEDIATE in both sports; the label never sets current capacity',()=>{
+ const i=FOUNDER_ATHLETE();i.athlete.runTrainingMonths=10;i.athlete.strengthTrainingMonths=10;
+ const c=canonicalizeIntake(i);assert.equal(c.status,'CANONICAL');const a=c.canonical.athlete;
+ assert.deepEqual([a.runExperience,a.strengthExperience],['INTERMEDIATE','INTERMEDIATE']);
+ assert.deepEqual(a.experienceBasis,{run:{basis:'DERIVED_FROM_TRAINING_MONTHS',months:10},strength:{basis:'DERIVED_FROM_TRAINING_MONTHS',months:10}});
+ assert.deepEqual(a.experienceDeclared,{run:false,strength:false},'the athlete stated months, not a category');
+ const g=generateProgram(i);assert.equal(g.program.capability.run.class,'EASY_UNKNOWN','no longer walk/jog; still an easy entry while weekly minutes are unknown (C-Q03-5)');
+ assert.equal(g.program.capability.strength.class,'FAMILIAR_UNKNOWN_LOAD');
+ assert.equal(a.recentRun.runMinutesPerWeek,null,'unknown stays unknown');
+ for(const [m,cat] of [[0,'NONE'],[3,'NOVICE'],[6,'INTERMEDIATE'],[23,'INTERMEDIATE'],[24,'EXPERIENCED']]){const x=FOUNDER_ATHLETE();x.athlete.runTrainingMonths=m;assert.equal(canonicalizeIntake(x).canonical.athlete.runExperience,cat,String(m));}
+ const stated=FOUNDER_ATHLETE();stated.athlete.runTrainingMonths=40;stated.athlete.runExperience='NOVICE';assert.equal(canonicalizeIntake(stated).canonical.athlete.runExperience,'NOVICE','a stated category wins');
+ const bad=FOUNDER_ATHLETE();bad.athlete.runTrainingMonths=361;const b=canonicalizeIntake(bad);assert.equal(b.status,'ASK');assert.ok(b.missing.includes('athlete.runTrainingMonths'));
+});
+
+test('E2 (SSCTR-V1CP Q04): a current confirmed race result caps only the first long run and the single-run limit; never the run class',()=>{
+ const base=()=>{const i=FOUNDER_ATHLETE();i.athlete.runExperience='INTERMEDIATE';i.athlete.recent={runDaysPerWeek:3,runMinutesPerWeek:120};return i;};
+ const race=(min,date)=>({sport:'RUN',kind:'BEST_RESULT',distanceKm:5,durationMinutes:min,date,completed:true,tolerated:true});
+ const without=generateProgram(base()),withRace=(()=>{const i=base();i.athlete.performanceAnchors=[race(31,'2026-11-01')];return generateProgram(i);})();
+ assert.equal(withRace.program.capability.run.class,without.program.capability.run.class,'the class is unchanged');
+ const long=g=>g.program.weeks[0].sessions.find(s=>s.role==='LONG')?.prescription.durationMinutes??0;
+ assert.ok(long(withRace)<=31&&long(withRace)<=withRace.program.schedule.runMinutes,'week 1 within the race minutes and the availability');
+ assert.ok(withRace.uncertainty.some(u=>u.field==='performanceAnchors'&&/recent run of about 31 minutes/.test(u.action)));
+ const short=base();short.athlete.performanceAnchors=[race(14,'2026-11-01')];assert.notEqual(generateProgram(short).program.capability.run.class,'WALK_JOG','a sub-15-minute race never makes walk/jog');
+ const old=base();old.athlete.performanceAnchors=[race(31,'2026-09-01')];assert.equal(canonicalizeIntake(old).canonical.athlete.recentRun.longestFromRace,undefined,'older than 28 days: history only');
+ const unconfirmed=base();unconfirmed.athlete.performanceAnchors=[{...race(31,'2026-11-01'),tolerated:undefined}];assert.equal(canonicalizeIntake(unconfirmed).canonical.athlete.recentRun.longestFromRace,undefined,'tolerated must be answered');
+ const novice=FOUNDER_ATHLETE();novice.athlete.runExperience='NOVICE';novice.athlete.recent={runDaysPerWeek:2,runMinutesPerWeek:60};const n0=generateProgram(novice).program.capability.run.class;novice.athlete.performanceAnchors=[race(31,'2026-11-01')];assert.equal(generateProgram(novice).program.capability.run.class,n0,'a novice EASY_LOW class is unchanged');
+});
+
 test('E audit (pinned): age is eligibility only, body facts never reach a dose, race records are kept as stated, and the default experience is NOVICE',()=>{
  const c=canonicalizeIntake(FOUNDER_ATHLETE()).canonical,a=c.athlete;
  assert.equal(a.profileContext.doseConsumer,false);assert.equal(a.profileContext.heightCm,170);assert.equal(a.profileContext.weightKg,70);

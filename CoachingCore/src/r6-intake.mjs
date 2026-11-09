@@ -116,7 +116,17 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
   runGoal.kind='RACE';
   }
  }else if(runGoal.kind==='RACE')missing.push('athlete.event');
- const runExperience=EXPERIENCE[upper(a.runExperience)]??null,strengthExperience=EXPERIENCE[upper(a.strengthExperience??a.strengthTrainingAge)]??null;
+ // V1CP E1 (SSCTR-V1CP Q03): months of regular training (most weeks) in the current continuous period, per sport, read only when the sport's
+ // category is not stated: 0 NONE, 1-5 NOVICE, 6-23 INTERMEDIATE, 24 or more EXPERIENCED (a label: the runtime treats INTERMEDIATE and EXPERIENCED
+ // alike). It never sets current capacity: weekly minutes, days, longest run and loads stay their own facts. A value that is not a whole number
+ // from 0 to the athlete's age in months is asked.
+ const ageMonths=(number(a.ageYears,18,80)?a.ageYears:80)*12,monthsOf=(v,name)=>{if(v===undefined||v===null)return null;if(!Number.isInteger(v)||v<0||v>ageMonths){missing.push(name);return null;}return v;};
+ const runMonths=monthsOf(a.runTrainingMonths??a.trainingMonths?.run,'athlete.runTrainingMonths'),strengthMonths=monthsOf(a.strengthTrainingMonths??a.trainingMonths?.strength,'athlete.strengthTrainingMonths');
+ const fromMonths=m=>m===0?'NONE':m<=5?'NOVICE':m<=23?'INTERMEDIATE':'EXPERIENCED';
+ const runStated=EXPERIENCE[upper(a.runExperience)]??null,strengthStated=EXPERIENCE[upper(a.strengthExperience??a.strengthTrainingAge)]??null;
+ const runExperience=runStated??(runMonths!==null?fromMonths(runMonths):null),strengthExperience=strengthStated??(strengthMonths!==null?fromMonths(strengthMonths):null);
+ const experienceBasis={...(!runStated&&runMonths!==null?{run:{basis:'DERIVED_FROM_TRAINING_MONTHS',months:runMonths}}:{}),...(!strengthStated&&strengthMonths!==null?{strength:{basis:'DERIVED_FROM_TRAINING_MONTHS',months:strengthMonths}}:{})};
+ for(const [k,b,cat] of [['runExperience',experienceBasis.run,runExperience],['strengthExperience',experienceBasis.strength,strengthExperience]])if(b)uncertainty.push(unknown(k,'LEARN_DURING_FIRST_SESSIONS',`Derived from ${b.months} months of regular training: ${cat}; a label only, so current running, longest run and loads stay their own facts`,{basis:b.basis,months:b.months}));
  if(!runExperience&&runGoal.kind!=='NONE')uncertainty.push(unknown('runExperience','SAFE_CONSERVATIVE_ESTABLISHMENT','Treated as novice for establishment; first observed sessions update the estimate'));
  if(!strengthExperience&&strengthGoal.kind!=='NONE')uncertainty.push(unknown('strengthExperience','SAFE_CONSERVATIVE_ESTABLISHMENT','Treated as novice for movement practice and effort-guided load selection'));
  const runDays=runGoal.kind==='NONE'&&s.runDays===undefined?[]:days(s.runDays??a.runDays,'schedule.runDays',missing,errors);
@@ -140,6 +150,13 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  const wearable={activityAvailable:false,heartRateAvailable:false,exerciseIdentityAvailable:false,setsRepsLoadAvailable:false,subjectiveEffortAvailable:false,completeness:'NONE',provider:null,...clone(source.wearableCapabilities??a.wearableCapabilities??a.wearable??{})};
  const summary=historySummary(source.history??a.history,asOf,wearable);
  const recentRun={...recentSelf,basis:'SELF_REPORT'};
+ // V1CP E2 (SSCTR-V1CP Q04): a race result with distance, duration and date, completed and tolerated, dated within the intake's 28-day window and
+ // not after it, is one completed run of that duration, read only when the longest recent run is not reported, and used only as the week-1
+ // long-run cap and the single-run ceiling reference; never the run class, the walk/jog test, weekly minutes or days, a pace, an effort, quality
+ // familiarity, the event statement or a prediction. Older or undated results are history (records) only.
+ const raceMinutes=x=>{if(Number.isFinite(x?.durationMinutes))return x.durationMinutes;const m=typeof x?.time==='string'?x.time.match(/^(?:(\d{1,2}):)?(\d{1,2}):(\d{2})$/):null;return m?(Number(m[1]??0)*60+Number(m[2])+Number(m[3])/60):null;};
+ const race=recentSelf.longestRunMinutes===null&&isoDay(asOf)?(Array.isArray(a.performanceAnchors)?a.performanceAnchors:[]).filter(x=>x&&upper(x.sport)==='RUN'&&x.completed===true&&x.tolerated===true&&isoDay(x.date)&&dayGap(x.date,asOf)>=0&&dayGap(x.date,asOf)<=28&&number(raceMinutes(x),1,600)).map(x=>({minutes:Math.floor(raceMinutes(x)),date:x.date,distanceKm:x.distanceKm??null})).sort((p,q)=>q.minutes-p.minutes)[0]??null:null;
+ if(race){recentRun.longestFromRace=race.minutes;uncertainty.push(unknown('performanceAnchors','LEARN_DURING_FIRST_SESSIONS',`A recent race on ${race.date} is read as a recent run of about ${race.minutes} minutes, only to cap the first long run and the single-run limit; it is never a fitness estimate or a pace`,{minutes:race.minutes,date:race.date}));}
  if(summary.run){
   // Disagreement keeps the lower current exposure; a partial history never raises self-report.
   const conservative=(self,wear)=>self===null?wear:Math.min(self,wear);
@@ -203,7 +220,7 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  if(rs!==undefined&&(!rs||typeof rs!=='object'||typeof rs.readinessEventId!=='string'||!Array.isArray(rs.strengthRestrictions??[])||(rs.strengthRestrictions??[]).some(c=>!RX[c])))errors.push('athlete.restart');
  const restart=rs&&typeof rs==='object'&&typeof rs.readinessEventId==='string'&&(rs.strengthRestrictions??[]).every(c=>RX[c])?{readinessEventId:rs.readinessEventId,strengthRegions:[...new Set((rs.strengthRestrictions??[]).map(c=>RX[c]))].sort()}:null;
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
-  athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runExperience!==null,strength:strengthExperience!==null},recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
+  athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runStated!==null,strength:strengthStated!==null},...(Object.keys(experienceBasis).length?{experienceBasis}:{}),recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
   goals:{run:runGoal,strength:strengthGoal,event,...(contextEvent?{contextEvent}:{})},
   schedule:{runDays,strengthDays,runTurn,strengthTurn,runMinutes,strengthMinutes,longRunMinutes:longRunMinutes??runMinutes,longRunDay,sharedDays:shared,sameTurnConfirmed:s.sameTurnConfirmed===true,temporaryPreference},
   ...(coaching?{coaching}:{}),...(restart?{restart}:{}),
