@@ -1329,3 +1329,34 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing pushed, merged or deleted.
 - **Checkpoint:** `audits/v1-coaching-productization-2026-11-08/CHECKPOINT_V1CP.md`.
+
+<!-- V1CPFF-20261109-closure-r1 -->
+2026-11-09 · V1CP FIX-FORWARD **CLOSED_NOT_READY**, with named blockers.
+- **Runtime** (branch `claude/v1cp-fix-forward`, from `8039d94`):
+  - candidate `4630bca`;
+  - the single fix cycle `0950b0a`;
+  - the recheck records, `69faf76`;
+  - then this closure.
+- **Validation:**
+  - suite 1143/1143;
+  - the FREEZE-6 and `5ee9dec` differentials and journeys A–G are byte-identical to the shipped evidence;
+  - QRE fuzz, seeds 0–600: the counts match the shipped evidence.
+- **Judges:**
+  - round on `4630bca`: SSCTR BLOCK, QRE NOT_READY, Security PASS_WITH_CONDITIONS;
+  - narrow recheck on `0950b0a`: SSCTR BLOCK, QRE NOT_READY, Security PASS_WITH_CONDITIONS.
+
+  Every round-1 blocker is closed.
+- **Blockers named for the next mission:**
+  - runtime: SSCTR-FFC-01, SSCTR-FFC-02 and QRE-FFC-01;
+  - integration: CF-OBS-1, QRE-FF-06, RECORD-CUSTODY, SEC-V1CPI-06 and Security C4–C8.
+- **CF-OBS-1 decision** (PCG, Security and QRE; SSCTR C-3 concurs):
+  - the record is the source of truth of a hold;
+  - only the readiness declaration releases it;
+  - a missing reference state is never a release;
+  - the candidate closes separately.
+- **Unchanged:**
+  - V1 authority NO, and F08_OPEN;
+  - no freeze (the review was not favourable), and FREEZE-6, policy, canon and Figma untouched;
+  - the queue stays at 235;
+  - nothing pushed, merged or deleted.
+- **Checkpoint:** `audits/v1cp-fix-forward-2026-11-09/CHECKPOINT_FF.md`.

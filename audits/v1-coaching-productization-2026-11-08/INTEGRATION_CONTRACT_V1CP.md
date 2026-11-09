@@ -475,3 +475,40 @@ Appended; sections 1–9 above are kept as history. Where a line above disagrees
 - The NEED_REST route offer; the days question "1 to N"; the persistence routes with their guidance level.
 - The race as the athlete's own event with the coach's recommendation for that day, the three paths offered once, and the "back to the event rules" note. Never "cleared" or "safe to race".
 - The two guidance levels and their interim copy; the Demanding coach as advice only.
+
+## 11. V1CP Fix-Forward closure: what an integrator must know (2026-11-09; runtime `0950b0a`, CLOSED_NOT_READY)
+
+Appended at the closure; sections 1–10 are kept as history. The judges' records prevail: `audits/v1cp-fix-forward-2026-11-09/reviews/{ssctr,quality,security}/*_RECHECK_CYCLE.json` and `audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_CFOBS1.json`. **INTEGRATION_READY = NO.** Nothing here authorizes real collection.
+
+### 11.1 Deltas of the fix cycle (`0950b0a`) that the app consumes
+- `wellbeingCheck.improved`: a key that is not an open condition is reported once as `wellbeingCheck.improved.unrecognized` in `missingInputs`. It is never echoed.
+- While a clinical dependency stands, a sign answered yes sets `guidance` (level and wording) and `warningSigns` exactly as it does outside a hold. The status, the hold and the empty plan are unchanged. The sign itself is not recorded (Security C8).
+- Every `CLINICAL_HUMAN_REQUIRED` carries `guidance`, including the sticky one. The default is PROFESSIONAL_ASSESSMENT.
+- A ladder week counts as done for a sport only when its prescribed sessions were executed with no adverse or conflicting response. A check alone never makes it done. The reason now says "was not done as planned or had no review with your check".
+
+### 11.2 Runtime paths that are not validated (named blockers)
+The app must not present these paths as validated:
+- **SSCTR-FFC-01:** a Situation 1 chain that starts with an unexecuted REDUCE window and continues with a REST report.
+- **SSCTR-FFC-02:** a declared break after an answered check and an unexecuted return week.
+- **QRE-FFC-01:** the D49 strength cap across a per-sport chain.
+
+All three are in F08 Situation 1 chains and returns. Generation, the weekly review, session reports, coaching choices and the default path are unaffected: the FREEZE-6 differential and the journeys are unchanged.
+
+### 11.3 Integration blockers (all must close before INTEGRATION_READY)
+- **CF-OBS-1, clinical holds.** Decided by PCG-V1CPFF-CFOBS1-r1, Security C2 and QRE; SSCTR C-3 concurs.
+  - **Source of truth.** The record's `CLINICAL_HOLD` row is the source of truth. `referenceState` is a cache: it may add protection, never remove it.
+  - **Release.** A hold stands until a later valid `READINESS_DECLARED` releases it, sport by sport. Nothing else releases it: not time, sessions, a break, a report, a check, RECOVERED, an eligibility re-answer or a relayed clearance.
+  - **Absent, stale or altered reference state.** Such a state must never release a hold. Today it does: one omission launders the hold for every later review, even when the reference is sent exactly as received afterwards (QRE).
+  - **Until fixed.** No real path may run until both hold: the core enforces the rule on every review kind, and RECORD-CUSTODY keeps the record whole.
+  - **Section 1's caveat.** The sentence "a review that omits them loses facts" does not apply to clinical holds.
+  - **R7 convention.** The R7 practice of modelling a qualified clearance by dropping the reference state is an evaluation convention (PCG-F08-C07), never a product path.
+- **QRE-FF-06.** `canonical()` hashes keys whose value is undefined, so some programs fail `validProgram` after a JSON round trip; the result fails closed with HOLD. Programs and decisions must round-trip through storage unchanged before integration.
+- **Stale projections.** After an ASK or a `CLINICAL_HUMAN_REQUIRED`, the later weeks of the program are a projection. Never present or execute them as current (QRE `d49Executed` class; PCG-F08-C06).
+- **Custody and data.** RECORD-CUSTODY and the server schema (Security C7):
+  - event ids are opaque, server-assigned and bounded;
+  - a record is accepted only if it extends the stored prefix;
+  - a missing, stale or altered state is refused;
+  - athlete and clock are bound by the server;
+  - a guard decision that returns no `actualLedger` means "record unchanged" (OBS-FFC-01).
+
+  Also: the erasure tombstone (SEC-V1CPI-06) and Security C4–C8.

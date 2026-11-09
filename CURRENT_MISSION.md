@@ -1526,3 +1526,39 @@ It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase5/AUTHORIZATION
 **Founder questions:** FP-4; DEMANDING (C-Q09-2); B6 on a race kept inside a return; RC-16 with PCG; interim urgency wording. The queue stays at 235.
 
 **Next:** V1CP Fix-Forward. It fixes the named blockers, gets one fresh recheck, and only then produces a candidate and a freeze.
+
+## V1CP FIX-FORWARD, Founder request of 2026-11-09: CLOSED_NOT_READY, with named blockers (2026-11-09)
+
+<!-- V1CPFF-20261109-closure-r1 -->
+**V1CP Fix-Forward = CLOSED_NOT_READY · V1_COACHING_AUTHORITY_READY = NO · F08 = F08_OPEN · INTEGRATION_READY = NO · R7D-FREEZE-6 untouched · no freeze, push, merge or Figma change.**
+- **Where:** branch `claude/v1cp-fix-forward` (from `8039d94`), worktree `.claude/worktrees/v1-coaching-productization`.
+- **Records:** the [task contract](audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md), the [checkpoint (PT)](audits/v1cp-fix-forward-2026-11-09/CHECKPOINT_FF.md), and section 11 of the [integration contract](audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md).
+
+**Runtime:**
+- Candidate `4630bca`: NB-1..NB-6, SB-1..SB-5 and QRE-V1CPR-02/-05/-06, with the Founder's D1–D7 under DR-149.
+- Then the single bounded fix cycle, `0950b0a` ([FIX_CYCLE_FF](audits/v1cp-fix-forward-2026-11-09/FIX_CYCLE_FF.md)).
+- Suite 1143/1143. The seven F08 journeys and the FREEZE-6 differential are unchanged.
+
+**Judges.** The round on `4630bca` gave SSCTR BLOCK, QRE NOT_READY and Security PASS_WITH_CONDITIONS. Then came the one narrow recheck on `0950b0a`, by fresh instances working on extracts of the frozen commit:
+- SSCTR: BLOCK. FFR-01, -02 and -06 closed; SSCTR-FFC-01 and -02 new and blocking.
+- QRE: NOT_READY. QRE-FF-01..03 closed; QRE-FFC-01 new and blocking.
+- Security: PASS_WITH_CONDITIONS. C1 and C3 closed; C2 and C4–C8 open.
+
+The cycle bound is spent: no further cycle in this mission.
+
+**Named runtime blockers** (all in F08 Situation 1 chains):
+- **SSCTR-FFC-01:** an unexecuted REDUCE window chained with a REST report reads only the REST days. FASTER then goes R3 → R4 after 14 days without training.
+- **SSCTR-FFC-02:** a break after an answered check and an unexecuted return week restores the held doses after 17 days without training.
+- **QRE-FFC-01:** the D49 cap is lost across a per-sport chain (4 sets after a week at 1).
+
+**Integration blockers:**
+- **CF-OBS-1**, decided by PCG, Security and QRE. The record is the source of truth of a clinical hold, and only the readiness declaration releases it. Omitting the reference state is never a release.
+- **QRE-FF-06:** programs fail the JSON round trip.
+- **RECORD-CUSTODY**, **SEC-V1CPI-06** and **Security C4–C8**.
+
+**Unchanged:**
+- the queue stays at 235;
+- FREEZE-6, policy, canon, product and Figma;
+- nothing pushed, merged or deleted.
+
+**Next:** the Founder's decision on a V1 implementation mission (checkpoint §10). Its first unit would be the integration boundary: the three runtime blockers and CF-OBS-1 in the core, QRE-FF-06, and RECORD-CUSTODY. Until it closes, the F08 entries stay off in the app.
