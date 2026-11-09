@@ -20,29 +20,36 @@ const floor5=n=>Math.max(5,Math.floor(n/5)*5);
 /** Capacity per modality from onboarding-like facts; unknown stays unknown and selects establishment. */
 export function assessCapability(c,op=null){
  // The run-class thresholds are the reviewed runtime constants, exposed with their provenance (B0-F05); never changed or re-invented here.
- const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=['NONCLINICAL','READINESS_DECLARED'].includes(pause?.screen?.status)&&(pause.weeks??0)>=T.longPauseWeeksAtLeast;
+ const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,screened=['NONCLINICAL','READINESS_DECLARED'].includes(pause?.screen?.status);
+ // V1CP Situation 3 (SSCTR-V1CP Q08): per sport the pause is the record's, when it carries one (bySportDays); otherwise the stated weeks.
+ const daysOf=sp=>Number.isInteger(pause?.bySportDays?.[sp])?pause.bySportDays[sp]:Number.isFinite(pause?.weeks)?pause.weeks*7:0,longFor=sp=>screened&&(Number.isInteger(pause?.bySportDays?.[sp])?pause.bySportDays[sp]>=T.longPauseWeeksAtLeast*7:(pause?.weeks??0)>=T.longPauseWeeksAtLeast);
+ const longPause=longFor('RUN'),rs=c.restart??null,held=sp=>Array.isArray(rs?.notReady)&&rs.notReady.includes(sp);
+ // C-Q08-2: a new plan from the record never starts a sport above the in-program return of the same pause (past the short class: the entry), and
+ // after a clinical hold never above the readiness restart (the MODERATE floor).
+ const floorFor=sp=>!!rs?.fromRecord&&(rs.minimumClass==='MODERATE'||screened&&daysOf(sp)>(op?.return?.shortMaxDays??10));
  const current=a.knownRuns.filter(t=>t.current&&!t.implausible);
- const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,...(Number.isFinite(r.longestFromRace)?{longestFromRace:r.longestFromRace}:{}),familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
+ const run={programmed:runGoal!=='NONE'&&s.runDays.length>0&&!held('RUN'),experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,...(Number.isFinite(r.longestFromRace)?{longestFromRace:r.longestFromRace}:{}),familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
   // B0-C02 / B0-C10: other current familiar tasks by category; they never change the run class (classification equals the reviewed binding).
   familiarBouts:current.filter(t=>familiarRunCategory(t)==='VO2_STYLE').map(t=>({task:clone(t),missing:familiarBoutsInputs(t)})),laterGateTasks:current.filter(t=>familiarRunCategory(t)==='LATER_GATE').map(t=>({task:clone(t),laterGate:laterGateRunItem(t)})),ambiguousTasks:current.filter(t=>familiarRunCategory(t)==='AMBIGUOUS').map(t=>clone(t))};
  // Current running below the minimum easy session (longest run or weekly total) cannot hold a continuous easy run: walk/jog (QRE-R6-09).
  const minimum=op?.run?.minimumSessionMinutes??15,belowSession=v=>Number.isFinite(v)&&v>0&&v<minimum;
  run.belowMinimumSession=belowSession(r.longestRunMinutes)||belowSession(r.runMinutesPerWeek);
  const why=(cls,predicate)=>{run.class=cls;run.classification={predicate,thresholds:'RUN_CLASS_THRESHOLDS',policyDeclaration:T.policyDeclaration};};
- if(!run.programmed)why('NOT_PROGRAMMED','Run goal NONE or no chosen run days');
+ if(!run.programmed)why('NOT_PROGRAMMED',held('RUN')?'Held: not declared ready to train again (readiness declaration)':'Run goal NONE or no chosen run days');
  else if(a.runExperience==='NONE'||a.runExperience==='NOVICE'&&(r.runMinutesPerWeek===null||r.runMinutesPerWeek<T.noviceWeeklyMinutesBelow||r.runDaysPerWeek===0)||run.belowMinimumSession&&!longPause)why('WALK_JOG',a.runExperience==='NONE'?'Experience NONE':run.belowMinimumSession&&!longPause&&a.runExperience!=='NOVICE'?'Current longest run or weekly running below run.minimumSessionMinutes':`NOVICE with weekly minutes unknown, below ${T.noviceWeeklyMinutesBelow} or 0 run days`);
  else if(r.runDaysPerWeek===0||r.runMinutesPerWeek===0||longPause)why('RESTART',longPause?`Structured nonclinical pause of ${T.longPauseWeeksAtLeast} weeks or more`:'0 run days or 0 weekly minutes');
  else if(r.runMinutesPerWeek===null)why('EASY_UNKNOWN','Weekly running minutes unknown');
  else if(a.runExperience==='NOVICE'||r.runMinutesPerWeek<T.easyLowWeeklyMinutesBelow||(r.runDaysPerWeek??0)<T.easyLowRunDaysBelow)why('EASY_LOW',a.runExperience==='NOVICE'?'NOVICE':`Below ${T.easyLowWeeklyMinutesBelow} weekly minutes or ${T.easyLowRunDaysBelow} run days`);
  else if(run.familiarQuality.length)why('QUALITY_FAMILIAR','A current familiar THRESHOLD/CRUISE/TEN_K_SPECIFIC/HALF_MARATHON_SPECIFIC task');
  else why('EASY_CURRENT','Otherwise');
- const known=longPause?[]:a.knownExercises.filter(e=>e.dose);
- const strength={programmed:strengthGoal!=='NONE'&&s.strengthDays.length>0,experience:a.strengthExperience,known,familiarIds:a.knownExercises.filter(e=>e.familiar).map(e=>e.id),loadHints:Object.fromEntries(a.knownExercises.filter(e=>e.loadHint).map(e=>[e.id,e.loadHint]))};
+ if(run.programmed&&floorFor('RUN')&&['EASY_UNKNOWN','EASY_LOW','EASY_CURRENT','QUALITY_FAMILIAR'].includes(run.class))why('RESTART','A new plan after this pause (or after a clinical hold) starts no higher than the return entry (SSCTR-V1CP C-Q08-2)');
+ const known=longFor('STRENGTH')||floorFor('STRENGTH')?[]:a.knownExercises.filter(e=>e.dose);
+ const strength={programmed:strengthGoal!=='NONE'&&s.strengthDays.length>0&&!held('STRENGTH'),...(floorFor('STRENGTH')?{returnFloor:true}:{}),experience:a.strengthExperience,known,familiarIds:a.knownExercises.filter(e=>e.familiar).map(e=>e.id),loadHints:Object.fromEntries(a.knownExercises.filter(e=>e.loadHint).map(e=>[e.id,e.loadHint]))};
  if(!strength.programmed)strength.class='NOT_PROGRAMMED';
  else if(known.length)strength.class='KNOWN_LOAD';
  else if(['INTERMEDIATE','EXPERIENCED'].includes(a.strengthExperience)||a.knownExercises.length)strength.class='FAMILIAR_UNKNOWN_LOAD';
  else strength.class='NONE';
- return {run,strength,pause:clone(pause),restartAfterPause:longPause};
+ return {run,strength,pause:clone(pause),restartAfterPause:longPause||longFor('STRENGTH')};
 }
 /** Contextual priority from goals, event and phase. A static priority flag is never required. */
 export function buildGoalModel(c){
@@ -432,7 +439,7 @@ export function initialStrengthState(sk){
  // A known dose was last performed when it was observed: the resume clock starts there (SSCTR D52).
  for(const k of sk.cap.strength.known)exercises[k.id]={status:'ESTABLISHED',mode:'KNOWN',load:k.dose.load.value,convention:k.dose.load.convention,reps:k.dose.reps,sets:k.dose.sets,rir:k.dose.rir,loadTick:0,source:'CURRENT_FAMILIAR_KNOWN_DOSE',...(typeof k.observedAt==='string'?{lastPerformed:k.observedAt.slice(0,10)}:{})};
  // B0-C08: strength class NONE starts under the novice density cap (two full templates until the first block boundary).
- return {exercises,devCount:0,completedBlocks:0,...(noviceDensityApplies(sk)?{density:{capped:true}}:{})};
+ return {exercises,devCount:0,completedBlocks:0,...(sk.cap.strength.returnFloor?{returnEntry:true}:{}),...(noviceDensityApplies(sk)?{density:{capped:true}}:{})};
 }
 const PENDING_RULE='Choose the load by effort as in your first session; the load you logged becomes your reference once you confirm it or log it again';
 /** Return step 2 (SSCTR D49): one set above the entry and at least one below the count the sets come back to. */
@@ -463,7 +470,8 @@ function strengthCandidate(sk,ss,w,slot,entry,{firstOfWeek,phase,date,entryWeek}
  // that carries the goal's establishment target instead of the exercise's (a first establishment, a re-establishment) keeps it.
  const knownDose=!!ex&&!bodyweight&&(ex.mode==='KNOWN'||Number.isFinite(ex.load)||Number.isFinite(ex.ceiling)),inRange=r=>knownDose&&Number.isFinite(r)?Math.min(r,hi):r;
  // A new exercise in a return-entry week (an exercise in use this week is at the entry step) takes the entry dose (R6-POLICY-4).
- if(!ex&&entryWeek)return {kind:'RETURN_ENTRY',basis:R.strengthEntrySets,rirBase:R.strengthEntryMinimumRir,rirFloor:R.strengthEntryMinimumRir,row:{reps:g.reps,mode:bodyweight?'BODYWEIGHT':'ESTABLISH',establishment:!bodyweight,note:'Return entry: lowest demand while capacity is re-established'}};
+ // V1CP F08 (SSCTR-V1CP Q07): a region whose restriction ended re-enters its new rows at the entry dose too (entryRegions, one week).
+ if(!ex&&(entryWeek||Array.isArray(ss.entryRegions)&&ss.entryRegions.includes(entry.region)))return {kind:'RETURN_ENTRY',basis:R.strengthEntrySets,rirBase:R.strengthEntryMinimumRir,rirFloor:R.strengthEntryMinimumRir,row:{reps:g.reps,mode:bodyweight?'BODYWEIGHT':'ESTABLISH',establishment:!bodyweight,note:'Return entry: lowest demand while capacity is re-established'}};
  if(!ex&&phase==='ESTABLISHMENT'&&cap.strength.class==='NONE'&&firstOfWeek){const u=op.establishment.unloadedPractice;return {kind:'PRACTICE',basis:u.sets,rirBase:u.minimumRir,row:{practice:true,reps:u.reps}};}
  let normal=ex?.sets??(main?g.sets:Math.max(1,g.sets-1));
  const firstDevBlock=sk.blocks.find(b=>['BUILD','DEVELOPMENT'].includes(b.family));
@@ -647,7 +655,7 @@ const returningWeekOf=(ss0,used)=>used.some(x=>!x.practice&&Number.isInteger(ss0
  * so the marker ends; an exercise in use only planned before the break, never executed, has no state to be at the entry step and is entered by
  * the marker. A week without strength, or whose exposures established nothing, keeps it. The facts read at a later break (strengthAtBreak) move no
  * return step and never end it (R7-A boundary I1/I3). */
-const endReturnEntry=(ss,used)=>{if(ss.returnEntry===true&&used.some(x=>!x.practice&&ss.exercises[x.id]))delete ss.returnEntry;};
+const endReturnEntry=(ss,used)=>{if(ss.returnEntry===true&&used.some(x=>!x.practice&&ss.exercises[x.id]))delete ss.returnEntry;if(ss.entryRegions)delete ss.entryRegions;};
 const byExercise=used=>{const m=new Map();for(const x of used){if(!m.has(x.id))m.set(x.id,[]);m.get(x.id).push(x);}return m;};
 /**
  * EARNED_PROGRESS (R42; state model, audits/domain-coaching-r7a-state-model-2026-10-28/STATE_MODEL_CONTRACT.md): a load tick counts the

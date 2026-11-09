@@ -34,5 +34,5 @@ export function restartProgram({intake,record=[],referenceState=null,asOf=null},
  const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
  if(r.status!=='READY')return freeze({runtimeVersion:'R6-1',mode:'SHADOW',status:r.status,reason:r.reason,missingInputs:r.missingInputs??[],program:null,applied:false,carriedRecord:clone(Array.isArray(record)?record:[])});
  const g=generateProgram(r.intake,options);
- return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,note:r.carried.note}});
+ return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
 }
