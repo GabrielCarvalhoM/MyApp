@@ -49,3 +49,9 @@
 - a strategic or subjective choice the Founder owns.
 
 **Design input to the judges:** `DESIGN_V1CP.md` in this folder.
+
+**Provenance quotes** (PCG-V1CP-F05). These are the Founder's exact words for the passages the authority deltas rest on; the rest of the request stays summarized above, on the Founder's rule against re-saving prompts verbatim.
+- **B1:** "O usuário deve conseguir comunicar: Indisposição leve. Fadiga acima do habitual. Doença leve. Pequenos desconfortos. Necessidade de descansar temporariamente. O sistema deve permitir redução temporária por **3 a 14 dias**."
+- **B2:** "Uma retomada mais rápida não é autorização para restaurar automaticamente cargas e ritmos anteriores."
+- **B3:** "Não exigir universalmente upload de atestado. Não tratar uma simples declaração do usuário como liberação médica emitida pelo software. Não permitir que uma contraindicação conhecida seja ignorada."
+- **B6:** "Não declarar F08 concluído enquanto existir uma situação comum de recuperação na qual o usuário não consiga legitimamente voltar a treinar."

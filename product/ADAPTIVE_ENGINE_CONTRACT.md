@@ -266,6 +266,14 @@ Cada hold conserva **classe de causa, escopo afetado, provenance privada mínima
 
 A pessoa pode rejeitar/contestar, corrigir contexto e registrar com veracidade o que fez. Isso não obriga o Engine a gerar/exportar prescrição proibida nem limpa controle por override. Correção pode resolver um flag de contexto incorreto; restrição clínica exige resolução competente. Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco. Reavaliar futuro, sem clearance retroativo. Invalidar outputs pendentes afetados; cópia remota entregue conserva estado/versão reais, com cancelamento separado somente se suportado/autorizado, sem recall prometido. HOLD/retomada não produzem evento social ou exposição da causa.
 
+<!-- F08_RECOVERY_RETURN_OVERLAY_START: V1CP-F08-r1 -->
+> **Founder doctrine change · 2026-11-08 · [PDR DR-148](PRODUCT_DECISION_REGISTER.md) (Founder D2 and the V1CP request; record PCG-V1CP-F08-r1).** In the paragraph above, this replaces only "restrição clínica exige resolução competente". The rest of §7 stays.
+> - A correction can still fix an incorrect context flag, but it never reclassifies the clinical cause of an episode (R-F08-1).
+> - Clinical judgment (diagnosis, clearance, clinical restriction, urgency) stays outside the software. A known restriction or contraindication limits the prescription and is never ignored, until the person states that it ended. That statement is not a clearance either.
+> - The person's active readiness declaration (current screening answers, not a checkbox) can open a conservative sporting restart, sport by sport. It is not a clearance, the app neither issues nor validates it, and it is never shown as one. Any new sign returns to the clinical hold.
+> - On the DR-148 paths, the "Red flag de safety" and "Restrição declarada" rows above are read with this overlay. The professional-assessment recommendation and the person-reported restrictions follow SSCTR-scope rules pending G04 revalidation. The competent professional's assessment and clearance stay outside the product.
+<!-- F08_RECOVERY_RETURN_OVERLAY_END: V1CP-F08-r1 -->
+
 ### 7.2 Agente e autoridade fora do LLM
 
 Agente opcional lê somente objetos/finalidades autorizados; pode extrair fato **candidato** de linguagem voluntária, pedir esclarecimento mínimo, explicar a decisão atual e preparar opções permitidas pela policy. Fato sensível/material candidato precisa de confirmação/correção no objeto canônico antes de fundamentar decisão; distinguir declaração, observação e inferência. Proposta obsoleta é inválida. Não inventa limiar/evidência/dose, diagnostica, muda objetivo silenciosamente, prescreve dieta, limpa HOLD, altera consentimento/direitos ou envia workout/share/social. A explicação só cita evidência realmente vinculada à regra aplicada.

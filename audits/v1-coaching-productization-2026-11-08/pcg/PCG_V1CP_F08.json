@@ -1,0 +1,614 @@
+{
+  "recordId": "PCG-V1CP-F08-r1",
+  "date": "2026-11-08",
+  "role": "Product Constitution & Governance (constitution 1.2.0), fresh instance; author of the authority form for F08 under the Founder's D2 (trigger T2 of PCG-R7D-F08-r1) and the Founder's 2026-11-08 request (V1CP, B1-B6). Not the author of DESIGN_V1CP.md, TASK_CONTRACT.md, FOUNDER_DECISIONS_PHASE35.md, F08_MINIMAL_DELTA_AND_MISSION.md, PCG-R7D-F08-r1, any runtime, SSCTR or Security record. Decides the authority form only: no sporting content (SSCTR), no data conditions (Security with G07), no clinical judgment (G04, unavailable).",
+  "independent": true,
+  "runtimeContext": {
+    "model": "claude-opus-5-5 (inherited, as dispatched)",
+    "effort": "xhigh (as dispatched)",
+    "toolsUsed": [
+      "Read",
+      "Grep/Bash read-only (grep, sha256sum, git show, git diff, git status)",
+      "Edit (the three product/canon files)",
+      "Write (the two record files)",
+      "Bash (one scratch script to fill and verify the delta texts)"
+    ],
+    "delegation": "none",
+    "notRun": "npm run verify, any verify-r*, freeze-r* or integrate-queue* script, any test; no commit",
+    "worktree": "C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization, branch claude/v1-coaching-productization, HEAD 4584a77, clean at start",
+    "concurrentChangesNotMine": "During this run, other sessions modified CoachingCore/src/r6-adaptation.mjs, r6-clinical.mjs, r6-intake.mjs, three r7c tests, added CoachingCore/test/v1cp-block1.test.mjs and audits/v1-coaching-productization-2026-11-08/security/. This instance did not open, edit or rely on them; runtime vocabulary is cited from HEAD 4584a77."
+  },
+  "authority": {
+    "decision": "Founder D2 (audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md, 2026-11-07), declared trigger T2 of PCG-R7D-F08-r1 (D2.4).",
+    "currentRequest": "Founder direct request of 2026-11-08 (V1 Coaching Productization), sections B1-B6 as relayed in the dispatch and summarized in audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md ('F08 by D2: authority deltas covered by D2 only, then runtime'). The verbatim text is not on disk (finding PCG-V1CP-F05).",
+    "preparation": "audits/domain-coaching-r7-d-2026-11-02/phase35/f08/F08_MINIMAL_DELTA_AND_MISSION.md (G1-G9), Chief-prepared and referenced by D2.6; read as the candidate delta, each item checked against D2 and B1-B6.",
+    "evidencePolicy": "doctrine_audit: formalization of a Founder decision; hypotheses stay labelled; no EVIDENCE_SUFFICIENT is claimed or needed for the form. The sporting content keeps the SSCTR's evidence protocol."
+  },
+  "sourcesRead": [
+    {
+      "path": "C:/Users/carva/.claude/agent-system/protocols/CORE.md",
+      "read": "whole"
+    },
+    {
+      "path": "C:/Users/carva/.claude/agent-system/playbooks/PRODUCT_GOVERNANCE.md",
+      "read": "whole"
+    },
+    {
+      "path": "C:/Users/carva/.claude/agent-system/evals/PRODUCT_GOVERNANCE.md",
+      "read": "PCG, Research and Product/UX sections"
+    },
+    {
+      "path": "audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md",
+      "read": "whole"
+    },
+    {
+      "path": "audits/v1-coaching-productization-2026-11-08/DESIGN_V1CP.md",
+      "read": "whole (Block 2 is the proposal ruled on)"
+    },
+    {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md",
+      "read": "whole"
+    },
+    {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/f08/F08_MINIMAL_DELTA_AND_MISSION.md",
+      "read": "whole"
+    },
+    {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.md",
+      "read": "whole"
+    },
+    {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.json",
+      "read": "whole"
+    },
+    {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/f08/F08_RETURN_PROPOSAL.md",
+      "read": "whole"
+    },
+    {
+      "path": "canon/CANONICAL_INDEX.md",
+      "sha256Before": "c9e012a8c404ec5d520fc78ba03e592a429dc08b08e75884b546c3d33cde28cc",
+      "read": "whole"
+    },
+    {
+      "path": "product/PRODUCT_DECISION_REGISTER.md",
+      "sha256Before": "7387a013adee05ff7d89ecf3d1bb41fa9300ab94ee6b68e79e4f20b2e8a91f50",
+      "read": "PDR-1.12 block, PDR-1.5 block (DR-98-102, THESIS_CONFLICT-SSCTR-01), §5 G01-G11; DR numbers across all refs (highest 134 here, 147 on origin/chore/v1-healthkit-workoutkit-evidence)"
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256Before": "68252a158c8f41e24214b3ed0fd4a3dc2cac417e90075350a05f4c698c52874a",
+      "read": "header, §5 overlay convention, §7 whole"
+    },
+    {
+      "path": "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md",
+      "sha256": "08149de67c576d26dc0d99fd26ca199aa3d5259b7dfefe1d06430ac8e0e65e02",
+      "read": "rule 4, HC02, HC03, allowed_routes, PS04 (grep)"
+    },
+    {
+      "path": "governance/agents/sports-science-reviewer/CONSTITUTION.md",
+      "sha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180",
+      "read": "SSCTR-01 to SSCTR-06"
+    },
+    {
+      "path": "product/DESIGNER_PRODUCT_CONTEXT.md, canon/VILUMO_FIT_PRODUCT_THESIS_CONTRACT.md, product/UX_SPECIFICATION.md, product/CORE_FLOWS.md, product/EXPERIENCE_MODEL.md",
+      "read": "grep for clinical/return/clearance clauses only (clause map)"
+    },
+    {
+      "path": "CoachingCore/src/r6-clinical.mjs, r6-adaptation.mjs, r6-intake.mjs, r5-review-context.mjs (at HEAD 4584a77)",
+      "read": "grep only, for vocabulary: CLINICAL_CATEGORIES includes ILLNESS; illness words (sick, unwell, flu, fever, cough, ...) are clinical mentions; CLINICAL_KEYS pain, persistentPain, injury, illness, functionalLimitation, clinicalConcern (any true is clinical); current eligibility freshness rule; no restriction concept exists"
+    },
+    {
+      "path": "CoachingCore/scripts/verify-r7d-6.mjs, freeze-r7d-6.mjs",
+      "read": "grep for product/canon: the verifier checks the policy and catalog only; the freeze script's product/canon refusal applies at R7-D freeze time"
+    }
+  ],
+  "notOpened": [
+    "audits/v1-coaching-productization-2026-11-08/security/ (parallel Security instance)",
+    "any parallel SSCTR record of this mission",
+    "any review folder",
+    "final/ and final2/"
+  ],
+  "current": {
+    "doctrine": "DR-99: clinical injury/illness return, persistent pain, pathology, contraindications and clearance stay CLINICAL_HUMAN_REQUIRED. PDR G04: competent professionals approve classes, urgency/copy, eligibility, restriction, release and return; before collecting/classifying/acting, releasing a hold or prescribing a return; 'Confirmação/score/LLM não dão clearance'. AEC §7: 'restrição clínica exige resolução competente; sem liberação por ... checkbox de risco'. AEOS rule 4: never ask the user for clearance. SSCTR-05: suspected illness and clearance-dependent situations are CLINICAL_HUMAN_REQUIRED; SSCTR-06 G04 row: nonclinical return only.",
+    "record": "PCG-R7D-F08-r1: F08 BLOCKED_BY_AUTHORITY (F08-BLOCK-G04); P-1 S5/S6 not implementable; P-2 athlete clearance never opens S6; P-3 no interim exit; R-F08-1; C01-C10.",
+    "runtime": "At HEAD 4584a77 a mild illness can only be expressed as eligibility illness:true or an ILLNESS category or illness words, all clinical; a clinical hold has no exit in product use."
+  },
+  "target": "D2 + B1-B6: the software never makes the clinical judgment; Situation 1 low-friction reduction (mild illness included, B1); Situation 2 professional-assessment recommendation and a declared-readiness sporting restart that is never a clearance; Situation 3 new plan; gradual return at the chosen speed within safety limits; per-sport judgment; history preserved.",
+  "rulings": [
+    {
+      "question": "P1",
+      "summary": "Does D2 (with B1 and B6) formalize as one new PDR DR partly superseding DR-99?",
+      "ruling": "YES: one DR, DR-148, in a new amendment block PDR-1.14, partly superseding DR-99.",
+      "form": [
+        "Number: the register here ends at DR-134, but DR-135-147 are approved on origin/chore/v1-healthkit-workoutkit-evidence (PDR-1.13, pinned by the index); no ref uses DR-148 or higher. DR-148 / PDR-1.14 avoids a collision; the block states the skip.",
+        "(a) Clinical judgment (diagnosis, clearance, clinical restriction, urgency) stays outside the software: YES.",
+        "(b) Situation 1 opens on a structured report with every warning sign no: YES, and it belongs in this DR because 'mild illness' (B1) and its warning-sign screen touch DR-99/SSCTR-05 ('suspected illness') and G04 triage.",
+        "(c) Situation 2 restart on the athlete's readiness declaration with a current clear screen, not a clearance: YES, declared per sport (B4, D2.2), answering any clinical hold on record (a clinical-cause break, a clinical flag, pain with a substitution, a warning sign), not only declared breaks.",
+        "(d) Situation 3: admissible after a clinical hold only once readiness is declared; after a long nonclinical interruption it is already within existing authority (existing RESTART), confirmed by D2."
+      ],
+      "classification": {
+        "epistemic": "DECIDED (Founder D2 and the 2026-11-08 request)",
+        "normative": "CURRENT_PRODUCT_DECISION"
+      }
+    },
+    {
+      "question": "P2",
+      "summary": "The AEC §7 and PDR §5 G04-row deltas (G2, G4) and the re-ruling of P-2, P-3, C01, C02, C06 (G5), with C07 and R-F08-1 kept.",
+      "ruling": "APPROVED with the texts applied (deltas D-1 to D-4). Re-rulings in reRulings.",
+      "form": [
+        "AEC §7: a marked overlay that replaces only 'restrição clínica exige resolução competente'. It restates that a correction never reclassifies a clinical cause (R-F08-1), because removing the 'competent resolution' phrase without it would silently weaken the textual basis of I-F08-1. 'Sem liberação por silêncio, tempo, score, compromisso Crew ou checkbox de risco' and 'sem clearance retroativo' stay.",
+        "A known restriction limits the prescription 'until the person states that it ended': from F08 §1 (left column, referenced by D2.6) and D2.3 ('nem bloqueio permanente'); the restriction is known only through the person, so its end is the person's statement too, never a clearance (reading R-1, flagged for the fidelity check).",
+        "AEC §7.1 rows 'Red flag de safety' and 'Restrição declarada' keep their text and are read with the overlay on the DR-148 paths.",
+        "PDR §5 G04 row: original text kept; DR-148 sentences appended in columns 2 and 4 (G4)."
+      ]
+    },
+    {
+      "question": "P3",
+      "summary": "Is the DESIGN Block 2 warning-sign (red-flag) list an admissible conservative boundary instrument, or must Situation 1 reuse only the existing eligibility flags?",
+      "ruling": "ADMISSIBLE as a conservative boundary instrument under the DR-148 form. Its content is SSCTR nonclinical scope (DR-148 via D2 G4: 'triagem ... entram no escopo não clínico do SSCTR'), flagged FUTURE_G04_REVALIDATION and proposed for the human revalidation queue (append by the Founder). Reusing only the existing eligibility flags is not adequate: they cannot separate a mild illness from a relevant one and would either force illness:true (clinical, defeating B1) or a false no.",
+      "basis": "D2.3 proportional protection; F08 §1 left column 'Sinal atual relevante ... leva à recomendação de avaliação profissional, a qualquer momento'; B3; G4 (extended from the readiness path to Situation 1's entry screen on the basis of B1/B3: reading R-2, flagged for the fidelity check).",
+      "conditions": [
+        {
+          "id": "RF-1",
+          "text": "Additive only. It adds routes to the clinical hold and never removes, replaces, narrows or overrides an existing clinical screen (eligibility flags, clinical categories, the interruption screen's mentions, pain with a substitution, the intake clinical screen). The scoping of Q4 is a scoping of the illness/pain question, not a relaxation of any screen."
+        },
+        {
+          "id": "RF-2",
+          "text": "Closed booleans, each actively answered. Unknown or unanswered is ASK, never defaulted to no, and never inferred from free text, silence, wearable data or time."
+        },
+        {
+          "id": "RF-3",
+          "text": "Any yes routes to the clinical hold (S3) with the professional-assessment recommendation. No diagnosis, and no dose or generic deload offered as a substitute for assessment (SSCTR-05)."
+        },
+        {
+          "id": "RF-4",
+          "text": "All-no is not a clearance, not 'safe' and not a statement that danger is ruled out. It only admits the low-friction path; outputs and copy never say otherwise."
+        },
+        {
+          "id": "RF-5",
+          "text": "Items are SSCTR content, not G04-approved and not medical screening. The SSCTR may make the list stricter. Removing or narrowing an item is a re-review trigger for PCG and the SSCTR."
+        },
+        {
+          "id": "RF-6",
+          "text": "The same instrument, or a stricter one, is the set of triggers back to S3 during a reduction window (S2w) and a restart (S6), and part of the readiness 'current screen'."
+        },
+        {
+          "id": "RF-7",
+          "text": "An answer is current only for the decision it accompanies and the window or restart it opens. A later decision reads the latest answers; any new yes routes S3. How often to re-ask is SSCTR and Product/UX design space."
+        },
+        {
+          "id": "RF-8",
+          "text": "Urgency classes and urgent-care wording for any item are G04 content (finding PCG-V1CP-F03); interim wording is conservative, non-diagnostic and never suggests waiting."
+        }
+      ]
+    },
+    {
+      "question": "P4",
+      "summary": "Which product/ and canon/ texts change, exactly.",
+      "ruling": "Exactly the four deltas D-1 to D-4 in three files. Nothing else.",
+      "notChanged": [
+        "the DR-99 row (superseded in part by the DR-148 block, text kept)",
+        "AEOS (rule 4 unchanged per G3; HC03 and PS04 read under DR-148)",
+        "the SSCTR constitution (SSCTR-05/06 read under DR-148)",
+        "UXS, CF, EM, PA, PDM, RS, the thesis, the designer context",
+        "CURRENT_MISSION.md, MISSION_LEDGER.md, the human queue",
+        "CoachingCore/, every freeze, final/, final2/"
+      ],
+      "proposedNotApplied": [
+        {
+          "target": "governance/agents/sports-science-reviewer/CONSTITUTION.md SSCTR-05 and SSCTR-06 G04 row",
+          "text": "A one-line pointer: 'Read with PDR DR-148: the declared-readiness restart and the Situation 1 reduction are nonclinical sporting scope; clearance and clinical judgment stay outside the software.'",
+          "owner": "Chief (outside this dispatch's edit list)",
+          "needed": "not strictly; the SSCTR reads DR-148 through the index pointer and this record"
+        },
+        {
+          "target": "AEOS HC03/PS04, UXS DEP-05 and [DEP-G04] hold lines, DESIGNER_PRODUCT_CONTEXT",
+          "text": "DR-148 overlays at a later sync",
+          "owner": "Chief with Product/UX (integration contract unit)",
+          "needed": "for consumer coherence before design work on these flows"
+        }
+      ]
+    },
+    {
+      "question": "Q4",
+      "summary": "How Situation 1's 'mild illness' relates to the eligibility flag `illness`.",
+      "ruling": "MILD_ILLNESS is a structured Situation 1 fact of its own, never a value of the eligibility flag `illness`.",
+      "form": [
+        "(a) `illness: true` keeps its clinical meaning at every decision (clinical-first). DR-148 relaxes no flag.",
+        "(b) Scoping, one case only: while a current Situation 1 report states MILD_ILLNESS with every warning sign answered no and is not contradicted, the `illness` question asks about an illness other than, or worse than, the one reported. The mild illness is carried by the Situation 1 fact. The athlete is never asked a question whose truthful answer for that mild illness would be `illness: true`, and never asked to answer no to an unscoped 'are you ill?'. Wording is Product/UX design space, pending G04 revalidation.",
+        "(c) A relevant illness never slips into Situation 1: any warning sign yes routes S3; an unanswered sign is ASK and opens no window; `illness: true` or any other clinical flag at any time routes S3 whatever the report says; a worsening or a new sign during the window routes S3 and the episode then stays clinical under R-F08-1 (no return to Situation 1 by later no answers); a declared break with a clinical category (ILLNESS) stays clinical and is never converted into a Situation 1 report, and a Situation 1 report is never converted into an ILLNESS break; free text only raises (a self-attributed warning-sign term or clinical mention that contradicts the answers is ASK for that item) and never opens a window; Situation 1 windows are not chained past the 14-day bound without an explicit SSCTR rule.",
+        "(d) 'Mild' is the athlete's own report bounded by the warning-sign instrument. The software judges no severity; the instrument's content is the SSCTR's (P3).",
+        "(e) Q4-b, same form (extension, flagged): MINOR_DISCOMFORT against `pain`. `pain: true` and `persistentPain: true` stay clinical; while a current Situation 1 report states MINOR_DISCOMFORT with every sign no (the instrument covers pain that changes movement, and swelling), the `pain` question asks about pain other than, or worse than, the discomfort reported.",
+        "(f) Q4-c, same form at readiness: the readiness 'current screen' asks about signs other than, or worse than, what the declaration itself carries as a sport declared not ready or a closed restriction. A current sign the declaration does not carry routes S3. A restriction the closed vocabulary cannot express keeps the sports it may affect held, never ignored or approximated. Whether a carried restriction lets another sport restart is SSCTR content under G04 revalidation; the software infers nothing."
+      ]
+    }
+  ],
+  "reRulings": [
+    {
+      "id": "P-2-r2",
+      "previous": "PCG-R7D-F08-r1 P-2: an athlete-issued clearance ('I feel fine', 'I am ready', RECOVERED, an eligibility re-answer, a checkbox, a correction or a later report) never opens S6; Q-1 to Q-8 define a qualified clearance; a relayed professional clearance is not admissible now.",
+      "new": "For the DR-148 paths only, S6 is redefined as a sporting restart that is not a clearance, opened by the athlete's READINESS_DECLARATION: bound to the clinical hold on record it answers (an episode or a clinical route of this athlete); every item actively answered (declared recovered and ready per sport, restrictions from the closed vocabulary, a current screen), never a single checkbox, never pre-filled; valid forward only from its own date; current eligibility and the warning signs per Q4-c. A self-issued clearance is still never a clearance, and nothing is called one. 'I feel fine' free text, a checkbox, a correction, an eligibility re-answer alone, elapsed time, executed training or a Situation 1 report still open nothing. Q-1 to Q-8 stay as the form of any future professional clearance (T1), not used in V1. PCG-F08-Q03 (relay) stays open and outside V1.",
+      "basis": "D2.1 row 2; D2.4 (T2); G1, G5; B3."
+    },
+    {
+      "id": "P-3-r2",
+      "previous": "PCG-R7D-F08-r1 P-3: a fresh onboarding as an interim exit is NOT_ADMISSIBLE; interim state S3/S4 with no plan.",
+      "new": "The new plan (S8, Situation 3) is a legitimate exit. After a clinical hold it is admissible only once a valid readiness declaration exists. It is generated by the existing cold start from an updated intake plus the carried record: the episode, its declaration and the restrictions in force. It never asks the athlete to omit or relabel the cause. The intake reads the declaration instead of re-routing the historic episode, while any current sign still routes clinical. Prior capacity is context, never dose. After a long nonclinical interruption it is admissible directly (existing authority). S3 without a declaration stays a hold with no plan, now with the readiness path offered (C06-r2).",
+      "basis": "D2.1 row 3; G5; B3 fresh-start path; B5."
+    },
+    {
+      "id": "C01-r2",
+      "previous": "PCG-F08-C01: no S5 or S6 in the runtime: no clearance input, field, flag, event kind or client convention a consumer would rely on, inert or not.",
+      "new": "Kept for S5 and for any clearance: no clearance input, field, flag, event kind, value, label or relied-on client convention, inert or not. Its S6 part is superseded: the DR-148 inputs (the Situation 1 report, the readiness declaration, the restart-plan request) are admissible because they carry no issuer, no verification and no clearance value or wording; Security and G07 conditions bind before real collection. `professionalSeen` has no consumer in this form: PCG recommends leaving it out (minimisation); its existence is Security's decision; if kept, the engine never reads it, it is never required or verified and never shown as clearance, and its question never asks about release or clearance (AEOS rule 4).",
+      "basis": "G5 ('C01 fica, porque a entrada nova não é clearance'); D2.1 row 2 ('sem upload universal de atestado')."
+    },
+    {
+      "id": "C02-r2",
+      "previous": "PCG-F08-C02: no athlete statement ends a clinical-cause episode (I feel fine, RECOVERED, an eligibility re-answer, a return report, a correction, a fresh onboarding, a later break, elapsed time, executed training, a count of weeks).",
+      "new": "No statement ends a clinical-cause episode's clinical status: it stays a clinical-cause episode on record (R-F08-1). The READINESS_DECLARATION (P-2-r2) is the only act that opens the sporting restart for it; it does not edit, end or reclassify the episode and is not a clearance. Every other item of C02 still opens nothing, a Situation 1 report included.",
+      "basis": "G5 ('P-2, P-3 e C02 cedem só para o caminho de prontidão'); F08 §1 'R-F08-1 continua'."
+    },
+    {
+      "id": "C06-r2",
+      "previous": "PCG-F08-C06: never drop the clinical continuation state; no stale plan; no growth pressure; never offer 'start a new plan' or 'change the reason' as an exit; G04 copy only; keep recording; never expose the cause socially.",
+      "new": "Consumer, from a clinical hold: offer the professional-assessment recommendation (no diagnosis) and the readiness path (required: D2.5). The restart is entered only by the runtime reading the declaration; the consumer never drops or replaces the continuation state by a client act (C07). No stale plan as current during the hold; no growth pressure (DR-125) during a reduction window, a hold or a restart, since honoring rest or reduction is compliance. 'Change the reason' is never offered. 'New plan' is offered only after a readiness declaration, or after a long nonclinical interruption. Copy (G8): 'you told us you are ready to return', never 'cleared', 'liberado', 'approved' or 'safe'; restart speeds are presented as distinct from the coach profiles; clinical wording stays non-final pending G04 revalidation. Recording continues; the cause is never exposed socially.",
+      "basis": "G5 ('C06 passa a oferecer o recomeço'); G8; D2.2; D2.5."
+    }
+  ],
+  "kept": [
+    {
+      "id": "PCG-F08-C07",
+      "text": "QUALIFIED_CLEARANCE stays an evaluation-client convention only, never a product mechanism or runtime input. Added: the harness models the readiness declaration as its own step, never as QUALIFIED_CLEARANCE or a continuation-state drop."
+    },
+    {
+      "id": "R-F08-1",
+      "text": "Kept verbatim. The readiness declaration is a separate append-only fact, not a correction. In application, R-F08-1 also covers a Situation 1 episode once any of its reports routed the clinical hold."
+    },
+    {
+      "id": "clinical-first",
+      "text": "The clinical screen precedes Situation 1/2/3 logic, profile, volume, difficulty and speed at every decision."
+    },
+    {
+      "id": "boundary",
+      "text": "Never diagnose, never clear, never prescribe against a known restriction or contraindication."
+    },
+    {
+      "id": "AEOS-rule-4",
+      "text": "Unchanged (G3): the app asks readiness and current signs, never clearance."
+    }
+  ],
+  "supersedes": [
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "P-2, P-3, C01 (S6 part), C02, C06",
+      "by": "P-2-r2, P-3-r2, C01-r2, C02-r2, C06-r2",
+      "scope": "the DR-148 paths only"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "P-1, S6 part ('S6 NOT_IMPLEMENTABLE')",
+      "by": "the redefinition of S6 as a declared-readiness restart (P-2-r2); S5 stays not implementable",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "P-5 blocker F08-BLOCK-G04",
+      "by": "F08 stays F08_OPEN pending the runtime (R1-R4) and its SSCTR and QRE reviews; G04 is no longer the blocker for the DR-148 paths (it remains the owner of any clearance and of clinical content)",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "C05 ('never declared resolved')",
+      "by": "F08 may be declared resolved in the reference runtime when the DR-148 paths are implemented and both narrow reviews approve (D2.5; F08 mission §5)",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "C08 (the SSCTR Q8 answer is an offline proposal awaiting G04)",
+      "by": "the SSCTR's Situation 2 sporting content is binding nonclinical scope under DR-148 (G4), with human revalidation",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "PCG-F08-Q05 (whether clinical return enters V1)",
+      "by": "answered by D2.5: the declared-readiness restart is V1; a clearance-based return is not needed",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "reopening trigger T2",
+      "by": "consumed by this record",
+      "scope": "consequential"
+    },
+    {
+      "record": "PCG-R7D-F08-r1",
+      "part": "residuals R-F08-R1/R2 (a mistaken clinical entry holds with no exit)",
+      "by": "mitigated: the entry stays clinical on record, but the readiness declaration now gives an exit",
+      "scope": "consequential"
+    },
+    {
+      "record": "DR-99 (PDR-1.5)",
+      "part": "'Clinical injury/illness return ... stay CLINICAL_HUMAN_REQUIRED' and, through SSCTR-05, 'suspected illness'",
+      "by": "DR-148",
+      "scope": "only the declared-readiness restart, the new plan after it and a mild illness reported in Situation 1 with every warning sign no"
+    },
+    {
+      "record": "AEC §7 (AEC-1.3)",
+      "part": "'restrição clínica exige resolução competente'",
+      "by": "the V1CP-F08-r1 overlay",
+      "scope": "that phrase only; text kept in place"
+    },
+    {
+      "record": "PDR §5 G04 row",
+      "part": "G04 as the sole owner of triage, restriction vocabulary, return triggers and restart entry",
+      "by": "the appended DR-148 sentences",
+      "scope": "the reduction and declared-readiness paths; G04 keeps the clinical"
+    },
+    {
+      "record": "canon/CANONICAL_INDEX.md SSCTR-AUTH-r1 overlay",
+      "part": "'Clinical clearance/clinical return ... stay CLINICAL_HUMAN_REQUIRED'",
+      "by": "the new pointer V1CP-F08-r1",
+      "scope": "'clinical return' for the DR-148 paths only; clearance unchanged"
+    }
+  ],
+  "findings": [
+    {
+      "id": "PCG-V1CP-F01",
+      "type": "NORMATIVE_CONFLICT (THESIS_CONFLICT convention), resolved by the competent Founder",
+      "sourceA": "DR-99 and SSCTR-05 ('suspected illness ... CLINICAL_HUMAN_REQUIRED'); the runtime's ILLNESS category, illness words and eligibility `illness` as clinical (HEAD 4584a77).",
+      "sourceB": "B1 (2026-11-08): mild illness in the low-friction path; D2.1 row 1 ('indisposição leve').",
+      "incompatibility": "Under A every illness, a cold included, is a clinical hold; under B a mild illness reported with every warning sign no is a temporary reduction.",
+      "resolution": "The same Founder's later, specific decision prevails narrowly: Q4 (a)-(d). Every other illness stays clinical.",
+      "decider": "Founder (decided); PCG formalizes.",
+      "dependents": [
+        "the SSCTR's Situation 1 content",
+        "the runtime screens",
+        "Product/UX question wording",
+        "G04 revalidation"
+      ]
+    },
+    {
+      "id": "PCG-V1CP-F02",
+      "type": "INTERPRETIVE_AMBIGUITY",
+      "sourceA": "B2: 'never restoring prior loads or paces automatically'; D2.1 row 3: 'Cargas e ritmos antigos não voltam sem evidência'.",
+      "sourceB": "DESIGN Block 2 FASTER rows ('resume the held state: the pre-window doses'; SHORT 'resume the last completed doses, no step until execution is observed'); F08 §1 'o retorno por classe e o teto continuam'.",
+      "reading": "I-V1CP-2 (PCG, proposed): 'automatically' means by date or elapsed time alone, without executed evidence. A return to a prior tolerated dose is admissible only as a step of an existing approved recipe that is conditioned on executed evidence and never passes a cap. The SSCTR decides whether each speed meets this; a speed that cannot drops out (G6).",
+      "decider": "SSCTR for the content; Founder if a stricter meaning was intended (for example, no speed may return directly to the pre-window dose).",
+      "blocking": false
+    },
+    {
+      "id": "PCG-V1CP-F03",
+      "type": "AUTHORITY_GAP",
+      "text": "Urgency classes and urgent-care wording for warning signs (for example chest pain or fainting) are G04 content ('urgência/copy'); no G04 owner exists. The DR-148 path recommends professional assessment without urgency classes.",
+      "interim": "Conservative, non-diagnostic wording that never suggests waiting, drafted by Product/UX with the SSCTR, non-final pending G04.",
+      "routedTo": "Founder (interim copy acceptance); G04 when appointed",
+      "blocking": "for final consumer copy only, not for the authority form or the shadow runtime"
+    },
+    {
+      "id": "PCG-V1CP-F04",
+      "type": "PROCESS_NOTE",
+      "text": "The PRODUCT_GOVERNANCE 1.2.0 playbook expects a Research auditor (DOCTRINE_EVIDENCE_REVIEWED) and a Product/UX reviewer (DOCTRINE_INTERPRETABLE) before the Chief's PRODUCT_CONSTITUTION_READY. The route for this unit names a single fresh-PCG fidelity check. The gate choice is the Chief's; this record claims no READY and no canonization, and the edits stay uncommitted until the Chief consolidates.",
+      "blocking": false
+    },
+    {
+      "id": "PCG-V1CP-F05",
+      "type": "PROVENANCE_LIMIT",
+      "text": "The Founder's 2026-11-08 request is on disk only as the Chief's summary (TASK_CONTRACT.md) and the dispatch's B1-B6. DR-148 clause (2) 'mild illness' rests on B1 as relayed (D2.1's 'indisposição leve' is consistent with it).",
+      "trigger": "a verbatim request that differs on B1-B6 re-opens the affected clauses",
+      "blocking": false
+    }
+  ],
+  "observations": [
+    {
+      "id": "PCG-V1CP-O01",
+      "text": "DESIGN Block 2 Situation 1 text: 'screened only for red-flag terms'. The form also requires a self-attributed clinical mention that contradicts the structured answers to be asked (ASK), never ignored. That is consistent with the DESIGN's 'a contradiction is asked'."
+    },
+    {
+      "id": "PCG-V1CP-O02",
+      "text": "The DESIGN's READINESS_DECLARATION requires the declaration 'dated on or after the episode's last day'. For a per-sport restart while the other sport's issue is ongoing (D2.2), the form needs forward-only validity from the declaration's own date, with the not-ready sport held (Q4-c). The SSCTR and Engineering resolve how an open episode is dated."
+    },
+    {
+      "id": "PCG-V1CP-O03",
+      "text": "Editing product/ and canon/ does not affect verify-r7d-6 (it checks the policy and catalog). Any future V1CP freeze script must bind these product/canon hashes, not inherit R7-D's 'unchanged since FREEZE-5' refusal."
+    }
+  ],
+  "runtimeConditions": [
+    {
+      "id": "RC-01",
+      "text": "Clinical first at every decision: the clinical screen precedes Situation 1/2/3 logic, coach profile, volume, difficulty and restart speed."
+    },
+    {
+      "id": "RC-02",
+      "text": "No clearance anywhere: no clearance input, field, flag, event kind, value or label; no 'cleared', 'liberado', 'approved' or 'safe' in any decision output; an S6 output never calls the episode's cause nonclinical; the clinical cause stays on record."
+    },
+    {
+      "id": "RC-03",
+      "text": "Situation 1 entry: a structured report (condition, scope, every warning sign actively answered no, intent per affected sport, a 3-14 day window starting no earlier than the decision date), current eligibility with the Q4 scoping, and no clinical hold without a readiness declaration."
+    },
+    {
+      "id": "RC-04",
+      "text": "Situation 1 exit to S3 on any warning sign, clinical flag, self-attributed clinical mention or category, pain with a substitution or worsening; R-F08-1 then applies to that episode, and a later no never returns it to Situation 1."
+    },
+    {
+      "id": "RC-05",
+      "text": "Free text in any DR-148 input only raises (ASK on contradiction); it never opens a reduction or a restart and is never read as a restriction."
+    },
+    {
+      "id": "RC-06",
+      "text": "Situation 1 windows are not chained past 14 days without an explicit SSCTR rule."
+    },
+    {
+      "id": "RC-07",
+      "text": "A Situation 1 report and a declared break are separate channels: neither is ever converted into the other."
+    },
+    {
+      "id": "RC-08",
+      "text": "S6 entry: a READINESS_DECLARATION bound to this athlete's clinical hold on record; every item actively answered (no single checkbox, no defaults); per sport; valid forward only; current screen per Q4-c; unknown is ASK."
+    },
+    {
+      "id": "RC-09",
+      "text": "Restrictions: closed vocabulary only; hard caps above profile, volume, difficulty and speed; never replaced by a load from another exercise; a restriction the vocabulary cannot express keeps the sports it may affect held; a restriction ends only by the athlete's later structured statement (not time, training, silence or a score), after which the restricted scope restarts by the restart rules, never at prior loads."
+    },
+    {
+      "id": "RC-10",
+      "text": "S6 to S3 on any new sign; a new declaration, dated after it, is then required."
+    },
+    {
+      "id": "RC-11",
+      "text": "Situation 3: the existing cold start from an updated intake plus the carried record; after a clinical hold only with a valid declaration; the intake reads the declaration instead of re-routing the historic episode, any current sign still routes; restrictions in force carry over; prior capacity is context only, never shown or used as current capacity."
+    },
+    {
+      "id": "RC-12",
+      "text": "Restart speeds: every restoration toward a prior dose is a step of an existing approved recipe conditioned on executed evidence, never by date alone, never above caps; speeds stay separate from the coach profiles, never multiply with them and end when the return completes; the SSCTR decides which speeds exist."
+    },
+    {
+      "id": "RC-13",
+      "text": "Per sport: one sport can be reduced or held while the other proceeds; the software never infers that a sign spares a sport; per-sport readiness is the athlete's declaration."
+    },
+    {
+      "id": "RC-14",
+      "text": "Append-only record: episodes, reports, declarations, restriction ends and decisions; prior capacity kept distinct from current capacity; nothing erased by a new plan."
+    },
+    {
+      "id": "RC-15",
+      "text": "S6 is computed by the runtime from the declaration fact in the record, never by a client dropping the continuation state (C07); the harness models the declaration as its own step."
+    },
+    {
+      "id": "RC-16",
+      "text": "No new dose, threshold, count, length, increment, cadence or percentage unless the SSCTR approves it as a NEW PARAMETER in a separate file with its own decision record; the 3-14 day range is Founder-decided (D2, B1)."
+    },
+    {
+      "id": "RC-17",
+      "text": "Security and G07 conditions bind before any real collection; no medical document upload; no diagnosis field; closed enums and booleans."
+    },
+    {
+      "id": "RC-18",
+      "text": "Append-only INTERFACE and PREREG deltas supersede PREREG-6 Δ12 for the readiness path (G9) before any evaluation that claims these paths; R7D-FREEZE-6 bytes, final/ and final2/ untouched."
+    }
+  ],
+  "deltas": [
+    {
+      "id": "D-1",
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "section": "top of file, new amendment block PDR-1.14 (markers F08_RECOVERY_RETURN_START/END: V1CP-F08-r1), before PDR-1.12",
+      "operation": "insert",
+      "drNumberUsed": "DR-148 (local register ends at DR-134; DR-135-147 approved on origin/chore/v1-healthkit-workoutkit-evidence, PDR-1.13; no ref uses DR-148+)",
+      "insertedText": "<!-- F08_RECOVERY_RETURN_START: V1CP-F08-r1 -->\n## Current amendment — PDR-1.14 / recovery and return without clinical judgment by the software (F08) · 2026-11-08\n\n**DR-148 · DECIDED / CURRENT_PRODUCT_DECISION.** Source/decisor: the Founder, in [D2](../audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md) (2026-11-07, trigger T2 of PCG-R7D-F08-r1) and in the current direct request of 2026-11-08 (V1 Coaching Productization, B1–B6, summarized in the [task contract](../audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md)). PCG formalizes in [PCG-V1CP-F08-r1](../audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.md), where the conditions, the clause map and the independent check are recorded. Author status GOVERNANCE_READY_FOR_REVIEW. Numbering skips PDR-1.13 / DR-135–147, approved on the pinned wearable branch and not integrated here.\n\n| ID | Current decision / rationale | Scope, supersession, dependents |\n|---|---|---|\n| DR-148 | **The software never makes the clinical judgment, and a recovering athlete always has a legitimate way back to training.** (1) Diagnosis, clearance, clinical restriction and urgency stay outside the software. The app never diagnoses, never issues, suggests or validates a medical clearance or document, and never prescribes against a known restriction or contraindication. (2) **Temporary reduction (Situation 1).** The person may report mild indisposition, unusual fatigue, mild illness, minor discomfort or a need to rest. With every warning sign answered no and no current clinical sign, the product offers a 3–14 day reduction for each affected sport with one intent: light reduction, substantial reduction, light activity only or rest. The engine sets the dose. (3) **Relevant problem (Situation 2).** A warning sign, a current clinical flag or a clinical cause recommends professional assessment, without diagnosis, and holds the prescription. When the person actively declares, in structured answers with a current clear screen, that they have recovered and are ready for a sport, the product offers a conservative sporting restart of that sport. The declaration is the person's statement: never a clearance and never shown as one. No certificate upload is required. (4) **Prolonged interruption (Situation 3).** A new plan from an updated assessment (availability, goals, recent experience, currently demonstrated capacity), with the history kept. After a clinical hold, only once readiness is declared. (5) **Return** is gradual at the person's chosen speed (conservative, balanced, faster), never above the engine's safety limits and never restoring prior loads or paces automatically. The speeds are temporary and are not the coach profiles. (6) Running and strength are judged separately: one can be reduced or held without suspending the other. (7) History, records, prior capacity (kept distinct from current capacity), episodes and decisions are preserved. A clinical cause is never relabelled (R-F08-1). | **Partly supersedes DR-99**, only so that \"clinical injury/illness return … CLINICAL_HUMAN_REQUIRED\" no longer forbids the declared-readiness restart (3) or the new plan after it (4), and \"suspected illness\" no longer sends to the clinical route a mild illness reported under (2) with every warning sign no. The rest of DR-99 stands, unknown eligibility as ASK included. **Deltas:** [AEC §7](ADAPTIVE_ENGINE_CONTRACT.md) (overlay) and the §5 G04 row below. **Read under this DR, text unchanged:** AEC §7.1 rows \"Red flag de safety\" and \"Restrição declarada\"; AEOS HC03 and PS04; SSCTR-05/06 and the index SSCTR-AUTH-r1 \"clinical return\" phrase; UXS DEP-05 and its `[DEP-G04]` hold lines. AEOS rule 4 is unchanged: the app asks readiness and current signs, never clearance. **Kept:** R-F08-1 and C07 of PCG-R7D-F08-r1, clinical-first precedence, the G04 clinical scope. **Dependents:** SSCTR (sporting content), Security with G07 (health data, before real collection), the runtime and its INTERFACE/PREREG deltas, Product/UX copy, the human revalidation queue (proposals only). |\n\n**Protections (MUST):**\n- The clinical screen comes first at every decision. A warning sign, a clinical flag or a clinical mention the screen attributes to the person routes to the clinical hold at any time, during a reduction or a restart too.\n- An unanswered sign is ASK, never no. Free text never opens a reduction or a restart.\n- A known restriction is a hard cap until the person states that it ended. A restriction the closed vocabulary cannot express keeps the sports it may affect held.\n- The warning signs, the restriction vocabulary, the return triggers and the restart entry are SSCTR nonclinical scope under this DR (DR-98) and enter the funded human revalidation (DR-102). They are not G04 approval or medical screening.\n\n**Premise (ASSUMED, not validated):** a structured warning-sign screen plus the person's own report separates mild from relevant problems well enough for training adaptation, and conservative restart recipes cover the return after a person's recovery. Validation belongs to the funded human revalidation and to a future G04 owner. Nothing here is clinical or empirical evidence.\n\n**Open / owner:**\n- sporting content of the three situations and the speeds: SSCTR;\n- minimisation, consent, retention and access of these health facts: Security with G07;\n- copy (\"you told us you are ready\", never \"cleared\"; speeds distinct from profiles): Product/UX;\n- urgency wording for warning signs: G04 (unavailable), with interim conservative wording routed to the Founder;\n- the legal service model before commercial release: Founder with legal support (D1.5).\n\nF08 stays F08_OPEN until the runtime implements these paths and its reviews pass (D2.5). V1_COACHING_AUTHORITY_READY = NO.\n<!-- F08_RECOVERY_RETURN_END: V1CP-F08-r1 -->",
+      "followedBy": "one blank line, then the existing PDR-1.12 block"
+    },
+    {
+      "id": "D-2",
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "section": "§5 'Questões realmente abertas e dependências', row G04",
+      "operation": "replace (row extended; original text kept, two sentences appended in columns 2 and 4)",
+      "replacedText": "| **G04 Safety/retorno** · DR-17; TR-G04/G-SAFE-1 | Profissionais competentes (médico quando avaliação clínica) aprovam classes concretas, urgência/copy, elegibilidade, restrição, liberação e retorno; treino cobre retorno não clínico, Engineering falha operacional. Prova: regras e casos versionados, evidência de reavaliação e responsável real. | HOLD/contexto/contestação/retorno podem ser detalhados. Triagem, conselho específico, rótulo “seguro” e copy clínica não ficam finalizados. | Antes de coletar/classificar/atuar nesses casos, liberar hold ou prescrever retorno. Confirmação/score/LLM não dão clearance. |",
+      "newText": "| **G04 Safety/retorno** · DR-17; TR-G04/G-SAFE-1 | Profissionais competentes (médico quando avaliação clínica) aprovam classes concretas, urgência/copy, elegibilidade, restrição, liberação e retorno; treino cobre retorno não clínico, Engineering falha operacional. Prova: regras e casos versionados, evidência de reavaliação e responsável real. **Delta DR-148 (2026-11-08; Founder D2 e pedido V1CP; PCG-V1CP-F08-r1):** G04 mantém o clínico: diagnóstico, liberação, restrição clínica e urgência. As proteções da redução temporária e do recomeço por prontidão declarada pela pessoa (sinais de alerta, vocabulário fechado de restrições esportivas, gatilhos de volta à rota clínica, entrada do recomeço) passam ao escopo não clínico do SSCTR (DR-98) e entram na revalidação humana financiada (DR-102). Não são aprovação G04 nem triagem médica. | HOLD/contexto/contestação/retorno podem ser detalhados. Triagem, conselho específico, rótulo “seguro” e copy clínica não ficam finalizados. | Antes de coletar/classificar/atuar nesses casos, liberar hold ou prescrever retorno. Confirmação/score/LLM não dão clearance. Exceção DR-148: a declaração ativa de prontidão da pessoa, com triagem atual, abre um recomeço esportivo conservador, que não é liberação. Restrição conhecida nunca é ignorada; a coleta desses fatos segue Security/G07. |"
+    },
+    {
+      "id": "D-3",
+      "file": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "section": "§7.1, after the correction paragraph, before §7.2 (markers F08_RECOVERY_RETURN_OVERLAY_START/END: V1CP-F08-r1)",
+      "operation": "insert",
+      "insertedText": "<!-- F08_RECOVERY_RETURN_OVERLAY_START: V1CP-F08-r1 -->\n> **Founder doctrine change · 2026-11-08 · [PDR DR-148](PRODUCT_DECISION_REGISTER.md) (Founder D2 and the V1CP request; record PCG-V1CP-F08-r1).** In the paragraph above, this replaces only \"restrição clínica exige resolução competente\". The rest of §7 stays.\n> - A correction can still fix an incorrect context flag, but it never reclassifies the clinical cause of an episode (R-F08-1).\n> - Clinical judgment (diagnosis, clearance, clinical restriction, urgency) stays outside the software. A known restriction or contraindication limits the prescription and is never ignored, until the person states that it ended. That statement is not a clearance either.\n> - The person's active readiness declaration (current screening answers, not a checkbox) can open a conservative sporting restart, sport by sport. It is not a clearance, the app neither issues nor validates it, and it is never shown as one. Any new sign returns to the clinical hold.\n> - On the DR-148 paths, the \"Red flag de safety\" and \"Restrição declarada\" rows above are read with this overlay. The professional-assessment recommendation and the person-reported restrictions follow SSCTR-scope rules pending G04 revalidation. The competent professional's assessment and clearance stay outside the product.\n<!-- F08_RECOVERY_RETURN_OVERLAY_END: V1CP-F08-r1 -->",
+      "precededBy": "one blank line after the correction paragraph"
+    },
+    {
+      "id": "D-4",
+      "file": "canon/CANONICAL_INDEX.md",
+      "section": "top of file, new pointer (markers F08_RECOVERY_RETURN_INDEX_START/END: V1CP-F08-r1), before R7B0-CLOSE-1",
+      "operation": "insert",
+      "insertedText": "<!-- F08_RECOVERY_RETURN_INDEX_START: V1CP-F08-r1 -->\n## Current pointer — recovery and return without clinical judgment by the software (F08) / 2026-11-08\n\n[PDR DR-148 / PDR-1.14](../product/PRODUCT_DECISION_REGISTER.md) is **DECIDED / CURRENT_PRODUCT_DECISION**. Its sources are the Founder's [D2](../audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md) and the 2026-11-08 request summarized in the [V1CP task contract](../audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md). It partly supersedes DR-99 with three paths, and clinical judgment stays outside the software:\n- a temporary reduction for mild problems;\n- after a clinical hold, a sporting restart that the person's readiness declaration opens and that is never a clearance;\n- a new plan after a long interruption.\n\nThe deltas are an overlay in [AEC §7](../product/ADAPTIVE_ENGINE_CONTRACT.md) and the PDR §5 G04 row. For those paths only, it qualifies the \"clinical return\" phrase of the SSCTR-AUTH-r1 overlay below and the clauses listed in the [PCG record](../audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.md); their text is unchanged. Author status GOVERNANCE_READY_FOR_REVIEW; the independent check and Chief consolidation are recorded in that audit. It is not runtime authority on its own: F08 stays F08_OPEN until the runtime is implemented and reviewed. V1_COACHING_AUTHORITY_READY = NO.\n<!-- F08_RECOVERY_RETURN_INDEX_END: V1CP-F08-r1 -->",
+      "followedBy": "one blank line, then the existing R7B0-CLOSE-1 block"
+    }
+  ],
+  "fileHashes": [
+    {
+      "file": "product/PRODUCT_DECISION_REGISTER.md",
+      "sha256Before": "7387a013adee05ff7d89ecf3d1bb41fa9300ab94ee6b68e79e4f20b2e8a91f50",
+      "sha256After": "575f598dab116f90a9a807957dbe718571b25f1695b52e2929d0ec63a1b5136a",
+      "lineEndings": "LF (git ls-files --eol: i/lf w/lf)",
+      "numstat": "+28 -1"
+    },
+    {
+      "file": "product/ADAPTIVE_ENGINE_CONTRACT.md",
+      "sha256Before": "68252a158c8f41e24214b3ed0fd4a3dc2cac417e90075350a05f4c698c52874a",
+      "sha256After": "29118f8bfbb59ce21579d1bd40f5ed5b329a30d7af15d9795cbcf6e8c7e67157",
+      "lineEndings": "LF (git ls-files --eol: i/lf w/lf)",
+      "numstat": "+8 -0"
+    },
+    {
+      "file": "canon/CANONICAL_INDEX.md",
+      "sha256Before": "c9e012a8c404ec5d520fc78ba03e592a429dc08b08e75884b546c3d33cde28cc",
+      "sha256After": "3454c37d8f6d7414971edf43dc49834c23c853cd3d4ece73e47c562e18a5773d",
+      "lineEndings": "LF (git ls-files --eol: i/lf w/lf)",
+      "numstat": "+11 -0"
+    }
+  ],
+  "reReviewTriggers": [
+    "a verbatim Founder request of 2026-11-08 that differs from the relayed B1-B6 (PCG-V1CP-F05)",
+    "a Founder clarification of B2 (PCG-V1CP-F02)",
+    "a G04 owner appointed (T1): G04 revalidates the warning signs, restriction vocabulary, triggers, restart entry and copy, and may supersede them",
+    "funded human revalidation reaching these items (DR-102, T3)",
+    "a legal, regulatory or service-model decision on what the product may say or offer (T4, D1.5)",
+    "any path that leaves a clinical hold without a valid readiness declaration, uses a client clearance, relabels a cause, shows a stale plan or loses the record: at once, as a DOWNSTREAM_VIOLATION",
+    "any removal or narrowing of a warning sign, any change to the restriction vocabulary's semantics, any new field, value or label with clearance meaning, any document upload",
+    "a Security/G07 condition that changes the inputs",
+    "an SSCTR decision that conflicts with this form (returns to PCG and the Chief; neither prevails silently)",
+    "a change to DR-99, DR-148, the G04 row, AEC §7, AEOS rule 4/HC03/PS04 or SSCTR-05/06",
+    "consumer copy using 'cleared', 'liberado', 'approved' or 'safe' for these paths"
+  ],
+  "selfCheck": {
+    "note": "Self-check, not approval. Rubric evals/PRODUCT_GOVERNANCE.md 1.2.0, PCG section.",
+    "items": [
+      {
+        "criterion": "request, authority, current source and history recovered; current/target/delta explicit",
+        "result": "PASS",
+        "evidence": "authority, current, target, deltas, supersedes"
+      },
+      {
+        "criterion": "decisions, design space, open questions distinguishable, with IDs, sources and classifications",
+        "result": "PASS",
+        "evidence": "rulings, reRulings, RF-1..8, RC-01..18, findings; wording, re-ask frequency and representation left to Product/UX, SSCTR and Engineering"
+      },
+      {
+        "criterion": "no hypothesis turned into a MUST; no clinical or sporting judgment",
+        "result": "PASS",
+        "evidence": "the DR states its ASSUMED premise separately; warning-sign items, restriction semantics, doses and speeds are left to the SSCTR, urgency to G04"
+      },
+      {
+        "criterion": "conflicts with sources A/B, impact and resolution authority",
+        "result": "PASS",
+        "evidence": "PCG-V1CP-F01, F02"
+      },
+      {
+        "criterion": "history recoverable, supersession explicit, no rewrite",
+        "result": "PASS",
+        "evidence": "overlays and appends only; DR-99 row, AEC paragraph and SSCTR-AUTH-r1 text kept; supersedes lists each part"
+      },
+      {
+        "criterion": "no UI or architecture prescribed",
+        "result": "PASS",
+        "evidence": "copy constraints only as outcomes (G8); no surface or flow named"
+      },
+      {
+        "criterion": "independent reviews",
+        "result": "PENDING",
+        "evidence": "the Chief dispatches the fresh-PCG fidelity check (PCG-V1CP-F04 notes the playbook's standard gates)"
+      }
+    ]
+  },
+  "independenceStatement": "Fresh PCG instance, claude-opus-5-5 at xhigh as dispatched. I authored none of the inputs I ruled on. I did not open the parallel Security folder, any SSCTR record of this mission or any review. I ran no verifier, freeze script or test, and wrote only the three product/canon edits and these two records. No agent was delegated to. This is a self-checked submission, not a judgment of my own work and not canonical.",
+  "status": "GOVERNANCE_READY_FOR_REVIEW / PRODUCT_CONSTITUTION_DRAFT. Edits applied in the working tree, uncommitted (the Chief commits). Not canonical until the Chief consolidates; not runtime authority; F08 = F08_OPEN; V1_COACHING_AUTHORITY_READY = NO.",
+  "outcome": "AUTHORITY_FORM_DECIDED",
+  "deltaVerification": {
+    "method": "scratch script fill3.mjs: each after-file with its deltas removed (and the original G04 row restored) hashes to the HEAD 4584a77 blob",
+    "script": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d024db0a-e798-4d00-a3e5-d6bad7704647/scratchpad/pcg-v1cp-f08-1794188407/fill3.mjs",
+    "result": {
+      "product/PRODUCT_DECISION_REGISTER.md": true,
+      "product/ADAPTIVE_ENGINE_CONTRACT.md": true,
+      "canon/CANONICAL_INDEX.md": true,
+      "g04RowKeepsOriginalText": true
+    }
+  }
+}

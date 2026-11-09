@@ -1,3 +1,14 @@
+<!-- F08_RECOVERY_RETURN_INDEX_START: V1CP-F08-r1 -->
+## Current pointer — recovery and return without clinical judgment by the software (F08) / 2026-11-08
+
+[PDR DR-148 / PDR-1.14](../product/PRODUCT_DECISION_REGISTER.md) is **DECIDED / CURRENT_PRODUCT_DECISION**. Its sources are the Founder's [D2](../audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md) and the 2026-11-08 request summarized in the [V1CP task contract](../audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md). It partly supersedes DR-99 with three paths, and clinical judgment stays outside the software:
+- a temporary reduction for mild problems;
+- after a clinical hold, a sporting restart that the person's readiness declaration opens and that is never a clearance;
+- a new plan after a long interruption.
+
+The deltas are an overlay in [AEC §7](../product/ADAPTIVE_ENGINE_CONTRACT.md) and the PDR §5 G04 row. For those paths only, it qualifies the "clinical return" phrase of the SSCTR-AUTH-r1 overlay below and the clauses listed in the [PCG record](../audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.md); their text is unchanged. Author status GOVERNANCE_READY_FOR_REVIEW; the independent check and Chief consolidation are recorded in that audit. It is not runtime authority on its own: F08 stays F08_OPEN until the runtime is implemented and reviewed. V1_COACHING_AUTHORITY_READY = NO.
+<!-- F08_RECOVERY_RETURN_INDEX_END: V1CP-F08-r1 -->
+
 <!-- R7_B0_REPERTOIRE_INDEX_START: R7B0-CLOSE-1 -->
 ## R7-B0 V1 Coaching Repertoire Foundation — specification candidate / 2026-10-31
 
