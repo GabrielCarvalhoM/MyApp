@@ -185,7 +185,7 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  if(a.pause!==undefined&&a.pause!==null&&(typeof a.pause!=='object'||Array.isArray(a.pause)))errors.push('athlete.pause.object');
  const P=a.pause&&typeof a.pause==='object'&&!Array.isArray(a.pause)?a.pause:null;
  // A pause length that is not a number is asked, never read as no pause; any length of four weeks or more restarts (QRE-R6-12).
- const pause=P?{nonclinical:P.nonclinical===true,weeks:typeof P.weeks==='number'&&Number.isFinite(P.weeks)&&P.weeks>=0?P.weeks:null,reason:P.reason??null,reasonCategory:P.reasonCategory??null,screen:screenInterruptionReason({reason:P.reason,reasonCategory:P.reasonCategory,nonclinical:P.nonclinical??null,clinicalReason:P.clinicalReason??null})}:null;
+ const pause=P?{nonclinical:P.nonclinical===true,weeks:typeof P.weeks==='number'&&Number.isFinite(P.weeks)&&P.weeks>=0?P.weeks:null,reason:P.reason??null,reasonCategory:P.reasonCategory??null,screen:P.readinessDeclared===true?{status:'READINESS_DECLARED',basis:'READINESS_DECLARATION',matched:[]}:screenInterruptionReason({reason:P.reason,reasonCategory:P.reasonCategory,nonclinical:P.nonclinical??null,clinicalReason:P.clinicalReason??null}),...(P.readinessDeclared===true?{readinessDeclared:true}:{})}:null;
  // Any clinical pause reason routes to a human regardless of flags; an unclear or missing reason is asked.
  if(pause?.screen.status==='CLINICAL')uncertainty.push(unknown('pause.reason','CLINICAL_OUT_OF_SCOPE','The pause reason is clinical or possibly clinical; qualified assessment, no nonclinical restart',{matched:pause.screen.matched}));
  // V1CP A1 (QRE-P5H-F01): only what is missing is asked (reasonQuestion); a missing or unrecognized reason asks the category, as before.
@@ -198,11 +198,15 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  // V1CP Blocks 3-4: the athlete's coaching choices (coach profile, volume and difficulty per sport). None stated keeps the default path, whose
  // canonical intake has no such key (R7D-FREEZE-6 behaviour); a value outside the vocabulary is an input error, never ignored.
  const coachingErrors=[],coaching=canonicalCoaching(a.coaching??source.coaching,coachingErrors);errors.push(...coachingErrors);
+ // V1CP F08 Situation 3 (DR-148, RC-11): a new plan after a readiness declaration carries the restrictions in force (closed vocabulary only).
+ const RX={AVOID_LOWER_BODY_STRENGTH:'LOWER',AVOID_UPPER_BODY_STRENGTH:'UPPER'},rs=a.restart;
+ if(rs!==undefined&&(!rs||typeof rs!=='object'||typeof rs.readinessEventId!=='string'||!Array.isArray(rs.strengthRestrictions??[])||(rs.strengthRestrictions??[]).some(c=>!RX[c])))errors.push('athlete.restart');
+ const restart=rs&&typeof rs==='object'&&typeof rs.readinessEventId==='string'&&(rs.strengthRestrictions??[]).every(c=>RX[c])?{readinessEventId:rs.readinessEventId,strengthRegions:[...new Set((rs.strengthRestrictions??[]).map(c=>RX[c]))].sort()}:null;
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
   athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runExperience!==null,strength:strengthExperience!==null},recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
   goals:{run:runGoal,strength:strengthGoal,event,...(contextEvent?{contextEvent}:{})},
   schedule:{runDays,strengthDays,runTurn,strengthTurn,runMinutes,strengthMinutes,longRunMinutes:longRunMinutes??runMinutes,longRunDay,sharedDays:shared,sameTurnConfirmed:s.sameTurnConfirmed===true,temporaryPreference},
-  ...(coaching?{coaching}:{}),
+  ...(coaching?{coaching}:{}),...(restart?{restart}:{}),
   officialPlanState:clone(source.officialPlanState??null),completedWork:clone(source.completedWork??[]),uncertainty,negotiation};
  canonical.hash=hash(canonical);
  const clinical=el.status==='CLINICAL'||pause?.screen.status==='CLINICAL';

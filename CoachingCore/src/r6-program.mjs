@@ -2,7 +2,7 @@ import {clone,freeze,hash} from './value.mjs';
 import {canonicalizeIntake,onDate,dayGap} from './r6-intake.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
-import {walkPrescription,walkJogPrescription,easyPrescription,qualityPrescription,racePrescription,exerciseRow,fitStrengthSession,strengthPrescription,validateR6Prescription,roundTo5,reducedWork} from './r6-prescription.mjs';
+import {walkPrescription,walkJogPrescription,easyPrescription,qualityPrescription,racePrescription,exerciseRow,fitStrengthSession,strengthPrescription,validateR6Prescription,roundTo5,reducedWork,restrictStrengthSession} from './r6-prescription.mjs';
 import {chooseBalanced,hourOf} from './r6-balanced.mjs';
 import {admitted,repertoireAuthority,DEFAULT_REPERTOIRE,repertoireOf,repertoireBinding,allowsCandidate,buildTemplates,templateTypesFor,noviceTemplateTypes,PRACTICE_FOR,RUN_CLASS_THRESHOLDS,archetypeOf,noExternalLoad,ordinalResistance,incrementFor,kgText,pullCoverageDisclosure,lowerStimulusDisclosure,runRepertoireOf,ROTATION_DEFERRED_PHASES,rotationEligibility,configurationOf,novelOrEccentricLower,I11_PROTECTED_FAMILIES,demandRank,familiarRunCategory,familiarBoutsInputs,laterGateRunItem,laterGateItem,CONFIGURATIONS,TEMPLATE_DEFS,REASON_BASED_SUBSTITUTION,admissibleAlternative,followsSkillMismatch,skillRank} from './r7b-repertoire.mjs';
 
@@ -19,7 +19,7 @@ const floor5=n=>Math.max(5,Math.floor(n/5)*5);
 /** Capacity per modality from onboarding-like facts; unknown stays unknown and selects establishment. */
 export function assessCapability(c,op=null){
  // The run-class thresholds are the reviewed runtime constants, exposed with their provenance (B0-F05); never changed or re-invented here.
- const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=pause?.screen?.status==='NONCLINICAL'&&(pause.weeks??0)>=T.longPauseWeeksAtLeast;
+ const T=RUN_CLASS_THRESHOLDS,a=c.athlete,r=a.recentRun,s=c.schedule,runGoal=c.goals.run.kind,strengthGoal=c.goals.strength.kind,pause=a.pause,longPause=['NONCLINICAL','READINESS_DECLARED'].includes(pause?.screen?.status)&&(pause.weeks??0)>=T.longPauseWeeksAtLeast;
  const current=a.knownRuns.filter(t=>t.current&&!t.implausible);
  const run={programmed:runGoal!=='NONE'&&s.runDays.length>0,experience:a.runExperience,basis:r.basis,weeklyMinutes:r.runMinutesPerWeek,daysPerWeek:r.runDaysPerWeek,longestMinutes:r.longestRunMinutes,familiarQuality:a.knownRuns.filter(t=>t.current&&['THRESHOLD','CRUISE','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC'].includes(t.prescription?.family)),
   // B0-C02 / B0-C10: other current familiar tasks by category; they never change the run class (classification equals the reviewed binding).
@@ -1385,7 +1385,11 @@ export function generateProgram(input,options={}){
  }
  const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
  // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
- const weeks=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
+ const weeks0=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
+ // V1CP F08 Situation 3 (DR-148, RC-11): the restrictions a readiness declaration left in force carry into the new plan as hard caps, recorded on
+ // every week (as a declaration records them), so every later re-plan keeps them until the athlete states they ended.
+ const restriction=c.restart?.strengthRegions?.length?{kind:'STRENGTH_RESTRICTION',eventId:c.restart.readinessEventId,asOf:null,asOfLocal:onDate(c.startDate,-1),past:[],regions:clone(c.restart.strengthRegions),from:c.startDate}:null;
+ const weeks=restriction?weeks0.map(wk=>({...wk,sessions:wk.sessions.map(x=>restrictStrengthSession(x,restriction.regions,{budget:s.strengthMinutes})),adaptations:[...(wk.adaptations??[]),clone(restriction)]})):weeks0;
  if(cap.run.programmed&&cap.run.class==='WALK_JOG'&&s.runDays.length>op.establishment.maxWalkJogDaysPerWeek)negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_ESTABLISHMENT',blocking:false,detail:`${s.runDays.length} run days chosen; establishment supports up to ${op.establishment.maxWalkJogDaysPerWeek} walk/jog exposures, so the other chosen days carry brisk walks`,options:['Keep the walks on those days','Choose fewer run days']});
  if(runState.walks>0&&cap.run.class!=='WALK_JOG')negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE',blocking:false,detail:`Current running (${cap.run.weeklyMinutes??'unknown'} min/week) is spread over fewer runs; ${runState.walks} chosen run day(s) carry brisk walks and convert to runs at block starts when responses allow`,options:['Keep the plan','Choose fewer run days','Report more current running']});
  const target=runTarget(sk);

@@ -106,6 +106,16 @@ export function strengthPrescription(family,exercises,{budget,warmup=5,cooldown=
  const duration=strengthDuration(exercises,{warmup,cooldown,secondsPerRep});
  return {modality:'STRENGTH',family,durationMinutes:Math.min(budget,duration),warmupMinutes:warmup,cooldownMinutes:cooldown,secondsPerRep,equipment:[...new Set(exercises.flatMap(e=>e.equipment))].sort(),exercises:clone(exercises),goalMode,establishment:exercises.some(e=>e.establishment),instructions:['Warm up with easy movement and lighter ramp-up sets',...instructions,'Stop a set when technique slips; reps in reserve are approximate and technique governs','Log actual sets, reps, load and convention; missing effort does not mean a poor response']};
 }
+/** V1CP F08 (DR-148, RC-09): a strength session with the rows of the restricted body regions left out (a hard cap, never replaced by a load from
+ * another exercise); a session left with no row is rest, without debt. Shared by the new-plan generator and the composition replay. */
+export function restrictStrengthSession(s,regions,{budget}){
+ if(!(s.prescription&&s.sport==='STRENGTH'))return s;
+ const all=s.prescription.exercises??[],keep=all.filter(e=>!regions.includes(e.region));
+ if(keep.length===all.length)return s;
+ if(!keep.length){const {status,movedTo,...row}=s;return {...row,role:'REST_BY_DESIGN',key:false,essential:false,optional:true,prescription:null,progression:null,plannedPrescriptionHash:null,explanation:'Rows of the region you said to avoid are left out until you tell us the restriction ended; nothing else fits this session, so it is rest'};}
+ const p=strengthPrescription(s.prescription.family,keep,{budget,warmup:s.prescription.warmupMinutes,cooldown:s.prescription.cooldownMinutes,secondsPerRep:s.prescription.secondsPerRep,goalMode:s.prescription.goalMode,instructions:['Rows of the region you said to avoid are left out until you tell us the restriction ended']});
+ return {...s,prescription:p,plannedPrescriptionHash:hash(p)};
+}
 const bad=(errors,key)=>errors.push(key);
 export function validateR6Prescription(p){
  const errors=[];if(!p||!['RUN','STRENGTH'].includes(p.modality))return ['modality'];

@@ -1,7 +1,7 @@
 import {clone,hash} from './value.mjs';
 import {skeletonOf,projectWeeks,advanceRun,advanceStrength,projectionGates,plannedOf,plannedStrengthOf,runMinutesOf,dayPhaseOf,needsReestablishment,weekSummary,startAuthority,anchoredStart,projectedStart,WEEK_START} from './r6-program.mjs';
 import {interferenceCosts,SEVERITY} from './r6-balanced.mjs';
-import {easyPrescription,strengthPrescription} from './r6-prescription.mjs';
+import {easyPrescription,strengthPrescription,walkPrescription,restrictStrengthSession} from './r6-prescription.mjs';
 import {localDate} from './r6-provenance.mjs';
 import {onDate,dayGap} from './r6-intake.mjs';
 
@@ -115,9 +115,55 @@ export const waitSessions=(env,sessions,a)=>{const ahead=aheadAt(a);return sessi
  */
 const EASY_SLOT='First quality slot after a short break runs easy';
 export function shortReturnEasy(env,sessions,a){const ahead=aheadAt(a),own=s=>s.explanation===EASY_SLOT&&(s.easedFor??null)===(a.episode??null),q=sessions.find(own)??sessions.find(s=>s.role==='QUALITY'&&s.prescription&&s.status!=='SKIPPED'&&ahead(s));return {slot:q??null,sessions:q?.role==='QUALITY'&&env.ahead(q)?sessions.map(s=>s===q?easyRun(env.sk,s,EASY_SLOT,a.episode?{easedFor:a.episode}:{}):s):sessions};}
+// ---------- V1CP F08 (DR-148): a temporary reduction, a sport held and a strength restriction, recorded on the weeks they cover ----------
+const restRow=(s,explanation)=>({...(({status,movedTo,...row})=>row)(s),role:'REST_BY_DESIGN',key:false,essential:false,optional:true,prescription:null,progression:null,plannedPrescriptionHash:null,explanation});
+/** The operations a recorded reduction applies to a session of an affected sport inside its window; every one is an existing dose operation. */
+const RUN_OPS={
+ // Rest: the session is rest, without debt.
+ REST:(env,s,a)=>restRow(s,a.explanation??'Rest: you said you are not 100%; no session today, without debt'),
+ // Light activity only: an optional easy walk of the shortest walk-session length (establishment.walkSessionMinutes).
+ WALK:(env,s,a)=>{const m=Math.min(env.sk.c.schedule.runMinutes,env.sk.op.establishment.walkSessionMinutes[0]),p=walkPrescription(m,{reason:'Light activity only: an easy walk if you feel like it, while you are not 100%'});return {...s,role:'WALK',key:false,essential:false,optional:true,prescription:p,plannedPrescriptionHash:hash(p),explanation:'Light activity only while you are not 100%: an optional easy walk'};},
+ // Easier: the hard work of the session becomes easy at the same duration (the converging-fatigue reduction of a hard run); strides go.
+ EASIER:(env,s,a)=>['QUALITY','RACE_TOUCH'].includes(s.role)||s.prescription?.strides?easyRun(env.sk,s,'Easier while you are not 100%: easy effort only'):s,
+ // Easy only and shorter: every run is easy at the week's easy-run duration (a long run is no longer long); strides go.
+ EASY_SHORT:(env,s,a,week)=>{const easy=Math.min(...week.filter(x=>x.sport==='RUN'&&x.role==='EASY'&&x.prescription).map(x=>x.prescription.durationMinutes),s.prescription.durationMinutes),p=easyPrescription(Math.max(env.sk.op.run.minimumSessionMinutes,easy),{cue:env.sk.op.run.effortCues.EASY_CONVERSATIONAL});return {...s,role:'EASY',key:false,prescription:p,plannedPrescriptionHash:hash(p),explanation:'Much lighter while you are not 100%: a shorter easy run'};}
+};
+const strengthRows=(env,s,rows,instructions)=>{if(!rows.length)return restRow(s,'Nothing of this session fits what you reported; rest without debt');const p=strengthPrescription(s.prescription.family,rows,{budget:env.sk.c.schedule.strengthMinutes,warmup:s.prescription.warmupMinutes,cooldown:s.prescription.cooldownMinutes,secondsPerRep:s.prescription.secondsPerRep,goalMode:s.prescription.goalMode,instructions});return {...s,prescription:p,plannedPrescriptionHash:hash(p)};};
+const withExposure=(e,sets)=>({...e,sets,...(e.exposure?{exposure:{...e.exposure,phasedSets:Math.min(e.exposure.phasedSets??e.sets,sets)}}:{})});
+const STRENGTH_OPS={
+ REST:(env,s,a)=>restRow(s,a.explanation??'Rest: you said you are not 100%; no session today, without debt'),
+ // Easier: the same exercises and sets with at least the return-entry reserve (return.strengthEntryMinimumRir).
+ EASIER:(env,s,a,rows)=>strengthRows(env,s,rows.map(e=>({...e,rir:Math.max(e.rir,env.sk.op.return.strengthEntryMinimumRir)})),['Easier while you are not 100%: same exercises, more reps in reserve']),
+ // Much lighter: main lifts only, one set fewer, at least the return-entry reserve (the converging-fatigue reduction of strength).
+ MAIN_FEWER:(env,s,a,rows)=>strengthRows(env,s,rows.filter(e=>e.role==='MAIN').map(e=>withExposure({...e,rir:Math.max(e.rir,env.sk.op.return.strengthEntryMinimumRir)},Math.max(1,e.sets-1))),['Much lighter while you are not 100%: main lifts only, fewer sets, more reps in reserve'])
+};
+/** V1CP F08 Situation 1: the sessions of the affected sports dated inside the window, by the operation the decision recorded for each sport.
+ * A scope of one region (UPPER or LOWER) changes only that region's strength rows; the race is never changed here (its handler asks). */
+export function wellbeingSessions(env,sessions,a){
+ const inWindow=s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.role!=='RACE'&&s.date>=a.startDate&&s.date<=a.endDate&&(a.sports??[]).includes(s.sport);
+ return sessions.map(s=>{
+  if(!inWindow(s))return s;
+  const op=a.ops?.[s.sport];if(!op)return s;
+  if(s.sport==='RUN')return RUN_OPS[op]?.(env,s,a,sessions)??s;
+  const all=s.prescription.exercises??[],hit=a.region?all.filter(e=>e.region===a.region):all;
+  if(op==='REST'&&!a.region)return STRENGTH_OPS.REST(env,s,a);
+  if(op==='REST')return strengthRows(env,s,all.filter(e=>!hit.includes(e)),['Rows of the region you reported rest while you are not 100%']);
+  const changed=STRENGTH_OPS[op]?.(env,{...s,prescription:{...s.prescription,exercises:hit}},a,hit);
+  if(!a.region||!changed?.prescription)return changed??s;
+  return strengthRows(env,s,[...all.filter(e=>!hit.includes(e)),...changed.prescription.exercises],changed.prescription.instructions??[]);
+ });
+}
+/** V1CP F08 Situation 2: a sport the athlete has not declared ready stays held: its sessions from the decision on are rest, without debt. */
+export const heldSportSessions=(env,sessions,a)=>sessions.map(s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.sport===a.sport&&s.role!=='RACE'&&s.date>=a.from?restRow(s,'Held: you have not told us you are ready for this sport yet; tell us when you are'):s);
+/** V1CP F08 Situation 2: a restriction from the closed vocabulary is a hard cap: strength rows of the restricted region are left out, never
+ * replaced by a load from another exercise (RC-09). A session left with no row is rest. */
+export const restrictedSessions=(env,sessions,a)=>sessions.map(s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.sport==='STRENGTH'&&s.date>=a.from?restrictStrengthSession(s,a.regions??[],{budget:env.sk.c.schedule.strengthMinutes}):s);
 /** Applies a recorded adaptation again to a re-planned week, with its own clock (C4); {ask} when the new plan contradicts it. */
 function reapply(env,sessions,a){
  const own=aheadAt(a),e={...env,asOfLocal:a.asOfLocal,ahead:s=>env.ahead(s)&&own(s)};
+ if(a.kind==='WELLBEING_REDUCTION')return {sessions:wellbeingSessions(e,sessions,a)};
+ if(a.kind==='SPORT_HELD')return {sessions:heldSportSessions(e,sessions,a)};
+ if(a.kind==='STRENGTH_RESTRICTION')return {sessions:restrictedSessions(e,sessions,a)};
  if(a.kind==='SYSTEMIC_FATIGUE'||a.kind==='LOCAL_FATIGUE')return {sessions:fatigueSessions(e,sessions,{systemic:a.kind==='SYSTEMIC_FATIGUE',region:a.region})};
  if(a.kind==='UNAVAILABLE_DAY'){const r=unavailableSessions(e,sessions,new Set(a.dates));return r.race?{ask:'The race now falls on a date marked unavailable; confirm whether the race still happens on that date or the new date',missingInputs:['event.date']}:{sessions:r.sessions};}
  if(a.kind==='EVENT_WEEK_CONFLICT')return {sessions:conflictSessions(e,sessions,new Set(a.dates))};
