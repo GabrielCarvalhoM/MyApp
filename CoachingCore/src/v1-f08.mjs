@@ -129,7 +129,8 @@ export function readCheck(c,{condition,improved=false,allowImproved=false,exerci
  if(per){
   const single=open.length===1?open[0]:due.length===1?due[0]:null;
   if(typeof c.improved==='boolean'){if(single)improvedBy={[single]:c.improved};else bad.push('wellbeingCheck.improved');}
-  else if(isObj(c.improved)){improvedBy={};for(const [k,a] of Object.entries(c.improved)){if(!open.includes(k)||typeof a!=='boolean')bad.push('wellbeingCheck.improved.'+k);else improvedBy[k]=a;}for(const k of due)if(!(k in improvedBy))missing.push('wellbeingCheck.improved.'+k);}
+  // V1CP Fix-Forward cycle (SEC-FFR-01): a key that is not an open condition is never echoed back (free text): it is reported once, as unrecognized.
+  else if(isObj(c.improved)){improvedBy={};let unknown=0;for(const [k,a] of Object.entries(c.improved)){if(!open.includes(k))unknown++;else if(typeof a!=='boolean')bad.push('wellbeingCheck.improved.'+k);else improvedBy[k]=a;}if(unknown)bad.push('wellbeingCheck.improved.unrecognized');for(const k of due)if(!(k in improvedBy))missing.push('wellbeingCheck.improved.'+k);}
   else if(c.improved!==undefined)bad.push('wellbeingCheck.improved');
   else if(due.length)missing.push(...(due.length===1?['wellbeingCheck.improved']:due.map(k=>'wellbeingCheck.improved.'+k)));
  }else{

@@ -1,0 +1,37 @@
+{
+ "generatedBy": "the QRE recheck fuzz (reviews/quality evidence location: scratchpad qre-ffr-1794235811-k3/tools/fuzz.mjs), seeds 0-600, read-only on git-archive copies",
+ "candidate_4630bca": {
+  "seeds": 600,
+  "steps": 6902,
+  "evaluations": 20260,
+  "viol": {
+   "programNotJsonStable": 1175,
+   "jsonRoundTripProgram": 418,
+   "d49Executed": 25,
+   "s1AfterRestart": 78,
+   "noGuidance": 6,
+   "raceAtEffortInScope": 1
+  }
+ },
+ "cycle": {
+  "seeds": 600,
+  "steps": 6905,
+  "evaluations": 20267,
+  "viol": {
+   "programNotJsonStable": 1172,
+   "jsonRoundTripProgram": 415,
+   "d49Executed": 7
+  },
+  "examples": {
+   "d49Executed": [
+    "seed 43 w6d2 RETURN_AFTER_PAUSE -> ASK/ASK w6 db-row planned 4 after 2 logged on 2026-12-11 (R4);w6 db-bench-press planned 4 after 2 logged on 2026-12-11 (R4)",
+    "seed 130 w3d5 RETURN_AFTER_PAUSE -> CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED w4 db-bench-press planned 3 after 1 logged on 2026-11-27 (R4);w4 db-row planned 3 after 1 logged on 2026-11-27 (R4)",
+    "seed 153 w6d6 WEEKLY_REVIEW -> CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED w7 db-row planned 4 after 2 logged on 2026-12-14 (R4);w7 db-bench-press planned 4 after 2 logged on 2026-12-14 (R4)",
+    "seed 153 w7d2 WELLBEING_CHECK -> CLINICAL_HUMAN_REQUIRED/CLINICAL_HUMAN_REQUIRED w7 db-bench-press planned 4 after 2 logged on 2026-12-14 (R4);w7 db-row planned 4 after 2 logged on 2026-12-14 (R4)",
+    "seed 207 w3d6 WEEKLY_REVIEW -> MODIFY/GATED_NEXT_STEP w4 db-bench-press planned 5 after 1 logged on 2026-12-04 (R3);w4 db-row planned 5 after 1 logged on 2026-12-04 (R3)",
+    "seed 544 w6d6 WEEKLY_REVIEW -> MODIFY/GATED_NEXT_STEP w7 db-bench-press planned 4 after 1 logged on 2026-12-21 (R3);w7 db-row planned 4 after 1 logged on 2026-12-21 (R3)"
+   ]
+  }
+ },
+ "reading": "s1AfterRestart (QRE-FF-01), raceAtEffortInScope (QRE-FF-02) and noGuidance (QRE-FF-03) go to 0. The 7 remaining d49Executed steps are the cases the QRE record classes as checker limits or OBS-QRE-FF-4 in its fixHypothesisFF02 (stale projection after an ASK or clinical result; a pre-window session counted in the week), none the QRE-FF-02 mechanism. programNotJsonStable and jsonRoundTripProgram are the pre-existing QRE-FF-06 class, at 4630bca as well."
+}

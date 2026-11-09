@@ -514,7 +514,11 @@ export function composeWeeks(ctx,next,options){
  // more than one set over the count that week executed (a short log), as every later week is; it is placed again from the held strength start.
  if(options.fromWeek>0&&!options.d49Checked){const i=options.fromWeek,ext=d49Hold(placed.weeks,i,sports,record);if(ext){const f=fixedStartOf(ext,placed.stateTrace,i,sports),s0=placed.stateTrace[i];
   return composeWeeks(ctx,{...next,weeks:ext,stateTrace:placed.stateTrace},{...options,start:{runState:options.start?.runState?clone(options.start.runState):clone(s0.run),strengthState:f?.STRENGTH?.state??clone(s0.strength)},d49Checked:true,ownStart:true});}}
- for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports,record);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
+ for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports,record);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);
+  // V1CP Fix-Forward cycle (QRE-FF-02): a marker an extension added to week i with no start of its own (or one the race rule drops) is applied to it:
+  // week i is placed again from the state it was placed with, so its rung, the race composition and the D49 cap run on it.
+  if(!f&&ext){const s0=placed.stateTrace[i];return composeWeeks(ctx,{...next,weeks:placed.weeks,stateTrace:placed.stateTrace},{...options,fromWeek:i,start:{runState:clone(s0.run),strengthState:clone(s0.strength)},startAuthority:placed.weeks[i].startAuthority,returnDay:null,evidence:null,uncredited:[],ownStart:true});}
+  if(!f)continue;
   const s0=placed.stateTrace[i],by={eventId:ctx.review?.event?.id??null,asOf:ctx.asOf??null};
   return composeWeeks(ctx,{...next,weeks:placed.weeks,stateTrace:placed.stateTrace},{...options,fromWeek:i,start:{runState:f.RUN?.state??clone(s0.run),strengthState:f.STRENGTH?.state??clone(s0.strength)},startAuthority:fixedAuthority(f,projectedStart(placed.weeks[i-1],by)),returnDay:null,evidence:null,uncredited:[],ownStart:true});}
  return placed;

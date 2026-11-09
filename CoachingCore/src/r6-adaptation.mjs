@@ -451,7 +451,9 @@ export function evaluateProgram(program,input,options={}){
  const base={runtimeVersion:'R6-1',mode:'SHADOW',applied:false,proposal:null,officialPlanState:official,appliedState:clone(official),completedWork:clone(program?.completedWork??[]),horizonsConsidered:HORIZONS,qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'},missingInputs:[],counterfactuals:[]};
  // V1CP Fix-Forward D5 (SSCTR-FF-Q9): every clinical route carries a guidance level; a route no warning sign caused (persistence, a recurrence, a
  // clinical reason or category, an eligibility flag, pain with a substitution) carries the professional assessment.
- const finish=(status,action,reason,extra={})=>freeze(withHoldFact(program,input,withReference(program,input,{...base,status,action,reason,...extra,...(status==='CLINICAL_HUMAN_REQUIRED'&&!extra.guidance?{guidance:{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}}:{})})));
+ // V1CP Fix-Forward cycle (QRE-FF-03): the level follows the final status, so the clinical dependency the reference preserves carries it too.
+ const guided=r=>r.status==='CLINICAL_HUMAN_REQUIRED'&&!r.guidance?{...r,guidance:{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}}:r;
+ const finish=(status,action,reason,extra={})=>freeze(withHoldFact(program,input,guided(withReference(program,input,{...base,status,action,reason,...extra}))));
  if(!validProgram(program))return finish('HOLD','HOLD','Program integrity or version is invalid');
  // The repertoire authority is read at the review's date; the program must have been planned under the same catalog (R7-B, fail closed).
  const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf:null})};
@@ -519,7 +521,10 @@ export function evaluateProgram(program,input,options={}){
  if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
  const guard=previousValidity(program,review,{readiness:readinessOk});
  // An integrity refusal reads nothing of the review; a standing clinical route or a question still keeps the break it declares.
- if(guard)return finish(guard.status,guard.status,guard.reason,(guard.status==='HOLD'?x=>x:keep)({missingInputs:guard.missingInputs??[]}));
+ // V1CP Fix-Forward cycle (SEC-FFR-02; D5, SSCTR-FF-Q9): while a clinical dependency stands, the items this review answers yes still set the guidance
+ // level and the wording (a chest pain reported during a hold advises urgent care), as they do outside a hold.
+ if(guard){const yes=guard.status==='CLINICAL_HUMAN_REQUIRED'?[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))]:[],sign=yes.length?signRoute(yes):null;
+  return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});
  // V1CP Fix-Forward SB-3 (SEC-V1CPR-01; SEC-V1CPI-04 required; QRE-V1CP-10): a recovery or readiness row that cannot be read with integrity for this
@@ -1168,10 +1173,17 @@ function chainStartFor(ctx,ep,s){
  */
 function missedLadderWeek(ctx,ep,w){
  const {program}=ctx,tz=program.timezoneOffsetMinutes??0,gone=takenAway(ctx,ep),checks=checksFor(ctx,ep.eventId).filter(x=>['RETURN','WINDOW_END'].includes(kindFor(x,ep.eventId))).map(x=>localDate(x.declaredAt,tz));
+ // V1CP Fix-Forward cycle (QRE-FF-01; C-Q05-6): a ladder week behind a readiness restart or a declared break's return (a READINESS_RESTART or REESTABLISH
+ // dated on or after that week's start) belongs to an episode they superseded: it never re-opens the episode or lays its ladder over their return.
+ const behind=k=>program.decisions.some(d=>['REESTABLISH','READINESS_RESTART'].includes(d.action)&&typeof d.asOf==='string'&&localDate(d.asOf,tz)>=program.weeks[k].startDate);
  for(let k=0;k<Math.min(w,program.weeks.length);k++){
-  const ms=marksOf(program.weeks[k],ep.eventId,'LADDER').filter(m=>m.startDate<=program.weeks[k].startDate);if(!ms.length)continue;
-  const from=program.weeks[k].startDate,to=onDate(from,7);if(checks.some(d=>d>=from&&d<=to))continue;
-  const sports=[...new Set(ms.flatMap(m=>Object.keys(m.rungs??{})))].filter(s=>!gone.has(s)&&!program.weeks.slice(k+1).some(x=>marksOf(x,ep.eventId,'LADDER').some(a=>Number.isInteger(a.repeatOf?.[s])&&a.repeatOf[s]<=k)));
+  const ms=marksOf(program.weeks[k],ep.eventId,'LADDER').filter(m=>m.startDate<=program.weeks[k].startDate);if(!ms.length||behind(k))continue;
+  // V1CP Fix-Forward cycle (SSCTR-FFR-01): a check alone never makes a week done: a checked week is skipped for a sport only when its prescribed
+  // sessions of that sport were all executed with no adverse or conflicting response; a check sent outside the weekly review of an unexecuted
+  // week leaves it not done, so its rung repeats.
+  const from=program.weeks[k].startDate,to=onDate(from,7),checked=checks.some(d=>d>=from&&d<=to),wk=program.weeks[k];
+  const done=s=>{const own=wk.sessions.filter(x=>x.sport===s);return !own.some(x=>x.prescription&&!x.optional&&x.status!=='SKIPPED')||executionOf(ctx,own).all;};
+  const sports=[...new Set(ms.flatMap(m=>Object.keys(m.rungs??{})))].filter(s=>!gone.has(s)&&!(checked&&done(s))&&!program.weeks.slice(k+1).some(x=>marksOf(x,ep.eventId,'LADDER').some(a=>Number.isInteger(a.repeatOf?.[s])&&a.repeatOf[s]<=k)));
   if(sports.length)return {k,sports};
  }
  return null;
@@ -1183,7 +1195,7 @@ function restartLadder(ctx,program,ep,miss,at){
  for(const s of new Set([...Object.keys(fromK),...Object.keys(fromAt)]))lists[s]=miss.sports.includes(s)&&fromK[s]?.length?[{...fromK[s][0],repeatOf:miss.k},...fromK[s].slice(1)]:fromAt[s]??[];
  return withLadder(ctx,program,ep,{k:at,day:program.weeks[at].startDate,lists,easySlot:false});
 }
-const missedSaid=(program,miss,when)=>`${miss.sports.map(sayS).join(' and ')}: the week of ${program.weeks[miss.k].startDate} had no review with your check, so it counts as not done and its step repeats from ${when} (no debt)`;
+const missedSaid=(program,miss,when)=>`${miss.sports.map(sayS).join(' and ')}: the week of ${program.weeks[miss.k].startDate} was not done as planned or had no review with your check, so it counts as not done and its step repeats from ${when} (no debt)`;
 /**
  * V1CP Fix-Forward NB-1 (CH-r2-3, -5, -6, -7; SSCTR-V1CPFF-DECISION-r1 FF-Q7): Situation 1 is held per sport. The conditions bound to sport s in report
  * E are its own and the unresolved ones it carried for s from the report it took s from, one entry per condition (earliest start, latest end, most
@@ -1281,9 +1293,15 @@ function speedPlan(R,intent,days,speed){
  */
 function sportPlan(ctx,E,s,speed,from){
  const {program}=ctx,R=ctx.sk.op.return,tz=program.timezoneOffsetMinutes??0,eps=chainReportsFor(ctx,E,s),ids=new Set(eps.map(x=>x.eventId));
- const at=d=>{const k=weekOfDay(program,d),wk=program.weeks[k];if(!wk||d<wk.startDate||d>lastDayOf(program,k))return null;return (wk.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&ids.has(a.episode)&&['WINDOW','WAIT'].includes(a.phase)&&a.rungs?.[s]&&a.startDate<=d&&(!a.endDate||a.endDate>=d))??null;};
+ const mark=(d,phases)=>{const k=weekOfDay(program,d),wk=program.weeks[k];if(!wk||d<wk.startDate||d>lastDayOf(program,k))return null;return (wk.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&ids.has(a.episode)&&phases.includes(a.phase)&&a.rungs?.[s]&&a.startDate<=d&&(!a.endDate||a.endDate>=d))??null;},at=d=>mark(d,['WINDOW','WAIT']);
+ const did=d=>executionOf(ctx,sessionsIn(program,[s],d,d)).done;
  let rest=0,waited=0,reduce=0,minR='R4',winFrom=null,winTo=null;
- for(let g=0,d=onDate(from,-1);g<120;g++,d=onDate(d,-1)){const a=at(d);if(!a)break;const r=a.rungs[s];
+ for(let g=0,d=onDate(from,-1);g<200;g++,d=onDate(d,-1)){const a=at(d);
+  // V1CP Fix-Forward cycle (SSCTR-FFR-02; CH-r2-7 with FF-N1): a stretch of the chain's own return with no executed session of the sport, between
+  // two of its windows, is days without training: it is read as waited days and the scan goes on into the earlier window. A return stretch with an
+  // executed session stops the scan at the window (the sport trained then).
+  if(!a){let e=d,n=0;while(n<120&&mark(e,['LADDER'])&&!did(e)){n++;e=onDate(e,-1);}if(n&&at(e)){waited+=n;g+=n;d=onDate(e,1);continue;}break;}
+  const r=a.rungs[s];
   if(a.phase==='WAIT'){waited++;continue;}
   if(r==='R0'||r==='R1'||r==='WAIT')rest++;else reduce++;
   minR=minRung(minR,r==='WAIT'?'R0':r);winFrom=d;winTo=winTo??d;}
@@ -1357,7 +1375,8 @@ function composeReturn(ctx,program,ep,{k,lists,held,declared}){
    if(!returning(next.stateTrace[i],s,held))break;
    const l=[...stepsFrom({...view,weeks:next.weeks},ep,k)[s]];l[i-k]={rung:'M',start:null,each:true};l[i-k+1]={rung:'M',start:'REPEAT',each:true};
    view=withLadder(ctx,{...view,weeks:next.weeks,stateTrace:next.stateTrace},ep,{k,day:marksOf(next.weeks[k],ep.eventId,'LADDER').find(a=>a.rungs?.[s])?.startDate??program.weeks[k].startDate,lists:{[s]:l},easySlot:false});
-   next=composeWeeks(ctx,view,{fromWeek:i+1,start:null,sports,declared});if(next.ask)return next;
+   // V1CP Fix-Forward cycle (QRE-FF-02): week i now holds its recipe step: it is placed again under it (the race composition included).
+   next=composeWeeks(ctx,view,{fromWeek:i,start:null,sports,declared});if(next.ask)return next;
   }
  }
  return {next,view};
@@ -2014,7 +2033,7 @@ function goalChange(ctx){
  * its report, and its start as the start of its re-entry week. */
 function breakOf(program,d){
  const i=d.interruption??{},day=localDate(d.asOf,program.timezoneOffsetMinutes??0),end=i.endDate??onDate(day,-1);
- return {eventId:d.eventId,episode:i.episode??d.eventId,start:i.startDate??onDate(end,-((i.days??1)-1)),startedAt:i.startedAt??null,end,day,asOf:d.asOf,cls:i.class??null,fromWeek:d.fromWeek,supersedes:i.supersedes??null,inputHash:i.inputHash??null,entry:i.entry??program.stateTrace[d.fromWeek]??null,restart:i.restart??null};
+ return {eventId:d.eventId,episode:i.episode??d.eventId,start:i.startDate??onDate(end,-((i.days??1)-1)),startedAt:i.startedAt??null,end,day,asOf:d.asOf,cls:i.class??null,classBySport:i.classBySport??null,fromWeek:d.fromWeek,supersedes:i.supersedes??null,inputHash:i.inputHash??null,entry:i.entry??program.stateTrace[d.fromWeek]??null,restart:i.restart??null};
 }
 /**
  * The interruptions the record holds (InterruptionEpisode, Founder 0.1), in the order they were first reported: each is its identity (`id`), its
@@ -2501,7 +2520,8 @@ function staleReturn(ctx){
  const rec=recordedStop(ctx,r.eventId,{start:r.start,end:r.end,days:null,startedAt:r.startedAt},{onlyOwnReturn:true});
  if(rec?.decision)return rec.decision;
  const at=stateForStop(ctx,{start:r.start,startedAt:r.startedAt,episode:e.id},rec?.stop?.own??null);
- if(hash(returnStrength(r.cls,at.state.strength))===hash(r.entry.strength)&&!at.material)return null;
+ // V1CP Fix-Forward cycle (SSCTR-FFR-06): a return that read a sport's own stop (NB-3, classBySport) is compared with the entry of that sport's class.
+ if(hash(returnStrength(r.classBySport?.STRENGTH??r.cls,at.state.strength))===hash(r.entry.strength)&&!at.material)return null;
  return {action:'ASK',reason:`Training before the interruption that began on ${r.start} is now recorded, and the return reported on ${r.day} did not read it: confirm that interruption again (episodeId ${e.id}, or the same dates) so its return reads the whole record; nothing else changes until then`,missingInputs:['interruption.episodeId'],question:{episodeId:e.id,startDate:r.start,endDate:r.end,reportedOn:r.day}};
 }
 /**

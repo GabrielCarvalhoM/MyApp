@@ -1,0 +1,304 @@
+{
+ "record": "SEC_FF_RECHECK",
+ "revision": "r1",
+ "date": "2026-11-09",
+ "role": "security-privacy-abuse-architect",
+ "instance": "independent judge instance; not an author of 4630bca, cc0d219, the SSCTR FF decision or the integration-contract delta; not the instance that wrote SEC_V1CP_IMPL or SEC_V1CP_RECHECK (those are criteria, not re-judged); no delegation",
+ "model": "claude-opus-5-5",
+ "effort": "high",
+ "level": "L3",
+ "mode": "productization; the single independent review round of the V1CP Fix-Forward candidate (bounded-cycle rule)",
+ "reviewed": {
+  "commit": "4630bca016d022d08a0bf537647b0a0c70965278",
+  "branch": "claude/v1cp-fix-forward",
+  "worktree": "C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization",
+  "treeCheck": "git diff --quiet 4630bca -- CoachingCore: the CoachingCore tree equals the commit; git status clean at review time",
+  "diffReviewed": "git diff 5ee9dec..4630bca -- CoachingCore/src (v1-f08, r6-adaptation, r6-composition, r6-clinical, r6-index, r6-intake, r6-program) and the directed tests v1cp-ff.test.mjs, v1cp-ff-guard.test.mjs",
+  "comparisonBaseline": "5ee9dec extracted with git archive into the scratch folder (read-only for the repository), used only to tell regressions from pre-existing behaviour",
+  "files_sha256": {
+   "CoachingCore/src/v1-f08.mjs": "62cfbd7cf2abf2dd1a4a57099bd613cfb9ef23e4259833851e881fe7b2835a9d",
+   "CoachingCore/src/r6-adaptation.mjs": "d8969916362e92b39285673f93fa995fba969382e36706856c22081e0591c217",
+   "CoachingCore/src/r6-composition.mjs": "abe41d0e442c83ee2537f6fe02bc03bc4bc7adf60f34efaf7502f1ebcf184f21",
+   "CoachingCore/src/r6-clinical.mjs": "cd594a788e927f11617be2bcb62ee465c877e9c6e2045c76a5905a2d9a50063a",
+   "CoachingCore/src/r6-index.mjs": "552612544d65b0d852c96505011305610d9cce26f8730afd1b8bfdde764e2fc9",
+   "CoachingCore/src/r6-intake.mjs": "fa21b16c8b26f89c73b50509954522e39fe903274e8a067c86e47bddb9f6ff29",
+   "CoachingCore/src/r6-program.mjs": "240bf6e3509485e3b99ae458f2706ae64aef4a542326ff3e597f6fda706dbd37",
+   "CoachingCore/test/v1cp-ff.test.mjs": "c695e01700327cbb4cd3feedeba55ff7df04f4fda5ee899cccc90859bf6421ae",
+   "CoachingCore/test/v1cp-ff-guard.test.mjs": "2eb07ea5db5da2c79ced7532f810e5c23ca1b05439ee2e3fc35dad23a1514843"
+  }
+ },
+ "criteria": {
+  "audits/v1cp-fix-forward-2026-11-09/REVIEW_REQUEST_FF.md": "b23b24805c8c3da83fa8f73879173490ff9c3697904d45b48a4eb584c97ad015",
+  "audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md": "16be9fb219dea9fe8c9cd38229a6fed7073b0b04e09c03b20fca59bc55da050f",
+  "audits/v1-coaching-productization-2026-11-08/security-recheck/SEC_V1CP_RECHECK.json (SEC-V1CPR-01..06, OBS-R1, OBS-R2)": "6a72ec1c7b2b49a124289cc267c99c1d472e3df9fdee4bd7ff8c6317397f73c4",
+  "audits/v1-coaching-productization-2026-11-08/security-impl/SEC_V1CP_IMPL.json (pendings)": "118e193a362ea73c7902eb51d4212ef9e74f90469a632c403584ab788a6d39d7",
+  "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md (section 10)": "935126b7c5b2cbdf036d478526abbcf0b3aac3b9bc517ce3746597dfbb55f463",
+  "audits/v1cp-fix-forward-2026-11-09/ssctr-decision/SSCTR_FF_DECISION.json (FF-Q8 LEX-3, FF-Q9 C-FF9-2)": "b41e6d5991c29a3eee0f52ea207640ea72daccaa2d42a68e0f626a02d90ff845"
+ },
+ "executed": {
+  "suite": "node --test from the scratch copy's CoachingCore, V1CP_ROOT unset: 1133 tests, 1132 pass, 1 fail only because the scratch copy lacked two read-only audit inputs of test/v1cp-block1.test.mjs (audits/domain-coaching-r7-d-2026-11-02/harness/lib and final2/R7D_FINAL_HOLDOUT_2.json); after copying them from 4630bca with git archive, v1cp-block1.test.mjs 10/10. Effective result 1133/1133.",
+  "directed": "node --test test/v1cp-ff.test.mjs test/v1cp-ff-guard.test.mjs: 53/53 pass",
+  "probes": {
+   "location": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/sec-ff-20261109-a7k3/ (cand = 4630bca, base5ee = 5ee9dec, both via git archive; probes/ holds lib.mjs, p1..p6 and their .out files)",
+   "results": {
+    "p1-restart (SB-1, SB-5)": "candidate 25/0; 5ee9dec 10/15 (the SB-1 and SB-5 scenarios fail there: PROPOSED with READINESS_DECLARED, TypeError)",
+    "p2-reviews (SB-2, SB-3, SB-4)": "42/1; the one FAIL is the probe's own chronology error (a replay dated before the reference state's clock gives HOLD); redone in p4 with the right clock: KEEP, no row",
+    "p3-minimisation (C-FF9-2, SEC-V1CPR-06, new fields, offers, race row, append-only, seal)": "40/1; the FAIL is SEC-FFR-01 (improved-key echo)",
+    "p4-cfobs-lex (CF-OBS-1, replay, readBreakIds tamper, LEX-3 monotonicity)": "20/0",
+    "p5-obs (OBS-R1, OBS-R2, SEC-V1CPI-09 residual, NEED_REST_ROUTE)": "11/0",
+    "p6-replay-sign (CF-OBS-1 variant, echo regression check)": "candidate and 5ee9dec 4/0 each (informational comparisons)"
+   },
+   "fixture": "the synthetic 8-week hybrid athlete of test/v1cp-fixtures.mjs, timezone -03:00; no real data"
+  }
+ },
+ "verdict": {
+  "result": "PASS_WITH_CONDITIONS",
+  "gate": "SECURITY_READY_WITH_CONDITIONS",
+  "scope": "the offline core boundary of 4630bca only (no server, client, logging, analytics or share surface exists in this repository and none was verified)",
+  "summary": "Every finding behind SB-1..SB-5 is closed at its cause and verified by my own probes against 5ee9dec: a new stop after resumed training is screened on its own; a sign under a reused event id routes clinically and writes its hold; unreadable, foreign, malformed, orphan or later rows hold on both the review and the restart path, with counts only; every clinical decision returns a readable unreleased CLINICAL_HOLD (non-string ids are refused); the default restart asks and no malformed input throws. SEC-V1CPR-05 and -06, OBS-R1 and OBS-R2 are closed. The guidance level is derived only from items answered yes, never enters a record row or the reference state as a field, and every clinical route carries it. Rows stay append-only and sealed; LEX-3 text never lowers an outcome. One new privacy regression (the per-condition improved object echoes an unknown key, free text included, into the output and the reference state) and one safety-relevant gap outside my authority (an urgent sign during a standing clinical reference is answered by the generic guard) are NON_BLOCKING for this offline candidate and bound as conditions. CF-OBS-1 is not blocking for this candidate and is a condition before any integration.",
+  "blockingFindings": [],
+  "namedBlockerCarried": {
+   "id": "SEC-V1CPI-06",
+   "status": "OPEN, unchanged (deleting the CLINICAL_HOLD row still gives PROPOSED, p2); acceptable as a named blocker on the terms of SEC_V1CP_RECHECK, extended by condition C6"
+  },
+  "statesKeptDistinct": {
+   "implementationDone": "YES for the fix-forward scope at 4630bca",
+   "technicalValidation": "security part of the offline core: passed with conditions C1-C7 (this record)",
+   "integrationReadiness": "NO (C1, C2, C7 and RECORD-CUSTODY bind before any integration)",
+   "authorizationForRealAthletes": "NO (no real collection is authorized; SEC-V1CP pendings and the named blocker stand)",
+   "appPublicationReadiness": "NO",
+   "F08": "F08_OPEN",
+   "V1_COACHING_AUTHORITY_READY": "NO"
+  },
+  "noLegalClaim": "No legal, regulatory or clinical compliance determination is made or implied.",
+  "invalidatedBy": "any change to v1-f08.mjs (readers, facts, readableF08, unreadableF08, restartIntake, guidanceOf, signRoute, signsYesIn), canonicalizeIntake pause or restart handling, restartProgram, withHoldFact, withReference, previousValidity, replayOf, the F08 handlers, raceAsOwnEvent or raceScope, r6-clinical LEX-3, the record facts, or any outbound surface"
+ },
+ "findings": [
+  {
+   "id": "SEC-V1CPI-02 residual (SB-1)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "restartIntake reads the declaration only when no session executed after it (trainedAfter, observedAt compared with the declaration; every ledger execution row carries observedAt, p1).",
+    "Flu break, declaration, weeks 3-5 trained, new stop of 1, 4 and 6 weeks, no pause stated: ASK athlete.pause.reasonCategory (5ee9dec: PROPOSED, screen READINESS_DECLARED). One session after the declaration then 5 weeks: ASK (5ee9dec PROPOSED). A stated TRAVEL pause: PROPOSED (screened NONCLINICAL); 'tore my acl skiing' or clinicalReason true: CLINICAL_HUMAN_REQUIRED (p1).",
+    "A declaration with no training after it still stands in for the stop it answered (PROPOSED, p1), as RC-11 allows."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-03 (SB-2)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "replayOf: an identical payload stays KEEP; any other payload under an id on record is screened first (signsYesIn over warningSigns and exerciseResponse) and a yes returns signRoute; only an all-no payload is asked for its id.",
+    "Weekly review reusing 'wr-G' with X1 yes, a check reusing the report's id with W5 yes, a report reusing a check's id with W2 yes, a readiness reusing the report's id with W3 yes: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, one new CLINICAL_HOLD each, and a later restart from the record alone blocks (p2). All-no under a reused id: ASK event.id; identical replay: KEEP, no row (p2, p4)."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-01 (SB-3)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "unreadableF08 classifies foreign, malformed, altered (unsealed or changed) and orphan-check rows; evaluateProgram returns HOLD errors ['record.f08Unreadable'] with an 'unreadable' object of integer counts only, after the eligibility clinical flag (a clinical flag with an altered row is still CLINICAL first) (p2).",
+    "restartIntake holds on the same classes plus non-F08 rows of another athlete and rows dated after the restart's clock: altered, foreign, numeric id, unsealed, orphan check, intake dated before the hold and intake naming another athlete all give HOLD; with the new athleteId parameter bound to the real athlete, the hold is read (CLINICAL_HUMAN_REQUIRED) (p2).",
+    "Residual (not in this finding): a re-sealed row dated after a review's clock is causal history and not read in a review (MODIFY, p2); forging it needs the record in client hands (RECORD-CUSTODY, C7)."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-02 (SB-4)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "(a) event ids 4242, '', '   ', null and an object with an illness flag: HOLD before anything is decided (p2).",
+    "(b) a planted CLINICAL_HOLD of another athlete with the review's id: this athlete's hold is written; an altered own hold row does not suppress a new readable fact (p2).",
+    "(c) an id reused after a released hold: a new hold row (1 to 2); (d) a stale clinical reference after a release with W2: the hold is written (1 to 2) (p2).",
+    "Across 18 clinical decisions in my journeys, every one returns a record holding a readable, unreleased CLINICAL_HOLD (p3).",
+    "(e) a malformed actualLedger with a clinical flag still returns the clinical route with no ledger and no fact (p2). Not part of the required fix; mitigated only by RECORD-CUSTODY (C7)."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-04 (SB-5)",
+   "ruling": "CLOSED",
+   "evidence": [
+    "No stated pause, record with executed sessions, no declaration, restarts 1, 3, 10 and 45 days later: ASK athlete.pause.reasonCategory (5ee9dec: TypeError each time) (p1).",
+    "intake null, athlete null, pause as a string, a null record row: a status every time (HOLD, INVALID_INPUT or ASK), never an exception; the catch-all HOLD names only the error class ('malformed:<Class>') (p1, code)."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-05",
+   "ruling": "CLOSED",
+   "evidence": [
+    "A plan from the record names the breaks its restart read (canonical.restart.readBreakIds) and excludes exactly those; directed test SEC-V1CPR-05 passes (a clinical break on the restart day, the next review without the reference: CLINICAL_HUMAN_REQUIRED).",
+    "readBreakIds is inside the hashed program: a tampered list gives HOLD 'Program integrity or version is invalid' (p4)."
+   ]
+  },
+  {
+   "id": "SEC-V1CPR-06",
+   "ruling": "CLOSED",
+   "evidence": [
+    "CLINICAL_HOLD rows hold only fact, eventId, athleteId, declaredAt, provenance and rowHash (18 rows, p3).",
+    "An early check answering improved false is kept with improved null and no improvedBy (p3); improvedBy keeps only answers that took effect (episodeCheck 'kept').",
+    "Residual sharpened, not reopened: the row's inputHash (unsalted digest of the closed payload) recovers the dropped answer by enumeration of three candidates (p3): SEC-FFR-04, condition C5."
+   ]
+  },
+  {
+   "id": "SEC-V1CPI-09 residual",
+   "ruling": "CLOSED",
+   "evidence": [
+    "A named hold matches on every key present and {} is refused: {}, {eventId:'nope'}, {episodeId:'nope'} and {eventId:<real>, episodeId:'nope'} are asked (readiness.hold); {eventId:<real>} restarts (p5)."
+   ]
+  },
+  {
+   "id": "OBS-R1",
+   "ruling": "CLOSED",
+   "evidence": [
+    "LEX-3 adds acl/meniscus/lca and tore/rompeu/desgarre: 'tore my acl skiing', 'rompi o lca jogando futebol', 'me rompí el menisco' under TRAVEL nonclinical with clinicalReason no: CLINICAL (p5)."
+   ]
+  },
+  {
+   "id": "OBS-R2",
+   "ruling": "CLOSED",
+   "evidence": [
+    "The same condition reported again after it was answered improved, before the chain reset: CLINICAL_HUMAN_REQUIRED (PROFESSIONAL_ASSESSMENT), recorded with persistence RECURRENCE and 'of' naming the earlier report; a restart from the record blocks (p5). The sporting rule is SSCTR's (CH-r2-8); Security confirms only that the route is recorded and binds the record."
+   ]
+  }
+ ],
+ "newAndChangedOutputs": {
+  "guidance (C-FF9-2)": {
+   "ruling": "VERIFIED_WITH_CONDITIONS",
+   "evidence": [
+    "guidanceOf reads only the items answered yes (URGENT_SIGNS W2-W5, X1); no new input field exists; each of W1-W15 alone gives the expected level with INTERIM_PENDING_G04 and no 'emergency'/'urgent' word on the professional-assessment route; persistence and eligibility flags give PROFESSIONAL_ASSESSMENT (p3).",
+    "Every CLINICAL_HUMAN_REQUIRED in my journeys carries guidance (18/18); the guidance object never appears in a record row or as a field of the reference state (p3)."
+   ],
+   "conditions": [
+    "The level is reconstructible from referenceState.pending.reason, which keeps the sign names and the urgent wording (4 of 4 urgent references, p3), and from WELLBEING_CHECKED.check.signsYes (pre-existing): both are health data for the SEC-V1CP-01 inventory and stay out of logs, analytics, push/OS surfaces, shares and exports (C4).",
+    "SEC-FFR-02 (urgent sign under a standing clinical reference) is routed to SSCTR/QRE (C3)."
+   ]
+  },
+  "race row ownEvent/coachRecommendation and RACE_PATHS": {
+   "ruling": "VERIFIED_WITH_CONDITIONS",
+   "evidence": [
+    "No new collected data: the offer carries id, type, blocking false, raceSessionId, raceDate, coachRecommendation and three fixed paths (MOVE via EVENT_DATE_CHANGE, REMOVE via GOAL_CHANGE: existing routes); the default needs no answer (p3).",
+    "The race row and its explanation ('The coach does not plan a race while you are unwell ...') never say cleared or safe (test NB-2)."
+   ],
+   "conditions": [
+    "The program now carries health-derived state outside the F08 record (race explanation 'while you are unwell', WELLBEING_REDUCTION markers with unwell, phase and rungs, RACE_IN_RETURN): SEC-FFR-03, condition C4."
+   ]
+  },
+  "NEED_REST_ROUTE and WELLBEING_CHECK offers": {
+   "ruling": "VERIFIED",
+   "evidence": [
+    "NEED_REST_ROUTE carries id, type INTERRUPTION_OR_RESTART, sports, blocking false and fixed text; WELLBEING_CHECK carries the report event ids and fixed text; neither collects or echoes anything (p5, code)."
+   ]
+  },
+  "record fields takenFrom, chainFrom, carried, rungs, supersedes, persistence facts, kinds, improvedBy CONDITION@eventId": {
+   "ruling": "VERIFIED_WITH_CONDITIONS",
+   "evidence": [
+    "Values are closed-vocabulary conditions and rungs, dates and event ids (p3: takenFrom {RUN:id}, rungs {RUN:'R0'}, carried [{condition, episode, startDate, endDate, rung}], supersedes id; improvedBy {'MINOR_DISCOMFORT@evt-run':true,...}, kinds {id:'WINDOW_END'}).",
+    "improvedBy keys are validated against the open keys before they are kept; an unknown key never reaches a row (it is asked) - but it is echoed in the ASK: SEC-FFR-01."
+   ],
+   "conditions": [
+    "carried copies one report's conditions into a later row, and ids of other reports now sit in takenFrom, chainFrom, supersedes(All), of, kinds keys and improvedBy keys: the tombstone design must cover these cross-row references (C6).",
+    "Event ids are copied into more rows, keys and reason strings: ids must be opaque, server-assigned and bounded (C7)."
+   ]
+  },
+  "only answers that took effect are kept": "VERIFIED (SEC-V1CPR-06 above; inputHash residual C5)",
+  "free text (LEX-3) only adds CLINICAL or ASK, fails closed": {
+   "ruling": "VERIFIED",
+   "evidence": [
+    "441 combinations (7 categories incl. none x clinicalReason yes/no/absent x 21 texts incl. a 50,000-character text, exclusions, 'same', 'tbm', self clinical plus exclusion): no text lowers the outcome of the same structured answers, no exception (p4).",
+    "Self clinical plus an exclusion ('I tore my acl, not me', 'tive covid, eu não') stays CLINICAL; 'my wife had covid; same' and 'minha mãe teve covid; tbm' ASK SELF_INCLUSION_UNCERTAIN with clinicalReason no; matched carries lexicon words only, never the note's other words (p4)."
+   ]
+  },
+  "unreadable rows hold": "VERIFIED (SEC-V1CPR-01 above)",
+  "every clinical decision records its hold": "VERIFIED (SEC-V1CPR-02 above; (e) residual under C7)",
+  "append-only and digest-sealed": {
+   "ruling": "VERIFIED_WITH_CONDITIONS",
+   "evidence": [
+    "Across every step of my journeys no earlier row is dropped or changed and every F08 row's rowHash matches (p3)."
+   ],
+   "conditions": [
+    "The seal is a keyless sha256 (accident detection, not forgery resistance): integrity against a client needs RECORD-CUSTODY (unchanged pending)."
+   ]
+  }
+ },
+ "newFindings": [
+  {
+   "id": "SEC-FFR-01",
+   "severity": "LOW",
+   "classification": "NON_BLOCKING",
+   "introducedByCandidate": true,
+   "title": "The per-condition improved object echoes an unknown key, free text included, into the decision and the reference state",
+   "files": [
+    "CoachingCore/src/v1-f08.mjs readCheck: bad.push('wellbeingCheck.improved.'+k) for a key not in open; the ASK reason joins bad"
+   ],
+   "scenario": "Open report; WELLBEING_CHECK or weekly-review check with improved {NEED_REST:true, ZEBRA_CANARY_TEXT:true} (or a 2,000-character key 'MY_DOCTOR_SAID_I_HAVE_MYOCARDITIS_...'): ASK with missingInputs ['wellbeingCheck.improved.<key>'], the key repeated in the reason and stored in referenceState.pending (missingInputs and reason); output 52 KB (p3, p6). 5ee9dec gave missingInputs ['wellbeingCheck.improved'] with no echo (p6).",
+   "impact": "A free-text channel into persisted, health-adjacent state and into any log that records reasons; regresses the property verified under SEC-V1CPI-08 and SEC-V1CP-05 (unknown keys are never echoed). No record row is written by the ASK.",
+   "smallestFix": "In readCheck, report keys outside open as one 'wellbeingCheck.improved.unrecognized' (count only), as unrecognized() does; directed canary test (no canary in output, reference state or record).",
+   "condition": "C1"
+  },
+  {
+   "id": "SEC-FFR-02",
+   "severity": "MEDIUM (safety relevance; classification of the sporting/clinical severity belongs to SSCTR and QRE)",
+   "classification": "NON_BLOCKING for the security gate; routed",
+   "introducedByCandidate": "pre-existing guard order; the gap is new against D5's claim",
+   "title": "An urgent sign answered during a standing clinical reference is answered by the generic guard: no urgent guidance, the sign is not recorded",
+   "files": [
+    "CoachingCore/src/r6-adaptation.mjs previousValidity (pending CLINICAL returns before the handlers read the payload) and evaluateProgram's guard call"
+   ],
+   "scenario": "Hold opened by W7 at entry (PROFESSIONAL_ASSESSMENT). A later NOT_FEELING_100 with W2 yes, reference sent: CLINICAL_HUMAN_REQUIRED, guidance PROFESSIONAL_ASSESSMENT, reason 'A prior clinical dependency remains ...', no row records W2. The same review without the reference: URGENT_CARE_ADVISED (p3). A replay of a W2 check with the reference: PROFESSIONAL_ASSESSMENT (p6); a stale clinical reference with W2: PROFESSIONAL_ASSESSMENT (p2, SB-4d).",
+   "impact": "No training is planned (the hold stands and is on record), so no trust boundary fails; but a potentially serious sign gets the non-urgent wording and leaves no trace, the opposite of SSCTR-FF-Q9's mapping ('at entry, at a check ...') and of D5's proportional-urgency instruction, and the better outcome depends on the client omitting the reference.",
+   "smallestFix": "Before the CLINICAL guard, read signsYesIn of the review's wellbeing, wellbeingCheck or readiness payload; on any yes return signRoute (its guidance) and keep the hold, as SB-2 does for a reused id; directed test with the reference sent.",
+   "routing": "SSCTR (whether FF-Q9 requires the urgent level here) and QRE; Chief to judge whether TASK_CONTRACT_FF ESCALATE_IF 'a relevant sign ignored' applies in this narrow form. If SSCTR says yes it is a narrow runtime-only fix eligible for the single cycle.",
+   "condition": "C3"
+  },
+  {
+   "id": "SEC-FFR-03",
+   "severity": "LOW",
+   "classification": "NON_BLOCKING (condition before exposure)",
+   "introducedByCandidate": "partly (race row fields and 'unwell' marker are new)",
+   "title": "Health-derived state now lives in the program object and the reference state, outside the F08 record",
+   "scenario": "After a MILD_ILLNESS report in the race week: race row explanation 'The coach does not plan a race while you are unwell ...', ownEvent true, coachRecommendation; WELLBEING_REDUCTION markers with unwell, phase, rungs, episode; the program JSON holds 'unwell' 7 times (p3). referenceState.pending.reason holds sign names and 'urgent' wording (p3).",
+   "impact": "Any surface that renders or shares the plan (Growth Layer plan-week and post-workout artefacts, exports, notifications, analytics, crash reports) can disclose a health state without touching an F08 row.",
+   "smallestFix": "Inventory and egress rule, not a core change: list these fields in SEC-V1CP-01 and strip them from every share, export, analytics, log and OS surface (SEC-V1CP-09, -15..-18).",
+   "condition": "C4"
+  },
+  {
+   "id": "SEC-FFR-04",
+   "severity": "LOW",
+   "classification": "NON_BLOCKING (pre-existing; condition before exposure)",
+   "title": "inputHash (and rowHash) are unsalted digests of small closed payloads: a dropped answer is recoverable",
+   "scenario": "The early 'improved false' kept as null in the clear is recovered from the check row's inputHash by hashing three candidate payloads (p3).",
+   "smallestFix": "Treat both digests as the payload for retention, erasure, export and logging (already SEC-V1CP-15), or move to a keyed digest under RECORD-CUSTODY.",
+   "condition": "C5"
+  },
+  {
+   "id": "SEC-FFR-05",
+   "severity": "LOW",
+   "classification": "NON_BLOCKING (pre-existing hardening)",
+   "title": "A record that is not an array is read as no record on the restart path",
+   "scenario": "restartProgram with record {} or null: PROPOSED from the cold start (p1); with a hold on record sent as {rows:[...]} the hold is not read (ASK for an unrelated input, p2). Equivalent to withholding the record.",
+   "smallestFix": "A record that is present and not an array gives HOLD 'malformed:record'; with RECORD-CUSTODY the server always sends the stored record.",
+   "condition": "C7"
+  }
+ ],
+ "cfObs1": {
+  "classification": "NON_BLOCKING for this offline candidate; CONDITION before any integration (C2); not acceptable as the protocol's contract alone",
+  "evidence": [
+   "Hold on record (W7), no reference: WEEKLY_REVIEW KEEP with a proposal of 30 live sessions ahead, MISSED_SESSION MODIFY, SYSTEMIC_FATIGUE MODIFY; with the reference all are CLINICAL_HUMAN_REQUIRED; the returned reference after the no-reference review has pending null (p4).",
+   "The record keeps the hold: a restart from it still gives CLINICAL_HUMAN_REQUIRED, and a readiness declaration reads it (p4; QRE-V1CPR-08 test).",
+   "Same class, pre-existing at 5ee9dec: an identical replay of a W2 check without the reference is KEEP with a clean reference (p6)."
+  ],
+  "reasoning": "The core now treats the record hold as authoritative for restarts and readiness but not for the other reviews, so a client that drops the reference state plans training over an unreleased clinical hold. In my previous record this was a condition of SEC-V1CPI-03 under RECORD-CUSTODY; it needs a client or server fault, the record keeps the fact, and the offline core has no integration, so it does not block this candidate. Relying on custody alone leaves a silent fail-open for any future integrator, so the narrow core fix is preferred.",
+  "condition": "C2"
+ },
+ "conditions": [
+  {"id": "C1", "what": "Fix SEC-FFR-01 (unknown improved keys reported as a count, never echoed) with a canary test.", "trigger": "before any integration; eligible for the single narrow runtime-only cycle", "owner": "Engineering; Security re-verifies"},
+  {"id": "C2", "what": "CF-OBS-1: an unreleased record CLINICAL_HOLD keeps the clinical route on every review kind except the readiness declaration and a declared break (preferred narrow core fix), or the integration contract makes referenceState mandatory whenever the record holds an F08 fact and the server refuses a review without it, with negative tests. RECORD-CUSTODY in either case.", "trigger": "before any integration", "owner": "Engineering with QRE; Security re-verifies"},
+  {"id": "C3", "what": "SEC-FFR-02 routed: SSCTR rules whether an urgent sign answered during a standing clinical reference must get URGENT_CARE_ADVISED and be recorded; if yes, the narrow fix in SEC-FFR-02.", "trigger": "SSCTR ruling in this round; fix before any real use of the D5 wording", "owner": "SSCTR and QRE; Engineering; Chief for ESCALATE_IF"},
+  {"id": "C4", "what": "C-FF9-2 and SEC-FFR-03: guidance, referenceState.pending.reason, the race row fields and explanation, WELLBEING_REDUCTION markers (unwell, phase, rungs), RACE_IN_RETURN and decision.wellbeing enter the SEC-V1CP-01 inventory and are excluded from logs, analytics, crash reports, push/OS surfaces, shares and exports (Growth Layer artefacts included).", "trigger": "before exposure", "owner": "Engineering, Product/UX, Data/Analytics; G07"},
+  {"id": "C5", "what": "SEC-FFR-04: inputHash and rowHash treated as the payload (retention, erasure, export, logs), or keyed under custody.", "trigger": "before exposure", "owner": "Engineering"},
+  {"id": "C6", "what": "SEC-V1CPI-06 tombstone design extended to cross-row references: carried (copied conditions), takenFrom, chainFrom, supersedes, supersedesAll, of, kinds and improvedBy keys CONDITION@eventId.", "trigger": "before any erasure path, real collection or exposure (named blocker terms unchanged)", "owner": "Engineering with SSCTR; G07"},
+  {"id": "C7", "what": "RECORD-CUSTODY and the server schema: opaque, server-assigned, length-bounded string event ids (now copied into keys, rows and reasons); a present non-array record or ledger gives HOLD (SEC-FFR-05, SEC-V1CPR-02 (e) residual); the server binds the athlete id (restartProgram athleteId) and the restart's clock.", "trigger": "before any integration", "owner": "Engineering"}
+ ],
+ "pending": "Unchanged and still pending (SEC_V1CP_IMPL, SEC_V1CP_RECHECK): RECORD-CUSTODY; SEC-V1CP-01 inventory; SEC-V1CP-02 server schema; SEC-V1CP-03 client; SEC-V1CP-06..-13 (free text bounds, purpose register, analytics, consent, refusal, revocation, retention); SEC-V1CP-14 / SEC-V1CPI-06 erasure (named blocker); SEC-V1CP-15..-20 (hashes, logs, OS surfaces, shares, authorization, protection); SEC-V1CP-21 catalog and the D5 interim wording (G04 before real use); SEC-V1CP-22/-23 server parts; SEC-V1CP-24, -26, -27; SEC-V1CPI-07 conditions (server-bound assessedAt); E1-E2-INTAKE-FIELDS.",
+ "escalations": [
+  "SEC-FFR-02 to the Chief with SSCTR and QRE: possible narrow form of TASK_CONTRACT_FF ESCALATE_IF 'a relevant sign ignored' (the hold stands; the urgent level and the record of the new sign do not). No Founder decision is needed from Security."
+ ],
+ "notDone": "No code, test, canon, product document, mission, ledger, freeze or other judge's record was edited; nothing was committed, pushed, merged or frozen; no npm run verify or verify-r* script was run; no recursive deletion. The only files written in the repository are this record and SEC_FF_RECHECK.md. No server, client, logging, analytics or share surface was verified (none exists). No legal or clinical determination was made."
+}

@@ -1,0 +1,119 @@
+{
+ "generatedBy": "scratchpad tools/mutate.mjs on an isolated copy of the cycle code (never the repository)",
+ "control": {
+  "pass": 129,
+  "fail": 0,
+  "failing": []
+ },
+ "restored": {
+  "pass": 129,
+  "fail": 0,
+  "failing": []
+ },
+ "killed": 8,
+ "total": 10,
+ "classification": {
+  "MC-QRE02a": "COVERED_ELSEWHERE: in the tested scenarios the recipe-step weeks are placed again by the composeWeeks-level fix (MC-QRE02b, killed); the composeReturn loop change is kept for consistency, not shown distinguishable",
+  "MF-D3-strength": "EQUIVALENT_IN_PRACTICE: the race-week rules already keep no strength in the last three days before the race"
+ },
+ "note": "MF-M12, which survived the candidate runs, is killed by the cycle test with known rows (QRE-V1CPR-06 residual).",
+ "results": [
+  {
+   "id": "MC-FFR01",
+   "what": "a checked week counts as done whatever was executed (SSCTR-FFR-01)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle SSCTR-FFR-01: a check outside the weekly review never makes an unexecuted ladder week done: its rung repeats"
+   ]
+  },
+  {
+   "id": "MC-FFR02",
+   "what": "an unexecuted return stretch between two windows stops the scan (SSCTR-FFR-02)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle SSCTR-FFR-02: return days with no executed session between two rest windows of a chain are days without training"
+   ]
+  },
+  {
+   "id": "MC-FFR06",
+   "what": "the stale-return check uses the break's own class (SSCTR-FFR-06)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle SSCTR-FFR-06: after a single declared break read per sport (NB-3), later reports and reviews are decided, never asked to confirm the break again"
+   ]
+  },
+  {
+   "id": "MC-SEC01",
+   "what": "an unknown improvement key is echoed back (SEC-FFR-01)",
+   "file": "src/v1-f08.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle SEC-FFR-01: a key of the improvement answer that is not an open condition is never echoed back"
+   ]
+  },
+  {
+   "id": "MC-SEC02",
+   "what": "a sign during a standing dependency sets no level (SEC-FFR-02)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle SEC-FFR-02 (D5): a sign answered yes while a clinical dependency stands sets the guidance level and the wording"
+   ]
+  },
+  {
+   "id": "MC-QRE01",
+   "what": "a ladder week behind a restart re-opens its episode (QRE-FF-01)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle QRE-FF-01: a ladder week behind a readiness restart never re-opens its episode or lays a ladder over the restart"
+   ]
+  },
+  {
+   "id": "MC-QRE02a",
+   "what": "the each-hold loop recomposes from the week after (QRE-FF-02)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": false,
+   "fail": 0,
+   "killedBy": []
+  },
+  {
+   "id": "MC-QRE02b",
+   "what": "a marker an extension adds is not applied to its week (QRE-FF-02)",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "Cycle QRE-FF-02 (a): a race in a recipe step that the hold extension adds is the athlete's own event, never at race effort",
+    "Cycle QRE-FF-02 (b): after a race moved into the return, the D49 week after it plans at most one set over the last count"
+   ]
+  },
+  {
+   "id": "MF-M12",
+   "what": "a return's own start gives way to a marker (QRE's M12)",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "Cycle QRE-V1CPR-06 residual (M12, known rows): a readiness restart week starts from the restart's own state, never a projected execution date"
+   ]
+  },
+  {
+   "id": "MF-D3-strength",
+   "what": "race day keeps strength in scope (FF-Q2 (b))",
+   "file": "src/r6-composition.mjs",
+   "killed": false,
+   "fail": 0,
+   "killedBy": []
+  }
+ ]
+}

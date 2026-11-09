@@ -397,6 +397,100 @@ test('FF-Q4 (D6): the Demanding coach prescribes what the Balanced coach prescri
  assert.match(d.p.negotiation.find(n=>n.id==='COACH_DEMANDING')?.detail??'',/same as the balanced coach/,'the disclosure says the doses and limits are the balanced coach\'s');
 });
 
+// ================= The single narrow fix cycle after the review round (SSCTR_FF_RECHECK, SEC_FF_RECHECK), each test red on 4630bca =================
+test('Cycle SSCTR-FFR-01: a check outside the weekly review never makes an unexecuted ladder week done: its rung repeats',()=>{
+ for(const [speed,intent,want] of [['FASTER','REST','R3'],['BALANCED','REDUCE_SUBSTANTIAL','R2']]){
+  const t=timeline(KNOWN(4,HYBRID()));reviewWeeks(t,0,1);
+  t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent,days:5,returnSpeed:speed}},'07:00');
+  assert.equal(t.step(1,6,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:true}},'09:00').action,'WELLBEING_RETURN_START');
+  const step2=ladder(t.p,2)?.RUN;assert.equal(step2,want,speed+': the first whole week of the return');
+  assert.equal(t.step(2,5,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST')}},'09:00').status,'KEEP','an off-review check with every sign no');
+  const r=t.step(3,0,'WEEKLY_REVIEW',{observations:[],check:{warningSigns:NO('NEED_REST')}},'07:00');assert.notEqual(r.status,'CLINICAL_HUMAN_REQUIRED',r.reason);
+  assert.equal(ladder(t.p,3)?.RUN,want,`${speed}: week 2 was not executed, so its rung (${want}) repeats in week 3, never the next step`);
+ }
+});
+test('Cycle SSCTR-FFR-02: return days with no executed session between two rest windows of a chain are days without training',()=>{
+ const run=(speed,{executed=false,waitDays=0}={})=>{const t=timeline(KNOWN(4,HYBRID()));reviewWeeks(t,0,1);
+  t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:7,returnSpeed:speed}},'07:00');
+  assert.equal(t.step(2,0,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:true}},'06:00').action,'WELLBEING_RETURN_START');
+  const obs=executed?doneWeek(t,2).filter(o=>t.p.weeks[2].sessions.some(s=>s.id===o.sessionId&&s.date<=t.day(2,1))):[];
+  const r=t.step(2,3,'NOT_FEELING_100',{observations:obs,wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:4,returnSpeed:speed}},'07:00');assert.equal(r.action,'WELLBEING_REDUCTION',r.reason);
+  const c=t.step(3+Math.floor(waitDays/7),waitDays%7,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true}},'07:00');assert.equal(c.action,'WELLBEING_RETURN_START',c.reason);
+  return t.p.decisions.at(-1).wellbeing.plans;};
+ for(const speed of ['FASTER','BALANCED','CONSERVATIVE']){const p=run(speed);assert.equal(p.RUN.recipe,'MODERATE',speed+': 14 days without training: '+JSON.stringify(p.RUN));assert.equal(p.STRENGTH.recipe,'MODERATE',speed+' strength');}
+ assert.equal(run('FASTER',{waitDays:6}).RUN.recipe,'MODERATE','20 days with the wait');
+ assert.deepEqual(run('FASTER',{executed:true}).RUN.rungs,['R3','R4'],'the return trained: the last window alone, unchanged');
+});
+test('Cycle SSCTR-FFR-06: after a single declared break read per sport (NB-3), later reports and reviews are decided, never asked to confirm the break again',()=>{
+ const t=timeline(KNOWN(4,HYBRID()));reviewWeeks(t,0,4);
+ t.step(4,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:7}},'07:00');
+ const b=t.step(6,0,'RETURN_AFTER_PAUSE',{interruption:{startDate:t.day(5,0),endDate:t.day(5,6),reasonCategory:'TRAVEL',nonclinical:true}},'07:00');assert.equal(b.action,'REESTABLISH',b.reason);
+ const stale=r=>(r.missingInputs??[]).includes('interruption.episodeId')||/confirm that interruption again/.test(r.reason??'');
+ for(const r of [t.step(6,1,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST')}},'07:00'),t.step(6,2,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REDUCE_SUBSTANTIAL',days:3}},'07:00'),t.step(6,6,'WEEKLY_REVIEW',{observations:doneWeek(t,6)},'20:00')])assert.ok(!stale(r),`${r.status}: ${r.reason}`);
+});
+test('Cycle SEC-FFR-01: a key of the improvement answer that is not an open condition is never echoed back',()=>{
+ const t=timeline();reviewWeeks(t,0,1);t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:3}},'07:00');
+ const canary='CANARY-'+'x'.repeat(2000),r=t.step(1,4,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:{[canary]:true}}},'07:00');
+ assert.equal(r.status,'ASK');assert.deepEqual(r.missingInputs,['wellbeingCheck.improved.unrecognized']);
+ assert.ok(!JSON.stringify(r).includes('CANARY'),'not in the decision or its reference state');assert.ok(!JSON.stringify(t.ledger).includes('CANARY'),'not in the record');
+});
+test('Cycle SEC-FFR-02 (D5): a sign answered yes while a clinical dependency stands sets the guidance level and the wording',()=>{
+ const t=timeline();reviewWeeks(t,0,1);
+ assert.equal(t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true},intent:'REST',days:5}},'08:00').status,'CLINICAL_HUMAN_REQUIRED');
+ const r=t.step(1,3,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:{...NO('MILD_ILLNESS'),[W.W2]:true},intent:'REST',days:5}},'08:00');
+ assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(r.guidance?.level,'URGENT_CARE_ADVISED');assert.match(r.reason,/urgent medical care/);
+ const q=t.step(1,4,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:{...NO('MILD_ILLNESS'),[W.W7]:true},intent:'REST',days:5}},'08:00');
+ assert.equal(q.guidance?.level,'PROFESSIONAL_ASSESSMENT');assert.doesNotMatch(q.reason,/emergency/i);
+});
+
+test('Cycle QRE-FF-01: a ladder week behind a readiness restart never re-opens its episode or lays a ladder over the restart',()=>{
+ const build=()=>{const t=timeline();reviewWeeks(t,0,1);
+  t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_SUBSTANTIAL',days:5}},'07:00');
+  t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),improved:true}});
+  t.step(2,5,'MISSED_SESSION',{observations:doneWeek(t,2).filter(o=>t.p.weeks[2].sessions.some(s=>s.id===o.sessionId&&s.date<=t.day(2,5)))},'20:00');
+  assert.equal(t.step(3,0,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true},intent:'REST',days:3}},'07:00').status,'CLINICAL_HUMAN_REQUIRED');
+  const d=t.step(3,2,'READINESS_DECLARATION',{readiness:READY()},'09:00');assert.ok(['READINESS_RESTART','REESTABLISH'].includes(d.action),d.reason);return t;};
+ const s1Ladder=(t,w,from)=>(t.p.weeks[w]?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.phase==='LADDER'&&!x.endedBy&&(!from||x.startDate>=from));
+ const a=build(),g=a.step(3,6,'WEEKLY_REVIEW',{observations:doneWeek(a,3).filter(o=>a.p.weeks[3].sessions.some(s=>s.id===o.sessionId&&s.date>a.day(3,2))),check:S6NO()},'20:00');
+ assert.doesNotMatch(g.reason??'',/had no review with your check/,g.reason);assert.ok(!s1Ladder(a,4),'no Situation 1 ladder over the restart');
+ const b=build();b.step(3,3,'MISSED_SESSION',{observations:[]},'20:00');assert.ok(!s1Ladder(b,3,b.day(3,3))&&!s1Ladder(b,4),'the day after the restart nothing re-opens the episode');
+});
+test('Cycle QRE-FF-02 (a): a race in a recipe step that the hold extension adds is the athlete\'s own event, never at race effort',()=>{
+ const t=timeline(RACE(HYBRID(),'2026-12-19'));reviewWeeks(t,0,1);
+ t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:12,returnSpeed:'CONSERVATIVE'}},'07:00');
+ t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('NEED_REST')}});
+ const e=t.step(2,6,'WEEKLY_REVIEW',{observations:doneWeek(t,2),check:{warningSigns:NO('NEED_REST'),improved:true}});assert.notEqual(e.status,'ASK',e.reason);
+ const race=raceRow(t);assert.equal(race.weekIndex,5);assert.equal(ladder(t.p,5)?.RUN,'M','week 5 holds a recipe step');
+ assert.equal(race.ownEvent,true,'the athlete\'s own event');assert.ok(race.prescription===null||race.prescription.family==='EASY','never at race effort: '+JSON.stringify(race.prescription?.family));
+ assert.ok(!(t.p.negotiation??[]).some(n=>n.id==='EVENT_AMBITIOUS_FOR_CURRENT_RUNNING'),'no completion item');
+});
+test('Cycle QRE-FF-02 (b): after a race moved into the return, the D49 week after it plans at most one set over the last count',()=>{
+ const t=timeline(KNOWN(6,RACE(HYBRID(),'2026-12-26')));reviewWeeks(t,0,1);
+ t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:NO('MINOR_DISCOMFORT'),intent:'REDUCE_LIGHT',days:4,returnSpeed:'CONSERVATIVE'}},'07:00');
+ t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('MINOR_DISCOMFORT'),exerciseResponse:XNO('MINOR_DISCOMFORT'),improved:true}});
+ const c=t.step(2,2,'EVENT_DATE_CHANGE',{changes:{eventDate:'2026-12-05'}},'07:00');assert.notEqual(c.status,'ASK',c.reason);
+ const id='db-bench-press',last=Math.max(setsOf(t.p,3,id),setsOf(t.p,4,id)),w5=setsOf(t.p,5,id);
+ assert.ok(w5<=last+1,`week 5 plans ${w5} sets after ${last} (D49)`);
+});
+test('Cycle QRE-V1CPR-05 (a), CF-OBS-2: a date change that moves the race into a return week makes it the athlete\'s own event, with no question',()=>{
+ const t=timeline(RACE(HYBRID(),RACE_DAY));reviewWeeks(t,0,1);
+ t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REDUCE_SUBSTANTIAL',days:5}},'07:00');
+ t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('MILD_ILLNESS'),exerciseResponse:XNO('MILD_ILLNESS'),improved:true}});
+ assert.deepEqual([2,3,4].map(w=>ladder(t.p,w)?.RUN),['R2','R3','R4']);
+ const c=t.step(2,1,'EVENT_DATE_CHANGE',{changes:{eventDate:'2026-12-05'}},'07:00');assert.notEqual(c.status,'ASK',c.reason);
+ const race=raceRow(t);assert.equal(race.date,'2026-12-05');assert.equal(race.ownEvent,true);assert.equal(race.coachRecommendation,'EASY_RUN','an R3 week: an easy run');assert.ok(raceOffer(c),'its paths offered once');
+});
+test('Cycle QRE-V1CPR-06 residual (M12, known rows): a readiness restart week starts from the restart\'s own state, never a projected execution date',()=>{
+ const t=timeline(KNOWN(4,HYBRID()));reviewWeeks(t,0,2);
+ t.step(3,0,'RETURN_AFTER_PAUSE',{interruption:{startDate:t.day(2,0),endDate:t.day(2,6),reasonCategory:'ILLNESS',reason:'flu'}},'07:00');
+ const d=t.step(3,0,'READINESS_DECLARATION',{readiness:READY(),eligibility:ELIG(`${t.day(3,0)}T11:30:00Z`)},'09:00');assert.ok(['READINESS_RESTART','REESTABLISH'].includes(d.action),d.reason);
+ const from=t.p.decisions.at(-1).fromWeek,ids=new Set(t.p.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='STRENGTH').map(s=>s.id)),lastDone=t.ledger.filter(o=>ids.has(o.sessionId)&&o.actual?.completed).map(o=>o.occurrenceDate).sort().at(-1);
+ for(let w=from;w<Math.min(from+2,t.p.weeks.length);w++)for(const [id,e] of Object.entries(t.p.stateTrace[w].strength.exercises??{}))if(e.lastPerformed&&w===from)assert.ok(e.lastPerformed<=lastDone,`${id} week ${w} lastPerformed ${e.lastPerformed} after the last executed strength session ${lastDone}`);
+});
+test('Cycle FF-Q1 DT4: an adverse session in the window\'s trailing days removes FASTER\'s shortcut',()=>{
+ const e=lightTen('FASTER',{adverse:true});assert.notEqual(e.end.status,'ASK',e.end.reason);assert.deepEqual([3,4].map(w=>ladder(e.t.p,w)?.RUN),['R3','R4']);
+});
+
 // ================= NB-3 (SSCTR-V1CPI-03, QRE-V1CPR-01): rest days before a single declared break =================
 test('NB-3: a single declared break right after a rest window reads the window\'s rest and waiting days, per sport',()=>{
  const t=timeline();reviewWeeks(t,0,4);
