@@ -1,0 +1,1580 @@
+{
+  "recordId": "SSCTR-V1CP-DECISION-r1",
+  "date": "2026-11-08",
+  "mission": "V1_COACHING_PRODUCTIZATION (Founder request 2026-11-08; task contract V1CP-TC-r1)",
+  "reviewer": {
+    "role": "Sports Science & Concurrent Training Reviewer",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "protocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "skill": ".agents/skills/sports-science-review/SKILL.md 1.0.0",
+    "actorType": "AI_AGENT",
+    "instance": "fresh instance launched by the Chief for this decision; model claude-opus-5-5, effort max",
+    "nativeDispatch": "not verifiable from inside the run: the role was loaded from the project constitution, skill and adapter text the dispatch named",
+    "humanCredentialsClaimed": false,
+    "independence": "Authored none of the DESIGN, the PCG form, the Security record or the runtime. Did not read or review the implementation commits 4c3f6dc and 54b25bb or the uncommitted F08 runtime (see concurrentWorkNotice). Prior SSCTR records (Phase 3.4 decision, Phase 5 holdout judgment) were read as context of another instance, not re-judged.",
+    "delegation": "none"
+  },
+  "authority": {
+    "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, nonclinical sporting content only",
+    "f08Basis": "DR-148 as formalized in PCG-V1CP-F08 r2: Situation 1 warning-sign content and the declared-readiness restart protections are SSCTR nonclinical scope (PDR §5 G04-row delta; PCG P3), flagged FUTURE_G04_REVALIDATION. DR-148 status is GOVERNANCE_READY_FOR_REVIEW; its narrow fidelity re-check is running and the Chief has not consolidated it.",
+    "notProvided": "No clinical judgment, diagnosis, clearance, clinical return approval, urgency class or assessment of any person. Clinical content stays CLINICAL_HUMAN_REQUIRED (G04, no owner appointed)."
+  },
+  "inputs": {
+    "design": {
+      "path": "audits/v1-coaching-productization-2026-11-08/DESIGN_V1CP.md",
+      "sha256": "7ac633c41bb3430b94814e719d34c0671dfba187d24df270a0d587a016272b41",
+      "matchesDispatch": true
+    },
+    "taskContract": {
+      "path": "audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md",
+      "sha256AtFirstRead": "446fba6e28cd99234a809a3472aa9f8f481f52c4083274e699381e1da9844098",
+      "sha256Current": "4164a5227960ee8030de4fb969216b769caf3bc2ae322047410a3795280b7a8b",
+      "note": "The Chief appended the Founder's B1-B6 verbatim during this review; B1-B6 were read and are binding here."
+    },
+    "pcgForm": {
+      "path": "audits/v1-coaching-productization-2026-11-08/pcg/PCG_V1CP_F08.json",
+      "sha256": "fb9f3026db3c0d7ca222e797bfa6dc608b90b0641f721b36643c99cdb7747806",
+      "revision": "r2 (fidelity FAITHFUL_WITH_CONDITIONS; narrow re-check running)"
+    },
+    "pdr": {
+      "path": "product/PRODUCT_DECISION_REGISTER.md",
+      "sha256": "b66e0b6c4d8680f4d608c96b1ad5b9cf5eab43b85c28a5f7e0479ff6b73944fb",
+      "rows": "DR-148 and the §5 G04-row delta"
+    },
+    "security": {
+      "path": "audits/v1-coaching-productization-2026-11-08/security/SECURITY_V1CP_F08.json",
+      "sha256": "b570fc7053f819b8e0d24dff1ed2352b90af86cfbd30daa649610d726c72d0f2",
+      "used": "SEC-V1CP-02 (vocabulary extensions need SSCTR and Security), -03 (no prefilled answers), -04/-05 (professionalSeen and free text dropped; ignored here as instructed)"
+    },
+    "founderD2": {
+      "path": "audits/domain-coaching-r7-d-2026-11-02/phase35/FOUNDER_DECISIONS_PHASE35.md",
+      "sha256": "38a49fdc82b400c65897cbcc6651e64d665974d82c54269dc8dfb04045ca398d"
+    },
+    "f08Sources": [
+      "audits/domain-coaching-r7-d-2026-11-02/phase35/f08/F08_MINIMAL_DELTA_AND_MISSION.md",
+      "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/PCG_F08_AUTHORITY_R7D.md",
+      "audits/domain-coaching-r7-d-2026-11-02/phase34/f08/F08_RETURN_PROPOSAL.md"
+    ],
+    "priorSsctr": [
+      {
+        "path": "audits/domain-coaching-r7-d-2026-11-02/final2/judgment/ssctr/SSCTR_FINAL_HOLDOUT_2_R7D.json",
+        "sha256": "9b2a44c14e4973ec107c54ac65a84cc21e388bfdc64fc3e10fb208f83a2b595e",
+        "used": "SSCTR-P5H-O01..O04"
+      },
+      {
+        "path": "audits/domain-coaching-r7-d-2026-11-02/phase34/policy/SSCTR_P34_DECISION_R7D.json",
+        "sha256": "d9335e58b680837aef6ee87d958f8848871dfb41d70c2d99c03148abaaf87c7d",
+        "used": "BR-Q1..BR-Q6; Q8 line and its condition that an adverse response during a restart is asked and routed, never only held"
+      }
+    ],
+    "chiefNotes": "Two coordinator notes received mid-review: the PCG form exists (RC-06, RC-12, DR-148 clause 5, FP-1) and REDUCE_LIGHT must reduce difficulty, not only volume. Both are applied in Q05-Q07."
+  },
+  "runtimeBaseline": {
+    "reference": "R7D-FREEZE-6 behaviour: HEAD 4584a77 CoachingCore, whose src/, r6/ and r7/b0/ are byte-identical to d569ef2 (only the FREEZE-6 record and verification files were added after it)",
+    "fileSha256": {
+      "src/r6-clinical.mjs": "51449486b4cb7acaaae6c7c915d52b150c420b4f49c14cdfe9f896febff7f681",
+      "src/r6-adaptation.mjs": "8a5cfb5c84770561250ab4129a96ee50b8a06cd3b587735ec6aaf0030ee06062",
+      "src/r6-program.mjs": "05fe3ec428d9c49d6b3c35ef620e018e4a7e3d283758b050297fa04c1bc85870",
+      "src/r6-intake.mjs": "8becd1c6dcfa357c4e7f957068265d3a0cad5036f74a0d23b78711d3936e3c56",
+      "src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+      "src/r7b-repertoire.mjs": "e8f1689520e159836a4c2c005c1405e683629202bd6da6dbdfdc031bc73c3733",
+      "r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+      "r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+    },
+    "pointsRead": [
+      "r6-clinical.mjs screenInterruptionReason (clinicalReason already an input; isNo does not resolve an ambiguity today)",
+      "r6-adaptation.mjs interruptionScreen, keptBreaks (re-screens every report at each decision), episodeClinical, recordedStop/separateStop/returnAfterPause ASK sites, reentryBetween (full vs sport), stopOf, returnClass, returnEntry, returnStrength, weeklyGates (EARNED, tolerance, systemic HOLD), fatigue (systemic reduction), rebuild/scheduleChange",
+      "r6-learning.mjs classify (COMPLETED_NO_RESPONSE)",
+      "r6-program.mjs assessCapability, initialRunState (week-1 long run), runRow (consolidation long run), advanceRun (easy cadence, EARNED, gate default ADVANCE when unset), strengthCandidate/strengthDose/phaseDose (row RIR 3 in development; FROM_LOG rule text uses targetRir), advanceStrength, taper doses",
+      "r6-intake.mjs EXPERIENCE map, currentFamiliar (28 days), performanceAnchors cloned and unread, pause screen",
+      "policy operational.return, .run, .strength, .event, .establishment, population line"
+    ],
+    "probes": {
+      "dir": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d024db0a-e798-4d00-a3e5-d6bad7704647/scratchpad/ssctr-v1cp-20261108-223328",
+      "files": [
+        "probes/e1e2-probe.mjs",
+        "out/e1e2-probe.out.txt",
+        "probes/pdf-text2.mjs (literature text extraction only)"
+      ],
+      "authority": "dev fixture authority (DEV_TEST_ONLY) for program generation; no evidence value beyond confirming the runtime behaviour described",
+      "results": [
+        "No experience field: run WALK_JOG ('NOVICE with weekly minutes unknown'), strength NONE",
+        "INTERMEDIATE declared, minutes unknown: run EASY_UNKNOWN (20-min easy entry), strength FAMILIAR_UNKNOWN_LOAD",
+        "INTERMEDIATE, 120 min / 3 days: week 1 EASY 40, EASY 40, LONG 40; with longest 78 reported: EASY 35, EASY 35, LONG 45 (redistribution inside availability, class unchanged)",
+        "Longest 14 reported: an INTERMEDIATE runner becomes WALK_JOG (below run.minimumSessionMinutes) - why E2 must never feed that test"
+      ]
+    }
+  },
+  "concurrentWorkNotice": "During this review the branch moved from 4584a77 to 2d0cee5 (A1/A2 in 4c3f6dc, E3 and Blocks 3-4 plumbing incl. PREFERENCE_CHANGE in 54b25bb, PCG r1/r2, Security) and the worktree held uncommitted runtime work (CoachingCore/src/v1-f08.mjs, r6-adaptation.mjs, r6-composition.mjs). This record decides the DESIGN against FREEZE-6 behaviour. Where this record differs from what was implemented ahead of it, the implementation is to be reconciled; that reconciliation is the later SSCTR review of the candidate, not done here.",
+  "literatureAccess": {
+    "tools": "WebSearch and WebFetch (loaded through ToolSearch) worked; publisher sites for BJSM, Springer and LWW refused (403/402/login). PMC, Europe PMC REST and institutional repositories worked. One postprint PDF was decoded locally by a read-only Node script (object streams and ToUnicode maps) and read in the sections cited.",
+    "unavailable": "Python is not installed, so the skill's validator could not run. No paid full text.",
+    "rule": "Abstract-only and record-only sources are context, never the sole basis of an approval. Search snippets and consumer pages were not used as evidence."
+  },
+  "searches": [
+    {
+      "query": "ACSM position stand resistance training 2026 MSSE overview of reviews",
+      "site": "WebSearch",
+      "on": "2026-11-08",
+      "purpose": "currency of the 2009 training-status definitions",
+      "result": "Found the 2026 ACSM position stand (Currier et al.); publisher full text 402; PMC12965823 read."
+    },
+    {
+      "query": "PMID 19204579 (ACSM 2009 progression models)",
+      "site": "PubMed (cookie wall), Europe PMC REST, journals.lww.com (402)",
+      "on": "2026-11-08",
+      "purpose": "E1 strength definitions",
+      "result": "Abstract read via Europe PMC with the novice/intermediate/advanced definitions verbatim; full text not accessible."
+    },
+    {
+      "query": "Videbaek 2015 incidence per 1000 h novice runners definition",
+      "site": "WebSearch, PMC4473093",
+      "on": "2026-11-08",
+      "purpose": "E1 running definitions",
+      "result": "Full text read: no formal novice definition; inclusion criteria and one >6-month recreational criterion recorded."
+    },
+    {
+      "query": "Robinson 2024 proximity to failure dose-response meta-regressions",
+      "site": "WebSearch, Springer (login), Abertay repository (abstract; manuscript PDF 403)",
+      "on": "2026-11-08",
+      "purpose": "D1 HIGHER",
+      "result": "Abstract only."
+    },
+    {
+      "query": "Refalo 2023 proximity-to-failure hypertrophy meta-analysis PMC",
+      "site": "WebSearch, PMC9935748",
+      "on": "2026-11-08",
+      "purpose": "D1 HIGHER and counterevidence on failure training",
+      "result": "Full text read (first 100k characters: abstract to limitations)."
+    },
+    {
+      "query": "IOC consensus acute respiratory illness part 1 Schwellnus 2022 return to sport",
+      "site": "WebSearch, BJSM (403), Europe PMC REST (not OA), University of Pretoria repository postprint PDF",
+      "on": "2026-11-08",
+      "purpose": "F08 Situation 1 mild illness, warning signs, graded return, S6",
+      "result": "Postprint decoded and read: section 9.1-9.3, Tables 4, 6 and 7."
+    },
+    {
+      "query": "exercise during upper respiratory tract infection above the neck symptoms fever systemic return",
+      "site": "WebSearch, PMC7176256",
+      "on": "2026-11-08",
+      "purpose": "counter/confirming evidence for exercise during mild illness",
+      "result": "Mostly consumer pages (excluded). One Springer book chapter (PMC7176256) read in full: auxiliary only."
+    },
+    {
+      "query": "Frandsen 2025 BJSM how much running is too much single-session spikes",
+      "site": "WebSearch, BJSM (403), Aarhus University portal",
+      "on": "2026-11-08",
+      "purpose": "E2 and P5 (single-session vs weekly progression)",
+      "result": "Abstract only."
+    },
+    {
+      "query": "Spiering 2021 minimal dose maintaining endurance and strength",
+      "site": "WebSearch, Europe PMC REST",
+      "on": "2026-11-08",
+      "purpose": "maintenance during reduced training (A3, return ladder)",
+      "result": "Abstract only; not open access."
+    }
+  ],
+  "counterevidenceSearch": "Directed searches for counterevidence: failure vs non-failure (Refalo 2023: no advantage of momentary failure; ACSM 2026: failure does not enhance gains and exact RIR targets are not quantified), against D1 HIGHER's benefit; weekly progression vs single-session spikes (Frandsen 2025 abstract: week-to-week ratio not associated, ACWR negative), which bears on P5 in both directions; consumer 'neck check' pages were found and excluded. Running-progression trials and cohorts recalled from memory (graded-program RCT, 2-week progression cohort in novices) were not retrieved in this session and are not used as evidence.",
+  "sources": [
+    {
+      "id": "S01",
+      "citation": "Currier BS, D'Souza AC, Fiatarone Singh MA, ... Phillips SM. American College of Sports Medicine Position Stand. Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance in Healthy Adults: An Overview of Reviews. Med Sci Sports Exerc 2026;58(4):851-872.",
+      "doi": "10.1249/MSS.0000000000003897",
+      "pmid": "41843416",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12965823",
+      "type": "CONSENSUS_POSITION_STAND",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "prescriptiveSupportEligible": true,
+      "accessedOn": "2026-11-08",
+      "locator": "Methods (eligibility), Discussion (effort, volume, progression), Limitations; reference list truncated in capture",
+      "findingsUsed": "No numeric training-age cutoff; most evidence from novices; training experience had minimal impact on strength and hypertrophy outcomes; sufficient effort by near-failure or a 2-3 RIR target; momentary failure does not enhance gains; insufficient evidence to quantify exact RIR targets; lifting to fatigue inadvisable for some populations (e.g., older); hypertrophy enhanced by about 10 or more weekly sets.",
+      "limitations": [
+        "overview of reviews of mostly untrained participants",
+        "not separated by age"
+      ]
+    },
+    {
+      "id": "S02",
+      "citation": "American College of Sports Medicine. Position stand: progression models in resistance training for healthy adults. Med Sci Sports Exerc 2009;41(3):687-708.",
+      "doi": "10.1249/mss.0b013e3181915670",
+      "pmid": "19204579",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:19204579&resultType=core",
+      "type": "CONSENSUS_POSITION_STAND",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "prescriptiveSupportEligible": false,
+      "accessedOn": "2026-11-08",
+      "locator": "abstract",
+      "findingsUsed": "Novice: untrained, no RT experience or not trained for several years; intermediate: about 6 months of consistent RT; advanced: years of RT.",
+      "limitations": [
+        "superseded for prescription by S01",
+        "full text not accessed",
+        "definitions are descriptive, not validated predictors"
+      ]
+    },
+    {
+      "id": "S03",
+      "citation": "Videbaek S, Bueno AM, Nielsen RO, Rasmussen S. Incidence of Running-Related Injuries Per 1000 h of running in Different Types of Runners: A Systematic Review and Meta-Analysis. Sports Med 2015;45(7):1017-1026.",
+      "doi": "10.1007/s40279-015-0333-8",
+      "pmid": "25951917",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4473093/",
+      "type": "META_ANALYSIS",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "prescriptiveSupportEligible": true,
+      "accessedOn": "2026-11-08",
+      "locator": "Methods (data collection), Table 1, Results (Fig. 2), Discussion (limitations)",
+      "findingsUsed": "Injury incidence 17.8 (16.7-19.1) per 1000 h in novice vs 7.7 (6.9-8.7) in recreational runners; no exact definition of runner types; novice cohorts = little or no running experience or not running regularly in the previous 12 months; one recreational cohort required more than 6 accumulated months of regular training; authors suggest a cut-off may be appropriate.",
+      "limitations": [
+        "heterogeneous definitions",
+        "observational cohorts",
+        "per-hour incidence is not a dose rule"
+      ]
+    },
+    {
+      "id": "S04",
+      "citation": "Refalo MC, Helms ER, Trexler ET, Hamilton DL, Fyfe JJ. Influence of Resistance Training Proximity-to-Failure on Skeletal Muscle Hypertrophy: A Systematic Review with Meta-analysis. Sports Med 2023;53(3):649-665.",
+      "doi": "10.1007/s40279-022-01784-y",
+      "pmid": "36334240",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9935748",
+      "type": "META_ANALYSIS",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "prescriptiveSupportEligible": true,
+      "accessedOn": "2026-11-08",
+      "locator": "Abstract (Results, Conclusion), Results (search), Discussion (practical application, limitations)",
+      "findingsUsed": "Set failure vs non-failure ES 0.19 (0.00-0.37), trivial; momentary failure vs non-failure ES 0.12 (-0.13 to 0.37); a majority of sets with close proximity to failure recommended; possible non-linear relation; only two set-failure studies in resistance-trained participants.",
+      "limitations": [
+        "power",
+        "proximity measured imprecisely",
+        "a published letter disputes some cited references"
+      ]
+    },
+    {
+      "id": "S05",
+      "citation": "Robinson ZP, Pelland JC, Remmert JF, Refalo MC, Jukic I, Steele J, Zourdos MC. Exploring the dose-response relationship between estimated resistance training proximity to failure, strength gain, and muscle hypertrophy: a series of meta-regressions. Sports Med 2024;54(9):2209-2231.",
+      "doi": "10.1007/s40279-024-02069-2",
+      "pmid": null,
+      "url": "https://rke.abertay.ac.uk/en/publications/exploring-the-dose-response-relationship-between-estimated-resist/",
+      "type": "META_ANALYSIS (meta-regressions)",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "prescriptiveSupportEligible": false,
+      "accessedOn": "2026-11-08",
+      "locator": "abstract (repository record)",
+      "findingsUsed": "Strength gains similar across a wide RIR range; hypertrophy improves as sets end closer to failure; exploratory; exact relation unclear given RIR estimation.",
+      "limitations": [
+        "full text inaccessible (403)",
+        "estimated RIR"
+      ]
+    },
+    {
+      "id": "S06",
+      "citation": "Schwellnus M, Adami PE, Bougault V, et al. International Olympic Committee (IOC) consensus statement on acute respiratory illness in athletes part 1: acute respiratory infections. Br J Sports Med 2022;56(19):1066-1088.",
+      "doi": "10.1136/bjsports-2022-105759",
+      "pmid": "35863871",
+      "url": "https://repository.up.ac.za/bitstreams/ded27e8a-3737-4626-862c-9d43297325b5/download",
+      "type": "CONSENSUS_POSITION_STAND",
+      "access": "FULL_TEXT (accepted postprint, decoded locally; not the typeset version)",
+      "verified": true,
+      "prescriptiveSupportEligible": true,
+      "accessedOn": "2026-11-08",
+      "locator": "postprint pp. 25 (Table 4), 33-34 (Table 6 checklist 1), 38-44 (section 9.1-9.3, Table 7)",
+      "findingsUsed": "RTS is a continuum whose rate depends on severity, complications and normal responses to progressive load; most ARill are mild and short and ~20% cost more than one training day; mild ARinf is self-managed with a daily pre-exercise checklist (fever, chills, excessive fatigue, general muscle aches, breathing difficulty, chest pain/pressure/tightness, dizziness or palpitations at rest, moderate-severe cough, severe headache, persistent/severe nose-throat symptoms, persistent abdominal symptoms, not feeling well enough; plus chronic-condition risk factors); then a self-administered challenge at 60-70% of normal intensity, 10-20 min, stopped and referred on listed symptoms during, after and 24 h after exercise (incl. very dark urine); moderate or severe ARinf under professional care.",
+      "limitations": [
+        "respiratory infections only",
+        "severity indicators not fully validated (authors)",
+        "elite-athlete focus",
+        "decoded text, page numbers of the postprint"
+      ]
+    },
+    {
+      "id": "S07",
+      "citation": "Frandsen JSB, Hulme A, Parner ET, ... Nielsen RO. How much running is too much? Identifying high-risk running sessions in a 5200-person cohort study. Br J Sports Med 2025;59(17):1203-1210.",
+      "doi": "10.1136/bjsports-2024-109380",
+      "pmid": null,
+      "url": "https://pure.au.dk/portal/en/publications/how-much-running-is-too-much-identifying-high-risk-running-sessio/",
+      "type": "PROSPECTIVE_COHORT",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "prescriptiveSupportEligible": false,
+      "accessedOn": "2026-11-08",
+      "locator": "abstract (university portal)",
+      "findingsUsed": "Reference = longest distance run in the past 30 days (device data); single-session spikes >10% associated with overuse injury (HRR 1.64, 1.52, 2.28 by spike size); ACWR negative dose-response; week-to-week ratio no relationship.",
+      "limitations": [
+        "full text inaccessible",
+        "distance not duration",
+        "whether races were in the reference not verified",
+        "mean age 45.8, mostly low-frequency runners"
+      ]
+    },
+    {
+      "id": "S08",
+      "citation": "Spiering BA, Mujika I, Sharp MA, Foulis SA. Maintaining Physical Performance: The Minimal Dose of Exercise Needed to Preserve Endurance and Strength Over Time. J Strength Cond Res 2021;35(5):1449-1458.",
+      "doi": "10.1519/jsc.0000000000003964",
+      "pmid": "33629972",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:33629972&resultType=core",
+      "type": "NARRATIVE_REVIEW",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "prescriptiveSupportEligible": false,
+      "accessedOn": "2026-11-08",
+      "locator": "abstract",
+      "findingsUsed": "Endurance maintained up to 15 weeks with volume reduced 33-66% if intensity is kept; strength and size (younger) up to 32 weeks with 1 session/week, 1 set/exercise; intensity is the key variable; insufficient data for athletes.",
+      "limitations": [
+        "narrative review",
+        "abstract only"
+      ]
+    },
+    {
+      "id": "S09",
+      "citation": "Chamorro-Vina C, Fernandez-del-Valle M, Tacon AM. Excessive Exercise and Immunity: The J-Shaped Curve. In: The Active Female (Springer, 2013/2014), ch. 24, pp. 357-372.",
+      "doi": "10.1007/978-1-4614-8884-2_24",
+      "pmid": null,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7176256/",
+      "type": "OTHER (book chapter reproducing older URTI exercise guidelines)",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "prescriptiveSupportEligible": false,
+      "accessedOn": "2026-11-08",
+      "locator": "Tables 24.3 and 24.4",
+      "findingsUsed": "No exercise with systemic symptoms (muscle/joint pain, fever, malaise, diarrhoea or vomiting); light exercise only without fever or malaise and with no worsening above-the-neck symptoms; consult if no relief; step back up over as many days as were lost; stop and consult on a new fever or worsening.",
+      "limitations": [
+        "secondary, older guidance",
+        "auxiliary only"
+      ]
+    },
+    {
+      "id": "I01",
+      "citation": "CoachingCore/r6/PROGRAM_POLICY_R6.json (R6-POLICY-5)",
+      "sha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+      "type": "INTERNAL_APPROVED_POLICY",
+      "access": "FULL_TEXT",
+      "findingsUsed": "population line (no pregnancy/postpartum, rehabilitation or clearance extrapolation), operational.return (classes, recipes, reasonScreen, strengthReturnSets D49), run (cadence, consolidation, ceiling, strides optional), strength (goal doses, gates, maxExercises), event ranges and semantics, establishment"
+    },
+    {
+      "id": "I02",
+      "citation": "CoachingCore/src at FREEZE-6 bytes (hashes in runtimeBaseline)",
+      "type": "INTERNAL_RUNTIME",
+      "access": "FULL_TEXT",
+      "findingsUsed": "pointsRead"
+    },
+    {
+      "id": "I03",
+      "citation": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json (R7B0-CATALOG-2)",
+      "sha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+      "type": "INTERNAL_APPROVED_CATALOG",
+      "access": "FULL_TEXT",
+      "findingsUsed": "RETURN_SHORT guard (resume, hold shortHoldWeeks, first quality slot easy); B0-C01 c8 strides optional"
+    },
+    {
+      "id": "I04",
+      "citation": "SSCTR-R7D-FINAL-HOLDOUT-2-r1 findings O01-O04",
+      "type": "INTERNAL_PRIOR_REVIEW",
+      "access": "FULL_TEXT"
+    },
+    {
+      "id": "I05",
+      "citation": "SSCTR-R7D-P34-DECISION-r1 (BR-Q1..BR-Q6, Q8)",
+      "type": "INTERNAL_PRIOR_REVIEW",
+      "access": "FULL_TEXT"
+    },
+    {
+      "id": "I06",
+      "citation": "PCG-V1CP-F08 r2 and DR-148",
+      "type": "INTERNAL_AUTHORITY_FORM",
+      "access": "FULL_TEXT",
+      "findingsUsed": "RC-01..RC-18, P3 RF-1..RF-8, Q4 (a)-(f), P-2-r2, P-3-r2, C01/C02/C06-r2, F02 (FP-4), accepted conditions FP-1, Q4-b, FP-2, FP-5, O02"
+    },
+    {
+      "id": "I07",
+      "citation": "Founder D2 (FOUNDER_DECISIONS_PHASE35.md) and B1-B6 (TASK_CONTRACT.md)",
+      "type": "FOUNDER_DECISION",
+      "access": "FULL_TEXT"
+    }
+  ],
+  "returnLadder": {
+    "purpose": "Exact operations for the four Situation 1 intents and the steps of every return speed (Q05, Q06). Only existing doses and values; the combination in R3 is new and is recorded as a new parameter.",
+    "rungs": [
+      {
+        "id": "R0",
+        "name": "REST",
+        "run": "no running session of the affected sport (REST_BY_DESIGN, no debt)",
+        "strength": "no strength session (REST_BY_DESIGN, no debt)"
+      },
+      {
+        "id": "R1",
+        "name": "LIGHT_ACTIVITY_ONLY",
+        "run": "each run day becomes an optional walk of walkSessionMinutes[0] (20 min); never counted as a run",
+        "strength": "rest"
+      },
+      {
+        "id": "R2",
+        "name": "REDUCE_SUBSTANTIAL ('reduzir bastante as sessoes')",
+        "run": "the existing systemic reduction: every quality session and the long run become easy runs at the week's easy duration; strides omitted; easy runs unchanged",
+        "strength": "return-entry rows: strengthEntrySets (1) per exercise, load chosen by effort leaving at least strengthEntryMinimumRir (4) reps in reserve, never above the current load"
+      },
+      {
+        "id": "R3",
+        "name": "REDUCE_LIGHT ('reduzir a dificuldade' / 'reducao leve')",
+        "run": "no hard work: each quality session becomes an easy run at the week's easy duration and strides are omitted; the long run at its consolidation length (long - consolidationLongRunReductionSteps x longRunStepMinutes, floor run.minimumSessionMinutes, never below the week's easy run); easy runs unchanged",
+        "strength": "the consolidation set count (sets - consolidationSetReduction, at least 1), every set leaving at least strengthEntryMinimumRir (4) reps in reserve with the load chosen by effort, never above the current load; no rep or load step"
+      },
+      {
+        "id": "R4",
+        "name": "HELD",
+        "run": "the held pre-window doses (the state at the window's start), no step that week; the first quality slot runs easy (SHORT_RETURN_EASY, SSCTR R27)",
+        "strength": "the held pre-window doses, no step that week"
+      },
+      {
+        "id": "R5",
+        "name": "NORMAL",
+        "run": "the gates move the athlete again (profile levers apply)",
+        "strength": "the gates move the athlete again"
+      }
+    ],
+    "transitionRule": "A rung is left only after a whole plan week of the affected sport at that rung was executed (the BR-Q4 completion test for that sport: every session executed, no adverse or conflicting response) and the warning signs were re-answered no at that week's review. Otherwise the rung repeats: missed or partial repeats it with no debt; one adverse response repeats it and asks the exercise-response items; the existing repeated-adverse regression applies; any warning sign yes routes S3. Strength sets come back at most one set per executed week whatever the rung (the D49 rule). Never by date alone; the speed choice is never evidence (RC-12).",
+    "loadReference": "Loads logged on R2/R3 rows (chosen by effort below the current load) never replace the held reference load downward or upward; they are tolerance evidence only. At R4 the held reference returns and the existing gates judge it."
+  },
+  "warningSignInstrument": {
+    "status": "SSCTR nonclinical boundary content under DR-148 (PCG P3, RF-1..RF-8), stricter than the DESIGN list as RF-5 allows; FUTURE_G04_REVALIDATION; not clinical screening; all-no is never 'safe' or a clearance (RF-4); urgency classes and urgent wording are G04 (RF-8). Adding booleans is a vocabulary extension: Security must confirm minimisation and grouping (SEC-V1CP-02). Each item starts unanswered and is actively answered (SEC-V1CP-03); unknown is ASK (RF-2); any yes routes the clinical hold for every sport (RF-3, Q4-c).",
+    "entryAndRecheckItemsAllConditions": [
+      {
+        "id": "W1",
+        "item": "fever or chills",
+        "basis": "S06 checklist 1 (fever, chills); DESIGN fever"
+      },
+      {
+        "id": "W2",
+        "item": "chest pain, pressure or tightness",
+        "basis": "S06 checklist 1; DESIGN"
+      },
+      {
+        "id": "W3",
+        "item": "shortness of breath or fast breathing at rest",
+        "basis": "S06 checklist 1; DESIGN item split"
+      },
+      {
+        "id": "W4",
+        "item": "palpitations or a racing heart at rest",
+        "basis": "S06 checklist 1; DESIGN item split"
+      },
+      {
+        "id": "W5",
+        "item": "fainting, near-fainting or dizziness",
+        "basis": "S06 checklist 1; DESIGN"
+      },
+      {
+        "id": "W6",
+        "item": "pain that changes how you move",
+        "basis": "DESIGN; confirms the Q4-b coverage"
+      },
+      {
+        "id": "W7",
+        "item": "swelling",
+        "basis": "DESIGN item split so swelling is answered on its own (Q4-b)"
+      },
+      {
+        "id": "W8",
+        "item": "an injury from a fall or impact",
+        "basis": "DESIGN"
+      },
+      {
+        "id": "W9",
+        "item": "worse than when the window started",
+        "basis": "DESIGN worsening; detects progression"
+      }
+    ],
+    "systemicItemsForSystemicConditions": {
+      "appliesTo": "MILD_ILLNESS, MILD_INDISPOSITION and UNUSUAL_FATIGUE (W11 and W15 only for MILD_ILLNESS and MILD_INDISPOSITION, so training fatigue alone is not routed clinical)",
+      "items": [
+        {
+          "id": "W10",
+          "item": "body-wide muscle aches or pains",
+          "basis": "S06 checklist 1 (general muscle aches); S09"
+        },
+        {
+          "id": "W11",
+          "item": "exhaustion or excessive tiredness at rest",
+          "basis": "S06 checklist 1"
+        },
+        {
+          "id": "W12",
+          "item": "vomiting, diarrhoea, or persistent nausea or abdominal pain",
+          "basis": "S06 checklist 1; S09"
+        },
+        {
+          "id": "W13",
+          "item": "a moderate or severe cough",
+          "basis": "S06 checklist 1; Table 4 (lower respiratory = moderate)"
+        },
+        {
+          "id": "W14",
+          "item": "a severe headache",
+          "basis": "S06 checklist 1"
+        },
+        {
+          "id": "W15",
+          "item": "severe or persistent nose or throat symptoms",
+          "basis": "S06 checklist 1"
+        }
+      ]
+    },
+    "exerciseResponseItems": {
+      "askedWhen": "a session inside a window, a return ladder or an S6 restart is reported with an ADVERSE or CONFLICTING response, and at each weekly review there",
+      "items": [
+        {
+          "id": "X1",
+          "item": "unusual breathlessness, chest pain or discomfort, dizziness or a racing heart during or after exercise",
+          "basis": "S06 Table 7"
+        },
+        {
+          "id": "X2",
+          "item": "a much higher effort than usual for the same session",
+          "basis": "S06 Table 7"
+        },
+        {
+          "id": "X3",
+          "item": "new muscle or joint pain during exercise (illness-type windows)",
+          "basis": "S06 Table 7"
+        },
+        {
+          "id": "X4",
+          "item": "very dark brown or red urine after exercise",
+          "basis": "S06 Table 7"
+        }
+      ]
+    },
+    "persistence": "At the window's end the condition must be reported resolved or clearly improved (a new structured answer; Security). Not improved: no new window (RC-06); professional-assessment recommendation and the clinical hold for MILD_ILLNESS, MILD_INDISPOSITION, UNUSUAL_FATIGUE and MINOR_DISCOMFORT (discomfort also asked against persistentPain, Q4-b); NEED_REST goes to the existing declared-break return or Situation 3. Basis: S06 (mild ARinf mostly resolve in days; progression depends on normal responses), S09 (consult when there is no relief).",
+    "fp1Answer": "Items that catch a mild illness turning relevant: worsening W9; systemic signs W1, W10, W11, W12, W14; lower-respiratory or regional progression W3, W13, W2, W4, W5, W15; exercise-response signs X1-X4; persistence at the window's end. The DESIGN list covered only fever (without chills), chest pain or pressure, breathlessness or palpitations combined, fainting or dizziness, and worsening.",
+    "disclosedGap": "S06 checklist 1 question 2 (heart, blood-vessel or lung disease including asthma, cancer, diabetes, other chronic or immune disease, obesity) calls for caution and professional input when not well controlled. It is not proposed here as a new field (sensitive data). PCG, Security/G07 and G04 decide whether the existing eligibility screen covers it before MILD_ILLNESS is exposed; otherwise the gap is disclosed with the release."
+  },
+  "items": [
+    {
+      "id": "SSCTR-V1CP-Q01",
+      "question": "A1 (a)-(c): reason-screen semantics",
+      "designRows": [
+        "Block 1 A1 (a) ask only what is missing",
+        "A1 (b) who has the problem",
+        "A1 (c) body words that are not about the body",
+        "A1 (d) unchanged",
+        "QRE-P5H-F01",
+        "SSCTR-P5H-O01",
+        "R7D-H07, H20, H32, H34"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "The screen stays fail-closed: free text alone never yields NONCLINICAL, and every ambiguity or third-party mention ends in one explicit structured question with its own exit. The residual is the same self-report residual the eligibility screen already carries. Lexicon coverage in PT-BR/EN/ES is not exhaustive and was not tested by this instance."
+      },
+      "approvedRule": "(a) No category: ask interruption.reasonCategory. A structured nonclinical category with free text that is ambiguous or names someone else's condition: ask once interruption.clinicalReason (yes/no): 'Did this break involve your own pain, injury, illness, pregnancy or recent childbirth, or another medical reason?' (PT-BR/EN/ES). An explicit no (isNo) with a structured nonclinical category resolves only the AMBIGUOUS_REASON basis (ambiguous words and phrases, body words, locally negated damage) and the third-party basis to NONCLINICAL. It never resolves a clinical category, a clinical flag, a self-attributed clinical word, phrase or damage-plus-body mention, a mid-clause or conditioned denial (a contradiction between text and answer is ASK, PCG O01/RC-05), CONTRADICTORY_FLAGS, INVALID_CLINICAL_FLAG, or a missing or unrecognized category; current eligibility flags still apply; yes stays CLINICAL (R-F08-1). (b) A clause that names another person by a possessive or article plus a noun from a closed, versioned list (family member, partner, child, friend, pet) and holds no first-person marker: its clinical words, phrases and damage mentions are a third-party mention, asked as in (a), never the athlete's clinical mention and never NONCLINICAL by text. First-person markers: I, me, myself, my/mine with a body part, we, us, our(s); eu, me, comigo, nos, a gente, meu/minha with a body part, nosso/nossa; yo, me, mi, conmigo, nosotros/nosotras, mi with a body part, nuestro/nuestra; and first-person forms of clinical verbs. A clause mixing both stays clinical; the clause split is unchanged. (c) 'back' in the listed adverbial collocations (back from, came/got/went/flew/drove back, back home, back to, be back) is not a body word, for the matched token only; 'back' after a possessive, article or modifier (my/the/lower/upper back) stays a body word. 'on my/our/his/her feet' is not a body mention. No such exception applies in a clause holding a damage verb or a clinical word or phrase; other ambiguous words in the clause still ask. 'baby' and the maternity, newborn and breastfeeding words stay ambiguous and are asked once with the pregnancy and childbirth wording. (d) Everything listed in DESIGN A1 (d) is unchanged.",
+      "modification": "Relative to the DESIGN: (1) the confirmation names pregnancy and recent childbirth, because PREGNANCY and POSTPARTUM are clinical categories and the V1 population excludes them (I01 population line); (2) first-person plural markers count as first person; (3) idiom and adverb exceptions never apply in a clause with a damage verb or a clinical word; possessive/article/modifier + 'back' stays a body word; (4) a structured no never resolves a conditioned or mid-clause denial; (5) R-F08-1 is protected across the screen change (condition C-Q01-5).",
+      "conditions": [
+        "C-Q01-1: The clinicalReason answer is part of that report's facts (append-only, in its inputHash), asked once per report, starts unanswered and is actively answered (SEC-V1CP-03); unknown is ASK.",
+        "C-Q01-2: The third-party noun list, the first-person markers and the adverb collocations are closed, versioned lexicon data in all three V1 languages; PT 'em pe' and ES 'de pie' may be added under the same rules (recommended for parity; without them those texts stay ASK).",
+        "C-Q01-3: Free text can still only add CLINICAL or ASK; no text alone ever yields NONCLINICAL (operational.return.reasonScreen).",
+        "C-Q01-4: Directed tests: the four holdout texts (H07 becomes ASK then NONCLINICAL only on a structured no); 'my son had the flu, I caught it' CLINICAL; 'my wife and I had covid' and 'we all got sick' CLINICAL; 'visiting my dad in hospital' ASK; 'got back pain', 'back from hospital' CLINICAL; 'my back was killing me' ASK; 'cut on my feet' clinical (damage plus body); 'didn't feel any pain until I ran' with clinicalReason no stays ASK; 'new baby' asked with the childbirth wording; every case in the three languages.",
+        "C-Q01-5: A report the runtime classed CLINICAL under an earlier screen version stays a clinical-cause episode. Before launch, Engineering confirms no persisted athlete record predates the change; once records persist, the first-recorded screen outcome is kept per report and R-F08-1 reads the stricter of the recorded and the current outcome (routed to PCG and Engineering).",
+        "C-Q01-6: Copy is G03/Product-UX; it never says the athlete is 'cleared' and never implies the coach ruled out illness."
+      ],
+      "newParameters": [
+        {
+          "name": "A1 lexicon additions",
+          "value": "third-party noun list; first-person plural markers; 'back' adverbial collocations; 'on my feet' idiom; confirmation wording with pregnancy and childbirth",
+          "basis": "DESIGN A1, holdout texts (I04 O01), population line (I01); no number",
+          "population": "V1 nonclinical adults, PT-BR/EN/ES"
+        }
+      ],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I04",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S06",
+          "access": "FULL_TEXT",
+          "use": "context: a structured, self-administered checklist is the recognized basis for a nonclinical decision to train"
+        }
+      ],
+      "reReviewTrigger": "Any lexicon or wording change; a missed self-attributed clinical case in tests, a holdout or production; a new V1 language; a change to RC-05, R-F08-1 or the reason screen's precedence; appointment of a G04 owner.",
+      "pendingIfRejected": null
+    },
+    {
+      "id": "SSCTR-V1CP-Q02",
+      "question": "A3: option A or B",
+      "designRows": [
+        "Block 1 A3 option A",
+        "option B (disclosed residual)",
+        "SSCTR-P5H-O02",
+        "BR-Q4.4",
+        "R7D-H28 s4"
+      ],
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "decisiveBasis": "Internal and structural: the existing approved return classes and recipes (I01, R6-NONCLINICAL-RETURN as approved with its own SSCTR records) and the existing none-planned continuity rule (I02), applied per sport. No new physiological claim; S08 is context only.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Option A applies the existing 'none planned' continuity rule per sport and the existing classes; it is the smallest change that makes an equal lapse read the same whatever the race-week coincidence. The harm it removes was PLAUSIBLE_BUT_UNCERTAIN (soreness more than injury), so the benefit is modest."
+      },
+      "approvedRule": "Option A. Per sport: when no live session of a sport (a planned session with a prescription, not SKIPPED; REST_BY_DESIGN days are not sessions) is planned on any day strictly between two separate breaks, that sport's stop runs back through the earlier break, and its return class is the existing class of that sport's own stop days (shortMaxDays 10, moderateMaxDays 28) with the existing recipes (returnStrength, strengthEntryWeek, D49; returnEntry for running). The other sport keeps today's reading. H28: strength 2026-12-30 to 2027-01-16, 18 days, MODERATE (entry 1 set at RIR 4 or more, then D49); running 4 days, SHORT.",
+      "modification": null,
+      "conditions": [
+        "C-Q02-1: It only lengthens: it never shortens a sport's stop or lowers its class relative to today's reading.",
+        "C-Q02-2: A sport with sessions planned between the breaks keeps BR-Q1, BR-Q3 and BR-Q4 unchanged (OWN_RETURN, TRAINING_AFTER, continuity, the unreported-sessions ASK, the appliedBetween guard).",
+        "C-Q02-3: Symmetric for running (no runs planned between the breaks).",
+        "C-Q02-4: The record states each sport's stop and class; the copy explains the sport's own lapse.",
+        "C-Q02-5: Composition and I10/I11 unchanged: one sport's stop never moves the other's doses.",
+        "C-Q02-6: Directed tests: the H28 shape; the symmetric running case; a sport planned and executed between (unchanged); a sport planned and missed between (unchanged reading, residual SSCTR-P34-F04 still disclosed); clinical-first precedence.",
+        "C-Q02-7: No new number."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I04",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I05",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S08",
+          "access": "ABSTRACT_ONLY",
+          "use": "context only: maintenance depends on the sport's own stimulus"
+        }
+      ],
+      "reReviewTrigger": "A change to BR-Q4, separateStop or the return classes; a case where a sport planned but missed between breaks produces a longer lapse than its class (the pre-existing SSCTR-P34-F04 residual); new detraining evidence.",
+      "pendingIfRejected": null
+    },
+    {
+      "id": "SSCTR-V1CP-Q03",
+      "question": "E1: training-age mapping per sport",
+      "designRows": [
+        "Block 1 E1",
+        "Block 1 E data-path audit (Founder synthetic athlete)"
+      ],
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "LOW",
+        "rationale": "The boundary values rest on descriptive, heterogeneous definitions (strength: a 2009 consensus abstract; running: no standard, one cohort's >6-month criterion). Harm is bounded because the derived category never sets capacity and the existing establishment rules still apply; misclassification mainly changes the walk/jog vs 20-minute easy entry and exercise skill admissibility."
+      },
+      "approvedRule": "Per sport, an optional intake field trainingMonths (months of regular training, most weeks, in the current continuous period ending now) is read only when that sport's category is absent: 0 = NONE; 1-5 = NOVICE; 6-23 = INTERMEDIATE; 24 or more = EXPERIENCED. An explicit category always wins. The derived category never sets current capacity: weekly minutes, days, longest run and loads stay their own facts and unknown stays unknown. A stop of longPauseWeeksAtLeast (4) weeks or more ends a period and is the existing pause fact (RESTART). A value that is not a whole number from 0 up to the athlete's age in months is asked.",
+      "modification": null,
+      "conditions": [
+        "C-Q03-1: The question defines 'regular' and 'current continuous period', per sport, in the three languages; a lifetime total is never used (an earlier period before a long stop is history: ACSM 2009 counts 'not trained for several years' as novice).",
+        "C-Q03-2: EXPERIENCED derived at 24 months is a label with no dose effect today (the runtime treats INTERMEDIATE and EXPERIENCED alike); any rule that distinguishes them re-opens this boundary.",
+        "C-Q03-3: The derived category is recorded with basis DERIVED_FROM_TRAINING_MONTHS and disclosed in the cold-start explanation.",
+        "C-Q03-4: Strength skill admissibility for a derived INTERMEDIATE still passes the existing establishment rules (effort-guided from the lightest load, technique first, SKILL_MISMATCH step back).",
+        "C-Q03-5: E1 never replaces current exposure: for the Founder athlete (10 months) the result is INTERMEDIATE in both sports, run EASY_UNKNOWN (20-minute easy entry) while weekly minutes are unknown, strength FAMILIAR_UNKNOWN_LOAD; the smallest missing input remains current weekly running minutes and days (G03/Product: ask them).",
+        "C-Q03-6: trainingMonths is a new intake field: Security/G07 confirm it (it is not health data, but it is profiling data)."
+      ],
+      "newParameters": [
+        {
+          "name": "trainingMonths bands (both sports)",
+          "value": "0 NONE; 1-5 NOVICE; 6-23 INTERMEDIATE; >=24 EXPERIENCED (label only)",
+          "basis": "Strength: S02 (ABSTRACT_ONLY) intermediate about 6 months of consistent RT, advanced years; S01 (FULL_TEXT) no cutoff, experience had minimal impact on outcomes, most evidence in novices. Running: S03 (FULL_TEXT) novice cohorts = little or no experience or not running regularly in the previous 12 months, one recreational cohort = more than 6 accumulated months of regular training, no established cutoff.",
+          "population": "nonclinical adults 18+, recreational hybrid (V1)"
+        }
+      ],
+      "sources": [
+        {
+          "id": "S01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S02",
+          "access": "ABSTRACT_ONLY"
+        },
+        {
+          "id": "S03",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "A validated training-status classification for running or strength; product data on misclassification; any rule distinguishing EXPERIENCED; a V1 population change.",
+      "pendingIfRejected": null
+    },
+    {
+      "id": "SSCTR-V1CP-Q04",
+      "question": "E2: race results, or history only",
+      "designRows": [
+        "Block 1 E2"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "decisiveBasis": "Internal: the approved single-run ceiling definition (I01: longest completed run in the window; intake ceiling in the first cold-start week) applied to a fact type it already covers (a completed run), with the probe confirming the effect. No new dose or number; S07 is context only.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "A completed race is a completed run session, which is what the approved single-run ceiling reads; the probe shows the effect is a week-1 redistribution inside availability. Whether the cohort behind the ceiling counted races was not verified (abstract only)."
+      },
+      "approvedRule": "A race result with distance, duration and date counts as one completed run session of that duration (time on feet, not a claim of continuous running) only when recent.longestRunMinutes is not reported, the result is dated within the intake's existing 28-day window and not after the intake date, and the athlete confirms it was completed and tolerated (the existing currentFamiliar confirmations). It is then used exactly as a reported longest run for the week-1 long-run cap and as the single-run ceiling reference (INTAKE_REPORTED_LONGEST). It never enters the below-minimum walk/jog test, the run class, weekly minutes or days, pace, effort zone, intensity, quality familiarity, the event or race-day statement, or a prediction. Older or undated results are history (records) only.",
+      "modification": "Relative to the DESIGN: 'continuous' is removed (a race may include walking); 'classification' is removed (a race value under run.minimumSessionMinutes would flip an intermediate runner to walk/jog, see probe); the tolerated confirmation is required.",
+      "conditions": [
+        "C-Q04-1: Directed tests from the probe: 120 min / 3 days with and without a race (class unchanged, week 1 within availability); a sub-15-minute race never makes WALK_JOG; a NOVICE EASY_LOW class unchanged; a race older than 28 days changes nothing.",
+        "C-Q04-2: The tolerated question is a structured answer (Security/G07); a pain or injury answer goes to the existing eligibility screen.",
+        "C-Q04-3: The explanation states the race was read as 'a recent run of about N minutes', never as a fitness estimate."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S07",
+          "access": "ABSTRACT_ONLY",
+          "use": "context: the 30-day longest-run reference and single-session spikes"
+        }
+      ],
+      "reReviewTrigger": "Full-text appraisal of S07 (were races in the reference?); any change to the single-run ceiling; product data on races as longest runs.",
+      "pendingIfRejected": "If Security or Product reject the tolerated question, race results stay history only (the DESIGN's alternative)."
+    },
+    {
+      "id": "SSCTR-V1CP-Q05",
+      "question": "F08 Situation 1: the intent table",
+      "designRows": [
+        "Block 2 states S2w",
+        "Inputs NOT_FEELING_100",
+        "Situation 1 intents table",
+        "PCG P3 (instrument)",
+        "PCG-V1CP-F08 r2 Q4 (a)-(e), RF-1..RF-8, RC-03..RC-07, RC-13, FP-1, Q4-b"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "The consensus content is for acute respiratory infections; 'mild illness' in V1 also covers other mild illnesses (e.g., gastrointestinal), so part of it is extrapolated. The intents use existing doses; the instrument is pending G04 revalidation and Security's vocabulary confirmation."
+      },
+      "authorityCondition": "Valid only if PCG-V1CP-F08 r2 (DR-148 clauses 2, 5 and 6, the G04-row delta, Q4 and RC-01..RC-18) passes its narrow fidelity re-check and the Chief consolidates it as written. Until then Situation 1 is not implementable and F08 stays F08_OPEN. The MILD_ILLNESS path also rests on DR-148's partial supersession of DR-99 and of SSCTR-05's 'suspected illness' for this subset (read under DR-148; the constitution text is unchanged, and the PCG-proposed pointer is the Chief's to apply).",
+      "approvedRule": "Intents map to rungs (returnLadder): REST R0; LIGHT_ACTIVITY_ONLY R1; REDUCE_SUBSTANTIAL R2; REDUCE_LIGHT R3, which reduces difficulty first (no hard work in running; every strength set at 4 or more reps in reserve) with a light volume cut (consolidation long run, consolidation set count). Intents offered: MILD_ILLNESS and MILD_INDISPOSITION: R2, R1 or R0 (no long run and no near-normal strength volume while unwell); UNUSUAL_FATIGUE, MINOR_DISCOMFORT and NEED_REST: R3, R2, R1 or R0. Affected sports: systemic conditions (MILD_ILLNESS, MILD_INDISPOSITION, UNUSUAL_FATIGUE) always affect both programmed sports; for local conditions the affected sports are the athlete's explicit per-sport statement, never inferred (RC-13), both when unstated; an UPPER_BODY or LOWER_BODY statement limits the strength intent to that region's rows. Any week holding window days of an affected sport HOLDs that sport's gates (no step from a reduced week). Entry needs every warning sign (warningSignInstrument) actively answered no and no current clinical sign (RC-03).",
+      "modification": "Relative to the DESIGN: (1) REDUCE_LIGHT is no longer the CONSOLIDATION dose, which holds intensity and keeps quality sessions: it becomes R3 (exact operation in returnLadder.rungs[R3]); (2) REDUCE_LIGHT is not offered for MILD_ILLNESS or MILD_INDISPOSITION; (3) scopes follow the athlete's per-sport statement (RC-13); (4) a stricter warning-sign instrument (FP-1); (5) explicit window-end, chaining and race rules below.",
+      "conditions": [
+        "C-Q05-1 (window end): the return starts only after the athlete's structured answers that every warning sign is no and the condition has resolved or clearly improved; not improved follows warningSignInstrument.persistence (no new window).",
+        "C-Q05-2 (chaining, RC-06): no new Situation 1 window for a systemic condition, or for a local condition in the same or an overlapping scope, until the previous window's return ladder has completed (R5 reached after a whole executed plan week at R4 with no adverse response). A report before that is not re-windowed: it is screened (warning signs; persistentPain for discomfort; the scoped illness question, Q4 b); any yes routes S3; all no holds the ladder's current rung that week; the same condition reported again at the next weekly review leads to the professional-assessment recommendation and S3. A continuous Situation 1 window never exceeds 14 days.",
+        "C-Q05-3 (race in a window): agreed with the DESIGN handler. A window holding the race day asks about the race (keep the date and end the window before it, move it, or skip it); the race is never silently kept or dropped. Inside an R0-R3 window no race-effort touch or quality session is prescribed. For a systemic-condition window the question says the coach does not plan a race while the athlete is unwell (copy G03, wording pending G04).",
+        "C-Q05-4 (re-ask, RF-7): warning signs at entry, at each weekly review inside the window and the ladder, at the window end, and with any session reported ADVERSE or CONFLICTING there (then the exercise-response items).",
+        "C-Q05-5: A REDUCE window whose sessions were not executed is read as a rest window of its days for the return.",
+        "C-Q05-6: The window stays a Situation 1 fact (RC-07); it is never converted into a declared break, and a declared break is never converted into it.",
+        "C-Q05-7: Clinical first (RC-01); free text is not an F08 input (SEC-V1CP-05); unknown is ASK (RF-2); all-no is never shown as safe (RF-4).",
+        "C-Q05-8: Security confirms the added booleans and the improvement question before any real collection (SEC-V1CP-02, RC-17).",
+        "C-Q05-9: Directed tests: each condition x intent pair allowed or refused as above; each warning sign yes routes S3 for every sport; an unanswered sign is ASK; the race-in-window question; chaining refused with S3 on persistence; regional scope applied only to the stated region; the unaffected sport unchanged."
+      ],
+      "newParameters": [
+        {
+          "name": "R3 (REDUCE_LIGHT) dose combination",
+          "value": "quality and strides to easy; long run at consolidation length; strength consolidation sets at >=4 RIR, effort-chosen load not above current; no step",
+          "basis": "existing values only (consolidationLongRunReductionSteps, consolidationSetReduction, strengthEntryMinimumRir); S06 (resume at moderate intensity, progress on normal responses); S08 abstract (intensity the key maintenance variable, context); the Founder's 'reduzir a dificuldade'",
+          "population": "V1 nonclinical adults in a Situation 1 window"
+        },
+        {
+          "name": "condition-to-intent availability",
+          "value": "MILD_ILLNESS and MILD_INDISPOSITION: R2/R1/R0; others: R3/R2/R1/R0",
+          "basis": "S06 (systemic symptoms preclude exercise; mild cases exercise at reduced intensity); S09 auxiliary",
+          "population": "as above"
+        },
+        {
+          "name": "chaining and persistence rule",
+          "value": "no re-window before the ladder completes; persistence at window end or at the next weekly review routes S3 (NEED_REST excepted)",
+          "basis": "RC-06, Q4-b; S06, S09 (persistence is a reason for assessment); 14 days is the Founder's bound",
+          "population": "as above"
+        },
+        {
+          "name": "warning-sign items W1-W15, X1-X4 and the improvement question",
+          "value": "see warningSignInstrument",
+          "basis": "S06 checklist 1 and Table 7; DESIGN items",
+          "population": "as above; FUTURE_G04_REVALIDATION"
+        }
+      ],
+      "sources": [
+        {
+          "id": "S06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S09",
+          "access": "FULL_TEXT",
+          "use": "auxiliary"
+        },
+        {
+          "id": "S08",
+          "access": "ABSTRACT_ONLY",
+          "use": "context"
+        },
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I07",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "A G04 owner (T1); any Security change to the instrument; removal or narrowing of an item (RF-5); a new consensus on exercise during or after illness; an adverse event; DR-148 or RC changes; product data on window use and recurrence.",
+      "pendingIfRejected": "If DR-148 is not consolidated as written, Situation 1 stays PENDING and F08_OPEN. If Security refuses the added items, MILD_ILLNESS and MILD_INDISPOSITION are limited to R0 and R1 until a covering instrument exists (the other conditions keep the DESIGN items plus W7 split)."
+    },
+    {
+      "id": "SSCTR-V1CP-Q06",
+      "question": "F08 return speeds",
+      "designRows": [
+        "Block 2 return speeds table",
+        "RC-12",
+        "PCG-V1CP-F02 (FP-4)",
+        "DR-148 clause 5"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Moderate for the direction (gradual, evidence-conditioned, no rest-to-full jump); low for the exact number of rungs and holds, which no evidence quantifies: they only hold doses already tolerated."
+      },
+      "authorityCondition": "Same as SSCTR-V1CP-Q05.",
+      "approvedRule": "Speeds are rung sequences on returnLadder; each rung lasts one executed week (transitionRule). Window REDUCE_LIGHT: FASTER R4 then R5; BALANCED R3, R4, R5; CONSERVATIVE R3, R4, R4, R5. Window REDUCE_SUBSTANTIAL: FASTER R3, R4, R5; BALANCED R2, R3, R4, R5; CONSERVATIVE R2, R3, R4, R4, R5. Window REST or LIGHT_ACTIVITY_ONLY of 10 days or less: FASTER R3, R4, R5; BALANCED R2, R3, R4, R5; CONSERVATIVE the MODERATE recipe (entry dose, then moderateStepsToPrior conditional steps, prior doses the ceiling), then R5. Window REST or LIGHT_ACTIVITY_ONLY of 11-14 days: FASTER the MODERATE recipe; BALANCED the MODERATE recipe with its first step held one more executed week; CONSERVATIVE the MODERATE recipe with each step held one more executed week. No window of 14 days or less is ever read as LONG (no restart, no clearing of achieved history). Default BALANCED; the speed can change until the window ends; it is never itself evidence (RC-12, B2); the speeds end at R5, never multiply with the coach profiles (profile gates act inside them only as holds) and never pass a cap.",
+      "modification": "Relative to the DESIGN: (1) no speed goes from a rest or a substantial reduction straight to the pre-window doses: FASTER after rest or REDUCE_SUBSTANTIAL climbs through R3 (RC-12: gradual at every speed); (2) BALANCED is a climb, not 'the class recipe plus one hold', so the first week back has no hard work; (3) CONSERVATIVE never reads a window as LONG; (4) the D49 one-set-per-week rule applies to strength on every rung; (5) the window's logs never replace the held reference load.",
+      "fp4Note": "The only step from a reduced rung to the held pre-window dose is FASTER after a REDUCE_LIGHT window (R3 executed during the window, then R4). It mirrors the existing consolidation-to-development transition and is conditioned on the window's executed weeks. If the Founder reads 'gradual' more strictly, FASTER after REDUCE_LIGHT becomes R3, R4, R5 and equals BALANCED for that window. Founder question (FP-4), non-blocking.",
+      "conditions": [
+        "C-Q06-1: Every rung transition follows returnLadder.transitionRule; an adverse response repeats the rung, a warning sign routes S3.",
+        "C-Q06-2: After any window the first quality slot runs easy (R4).",
+        "C-Q06-3: Directed tests: each window x speed sequence; no sequence reaches the pre-window dose before an executed R3 or MODERATE step (except FP-4's case); an 11-14 day CONSERVATIVE never restarts or clears history; strength sets never rise more than one per executed week; a missed rung repeats; the speed change before and after the window end.",
+        "C-Q06-4: Copy explains each speed concretely (for example 'one easy week, then your usual plan') and never presents a speed as clearance; speeds are not the coach profiles (D2.2)."
+      ],
+      "newParameters": [
+        {
+          "name": "return-speed rung sequences and hold units",
+          "value": "as approvedRule (one executed week per rung; BALANCED and CONSERVATIVE add holds of one executed week)",
+          "basis": "RC-12; S06 (graded RTS, progression on normal responses, first exposure at moderate intensity); S08 abstract (reduced training for 14 days or less maintains most capacity, so the ladder is a tolerance check); existing recipes (I01)",
+          "population": "V1 nonclinical adults returning from a Situation 1 window"
+        }
+      ],
+      "sources": [
+        {
+          "id": "S06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S08",
+          "access": "ABSTRACT_ONLY",
+          "use": "context"
+        },
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I03",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "The Founder's FP-4 answer; any change to RC-12 or the return recipes; product data on returns after windows; a new consensus on graded return after illness.",
+      "pendingIfRejected": null
+    },
+    {
+      "id": "SSCTR-V1CP-Q07",
+      "question": "F08 Situation 2: per-sport entry and triggers, conditional on the PCG form",
+      "designRows": [
+        "Block 2 Situation 2 (S6)",
+        "READINESS_DECLARATION",
+        "PCG P-2-r2, C01-r2, C02-r2, Q4 (f), O02, RC-08..RC-10, RC-13, RC-15",
+        "DR-148 clauses 3, 5, 6"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Moderate for the dose mechanics, which reuse existing recipes with a conservative floor. Whether a person may train after a relevant illness or injury is not assessed here: that part is OUT_OF_SCOPE_CLINICAL and stays with the person and their professional."
+      },
+      "authorityCondition": "Valid only if DR-148 clauses 3, 5 and 6 and the G04-row delta, with P-2-r2, C01-r2, C02-r2 and RC-08..RC-10, RC-12, RC-13 and RC-15, are consolidated as written. The restart is a sporting restart after the person's declaration, never a clearance (RC-02). This record approves no clinical return or clearance and assesses no person (SSCTR-05).",
+      "approvedRule": "Per sport declared ready: the return class from the episode's own days, counted from its first day to that sport's declaration date (per sport, forward only: PCG O02), never below MODERATE (no SHORT resume after a clinical hold); no current-demonstration entry; the existing recipes (returnEntry, returnStrength, strengthEntryWeek, D49). Options: BALANCED (default) = the class recipe with its first step held one more executed week; CONSERVATIVE = the next class's recipe (MODERATE to LONG; LONG stays LONG). No FASTER. Restrictions from the closed vocabulary are hard caps above profile, volume, difficulty and speed: AVOID_LOWER_BODY_STRENGTH removes lower-region strength rows and AVOID_UPPER_BODY_STRENGTH upper-region rows, never replaced by another exercise or by a load from another exercise; when a restriction ends by the person's later structured statement, that region restarts by its own return recipe (entry dose, D49), never at prior loads (RC-09). A sport declared not ready stays held and the other proceeds with the existing composition (RC-13). Back to S3 on any warning sign (warningSignInstrument, entry and exercise-response items), an eligibility flag, a clinical reason or mention, pain with a substitution, or symptoms reported back; a new declaration dated after it is then required (RC-10). S6 ends by the existing return completion (executed evidence).",
+      "modification": "Relative to the DESIGN: (1) MODERATE is the minimum class after a clinical hold, so a short episode never resumes at last doses; (2) an ADVERSE or CONFLICTING session response during the restart is asked against the warning-sign items and never only held (the Phase 3.4 Q8 condition carried); (3) running restarts with AVOID_LOWER_BODY_STRENGTH only if the declaration answers an explicit item that running itself is not restricted (Q4 f: the software infers nothing); AVOID_UPPER_BODY_STRENGTH does not hold running, which is declared on its own; (4) per-sport dating (O02).",
+      "conditions": [
+        "C-Q07-1: No clearance wording, field or label anywhere (RC-02); copy 'you told us you are ready to return', never 'cleared' (G8).",
+        "C-Q07-2: The declaration is append-only, bound to this athlete's clinical hold on record, every item actively answered, never a single checkbox (RC-08); it never edits or reclassifies the episode (R-F08-1).",
+        "C-Q07-3: S6 is computed by the runtime from the declaration fact (RC-15), never by a client dropping the continuation state (C07).",
+        "C-Q07-4: Directed tests: no declaration stays clinical; a declaration with any warning sign stays clinical; a clean declaration restarts at MODERATE or above, without old loads; restrictions respected and never substituted; RUN with AVOID_LOWER without the explicit item stays held; one sport held and the other active; a recurrent symptom and an adverse response route back with an ASK; a reason change still has no exit; history preserved; no option passes a cap."
+      ],
+      "newParameters": [
+        {
+          "name": "minimum return class after a clinical hold",
+          "value": "MODERATE",
+          "basis": "S06 (RTS after a more than mild ARinf is under professional care and progresses on normal responses from a moderate-intensity first exposure); existing classes (I01); DR-148 clause 5 ('the restart stays conservative')",
+          "population": "V1 adults restarting by declared readiness after a clinical hold"
+        },
+        {
+          "name": "explicit running item with AVOID_LOWER_BODY_STRENGTH",
+          "value": "running restarts only on an explicit 'running is not restricted' answer",
+          "basis": "PCG Q4 (f) delegates the cross-sport effect to the SSCTR; lower-limb restrictions plausibly concern running too; no inference",
+          "population": "as above; FUTURE_G04_REVALIDATION"
+        }
+      ],
+      "sources": [
+        {
+          "id": "S06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I05",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I07",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "PCG-F08 T1 (a G04 owner), T3 (funded revalidation), T4, T5, T6; any change to DR-148, RC-08..RC-10 or the restriction vocabulary; an adverse event during a restart.",
+      "pendingIfRejected": "If the PCG form is not consolidated as written, S6 stays NOT_IMPLEMENTABLE and F08_OPEN (PCG-R7D-F08-r1 stands)."
+    },
+    {
+      "id": "SSCTR-V1CP-Q08",
+      "question": "F08 Situation 3: existing cold start and restart",
+      "designRows": [
+        "Block 2 Situation 3 (S8)",
+        "RESTART_PLAN",
+        "PCG P-3-r2, RC-11, RC-14",
+        "SSCTR-P5H-O04"
+      ],
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "decisiveBasis": "Internal: the existing cold start and RESTART rules (I01, I02) and the PCG form (I06); the added condition only removes an inconsistency between two existing rules (I04 O04). No new physiological claim.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Existing cold-start and RESTART rules; the added condition only removes an existing inconsistency (O04) for this path."
+      },
+      "authorityCondition": "After a long nonclinical interruption: existing authority. After a clinical hold: DR-148 clause 4 and RC-11 as consolidated, and only with a valid readiness declaration.",
+      "approvedRule": "The new program comes from the existing cold start (generateProgram) on an updated intake plus the carried record. Per sport the pause is computed from the record (weeks since that sport's last executed session) and the existing RESTART rules apply (run restart at longPauseWeeksAtLeast or more; strength known doses ignored on a long pause). Prior history, records and achieved peaks are context (priorCapacity), never dose and never shown as current capacity.",
+      "modification": null,
+      "conditions": [
+        "C-Q08-1: The record bounds the updated intake's recent exposure: recent weekly minutes and days never exceed what the record shows executed in the period it covers; unknown stays unknown.",
+        "C-Q08-2 (coherence, O04): the new plan never starts a sport above the start the in-program return of the same record pause would set (SHORT or MODERATE recipe), and after a clinical hold never above the S6 restart for that sport (MODERATE floor, restrictions in force, not-ready sports held).",
+        "C-Q08-3: Restrictions in force carry over (RC-11); any current sign still routes clinical; the intake reads the declaration instead of re-routing the historic episode.",
+        "C-Q08-4: Race results older than 28 days are history only (Q04).",
+        "C-Q08-5: Directed tests: a 3-week nonclinical pause never starts above the MODERATE entry; a post-hold plan with AVOID_LOWER keeps the restriction; a not-ready sport is not programmed; history unchanged."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I04",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "Any change to the cold start, the intake pause rule (QRE-R6-12) or RC-11; O04 resolved by the policy owner for the onboarding path.",
+      "pendingIfRejected": null
+    },
+    {
+      "id": "SSCTR-V1CP-Q09",
+      "question": "Profile levers P1-P4 and the new parameter P5",
+      "designRows": [
+        "Blocks 3-4 axes table: P1, P2, P3, P4, P5"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "decisiveBasis": "Internal: P1, P2 and P4 only hold or advise inside the approved gates (I01, I02); holding is inside the envelope and needs no dose evidence. S07 and S08 are context; P5, the only new dose element, is rejected.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "P1, P2 and P4 only hold or advise inside the reviewed envelope; P5 is rejected for lack of applicable evidence."
+      },
+      "leverDecisions": [
+        {
+          "lever": "P1",
+          "disposition": "APPROVE",
+          "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+          "rule": "CONSERVATIVE: EARNED counts as ADVANCE for run and strength gates (cadence only; no early release, no consolidation skip). BALANCED and DEMANDING as today."
+        },
+        {
+          "lever": "P2",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+          "rule": "CONSERVATIVE: a completed run with no reported response (COMPLETED_NO_RESPONSE) holds its run gate in EASY-mode development weeks; never REGRESS, never adverse; not applied in WALK_JOG, RESTART or RETURN modes (return recipes unchanged).",
+          "conditions": [
+            "The output says the step waits for a reported effort and recovery.",
+            "Completions imported without a response (HealthKit, DR-118: missing stays missing) hold too: disclosed at the choice.",
+            "Graduation (B0-C01) therefore waits for reported responses: disclosed."
+          ]
+        },
+        {
+          "lever": "P3",
+          "disposition": "REJECT (as a profile lever; content moved to D1 LOWER in Q11)",
+          "evidenceStatus": "SUPPORTED_WITH_LIMITS for the content, rejected on structure",
+          "rule": "Not a profile lever. It moves the same quantity as D1 (the reps in reserve at which a set counts as progression evidence), so the profile would override a difficulty choice (rule 3), and with the FROM_LOG instruction ('add reps while at least targetRir in reserve') an athlete following the plan's own instruction at RIR 2 would be held (prescribed RIR 3, tolerance 0)."
+        },
+        {
+          "lever": "P4",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+          "rule": "Advisory only on RUN_QUALITY_GRADUATION (and, identically, B0-C07 ladder offers): CONSERVATIVE recommends keep building, BALANCED neutral, DEMANDING recommends accept.",
+          "conditions": [
+            "The equal-alternative wording stays; declining is never penalized or pressured (DR-125).",
+            "The offer itself stays evidence-gated exactly as today."
+          ]
+        },
+        {
+          "lever": "P5",
+          "disposition": "REJECT (NEW PARAMETER not approved)",
+          "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+          "rule": "Not approved. No accessible full-text source supports doubling the easy-run step cadence for the V1 population; the abstract-only cohort (S07) shows week-to-week ratios not associated with injury but does not establish adequacy of a faster cadence. The reviewed cadence (easyStepEveryDevelopmentWeeks 2) stays for every profile."
+        }
+      ],
+      "approvedRule": "P1 and P2 for CONSERVATIVE, P4 for all profiles; P3 relocated to Difficulty; P5 rejected. DEMANDING's doses equal BALANCED's; it differs only by P4's advice.",
+      "modification": "P3 moves from the profile to D1 LOWER; P5 is removed.",
+      "conditions": [
+        "C-Q09-1: Profile levers apply only as holds or advice inside every gate, cap and recipe; they never shorten a return, a ladder or an S6 option (rule 2).",
+        "C-Q09-2: Founder disclosure: with P5 rejected, DEMANDING is the BALANCED envelope with acceptance-oriented advice; whether to ship it as a distinct profile with that content is the Founder's product decision."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S08",
+          "access": "ABSTRACT_ONLY",
+          "use": "context: holding maintains"
+        },
+        {
+          "id": "S07",
+          "access": "ABSTRACT_ONLY",
+          "use": "context for P5 (counter and limits)"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT",
+          "use": "RC-12: profiles never multiply speeds"
+        }
+      ],
+      "reReviewTrigger": "Full-text evidence on weekly progression in recreational hybrid athletes (for P5); product data on progression by profile; any new profile lever.",
+      "pendingIfRejected": "P5: PENDING; DEMANDING has no dose lever until an evidence-supported one is approved."
+    },
+    {
+      "id": "SSCTR-V1CP-Q10",
+      "question": "Volume levers V1-V3 and the new parameter V4",
+      "designRows": [
+        "Blocks 3-4 axes table: V1, V2, V3, V4"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "V1-V3 select existing values or approved range bounds; V4 is replaced by a hold that needs no new count or gating semantics."
+      },
+      "leverDecisions": [
+        {
+          "lever": "V1",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "rule": "LOWER: maxExercises MAIN_ONLY_BUDGET (3) whatever the time budget, with the existing fit order and coverage disclosures (as for a session under 35 minutes). STANDARD and HIGHER: DEFAULT (5); HIGHER equals STANDARD, disclosed.",
+          "conditions": [
+            "LOWER discloses slower progress toward a hypertrophy goal (S01: hypertrophy enhanced by about 10 or more weekly sets per muscle group)."
+          ]
+        },
+        {
+          "lever": "V2",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "rule": "LOWER: no block-boundary set addition (base sets). STANDARD as today. HIGHER as today (maxSets cap).",
+          "conditions": [
+            "blocksDone and return-ceiling accounting unchanged.",
+            "Switching back to STANDARD or HIGHER restores at most one set per exercise per executed week."
+          ]
+        },
+        {
+          "lever": "V3",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "rule": "LOWER: lower bounds of taperWeekRunVolumeRange (0.6), raceWeekRunVolumeRange (0.4) and taperWeekLongRunRange (0.55). STANDARD as today (midpoints; 10K taper week at the upper bound). HIGHER: upper bounds (0.8, 0.6, 0.7); for the 10K taper week HIGHER equals STANDARD.",
+          "conditions": [
+            "Per-session fractions of executed peaks, as today; the taper long run never below the easy runs; strength phase doses unchanged."
+          ]
+        },
+        {
+          "lever": "V4",
+          "disposition": "REJECT as proposed; replaced by V4'",
+          "rule": "The 'one optional easy day' is a new count with new gating semantics: an optional easy row must never gate, and a week left with no required easy row would default the easy dimension to ADVANCE (advanceRun reads an unset EASY gate as ADVANCE); it also turns a chosen run day into an optional one (DR-112)."
+        },
+        {
+          "lever": "V4'",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "rule": "LOWER running volume: easy-run durations take no step (neither ADVANCE nor EARNED moves them); the long run, the quality ladder and walk-to-run conversion follow their gates under unchanged caps.",
+          "conditions": [
+            "Disclosed: fewer run days is a change of chosen days (DR-112), not this control.",
+            "Volume owns this lever alone (P5 rejected)."
+          ]
+        }
+      ],
+      "approvedRule": "V1, V2 and V3 as in leverDecisions; V4 replaced by V4'.",
+      "modification": "V4 (optional easy day) replaced by V4' (easy-run duration steps held under LOWER).",
+      "conditions": [
+        "C-Q10-1: HIGHER volume never exceeds the chosen days and minutes; where it equals STANDARD the output says so (rule 5).",
+        "C-Q10-2: Directed tests: LOWER keeps three exercises and base sets; taper fractions at the bounds; an EARNED gate under V4' moves no easy duration; the default path byte-identical."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S01",
+          "access": "FULL_TEXT",
+          "use": "context for the LOWER disclosure"
+        }
+      ],
+      "reReviewTrigger": "Any change to the taper ranges, maxExercises or the block set rule; product data on LOWER volume and goal attainment.",
+      "pendingIfRejected": "V4 as proposed: PENDING (not approved)."
+    },
+    {
+      "id": "SSCTR-V1CP-Q11",
+      "question": "Difficulty levers D1 (LOWER and the HIGHER new parameter), D2 and D3",
+      "designRows": [
+        "Blocks 3-4 axes table: D1, D2, D3",
+        "P3 content (moved here)"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Moderate that D1 HIGHER is an acceptable optional setting inside the recognized near-failure range for trained adults; low for any added benefit, which the product must not claim."
+      },
+      "leverDecisions": [
+        {
+          "lever": "D1 LOWER",
+          "disposition": "MODIFY",
+          "rule": "The FROM_LOG instruction threshold is startRir (3), and a development step (and an above-plan load adoption) needs the logged minimum RIR at or above the prescribed RIR (tolerance 0; P3's content). The regression bound stays prescribed minus one: a log one RIR short holds and never regresses. Establishment, re-establishment, unlogged, return-entry, return-step and event-phase rows are unchanged."
+        },
+        {
+          "lever": "D1 HIGHER",
+          "disposition": "APPROVE_WITH_CONDITIONS (NEW PARAMETER)",
+          "rule": "HYPERTROPHY accessory loaded rows (KNOWN or FROM_LOG; never MAIN, PRACTICE, bodyweight, band or assisted rows) are prescribed at RIR 2 (targetRir) with the instruction 'add reps while at least 1 in reserve' (acceptance prescribed minus one = 1, tolerance unchanged). GENERAL accessory loaded rows: instruction threshold 2 (targetRir - 1, inside today's acceptance; prescribed RIR stays 3).",
+          "conditions": [
+            "Strength experience INTERMEDIATE or EXPERIENCED, declared or derived (Q03).",
+            "Development phases only (BUILD, DEVELOPMENT, NEXT_BLOCK, CONSOLIDATION); never ESTABLISHMENT, RESTART, RETURN entry or steps, re-establishment, SPECIFIC, TAPER, RACE_WEEK or POST_EVENT, nor inside a Situation 1 window, its ladder or an S6 restart.",
+            "With a programmed run goal, upper-body accessory rows only; lower-body accessory rows keep STANDARD (key-run protection).",
+            "RIR 0 (failure) is never prescribed; no benefit is claimed (S01, S04)."
+          ]
+        },
+        {
+          "lever": "D1 HIGHER, lower-body accessory rows for athletes with a run goal",
+          "disposition": "ABSTAIN",
+          "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+          "rule": "No accessible evidence quantifies the added interference with running of lower-body accessory work at RIR 1 vs 2. PENDING."
+        },
+        {
+          "lever": "D2",
+          "disposition": "MODIFY",
+          "rule": "LOWER: optional strides are not shown. STANDARD as today. HIGHER: strides are shown as part of the easy run where today's plan already offers them (strides ready, R6-RUN-QUALITY), still optional, never a completion condition and never gating; never in WALK_JOG, RESTART or RETURN modes; B0-C01 c8 kept."
+        },
+        {
+          "lever": "D3",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "rule": "LOWER: taperQualityWorkRange lower bound (0.5) as the target; HIGHER: upper bound (0.6); STANDARD as today. The existing reducedWork fitting and reducedWorkMinimums apply; same effort cue; no quality where no executed peak exists."
+        }
+      ],
+      "approvedRule": "As in leverDecisions. No running-intensity lever is approved: HIGHER difficulty never changes running quality progression.",
+      "modification": "D1 LOWER also owns the step tolerance (from P3); D1 HIGHER is narrowed to upper-body accessory rows for runners; D2 HIGHER keeps strides optional and ungated.",
+      "conditions": [
+        "C-Q11-1: The displayed FROM_LOG instruction threshold is never below the gate's acceptance bound (prescribed RIR minus tolerance), so the plan never holds an athlete for following its own instruction.",
+        "C-Q11-2: Directed tests: LOWER holds a log at RIR 2 on an RIR 3 row and never regresses it; HIGHER accepts RIR 1 on an eligible row and not on MAIN or lower-body rows of a runner; HIGHER absent in every excluded phase and state; D2 HIGHER never makes a run partial; D3 results stay inside the approved range except where the existing minimums force them, as today.",
+        "C-Q11-3: Limitation disclosed: S01 notes that lifting to fatigue is inadvisable for some populations (e.g., older); no age cutoff is invented here; RIR 1 is near-failure, not failure."
+      ],
+      "newParameters": [
+        {
+          "name": "D1 HIGHER (HYPERTROPHY accessory)",
+          "value": "prescribed RIR 2; progression instruction 'while >= 1 in reserve'",
+          "basis": "S01 FULL_TEXT (near-failure or 2-3 RIR is sufficient effort; failure adds nothing; exact RIR not quantified); S04 FULL_TEXT (close proximity for most sets; failure vs non-failure trivial); S05 ABSTRACT (hypertrophy rises closer to failure, strength does not)",
+          "population": "INTERMEDIATE or EXPERIENCED adult lifters, HYPERTROPHY goal, development phases; upper-body accessory rows when a run goal is programmed"
+        },
+        {
+          "name": "D1 HIGHER (GENERAL accessory)",
+          "value": "progression instruction 'while >= 2 in reserve' (prescribed RIR 3)",
+          "basis": "inside today's acceptance (prescribed 3 minus tolerance 1); S01",
+          "population": "as above, GENERAL goal"
+        },
+        {
+          "name": "D1 LOWER step tolerance",
+          "value": "0 for development steps and above-plan adoption; regression bound unchanged",
+          "basis": "a hold inside the gate (I01/I02); S01 (2-3 RIR remains sufficient effort)",
+          "population": "any athlete choosing LOWER difficulty"
+        }
+      ],
+      "sources": [
+        {
+          "id": "S01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S04",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "S05",
+          "access": "ABSTRACT_ONLY",
+          "use": "direction only"
+        },
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I03",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "Full-text evidence on proximity to failure in trained adults or on concurrent interference by lower-body work near failure; an adverse pattern in product data; a V1 population change toward older adults.",
+      "pendingIfRejected": "D1 HIGHER for lower-body accessory rows of athletes with a run goal: PENDING."
+    },
+    {
+      "id": "SSCTR-V1CP-Q12",
+      "question": "Interaction rules 1-6",
+      "designRows": [
+        "Blocks 3-4 interaction rules 1-6",
+        "Defaults byte-identical to R7D-FREEZE-6",
+        "D2.2 speeds are not profiles; RC-12"
+      ],
+      "disposition": "MODIFY",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "decisiveBasis": "Structural rules over the levers decided in Q09-Q11 and the PCG form (I06); they add no physiological claim of their own.",
+      "confidence": {
+        "level": "MODERATE",
+        "rationale": "Structural rules; they add no physiological claim beyond the levers' own statuses."
+      },
+      "approvedRule": "1. One axis per lever, holding with Q09-Q11: the RIR threshold and the step tolerance are Difficulty's; the easy-run duration step is Volume's (LOWER only); EARNED never releases an easy-duration step that LOWER volume withholds. 2. The envelope comes last and is the same for every choice: clinical screen and clinical-first, R-F08-1, the F08 instrument and S3 routes, eligibility, single-run ceiling, long-run share, availability, event phase doses and proximity rules, return classes and recipes (D49, strengthEntryWeek), establishment and cold-start rules, the gates' HOLD and REGRESS on missed, partial, adverse or conflicting evidence, the systemic hold, the Situation 1 ladder and the S6 options. 3. The profile never overrides a volume or difficulty choice (now true by construction). 4. HIGHER difficulty is never a bypass: D1 HIGHER only within Q11's conditions; D2 HIGHER only changes the default presentation of an optional element today's plan offers; D3 HIGHER only selects the upper bound of the approved taper range; no HIGHER choice changes any gate, cap, ceiling, phase minimum RIR, return recipe, F08 rule or the clinical screen. 5. HIGHER volume never exceeds the chosen days and minutes; where it equals STANDARD the output says so. 6. A change of choice is a PREFERENCE_CHANGE recorded as a decision that re-plans only weeks after this one from the current state; executed history and this week's sessions are unchanged; in the last week it is KEEP, recorded for the next program; the same choice again changes nothing.",
+      "modification": "Rule 4 is rewritten: the DESIGN text ('never applies to novices ... or event phases') contradicted D2 (novices' optional strides) and D3 (a taper lever). Rule 6 gains the conditions below.",
+      "conditions": [
+        "C-Q12-1: No retroactive credit: a change never re-labels completed weeks (no past HOLD becomes a step; switching LOWER to STANDARD or HIGHER volume restores at most one set per exercise per executed week).",
+        "C-Q12-2: During a Situation 1 window, its ladder, an S6 restart or any return, a choice is recorded but the window, ladder or return rules prevail; D1 HIGHER waits until the return completes.",
+        "C-Q12-3: No toggling yields two steps in one week (at most one step per dimension per week, existing).",
+        "C-Q12-4: Defaults: BALANCED, STANDARD and STANDARD with no new key produce FREEZE-6 outputs byte for byte: the full R7-D suite and both spent holdouts as a differential (never re-evaluated as holdouts; nothing written under final/ or final2/).",
+        "C-Q12-5: Return speeds govern only the post-window ladder; profile gates act inside it only as holds; neither multiplies (D2.2, RC-12)."
+      ],
+      "newParameters": [],
+      "sources": [
+        {
+          "id": "I01",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I02",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I06",
+          "access": "FULL_TEXT"
+        },
+        {
+          "id": "I07",
+          "access": "FULL_TEXT"
+        }
+      ],
+      "reReviewTrigger": "Any new lever or axis; any change to the levers decided in Q09-Q11; a multiplication or bypass found in review.",
+      "pendingIfRejected": null
+    }
+  ],
+  "aeReview": [
+    {
+      "q": 1,
+      "answer": "Current plan adequate? FREEZE-6 behaviour stays the default byte for byte; the deltas add athlete choices and legitimate exits, they replace no adequate default."
+    },
+    {
+      "q": 2,
+      "answer": "Material facts with provenance? Every lever reads structured, append-only facts (choices, Situation 1 reports, declarations, the record); free text never opens anything."
+    },
+    {
+      "q": 3,
+      "answer": "KEEP defensible? Yes for the default path and the last week (KEEP); not for H07 (no exit), H28 (an inconsistent strength restart) or F08 (no legitimate return, B6)."
+    },
+    {
+      "q": 4,
+      "answer": "Change necessary? A1, A3, E1 and E2 fix documented defects (holdout O01, O02, the data-path audit); F08 is required before launch (D2.5, B6); profiles, volume and difficulty are Founder-mandated capabilities (D1.4)."
+    },
+    {
+      "q": 5,
+      "answer": "Smallest sufficient intervention? Existing doses, recipes and range bounds wherever possible; new values only E1's bands and D1 HIGHER's RIR; holds counted in executed weeks."
+    },
+    {
+      "q": 6,
+      "answer": "Why smaller options fail? Resending the break was A1's only exit and none existed for H07; option B keeps a SUBOPTIMAL restart; the DESIGN's consolidation REDUCE_LIGHT keeps hard sessions and so does not reduce difficulty; one-step FASTER rows were not gradual (RC-12)."
+    },
+    {
+      "q": 7,
+      "answer": "Priority and progression protected? Key runs are protected (no hard work in ladders, D1 HIGHER upper-body only for runners); every restoration needs executed evidence; no ladder skips a rung."
+    },
+    {
+      "q": 8,
+      "answer": "Evidence supports conclusion and dose? Per item; P5 rejected and lower-body D1 HIGHER for runners abstained for lack of evidence."
+    },
+    {
+      "q": 9,
+      "answer": "Material uncertainty: E1's exact boundaries; any benefit of RIR 1; extrapolation from respiratory infection to other mild illnesses; the number of rungs and holds; warning-sign content (G04); the reliability of self-report."
+    },
+    {
+      "q": 10,
+      "answer": "ASK, HOLD or CLINICAL_HUMAN_REQUIRED needed? Yes: A1 asks once; F08 warning signs, persistence and S6 triggers route the clinical hold; unknown is ASK; clinical judgment stays outside the software."
+    }
+  ],
+  "proposedQueueItems": [
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q01",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q01",
+      "decision_revision": "r1",
+      "scope": "A1 reason screen as modified: structured clinicalReason exit with pregnancy/childbirth wording, third-party attribution, adverb/idiom exceptions, R-F08-1 across screen versions",
+      "conditions": "C-Q01-1..6",
+      "linked": [
+        "HQ-R7D-SSCTR-P5-HOLDOUT-2-JUDGMENT (proposed)"
+      ]
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q02",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q02",
+      "decision_revision": "r1",
+      "scope": "A3 option A: per-sport continuity through a break when the sport is not planned between",
+      "conditions": "C-Q02-1..7",
+      "linked": [
+        "HQ-R7D-SSCTR-P34-DECISION (proposed)"
+      ]
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q03",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q03",
+      "decision_revision": "r1",
+      "scope": "E1 trainingMonths bands per sport (NEW PARAMETER)",
+      "conditions": "C-Q03-1..6",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q04",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q04",
+      "decision_revision": "r1",
+      "scope": "E2 race result as the intake longest-run reference only",
+      "conditions": "C-Q04-1..3",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q05",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q05",
+      "decision_revision": "r1",
+      "scope": "F08 Situation 1 intents, R3 combination, condition-to-intent availability, chaining and persistence rule, warning-sign instrument (conditional on DR-148)",
+      "conditions": "C-Q05-1..9; authorityCondition",
+      "linked": [
+        "PCG-V1CP-F08 r2",
+        "FUTURE_G04_REVALIDATION"
+      ]
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q06",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q06",
+      "decision_revision": "r1",
+      "scope": "F08 return speeds as rung sequences (conditional on DR-148)",
+      "conditions": "C-Q06-1..4; FP-4 Founder answer",
+      "linked": [
+        "PCG-V1CP-F08 r2"
+      ]
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q07",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q07",
+      "decision_revision": "r1",
+      "scope": "F08 Situation 2 sporting restart mechanics: MODERATE floor, options, restrictions, triggers (conditional on DR-148)",
+      "conditions": "C-Q07-1..4; authorityCondition",
+      "linked": [
+        "PCG-V1CP-F08 r2",
+        "HQ-R7D-SSCTR-P34-DECISION (proposed)",
+        "FUTURE_G04_REVALIDATION"
+      ]
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q08",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q08",
+      "decision_revision": "r1",
+      "scope": "F08 Situation 3 new plan with record-bounded exposure and in-program coherence",
+      "conditions": "C-Q08-1..5",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q09",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q09",
+      "decision_revision": "r1",
+      "scope": "Coach profile levers P1, P2, P4 (P3 relocated, P5 rejected)",
+      "conditions": "C-Q09-1..2 and lever conditions",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q10",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q10",
+      "decision_revision": "r1",
+      "scope": "Volume levers V1, V2, V3, V4' (V4 rejected)",
+      "conditions": "C-Q10-1..2 and lever conditions",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q11",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q11",
+      "decision_revision": "r1",
+      "scope": "Difficulty levers D1 LOWER (with tolerance 0), D1 HIGHER (NEW PARAMETER, narrowed), D2, D3",
+      "conditions": "C-Q11-1..3 and lever conditions",
+      "linked": []
+    },
+    {
+      "queue_id": "HQ-V1CP-SSCTR-Q12",
+      "decision_id": "SSCTR-V1CP-DECISION-r1#Q12",
+      "decision_revision": "r1",
+      "scope": "Interaction rules 1-6 as modified; defaults byte-identical",
+      "conditions": "C-Q12-1..5",
+      "linked": []
+    }
+  ],
+  "proposedQueueItemCommon": {
+    "target": {
+      "project": "MyApp / Vilumo Fit",
+      "artifact": "audits/v1-coaching-productization-2026-11-08/ssctr/SSCTR_V1CP_DECISION.json",
+      "design": "DESIGN_V1CP.md sha256 7ac633c41bb3430b94814e719d34c0671dfba187d24df270a0d587a016272b41",
+      "runtimeBaseline": "R7D-FREEZE-6 behaviour (HEAD 4584a77, bytes of d569ef2)",
+      "policySha256": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+      "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+    },
+    "approved_scope_common": "Offline synthetic shadow reference; nonclinical adults 18+; sporting content only; no clearance; no human, empirical or clinical validation.",
+    "approval_date": "2026-11-08",
+    "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "appended": false,
+    "appendOwner": "Founder (the queue stays at 235 items)",
+    "owner": "Chief / Founder",
+    "human_review": null,
+    "notQueued": "Rejected or abstained parts (P5, V4 as proposed, D1 HIGHER lower-body for runners) are not prescriptive approvals and get no queue item."
+  },
+  "escalations": [
+    {
+      "to": "Founder",
+      "items": [
+        "FP-4: may FASTER after a REDUCE_LIGHT window return to the held pre-window dose after the window's executed weeks (Q06), or must it pass one more R3 week?",
+        "DEMANDING equals BALANCED in dose with P5 rejected (Q09): ship it as advice-only, or hold it?",
+        "LOWER running volume holds easy-run durations instead of making a chosen day optional (Q10)."
+      ]
+    },
+    {
+      "to": "PCG",
+      "items": [
+        "R-F08-1 across a reason-screen version change (C-Q01-5).",
+        "MILD_INDISPOSITION is treated as illness-type here (intent restrictions and W11/W15): confirm under DR-148.",
+        "The PCG-proposed one-line SSCTR-05/06 pointer to DR-148 is the Chief's to apply; this record reads SSCTR-05 under DR-148 meanwhile."
+      ]
+    },
+    {
+      "to": "Security / G07",
+      "items": [
+        "New booleans: W1-W15 grouping, X1-X4, the window-end improvement answer, the running item with AVOID_LOWER_BODY_STRENGTH, the race tolerated answer, trainingMonths (SEC-V1CP-02).",
+        "The chronic-condition risk-factor gap (warningSignInstrument.disclosedGap)."
+      ]
+    },
+    {
+      "to": "G04 (no owner)",
+      "items": [
+        "All warning-sign content, persistence routing and urgency wording: FUTURE_G04_REVALIDATION."
+      ]
+    },
+    {
+      "to": "Product/UX (G03)",
+      "items": [
+        "Wording of the A1 confirmation, the improvement question, speed explanations, the race-in-window question and the DEMANDING copy; never 'cleared' or 'liberado'."
+      ]
+    },
+    {
+      "to": "Engineering / Chief",
+      "items": [
+        "Reconcile the implementation committed or written ahead of this decision (4c3f6dc, 54b25bb, uncommitted v1-f08.mjs) with this record before the SSCTR review of the candidate."
+      ]
+    }
+  ],
+  "validation": {
+    "jsonWellFormed": "checked with Node JSON.parse after writing",
+    "skillValidator": "not run: Python is not installed in this environment, and the record shape (a twelve-item decision with the fields the dispatch specified) does not fit decision.schema.json, which validates one bounded decision per record (schema_version, scope.gate, claims, ae_review ...). Not forced. Each item can be expanded into a schema record if the Chief needs one.",
+    "decisionSchemaParity": "The schema's rules are honoured in substance: approvals only with WELL_SUPPORTED or SUPPORTED_WITH_LIMITS and at least one verified full-text source; plausible, insufficient or conflicting claims lead to REJECT or ABSTAIN; prescriptive approvals have queue proposals; human, empirical and clinical validation flags are false."
+  },
+  "governance": {
+    "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+    "publicationStatus": "NOT_PUBLISHED",
+    "humanValidation": false,
+    "empiricalProductValidation": false,
+    "clinicalClearance": false,
+    "f08": "F08_OPEN until the authority change passes the Chief's gate and the runtime is implemented and reviewed (FP-5).",
+    "v1CoachingAuthorityReady": "NO",
+    "humanQueue": "235 items, unchanged; proposals only",
+    "nextOwner": "Chief",
+    "nextAction": "Consolidate DR-148 after its re-check; route the Founder questions; have Engineering reconcile the candidate with this record; one SSCTR review of the candidate."
+  },
+  "expiry": {
+    "owner": "Chief with the SSCTR",
+    "reviewBy": null,
+    "eventBasedExpiry": "Each item's reReviewTrigger; any change to DESIGN_V1CP.md, the PCG form or DR-148, the policy or catalog hashes, or the runtime the candidate is reviewed on; a G04 owner (T1); funded human revalidation (T3); a new systematic review or consensus on proximity to failure, illness and return, or running training status; an adverse event; a V1 population change. A stale approval does not extend silently."
+  }
+}
