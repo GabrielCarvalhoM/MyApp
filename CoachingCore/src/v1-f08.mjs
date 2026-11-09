@@ -48,6 +48,8 @@ const ask=(missingInputs,reason)=>({ask:{action:'ASK',reason,missingInputs}});
 const human=list=>list.map(k=>k.replace(/([A-Z])/g,' $1').toLowerCase()).join(', ');
 /** The clinical route of a warning sign (RF-3): the hold for every sport, a professional assessment, the record kept; never a diagnosis (RF-4). */
 export const signRoute=(yes,{lead='You reported'}={})=>({action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:`${lead} ${yes.length>1?'warning signs':'a warning sign'} (${human(yes)}): seek a professional assessment; no training is planned while it stands, and your record keeps being kept. When you are ready to train again, you can tell us sport by sport`,warningSigns:[...yes]});
+/** V1CP Fix-Forward SB-2 (SEC-V1CPR-03, RC-01): the warning signs and exercise-response items a payload answers yes, whatever else it holds. */
+export const signsYesIn=p=>isObj(p)?[...ALL_W.filter(k=>isObj(p.warningSigns)&&p.warningSigns[k]===true),...ALL_X.filter(k=>isObj(p.exerciseResponse)&&p.exerciseResponse[k]===true)]:[];
 /** Reads a group of booleans: the keys answered yes (any key of the group, asked or not), the asked keys not answered no, and keys outside it. */
 function readBooleans(o,asked,group,prefix){
  const x=isObj(o)?o:{},yes=group.filter(k=>x[k]===true),missing=asked.filter(k=>x[k]!==false&&x[k]!==true).map(k=>prefix+'.'+k);
@@ -86,7 +88,9 @@ export function readWellbeing(w,{today,programmed}){
  let days=null;
  if(w.days!==undefined)days=Number.isInteger(w.days)?w.days:NaN;
  if(w.endDate!==undefined){if(!isoDay(w.endDate))bad.push('wellbeing.endDate');else{const d=gap(start,w.endDate)+1;if(days!==null&&days!==d)bad.push('wellbeing.days');days=d;}}
- if(days===null)missing.push('wellbeing.days');else if(!Number.isInteger(days)||days<WINDOW_DAYS.min||days>WINDOW_DAYS.max)bad.push('wellbeing.days');
+ // V1CP Fix-Forward (SSCTR-FF-Q6): a report continuing a chain may be shorter than 3 days (the chain already holds the reduction); a new window keeps
+ // the Founder's 3 to 14 days, which notFeeling100 checks.
+ if(days===null)missing.push('wellbeing.days');else if(!Number.isInteger(days)||days<1||days>WINDOW_DAYS.max)bad.push('wellbeing.days');
  if(bad.length)return ask(bad,'Some answers are outside the options ('+bad.join(', ')+'): a condition and an intent from the list, every warning sign answered yes or no, a window of '+WINDOW_DAYS.min+' to '+WINDOW_DAYS.max+' days starting today');
  if(missing.length)return ask(missing,'Answer every item: the condition, each warning sign (yes or no), what you want to do and for how many days');
  if(!sports.length)return ask(['wellbeing.sports'],'What you reported affects no sport your plan has: say which sport it affects');
@@ -105,23 +109,38 @@ export const wellbeingFact=(program,review,asOf,value)=>sealed({fact:WELLBEING_D
  * exercise-response items when `exercise` (sessions executed or an adverse one reported); whether the condition resolved or clearly improved when
  * `improved` (the window-end check, C-Q05-1); a change of return speed only while `speed` (before the return starts, Q06). {clinical} on any yes.
  */
-export function readCheck(c,{condition,improved=false,allowImproved=false,exercise=false,speed=false,signs=null,xsigns=null}){
- if(!isObj(c))return ask(['wellbeingCheck'],`Tell us how you are: each warning sign (yes or no)${exercise?', how your sessions felt (each exercise-response item)':''}${improved?', and whether it has passed or clearly improved':''}`);
+export function readCheck(c,{condition,improved=false,allowImproved=false,exercise=false,speed=false,signs=null,xsigns=null,due=null,early=[]}){
+ // V1CP Fix-Forward NB-1 (CH-r2-6): with `due` (the conditions at or past their own end) and `early` (those that may end early), improvement is answered
+ // per condition: `improved` is one yes or no when a single condition is concerned, else an object {CONDITION: yes or no}; every due one is answered.
+ const per=Array.isArray(due),open=per?[...due,...early]:[],asksImproved=per?due.length>0:improved;
+ const said=list=>list.map(k=>k.split('@')[0].toLowerCase().replace(/_/g,' ')+(k.includes('@')?` (report ${k.split('@')[1]})`:'')).join(', ');
+ if(!isObj(c))return ask(['wellbeingCheck'],`Tell us how you are: each warning sign (yes or no)${exercise?', how your sessions felt (each exercise-response item)':''}${asksImproved?`, and whether ${per&&due.length>1?`each of these has passed or clearly improved: ${said(due)}`:'it has passed or clearly improved'}`:''}`);
  const extra=unknownKeys(c,['warningSigns','exerciseResponse','improved','returnSpeed']);
  if(extra.length)return unrecognized('wellbeingCheck',extra);
  const asked=signs??signsFor(condition),xasked=xsigns??exerciseSignsFor(condition),s=readBooleans(c.warningSigns,asked,ALL_W,'wellbeingCheck.warningSigns'),x=readBooleans(c.exerciseResponse,exercise?xasked:[],ALL_X,'wellbeingCheck.exerciseResponse');
  if(s.yes.length||x.yes.length)return {clinical:signRoute([...s.yes,...x.yes])};
  const missing=[...s.missing,...x.missing],bad=[...s.bad,...x.bad];
- if(improved&&typeof c.improved!=='boolean')(c.improved===undefined?missing:bad).push('wellbeingCheck.improved');
- if(!improved&&!allowImproved&&c.improved!==undefined)bad.push('wellbeingCheck.improved');
- if(allowImproved&&c.improved!==undefined&&typeof c.improved!=='boolean')bad.push('wellbeingCheck.improved');
+ let improvedBy=null;
+ if(per){
+  const single=open.length===1?open[0]:due.length===1?due[0]:null;
+  if(typeof c.improved==='boolean'){if(single)improvedBy={[single]:c.improved};else bad.push('wellbeingCheck.improved');}
+  else if(isObj(c.improved)){improvedBy={};for(const [k,a] of Object.entries(c.improved)){if(!open.includes(k)||typeof a!=='boolean')bad.push('wellbeingCheck.improved.'+k);else improvedBy[k]=a;}for(const k of due)if(!(k in improvedBy))missing.push('wellbeingCheck.improved.'+k);}
+  else if(c.improved!==undefined)bad.push('wellbeingCheck.improved');
+  else if(due.length)missing.push(...(due.length===1?['wellbeingCheck.improved']:due.map(k=>'wellbeingCheck.improved.'+k)));
+ }else{
+  if(improved&&typeof c.improved!=='boolean')(c.improved===undefined?missing:bad).push('wellbeingCheck.improved');
+  if(!improved&&!allowImproved&&c.improved!==undefined)bad.push('wellbeingCheck.improved');
+  if(allowImproved&&c.improved!==undefined&&typeof c.improved!=='boolean')bad.push('wellbeingCheck.improved');
+ }
  if(c.returnSpeed!==undefined&&!RETURN_SPEEDS.includes(c.returnSpeed))bad.push('wellbeingCheck.returnSpeed');
  else if(c.returnSpeed!==undefined&&!speed)return ask(['wellbeingCheck.returnSpeed'],'Your return has started: its speed no longer changes. The plan keeps following what you execute');
- if(bad.length)return ask(bad,'Some answers are outside the options ('+bad.join(', ')+'): each item yes or no');
- if(missing.length)return ask(missing,`Answer every item: each warning sign (yes or no)${exercise?' and each exercise-response item':''}${improved?', and whether it has passed or clearly improved':''}`);
- return {value:{improved:improved||allowImproved?c.improved??null:null,returnSpeed:c.returnSpeed??null,warningSigns:Object.fromEntries(asked.map(k=>[k,false])),...(exercise?{exerciseResponse:Object.fromEntries(xasked.map(k=>[k,false]))}:{})}};
+ if(bad.length)return ask(bad,'Some answers are outside the options ('+bad.join(', ')+'): each item yes or no'+(per&&open.length>1?`, and for each of ${said(open)} whether it has passed or clearly improved`:''));
+ if(missing.length)return ask(missing,`Answer every item: each warning sign (yes or no)${exercise?' and each exercise-response item':''}${asksImproved?`, and whether ${per&&due.length>1?`each of these has passed or clearly improved: ${said(due)}`:'it has passed or clearly improved'}`:''}`);
+ const one=improvedBy&&Object.keys(improvedBy).length===1?Object.values(improvedBy)[0]:null;
+ return {value:{improved:per?one:improved||allowImproved?c.improved??null:null,...(improvedBy?{improvedBy}:{}),returnSpeed:c.returnSpeed??null,warningSigns:Object.fromEntries(asked.map(k=>[k,false])),...(exercise?{exerciseResponse:Object.fromEntries(xasked.map(k=>[k,false]))}:{})}};
 }
-export const checkFact=(program,review,asOf,episode,value,kind)=>sealed({fact:WELLBEING_CHECKED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,episode,check:{...clone(value),kind},inputHash:hash(review.wellbeingCheck),provenance:{firstRecordedAt:asOf}});
+/** V1CP Fix-Forward NB-1: a check that answered several open episodes names the kind it had for each one (`kinds`); `episode` is the latest of them. */
+export const checkFact=(program,review,asOf,episode,value,kind,kinds=null)=>sealed({fact:WELLBEING_CHECKED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,episode,check:{...clone(value),kind,...(kinds?{kinds:clone(kinds)}:{})},inputHash:hash(review.wellbeingCheck),provenance:{firstRecordedAt:asOf}});
 
 /**
  * Situation 2 entry: the athlete's readiness declaration (`r` = review.readiness). Every warning sign is answered (any yes keeps the hold for every
@@ -165,7 +184,7 @@ export function readReadiness(r,{programmed}){
   out[s]={ready:x.ready};
  }
  const hold=isObj(r.hold)?r.hold:null;
- if(r.hold!==undefined&&(!hold||unknownKeys(hold,['episodeId','eventId']).length||Object.values(hold).some(v=>typeof v!=='string')))bad.push('readiness.hold');
+ if(r.hold!==undefined&&(!hold||!Object.keys(hold).length||unknownKeys(hold,['episodeId','eventId']).length||Object.values(hold).some(v=>typeof v!=='string')))bad.push('readiness.hold');
  if(bad.length)return ask(bad,'Some answers are outside the options ('+bad.join(', ')+'): each sport ready yes or no, restrictions from the list only, each warning sign yes or no, a balanced or conservative restart');
  if(missing.length)return ask(missing,'Answer every item: each warning sign, that you recovered, for each sport whether you are ready to train again'+(lowerAvoided?', and whether running itself is restricted':''));
  return {value:{declaredRecovered:true,sports:out,returnSpeed:r.returnSpeed??'BALANCED',warningSigns:Object.fromEntries(READINESS_SIGNS.map(k=>[k,false])),hold:hold?clone(hold):null}};
@@ -173,7 +192,8 @@ export function readReadiness(r,{programmed}){
 export const readinessFact=(program,review,asOf,value,hold)=>sealed({fact:READINESS_DECLARED,eventId:review.event.id,athleteId:program.athleteId,declaredAt:asOf,readiness:{...clone(value),hold:clone(hold)},inputHash:hash(review.readiness),provenance:{firstRecordedAt:asOf}});
 /** SEC-V1CPI-03: a clinical hold a decision opens is a fact of the record (no reason text: minimisation, SEC-V1CP-01), so a new plan reads every
  * standing hold from the record, never only from a reference state the client keeps; a readiness declaration after it releases it. */
-export const holdFact=(program,eventId,asOf,eventKind)=>sealed({fact:CLINICAL_HOLD,eventId,athleteId:program.athleteId,declaredAt:asOf,eventKind:eventKind??null,provenance:{firstRecordedAt:asOf}});
+// V1CP Fix-Forward (SEC-V1CPR-06, minimisation): the row holds only what a later decision reads: who, when, and the decision's event id.
+export const holdFact=(program,eventId,asOf)=>sealed({fact:CLINICAL_HOLD,eventId,athleteId:program.athleteId,declaredAt:asOf,provenance:{firstRecordedAt:asOf}});
 export const isF08Fact=o=>isObj(o)&&[WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD].includes(o.fact);
 const shapeOk=o=>o.fact===WELLBEING_DECLARED?isObj(o.wellbeing)&&CONDITIONS.includes(o.wellbeing.condition)&&isoDay(o.wellbeing.startDate)&&isoDay(o.wellbeing.endDate):o.fact===WELLBEING_CHECKED?typeof o.episode==='string'&&isObj(o.check):o.fact===READINESS_DECLARED?isObj(o.readiness)&&o.readiness.declaredRecovered===true&&isObj(o.readiness.sports):o.fact===CLINICAL_HOLD;
 /**
@@ -182,10 +202,24 @@ const shapeOk=o=>o.fact===WELLBEING_DECLARED?isObj(o.wellbeing)&&CONDITIONS.incl
  */
 export function readableF08(rows,{athleteId,at}){
  const ok=o=>isF08Fact(o)&&o.athleteId===athleteId&&typeof o.eventId==='string'&&typeof o.declaredAt==='string'&&Number.isFinite(Date.parse(o.declaredAt))&&Date.parse(o.declaredAt)<=at&&intact(o)&&shapeOk(o);
- const first=(Array.isArray(rows)?rows:[]).filter(ok),episodes=new Set(first.filter(o=>o.fact===WELLBEING_DECLARED).map(o=>o.eventId));
- return first.filter(o=>o.fact!==WELLBEING_CHECKED||episodes.has(o.episode));
+ // V1CP Fix-Forward QRE-V1CPR-02: a check belongs to a Situation 1 report or, during a readiness restart (S6), to the readiness declaration.
+ const first=(Array.isArray(rows)?rows:[]).filter(ok),episodes=new Set(first.filter(o=>o.fact===WELLBEING_DECLARED||o.fact===READINESS_DECLARED).map(o=>o.eventId));
+ return first.filter(o=>o.fact!==WELLBEING_CHECKED||episodes.has(o.episode)&&Object.keys(o.check?.kinds??{}).every(id=>episodes.has(id)));
 }
 
+/**
+ * V1CP Fix-Forward SB-3 (SEC-V1CPR-01, QRE-V1CPR-03; SEC-V1CP-14): the F08 rows of a record that cannot be read with integrity for this athlete,
+ * whatever their date: another athlete's, without a string id or a valid time, altered after sealing, of the wrong shape, or a check whose report
+ * or declaration is not on record. A hold, a restriction or an episode is never read as absent because its row is unreadable: callers fail closed.
+ * Counts by cause only; no row content is returned.
+ */
+export function unreadableF08(rows,{athleteId}){
+ const list=(Array.isArray(rows)?rows:[]).filter(isF08Fact),cause=o=>o.athleteId!==athleteId?'foreign':typeof o.eventId!=='string'||!o.eventId||typeof o.declaredAt!=='string'||!Number.isFinite(Date.parse(o.declaredAt))?'malformed':!intact(o)||!shapeOk(o)?'altered':null;
+ const owners=new Set(list.filter(o=>!cause(o)&&(o.fact===WELLBEING_DECLARED||o.fact===READINESS_DECLARED)).map(o=>o.eventId));
+ const out={foreign:0,malformed:0,altered:0,orphanCheck:0};
+ for(const o of list){const c=cause(o)??(o.fact===WELLBEING_CHECKED&&(!owners.has(o.episode)||Object.keys(o.check?.kinds??{}).some(id=>!owners.has(id)))?'orphanCheck':null);if(c)out[c]++;}
+ const total=out.foreign+out.malformed+out.altered+out.orphanCheck;return total?{...out,total}:null;
+}
 // ---------- Situation 3 (DR-148 path 3; PCG-V1CP-F08 RC-11, RC-14; SSCTR-V1CP Q08): a new plan after a long interruption ----------
 const CLINICAL_CATEGORIES_F08=['ILLNESS','INJURY','PAIN','MEDICAL','SURGERY','PREGNANCY','POSTPARTUM','CLINICAL'];
 const sportOf=o=>{const t=String(o?.context?.sessionType??o?.context?.sport??'');return t.startsWith('RUN')?'RUN':t.startsWith('STRENGTH')?'STRENGTH':null;};
@@ -207,6 +241,12 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  const all=Array.isArray(record)?record:[],day0=String(asOf??intake?.asOf??'').slice(0,10),at=isoDay(day0)?Date.parse(day0+'T23:59:59Z')+14*3600e3:Date.now();
  // Only this athlete's readable F08 rows are read (SEC-V1CPI-04); every row travels with the record.
  const owner=athleteId??intake?.athlete?.id??null,f08=readableF08(all,{athleteId:owner,at}),rows=[...all.filter(o=>!isF08Fact(o)),...f08];
+ // V1CP Fix-Forward SB-3 (SEC-V1CPR-01, QRE-V1CPR-03; SEC-V1CP-23): the record a new plan reads is this athlete's, as kept, up to this restart's date.
+ // A row that cannot be read for this athlete (another athlete's, altered, malformed, a check without its report) or that is dated after the
+ // restart holds the new plan: never read as no hold, no restriction or no episode. Counts only; no content.
+ const bad=unreadableF08(all,{athleteId:owner}),foreign=all.filter(o=>o&&typeof o==='object'&&!isF08Fact(o)&&typeof o.athleteId==='string'&&o.athleteId!==owner).length;
+ const later=all.filter(o=>o&&typeof o==='object'&&(isF08Fact(o)||o.fact)?Number.isFinite(Date.parse(o.declaredAt))&&Date.parse(o.declaredAt)>at:isoDay(dayOfRow(o??{}))&&isoDay(day0)&&dayOfRow(o)>day0).length;
+ if(bad||foreign||later)return {status:'HOLD',reason:`${(bad?.total??0)+foreign+later} record row${(bad?.total??0)+foreign+later>1?'s':''} cannot be read for this athlete at this date (another athlete's, dated after this restart, or altered): no new plan is made over them; send this athlete's record as kept, with today's date`,missingInputs:['record'],unreadable:{...(bad??{}),foreignRows:foreign,laterThanRestart:later}};
  const readiness=rows.filter(o=>o?.fact===READINESS_DECLARED).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt)).at(-1)??null;
  const after=t=>!readiness||Date.parse(t)>Date.parse(readiness.declaredAt);
  const clinicalBreak=rows.find(o=>o?.fact==='INTERRUPTION_DECLARED'&&after(o.declaredAt)&&(CLINICAL_CATEGORIES_F08.includes(String(o.interruption?.reasonCategory??'').toUpperCase())||screen?.(o.interruption)?.status==='CLINICAL'));
@@ -220,7 +260,10 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  const daysSince=d=>d?gap(d,day):null,byDays={RUN:daysSince(lastBy('RUN')),STRENGTH:daysSince(lastBy('STRENGTH'))},any=daysSince(done.at(-1)??null);
  // The record's pause, per sport (Q08), as restart facts: a stated pause never shortens it (QRE-V1CP-06); a stated cause is screened as stated.
  const facts={pause:null,restart:null};
- if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness?{readinessDeclared:true}:{})};}
+ // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
+ // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
+ const trainedAfter=!!readiness&&rows.some(o=>executed(o)&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},readinessDeclared:true};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
  const from=isoDay(day)?addDays(day,-28):null,runRows=rows.filter(o=>executed(o)&&sportOf(o)==='RUN'&&from&&dayOfRow(o)>from&&dayOfRow(o)<=day);
@@ -231,7 +274,9 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  }
  const strength=readiness?.readiness?.sports?.STRENGTH,restrictions=strength?.ready?strength.restrictions??[]:[];
  const notReady=readiness?Object.entries(readiness.readiness.sports??{}).filter(([,x])=>!x.ready).map(([s])=>s):[];
- facts.restart=readiness?{readinessEventId:readiness.eventId,strengthRestrictions:clone(restrictions),notReady:clone(notReady),minimumClass:'MODERATE',fromRecord:true,asOf:day0}:{readinessEventId:null,strengthRestrictions:[],fromRecord:true,asOf:day0};
+ // V1CP Fix-Forward SEC-V1CPR-05: the breaks this restart read, by event id: only they are the previous plan's history for the new plan.
+ const readBreakIds=[...new Set(rows.filter(o=>o?.fact==='INTERRUPTION_DECLARED'&&typeof o.eventId==='string').map(o=>o.eventId))].sort();
+ facts.restart=readiness?{readinessEventId:readiness.eventId,strengthRestrictions:clone(restrictions),notReady:clone(notReady),minimumClass:'MODERATE',fromRecord:true,asOf:day0,readBreakIds}:{readinessEventId:null,strengthRestrictions:[],fromRecord:true,asOf:day0,readBreakIds};
  const prior={lastExecutedDay:done.at(-1)??null,lastExecutedBySport:{RUN:lastBy('RUN'),STRENGTH:lastBy('STRENGTH')},observations:rows.filter(o=>o&&!o.fact).length};
  return {status:'READY',intake:next,facts,carried:{record:clone(all),priorCapacity:prior,boundedByRecord:bounded,note:'History and prior capacity are context only: the new plan starts from current capacity (the cold start), never from prior doses'}};
 }

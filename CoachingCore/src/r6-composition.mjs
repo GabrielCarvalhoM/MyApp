@@ -141,12 +141,32 @@ const RUN_RUNGS={
 };
 const strengthRows=(env,s,rows,instructions)=>{if(!rows.length)return restRow(s,'Nothing of this session fits what you reported; rest without debt');const p=strengthPrescription(s.prescription.family,rows,{budget:env.sk.c.schedule.strengthMinutes,warmup:s.prescription.warmupMinutes,cooldown:s.prescription.cooldownMinutes,secondsPerRep:s.prescription.secondsPerRep,goalMode:s.prescription.goalMode,instructions});return {...s,prescription:p,plannedPrescriptionHash:hash(p)};};
 const withExposure=(e,sets)=>({...e,sets,...(e.exposure?{exposure:{...e.exposure,phasedSets:Math.min(e.exposure.phasedSets??e.sets,sets)}}:{})});
-/** D49 on every rung (returnLadder.transitionRule): an exercise's sets rise at most one above the previous week of the same episode at a rung. */
+const rungWeek=(week,episode)=>(week?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.episode===episode&&['R2','R3','R4'].includes(x.rungs?.STRENGTH));
+const EXECUTED=new WeakMap();
+const executedBySession=record=>{if(!Array.isArray(record))return new Map();let m=EXECUTED.get(record);if(!m){m=new Map();for(const o of record)if(o&&o.sessionId&&!o.conflicted&&!o.fact)m.set(o.sessionId,o);EXECUTED.set(record,m);}return m;};
+/** V1CP Fix-Forward NB-6 (SSCTR-V1CPR-03, QRE-V1CPR-04): the sets of exercise `id` that week `week` executed. A session already history counts
+ * what the record shows (its logged sets; the prescribed sets when it is reported done without a per-exercise log; none when not done); a session
+ * still ahead counts its prescription, as the conditional plan assumes it executed. An unexecuted prescription is never a step. */
+function setsExecutedIn(env,week,id){
+ const by=executedBySession(env.fullLedger);let n=0;
+ for(const x of week?.sessions??[]){
+  if(x.sport!=='STRENGTH'||!x.prescription||x.status==='SKIPPED')continue;
+  const row=(x.prescription.exercises??[]).find(e=>e.id===id);if(!row)continue;
+  if(!env.elapsed?.(x)){n=Math.max(n,row.sets);continue;}
+  const o=by.get(x.id);if(!o||!(o.actual?.completed===true||Number(o.actual?.minutes)>0))continue;
+  const logged=(Array.isArray(o.actual?.exercises)?o.actual.exercises:[]).find(e=>e&&e.id===id);
+  n=Math.max(n,logged?(Array.isArray(logged.sets)?logged.sets.filter(z=>z&&typeof z==='object').length:0):row.sets);
+ }
+ return n;
+}
+/** NB-6: the last count of exercise `id` executed in the episode's rung weeks before week i, scanning back while the weeks are its rungs; null if none. */
+function lastExecutedSets(env,weeks,i,id,episode){for(let k=i-1;k>=0&&rungWeek(weeks[k],episode);k--){const n=setsExecutedIn(env,weeks[k],id);if(n>0)return n;}return null;}
+/** D49 on every rung (returnLadder.transitionRule): an exercise's sets rise at most one above the last count executed at a rung of the same episode. */
 function ladderCap(env,s,a,id){
- const prev=env.program?.weeks?.[s.weekIndex-1],m=(prev?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.episode===a.episode&&['R2','R3','R4'].includes(x.rungs?.STRENGTH));
+ const weeks=env.program?.weeks??[],prev=weeks[s.weekIndex-1],m=(prev?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.episode===a.episode&&['R2','R3','R4'].includes(x.rungs?.STRENGTH));
  if(!m)return Infinity;
- const sets=(prev.sessions??[]).filter(x=>x.sport==='STRENGTH'&&x.prescription).flatMap(x=>x.prescription.exercises).filter(e=>e.id===id).map(e=>e.sets);
- return sets.length?Math.max(...sets)+1:Infinity;
+ const last=lastExecutedSets(env,weeks,s.weekIndex,id,a.episode);
+ return last!==null?last+1:Infinity;
 }
 const ceilingOf=e=>e.load?.mode==='KNOWN'?`never above ${e.load.value} ${String(e.load.unit??'kg').toLowerCase()}, the load you used before`:e.load?.mode==='BODYWEIGHT'?'bodyweight only':'never above the load you used last time';
 /** Strength rows at a rung (returnLadder): R2 the return-entry rows (one set, at least the entry reserve, load by effort never above the current
@@ -158,15 +178,35 @@ const STRENGTH_RUNGS={
  R4:(env,s,a,rows)=>rows.map(e=>{const cap=ladderCap(env,s,a,e.id),start=env.sk.op.strength.goalDoses?.[env.sk.goal?.strength?.kind]?.startRir,rir=Number.isFinite(start)&&Number.isFinite(e.rir)?Math.max(e.rir,start):e.rir,x=cap<e.sets?withExposure(e,cap):e;return rir!==e.rir?{...x,rir}:x;})
 };
 const RUNG_TEXT={R2:'Much lighter while you get back: fewer sets, more reps in reserve',R3:'Easier while you get back: fewer sets, more reps in reserve, no increase',R4:'Your usual doses again; sets come back one at a time'};
+/**
+ * V1CP Fix-Forward NB-2 (Founder D3; SSCTR-FF-Q2 (b), C-FF2-1, -2): a race inside a Situation 1 reduction or return that holds running, or inside a
+ * readiness restart while running is still returning, stays on the calendar as the athlete's own event: its identity and date are kept, taking part is
+ * the athlete's decision, and the coach's recommendation for that day is the rung's operation on a hard session: no session (R0, the wait, or a date
+ * that is not one of the run days), the optional walk (R1), an easy run at the week's easy duration (R2, R3, R4, a recipe step, a restart week). Never
+ * at race effort and never as a completion.
+ */
+function raceAsOwnEvent(env,s,rung,week,unwell){
+ const runDay=(env.sk?.c?.schedule?.runDays??[]).includes(s.day),why=unwell?'The coach does not plan a race while you are unwell':'During your return the coach plans no racing effort',own='the race stays on your calendar as your own event, and taking part is your decision';
+ if(rung==='R0'||rung==='WAIT'||!runDay)return {...s,key:false,essential:false,optional:true,prescription:null,progression:null,plannedPrescriptionHash:null,ownEvent:true,coachRecommendation:'NO_SESSION',explanation:`${why}: ${own}; the coach plans no session that day`};
+ if(rung==='R1'){const m=Math.min(env.sk.c.schedule.runMinutes,env.sk.op.establishment.walkSessionMinutes[0]),p=walkPrescription(m,{reason:'Light activity only: an easy walk if you feel like it'});return {...s,key:false,essential:false,optional:true,prescription:p,progression:null,plannedPrescriptionHash:hash(p),ownEvent:true,coachRecommendation:'OPTIONAL_WALK',explanation:`${why}: ${own}; the coach recommends an optional easy walk that day`};}
+ const R=env.sk.op.run,easy=week.filter(x=>x.sport==='RUN'&&x.role==='EASY'&&x.prescription).map(x=>x.prescription.durationMinutes),st=env.program?.stateTrace?.[s.weekIndex]?.run?.easy;
+ const p=easyPrescription(Math.max(R.minimumSessionMinutes,easy.length?Math.min(...easy):Number.isFinite(st)?st:R.minimumSessionMinutes),{cue:R.effortCues.EASY_CONVERSATIONAL});
+ return {...s,key:false,prescription:p,progression:null,plannedPrescriptionHash:hash(p),ownEvent:true,coachRecommendation:'EASY_RUN',explanation:`${why}: ${own}; the coach recommends an easy run at your easy-run length that day`};
+}
+/** NB-2 (SSCTR-FF-Q2 (b)): the race of `sessions` the marker or restart `a` holds running on that day, if it is still ahead. */
+const raceHeld=(env,sessions,from,to)=>sessions.find(s=>s.role==='RACE'&&s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.date>=from&&(!to||s.date<=to))??null;
 /** V1CP F08 Situation 1: the sessions of the affected sports dated inside a marker's days (a window, the wait for the window-end check, a week of
- * the return ladder), by the rung it records for each sport. A region (UPPER or LOWER) limits the strength rung to that region's rows. */
+ * the return ladder), by the rung it records for each sport. A region (UPPER or LOWER) limits the strength rung to that region's rows. A race on a
+ * day the marker holds running for is the athlete's own event (raceAsOwnEvent); that day keeps no strength, and the race-week touch runs easy. */
 export function wellbeingSessions(env,sessions,a){
  const inRange=s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.role!=='RACE'&&s.date>=a.startDate&&(!a.endDate||s.date<=a.endDate)&&!!a.rungs?.[s.sport];
- const raceWaits=s=>s.role==='RACE'&&s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&a.rungs?.RUN==='WAIT'&&s.date>=a.startDate&&(!a.endDate||s.date<=a.endDate);
+ const race=a.rungs?.RUN?raceHeld(env,sessions,a.startDate,a.endDate):null;
  return sessions.map(s=>{
-  if(raceWaits(s))return {...s,waitsForCheck:true,explanation:'Your race waits for your check: tell us how you are before it'};
+  if(race&&s===race)return raceAsOwnEvent(env,s,a.rungs.RUN,sessions,!!a.unwell);
+  if(race&&s.sport==='STRENGTH'&&s.date===race.date&&s.prescription&&s.status!=='SKIPPED'&&env.ahead(s))return restRow(s,'Race day keeps no strength while your return holds running');
   if(!inRange(s))return s;
   const rung=a.rungs[s.sport];
+  if(s.sport==='RUN'&&s.role==='RACE_TOUCH'&&(rung==='R4'||rung==='M'))return asEasy(env,s,weekEasy(env,s,sessions),'During your return the race-week touch runs easy');
   if(s.sport==='RUN')return RUN_RUNGS[rung]?.(env,s,sessions)??s;
   const all=s.prescription.exercises??[],hit=a.region?all.filter(e=>e.region===a.region):all;
   if(!hit.length)return s;
@@ -186,7 +226,13 @@ export function withExecutionFacts(fixed,current){
 }
 export function fixedStartOf(weeks,stateTrace,i,sports){
  const out={};
- for(const a of weeks[i]?.adaptations??[])if(['WELLBEING_REDUCTION','RETURN_HOLD'].includes(a.kind)&&a.starts&&!a.endedBy)for(const [s,rule] of Object.entries(a.starts)){
+ // V1CP Fix-Forward NB-2 (SSCTR-FF-Q2 (d), I-17): nothing of a pre-race held start passes the race: a week that starts after the race day takes no
+ // fixed or repeated start of a reduction, return or restart that began before it; it starts from the plan's own post-race start, the rung's
+ // operation still applying to its sessions.
+ const race=weeks.flatMap(x=>x.sessions).find(s=>s.role==='RACE'&&s.status!=='SKIPPED');
+ const began=ep=>weeks.flatMap(x=>(x.adaptations??[]).filter(z=>['WELLBEING_REDUCTION','RETURN_HOLD'].includes(z.kind)&&z.episode===ep).map(z=>z.startDate??x.startDate)).sort()[0];
+ const passed=a=>!!race&&!!weeks[i]&&race.date<weeks[i].startDate&&(began(a.episode)??weeks[i].startDate)<=race.date;
+ for(const a of weeks[i]?.adaptations??[])if(['WELLBEING_REDUCTION','RETURN_HOLD'].includes(a.kind)&&a.starts&&!a.endedBy&&!passed(a))for(const [s,rule] of Object.entries(a.starts)){
   if(!sports.includes(s))continue;
   if(rule==='FIXED'&&a.fixed?.[s])out[s]={state:s==='STRENGTH'?withExecutionFacts(a.fixed[s],stateTrace[i]?.strength):clone(a.fixed[s]),a};
   else if(rule==='REPEAT'&&i>0&&stateTrace[i-1])out[s]={state:clone(stateTrace[i-1][s==='RUN'?'run':'strength']),a};
@@ -213,12 +259,13 @@ function eachHold(weeks,stateTrace,i,sports){
 /** V1CP F08 (SSCTR-V1CP returnLadder.transitionRule, QRE-V1CP-05): strength sets come back at most one set per executed week whatever the rung, so
  * when week i, after an episode's last held strength week (R4), would add more than one set to an exercise, week i is one more held week (the
  * R4 cap applies again). Returns the weeks with that marker, or null. */
-function d49Hold(weeks,i,sports){
+function d49Hold(weeks,i,sports,env={}){
  if(!sports.includes('STRENGTH'))return null;
  const prev=(weeks[i-1]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&!a.endedBy&&a.rungs?.STRENGTH==='R4'&&a.fixed?.STRENGTH);if(!prev)return null;
  if((weeks[i].adaptations??[]).some(a=>a.kind==='WELLBEING_REDUCTION'&&a.episode===prev.episode&&!a.endedBy&&a.rungs?.STRENGTH))return null;
  const sets=w=>{const o={};for(const s of w.sessions.filter(x=>x.sport==='STRENGTH'&&x.prescription&&x.status!=='SKIPPED'))for(const e of s.prescription.exercises??[])o[e.id]=Math.max(o[e.id]??0,e.sets);return o;};
- const a=sets(weeks[i-1]),b=sets(weeks[i]);if(!Object.keys(b).some(id=>a[id]!==undefined&&b[id]>a[id]+1))return null;
+ // NB-6: compared with the last count executed at a rung of the episode (the record), the plan only for weeks still ahead.
+ const a=sets(weeks[i-1]),b=sets(weeks[i]);if(!Object.keys(b).some(id=>{const last=lastExecutedSets(env,weeks,i,id,prev.episode)??a[id];return last!==undefined&&b[id]>last+1;}))return null;
  const out=weeks.map(x=>x),x=out[i],m=(x.adaptations??[]).find(z=>z.kind==='WELLBEING_REDUCTION'&&z.episode===prev.episode&&z.phase==='LADDER'&&!z.endedBy);
  const base=m?clone(m):(({starts,fixed,each,ref,...p})=>({...clone(p),startDate:x.startDate,endDate:onDate(x.startDate,6),rungs:{},hold:{},step:(prev.step??0)+1}))(prev);
  const n={...base,rungs:{...base.rungs,STRENGTH:'R4'},hold:{...base.hold,STRENGTH:false},starts:{...(base.starts??{}),STRENGTH:'FIXED'},fixed:{...(base.fixed??{}),STRENGTH:clone(prev.fixed.STRENGTH)},d49:true};
@@ -228,6 +275,19 @@ function d49Hold(weeks,i,sports){
 }
 /** The authority of a fixed start: a return's entry, by the decision that recorded the marker; a sport it does not fix keeps its own. */
 const fixedAuthority=(f,other)=>startAuthority(Object.fromEntries(SPORTS.map(x=>[x,f[x]?{provenance:WEEK_START.RETURN_ENTRY,eventId:f[x].a.eventId??null,evidenceThrough:f[x].a.asOf??null}:other?.[x]??null])));
+/** V1CP Fix-Forward NB-2 (SSCTR-FF-Q2 (a), (b)): inside a readiness restart while running is still returning (run mode RETURN or RESTART), the race
+ * is the athlete's own event and the coach's recommendation is an easy run at the restart week's easy duration; the race-week touch runs easy and race
+ * day keeps no strength. Outside the restart's running return the race follows the event rules. */
+function restartRaceSessions(env,sessions,a){
+ if(!['RETURN','RESTART'].includes(env.program?.stateTrace?.[env.w]?.run?.mode))return sessions;
+ const live=s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.date>=a.from&&(!a.endDate||s.date<=a.endDate),race=raceHeld(env,sessions.filter(live),a.from,a.endDate);
+ return sessions.map(s=>{
+  if(race&&s===race)return raceAsOwnEvent(env,s,'RESTART',sessions,false);
+  if(race&&s.sport==='STRENGTH'&&s.date===race.date&&live(s))return restRow(s,'Race day keeps no strength while running is restarting');
+  if(s.sport==='RUN'&&s.role==='RACE_TOUCH'&&live(s))return asEasy(env,s,weekEasy(env,s,sessions),'While running is restarting the race-week touch runs easy');
+  return s;
+ });
+}
 /** V1CP F08 Situation 2: a sport the athlete has not declared ready stays held: its sessions from the decision on are rest, without debt. */
 export const heldSportSessions=(env,sessions,a)=>sessions.map(s=>s.prescription&&s.status!=='SKIPPED'&&env.ahead(s)&&s.sport===a.sport&&s.role!=='RACE'&&s.date>=a.from?restRow(s,'Held: you have not told us you are ready for this sport yet; tell us when you are'):s);
 /** V1CP F08 Situation 2: a restriction from the closed vocabulary is a hard cap: strength rows of the restricted region are left out, never
@@ -237,6 +297,7 @@ export const restrictedSessions=(env,sessions,a)=>sessions.map(s=>s.prescription
 function reapply(env,sessions,a){
  const own=aheadAt(a),e={...env,asOfLocal:a.asOfLocal,ahead:s=>env.ahead(s)&&own(s)};
  if(a.kind==='WELLBEING_REDUCTION')return {sessions:wellbeingSessions(e,sessions,a)};
+ if(a.kind==='RACE_IN_RETURN')return {sessions:restartRaceSessions(e,sessions,a)};
  if(a.kind==='SPORT_HELD')return {sessions:heldSportSessions(e,sessions,a)};
  if(a.kind==='STRENGTH_RESTRICTION')return {sessions:restrictedSessions(e,sessions,a)};
  if(a.kind==='SYSTEMIC_FATIGUE'||a.kind==='LOCAL_FATIGUE')return {sessions:fatigueSessions(e,sessions,{systemic:a.kind==='SYSTEMIC_FATIGUE',region:a.region})};
@@ -258,7 +319,7 @@ function reapply(env,sessions,a){
  * again to that slot with its own clock; a move is never applied again. The week's totals keep describing its plan (as before R7-A.1). */
 export function adaptThisWeek(ctx,program,w,sessions,fact){
  const was=new Map(program.weeks[w].sessions.map(s=>[s.id,s.moved?.from??null])),moved=new Set(sessions.filter(s=>s.moved&&was.get(s.id)!==s.moved.from).map(s=>s.id));let out=sessions;
- for(const a of moved.size?program.weeks[w].adaptations??[]:[]){if(a.kind==='MISSED_SESSION')continue;const r=reapply({...ctx,program:withWeek(program,w,out),sk:ctx.skw??ctx.sk,w,ahead:s=>moved.has(s.id)&&ctx.ahead(s)},out,a);if(!r.ask)out=r.sessions;}
+ for(const a of moved.size?program.weeks[w].adaptations??[]:[]){if(a.kind==='MISSED_SESSION')continue;const r=reapply({...ctx,program:withWeek(program,w,out),sk:ctx.skw??ctx.sk,w,ahead:s=>moved.has(s.id)&&ctx.ahead(s),elapsed:s=>!ctx.ahead(s)},out,a);if(!r.ask)out=r.sessions;}
  return {weeks:program.weeks.map((x,i)=>i!==w?x:{...clone(x),sessions:out,adaptations:[...(x.adaptations??[]),fact]}),stateTrace:program.stateTrace};
 }
 /** The fact an adaptation records: its kind, its review, its clock, the sessions of its day already past then, and what it needs to apply again. */
@@ -448,7 +509,8 @@ export function composeWeeks(ctx,next,options){
  // V1CP F08 (SSCTR-V1CP returnLadder, Q07): a later week whose start a Situation 1 return or a readiness restart's hold fixes, for a sport in scope,
  // is placed again from that start, so no projection carries a step into it (every handler re-plans through here, so every re-plan keeps it).
  const sports=options.sports??SPORTS,N=placed.weeks.length;
- for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
+ const record={fullLedger:ctx.fullLedger??ctx.ledger??[],elapsed:(a=>s=>!a(s))(aheadOf(ctx))};
+ for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports,record);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
   const s0=placed.stateTrace[i],by={eventId:ctx.review?.event?.id??null,asOf:ctx.asOf??null};
   return composeWeeks(ctx,{...next,weeks:placed.weeks,stateTrace:placed.stateTrace},{...options,fromWeek:i,start:{runState:f.RUN?.state??clone(s0.run),strengthState:f.STRENGTH?.state??clone(s0.strength)},startAuthority:fixedAuthority(f,projectedStart(placed.weeks[i-1],by)),returnDay:null,evidence:null,uncredited:[],ownStart:true});}
  return placed;
@@ -484,7 +546,7 @@ function composeFrom(ctx,next,{fromWeek,start=null,startAuthority:startAuth=null
   const merged=mergeRows(ctx,next,i,rows,sports),planned={...weeks[i]??{},sessions:merged,...totals(i,merged),startAuthority:ownAuthority(i,auth)};weeks[i]=planned;stateTrace[i]=own(i,state);
   const list=[];let sessions=merged;
   for(const a of [...(next.weeks[i].adaptations??[]),...carry]){
-   const env={program:{...next,weeks:weeks.map((x,k)=>k===i?{...x,sessions}:x),stateTrace},sk:at(i),w:i,ahead:fresh,authority,returned:returned(i)},r=reapply(env,sessions,a);if(r.ask)return r;
+   const env={program:{...next,weeks:weeks.map((x,k)=>k===i?{...x,sessions}:x),stateTrace},sk:at(i),w:i,ahead:fresh,authority,returned:returned(i),fullLedger:ctx.fullLedger??ctx.ledger??[],elapsed:s=>!ahead(s)},r=reapply(env,sessions,a);if(r.ask)return r;
    // A short return's easy slot that this week does not hold moves on to the next week placed (SSCTR D58).
    if(a.kind==='SHORT_RETURN_EASY'){carry=carry.filter(x=>x!==a);if(!r.slot){carry.push(a);continue;}}
    list.push(a);sessions=r.sessions;

@@ -79,7 +79,8 @@ function independent(V){
   // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier's HOLD was the internal TypeError of a
   // schedule change in the program's last week. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer
   // itself and is no longer a refusal; the clinical-route carrier still records and applies nothing. The property below is unchanged.
-  if(carrier==='R4')assert.ok(c.status!=='HOLD'&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status);
+  // V1CP Fix-Forward QRE-V1CPR-C7 (QRE-V1CP-11): pinned to the measured outcome, a re-plan from evidence or a keep, never a question or a route.
+  if(carrier==='R4')assert.ok([['MODIFY','REPLAN_FROM_EVIDENCE'],['KEEP','KEEP']].some(([s,a])=>c.status===s&&c.action===a)&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status+' '+c.action);
   else{assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
   assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');}
   assert.deepEqual(runs,reference.runs,label+': the runs ahead follow the facts, as the direct answer');

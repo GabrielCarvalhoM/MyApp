@@ -34,7 +34,8 @@ const rowsOf=s=>(s.prescription?.exercises??[]);
 const facts=(t,f)=>t.ledger.filter(o=>o.fact===f);
 /** Reports of week w's live sessions, done as prescribed; `adverse` session ids report an adverse recovery, `skip` ids are not reported. */
 const doneWeek=(t,w,{adverse=[],skip=[]}={})=>doneBefore(t.p,w+1).filter(o=>t.p.weeks[w].sessions.some(s=>s.id===o.sessionId)&&!skip.includes(o.sessionId)).map(o=>adverse.includes(o.sessionId)?{...o,eventId:o.eventId+'-adverse',response:{...o.response,recovery:'ADVERSE'}}:o);
-const ladder=(p,w)=>{const m=(p.weeks[w]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER');return m?m.rungs:null;};
+// V1CP Fix-Forward NB-1: a sport returns on its own, so a week may hold one ladder marker per sport; the week's rungs are their union.
+const ladder=(p,w)=>(p.weeks[w]?.adaptations??[]).filter(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&!a.endedBy).reduce((o,a)=>({...(o??{}),...a.rungs}),null);
 const maxSets=(p,w)=>{const o={};for(const s of p.weeks[w].sessions.filter(x=>x.sport==='STRENGTH'&&live(x)))for(const e of rowsOf(s))o[e.id]=Math.max(o[e.id]??0,e.sets);return o;};
 /** Week 0 done and reviewed; the report on week 1's Tuesday morning; each window week done (unless `skipWindow`) and reviewed with its check;
  * the last review of the window is the window-end check (improved). Returns the timeline and the week the return starts. */
@@ -101,11 +102,15 @@ test('S1-3 (Q05, C-Q05-9): the window runs the intent\'s rung; a local report ch
  assert.deepEqual(sessionsIn(t.p,t.day(1,1),t.day(2,6),'RUN').map(s=>hash(s.prescription)),sessionsIn(b3,t.day(1,1),t.day(2,6),'RUN').map(s=>hash(s.prescription)));
 });
 
-test('S1-4 (C-Q05-3, C-Q05-9): a window holding the race day is asked; a replay changes nothing; the weeks a window covers release no step',()=>{
+test('S1-4 (C-Q05-3 under D3, C-Q05-9): a window holding the race day opens at once with the race as the athlete\'s own event; a replay changes nothing; the weeks a window covers release no step',()=>{
  const race=HYBRID();race.athlete.goals={run:{kind:'RACE',event:{kind:'10K',date:'2026-12-05'}},strength:'GENERAL'};
  const t=timeline(race),raceDay=t.p.weeks.flatMap(x=>x.sessions).find(s=>s.role==='RACE').date,w=Math.floor((Date.parse(raceDay)-Date.parse(t.p.startDate))/864e5/7),d=(Date.parse(raceDay)-Date.parse(t.p.weeks[w].startDate))/864e5;
  const ill=t.step(w,Math.max(0,d-3),'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:5}},'08:00');
- assert.equal(ill.status,'ASK');assert.match(ill.reason,/race/);assert.match(ill.reason,/does not plan a race while you are unwell/);assert.equal(ill.proposal,null);
+ // V1CP Fix-Forward NB-2 (Founder D3; SSCTR-FF-Q2) replaced the question this line asserted: the window opens at once and the race stays on the
+ // calendar as the athlete's own event, with the wording of C-FF2-2 and its paths offered, never blocking.
+ assert.equal(ill.action,'WELLBEING_REDUCTION',ill.reason);assert.ok(ill.proposal);
+ const own=ill.proposal.weeks.flatMap(x=>x.sessions).find(s=>s.role==='RACE');assert.equal(own.ownEvent,true);assert.equal(own.date,raceDay);assert.match(own.explanation,/does not plan a race while you are unwell/);
+ assert.ok(ill.offers.some(o=>o.type==='RACE_PATHS'&&o.blocking===false));
  const u=timeline();u.step(0,6,'WEEKLY_REVIEW',{observations:doneBefore(u.p,1)});
  const wb={condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:9};
  assert.equal(u.step(1,1,'NOT_FEELING_100',{wellbeing:wb,eventId:'nf-1'},'08:00').action,'WELLBEING_REDUCTION');
@@ -137,7 +142,9 @@ test('S1-5 (C-Q05-1, persistence): the return starts only after the window-end c
 });
 
 test('S1-6 (C-Q06-3): each window and speed climbs its rungs one week each; none reaches the held doses before an executed R3 or recipe step (FP-4 apart)',()=>{
- const cases=[['REDUCE_LIGHT','FASTER',5,['R4']],['REDUCE_LIGHT','BALANCED',5,['R3','R4']],['REDUCE_LIGHT','CONSERVATIVE',5,['R3','R4','R4']],['REDUCE_SUBSTANTIAL','FASTER',5,['R3','R4']],['REDUCE_SUBSTANTIAL','BALANCED',5,['R2','R3','R4']],['REDUCE_SUBSTANTIAL','CONSERVATIVE',5,['R2','R3','R4','R4']],['REST','FASTER',5,['R3','R4']],['REST','BALANCED',5,['R2','R3','R4']],['REST','CONSERVATIVE',5,['M']],['LIGHT_ACTIVITY_ONLY','FASTER',12,['M']],['REST','BALANCED',12,['M','M']]];
+ // V1CP Fix-Forward SSCTR-FF-Q1: FASTER after an easier window resumes the held doses at once only when a whole executed and checked week of the
+ // window lies inside it; this 5-day window (Tuesday to Saturday) holds none, so FASTER equals BALANCED (disclosed; v1cp-ff FF-Q1 tests both).
+ const cases=[['REDUCE_LIGHT','FASTER',5,['R3','R4']],['REDUCE_LIGHT','BALANCED',5,['R3','R4']],['REDUCE_LIGHT','CONSERVATIVE',5,['R3','R4','R4']],['REDUCE_SUBSTANTIAL','FASTER',5,['R3','R4']],['REDUCE_SUBSTANTIAL','BALANCED',5,['R2','R3','R4']],['REDUCE_SUBSTANTIAL','CONSERVATIVE',5,['R2','R3','R4','R4']],['REST','FASTER',5,['R3','R4']],['REST','BALANCED',5,['R2','R3','R4']],['REST','CONSERVATIVE',5,['M']],['LIGHT_ACTIVITY_ONLY','FASTER',12,['M']],['REST','BALANCED',12,['M','M']]];
  for(const [intent,speed,days,want] of cases){
   const {t,from}=windowThenCheck({condition:'UNUSUAL_FATIGUE',intent,speed,days});
   const got=[];for(let w=from;w<from+want.length;w++)got.push(ladder(t.p,w)?.RUN??'-');
@@ -191,10 +198,16 @@ test('S1-10 (C-Q05-2 with SSCTR-V1CPI-01, C-Q05-4): a report during the return s
  const again=t.step(from+1,1,'NOT_FEELING_100',{wellbeing:wb},'08:00');assert.equal(again.status,'CLINICAL_HUMAN_REQUIRED');assert.match(again.reason,/professional assessment/);
  // Within the 14 days a continuous window may last: during a window, a new report that would pass them is asked.
  const c=timeline();c.step(0,6,'WEEKLY_REVIEW',{observations:doneBefore(c.p,1)});c.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:10}},'08:00');
- const over=c.step(1,4,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:14}},'08:00');assert.equal(over.status,'ASK');assert.deepEqual(over.missingInputs,['wellbeing.days']);
- // A local report in a scope the open episode does not touch is asked (I-06).
- const n=windowThenCheck({condition:'MINOR_DISCOMFORT',sports:['RUN'],intent:'REDUCE_LIGHT',speed:'BALANCED',days:5});
- const other=n.t.step(n.from,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',sports:['STRENGTH'],warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:3}},'08:00');assert.equal(other.status,'ASK');assert.match(other.reason,/one reduction is open at a time/);
+ // V1CP Fix-Forward NB-1 (CH-r2-3 (c), -9): another condition moves both sports into its window, carrying the fatigue, so the 14-day question arises
+ // again (1 to the days left); the illness's own items are then asked at the check with the fatigue's.
+ const over=c.step(1,4,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:14}},'08:00');assert.equal(over.status,'ASK',over.reason);assert.deepEqual(over.missingInputs,['wellbeing.days']);assert.match(over.reason,/choose 1 to 11 days/);
+ const fit=c.step(1,4,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REST',days:11}},'08:30');assert.equal(fit.action,'WELLBEING_REDUCTION',fit.reason);assert.match(fit.reason,/unusual fatigue\) still holds/);
+ const q=c.step(1,6,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE')}},'09:00');assert.equal(q.status,'ASK');assert.ok(q.missingInputs.some(k=>k.endsWith(F.WARNING_SIGNS.W11)),JSON.stringify(q.missingInputs));
+ // V1CP Fix-Forward NB-1 ((vii)): a local report on a sport no open report governs opens its own report and chain (the I-06 question is gone); the
+ // running ladder is unchanged.
+ const n=windowThenCheck({condition:'MINOR_DISCOMFORT',sports:['RUN'],intent:'REDUCE_LIGHT',speed:'BALANCED',days:5}),runLadder=JSON.stringify([n.from,n.from+1].map(w=>ladder(n.t.p,w)?.RUN));
+ const other=n.t.step(n.from,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',sports:['STRENGTH'],warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:3}},'08:00');assert.equal(other.action,'WELLBEING_REDUCTION',other.reason);
+ assert.equal(facts(n.t,'WELLBEING_DECLARED').at(-1).wellbeing.takenFrom,undefined,'its own report: it takes nothing');assert.equal(JSON.stringify([n.from,n.from+1].map(w=>ladder(n.t.p,w)?.RUN)),runLadder,'the running ladder is unchanged');
  // An adverse session during the return asks the warning signs and the exercise-response items before anything else.
  const u=windowThenCheck({condition:'MILD_ILLNESS',intent:'REDUCE_SUBSTANTIAL',speed:'BALANCED',days:5}),w=u.from,s0=u.t.p.weeks[w].sessions.find(s=>live(s)&&s.date<=u.t.day(w,2)&&s.sport==='STRENGTH');
  const obs=doneWeek(u.t,w,{adverse:[s0.id]}).filter(o=>o.sessionId===s0.id);

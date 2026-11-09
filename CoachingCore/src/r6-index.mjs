@@ -31,9 +31,13 @@ export function sessionContext(program,session){
  * carried record. A clinical hold still standing needs the readiness declaration first; otherwise the existing cold start builds the plan (the
  * pause read from the record, the restrictions in force carried), and the record is returned unchanged with prior capacity as context only.
  */
-export function restartProgram({intake,record=[],referenceState=null,asOf=null},options={}){
- const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
- if(r.status!=='READY')return freeze({runtimeVersion:'R6-1',mode:'SHADOW',status:r.status,reason:r.reason,missingInputs:r.missingInputs??[],program:null,applied:false,carriedRecord:clone(Array.isArray(record)?record:[])});
- const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts});
- return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
+export function restartProgram({intake,record=[],referenceState=null,asOf=null,athleteId=null},options={}){
+ const stopped=(status,reason,missingInputs=[],extra={})=>freeze({runtimeVersion:'R6-1',mode:'SHADOW',status,reason,missingInputs,program:null,applied:false,carriedRecord:clone(Array.isArray(record)?record:[]),...extra});
+ // V1CP Fix-Forward SB-5 (SEC-V1CPR-04): a restart returns a status, never an exception (QRE-R6-10); a malformed input holds, naming only its class.
+ try{
+  const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,athleteId,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
+  if(r.status!=='READY')return stopped(r.status,r.reason,r.missingInputs??[],r.unreadable?{unreadable:clone(r.unreadable)}:{});
+  const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts});
+  return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
+ }catch(e){return stopped('HOLD','The restart facts could not be read: no new plan is made from them; send the updated facts and the record as kept',[],{errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }

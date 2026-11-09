@@ -1,0 +1,325 @@
+✖ NB-1 (a): a lighter local report during an illness window opens nothing; the illness keeps both sports and its check (184.5021ms)
+✖ NB-1 (b): a lighter report on a sport in an illness return rung never raises it; the ladder stays for both sports (111.7661ms)
+✖ NB-1 (c): a more restrictive local report takes only its sport; the other sport keeps its ladder (108.1762ms)
+✖ NB-1 (d): during an illness window a lighter report of another condition opens nothing and never replaces the illness check (69.026ms)
+✖ NB-1 (e): the 14-day bound runs from the chain's first window until a whole ladder week is executed (116.0333ms)
+✖ NB-3: a single declared break right after a rest window reads the window's rest and waiting days, per sport (142.5927ms)
+✖ NB-4: an elapsed ladder week without its check repeats its rung at the next review, even with sessions pending, and only once (96.0232ms)
+✖ NB-5: without a reported longest run, a race result only raises the first long run, never lowers a session or the week (29.1547ms)
+✖ NB-6: on the ladder and past it, strength sets rise at most one over the last executed count (129.6439ms)
+✖ SB-1: a new stop after training resumed post-declaration is screened on its own: its reason is asked (154.9412ms)
+✖ SB-2: a warning sign under a reused event id routes to the clinical hold and writes its fact (89.7771ms)
+✖ SB-3: a restart never reads an unreadable, foreign or later hold as no hold (54.2089ms)
+✖ SB-4: a clinical decision always leaves its CLINICAL_HOLD fact on record (37.5019ms)
+✖ SB-5: a restart with no stated pause asks the reason; it never throws (36.053ms)
+✖ QRE-V1CPR-02: an answered restart check is not asked again, and a replay adds no row (96.2378ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 0
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1583.5995
+
+✖ failing tests:
+
+test at test\v1cp-ff.test.mjs:37:1
+✖ NB-1 (a): a lighter local report during an illness window opens nothing; the illness keeps both sports and its check (184.5021ms)
+  AssertionError [ERR_ASSERTION]: This replaces what you reported before (it ends from today). You told us you are not 100% (minor discomfort): easier sessions (no hard work) for running from 2026-12-09 to 2026-12-11. On 2026-12-12 tell us how you are; once it has passed or clearly improved, your return (balanced) is an easier week, then a week at your usual doses, then your plan moves on with what you execute. Nothing returns to a previous dose by date alone; if a warning sign appears, stop and seek a professional assessment
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:41:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WELLBEING_REDUCTION',
+    expected: 'WELLBEING_REDUCTION',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:48:1
+✖ NB-1 (b): a lighter report on a sport in an illness return rung never raises it; the ladder stays for both sports (111.7661ms)
+  AssertionError [ERR_ASSERTION]: This replaces what you reported before (it ends from today). You told us you are not 100% (minor discomfort): easier sessions (no hard work) for running from 2026-11-24 to 2026-11-26. On 2026-11-27 tell us how you are; once it has passed or clearly improved, your return (balanced) is an easier week, then a week at your usual doses, then your plan moves on with what you execute. Nothing returns to a previous dose by date alone; if a warning sign appears, stop and seek a professional assessment
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:54:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WELLBEING_REDUCTION',
+    expected: 'WELLBEING_REDUCTION',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:59:1
+✖ NB-1 (c): a more restrictive local report takes only its sport; the other sport keeps its ladder (108.1762ms)
+  AssertionError [ERR_ASSERTION]: running keeps its ladder
+  
+  undefined !== 'R3'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:66:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'R3',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:70:1
+✖ NB-1 (d): during an illness window a lighter report of another condition opens nothing and never replaces the illness check (69.026ms)
+  AssertionError [ERR_ASSERTION]: This replaces what you reported before (it ends from today). You told us you are not 100% (unusual fatigue): easier sessions (no hard work) for running and strength from 2026-11-19 to 2026-11-21. On 2026-11-22 tell us how you are; once it has passed or clearly improved, your return (balanced) is an easier week, then a week at your usual doses, then your plan moves on with what you execute. Nothing returns to a previous dose by date alone; if a warning sign appears, stop and seek a professional assessment
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:74:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WELLBEING_REDUCTION',
+    expected: 'WELLBEING_REDUCTION',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:79:1
+✖ NB-1 (e): the 14-day bound runs from the chain's first window until a whole ladder week is executed (116.0333ms)
+  AssertionError [ERR_ASSERTION]: 18 days of the same illness with one return day are never one more window
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:84:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'WELLBEING_REDUCTION',
+    expected: 'WELLBEING_REDUCTION',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:88:1
+✖ NB-3: a single declared break right after a rest window reads the window's rest and waiting days, per sport (142.5927ms)
+  AssertionError [ERR_ASSERTION]: 14 days without running
+  + actual - expected
+  
+  + 'SHORT'
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:94:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'SHORT',
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:110:1
+✖ NB-4: an elapsed ladder week without its check repeats its rung at the next review, even with sessions pending, and only once (96.0232ms)
+  AssertionError [ERR_ASSERTION]: week 3 repeats the rung week 2 did not execute
+  
+  'R4' !== 'R3'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:118:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'R4',
+    expected: 'R3',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:127:1
+✖ NB-5: without a reported longest run, a race result only raises the first long run, never lowers a session or the week (29.1547ms)
+  AssertionError [ERR_ASSERTION]: 5 km in 25 min: w0-run-d5 25 < 50
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:134:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:141:1
+✖ NB-6: on the ladder and past it, strength sets rise at most one over the last executed count (129.6439ms)
+  AssertionError [ERR_ASSERTION]: R3 missed: week 4 plans 3 after 1 executed (1 > skipped)
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:148:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:157:1
+✖ SB-1: a new stop after training resumed post-declaration is screened on its own: its reason is asked (154.9412ms)
+  AssertionError [ERR_ASSERTION]: 4 weeks: the old declaration stood in for a stop it never answered
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:165:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROPOSED',
+    expected: 'PROPOSED',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:171:1
+✖ SB-2: a warning sign under a reused event id routes to the clinical hold and writes its fact (89.7771ms)
+  AssertionError [ERR_ASSERTION]: This check id already belongs to another check; send a new one with its own id
+  + actual - expected
+  
+  + 'ASK'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:177:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ASK',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:191:1
+✖ SB-3: a restart never reads an unreadable, foreign or later hold as no hold (54.2089ms)
+  AssertionError [ERR_ASSERTION]: an altered hold row
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:197:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROPOSED',
+    expected: 'PROPOSED',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:207:1
+✖ SB-4: a clinical decision always leaves its CLINICAL_HOLD fact on record (37.5019ms)
+  AssertionError [ERR_ASSERTION]: A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe
+  + actual - expected
+  
+  + 'CLINICAL_HUMAN_REQUIRED'
+  - 'HOLD'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:212:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'CLINICAL_HUMAN_REQUIRED',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:233:1
+✖ SB-5: a restart with no stated pause asks the reason; it never throws (36.053ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception: 1 days
+  Actual message: "Cannot read properties of null (reading 'reasonCategory')"
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:237:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot read properties of null (reading 'reasonCategory')
+        at reasonQuestion (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/ext-5ee9dec-1794227618-1160/CoachingCore/src/r6-clinical.mjs:216:40)
+        at canonicalizeIntake (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/ext-5ee9dec-1794227618-1160/CoachingCore/src/r6-intake.mjs:217:43)
+        at generateProgram (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/ext-5ee9dec-1794227618-1160/CoachingCore/src/r6-program.mjs:1365:178)
+        at generateProgram (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/ext-5ee9dec-1794227618-1160/CoachingCore/src/r6-index.mjs:18:76)
+        at restartProgram (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/4a9af017-27d1-4bf0-ba2a-8b07c59ee2e3/scratchpad/ext-5ee9dec-1794227618-1160/CoachingCore/src/r6-index.mjs:37:10)
+        at file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:237:36
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:237:16)
+        at Test.runInAsyncScope (node:async_hooks:227:14),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff.test.mjs:244:1
+✖ QRE-V1CPR-02: an answered restart check is not asked again, and a replay adds no row (96.2378ms)
+  AssertionError [ERR_ASSERTION]: the answered check is not asked again: A session was reported as not going well: tell us how you are: each warning sign (yes or no), how your sessions felt (each exercise-response item)
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff.test.mjs:252:59)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

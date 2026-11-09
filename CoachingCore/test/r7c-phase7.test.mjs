@@ -95,7 +95,8 @@ function independent(V,opt){
   // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier's HOLD was the internal TypeError of a
   // schedule change in the program's last week. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer
   // itself and is no longer a refusal; the clinical-route carrier still records and applies nothing. The property below is unchanged.
-  if(carrier==='R4')assert.ok(c.status!=='HOLD'&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status);
+  // V1CP Fix-Forward QRE-V1CPR-C7 (QRE-V1CP-11): pinned to the measured outcome, a re-plan from evidence or a keep, never a question or a route.
+  if(carrier==='R4')assert.ok([['MODIFY','REPLAN_FROM_EVIDENCE'],['KEEP','KEEP']].some(([s,a])=>c.status===s&&c.action===a)&&!/Malformed/.test(c.reason??''),label+': the last-week schedule change decides without the error path: '+c.status+' '+c.action);
   else{assert.ok(['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(c.status)&&!c.proposal,label+': the carrier records the answer and applies nothing: '+c.status);
   assert.notEqual(c.planValidity?.status,VALID,label+': the carrier decision is never valid');}
   assert.deepEqual(runs,reference.runs,label+': the runs ahead follow the facts, as the direct answer');
@@ -319,7 +320,10 @@ test('R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report
 test('R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it',()=>{
  // Gate-class rule, kept only for such records: sound for full-dose and adverse answers (REGRESS counts as an executed run), so they still reconcile;
  // a shortened answer reads HOLD either way and keeps R7C-FREEZE-3's reading (disclosed: such a record does not say when its reports arrived).
- const strip=t=>{t.ledger=t.ledger.map(o=>{const {firstRecordedAt,...provenance}=o.provenance??{};return {...o,provenance};});return t;};
+ // V1CP Fix-Forward SB-3: a record from before R7C-FREEZE-4 holds no F08 row; the sealed F08 rows the V1CP runtime writes (the CLINICAL_HOLD of the
+ // clinical step) keep their bytes, since an altered sealed row now holds the decision (fail closed). Only the rows this test is about are stripped.
+ const F08_ROWS=['WELLBEING_DECLARED','READINESS_DECLARED','WELLBEING_CHECKED','CLINICAL_HOLD'];
+ const strip=t=>{t.ledger=t.ledger.map(o=>{if(F08_ROWS.includes(o?.fact))return o;const {firstRecordedAt,...provenance}=o.provenance??{};return {...o,provenance};});return t;};
  for(const [V,reconciled] of [['ALL_ADVERSE',true],['SHORT60',false]]){
   const {B}=fork(GEN,{g:0,b:7,mode:'RV'}),facts=report(B.p,0,7,V),direct=copy(B);step(direct,7,{...AT(2),observations:facts});const d3=step(strip(direct),7,AT(3));
   const t=copy(B),stale=planFrom(t.p,7,3);carry(t,7,'CLIN',facts);clear(strip(t));const r=step(t,7,AT(3));

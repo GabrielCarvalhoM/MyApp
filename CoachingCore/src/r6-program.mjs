@@ -227,7 +227,7 @@ export function initialRunState(sk){
   else{
    const W0=cap.run.weeklyMinutes,avg=W0/runDays.length,share=runDays.length>=3?Math.max(avg,W0*R.longRunShareOfWeeklyMinutesMax):W0;
    // Week-1 long run never exceeds the longest current run; rounding goes down.
-   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??(Number.isFinite(cap.run.longestFromRace)?Math.max(cap.run.longestFromRace,R.minimumSessionMinutes):avg),share))):null;
+   st.long=hasLong?Math.min(longBudget,W0,floor5(Math.min(cap.run.longestMinutes??avg,share))):null;
    // A current familiar quality task in week 1 counts inside the reported weekly minutes, otherwise it waits a week.
    const fq=cls==='QUALITY_FAMILIAR'&&plan.establishmentWeeks===0?familiarQualityMinutes(sk):null;
    // The ladder continues from the athlete's familiar level: the familiar task stands at the highest step it covers.
@@ -236,6 +236,10 @@ export function initialRunState(sk){
    if(fq!==null&&nEasy>=2&&pool-fq>=R.minimumSessionMinutes){pool-=fq;days=nEasy-1;}else if(fq!==null)st.qualityNeeds=1;
    let e=days?pool/days:0;while(days-st.walks>0&&e<R.minimumSessionMinutes){st.walks++;e=pool/(days-st.walks);}
    st.easy=days-st.walks>0?Math.min(budget,Math.max(R.minimumSessionMinutes,Math.floor(e/5)*5)):null;
+   // V1CP Fix-Forward NB-5 (SSCTR-V1CPI-07 as the recheck ruled; Q04): with no longest run reported, a recent race only raises the first long run,
+   // toward the race's minutes within the long-run time, the long-run share and the weekly minutes the week leaves; every other session keeps the
+   // dose it has without the race, so no session and no week is ever lower because of it.
+   if(st.long!==null&&!Number.isFinite(cap.run.longestMinutes)&&Number.isFinite(cap.run.longestFromRace)){const planned=(st.long??0)+(st.easy??0)*Math.max(0,days-st.walks)+(W0-(st.long??0)-pool);st.long=Math.max(st.long,floor5(Math.min(longBudget,W0,share,cap.run.longestFromRace,st.long+Math.max(0,W0-planned))));}
   }
  }
  return st;
@@ -1402,7 +1406,7 @@ export function generateProgram(input,options={}){
   if(choice.askRequired)return reject('ASK','Genuine run/strength arrangement trade-off with equal worst-case joint harm; a temporary preference is needed',{missingInputs:['schedule.temporaryPreference'],question:choice.question,trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace}});
   sk.arrangement[key]=choice.selected;if(!capped)previousId=choice.selected?.id??previousId;choices[key]=choice;
  }
- const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??(Number.isFinite(cap.run.longestFromRace)?Math.max(cap.run.longestFromRace,op.run.minimumSessionMinutes,Number.isFinite(cap.run.weeklyMinutes)&&s.runDays.length?Math.floor(cap.run.weeklyMinutes/s.runDays.length):0):null):null});
+ const runState=initialRunState(sk),strengthState=initialStrengthState(sk),{weeks:projected,states}=projectWeeks(sk,0,{runState,strengthState},[],{coldStart:true,initialCeiling:['EASY_CURRENT','QUALITY_FAMILIAR','EASY_LOW'].includes(cap.run.class)?cap.run.longestMinutes??null:null});
  // The first week starts from the athlete's reported current state; every later week from the conditional plan of the week before.
  const weeks0=projected.map((wk,i)=>({...wk,startAuthority:i===0?anchoredStart(WEEK_START.INTAKE,{asOf:c.asOf}):projectedStart(projected[i-1])}));
  // V1CP F08 Situation 3 (DR-148, RC-11): the restrictions a readiness declaration left in force carry into the new plan as hard caps, recorded on

@@ -60,7 +60,9 @@ test('E2 (SSCTR-V1CP Q04): a current confirmed race result caps only the first l
  const without=generateProgram(base()),withRace=(()=>{const i=base();i.athlete.performanceAnchors=[race(31,'2026-11-01')];return generateProgram(i);})();
  assert.equal(withRace.program.capability.run.class,without.program.capability.run.class,'the class is unchanged');
  const long=g=>g.program.weeks[0].sessions.find(s=>s.role==='LONG')?.prescription.durationMinutes??0;
- assert.ok(long(withRace)<=31&&long(withRace)<=withRace.program.schedule.runMinutes,'week 1 within the race minutes and the availability');
+ // V1CP Fix-Forward NB-5 (SSCTR-V1CPI-07 as the recheck ruled: the race is a lower bound only): it never shortens the first long run below
+ // the plan without it, and the long run stays within the availability. (Before the fix this line read the race as a cap: long <= 31.)
+ assert.ok(long(withRace)>=long(without)&&long(withRace)<=(withRace.program.schedule.longRunMinutes??withRace.program.schedule.runMinutes),'week 1 never below the plan without the race, within the availability');
  assert.ok(withRace.uncertainty.some(u=>u.field==='performanceAnchors'&&/recent run of about 31 minutes/.test(u.action)));
  const short=base();short.athlete.performanceAnchors=[race(14,'2026-11-01')];assert.notEqual(generateProgram(short).program.capability.run.class,'WALK_JOG','a sub-15-minute race never makes walk/jog');
  const old=base();old.athlete.performanceAnchors=[race(31,'2026-09-01')];assert.equal(canonicalizeIntake(old).canonical.athlete.recentRun.longestFromRace,undefined,'older than 28 days: history only');

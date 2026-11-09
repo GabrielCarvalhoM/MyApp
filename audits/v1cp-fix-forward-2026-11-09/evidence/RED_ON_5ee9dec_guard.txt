@@ -1,0 +1,98 @@
+✔ N14: the S1 window-end answers sent after a readiness restart open no S1 ladder; the restart's return stands (131.0238ms)
+✖ N18, QRE-V1CPR-07: a declaration naming a hold not on record, or naming nothing, is asked; a full match restarts (67.3497ms)
+✔ N19: a same-day screen stamped before the hold is asked again; one stamped after it restarts (117.2962ms)
+✔ M12: a readiness restart week starts from the restart's own state: no projected execution date leaks into it (99.9802ms)
+✔ M29: rows of a region whose restriction ends after the entry week enter at the return entry (one set, four or more in reserve) (206.2936ms)
+✖ QRE-V1CPR-08: a declaration releases a hold the record holds, with or without the reference state (48.9934ms)
+✖ SEC-V1CPR-05: a clinical break declared on the restart day, after the restart, still holds the new plan (88.3997ms)
+✖ SEC-V1CPR-06: an early check that says not improved stores no improvement answer; a hold row stores no event kind (62.5591ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 4
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 946.07
+
+✖ failing tests:
+
+test at test\v1cp-ff-guard.test.mjs:45:1
+✖ N18, QRE-V1CPR-07: a declaration naming a hold not on record, or naming nothing, is asked; a full match restarts (67.3497ms)
+  AssertionError [ERR_ASSERTION]: {"eventId":"not-on-record"}: You told us you are ready to train again: running restarts after 9 days without it, with a lighter entry and 2 conditional steps back, its first week repeated once; strength restarts after 10 days without it, with a lighter entry and 2 conditional steps back, its first week repeated once. This is your own statement; the app makes no medical judgment. If a warning sign appears, stop and seek a professional assessment
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff-guard.test.mjs:49:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'READINESS_RESTART',
+    expected: 'READINESS_RESTART',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff-guard.test.mjs:90:1
+✖ QRE-V1CPR-08: a declaration releases a hold the record holds, with or without the reference state (48.9934ms)
+  AssertionError [ERR_ASSERTION]: No clinical hold, held sport or restriction is on record: there is nothing to restart. If you stopped training for a while, report the stop as a break
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff-guard.test.mjs:94:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff-guard.test.mjs:100:1
+✖ SEC-V1CPR-05: a clinical break declared on the restart day, after the restart, still holds the new plan (88.3997ms)
+  AssertionError [ERR_ASSERTION]: the record keeps the break declared under the new plan
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff-guard.test.mjs:106:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cp-ff-guard.test.mjs:110:1
+✖ SEC-V1CPR-06: an early check that says not improved stores no improvement answer; a hold row stores no event kind (62.5591ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== null
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization/CoachingCore/test/v1cp-ff-guard.test.mjs:114:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

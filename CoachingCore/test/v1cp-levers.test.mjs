@@ -89,9 +89,11 @@ test('D1 HIGHER (C-Q11-1, C-Q11-2): eligible accessory rows only, never main or 
  assert.notEqual(r.gates[el.id],'HOLD',`eligible row ${el.id}: ${r.gates[el.id]}`);assert.equal(r.gates[main.id],'HOLD',`main row ${main.id}`);
  // During a Situation 1 return the held week keeps the goal's start reserve: D1 HIGHER waits (C-Q12-2).
  const u=timeline(gen({difficulty:{strength:'HIGHER'}}));through(u,3);
- u.step(3,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:Object.fromEntries(F.signsFor('NEED_REST').map(k=>[k,false])),intent:'REDUCE_LIGHT',days:5,returnSpeed:'FASTER'}});
+ // V1CP Fix-Forward SSCTR-FF-Q1: FASTER resumes the held doses at once only after a whole executed and checked week of an easier window, so the window
+ // here is that whole week (it was Tuesday to Saturday; the held week under test is unchanged).
+ u.step(3,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:Object.fromEntries(F.signsFor('NEED_REST').map(k=>[k,false])),intent:'REDUCE_LIGHT',days:7,returnSpeed:'FASTER'}});
  u.step(3,6,'WEEKLY_REVIEW',{observations:week(u,3),check:{warningSigns:Object.fromEntries(F.signsFor('NEED_REST').map(k=>[k,false])),exerciseResponse:Object.fromEntries(F.exerciseSignsFor('NEED_REST').map(k=>[k,false])),improved:true}});
- assert.equal((u.p.weeks[4].adaptations??[]).find(a=>a.phase==='LADDER')?.rungs?.STRENGTH,'R4');
+ assert.equal((u.p.weeks[4].adaptations??[]).filter(a=>a.phase==='LADDER'&&!a.endedBy).reduce((o,a)=>({...o,...a.rungs}),{}).STRENGTH,'R4');
  assert.ok(rows(u.p,4).every(e=>e.rir>=3),'no row below the start reserve while the return holds the doses');
 });
 

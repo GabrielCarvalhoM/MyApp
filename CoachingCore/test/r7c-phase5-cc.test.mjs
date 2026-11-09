@@ -60,7 +60,8 @@ test('R7-C QE-R7C-01: an answer a refusal (R4 HOLD) recorded without applying it
   // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): this HOLD was the internal TypeError of a schedule change in
   // the program's last week. The explicit last-week rule keeps the weeks, so the review decides without the error path and applies the recorded
   // answer itself; what follows (the next decision keeps the race week as on time, history intact) is unchanged.
-  assert.ok(hold.status!=='HOLD'&&!/Malformed/.test(hold.reason??''),label+': '+hold.reason);
+  // V1CP Fix-Forward QRE-V1CPR-C7 (QRE-V1CP-11): pinned to the measured outcome, a re-plan from evidence or a keep, never a question or a route.
+  assert.ok([['MODIFY','REPLAN_FROM_EVIDENCE'],['KEEP','KEEP']].some(([s,a])=>hold.status===s&&hold.action===a)&&!/Malformed/.test(hold.reason??''),label+': '+hold.status+' '+hold.action+' '+hold.reason);
   assert.ok(facts.every(f=>t.ledger.some(o=>o.sessionId===f.sessionId)),label+': the answer is recorded');
   assert.ok(stale(stored),label+': the stored race week still holds the projection');
   for(const [what,x] of [['no observations',{}],['the answer re-sent',{observations:facts}]]){

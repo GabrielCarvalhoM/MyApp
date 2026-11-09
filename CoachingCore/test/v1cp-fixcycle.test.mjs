@@ -28,7 +28,8 @@ function timeline(input=HYBRID()){
 }
 const doneWeek=(t,w,{adverse=[],skip=[],load=false}={})=>doneBefore(t.p,w+1).filter(o=>t.p.weeks[w].sessions.some(s=>s.id===o.sessionId)&&!skip.includes(o.sessionId)).map(o=>{const s=t.p.weeks[w].sessions.find(x=>x.id===o.sessionId);let x=adverse.includes(o.sessionId)?{...o,eventId:o.eventId+'-adv',response:{...o.response,recovery:'ADVERSE'}}:o;
  if(load&&x.actual.exercises)x={...x,actual:{...x.actual,exercises:x.actual.exercises.map(e=>{const row=s.prescription.exercises.find(y=>y.id===e.id);return {...e,sets:e.sets.map(z=>z.load||row.load.mode==='BODYWEIGHT'?z:{...z,load:{value:row.load.mode==='KNOWN'?row.load.value:10,unit:'KG',convention:row.load.convention}})};})}};return x;});
-const ladder=(p,w)=>(p.weeks[w]?.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&!a.endedBy)?.rungs??null;
+// V1CP Fix-Forward NB-1: a sport returns on its own, so a week may hold one ladder marker per sport; the week's rungs are their union.
+const ladder=(p,w)=>(p.weeks[w]?.adaptations??[]).filter(a=>a.kind==='WELLBEING_REDUCTION'&&a.phase==='LADDER'&&!a.endedBy).reduce((o,a)=>({...(o??{}),...a.rungs}),null);
 const sets=(p,w,id)=>Math.max(0,...p.weeks[w].sessions.filter(s=>s.sport==='STRENGTH'&&live(s)).flatMap(s=>s.prescription.exercises).filter(e=>e.id===id).map(e=>e.sets));
 const runsOf=(p,w)=>p.weeks[w].sessions.filter(s=>s.sport==='RUN'&&live(s));
 /** A window from week 1's Tuesday morning, each window week done and reviewed with its check; the last review is the window-end check. */
@@ -167,7 +168,9 @@ test('M26, M54: an R2 week runs no hard session; after a window the first qualit
  t.step(qw,0,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REDUCE_SUBSTANTIAL',days:4}},'07:00');
  assert.ok(!t.p.weeks[qw].sessions.some(s=>live(s)&&['QUALITY','RACE_TOUCH'].includes(s.role)&&s.date<=t.day(qw,3)),'M54: no hard session inside the R2 window');
  const u=timeline(RACE(HYBRID()));for(let k=0;k<qw-1;k++)u.step(k,6,'WEEKLY_REVIEW',{observations:doneWeek(u,k)});
- u.step(qw-1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:3,returnSpeed:'FASTER'}},'07:00');
+ // V1CP Fix-Forward SSCTR-FF-Q1: FASTER resumes the held doses at once only after a whole executed and checked week of an easier window, so the window
+ // here is that whole week (it was 3 days; the eased first quality slot under test is unchanged).
+ u.step(qw-1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:7,returnSpeed:'FASTER'}},'07:00');
  u.step(qw-1,6,'WEEKLY_REVIEW',{observations:doneWeek(u,qw-1),check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),improved:true}});
  assert.equal(ladder(u.p,qw)?.RUN,'R4');
  // The held week runs the held doses; the first quality slot after the window, in whichever week it falls (D58), runs easy.
@@ -188,14 +191,17 @@ test('M37 (I-04), M33 (I-16): a reduced window not all done repeats its rung fir
 });
 
 // ---------------- QRE-V1CP-07, SSCTR-V1CPI-05: the race ----------------
-test('QRE-V1CP-07, SSCTR-V1CPI-05: a race waits for the window-end check too, and the return never crosses a race',()=>{
+// V1CP Fix-Forward NB-2 (Founder D3; SSCTR-FF-Q2) replaced the I-17 question this test asserted: the race stays on the calendar as the athlete's own
+// event, the check starts the return at once, and the race slot is the rung's session (none on a date that is not a run day).
+test('QRE-V1CP-07, SSCTR-V1CPI-05 under D3: a race in the wait is kept as the athlete\'s own event with no session; the check starts the return at once',()=>{
  const p=timeline(RACE(HYBRID())).p,raceDay=p.weeks.flatMap(x=>x.sessions).find(s=>s.role==='RACE').date,rw=Math.floor((Date.parse(raceDay)-Date.parse(p.startDate))/864e5/7);
  const t=timeline(RACE(HYBRID()));for(let k=0;k<rw;k++)t.step(k,6,'WEEKLY_REVIEW',{observations:doneWeek(t,k)});
  t.step(rw,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:3}},'07:00');
  const race=t.p.weeks[rw].sessions.find(s=>s.role==='RACE');
- if(race.date>t.day(rw,2)){assert.equal(race.waitsForCheck,true,'the race waits for the check');assert.ok(race.prescription,'never dropped');}
- const ask=t.step(rw,3,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:true}},'07:00');
- if(race.date>=t.day(rw,3)){assert.equal(ask.status,'ASK');assert.match(ask.reason,/never crosses a race/);}
+ if(race.date>t.day(rw,2)){assert.equal(race.ownEvent,true,'the race is the athlete\'s own event');assert.equal(race.coachRecommendation,'NO_SESSION','no session while waiting');assert.equal(race.role,'RACE','never dropped or relabelled');}
+ const go=t.step(rw,3,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:true}},'07:00');
+ assert.equal(go.action,'WELLBEING_RETURN_START',go.reason);
+ const after=t.p.weeks[rw].sessions.find(s=>s.role==='RACE');if(after.date>=t.day(rw,3)){assert.equal(after.ownEvent,true);assert.ok(['NO_SESSION','EASY_RUN'].includes(after.coachRecommendation),after.coachRecommendation);}
 });
 
 // ---------------- QRE-V1CP-08: the new plan's history ----------------
@@ -230,17 +236,25 @@ test('SSCTR-V1CPI-04: a ladder week with no review of its own does not count as 
  const {t,from}=windowThenCheck(HYBRID(),{});
  assert.equal(ladder(t.p,from+1)?.RUN,'R3');
  const g=t.step(from+1,6,'WEEKLY_REVIEW',{observations:[...doneWeek(t,from),...doneWeek(t,from+1)],check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST')}});
- assert.match(g.reason,/no review/);assert.equal(ladder(t.p,from+2)?.RUN,'R3','the step repeats');
+ // V1CP Fix-Forward NB-4: the SSCTR recheck ruled that the elapsed unchecked week's rung repeats, not this week's step (which this line asserted
+ // before: R3). Week `from` (R2) had no check, so R2 repeats from the next week.
+ assert.match(g.reason,/no review/);assert.equal(ladder(t.p,from+2)?.RUN,'R2','the unchecked week\'s rung repeats');
 });
 
 // ---------------- SSCTR-V1CPI-06: an early end ----------------
-test('SSCTR-V1CPI-06: an athlete who recovers early ends the window from its third day, never before',()=>{
+// V1CP Fix-Forward: the Founder's D4 replaced the third-day minimum this test asserted (SSCTR-V1CPI-06 as first ruled): the 3 to 14 days are a
+// choice, and the check can end the window from the day after the report (SSCTR-FF-Q3), with today's screen; on the report day it continues.
+test('SSCTR-V1CPI-06 under D4 (SSCTR-FF-Q3): an athlete who feels better ends the window early from the day after the report, never on it',()=>{
  const t=timeline();t.step(0,6,'WEEKLY_REVIEW',{observations:doneWeek(t,0)});
  t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:10}},'07:00');
- const soon=t.step(1,2,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true}},'07:00');assert.equal(soon.status,'ASK');assert.match(soon.reason,/at least 3 days/);
- const ok=t.step(1,3,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true}},'07:00');
- assert.equal(ok.action,'WELLBEING_RETURN_START',ok.reason);assert.match(ok.reason,/ends today, after 3 days/);
- assert.ok(t.p.weeks[1].sessions.filter(s=>s.date>=t.day(1,3)).some(live),'training resumes from the check');
+ const same=t.step(1,0,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true}},'09:00');assert.equal(same.status,'KEEP',same.reason);assert.match(same.reason,/from tomorrow/);
+ assert.equal(t.ledger.filter(o=>o.fact===F.WELLBEING_CHECKED).at(-1).check.improvedBy,undefined,'an answer that ends nothing is not kept');
+ const not=t.step(1,1,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:false}},'07:00');assert.equal(not.status,'KEEP','before its end, not improved changes nothing and is not persistence');
+ const stale=t.step(1,1,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true},eligibility:ELIG(t.day(1,0))},'07:15');assert.equal(stale.status,'ASK');assert.deepEqual(stale.missingInputs,['eligibility.assessedToday']);
+ const ok=t.step(1,1,'WELLBEING_CHECK',{check:{warningSigns:NO('UNUSUAL_FATIGUE'),improved:true}},'07:30');
+ assert.equal(ok.action,'WELLBEING_RETURN_START',ok.reason);assert.match(ok.reason,/early, from today/);assert.doesNotMatch(ok.reason,/recovered|cleared|healed/i);
+ assert.ok(t.p.weeks[1].sessions.filter(s=>s.date>=t.day(1,1)).some(live),'training resumes from the check');
+ assert.deepEqual([1,2,3,4].map(w=>ladder(t.p,w)?.RUN),['R2','R2','R3','R4'],'the window lasted 1 day: BALANCED R2 (partial), R2, R3, R4');
 });
 
 // ---------------- SSCTR-V1CPI-07: a race result ----------------
