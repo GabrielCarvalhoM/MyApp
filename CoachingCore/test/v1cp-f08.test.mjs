@@ -51,7 +51,8 @@ function windowThenCheck({condition='MILD_ILLNESS',intent='REDUCE_SUBSTANTIAL',d
 // ---------------- Situation 1: the entry ----------------
 test('S1-1 (C-Q05-9, SEC-V1CP-02/03): any warning sign yes routes to the clinical hold; an unanswered one is asked; only the vocabulary is read',()=>{
  const wb=c=>({condition:c,warningSigns:NO(c),intent:'REST',days:5});
- for(const c of ['MINOR_DISCOMFORT','MILD_ILLNESS'])for(const k of F.signsFor(c)){const r=timeline().step(1,1,'NOT_FEELING_100',{wellbeing:{...wb(c),warningSigns:{...NO(c),[k]:true}}});assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',c+' '+k);assert.equal(r.proposal,null);assert.match(r.reason,/professional assessment/);assert.doesNotMatch(r.reason,FORBIDDEN);}
+ // V1CP Fix-Forward D5 (SSCTR-FF-Q9): the potentially serious signs advise urgent care; the others a professional assessment (interim wording).
+ for(const c of ['MINOR_DISCOMFORT','MILD_ILLNESS'])for(const k of F.signsFor(c)){const r=timeline().step(1,1,'NOT_FEELING_100',{wellbeing:{...wb(c),warningSigns:{...NO(c),[k]:true}}});assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',c+' '+k);assert.equal(r.proposal,null);const urgent=F.URGENT_SIGNS.includes(k);assert.equal(r.guidance?.level,urgent?'URGENT_CARE_ADVISED':'PROFESSIONAL_ASSESSMENT',k);assert.match(r.reason,urgent?/urgent medical care/:/professional assessment/);if(!urgent)assert.doesNotMatch(r.reason,/emergency/i);assert.doesNotMatch(r.reason,FORBIDDEN);}
  const W=F.WARNING_SIGNS;
  assert.ok(!F.signsFor('UNUSUAL_FATIGUE').includes(W.W11)&&!F.signsFor('UNUSUAL_FATIGUE').includes(W.W15)&&F.signsFor('UNUSUAL_FATIGUE').includes(W.W10),'training fatigue alone is not routed clinical');
  assert.ok(F.signsFor('MILD_ILLNESS').includes(W.W11)&&F.signsFor('MILD_ILLNESS').includes(W.W15)&&!F.signsFor('MINOR_DISCOMFORT').includes(W.W10));

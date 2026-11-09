@@ -257,6 +257,8 @@ test('NB-2 (FF-Q2 (d), I-17): a ladder week after the race takes no pre-race hel
  assert.deepEqual([rw,rw+1].map(w=>ladder(t.p,w)?.RUN),['R2','R3'],'the plan ends the week after the race');
  const m=t.p.weeks[rw+1].adaptations.find(a=>a.phase==='LADDER'&&a.fixed?.RUN);assert.ok(m,'the marker still records its held start');
  assert.notEqual(JSON.stringify(t.p.stateTrace[rw+1].run),JSON.stringify(m.fixed.RUN),'the week after the race does not start from the pre-race held state');
+ // Mutation analysis (MF-D3-post survived the line above): the post-race start is the plan's own (shorter easy runs), never the held one.
+ assert.ok(t.p.stateTrace[rw+1].run.easy<m.fixed.RUN.easy,`post-race easy ${t.p.stateTrace[rw+1].run.easy} vs held ${m.fixed.RUN.easy}`);
 });
 test('NB-2 (FF-Q2 (b)): a MODERATE recipe step in race week: an easy run, no completion prescription, no completion item',()=>{
  const {t,rw}=raceT();reviewWeeks(t,0,rw-1);
@@ -282,6 +284,117 @@ test('NB-2 (FF-Q2 (c)): removing the race (GOAL_CHANGE) leaves the ladder in pla
  const n=t.ledger.filter(o=>o.fact).length;
  const g=t.step(rw,0,'GOAL_CHANGE',{changes:{goals:{run:'GENERAL'},event:null}},'07:00');assert.equal(g.status,'MODIFY',g.reason);
  assert.equal(raceRow(t),undefined,'the race leaves the plan');assert.equal(ladder(t.p,rw)?.RUN,'R2','the ladder continues');assert.ok(t.ledger.filter(o=>o.fact).length>=n,'the record keeps its history');
+});
+
+// ================= SSCTR-V1CPFF-DECISION-r1: the Founder's D1, D2, D4-D6 as ruled (FF-Q1, -Q3, -N1, -Q6, -Q9, -Q8, -Q4) =================
+const {screenInterruptionReason,reasonQuestion}=await import(pathToFileURL(path.join(ROOT,'CoachingCore/src/r6-clinical.mjs')).href);
+/** A REDUCE_LIGHT window of 10 days from week 1's Monday (week 1 whole inside it), its week-1 review, and the window-end check at week 2's review. */
+function lightTen(speed,{skip=false,noCheck=false,adverse=false}={}){
+ const t=timeline();reviewWeeks(t,0,1);
+ t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:10,returnSpeed:speed}},'07:00');
+ const w1=doneWeek(t,1),skipped=skip?[w1.find(o=>t.p.weeks[1].sessions.some(s=>s.id===o.sessionId&&s.sport==='RUN')).sessionId]:[];
+ if(!noCheck)t.step(1,6,'WEEKLY_REVIEW',{observations:w1.filter(o=>!skipped.includes(o.sessionId)),check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST')}});
+ const run2=t.p.weeks[2].sessions.find(s=>s.sport==='RUN'&&live(s)&&s.date<=t.day(2,2));
+ const obs=[...(noCheck?w1:[]),...doneWeek(t,2,{adverse:adverse&&run2?[run2.id]:[]})];
+ const end=t.step(2,6,'WEEKLY_REVIEW',{observations:obs,check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),improved:true}});
+ return {t,end};
+}
+test('FF-Q1 (D1, D2): FASTER after an easier window resumes the held doses at once only after a whole executed and checked week inside it',()=>{
+ const a=lightTen('FASTER');assert.notEqual(a.end.status,'ASK',a.end.reason);
+ assert.equal(ladder(a.t.p,3)?.RUN,'R4','a whole executed and checked R3 week inside the window: R4');assert.equal(ladder(a.t.p,4)?.RUN,undefined,'then the plan moves on');
+ const b=lightTen('FASTER',{skip:true});assert.deepEqual([3,4].map(w=>ladder(b.t.p,w)?.RUN),['R3','R4'],'one session unreported: R3, R4 (no regression, no debt)');
+ const c=lightTen('FASTER',{noCheck:true});assert.deepEqual([3,4].map(w=>ladder(c.t.p,w)?.RUN),['R3','R4'],'the week was never checked: R3, R4');
+ const d=lightTen('BALANCED');assert.deepEqual([3,4].map(w=>ladder(d.t.p,w)?.RUN),['R3','R4'],'BALANCED is unchanged');
+});
+test('FF-Q1 (C-FF1-1): with no whole week inside an easier window FASTER equals BALANCED and says so; a missed session repeats the rung once at each speed',()=>{
+ const run=(speed,skip)=>{const t=timeline();reviewWeeks(t,0,1);
+  t.step(1,2,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:5,returnSpeed:speed}},'07:00');
+  const o=doneWeek(t,1),miss=skip?o.filter(x=>t.p.weeks[1].sessions.some(s=>s.id===x.sessionId&&s.sport==='RUN'&&s.date>=t.day(1,2))).map(x=>x.sessionId).slice(0,1):[];
+  const r=t.step(1,6,'WEEKLY_REVIEW',{observations:o.filter(x=>!miss.includes(x.sessionId)),check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),improved:true}});
+  return {r,got:[2,3,4,5,6].map(w=>ladder(t.p,w)?.RUN).filter(Boolean)};};
+ const f=run('FASTER',false);assert.deepEqual(f.got,['R3','R4']);assert.match(f.r.reason,/one easier week first at both/);assert.doesNotMatch(f.r.reason,/skipped/);
+ assert.deepEqual(run('FASTER',true).got,['R3','R4'],'FASTER: R3 is the repeat, never R3, R3, R4');
+ assert.deepEqual(run('BALANCED',true).got,['R3','R3','R4']);assert.deepEqual(run('CONSERVATIVE',true).got,['R3','R3','R4','R4']);
+});
+test('FF-Q3 (D4): the weekly review ends the window with its plan week (the return starts next week, whole); an early warning sign or clinical flag routes clinical',()=>{
+ const t=timeline();reviewWeeks(t,0,1);
+ t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:10}},'07:00');
+ const r=t.step(1,6,'WEEKLY_REVIEW',{observations:[],check:{warningSigns:NO('MINOR_DISCOMFORT'),improved:true}});
+ assert.notEqual(r.status,'ASK',r.reason);assert.equal(ladder(t.p,1),null,'the window held the rest of the reviewed week');assert.equal(ladder(t.p,2)?.RUN,'R2','the return starts next week, as a whole week');
+ const u=timeline();reviewWeeks(u,0,1);u.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:10}},'07:00');
+ assert.equal(u.step(1,3,'WELLBEING_CHECK',{check:{warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true},improved:true}},'07:00').status,'CLINICAL_HUMAN_REQUIRED');
+ const v=timeline();reviewWeeks(v,0,1);v.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:10}},'07:00');
+ const flag=v.step(1,3,'WELLBEING_CHECK',{check:{warningSigns:NO('MINOR_DISCOMFORT'),improved:true},eligibility:ELIG(v.day(1,3),{persistentPain:true})},'07:00');assert.equal(flag.status,'CLINICAL_HUMAN_REQUIRED','a current clinical flag routes clinical');
+ assert.deepEqual(flag.guidance,{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'},'a route no warning sign caused carries the professional assessment (D5)');
+});
+test('FF-Q3 (C-Q05-5 precised): an easier window with no planned session of a sport follows its row; one whose planned runs were all missed reads as rest',()=>{
+ const t=timeline();reviewWeeks(t,0,1);
+ const day=[0,1,2,3,4,5].find(d=>!t.p.weeks[1].sessions.some(s=>s.sport==='STRENGTH'&&live(s)&&s.date===t.day(1,d))&&t.p.weeks[1].sessions.some(s=>s.sport==='RUN'&&live(s)&&s.date===t.day(1,d)));
+ if(day!==undefined){
+  t.step(1,day,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_LIGHT',days:3}},'06:00');
+  const runs=doneWeek(t,1).filter(o=>t.p.weeks[1].sessions.some(s=>s.id===o.sessionId&&s.sport==='RUN'&&s.date===t.day(1,day)));
+  const c=t.step(1,day+1,'WELLBEING_CHECK',{observations:runs,check:{warningSigns:NO('NEED_REST'),...(runs.length?{exerciseResponse:XNO('NEED_REST')}:{}),improved:true}},'07:00');
+  assert.equal(c.action,'WELLBEING_RETURN_START',c.reason);const plans=t.p.decisions.at(-1).wellbeing.plans;
+  if(!t.p.weeks[1].sessions.some(s=>s.sport==='STRENGTH'&&s.prescription&&s.date===t.day(1,day)))assert.equal(plans.STRENGTH.row,'REDUCE_LIGHT','no strength session in the window: its row as chosen');
+ }
+ const u=timeline();reviewWeeks(u,0,1);
+ u.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',sports:['RUN'],warningSigns:NO('NEED_REST'),intent:'REDUCE_SUBSTANTIAL',days:5}},'07:00');
+ const c=u.step(1,5,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST'),improved:true}},'07:00');assert.equal(c.action,'WELLBEING_RETURN_START',c.reason);
+ const p=u.p.decisions.at(-1).wellbeing.plans.RUN;if(u.p.weeks[1].sessions.some(s=>s.sport==='RUN'&&s.prescription&&s.date<=u.day(1,4)))assert.equal(p.read,'READ_AS_REST','its planned runs were all missed: rest');
+});
+test('FF-N1: days waited for the check are days without training: up to 10 the short rows, 11 to 28 the MODERATE recipe, beyond that the LONG restart',()=>{
+ const wait=(intent,days,checkW,checkD,speed='FASTER')=>{const t=timeline();reviewWeeks(t,0,1);
+  t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent,days,returnSpeed:speed}},'07:00');
+  // The window's sessions done as planned, so only the waited days decide the row (C-Q05-5 reads a missed window as rest).
+  const done=doneWeek(t,1).filter(o=>t.p.weeks[1].sessions.some(s=>s.id===o.sessionId&&s.date<=t.day(1,days-1)));
+  const c=t.step(checkW,checkD,'WELLBEING_CHECK',{observations:done,check:{warningSigns:NO('NEED_REST'),...(done.length?{exerciseResponse:XNO('NEED_REST')}:{}),improved:true}},'07:00');assert.equal(c.action,'WELLBEING_RETURN_START',c.reason);
+  return {t,plan:t.p.decisions.at(-1).wellbeing.plans.RUN};};
+ assert.equal(wait('REST',3,2,4).plan.recipe,'MODERATE','REST 3 days and 9 waited (12 days): the MODERATE recipe');
+ assert.deepEqual(wait('REST',3,1,3).plan.rungs,['R3','R4'],'a check the day after the window: unchanged');
+ assert.equal(wait('REDUCE_LIGHT',3,2,1).plan.row,'REDUCE_LIGHT','REDUCE_LIGHT 3 days and 5 waited: its row');
+ assert.equal(wait('REDUCE_LIGHT',3,3,1).plan.recipe,'MODERATE','REDUCE_LIGHT 3 days and 12 waited: the MODERATE recipe');
+ for(const speed of ['FASTER','BALANCED','CONSERVATIVE']){const x=wait('REST',5,5,6,speed);assert.equal(x.plan.recipe,'LONG',speed+': REST 5 days and 30 waited: the LONG class');assert.equal(x.t.p.stateTrace[5].run.mode==='RESTART'||x.t.p.stateTrace[6]?.run?.mode==='RESTART',true,speed+': a restart from current capacity');}
+});
+test('FF-Q6: the 14 days per sport: none left is persistence at the strictest route; else the days are 1 to the smallest allowance, never 0',()=>{
+ const ten=c=>{const t=timeline();reviewWeeks(t,0,1);t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:c,warningSigns:NO(c),intent:'REST',days:10}},'07:00');return t;};
+ const a=ten('NEED_REST'),r=a.step(3,1,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:3}},'07:00');
+ assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',r.reason);assert.match(r.reason,/professional assessment/);assert.equal(a.ledger.filter(o=>o.fact===F.WELLBEING_DECLARED).at(-1).wellbeing.persistence,'FOURTEEN_DAYS');
+ const b=ten('NEED_REST'),s=b.step(3,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:3}},'07:00');assert.equal(s.status,'ASK');assert.deepEqual(s.missingInputs,['interruption|restart']);
+ const c=ten('MILD_ILLNESS'),q=c.step(2,4,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:5}},'07:00');
+ assert.equal(q.status,'ASK');assert.match(q.reason,/choose 1 to 3 days/);
+ const ok=c.step(2,4,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:3}},'07:30');assert.equal(ok.action,'WELLBEING_REDUCTION',ok.reason);
+ const d=ten('MILD_ILLNESS'),one=d.step(2,6,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:3}},'07:00');assert.match(one.reason,/choose 1 day/);
+ const e=timeline();reviewWeeks(e,0,1);e.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',sports:['RUN'],warningSigns:NO('MINOR_DISCOMFORT'),intent:'REST',days:10}},'07:00');
+ const two=e.step(2,5,'NOT_FEELING_100',{wellbeing:{condition:'UNUSUAL_FATIGUE',warningSigns:NO('UNUSUAL_FATIGUE'),intent:'REST',days:5}},'07:00');assert.match(two.reason,/choose 1 to 2 days/,'running has 2 days left, strength no chain');
+ for(const x of [...a.results,...b.results,...c.results,...d.results,...e.results])assert.doesNotMatch(x.reason??'',/at most 0 days|choose 0/);
+});
+test('FF-Q9 (D5): the guidance level comes only from the items answered yes: urgent care for W2-W5 and X1, a professional assessment otherwise; an unanswered item has none',()=>{
+ const wb=c=>({condition:c,warningSigns:NO(c),intent:'REST',days:5}),urgent=F.URGENT_SIGNS;
+ for(const k of F.signsFor('MILD_ILLNESS')){const r=timeline().step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MILD_ILLNESS'),warningSigns:{...NO('MILD_ILLNESS'),[k]:true}}});
+  assert.deepEqual(r.guidance,{level:urgent.includes(k)?'URGENT_CARE_ADVISED':'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'},k);if(!urgent.includes(k))assert.doesNotMatch(r.reason,/emergency/i,k);}
+ const both=timeline().step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MINOR_DISCOMFORT'),warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true,[W.W2]:true}}});assert.equal(both.guidance.level,'URGENT_CARE_ADVISED','the higher level of several');
+ const t=timeline();reviewWeeks(t,0,1);t.step(1,1,'NOT_FEELING_100',{wellbeing:wb('MINOR_DISCOMFORT')},'07:00');
+ for(const k of Object.values(F.EXERCISE_SIGNS)){const r=t.step(1,4,'WELLBEING_CHECK',{check:{warningSigns:NO('MINOR_DISCOMFORT'),exerciseResponse:{...XNO('MILD_ILLNESS'),[k]:true},improved:true}},'07:00');if(r.status!=='CLINICAL_HUMAN_REQUIRED')continue;assert.equal(r.guidance.level,urgent.includes(k)?'URGENT_CARE_ADVISED':'PROFESSIONAL_ASSESSMENT',k);break;}
+ const s6=timeline();reviewWeeks(s6,0,1);s6.step(2,0,'RETURN_AFTER_PAUSE',{interruption:{startDate:s6.day(1,1),endDate:s6.day(1,6),reasonCategory:'ILLNESS',reason:'flu'}},'07:00');
+ const decl=s6.step(2,1,'READINESS_DECLARATION',{readiness:{...READY(),warningSigns:{...RNO(),[W.W3]:true}}},'07:00');assert.equal(decl.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(decl.guidance.level,'URGENT_CARE_ADVISED','Situation 2 uses the same mapping');
+ const ask=timeline().step(1,1,'NOT_FEELING_100',{wellbeing:{...wb('MINOR_DISCOMFORT'),warningSigns:(({[W.W2]:_,...x})=>x)(NO('MINOR_DISCOMFORT'))}});assert.equal(ask.status,'ASK');assert.equal(ask.guidance,undefined,'an unanswered item is asked, with no level');
+});
+test('FF-Q8 (lexicon V1CP-A1-LEX-3): the 43 directed texts, with and without the answer no',()=>{
+ const CASES=[["my wife had covid, and me too","CLINICAL"],["my wife had covid, I also did","CLINICAL"],["my wife had covid, I had it too","CLINICAL"],["my wife had covid, then I got it","CLINICAL"],["my wife had covid, same for me","CLINICAL"],["my wife had covid, us too","CLINICAL"],["my wife had covid, both of us actually","CLINICAL"],["my wife had covid; same","ASK_EVEN_WITH_NO"],["my wife had covid, not me","THIRD_PARTY"],["my son had the flu, I didn't get it","THIRD_PARTY"],["my mother had surgery, I took care of her","THIRD_PARTY"],["my mother had covid. I did too","CLINICAL"],["my mother had covid; me too","CLINICAL"],["my mother had covid and so did I","CLINICAL"],["visiting my dad in hospital","THIRD_PARTY"],["my dog bit me (OTHER_NONCLINICAL)","CLINICAL"],["I got bit by a dog (TRAVEL)","CLINICAL"],["the dog bit my son","THIRD_PARTY"],["work was a bit crazy (WORK)","NONCLINICAL"],["tore my acl skiing (TRAVEL)","CLINICAL"],["I tore my jeans on the trip (TRAVEL)","NONCLINICAL"],["my friend tore her acl","THIRD_PARTY"],["minha esposa teve covid, eu tbm","CLINICAL"],["minha esposa teve covid, eu também tive","CLINICAL"],["minha esposa teve covid, e eu também","CLINICAL"],["minha mãe teve covid, tive também","CLINICAL"],["minha mãe teve gripe, ela me passou","CLINICAL"],["minha mãe operou e eu também","CLINICAL"],["minha mãe operou, cuidei dela","THIRD_PARTY"],["minha mãe teve covid, eu não","THIRD_PARTY"],["minha mãe teve covid; tbm","ASK_EVEN_WITH_NO"],["o cachorro me mordeu (OTHER_NONCLINICAL)","CLINICAL"],["rompi o lca jogando futebol (TRAVEL)","CLINICAL"],["meu filho teve covid, nós também","CLINICAL"],["mi esposa tuvo covid, y yo también","CLINICAL"],["mi mamá tuvo covid, también la tuve","CLINICAL"],["mi hijo tuvo gripe, me la pegó","CLINICAL"],["mi mamá tuvo covid, yo no","THIRD_PARTY"],["mi mamá tuvo covid, yo tmb","CLINICAL"],["tuve una cirugía (TRAVEL)","CLINICAL"],["mi perro me mordió (OTHER_NONCLINICAL)","CLINICAL"],["me rompí el menisco (TRAVEL)","CLINICAL"],["mi mamá tuvo una cirugía, la cuidé","THIRD_PARTY"]];
+ const WANT={CLINICAL:['CLINICAL','CLINICAL'],THIRD_PARTY:['ASK','NONCLINICAL'],ASK_EVEN_WITH_NO:['ASK','ASK'],NONCLINICAL:['NONCLINICAL','NONCLINICAL']};
+ for(const [s,k] of CASES){const m=s.match(/^(.*) \(([A-Z_]+)\)$/),reason=m?m[1]:s,reasonCategory=m?m[2]:'FAMILY';
+  const got=[screenInterruptionReason({reason,reasonCategory,nonclinical:true}).status,screenInterruptionReason({reason,reasonCategory,nonclinical:true,clinicalReason:false}).status];assert.deepEqual(got,WANT[k],`${k}: ${s}`);}
+ const u=screenInterruptionReason({reason:'my wife had covid; same',reasonCategory:'FAMILY',nonclinical:true,clinicalReason:false});assert.equal(u.basis,'SELF_INCLUSION_UNCERTAIN');
+ const q=reasonQuestion(u,{reasonCategory:'FAMILY'});assert.deepEqual(q.missingInputs,['interruption.reason','interruption.clinicalReason']);assert.match(q.text,/may say you had it too/);
+});
+test('FF-Q4 (D6): the Demanding coach prescribes what the Balanced coach prescribes, on generation and on the F08 paths; it says so',()=>{
+ const run=profile=>{const t=timeline(HYBRID({profile}));reviewWeeks(t,0,1);
+  t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REDUCE_SUBSTANTIAL',days:5}},'07:00');
+  t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('MILD_ILLNESS'),exerciseResponse:XNO('MILD_ILLNESS'),improved:true}});
+  return t;};
+ const b=run('BALANCED'),d=run('DEMANDING'),rx=t=>JSON.stringify(t.p.weeks.map(w=>w.sessions.map(s=>[s.id,s.role,s.prescription])));
+ assert.equal(rx(d),rx(b),'the same sessions and doses');
+ assert.match(d.p.negotiation.find(n=>n.id==='COACH_DEMANDING')?.detail??'',/same as the balanced coach/,'the disclosure says the doses and limits are the balanced coach\'s');
 });
 
 // ================= NB-3 (SSCTR-V1CPI-03, QRE-V1CPR-01): rest days before a single declared break =================
@@ -338,6 +451,30 @@ test('NB-5: without a reported longest run, a race result only raises the first 
 });
 
 // ================= NB-6 (SSCTR-V1CPR-03, QRE-V1CPR-04): D49 on executed sets =================
+// Mutation analysis of the fix-forward (MF-NB4-stack, MF-NB6-d49, MF-SB3-program survived the first run): the three directed tests below close them.
+test('NB-4 (SSCTR-V1CPR-04): a second review of the same ladder week adds no second repeat',()=>{
+ const t=timeline();reviewWeeks(t,0,1);
+ t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_SUBSTANTIAL',days:5}},'07:00');
+ t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:{warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),improved:true}});
+ assert.deepEqual([2,3,4].map(w=>ladder(t.p,w)?.RUN),['R2','R3','R4']);
+ const run=t.p.weeks[2].sessions.find(s=>s.sport==='RUN'&&live(s)).id,obs=doneWeek(t,2,{skip:[run]}),check={warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST')};
+ t.step(2,6,'WEEKLY_REVIEW',{observations:obs,check},'20:00');
+ const once=[3,4,5].map(w=>ladder(t.p,w)?.RUN);assert.deepEqual(once,['R2','R3','R4'],'the R2 week not done repeats once');
+ t.step(2,6,'WEEKLY_REVIEW',{observations:obs,check},'21:00');
+ assert.deepEqual([3,4,5].map(w=>ladder(t.p,w)?.RUN),once,'a second review of the same week adds nothing');
+});
+test('NB-6 (SSCTR-V1CPR-03): past the ladder, the D49 hold reads the sets the last R4 week executed, never the plan, from the first week placed',()=>{
+ for(const n of [3,4,6]){
+ const t=timeline(KNOWN(n,HYBRID()));reviewWeeks(t,0,1);const ck=x=>({warningSigns:NO('NEED_REST'),exerciseResponse:XNO('NEED_REST'),...x});
+ t.step(1,0,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_SUBSTANTIAL',days:3}},'07:00');
+ t.step(1,6,'WEEKLY_REVIEW',{observations:doneWeek(t,1),check:ck({improved:true})});
+ for(let w=2;w<4;w++)t.step(w,6,'WEEKLY_REVIEW',{observations:doneWeek(t,w),check:ck()});
+ assert.equal(ladder(t.p,4)?.STRENGTH,'R4');const id='db-bench-press',r4=setsOf(t.p,4,id);assert.ok(r4>=2,'R4 plans '+r4);
+ const obs=doneWeek(t,4).map(o=>o.actual.exercises?{...o,actual:{...o.actual,exercises:o.actual.exercises.map(e=>({...e,sets:e.sets.slice(0,1)}))}}:o);
+ t.step(4,6,'WEEKLY_REVIEW',{observations:obs,check:ck()});
+ const next=setsOf(t.p,5,id);assert.ok(next<=2,`known ${n}: week 5 plans ${next} sets of ${id} after one executed (R4 planned ${r4})`);
+ }
+});
 test('NB-6: on the ladder and past it, strength sets rise at most one over the last executed count',()=>{
  for(const missed of ['R3','R4']){
   const t=timeline(KNOWN(6,HYBRID()));reviewWeeks(t,0,1);
@@ -389,6 +526,13 @@ test('SB-2: a warning sign under a reused event id routes to the clinical hold a
 });
 
 // ================= SB-3 (SEC-V1CPR-01, QRE-V1CPR-03): unreadable holds fail closed =================
+test('SB-3 (SEC-V1CPR-01): a decision never reads an altered recovery row as absent: it holds',()=>{
+ const t=timeline();reviewWeeks(t,0,1);
+ assert.equal(t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true},intent:'REST',days:5}},'08:00').status,'CLINICAL_HUMAN_REQUIRED');
+ const altered=t.ledger.map(o=>o.fact===F.CLINICAL_HOLD?{...o,declaredAt:new Date(Date.parse(o.declaredAt)+1).toISOString()}:o);
+ const r=evaluateProgram(t.p,{...t.review(1,6,'WEEKLY_REVIEW',{noLedger:true,noRef:true}),actualLedger:altered});
+ assert.equal(r.status,'HOLD',r.reason);assert.deepEqual(r.errors,['record.f08Unreadable']);assert.equal(r.proposal,null);
+});
 test('SB-3: a restart never reads an unreadable, foreign or later hold as no hold',()=>{
  const t=timeline();reviewWeeks(t,0,1);
  assert.equal(t.step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'MINOR_DISCOMFORT',warningSigns:{...NO('MINOR_DISCOMFORT'),[W.W7]:true},intent:'REST',days:5}},'08:00').status,'CLINICAL_HUMAN_REQUIRED');

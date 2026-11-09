@@ -510,6 +510,10 @@ export function composeWeeks(ctx,next,options){
  // is placed again from that start, so no projection carries a step into it (every handler re-plans through here, so every re-plan keeps it).
  const sports=options.sports??SPORTS,N=placed.weeks.length;
  const record={fullLedger:ctx.fullLedger??ctx.ledger??[],elapsed:(a=>s=>!a(s))(aheadOf(ctx))};
+ // V1CP Fix-Forward NB-6 (SSCTR-V1CPR-03; found by the mutation analysis): the first week placed after a held R4 week is held too when it would add
+ // more than one set over the count that week executed (a short log), as every later week is; it is placed again from the held strength start.
+ if(options.fromWeek>0&&!options.d49Checked){const i=options.fromWeek,ext=d49Hold(placed.weeks,i,sports,record);if(ext){const f=fixedStartOf(ext,placed.stateTrace,i,sports),s0=placed.stateTrace[i];
+  return composeWeeks(ctx,{...next,weeks:ext,stateTrace:placed.stateTrace},{...options,start:{runState:options.start?.runState?clone(options.start.runState):clone(s0.run),strengthState:f?.STRENGTH?.state??clone(s0.strength)},d49Checked:true,ownStart:true});}}
  for(let i=options.fromWeek+1;i<N;i++){const ext=eachHold(placed.weeks,placed.stateTrace,i,sports)??d49Hold(placed.weeks,i,sports,record);if(ext)placed.weeks=ext;const f=fixedStartOf(placed.weeks,placed.stateTrace,i,sports);if(!f)continue;
   const s0=placed.stateTrace[i],by={eventId:ctx.review?.event?.id??null,asOf:ctx.asOf??null};
   return composeWeeks(ctx,{...next,weeks:placed.weeks,stateTrace:placed.stateTrace},{...options,fromWeek:i,start:{runState:f.RUN?.state??clone(s0.run),strengthState:f.STRENGTH?.state??clone(s0.strength)},startAuthority:fixedAuthority(f,projectedStart(placed.weeks[i-1],by)),returnDay:null,evidence:null,uncredited:[],ownStart:true});}

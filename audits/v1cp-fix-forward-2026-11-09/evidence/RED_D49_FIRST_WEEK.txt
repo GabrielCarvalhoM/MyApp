@@ -1,0 +1,8 @@
+NB-6 first-week D49 (found by the mutation analysis, MF-NB6-d49 surviving run 1): after a held R4 week logged with fewer sets than planned, the first
+week placed by the weekly review planned 3 or 4 sets of db-bench-press after 1 executed (known 3 or 4 sets), because composeWeeks checked the D49 hold
+from fromWeek+1 only. Fixed in src/r6-composition.mjs (composeWeeks: the first week placed is held too, placed again from the held strength start).
+
+RED: test 'NB-6 (SSCTR-V1CPR-03): past the ladder, the D49 hold reads the sets the last R4 week executed, never the plan, from the first week placed'
+fails on an isolated copy of the candidate without the fix (pass 0, fail 1).
+GREEN: it passes with the fix; MF-NB6-d49 is then killed (mutation run 3). Probe values (sets of db-bench-press, weeks 4/5/6 after the short log):
+known 3: before the fix 2/3/3, after 2/2/3; known 4: before 3/4/4, after 3/2/3; known 6: 3/2/3 both (the projected d49 marker already held).

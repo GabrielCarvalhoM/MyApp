@@ -36,3 +36,12 @@
 **ESCALATE_IF:** a medical document needed; a clearance claimed; a relevant sign ignored; a new number without evidence; a strategic or subjective choice that is the Founder's and is not covered by D1–D7.
 
 **States kept distinct in every report:** implementation done; technical validation passed; integration readiness; authorization for real athletes; app ready to publish.
+
+## Provenance addendum (PCG-V1CPFF-F08 F04; appended, r1 unchanged above)
+
+The Founder's own words for the decisions summarized above without a quote (mission prompt of 2026-11-09):
+
+- **D2:** "Essas velocidades influenciam a trajetória de progressão, mas compartilham os limites obrigatórios do motor." "A escolha mais rápida deve ter um efeito legítimo quando existe margem para isso." "Não tornar as três velocidades idênticas. Também não criar agressividade artificial para diferenciá-las." "As velocidades são temporárias e independentes do perfil permanente de treinador."
+- **D5:** "Adotar linguagem provisória clara, objetiva e não diagnóstica." "Quando houver sinais potencialmente graves, orientar atendimento urgente de maneira proporcional ao risco, sem inventar um diagnóstico, uma classificação de urgência não fundamentada ou uma liberação clínica." "Não transformar toda indisposição leve em emergência."
+- **D6:** "O perfil Exigente não pode ser vendido como um treinador funcionalmente diferente se apenas trocar as frases exibidas." "Se não houver uma alternativa técnica legitimamente distinta, registrar explicitamente essa limitação. Nesse caso, o perfil Exigente não poderá ser declarado funcionalmente concluído nem apresentado como comportamento prescritivo diferente na V1."
+- **D7:** "Registrar sua disposição de forma rastreável: relevante para corrigir bloqueador atual, melhoria futura ou já coberta." "Não criar automaticamente 12 novas missões, rodadas de validação ou etapas de governança." "Não aumentar o backlog simplesmente por procedimento."

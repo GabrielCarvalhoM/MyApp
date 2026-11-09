@@ -1,0 +1,750 @@
+{
+ "generatedBy": "scratchpad tools/mutate.mjs on isolated copies (never the repository); mutants and runs as listed",
+ "runs": [
+  {
+   "run": 1,
+   "mutants": 60,
+   "control": {
+    "pass": 115,
+    "fail": 0,
+    "failing": []
+   },
+   "restored": {
+    "pass": 115,
+    "fail": 0,
+    "failing": []
+   },
+   "killed": 53
+  },
+  {
+   "run": 2,
+   "note": "survivors of run 1 after three new directed tests, a strengthened M12 guard and the NB-2 (d) assertion; MF-LEX3-words replaced by MF-LEX3-bites (the first mutant hit overlapping entries)",
+   "mutants": 7,
+   "control": {
+    "pass": 118,
+    "fail": 0,
+    "failing": []
+   },
+   "restored": {
+    "pass": 118,
+    "fail": 0,
+    "failing": []
+   },
+   "killed": 4
+  },
+  {
+   "run": 3,
+   "note": "after the NB-6 first-week D49 fix found by run 1 (MF-NB6-d49), RED without it and GREEN with it",
+   "mutants": 3,
+   "control": {
+    "pass": 118,
+    "fail": 0,
+    "failing": []
+   },
+   "restored": {
+    "pass": 118,
+    "fail": 0,
+    "failing": []
+   },
+   "killed": 1
+  }
+ ],
+ "final": {
+  "distinct": 60,
+  "killed": 58,
+  "survived": [
+   "MF-M12",
+   "MF-D3-strength"
+  ]
+ },
+ "classification": {
+  "MF-D3-strength": "EQUIVALENT_IN_PRACTICE: the race-week rules already keep no strength in the last three days before the race, so race day never holds strength on these routes; the composition rule is kept as a guard",
+  "MF-M12": "NOT_SHOWN_REACHABLE: QRE M12 guard holds with the mutant at both bounds (declaration day; last executed strength session) on the fixture; the projected states here carry no later execution date; named for QRE"
+ },
+ "results": [
+  {
+   "id": "MF-NB3",
+   "what": "the window's rest and waiting days are not days without the sport (also QRE's N11)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-3: a single declared break right after a rest window reads the window's rest and waiting days, per sport"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-NB4-detect",
+   "what": "an unchecked ladder week is never seen",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "NB-4: an elapsed ladder week without its check repeats its rung at the next review, even with sessions pending, and only once",
+    "SSCTR-V1CPI-04: a ladder week with no review of its own does not count as done"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-NB4-once",
+   "what": "a repeat already recorded does not count",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-4: an elapsed ladder week without its check repeats its rung at the next review, even with sessions pending, and only once"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-NB4-stack",
+   "what": "a second review of a week stacks its own repeat (SSCTR-V1CPR-04)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-4 (SSCTR-V1CPR-04): a second review of the same ladder week adds no second repeat"
+   ],
+   "run": 2
+  },
+  {
+   "id": "MF-NB5",
+   "what": "a race result caps the first long run again",
+   "file": "src/r6-program.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "E2 (SSCTR-V1CP Q04): a current confirmed race result caps only the first long run and the single-run limit; never the run class",
+    "NB-5: without a reported longest run, a race result only raises the first long run, never lowers a session or the week"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-NB6-cap",
+   "what": "the ladder cap reads prescribed sets",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-6: on the ladder and past it, strength sets rise at most one over the last executed count"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-NB6-d49",
+   "what": "the D49 hold compares with the planned week",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-6 (SSCTR-V1CPR-03): past the ladder, the D49 hold reads the sets the last R4 week executed, never the plan, from the first week placed"
+   ],
+   "run": 3
+  },
+  {
+   "id": "MF-SB1",
+   "what": "an old declaration stands in for a later stop",
+   "file": "src/v1-f08.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-1: a new stop after training resumed post-declaration is screened on its own: its reason is asked"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SB2",
+   "what": "a reused id is asked before the warning signs",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-2: a warning sign under a reused event id routes to the clinical hold and writes its fact"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SB3-restart",
+   "what": "a restart reads unreadable, foreign or later rows as absent",
+   "file": "src/v1-f08.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-3: a restart never reads an unreadable, foreign or later hold as no hold"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SB3-program",
+   "what": "a decision reads unreadable F08 rows as absent",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-3 (SEC-V1CPR-01): a decision never reads an altered recovery row as absent: it holds"
+   ],
+   "run": 2
+  },
+  {
+   "id": "MF-SB4-id",
+   "what": "a non-string event id is decided",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-4: a clinical decision always leaves its CLINICAL_HOLD fact on record"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SB4-standing",
+   "what": "any hold row on record counts as standing",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SB-4: a clinical decision always leaves its CLINICAL_HOLD fact on record"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SB5",
+   "what": "the restart question reads a null pause",
+   "file": "src/r6-intake.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "SB-1: a new stop after training resumed post-declaration is screened on its own: its reason is asked",
+    "SB-5: a restart with no stated pause asks the reason; it never throws"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-QRE02",
+   "what": "restart checks are unreadable again",
+   "file": "src/v1-f08.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "QRE-V1CPR-02: an answered restart check is not asked again, and a replay adds no row"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-QRE07",
+   "what": "a named hold matches an absent key (also QRE's N18)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "N18, QRE-V1CPR-07: a declaration naming a hold not on record, or naming nothing, is asked; a full match restarts"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N18",
+   "what": "a declaration naming a hold not on record is accepted",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "N18, QRE-V1CPR-07: a declaration naming a hold not on record, or naming nothing, is asked; a full match restarts"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-QRE08",
+   "what": "a hold on record cannot be bound without the reference",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "QRE-V1CPR-08: a declaration releases a hold the record holds, with or without the reference state"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SECR05",
+   "what": "the restart day is read as old history again",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SEC-V1CPR-05: a clinical break declared on the restart day, after the restart, still holds the new plan"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-I09",
+   "what": "a missed restart entry week does not move the hold",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "I-09: when the restart's entry week is not done, the entry repeats once more, so two executed entry weeks come before the first step"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-I10",
+   "what": "a region restart counts from the last strength session",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "I-10: a restriction that ends restarts its region from that region's own stop, recorded and stated"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-M12",
+   "what": "a return's own start gives way to a marker (QRE's M12)",
+   "file": "src/r6-composition.mjs",
+   "killed": false,
+   "fail": 0,
+   "killedBy": [],
+   "run": 3
+  },
+  {
+   "id": "MF-M29",
+   "what": "new region rows after a restriction ends are not at the entry (QRE's M29)",
+   "file": "src/r6-program.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "M29: rows of a region whose restriction ends after the entry week enter at the return entry (one set, four or more in reserve)"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N14",
+   "what": "ended markers are not flagged endedBy (QRE's N14, AF-01)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "N14: the S1 window-end answers sent after a readiness restart open no S1 ladder; the restart's return stands",
+    "NB-1 ((vi), CH-r2-9): each sport's 14-day count: an early end or a declared break never resets it; a whole executed and checked ladder week does; a disjoint report neither resets nor extends it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N19",
+   "what": "a screen answered before the hold is accepted (QRE's N19)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "N19: a same-day screen stamped before the hold is asked again; one stamped after it restarts"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-rung",
+   "what": "a moved sport takes the report's rung, not the stricter of it and the rung in force (CH-r2-3 (c))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 3,
+   "killedBy": [
+    "NB-1 V1CPR-01 (a): a local report in an illness window moves its sport at the stricter rung carrying the illness; the other sport keeps the illness and its check",
+    "NB-1 V1CPR-01 (b): an easier local report on a sport in an illness return moves it at the ladder rung (R2), never above; strength keeps R2, R3, R4; running returns on the much-lighter row",
+    "NB-1 V1CPR-01 (d): another condition in an illness rest window keeps both sports at R0 until the illness end, carrying it (W11, W15 still asked); at an R2 rung an easier report keeps R2"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-carry",
+   "what": "a moved sport carries no unresolved condition (CH-r2-3 (c))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 4,
+   "killedBy": [
+    "S1-10 (C-Q05-2 with SSCTR-V1CPI-01, C-Q05-4): a report during the return supersedes it with its own window and coverage; again a week later routes to assessment; an adverse session asks the items",
+    "NB-1 V1CPR-01 (a): a local report in an illness window moves its sport at the stricter rung carrying the illness; the other sport keeps the illness and its check",
+    "NB-1 V1CPR-01 (d): another condition in an illness rest window keeps both sports at R0 until the illness end, carrying it (W11, W15 still asked); at an R2 rung an easier report keeps R2",
+    "NB-1 ((vii), regions): another strength region merges into the whole sport at the stricter rung, carrying the first condition"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-perSport",
+   "what": "taking a sport ends the whole report it was taken from (CH-r2-4)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 3,
+   "killedBy": [
+    "NB-1 V1CPR-01 (a): a local report in an illness window moves its sport at the stricter rung carrying the illness; the other sport keeps the illness and its check",
+    "NB-1 V1CPR-01 (b): an easier local report on a sport in an illness return moves it at the ladder rung (R2), never above; strength keeps R2, R3, R4; running returns on the much-lighter row",
+    "NB-1 V1CPR-01 (c): a stricter local report during a return takes only its sport (R0, then its wait); the other sport keeps R2, R3, R4"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-same",
+   "what": "the unchanged case ignores the condition (CH-r2-3 (b))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "NB-1 V1CPR-01 (a): a local report in an illness window moves its sport at the stricter rung carrying the illness; the other sport keeps the illness and its check",
+    "NB-1 V1CPR-01 (d): another condition in an illness rest window keeps both sports at R0 until the illness end, carrying it (W11, W15 still asked); at an R2 rung an easier report keeps R2"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-recur",
+   "what": "a recurrence is never seen (CH-r2-8, OBS-R2)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 V1CPR-01 (e), OBS-R2 (CH-r2-8): the same illness after it was answered improved, before the chain resets, is a recurrence: the clinical route with the professional-assessment recommendation"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-wait",
+   "what": "the same condition in its wait is not its not-improved answer (CH-r2-8)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 (CH-r2-8): the same condition in its wait is its not-improved answer: clinical (discomfort, illness) or the break or a new plan (need to rest); never a new window"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-none",
+   "what": "no day left is not persistence (CH-r2-9, FF-Q6)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q6: the 14 days per sport: none left is persistence at the strictest route; else the days are 1 to the smallest allowance, never 0"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-min",
+   "what": "the days question offers the largest allowance, not the smallest (FF-Q6)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 ((vi), CH-r2-9): each sport's 14-day count: an early end or a declared break never resets it; a whole executed and checked ladder week does; a disjoint report neither resets nor extends it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-break",
+   "what": "a declared break resets the count ((vi))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 ((vi), CH-r2-9): each sport's 14-day count: an early end or a declared break never resets it; a whole executed and checked ladder week does; a disjoint report neither resets nor extends it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-perCond",
+   "what": "any improved answer resolves every condition (CH-r2-6)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "NB-1 ((vii)): a report on a sport no report governs opens its own report: no question; its condition is answered apart from the same condition of the other report",
+    "NB-1 (CH-r2-6): each improvement answer applies to its condition: a discomfort not improved routes clinical; a need to rest not improved keeps running waiting while strength returns"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-key",
+   "what": "two reports of the same condition share one answer (separate checks)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 ((vii)): a report on a sport no report governs opens its own report: no question; its condition is answered apart from the same condition of the other report"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-region",
+   "what": "another strength region does not merge into the whole sport ((vii))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-1 ((vii), regions): another strength region merges into the whole sport at the stricter rung, carrying the first condition"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-CH-fresh",
+   "what": "a fresh window of fewer than 3 days is accepted (D4 keeps 3 to 14)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "S1-1 (C-Q05-9, SEC-V1CP-02/03): any warning sign yes routes to the clinical hold; an unanswered one is asked; only the vocabulary is read"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D4-soon",
+   "what": "the check ends a window on its report day (FF-Q3)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SSCTR-V1CPI-06 under D4 (SSCTR-FF-Q3): an athlete who feels better ends the window early from the day after the report, never on it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D4-screen",
+   "what": "an early end needs no screen today (FF-Q3)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "SSCTR-V1CPI-06 under D4 (SSCTR-FF-Q3): an athlete who feels better ends the window early from the day after the report, never on it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D4-early-not",
+   "what": "not improved before the chosen end is persistence (FF-Q3)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "SEC-V1CPR-06: an early check that says not improved stores no improvement answer; a hold row stores no event kind",
+    "SSCTR-V1CPI-06 under D4 (SSCTR-FF-Q3): an athlete who feels better ends the window early from the day after the report, never on it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-SECR06",
+   "what": "answers that end nothing are kept (SEC-V1CPR-06)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "SEC-V1CPR-06: an early check that says not improved stores no improvement answer; a hold row stores no event kind",
+    "SSCTR-V1CPI-06 under D4 (SSCTR-FF-Q3): an athlete who feels better ends the window early from the day after the report, never on it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-scope",
+   "what": "a race inside a reduction or return keeps its race prescription (FF-Q2 (b))",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 7,
+   "killedBy": [
+    "S1-4 (C-Q05-3 under D3, C-Q05-9): a window holding the race day opens at once with the race as the athlete's own event; a replay changes nothing; the weeks a window covers release no step",
+    "NB-2 (FF-Q2 (b), (c)): a race inside a window is the athlete's own event: no question, the rung's easy run, no strength that day, the three paths offered once, no completion item",
+    "NB-2 (FF-Q2 (b)): at R0 or in the wait the race slot has no session and the event is kept; the r12 dead end: a check starts the return and the race slot is the rung's easy run",
+    "NB-2 (FF-Q2 (a), (b)): R3 and R4 weeks hold the race in scope: an easy run at once, the race-week touch easy",
+    "NB-2 (C-FF2-4): when the return completes before the race, the race leaves the scope: the event rules plan it again and the decision says so",
+    "NB-2 (FF-Q2 (b)): a MODERATE recipe step in race week: an easy run, no completion prescription, no completion item",
+    "QRE-V1CP-07, SSCTR-V1CPI-05 under D3: a race in the wait is kept as the athlete's own event with no session; the check starts the return at once"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-offer",
+   "what": "the race paths are never offered (FF-Q2 (c))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 4,
+   "killedBy": [
+    "S1-4 (C-Q05-3 under D3, C-Q05-9): a window holding the race day opens at once with the race as the athlete's own event; a replay changes nothing; the weeks a window covers release no step",
+    "NB-2 (FF-Q2 (b), (c)): a race inside a window is the athlete's own event: no question, the rung's easy run, no strength that day, the three paths offered once, no completion item",
+    "NB-2 (C-FF2-4): when the return completes before the race, the race leaves the scope: the event rules plan it again and the decision says so",
+    "NB-2 (FF-Q2 (a)): a readiness restart with the race two weeks later plans an easy run there, never a completion; a declared nonclinical break's return is unchanged"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-left",
+   "what": "leaving the scope is not said (C-FF2-4)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-2 (C-FF2-4): when the return completes before the race, the race leaves the scope: the event rules plan it again and the decision says so"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-post",
+   "what": "a week after the race takes the pre-race held start (FF-Q2 (d), I-17)",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-2 (FF-Q2 (d), I-17): a ladder week after the race takes no pre-race held start; the rung still applies"
+   ],
+   "run": 2
+  },
+  {
+   "id": "MF-D3-completion",
+   "what": "a race in scope still gets the completion item (FF-Q2 (b))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-2 (FF-Q2 (b)): a MODERATE recipe step in race week: an easy run, no completion prescription, no completion item"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-s6",
+   "what": "a readiness restart never puts the race in scope (FF-Q2 (a))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "NB-2 (FF-Q2 (a)): a readiness restart with the race two weeks later plans an easy run there, never a completion; a declared nonclinical break's return is unchanged"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D3-strength",
+   "what": "race day keeps strength in scope (FF-Q2 (b))",
+   "file": "src/r6-composition.mjs",
+   "killed": false,
+   "fail": 0,
+   "killedBy": [],
+   "run": 3
+  },
+  {
+   "id": "MF-D3-unwell",
+   "what": "the systemic wording is lost (C-FF2-2)",
+   "file": "src/r6-composition.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "S1-4 (C-Q05-3 under D3, C-Q05-9): a window holding the race day opens at once with the race as the athlete's own event; a replay changes nothing; the weeks a window covers release no step",
+    "NB-2 (FF-Q2 (b), (c)): a race inside a window is the athlete's own event: no question, the rung's easy run, no strength that day, the three paths offered once, no completion item"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D5-level",
+   "what": "every sign route advises only a professional assessment (FF-Q9)",
+   "file": "src/v1-f08.mjs",
+   "killed": true,
+   "fail": 2,
+   "killedBy": [
+    "S1-1 (C-Q05-9, SEC-V1CP-02/03): any warning sign yes routes to the clinical hold; an unanswered one is asked; only the vocabulary is read",
+    "FF-Q9 (D5): the guidance level comes only from the items answered yes: urgent care for W2-W5 and X1, a professional assessment otherwise; an unanswered item has none"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-D5-default",
+   "what": "a clinical route no sign caused carries no level (FF-Q9)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q3 (D4): the weekly review ends the window with its plan week (the return starts next week, whole); an early warning sign or clinical flag routes clinical"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-Q1-whole",
+   "what": "FASTER resumes the held doses without a whole executed week (FF-Q1)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 3,
+   "killedBy": [
+    "S1-6 (C-Q06-3): each window and speed climbs its rungs one week each; none reaches the held doses before an executed R3 or recipe step (FP-4 apart)",
+    "FF-Q1 (D1, D2): FASTER after an easier window resumes the held doses at once only after a whole executed and checked week inside it",
+    "FF-Q1 (C-FF1-1): with no whole week inside an easier window FASTER equals BALANCED and says so; a missed session repeats the rung once at each speed"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-Q1-checked",
+   "what": "the whole week needs no check (FF-Q1 (ii))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q1 (D1, D2): FASTER after an easier window resumes the held doses at once only after a whole executed and checked week inside it"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N1-waited",
+   "what": "waited days are not days without training (FF-N1 (a))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-N1: days waited for the check are days without training: up to 10 the short rows, 11 to 28 the MODERATE recipe, beyond that the LONG restart"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N1-long",
+   "what": "no LONG class after a long wait (FF-N1)",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-N1: days waited for the check are days without training: up to 10 the short rows, 11 to 28 the MODERATE recipe, beyond that the LONG restart"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-N1-reduce",
+   "what": "a long wait after a reduce window keeps the reduce row (FF-N1 (b))",
+   "file": "src/r6-adaptation.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-N1: days waited for the check are days without training: up to 10 the short rows, 11 to 28 the MODERATE recipe, beyond that the LONG restart"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-LEX3-incl",
+   "what": "the athlete's own inclusion is never read (FF-Q8)",
+   "file": "src/r6-clinical.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q8 (lexicon V1CP-A1-LEX-3): the 43 directed texts, with and without the answer no"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-LEX3-uncertain",
+   "what": "an uncertain inclusion is not asked (FF-Q8)",
+   "file": "src/r6-clinical.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q8 (lexicon V1CP-A1-LEX-3): the 43 directed texts, with and without the answer no"
+   ],
+   "run": 1
+  },
+  {
+   "id": "MF-LEX3-bites",
+   "what": "the added English bite and ligament phrases are absent (FF-Q8)",
+   "file": "src/r6-clinical.mjs",
+   "killed": true,
+   "fail": 1,
+   "killedBy": [
+    "FF-Q8 (lexicon V1CP-A1-LEX-3): the 43 directed texts, with and without the answer no"
+   ],
+   "run": 2
+  }
+ ]
+}

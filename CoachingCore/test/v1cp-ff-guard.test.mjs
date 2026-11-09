@@ -69,6 +69,10 @@ test('M12: a readiness restart week starts from the restart\'s own state: no pro
  const d=t.step(3,0,'READINESS_DECLARATION',{readiness:READY(),eligibility:ELIG(`${t.day(3,0)}T11:30:00Z`)},'09:00');assert.ok(['READINESS_RESTART','REESTABLISH'].includes(d.action),d.reason);
  const from=t.p.decisions.at(-1).fromWeek,decl=t.day(3,0);
  for(const [id,e] of Object.entries(t.p.stateTrace[from].strength.exercises??{}))if(e.lastPerformed)assert.ok(e.lastPerformed<=decl,`${id} lastPerformed ${e.lastPerformed} after the declaration ${decl}`);
+ // Mutation analysis (MF-M12 survived the bound above): the break's week was planned but never executed, so no exercise of the restart week was last
+ // performed after the last strength session the record shows.
+ const strengthIds=new Set(t.p.weeks.flatMap(x=>x.sessions).filter(s=>s.sport==='STRENGTH').map(s=>s.id)),lastDone=t.ledger.filter(o=>strengthIds.has(o.sessionId)&&o.actual?.completed).map(o=>o.occurrenceDate).sort().at(-1);
+ for(const [id,e] of Object.entries(t.p.stateTrace[from].strength.exercises??{}))if(e.lastPerformed&&lastDone)assert.ok(e.lastPerformed<=lastDone,`${id} lastPerformed ${e.lastPerformed} after the last executed strength session ${lastDone}`);
 });
 
 // ---- M29: a restriction lifted after a restarted plan's entry week enters the new region rows at the entry dose ----

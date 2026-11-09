@@ -27,7 +27,8 @@ function journey(name, goal, input = HYBRID()) {
     const rungs = (x.adaptations ?? []).filter(a => a.kind === 'WELLBEING_REDUCTION' && !a.endedBy).map(a => `${a.phase}:${Object.entries(a.rungs ?? {}).map(([s, r]) => s[0] + r).join('/')}`);
     const run = x.sessions.filter(s => s.sport === 'RUN').map(s => live(s) ? `${s.role}${s.prescription.durationMinutes}` : s.role === 'RACE' ? 'RACE(-)' : '-');
     const str = x.sessions.filter(s => s.sport === 'STRENGTH').map(s => live(s) ? s.prescription.exercises.map(e => `${e.sets}x${e.reps}@${e.rir}`).join(',') : '-');
-    return {week: w, rungs, run, strength: str};
+    const race = x.sessions.filter(s => s.role === 'RACE').map(s => ({date: s.date, ownEvent: !!s.ownEvent, coach: s.coachRecommendation ?? null, plan: s.prescription ? `${s.prescription.family} ${s.prescription.durationMinutes ?? ''}`.trim() : null}));
+    return {week: w, rungs, run, strength: str, ...(race.length ? {race} : {})};
   };
   t.step = (w, d, kind, extra = {}, time = '20:00', note = '') => {
     const day = t.day(w, d);
@@ -51,6 +52,15 @@ const journeys = [];
   t.step(1, 1, 'NOT_FEELING_100', {wellbeing: {condition: 'MILD_INDISPOSITION', warningSigns: NO('MILD_INDISPOSITION'), intent: 'REDUCE_SUBSTANTIAL', days: 4}}, '07:00', 'I am not 100%: much lighter, 4 days');
   t.step(1, 5, 'WELLBEING_CHECK', {check: {warningSigns: NO('MILD_INDISPOSITION'), improved: true}}, '09:00', 'better: the short check');
   for (let w = 1; w < 6; w++) t.review(w, 'MILD_INDISPOSITION');
+  journeys.push(t.out());
+}
+// B: a faster recovery: the athlete feels better on day 3, ends the reduction early with the short check (D4) and picked the faster return (D2): the
+// return still climbs through executed weeks; nothing comes back by the calendar (D1). With no whole week inside the window, faster equals balanced.
+{
+  const t = journey('B', 'Recuperacao mais rapida: encerra a reducao antes, retomada rapida, sem volta automatica a dose anterior');
+  t.step(1, 0, 'NOT_FEELING_100', {wellbeing: {condition: 'UNUSUAL_FATIGUE', warningSigns: NO('UNUSUAL_FATIGUE'), intent: 'REDUCE_LIGHT', days: 7, returnSpeed: 'FASTER'}}, '07:00', 'unusual fatigue: easier sessions, 7 days, faster return');
+  t.step(1, 2, 'WELLBEING_CHECK', {check: {warningSigns: NO('UNUSUAL_FATIGUE'), improved: true}}, '07:00', 'day 3: I feel better (the short check, with today\'s screen)');
+  for (let w = 1; w < 5; w++) t.review(w, 'UNUSUAL_FATIGUE');
   journeys.push(t.out());
 }
 // C: a local problem: strength's lower-body rows rest; running and the upper rows continue; a later systemic report covers both.
@@ -82,6 +92,18 @@ const journeys = [];
     firstWeek: g.program ? {run: g.program.weeks[0].sessions.filter(s => s.sport === 'RUN' && live(s)).map(s => s.prescription.durationMinutes), strength: g.program.weeks[0].sessions.filter(s => s.sport === 'STRENGTH' && live(s)).map(s => s.prescription.exercises.map(e => `${e.sets}x${e.reps}@${e.rir}`).join(','))} : null,
     oldPeak: {run: Math.max(...t.p.weeks.slice(0, 3).flatMap(x => x.sessions.filter(s => s.sport === 'RUN' && live(s)).map(s => s.prescription.durationMinutes)))}};
   journeys.push(out);
+}
+// F: a race during the return (D3): it stays on the calendar as the athlete's own event, no question blocks, the paths are offered once, and the coach
+// plans that day as the return's rung allows (an easy run), never at race effort or as a completion.
+{
+  const i = HYBRID(); i.athlete.goals = {run: {kind: 'RACE', event: {kind: '10K', date: '2026-12-26'}}, strength: 'GENERAL'};
+  const t = journey('F', 'Corrida durante o retorno: evento proprio do atleta, sem bloqueio; o dia segue a etapa do retorno', i);
+  const rw = t.p.weeks.findIndex(x => x.sessions.some(s => s.role === 'RACE'));
+  for (let w = 1; w < rw - 1; w++) t.review(w, 'MILD_ILLNESS');
+  t.step(rw - 1, 1, 'NOT_FEELING_100', {wellbeing: {condition: 'MILD_ILLNESS', warningSigns: NO('MILD_ILLNESS'), intent: 'REDUCE_SUBSTANTIAL', days: 5}}, '07:00', 'a mild illness the week before the race');
+  t.review(rw - 1, 'MILD_ILLNESS', {improved: true, note: 'window end: better'});
+  t.review(rw, 'MILD_ILLNESS', {note: 'race week: the race slot follows the return rung'});
+  journeys.push(t.out());
 }
 // G: a new interruption after the return: the new episode is judged on its own, never by the earlier one.
 {

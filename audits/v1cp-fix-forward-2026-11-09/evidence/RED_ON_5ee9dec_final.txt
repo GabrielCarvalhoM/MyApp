@@ -1,0 +1,60 @@
+RED evidence: the fix-forward directed tests (test/v1cp-ff.test.mjs, test/v1cp-ff-guard.test.mjs at the candidate) run against an extract of commit 5ee9dec
+(git archive of 5ee9dec into a scratch folder; V1CP_ROOT=<extract>). Generated 2026-11-09T14:33Z.
+5ee9dec src/r6-adaptation.mjs sha256: 20727e3291e89b44bebf53e04d56c30ed1aa66039ab734cc865aaa16fc2a9938
+
+ℹ tests 50
+ℹ pass 7
+ℹ fail 43
+
+✔ N14: the S1 window-end answers sent after a readiness restart open no S1 ladder; the restart's return stands
+✖ N18, QRE-V1CPR-07: a declaration naming a hold not on record, or naming nothing, is asked; a full match restarts
+✔ N19: a same-day screen stamped before the hold is asked again; one stamped after it restarts
+✔ M12: a readiness restart week starts from the restart's own state: no projected execution date leaks into it
+✔ M29: rows of a region whose restriction ends after the entry week enter at the return entry (one set, four or more in reserve)
+✖ QRE-V1CPR-08: a declaration releases a hold the record holds, with or without the reference state
+✖ SEC-V1CPR-05: a clinical break declared on the restart day, after the restart, still holds the new plan
+✖ I-09: when the restart's entry week is not done, the entry repeats once more, so two executed entry weeks come before the first step
+✖ I-10: a restriction that ends restarts its region from that region's own stop, recorded and stated
+✖ SEC-V1CPR-06: an early check that says not improved stores no improvement answer; a hold row stores no event kind
+✖ NB-1 V1CPR-01 (a): a local report in an illness window moves its sport at the stricter rung carrying the illness; the other sport keeps the illness and its check
+✖ NB-1 V1CPR-01 (b): an easier local report on a sport in an illness return moves it at the ladder rung (R2), never above; strength keeps R2, R3, R4; running returns on the much-lighter row
+✖ NB-1 V1CPR-01 (c): a stricter local report during a return takes only its sport (R0, then its wait); the other sport keeps R2, R3, R4
+✖ NB-1 V1CPR-01 (d): another condition in an illness rest window keeps both sports at R0 until the illness end, carrying it (W11, W15 still asked); at an R2 rung an easier report keeps R2
+✖ NB-1 V1CPR-01 (e), OBS-R2 (CH-r2-8): the same illness after it was answered improved, before the chain resets, is a recurrence: the clinical route with the professional-assessment recommendation
+✖ NB-1 -06 (CH-r2-3 (b)): the same condition, easier, inside its window changes nothing: KEEP with the check offered, nothing recorded, not persistence; again the next week inside the window: still KEEP
+✖ NB-1 (CH-r2-8): the same condition in its wait is its not-improved answer: clinical (discomfort, illness) or the break or a new plan (need to rest); never a new window
+✔ NB-1 (CH-r2-2, FF-Q7 (i)): another condition on a sport at a recipe step moves it to R3 on the recipe's own state; after it the recipe continues from that state
+✖ NB-1 ((vii)): a report on a sport no report governs opens its own report: no question; its condition is answered apart from the same condition of the other report
+✖ NB-1 ((vii), regions): another strength region merges into the whole sport at the stricter rung, carrying the first condition
+✖ NB-1 (CH-r2-6): each improvement answer applies to its condition: a discomfort not improved routes clinical; a need to rest not improved keeps running waiting while strength returns
+✖ NB-1 ((vi), CH-r2-9): each sport's 14-day count: an early end or a declared break never resets it; a whole executed and checked ladder week does; a disjoint report neither resets nor extends it
+✖ NB-2 (FF-Q2 (b), (c)): a race inside a window is the athlete's own event: no question, the rung's easy run, no strength that day, the three paths offered once, no completion item
+✖ NB-2 (FF-Q2 (b)): at R0 or in the wait the race slot has no session and the event is kept; the r12 dead end: a check starts the return and the race slot is the rung's easy run
+✖ NB-2 (FF-Q2 (a), (b)): R3 and R4 weeks hold the race in scope: an easy run at once, the race-week touch easy
+✖ NB-2 (C-FF2-4): when the return completes before the race, the race leaves the scope: the event rules plan it again and the decision says so
+✔ NB-2 (QRE-V1CPR-09): a strength-only report never involves the race: no offer, the race keeps the event rules
+✖ NB-2 (FF-Q2 (d), I-17): a ladder week after the race takes no pre-race held start; the rung still applies
+✖ NB-2 (FF-Q2 (b)): a MODERATE recipe step in race week: an easy run, no completion prescription, no completion item
+✖ NB-2 (FF-Q2 (a)): a readiness restart with the race two weeks later plans an easy run there, never a completion; a declared nonclinical break's return is unchanged
+✖ NB-2 (FF-Q2 (c)): removing the race (GOAL_CHANGE) leaves the ladder in place; the record keeps the history
+✖ FF-Q1 (D1, D2): FASTER after an easier window resumes the held doses at once only after a whole executed and checked week inside it
+✖ FF-Q1 (C-FF1-1): with no whole week inside an easier window FASTER equals BALANCED and says so; a missed session repeats the rung once at each speed
+✖ FF-Q3 (D4): the weekly review ends the window with its plan week (the return starts next week, whole); an early warning sign or clinical flag routes clinical
+✖ FF-Q3 (C-Q05-5 precised): an easier window with no planned session of a sport follows its row; one whose planned runs were all missed reads as rest
+✖ FF-N1: days waited for the check are days without training: up to 10 the short rows, 11 to 28 the MODERATE recipe, beyond that the LONG restart
+✖ FF-Q6: the 14 days per sport: none left is persistence at the strictest route; else the days are 1 to the smallest allowance, never 0
+✖ FF-Q9 (D5): the guidance level comes only from the items answered yes: urgent care for W2-W5 and X1, a professional assessment otherwise; an unanswered item has none
+✖ FF-Q8 (lexicon V1CP-A1-LEX-3): the 43 directed texts, with and without the answer no
+✔ FF-Q4 (D6): the Demanding coach prescribes what the Balanced coach prescribes, on generation and on the F08 paths; it says so
+✖ NB-3: a single declared break right after a rest window reads the window's rest and waiting days, per sport
+✖ NB-4: an elapsed ladder week without its check repeats its rung at the next review, even with sessions pending, and only once
+✖ NB-5: without a reported longest run, a race result only raises the first long run, never lowers a session or the week
+✖ NB-6: on the ladder and past it, strength sets rise at most one over the last executed count
+✖ SB-1: a new stop after training resumed post-declaration is screened on its own: its reason is asked
+✖ SB-2: a warning sign under a reused event id routes to the clinical hold and writes its fact
+✖ SB-3: a restart never reads an unreadable, foreign or later hold as no hold
+✖ SB-4: a clinical decision always leaves its CLINICAL_HOLD fact on record
+✖ SB-5: a restart with no stated pause asks the reason; it never throws
+✖ QRE-V1CPR-02: an answered restart check is not asked again, and a replay adds no row
+
+The 7 that pass at 5ee9dec are guards of behaviour already right there (N14, N19, M12, M29, the recipe-step move, the strength-only race, the Demanding equivalence).

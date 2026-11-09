@@ -35,13 +35,18 @@ const CLINICAL=words(`
  intoxicacion convulsion diagnosticada
  parto atropelado atropelada atropellado atropellada bitten mordida mordido mordedura
  csection cesarean caesarean cesariana cesarea miscarriage miscarried aborto vasectomy vasectomia colonoscopy colonoscopia endoscopy endoscopia lasik endodoncia
+ operou operaram operamos operar mordeu rompeu romperam cirurgico cirurgica ruptura
+ cirugia quirurgico quirurgica opere operarme mordio mordieron desgarre desgarrado desgarrada
 `);
 const CLINICAL_PHRASES=['a cold','common cold','head cold','chest cold','caught a cold','sore throat','shin splints','stress fracture','gave birth','plantar fasciitis','pos parto','dor de garganta','dolor de garganta','me torci','me dolia','me duele',
  'heart attack','chest tightness','tight chest','blood pressure','kidney stone','kidney stones','panic attack','panic attacks','food poisoning','wisdom teeth','wisdom tooth','short of breath','shortness of breath','passed out','threw up','glandular fever','heat stroke',
  'pressao alta','ataque de panico','ataques de panico','crise de panico','pedra no rim','calculo renal','intoxicacao alimentar','dente do siso','falta de ar','dor no peito',
  'presion alta','ataque de ansiedad','calculo renal','intoxicacion alimentaria','muela del juicio','muelas del juicio','falta de aire','dolor en el pecho',
  'had a baby','tive um bebe','tuve un bebe','hit by a car','car crash','bike crash','car accident',
- 'root canal','tratamento de canal'];
+ 'root canal','tratamento de canal',
+ // V1CP Fix-Forward (SSCTR-FF-Q8, lexicon V1CP-A1-LEX-3): bites and named ligaments; a bare 'bit' ('a bit') never.
+ 'bit me','bit us','got bit','was bit','been bit','bit by a','bit by the','bit by my','bit by his','bit by her','bit by our','dog bit','dogs bit','cat bit','rotator cuff',
+ 'me mordeu','ligamento cruzado','me mordio'];
 // Body parts are asked about alone; with a damage verb in the same clause they are a clinical mention ("broke my leg", SSCTR QRE-R6-07).
 const BODY=words(`
  knee knees ankle ankles hip hips back shoulder shoulders foot feet achilles hamstring shin shins calf calves wrist neck leg legs arm arms finger fingers
@@ -52,10 +57,12 @@ const BODY=words(`
  rodilla tobillo cadera espalda hombro gemelo muneca cuello pierna piernas brazo brazos codo costilla costillas cabeza pecho corazon pulmon rinon
  diente dientes muela muelas ingle muslo columna tendon ligamento musculo hueso
  hand hands thumb nose eye eyes face mao maos polegar nariz olho olhos rosto mano manos pulgar ojo ojos
+ acl mcl pcl lcl meniscus labrum lca menisco
 `);
 const DAMAGE=words(`
  broke broken break breaking snapped cracked quebrei quebrou quebrado quebrada quebrar trinquei trincou rompi rompio roto rota rompe parti partio
  burned burnt cut queimei queimou cortei cortou queme corte
+ tore tearing rompeu estourei estourou desgarre
 `);
 // V1CP A1 (SSCTR-V1CP Q01 (c), C-Q01-2; lexicon V1CP-A1-LEX-2, closed): a body word in an approved non-body collocation is not a body mention, for
 // the matched token only: "back" in "back from", "back home", "back to", "came/got/went/flew/drove back" and "be back"; "on my/our/his/her
@@ -110,6 +117,40 @@ const namedAt=(t,i,set)=>set.has(t[i-1])||set.has(t[i-2])&&!OTHER_PEOPLE.has(t[i
 const otherAt=(t,i)=>OTHER_PEOPLE.has(t[i])&&namedAt(t,i,BABY.has(t[i])?POSSESSIVE_NAMERS:NAMERS)&&!agentAt(t,i);
 // A first-person contagion verb ("I caught it", "peguei", "me contagió") makes another person's illness named in the report the athlete own.
 const CONTAGION=new Set(['caught','catch','catching','peguei','pegamos','contagie','contagiei','contagio','contagiou','contagiaron','contagiado','contagiada','contagiados']);
+/**
+ * V1CP Fix-Forward (SSCTR-FF-Q8; lexicon V1CP-A1-LEX-3, closed and versioned, co-owned with PCG, C-Q01-2; SSCTR-V1CPI-10, -11, Security OBS-R1): in a
+ * reason that names someone else's clinical event, a clause of the athlete's own inclusion ('and me too', 'I had it too', 'eu tbm', 'ela me passou',
+ * 'también la tuve') makes it the athlete's own: after at most two leading conjunctions every token is of the closed classes below, with a first-person
+ * anchor and an additive, a pronoun object or a contagion phrase, and no negator (SELF_INCLUSION). A clause of additives alone, with no anchor ('same',
+ * 'tbm'), is UNCERTAIN: asked, and the clinicalReason no does not resolve it. An exclusion ('not me', 'I didn't get it', 'eu não', 'yo no') leaves the
+ * mention someone else's. Free text still only adds a clinical or an ask outcome.
+ */
+const LEX3={
+ conj:new Set(['and','then','so','e','entao','depois','y','entonces','luego','despues']),
+ anchor:new Set(['i','me','we','us','myself','eu','mim','nos','yo','nosotros','nosotras','a_gente','pra_mim','para_mim','a_mi']),
+ verbFirst:new Set(['tive','tenho','peguei','fiquei','estou','estive','fui','tuve','tengo','pegue','estuve','estoy']),
+ verbEn:new Set(['did','do','had','have','got','get','caught','was','am','were']),
+ additive:new Set(['too','also','as_well','same_for','same_with','same_here','same_to','tambem','tbm','tb','idem','igual','mesmo','mesma','tambien','tmb','mismo','misma']),
+ additiveSelf:new Set(['both_of_us','us_both','we_both','all_of_us','we_all','todos_nos','a_gente_toda','todos_nosotros']),
+ uncertainOnly:new Set(['same']),
+ object:new Set(['it','that','a','o','isso','ela','ele','la','lo','eso']),
+ contagionSelf:new Set(['gave_it_to_me','gave_it_to_us','passed_it_to_me','passed_it_on_to_me','passed_it_to_us','me_passou','nos_passou','passou_pra_mim','passou_para_mim','me_pegou','me_la_pego','me_lo_pego','me_la_paso','me_lo_paso','me_la_contagio','me_lo_contagio','nos_la_pego','nos_lo_pego']),
+ filler:new Set(['actually','really','unfortunately','sadly','then','infelizmente','depois','logo','desafortunadamente','luego','despues']),
+ negator:new Set(['except','menos','exceto','excepto'])
+};
+const LEX3_MULTI=[...LEX3.contagionSelf,...LEX3.additiveSelf,'a_gente','pra_mim','para_mim','a_mi','as_well','same_for','same_with','same_here','same_to'].map(x=>x.split('_')).sort((a,b)=>b.length-a.length);
+function inclusionOf(tokens){
+ let t=[];for(let i=0;i<tokens.length;){const m=LEX3_MULTI.find(p=>p.every((w,k)=>tokens[i+k]===w));if(m){t.push(m.join('_'));i+=m.length;}else t.push(tokens[i++]);}
+ for(let k=0;k<2&&t.length&&LEX3.conj.has(t[0]);k++)t=t.slice(1);
+ if(!t.length||t.some(x=>NEGATORS.has(x)||NEGATION_HEADS.has(x)||INABILITY.has(x)||LEX3.negator.has(x)))return null;
+ const of=x=>Object.values(LEX3).some(s=>s.has(x))||CONTAGION.has(x)||SELF_MARKERS.has(x);
+ if(!t.every(of))return null;
+ const anchor=t.some(x=>LEX3.anchor.has(x)||LEX3.verbFirst.has(x)||LEX3.additiveSelf.has(x)||LEX3.contagionSelf.has(x)||SELF_MARKERS.has(x));
+ const act=t.some(x=>LEX3.additive.has(x)||LEX3.additiveSelf.has(x)||LEX3.object.has(x)||LEX3.contagionSelf.has(x)||CONTAGION.has(x));
+ if(anchor&&act)return 'SELF_INCLUSION';
+ if(!anchor&&t.every(x=>LEX3.additive.has(x)||LEX3.uncertainOnly.has(x)||LEX3.conj.has(x)||LEX3.filler.has(x)))return 'UNCERTAIN';
+ return null;
+}
 function attribution(t){
  if(t.some((x,i)=>SELF_MARKERS.has(x)||x==="gente"&&t[i-1]==="a"))return "SELF";
  for(let i=0;i<t.length;i++)if(FIRST_POSSESSIVES.has(t[i])&&!otherAt(t,i+1)&&(bodyAt(t,i+1)||bodyAt(t,i+2)&&!otherAt(t,i+2)))return "SELF";
@@ -219,6 +260,7 @@ export function reasonQuestion(screen,{reasonCategory=null}={},prefix='interrupt
  if(screen?.basis==='AMBIGUOUS_REASON')return structured?{changed:true,missingInputs:[confirm],text:`say whether this break involved ${own} (yes or no)`}:{changed:true,missingInputs:[cat,confirm],text:`say what interrupted training (for example travel, work or family) and whether it involved ${own} (yes or no)`};
  // The note itself contradicts the answer (a conditioned denial): the note is restated, or the answer changed (its exit is either).
  if(screen?.basis==='CONDITIONED_DENIAL')return {changed:true,missingInputs:[prefix+'reason',confirm],text:`your note says something appeared under a condition (for example 'until I ran'), and you answered that this break involved none of ${own}: restate the note, or answer yes if it did`};
+ if(screen?.basis==='SELF_INCLUSION_UNCERTAIN')return {changed:true,missingInputs:[prefix+'reason',confirm],text:`your note may say you had it too: restate it, or answer yes if this break involved ${own}`};
  if(screen?.basis==='CONTRADICTORY_FLAGS')return {changed:true,missingInputs:[...(structured?[]:[cat]),prefix+'nonclinical'],text:'the break is marked as not nonclinical although what was given describes a nonclinical reason: correct the mark'+(structured?'':' and say what interrupted training')};
  if(screen?.basis==='INVALID_CLINICAL_FLAG')return {changed:true,missingInputs:[confirm],text:`answer yes or no: did this break involve ${own}`};
  return {changed:false,missingInputs:[cat],text:'say what interrupted training (for example travel, work, family, illness or injury)'};
@@ -244,6 +286,11 @@ export function screenInterruptionReason({reason=null,reasonCategory=null,noncli
  // A clinical word in a clause about someone else is never the athlete's clinical mention: it is asked once (SSCTR-V1CP Q01).
  const aboutOthers=others.flatMap(p=>mentions([p]).map(m=>'about someone else: '+m));
  if(aboutOthers.length&&parts.some(p=>p.who==='SELF'&&p.text.split(' ').some(x=>CONTAGION.has(x))))return {status:'CLINICAL',basis:'CLINICAL_MENTION',matched:[...new Set(aboutOthers.map(m=>m.replace('about someone else: ','')))]};
+ // V1CP Fix-Forward (SSCTR-FF-Q8, LEX-3): a clause of the athlete's own inclusion makes the mentions about someone else their own; a clause of
+ // additives alone is asked again, and the clinicalReason no does not resolve it (its exit is restating the note, or answering yes).
+ const incl=aboutOthers.length?clausesOf(reason).map(c=>inclusionOf(c.split(' '))):[];
+ if(incl.includes('SELF_INCLUSION'))return {status:'CLINICAL',basis:'CLINICAL_MENTION',matched:[...new Set(aboutOthers.map(m=>m.replace('about someone else: ','')))]};
+ if(incl.includes('UNCERTAIN'))return {status:'ASK',basis:'SELF_INCLUSION_UNCERTAIN',matched:[...new Set(aboutOthers)]};
  const ambiguousWord=(t,i)=>t[i]==='__mid_clause_denial__'||AMBIGUOUS.has(t[i])&&(!BODY.has(t[i])||bodyAt(t,i));
  const ambiguous=[...aboutOthers,...clauses.flatMap(c=>{const t=c.split(' ');return t.filter((x,i)=>ambiguousWord(t,i));}).map(t=>t==='__mid_clause_denial__'?'denial that depends on its clause (mid-clause without/sem/sin, or a time or contrast condition)':t),...clauses.flatMap(c=>hasPhrase(c,AMBIGUOUS_PHRASES)),...damageMentions(clauses).negated.map(m=>'negated damage: '+m)];
  // V1CP A1 (QRE-P5H-F01): the athlete's explicit answer to the screen's question, that the break involved no pain, injury, illness or medical

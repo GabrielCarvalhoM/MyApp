@@ -449,7 +449,9 @@ function horizonSummary(sk,program,next,{w,changed}){
 export function evaluateProgram(program,input,options={}){
  const official=clone(input?.officialPlanState??program?.officialPlanState??null);
  const base={runtimeVersion:'R6-1',mode:'SHADOW',applied:false,proposal:null,officialPlanState:official,appliedState:clone(official),completedWork:clone(program?.completedWork??[]),horizonsConsidered:HORIZONS,qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'},missingInputs:[],counterfactuals:[]};
- const finish=(status,action,reason,extra={})=>freeze(withHoldFact(program,input,withReference(program,input,{...base,status,action,reason,...extra})));
+ // V1CP Fix-Forward D5 (SSCTR-FF-Q9): every clinical route carries a guidance level; a route no warning sign caused (persistence, a recurrence, a
+ // clinical reason or category, an eligibility flag, pain with a substitution) carries the professional assessment.
+ const finish=(status,action,reason,extra={})=>freeze(withHoldFact(program,input,withReference(program,input,{...base,status,action,reason,...extra,...(status==='CLINICAL_HUMAN_REQUIRED'&&!extra.guidance?{guidance:{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}}:{})})));
  if(!validProgram(program))return finish('HOLD','HOLD','Program integrity or version is invalid');
  // The repertoire authority is read at the review's date; the program must have been planned under the same catalog (R7-B, fail closed).
  const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf:null})};

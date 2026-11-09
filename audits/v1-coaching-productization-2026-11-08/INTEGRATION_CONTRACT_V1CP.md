@@ -432,3 +432,46 @@ Source: `CoachingCore/test/v1cp-experience.test.mjs`, which pins this behaviour.
 
 **Do not show (sections 7–8)**
 - Anything classed NOT_SUPPORTED above: readiness score, Body Battery, stress, race prediction, paces from goals, early window end.
+
+## 10. V1CP Fix-Forward delta (2026-11-09; branch `claude/v1cp-fix-forward`)
+
+Appended; sections 1–9 above are kept as history. Where a line above disagrees with this section, this section is current for the fix-forward candidate. Only fields, options, states, outputs and rules that changed are listed. Nothing here is validated with real athletes or authorizes real collection (SEC-V1CP pendings unchanged: erasure/tombstone, custody, access control, minimisation, consent).
+
+### 10.1 Situation 1: reports while reports are open (NB-1; SSCTR CH-r2)
+- `wellbeing.days`: 3–14 for a report no open report covers. A report that continues a sport's chain may be 1 to the smallest remaining allowance of the sports it covers: the ASK says "choose 1 to N days" (never 0). No day left: the persistence route (below).
+- Per sport, at most one report governs. A covered sport: joins the new report when no report governs it; is unchanged when the report names the same condition, not stricter and ending inside its window (`KEEP`, `offers[WELLBEING_CHECK]`, **not recorded**); otherwise moves to the new report at the stricter rung, carrying its unresolved conditions. A sport not covered keeps its report and check. A report on sports no report governs opens its own report (no question).
+- Same condition in its wait, or again after it was answered improved before the sport's chain reset: the persistence route (`CLINICAL_HUMAN_REQUIRED` with `guidance` PROFESSIONAL_ASSESSMENT; NEED_REST: `ASK interruption|restart`), recorded.
+- New record fields on `WELLBEING_DECLARED.wellbeing`: `takenFrom {SPORT: eventId}`, `chainFrom {SPORT: eventId}` (a chain continued across a declared break or readiness restart), `rungs {SPORT: rung}`, `carried {SPORT: [{condition, episode, startDate, endDate, rung}]}`, `supersedes`, `supersedesAll`, `returnPlan {SPORT: …}`. Persistence facts: `chained: true`, `persistence` NOT_IMPROVED | RECURRENCE | FOURTEEN_DAYS, `of [eventId]`.
+- Week markers: one `WELLBEING_REDUCTION` marker per sport where the sports diverge (read a week's rungs as the union of its unended markers). WINDOW/WAIT markers may carry `unwell: true` (a systemic condition bound).
+
+### 10.2 The check (CH-r2-6, -7; D4)
+- `wellbeingCheck.improved`: a boolean when one condition is concerned; otherwise an object `{CONDITION: boolean}` (`CONDITION@reportEventId` when two open reports share a condition). Conditions at or after their own end must be answered; earlier ones are optional.
+- Early end (D4): `improved` before the chosen end, on any day after the report day, with `eligibility.assessedAt` today (else `ASK eligibility.assessedToday`). On the report day it has no effect (`KEEP`, "from tomorrow"). The 3-day floor is gone.
+- Each answer applies to its condition: improved resolves it; not improved before its end changes nothing; not improved at or after its end: NEED_REST keeps that sport waiting with `offers[NEED_REST_ROUTE]` (type INTERRUPTION_OR_RESTART; `ASK interruption|restart` when it holds every sport); any other condition → `CLINICAL_HUMAN_REQUIRED`.
+- A sport returns when all its conditions are answered improved (`WELLBEING_RETURN_START`); a sport with conditions left runs on at their rungs (`WELLBEING_REDUCTION`, `decision.wellbeing.adjusted`). At a weekly review the window ends with the reviewed week and the return starts next week.
+- `WELLBEING_CHECKED.check`: `improvedBy` holds only the answers that took effect; `improved` is that single answer or null; `kinds {reportEventId: WINDOW | WINDOW_END | RETURN}`.
+- Return plan per sport in `decision.wellbeing.plans[SPORT]`: `{rungs | recipe (MODERATE | LONG), holds, row, days, read}`, `read` AS_CHOSEN | READ_AS_REST | WINDOW_RUNG_REPEATED | NO_WHOLE_WEEK. FASTER after REDUCE_LIGHT is R4 at once only after a whole executed and checked week inside the window; otherwise it equals BALANCED and the reason says so. Waited days count as days without training (N1).
+
+### 10.3 A race during a reduction, return or restart (NB-2; Founder D3; SSCTR-FF-Q2)
+- No race question blocks: the window-opening ASK and the "move or skip" ASK at the return start are gone; `waitsForCheck` and the `RACE_DURING_RETURN` disclosure are replaced.
+- In scope (any F08 marker holding running on the race day; or a readiness restart while running is RETURN/RESTART, adaptation kind `RACE_IN_RETURN`), the race row keeps `role: RACE`, id and date, and adds `ownEvent: true` and `coachRecommendation` NO_SESSION | OPTIONAL_WALK | EASY_RUN, with the matching prescription (an easy run at the week's easy duration). The race-week touch runs easy; race day keeps no strength; no `EVENT_AMBITIOUS_FOR_CURRENT_RUNNING` item.
+- The decision that puts the race in scope carries one `offers[RACE_DURING_RETURN]` (type RACE_PATHS, `blocking: false`, paths KEEP_AS_OWN_EVENT (default), MOVE via EVENT_DATE_CHANGE, REMOVE via GOAL_CHANGE). The decision after which it leaves the scope carries `disclosures[RACE_BACK_TO_EVENT_RULES]`.
+- A week starting after the race takes no pre-race held start of a reduction, return or restart that began before it.
+
+### 10.4 Warning-sign guidance (Founder D5; SSCTR-FF-Q9)
+- Every `CLINICAL_HUMAN_REQUIRED` carries `guidance {level, wordingStatus: INTERIM_PENDING_G04}`: URGENT_CARE_ADVISED when an item answered yes is W2, W3, W4, W5 or X1; PROFESSIONAL_ASSESSMENT otherwise (and for persistence, recurrence, clinical reasons, eligibility flags). An unanswered item is ASK with no level. The wording is interim and marked for G04 review before real use; never "emergency" for a professional-assessment route.
+
+### 10.5 Other runtime deltas the app consumes
+- `event.id` must be a non-empty string (else `HOLD`, `errors ['event.id/kind']`).
+- Unreadable F08 rows (foreign athlete, altered, malformed, orphan check) are never read as absent: `HOLD` (SB-3). `restartProgram({intake, record, referenceState, asOf?, athleteId?})` returns `HOLD` with `errors ['malformed:<Class>']` on malformed input; a restart with no stated pause asks `athlete.pause.reasonCategory`.
+- `CLINICAL_HOLD` rows store no event kind.
+- A new stop after training resumed post-declaration is screened on its own (its reason is asked).
+- Reason screening (lexicon V1CP-A1-LEX-3): new basis `SELF_INCLUSION_UNCERTAIN` asks `interruption.reason` and `interruption.clinicalReason` together.
+- The Demanding coach prescribes exactly what the Balanced coach prescribes (D6, limitation): only the P4 recommendation fields and the COACH_DEMANDING disclosure differ. It must not be presented as distinct prescriptive behaviour.
+
+### 10.6 Design × engine deltas (for the future Figma × engine audit; no Figma opened or changed)
+- The improvement question per condition (and per report when two share a condition), due ones required; the early end from the day after the report, with today's screen; the "from tomorrow" answer on the report day. Remove "early window end" from the Do-not-show list (section 9): it is now supported.
+- Per-sport states: one sport waiting or reduced while the other returns; a report taking one sport; the carried conditions shown as still holding.
+- The NEED_REST route offer; the days question "1 to N"; the persistence routes with their guidance level.
+- The race as the athlete's own event with the coach's recommendation for that day, the three paths offered once, and the "back to the event rules" note. Never "cleared" or "safe to race".
+- The two guidance levels and their interim copy; the Demanding coach as advice only.

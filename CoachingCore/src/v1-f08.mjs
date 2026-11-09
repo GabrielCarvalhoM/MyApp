@@ -47,7 +47,12 @@ const unrecognized=(prefix,keys)=>({ask:{action:'ASK',reason:`${keys.length} ans
 const ask=(missingInputs,reason)=>({ask:{action:'ASK',reason,missingInputs}});
 const human=list=>list.map(k=>k.replace(/([A-Z])/g,' $1').toLowerCase()).join(', ');
 /** The clinical route of a warning sign (RF-3): the hold for every sport, a professional assessment, the record kept; never a diagnosis (RF-4). */
-export const signRoute=(yes,{lead='You reported'}={})=>({action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:`${lead} ${yes.length>1?'warning signs':'a warning sign'} (${human(yes)}): seek a professional assessment; no training is planned while it stands, and your record keeps being kept. When you are ready to train again, you can tell us sport by sport`,warningSigns:[...yes]});
+/** V1CP Fix-Forward D5 (Founder; SSCTR-FF-Q9, C-FF9-1): the guidance level of a clinical route, derived only from the items answered yes (the higher one
+ * when several): urgent care for chest pain, pressure or tightness, breathlessness or palpitations at rest, fainting or dizziness, and breathlessness,
+ * chest symptoms, dizziness or a racing heart with exercise; a professional assessment otherwise. Interim wording, pending the clinical authority (G04). */
+export const URGENT_SIGNS=Object.freeze([WS.W2,WS.W3,WS.W4,WS.W5,EXERCISE_SIGNS.X1]);
+export const guidanceOf=(yes=[])=>({level:yes.some(k=>URGENT_SIGNS.includes(k))?'URGENT_CARE_ADVISED':'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'});
+export const signRoute=(yes,{lead='You reported'}={})=>{const g=guidanceOf(yes),urgent=g.level==='URGENT_CARE_ADVISED';return {action:'CLINICAL_HUMAN_REQUIRED',status:'CLINICAL_HUMAN_REQUIRED',reason:`${lead} ${yes.length>1?'warning signs':'a warning sign'} (${human(yes)}): ${urgent?'stop now and seek urgent medical care; if it is severe or does not settle, call your local emergency number':'stop training and seek a professional assessment'}; no training is planned while it stands, and your record keeps being kept. When you are ready to train again, you can tell us sport by sport`,warningSigns:[...yes],guidance:g};};
 /** V1CP Fix-Forward SB-2 (SEC-V1CPR-03, RC-01): the warning signs and exercise-response items a payload answers yes, whatever else it holds. */
 export const signsYesIn=p=>isObj(p)?[...ALL_W.filter(k=>isObj(p.warningSigns)&&p.warningSigns[k]===true),...ALL_X.filter(k=>isObj(p.exerciseResponse)&&p.exerciseResponse[k]===true)]:[];
 /** Reads a group of booleans: the keys answered yes (any key of the group, asked or not), the asked keys not answered no, and keys outside it. */

@@ -1,3 +1,9 @@
+<!-- F08_FOUNDER_D1_D7_INDEX_START: V1CPFF-F08-r1 -->
+## Current pointer — F08 amendment by the Founder's D1–D7 / 2026-11-09
+
+[PDR DR-149 / PDR-1.15](../product/PRODUCT_DECISION_REGISTER.md) is **DECIDED / CURRENT_PRODUCT_DECISION** and amends DR-148 (pointer below): low-friction return decided by executed sessions (answers FP-4), the three speeds, a registered race during an incompatible return (answers B6), the athlete's early end of a reduction, interim warning-sign wording, and the Demanding coach only as far as a real admissible difference exists (answers C-Q09-2). Source: the Founder's 2026-11-09 request, summarized with quotes in the [Fix-Forward task contract](../audits/v1cp-fix-forward-2026-11-09/TASK_CONTRACT_FF.md). RC-16 r2 and the readings of the race questions are in the [PCG record](../audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_F08_DELTA.md). Author status GOVERNANCE_READY_FOR_REVIEW; not runtime authority on its own. F08 stays F08_OPEN; V1_COACHING_AUTHORITY_READY = NO.
+<!-- F08_FOUNDER_D1_D7_INDEX_END: V1CPFF-F08-r1 -->
+
 <!-- F08_RECOVERY_RETURN_INDEX_START: V1CP-F08-r1 -->
 ## Current pointer — recovery and return without clinical judgment by the software (F08) / 2026-11-08
 
