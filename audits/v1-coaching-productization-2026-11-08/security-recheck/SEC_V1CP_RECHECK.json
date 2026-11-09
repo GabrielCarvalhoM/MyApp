@@ -1,0 +1,382 @@
+{
+  "record": "SEC_V1CP_RECHECK",
+  "revision": "r1",
+  "date": "2026-11-09",
+  "role": "security-privacy-abuse-architect",
+  "instance": "fresh instance; not an author of 5ee9dec, fa3985b or DESIGN_V1CP, and not the instance that wrote SEC_V1CP_IMPL; no delegation. SECURITY_V1CP_F08 r1 and SEC_V1CP_IMPL r1 are the criteria, not re-judged.",
+  "model": "claude-opus-5-5",
+  "effort": "max",
+  "level": "L3",
+  "mode": "productization; SEC-V1CP-25 single narrow re-verification of the offline core boundary (bounded-cycle rule: no further cycle follows)",
+  "reviewed": {
+    "commit": "5ee9dec7aac8dc8bebaf8423a53f170ecd147220",
+    "branch": "claude/v1-coaching-productization",
+    "worktree": "C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-coaching-productization",
+    "treeCheck": "git diff --quiet 5ee9dec -- CoachingCore: the CoachingCore tree equals the commit",
+    "diffReviewed": "git diff fa3985b..5ee9dec -- CoachingCore (src: v1-f08, r6-adaptation, r6-intake, r6-program, r6-index, r6-composition, r6-clinical; tests: v1cp-fixcycle, v1cp-f08, v1cp-block1)",
+    "comparisonBaseline": "fa3985b extracted with git archive into the scratch folder (read-only for the repository), used only to tell regressions from pre-existing behaviour",
+    "files_sha256": {
+      "CoachingCore/src/v1-f08.mjs": "28c3bfb32a8a1759fe150a806f45b13b4d00347f52b9e33294c80c75e326a816",
+      "CoachingCore/src/r6-adaptation.mjs": "20727e3291e89b44bebf53e04d56c30ed1aa66039ab734cc865aaa16fc2a9938",
+      "CoachingCore/src/r6-intake.mjs": "776ed4daf08853a2178ae390a0bf7ad3dd7bae4432dc1c2add6917bd96cdb147",
+      "CoachingCore/src/r6-program.mjs": "057cc0338c825d0eecbce4ca9150f6515471413fe429a97a74cd2b7dcd7a2ed7",
+      "CoachingCore/src/r6-index.mjs": "dae257e6934a72e99a826542bc05588ccb59c0cf13279aaacbeb240496fbba99",
+      "CoachingCore/src/r6-composition.mjs": "7e8b94e567569bf499ebe0a746960ca83800e8cfac54ac7a5fc1de635ca0d586",
+      "CoachingCore/src/r6-clinical.mjs": "026e95cf28994bedfd6f39d9dc8764023dfdf7956ee3cba04e07e353a4de24e6",
+      "CoachingCore/test/v1cp-fixcycle.test.mjs": "ae36d26af4696e70c4df1b09ac48db50923964c2d3a2c09243cb76ce60ffb2fa"
+    }
+  },
+  "criteria": {
+    "FIX_CYCLE_V1CP.md (dispositions)": "b49aba8102f686bcc1096c9e6241f00e2bbd648a862dc5105c9e1af4c20da43c",
+    "security-impl/SEC_V1CP_IMPL.json": "118e193a362ea73c7902eb51d4212ef9e74f90469a632c403584ab788a6d39d7",
+    "security/SECURITY_V1CP_F08.json": "b570fc7053f819b8e0d24dff1ed2352b90af86cfbd30daa649610d726c72d0f2",
+    "pcg/PCG_V1CP_F08.json (RC-01, RC-11, RC-14, RC-15)": "fb9f3026db3c0d7ca222e797bfa6dc608b90b0641f721b36643c99cdb7747806",
+    "TASK_CONTRACT.md (ESCALATE_IF, cycle bound)": "4164a5227960ee8030de4fb969216b769caf3bc2ae322047410a3795280b7a8b"
+  },
+  "contextNotReviewed": [
+    {"path": "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md", "sha256": "98dc49cc2a2fa217e1984a41dac97eec9b018f38967c14da3aef16370f85773b", "note": "Modified in the working tree by another author during this recheck (uncommitted); not part of 5ee9dec and not used for any ruling."}
+  ],
+  "executed": {
+    "suite": "cd CoachingCore && node --test: 1080 tests, 1080 pass, 0 fail (127.8 s) at 5ee9dec",
+    "directed": "node --test test/v1cp-fixcycle.test.mjs: 22/22 pass",
+    "probes": {
+      "location": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d024db0a-e798-4d00-a3e5-d6bad7704647/scratchpad/sec-v1cpr/ (outside the repository; modules imported read-only; outputs r1.out..r8.out)",
+      "files": ["lib.mjs", "r1-restart-facts.mjs", "r1b-canon.mjs", "r1c-control.mjs", "r1d-throw.mjs", "r1e-lex.mjs", "r2-hold-facts.mjs", "r3-readable.mjs", "r3b-json.mjs", "r3c-det.mjs", "r3d-json-fixed.mjs", "r3e-idshift.mjs", "r4-readiness.mjs", "r4b-named-hold.mjs", "r5-echo.mjs", "r6-replay-chain-early.mjs", "r6b-idsign.mjs", "r6c-idsign2.mjs", "r6d-report-id.mjs", "r7-wording.mjs", "r8-erasure-conditions.mjs", "r9-madefrom.mjs"],
+      "results": "r1 16 pass / 3 fail (RF-e x2: SEC-V1CPI-02 residual; RF-d 'tore my acl skiing': A1 lexicon, pre-existing); r2 38/3 (SEC-V1CPR-02); r3 8/6 (5 real: SEC-V1CPR-01; RH-a was the probe's own auto-incremented event id, redone in r3d 2/2 pass); r4 15/1 (SEC-V1CPI-09 residual); r5 12/0; r6 12/0 plus r6b/r6c/r6d regression comparisons (SEC-V1CPR-03); r7 222,392 output strings, 1/0; r8 5/0; r9 and r1d compared with fa3985b (SEC-V1CPR-05, SEC-V1CPR-04)",
+      "colleagueProbeRerun": "sec-v1cpi-probes/p1-vocabulary.mjs on 5ee9dec: 65 pass, 20 differ only by the fixes themselves (missingInputs now '<group>.unrecognized' instead of the key name, SEC-V1CPI-08; READY() without restrictions now asked, SEC-V1CPI-05); every one of the 20 is still an ASK that reads nothing",
+      "fixture": "the 8-week hybrid athlete of test/v1cp-fixtures.mjs (synthetic), timezone -03:00"
+    },
+    "testAdequacyForSecurity": "The fix-cycle tests cover one hold source without a reference state (the Situation 1 entry sign), a stated cause after a declaration, the rejection of client restart fields, a foreign and a tampered row, and identical replays. No test covers: a restart with no stated pause (it throws), a new stop after training resumed post-declaration, a review whose event id is already on record with a different payload carrying a sign, a non-string or reused event id, an intake naming another athlete id, a restart dated before a hold, or a CLINICAL_HOLD row that is altered or deleted."
+  },
+  "verdict": {
+    "result": "FAILED",
+    "gate": "SECURITY_BLOCKED",
+    "scope": "the offline core boundary of 5ee9dec only (no server, client, logging or analytics exists in this repository)",
+    "summary": "The cycle closes most of what it set out to close: client intake can no longer carry restart facts, a stated cause is screened, every one of nine hold sources now writes a CLINICAL_HOLD fact and the record alone blocks a new plan, foreign, tampered and future rows are never read, restrictions must be answered, unknown keys are never echoed, replays add no row and no V1CP string claims a clearance. The boundary still fails on the restart path and on clinical-first: (1) an old readiness declaration still stands in for the cause of a new stop after training resumed, so the A1 reason is never asked (SEC-V1CPI-02 residual, RC-11); (2) a warning sign answered yes in a review whose event id is already on record now gets an id question instead of the clinical route, a regression from fa3985b (SEC-V1CPR-03, RC-01; the task contract's 'relevant sign being ignored' trigger, in a narrow form). Defence-in-depth gaps in the new hold mechanism (SEC-V1CPR-01, -02), a crash of the default no-stated-pause restart (SEC-V1CPR-04) and the erasure tombstone (SEC-V1CPI-06, named blocker) remain.",
+    "failedConditions": ["SEC-V1CP-14", "SEC-V1CP-23"],
+    "blockingFindings": ["SEC-V1CPI-02", "SEC-V1CPR-03"],
+    "mustFixBeforeAnyIntegration": ["SEC-V1CPR-01", "SEC-V1CPR-02", "SEC-V1CPR-04"],
+    "namedBlocker": {"id": "SEC-V1CPI-06", "accepted": true, "scope": "see findings[SEC-V1CPI-06].namedBlockerTerms"},
+    "boundedCycleNote": "This was the single narrow recheck. Under the bounded-cycle rule the blockers above are closed as named blockers with owners, not reopened here; the Chief routes them (a new mission or a Founder-authorized cycle).",
+    "escalation": "TASK_CONTRACT ESCALATE_IF 'a relevant sign being ignored' fires narrowly (SEC-V1CPR-03: a chest-pain yes under a reused event id is answered with an id question). Routed to the Chief. No G07, G08, G09, G10, PCG or Founder decision is needed for the interim fail-closed fixes; the RC-11 matching rule for recognising the historic episode stays with SSCTR and PCG as already recorded in SEC_V1CP_IMPL.",
+    "invalidatedBy": "any change to v1-f08.mjs (readers, facts, readableF08, restartIntake), canonicalizeIntake pause or restart handling, restartProgram, withHoldFact, withReference or previousValidity, replayOf, the F08 handlers in r6-adaptation.mjs, the record facts, or any outbound surface"
+  },
+  "findings": [
+    {
+      "id": "SEC-V1CPI-01",
+      "originalSeverity": "HIGH",
+      "ruling": "CLOSED",
+      "evidence": [
+        "athlete.pause.readinessDeclared (true or false), athlete.pause.bySportDays, athlete.restart (an object or null) and onboarding.restart are input errors on every entry point; a clinical stated reason still routes first (r1 RF-a, 6/6; fixcycle SEC-V1CPI-01/-02).",
+        "restartFacts passed by a string key in options, or a symbol key after a JSON round trip, are never read: the surgery pause stays CLINICAL_HUMAN_REQUIRED (r1 RF-b).",
+        "restartProgram replaces any caller-supplied RESTART_FACTS value with the record's facts (r1 RF-c).",
+        "Only generateProgram reads options[RESTART_FACTS]; no review path re-canonicalizes an intake (grep)."
+      ],
+      "note": "canonicalizeIntake, re-exported by r6-index, still accepts restartFacts by a plain option key. It returns a canonical intake only; no path builds a program from an external canonical intake, and a stated cause is screened even then (r1b). Informational."
+    },
+    {
+      "id": "SEC-V1CPI-02",
+      "originalSeverity": "HIGH",
+      "ruling": "OPEN",
+      "residualSeverity": "HIGH",
+      "evidence": [
+        "Fixed half: after a declaration on record, INJURY 'I broke my leg after the restart', OTHER 'knee surgery last month', ILLNESS, clinicalReason true and OTHER 'hospital' each give CLINICAL_HUMAN_REQUIRED (r1 RF-d 5/5; fixcycle test).",
+        "Residual: flu break, readiness declaration, weeks 3 to 5 trained (last executed 2026-12-19), then a new stop. restartProgram with no pause stated gives PROPOSED with pause.screen READINESS_DECLARED for a 4-week and a 6-week stop; the same stop at onboarding asks athlete.pause.reasonCategory (r1 RF-e). The old declaration stands in for a stop it never answered.",
+        "The required of SEC_V1CP_IMPL named this case: the declaration stands in only when 'no executed training after the declaration'. The fix (FIX_CYCLE: 'A declaration on record is read only when no cause is stated') omits it.",
+        "RC-11 lets the intake read the declaration 'instead of re-routing the historic episode' only; a later stop is not that episode."
+      ],
+      "required": "When an executed session is on record after the latest readiness declaration (or the record's pause starts after it), the restart screens the pause as stated and asks a missing reason (reasonQuestion), exactly as without a declaration; READINESS_DECLARED stands in only for the stop the declaration answered. Directed test: declaration, trained weeks, new stop, no stated cause gives ASK.",
+      "owner": "Engineering; SSCTR and PCG for the final RC-11 matching rule (the interim fail-closed ASK needs no new authority)",
+      "seeAlso": ["SEC-V1CPR-04 (the same path without a declaration throws)"]
+    },
+    {
+      "id": "SEC-V1CPI-03",
+      "originalSeverity": "HIGH",
+      "ruling": "CLOSED_WITH_CONDITIONS",
+      "evidence": [
+        "Each hold source writes one CLINICAL_HOLD fact and restartProgram blocks on the record alone and with the reference state from before the hold: Situation 1 entry sign, window end not improved, eligibility flag, eligibility status PAIN_OR_INJURY, pain with a substitution, S6 restart sign, the chained 'again' route, an adverse-session sign and a window check sign (r2 H-a..H-h, 36/36). A readiness answering a sign yes without the reference writes one more (r2 H-i); a clinical break still blocks by itself (r2 H-j).",
+        "A replay of a clinical review adds no second fact (r2 D); a hold forged by the client for this athlete only blocks (r2 F).",
+        "The hold row carries no reason, sign, condition or free text (r2 M)."
+      ],
+      "conditions": [
+        "SEC-V1CPR-02 fixed: the fact can still be suppressed (non-string or reused event id, a planted row with the same id, a stale clinical reference, a malformed ledger).",
+        "SEC-V1CPR-01 fixed: an altered hold row, an intake with another athlete id, or a restart dated before the hold still reads no hold.",
+        "In-program holds still depend on the reference state (pre-existing FREEZE-6 pattern): after a Situation 1 sign hold, a weekly review without the reference is KEEP and a report without it opens a window (r2 S-in-program, r6 CH-b), although the hold fact is on record. RECORD-CUSTODY: the server keeps and sends the latest referenceState and the record; the client never drops either."
+      ],
+      "owner": "Engineering; Security re-verifies"
+    },
+    {
+      "id": "SEC-V1CPI-04",
+      "originalSeverity": "MEDIUM",
+      "ruling": "CLOSED_WITH_CONDITIONS",
+      "evidence": [
+        "readableF08 never reads a row of another athlete, a row declared after the decision clock, a tampered row, an unsealed row, a row of the wrong shape, a row with a numeric event id, or a check without its episode (r3 RH-b, 7/7; fixcycle test).",
+        "Every sealed row type (WELLBEING_DECLARED, WELLBEING_CHECKED with earlyEnd and with signsYes, CLINICAL_HOLD, READINESS_DECLARED) stays readable after a JSON round trip, and a decision on a JSON-stored record and reference equals the in-memory one (r3 RH-a, r3d 2/2)."
+      ],
+      "conditions": [
+        "SEC-V1CPR-01: an unreadable row is dropped silently instead of refused, which on the restart path lifts a hold or a restriction.",
+        "The seal (rowHash) is a keyless sha256: it detects accidents, not forgery. Integrity against a client needs RECORD-CUSTODY (pending, Engineering)."
+      ],
+      "owner": "Engineering"
+    },
+    {
+      "id": "SEC-V1CPI-05",
+      "originalSeverity": "MEDIUM",
+      "ruling": "CLOSED",
+      "evidence": [
+        "Strength declared ready without restrictions keeps the hold and asks readiness.sports.STRENGTH.restrictions; restrictions null is not the answer none; [] restarts; strength not ready needs no list (r4 R5-a..d; fixcycle test)."
+      ]
+    },
+    {
+      "id": "SEC-V1CPI-06",
+      "originalSeverity": "MEDIUM",
+      "ruling": "OPEN",
+      "namedBlockerAcceptable": true,
+      "evidence": [
+        "Unchanged: no tombstone exists. Deleting the CLINICAL_HOLD row gives PROPOSED (r8 ER-a). Deleting the readiness row alone now keeps the hold, a fail-safe improvement from the hold fact (r8 ER-b); deleting both lifts the hold and the restriction: PROPOSED with 32 lower-body rows (r8 ER-c). Deleting an open window's report row leaves 0 of 10 sessions live with no answerable check, and a new report opens a second window (r8 ER-d).",
+        "Altering a row so it is unreadable has the same effect as deleting it (SEC-V1CPR-01)."
+      ],
+      "namedBlockerTerms": {
+        "acceptable": "Yes, for the offline shadow core, which has no erasure path, on these terms only.",
+        "terms": [
+          "No erasure, edit or per-episode deletion path for any F08 row (CLINICAL_HOLD and READINESS_DECLARED included) in the app, the server, support or admin tooling, and no account-deletion variant that removes F08 rows while keeping the program.",
+          "RECORD-CUSTODY first: today any client that holds the record can delete or alter a row, which is an erasure.",
+          "No real collection and no exposure before the tombstone design and its regressions exist: the core reads an erased or unreadable F08 row as clinical-cause, restriction in force or episode unknown, never as absent, with integrity kept (SEC-V1CP-14 evidence).",
+          "Trigger: before any erasure path, real collection or exposure, whichever comes first."
+        ],
+        "notAcceptableAs": "permission to ship account or episode deletion, or to treat SEC-V1CP-14 as met"
+      },
+      "owner": "Engineering with SSCTR; retention basis G07"
+    },
+    {
+      "id": "SEC-V1CPI-07",
+      "originalSeverity": "LOW",
+      "ruling": "CLOSED_WITH_CONDITIONS",
+      "evidence": [
+        "A same-day screen answered before the hold is refused (eligibility.assessedAfterHold); one answered after it is accepted; a date-only screen on the hold day is asked again; a previous-local-day screen sent in UTC is not today; a date-only screen the next day is accepted (r4 R7-a..e; fixcycle test)."
+      ],
+      "conditions": [
+        "A screen stamped after the decision clock (23:30 for a 12:00 declaration) is accepted (r4 R7-f): the server binds assessedAt to the screen it served in the declaration flow.",
+        "holdAt comes from the CLINICAL_HOLD fact; where that fact is suppressed (SEC-V1CPR-02) the after-the-hold check has nothing to compare with."
+      ],
+      "owner": "Engineering"
+    },
+    {
+      "id": "SEC-V1CPI-08",
+      "originalSeverity": "LOW",
+      "ruling": "CLOSED",
+      "evidence": [
+        "A canary key or value at every level of the report, the check and the readiness (top level, warningSigns, exerciseResponse, sports, a sport object, a restriction value, the hold) never reaches the decision, the reference state or the record; each reader returns '<group>.unrecognized' only; a 200,000-character key gives a 15 KB output (r5, 12/12).",
+        "The cycle's new reason strings (unrecognized, region, race, 14-day chain, early end, named hold, assessedAfterHold, replay) take only counts, dates and fixed words (diff review; r5 ET)."
+      ],
+      "note": "Pre-existing, outside the cycle: screenInterruptionReason returns a non-boolean clinicalReason verbatim in matched (200,000 characters kept); it did not reach any restart or onboarding output in the probes (r5 EB)."
+    },
+    {
+      "id": "SEC-V1CPI-09",
+      "originalSeverity": "LOW",
+      "ruling": "OPEN",
+      "residualSeverity": "LOW",
+      "evidence": [
+        "Fixed: running stated restricted with ready true is asked; an unprogrammed sport's object is validated; a region without strength is asked (r4 R9-c..f; fixcycle test).",
+        "Not fixed: the named-hold check compares absent keys (h.eventId === hold.eventId || h.identity === hold.episodeId, with undefined on both sides). hold {episodeId:'someone-elses-episode'}, {eventId:'wrong'} and {} are accepted wherever a hold lacks the other key (r4 R9-a, r4b). No decision effect: the fact binds the holds on record."
+      ],
+      "required": "Require at least one key, and a match on every key present; directed test with each key alone and wrong.",
+      "owner": "Engineering"
+    },
+    {
+      "id": "SEC-V1CPI-10",
+      "originalSeverity": "LOW",
+      "ruling": "CLOSED",
+      "evidence": [
+        "A replayed weekly review with a check is a KEEP and adds no row; a check reusing the report's id is asked; only a decision's own CLINICAL_HOLD shares its event id (r6 R10-a, c, d; fixcycle test)."
+      ],
+      "note": "The fix put the id check before the clinical screen: SEC-V1CPR-03."
+    },
+    {
+      "id": "SEC-V1CPI-11",
+      "originalSeverity": "LOW",
+      "ruling": "CLOSED_WITH_CONDITIONS",
+      "evidence": [
+        "222,392 decision-output strings on 5ee9dec (Situation 1 for every condition, intent and speed at 4 and 12 days with window and return weeks; the early end, the 14-day chain ask, the supersede, the unreviewed ladder week, the race asks, not improved, sign routes; Situation 2 variants and restart weeks; Situation 3 restart, blocked and hold-on-record outputs): no V1CP string carries a clearance or diagnosis word (r7).",
+        "Two hits remain, neither a claim: the readiness item 'that you recovered' (a question to the athlete) and the R6 baseline reason 'no automatic clearance' (previousValidity), which is shown during F08 holds."
+      ],
+      "conditions": [
+        "Catalog copy in PT-BR, EN and ES, including the baseline reasons shown in F08 flows, without denylisted words, with a string scan (Product/UX with PCG; G07/G11 final).",
+        "Urgent-care guidance for W2-W5 and X1: G04 unavailable, interim wording to the Founder per DR-148."
+      ],
+      "owner": "Product/UX copy with PCG; G04 and the Founder for urgency"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "SEC-V1CP-02",
+      "title": "Closed structure, fail closed",
+      "status": "VERIFIED_WITH_CONDITIONS",
+      "evidence": [
+        "Client restart fields refused (r1 RF-a); strength restrictions required (r4 R5); every F08 reader closed, with '<group>.unrecognized' (r5; p1 rerun 65 + 20 still ASK); unprogrammed sports validated (r4 R9-d); out-of-vocabulary values ASK (p1 rerun)."
+      ],
+      "conditions": ["SEC-V1CPI-09 residual (named hold)", "SEC-V1CPR-02: the review contract accepts a non-string event id, which silently skips the hold fact", "server-side closed schema (string ids, strict booleans, additionalProperties false): PENDING, Engineering"]
+    },
+    {
+      "id": "SEC-V1CP-03",
+      "title": "No prefilled health answers; every item actively answered",
+      "status": "VERIFIED_WITH_CONDITIONS",
+      "evidence": [
+        "Nine shortcut forms for the warning signs are asked; each missing sign is asked by name; each of the 15 readiness signs is required; strength restrictions are required (r8 C3, r4 R5-a)."
+      ],
+      "conditions": ["client: every control unanswered, one by one, no all-no, no copy from an earlier screen: PENDING, Product/UX and Engineering", "the A1 reason not asked on the restart path after resumed training is ruled under SEC-V1CP-23 (SEC-V1CPI-02 residual)"]
+    },
+    {
+      "id": "SEC-V1CP-04",
+      "title": "professionalSeen dropped",
+      "status": "VERIFIED",
+      "evidence": ["professionalSeen, doctorName, professionalName, professionalVisitDate, doctorCleared and clearanceDate are refused by the report, the check and the readiness; no F08 row has a professional field (r8 C4)."]
+    },
+    {
+      "id": "SEC-V1CP-05",
+      "title": "No free text in the F08 inputs",
+      "status": "VERIFIED",
+      "evidence": ["text, notes, symptoms, medication and diagnosis are refused by every F08 reader; unknown keys are never echoed (r5, r8 C5); an unprogrammed sport's free text is refused (r4 R9-d); no F08 row has a free-text field."]
+    },
+    {
+      "id": "SEC-V1CP-14",
+      "title": "Erasure fails closed in a hash-bound record",
+      "status": "FAILED",
+      "evidence": [
+        "Append-only and hash-bound half: rows travel unchanged, each F08 row is sealed and survives JSON storage, tampered rows are not read (r3 RH-a, RH-b, r3d).",
+        "Erasure half not met: no tombstone; deleting the CLINICAL_HOLD row, or the readiness and hold rows together, unlocks a plan and drops the restriction; deleting a report row strands the athlete (r8 ER-a..d). An altered row is read as absent (SEC-V1CPR-01)."
+      ],
+      "disposition": "Carried as the named blocker SEC-V1CPI-06 on the terms in findings; it does not gate the offline shadow core, which exposes no erasure path."
+    },
+    {
+      "id": "SEC-V1CP-21",
+      "title": "Copy never claims clearance or diagnosis",
+      "status": "VERIFIED_WITH_CONDITIONS",
+      "evidence": ["222,392 output strings, no V1CP string with a denylisted word; the readiness reason now reads 'This is your own statement; the app makes no medical judgment' (r7)."],
+      "conditions": ["catalog scan in three languages including the baseline 'no automatic clearance' reason, and urgency wording: SEC-V1CPI-11"]
+    },
+    {
+      "id": "SEC-V1CP-22",
+      "title": "Readiness declaration integrity",
+      "status": "VERIFIED_WITH_CONDITIONS",
+      "evidence": [
+        "No hold: KEEP, nothing recorded; a foreign reference: HOLD; a replay: KEEP with one row; same id, other payload: ASK; the clinical cause stays on record (r4 R22).",
+        "Screen today by the program's clock and after the latest hold (r4 R7); a sign in the declaration keeps the hold and records it (r2 H-i); a sign during the S6 restart returns to the hold and writes its fact (r2 H-e)."
+      ],
+      "conditions": ["SEC-V1CPI-09 residual", "SEC-V1CPI-07 conditions (server-bound assessedAt)", "SEC-V1CPR-03: under a reused event id a new sign is asked, not held", "in-program holds rely on the reference state (RECORD-CUSTODY)", "server ownership, eventId deduplication across devices, device-owner authentication SHOULD (G09): PENDING, Engineering"]
+    },
+    {
+      "id": "SEC-V1CP-23",
+      "title": "A restart plan is not a bypass",
+      "status": "FAILED",
+      "evidence": [
+        "Verified: with an intact, same-athlete record and string event ids, every one of nine hold sources blocks a new plan with no reference and with a stale one (r2); restrictions in force carry (0 lower-body rows); client restart fields are refused (r1 RF-a); a stated clinical cause routes (r1 RF-d); a stated pause never shortens the record's (r1 RF-f).",
+        "FAILED by SEC-V1CPI-02 residual: an old declaration stands in for the cause of a new stop after resumed training (r1 RF-e).",
+        "Also SEC-V1CPR-01 (restriction lost through the intake's athlete id, a regression: fa3985b 0 lower-body rows, 5ee9dec 32; hold lost through an altered row or a restart dated before it), SEC-V1CPR-02 (a suppressed hold fact unlocks a plan) and SEC-V1CPR-04 (the default no-stated-pause restart throws instead of asking)."
+      ],
+      "outsideCore": "the server keeps the carried record by reference and binds the athlete id and the restart's clock: PENDING, Engineering"
+    }
+  ],
+  "newFindings": [
+    {
+      "id": "SEC-V1CPR-01",
+      "severity": "MEDIUM",
+      "introducedByCycle": true,
+      "title": "On the restart path, an F08 row readableF08 rejects is read as absent, and the owner and clock come from the intake",
+      "files": ["CoachingCore/src/v1-f08.mjs:183-187 (readableF08)", "CoachingCore/src/v1-f08.mjs:206-216 (restartIntake owner, at, heldOnRecord)", "CoachingCore/src/r6-index.mjs:35 (no athleteId passed)"],
+      "scenario": "Hold on record (swelling yes), then a readiness with AVOID_LOWER_BODY_STRENGTH. (a) The CLINICAL_HOLD row's declaredAt altered by 1 ms: restart PROPOSED (r3 RH-c). (b) The intake names athlete id 'ath-v1cp-hybrid-2' with the same record: the hold is not read (PROPOSED) and the restriction is lost, 32 lower-body rows instead of 0; fa3985b kept the restriction with the same input (r3 RH-d, r3e). (c) A restart whose intake asOf is two or more days before the hold: PROPOSED (r3 RH-e).",
+      "impact": "A hold or a restriction in force fails open on inputs a client controls in the core contract (the record, intake.athlete.id, intake.asOf). Equivalent to deleting the row; a regression for restrictions.",
+      "required": "In restartIntake, a record row that fails the predicate, names another athlete or is dated after the restart's clock gives HOLD or ASK (counting rows, naming no content), never an empty read; restartProgram takes the athlete id from a bound source (a required parameter, or every F08 row must match the intake's id); directed tests for (a) to (c).",
+      "violates": ["SEC-V1CP-23", "SEC-V1CP-14 (unreadable read as absent)", "SEC_V1CP_IMPL SEC-V1CPI-04 required ('a failing row gives HOLD, never silently honoured or dropped')", "PCG RC-11 (restrictions in force carry over)"],
+      "mitigation": "Unreachable once RECORD-CUSTODY holds and the server binds the athlete id and the restart's clock.",
+      "owner": "Engineering; Security re-verifies"
+    },
+    {
+      "id": "SEC-V1CPR-02",
+      "severity": "MEDIUM",
+      "introducedByCycle": true,
+      "title": "A clinical decision can leave no CLINICAL_HOLD fact, and a new plan then unlocks",
+      "files": ["CoachingCore/src/r6-adaptation.mjs:43-50 (withHoldFact)", "CoachingCore/src/r6-adaptation.mjs:29-36 and 494 (previousValidity; event.id truthiness only)"],
+      "scenario": "(a) Event id 4242 (a number) with an illness flag: CLINICAL_HUMAN_REQUIRED, no hold fact, restart PROPOSED (r2 S-numeric). (b) A CLINICAL_HOLD row of another athlete planted with the next event id: the real hold is not written, restart PROPOSED (r2 S-planted). (c) An event id reused after a released hold: the new hold is not written, restart PROPOSED (r2 S-reused). (d) A stale clinical reference sent after a release with a chest-pain report: the review is answered from the stale state, the sign is never read or recorded, restart PROPOSED (r2 S-stale). (e) A malformed actualLedger with a clinical flag: no ledger and no fact returned (r2 S-malformed).",
+      "impact": "The record alone again fails to show a standing hold, which SEC-V1CPI-03 was fixed to guarantee.",
+      "required": "The review contract refuses a non-string or empty event id (HOLD); withHoldFact deduplicates only on a readable row of this athlete with the same id and no later READINESS_DECLARED; a reference whose asOf predates the latest readable F08 fact is refused, or counts as standing only when the record holds an unreleased hold; directed tests for (a) to (d).",
+      "violates": ["SEC-V1CP-23", "SEC-V1CP-02 (fail closed)", "PCG RC-15"],
+      "mitigation": "(b), (d), (e) need a client that controls the record or the reference (RECORD-CUSTODY removes them); (a) and (c) need only an integrator's id scheme.",
+      "owner": "Engineering; Security re-verifies"
+    },
+    {
+      "id": "SEC-V1CPR-03",
+      "severity": "MEDIUM",
+      "introducedByCycle": true,
+      "title": "An event-id conflict now comes before the clinical route: a warning sign yes is answered with an id question",
+      "files": ["CoachingCore/src/r6-adaptation.mjs:1192 (replayOf now matches an F08 fact of any type)", "CoachingCore/src/r6-adaptation.mjs:1316 (replayOf added at the head of episodeWeekly)", "CoachingCore/src/r6-adaptation.mjs:1206 and 1277 (replayOf before readWellbeing and readCheck)"],
+      "scenario": "Inside an episode, a weekly review with id 'wr-G' and an all-no check, then the same id with chest pain yes: 5ee9dec ASK 'This check id already belongs to another check'; fa3985b CLINICAL_HUMAN_REQUIRED. A WELLBEING_CHECK reusing the report's id with chest pain yes, and a NOT_FEELING_100 report reusing a check's id with chest pain yes: 5ee9dec ASK; fa3985b CLINICAL_HUMAN_REQUIRED (r6b, r6c, r6d). A check reusing a check id, or a report reusing a report id, already asked at fa3985b (pre-existing). No hold fact is written and the next review proceeds normally (r6 R10-b).",
+      "impact": "A relevant sign gets no hold and no professional-assessment advice whenever a client resubmits edited answers under the same idempotency key. This is the task contract's ESCALATE_IF 'a relevant sign being ignored', in a narrow form.",
+      "required": "Clinical first: an identical payload stays a KEEP; any other payload is screened first, so a yes routes to the clinical hold and writes its fact, and the id is asked only for an all-no payload; directed tests for the report, the check and the weekly review.",
+      "violates": ["PCG RC-01 (the clinical screen precedes Situation 1/2/3 logic)", "QE-R7B1-04 precedent (clinical before the report-identity question)", "SEC-V1CP-22 (a new sign returns to the hold)"],
+      "owner": "Engineering; QRE re-verifies"
+    },
+    {
+      "id": "SEC-V1CPR-04",
+      "severity": "MEDIUM",
+      "introducedByCycle": true,
+      "title": "restartProgram throws on the default restart: no stated pause, a record with executed sessions and no declaration",
+      "files": ["CoachingCore/src/r6-intake.mjs:213-217 (pause built from the record facts with P null; reasonQuestion(pause.screen, P) destructures null)"],
+      "scenario": "A record with week 0 executed, no readiness on record, an intake with no pause, restarts 1, 3, 10 and 45 days after the last session: TypeError 'Cannot read properties of null (reading reasonCategory)' every time; fa3985b returned ASK athlete.pause.reasonCategory (r1d, r1c).",
+      "impact": "The main Situation 3 path returns an exception instead of the A1 question. No plan is produced, so no unsafe plan, but a status is the core's fail-closed contract (QRE-R6-10), and an integrator's error fallback is unspecified.",
+      "required": "reasonQuestion receives the stated pause or an empty one, and the restart asks the reason; generateProgram and restartProgram return a status, never an exception; directed test for the no-stated-pause restart with and without a declaration.",
+      "violates": ["SEC-V1CP-02 (unknown becomes ASK)", "QRE-R6-10"],
+      "owner": "Engineering; QRE (functional severity is QRE's call)"
+    },
+    {
+      "id": "SEC-V1CPR-05",
+      "severity": "LOW",
+      "introducedByCycle": true,
+      "title": "The made-from-the-record filter (QRE-V1CP-08) reads the whole restart day as old history",
+      "files": ["CoachingCore/src/r6-adaptation.mjs:463-464 (madeFrom = start of the next local day)"],
+      "scenario": "A plan restarted with startDate equal to asOf; a clinical break (ILLNESS 'flu') declared under it at 18:00 that day. The next day's review without the reference: 5ee9dec MODIFY, fa3985b CLINICAL_HUMAN_REQUIRED from the record's break. With the reference, and for a later restart from the record, both block (r9).",
+      "impact": "Narrow: an in-program clinical break of the restart day is no longer kept by the record, only by the reference state.",
+      "required": "Exclude only the breaks the restart read (by eventId, from the carried record), or compare with the restart's instant; directed test.",
+      "owner": "Engineering; QRE re-verifies"
+    },
+    {
+      "id": "SEC-V1CPR-06",
+      "severity": "LOW",
+      "introducedByCycle": true,
+      "title": "Minimisation: fields stored with no consumer",
+      "files": ["CoachingCore/src/v1-f08.mjs:176 (holdFact eventKind)", "CoachingCore/src/v1-f08.mjs:122 and r6-adaptation.mjs:1281-1285 (early improved false)"],
+      "scenario": "CLINICAL_HOLD stores eventKind (for example NOT_FEELING_100), which nothing in src reads (grep). An early check answering improved false is stored with kind WINDOW, and nothing reads it (r6 EE-e).",
+      "required": "Drop both, or name a consumer and list them in the SEC-V1CP-01 inventory with CLINICAL_HOLD, rowHash, earlyEnd, chainOf and supersedes.",
+      "owner": "Engineering with G07 (inventory)"
+    }
+  ],
+  "observationsRouted": [
+    {"id": "OBS-R1", "what": "A1 lexicon: 'tore my acl skiing' under TRAVEL nonclinical screens NONCLINICAL at 5ee9dec and fa3985b; the FREEZE-6 lexicon has neither 'acl' nor 'tore' (r1 RF-d, r1e). Pre-existing, same class as SSCTR-V1CPI-11.", "owner": "SSCTR and PCG (lexicon data, C-Q01-2)"},
+    {"id": "OBS-R2", "what": "Chain counting: a report of the same condition as the original episode in a later plan week supersedes it (new window); only the next one routes to assessment, unchanged from fa3985b (r6 CH-c). Whether the original report counts under C-1 'reported again' is a sporting rule.", "owner": "SSCTR with QRE"}
+  ],
+  "pending": [
+    {"id": "SEC-V1CPI-02 residual", "what": "the restart asks the cause of a stop after resumed training", "status": "BLOCKER", "owner": "Engineering; SSCTR and PCG for the RC-11 matching rule"},
+    {"id": "SEC-V1CPR-03", "what": "clinical first before the event-id question", "status": "BLOCKER", "owner": "Engineering; QRE"},
+    {"id": "SEC-V1CPR-01, SEC-V1CPR-02, SEC-V1CPR-04", "what": "fail-open reads and suppressed hold facts on the restart path; the no-stated-pause crash", "status": "BEFORE_ANY_INTEGRATION", "owner": "Engineering; QRE for -04"},
+    {"id": "SEC-V1CPI-09 residual, SEC-V1CPR-05, SEC-V1CPR-06", "what": "named-hold comparison, restart-day filter, minimisation", "status": "BEFORE_EXPOSURE", "owner": "Engineering; G07 for the inventory"},
+    {"id": "SEC-V1CPI-06 / SEC-V1CP-14", "what": "erasure tombstone design and regressions, CLINICAL_HOLD and unreadable rows included", "status": "NAMED_BLOCKER before any erasure path, real collection or exposure", "owner": "Engineering with SSCTR; G07 retention basis"},
+    {"id": "RECORD-CUSTODY", "what": "the server alone appends recordFact rows, stores referenceState and sends the latest one, binds the athlete id, the decision clock and assessedAt, and assigns string event ids; the client never submits an editable record or state", "status": "PENDING", "owner": "Engineering"},
+    {"id": "SEC-V1CP-01", "what": "data inventory purpose to data to derived for every F08 field, now with CLINICAL_HOLD, rowHash, earlyEnd, chainOf, supersedes", "status": "PENDING", "owner": "Engineering with G07"},
+    {"id": "SEC-V1CP-02 (server)", "what": "closed schema before the core, string ids and strict booleans", "status": "PENDING", "owner": "Engineering"},
+    {"id": "SEC-V1CP-03 (client)", "what": "unanswered controls one by one, no all-no, no copy; UI test", "status": "PENDING", "owner": "Product/UX and Engineering"},
+    {"id": "SEC-V1CP-06, -07", "what": "baseline free text bounded with no outbound path; deleting a note never reclassifies", "status": "PENDING", "owner": "Engineering with SSCTR"},
+    {"id": "SEC-V1CP-08, -09", "what": "purpose register; analytics schema without F08 fields", "status": "PENDING", "owner": "Product/UX, Data/Analytics and Engineering; G07"},
+    {"id": "SEC-V1CP-10, -11, -12", "what": "consent at first use in three languages; refusal posture; revocation fails conservative", "status": "PENDING", "owner": "Product/UX, SSCTR, Engineering; G07"},
+    {"id": "SEC-V1CP-13", "what": "retention and deletion across record, replicas and backups", "status": "PENDING", "owner": "Engineering; G07 durations"},
+    {"id": "SEC-V1CP-15, -16", "what": "hashes (rowHash included) treated as the facts; no health value in logs, telemetry or crash reports; canary test", "status": "PENDING", "owner": "Engineering"},
+    {"id": "SEC-V1CP-17, -18", "what": "neutral OS surfaces; no F08 fact in shares or exports; export behind reauthentication", "status": "PENDING", "owner": "Product/UX and Engineering; G08/G09"},
+    {"id": "SEC-V1CP-19, -20", "what": "server authorization by account with negative tests; protection at rest and in transit", "status": "PENDING", "owner": "Engineering (G09)"},
+    {"id": "SEC-V1CP-21 (catalog), URGENCY-WORDING", "what": "three-language catalog scan including baseline reasons; urgent-care guidance W2-W5, X1", "status": "PENDING", "owner": "Product/UX with PCG; G04 unavailable, interim wording to the Founder per DR-148; G07/G11 final"},
+    {"id": "SEC-V1CP-22 (server), SEC-V1CP-23 (server)", "what": "ownership on every read and write, eventId deduplication across devices, device-owner authentication SHOULD; carried record by reference", "status": "PENDING", "owner": "Engineering; G09"},
+    {"id": "SEC-V1CP-24, -26, -27", "what": "no medical document in any flow; safety route ungated; age gate unchanged", "status": "PENDING", "owner": "Chief, Product/UX, Product; G07, G08, G10"},
+    {"id": "SEC-V1CP-25", "what": "re-verification of a revision that fixes the blockers above, then of the server and client implementation", "status": "PENDING", "owner": "Engineering and QRE; Security"},
+    {"id": "E1-E2-INTAKE-FIELDS", "what": "trainingMonths and the race 'tolerated' answer, escalated by the SSCTR", "status": "PENDING", "owner": "Security (separate ruling) with G07"},
+    {"id": "RC-16", "what": "whether an early end may fall below the 3-day minimum", "status": "PENDING", "owner": "Founder with PCG"}
+  ],
+  "notDone": "No code, test, canon, product document, CURRENT_MISSION.md or ledger was edited; nothing was committed, pushed, merged or frozen. The only files written in the repository are this record and SEC_V1CP_RECHECK.md. Probes and the fa3985b extract live in the scratch folder outside the repository. No server, client, logging or analytics was verified (none exists). No legal or clinical determination was made."
+}

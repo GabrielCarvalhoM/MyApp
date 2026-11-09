@@ -1305,3 +1305,27 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing merged, pushed or deleted.
 - **Next:** the Founder's decision on the next functional mission. Checkpoint: `audits/domain-coaching-r7-d-2026-11-02/PHASE5_CHECKPOINT.md`.
+
+
+<!-- V1CP-20261109-closure-r1 -->
+2026-11-09 · V1 COACHING PRODUCTIZATION (V1CP) **CLOSED_NOT_READY**, with named blockers.
+- **Runtime** (branch `claude/v1-coaching-productization`, from `32b5ce3`):
+  - A1–A3;
+  - E1–E3;
+  - F08 Situations 1–3 under DR-148, with the SSCTR-V1CP Q05–Q08 mapping;
+  - three coach profiles, plus independent volume and difficulty;
+  - PREFERENCE_CHANGE.
+- **Commits:** `4584a77`…`fa3985b` (the reviewed candidate), then `5ee9dec` (the single fix cycle), then this closure.
+- **Validation:**
+  - suite 1080/1080;
+  - FREEZE-6 differential: H2 300/300 and generations 39/39 identical in the full result. H1 differs in 13 explained Block 1 steps, and in 13 more only by CLINICAL_HOLD rows.
+- **Judges:**
+  - round 1: SSCTR NOT_READY, Quality NOT_READY, Security FAILED;
+  - recheck on `5ee9dec`: SSCTR NOT_READY, Quality NOT_READY (both original blockers closed), Security FAILED.
+- **Blockers named for V1CP Fix-Forward:** NB-1..NB-6, SB-1..SB-5 and QRE-V1CPR-02/-05/-06. The tombstone and RECORD-CUSTODY must come before any real collection.
+- **Unchanged:**
+  - V1 authority NO, and F08_OPEN;
+  - FREEZE-6, policy, canon and Figma;
+  - the queue stays at 235;
+  - nothing pushed, merged or deleted.
+- **Checkpoint:** `audits/v1-coaching-productization-2026-11-08/CHECKPOINT_V1CP.md`.

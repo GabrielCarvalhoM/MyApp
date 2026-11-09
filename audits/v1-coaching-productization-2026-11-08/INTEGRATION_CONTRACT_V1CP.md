@@ -1,7 +1,7 @@
 # V1CP — integration contract for the app and the design candidate
 
 **Status: DERIVED INTEGRATION HANDOFF, not canonical.**
-- Product, domain and experience authority stay where `canon/CANONICAL_INDEX.md` puts them. This page describes only what the CoachingCore reference runtime accepts and returns, at candidate commit `fa3985b`. It invents no product decision.
+- Product, domain and experience authority stay where `canon/CANONICAL_INDEX.md` puts them. This page describes only what the CoachingCore reference runtime accepts and returns, at commit `5ee9dec` (after the bounded fix cycle). It invents no product decision.
 - The runtime is an offline, synthetic shadow reference: `mode: 'SHADOW'`, `applied: false`. It is not the app's backend, and V1_COACHING_AUTHORITY_READY = NO.
 - This mission edits no Figma file. Section 9 lists what the design candidate must represent, for whoever owns the design to reconcile.
 
@@ -94,8 +94,12 @@ The client maps status to UI states. It maps action only to explanation copy.
 - EXERCISE_SUBSTITUTION, PREFERENCE_CHANGE;
 - NOT_FEELING_100, WELLBEING_CHECK, READINESS_DECLARATION.
 
+**Unknown fields.** A field outside the closed vocabulary is never echoed back, since it may carry free text. The decision returns one `<group>.unrecognized` entry in `missingInputs`.
+
+**Clinical holds in the record.** Every decision that opens a clinical hold appends a `CLINICAL_HOLD` row to `actualLedger`, carrying no reason text. A readiness declaration after it releases it. A new plan (`restartProgram`) reads standing holds from the record, never only from `referenceState`.
+
 **Every review** carries:
-- `eligibility`: the six clinical flags as booleans, a `status` and `assessedAt`, no older than 14 days. F08 entries need it dated that day.
+- `eligibility`: the six clinical flags as booleans, a `status` and `assessedAt`, no older than 14 days. F08 entries need it dated that day, by the program's local clock (an instant is read in the program's offset). A readiness declaration's screen must come after the hold it answers; a same-day screen needs its time.
 - `observations`: session reports. Each has `{eventId, sessionId, actual: {completed, minutes, exercises: [{id, sets: [{reps, load?, rir?}]}]}, response: {performance, recovery, effort, nextDayFunction}, occurrenceDate}`.
 
 ## 4. Capabilities
@@ -203,13 +207,18 @@ Each RETURN rung is recorded on its week as `adaptations[kind=WELLBEING_REDUCTIO
 - Not improved → CLINICAL_HUMAN_REQUIRED. NEED_REST instead gets ASK: declare a break or start a new plan.
 - Any warning sign yes → CLINICAL_HUMAN_REQUIRED.
 - A rung not done as planned repeats (no debt).
-- A new report while open → WELLBEING_RUNG_HELD. The same condition again a week later → CLINICAL_HUMAN_REQUIRED.
+- A new report while open supersedes the open episode and opens its own window, at its own intent and coverage. While the open window or its wait still runs, the chain is bounded to 14 continuous days; more is asked. The same condition again in a later plan week → CLINICAL_HUMAN_REQUIRED. A local report in a scope the open episode does not touch → ASK (one episode at a time).
+- Early end: a WELLBEING_CHECK with `improved: true` before the chosen end, from the window's third day, ends the window the day before and starts the return. Before day 3 → ASK.
+- A race inside the weeks the return needs → ASK at the window-end check: move it or skip it; the return never crosses a race. While sessions wait for the check, the race waits too. It is kept and marked `waitsForCheck: true`, never dropped.
+- A ladder week with no weekly review carrying the check does not count as done: its step repeats.
 
 **Recoverable errors**
 - ASK for every unanswered or unknown item, and for a race inside the window.
 
 **Persisted**
-- Record facts `WELLBEING_DECLARED` and `WELLBEING_CHECKED`: append-only, deduplicated by event id.
+- Record facts `WELLBEING_DECLARED` and `WELLBEING_CHECKED`: append-only, deduplicated by event id. One event id is one fact, of one type.
+- Every F08 row carries `rowHash`, the digest of its own content. Store and send rows byte for byte: a changed row is never read again.
+- A row is read only when it belongs to the athlete and was declared by the decision's clock.
 
 **Explanation data**
 - `reason` describes the window and the return concretely, for example "a much lighter week, then an easier week, then a week at your usual doses".
@@ -227,7 +236,9 @@ Each RETURN rung is recorded on its week as `adaptations[kind=WELLBEING_REDUCTIO
 | `warningSigns` | W1–W15, all of them. |
 | `sports` | `{RUN:{ready, runningNotRestricted?}, STRENGTH:{ready, restrictions?}}` |
 | `restrictions` | AVOID_LOWER_BODY_STRENGTH, AVOID_UPPER_BODY_STRENGTH |
-| `runningNotRestricted` | Required when running is ready and AVOID_LOWER_BODY_STRENGTH is declared. |
+| `runningNotRestricted` | Required (`true` or `false`) when running is ready and AVOID_LOWER_BODY_STRENGTH is declared. Otherwise only `true` is accepted; a stated running restriction without that is asked. |
+| `STRENGTH.restrictions` | Required when strength is ready: an array, where `[]` is the answer "none". Never defaulted. |
+| `hold` | Optional. When sent, it must name a hold on record; otherwise ASK. |
 | `returnSpeed` | BALANCED or CONSERVATIVE. FASTER is refused. |
 
 **Outputs and states**
@@ -379,7 +390,7 @@ Source: `CoachingCore/test/v1cp-experience.test.mjs`, which pins this behaviour.
 |---|---|---|
 | Return progress after a Situation 1 window (rung per week) | IMPLEMENTED | Week adaptations `WELLBEING_REDUCTION` (`phase`, `rungs`) |
 | Clinical hold state and its exit | IMPLEMENTED | `status: CLINICAL_HUMAN_REQUIRED`, `referenceState.pending`, READINESS_DECLARATION |
-| Early end of a Situation 1 window ("I'm better sooner") | NOT_SUPPORTED | The window lasts the chosen days (V1 limit). |
+| Early end of a Situation 1 window ("I'm better sooner") | IMPLEMENTED from the window's third day | WELLBEING_CHECK with `improved: true`. An end before day 3 is a Founder/PCG question (RC-16). |
 | Concurrent Situation 1 episodes in non-overlapping scopes | NOT_SUPPORTED | One open episode at a time (V1 limit). |
 
 **Metrics and scores**
@@ -399,12 +410,13 @@ Source: `CoachingCore/test/v1cp-experience.test.mjs`, which pins this behaviour.
 - Represent the window-end check: the warning signs, plus "has it passed or clearly improved?" (yes/no).
 - Represent each weekly check while the episode is open, and the exercise-response items after executed or adverse sessions.
 - Represent the return speeds as concrete copy (C-Q06-4), never as coach profiles. Represent the rung of each return week.
+- Represent the early end ("I am better") from the window's third day, a report that replaces an open one, a race waiting for the check, and the race question at the return start (move or skip).
 
 **Situation 2**
 - Represent the readiness declaration:
   - every warning sign;
   - each sport ready, yes or no;
-  - restrictions from the closed list;
+  - restrictions from the closed list, with "none" as an explicit answer;
   - the explicit "running itself is not restricted" item;
   - the BALANCED/CONSERVATIVE restart.
 - Never use clearance wording.

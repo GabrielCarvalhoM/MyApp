@@ -1477,3 +1477,52 @@ It is summarized in `audits/domain-coaching-r7-d-2026-11-02/phase5/AUTHORIZATION
   - Nothing was pushed, merged or deleted.
 
   [Checkpoint](audits/domain-coaching-r7-d-2026-11-02/PHASE5_CHECKPOINT.md).
+
+## V1 COACHING PRODUCTIZATION (V1CP), Founder request of 2026-11-08: CLOSED_NOT_READY, with named blockers (2026-11-09)
+
+<!-- V1CP-20261109-closure-r1 -->
+**V1CP = CLOSED_NOT_READY · V1_COACHING_AUTHORITY_READY = NO · F08 = F08_OPEN · R7D-FREEZE-6 untouched · no freeze, push, merge or Figma change.** This new functional mission is independent of R7-D, which was not reopened. It ran on branch `claude/v1-coaching-productization`, in worktree `.claude/worktrees/v1-coaching-productization`, from `32b5ce3`. It produced the [task contract](audits/v1-coaching-productization-2026-11-08/TASK_CONTRACT.md), the [checkpoint (PT)](audits/v1-coaching-productization-2026-11-08/CHECKPOINT_V1CP.md) and the [integration contract](audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md).
+
+**Implemented in the shadow reference runtime (`CoachingCore/`), each with directed tests:**
+- A1, the free-text screen, per SSCTR-V1CP Q01. Its collocations are exactly Q01 (c).
+- A2, the last-week rule.
+- A3, the per-sport stop, per Q02.
+- E1–E3, the experience and records path (Q03 and Q04).
+- F08, under DR-148 and the SSCTR-V1CP Q05–Q08 mapping:
+  - Situation 1: the warning-sign instrument, a window of 3–14 days, the wait for the window-end check, a return ladder R0–R5 at three speeds, chaining, an early end from day 3, and the race;
+  - Situation 2: the readiness restart, with a MODERATE floor, the held first step, restrictions and S6 checks;
+  - Situation 3: a new plan from the record, never above the in-program return.
+- Three coach profiles (P1, P2, P4; P5 rejected) and independent volume and difficulty (V1–V4', D1–D3), one axis per lever.
+- PREFERENCE_CHANGE.
+
+**Validation:**
+- Suite 1080/1080 at `5ee9dec`.
+- FREEZE-6 differential:
+  - H2 300/300 and generations 39/39 identical in the full result;
+  - H1 has 13 Block 1 steps that differ, all explained;
+  - 13 more H1 steps differ only by the new CLINICAL_HOLD record rows.
+
+**Independent judges.** Round 1 at `fa3985b`: SSCTR NOT_READY, Quality NOT_READY, Security FAILED. One bounded fix cycle followed (`5ee9dec`; see [FIX_CYCLE_V1CP](audits/v1-coaching-productization-2026-11-08/FIX_CYCLE_V1CP.md)), then one narrow recheck with fresh instances:
+- SSCTR: NOT_READY;
+- Quality: NOT_READY, with both original blockers closed;
+- Security: FAILED.
+
+**Named blockers for the next mission:**
+- NB-1: the chaining consolidation C-1, as the SSCTR recheck modified it (BLOCKING).
+- NB-2: the race "keep" answer (C-2 modified).
+- NB-3: rest days before a single declared break.
+- NB-4: an unreviewed ladder week.
+- NB-5: a race result entering weekly minutes.
+- NB-6: D49 counted on executed sets.
+- SB-1: the RC-11 residual.
+- SB-2: clinical-first before an id conflict (a regression).
+- SB-3: unreadable holds must fail closed.
+- SB-4: every clinical decision records its hold.
+- SB-5: a TypeError on the default restart.
+- QRE-V1CPR-02, -05, -06.
+
+**Design blockers before any real collection:** SEC-V1CPI-06, the erasure tombstone, and RECORD-CUSTODY.
+
+**Founder questions:** FP-4; DEMANDING (C-Q09-2); B6 on a race kept inside a return; RC-16 with PCG; interim urgency wording. The queue stays at 235.
+
+**Next:** V1CP Fix-Forward. It fixes the named blockers, gets one fresh recheck, and only then produces a candidate and a freeze.
