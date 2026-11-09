@@ -2,6 +2,7 @@ import {clone,freeze,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {ordinalResistance,allowsCandidate,DEFAULT_REPERTOIRE} from './r7b-repertoire.mjs';
 import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
+import {canonicalCoaching} from './v1-coaching.mjs';
 
 export const INTAKE_VERSION='R6-INTAKE-1';
 export const isoDay=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&Number.isFinite(Date.parse(value+'T00:00:00Z'))&&new Date(value+'T00:00:00Z').toISOString().slice(0,10)===value;
@@ -167,6 +168,17 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  if(!Array.isArray(equipment)||equipment.some(e=>typeof e!=='string'))errors.push('athlete.equipment');
  if(recentRun.runMinutesPerWeek===null&&runGoal.kind!=='NONE')uncertainty.push(unknown('recent.runMinutesPerWeek','SAFE_CONSERVATIVE_ESTABLISHMENT','Conservative run establishment week; missing exposure is not poor tolerance'));
  if(recentSelf.strengthDaysPerWeek===null&&strengthGoal.kind!=='NONE')uncertainty.push(unknown('recent.strengthDaysPerWeek','LEARN_DURING_FIRST_SESSIONS','Initial frequency follows chosen days with low first-week volume'));
+ // V1CP E3 (experience and records audit): history the plan cannot use is named, never dropped in silence. A known exercise that is not a
+ // configuration of the bound catalog, or whose configuration needs equipment the athlete did not declare, and a reported load in a unit or
+ // convention the engine does not read (for example PLATES) are disclosed. The plan is unchanged by it (effort-guided establishment, as before).
+ const declaredEquipment=new Set([...(Array.isArray(equipment)?equipment.filter(x=>typeof x==='string').map(upper):[]),'BODYWEIGHT']);
+ for(const e of dedupedExercises){const entry=catalogueEntry(e.id);if(!entry)uncertainty.push(unknown('knownExercises.'+e.id,'SAFE_CONSERVATIVE_ESTABLISHMENT',`${e.id} is not an exercise of the bound catalog: its history is kept as reported and not planned`));else if(!entry.equipment.every(q=>declaredEquipment.has(q)))uncertainty.push(unknown('knownExercises.'+e.id,'SAFE_CONSERVATIVE_ESTABLISHMENT',`The reported history of ${e.id} is kept but not planned: it needs ${entry.equipment.join(', ')}, not all of which is among the declared equipment; declaring it lets the plan use that history`,{requires:clone(entry.equipment)}));}
+ for(const raw of (Array.isArray(a.knownExercises)?a.knownExercises:Array.isArray(a.knownLoads)?a.knownLoads:[])){
+  if(!raw||typeof raw!=='object'||!present(raw.id)||raw.load===undefined||raw.load===null)continue;
+  const entry=catalogueEntry(raw.id),asLoad=typeof raw.load==='number'?{value:raw.load,unit:'KG',convention:raw.convention??entry?.convention??'TOTAL'}:raw.load;
+  if(entry&&ordinalResistance(entry))continue;
+  if(!toKilograms(asLoad))uncertainty.push(unknown('knownExercises.'+raw.id+'.load','SAFE_CONSERVATIVE_ESTABLISHMENT',`The reported load of ${raw.id} uses a unit or load convention the engine does not read (${[asLoad?.unit,asLoad?.convention].filter(Boolean).join(', ')||'none given'}): it is kept as reported and not used; the load is established by effort`,{reported:clone(raw.load)}));
+ }
  if(!dedupedExercises.some(e=>e.dose)&&strengthGoal.kind!=='NONE'&&strengthDays.length)uncertainty.push(unknown('knownExercises.load','SAFE_CONSERVATIVE_ESTABLISHMENT','Effort-guided load establishment in the first exposure; no sex-, body-size- or cross-exercise load'));
  if(event&&recentRun.longestRunMinutes===null)uncertainty.push(unknown('recent.longestRunMinutes','LEARN_DURING_FIRST_SESSIONS','Long-run start follows current easy exposure; event trajectory stays conditional'));
  if(event?.timeGoalMinutes)uncertainty.push(unknown('event.timeGoalMinutes','SAFE_CONSERVATIVE_ESTABLISHMENT','Time goal is context only; training intensity comes from current effort anchors, never from the goal time'));
@@ -183,10 +195,14 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE}={}){
  const emphasis=listOf(prefs.emphasis??a.strengthDevelopmentPreferences,'strengthPreferences.emphasis'),movementPriorities=listOf(prefs.movementPriorities??a.movementPriorities,'strengthPreferences.movementPriorities');
  const rotation=ROTATIONS.includes(upper(a.exerciseRotationPreference??prefs.rotation))?upper(a.exerciseRotationPreference??prefs.rotation):'COACH_DECIDES';
  const temporaryPreference=['RUN','STRENGTH'].includes(String(upper(s.temporaryPreference??s.temporaryOrderPreference)??'').replace('_FIRST',''))?String(upper(s.temporaryPreference??s.temporaryOrderPreference)).replace('_FIRST',''):null;
+ // V1CP Blocks 3-4: the athlete's coaching choices (coach profile, volume and difficulty per sport). None stated keeps the default path, whose
+ // canonical intake has no such key (R7D-FREEZE-6 behaviour); a value outside the vocabulary is an input error, never ignored.
+ const coachingErrors=[],coaching=canonicalCoaching(a.coaching??source.coaching,coachingErrors);errors.push(...coachingErrors);
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
   athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runExperience!==null,strength:strengthExperience!==null},recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},
   goals:{run:runGoal,strength:strengthGoal,event,...(contextEvent?{contextEvent}:{})},
   schedule:{runDays,strengthDays,runTurn,strengthTurn,runMinutes,strengthMinutes,longRunMinutes:longRunMinutes??runMinutes,longRunDay,sharedDays:shared,sameTurnConfirmed:s.sameTurnConfirmed===true,temporaryPreference},
+  ...(coaching?{coaching}:{}),
   officialPlanState:clone(source.officialPlanState??null),completedWork:clone(source.completedWork??[]),uncertainty,negotiation};
  canonical.hash=hash(canonical);
  const clinical=el.status==='CLINICAL'||pause?.screen.status==='CLINICAL';

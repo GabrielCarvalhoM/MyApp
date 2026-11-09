@@ -1,0 +1,278 @@
+{
+ "h1": {
+  "cases": 39,
+  "steps": 130,
+  "differingSteps": 12,
+  "diffs": [
+   {
+    "caseId": "R7D-H05",
+    "step": "s4",
+    "base": {
+     "status": "HOLD",
+     "action": "HOLD",
+     "proposal": null,
+     "missing": "",
+     "question": null,
+     "errors": "malformed:TypeError"
+    },
+    "candidate": {
+     "status": "KEEP",
+     "action": "KEEP",
+     "proposal": null,
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "Malformed review facts: Cannot read properties of undefined (reading 'sessions')",
+    "candidateReason": "This is the last week of the program: new chosen days or shifts apply from the next week, and this program has no week after this one, so the current week keeps its days, shifts and doses; the next program starts from th"
+   },
+   {
+    "caseId": "R7D-H07",
+    "step": "s1",
+    "base": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": null,
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.clinicalReason",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The interruption reason is clinical or possibly clinical (operation): qualified assessment is needed; no nonclinical return recipe",
+    "candidateReason": "Before a nonclinical restart, say whether this break involved your own pain, injury, illness or a medical reason (yes or no) (the reason mentions: about someone else: operation)"
+   },
+   {
+    "caseId": "R7D-H07",
+    "step": "s2",
+    "base": {
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "proposal": null,
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.clinicalReason",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "A prior clinical dependency remains outside this nonclinical reference; no automatic clearance",
+    "candidateReason": "The break reported on 2026-12-06 (episodeId R7D-H07-s1): say whether this break involved your own pain, injury, illness or a medical reason (yes or no); report it again with its episodeId"
+   },
+   {
+    "caseId": "R7D-H20",
+    "step": "s1",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.endAfterThisReview",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness",
+    "candidateReason": "The interruption facts are out of range or contradict each other (interruption.endAfterThisReview); say when it started and when it ended"
+   },
+   {
+    "caseId": "R7D-H20",
+    "step": "s2",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "proposal": "d08f6cd7701618c6",
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness",
+    "candidateReason": "The break reported on 2026-12-20 is on record and applied now: short nonclinical interruption (6 days): resume the last completed doses; no step until execution is observed"
+   },
+   {
+    "caseId": "R7D-H32",
+    "step": "s1",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.endAfterThisReview",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness",
+    "candidateReason": "The interruption facts are out of range or contradict each other (interruption.endAfterThisReview); say when it started and when it ended"
+   },
+   {
+    "caseId": "R7D-H32",
+    "step": "s2",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "proposal": "caafe035009a2196",
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The break reported on 2026-12-17 (episodeId h32-a): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId",
+    "candidateReason": "Separate breaks on record are applied now (2026-12-14 to 2026-12-20; 2026-12-28 to 2027-01-01), each its own interruption; the stop read runs from 2026-12-28 to 2027-01-01; the break from 2026-12-14 to 2026-12-20 is read"
+   },
+   {
+    "caseId": "R7D-H32",
+    "step": "s3",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.startedAt",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The break reported on 2026-12-17 (episodeId h32-a): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId",
+    "candidateReason": "A strength session was recorded on 2026-12-14, the day the break reported on 2026-12-17 (episodeId h32-a) began, and whether it came before that break changes the state its own return starts from: report that break again"
+   },
+   {
+    "caseId": "R7D-H32",
+    "step": "s4",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.startedAt",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The break reported on 2026-12-17 (episodeId h32-a): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId",
+    "candidateReason": "A strength session was recorded on 2026-12-14, the day the break reported on 2026-12-17 (episodeId h32-a) began, and whether it came before that break changes the state its own return starts from: report that break again"
+   },
+   {
+    "caseId": "R7D-H32",
+    "step": "s5",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "MODIFY",
+     "action": "REESTABLISH",
+     "proposal": "81ed90aec4bcd9bb",
+     "missing": "",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The break reported on 2026-12-17 (episodeId h32-a): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId",
+    "candidateReason": "Separate breaks on record are applied now (2026-12-14 to 2026-12-20; 2026-12-28 to 2027-01-01), each its own interruption; the stop read runs from 2026-12-28 to 2027-01-01; the break from 2026-12-14 to 2026-12-20 is read"
+   },
+   {
+    "caseId": "R7D-H34",
+    "step": "s2",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.clinicalReason",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The interruption reason is unclear; say what it was and confirm it involved no pain, injury or illness",
+    "candidateReason": "Before a nonclinical restart, say whether this break involved your own pain, injury, illness or a medical reason (yes or no) (the reason mentions: baby)"
+   },
+   {
+    "caseId": "R7D-H34",
+    "step": "s3",
+    "base": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.reasonCategory",
+     "question": null,
+     "errors": ""
+    },
+    "candidate": {
+     "status": "ASK",
+     "action": "ASK",
+     "proposal": null,
+     "missing": "interruption.clinicalReason",
+     "question": null,
+     "errors": ""
+    },
+    "baseReason": "The break reported on 2026-12-21 (episodeId h34-b): its reason is unclear; say what it was and confirm it involved no pain, injury or illness; report it again with its episodeId",
+    "candidateReason": "The break reported on 2026-12-21 (episodeId h34-b): say whether this break involved your own pain, injury, illness or a medical reason (yes or no); report it again with its episodeId"
+   }
+  ]
+ },
+ "h2": {
+  "intakes": 300,
+  "differing": 0,
+  "diffs": []
+ }
+}

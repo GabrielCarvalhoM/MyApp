@@ -9,11 +9,12 @@ import {createLearningModel,updateLearningModel,validateLearningModel,evidenceFo
 import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs';
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
+import {coachingOf,mergeCoaching,describeCoaching} from './v1-coaching.mjs';
 import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
 const KIND_ALIASES={REVIEW:'WEEKLY_REVIEW',MISSED_ESSENTIAL:'MISSED_SESSION',MISSED_OPTIONAL:'MISSED_SESSION',RETURN:'RETURN_AFTER_PAUSE',CONFLICT:'DOUBLE_CONFLICT',DOUBLE_INFEASIBLE:'DOUBLE_CONFLICT',EVENT_NEAR:'EVENT_WEEK_CONFLICT',SESSION_MOVED:'UNAVAILABLE_DAY',TRAVEL:'EQUIPMENT_CHANGE',SUBSTITUTION_NEED:'EQUIPMENT_CHANGE'};
-export const REVIEW_KINDS=['WEEKLY_REVIEW','MISSED_SESSION','PARTIAL_SESSION','UNDERPERFORMANCE','OVERPERFORMANCE','PROGRESSION_NOT_TOLERATED','PROGRESSION_TOO_EASY','LOCAL_FATIGUE','SYSTEMIC_FATIGUE','SCHEDULE_CHANGE','UNAVAILABLE_DAY','DOUBLE_CONFLICT','EQUIPMENT_CHANGE','GOAL_CHANGE','EVENT_DATE_CHANGE','RETURN_AFTER_PAUSE','EVENT_WEEK_CONFLICT','RECOVERED','EXERCISE_SUBSTITUTION'];
+export const REVIEW_KINDS=['WEEKLY_REVIEW','MISSED_SESSION','PARTIAL_SESSION','UNDERPERFORMANCE','OVERPERFORMANCE','PROGRESSION_NOT_TOLERATED','PROGRESSION_TOO_EASY','LOCAL_FATIGUE','SYSTEMIC_FATIGUE','SCHEDULE_CHANGE','UNAVAILABLE_DAY','DOUBLE_CONFLICT','EQUIPMENT_CHANGE','GOAL_CHANGE','EVENT_DATE_CHANGE','RETURN_AFTER_PAUSE','EVENT_WEEK_CONFLICT','RECOVERED','EXERCISE_SUBSTITUTION','PREFERENCE_CHANGE'];
 const HORIZONS=['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'];
 const CLINICAL_KEYS=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'];
 export const sessionType=s=>s.sport==='RUN'?'RUN:'+s.role:'STRENGTH:'+(s.templateType??s.prescription?.family??'SESSION');
@@ -1072,7 +1073,7 @@ function contextAfter(ctx,base,start,{canonical:change=null,goals=false,athleteS
  * path ("Malformed review facts").
  */
 function lastWeekKeep(ctx,action){
- const what=action==='REARRANGE_FUTURE_WEEKS'?'new chosen days or shifts apply':/GOAL|EVENT/.test(String(action??ctx.kind))||['GOAL_CHANGE','EVENT_DATE_CHANGE'].includes(ctx.kind)?'the new goal applies':'the change applies';
+ const what=action==='PREFERENCE_CHANGE'?'the new coaching choices apply':action==='REARRANGE_FUTURE_WEEKS'?'new chosen days or shifts apply':/GOAL|EVENT/.test(String(action??ctx.kind))||['GOAL_CHANGE','EVENT_DATE_CHANGE'].includes(ctx.kind)?'the new goal applies':'the change applies';
  return {action:'KEEP',reason:`This is the last week of the program: ${what} from the next week, and this program has no week after this one, so the current week keeps its days, shifts and doses; the next program starts from the athlete's facts with the change. To move one of this week's sessions, report its day as unavailable`,counterfactuals:[counter('KEEP','KEEP',true,'No week of this program falls after this one',{selected:true}),counter(action??'REPLAN','REPLAN',false,'Re-planning a week the program does not have is impossible; moving this week\'s sessions onto other days is the unavailable-day report')]};
 }
 /** Re-plans the weeks from `fromWeek` after an agenda, goal or learned-arrangement change: the new context from that week (C2), then the one
@@ -1144,6 +1145,20 @@ function scheduleChange(ctx){
  if(isoDay(ch.to))return {action:'ASK',reason:`The change is stated for ${isoDay(ch.from)&&ch.from!==ch.to?ch.from+' to '+ch.to:ch.to} only; a dated window of days or shifts is not re-planned automatically. Say whether the change is permanent from a date, or move or skip the affected sessions`,missingInputs:['changes.permanentFrom|sessionMove'],counterfactuals:[counter('REARRANGE_FUTURE_WEEKS','REARRANGE_FUTURE_WEEKS',false,'Applying a change stated for some dates to every later week would change days and shifts the athlete did not mention'),counter('ASK','ASK',true,'The scope of the change is the athlete’s statement',{selected:true})]};
  if(start<0)return {action:'KEEP',reason:'The change starts after the last week of this program; the current weeks keep their days and shifts',counterfactuals:[counter('KEEP','KEEP',true,'Nothing in this program falls on or after the stated date',{selected:true})]};
  return rebuild(ctx,{canonical:c=>({...c,schedule:normalizedSchedule(mergedSchedule(c.schedule,norm))}),fromWeek:start,reason:`New chosen days or shifts: same doses rearranged on the new days from ${start===ctx.w+1?'next week':program.weeks[start].startDate}; this week’s remaining sessions are not moved onto days the athlete removed`,action:'REARRANGE_FUTURE_WEEKS'});
+}
+/**
+ * V1CP Blocks 3-4: a change of the athlete's coaching choices (coach profile, volume, difficulty per sport). It is recorded as a decision and
+ * re-plans only the weeks after this one, from the current state (rebuild, as a schedule change does): executed sessions and this week's sessions
+ * stay as they are, and the profile's review-time levers apply from the next review on. The same choices again change nothing, a value outside
+ * the vocabulary is asked, and in the last week the change keeps the weeks (lastWeekKeep).
+ */
+function preferenceChange(ctx){
+ const ch=ctx.review.changes?.coaching;
+ if(ch===undefined)return {action:'ASK',reason:'Say which coaching choice changes: the coach profile, the volume or the difficulty',missingInputs:['changes.coaching']};
+ const inForce=coachingOf((ctx.sk.at(ctx.w+1)??ctx.sk).c),errors=[],next=mergeCoaching(inForce,ch,errors);
+ if(errors.length)return {action:'ASK',reason:'The coaching choices have values the plan cannot use ('+errors.join(', ')+'); nothing changes until they are corrected',missingInputs:errors.map(e=>'changes.'+e)};
+ if(hash(next)===hash(inForce))return {action:'KEEP',reason:'These coaching choices are already in force; nothing changes',counterfactuals:[counter('KEEP','KEEP',true,'The same choices again',{selected:true})]};
+ return rebuild(ctx,{canonical:c=>({...c,coaching:next}),fromWeek:ctx.w+1,reason:`New coaching choices from next week (${describeCoaching(next)}): the weeks ahead are re-planned from the current state; executed sessions and this week's sessions stay as they are`,action:'PREFERENCE_CHANGE'});
 }
 function unavailableDay(ctx){
  const {program,sk,w,review}=ctx,dates=new Set(Array.isArray(review.changes?.unavailableDates)?review.changes.unavailableDates:[]),week=program.weeks[w];
@@ -2059,4 +2074,4 @@ function eventWeekConflict(ctx){
  return {action:'SKIP_NO_CATCH_UP',reason:'Event period conflict: the affected session is skipped, the race and freshness are protected, nothing is stacked',proposal,counterfactuals:[counter('MOVE_INTO_TAPER','MOVE',false,'Moving work closer to the race adds fatigue when it should fall'),counter('SKIP_NO_CATCH_UP','SKIP',true,'Smallest safe change',{selected:true})]};
 }
 function recovered(ctx){return weeklyReview(ctx,{extraReason:'Recovered label noted; the next step still follows executed evidence'});}
-const HANDLERS={EXERCISE_SUBSTITUTION:exerciseSubstitution,WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered};
+const HANDLERS={EXERCISE_SUBSTITUTION:exerciseSubstitution,WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered,PREFERENCE_CHANGE:preferenceChange};
