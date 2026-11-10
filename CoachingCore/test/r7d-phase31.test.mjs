@@ -9,6 +9,7 @@ import assert from 'node:assert/strict';
 import {hash} from '../src/value.mjs';
 import * as adaptation from '../src/r6-adaptation.mjs';
 import {opts,K,FULL,elig,program,review,obs,live,runs,addDays,evaluateProgram} from '../r7/b/fixtures/helpers.mjs';
+import * as F08 from '../src/v1-f08.mjs';
 
 // The record row type is named as the runtime exports it (read by name so the file also runs, and fails for its reasons, on R7D-FREEZE-1).
 const {historicalStateOf,REVIEW_KINDS}=adaptation,INTERRUPTION_DECLARED=adaptation.INTERRUPTION_DECLARED??'INTERRUPTION_DECLARED';
@@ -20,6 +21,12 @@ const fresh=(o=GEN)=>({p:program(o),ledger:[],ref:null});
 const copy=t=>({p:t.p,ledger:[...t.ledger],ref:t.ref});
 /** Qualified clearance as C3 models it: the client drops the clinical continuation state and keeps the record. */
 const clear=t=>{t.ref=null;return t;};
+// V1 Coaching Integration Boundary CF-OBS-1 migration (PCG-V1CPFF-CFOBS1-r1 Q4, Q6; Security C2; QRE): the record is the source of truth of a clinical
+// hold and only the athlete's readiness declaration releases it. Dropping the clinical reference state (`clear`, the R7 evaluation convention for a
+// qualified clearance, PCG-F08-C07) is never a release: each migrated test keeps it as its negative twin and releases by the declaration.
+const RNO=()=>Object.fromEntries(F08.READINESS_SIGNS.map(k=>[k,false]));
+const declare=(t,w,at)=>step(t,w,{...at,kind:'READINESS_DECLARATION',readiness:{declaredRecovered:true,warningSigns:RNO(),sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}}});
+const CLASS_ORDER=['SHORT','MODERATE','LONG'];
 const weekFacts=(p,w)=>p.weeks[w].sessions.filter(live).map(s=>obs(p,s));
 const PREP=new Map();
 function beforeBreak(o=GEN){if(!PREP.has(o.id)){const t=fresh(o);for(const w of [0,1,2])step(t,w,{observations:weekFacts(t.p,w)});PREP.set(o.id,t);}return copy(PREP.get(o.id));}
@@ -83,7 +90,21 @@ test('R7-D Phase 3.1 T1: while the recorded break is not applied, a later event 
 });
 
 // ---------- T2: a clinical route carries the break ----------
-test('R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; after clearance the first review re-enters from it',()=>{
+/** V1CIB CF-OBS-1 migration: the readiness declaration that ends the route re-enters from the recorded break once (its restart reads the break's days
+ * and is recorded as its return); the next plain review re-enters no more. Returns the restart decision. */
+function releasedReentersOnce(t,brk,ceiling,label){
+ const ra=declare(t,5,D2),d=t.p.decisions.at(-1);
+ assert.equal(ra.action,'REESTABLISH',`${label}: ${ra.reason}`);assert.equal(ra.planValidity.status,VALID,label);
+ assert.equal(d.interruption.relation,'READINESS',label+': the restart is the return of the recorded break');
+ for(const s of ['RUN','STRENGTH'])assert.ok(d.interruption.stops[s].start<=brk.startDate,`${label}: ${s} restarts after the break's days (${JSON.stringify(d.interruption.stops[s])})`);
+ const ahead=aheadRuns(t.p,5,addDays(t.p.weeks[5].startDate,2));
+ assert.ok(ahead.filter(s=>s.weekIndex===5).every(s=>s.prescription.durationMinutes<=ceiling),label+': within the executed run');
+ assert.ok(ahead.every(s=>!QUALITY.includes(s.prescription.family)),label+': no quality');
+ const next=step(copy(t),5,D3);
+ assert.notEqual(next.action,'REESTABLISH',`${label}: applied once, never again over the restart (${next.reason})`);assert.notEqual(next.status,'CLINICAL_HUMAN_REQUIRED',label);
+ return ra;
+}
+test('R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; dropping the reference state never releases; after the readiness declaration the restart re-enters from it, once',()=>{
  for(const kind of ['WEEKLY_REVIEW','RETURN_AFTER_PAUSE','SYSTEMIC_FATIGUE','SCHEDULE_CHANGE']){
   for(const flag of ['illness','pain','injury','clinicalConcern']){
    const t=beforeBreak(),brk=BREAK(t.p),ceiling=executedMax(t,brk.startDate),label=`${kind} ${flag}`;
@@ -93,24 +114,20 @@ test('R7-D Phase 3.1 T2: a break with a clinical flag routes to a human first an
    // The clinical route stands (no clearance): still clinical, no dose, no return.
    const sticky=step(copy(t),5,D2);
    assert.equal(sticky.status,'CLINICAL_HUMAN_REQUIRED',label);assert.equal(sticky.proposal,null);assert.notEqual(sticky.planValidity.status,VALID);
-   // After qualified clearance the first review reads the recorded break: the re-entry, never the pre-break plan.
-   clear(t);
-   const {a,ra,b,rb}=restated(t,5,D2,brk);
-   assert.equal(ra.action,'REESTABLISH',`${label}: ${ra.reason}`);assert.equal(ra.planValidity.status,VALID);
-   assert.deepEqual(planView(a.p),planView(b.p),label+': as the break stated again after clearance');
-   const ahead=aheadRuns(a.p,5,addDays(a.p.weeks[5].startDate,2));
-   assert.ok(ahead.filter(s=>s.weekIndex===5).every(s=>s.prescription.durationMinutes<=ceiling),label+': within the executed run');
-   assert.ok(ahead.every(s=>!QUALITY.includes(s.prescription.family)),label+': no quality');
+   // Negative twin (the R7 convention): the reference state dropped is no release; the record keeps the hold and the break.
+   const dropped=clear(copy(t)),neg=step(dropped,5,D2);
+   assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',label+': dropping the reference never releases');assert.equal(neg.proposal,null,label);assert.notEqual(neg.planValidity.status,VALID,label);
+   assert.equal(declarations(dropped.ledger).length,1,label+': the break is still on record');
+   releasedReentersOnce(t,brk,ceiling,label);
   }
  }
 });
-test('R7-D Phase 3.1 T2: a break with a pain substitution routes to a human and is recorded; after clearance the first review re-enters from it',()=>{
- const t=beforeBreak(),brk=BREAK(t.p),X=t.p.weeks[5].sessions.filter(s=>live(s)&&s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.map(e=>e.id))[0];
+test('R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a pain substitution routes to a human and is recorded; dropping the reference never releases; after the readiness declaration the restart re-enters from it, once',()=>{
+ const t=beforeBreak(),brk=BREAK(t.p),ceiling=executedMax(t,brk.startDate),X=t.p.weeks[5].sessions.filter(s=>live(s)&&s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.map(e=>e.id))[0];
  const r1=step(t,5,{...D1,kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:X,reason:'SKILL_MISMATCH',pain:true},interruption:brk});
  assert.equal(r1.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(r1.proposal,null);assert.equal(declarations(t.ledger).length,1);
- clear(t);
- const {a,ra,b}=restated(t,5,D2,brk);
- assert.equal(ra.action,'REESTABLISH',ra.reason);assert.deepEqual(planView(a.p),planView(b.p));
+ const neg=step(clear(copy(t)),5,D2);assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED','dropping the reference never releases');assert.equal(neg.proposal,null);
+ releasedReentersOnce(t,brk,ceiling,'pain substitution');
 });
 test('R7-D Phase 3.1 T2: a break whose own reason is clinical is recorded and, after clearance, routes to a human again as the same break stated again does (F08 unchanged): never a dose, never the pre-break plan',()=>{
  const t=beforeBreak(),brk={...BREAK(t.p),reasonCategory:'INJURY',reason:'ankle sprain',nonclinical:false};
@@ -128,23 +145,24 @@ test('R7-D Phase 3.1 T2: a break whose own reason is clinical is recorded and, a
 /** Weeks 0-1 executed and reviewed, weeks 2-6 silent: week 7's first review asks about the unreported training. */
 function silent(){const t=fresh();for(const w of [0,1])step(t,w,{observations:weekFacts(t.p,w)});const q=step(t,7,{day:0,hour:'07:00:00'});assert.equal(q.question?.kind,'UNREPORTED_TRAINING',q.reason);return t;}
 const answerBreak=p=>({startDate:p.weeks[2].startDate,endDate:addDays(p.weeks[7].startDate,-1),reasonCategory:'WORK',reason:'Work project, no training',nonclinical:true});
-test('R7-D Phase 3.1 T3 (P3-F01): a break answering the unreported-training question through a clinical route survives clearance; the first review applies it with no second declaration, as the direct answer does',()=>{
+test('R7-D Phase 3.1 T3 (P3-F01; V1CIB CF-OBS-1 migration): a break answering the unreported-training question through a clinical route survives the route; dropping the reference never releases; the readiness declaration applies it with no second declaration, never less conservative than the direct answer',()=>{
  const base=silent(),brk=answerBreak(base.p);
  // Direct: the answer in a plain review on day 2, then a plain review on day 3.
  const direct=copy(base),d2=step(direct,7,{day:2,hour:'07:00:00',interruption:brk}),d3=step(direct,7,D3);
  assert.equal(d2.action,'REESTABLISH',d2.reason);
- // Through a clinical route: the same answer with a pain substitution on day 2, clearance, then a plain review on day 3.
+ // Through a clinical route: the same answer with a pain substitution on day 2, then (negative twin) the reference dropped, or the readiness
+ // declaration on day 3.
  const t=copy(base),X=t.p.weeks[7].sessions.filter(s=>live(s)&&s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.map(e=>e.id))[0];
  const c2=step(t,7,{day:2,hour:'07:00:00',kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:X,reason:'SKILL_MISMATCH',pain:true},interruption:brk});
  assert.equal(c2.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(c2.proposal,null);assert.equal(declarations(t.ledger).length,1,'the answer is recorded');
- clear(t);
- const c3=step(t,7,D3);
+ const neg=step(clear(copy(t)),7,D3);assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED','dropping the reference never releases');assert.equal(neg.proposal,null);
+ const c3=declare(t,7,D3);
  assert.equal(c3.action,'REESTABLISH',c3.reason);assert.equal(c3.question??null,null);assert.equal(c3.planValidity.status,VALID);
- // Equivalent in interruption facts and return consequences to the direct delivery of that same break.
- const f=r=>{const x=breakFacts(r.proposal?.decisions.findLast(d=>d.action==='REESTABLISH')??{interruption:{}});const {stateAt,...rest}=x;return rest;};
- assert.deepEqual(f(c3),f({proposal:direct.p}),'the same interruption facts, class and entry');
- const from=addDays(t.p.weeks[7].startDate,3),window=p=>[...p.weeks[7].sessions,...p.weeks[8].sessions].filter(s=>s.date>=from).map(s=>`${s.id}|${s.status??'PLANNED'}|${hash(s.prescription??null)}`);
- assert.deepEqual(window(t.p),window(direct.p),'the same sessions ahead of the first eligible review');
+ assert.equal(declarations(t.ledger).length,1,'no second declaration of the break');
+ const r=t.p.decisions.at(-1).interruption,b=direct.p.decisions.findLast(d=>d.action==='REESTABLISH').interruption;
+ assert.equal(r.relation,'READINESS');
+ for(const s of ['RUN','STRENGTH']){assert.ok(r.stops[s].start<=brk.startDate,`${s}: the restart reads the break's days`);assert.ok(CLASS_ORDER.indexOf(r.classBySport[s])>=CLASS_ORDER.indexOf(b.classBySport?.[s]??b.class),`${s}: ${r.classBySport[s]} is never below the direct answer's ${b.classBySport?.[s]??b.class}`);}
+ const next=step(t,7,{day:4,hour:'07:00:00'});assert.notEqual(next.action,'REESTABLISH','applied once');
  assert.equal(d3.planValidity.status,VALID);
 });
 

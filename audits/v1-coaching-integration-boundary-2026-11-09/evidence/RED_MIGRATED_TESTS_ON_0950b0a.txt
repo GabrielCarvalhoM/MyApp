@@ -1,0 +1,755 @@
+✔ R7-B.2 QE-R7B1-04: pain or injury with an exercise, reported with late training before the break, routes to a human before the late-evidence question (316.1344ms)
+✔ R7-B.2 QE-R7B1-04: with a block choice or an unrecognised choice in the same review, the clinical route still wins (223.6916ms)
+✔ R7-B.2 QE-R7B1-04: two steps — the late report recorded with its question, then a pain-only review of the same re-entry week routes to a human (215.3458ms)
+✖ R7-B.2 QE-R7B1-04 (V1CIB CF-OBS-1 migration): after the clinical route a later review without the clinical state stays clinical; after the readiness declaration the late evidence is still asked, never lost behind the route; one carrying the clinical state stays clinical (211.1774ms)
+✔ R7-B.2 preserved (neighbor A): late training before the break with no clinical signal gets R7-A's confirmation question, whatever the review kind (243.7917ms)
+✔ R7-B.2 preserved (neighbor B): a clinical signal with no late evidence takes the handler's own route (180.7727ms)
+✔ R7-B.2 preserved: a return reporting an illness in the re-entry week routes to a human, with or without late training before the break (160.8844ms)
+✔ R7-B.2 preserved (neighbor D): a nonclinical correction of earlier reports with late training before the break is never routed to a human (199.3532ms)
+✔ R7-B.2 preserved (neighbor F): a skill substitution with no clinical signal and no late evidence substitutes as R7-B.1 does (144.6897ms)
+✔ R7-B.2 CAND-02: a return report resent under the same event id whose reason is clinical routes to a human, not to the report-id question (193.7462ms)
+✔ R7-B.2 preserved (CAND-02): the same report again is kept, and the same id with other nonclinical facts is asked (183.7404ms)
+✔ R7-B.2 CAND-01: when the factual re-plan raises its own question, a review reporting pain or an illness still routes to a human (370.5947ms)
+✔ R7-B.2 preserved (CAND-01): without a clinical signal the factual re-plan's question is asked as before (344.7302ms)
+✔ R7-C QE-R7C-01: an answer a refusal (R4 HOLD) recorded without applying it never leaves the stale doses valid: the next decision re-plans them, as on time (race week) (2071.7574ms)
+✖ R7-C QE-R7C-01 (V1CIB CF-OBS-1 migration): an answer a clinical route recorded is applied after the readiness declaration with no re-send; while the route stands, or with the clinical state dropped, nothing is valid (356.3395ms)
+✔ R7-C QE-R7C-02 / C9 (SSCTR-SD5-01): after a known-stop answer later in the week, the week after it is planned as on time; the elapsed sessions with no report are never credited (taper to race week included) (3503.2663ms)
+✔ R7-C QE-R7C-03: a held signal keeps travelling beside a change kept while the question stays open, and is re-evaluated with the answer as on time (745.4143ms)
+✔ R7-C QE-R7C-04: a signal held at the end of its week is never replayed in the next week (the week guard) (270.9912ms)
+✔ R7-C QE-R7C-01 trigger scope: a dose standing on facts the record does not keep, or planned on time, is never re-planned by the ceiling (1666.4856ms)
+✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (7791.1054ms)
+✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (7047.2537ms)
+✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (6990.6573ms)
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): a known stop (MISS) recorded by a carrier is applied as the direct answer: the ceiling re-plan for the R4 carrier, the readiness restart for the clinical route (6864.2771ms)
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): a PARTIAL answer recorded by a carrier still leaves part of the window unknown: the next decision asks, never valid; under a clinical route the declaration itself asks and the hold stands (4460.8041ms)
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): while the clinical route stands nothing is prescribed; dropping the clinical state never releases; after the readiness declaration the recorded facts are applied with no re-send (226.792ms)
+✔ R7-C QE-R7C-07: no decision presents the stale projection as valid once the record holds the answer (race touch, taper quality, long run) (8.104ms)
+✖ R7-C QE-R7C-07: the same record, program, clock and safety state give the same decision whichever decision recorded the answer (determinism) (575.374ms)
+✔ R7-C QE-R7C-07: the re-plan of a recorded answer never rewrites history: every session dated before the decision keeps its row (0.2821ms)
+✔ R7-C QE-R7C-07 scope: a late report of a session in a week a review already read leaves the projection standing (Property B), as in R7C-FREEZE-2 (123.4698ms)
+✔ R7-C QE-R7C-07 reach: a plan that rests on projection over its whole run window follows the record of that window, however it was reported (349.5915ms)
+✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (228.4796ms)
+✔ R7-C QE-R7C-10 visibility (1): a review that had the run reports by its clock read them, though every run gate it gave was HOLD (runs done short): the plan stands mid-week (434.3364ms)
+✔ R7-C QE-R7C-10 visibility (2) and all-adverse (11): a review that read adverse runs and gave REGRESS read them; REGRESS is never read as "the review read no run" (376.1419ms)
+✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (8136.8604ms)
+✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (500.0648ms)
+✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (0.4288ms)
+✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan (5361.1913ms)
+✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan (5413.8426ms)
+✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan (5210.0816ms)
+✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan (5272.2742ms)
+✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection (5272.6282ms)
+✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan (5243.5938ms)
+✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record (0.3804ms)
+✖ R7-C QE-R7C-10 (13): an answer that reports earlier runs done short but leaves part of the window unknown still asks, never valid, as the direct partial answer (3047.6521ms)
+✖ R7-C QE-R7C-10 (14): the reconciliation never rewrites history, and the first-recorded clock never enters HistoricalState (0.2815ms)
+✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send (164.8204ms)
+✔ R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed) (10317.0114ms)
+✔ R7-C QE-R7C-10 record: the runtime stamps the clock it first held a report at, never a value the input supplies; one execution keeps its earliest; the learning model holds none (40.6831ms)
+✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (137.8109ms)
+✔ R7-D Phase 3.1 T1: a break declared with another event is asked and recorded; the next plain review applies it with no repetition, as the same break stated there (1059.8443ms)
+✔ R7-D Phase 3.1 T1: while the recorded break is not applied, a later event of another kind is asked and applies nothing; a return report with no break of its own applies it (179.064ms)
+✖ R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; dropping the reference state never releases; after the readiness declaration the restart re-enters from it, once (47.9187ms)
+✖ R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a pain substitution routes to a human and is recorded; dropping the reference never releases; after the readiness declaration the restart re-enters from it, once (71.7263ms)
+✔ R7-D Phase 3.1 T2: a break whose own reason is clinical is recorded and, after clearance, routes to a human again as the same break stated again does (F08 unchanged): never a dose, never the pre-break plan (122.0289ms)
+✖ R7-D Phase 3.1 T3 (P3-F01; V1CIB CF-OBS-1 migration): a break answering the unreported-training question through a clinical route survives the route; dropping the reference never releases; the readiness declaration applies it with no second declaration, never less conservative than the direct answer (199.8096ms)
+✔ R7-D Phase 3.1 T4: retaining the break never applies the event that carried it; after the return the event is sent again and applied then (280.0593ms)
+✔ R7-D Phase 3.1 T5: the same break delivered again, or the same report replayed, records one fact and applies one return; the next reviews never apply it again (146.1004ms)
+✔ R7-D Phase 3.1 T6: a newer declaration of the break replaces a recorded one not applied yet when it names it (R7-D Phase 3.2: unnamed, it is asked); the earlier decisions stay as they were (111.8714ms)
+✔ R7-D Phase 3.1 T6: a recorded break once applied is corrected through its episode, named by the report that declared it; only later decisions use the correction (117.6748ms)
+✔ R7-D Phase 3.1 T7: a recorded break never passes a clinical route: a later clinical flag, a pain substitution or a standing clinical reference routes to a human with no return applied (85.8829ms)
+✔ R7-D Phase 3.1 T7: every event kind with a recorded break and a clinical flag routes to a human; with no flag none is valid before the return (586.3812ms)
+✔ R7-D Phase 3.1: the declared break is a record fact of its own kind: carried unchanged and append-only, never an execution report, never read when it is not this athlete's or its facts do not match its hash (135.513ms)
+✔ R7-D Phase 3.1: a break that begins after its review is its own review's question, not a recorded fact; a template of empty fields records nothing; the same facts give the same decision (142.3965ms)
+✔ R7-D Phase 3.4 T1 (the Founder's case): a 14-day holiday, two weeks with every run done and one strength session missed each week, then a 4-day trip: never a restart; the trip is classed by its own days, running resumes the executed doses and strength steps nothing (332.9582ms)
+✔ R7-D Phase 3.4 T2: strength executed in full and an easy run missed each week: strength resumes its executed doses, running continues from the holiday's own return (no step it did not earn) (169.9867ms)
+✔ R7-D Phase 3.4 T2: one week with every run done and the Friday strength missed: running resumes the doses of that whole week, as the complete week gives (147.4261ms)
+✔ R7-D Phase 3.4 T3: a week executed in full with strength logged without reps in reserve: the missing strength data holds strength only; running re-enters by its whole week (169.0124ms)
+✔ R7-D Phase 3.4 T4: isolated sessions in no whole week, in either sport, still run the stop through the earlier break, exactly as R7D-FREEZE-4 (271.7249ms)
+✔ R7-D Phase 3.4 T4 (disclosed residual): weeks with both sports partial (an easy run and a strength session missed each week) complete no week in any sport: the stop still runs through the earlier break (66.6445ms)
+✔ R7-D Phase 3.4 T5: an adverse response holds the sport it was reported in: the long run with recovery adverse or next-day function impaired, strength complete: strength resumes, running continues from the holiday's own return (138.7115ms)
+✔ R7-D Phase 3.4 T6: unreported sessions between the breaks are asked first, also when a sport has a whole week executed; the answer decides (126.6903ms)
+✔ R7-D Phase 3.4 T7: the late form (weeks reviewed at the time, the holiday declared later) reads the same way; timely reporting (weekly reviews; the holiday applied when stated) is unchanged (373.5235ms)
+✔ R7-D Phase 3.4 T8: three breaks: a run-complete week after the first reads it as its own return; the days between the second and the last, in no whole week, run their stop through; the record says each (103.3227ms)
+✔ R7-D Phase 3.4 T9: clinical first is unchanged: a clinical earlier break with a run-complete week between, or a pain flag at the review, routes to a human with no proposal (63.2445ms)
+✔ R7-D Phase 3.4 T10: after a return that read the earlier break as its own return, later reviews are not asked again, and a named correction of the trip re-reads the holiday as that return did; a replay changes nothing (161.3348ms)
+✔ R7-D Phase 3.4 T10: a named correction of the latest break after a return whose stop ran through the earlier break keeps the earlier break in the stop (R7D-FREEZE-4 dropped it and resumed the pre-break doses) (129.556ms)
+✔ R7-D Phase 3.4 T11: the record keeps both declarations and the training between, append-only; the return is applied once; the same review twice is byte-identical; either order of declaration gives the same stop and plan (254.8261ms)
+✔ R7-D Phase 3.4 T12 (R-F08-1): a clinical-cause break restated as a holiday by name never ends the clinical route, with or without a clearance, and opens no nonclinical return (79.7769ms)
+✔ R7-D Phase 3.4 T12 (R-F08-1): a later trip, a schedule change or a weekly review never makes the clinical-cause episode nonclinical, and no other event's change is applied with the route; the record keeps every report (75.5723ms)
+✔ R7-D Phase 3.4 T12 (R-F08-1, control): a nonclinical break corrected by name, and a reason screened only as unclear, are unaffected (91.72ms)
+✔ R7-D Phase 3.4 T13: after a return that read the earlier break as its own return, a genuine late fact about the training before the trip still asks to confirm the trip again (106.772ms)
+✔ R7-D Phase 3.4 T14: a race week between the breaks re-enters running only with its race touch and race finished; strength re-enters by its own week (804.3177ms)
+✔ R7-D Phase 3.4 T14: optional walks never decide a re-entry week, done or not (283.655ms)
+✔ R7-D Phase 3.4 T15: a week whose last session falls on the first day of the later break counts when that session was executed before the stated start, never after it (116.0997ms)
+✔ R7-D Phase 3.4 T16: a return reported mid-week plans the weeks after it from the runs completed, never from the elapsed runs of that week that were not done (332.0504ms)
+✔ R7-D Phase 3.4 T17 (R1, R1b): a running lapse with strength complete: strength resumes its executed doses; running continues the holiday's own return, exactly as the episode rule (574.4914ms)
+✔ R7-D Phase 3.4 T17 (R2): a strength lapse with every run done: running resumes its executed doses; strength re-enters from its return exactly as the episode rule (233.5525ms)
+✔ R7-D Phase 3.4 T18 (E4, V3, W4): a week without its long run holds running only; three weeks with the Friday strength missed re-enter running; a race week with only its easy run and strength done re-enters strength only (471.2368ms)
+✔ R7-D Phase 3.4 T18 (X6, characterization): an adverse recovery on every run of the week is a systemic signal that holds both sports: no week complete in any sport, the stop runs through, as R7D-FREEZE-4 (57.2572ms)
+✔ R7-D Phase 3.4 T19 (characterization): a run-only and a strength-only plan re-enter only by a whole week of their one sport; one session missed there is no whole week, never an own return (289.936ms)
+✔ R7-D Phase 3.4 T19: each sport re-enters by its own first whole week when the sports complete different weeks (62.5066ms)
+✔ R7-D Phase 3.4 T20 (characterization): an applied return between the breaks blocks any own return across it (the existing question stands); a consolidation week executed in full re-enters the athlete (O-01); a correction naming the earlier break a return consumed is asked (O-02) (461.5567ms)
+✔ R7-D Phase 3.4 T20: the ceiling ladder (G1-G4): a return reported on Friday with that week's elapsed runs unreported plans the weeks after it as a Monday report does (171.3602ms)
+✔ R7-D Phase 3.4 T21: a named correction of the latest break gives the return a fresh report of the corrected break gives, also when it makes the breaks touch or overlap or moves a whole week out; a week it moves in between is asked about first (634.8278ms)
+✔ R7-D Phase 3.4 T22 (SSCTR-P34R-F01): a named correction that moves the trip's start one day later re-reads the holiday as its own return, exactly as a fresh report of the corrected trip; the guard counts only another episode's return (157.3419ms)
+✔ R7-D Phase 3.4 T23 (SSCTR-P34R-F02): a race touch reported completed at half its minutes is partial by the existing completion rule: it never re-enters running, in a hybrid or a run-only plan (382.9862ms)
+✔ R7-D Phase 3.4 T24 (SSCTR-P34R-F03): a race week whose runs are the race touch, an optional shakeout and the race, executed in full, re-enters running, in a hybrid or a run-only plan (314.2364ms)
+✔ R7-D Phase 3.4 T25 (SSCTR-P34R-F04): a strength session on the earlier break's first day with no stated start time is asked about when strength reads from that break's own return (rule 0.8); with the start stated, or with strength re-entered by its own week, nothing is asked (180.2349ms)
+✔ R7-D Phase 3.4 T26 (QRE-P34-01): a named correction of the latest break that states its length and last day but not its first day, or only its length, is read as the same correction with its first day, and no later review holds (315.6734ms)
+✔ R7-D Phase 3.4 T27 (QRE CQ-2): a race touch or race with an adverse recovery, or a race observed only after the later break began, never re-enters running; strength still re-enters by its own week (677.8458ms)
+✔ R7-D Phase 3.4 T28 (QRE CQ-2): a named correction of the latest break sent with a record that lacks an earlier break its return read is asked, never applied with that break dropped (66.888ms)
+✔ R7-D Phase 3.4 T29 (QRE CQ-2, characterization): a later break that starts on the last day of a week, with no stated start time, leaves that week out: no sport re-enters by it and the stop runs through the earlier break (52.4216ms)
+✔ R7-D Phase 3.4 T30 (QRE CQ-2): three breaks with an inner own return: the record places the first break inside the second break's own return (WITHIN_OWN_RETURN, ownReturnOf, stopInOwnReturn) (95.9213ms)
+ℹ tests 103
+ℹ suites 0
+ℹ pass 76
+ℹ fail 27
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55131.977
+
+✖ failing tests:
+
+test at test\r7b2-clinical-precedence.test.mjs:68:1
+✖ R7-B.2 QE-R7B1-04 (V1CIB CF-OBS-1 migration): after the clinical route a later review without the clinical state stays clinical; after the readiness declaration the late evidence is still asked, never lost behind the route; one carrying the clinical state stays clinical (211.1774ms)
+  AssertionError [ERR_ASSERTION]: the record holds the hold: no clinical state sent is no release
+  + actual - expected
+  
+  + 'ASK'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7b2-clinical-precedence.test.mjs:72:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ASK',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase5-cc.test.mjs:81:1
+✖ R7-C QE-R7C-01 (V1CIB CF-OBS-1 migration): an answer a clinical route recorded is applied after the readiness declaration with no re-send; while the route stands, or with the clinical state dropped, nothing is valid (356.3395ms)
+  AssertionError [ERR_ASSERTION]: g=0, clinical state dropped, no observations: Run doses stored ahead exceed what the recorded runs allow (the longest run completed in the window plus the single-run step, or the reviewed entry when none is), so they rest on training the record does not show: the sessions still ahead are planned from the facts; completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase5-cc.test.mjs:94:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:115:1
+✖ R7-C QE-R7C-07: an EXECUTED answer recorded by an R4 HOLD or a clinical route gives the plan the direct answer gives (recorder independence) (7791.1054ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV EXEC CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:100:31
+      at Array.forEach (<anonymous>)
+      at grid (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:94:32)
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:97:2)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:116:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:118:1
+✖ R7-C QE-R7C-07: a MIXED answer (long runs done, the rest not) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (7047.2537ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV MIXED CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:100:31
+      at Array.forEach (<anonymous>)
+      at grid (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:94:32)
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:97:2)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:119:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:121:1
+✖ R7-C QE-R7C-07: an ADVERSE answer (done, the long runs with an adverse response) recorded by an R4 HOLD or a clinical route gives the direct answer's plan (6990.6573ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV ADVERSE CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:100:31
+      at Array.forEach (<anonymous>)
+      at grid (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:94:32)
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:97:2)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:122:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:125:1
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): a known stop (MISS) recorded by a carrier is applied as the direct answer: the ceiling re-plan for the R4 carrier, the readiness restart for the clinical route (6864.2771ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV MISS CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:128:31
+      at Array.forEach (<anonymous>)
+      at grid (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:94:32)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:127:2)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:138:1
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): a PARTIAL answer recorded by a carrier still leaves part of the window unknown: the next decision asks, never valid; under a clinical route the declaration itself asks and the hold stands (4460.8041ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV PARTIAL CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'ASK'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:141:11
+      at Array.forEach (<anonymous>)
+      at grid (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:94:32)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:139:2)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ASK',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:154:1
+✖ R7-C QE-R7C-07 (V1CIB CF-OBS-1 migration): while the clinical route stands nothing is prescribed; dropping the clinical state never releases; after the readiness declaration the recorded facts are applied with no re-send (226.792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:164:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:181:1
+✖ R7-C QE-R7C-07: the same record, program, clock and safety state give the same decision whichever decision recorded the answer (determinism) (575.374ms)
+  AssertionError [ERR_ASSERTION]: no clinical state sent is never a release
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:190:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase6.test.mjs:242:1
+✖ R7-C QE-R7C-07 (G01): the recorded-answer re-plan never travels with a question about unknown training; that question decides alone (228.4796ms)
+  AssertionError [ERR_ASSERTION]: The run doses still ahead were stored while the record held no report of the run sessions they depended on; the record now holds those reports, whichever decision recorded them: the sessions still ahead are planned from those facts; completed sessions stay as they were; next-week steps are gated when this week’s remaining sessions are complete
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase6.test.mjs:253:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:168:1
+✖ R7-C QE-R7C-10 visibility (3): a report the record first held after the review closed its week was not read by it, whatever gate the week gives; the next eligible decision reconciles it (8136.8604ms)
+  AssertionError [ERR_ASSERTION]: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:178:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:184:1
+✖ R7-C QE-R7C-10 visibility (4): reports of one week held by its review and reports recorded after it are read and unread one by one (500.0648ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:205:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:233:1
+✖ R7-C QE-R7C-10 shortened (5): every gap run done at 60 % of its minutes, recorded by an R4 HOLD or a clinical route, gives the direct answer's plan (0.4288ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT60 CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:234:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:236:1
+✖ R7-C QE-R7C-10 shortened (6): every gap run done at 80 %, recorded by a carrier, gives the direct answer's plan (5361.1913ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT80 CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:237:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:239:1
+✖ R7-C QE-R7C-10 shortened (7): the long runs shortened (60 %), the rest done, recorded by a carrier, gives the direct answer's plan (5413.8426ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV LONGSHORT CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:240:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:242:1
+✖ R7-C QE-R7C-10 shortened (8): the long runs shortened, the rest not done, recorded by a carrier, gives the direct answer's plan (5210.0816ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT_MISS CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:243:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:245:1
+✖ R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse response, recorded by a carrier, gives the direct answer's plan (5272.2742ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT_ADVERSE CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:246:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:250:1
+✖ R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer's plan, never the stale projection (5272.6282ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV ALL_ADVERSE CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:251:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:259:1
+✖ R7-C P6-F01 mixed: some runs done, some not done; some done short, some not done; some done, some adverse: recorded by a carrier, each gives the direct answer's plan (5243.5938ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV MIX_EXEC_MISS CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at independent (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:115:31)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:260:84)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:271:1
+✖ R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts change the plan, the carrier's next decision re-plans from the record (0.3804ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT60 CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:276:31)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:289:1
+✖ R7-C QE-R7C-10 (13): an answer that reports earlier runs done short but leaves part of the window unknown still asks, never valid, as the direct partial answer (3047.6521ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT_PARTIAL CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'ASK'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:295:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ASK',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:306:1
+✖ R7-C QE-R7C-10 (14): the reconciliation never rewrites history, and the first-recorded clock never enters HistoricalState (0.2815ms)
+  AssertionError [ERR_ASSERTION]: R10K race week g=0 RV SHORT60 CLIN :: declaration day 3: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:310:31)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:325:1
+✖ R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened answer prescribes nothing; after clearance it is applied with no re-send (164.8204ms)
+  AssertionError [ERR_ASSERTION]: R10K race week SHORT60: dropping the clinical state never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:335:49)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7c-phase7.test.mjs:376:1
+✖ R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (no first-recorded clocks) is read as R7C-FREEZE-3 read it (137.8109ms)
+  AssertionError [ERR_ASSERTION]: ALL_ADVERSE
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7c-phase7.test.mjs:390:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7d-phase31.test.mjs:107:1
+✖ R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a clinical flag routes to a human first and is recorded; nothing is prescribed while the route stands; dropping the reference state never releases; after the readiness declaration the restart re-enters from it, once (47.9187ms)
+  AssertionError [ERR_ASSERTION]: WEEKLY_REVIEW illness: dropping the reference never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7d-phase31.test.mjs:119:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7d-phase31.test.mjs:125:1
+✖ R7-D Phase 3.1 T2 (V1CIB CF-OBS-1 migration): a break with a pain substitution routes to a human and is recorded; dropping the reference never releases; after the readiness declaration the restart re-enters from it, once (71.7263ms)
+  AssertionError [ERR_ASSERTION]: dropping the reference never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7d-phase31.test.mjs:129:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\r7d-phase31.test.mjs:148:1
+✖ R7-D Phase 3.1 T3 (P3-F01; V1CIB CF-OBS-1 migration): a break answering the unreported-training question through a clinical route survives the route; dropping the reference never releases; the readiness declaration applies it with no second declaration, never less conservative than the direct answer (199.8096ms)
+  AssertionError [ERR_ASSERTION]: dropping the reference never releases
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/r7d-phase31.test.mjs:158:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

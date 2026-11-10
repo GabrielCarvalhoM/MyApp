@@ -1,0 +1,612 @@
+{
+ "state": "NEEDS_INPUT",
+ "call": "logRun",
+ "request": {
+  "actor": {
+   "athleteId": "ath-fixture-hybrid"
+  },
+  "clientRequestId": "fixture-req-008",
+  "expectedVersion": 8,
+  "eligibility": {
+   "status": "NONCLINICAL_CONFIRMED",
+   "assessedAt": "2026-10-01",
+   "pain": false,
+   "persistentPain": false,
+   "injury": false,
+   "illness": false,
+   "functionalLimitation": false,
+   "clinicalConcern": false
+  },
+  "sessionId": "unknown",
+  "occurredOn": "2026-11-16",
+  "completed": false
+ },
+ "response": {
+  "ok": true,
+  "decisionId": "dc_fixture_0015",
+  "eventId": "ev_fixture_0014",
+  "version": 9,
+  "status": "ASK",
+  "action": "ASK",
+  "held": false,
+  "suppressed": false,
+  "adoption": null,
+  "observationIds": [
+   "ob_50a10227af65d8ef47f255d94f"
+  ],
+  "decision": {
+   "decisionId": "dc_fixture_0015",
+   "eventId": "ev_fixture_0014",
+   "kind": "MISSED_SESSION",
+   "at": "2026-11-17T11:00:00.000Z",
+   "status": "ASK",
+   "action": "ASK",
+   "reason": "Current eligibility must be assessed; unknown is neither clearance nor illness",
+   "missingInputs": [
+    "eligibility.currentAssessment"
+   ],
+   "question": null,
+   "planValidity": "REQUIRES_RECONCILIATION"
+  },
+  "view": {
+   "state": "NEEDS_INPUT",
+   "version": 9,
+   "programHash": "d273c5aa8454bb6b1b9406d8db1242c083bc8c6ff453e71635cddb1ee2f4a8e8",
+   "today": "2026-11-17",
+   "weekIndex": 1,
+   "weeks": 8,
+   "sports": {
+    "RUN": {
+     "programmed": true,
+     "state": "ACTIVE"
+    },
+    "STRENGTH": {
+     "programmed": true,
+     "state": "ACTIVE"
+    }
+   },
+   "hold": null,
+   "pending": null,
+   "question": {
+    "missingInputs": [
+     "eligibility.currentAssessment"
+    ],
+    "eventKind": "MISSED_SESSION",
+    "reason": "Current eligibility must be assessed; unknown is neither clearance nor illness"
+   },
+   "week": {
+    "index": 1,
+    "startDate": "2026-11-16",
+    "sessions": [
+     {
+      "id": "w1-str-d0",
+      "date": "2026-11-16",
+      "sport": "STRENGTH",
+      "role": "STRENGTH_FULL_B",
+      "turn": null,
+      "optional": false,
+      "status": "PLANNED",
+      "executable": false,
+      "projected": false,
+      "prescription": {
+       "modality": "STRENGTH",
+       "family": "FULL_BODY",
+       "durationMinutes": 31,
+       "warmupMinutes": 5,
+       "cooldownMinutes": 3,
+       "secondsPerRep": 4,
+       "equipment": [
+        "BENCH",
+        "DUMBBELLS"
+       ],
+       "exercises": [
+        {
+         "id": "db-rdl",
+         "pattern": "HINGE",
+         "subpattern": "HIP_HINGE",
+         "region": "LOWER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "MODERATE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-row",
+         "pattern": "PULL",
+         "subpattern": "HORIZONTAL_PULL",
+         "region": "UPPER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "NONE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-bench-press",
+         "pattern": "PUSH",
+         "subpattern": "HORIZONTAL_PUSH",
+         "region": "UPPER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS",
+          "BENCH"
+         ],
+         "lowerDemand": "NONE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-split-squat",
+         "pattern": "LUNGE",
+         "subpattern": "SPLIT_STANCE",
+         "region": "LOWER",
+         "role": "ACCESSORY",
+         "laterality": "UNILATERAL",
+         "sets": 2,
+         "reps": 10,
+         "rir": 3,
+         "restSeconds": 75,
+         "preparationMinutes": 1,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "MODERATE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 10 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention",
+          "Repetitions are per side: do each set on both sides; sides are never added together"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 2,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 2
+         }
+        },
+        {
+         "id": "db-biceps-curl",
+         "pattern": "ELBOW_FLEXION",
+         "subpattern": "ELBOW_FLEXION",
+         "region": "UPPER",
+         "role": "ACCESSORY",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 10,
+         "rir": 3,
+         "restSeconds": 75,
+         "preparationMinutes": 1,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "NONE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 10 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 2,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 2
+         }
+        }
+       ],
+       "goalMode": "REPS_THEN_LOAD",
+       "establishment": true,
+       "instructions": [
+        "Warm up with easy movement and lighter ramp-up sets",
+        "Stop a set when technique slips; reps in reserve are approximate and technique governs",
+        "Log actual sets, reps, load and convention; missing effort does not mean a poor response"
+       ]
+      },
+      "explanation": null
+     },
+     {
+      "id": "w1-run-d1",
+      "date": "2026-11-17",
+      "sport": "RUN",
+      "role": "EASY",
+      "turn": null,
+      "optional": false,
+      "status": "PLANNED",
+      "executable": false,
+      "projected": true,
+      "prescription": {
+       "modality": "RUN",
+       "family": "EASY",
+       "durationMinutes": 35,
+       "warmupMinutes": 5,
+       "cooldownMinutes": 5,
+       "effortDomain": "EASY_CONVERSATIONAL",
+       "effort": "Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed",
+       "equipment": [],
+       "calibration": {
+        "basis": "CURRENT_EASY_EFFORT"
+       },
+       "instructions": [
+        "Keep a conversational effort; slow down or walk briefly when needed",
+        "Shorten the run if easy effort cannot be maintained",
+        "Record actual minutes and effort"
+       ]
+      },
+      "explanation": null
+     },
+     {
+      "id": "w1-run-d3",
+      "date": "2026-11-19",
+      "sport": "RUN",
+      "role": "EASY",
+      "turn": null,
+      "optional": false,
+      "status": "PLANNED",
+      "executable": false,
+      "projected": true,
+      "prescription": {
+       "modality": "RUN",
+       "family": "EASY",
+       "durationMinutes": 35,
+       "warmupMinutes": 5,
+       "cooldownMinutes": 5,
+       "effortDomain": "EASY_CONVERSATIONAL",
+       "effort": "Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed",
+       "equipment": [],
+       "calibration": {
+        "basis": "CURRENT_EASY_EFFORT"
+       },
+       "instructions": [
+        "Keep a conversational effort; slow down or walk briefly when needed",
+        "Shorten the run if easy effort cannot be maintained",
+        "Record actual minutes and effort"
+       ]
+      },
+      "explanation": null
+     },
+     {
+      "id": "w1-str-d4",
+      "date": "2026-11-20",
+      "sport": "STRENGTH",
+      "role": "STRENGTH_FULL_A",
+      "turn": null,
+      "optional": false,
+      "status": "PLANNED",
+      "executable": false,
+      "projected": true,
+      "prescription": {
+       "modality": "STRENGTH",
+       "family": "FULL_BODY",
+       "durationMinutes": 31,
+       "warmupMinutes": 5,
+       "cooldownMinutes": 3,
+       "secondsPerRep": 4,
+       "equipment": [
+        "BENCH",
+        "DUMBBELLS"
+       ],
+       "exercises": [
+        {
+         "id": "goblet-squat",
+         "pattern": "SQUAT",
+         "subpattern": "BILATERAL_SQUAT",
+         "region": "LOWER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "SINGLE_IMPLEMENT"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "MODERATE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention",
+          "One dumbbell or kettlebell: the load is the mass of that one implement"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-bench-press",
+         "pattern": "PUSH",
+         "subpattern": "HORIZONTAL_PUSH",
+         "region": "UPPER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS",
+          "BENCH"
+         ],
+         "lowerDemand": "NONE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-row",
+         "pattern": "PULL",
+         "subpattern": "HORIZONTAL_PULL",
+         "region": "UPPER",
+         "role": "MAIN",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 8,
+         "rir": 3,
+         "restSeconds": 120,
+         "preparationMinutes": 2,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "NONE",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 3,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 3
+         }
+        },
+        {
+         "id": "db-calf-raise",
+         "pattern": "CALF",
+         "subpattern": "STRAIGHT_KNEE",
+         "region": "LOWER",
+         "role": "ACCESSORY",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 10,
+         "rir": 3,
+         "restSeconds": 75,
+         "preparationMinutes": 1,
+         "load": {
+          "mode": "ESTABLISH",
+          "unit": "KG",
+          "convention": "PER_HAND"
+         },
+         "equipment": [
+          "DUMBBELLS"
+         ],
+         "lowerDemand": "LIGHT",
+         "establishment": true,
+         "instructions": [
+          "Practise the movement with no or minimal load first",
+          "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 10 repetitions with steady technique; the working load is the heaviest such load",
+          "Do not reuse a load from another exercise or implement; record the load and its convention"
+         ],
+         "exposure": {
+          "kind": "FIRST_ESTABLISH",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 2,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 2
+         }
+        },
+        {
+         "id": "dead-bug",
+         "pattern": "TRUNK",
+         "subpattern": "ANTI_EXTENSION",
+         "region": "CORE",
+         "role": "ACCESSORY",
+         "laterality": "BILATERAL",
+         "sets": 2,
+         "reps": 10,
+         "rir": 3,
+         "restSeconds": 75,
+         "preparationMinutes": 1,
+         "load": {
+          "mode": "BODYWEIGHT",
+          "unit": "BODYWEIGHT",
+          "convention": "BODYWEIGHT"
+         },
+         "equipment": [],
+         "lowerDemand": "NONE",
+         "establishment": false,
+         "instructions": [
+          "Bodyweight: keep the reps in reserve shown"
+         ],
+         "exposure": {
+          "kind": "BODYWEIGHT",
+          "phase": "DEVELOPMENT",
+          "phaseBasis": 2,
+          "phasedSets": 2,
+          "baseSets": 2,
+          "normalSets": 2
+         }
+        }
+       ],
+       "goalMode": "REPS_THEN_LOAD",
+       "establishment": true,
+       "instructions": [
+        "Warm up with easy movement and lighter ramp-up sets",
+        "Stop a set when technique slips; reps in reserve are approximate and technique governs",
+        "Log actual sets, reps, load and convention; missing effort does not mean a poor response"
+       ]
+      },
+      "explanation": null
+     },
+     {
+      "id": "w1-run-d5",
+      "date": "2026-11-21",
+      "sport": "RUN",
+      "role": "LONG",
+      "turn": null,
+      "optional": false,
+      "status": "PLANNED",
+      "executable": false,
+      "projected": true,
+      "prescription": {
+       "modality": "RUN",
+       "family": "LONG",
+       "durationMinutes": 50,
+       "warmupMinutes": 5,
+       "cooldownMinutes": 5,
+       "effortDomain": "EASY_CONVERSATIONAL",
+       "effort": "Conversational effort (about 2-4 of 10): full sentences are possible; walk breaks are allowed",
+       "equipment": [],
+       "calibration": {
+        "basis": "CURRENT_EASY_EFFORT"
+       },
+       "instructions": [
+        "Longer easy run: time on feet, not speed",
+        "Keep a conversational effort; slow down or walk briefly when needed",
+        "Shorten the run if easy effort cannot be maintained",
+        "Record actual minutes and effort"
+       ]
+      },
+      "explanation": null
+     }
+    ]
+   },
+   "lastDecision": {
+    "decisionId": "dc_fixture_0015",
+    "at": "2026-11-17T11:00:00.000Z",
+    "status": "ASK",
+    "action": "ASK",
+    "reason": "Current eligibility must be assessed; unknown is neither clearance nor illness",
+    "missingInputs": [
+     "eligibility.currentAssessment"
+    ]
+   }
+  }
+ }
+}

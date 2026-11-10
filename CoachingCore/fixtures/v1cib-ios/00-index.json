@@ -1,0 +1,118 @@
+{
+ "contract": "V1CIB boundary, audits/v1-coaching-integration-boundary-2026-11-09/INTEGRATION_BOUNDARY_V1.md",
+ "synthetic": true,
+ "states": [
+  "BLOCKED",
+  "INTEGRITY_FAILURE",
+  "NEEDS_INPUT",
+  "NO_DATA",
+  "OPERATIONAL_ERROR",
+  "PENDING_CONFIRMATION",
+  "REDUCED",
+  "RETURNING",
+  "VALID_PLAN"
+ ],
+ "notSynced": "NOT_SYNCED is the app's own state for reports in its offline queue (the server never returns it)",
+ "files": [
+  {
+   "name": "01-onboarding",
+   "state": "VALID_PLAN",
+   "call": "onboard"
+  },
+  {
+   "name": "02-plan-current-week",
+   "state": "VALID_PLAN",
+   "call": "plan"
+  },
+  {
+   "name": "03-log-run",
+   "state": "VALID_PLAN",
+   "call": "logRun"
+  },
+  {
+   "name": "04-log-strength",
+   "state": "VALID_PLAN",
+   "call": "logStrength"
+  },
+  {
+   "name": "05-weekly-check-in",
+   "state": "VALID_PLAN",
+   "call": "weeklyCheckIn"
+  },
+  {
+   "name": "06-availability-change-pending",
+   "state": "PENDING_CONFIRMATION",
+   "call": "updateAvailability"
+  },
+  {
+   "name": "07-accept-change",
+   "state": "VALID_PLAN",
+   "call": "accept"
+  },
+  {
+   "name": "08-set-preferences",
+   "state": "PENDING_CONFIRMATION",
+   "call": "setPreferences"
+  },
+  {
+   "name": "09-set-coach",
+   "state": "PENDING_CONFIRMATION",
+   "call": "setCoach"
+  },
+  {
+   "name": "10-needs-input",
+   "state": "NEEDS_INPUT",
+   "call": "logRun"
+  },
+  {
+   "name": "11-not-feeling-100-reduced",
+   "state": "REDUCED",
+   "call": "notFeeling100"
+  },
+  {
+   "name": "12-check-returning",
+   "state": "RETURNING",
+   "call": "wellbeingCheck"
+  },
+  {
+   "name": "13-warning-sign-blocked",
+   "state": "BLOCKED",
+   "call": "notFeeling100"
+  },
+  {
+   "name": "14-status-blocked",
+   "state": "BLOCKED",
+   "call": "status"
+  },
+  {
+   "name": "15-readiness-restart",
+   "state": "RETURNING",
+   "call": "declareReadiness"
+  },
+  {
+   "name": "16-decision-explanation",
+   "state": "RETURNING",
+   "call": "decision"
+  },
+  {
+   "name": "17-history",
+   "state": "RETURNING",
+   "call": "history"
+  },
+  {
+   "name": "18-conflict-stale-version",
+   "state": "OPERATIONAL_ERROR",
+   "call": "logRun"
+  },
+  {
+   "name": "19-integrity-failure",
+   "state": "INTEGRITY_FAILURE",
+   "call": "plan"
+  },
+  {
+   "name": "20-no-data",
+   "state": "NO_DATA",
+   "call": "plan"
+  }
+ ]
+}

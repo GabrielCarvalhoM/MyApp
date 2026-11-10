@@ -70,6 +70,17 @@ const past=(P,b,d)=>{const day=addDays(P.weeks[b].startDate,d);return P.weeks.sl
 const CELLS=[['R10K race week',R10K,11,['R4','CLIN']],['R10K taper',R10K,10,['CLIN']],['GEN week 7',GEN,7,['CLIN']]];
 /** Every cell of the grid for answer V (computed once per answer and shared; decisions are pure). */
 const GRIDS={};
+// V1 Coaching Integration Boundary CF-OBS-1 migration (PCG-V1CPFF-CFOBS1-r1 Q4, Q6; QRE Q6): the clinical carrier's route ends only by the athlete's
+// readiness declaration, read from the record; dropping the clinical state (`clear`, the R7 evaluation convention, PCG-F08-C07) never releases and is
+// kept as each cell's negative twin. Recorder independence is then asserted at the release: the answer the clinical route recorded gives the plan
+// that the same route without the answer gives when the answer comes with the declaration itself (same program, same clock, same hold).
+const READY_ALL={declaredRecovered:true,warningSigns:Object.fromEntries(['feverOrChills','chestPainPressureOrTightness','breathlessAtRest','palpitationsAtRest','faintingOrDizziness','painThatChangesMovement','swelling','injuryFromFallOrImpact','gettingWorse','bodyWideAches','exhaustionAtRest','vomitingDiarrhoeaNauseaOrAbdominalPain','moderateOrSevereCough','severeHeadache','severeNoseOrThroat'].map(k=>[k,false])),sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}};
+const declare=(t,b,x={})=>step(t,b,{...AT(3),kind:'READINESS_DECLARATION',readiness:READY_ALL,...x});
+const LATER={day:3,hour:'08:00:00'};
+function heldReference(B,b,facts){
+ const hold=copy(B),c=carry(hold,b,'CLIN',[]),release=declare(hold,b,{observations:facts}),d3=step(hold,b,LATER);
+ return {plan:planFrom(d3.proposal??hold.p,b,3),runs:runsFrom(d3.proposal??hold.p,b,3),validity:d3.planValidity?.status,d2:c,d3,release};
+}
 function cells(V,{onTime=null,modes=['RV','NR'],key=V}={}){
  if(GRIDS[key])return GRIDS[key];
  const out=[];
@@ -79,7 +90,15 @@ function cells(V,{onTime=null,modes=['RV','NR'],key=V}={}){
   const direct=copy(B),d2=step(direct,b,{...AT(2),observations:facts}),d3=step(direct,b,AT(3));
   const reference={plan:planFrom(d3.proposal??direct.p,b,3),runs:runsFrom(d3.proposal??direct.p,b,3),validity:d3.planValidity?.status,d2,d3};
   for(const carrier of carriers){
-   const t=copy(B),before=t.p,c=carry(t,b,carrier,facts);if(carrier==='CLIN')clear(t);
+   const t=copy(B),before=t.p,c=carry(t,b,carrier,facts);
+   if(carrier==='CLIN'){
+    const neg=step(clear(copy(t)),b,AT(3)),held=heldReference(B,b,facts);
+    for(const [next,x] of [['declaration day 3',{}],['declaration with the answer re-sent day 3',{observations:facts}]]){
+     const u=copy(t),release=declare(u,b,x),r=step(u,b,LATER);
+     out.push({label:`${label} ${carrier} :: ${next}`,carrier,c,r,u,t,b,g,before,facts,reference:held,neg,release,plan:planFrom(r.proposal??u.p,b,3),runs:runsFrom(r.proposal??u.p,b,3)});
+    }
+    continue;
+   }
    for(const [next,x] of [['plain day 3',{}],['answer re-sent day 3',{observations:facts}]]){
     const u=copy(t),r=step(u,b,{...AT(3),...x});
     out.push({label:`${label} ${carrier} :: ${next}`,carrier,c,r,u,t,b,g,before,facts,reference,plan:planFrom(r.proposal??u.p,b,3),runs:runsFrom(r.proposal??u.p,b,3)});
@@ -90,8 +109,10 @@ function cells(V,{onTime=null,modes=['RV','NR'],key=V}={}){
 }
 function independent(V,opt){
  let n=0;
- for(const {label,carrier,c,r,plan,runs,reference} of cells(V,opt)){
+ for(const {label,carrier,c,r,plan,runs,reference,neg} of cells(V,opt)){
   n++;
+  // V1CIB CF-OBS-1: the negative twin, the clinical state dropped, is never a release.
+  if(carrier==='CLIN'){assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',label+': dropping the clinical state never releases');assert.equal(neg.proposal??null,null,label);}
   // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier's HOLD was the internal TypeError of a
   // schedule change in the program's last week. The explicit last-week rule keeps the weeks, so that review now applies the recorded answer
   // itself and is no longer a refusal; the clinical-route carrier still records and applies nothing. The property below is unchanged.
@@ -153,7 +174,9 @@ test('R7-C QE-R7C-10 visibility (3): a report the record first held after the re
   if(clock){closed++;assert.ok(Date.parse(row.provenance.firstRecordedAt)>Date.parse(clock),f.sessionId+': after the review that closed its week');}
  }
  assert.ok(closed>=6,'reports of weeks a review closed with HOLD gates: '+closed);
- assert.equal(cell.r.action,'REPLAN_FROM_EVIDENCE',cell.r.reason);assert.match(cell.r.reason,RECORDED);
+ // V1CIB CF-OBS-1 migration: the next eligible decision is the release (the readiness declaration); its restart reconciles the recorded reports.
+ assert.equal(cell.neg.status,'CLINICAL_HUMAN_REQUIRED','dropping the clinical state never releases');
+ assert.equal(cell.release.status,'MODIFY',cell.release.reason);
  assert.deepEqual(cell.runs,cell.reference.runs);assert.equal(cell.r.planValidity?.status,VALID);
  assert.deepEqual(runsFrom(cell.before,7,3),['QUALITY:34','LONG:60'],'the stale projection QE-R7C-10 left valid on R7C-FREEZE-3');
  assert.ok(cell.runs.every(x=>!/^QUALITY/.test(x)),'the shortened answer rules the quality session out: '+cell.runs);
@@ -167,7 +190,7 @@ test('R7-C QE-R7C-10 visibility (4): reports of one week held by its review and 
   const {B,question}=fork(o,{g,b,mode:'RV',onTime});assert.equal(question,'UNREPORTED_TRAINING',prog);
   const facts=easyShort(B.p,g,b),direct=copy(B);step(direct,b,{...AT(2),observations:facts});const d3=step(direct,b,AT(3));
   for(const carrier of carriers){
-   const t=copy(B);carry(t,b,carrier,facts);if(carrier==='CLIN')clear(t);
+   const t=copy(B);carry(t,b,carrier,facts);
    let closed=0;
    for(let j=g;j<b;j++){
     const at=closingClock(B.p,j);if(!at)continue;closed++;
@@ -176,6 +199,15 @@ test('R7-C QE-R7C-10 visibility (4): reports of one week held by its review and 
     assert.ok(rows.some(o=>o.context.role!=='LONG'&&Date.parse(o.provenance.firstRecordedAt)>clock),`${prog} week ${j}: the easy runs recorded after it`);
    }
    assert.ok(closed>0,`${prog} g=${g}: some week a review closed`);
+   // V1CIB CF-OBS-1 migration: the clinical carrier is released by the readiness declaration (the clinical state dropped is no release), and its plan
+   // is the same route's with the reports sent with the declaration itself.
+   if(carrier==='CLIN'){
+    const neg=step(clear(copy(t)),b,AT(3));assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',`${prog} g=${g}: dropping the clinical state never releases`);
+    declare(t,b);const rc=step(t,b,LATER),ref=heldReference(B,b,facts);n++;
+    assert.deepEqual(planFrom(rc.proposal??t.p,b,3),ref.plan,`${prog} g=${g} ${carrier}: the plan of the declaration carrying the reports`);
+    assert.equal(rc.planValidity?.status,ref.validity,`${prog} g=${g} ${carrier}`);
+    continue;
+   }
    const r=step(t,b,AT(3));n++;
    assert.deepEqual(planFrom(r.proposal??t.p,b,3),planFrom(d3.proposal??direct.p,b,3),`${prog} g=${g} ${carrier}: the direct answer's plan`);
    assert.equal(r.planValidity?.status,d3.planValidity?.status,`${prog} g=${g} ${carrier}`);
@@ -188,8 +220,11 @@ test('R7-C QE-R7C-10 visibility (4): reports of one week held by its review and 
  for(let w=0;w<6;w++)step(t,w,{observations:[...strengthOf(t.p,w),...t.p.weeks[w].sessions.filter(s=>live(s)&&s.sport==='RUN'&&s.role==='LONG').map(s=>short(t.p,s,0.6))]});
  const late=runSessions(t.p,0,6).filter(s=>s.role!=='LONG').map(s=>obs(t.p,s)),stored=planFrom(t.p,6,3);
  const d=copy(t);const dr=step(d,6,{...AT(2),observations:late});
+ // V1CIB CF-OBS-1 migration: under the clinical route the late reports are recorded and re-plan nothing, the clinical state dropped included (no
+ // release); a readiness declaration is a restart of its own, so Property B is read on the decisions before it.
  const c=copy(t);carry(c,6,'CLIN',late);clear(c);const cr=step(c,6,AT(3)),dr3=step(d,6,AT(3));
- for(const [x,r,label] of [[d,dr,'direct day 2'],[d,dr3,'direct day 3'],[c,cr,'clinical then clearance, day 3']]){
+ assert.equal(cr.status,'CLINICAL_HUMAN_REQUIRED','dropping the clinical state never releases');
+ for(const [x,r,label] of [[d,dr,'direct day 2'],[d,dr3,'direct day 3'],[c,cr,'clinical, the clinical state dropped, day 3']]){
   assert.ok(!RECORDED.test(r.reason??''),label+': '+r.reason);assert.equal(r.proposal??null,null,label);assert.deepEqual(planFrom(x.p,6,3),stored,label);
  }
 });
@@ -214,7 +249,8 @@ test('R7-C QE-R7C-10 shortened (9): every gap run shortened with an adverse resp
 // ---------- all adverse ----------
 test('R7-C QE-R7C-10 all-adverse (10): every gap run done with an adverse response, recorded by a carrier, gives the direct answer\'s plan, never the stale projection',()=>{
  assert.equal(independent('ALL_ADVERSE'),32);
- const cell=cells('ALL_ADVERSE').find(x=>x.label.startsWith('GEN week 7 g=0 RV')&&x.carrier==='CLIN'&&/plain/.test(x.label));
+ // V1CIB CF-OBS-1 migration: the clinical cell is the one released by the plain declaration.
+ const cell=cells('ALL_ADVERSE').find(x=>x.label.startsWith('GEN week 7 g=0 RV')&&x.carrier==='CLIN'&&/declaration day 3$/.test(x.label));
  assert.deepEqual(runsFrom(cell.before,7,3),['QUALITY:34','LONG:60']);assert.notDeepEqual(cell.runs,runsFrom(cell.before,7,3));
  assert.ok(cell.runs.every(x=>!/^QUALITY/.test(x))&&Number(cell.runs.find(x=>x.startsWith('LONG'))?.split(':')[1])<60,'adverse runs: no quality, a shorter long run: '+cell.runs);
 });
@@ -224,9 +260,10 @@ test('R7-C P6-F01 mixed: some runs done, some not done; some done short, some no
  for(const V of ['MIX_EXEC_MISS','MIX_SHORT_MISS','MIX_EXEC_ADVERSE'])assert.equal(independent(V),32,V);
  // The SSCTR's reproduction: GEN, weeks 0-5 reviewed with strength only, every other run not done, a substitution with pain, clearance, a plain
  // day-3 decision: the stale QUALITY 34 / LONG 60 stayed valid on R7C-FREEZE-3 where the direct answer plans easy running and a shorter long run.
- const cell=cells('MIX_EXEC_MISS').find(x=>x.label.startsWith('GEN week 7 g=0 RV')&&x.carrier==='CLIN'&&/plain/.test(x.label));
+ // V1CIB CF-OBS-1 migration: the clinical route ends by the readiness declaration, whose restart reconciles the recorded answer.
+ const cell=cells('MIX_EXEC_MISS').find(x=>x.label.startsWith('GEN week 7 g=0 RV')&&x.carrier==='CLIN'&&/declaration day 3$/.test(x.label));
  assert.deepEqual(runsFrom(cell.before,7,3),['QUALITY:34','LONG:60']);
- assert.equal(cell.r.action,'REPLAN_FROM_EVIDENCE',cell.r.reason);assert.deepEqual(cell.runs,cell.reference.runs);
+ assert.equal(cell.release.status,'MODIFY',cell.release.reason);assert.deepEqual(cell.runs,cell.reference.runs);
  assert.ok(cell.runs.every(x=>!/^QUALITY/.test(x))&&Number(cell.runs.find(x=>x.startsWith('LONG'))?.split(':')[1])<60,cell.runs.join('/'));
 });
 
@@ -235,21 +272,31 @@ test('R7-C QE-R7C-10 (12): true unread still reconciles: wherever the facts chan
  // Answers whose every gap session has an executed report: no session is credited, so the ceiling re-plan cannot act and the recorded-answer
  // re-plan alone reconciles (RV weeks closed with HOLD gates, NR weeks projected).
  let replanned=0;const modes=new Set();
- for(const V of ['SHORT60','SHORT80','LONGSHORT','SHORT_ADVERSE','ALL_ADVERSE'])for(const {label,carrier,c,r,reference,before,b} of cells(V)){
+ for(const V of ['SHORT60','SHORT80','LONGSHORT','SHORT_ADVERSE','ALL_ADVERSE'])for(const {label,carrier,c,r,reference,before,b,release,neg} of cells(V)){
+  if(carrier==='CLIN'){assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',label+': dropping the clinical state never releases');assert.equal(neg.proposal??null,null,label);}
   if(JSON.stringify(reference.plan)===JSON.stringify(planFrom(before,b,3)))continue;
   replanned++;modes.add(label.split(' ').find(x=>x==='RV'||x==='NR'));
   // V1CP A2 amendment (QRE-P5H-F04, K-QRE-P5H-06; disclosed in the V1CP checkpoint): the R4 carrier (a schedule change in the program's last
   // week) no longer refuses with the internal TypeError: it applies the answer it carries itself, as the direct answer does on day 2, so the
   // reconciliation is its own decision and the next one has nothing left to re-plan. The clinical-route carrier is unchanged.
   if(carrier==='R4'){assert.equal(c.action,reference.d2.action,label+': '+c.reason);continue;}
-  assert.equal(r.action,'REPLAN_FROM_EVIDENCE',label+': '+r.reason);assert.match(r.reason,RECORDED,label);
+  // V1CIB CF-OBS-1 migration: the clinical route's next eligible decision is the readiness declaration; its restart re-plans from the record.
+  assert.equal(release.status,'MODIFY',label+': '+release.reason);assert.ok(['READINESS_RESTART','REESTABLISH'].includes(release.action),label+': '+release.action);
+  assert.equal(r.planValidity?.status,VALID,label+': '+r.reason);
  }
  assert.ok(replanned>=40&&modes.has('RV')&&modes.has('NR'),'cells where the facts change the plan: '+replanned+' '+[...modes]);
 });
 test('R7-C QE-R7C-10 (13): an answer that reports earlier runs done short but leaves part of the window unknown still asks, never valid, as the direct partial answer',()=>{
  let withShort=0;
- for(const {label,r,reference,facts} of cells('SHORT_PARTIAL')){
+ for(const {label,carrier,r,reference,facts,release,neg} of cells('SHORT_PARTIAL')){
   if(facts.some(f=>f.actual.completed))withShort++;
+  // V1CIB CF-OBS-1 migration: under a clinical route the declaration itself asks the unknown training first, and the hold stands.
+  if(carrier==='CLIN'){
+   assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',label+': dropping the clinical state never releases');assert.equal(neg.proposal??null,null,label);
+   assert.equal(release.question?.kind,'UNREPORTED_TRAINING',label+': '+release.reason);assert.equal(release.proposal??null,null,label);assert.notEqual(release.planValidity?.status,VALID,label);
+   assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',label);assert.equal(reference.release.question?.kind,'UNREPORTED_TRAINING',label+': as the declaration carrying the partial answer');
+   continue;
+  }
   assert.equal(r.status,'ASK',label);assert.equal(r.question?.kind,'UNREPORTED_TRAINING',label);
   assert.equal(r.proposal??null,null,label);assert.equal(r.planValidity?.status,'REQUIRES_RECONCILIATION',label);
   assert.equal(reference.d3.status,'ASK',label+': as the direct partial answer');
@@ -258,10 +305,16 @@ test('R7-C QE-R7C-10 (13): an answer that reports earlier runs done short but le
 });
 test('R7-C QE-R7C-10 (14): the reconciliation never rewrites history, and the first-recorded clock never enters HistoricalState',()=>{
  let n=0;
- for(const V of ['SHORT60','SHORT_MISS','ALL_ADVERSE','MIX_SHORT_MISS'])for(const {label,r,u,t,b} of cells(V)){
-  if(!r.proposal)continue;n++;
-  assert.deepEqual(past(r.proposal,b,3),past(t.p,b,3),label+': every session dated before the decision keeps its row');
-  assert.ok(r.proposal.decisions.length===t.p.decisions.length+1&&hash(r.proposal.decisions.slice(0,-1))===hash(t.p.decisions),label+': the decision log is append-only');
+ for(const V of ['SHORT60','SHORT_MISS','ALL_ADVERSE','MIX_SHORT_MISS'])for(const {label,carrier,r,u,t,b,release,neg} of cells(V)){
+  // V1CIB CF-OBS-1 migration: for the clinical route the reconciling re-plan is the readiness declaration's restart; dropping the state releases nothing.
+  if(carrier==='CLIN'){assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',label+': dropping the clinical state never releases');assert.equal(neg.proposal??null,null,label);}
+  const x=carrier==='CLIN'?release:r;
+  if(!x.proposal)continue;n++;
+  assert.deepEqual(past(x.proposal,b,3),past(t.p,b,3),label+': every session dated before the decision keeps its row');
+  // The log only grows: the earlier decisions stay a byte-identical prefix (a re-plan adds one decision; the release's restart may add the factual
+  // re-plan of the same review before its own).
+  const k=t.p.decisions.length;
+  assert.ok(x.proposal.decisions.length>k&&(carrier==='CLIN'||x.proposal.decisions.length===k+1)&&hash(x.proposal.decisions.slice(0,k))===hash(t.p.decisions),label+': the decision log is append-only');
  }
  assert.ok(n>=20,'re-plans checked: '+n);
  const cell=cells('SHORT60').find(x=>x.label.startsWith('GEN week 7 g=0 RV')&&x.carrier==='CLIN'),asOf=`${addDays(cell.before.weeks[7].startDate,3)}T07:00:00Z`;
@@ -277,9 +330,12 @@ test('R7-C QE-R7C-10 (15): clinical first: while the route stands a shortened an
   assert.ok(facts.every(f=>t.ledger.some(x=>x.sessionId===f.sessionId)),'the answer is in the carried record');
   const held=copy(t),h=step(held,b,AT(3));
   assert.equal(h.status,'CLINICAL_HUMAN_REQUIRED',`${prog} ${V}`);assert.equal(h.proposal??null,null);assert.equal(h.planValidity?.status,'REQUIRES_RECONCILIATION');
-  clear(t);const r=step(t,b,AT(3));
-  assert.deepEqual(planFrom(r.proposal??t.p,b,3),planFrom(d3.proposal??direct.p,b,3),`${prog} ${V}: after clearance, the direct answer's plan`);
-  assert.equal(r.planValidity?.status,d3.planValidity?.status,`${prog} ${V}`);
+  // V1CIB CF-OBS-1 migration: the clinical state dropped is no release (negative twin); after the readiness declaration the shortened answer is applied
+  // with no re-send, as the same route's declaration carrying it.
+  const neg=step(clear(copy(t)),b,AT(3));assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',`${prog} ${V}: dropping the clinical state never releases`);assert.equal(neg.proposal??null,null);
+  declare(t,b);const r=step(t,b,LATER),ref=heldReference(B,b,facts);
+  assert.deepEqual(planFrom(r.proposal??t.p,b,3),ref.plan,`${prog} ${V}: after the declaration, the plan of the declaration carrying the answer`);
+  assert.equal(r.planValidity?.status,ref.validity,`${prog} ${V}`);
  }
 });
 test('R7-C QE-R7C-10 (16): no decision presents the stale projection as valid once the record holds the answer (shortened, adverse, mixed)',()=>{
@@ -326,8 +382,13 @@ test('R7-C QE-R7C-10 backward behaviour: a record written before R7C-FREEZE-4 (n
  const strip=t=>{t.ledger=t.ledger.map(o=>{if(F08_ROWS.includes(o?.fact))return o;const {firstRecordedAt,...provenance}=o.provenance??{};return {...o,provenance};});return t;};
  for(const [V,reconciled] of [['ALL_ADVERSE',true],['SHORT60',false]]){
   const {B}=fork(GEN,{g:0,b:7,mode:'RV'}),facts=report(B.p,0,7,V),direct=copy(B);step(direct,7,{...AT(2),observations:facts});const d3=step(strip(direct),7,AT(3));
-  const t=copy(B),stale=planFrom(t.p,7,3);carry(t,7,'CLIN',facts);clear(strip(t));const r=step(t,7,AT(3));
-  if(reconciled){assert.match(r.reason??'',RECORDED,V);assert.deepEqual(planFrom(r.proposal??t.p,7,3),planFrom(d3.proposal??direct.p,7,3),V);}
-  else{assert.ok(!RECORDED.test(r.reason??''),V);assert.deepEqual(planFrom(t.p,7,3),stale,V+': the R7C-FREEZE-3 reading');}
+  // V1CIB CF-OBS-1 migration: with the clinical route as the carrier, the stripped record and the clinical state dropped are no release (nothing is
+  // planned and the stale projection is never validated); the release is the readiness declaration, whose restart plans from the record whatever
+  // clocks it holds, so neither answer leaves the stale projection in force. The gate-class reading of such records is no longer reached through
+  // the clinical route; it stays the runtime's reading of a legacy record (`reconciled`, unchanged in the code).
+  const t=copy(B),stale=planFrom(t.p,7,3);carry(t,7,'CLIN',facts);const neg=step(clear(strip(copy(t))),7,AT(3));
+  assert.equal(neg.status,'CLINICAL_HUMAN_REQUIRED',V);assert.equal(neg.proposal??null,null,V);assert.notEqual(neg.planValidity?.status,VALID,V);
+  strip(t);declare(t,7);const r=step(t,7,LATER);
+  assert.notEqual(r.status,'CLINICAL_HUMAN_REQUIRED',V);assert.notDeepEqual(planFrom(r.proposal??t.p,7,3),stale,V+': the stale projection never stays after the release');
  }
 });

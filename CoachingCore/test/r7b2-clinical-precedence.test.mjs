@@ -61,14 +61,22 @@ test('R7-B.2 QE-R7B1-04: two steps — the late report recorded with its questio
  const r=at(t,{...sub(X,{pain:true}),observations:[]});
  clinical(r,'pain-only review',PAIN_ROUTE(X));assert.ok(recorded(r,late),'the late report stays in the record');
 });
-test('R7-B.2 QE-R7B1-04: after the clinical route a later review with no clinical signal and no pending clinical state still gets the late-evidence question, and one carrying the clinical state stays clinical',()=>{
+// V1 Coaching Integration Boundary CF-OBS-1 migration (PCG-V1CPFF-CFOBS1-r1 Q4, Q6): a review sent without the clinical state was the R7 model of a
+// qualified clearance; the record's hold now keeps the route there (the negative twin), and the release is the readiness declaration. The test's
+// invariant (late evidence is never lost behind the clinical route) is checked after the release.
+const READY_ALL={declaredRecovered:true,warningSigns:Object.fromEntries(['feverOrChills','chestPainPressureOrTightness','breathlessAtRest','palpitationsAtRest','faintingOrDizziness','painThatChangesMovement','swelling','injuryFromFallOrImpact','gettingWorse','bodyWideAches','exhaustionAtRest','vomitingDiarrhoeaNauseaOrAbdominalPain','moderateOrSevereCough','severeHeadache','severeNoseOrThroat'].map(k=>[k,false])),sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}};
+test('R7-B.2 QE-R7B1-04 (V1CIB CF-OBS-1 migration): after the clinical route a later review without the clinical state stays clinical; after the readiness declaration the late evidence is still asked, never lost behind the route; one carrying the clinical state stays clinical',()=>{
  const {t,lateObs,X}=reentry();
  const pain=apply(t,at(t,{...sub(X,{pain:true}),observations:[lateObs]},'05:00:00'));
  const later=at(t,{observations:[]});
- assert.equal(later.status,'ASK');assert.match(later.reason,STALE,'the late evidence is not lost behind the clinical route');
- assert.deepEqual(later.missingInputs,['interruption.episodeId']);assert.equal(later.proposal,null);
+ assert.equal(later.status,'CLINICAL_HUMAN_REQUIRED','the record holds the hold: no clinical state sent is no release');assert.equal(later.proposal,null);
  const carried=evaluateProgram(t.p,{...review(t.p,3,{day:4,hour:'06:00:00'}),actualLedger:t.ledger,referenceState:pain.referenceState},opts);
  assert.equal(carried.status,'CLINICAL_HUMAN_REQUIRED','a pending clinical state is never cleared by a later nonclinical review');
+ const day=addDays(t.p.weeks[3].startDate,4),ready=apply(t,evaluateProgram(t.p,{...review(t.p,3,{day:4,hour:'07:00:00',kind:'READINESS_DECLARATION',readiness:READY_ALL}),eligibility:{status:'NONCLINICAL_CONFIRMED',assessedAt:`${day}T07:00:00Z`,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false},actualLedger:t.ledger,referenceState:pain.referenceState},opts));
+ assert.equal(ready.status,'MODIFY',ready.reason);
+ const next=evaluateProgram(t.p,{...review(t.p,3,{day:4,hour:'08:00:00'}),actualLedger:t.ledger,referenceState:ready.referenceState},opts);
+ assert.equal(next.status,'ASK',next.reason);assert.match(next.reason,STALE,'the late evidence is not lost behind the clinical route');
+ assert.deepEqual(next.missingInputs,['interruption.episodeId']);assert.equal(next.proposal,null);
 });
 test('R7-B.2 preserved (neighbor A): late training before the break with no clinical signal gets R7-A\'s confirmation question, whatever the review kind',()=>{
  const {t,lateObs,X}=reentry();

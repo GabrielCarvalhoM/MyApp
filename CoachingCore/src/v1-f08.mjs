@@ -14,6 +14,10 @@
 import {clone,hash} from './value.mjs';
 
 export const WELLBEING_DECLARED='WELLBEING_DECLARED',READINESS_DECLARED='READINESS_DECLARED',WELLBEING_CHECKED='WELLBEING_CHECKED',CLINICAL_HOLD='CLINICAL_HOLD';
+/** V1 Coaching Integration Boundary (SEC-V1CPI-06 tombstone design, SEC-V1CP-14, Security C6): the append-only marker custody writes when F08 rows are
+ * erased (their content removed, with every row that references them). The core never reads an erased fact as absent: the marker is a clinical hold
+ * of unknown cause, standing from the erasure until a later readiness declaration (the athlete's legitimate way back). It carries ids and times only. */
+export const ERASED_F08='ERASED_F08';
 export const CONDITIONS=Object.freeze(['MILD_INDISPOSITION','UNUSUAL_FATIGUE','MILD_ILLNESS','MINOR_DISCOMFORT','NEED_REST']);
 /** Systemic conditions affect every programmed sport (Q05); the local ones affect the sports the athlete states, both when unstated (RC-13). */
 export const SYSTEMIC_CONDITIONS=Object.freeze(['MILD_INDISPOSITION','UNUSUAL_FATIGUE','MILD_ILLNESS']);
@@ -200,8 +204,25 @@ export const readinessFact=(program,review,asOf,value,hold)=>sealed({fact:READIN
  * standing hold from the record, never only from a reference state the client keeps; a readiness declaration after it releases it. */
 // V1CP Fix-Forward (SEC-V1CPR-06, minimisation): the row holds only what a later decision reads: who, when, and the decision's event id.
 export const holdFact=(program,eventId,asOf)=>sealed({fact:CLINICAL_HOLD,eventId,athleteId:program.athleteId,declaredAt:asOf,provenance:{firstRecordedAt:asOf}});
-export const isF08Fact=o=>isObj(o)&&[WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD].includes(o.fact);
-const shapeOk=o=>o.fact===WELLBEING_DECLARED?isObj(o.wellbeing)&&CONDITIONS.includes(o.wellbeing.condition)&&isoDay(o.wellbeing.startDate)&&isoDay(o.wellbeing.endDate):o.fact===WELLBEING_CHECKED?typeof o.episode==='string'&&isObj(o.check):o.fact===READINESS_DECLARED?isObj(o.readiness)&&o.readiness.declaredRecovered===true&&isObj(o.readiness.sports):o.fact===CLINICAL_HOLD;
+export const isF08Fact=o=>isObj(o)&&[WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD,ERASED_F08].includes(o.fact);
+/** The erasure marker (SEC-V1CPI-06): sealed like every F08 row, with the erased event ids only. */
+export const erasureFact=({athleteId,eventId,asOf,erased})=>sealed({fact:ERASED_F08,eventId,athleteId,declaredAt:asOf,erased:[...erased].sort(),provenance:{firstRecordedAt:asOf}});
+// V1 Coaching Integration Boundary (CF-OBS-1; Security Q2): a readiness declaration row reads only as the declaration it can be (every warning sign
+// answered no, the recovery stated, the sports answered): any other content is unreadable, so it never releases a hold (callers fail closed).
+const declarationOk=r=>isObj(r)&&r.declaredRecovered===true&&isObj(r.sports)&&isObj(r.warningSigns)&&READINESS_SIGNS.every(k=>r.warningSigns[k]===false);
+const shapeOk=o=>o.fact===WELLBEING_DECLARED?isObj(o.wellbeing)&&CONDITIONS.includes(o.wellbeing.condition)&&isoDay(o.wellbeing.startDate)&&isoDay(o.wellbeing.endDate):o.fact===WELLBEING_CHECKED?typeof o.episode==='string'&&isObj(o.check):o.fact===READINESS_DECLARED?declarationOk(o.readiness):o.fact===ERASED_F08?Array.isArray(o.erased)&&o.erased.length>0&&o.erased.every(x=>typeof x==='string'):o.fact===CLINICAL_HOLD;
+/**
+ * V1 Coaching Integration Boundary CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q1, Q2; Security C2 Q2; QRE): the one standing-hold predicate, shared by every entry
+ * point. `rows` are the athlete's readable F08 rows (readableF08). A clinical hold stands while a CLINICAL_HOLD row has no later READINESS_DECLARED;
+ * the declaration releases it sport by sport (the sports it does not declare ready stay held: Situation 2, SPORT_HELD). Time, sessions, a break, a
+ * report, a check, RECOVERED, an eligibility re-answer, an omitted or altered reference state or a relayed clearance never release it. Returns the
+ * standing hold rows, oldest first, and the latest declaration.
+ */
+export function standingHolds(rows){
+ const list=Array.isArray(rows)?rows:[],lastReady=list.filter(o=>o.fact===READINESS_DECLARED).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt)).at(-1)??null;
+ // An erasure marker is a hold of unknown cause (SEC-V1CPI-06): erased F08 facts are never read as absent.
+ return {holds:list.filter(o=>(o.fact===CLINICAL_HOLD||o.fact===ERASED_F08)&&(!lastReady||Date.parse(o.declaredAt)>Date.parse(lastReady.declaredAt))).sort((a,b)=>Date.parse(a.declaredAt)-Date.parse(b.declaredAt)),lastReady};
+}
 /**
  * SEC-V1CPI-04: the F08 rows a decision reads: this athlete's, declared by the decision's clock (`at`, epoch ms), of their type's shape and intact;
  * a check only with the report of its own episode. Every row still travels with the record unchanged (append-only); an unreadable one is never read.
@@ -257,8 +278,9 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  const after=t=>!readiness||Date.parse(t)>Date.parse(readiness.declaredAt);
  const clinicalBreak=rows.find(o=>o?.fact==='INTERRUPTION_DECLARED'&&after(o.declaredAt)&&(CLINICAL_CATEGORIES_F08.includes(String(o.interruption?.reasonCategory??'').toUpperCase())||screen?.(o.interruption)?.status==='CLINICAL'));
  const continuation=referenceState?.pending?.status==='CLINICAL_HUMAN_REQUIRED';
- // SEC-V1CPI-03, QRE-V1CP-03: a clinical hold the record holds after the latest declaration blocks the new plan, whatever reference is sent.
- const heldOnRecord=rows.some(o=>o?.fact===CLINICAL_HOLD&&after(o.declaredAt));
+ // SEC-V1CPI-03, QRE-V1CP-03: a clinical hold the record holds after the latest declaration blocks the new plan, whatever reference is sent
+ // (V1CIB CF-OBS-1: the shared standing-hold predicate).
+ const heldOnRecord=standingHolds(f08).holds.length>0;
  if(continuation||clinicalBreak||heldOnRecord)return {status:'CLINICAL_HUMAN_REQUIRED',reason:'A clinical hold is on record: before a new plan, tell us, sport by sport, that you are ready to train again (readiness declaration); your record keeps being kept',missingInputs:['readiness']};
  const next=clone(intake),a=next.athlete??(next.athlete={});
  const day=String(asOf??next.asOf??'').slice(0,10),done=rows.filter(executed).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort();

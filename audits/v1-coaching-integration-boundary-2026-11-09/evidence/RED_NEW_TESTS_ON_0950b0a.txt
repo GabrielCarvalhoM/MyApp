@@ -1,0 +1,712 @@
+✖ CF-OBS-1 negative matrix: while the record holds a hold, no review kind with any reference variant prescribes anything; an invalid digest is HOLD; the absent, stale and re-sealed variants are clinical (251.3684ms)
+✖ CF-OBS-1 monotonicity: for every review kind, the result with the reference absent, stale or re-sealed is never less restrictive than with it as kept (75.0003ms)
+✖ CF-OBS-1 (1) absent reference, (2) stale reference, (3) a clean-looking re-sealed reference: the hold stands, and a single omission never launders it for the reviews after it (55.9999ms)
+✖ CF-OBS-1 (4) incomplete history: earlier rows missing still hold the hold; an altered or foreign hold row is unreadable (HOLD), never read as no hold (55.8691ms)
+✖ CF-OBS-1 (5) a reused event id: under the hold's own id or a session report's, nothing is planned and no declaration is recorded; an earlier declaration replayed after a new hold never releases it (52.7025ms)
+✖ CF-OBS-1 (6) a change of device: the stored record without the reference, or an older stored plan, never plans over the hold; after a declaration an older plan is refused (HOLD) (65.1109ms)
+✖ CF-OBS-1 (7) later weekly reviews and (8) plan or preference changes keep the hold, the reference sent or not (136.0005ms)
+✖ CF-OBS-1 what never releases: time, executed sessions, a break, a report, an improved check, RECOVERED, a fresh clear screen (73.0367ms)
+✖ CF-OBS-1 facts are still recorded during a hold (PCG Q3): a session report sent while the hold stands joins the record, nothing is planned, and the restart reads it (49.526ms)
+✖ CF-OBS-1 clinical first during a hold: a warning sign answered in any payload sets the urgent guidance, the reference sent or not (103.3853ms)
+✔ CF-OBS-1 release parity: a valid readiness declaration releases with the reference kept and with it absent; the next review plans in both, with or without the reference (176.2887ms)
+✔ CF-OBS-1 invalid declarations never release: a sign yes, a screen from before the hold, a named hold not on record, an unanswered item (70.0271ms)
+✔ CF-OBS-1 legitimate release by sport: running declared ready restarts while strength stays held (with or without the reference); a later declaration restarts strength (99.0316ms)
+✔ CF-OBS-1 a new plan (restartProgram) reads the hold from the record whatever reference is sent, and a declaration on record lets it start (43.1334ms)
+✖ QRE-FF-06 canonical(): an absent key and an undefined value are the same JSON value; null stays a value of its own (1.5857ms)
+✖ QRE-FF-06 canonical(): every JSON value hashes the same before and after a JSON round trip, and a changed value never does (0.3525ms)
+✖ QRE-FF-06 history: a JSON-stable value keeps its earlier hash exactly; only values that held undefined change (they already failed after storage) (40.0319ms)
+✖ QRE-FF-06 (QRE minimal reproduction): the next weekly review on a schedule-change proposal gives the same decision on the program as kept and on its JSON round trip (88.0359ms)
+✖ QRE-FF-06 round trip on disk, step by step: default weeks, a schedule change, a preference change and a missed session (182.7895ms)
+✔ QRE-FF-06 round trip on disk, step by step: a Situation 1 report, its check, a return, a clinical hold and its readiness declaration (369.6393ms)
+✔ QRE-FF-06 adversarial storage: a stored program whose dose was changed, or whose hash was recomputed by the client, is refused (HOLD), never planned on (45.5248ms)
+✔ QRE-FF-06 adversarial storage: a record row changed after sealing is unreadable after storage too (HOLD), and an intact one reads the same (77.6063ms)
+✖ SSCTR-FFC-01 (FASTER): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (281.7334ms)
+✖ SSCTR-FFC-01 (BALANCED): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (232.7762ms)
+✖ SSCTR-FFC-01 (CONSERVATIVE): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (224.5183ms)
+✖ SSCTR-FFC-01 variant: REDUCE 7 none executed, its return none executed, then REST 4: 14 days without training, the MODERATE recipe (FASTER) (129.6953ms)
+✔ SSCTR-FFC-01: the same chain with the REDUCE window executed is unchanged (the REST row of its own rest and waited days) (238.0749ms)
+✖ SSCTR-FFC-01 (running only): a local REDUCE window none executed chained with a local REST keeps its days at every speed (209.2775ms)
+✖ SSCTR-FFC-01 (strength only): a local REDUCE window none executed chained with a local REST keeps its days at every speed (195.9825ms)
+✖ SSCTR-FFC-01 (FF-N1): a partly executed REDUCE window chained with a REST report reads the days after its last executed session as days without training: the R6 class of those days, never below the REDUCE report alone (196.7873ms)
+✖ SSCTR-FFC-01 (CH-r2 with I-04 within the chain): a partly executed REDUCE window, then a REST report, with few days without training: never less conservative than the REDUCE report alone (its rung repeats first) (202.9031ms)
+✖ SSCTR-FFC-02 (FASTER): a break after an answered check and a return week with nothing executed reads the days without training: per-sport MODERATE, as the waited variant (163.0969ms)
+✖ SSCTR-FFC-02 (BALANCED): a break after an answered check and a return week with nothing executed reads the days without training: per-sport MODERATE, as the waited variant (155.2033ms)
+✔ SSCTR-FFC-02: a return week executed in full before the break keeps the short class (an executed session stops the stretch) (119.5082ms)
+✖ SSCTR-FFC-02 (C-Q05-5 with FF-N1): a declared break right after a REDUCE window none executed reads the window as days without training (88.1338ms)
+✖ QRE-FFC-01 (NEED_REST REST 2d, FASTER): strength sets come back at most one per executed week across the chain (D49) (103.0283ms)
+✔ QRE-FFC-01 (NEED_REST REST 2d, BALANCED): strength sets come back at most one per executed week across the chain (D49) (105.8703ms)
+✖ QRE-FFC-01 (NEED_REST REST 4d, FASTER): strength sets come back at most one per executed week across the chain (D49) (96.6315ms)
+✔ QRE-FFC-01 (NEED_REST REST 4d, BALANCED): strength sets come back at most one per executed week across the chain (D49) (99.8104ms)
+✖ QRE-FFC-01 (UNUSUAL_FATIGUE REST 3d, FASTER): strength sets come back at most one per executed week across the chain (D49) (96.1331ms)
+✔ QRE-FFC-01 (UNUSUAL_FATIGUE REST 3d, BALANCED): strength sets come back at most one per executed week across the chain (D49) (99.1075ms)
+✔ QRE-FFC-01 (NEED_REST REDUCE_LIGHT 2d, FASTER): strength sets come back at most one per executed week across the chain (D49) (100.7796ms)
+✔ QRE-FFC-01 (NEED_REST REDUCE_LIGHT 2d, BALANCED): strength sets come back at most one per executed week across the chain (D49) (101.9462ms)
+✖ QRE-FFC-01: a single report whose return waits a whole week for its check keeps the D49 cap of the executed window (66.8687ms)
+✖ QRE-FFC-01 (QRE fuzz seed 367 shape): a window that starts mid-week counts only the sessions inside it: a full Monday before it never lifts the D49 cap (49.4526ms)
+✔ QRE-FFC-01: with nothing executed in the reduction the rung keeps its own count (no executed count to rise from) (67.5973ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 15
+ℹ fail 31
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3583.8822
+
+✖ failing tests:
+
+test at test\v1cib-cfobs1.test.mjs:34:1
+✖ CF-OBS-1 negative matrix: while the record holds a hold, no review kind with any reference variant prescribes anything; an invalid digest is HOLD; the absent, stale and re-sealed variants are clinical (251.3684ms)
+  AssertionError [ERR_ASSERTION]: WEEKLY_REVIEW with the reference ABSENT: nothing is prescribed
+  
+  30 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:41:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 30,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:49:1
+✖ CF-OBS-1 monotonicity: for every review kind, the result with the reference absent, stale or re-sealed is never less restrictive than with it as kept (75.0003ms)
+  AssertionError [ERR_ASSERTION]: WEEKLY_REVIEW ABSENT: MODIFY vs kept CLINICAL_HUMAN_REQUIRED
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:54:132)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:57:1
+✖ CF-OBS-1 (1) absent reference, (2) stale reference, (3) a clean-looking re-sealed reference: the hold stands, and a single omission never launders it for the reviews after it (55.9999ms)
+  AssertionError [ERR_ASSERTION]: ABSENT
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:61:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:66:1
+✖ CF-OBS-1 (4) incomplete history: earlier rows missing still hold the hold; an altered or foreign hold row is unreadable (HOLD), never read as no hold (55.8691ms)
+  AssertionError [ERR_ASSERTION]: the hold row alone keeps the hold
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:70:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:81:1
+✖ CF-OBS-1 (5) a reused event id: under the hold's own id or a session report's, nothing is planned and no declaration is recorded; an earlier declaration replayed after a new hold never releases it (52.7025ms)
+  AssertionError [ERR_ASSERTION]: ib-2: next-week steps are gated when this week’s remaining sessions are complete
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:85:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:101:1
+✖ CF-OBS-1 (6) a change of device: the stored record without the reference, or an older stored plan, never plans over the hold; after a declaration an older plan is refused (HOLD) (65.1109ms)
+  AssertionError [ERR_ASSERTION]: a new device with the record and no reference
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:104:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:114:1
+✖ CF-OBS-1 (7) later weekly reviews and (8) plan or preference changes keep the hold, the reference sent or not (136.0005ms)
+  AssertionError [ERR_ASSERTION]: ABSENT WEEKLY_REVIEW week 2: Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:119:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:123:1
+✖ CF-OBS-1 what never releases: time, executed sessions, a break, a report, an improved check, RECOVERED, a fresh clear screen (73.0367ms)
+  AssertionError [ERR_ASSERTION]: WEEKLY_REVIEW (reference absent): Next week repeats or steps back only where this week’s evidence requires it; no debt, no compensation
+  + actual - expected
+  
+  + 'MODIFY'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:129:124)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MODIFY',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:134:1
+✖ CF-OBS-1 facts are still recorded during a hold (PCG Q3): a session report sent while the hold stands joins the record, nothing is planned, and the restart reads it (49.526ms)
+  AssertionError [ERR_ASSERTION]: KEPT: the report is on the record
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:139:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-cfobs1.test.mjs:145:1
+✖ CF-OBS-1 clinical first during a hold: a warning sign answered in any payload sets the urgent guidance, the reference sent or not (103.3853ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'KEEP'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-cfobs1.test.mjs:149:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'KEEP',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-persistence.test.mjs:19:1
+✖ QRE-FF-06 canonical(): an absent key and an undefined value are the same JSON value; null stays a value of its own (1.5857ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{"a":1,"b":undefined}'
+  - '{"a":1}'
+           ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:20:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"a":1,"b":undefined}',
+    expected: '{"a":1}',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-persistence.test.mjs:30:1
+✖ QRE-FF-06 canonical(): every JSON value hashes the same before and after a JSON round trip, and a changed value never does (0.3525ms)
+  AssertionError [ERR_ASSERTION]: {"a":[1,2,{"b":"x"}],"d":null,"e":{}}
+  + actual - expected
+  
+  + 'ce1fe58f8b888784ccd387bbec016e52c3d1a39623ae45991344f56b44942deb'
+  - 'c8671526ba700a33be1ca08f6641e7c759f958b8f79b95f4bc129515b464748b'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:32:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ce1fe58f8b888784ccd387bbec016e52c3d1a39623ae45991344f56b44942deb',
+    expected: 'c8671526ba700a33be1ca08f6641e7c759f958b8f79b95f4bc129515b464748b',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-persistence.test.mjs:38:1
+✖ QRE-FF-06 history: a JSON-stable value keeps its earlier hash exactly; only values that held undefined change (they already failed after storage) (40.0319ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  '{"a":1,"b":undefined}'
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:42:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"a":1,"b":undefined}',
+    expected: '{"a":1,"b":undefined}',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-persistence.test.mjs:44:1
+✖ QRE-FF-06 (QRE minimal reproduction): the next weekly review on a schedule-change proposal gives the same decision on the program as kept and on its JSON round trip (88.0359ms)
+  AssertionError [ERR_ASSERTION]: the proposal is valid after a JSON round trip
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:48:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-persistence.test.mjs:76:1
+✖ QRE-FF-06 round trip on disk, step by step: default weeks, a schedule change, a preference change and a missed session (182.7895ms)
+  AssertionError [ERR_ASSERTION]: default step 3: the stored program is valid
+      at bothWays (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:66:10)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-persistence.test.mjs:79:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:36:2
+✖ SSCTR-FFC-01 (FASTER): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (281.7334ms)
+  AssertionError [ERR_ASSERTION]: RUN: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"}
+  + actual - expected
+  
+  + undefined
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:41:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:36:2
+✖ SSCTR-FFC-01 (BALANCED): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (232.7762ms)
+  AssertionError [ERR_ASSERTION]: RUN: {"rungs":["R2","R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"}
+  + actual - expected
+  
+  + undefined
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:41:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:36:2
+✖ SSCTR-FFC-01 (CONSERVATIVE): REDUCE 12 none executed + REST 3 reads 14 days without training: the MODERATE recipe with the speed's holds, never above the REDUCE report alone (224.5183ms)
+  AssertionError [ERR_ASSERTION]: RUN holds: {"recipe":"MODERATE","holds":"NONE","read":"AS_CHOSEN","days":4,"row":"REST"}
+  
+  'NONE' !== 'EACH'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:41:74)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'NONE',
+    expected: 'EACH',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:47:1
+✖ SSCTR-FFC-01 variant: REDUCE 7 none executed, its return none executed, then REST 4: 14 days without training, the MODERATE recipe (FASTER) (129.6953ms)
+  AssertionError [ERR_ASSERTION]: RUN: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":7,"row":"REST"}
+  + actual - expected
+  
+  + undefined
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:56:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:67:2
+✖ SSCTR-FFC-01 (running only): a local REDUCE window none executed chained with a local REST keeps its days at every speed (209.2775ms)
+  AssertionError [ERR_ASSERTION]: FASTER RUN: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"}
+  + actual - expected
+  
+  + undefined
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:73:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:67:2
+✖ SSCTR-FFC-01 (strength only): a local REDUCE window none executed chained with a local REST keeps its days at every speed (195.9825ms)
+  AssertionError [ERR_ASSERTION]: FASTER STRENGTH: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"}
+  + actual - expected
+  
+  + undefined
+  - 'MODERATE'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:73:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'MODERATE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:88:1
+✖ SSCTR-FFC-01 (FF-N1): a partly executed REDUCE window chained with a REST report reads the days after its last executed session as days without training: the R6 class of those days, never below the REDUCE report alone (196.7873ms)
+  AssertionError [ERR_ASSERTION]: FASTER RUN: 11 or more days without training give the MODERATE recipe with the speed's holds: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"}
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:94:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:111:1
+✖ SSCTR-FFC-01 (CH-r2 with I-04 within the chain): a partly executed REDUCE window, then a REST report, with few days without training: never less conservative than the REDUCE report alone (its rung repeats first) (202.9031ms)
+  AssertionError [ERR_ASSERTION]: FASTER RUN: {"rungs":["R3","R4"],"read":"AS_CHOSEN","days":4,"row":"REST"} vs {"rungs":["R2","R3","R4"],"read":"WINDOW_RUNG_REPEATED","days":14,"row":"REDUCE_SUBSTANTIAL"}
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:117:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:135:2
+✖ SSCTR-FFC-02 (FASTER): a break after an answered check and a return week with nothing executed reads the days without training: per-sport MODERATE, as the waited variant (163.0969ms)
+  AssertionError [ERR_ASSERTION]: {"days":2,"class":"SHORT","nonclinical":true,"screen":{"status":"NONCLINICAL","basis":"NONCLINICAL_CATEGORY","matched":["TRAVEL"]},"startDate":"2026-11-30","endDate":"2026-12-01","episode":"ib-4","relation":"NEW","supersedes":null,"basis":"FIRST","revision":1,"inputHash":"282310893a0b537aae6d697d15234b7086239e5b47d936728ef7ad27d72b4854","stateAt":{"kind":"WEEK_START","week":3,"day":"2026-11-30","asOf":null,"eventId":null,"authority":{"RUN":"RETURN_ENTRY","STRENGTH":"RETURN_ENTRY"},"values":{"RUN":{"basis":"RETURN_ENTRY","week":3},"STRENGTH":{"db-bench-press":{"basis":"RETURN_ENTRY","week":3},"db-row":{"basis":"RETURN_ENTRY","week":3},"dead-bug":{"basis":"RETURN_ENTRY","week":3}}},"executed":["db-bench-press","db-biceps-curl","db-calf-raise","db-rdl","db-row","db-split-squat","dead-bug","goblet-squat"]},"entry":{"run":{"mode":"EASY","walkStep":0,"restart":15,"long":50,"easy":35,"easyExtra":0,"walks":0,"qualityStep":0,"specificStep":0,"thresholdDone":0,"devCount":1,"resumed":false,"longByWeek":{"0":50},"hasLong":true,"nEasy":2,"qualityRunner":true,"qualityNeeds":2,"stridesEligible":true,"easyWeeksDone":1,"qualityDone":0,"stridesDone":0,"achieved":{"long":50,"easy":35,"quality":null,"strides":0},"longestContinuous":50},"strength":{"exercises":{"db-bench-press":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"db-row":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"dead-bug":{"status":"ESTABLISHED","mode":"BODYWEIGHT","load":null,"convention":"BODYWEIGHT","reps":12,"sets":null,"rir":3,"loadTick":0,"source":"PLANNED_ESTABLISHMENT","lastPerformed":"2026-11-09","lastExecutedSets":2}},"devCount":1,"completedBlocks":0}}}
+  + actual - expected
+  
+  + undefined
+  - {
+  -   RUN: 'MODERATE',
+  -   STRENGTH: 'MODERATE'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:138:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { RUN: 'MODERATE', STRENGTH: 'MODERATE' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:135:2
+✖ SSCTR-FFC-02 (BALANCED): a break after an answered check and a return week with nothing executed reads the days without training: per-sport MODERATE, as the waited variant (155.2033ms)
+  AssertionError [ERR_ASSERTION]: {"days":2,"class":"SHORT","nonclinical":true,"screen":{"status":"NONCLINICAL","basis":"NONCLINICAL_CATEGORY","matched":["TRAVEL"]},"startDate":"2026-11-30","endDate":"2026-12-01","episode":"ib-4","relation":"NEW","supersedes":null,"basis":"FIRST","revision":1,"inputHash":"282310893a0b537aae6d697d15234b7086239e5b47d936728ef7ad27d72b4854","stateAt":{"kind":"WEEK_START","week":3,"day":"2026-11-30","asOf":null,"eventId":null,"authority":{"RUN":"RETURN_ENTRY","STRENGTH":"RETURN_ENTRY"},"values":{"RUN":{"basis":"RETURN_ENTRY","week":3},"STRENGTH":{"db-bench-press":{"basis":"RETURN_ENTRY","week":3},"db-row":{"basis":"RETURN_ENTRY","week":3},"dead-bug":{"basis":"RETURN_ENTRY","week":3}}},"executed":["db-bench-press","db-biceps-curl","db-calf-raise","db-rdl","db-row","db-split-squat","dead-bug","goblet-squat"]},"entry":{"run":{"mode":"EASY","walkStep":0,"restart":15,"long":50,"easy":35,"easyExtra":0,"walks":0,"qualityStep":0,"specificStep":0,"thresholdDone":0,"devCount":1,"resumed":false,"longByWeek":{"0":50},"hasLong":true,"nEasy":2,"qualityRunner":true,"qualityNeeds":2,"stridesEligible":true,"easyWeeksDone":1,"qualityDone":0,"stridesDone":0,"achieved":{"long":50,"easy":35,"quality":null,"strides":0},"longestContinuous":50},"strength":{"exercises":{"db-bench-press":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"db-row":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"dead-bug":{"status":"ESTABLISHED","mode":"BODYWEIGHT","load":null,"convention":"BODYWEIGHT","reps":12,"sets":null,"rir":3,"loadTick":0,"source":"PLANNED_ESTABLISHMENT","lastPerformed":"2026-11-09","lastExecutedSets":2}},"devCount":1,"completedBlocks":0}}}
+  + actual - expected
+  
+  + undefined
+  - {
+  -   RUN: 'MODERATE',
+  -   STRENGTH: 'MODERATE'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:138:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { RUN: 'MODERATE', STRENGTH: 'MODERATE' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:151:1
+✖ SSCTR-FFC-02 (C-Q05-5 with FF-N1): a declared break right after a REDUCE window none executed reads the window as days without training (88.1338ms)
+  AssertionError [ERR_ASSERTION]: {"days":1,"class":"SHORT","nonclinical":true,"screen":{"status":"NONCLINICAL","basis":"NONCLINICAL_CATEGORY","matched":["TRAVEL"]},"startDate":"2026-11-26","endDate":"2026-11-26","episode":"ib-4","relation":"NEW","supersedes":null,"basis":"FIRST","revision":1,"inputHash":"1b08978da0b85d987619d997e83bb409763e29bdb15f166b47f7750c240ee9d8","stateAt":{"kind":"WEEK_START","week":2,"day":"2026-11-23","asOf":null,"eventId":null,"authority":{"RUN":"RETURN_ENTRY","STRENGTH":"RETURN_ENTRY"},"values":{"RUN":{"basis":"RETURN_ENTRY","week":2},"STRENGTH":{"db-bench-press":{"basis":"RETURN_ENTRY","week":2},"db-row":{"basis":"RETURN_ENTRY","week":2},"dead-bug":{"basis":"RETURN_ENTRY","week":2}}},"executed":[]},"entry":{"run":{"mode":"EASY","walkStep":0,"restart":15,"long":50,"easy":35,"easyExtra":0,"walks":0,"qualityStep":0,"specificStep":0,"thresholdDone":0,"devCount":1,"resumed":false,"longByWeek":{"0":50},"hasLong":true,"nEasy":2,"qualityRunner":true,"qualityNeeds":2,"stridesEligible":true,"easyWeeksDone":1,"qualityDone":0,"stridesDone":0,"achieved":{"long":50,"easy":35,"quality":null,"strides":0},"longestContinuous":50},"strength":{"exercises":{"db-bench-press":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"db-row":{"status":"ESTABLISHED","mode":"KNOWN","load":20,"convention":"PER_HAND","reps":8,"sets":4,"rir":2,"loadTick":0,"source":"CURRENT_FAMILIAR_KNOWN_DOSE","lastPerformed":"2026-11-13"},"dead-bug":{"status":"ESTABLISHED","mode":"BODYWEIGHT","load":null,"convention":"BODYWEIGHT","reps":12,"sets":null,"rir":3,"loadTick":0,"source":"PLANNED_ESTABLISHMENT","lastPerformed":"2026-11-09","lastExecutedSets":2}},"devCount":1,"completedBlocks":0}}}
+  + actual - expected
+  
+  + undefined
+  - {
+  -   RUN: 'MODERATE',
+  -   STRENGTH: 'MODERATE'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:158:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { RUN: 'MODERATE', STRENGTH: 'MODERATE' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:175:2
+✖ QRE-FFC-01 (NEED_REST REST 2d, FASTER): strength sets come back at most one per executed week across the chain (D49) (103.0283ms)
+  AssertionError [ERR_ASSERTION]: week 3 plans at most 2 sets after a week at 1: 4,4
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:180:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:175:2
+✖ QRE-FFC-01 (NEED_REST REST 4d, FASTER): strength sets come back at most one per executed week across the chain (D49) (96.6315ms)
+  AssertionError [ERR_ASSERTION]: week 3 plans at most 2 sets after a week at 1: 4,4
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:180:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:175:2
+✖ QRE-FFC-01 (UNUSUAL_FATIGUE REST 3d, FASTER): strength sets come back at most one per executed week across the chain (D49) (96.1331ms)
+  AssertionError [ERR_ASSERTION]: week 3 plans at most 2 sets after a week at 1: 4,4
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:180:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:184:1
+✖ QRE-FFC-01: a single report whose return waits a whole week for its check keeps the D49 cap of the executed window (66.8687ms)
+  AssertionError [ERR_ASSERTION]: after a week at 1 set and a week waiting, at most 2: 4,4 ({"rungs":["R3","R4"],"read":"AS_CHOSEN","days":14,"row":"REDUCE_SUBSTANTIAL"})
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:191:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1cib-runtime.test.mjs:193:1
+✖ QRE-FFC-01 (QRE fuzz seed 367 shape): a window that starts mid-week counts only the sessions inside it: a full Monday before it never lifts the D49 cap (49.4526ms)
+  AssertionError [ERR_ASSERTION]: week 1 at most 2 sets after the window's 1 set: 3,3 (undefined)
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/b079c71a-0301-4293-9e01-d99397be1338/scratchpad/vib-1/x0950b0a/CoachingCore/test/v1cib-runtime.test.mjs:201:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

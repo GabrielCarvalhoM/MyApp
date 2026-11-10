@@ -74,10 +74,13 @@ test('R7-C QE-R7C-01: an answer a refusal (R4 HOLD) recorded without applying it
  }
 });
 
-test('R7-C QE-R7C-01: an answer a clinical route recorded is applied after clearance; while the clinical reference stands nothing is valid',()=>{
+// V1 Coaching Integration Boundary CF-OBS-1 migration (PCG-V1CPFF-CFOBS1-r1 Q4, Q6): the R7 model of a qualified clearance (`cleared`: the client
+// drops the clinical state) is no release, since the record holds the hold; it stays as each migrated test's negative twin. The release is the
+// athlete's readiness declaration, read from the record; its restart reads the answer the clinical route recorded.
+const READY_ALL={declaredRecovered:true,warningSigns:Object.fromEntries(['feverOrChills','chestPainPressureOrTightness','breathlessAtRest','palpitationsAtRest','faintingOrDizziness','painThatChangesMovement','swelling','injuryFromFallOrImpact','gettingWorse','bodyWideAches','exhaustionAtRest','vomitingDiarrhoeaNauseaOrAbdominalPain','moderateOrSevereCough','severeHeadache','severeNoseOrThroat'].map(k=>[k,false])),sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}};
+test('R7-C QE-R7C-01 (V1CIB CF-OBS-1 migration): an answer a clinical route recorded is applied after the readiness declaration with no re-send; while the route stands, or with the clinical state dropped, nothing is valid',()=>{
  for(const g of [0,2]){
-  const b=7,{A,B,facts}=fork(GEN,{g,b,mode:'RV',V:'MISS'}),label=`g=${g}`;
-  const onTime=copy(A),a=step(onTime,b,AT(3)),expected=runsFrom(inForce(onTime,a),b,3);
+  const b=7,{B,facts}=fork(GEN,{g,b,mode:'RV',V:'MISS'}),label=`g=${g}`;
   const t=copy(B),X=t.p.weeks[b].sessions.filter(s=>live(s)&&s.sport==='STRENGTH').flatMap(s=>s.prescription.exercises.map(e=>e.id))[0];
   const clin=step(t,b,{...AT(2),kind:'EXERCISE_SUBSTITUTION',substitution:{exerciseId:X,reason:'SKILL_MISMATCH',pain:true},observations:facts});
   assert.equal(clin.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(clin.proposal,null);
@@ -85,11 +88,21 @@ test('R7-C QE-R7C-01: an answer a clinical route recorded is applied after clear
   // The clinical reference stands: still clinical, nothing proposed or validated.
   const sticky=step(copy(t),b,AT(3));
   assert.equal(sticky.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(sticky.proposal,null);assert.notEqual(sticky.planValidity.status,VALID);
+  // Negative twins: the clinical state dropped (the R7 convention) is no release, whatever the review carries.
   for(const [what,x] of [['no observations',{}],['the answer re-sent',{observations:facts}],['a systemic fatigue',{kind:'SYSTEMIC_FATIGUE'}]]){
-   const u=cleared(t),r=step(u,b,{...AT(3),...x}),inPlan=runsFrom(inForce(u,r),b,3);
-   assert.equal(r.planValidity.status,VALID,`${label}, after clearance, ${what}: ${r.reason}`);
-   assert.ok(!stale(inPlan),`${label}, after clearance, ${what}: ${JSON.stringify(inPlan)}`);
-   if(what!=='a systemic fatigue')assert.deepEqual(inPlan,expected,`${label}, after clearance, ${what}: as on time`);
+   const u=cleared(t),r=step(u,b,{...AT(3),...x});
+   assert.equal(r.status,'CLINICAL_HUMAN_REQUIRED',`${label}, clinical state dropped, ${what}: ${r.reason}`);assert.equal(r.proposal,null);assert.notEqual(r.planValidity.status,VALID);
+  }
+  // The release: the readiness declaration. Its restart reads the recorded answer (the runs not done lengthen running's stop) and no stale dose is
+  // valid; the next decisions plan on it with no re-send.
+  const u=copy(t),ready=step(u,b,{...AT(3),kind:'READINESS_DECLARATION',readiness:READY_ALL}),d=u.p.decisions.at(-1),stop=d.readinessRecord?.stops??d.interruption?.stops;
+  assert.equal(ready.status,'MODIFY',`${label}: ${ready.reason}`);assert.equal(ready.planValidity.status,VALID,label);
+  assert.ok(stop.RUN.start<=facts.map(f=>f.observedAt.slice(0,10)).sort()[0],`${label}: running restarts from before the runs the answer reported not done (${JSON.stringify(stop.RUN)})`);
+  assert.ok(!stale(runsFrom(u.p,b,3)),`${label}: ${JSON.stringify(runsFrom(u.p,b,3))}`);
+  for(const [what,x] of [['no observations',{}],['a systemic fatigue',{kind:'SYSTEMIC_FATIGUE'}]]){
+   const v=copy(u),r=step(v,b,{...AT(4),...x}),inPlan=runsFrom(inForce(v,r),b,4);
+   assert.notEqual(r.status,'CLINICAL_HUMAN_REQUIRED',`${label}, after the declaration, ${what}: ${r.reason}`);
+   assert.ok(!stale(inPlan),`${label}, after the declaration, ${what}: ${JSON.stringify(inPlan)}`);
   }
  }
  // A clinical return report (illness) carrying the answer, then clearance.

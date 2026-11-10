@@ -141,16 +141,20 @@ const RUN_RUNGS={
 };
 const strengthRows=(env,s,rows,instructions)=>{if(!rows.length)return restRow(s,'Nothing of this session fits what you reported; rest without debt');const p=strengthPrescription(s.prescription.family,rows,{budget:env.sk.c.schedule.strengthMinutes,warmup:s.prescription.warmupMinutes,cooldown:s.prescription.cooldownMinutes,secondsPerRep:s.prescription.secondsPerRep,goalMode:s.prescription.goalMode,instructions});return {...s,prescription:p,plannedPrescriptionHash:hash(p)};};
 const withExposure=(e,sets)=>({...e,sets,...(e.exposure?{exposure:{...e.exposure,phasedSets:Math.min(e.exposure.phasedSets??e.sets,sets)}}:{})});
-const rungWeek=(week,episode)=>(week?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.episode===episode&&['R2','R3','R4'].includes(x.rungs?.STRENGTH));
+/** V1 Coaching Integration Boundary QRE-FFC-01 (returnLadder.transitionRule: "strength sets come back at most one set per executed week whatever the
+ * rung", the D49 rule): a week in which a Situation 1 marker holds strength, of any phase (window, wait, ladder) and of any report. A chain moves the
+ * sport from one report to the next with no break in its exposure, and a wait or a rest window executes nothing, so neither ends the search for the
+ * last executed count. */
+const reducedStrengthWeek=week=>(week?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&!!x.rungs?.STRENGTH);
 const EXECUTED=new WeakMap();
 const executedBySession=record=>{if(!Array.isArray(record))return new Map();let m=EXECUTED.get(record);if(!m){m=new Map();for(const o of record)if(o&&o.sessionId&&!o.conflicted&&!o.fact)m.set(o.sessionId,o);EXECUTED.set(record,m);}return m;};
 /** V1CP Fix-Forward NB-6 (SSCTR-V1CPR-03, QRE-V1CPR-04): the sets of exercise `id` that week `week` executed. A session already history counts
  * what the record shows (its logged sets; the prescribed sets when it is reported done without a per-exercise log; none when not done); a session
  * still ahead counts its prescription, as the conditional plan assumes it executed. An unexecuted prescription is never a step. */
-function setsExecutedIn(env,week,id){
+function setsExecutedIn(env,week,id,from=null){
  const by=executedBySession(env.fullLedger);let n=0;
  for(const x of week?.sessions??[]){
-  if(x.sport!=='STRENGTH'||!x.prescription||x.status==='SKIPPED')continue;
+  if(x.sport!=='STRENGTH'||!x.prescription||x.status==='SKIPPED'||from&&x.date<from)continue;
   const row=(x.prescription.exercises??[]).find(e=>e.id===id);if(!row)continue;
   if(!env.elapsed?.(x)){n=Math.max(n,row.sets);continue;}
   const o=by.get(x.id);if(!o||!(o.actual?.completed===true||Number(o.actual?.minutes)>0))continue;
@@ -159,13 +163,22 @@ function setsExecutedIn(env,week,id){
  }
  return n;
 }
-/** NB-6: the last count of exercise `id` executed in the episode's rung weeks before week i, scanning back while the weeks are its rungs; null if none. */
-function lastExecutedSets(env,weeks,i,id,episode){for(let k=i-1;k>=0&&rungWeek(weeks[k],episode);k--){const n=setsExecutedIn(env,weeks[k],id);if(n>0)return n;}return null;}
-/** D49 on every rung (returnLadder.transitionRule): an exercise's sets rise at most one above the last count executed at a rung of the same episode. */
+/** NB-6, V1CIB QRE-FFC-01: the last count of exercise `id` executed before week i, scanning back while a Situation 1 marker holds strength in the week
+ * (reducedStrengthWeek); null if none was executed there (the rung then keeps its own count: there is no executed count to rise from). */
+function lastExecutedSets(env,weeks,i,id){
+ for(let k=i-1;k>=0&&reducedStrengthWeek(weeks[k]);k--){
+  // Only the sessions from the reduction's first day in that week count (V1CIB, QRE fuzz seed 367: a window that starts mid-week leaves the full
+  // sessions before it out of the reduced count).
+  const from=(weeks[k].adaptations??[]).filter(x=>x.kind==='WELLBEING_REDUCTION'&&x.rungs?.STRENGTH).map(x=>x.startDate).filter(Boolean).sort()[0]??null;
+  const n=setsExecutedIn(env,weeks[k],id,from);if(n>0)return n;
+ }
+ return null;
+}
+/** D49 on every rung (returnLadder.transitionRule): an exercise's sets rise at most one above the last count executed in the reduction, the wait or the
+ * return before this week, whichever report of the sport's chain held it (V1CIB QRE-FFC-01: the cap was read only from the same report's R2-R4 weeks,
+ * so a later report's rest window or a wait for the check dropped it). */
 function ladderCap(env,s,a,id){
- const weeks=env.program?.weeks??[],prev=weeks[s.weekIndex-1],m=(prev?.adaptations??[]).some(x=>x.kind==='WELLBEING_REDUCTION'&&x.episode===a.episode&&['R2','R3','R4'].includes(x.rungs?.STRENGTH));
- if(!m)return Infinity;
- const last=lastExecutedSets(env,weeks,s.weekIndex,id,a.episode);
+ const last=lastExecutedSets(env,env.program?.weeks??[],s.weekIndex,id);
  return last!==null?last+1:Infinity;
 }
 const ceilingOf=e=>e.load?.mode==='KNOWN'?`never above ${e.load.value} ${String(e.load.unit??'kg').toLowerCase()}, the load you used before`:e.load?.mode==='BODYWEIGHT'?'bodyweight only':'never above the load you used last time';
@@ -265,7 +278,7 @@ function d49Hold(weeks,i,sports,env={}){
  if((weeks[i].adaptations??[]).some(a=>a.kind==='WELLBEING_REDUCTION'&&a.episode===prev.episode&&!a.endedBy&&a.rungs?.STRENGTH))return null;
  const sets=w=>{const o={};for(const s of w.sessions.filter(x=>x.sport==='STRENGTH'&&x.prescription&&x.status!=='SKIPPED'))for(const e of s.prescription.exercises??[])o[e.id]=Math.max(o[e.id]??0,e.sets);return o;};
  // NB-6: compared with the last count executed at a rung of the episode (the record), the plan only for weeks still ahead.
- const a=sets(weeks[i-1]),b=sets(weeks[i]);if(!Object.keys(b).some(id=>{const last=lastExecutedSets(env,weeks,i,id,prev.episode)??a[id];return last!==undefined&&b[id]>last+1;}))return null;
+ const a=sets(weeks[i-1]),b=sets(weeks[i]);if(!Object.keys(b).some(id=>{const last=lastExecutedSets(env,weeks,i,id)??a[id];return last!==undefined&&b[id]>last+1;}))return null;
  const out=weeks.map(x=>x),x=out[i],m=(x.adaptations??[]).find(z=>z.kind==='WELLBEING_REDUCTION'&&z.episode===prev.episode&&z.phase==='LADDER'&&!z.endedBy);
  const base=m?clone(m):(({starts,fixed,each,ref,...p})=>({...clone(p),startDate:x.startDate,endDate:onDate(x.startDate,6),rungs:{},hold:{},step:(prev.step??0)+1}))(prev);
  const n={...base,rungs:{...base.rungs,STRENGTH:'R4'},hold:{...base.hold,STRENGTH:false},starts:{...(base.starts??{}),STRENGTH:'FIXED'},fixed:{...(base.fixed??{}),STRENGTH:clone(prev.fixed.STRENGTH)},d49:true};

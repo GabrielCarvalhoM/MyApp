@@ -1,0 +1,177 @@
+{
+ "state": "RETURNING",
+ "call": "history",
+ "request": {
+  "actor": {
+   "athleteId": "ath-fixture-hybrid"
+  }
+ },
+ "response": {
+  "ok": true,
+  "history": {
+   "version": 13,
+   "sessions": [
+    {
+     "eventId": "ob_42ce441be1516e9bf1fb98724c",
+     "sessionId": "w0-run-d1",
+     "date": "2026-11-10",
+     "completed": true,
+     "minutes": 35
+    },
+    {
+     "eventId": "ob_8da1829e82f555de9ad849d90a",
+     "sessionId": "w0-str-d4",
+     "date": "2026-11-13",
+     "completed": true,
+     "minutes": 31
+    },
+    {
+     "eventId": "ob_2cecee9579b16b08d15274e24c",
+     "sessionId": "w0-str-d0",
+     "date": "2026-11-09",
+     "completed": true,
+     "minutes": 31
+    },
+    {
+     "eventId": "ob_a6e50b470480d6103fb2a7e3a5",
+     "sessionId": "w0-run-d3",
+     "date": "2026-11-12",
+     "completed": true,
+     "minutes": 35
+    },
+    {
+     "eventId": "ob_4443486177c3f6c4a8b56293b8",
+     "sessionId": "w0-run-d5",
+     "date": "2026-11-14",
+     "completed": true,
+     "minutes": 50
+    }
+   ],
+   "facts": [
+    {
+     "fact": "WELLBEING_DECLARED",
+     "eventId": "ev_fixture_0016",
+     "at": "2026-11-18T11:00:00.000Z"
+    },
+    {
+     "fact": "WELLBEING_CHECKED",
+     "eventId": "ev_fixture_0018",
+     "at": "2026-11-21T12:00:00.000Z"
+    },
+    {
+     "fact": "CLINICAL_HOLD",
+     "eventId": "ev_fixture_0020",
+     "at": "2026-11-25T11:00:00.000Z"
+    },
+    {
+     "fact": "READINESS_DECLARED",
+     "eventId": "ev_fixture_0022",
+     "at": "2026-11-27T12:00:00.000Z"
+    }
+   ],
+   "erasedSlots": 0,
+   "decisions": [
+    {
+     "decisionId": "dc_fixture_0002",
+     "kind": "WEEKLY_REVIEW",
+     "at": "2026-11-11T00:00:00.000Z",
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "decisionId": "dc_fixture_0004",
+     "kind": "WEEKLY_REVIEW",
+     "at": "2026-11-14T00:00:00.000Z",
+     "status": "KEEP",
+     "action": "KEEP",
+     "reason": "next-week steps are gated when this week’s remaining sessions are complete"
+    },
+    {
+     "decisionId": "dc_fixture_0006",
+     "kind": "WEEKLY_REVIEW",
+     "at": "2026-11-15T23:00:00.000Z",
+     "status": "KEEP",
+     "action": "INSTANTIATE_LOGGED_LOADS",
+     "reason": "Logged loads replace planned placeholders; the progression rule is unchanged"
+    },
+    {
+     "decisionId": "dc_fixture_0008",
+     "kind": "SCHEDULE_CHANGE",
+     "at": "2026-11-16T11:00:00.000Z",
+     "status": "MODIFY",
+     "action": "REARRANGE_FUTURE_WEEKS",
+     "reason": "New chosen days or shifts: same doses rearranged on the new days from next week; this week’s remaining sessions are not moved onto days the athlete removed"
+    },
+    {
+     "decisionId": "dc_fixture_0009",
+     "kind": "ADOPTION",
+     "at": "2026-11-16T11:00:00.000Z",
+     "status": "ADOPTED",
+     "action": null,
+     "reason": null
+    },
+    {
+     "decisionId": "dc_fixture_0011",
+     "kind": "PREFERENCE_CHANGE",
+     "at": "2026-11-16T11:00:00.000Z",
+     "status": "MODIFY",
+     "action": "PREFERENCE_CHANGE",
+     "reason": "New coaching choices from next week (coach balanced; volume running lower, strength lower; difficulty running standard, strength higher): the weeks ahead are re-planned from the current state; executed sessions and this week's sessions stay as they are"
+    },
+    {
+     "decisionId": "dc_fixture_0013",
+     "kind": "PREFERENCE_CHANGE",
+     "at": "2026-11-16T11:00:00.000Z",
+     "status": "MODIFY",
+     "action": "PREFERENCE_CHANGE",
+     "reason": "New coaching choices from next week (coach conservative; volume running standard, strength standard; difficulty running standard, strength standard): the weeks ahead are re-planned from the current state; executed sessions and this week's sessions stay as they are"
+    },
+    {
+     "decisionId": "dc_fixture_0015",
+     "kind": "MISSED_SESSION",
+     "at": "2026-11-17T11:00:00.000Z",
+     "status": "ASK",
+     "action": "ASK",
+     "reason": "Current eligibility must be assessed; unknown is neither clearance nor illness"
+    },
+    {
+     "decisionId": "dc_fixture_0017",
+     "kind": "NOT_FEELING_100",
+     "at": "2026-11-18T11:00:00.000Z",
+     "status": "MODIFY",
+     "action": "WELLBEING_REDUCTION",
+     "reason": "You told us you are not 100% (need rest): rest for running and strength from 2026-11-18 to 2026-11-20. On 2026-11-21 tell us how you are; if you feel better before, the check can end it from tomorrow. Once it has passed or clearly improved, your return (balanced) is a much lighter week, then an easier week, then a week at your usual doses, then your plan moves on with what you execute. Nothing returns to a previous dose by date alone; if a warning sign appears, stop and seek a professional assessment"
+    },
+    {
+     "decisionId": "dc_fixture_0019",
+     "kind": "WELLBEING_CHECK",
+     "at": "2026-11-21T12:00:00.000Z",
+     "status": "MODIFY",
+     "action": "WELLBEING_RETURN_START",
+     "reason": "You told us it has passed or clearly improved: your return (balanced) starts now, for running: a much lighter week, then an easier week, then a week at your usual doses, then your plan moves on with what you execute; strength: a much lighter week, then an easier week, then a week at your usual doses, then your plan moves on with what you execute. Each step waits for a whole week done as planned; if a warning sign appears, stop and seek a professional assessment"
+    },
+    {
+     "decisionId": "dc_fixture_0021",
+     "kind": "NOT_FEELING_100",
+     "at": "2026-11-25T11:00:00.000Z",
+     "status": "CLINICAL_HUMAN_REQUIRED",
+     "action": "CLINICAL_HUMAN_REQUIRED",
+     "reason": "You reported a warning sign (swelling): stop training and seek a professional assessment; no training is planned while it stands, and your record keeps being kept. When you are ready to train again, you can tell us sport by sport",
+     "guidance": {
+      "level": "PROFESSIONAL_ASSESSMENT",
+      "wordingStatus": "INTERIM_PENDING_G04"
+     }
+    },
+    {
+     "decisionId": "dc_fixture_0023",
+     "kind": "READINESS_DECLARATION",
+     "at": "2026-11-27T12:00:00.000Z",
+     "status": "MODIFY",
+     "action": "READINESS_RESTART",
+     "reason": "You told us you are ready to train again: running restarts after 12 days without it, with a lighter entry and 2 conditional steps back, its first week repeated once; strength restarts after 13 days without it, with a lighter entry and 2 conditional steps back, its first week repeated once. This is your own statement; the app makes no medical judgment. If a warning sign appears, stop and seek a professional assessment"
+    }
+   ]
+  }
+ }
+}

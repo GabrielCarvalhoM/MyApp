@@ -268,7 +268,10 @@ test('R7-D Phase 3.4 T12 (R-F08-1): a later trip, a schedule change or a weekly 
  assert.equal(sched.status,'CLINICAL_HUMAN_REQUIRED',sched.reason);assert.equal(sched.proposal,null,'the schedule change is not applied with the route');
  const wk=copy(t),rv=step(wk,4,{day:6,hour:'21:00:00'});
  assert.equal(rv.status,'CLINICAL_HUMAN_REQUIRED',rv.reason);assert.equal(hash(wk.p),before,'the program is unchanged');
- assert.deepEqual(rv.actualLedger.filter(o=>o.fact==='INTERRUPTION_DECLARED').map(o=>[o.eventId,o.interruption.reasonCategory]),[['t12b-A','INJURY'],[rv.actualLedger.filter(o=>o.fact==='INTERRUPTION_DECLARED')[1].eventId,'VACATION']],'both reports stay, append-only: the clinical one is never replaced');
+ // V1CIB CF-OBS-1 migration: with the reference dropped the record's hold now keeps the route through the guard, which returns no record when it adds
+ // none (OBS-FFC-01: an absent actualLedger is the record unchanged), so the record read is the one kept.
+ const kept=rv.actualLedger??wk.ledger;
+ assert.deepEqual(kept.filter(o=>o.fact==='INTERRUPTION_DECLARED').map(o=>[o.eventId,o.interruption.reasonCategory]),[['t12b-A','INJURY'],[kept.filter(o=>o.fact==='INTERRUPTION_DECLARED')[1].eventId,'VACATION']],'both reports stay, append-only: the clinical one is never replaced');
 });
 test('R7-D Phase 3.4 T12 (R-F08-1, control): a nonclinical break corrected by name, and a reason screened only as unclear, are unaffected',()=>{
  const t=base(),h=A();

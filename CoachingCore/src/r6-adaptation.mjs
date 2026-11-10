@@ -10,7 +10,7 @@ import {normalizeObservations,utcTimestamp,localDate} from './r6-provenance.mjs'
 import {onDate,dayGap,isoDay,LB_TO_KG,toKilograms,RUN_GOALS,STRENGTH_GOALS,EVENTS} from './r6-intake.mjs';
 import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
 import {coachingOf,mergeCoaching,describeCoaching,profileOf,difficultyOf,coachingDisclosures} from './v1-coaching.mjs';
-import {readWellbeing,wellbeingFact,readReadiness,readinessFact,isF08Fact,readCheck,checkFact,holdFact,readableF08,unreadableF08,signsYesIn,signRoute,signsFor,exerciseSignsFor,WARNING_SIGNS,ILLNESS_TYPE,WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD,READINESS_SIGNS,EXERCISE_SIGNS,WINDOW_DAYS,SYSTEMIC_CONDITIONS} from './v1-f08.mjs';
+import {readWellbeing,wellbeingFact,readReadiness,readinessFact,isF08Fact,readCheck,checkFact,holdFact,readableF08,unreadableF08,standingHolds,signsYesIn,signRoute,signsFor,exerciseSignsFor,WARNING_SIGNS,ILLNESS_TYPE,WELLBEING_DECLARED,READINESS_DECLARED,WELLBEING_CHECKED,CLINICAL_HOLD,READINESS_SIGNS,EXERCISE_SIGNS,WINDOW_DAYS,SYSTEMIC_CONDITIONS} from './v1-f08.mjs';
 import {repertoireAuthority,repertoireBinding,allowsCandidate,NO_KG_CONVENTIONS,incrementFor,kgText,configurationOf,ladderNext,ladderPrevious,ladderChangesSubpattern,admitted,skillRank,RUN_CLASS_THRESHOLDS,ROTATION_DEFERRED_PHASES} from './r7b-repertoire.mjs';
 
 export const REVIEW_VERSION='R6-REVIEW-1';
@@ -47,9 +47,19 @@ function withHoldFact(program,review,result){
  const asOf=utcTimestamp(review?.asOf),id=review?.event?.id;if(!asOf||typeof id!=='string'||!id.trim()||!program?.athleteId)return result;
  const ledger=Array.isArray(result.actualLedger)?result.actualLedger:Array.isArray(review?.actualLedger)?clone(review.actualLedger):review?.actualLedger==null?[]:null;
  if(!ledger)return result;
- const f08=readableF08(ledger.filter(isF08Fact),{athleteId:program.athleteId,at:Date.parse(asOf)}),lastReady=f08.filter(o=>o.fact===READINESS_DECLARED).map(o=>o.declaredAt).sort().at(-1)??null;
- if(f08.some(o=>o.fact===CLINICAL_HOLD&&(!lastReady||Date.parse(o.declaredAt)>Date.parse(lastReady))))return result;
+ const f08=readableF08(ledger.filter(isF08Fact),{athleteId:program.athleteId,at:Date.parse(asOf)});
+ if(standingHolds(f08).holds.length)return result;
  return {...result,actualLedger:[...ledger,holdFact(program,id,asOf)]};
+}
+/** V1 Coaching Integration Boundary CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q1-Q4; Security C2; QRE): the record is the source of truth of a clinical hold, the
+ * reference state only a cache that can add protection. A hold this athlete's readable record holds (standingHolds) keeps every review kind but the
+ * readiness declaration on the clinical route, with no prescription, whatever reference state is sent with it: absent, stale, re-sealed clean or
+ * altered. The declaration is decided by its own handler, which binds it to the holds on record (the release path). */
+function recordHoldGuard(program,review,{readiness=false}={}){
+ if(readiness)return null;
+ const asOf=utcTimestamp(review?.asOf),rows=Array.isArray(review?.actualLedger)?review.actualLedger.filter(isF08Fact):[];
+ if(!asOf||!rows.length)return null;
+ return standingHolds(readableF08(rows,{athleteId:program.athleteId,at:Date.parse(asOf)})).holds.length?{status:'CLINICAL_HUMAN_REQUIRED',reason:'A clinical hold is on your record: no training is planned until you tell us, sport by sport, that you are ready to train again (readiness declaration); your record keeps being kept'}:null;
 }
 function withReference(program,review,result){
  const prior=review?.referenceState,{hash:digest,...priorBody}=prior??{},priorValid=!!prior&&prior.athleteId===program?.athleteId&&digest===hash(priorBody);
@@ -404,7 +414,10 @@ function plansNoRunDose(ctx,proposal){
  */
 function heldByRunGap(ctx,gap,d){
  const status=d.status??(d.action==='ASK'?'ASK':null),unreported=d.question?.kind==='UNREPORTED_TRAINING';
- if(ctx.kind==='RETURN_AFTER_PAUSE'||['CLINICAL_HUMAN_REQUIRED','ASK','HOLD','UNSUPPORTED'].includes(status)&&!unreported)return d;
+ // V1CIB CF-OBS-1: a readiness restart that applies the break the record kept during the hold is that break's return, so it decides the stop itself,
+ // as a return report does (the break is the athlete's report of those days); a restart with no kept break is held by the question as before.
+ const keptReturn=d.readinessRestart&&d.action==='REESTABLISH'&&!!ctx.keptBreak;
+ if(ctx.kind==='RETURN_AFTER_PAUSE'||keptReturn||['CLINICAL_HUMAN_REQUIRED','ASK','HOLD','UNSUPPORTED'].includes(status)&&!unreported)return d;
  if(!unreported&&d.proposal&&plansNoRunDose(ctx,d.proposal))return {...d,question:clone(gap.question),missingInputs:[...gap.missingInputs],reason:`${d.reason}; the run sessions ahead stay as they were and wait for an answer: ${gap.ask}`};
  return {...askOf(gap),counterfactuals:[counter(d.action??'KEEP',d.action??'KEEP',false,'It would keep or plan run doses that depend on training with no report: the projection would credit it, the reviewed entry would read it as zero'),counter('ASK','ASK',true,'Unreported training counts neither as done nor as not done; the athlete’s report decides',{selected:true})]};
 }
@@ -519,12 +532,22 @@ export function evaluateProgram(program,input,options={}){
  // After the race, redevelopment needs an eligibility and function check dated on or after race day (SSCTR D04).
  const ph=program.phases,raceDate=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null;
  if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
- const guard=previousValidity(program,review,{readiness:readinessOk});
+ // V1CIB CF-OBS-1: the reference state's own clinical continuation, else the hold the record holds (the source of truth).
+ const guard=previousValidity(program,review,{readiness:readinessOk})??recordHoldGuard(program,review,{readiness:readinessOk});
  // An integrity refusal reads nothing of the review; a standing clinical route or a question still keeps the break it declares.
  // V1CP Fix-Forward cycle (SEC-FFR-02; D5, SSCTR-FF-Q9): while a clinical dependency stands, the items this review answers yes still set the guidance
  // level and the wording (a chest pain reported during a hold advises urgent care), as they do outside a hold.
  if(guard){const yes=guard.status==='CLINICAL_HUMAN_REQUIRED'?[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))]:[],sign=yes.length?signRoute(yes):null;
-  return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
+  // V1CIB CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q3: facts are still recorded): while a clinical dependency stands, the session reports this review carries are
+  // recorded as on any review (normalized and bound), with the break it declares; nothing is planned. A malformed report keeps the record unchanged.
+  let recorded=null;
+  if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
+   try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
+    const n=normalizeObservations(review.observations,{athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+    const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy);
+    recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
+  }
+  return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:recorded?x=>({...x,actualLedger:recorded}):keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});
  // V1CP Fix-Forward SB-3 (SEC-V1CPR-01; SEC-V1CPI-04 required; QRE-V1CP-10): a recovery or readiness row that cannot be read with integrity for this
@@ -532,6 +555,11 @@ export function evaluateProgram(program,input,options={}){
  // as absent because its row is unreadable. Rows dated after this decision's clock are causal history (never read), not an integrity failure.
  const badF08=unreadableF08(f08Carried,{athleteId:program.athleteId});
  if(badF08)return finish('HOLD','HOLD',`${badF08.total} recovery or readiness record row${badF08.total>1?'s':''} cannot be read with integrity for this athlete (another athlete's, altered, malformed, or a check without its report): nothing is planned over ${badF08.total>1?'them':'it'}; send this athlete's record as kept`,{errors:['record.f08Unreadable'],unreadable:clone(badF08)});
+ // V1CIB CF-OBS-1 (device change, a restored or stale plan): a readiness declaration on record is applied by the plan that follows it (its restart, or a
+ // new plan made from it). A plan without it is older than the record: planning on it would drop the restart's floor and the sports still held, so
+ // nothing is decided until the plan stored with this record is sent.
+ {const last=standingHolds(readableF08(f08Carried,{athleteId:program.athleteId,at:Date.parse(asOf)})).lastReady;
+  if(last&&!(program.decisions??[]).some(d=>d?.eventId===last.eventId)&&program.canonical?.restart?.readinessEventId!==last.eventId)return finish('HOLD','HOLD','This plan is older than your record: a readiness declaration on record is not in it. Nothing is planned on an older plan; send the plan stored with this record',{errors:['program.behindRecord']});}
  if(review.loadConfirmations!==undefined&&review.loadConfirmations!==null&&!Array.isArray(review.loadConfirmations))return finish('HOLD','HOLD','Load confirmations must be a list',{errors:['loadConfirmations.array']});
  // Block choices (QE-R7B-08): a list of ladder steps, main-lift changes with their reason, or keeping or declining the harder session; anything
  // else is asked. They are applied only by the weekly review of a complete week (the block-boundary step); never silently dropped.
@@ -565,8 +593,11 @@ export function evaluateProgram(program,input,options={}){
   // interruption (episode identity) and is recorded with the return that applies it.
   // V1CP Fix-Forward QRE-V1CPR-08 (RC-15): the clinical holds the record holds and no later readiness declaration released, whatever reference
   // state is sent: a declaration binds them too, so a hold on record can always be answered (DR-148 path 2).
-  {const lastReady=ctx.f08.filter(o=>o.fact===READINESS_DECLARED).map(o=>o.declaredAt).sort().at(-1)??null;ctx.holds.record=ctx.f08.filter(o=>o.fact===CLINICAL_HOLD&&(!lastReady||Date.parse(o.declaredAt)>Date.parse(lastReady))).map(o=>({eventId:o.eventId,asOf:o.declaredAt}));}
+  ctx.holds.record=standingHolds(ctx.f08).holds.map(o=>({eventId:o.eventId,asOf:o.declaredAt}));
   if(retained)ctx.declaredBy={eventId:retained.eventId,eventKind:retained.eventKind??null,declaredAt:retained.declaredAt};
+  // V1CIB CF-OBS-1: the break the record holds and no return applied (kept while a clinical route stood), so the readiness restart that ends the route
+  // applies it once, as that break's return, instead of a later review applying it again over the restart.
+  if(read&&!read.own&&!read.applied)ctx.keptBreak={identity:read.identity};
   // R7-D Phase 3.2: separate breaks a return reads together (separateStop), the identity of the one it reads, and breaks it does not apply.
   if(kept?.separate){ctx.separate=kept.separate;ctx.keptEpisode=read.identity;}
   if(kept?.excluded?.length)ctx.notApplied=kept.excluded;
@@ -1295,28 +1326,55 @@ function sportPlan(ctx,E,s,speed,from){
  const {program}=ctx,R=ctx.sk.op.return,tz=program.timezoneOffsetMinutes??0,eps=chainReportsFor(ctx,E,s),ids=new Set(eps.map(x=>x.eventId));
  const mark=(d,phases)=>{const k=weekOfDay(program,d),wk=program.weeks[k];if(!wk||d<wk.startDate||d>lastDayOf(program,k))return null;return (wk.adaptations??[]).find(a=>a.kind==='WELLBEING_REDUCTION'&&ids.has(a.episode)&&phases.includes(a.phase)&&a.rungs?.[s]&&a.startDate<=d&&(!a.endDate||a.endDate>=d))??null;},at=d=>mark(d,['WINDOW','WAIT']);
  const did=d=>executionOf(ctx,sessionsIn(program,[s],d,d)).done;
- let rest=0,waited=0,reduce=0,minR='R4',winFrom=null,winTo=null;
+ // V1 Coaching Integration Boundary (SSCTR-FFC-01): the days of each REDUCE window of the chain, by report, so each window keeps its own reading, and
+ // the days scanned after the sport's last executed session (days without training, SSCTR-FF-N1).
+ let rest=0,waited=0,reduce=0,minR='R4',winFrom=null,winTo=null,quiet=0,trained=false;const reduceBy=new Map();
  for(let g=0,d=onDate(from,-1);g<200;g++,d=onDate(d,-1)){const a=at(d);
   // V1CP Fix-Forward cycle (SSCTR-FFR-02; CH-r2-7 with FF-N1): a stretch of the chain's own return with no executed session of the sport, between
   // two of its windows, is days without training: it is read as waited days and the scan goes on into the earlier window. A return stretch with an
   // executed session stops the scan at the window (the sport trained then).
-  if(!a){let e=d,n=0;while(n<120&&mark(e,['LADDER'])&&!did(e)){n++;e=onDate(e,-1);}if(n&&at(e)){waited+=n;g+=n;d=onDate(e,1);continue;}break;}
+  if(!a){let e=d,n=0;while(n<120&&mark(e,['LADDER'])&&!did(e)){n++;e=onDate(e,-1);}if(n&&at(e)){waited+=n;if(!trained)quiet+=n;g+=n;d=onDate(e,1);continue;}break;}
+  if(!trained&&did(d))trained=true;if(!trained)quiet++;
   const r=a.rungs[s];
   if(a.phase==='WAIT'){waited++;continue;}
-  if(r==='R0'||r==='R1'||r==='WAIT')rest++;else reduce++;
+  if(r==='R0'||r==='R1'||r==='WAIT')rest++;else{reduce++;const x=reduceBy.get(a.episode);if(x){x.from=d;x.days++;x.rung=minRung(x.rung,r);}else reduceBy.set(a.episode,{from:d,to:d,days:1,rung:r});}
   minR=minRung(minR,r==='WAIT'?'R0':r);winFrom=d;winTo=winTo??d;}
- const sess=winFrom?sessionsIn(program,[s],winFrom,winTo):[],planned=sess.filter(x=>x.prescription&&!x.optional&&x.status!=='SKIPPED'),ex=executionOf(ctx,sess),all=rest+reduce+waited;
- let row=!winFrom||['R0','R1'].includes(minR)?'REST':minR==='R2'?'REDUCE_SUBSTANTIAL':'REDUCE_LIGHT',days=rest+waited,read='AS_CHOSEN';
- if(row!=='REST'&&planned.length&&ex.none){row='REST';days=all;read='READ_AS_REST';}
+ const planned=list=>list.filter(x=>x.prescription&&!x.optional&&x.status!=='SKIPPED');
+ const sess=winFrom?sessionsIn(program,[s],winFrom,winTo):[],ex=executionOf(ctx,sess),all=rest+reduce+waited;
+ /** The reading of a REDUCE row from the sessions of the sport between `wf` and `wt` (the chain's windows, or one REDUCE window of it): a partly
+  * executed or adverse window repeats its rung first (I-04); FASTER after REDUCE_LIGHT is R4 at once only after a whole executed and checked week. */
+ const reduceReading=(row,rung,wf,wt)=>{
+  const xs=sessionsIn(program,[s],wf,wt),e=executionOf(ctx,xs),plan=speedPlan(R,row,all,speed),partly=planned(xs).length>0&&(!e.all||e.adverse);
+  if(row==='REDUCE_LIGHT'&&speed==='FASTER'){
+   const checked=wk=>eps.some(x=>checksFor(ctx,x.eventId).some(c=>!(c.check?.signsYes?.length)&&localDate(c.declaredAt,tz)>=wk.startDate&&localDate(c.declaredAt,tz)<=onDate(wk.startDate,7)));
+   const whole=program.weeks.some((wk,k)=>wk.startDate>=wf&&lastDayOf(program,k)<=wt&&executionOf(ctx,wk.sessions.filter(x=>x.sport===s)).all&&checked(wk));
+   return whole&&!e.adverse?{...plan,read:'AS_CHOSEN',days:all,row}:{rungs:['R3','R4'],read:partly?'WINDOW_RUNG_REPEATED':'NO_WHOLE_WEEK',days:all,row};
+  }
+  return partly?{...plan,rungs:[rung,...plan.rungs],read:'WINDOW_RUNG_REPEATED',days:all,row}:{...plan,read:'AS_CHOSEN',days:all,row};
+ };
+ const restRow=!winFrom||['R0','R1'].includes(minR);
+ let row=restRow?'REST':minR==='R2'?'REDUCE_SUBSTANTIAL':'REDUCE_LIGHT',days=rest+waited,read='AS_CHOSEN';
+ if(row!=='REST'&&planned(sess).length&&ex.none){row='REST';days=all;read='READ_AS_REST';}
  else if(row!=='REST'&&waited>R.shortMaxDays){row='REST';days=waited;read='READ_AS_REST';}
- if(row==='REST')return {...speedPlan(R,'REST',days,speed),read,days,row};
- const plan=speedPlan(R,row,all,speed),partly=planned.length>0&&(!ex.all||ex.adverse);
- if(row==='REDUCE_LIGHT'&&speed==='FASTER'){
-  const checked=wk=>eps.some(x=>checksFor(ctx,x.eventId).some(c=>!(c.check?.signsYes?.length)&&localDate(c.declaredAt,tz)>=wk.startDate&&localDate(c.declaredAt,tz)<=onDate(wk.startDate,7)));
-  const whole=program.weeks.some((wk,k)=>wk.startDate>=winFrom&&lastDayOf(program,k)<=winTo&&executionOf(ctx,wk.sessions.filter(x=>x.sport===s)).all&&checked(wk));
-  return whole&&!ex.adverse?{...plan,read,days:all,row}:{rungs:['R3','R4'],read:partly?'WINDOW_RUNG_REPEATED':'NO_WHOLE_WEEK',days:all,row};
- }
- return partly?{...plan,rungs:[minR,...plan.rungs],read:'WINDOW_RUNG_REPEATED',days:all,row}:{...plan,read,days:all,row};
+ if(row!=='REST')return reduceReading(row,minR,winFrom,winTo);
+ // V1CIB SSCTR-FFC-01 (CH-r2-7 with C-Q05-5 as precised in FF-Q3, and SSCTR-FF-N1: days without training are days without training): the REST row
+ // reads every day of the chain's stretch after the sport's last executed session, so a REDUCE window none of whose planned sessions was executed is
+ // rest of its days, and so is the part of a REDUCE window after its last executed session. A window with no planned session of the sport keeps its
+ // row as chosen (FF-Q3) once the sport trained before it.
+ if(quiet>days){days=quiet;read='READ_AS_REST';}
+ // CH-r2 ('never less conservative than any report', with I-04): the REST row is never less conservative than a REDUCE window of the chain that held an
+ // executed session, read on its own (a partly executed one repeats its rung first). No new number: both readings are the existing rows.
+ const own=[...reduceBy.values()].filter(x=>{const xs=sessionsIn(program,[s],x.from,x.to);return planned(xs).length>0&&executionOf(ctx,xs).done;});
+ return own.reduce((p,x)=>stricterPlan(p,reduceReading(x.rung==='R2'?'REDUCE_SUBSTANTIAL':'REDUCE_LIGHT',x.rung,x.from,x.to)),{...speedPlan(R,'REST',days,speed),read,days,row});
+}
+const PLAN_LEVEL={R2:2,R3:3,R4:4},PLAN_HOLDS={NONE:0,FIRST:1,EACH:2};
+/** V1CIB (CH-r2): the more conservative of two return plans of one sport, by the existing order of the rows: the R6 LONG class, then the MODERATE
+ * recipe (EACH, FIRST, NONE holds), then the rung lists (the first lower rung, then the longer list; a list that has ended has returned to the plan). */
+function stricterPlan(a,b){
+ const cls=p=>p.recipe==='LONG'?3:p.recipe?2:1;if(cls(a)!==cls(b))return cls(a)>cls(b)?a:b;
+ if(a.recipe)return (PLAN_HOLDS[b.holds]??0)>(PLAN_HOLDS[a.holds]??0)?b:a;
+ for(let i=0;i<Math.max(a.rungs.length,b.rungs.length);i++){const x=PLAN_LEVEL[a.rungs[i]]??9,y=PLAN_LEVEL[b.rungs[i]]??9;if(x!==y)return y<x?b:a;}
+ return a;
 }
 const RUNG_WORDS={R2:'a much lighter week',R3:'an easier week',R4:'a week at your usual doses',M:'a lighter re-entry'};
 function describePlan(R,p){
@@ -1384,7 +1442,11 @@ function composeReturn(ctx,program,ep,{k,lists,held,declared}){
 /** One event id is one fact (SEC-V1CPI-10): the same payload again is a KEEP. V1CP Fix-Forward SB-2 (SEC-V1CPR-03; RC-01, the QE-R7B1-04 precedent):
  * any other payload under an id already on record is screened first, so a warning sign yes routes to the clinical hold (withHoldFact records it);
  * only a payload with every item no is asked for its own id. */
-const replayOf=(ctx,fact,payload,what)=>{const again=(ctx.f08??[]).find(x=>x.eventId===ctx.review.event.id);if(!again)return null;if(again.fact===fact&&again.inputHash===hash(payload))return {action:'KEEP',reason:`This ${what} is already recorded; nothing changes`,counterfactuals:[counter('KEEP','KEEP',true,`A ${what} recorded once is never applied twice`,{selected:true})]};const yes=signsYesIn(payload);if(yes.length)return signRoute(yes);return {action:'ASK',reason:again.fact!==fact?`This ${what} id already belongs to another fact on record; send it with its own id`:`This ${what} id already belongs to another ${what}; send a new one with its own id`,missingInputs:['event.id']};};
+const replayOf=(ctx,fact,payload,what)=>{const id=ctx.review.event.id,again=(ctx.f08??[]).find(x=>x.eventId===id);
+ // V1 Coaching Integration Boundary (the Founder's reused-id scenario; SEC-V1CPI-10, one event id is one fact): an id that already names a session report
+ // on record is another fact's too: the payload is screened first, then its own id is asked; it is never recorded under that id.
+ const report=!again&&(ctx.fullLedger??ctx.ledger??[]).some(o=>!o.fact&&o.eventId===id)&&!(ctx.review.observations??[]).some(x=>x?.eventId===id);
+ if(!again&&!report)return null;if(again&&again.fact===fact&&again.inputHash===hash(payload))return {action:'KEEP',reason:`This ${what} is already recorded; nothing changes`,counterfactuals:[counter('KEEP','KEEP',true,`A ${what} recorded once is never applied twice`,{selected:true})]};const yes=signsYesIn(payload);if(yes.length)return signRoute(yes);return {action:'ASK',reason:report||again.fact!==fact?`This ${what} id already belongs to another fact on record; send it with its own id`:`This ${what} id already belongs to another ${what}; send a new one with its own id`,missingInputs:['event.id']};};
 /** Q4 scoping (PCG-V1CP-F08 r2): the screen answered with the report, about anything other than, or worse than, what is reported. */
 const screenDayOf=(v,tz)=>typeof v==='string'&&v.includes('T')&&utcTimestamp(v)?localDate(utcTimestamp(v),tz):dayOf(v);
 const screenToday=ctx=>screenDayOf(ctx.review.eligibility?.assessedAt,ctx.program.timezoneOffsetMinutes??0)===ctx.asOfLocal;
@@ -1749,7 +1811,8 @@ function readinessRestart(ctx){
  const names=hold=>h=>(hold.eventId===undefined||h.eventId===hold.eventId)&&(hold.episodeId===undefined||h.identity===hold.episodeId);
  if(r.value?.hold&&!holds.some(names(r.value.hold)))return holds.length?hold('The hold this declaration names is not on record: send it for the hold you are returning from',['readiness.hold']):{action:'ASK',reason:'The hold this declaration names is not on record',missingInputs:['readiness.hold']};
  // SEC-V1CPI-07: the screen is today's by the program's clock, and answered after the latest hold opened.
- const assessed=review.eligibility?.assessedAt,lastReady=(ctx.f08??[]).filter(x=>x.fact===READINESS_DECLARED).map(x=>x.declaredAt).sort().at(-1)??null,holdAt=(ctx.f08??[]).filter(x=>x.fact===CLINICAL_HOLD&&(!lastReady||Date.parse(x.declaredAt)>Date.parse(lastReady))).map(x=>x.declaredAt).sort().at(-1)??null;
+ // V1CIB: the latest standing hold by the shared predicate (an erasure marker included, SEC-V1CPI-06).
+ const assessed=review.eligibility?.assessedAt,holdAt=standingHolds(ctx.f08??[]).holds.map(x=>x.declaredAt).sort((a,b)=>Date.parse(a)-Date.parse(b)).at(-1)??null;
  const afterHold=!holdAt||(typeof assessed==='string'&&assessed.includes('T')&&utcTimestamp(assessed)?Date.parse(utcTimestamp(assessed))>Date.parse(holdAt):screenDayOf(assessed,tz)>localDate(holdAt,tz));
  if(holds.length&&!afterHold&&screenDayOf(assessed,tz)===asOfLocal)return hold('Answer the screening questions again now, after the hold: a screen answered before it cannot answer it',['eligibility.assessedAfterHold']);
  if(screenDayOf(review.eligibility?.assessedAt,tz)!==asOfLocal)return holds.length?hold('To restart training, answer the screening questions today; until then no training is planned',['eligibility.assessedToday']):{action:'ASK',reason:'Answer the screening questions today with this declaration',missingInputs:['eligibility.assessedToday']};
@@ -1787,7 +1850,9 @@ function readinessRestart(ctx){
  const next=composeWeeks(ctx,base,{ownStart:true,fromWeek,start:{runState,strengthState},startAuthority:anchoredStart(WEEK_START.RETURN_ENTRY,by),completedRuns:ctx.completedRuns,returnDay:asOfLocal,evidence:evidenceRule(ctx),declared:[{start:earliest,end:onDate(asOfLocal,-1)}]});
  if(next.ask)return askOf(next);
  const cls=Object.values(classes).sort((a,b)=>order.indexOf(b)-order.indexOf(a))[0]??null;
- const episode=holds.find(h=>h.kind==='EPISODE')?.identity??null,record={restart:'READINESS_DECLARED',cause:'CLINICAL',nonclinical:false,returnSpeed:v.returnSpeed,readiness:{eventId:review.event.id,sports:clone(v.sports)},holds:clone(holds),classBySport:clone(classes),stops:clone(stops),restarted:clone(restart),held:clone(notReady),restrictions:[...restrictionsNow].sort(),endedRestrictions:ended.sort()};
+ // V1CIB CF-OBS-1: a nonclinical break kept on record while the hold stood is applied by this restart too (its days are in the restart's stops): the
+ // restart is recorded as that break's return, so no later review re-enters from it again over the restart's held first step.
+ const episode=holds.find(h=>h.kind==='EPISODE')?.identity??(holds.length?ctx.keptBreak?.identity:null)??null,record={restart:'READINESS_DECLARED',cause:'CLINICAL',nonclinical:false,returnSpeed:v.returnSpeed,readiness:{eventId:review.event.id,sports:clone(v.sports)},holds:clone(holds),classBySport:clone(classes),stops:clone(stops),restarted:clone(restart),held:clone(notReady),restrictions:[...restrictionsNow].sort(),endedRestrictions:ended.sort()};
  // After a clinical-cause episode the restart is recorded as that episode's return (the record's declarations are then applied history, never read
  // again as an open clinical break), with its clinical cause kept; otherwise it is a restart decision of its own.
  const decision=episode?{action:'REESTABLISH',interruption:{days:Math.max(...Object.values(stops).map(x=>x.days),1),class:cls,startDate:earliest,endDate:onDate(asOfLocal,-1),episode,relation:'READINESS',basis:'READINESS_DECLARED',revision:1,inputHash:hash(review.readiness),entry:{run:clone(runState),strength:clone(strengthState)},...record}}:{action:'READINESS_RESTART',readinessRecord:record};
@@ -2778,7 +2843,14 @@ function stopOf(ctx,H,list){
  */
 function f08RestBefore(ctx,S,st){
  // A marker acts inside its own week only: an open wait ends with its week.
- for(let guard=0;guard<60;guard++){const prev=onDate(st,-1);if(!ctx.program.weeks.some(w=>prev>=w.startDate&&prev<=onDate(w.startDate,6)&&(w.adaptations??[]).some(a=>a.kind==='WELLBEING_REDUCTION'&&['WINDOW','WAIT'].includes(a.phase)&&['R0','R1','WAIT'].includes(a.rungs?.[S])&&(S!=='STRENGTH'||!a.region)&&a.startDate<=prev&&(!a.endDate||a.endDate>=prev))))break;st=prev;}
+ const on=(d,ok)=>ctx.program.weeks.some(w=>d>=w.startDate&&d<=onDate(w.startDate,6)&&(w.adaptations??[]).some(a=>a.kind==='WELLBEING_REDUCTION'&&ok(a)&&a.rungs?.[S]&&a.startDate<=d&&(!a.endDate||a.endDate>=d)));
+ const rest=a=>['WINDOW','WAIT'].includes(a.phase)&&['R0','R1','WAIT'].includes(a.rungs[S])&&(S!=='STRENGTH'||!a.region);
+ // V1 Coaching Integration Boundary SSCTR-FFC-02 (I-15 and NB-3 with SSCTR-FF-N1: days without training are days without training, whether rest,
+ // waited or an unexecuted return week; C-Q05-5): a day of a Situation 1 return ladder or REDUCE window of S with no executed session of S counts too.
+ // An executed session stops the scan (the sport trained then), as the return stretch rule of sportPlan (SSCTR-FFR-02).
+ const held=a=>a.phase==='LADDER'||a.phase==='WINDOW'&&['R2','R3'].includes(a.rungs[S]);
+ const did=d=>executionOf(ctx,sessionsIn(ctx.program,[S],d,d)).done;
+ for(let guard=0;guard<60;guard++){const prev=onDate(st,-1);if(!on(prev,rest)&&!(on(prev,held)&&!did(prev)))break;st=prev;}
  return st;
 }
 /** Nonclinical return: current evidence is the start, prior tolerated dose the ceiling; no universal percentage rollback. */
