@@ -20,7 +20,89 @@
         "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-REVIEW-r1."
       ],
       "reviewId": "SSCTR-V1RC-REVIEW-r1"
+    },
+    {
+      "boundaryId": "V1X-RUN-CAPACITY",
+      "extensionSha256": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": ["SRC01", "SRC05", "SRC13", "SRC15", "SRC16", "SRC17", "SRC20"],
+      "conditions": [
+        "Synthetic data only; no real athletes and no production use. V1 authority NO; integration not decided here.",
+        "Bound to the extension bytes above and to src/v1-run-calibration.mjs sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01 and src/v1-run-index.mjs sha256 a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608; a change to any of them requires a new independent SSCTR check.",
+        "Global conditions G.1-G.8 of SSCTR-V1RC-DECISION-r1 hold: planner unchanged, effort cue governs, no pace from a goal, nothing harder from easy pace, no threshold claim.",
+        "When warningSignScreen.status is REQUIRED the client takes the athlete to the existing warning-sign screen at once, before any further session guidance; the extension decides no clearance.",
+        "SSCTR-V1RC-RC-01: no assessment offer is shown when nextWeek.capacity is CALIBRATED with confidence above LOW, or when any actualResults entry (RACE_RESULT, TIME_TRIAL, FIELD_TEST) is dated within 7 days before the offered date.",
+        "SSCTR-V1RC-RC-02: stoppedFor and tolerated are required answers in a test report whenever completed is false.",
+        "SSCTR-V1RC-RC-03: no correction of tolerated or stoppedFor on a declared result or test is offered (corrections only of date, distance, time and measurement).",
+        "A test offer is shown only to an athlete who can measure the distance (track or GPS on an open-sky course).",
+        "The integration passes no options to the entry point (QRE-V1RC-09).",
+        "Product and Data own the collection of tolerated, stoppedFor, RPE, measurement source and condition flags; athlete-facing copy needs Product review (G.8).",
+        "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1RC-SSCTR-CAP (appended by Founder or Chief).",
+        "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-RECHECK-r1."
+      ],
+      "reviewId": "SSCTR-V1RC-RECHECK-r1"
+    },
+    {
+      "boundaryId": "V1X-RUN-PACE",
+      "extensionSha256": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": ["SRC01", "SRC02", "SRC06", "SRC07", "SRC08", "SRC09", "SRC21", "SRC22"],
+      "conditions": [
+        "Synthetic data only; bound to the extension bytes above and to the runtime hashes named in the CAPACITY record of SSCTR-V1RC-RECHECK-r1.",
+        "Effort governs every band; when band and cue disagree the athlete slows. EASY, LONG and RECOVERY are ceilings only; the text never asks to speed up; their slow edge is never presented as a minimum pace.",
+        "Race-pace bands only with V1X-RUN-ESTIMATE on (as implemented) and under its conditions, including the Founder/PCG reading of the finish-time rule before athlete-facing use.",
+        "SSCTR-V1RC-R-11 limit: a MARATHON_EFFORT band is not shown when estimates.MARATHON.centralSeconds is above 21600 (6:00:00); the session stays by effort.",
+        "SSCTR-V1RC-RC-04: while warningSignScreen is REQUIRED the client takes the athlete to the screen before showing any race-pace band.",
+        "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1RC-SSCTR-PACE (appended by Founder or Chief).",
+        "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-RECHECK-r1."
+      ],
+      "reviewId": "SSCTR-V1RC-RECHECK-r1"
+    },
+    {
+      "boundaryId": "V1X-RUN-HR",
+      "extensionSha256": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": ["SRC08", "SRC09", "SRC10", "SRC11", "SRC12"],
+      "conditions": [
+        "Synthetic data only; bound to the extension bytes above and to the runtime hashes named in the CAPACITY record of SSCTR-V1RC-RECHECK-r1.",
+        "Display-only reference scale: never a session target, never a gate, never converted to pace or effort, never called thresholds; it may only suggest slowing in EASY, LONG or RECOVERY.",
+        "Observed maximum by chest strap only, from a qualifying race, time trial or field test of 10 min or more at RPE 8 or more, 140-220 bpm, within 365 days, never dated on or before a break, hold or return; never from age.",
+        "Supplied lab values are shown as supplied, never equated with estimated zones, and lapse at a hold or a return as the observed maximum does.",
+        "Heart-rate and lab values are health-adjacent data: Security review before integration.",
+        "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1RC-SSCTR-HR (appended by Founder or Chief).",
+        "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-RECHECK-r1."
+      ],
+      "reviewId": "SSCTR-V1RC-RECHECK-r1"
+    },
+    {
+      "boundaryId": "V1X-RUN-ESTIMATE",
+      "extensionSha256": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": ["SRC01", "SRC02", "SRC03", "SRC04", "SRC05", "SRC06"],
+      "conditions": [
+        "Synthetic data only; bound to the extension bytes above and to the runtime hashes named in the CAPACITY record of SSCTR-V1RC-RECHECK-r1.",
+        "Ranges only; the central value never alone; 'estimate of current capacity in comparable conditions; not a promise'; no future projection.",
+        "The marathon only from a current half-marathon or marathon result inside the marathon block, never on a completion race day, always with its cautions and assumptions.",
+        "SSCTR-V1RC-R-11 limit: a MARATHON estimate whose centralSeconds is above 21600 (6:00:00), with its marathon race-day reference, is not shown; it reads as outside the model population.",
+        "SSCTR-V1RC-RC-04: while warningSignScreen is REQUIRED the client takes the athlete to the screen before showing any estimate.",
+        "The Founder/PCG reading of the catalog rule against claiming a finish time is recorded before any athlete-facing use.",
+        "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1RC-SSCTR-EST and HQ-V1RC-SSCTR-EST-CALIBRATION (appended by Founder or Chief).",
+        "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-RECHECK-r1."
+      ],
+      "reviewId": "SSCTR-V1RC-RECHECK-r1"
     }
   ],
-  "note": "SSCTR-V1RC-REVIEW-r1 (2026-11-11), independent judge of candidate bc40218, values sha256 9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30 verified by the reviewer. Only V1X-RUN-HR is approved as the candidate stands. No record is written for V1X-RUN-CAPACITY (blocking SSCTR-V1RC-R-01, R-02), V1X-RUN-PACE or V1X-RUN-ESTIMATE (blocking SSCTR-V1RC-R-03). Because the runtime requires CAPACITY for every other boundary, this file leaves the whole extension off (status DISABLED). Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation."
+  "note": "SSCTR-V1RC-REVIEW-r1 (2026-11-11), independent judge of candidate bc40218, values sha256 9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30 verified by the reviewer. Only V1X-RUN-HR is approved as the candidate stands. No record is written for V1X-RUN-CAPACITY (blocking SSCTR-V1RC-R-01, R-02), V1X-RUN-PACE or V1X-RUN-ESTIMATE (blocking SSCTR-V1RC-R-03). Because the runtime requires CAPACITY for every other boundary, this file leaves the whole extension off (status DISABLED). Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation. SSCTR-V1RC-RECHECK-r1 (2026-11-11), independent recheck judge of the fix cycle 0098834, values sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa (revision 2) verified by the reviewer: the first record above is bound to the earlier bytes and enables nothing now; it is left as it was. Four records are appended for the current bytes, V1X-RUN-CAPACITY, V1X-RUN-PACE, V1X-RUN-HR and V1X-RUN-ESTIMATE, each APPROVE_WITH_CONDITIONS with SUPPORTED_WITH_LIMITS; no blocking finding is open (R-11 and RC-01 to RC-04 are non-blocking, held by the conditions). Synthetic data only. Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation."
 }

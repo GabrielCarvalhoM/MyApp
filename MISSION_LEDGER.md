@@ -1389,3 +1389,32 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing pushed, merged or deleted; the interrupted mission's worktree intact.
 - **Checkpoint:** `audits/coachingcore-v1-final-closure-2026-11-11/CHECKPOINT_V1FC.md`.
+
+
+<!-- V1RC-20261111-closure-r1 -->
+2026-11-11 · COACHINGCORE V1 RUN CALIBRATION EXTENSION **CLOSED, extension A approved with conditions**; frozen as COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1 (additive to COACHINGCORE-V1-FREEZE-1, preserved 198/198).
+- **Runtime** (branch `claude/coachingcore-v1-run-calibration`, from `981a8f6`):
+  - the SSCTR decision `415296a`;
+  - candidate `bc40218`;
+  - the first-round reviews `b429823`;
+  - the single fix cycle `0098834`;
+  - then this closure and the freeze record `CoachingCore/v1/RUNTIME_FREEZE_V1RC_1.json`.
+- **What it is:**
+  - the entry point `src/v1-run-index.mjs` over the unchanged `v1-index.mjs`;
+  - run calibration, pace bands by effort domain, heart-rate zones, current race estimates as ranges, a field assessment by experience;
+  - values pinned in `v1/RUN_CALIBRATION_EXTENSION_V1.json`, four boundaries enabled by independent SSCTR records.
+- **Validation:**
+  - suite 1334/1334;
+  - the decision's five worked examples reproduced;
+  - 25 journeys and a seeded fuzz identical to the frozen entry point; QRE differentials with zero differences.
+- **Judges:**
+  - round on `bc40218`: SSCTR NOT_READY, QRE NOT_READY;
+  - recheck on `0098834`: SSCTR READY_WITH_CONDITIONS, QRE READY_WITH_CONDITIONS.
+- **Named conditions:** SSCTR-V1RC-RC-01 to RC-04 and R-11 (client and a future amendment); QRE-V1RC-RC-01 to RC-07 and QRE-V1RC-09; the finish-time rule reading and copy (Founder, PCG, Product); Security before integration.
+- **Limitation C:** kept as it is; nothing wired.
+- **Unchanged:**
+  - V1 authority NO, INTEGRATION_READY NO, F08_OPEN;
+  - COACHINGCORE-V1-FREEZE-1 and every earlier freeze, the R6 policy, the catalog, canon and Figma;
+  - the queue stays at 235;
+  - nothing pushed, merged or deleted.
+- **Checkpoint:** `audits/coachingcore-v1-run-calibration-2026-11-11/CHECKPOINT_V1RC.md`.

@@ -1584,3 +1584,26 @@ The cycle bound is spent: no further cycle in this mission.
 **Open, named:** Product copy RC-01 and the G04 urgency wording before any athlete-facing use; QRE-V1FC-03 and -05 and the operational parts as conditions of integration; SEC-V1FC-04 before real data; the proposed human-queue entries HQ-V1FC-SSCTR-A, -B1, -B2, -B3, -C (not appended: the queue stays at 235); the PDR entry for the V1 scope (PCG). No authorization for real athletes.
 
 **Hard stop:** no backend, SwiftUI, Figma or further mission was started.
+
+
+## COACHINGCORE V1 RUN CALIBRATION EXTENSION, Founder request of 2026-11-11: CLOSED, extension A approved with conditions and frozen (2026-11-11)
+
+<!-- V1RC-20261111-closure-r1 -->
+**CoachingCore V1 Run Calibration Extension = CLOSED · extension A approved with conditions · frozen as COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1 (additive) · COACHINGCORE-V1-FREEZE-1 preserved, 198 of 198 files byte-identical · V1_COACHING_AUTHORITY_READY = NO · INTEGRATION_READY = NO · F08 = F08_OPEN · no push, merge, backend, SwiftUI or Figma change.**
+- **Where:** branch `claude/coachingcore-v1-run-calibration` (from `981a8f6`), worktree `.claude/worktrees/v1-run-calibration`.
+- **Records:** the [checkpoint (PT)](audits/coachingcore-v1-run-calibration-2026-11-11/CHECKPOINT_V1RC.md), the [data contract](audits/coachingcore-v1-run-calibration-2026-11-11/RUN_CALIBRATION_CONTRACT_V1RC.md), the [fix cycle](audits/coachingcore-v1-run-calibration-2026-11-11/FIX_CYCLE_V1RC.md), the SSCTR decision (`ssctr-decision/`), the reviews and rechecks (`reviews/`), and the freeze record `CoachingCore/v1/RUNTIME_FREEZE_V1RC_1.json`.
+
+**The Founder's direction:** complete the running intelligence of the frozen V1: at what intensity and, when the evidence supports it, at what pace a run is done, with a defensible estimate of race performance; without reopening the rest of the engine.
+
+**Runtime (additive):**
+- A new entry point `CoachingCore/src/v1-run-index.mjs` returns every result of `v1-index.mjs` unchanged and adds the run calibration (`src/v1-run-calibration.mjs`): evidence kinds and recency, contradictory results, pace bands by effort domain, heart-rate zones, current race estimates as ranges, a field assessment by experience, weekly stability, withdrawal after a hold or a long break. No future projection is produced.
+- Values in `CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json` (revision 2) from SSCTR-V1RC-DECISION-r1 as amended by the first independent review, pinned by hash; four boundaries (`V1X-RUN-CAPACITY`, `-PACE`, `-HR`, `-ESTIMATE`), each on only by an independent SSCTR record bound to those bytes. The custody and API boundary does not use the new entry point.
+- Commits: `415296a` (decision), `bc40218` (candidate), `b429823` (first round), `0098834` (the single fix cycle), then this closure and the freeze record. Suite 1334/1334.
+
+**Judges:** round on `bc40218`: SSCTR NOT_READY, QRE NOT_READY. Recheck on `0098834` by fresh instances: SSCTR READY_WITH_CONDITIONS (all four boundaries approved with conditions), QRE READY_WITH_CONDITIONS.
+
+**Limitation C:** kept as it is; nothing wired (checkpoint section 6).
+
+**Open, named (checkpoint section 7):** client conditions from SSCTR-V1RC-RC-01 to RC-04 and R-11; QRE-V1RC-RC-01 to RC-07 and QRE-V1RC-09; the Founder and PCG reading of the finish-time rule and Product copy before any athlete-facing use; a Security review before integration (the evidence record holds heart-rate and lab values); the proposed human-queue entries HQ-V1RC-SSCTR-CAP, -PACE, -HR, -EST, -EST-CALIBRATION (not appended: the queue stays at 235). No authorization for real athletes.
+
+**Hard stop:** V2 was not started; no further mission was started.

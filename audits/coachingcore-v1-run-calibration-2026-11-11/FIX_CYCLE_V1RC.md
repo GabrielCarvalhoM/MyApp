@@ -50,3 +50,12 @@ Amendments to the decision, taken from the review record: R-01 (repeat only afte
 - Whether a result that does not qualify as capacity (heat, for example) may still count as a long run for the endurance gates (QRE's question on reading R8). Today it counts when completed without walk breaks.
 - Whether the easy band's slow edge should rest on a single run (QRE-07). The rule is the decision's; only the plausibility window was added.
 - The test for lab values after a hold in a reachable flow is weak (the plan is in return mode, which hides heart rate anyway); the direct test in the QRE file is the one that discriminates.
+
+## After the recheck on `0098834` (no further cycle)
+
+SSCTR READY_WITH_CONDITIONS, QRE READY_WITH_CONDITIONS. Every first-round blocking finding is closed. Two statements above are corrected by the recheck:
+
+- **M06** (the hold day as a floor): the test this cycle added does not kill it. The readiness release sets the same floor, so the mutant appears equivalent. The claim of a killing test for M06 is not met.
+- **R-11** stays open, non-blocking. The recheck gives the value for a future amendment: longer-than-half evidence whose marathon central time exceeds 360 minutes is outside the model population. Until then it is a client condition.
+
+New non-blocking findings, carried as named conditions and not fixed here: SSCTR-V1RC-RC-01 to RC-04 and QRE-V1RC-RC-01 to RC-07 (`reviews/ssctr/SSCTR_V1RC_RECHECK.json`, `reviews/quality/QRE_V1RC_RECHECK.json`; summarised in `CHECKPOINT_V1RC.md` section 7).

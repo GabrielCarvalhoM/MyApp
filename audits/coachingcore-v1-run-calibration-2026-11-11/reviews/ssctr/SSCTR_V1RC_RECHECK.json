@@ -1,0 +1,170 @@
+{
+ "recordId": "SSCTR-V1RC-RECHECK-r1",
+ "date": "2026-11-11",
+ "mission": "CoachingCore V1 Run Calibration Extension (Founder request of 2026-11-11); the one narrow sporting recheck on the frozen bytes of the fix-cycle commit 0098834, after SSCTR-V1RC-REVIEW-r1 (NOT_READY) on bc40218. No further cycle exists: what stays open here stays as a named item.",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), independent recheck judge",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180, verified in the extract)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf, verified in the extract)",
+  "instance": "A fresh subagent instance dispatched by the Chief of this mission (model claude-opus-5-5, effort high). It wrote neither SSCTR-V1RC-DECISION-r1, nor SSCTR-V1RC-REVIEW-r1, nor the candidate or the fix. Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed.",
+  "nature": "An AI software reviewer under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, for nonclinical sporting content only. No human credentials, licence, degree or registration; no clinical or legal equivalence. This record is an internal literature-based sporting judgment, not human validation, empirical product validation or medical clearance. Clinical judgment stays CLINICAL_HUMAN_REQUIRED.",
+  "independence": "Independent of the decision author, the first-round judge and the implementer (SSCTR-08). No self-check is counted."
+ },
+ "inputs": {
+  "extract": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/0358d900-e2d8-4e0a-a69c-c1bc6aaf61e6/scratchpad/v1rc-fix-0098834 (frozen bytes of 0098834, no git). My probes are in its subfolder ssctr-recheck-scratch-rc1-9d4a; nothing else in the extract was changed.",
+  "extensionValues": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json revision 2, sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa (verified by me in the extract and in the live worktree; equals RUN_EXTENSION_SHA256 in the runtime)",
+  "runtime": "CoachingCore/src/v1-run-calibration.mjs sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01; CoachingCore/src/v1-run-index.mjs sha256 a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608 (both identical in the extract and the live worktree)",
+  "decision": "ssctr-decision/SSCTR_V1RC_DECISION.json sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3 (unchanged since the first round; the four amendments live in the values file and its note)",
+  "read": "CONSTITUTION.md, SKILL.md, SSCTR_V1RC_REVIEW.json and .md, FIX_CYCLE_V1RC.md, FIX_CYCLE_bc40218_to_0098834.diff (by its effects in the source), SSCTR_V1RC_DECISION.json (values, items, globalConditions, workedExamples), RUN_CALIBRATION_EXTENSION_V1.json, v1-run-calibration.mjs and v1-run-index.mjs in full, RUN_CALIBRATION_CONTRACT_V1RC.md (relevant rows), evidence/JOURNEYS_V1RC.txt (25 journeys, and diffed against the bc40218 journeys), QRE_V1RC_REVIEW.md, test/v1rc-helpers.mjs and the R-09 and QRE-06 tests; r6-adaptation.mjs lines 540-556 (what engine HOLD means)",
+  "notRead": "REVIEW_REQUEST_V1RC.md was listed in my brief but not opened; no finding depends on it. CURRENT_MISSION.md and canon index were not reopened; the scope comes from the brief and the constitution.",
+  "hostInjectedContext": "The host injected a global CLAUDE.md, the project CLAUDE.md and a MEMORY.md (summaries of earlier missions) into this instance. They were present; I used them only for orientation (for example the rule against verify scripts). Nothing in them is used as evidence, approval or a finding."
+ },
+ "runs": {
+  "directedTests": "node --test test/v1rc-review-fixes.test.mjs test/v1rc-review-fixes-qre.test.mjs test/v1rc-calibration.test.mjs test/v1rc-flow.test.mjs in the extract's CoachingCore: 72 tests, 72 pass, 0 fail",
+  "firstRoundProbes": "probe1-probe6 of ssctr-judge-scratch-r1-7c3e copied into ssctr-recheck-scratch-rc1-9d4a and repointed to the fix extract (only the import root changed), then run",
+  "ownProbes": "probe7.mjs (R-01 stop reasons, tolerance, corrections, out-of-plan race), probe8.mjs (test after a race; ruling (a); R-06; R-07; R-08; R-11; worked examples by hand; R-05 genuine down step), probe9.mjs (symptom stop in a clinical review; population-edge marathon equivalent; threshold band at the edge with ESTIMATE off). All under the development authority DEV, as the tests run.",
+  "notRun": "Full suite, fuzz, journeys script and freeze scripts (the reliability judge's scope). npm run verify and verify-r* never run. The skill's Python validator was not run: this record is multi-boundary, not the single-decision schema."
+ },
+ "literatureAccess": {
+  "statement": "No literature tool was called in this recheck and no source was opened. The rulings below are bounded rule-coherence judgments on values already supported by the decision's sources and by the first review's verified reads (SRC01 and SRC02 full text; SRC17, SRC05, SRC06, SRC13 abstract checks; counterevidence Smyth 2021 PMID 34010308, Oficial-Casado 2025 PMID 41631237). Every new condition only withholds or slows; none is a new prescriptive claim needing new evidence. Where a ruling would need new evidence (spacing a test after a race) I state a conservative withholding condition, not a value claimed as evidenced.",
+  "rule": "Search snippets, consumer pages and model recollection are not used as evidence."
+ },
+ "findings": [
+  {"id": "SSCTR-V1RC-R-01", "severity": "BLOCKING (first round)", "status": "CLOSED_WITH_CONDITION",
+   "evidence": "probe1 D: after a test declared stopped and not tolerated, weeks 5-7 give assessment NOT_OFFERED [SYMPTOM_OR_NOT_TOLERATED_REPORTED] (was OFFERED); D2 completed-not-tolerated: NOT_OFFERED to the end. probe7: stop with no reason (tolerated true) -> NOT_OFFERED and warningSignScreen REQUIRED ['t1'] at once, kept in later weeks; completed not tolerated -> same; a race outside the plan declared tolerated:false -> screen REQUIRED and offers end; stop for PACING tolerated -> repeat offered after 7 days (one repeat). probe9: a symptom stop declared in a review that also reports pain is recorded (added ['stop-pain']), the engine answers CLINICAL_HUMAN_REQUIRED, the calibration is WITHHELD_HOLD and the screen REQUIRED. Journey 24 shows the same.",
+   "conditions": ["SSCTR-V1RC-RC-02 and SSCTR-V1RC-RC-03 (below) are carried as integration conditions.", "Integration: when warningSignScreen.status is REQUIRED, the client takes the athlete to the existing warning-sign screen at once, before any further session guidance; the extension decides no clearance."]},
+  {"id": "SSCTR-V1RC-R-02", "severity": "BLOCKING (first round)", "status": "CLOSED",
+   "evidence": "probe6: day 6 with pain and clinicalConcern unanswered -> engine ASK, assessment NOT_OFFERED [ELIGIBILITY_NOT_CURRENT] (was OFFERED TIME_TRIAL_3K). probe3, probe4, probe5: UNASSESSED, an item unanswered, eligibility assessed 60 days earlier -> NOT_OFFERED [ELIGIBILITY_NOT_CURRENT]; control with all items no -> OFFERED. Code: the offer needs a prescribing engine status, eligibility NONCLINICAL_CONFIRMED and all six items === false."},
+  {"id": "SSCTR-V1RC-R-03", "severity": "BLOCKING (first round)", "status": "CLOSED",
+   "evidence": "probe1 A: eligible marathon block, half 2:55:00 (10K equivalent 78:43) -> every band and estimate OUTSIDE_MODEL_POPULATION including MARATHON and MARATHON_EFFORT; MARATHON_SPECIFIC session pace UNAVAILABLE (was 5:56:00-6:57:00 and 9:15-9:55). Control half 2:40:00 (equivalent 71:59) keeps a marathon 5:26:00-6:21:00. probe8 G and journey 25 agree."},
+  {"id": "SSCTR-V1RC-R-04", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe2 (10K sweep 27:30-75:00, OFFICIAL and GPS): no inversion of fast edges among derived bands (was one, at 73:45). Journey 04 week 5: EASY 6:35, LONG 6:35 (was 6:20); journey 11 week 7: EASY 6:40, LONG 6:40 (was 6:35). probe9 C: 10K 73:45 with every boundary on gives THRESHOLD 7:35 = TEN_K 7:35. With ESTIMATE off TEN_K is unavailable and THRESHOLD stays 7:30, still slower than the demonstrated 10 km pace (7:23); acceptable."},
+  {"id": "SSCTR-V1RC-R-05", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe1 E: two threshold sessions slower than the band at RPE 4 (cue 6-7) -> no training factor (was -0.02). probe8 I (regression): the same at RPE 7 -> THRESHOLD_CONTROLLED factor -0.02 from the two named sessions, band labelled ESTIMATED_TRAINING_ADJUSTED. Code: attempts include not-completed and partial rows, and a pair with one breaks (tries.every(a=>a.exec)); the directed R-05 test passes."},
+  {"id": "SSCTR-V1RC-R-06", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe8 C (CAPACITY + PACE, ESTIMATE off): FIVE_K, TEN_K, HALF and MARATHON effort bands EXTENSION_NOT_ENABLED; THRESHOLD, EASY, LONG, RECOVERY available; estimates EXTENSION_NOT_ENABLED; tenKEquivalent not shown."},
+  {"id": "SSCTR-V1RC-R-07", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe8 D (half 1:45:00, eligible block): the MARATHON estimate 3:36:00-4:08:00, the MARATHON_EFFORT band 5:35-5:55 and the race-day reference each carry cautions [MANY_RUNNERS_RACE_THE_MARATHON_SLOWER_THAN_SUCH_ESTIMATES] and assumes [BLOCK_LONG_RUNS_COMPLETED]; the race day adds the pacing caution (start at or slower than 5:53/km) and 'No finish time is promised'. Non-marathon bands do not carry it."},
+  {"id": "SSCTR-V1RC-R-08", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe8 E: P1 EASY 6:40-7:10 OBSERVED_AT_EFFORT with four session ids and dates, windowDays 28, validUntil 2026-12-10 (third-newest run + 28 days), uncertaintyCauses [OBSERVED_AT_EFFORT, GPS_DISTANCE_ERROR], confidence null (not a model tier). P2 bands carry the same fields (code, R-08 test)."},
+  {"id": "SSCTR-V1RC-R-09", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "Code: heartRateOf reads lab values only when dated after wk.floor (break, hold, release, return). The QRE-06 test, with the plan kept in EASY mode so only the floor decides, shows the supplied values and the 186-bpm maximum gone after a hold opened and released, and after a 14-day break; it passes in my run. The R-09 flow test is weak, as the fix record says (return mode hides HR anyway); the QRE-06 test is the discriminating one."},
+  {"id": "SSCTR-V1RC-R-10", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "probe1 C (10K 50:00 about 80 days old): clean -> PRESUMED LOW m0.06; GPS -> PRESUMED LOW; GPS + unknown effort -> capacity NONE (EVIDENCE_BELOW_LOWEST_CONFIDENCE); MANUAL -> NONE. The first round had LOW in all four."},
+  {"id": "SSCTR-V1RC-R-11", "severity": "NON_BLOCKING", "status": "OPEN",
+   "evidence": "Not corrected, as the fix record says. probe8 G (eligible block): 30 km 4:30:00 -> MARATHON 6:16:00-7:01:00 central 6:37:00, band 9:35-10:10; 30 km 5:00:00 -> 6:58:00-7:48:00 central 7:21:00, band 10:40-11:15; 35 km 5:50:00 -> central 7:12:00. A half of 2:55:00 (marathon equivalent 6:23) is excluded while these are not. A same-distance marathon above 6:00:00 is already REJECTED by the 360-min evidence duration cap. probe9 B: the 75-min 10K-equivalent edge corresponds to a half of 166.7 min and a MARATHON-model central of 364.9 min (6:04:53).",
+   "carriedAs": "A limit, with the condition in ruling (c), on V1X-RUN-ESTIMATE and V1X-RUN-PACE (MARATHON_EFFORT)."},
+  {"id": "SSCTR-V1RC-R-12", "severity": "NON_BLOCKING", "status": "CLOSED",
+   "evidence": "The contract (RUN_CALIBRATION_CONTRACT_V1RC.md, replacedSessionId row) says to declare the test in the same review as the not-done report of the replaced session. sessionGuidance returns TEST_ALREADY_DONE_THIS_WEEK (effort only) for a harder session later in the week of a test; the R-12 directed test passes. The withhold of the engine's MOVE is now narrowed (QRE-01); the frozen engine still prescribes any harder session it keeps, by effort."}
+ ],
+ "readingConditions": [
+  {"reading": "R3", "status": "MET", "evidence": "Band moved by training labelled ESTIMATED_TRAINING_ADJUSTED with method suffix _TRAINING_ADJUSTED (probe8 I)."},
+  {"reading": "R4", "status": "MET", "evidence": "Through R-05."},
+  {"reading": "R8", "status": "MET", "evidence": "The intake's longest-run figure is read only while the intake day is within 28 days of the week's first day and after any floor (longestRecentRun)."},
+  {"reading": "R11", "status": "MET", "evidence": "Through R-09."},
+  {"reading": "R12", "status": "MET", "evidence": "Through R-12."}
+ ],
+ "amendments": [
+  {"id": "R-01", "asWritten": "assessment.P3.stops: reasons SYMPTOM, PACING, CONDITIONS, TIME, OTHER; missingReasonReadAs SYMPTOM; repeatAllowedAfter the four non-symptom reasons; symptom or not tolerated ends test offers for the plan in force and names the existing warning-sign screen.",
+   "sportingJudgment": "SOUND. It follows the screening model the decision rests on (exercise-related cardiovascular events are often preceded by warning signs, SRC17): a stop with an unknown reason is never read as harmless, and a reported sign ends the most demanding optional effort for the plan, with no clinical decision taken by the extension. Ending offers for the plan in force (not for ever) is proportionate: a new plan comes from a restart, which goes through the engine's own eligibility and clinical route.",
+   "implemented": "YES, with two gaps carried as conditions: the repeat does not check that tolerance was reported (RC-02), and a correcting row lifts the flag at once (RC-03)."},
+  {"id": "R-04", "asWritten": "Ceilings never made faster: LONG fast edge at least EASY's, RECOVERY at least LONG's, THRESHOLD at least TEN_K's when both are available; only slows.",
+   "sportingJudgment": "SOUND. It keeps the effort order of the sessions (a long run is easy effort for longer; threshold effort 6-7 sits below 10 km effort 7-8) and derives nothing harder from easy pace, because it only moves fast edges slower. It replaces 'never derived from P1' with 'never made faster by P1', which keeps the intent of Q5.P1.",
+   "implemented": "YES (R-04 evidence)."},
+  {"id": "R-07", "asWritten": "estimates.marathon.cautions [MANY_RUNNERS_RACE_THE_MARATHON_SLOWER_THAN_SUCH_ESTIMATES] and assumes [BLOCK_LONG_RUNS_COMPLETED] with their texts.",
+   "sportingJudgment": "SOUND and matches the decision's Q7.marathon disclosure word for word. It is supported by the marathon underestimation of the power law (SRC01: median 10 min too fast at k 1.07) and by late-race collapse in recreational marathoners (first-round counterevidence). As fields, a copy layer cannot silently drop them.",
+   "implemented": "YES on the estimate, the MARATHON_EFFORT band and the race-day reference (R-07 evidence)."},
+  {"id": "R-10", "asWritten": "confidence.agingCountsAsReductions 1: aged evidence plus two more reductions is unavailable; the LOW cap stays.",
+   "sportingJudgment": "SOUND. Uncertainty from age (detraining within weeks, SRC15, SRC16) adds to uncertainty from measurement and effort. Aged evidence with one other reduction stays usable at LOW with the widest margin, which is still a defensible presumption with its cause shown.",
+   "implemented": "YES (R-10 evidence)."}
+ ],
+ "regression": {
+  "verdict": "NO_SPORTING_RULE_BROKEN",
+  "items": [
+   {"change": "Week 0 reads only what was on record before the plan's first day; recency counted from the first day of each week", "judgment": "Matches the decision (Q1.recency countedFrom the first day of the week being calibrated; G.4). Evidence ages slightly sooner, the conservative direction. Side effect seen in journey 11 week 6 (a 10 km result turns AGING, so a test is offered) is not caused by this change; see RC-01."},
+   {"change": "A correction takes effect the next week", "judgment": "Matches G.4 weekly stability. The one exception is the safety flag, which a correction lifts at once (RC-03)."},
+   {"change": "The longest recent run reads only what was on record before the week and after any withdrawal", "judgment": "Matches G.4 and Q9; a withdrawn period never shows endurance."},
+   {"change": "Nothing dated on or before a break, hold or return is read for heart rate", "judgment": "Matches Q9 (heart-rate zones withdrawn; pre-break evidence not used again)."},
+   {"change": "A running pace outside 2:00 to 15:00 per km is not an observation", "judgment": "Removes measurement faults only. No athlete inside the model population (10K equivalent 27-75 min) runs near these limits at EASY or harder effort, and walk/jog is effort-only by mode. No rule affected."},
+   {"change": "The 10 km equivalent is shown only with the estimate boundary", "judgment": "Coherent with R-06: it is an estimate."},
+   {"change": "Nothing is recorded while the extension is off or under a review the engine refused", "judgment": "Engine HOLD here is an integrity or contract refusal (r6-adaptation.mjs), not the clinical route: a symptom stop declared in a review that reports pain is still recorded and raises the screen (probe9 A). While off, no test is offered, so no test result can go missing."}
+  ],
+  "workedExamples": "The directed test 'V1RC values: the runtime reproduces every worked example' passes. By hand from the decision's formulas (independent arithmetic in probe8 H): 10K_50min_HIGH THRESHOLD 5:10-5:30, EASY 6:15-7:30, 5K 22:15-25:00 central 23:45; HALF_110min_HIGH THRESHOLD 5:10-5:25, EASY 6:10-7:30, 5K 21:15-25:15 central 23:30. Each equals values.workedExamples and the runtime output.",
+  "journeys": "The 25 journeys in the evidence file differ from the bc40218 journeys only by the R-04 clamp (journeys 04 and 11), the R-01 wording of journey 09 and the two new journeys 24 and 25; every journey still states the engine plan and decisions identical to the frozen V1 entry point (I read the file; I did not rerun the script)."
+ },
+ "rulings": [
+  {"q": "(a) May a result that does not qualify as capacity evidence still count as a long run for the 10 km and half-marathon endurance gates?",
+   "ruling": "YES for a result disqualified by conditions (HEAT, HILLY, TRAIL), measurement, effort or tolerance not reported: completed continuous running of that duration does show endurance, and heat or hills make it harder, not easier. Recorded executed runs already count this way (reading R8), and the gate only withholds an estimate. NO for a result reported as not tolerated: a run ended with a warning sign does not show tolerated endurance. Walk breaks stay excluded, as implemented.",
+   "runtimeDiffers": "A not-tolerated result counts today (probe8 B: a half reported tolerated:false opens the half estimate 1:45:00-1:59:00 and band 5:25-5:40, while the screen is REQUIRED). Recorded as SSCTR-V1RC-RC-04 with an integration condition; the value for a future amendment: tolerated === false excludes a result from longestRecentRun."},
+  {"q": "(b) The P1 easy band's slow edge rests on a single slow run.",
+   "ruling": "ACCEPTABLE AS IT IS. The easy band is a ceiling only: its slow edge is not a floor and slower is always valid (Q4.EASY, Q4.rule2). A slow run widens the range only in the direction the decision allows, it is bounded to the latest five qualifying runs inside 28 days, and the new plausibility window removes GPS faults. No different rule is required.",
+   "condition": "Athlete-facing copy never presents the slow edge of an EASY, LONG or RECOVERY band as a minimum pace or a pace to keep above (part of G.8)."},
+  {"q": "(c) R-11: no outer population limit for longer-than-half evidence converted up to the marathon.",
+   "ruling": "Carried as a limit with a binding condition. Value required in a future amendment: longer-than-half evidence whose MARATHON-model central marathon time exceeds 360 min (6:00:00) is UNAVAILABLE: OUTSIDE_MODEL_POPULATION for the marathon estimate, the MARATHON_EFFORT band and the marathon race-day reference. 360 min equals the evidence duration cap of Q1.qualification (so a same-distance marathon is already bounded) and is just inside the 364.9-min marathon equivalent of the 75-min 10K edge, so longer evidence is never treated more permissively than a half.",
+   "condition": "Until amended: before any athlete-facing use, a MARATHON estimate whose centralSeconds is above 21600, with its MARATHON_EFFORT band and marathon race-day reference, is not shown; the client shows the session by effort and the estimate as unavailable (outside the model population)."},
+  {"q": "(d) Supplied laboratory values lapse at a hold or a return, as the observed maximum does.",
+   "ruling": "CONFIRMED. Q9 withdraws heart-rate zones on a hold, a long break and a return. Values measured before an illness, injury or a time off training do not describe the athlete after it (SRC15, SRC16), and the app cannot check them anyway. Withdrawing them is the conservative choice, and the athlete can supply new values dated after the return."}
+ ],
+ "newFindings": [
+  {"id": "SSCTR-V1RC-RC-01", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-CAPACITY", "preExisting": "Yes: present on bc40218 (journey 11, week 6), not raised in the first round.",
+   "description": "A field test is offered for the week right after a qualifying race declared outside the plan. assessmentOf decides NOT_NEEDED from the capacity of the week in force (cap = now.cap) although the offer targets the next week, whose capacity already reads the race. Reproduce: probe8 A: 10K 55:00 of 2026-10-25 aged to PRESUMED LOW at week 6; a 10 km race of 52:00 declared for 2026-12-27; result: assessment OFFERED TIME_TRIAL_5K on 2026-12-29, two days after the race, while nextWeek.capacity is CALIBRATED HIGH. The decision has no spacing rule after a maximal effort (only 7 days after an adverse or harder-than-target response), so the runtime does not break a written value, but the offer is redundant and stacks a near-maximal effort two days after a race.",
+   "condition": "Integration: the client does not show an assessment offer when nextWeek.capacity is CALIBRATED with confidence above LOW, or when any entry of actualResults (RACE_RESULT, TIME_TRIAL, FIELD_TEST) is dated within 7 days before the offered date.",
+   "futureAmendment": "Assessment reads the target week's capacity; no field test within 7 days after any race, time trial or field test."},
+  {"id": "SSCTR-V1RC-RC-02", "severity": "NON_BLOCKING (LOW)", "boundary": "V1X-RUN-CAPACITY",
+   "description": "The one repeat is offered after a test stopped for PACING (or CONDITIONS, TIME, OTHER) whose tolerance was not reported; the first review required the stop to be tolerated. Reproduce: probe7 3 (completed:false, stoppedFor PACING, no tolerated) -> OFFERED TIME_TRIAL_3K then TIME_TRIAL_5K, screen not raised. Mitigated: the repeat is offered only when every warning-sign item of that review is actively answered no (R-02).",
+   "condition": "Integration: the test report makes stoppedFor and tolerated required answers whenever completed is false.",
+   "futureAmendment": "An unreported tolerance on a stopped test is read as not tolerated."},
+  {"id": "SSCTR-V1RC-RC-03", "severity": "NON_BLOCKING (LOW)", "boundary": "V1X-RUN-CAPACITY",
+   "description": "A correcting row (supersedes) clears a symptom or not-tolerated flag at once: the screen requirement disappears in the same review and test offers come back the next week. Reproduce: probe7 5 (SYMPTOM stop, then a row superseding it as PACING tolerated) -> screen NOT_RAISED_BY_THIS_EXTENSION, OFFERED TIME_TRIAL_5K from week 5. A reported sign is a safety fact of the record; correcting the numbers of a result should not withdraw it.",
+   "condition": "Integration: the client offers no correction of tolerated or stoppedFor on a declared result or test (corrections only of date, distance, time and measurement).",
+   "futureAmendment": "A symptom or not-tolerated flag, once recorded, stays for the plan in force whatever later row supersedes the result."},
+  {"id": "SSCTR-V1RC-RC-04", "severity": "NON_BLOCKING (LOW)", "boundary": "V1X-RUN-ESTIMATE",
+   "description": "A result reported as not tolerated counts as a long run for the endurance gates (ruling (a)). Reproduce: probe8 B (intake longest run 50 min, 10K 50:00; half 2:10:00 declared tolerated:false) -> HALF estimate 1:45:00-1:59:00 and band 5:25-5:40 shown while warningSignScreen is REQUIRED. Display only.",
+   "condition": "Integration (shared with R-01): while warningSignScreen is REQUIRED the client takes the athlete to the existing screen before showing any estimate or race-pace band.",
+   "futureAmendment": "tolerated === false excludes a result from the longest-recent-run gate."}
+ ],
+ "limitationC": {"view": "AGREE with the first review and the Chief: keep C as it is in this mission. Nothing in the fix cycle changes the reason (the frozen engine has no repetition limit for the one-week fatigue adaptation)."},
+ "boundaries": [
+  {"boundaryId": "V1X-RUN-CAPACITY", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC05", "SRC13", "SRC15", "SRC16", "SRC17", "SRC20"], "openBlockingFindings": [],
+   "conditions": ["Global conditions G.1-G.8 of SSCTR-V1RC-DECISION-r1.", "warningSignScreen REQUIRED is acted on at once (R-01).", "RC-01, RC-02, RC-03 integration conditions.", "The integration passes no options to the entry point (QRE-V1RC-09).", "A test offer is shown only to an athlete who can measure the distance (track or GPS), per the first review's journey 03/17 note.", "Product/Data own the collection of tolerated, stoppedFor, RPE and measurement source."]},
+  {"boundaryId": "V1X-RUN-PACE", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC02", "SRC06", "SRC07", "SRC08", "SRC09", "SRC21", "SRC22"], "openBlockingFindings": [],
+   "conditions": ["Effort governs every band; EASY, LONG and RECOVERY are ceilings only; their slow edge is never presented as a minimum (ruling (b)).", "Race-pace bands only with ESTIMATE on, as implemented, and under the ESTIMATE conditions including the Founder/PCG reading of the finish-time rule.", "R-11 condition of ruling (c) for MARATHON_EFFORT.", "RC-04 screen condition for race-pace bands."]},
+  {"boundaryId": "V1X-RUN-HR", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC08", "SRC09", "SRC10", "SRC11", "SRC12"], "openBlockingFindings": [],
+   "conditions": ["Display-only reference scale: never a session target, never a gate, never converted to pace or effort, never called thresholds; may only suggest slowing in EASY, LONG or RECOVERY.", "Chest strap only, qualifying effort of 10 min or more at RPE 8 or more, 140-220 bpm, within 365 days, never dated on or before a break, hold or return; never from age; supplied lab values as supplied, lapsing at a hold or return (ruling (d)).", "Heart-rate and lab values are health-adjacent data: Security review before integration (not this role)."],
+   "note": "Replaces the first-round HR record for the current bytes: that record is bound to 9f2cf47d... and enables nothing now; it stays in the file untouched."},
+  {"boundaryId": "V1X-RUN-ESTIMATE", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC02", "SRC03", "SRC04", "SRC05", "SRC06"], "openBlockingFindings": [],
+   "conditions": ["Ranges only, central never alone, 'not a promise', no projection; the marathon only from a current half or marathon result inside the block, never on a completion race day; marathon cautions and assumptions shown with it.", "R-11 condition of ruling (c).", "RC-04 screen condition.", "The Founder/PCG reading of the catalog rule against claiming a finish time is recorded before any athlete-facing use of estimates or race-pace bands."]}
+ ],
+ "verdict": {
+  "overall": "READY_WITH_CONDITIONS",
+  "why": "The three blocking findings of the first round are closed by behaviour I reproduced myself; the four amendments are sound sporting content and implemented as written; the reliability changes break no rule of the decision and the worked examples still reproduce. What remains (R-11 and four new low-severity findings, one of them pre-existing) only ever withholds or slows and is held by integration conditions the client can check from the output, plus amendments for a later mission.",
+  "scope": "Synthetic data only. V1 authority NO; INTEGRATION_READY is not decided here. Enabling records turn the boundaries on in the runtime for this shadow candidate; they authorize no real athlete use.",
+  "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false
+ },
+ "enablingRecords": {
+  "file": "SSCTR_V1RC_RUN_RECORDS.json (beside this record), appended after the first-round record, which is left as it was",
+  "written": ["V1X-RUN-CAPACITY", "V1X-RUN-PACE", "V1X-RUN-HR", "V1X-RUN-ESTIMATE"],
+  "boundTo": "extensionSha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa"
+ },
+ "escalations": [
+  {"to": "Founder / PCG", "what": "The formal reading of the finish-time rule before estimates or race-pace bands reach athletes (unchanged from the decision and the first review)."},
+  {"to": "Product / Data via Chief", "what": "Integration conditions RC-01 to RC-04, the screen at once on REQUIRED, required tolerated and stoppedFor, no correction of safety fields, slow edge copy, the 6:00:00 marathon display limit."},
+  {"to": "Chief (next mission backlog)", "what": "One values-and-runtime amendment carrying the four futureAmendment items and the R-11 value; it needs its own independent SSCTR check."},
+  {"to": "Security via Chief", "what": "Heart-rate and lab values."},
+  {"to": "Clinical route (existing)", "what": "The warning-sign screen named by the extension; this record sets no clinical rule and grants no clearance."}
+ ],
+ "proposedQueueItems": [
+  {"queue_id": "HQ-V1RC-SSCTR-CAP", "decision_id": "SSCTR-V1RC-DECISION-r1#Q1,Q2,Q5,Q8,Q9 as amended (R-01, R-10), judged by SSCTR-V1RC-RECHECK-r1", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false},
+  {"queue_id": "HQ-V1RC-SSCTR-PACE", "decision_id": "SSCTR-V1RC-DECISION-r1#Q3,Q4 as amended (R-04, R-07), judged by SSCTR-V1RC-RECHECK-r1", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false},
+  {"queue_id": "HQ-V1RC-SSCTR-HR", "decision_id": "SSCTR-V1RC-DECISION-r1#Q6, judged by SSCTR-V1RC-REVIEW-r1 and SSCTR-V1RC-RECHECK-r1", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "note": "Compare observed-maximum zones with measured anchors where available."},
+  {"queue_id": "HQ-V1RC-SSCTR-EST", "decision_id": "SSCTR-V1RC-DECISION-r1#Q3,Q7,Q10 as amended (R-07), judged by SSCTR-V1RC-RECHECK-r1", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false},
+  {"queue_id": "HQ-V1RC-SSCTR-EST-CALIBRATION", "decision_id": "SSCTR-V1RC-DECISION-r1#Q7", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "note": "First real estimate-versus-actual race results, the marathon especially, are the empirical test of the ranges."}
+ ],
+ "proposedQueueNote": "Proposed only; the queue is appended by the Founder or the Chief, not by this instance.",
+ "expiry": {"owner": "Chief / SSCTR", "reviewBy": "2027-05-11", "triggers": ["any change to the values file (its hash binds the records)", "any change to v1-run-calibration.mjs or v1-run-index.mjs (sha256 above)", "the amendment carrying RC-01 to RC-04 and R-11", "a new systematic review on race-time prediction or heart-rate prescription in recreational runners", "first real estimate-versus-actual data or any adverse event in a test or banded session", "the Founder's funding declaration (human revalidation)"]}
+}
