@@ -98,6 +98,10 @@ test('SEC-V1FC-01: the erased flag and the annotation pointer are under a MAC: a
  // The reviewer's tamper, without the key: null the marker row and flag its chain entry as erased.
  const a=tamper(d=>{d.rows[m]=null;d.chain[m].erased=true;});assert.equal(a.ok,false);assert.equal(a.error.code,'INTEGRITY_FAILURE');assert.equal(a.state,S.INTEGRITY_FAILURE);
  // Un-erasing a slot, or flagging any other row as erased, fails the same way.
+ // The recheck's variants: a flag that is truthy but not true reads as erased to no one; nor does an unknown key or a non-integer pointer pass.
+ for(const v of [1,'true',{},[],'1'])assert.equal(tamper(d=>{d.rows[m]=null;d.chain[m].erased=v;}).error.code,'INTEGRITY_FAILURE',JSON.stringify(v));
+ for(const v of [false,0,null,''])assert.equal(tamper(d=>{d.chain[m].erased=v;}).error.code,'INTEGRITY_FAILURE','a present flag that is not true: '+JSON.stringify(v));
+ assert.equal(tamper(d=>{d.chain[m].deleted=true;}).error.code,'INTEGRITY_FAILURE');assert.equal(tamper(d=>{d.chain[m].of='1';}).error.code,'INTEGRITY_FAILURE');
  const e=JSON.parse(raw).chain.findIndex(c=>c.erased);assert.equal(tamper(d=>{delete d.chain[e].erased;}).error.code,'INTEGRITY_FAILURE');
  assert.equal(tamper(d=>{d.rows[0]=null;d.chain[0].erased=true;}).error.code,'INTEGRITY_FAILURE');
  // The annotation pointer: an entry cannot be re-pointed or turned into an annotation.

@@ -35,6 +35,8 @@ export const RETENTION=Object.freeze({record:'KEPT_WHILE_THE_ACCOUNT_EXISTS',dec
 export const PURPOSES=Object.freeze({COACHING:'COACHING',HEALTH_SIGNALS:'HEALTH_SIGNALS',LEARNING:'LEARNING'});
 
 const fail=(code,message,extra={})=>({ok:false,error:{code,message,...extra}});
+/** The keys a chain entry may hold (SEC-V1FC-01): each is under the link MAC or the sealed envelope. */
+const CHAIN_KEYS=Object.freeze(['seq','recordedAt','digest','of','mac','erased']);
 const sha=text=>createHash('sha256').update(text).digest('hex');
 const digest=v=>sha(canonical(v)??'null');
 const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
@@ -70,8 +72,12 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
   if(!same(seal({...doc,docMac:undefined}).docMac,doc.docMac))return 'document';
   let prev='genesis';const latest=new Map();
   for(let i=0;i<doc.chain.length;i++){const c=doc.chain[i];if(!isObj(c)||c.seq!==i+1)return 'sequence';if(!same(link(doc.athleteId,c,prev),c.mac))return 'chain';prev=c.mac;
+   // SEC-V1FC-01 (recheck): a chain entry says only what the seal and the link read, in the form they read it. The erased flag is the boolean true or
+   // absent (the seal counts exactly those), the annotation pointer an integer or absent, and no other key exists: a value the verifier would read
+   // one way and the seal another is an integrity failure, never an erased slot.
+   if(Object.keys(c).some(k=>!CHAIN_KEYS.includes(k))||'erased' in c&&c.erased!==true||'of' in c&&!Number.isInteger(c.of))return 'entry';
    if(Number.isInteger(c.of)){if(c.of<1||c.of>i||Number.isInteger(doc.chain[c.of-1].of)||doc.rows[i]!==null)return 'annotation';latest.set(c.of,c.digest);}}
-  for(let i=0;i<doc.chain.length;i++){const c=doc.chain[i];if(Number.isInteger(c.of))continue;if(c.erased?doc.rows[i]!==null:!same(rowDigest(doc.rows[i]),latest.get(c.seq)??c.digest))return 'row';}
+  for(let i=0;i<doc.chain.length;i++){const c=doc.chain[i];if(Number.isInteger(c.of))continue;if(c.erased===true?doc.rows[i]!==null:!same(rowDigest(doc.rows[i]),latest.get(c.seq)??c.digest))return 'row';}
   if(!validProgram(doc.program))return 'program';
   return null;
  }
