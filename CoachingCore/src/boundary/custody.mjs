@@ -12,7 +12,7 @@ import {generateProgram,evaluateProgram,restartProgram} from '../v1-index.mjs';
 import {validProgram} from '../r6-program.mjs';
 import {readableF08,standingHolds,isF08Fact,erasureFact,WELLBEING_DECLARED,WELLBEING_CHECKED,READINESS_DECLARED} from '../v1-f08.mjs';
 
-export const CUSTODY_SCHEMA='V1CIB-CUSTODY-2';
+export const CUSTODY_SCHEMA='V1CIB-CUSTODY-3';
 /** The review fields the app may send (anything else is refused, never forwarded: SEC-V1CP-02 server part). */
 export const CLIENT_REVIEW_FIELDS=Object.freeze(['kind','observations','eligibility','interruption','changes','choices','wellbeing','wellbeingCheck','readiness','loadConfirmations','substitution','targetSessionId','signals','currentDemonstration']);
 /** The fields only custody sets: a request carrying any of them is refused (the app never builds, edits, re-seals or drops this state). */
@@ -54,9 +54,12 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
  const rowDigest=row=>hmac(CUSTODY_SCHEMA+'|content|'+(canonical(row)??'null'));
  let counter=0;const id=prefix=>newId?newId(prefix):`${prefix}_${hmac(`${prefix}|${now()}|${++counter}|${Math.random()}`).slice(0,26)}`;
  const subjectOf=athleteId=>hmac(`${CUSTODY_SCHEMA}|subject|${athleteId}`);
- const link=(athleteId,c,prev)=>hmac(`${CUSTODY_SCHEMA}|row|${athleteId}|${c.seq}|${c.recordedAt}|${c.digest}|${prev}`);
+ // SEC-V1FC-01: everything a chain entry says is under a MAC. The annotation pointer (`of`) is part of the entry's own link; the erased flag is set
+ // after the link was made, so the set of erased slots is part of the sealed envelope. Neither can be forged without the key: a marker row (the
+ // hold an erasure leaves) can no longer be turned into an erased slot in storage.
+ const link=(athleteId,c,prev)=>hmac(`${CUSTODY_SCHEMA}|row|${athleteId}|${c.seq}|${c.recordedAt}|${c.digest}|${Number.isInteger(c.of)?c.of:'-'}|${prev}`);
  const envelope=doc=>({schema:doc.schema,athleteId:doc.athleteId,version:doc.version,createdAt:doc.createdAt,program:digest(doc.program),pending:digest(doc.pending??null),reference:digest(doc.reference??null),
-  model:digest(doc.model??null),consents:digest(doc.consents),agency:digest(doc.agency??null),head:doc.chain.at(-1)?.mac??'genesis',rows:doc.chain.length,decisions:digest(doc.decisions),requests:digest(doc.requests)});
+  model:digest(doc.model??null),consents:digest(doc.consents),agency:digest(doc.agency??null),head:doc.chain.at(-1)?.mac??'genesis',rows:doc.chain.length,erased:digest(doc.chain.filter(c=>c?.erased===true).map(c=>c.seq)),decisions:digest(doc.decisions),requests:digest(doc.requests)});
  const seal=doc=>({...doc,docMac:hmac(`${CUSTODY_SCHEMA}|doc|`+canonical(envelope(doc)))});
  const same=(a,b)=>typeof a==='string'&&typeof b==='string'&&a.length===b.length&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
  /** Integrity of a stored document: its seal, the order and links of the chain, every row's digest (the digest of its latest annotation entry, when a
@@ -137,6 +140,8 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    const at=now(),day=localIso(at,intake.timezoneOffsetMinutes??0).slice(0,10),bound={...intake,asOf:day,athlete:{...(intake.athlete??{}),id:actor.athleteId},learningConsent:consents[PURPOSES.LEARNING]===true};
    const g=engine.generateProgram(bound);
    if(g.status!=='PROPOSED')return {ok:true,status:g.status,missingInputs:g.missingInputs??[],errors:g.errors??[],reason:g.reason??null,enrolled:false};
+   // SEC-V1FC-02: a plan custody could not read back is never stored (it would lock the record).
+   if(!validProgram(g.program))return fail('ENGINE_CONTRACT_VIOLATION','The plan made is not one this version keeps; nothing was stored');
    const stamp=new Date(at).toISOString(),doc=seal({schema:CUSTODY_SCHEMA,athleteId:actor.athleteId,version:1,createdAt:stamp,program:g.program,pending:null,reference:null,model:null,
     consents:Object.fromEntries(Object.values(PURPOSES).map(p=>[p,{granted:consents[p]===true,at:stamp}])),rows:[],chain:[],decisions:[],requests:{}});
    const r=store.commit(actor.athleteId,null,doc);if(!r.ok)return fail('CONFLICT_ALREADY_ENROLLED','This athlete already has a plan');
@@ -155,6 +160,8 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    if(seen)return seen.requestDigest===requestDigest?{...seen.response,replayed:true}:fail('CONFLICT_IDEMPOTENCY_KEY','This request id was already used for another request');
    if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again',{version:doc.version});
    const kind=review.kind;
+   // SEC-V1FC-03: a session named as missed must be the one this same request reports as not done; the app cannot point the coach at another session.
+   if(review.targetSessionId!==undefined&&kind==='MISSED_SESSION'&&!(typeof review.targetSessionId==='string'&&Array.isArray(review.observations)&&review.observations.some(o=>isObj(o)&&o.sessionId===review.targetSessionId&&o.actual?.completed===false)))return fail('INVALID_REQUEST','The session named as missed is not the one this request reports as not done',{fields:['targetSessionId']});
    if(doc.consents[PURPOSES.COACHING]?.granted!==true)return fail('CONSENT_REQUIRED','Coaching consent was revoked',{purpose:PURPOSES.COACHING});
    if((F08_KINDS.includes(kind)||review.wellbeing||review.wellbeingCheck||review.readiness)&&doc.consents[PURPOSES.HEALTH_SIGNALS]?.granted!==true)return fail('CONSENT_REQUIRED','Reporting how you feel needs your consent for health signals',{purpose:PURPOSES.HEALTH_SIGNALS});
    // The engine input, composed from the stored copies: server id, server clock, the athlete bound, observation ids assigned by the server.
@@ -214,7 +221,8 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    // revocation also close it). A change whose own days have already passed is closed too: adopting it would rewrite days behind the athlete.
    const at=now(),stamp=new Date(at).toISOString(),today=localIso(at,doc.program.timezoneOffsetMinutes??0).slice(0,10);
    if(doc.consents[PURPOSES.COACHING]?.granted!==true)return fail('CONSENT_REQUIRED','Coaching consent was revoked',{purpose:PURPOSES.COACHING});
-   if(holdsOf(visible(doc),doc.athleteId,at).length)return fail('HOLD_ON_RECORD','A hold is on your record: no change to the plan is adopted while it stands');
+   if(holdsOf(visible(doc),doc.athleteId,at).length)return fail('CHANGE_NOT_ADOPTABLE','No change to the plan is adopted in the plan\'s current state');
+   if(doc.pending.kind==='LEARNED_REARRANGEMENT'&&doc.consents[PURPOSES.LEARNING]?.granted!==true)return fail('CONSENT_REQUIRED','This change rests on learning from your sessions, which needs your consent',{purpose:PURPOSES.LEARNING});
    if(!validProgram(doc.pending.proposal)||daysPassed(doc.program,doc.pending.proposal,today)){
     const c=commit(doc,{...doc,pending:null,decisions:[...doc.decisions,...closed(doc,at,'ITS_DAYS_PASSED','EXPIRED')]});
     return c.ok?fail('PENDING_EXPIRED','This change was prepared for days that have passed; ask again if you still want it',{version:doc.version+1}):c;}
@@ -243,6 +251,7 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    const at=now(),tz=doc.program.timezoneOffsetMinutes??0,asOf=localIso(at,tz),bound={...intake,asOf:asOf.slice(0,10),athlete:{...(intake.athlete??{}),id:doc.athleteId},learningConsent:doc.consents[PURPOSES.LEARNING]?.granted===true};
    const r=engine.restartProgram({intake:bound,record:visible(doc),referenceState:doc.reference,asOf,athleteId:doc.athleteId});
    if(r.status!=='PROPOSED')return {ok:true,status:r.status,reason:r.reason??null,missingInputs:r.missingInputs??[],errors:r.errors??[]};
+   if(!validProgram(r.program))return fail('ENGINE_CONTRACT_VIOLATION','The plan made is not one this version keeps; nothing was stored');
    const next={...doc,program:r.program,pending:null,reference:null,decisions:[...doc.decisions,...closed(doc,at,'NEW_PLAN'),{decisionId:id('dc'),kind:'RESTART',at:new Date(at).toISOString(),status:'PROPOSED',programHash:r.program.hash}]};
    const c=commit(doc,next);return c.ok?{ok:true,status:'PROPOSED',version:doc.version+1,programHash:r.program.hash}:c;
   },
@@ -252,7 +261,7 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    if(!Object.values(PURPOSES).includes(purpose)||typeof granted!=='boolean')return fail('INVALID_REQUEST','Unknown purpose or answer');
    if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed; refresh',{version:doc.version});
    // A-C3: revoking the coaching consent closes a change that was waiting (it is never adopted after the revocation, even if consent returns).
-   const ms=now(),at=new Date(ms).toISOString(),closes=purpose===PURPOSES.COACHING&&granted===false&&!!doc.pending;
+   const ms=now(),at=new Date(ms).toISOString(),closes=granted===false&&!!doc.pending&&(purpose===PURPOSES.COACHING||purpose===PURPOSES.LEARNING&&doc.pending.kind==='LEARNED_REARRANGEMENT');
    const next={...doc,consents:{...doc.consents,[purpose]:{granted,at}},...(closes?{pending:null,decisions:[...doc.decisions,...closed(doc,ms,'CONSENT_REVOKED')]}:{})};
    const c=commit(doc,next);return c.ok?{ok:true,version:doc.version+1}:c;
   },
@@ -265,12 +274,15 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    const rows=doc.rows,gone=new Set(eventIds);
    // V1 Final Closure (SSCTR C.1: the report is logged; Security C6: what is logged can be erased): a "not 100%" report that opened nothing leaves no
    // fact row, only its decision entry. Naming its event erases that entry's content; no hold is lost, so no marker is written.
-   const logged=doc.decisions.some(d=>gone.has(d.eventId)&&F08_KINDS.includes(d.kind));
+   // SEC-V1FC-06: only what is health content is erased: the F08 rows named (and the rows that reference them) and the logged reports of how the
+   // athlete feels. Naming another review's event beside them erases nothing of it.
+   const loggedIds=new Set(doc.decisions.filter(d=>gone.has(d.eventId)&&F08_KINDS.includes(d.kind)).map(d=>d.eventId)),logged=loggedIds.size>0;
    if(!rows.some(r=>r&&isF08Fact(r)&&gone.has(r.eventId))){
     if(!logged)return fail('NOT_FOUND','No such health fact on record');
-    const stamp=now(),scrubbed=d=>gone.has(d.eventId)?{decisionId:d.decisionId,eventId:d.eventId,kind:'ERASED',at:d.at,status:'ERASED'}:d,kept=Object.fromEntries(Object.entries(doc.requests).filter(([,q])=>!gone.has(q?.response?.eventId)));
-    const n=doc.decisions.filter(d=>gone.has(d.eventId)).length,c=commit(doc,{...doc,requests:kept,decisions:[...doc.decisions.map(scrubbed),{decisionId:id('dc'),kind:'ERASURE',at:new Date(stamp).toISOString(),status:'ERASED',count:n}]});
-    return c.ok?{ok:true,version:doc.version+1,erased:n}:c;}
+    const stamp=now(),scrubbed=d=>loggedIds.has(d.eventId)?{decisionId:d.decisionId,eventId:d.eventId,kind:'ERASED',at:d.at,status:'ERASED'}:d,kept=Object.fromEntries(Object.entries(doc.requests).filter(([,q])=>!loggedIds.has(q?.response?.eventId)));
+    // SEC-V1FC-05: the cached question of an erased report goes with it (the view no longer asks it).
+    const c=commit(doc,{...doc,requests:kept,...(loggedIds.has(doc.reference?.pending?.eventId)?{reference:null}:{}),decisions:[...doc.decisions.map(scrubbed),{decisionId:id('dc'),kind:'ERASURE',at:new Date(stamp).toISOString(),status:'ERASED',count:loggedIds.size}]});
+    return c.ok?{ok:true,version:doc.version+1,erased:loggedIds.size}:c;}
    for(let changed=true;changed;){changed=false;for(const r of rows)if(r&&isF08Fact(r)&&!gone.has(r.eventId)&&referencesOf(r).some(x=>gone.has(x))){gone.add(r.eventId);changed=true;}}
    const erased=[],chain=doc.chain.map((c,i)=>{const r=rows[i];if(r&&isF08Fact(r)&&gone.has(r.eventId)){erased.push(r.eventId);return {...c,erased:true};}return c;});
    const at=now(),tz=doc.program.timezoneOffsetMinutes??0,marker=erasureFact({athleteId:doc.athleteId,eventId:id('er'),asOf:localIso(at,tz),erased});
@@ -278,9 +290,9 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    // SEC-V1CIB-01, A-C3: a change that was waiting is closed by the erasure (the marker is a hold; nothing prepared before it is adopted over it).
    // PCG B-C1 (C8 enters the erasure): the decision entries and the stored responses of the erased events lose their content too (the reason, the
    // sign names, the guidance); the entry keeps its id and time only. The cached reference of an erased event goes (the marker holds without it).
-   const scrub=d=>gone.has(d.eventId)?{decisionId:d.decisionId,eventId:d.eventId,kind:'ERASED',at:d.at,status:'ERASED'}:d;
-   const requests=Object.fromEntries(Object.entries(doc.requests).filter(([,q])=>!gone.has(q?.response?.eventId)));
-   next={...next,pending:null,requests,...(gone.has(doc.reference?.pending?.eventId)?{reference:null}:{}),
+   const health=new Set([...erased,...loggedIds]),scrub=d=>health.has(d.eventId)?{decisionId:d.decisionId,eventId:d.eventId,kind:'ERASED',at:d.at,status:'ERASED'}:d;
+   const requests=Object.fromEntries(Object.entries(doc.requests).filter(([,q])=>!health.has(q?.response?.eventId)));
+   next={...next,pending:null,requests,...(health.has(doc.reference?.pending?.eventId)?{reference:null}:{}),
     decisions:[...doc.decisions.map(scrub),...closed(doc,at,'HEALTH_FACTS_ERASED'),{decisionId:id('dc'),kind:'ERASURE',at:new Date(at).toISOString(),status:'ERASED',count:erased.length}]};
    const c=commit(doc,next);return c.ok?{ok:true,version:doc.version+1,erased:erased.length}:c;
   },

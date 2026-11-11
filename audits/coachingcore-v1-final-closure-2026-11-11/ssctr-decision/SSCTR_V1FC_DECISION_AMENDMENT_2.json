@@ -1,0 +1,90 @@
+{
+  "recordId": "SSCTR-V1FC-DECISION-r1-AMENDMENT-2",
+  "date": "2026-11-11",
+  "amends": "SSCTR-V1FC-DECISION-r1 and Amendment 1 (neither edited). Items not named here stand as decided.",
+  "reviewer": "The same SSCTR-1.0.0 instance that authored r1 and Amendment 1, as decision author. An AI agent with no human credentials; no human, clinical or empirical validation. The independent SSCTR judge keeps judging the implementation; this instance does not judge it.",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, nonclinical sporting content only; clinical judgment stays CLINICAL_HUMAN_REQUIRED.",
+  "trigger": "Judge finding R-01 (MAJOR, marathon only), as relayed by the Chief: race day reads the program's highest executed long run however old, so a 150-minute run executed about 77 days before the race keeps race day at marathon effort after ten weeks of missed long runs. This contradicts the 30-day recency of B1.2 and r1 G.2. The reproduction and probes were not re-run by this instance.",
+  "literature": "No new search. The 30-day window reuses SRC06 (Frandsen 2025, full text: risk is defined against the longest run of the previous 30 days) and the r1 completion rationale (SRC11).",
+  "items": [
+    {
+      "id": "B3.raceDayBasis",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {
+        "event": "MARATHON",
+        "basis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW",
+        "windowDaysBeforeFirstTaperDay": 30,
+        "window": "sessions on days 21 to 50 before the race inclusive (1 to 30 days before the first taper day, which is 20 days before the race)",
+        "candidates": "executed training long runs (role LONG) by their executed minutes; never taper or race-window sessions, the race, post-event sessions or easy, quality, restart or walk/jog sessions",
+        "noCandidate": 0,
+        "completionLongRunBelowMinutes": 150
+      },
+      "conditions": [
+        "Marathon only. 10K and half marathon keep the existing achievedPeakBasis and stay byte-identical (r1 G.1).",
+        "The windowed value below 150 makes race day a completion, and Amendment 1's caution applies: EVENT_AMBITIOUS_FOR_CURRENT_RUNNING with the later or shorter event first, keeping the race offered.",
+        "Mode and history completions (WALK_JOG, RESTART, RETURN) are unchanged and apply in addition.",
+        "Read from the record by executed date. A reprojection before race week uses the same window, with projected weeks counted as executed, as the existing conditional projection does, so a shortfall appears as soon as it is projected (Amendment 1, B3.planCreationDisclosure)."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC06", "SRC11"],
+      "rationale": "Race-day readiness for a 5-6 hour event must rest on recent long-run capacity, as the single-run ceiling and B1.2 already do. A 30-day window before the taper holds four (sometimes five) long-run days, so it tolerates a consolidation week and one or two missed long runs (as the judge's probes show), yet catches a long absence. A longer window would recreate R-01; a shorter one would make a single missed run decisive.",
+      "disclosure": "See B3.raceDayBasisDisclosure."
+    },
+    {
+      "id": "B3.longRunsOutsideWindow",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"countForRaceDayMode": false, "countForKeepCaution": false, "countForTaperLongRun": false},
+      "conditions": [
+        "Training long runs executed in the plan but outside the window count for nothing in the race-day mode, the keep caution or the taper long run.",
+        "They stay in the record and in every other existing rule unchanged (single-run ceiling within its own 30 days, gates, next-block resume, which the ceiling still caps)."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC06"],
+      "rationale": "Old capacity is not current capacity; giving it partial weight would need a decay rule no evidence supports.",
+      "disclosure": "none beyond B3.raceDayBasisDisclosure"
+    },
+    {
+      "id": "B3.taperLongRunBasis",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"event": "MARATHON", "taperLongRunBasis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW", "fractions": {"days14to20": 0.7, "days7to13": 0.55}, "noCandidate": "the taper long run is that week's easy run (existing longRunFloor)"},
+      "conditions": [
+        "Marathon only, and only the taper long run. Taper easy-run and quality fractions keep their existing achieved-peak basis, still bound by the single-run ceiling and the gates.",
+        "Taper long runs stay capped by the single-run ceiling (unchanged)."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC01", "SRC02", "SRC06"],
+      "rationale": "One basis for the race-day decision and the taper long run keeps the plan coherent: a taper is a reduction from what the athlete has recently done (SRC01, SRC02), not from an old peak.",
+      "disclosure": "none"
+    },
+    {
+      "id": "B3.raceDayBasisDisclosure",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {
+        "atPlanCreation": "Add to the Amendment 1 creation disclosure: 'Race day is decided by the longest long run you complete between about 7 and 3 weeks before the race.'",
+        "atCompletion": "When the windowed value decides a completion, the EVENT_AMBITIOUS_FOR_CURRENT_RUNNING statement names the longest long run executed in that window (0 when none) as the reason, and says that earlier long runs are too long ago to count."
+      },
+      "conditions": ["Wording with Product/UX; content fixed as above."],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC06"],
+      "rationale": "The athlete must know which runs decide race day, and why an earlier long run no longer counts.",
+      "disclosure": "As the value."
+    }
+  ],
+  "values": {
+    "marathon": {
+      "raceDayLongRunBasis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW",
+      "raceDayLongRunWindowDaysBeforeFirstTaperDay": 30,
+      "taperLongRunBasis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW"
+    }
+  },
+  "proposedQueueItems": [{"queue_id": "HQ-V1FC-SSCTR-B3", "change": "the race-day and taper long-run basis is the 30-day pre-taper window"}],
+  "proposedQueueNote": "Proposals only; nothing appended; the queue stays at 235.",
+  "hostInjectedContext": "As in r1: a global CLAUDE.md, the project CLAUDE.md and a MEMORY.md were injected and used only to orient.",
+  "governance": {"gateStatus": "NOT_CLOSED_BY_THIS_RECORD", "publicationStatus": "NOT_PUBLISHED", "humanValidation": false, "empiricalProductValidation": false, "clinicalClearance": false},
+  "verificationNeeded": "The R-01 reproduction yields a completion with the caution; the fully executed reference athlete and the athlete missing only the last two specific long runs keep marathon effort; the taper long run follows the windowed basis; 10K and half byte-identical.",
+  "expiry": "As r1; also on any change to the taper length, race window or long-run cadence, since the window is defined from them."
+}

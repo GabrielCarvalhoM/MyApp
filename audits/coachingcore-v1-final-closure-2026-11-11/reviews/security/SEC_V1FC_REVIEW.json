@@ -1,0 +1,166 @@
+{
+  "reviewId": "SEC-V1FC-REVIEW-r1",
+  "date": "2026-11-11",
+  "role": "Security, Privacy & Abuse Architect (independent judge; authored none of this work)",
+  "candidate": {
+    "commit": "2d089c08a92f4d5ab752dcf98512527b9387ae6e",
+    "base": "3b1480445fc22a5fc3a35875dd26d2c4de891a60",
+    "branch": "claude/coachingcore-v1-final-closure"
+  },
+  "method": {
+    "extract": "git archive of 2d089c0 into a new scratchpad folder (secv1fc-x2d089c0-1794407385), CoachingCore/node_modules copied from the worktree; base 3b14804 extracted the same way (secv1fc-xbase3b14804-1794408163) for one differential probe",
+    "probes": "plain Node 24 ESM scripts in a separate scratchpad folder (secv1fc-probes-1794407385), synthetic data only, in-memory store, the custody service and the app boundary stood up as test/v1fc-boundary.test.mjs does",
+    "suite": "node --test in CoachingCore of the extract (V1CP_ROOT = the extract): 1243 tests, 1243 pass, 0 fail",
+    "notRun": [
+      "npm run verify",
+      "any verify-r* script"
+    ],
+    "noRecursiveDeletion": true,
+    "filesWritten": [
+      "reviews/security/SEC_V1FC_REVIEW.json",
+      "reviews/security/SEC_V1FC_REVIEW.md"
+    ],
+    "otherRolesRecordsRead": false,
+    "hostContextDisclosure": "The host injected the global CLAUDE.md (sha256 c75718d0...709c6), the project CLAUDE.md (e657d059...22e6) and MEMORY.md (2b8e0609...8191). Used only to orient; no ruling rests on them; taken as neither approval nor a finding.",
+    "noLegalRegulatoryOrClinicalClaim": true
+  },
+  "verdict": "FAIL",
+  "gate": "SECURITY_BLOCKED",
+  "verdictScope": "The V1-scoped synthetic candidate at 2d089c0 and its reference custody boundary only. Three blocking findings, each narrow and runtime-only with a small fix; eligible for the one directed fix cycle and one narrow recheck by this role.",
+  "priorFindings": [
+    {
+      "id": "SEC-V1CIB-01",
+      "status": "CLOSED",
+      "probe": "p2-adopt.mjs A1-A7: pending change then hold by a submit, by an erasure, by coaching revocation (and consent returned), by a restart; replayed retries of the creating request before and after a hold and after an erasure; a change submitted while held (no pending is created); a forged pending in storage (INTEGRITY_FAILURE). Every accept returned NOT_PENDING (or INTEGRITY_FAILURE) and the program hash stayed unchanged.",
+      "residual": "LEARNING revocation does not close a waiting learned rearrangement: SEC-V1FC-07 (new, LOW)."
+    },
+    {
+      "id": "SEC-V1CIB-02",
+      "status": "CLOSED",
+      "probe": "p3-restart.mjs R1: restart after COACHING revoked returns CONSENT_REQUIRED and stores nothing; R7: restart under a hold is CLINICAL_HUMAN_REQUIRED and the view stays BLOCKED; R6: a clinical break on record with an intake claiming a nonclinical pause is CLINICAL_HUMAN_REQUIRED."
+    },
+    {
+      "id": "SEC-V1CIB-03",
+      "status": "CLOSED",
+      "probe": "p3-restart.mjs R2: intake learningConsent:true with LEARNING false gives program.learningConsent false; R3: athleteId, actualLedger, referenceState, athleteModel, officialPlanState, completedWork, event, weekIndex in the intake are not taken (INVALID_INPUT, record unchanged, athlete bound); R4: a future eligibility screen is asked; R9: SYNTHETIC_ONLY at restart and enroll.",
+      "residual": "The intake's own version field is not closed: version R5-INPUT-1 selects the legacy R5 generator through the V1 entry point (SEC-V1FC-02, new)."
+    },
+    {
+      "id": "SEC-V1CIB-04",
+      "status": "CLOSED",
+      "probe": "p4-erasure.mjs: after hold + readiness + erasure, neither the keyless sha256 of any erased row nor its rowHash or inputHash occurs anywhere in the stored text; erased slots keep a keyed digest; a custody with another key fails verify; request digests and observation ids are keyed (hmac). The keyed-digest fix holds for the chain and the idempotency map.",
+      "residual": "PCG B-C1 is not fully met: the stored program keeps health-derived content of the erased events in plain text (SEC-V1FC-04), and the logged-report erasure path keeps the cached reference (SEC-V1FC-05)."
+    }
+  ],
+  "findings": [
+    {
+      "id": "SEC-V1FC-01",
+      "severity": "HIGH",
+      "blockingForV1Freeze": true,
+      "class": "integrity / hold bypass (CF-OBS-1 custody layer, C7)",
+      "summary": "A storage-access actor without the server key can release the standing hold an erasure leaves, and can remove any record row: the chain entry's `erased` flag and annotation pointer `of` are outside every MAC (link() covers seq, recordedAt, digest, prev; the sealed envelope covers the chain head and row count only). Nulling the ERASED_F08 marker row and setting erased:true on its chain entry verifies. Before this candidate the cached CLINICAL reference kept the view blocked; the candidate now clears that reference on erasure (B-C1), so the marker is the only hold and the tamper releases it.",
+      "reproduction": "p9c-tamper.mjs: enroll, week-0 check-in, sign answered yes (hold), eraseHealthFacts(hold) -> view BLOCKED, reference null; in raw storage set rows[m]=null and chain[m].erased=true for the marker; read OK, view VALID_PLAN with 4 executable sessions and 5 prescriptions; next logRun KEEP; an availability change is PENDING and accept ADOPTED. Same tamper on base 3b14804 reads OK too (the gap is pre-existing) but stays BLOCKED by the reference. Variant: re-pointing a later chain entry with `of` to the marker slot and moving that row into the slot also verifies (p9b/p9-tamper X2b).",
+      "smallestFix": "Bind both fields under the key: add `of` to the link() MAC input (it is set once, at creation) and add the sorted list of erased seqs to the sealed envelope (e.g. erased: digest(chain.filter(c=>c.erased).map(c=>c.seq))); bump the schema to V1CIB-CUSTODY-3; add the two tamper variants to the tamper tests. Integration contract section 7 ('removed row -> INTEGRITY_FAILURE') is not true until then."
+    },
+    {
+      "id": "SEC-V1FC-02",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": true,
+      "class": "V1 scope bypass at the V1 entry point / availability",
+      "summary": "v1-index generateProgram and restartProgram pass a client intake with version R5-INPUT-1 to the legacy R5 generator (r6-index dispatches on input.version), which ignores the V1 scope and the restart facts and returns an R6-LEGACY-PROGRAM-1 program. Custody commits it, then its own verify (cold-only validProgram) fails on every read: the account is permanently INTEGRITY_FAILURE (re-enroll refused as already enrolled), the whole record becomes unreadable, the client sees a false integrity alarm, and only account erasure recovers. No prescription escapes custody.",
+      "reproduction": "p1b-legacy.mjs / p1c-legacy.mjs: V1.generateProgram(r5/fixtures canonicalAthlete) -> PROPOSED R6-LEGACY-PROGRAM-1; onboard with it -> ok, enrolled:true, then read INTEGRITY_FAILURE (part program), submit INTEGRITY_FAILURE, onboard CONFLICT_ALREADY_ENROLLED. On an existing V1 athlete, restart with the R5 intake (dates current) -> PROPOSED, then read INTEGRITY_FAILURE (part program).",
+      "smallestFix": "In v1-index refuse any intake whose version is not R6-INTAKE-1 (UNSUPPORTED, typed) and any program whose version is not R6-PROGRAM-1 (HOLD); in custody enroll and restart commit only when validProgram(program) holds."
+    },
+    {
+      "id": "SEC-V1FC-03",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": true,
+      "class": "unvalidated client object reference (targetSessionId) causing a plan effect",
+      "summary": "custody.submit forwards targetSessionId unbound: it need not be the session the review reports missed, nor in the current week, nor already due. Ids are program-local labels, so another athlete's record is never touched (cross-account: no effect), but the app can name any session of its own plan: a quality session two weeks ahead declared missed now is offered as a MOVE that copies it into the current week (which keeps its own quality session) while the later one stays planned; a long run later this week, not yet due, is offered moved three days earlier; a target different from the reported session gets a MOVE for the unreported one; a past-week target ends in ENGINE_CONTRACT_VIOLATION, which the app shows as INTEGRITY_FAILURE. Each MOVE is adopted on accept. The sporting effect (two quality sessions in a week, a long run moved earlier) is for SSCTR to rule on; the defect is that the server relies on the app to name a legitimate target.",
+      "reproduction": "p7-target.mjs: TEN_K_EIGHT_WEEKS, weeks 0-3 executed, clock on week 4 quality day 21:00; MISSED_SESSION with targetSessionId w6-run-d0 (and its observation) -> offer MOVE, accept ADOPTED, week 4 gains w4-run-d2<w6-run-d0 next to w4-run-d0; target w4-run-d5 (LONG, 2026-12-05) on 2026-11-30 -> MOVE to 2026-12-02, adopted; target q with the observation naming w6 -> MOVE offered; target w1-run-d5 -> ENGINE_CONTRACT_VIOLATION. p6-scope.mjs T1: the other athlete's version unchanged.",
+      "smallestFix": "In custody.submit, for kind MISSED_SESSION accept targetSessionId only when it equals the sessionId of a missed observation in the same review, belongs to the current week of the stored program and is dated on or before today in the program's offset; otherwise drop it (the review is decided without a target) or refuse INVALID_REQUEST without echo. Keep api.logRun sending only req.sessionId."
+    },
+    {
+      "id": "SEC-V1FC-04",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": false,
+      "requiredBefore": "real data",
+      "class": "erasure completeness (C6, PCG B-C1)",
+      "summary": "Health-fact erasure scrubs the custody decision log, stored responses and the cached reference, but not the stored program: program.decisions keeps the readiness restart entry with readinessRecord.cause CLINICAL, the erased hold's event id, its kind NOT_FEELING_100 and time, the stop dates and the per-sport readiness answers (held sports); program.weeks[].adaptations keep SPORT_HELD / RETURN_HOLD / RACE_IN_RETURN tied to the erased readiness event. This is readable in plain text by anyone with storage access, without guessing.",
+      "reproduction": "p4b.mjs: hold, readiness (RUN ready, STRENGTH not ready), eraseHealthFacts(hold) (readiness erased transitively, 2 slots) -> program.decisions[1] = {action: READINESS_RESTART, readinessRecord: {cause: CLINICAL, holds: [{eventKind: NOT_FEELING_100, eventId: <erased>, asOf}], stops, held: [STRENGTH] ...}}; p4-erasure.mjs lists 43 program paths still carrying the erased readiness id.",
+      "smallestFix": "On erasure, redact the program's decision entries and adaptations of the erased events to their planning shape only (drop readinessRecord detail, holds' kind and time, stops), re-hash the program, and re-seal; or, as the smallest scope statement, list the program-derived residue in section 9 of the integration contract as not erased until that is built."
+    },
+    {
+      "id": "SEC-V1FC-05",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "class": "erasure completeness (logged-report path)",
+      "summary": "Erasing a 'not 100%' report that opened nothing (logged-only path) leaves doc.reference.pending of that report: eventKind NOT_FEELING_100, its event id and the unanswered sign name; the view keeps asking the erased question. The fact path clears it; the logged path does not.",
+      "reproduction": "p5-logged.mjs (a): notFeeling100 MILD_ILLNESS with one sign unanswered -> ASK; eraseHealthFacts(that event) -> ok erased 1; reference.pending still {eventKind: NOT_FEELING_100, missingInputs: [wellbeing.warningSigns.feverOrChills]}; view NEEDS_INPUT with the same question.",
+      "smallestFix": "In the logged-only branch apply the same rule as the fact path: reference:null when gone.has(doc.reference?.pending?.eventId)."
+    },
+    {
+      "id": "SEC-V1FC-06",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "class": "auditability / idempotency",
+      "summary": "Both erasure paths scrub every decision entry whose event id is named and drop its stored response, whatever its kind: naming one health event plus any ordinary review's event id erases that review's decision trace (kind, action, adoption) and its idempotency entry, and counts it as erased.",
+      "reproduction": "p5-logged.mjs (b): eraseHealthFacts([logged report, week-0 WEEKLY_REVIEW event]) -> erased 2, the weekly decision becomes {kind: ERASED}; (c) same through the fact path with the hold's id.",
+      "smallestFix": "Scrub only entries whose event id is an erased F08 row or a logged F08-kind decision; ignore (or refuse) other named ids and count only what was erased."
+    },
+    {
+      "id": "SEC-V1FC-07",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "class": "consent (A-C3 applied to LEARNING)",
+      "summary": "Revoking the LEARNING consent leaves a waiting LEARNED_REARRANGEMENT offer in place, and accept adopts it after the revocation. The learning model itself is kept (retention is G07's).",
+      "reproduction": "p2-adopt.mjs A8 (stub engine as in the candidate's own F01 test, valid program hash): offer LEARNED_REARRANGEMENT, setConsent LEARNING false, accept -> ADOPTED.",
+      "smallestFix": "setConsent(LEARNING,false) closes a pending of kind LEARNED_REARRANGEMENT with cause CONSENT_REVOKED; accept refuses that kind without LEARNING."
+    },
+    {
+      "id": "SEC-V1FC-08",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "class": "data inventory / egress canary (C4)",
+      "summary": "DATA_INVENTORY does not class the new fields: response.unavailable (it reveals a 'not 100%' report: health-derived), doc.pending (offer proposal, reason, pattern key), decision.offer and doc.agency. accept's refusal code HOLD_ON_RECORD is on NEVER_OUTBOUND, and telemetryOf would emit it as `code` (the branch is defence in depth, unreachable in my probes).",
+      "reproduction": "p6-scope.mjs L1: a journey through MOVE offer, decline, 'not 100%', check, both erasure paths, hold and readiness leaves no canary word in 14 telemetry records and neutral push texts (PASS); L2: telemetryOf('accept', {ok:false,error:{code:'HOLD_ON_RECORD'}}) -> {op:adoption, code:HOLD_ON_RECORD}.",
+      "smallestFix": "Add inventory rows (unavailable: HEALTH_DERIVED, egress NONE; pending/offer/agency: TRAINING, egress NONE); give the accept refusal a neutral code (e.g. NOT_ADOPTABLE) or map error codes to neutral classes in telemetryOf."
+    }
+  ],
+  "verifiedWithoutFinding": [
+    "V1 gate (p6-scope S1): 24 kinds incl. aliases, case and whitespace variants and prototype names, each with wellbeing, wellbeingCheck or both, on the V1 custody: no WELLBEING_DECLARED row, no WELLBEING_REDUCTION adaptation, never REDUCED, no exception.",
+    "Hold release (p6-scope S2): under a hold, the same 24 kinds with no payload, a readiness payload on another kind, a wellbeing payload or an interruption: always BLOCKED, no prescription and nothing executable; only the readiness declaration releases; readiness needs HEALTH_SIGNALS (S3).",
+    "V1 scope cannot be widened by an option (the entry overwrites scope); custody passes only withhold, filtered to MOVE and LEARNED_REARRANGEMENT; review fields scope/withhold refused as unknown without echo (p8 G3).",
+    "Event extension (p11-events): with no SSCTR record file the default authority approves nothing; a marathon intake is UNSUPPORTED and a 5K keeps the fallback, identical with eventExtension, authority, eventRecords and extension values smuggled in the intake.",
+    "Offer path: the decline memory is under the seal (drop, null or empty agency -> INTEGRITY_FAILURE; p10 G7); a declined pattern is not offered again (G8); PENDING_EXPIRED closes with a recorded cause; no pending is created while held.",
+    "Regression on touched paths (p8): tamper of agency, pending, decisions, requests, consents, schema, reference, truncation and reorder -> INTEGRITY_FAILURE on read and write; foreign key fails verify; idempotent replay, key reuse conflict, stale version, server-owned and unknown fields refused, cross-athlete NOT_ENROLLED, unauthenticated refused; HEALTH_SIGNALS gate on F08 kinds and payloads; account tombstone pseudonymous, refuses re-enroll and writes; CF-OBS-1 engine layer: seven kinds with the hold on record and no reference sent are CLINICAL_HUMAN_REQUIRED with no proposal.",
+    "Telemetry and push (p6-scope L1): no health-derived word, no OUTSIDE_V1_SCOPE, TEMPORARY_REDUCTION, MOVE or LEARNED in telemetry; push text neutral."
+  ],
+  "section7PendingCompleteness": {
+    "stillComplete": false,
+    "guaranteeContradicted": "Section 7 states that a removed row is an INTEGRITY_FAILURE; SEC-V1FC-01 shows a row removed by flagging its slot erased verifies. Correct the guarantee or fix it.",
+    "addToPending": [
+      "Integrity and deployment pinning of the authority files read from disk at module load (the R6 review records, the R7-B catalog records, and now the event-extension records file audits/coachingcore-v1-final-closure-2026-11-11/reviews/ssctr/SSCTR_V1FC_EVENT_RECORDS.json, whose presence alone enables events: its bytes are not hash-pinned in code and 'independent: true' is self-asserted).",
+      "Request size limits at the boundary (observations, payload depth, targetSessionId length are unbounded; only clientRequestId is capped), with the rate limits already listed; an offer evaluates the review twice.",
+      "Erasure of program-derived health content (SEC-V1FC-04) and erasure reaching backups and replicas.",
+      "Learning-model retention and deletion when LEARNING is revoked (the model is kept and carried; periods are G07's).",
+      "Key separation: one server key serves the chain, the seal, the subject pseudonym, request digests and ids (domain-separated by prefixes only); KMS design should decide per-purpose keys and rotation that keeps the chain verifiable."
+    ]
+  },
+  "fourDistinctions": {
+    "syntheticCandidate": "FAIL (SECURITY_BLOCKED): SEC-V1FC-01, -02, -03 block the V1-scoped freeze; each is narrow with the smallest fix named; one directed fix cycle and one narrow recheck by this role close them.",
+    "integrationBoundary": "NOT_READY: the three blockers, plus section 7's operational PENDING parts and the additions above.",
+    "beforeRealData": "All findings resolved (incl. SEC-V1FC-04..08); section 7 operational parts built (authentication, KMS, production database with access control and encryption at rest, external monotonic version, backups with erasure, monitoring, rate and size limits); authority files pinned; G07 legal basis, texts and periods (owner: Founder with legal counsel; not ruled here); SEC-V1CP pendings; F08/G04 wording.",
+    "realAthletes": "NO: all of the above plus human and clinical revalidation; no AI clearance; CLINICAL_HUMAN_REQUIRED stands (owner: qualified human/clinical review; not ruled here)."
+  },
+  "states": {
+    "RUNTIME_CORRECTNESS_security_part": "FAIL (three blockers)",
+    "V1_SCOPE_ENFORCED": "NO at the V1 entry point (SEC-V1FC-02); YES for every R6 kind and payload probed",
+    "EVENT_EXTENSION": "fail-closed against client values; enablement rests on an unpinned records file (PENDING item)",
+    "F08_STATUS": "Situation 1 not reachable through V1 custody; hold release only by readiness except by keyless storage tamper (SEC-V1FC-01)",
+    "RECORD_CUSTODY_STATUS": "IMPLEMENTED_WITH_BLOCKERS",
+    "INTEGRATION_READY": "NO",
+    "authorizationForRealAthletes": "NO"
+  },
+  "escalation": "None needed for this gate. Owners outside this role: SSCTR for the sporting effect named in SEC-V1FC-03; Founder with legal counsel for G07; qualified clinical review for real athletes."
+}

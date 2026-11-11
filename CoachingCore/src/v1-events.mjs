@@ -12,7 +12,7 @@ import {clone,freeze} from './value.mjs';
  * Nothing here changes the R6 policy file or its hash: the values are merged into the operational view the planner reads.
  */
 export const EVENT_EXTENSION_ID='V1X-EVENTS-1';
-export const EXTENSION_SHA256='e53a282dc6b8dc652564173141256411186094339476c852f307a6ff36c97a2b';
+export const EXTENSION_SHA256='8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8';
 export const EXTENSION_URL=new URL('../v1/EVENT_EXTENSION_V1.json',import.meta.url);
 export const EVENT_RECORDS_URL=new URL('../../audits/coachingcore-v1-final-closure-2026-11-11/reviews/ssctr/SSCTR_V1FC_EVENT_RECORDS.json',import.meta.url);
 /** The boundary each extension event needs an enabling record for. */
@@ -34,7 +34,9 @@ const BYTES=readBytes(EXTENSION_URL);
 export const EXTENSION_FILE_SHA256=BYTES?sha256(BYTES):null;
 const parse=bytes=>{try{return JSON.parse(bytes.toString('utf8'));}catch{return null;}};
 /** The extension values, only when the file is the reviewed bytes. */
-export const EXTENSION=BYTES&&EXTENSION_FILE_SHA256===EXTENSION_SHA256?freeze(parse(BYTES)):null;
+/** The values of a file's bytes, only when they are the pinned bytes (any other bytes are not the reviewed extension: null). */
+export const extensionOf=bytes=>bytes&&sha256(bytes)===EXTENSION_SHA256?freeze(parse(bytes)):null;
+export const EXTENSION=extensionOf(BYTES);
 const RECORD_BYTES=readBytes(EVENT_RECORDS_URL),DEFAULT_RECORDS=RECORD_BYTES?parse(RECORD_BYTES):null;
 const ENABLING=new Set(['APPROVE','APPROVE_WITH_CONDITIONS']),EVIDENCE=new Set(['WELL_SUPPORTED','SUPPORTED_WITH_LIMITS']);
 
@@ -89,6 +91,8 @@ export function extendPolicy(policy,ext){
   // SSCTR V1FC B3: the long-run target that is a cap only (its "peak below target" note is keyed to the completion threshold), the executed long run
   // below which keeping the race is cautioned, the post-event weeks (easy only through day 14 after a marathon) and the days without strength.
   longRunTargetIsCapOnly:pick(v=>v.longRunTargetIsCapOnly===true?true:undefined),keepCautionLongRunBelowMinutes:pick(v=>v.keepCautionLongRunBelowMinutes),
+  // SSCTR V1FC Amendment 2: the window (days before the first taper day) whose executed long runs decide race day and the taper long run.
+  raceDayLongRunWindowDays:pick(v=>v.raceDayLongRunWindowDaysBeforeFirstTaperDay),
   postEventWeeks:pick(v=>v.postEventWeeks),postEventStrengthMinDaysAfterRaceByKind:pick(v=>v.postEventStrengthMinDaysAfterRace)};
  const out={...policy,operational:{...op,run,event}};by.set(key,out);return out;
 }

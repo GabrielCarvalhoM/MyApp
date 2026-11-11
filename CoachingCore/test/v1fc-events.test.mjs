@@ -104,7 +104,7 @@ test('Marathon eligibility: every criterion is read from the athlete\'s own fact
   assert.equal(p.goal.run.event,null);assert.equal(p.canonical.goals.contextEvent.preparatory,true);assert.ok(!all(p).some(s=>s.role==='RACE'),'no race session');
   assert.ok(!p.phases.phases.some(x=>['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT'].includes(x)),'no event phase');assert.equal(fam(p,'MARATHON_SPECIFIC').length,0);assert.equal(p.eventExtension,undefined);
   const note=(g.negotiation??p.negotiation).find(n=>n.id==='MARATHON_PREPARATORY_PLAN');assert.ok(note&&note.unmet.some(u=>u.id===id&&'needed' in u),id);
-  assert.match(note.detail,/does not prepare you for the marathon date/);assert.match(note.detail,/do not run for 7 days after it/);assert.match(note.detail,/no date is promised/);assert.deepEqual(note.options,['Keep the preparatory plan','Choose a later marathon','Choose a 10K or half marathon first']);}
+  assert.match(note.detail,/does not prepare you for the marathon date/);assert.match(note.detail,/do not train for 7 days after it/);assert.match(note.detail,/no date is promised/);assert.deepEqual(note.options,['Keep the preparatory plan','Choose a later marathon','Choose a 10K or half marathon first']);}
  // Unknown is never read as met; a known month count of six or more with an explicit category is met; a recent tolerated race counts as the long run.
  assert.ok(unmetOf(mar({recent:{runDaysPerWeek:5,runMinutesPerWeek:360}})).ids.includes('LONGEST_RUN'));
  assert.deepEqual(unmetOf(mar({runTrainingMonths:7})).ids,[]);
@@ -163,7 +163,7 @@ test('Marathon, race day by the executed long run (B3.completion, Amendment 1): 
  assert.match(race.prescription.instructions.join(' '),/does not cover fuelling, drinking or heat/);assert.match(race.prescription.instructions.join(' '),/Walk breaks/);
  const note=(f.negotiation??[]).find(n=>n.id==='EVENT_AMBITIOUS_FOR_CURRENT_RUNNING');assert.ok(note,'the completion is disclosed on the plan that makes it one');
  assert.equal(note.basis,'LONG_RUN_BELOW_COMPLETION');assert.deepEqual(note.options,['Choose a later or shorter event','Keep the event and complete it with walk breaks']);assert.equal(note.caution,'LATER_OR_SHORTER_EVENT_FIRST');
- assert.match(note.detail,/Your longest executed run is 130 minutes/);assert.match(note.detail,/stays your choice/);
+ assert.match(note.detail,/Your longest long run between about 7 and 3 weeks before the race is 0 minutes \(earlier long runs are too long ago to count\)/);assert.match(note.detail,/stays your choice/);
  // The 10K and the half marathon keep their order and text (G.1): no caution.
  const hm=generateProgram(intake('v1fc-hm-beg',{weeks:12,athlete:{goals:{run:{kind:'RACE',event:{kind:'HALF_MARATHON',date:'2027-01-17'}},strength:'GENERAL'},runExperience:'NONE',strengthExperience:'NONE',recent:{runDaysPerWeek:0,runMinutesPerWeek:0}},schedule:{runDays:[1,3,5],strengthDays:[2,4],runMinutes:40,strengthMinutes:30,longRunDay:5}}),dev);
  const h=(hm.negotiation??hm.program.negotiation).find(n=>n.id==='EVENT_AMBITIOUS_FOR_CURRENT_RUNNING');assert.deepEqual(h.options,['Keep the event and complete it with walk breaks','Choose a later or shorter event']);assert.equal(h.caution,undefined);

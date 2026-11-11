@@ -20,6 +20,10 @@ export const DATA_INVENTORY=Object.freeze([
  {field:'observations (actual, response, loads, RIR)',class:C.TRAINING,purpose:'COACHING',egress:'NONE'},
  {field:'athlete.sex, heightCm, weightKg, ageYears, knownExercises, goals, schedule',class:C.PERSONAL,purpose:'COACHING',egress:'NONE'},
  {field:'inputHash, rowHash, referenceState.hash, program.hash',class:C.INTEGRITY,purpose:'COACHING',egress:'NONE',note:'C5: keyless digests are payload, never proof; the custody HMAC chain and seal are the integrity mechanism'},
+ // V1 Final Closure (SEC-V1FC-08): the fields the offer path and the V1 scope added.
+ {field:'response.unavailable (code, capability, paths)',class:C.HEALTH_DERIVED,purpose:'COACHING',egress:'NONE',note:'returned only to a report of how the athlete feels'},
+ {field:'response.offer, document.pending (decisionId, kind, proposal), decision.offer',class:C.TRAINING,purpose:'COACHING',egress:'NONE',note:'a change waiting for the athlete; only its decisionId is operational'},
+ {field:'document.agency.declined (kind, pattern key, time)',class:C.TRAINING,purpose:'LEARNING',egress:'NONE',note:'the athlete\'s declined learned patterns; under the seal'},
  {field:'custody version, decisionId, eventId (opaque, server-assigned), state, operation name, error code',class:C.OPERATIONAL,purpose:'OPERATIONS',egress:'LOGS_AND_TELEMETRY'}
 ]);
 /** The only decision categories telemetry may carry: a status class, never an action name (WELLBEING_REDUCTION or READINESS_RESTART reveal health), and

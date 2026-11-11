@@ -1,7 +1,7 @@
 import {clone,freeze,hash} from './value.mjs';
 import {EVENT_BOUNDARIES,allowsEvent} from './v1-events.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
-import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBoundary,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
+import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBoundary,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,marathonProjectionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
 import {substitutesFor,catalogueEntry,CATALOGUE as CATALOG_CONFIGURATIONS} from './r6-catalogue.mjs';
 import {exerciseRow,fitStrengthSession,strengthPrescription,easyPrescription,validateR6Prescription} from './r6-prescription.mjs';
@@ -445,6 +445,9 @@ function finishProposal(program,sk,next,decision){
  const rw=proposal.phases?.raceWeek,ownRace=Number.isInteger(rw)&&!!proposal.weeks[rw]?.sessions.some(s=>s.role==='RACE'&&s.ownEvent),raceState=proposal.goal?.run?.event&&Number.isInteger(rw)&&!ownRace?proposal.stateTrace[rw]?.run:null;
  const item=raceState?eventCompletionItem({...sk,goal:proposal.goal,plan:proposal.phases},raceState):null,list=proposal.negotiation??[],at=list.findIndex(n=>n.id==='EVENT_AMBITIOUS_FOR_CURRENT_RUNNING');
  if(at>=0||item)proposal.negotiation=at>=0?list.flatMap((n,i)=>i!==at?[n]:item?[item]:[]):[...list,item];
+ // V1 Final Closure (SSCTR R-02; Amendment 1, on reprojection): the marathon's projection note is the proposal's own. It is recomputed from the
+ // proposal, and when race day is a completion the completion note above replaces it.
+ if((proposal.negotiation??[]).some(n=>n.id==='MARATHON_PROJECTION')||proposal.goal?.run?.event?.kind==='MARATHON'&&raceState){const note=raceState?marathonProjectionItem({...sk,goal:proposal.goal,plan:proposal.phases},raceState,proposal.weeks):null;proposal.negotiation=[...(proposal.negotiation??[]).filter(n=>n.id!=='MARATHON_PROJECTION'),...(note?[note]:[])];}
  proposal.revision=program.revision+1;proposal.decisions=[...program.decisions,decision];delete proposal.hash;proposal.hash=programHash(proposal);return proposal;
 }
 const changedSessions=(a,b)=>{let n=0;const old=new Map(a.weeks.flatMap(w=>w.sessions.map(s=>[s.id,hash(s.prescription)])));for(const w of b.weeks)for(const s of w.sessions)if(old.get(s.id)!==hash(s.prescription))n++;return n;};
@@ -1113,6 +1116,9 @@ function targetSession(ctx){const id=ctx.review.targetSessionId??ctx.review.even
 function missedSession(ctx){
  const {program,sk,w,review}=ctx,target=targetSession(ctx);
  if(!target)return weeklyReview(ctx,{extraReason:'Missed work is recorded as zero; no debt and no compensation'});
+ // V1 Final Closure (SEC-V1FC-03): a missed session is a session of this week whose day has come. A session of another week, or one still ahead,
+ // cannot be missed yet: it is asked about, never moved or copied (moving it would bring work forward or plan it twice).
+ if(target.weekIndex!==w||target.date>ctx.asOfLocal)return {action:'ASK',reason:'The session named as missed is not a session of this week up to today: name the session that was not done',missingInputs:['targetSessionId'],counterfactuals:[counter('MOVE','MOVE',false,'A session of another week or still ahead is never moved as missed'),counter('ASK','ASK',true,'The session is asked about',{selected:true})]};
  // A session the record shows as done cannot also be missed: ask which is right, never repeat its content (QRE-R6-15).
  if((ctx.fullLedger??ctx.ledger).some(o=>o.sessionId===target.id&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)))return {action:'ASK',reason:'The record already has an execution report for this session; confirm whether it was missed, or correct the report',missingInputs:['observations.correction'],counterfactuals:[counter('MOVE','MOVE',false,'Moving a session that was reported as executed would repeat its content'),counter('ASK','ASK',true,'Contradictory facts are asked about',{selected:true})]};
  const {best,cands}=missedMove({...ctx,sk:ctx.skw},program.weeks[w].sessions,target);
@@ -2082,7 +2088,9 @@ function goalChange(ctx){
  const event=ch.event===null?null:ch.event?{kind:EVENTS[key(ch.event.kind)],date:ch.event.date,timeGoalMinutes:ch.event.timeGoalMinutes??null}:ctx.kind==='EVENT_DATE_CHANGE'&&ch.eventDate?{...c.goals.event,date:ch.eventDate}:c.goals.event;
  // V1X-EVENTS: a 5K or a marathon enters a plan only through a new plan's intake (where eligibility is read); a plan already made for one keeps
  // it through a date change. Any other change to those distances asks for a new plan.
- const sameKind=!!event&&!!c.goals.event&&event.kind===c.goals.event.kind&&allowsEvent(ctx.authority.eventExtension,event.kind);
+ // QRE-V1FC-01: a marathon's date is part of its eligibility (the weeks to the race, the block's own projection), read only when a plan is made:
+ // a marathon whose date changes asks for a new plan, as a change into one does. The same marathon stated again keeps the plan.
+ const sameKind=!!event&&!!c.goals.event&&event.kind===c.goals.event.kind&&allowsEvent(ctx.authority.eventExtension,event.kind)&&(event.kind!=='MARATHON'||event.date===c.goals.event.date);
  if(event&&(!(['10K','HALF_MARATHON'].includes(event.kind)||sameKind)||dayGap(c.startDate,event.date)>=program.weeks.length*7||dayGap(ctx.asOfLocal,event.date)<7))return {action:'ASK',reason:'The new event is outside this program horizon or too close to plan safely; a new program input is needed',missingInputs:['newProgramInput']};
  if(event&&!allows(ctx.authority,'R6-EVENT-TRANSITION'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Event transition authority unavailable'};
  const goalKey=g=>hash({run:g.run.kind,strength:g.strength.kind,event:g.event?{kind:g.event.kind,date:g.event.date}:null});
@@ -2995,9 +3003,13 @@ function temporaryReductionOutsideV1(ctx,kind){
  const {program,asOfLocal}=ctx,ph=program.phases,race=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null,near=race&&dayGap(asOfLocal,race)>=0&&dayGap(asOfLocal,race)<=20;
  const paths='You may skip, shorten or stop any session: a missed session is never made up, and the plan does not step up on sessions not done. If you need days off, report a break and the return is planned for you. If symptoms persist or worsen, or any warning sign appears, report it and seek a health professional\'s assessment'+(near?'. Your race is within 20 days: you can mark the race date unavailable or change the event':'');
  if(kind==='WELLBEING_CHECK')return {action:'KEEP',reason:'No temporary reduction is in progress in this version, so there is nothing to check: your plan stays as it is. '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,counterfactuals:[counter('KEEP','KEEP',true,'Nothing to check',{selected:true})]};
- const w=review.wellbeing&&typeof review.wellbeing==='object'&&!Array.isArray(review.wellbeing)?review.wellbeing:{},asked=signsFor(w.condition),answers=w.warningSigns&&typeof w.warningSigns==='object'&&!Array.isArray(w.warningSigns)?w.warningSigns:{};
- const missing=asked.filter(k=>answers[k]!==false).map(k=>'wellbeing.warningSigns.'+k);
- if(missing.length)return {action:'ASK',reason:'Answer each warning sign (yes or no): an unanswered sign is never read as no',missingInputs:missing};
+ // QRE-V1FC-02: the screen is the instrument's own reading (readWellbeing), unchanged: the condition from its vocabulary (it decides which signs are
+ // asked), every sign of that condition actively answered, no unrecognized or non-boolean answer. What V1 does not read (the intent, the days, the
+ // sports, the region, the return speed) is never asked: a reduction is not offered, so its choices are not needed.
+ const w=review.wellbeing&&typeof review.wellbeing==='object'&&!Array.isArray(review.wellbeing)?review.wellbeing:null;
+ const read=readWellbeing(w?{...w,intent:'REST',days:WINDOW_DAYS.min,sports:undefined,region:undefined,returnSpeed:undefined,startDate:undefined,endDate:undefined}:w,{today:asOfLocal,programmed:ctx.programmedSports});
+ if(read.clinical)return read.clinical;
+ if(read.ask)return {action:'ASK',reason:read.ask.missingInputs.some(k=>k.startsWith('wellbeing.warningSigns'))?'Answer each warning sign (yes or no): an unanswered sign is never read as no':read.ask.reason,missingInputs:read.ask.missingInputs};
  return {action:'KEEP',reason:'You told us you are not at 100% and answered no to every warning sign. This version does not adjust the plan for feeling under par, so your plan stays as it is. '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,
   counterfactuals:[counter('REDUCE','REDUCE',false,'A temporary reduction with its return is outside this version: no dose is invented for it'),counter('KEEP','KEEP',true,'The plan is kept; the athlete skips or stops by their own report',{selected:true})]};
 }
