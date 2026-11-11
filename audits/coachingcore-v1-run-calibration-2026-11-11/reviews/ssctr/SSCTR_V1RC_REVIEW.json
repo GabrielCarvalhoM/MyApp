@@ -1,0 +1,231 @@
+{
+ "recordId": "SSCTR-V1RC-REVIEW-r1",
+ "date": "2026-11-11",
+ "mission": "CoachingCore V1 Run Calibration Extension (Founder request of 2026-11-11); independent sporting gate on the candidate commit bc40218",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as independent judge of the implemented candidate",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180, read in the extract)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf, read in the extract)",
+  "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5, effort high). It did not author SSCTR-V1RC-DECISION-r1 and did not write the candidate. Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed.",
+  "nature": "An AI software reviewer under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, for nonclinical sporting content only. It holds no human credentials, licence, degree or registration and has no clinical or legal equivalence. This record is an internal literature-based sporting judgment, not human validation, empirical product validation or medical clearance. Clinical judgment stays CLINICAL_HUMAN_REQUIRED.",
+  "independence": "Independent of the decision author and of the implementer (SSCTR-08). No self-check is counted."
+ },
+ "inputs": {
+  "candidate": "Extract of commit bc40218 (no git), read and run in place; my probes ran from a scratch subfolder of my own (ssctr-judge-scratch-r1-7c3e) and changed nothing else in the extract",
+  "extensionValues": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json sha256 9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30 (verified by me in the extract and in the worktree; equals RUN_EXTENSION_SHA256 in the runtime)",
+  "runtime": "CoachingCore/src/v1-run-calibration.mjs sha256 135fcf39d450d8e70b0336e86e3d94cb3e314ad385d5ddb100c66df110d5fde0; CoachingCore/src/v1-run-index.mjs sha256 8db5c82417634dce229d2b368ed16b055493ca8e433a491fb32626f99e27fda4",
+  "decision": "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3 (and .md, and SSCTR_DECISION_REQUEST.md)",
+  "reviewRequest": "audits/coachingcore-v1-run-calibration-2026-11-11/REVIEW_REQUEST_V1RC.md sha256 fc5615f41e3d4a56fae33fb47b5516b5cd8a79d2a94e04befc58d14637ba503d (extract copy)",
+  "alsoRead": "RUN_CALIBRATION_CONTRACT_V1RC.md; evidence/JOURNEYS_V1RC.txt; test/v1rc-helpers.mjs, v1rc-flow.test.mjs, v1rc-limitation-c.test.mjs; src/r6-intake.mjs lines 239-260 (preparatory marathon goal)",
+  "notRead": "ACF_G05_RUN_CALIBRATION.md, REPERTOIRE_CATALOG_B0.json, PROGRAM_POLICY_R6.json, EVENT_EXTENSION_V1.json and the V1 closure records were not opened in this review; I relied on the decision's restatement of them and on the runtime's own values. No finding depends on them.",
+  "hostInjectedContext": "The host injected a global CLAUDE.md, the project CLAUDE.md and a MEMORY.md (earlier mission summaries) into this instance. They were used only for orientation (for example the rule against verify scripts). Nothing in them is used as evidence, approval or a finding; the judgment rests on the files and runs listed here."
+ },
+ "runs": {
+  "directedTests": "node --test test/v1rc-calibration.test.mjs test/v1rc-flow.test.mjs: 49 tests, 49 pass, 0 fail",
+  "journeys": "node scripts/v1rc-journeys.mjs <scratch>: 23 journeys, engine plan and decisions identical to the frozen V1 entry point in all; output byte-identical (cmp) to evidence/JOURNEYS_V1RC.txt and JOURNEYS_V1RC.json",
+  "probes": "ssctr-judge-scratch-r1-7c3e/probe1.mjs to probe6.mjs, through test/v1rc-helpers.mjs (timeline, runner, result, DEV) over src/v1-run-index.mjs. All under the development authority (DEV), as the tests run.",
+  "notRun": "Full suite, fuzz and freeze scripts (engineering scope of the other judge). npm run verify and verify-r* never run. The skill's Python validator was not run: this record is multi-boundary, not the single-decision schema."
+ },
+ "handRecomputation": {
+  "method": "Independent arithmetic from the decision's formulas (not from the runtime), compared with runtime output",
+  "cases": [
+   {"athlete": "10K 30:00 OFFICIAL RPE 9 (very fast)", "check": "THRESHOLD fast = v(55; 1.07) x 0.975 -> 192.1 s/km -> 3:15; slow = v(75; 1.12) x 0.95 -> 209.0 -> 3:30. EASY fast = 0.84 v(60; 1.07) x 0.975 -> 230.0 -> 3:50; slow = 0.72 v(60; 1.12) x 0.95 -> 283.4 -> 4:45. 5K estimate 13:15-15:00 central 14:15; half 1:03:00-1:11:00 central 1:07:00", "runtime": "identical"},
+   {"athlete": "10K 1:14:00 GPS (slow, MODERATE + slow-runner margin, m 0.05)", "check": "5K low = 4440 x 0.5^1.12 x 0.95 -> 32:15; high = 4440 x 0.5^1.04 x 1.05 -> 38:00", "runtime": "identical"},
+   {"athlete": "Half 1:45:00 OFFICIAL, eligible marathon block (journey 14)", "check": "Marathon low 6300 x 2^1.08 x 0.975 -> 3:36; high 6300 x 2^1.20 x 1.025 -> 4:08; central 2^1.13 -> 3:50; MARATHON_EFFORT band 5:35-5:55", "runtime": "identical"},
+   {"athlete": "5 km field test 23:45 TRACK (journey 04)", "check": "5K band 4:50-5:00; derived EASY fast 6:10 vs P1 observed 6:35 -> EASY 6:35; LONG fast 6:20", "runtime": "identical (and shows R-04)"}
+  ],
+  "conclusion": "Where the runtime computes a value, it computes the decision's formula exactly. The findings below are about rules, not arithmetic."
+ },
+ "literatureAccess": {
+  "tools": "Europe PMC REST API (search and fullTextXML) called with curl and Node from the shell, with a generic client name and no personal data. WebSearch and WebFetch were not used. PubMed and publisher pages were not tried.",
+  "fullTextRead": [
+   "Vickers AJ, Vertosick EA 2016, BMC Sports Sci Med Rehabil, PMC5000509 (SRC01): passages located by text search: k = 1.07 chosen as average; Riegel well calibrated to the half marathon and 10K; marathon underestimated by at least 10 min for half of runners; Table 4 Riegel residual centiles 5th -36:17, 10th -30:24, 25th -19:47, 50th -10:09, 95th +5:12; the predictor race was the runner's longest non-marathon race.",
+   "Blythe DA, Kiraly FJ 2016, PLoS One, PMC4919094 (SRC02): passage confirming individual exponents higher than Riegel's (median 1.12) and that the individual exponent correlates with performance."
+  ],
+  "abstractsRead": [
+   "Smyth B 2021, PLoS One, PMID 34010308: 28% of male and 17% of female recreational marathoners showed late-race pacing collapse (counterevidence for optimistic marathon estimates and for the pacing caution).",
+   "Oficial-Casado F et al. 2025, Front Physiol, PMID 41631237: 8,261 runners with a half and a marathon in the same year; half-to-marathon regression explained 85% of variance with mean absolute error 5.9%; accuracy similar to VDOT but differing by performance level.",
+   "Ausland A, Kelemen B, Seiler S 2026, Front Sports Act Living, PMID 42088591: age formulas systematically misestimate HRmax; field maxima from maximal training or racing efforts are an ecological alternative.",
+   "Kasiak PS et al. 2023, J Clin Med, PMID 37109218: 4,043 runners with CPET; HRmax prediction models of limited precision (RMSE 9.1-10.5 bpm).",
+   "Fisher J et al. 2017, J Hum Kinet, PMID 28713466: 5 km time trial CV 1.5% in six trained men after familiarisation.",
+   "Spot checks of decision sources (abstract records): SRC13 Gilgen-Ammann 2020 (PMID 32396865, MAPE 3.2-6.1%), SRC17 Riebe 2015 (PMID 26473759, cardiovascular events are often preceded by warning signs or symptoms), SRC05 Hopkins and Hewson 2001 (PMID 11528349), SRC06 Smyth and Muniz-Pumares 2020 (PMID 32472926). Each matched the decision's description."
+  ],
+  "negativeSearches": [
+   "Europe PMC title search for running time trial or field test safety or reliability in novice, untrained or recreational runners: 0 hits. No direct evidence on the safety of a 3 km or 5 km test in novices was found; the absence is a search result, not proof of safety.",
+   "Europe PMC title search for maximal heart rate from a field or race effort in runners (narrow form): 0 hits; the broader search found PMID 42088591 above."
+  ],
+  "notRead": "Riegel 1981; Daniels' tables; every decision source other than those listed above (relied on the decision record for SRC03, SRC04, SRC07-SRC12, SRC14-SRC16, SRC18-SRC25). No effect size or participant count is stated here beyond what the texts I opened report.",
+  "rule": "Search snippets, consumer pages and model recollection are not used as evidence."
+ },
+ "judgmentOfTheDecision": {
+  "summary": "SSCTR-V1RC-DECISION-r1 is defensible for nonclinical recreational adults on roads or tracks, with the amendments required by R-01, R-04 and R-10. Its central choices withstand the counterevidence I could check: a power-law range (not a point) to the half marathon (Vickers 2016 full text: k 1.07 well calibrated there); the marathon only upward from a current half or marathon result with a wide exponent range (Vickers residuals; Valencia MAE 5.9%; late-race collapse in 17-28% of recreational marathoners); easy, long and recovery bands as ceilings only; heart-rate zones display-only from a chest-strap observed maximum, never from age; no projection; fail-closed boundaries.",
+  "byQuestion": [
+   {"q": "Q1 evidence, quality, recency", "view": "Agree, except the AGING cap: aged evidence keeps LOW and margin 0.06 however many other reductions stack (see R-10). The 56/112-day windows are bounded choices, as the decision says."},
+   {"q": "Q2 conflict", "view": "Agree. Choosing the slower result even when it then leaves no capacity (R13) is the conservative abstention and acceptable."},
+   {"q": "Q3 model", "view": "Agree. The STANDARD range 1.04/1.07/1.12 brackets the Vickers average and the Blythe individual median. The MARATHON range (relative to the central exponent about -5.8% to +7.6% before rounding) covers most but not all recreational outcomes (Vickers 10th centile -30 min at k 1.07; Valencia MAE 5.9%); acceptable only as a labelled wide range with the explicit 'many runners race slower' disclosure carried by the runtime (R-07). The population limit must apply to every model output, the marathon included (R-03)."},
+   {"q": "Q4 bands", "view": "Agree with race-pace bands from the athlete's own estimate (fast edge slower than central), threshold as v(55)-v(75), fractions as ceilings, wider margins and slower rounding. Required addition: ceilings and fast edges must never invert effort order (R-04)."},
+   {"q": "Q5 assessments", "view": "Agree with P0-P3 and the eligibility, with one gap: the decision allows one repeat after 7 days for any incomplete test and does not distinguish a stop for a warning sign. Amendment required by R-01. The decision's own eligibility (current nonclinical eligibility; unknown is not eligible) must be enforced (R-02). The ACSM screening record (warning signs often precede exercise-related cardiac events) supports both."},
+   {"q": "Q6 heart rate", "view": "Agree: chest strap only, RPE 8 or more, display-only, no age formula, measured kept apart from estimated. An observed maximum from a controlled 8-of-10 test will often be below the true maximum; zones then shift low and only suggest slowing, the conservative direction; the runtime notes it."},
+   {"q": "Q7 estimates", "view": "Agree, including the opinion that a labelled current-capacity range with 'not a promise' is compatible with the no-promise reading of the finish-time rule; the formal reading stays with Founder/PCG."},
+   {"q": "Q8 recalibration", "view": "Agree. The runtime departs from it on the effort requirement of a downward step (R-05)."},
+   {"q": "Q9 withdrawal", "view": "Agree; the runtime applies it to the observed maximum but not to supplied lab anchors (R-09)."},
+   {"q": "Q10 limits", "view": "Agree; confirmed in journeys 01, 02, 15, 16 and my probes."}
+  ]
+ },
+ "conformance": [
+  {"item": "Q1", "result": "CONFORMS", "note": "Kinds kept apart; undated or old bests are HISTORICAL_BEST (journeys 06, 07); measurement, effort and short-break reductions as decided; aged evidence PRESUMED LOW with continuity."},
+  {"item": "Q2", "result": "CONFORMS", "note": "Slower wins within 28 days and 3% (journey 08); marathons only against longer results."},
+  {"item": "Q3", "result": "DEVIATES", "note": "Exponents, ratios and margins exact. The population limit is not applied to the marathon estimate from a STANDARD half (R-03)."},
+  {"item": "Q4", "result": "CONFORMS_WITH_NOTE", "note": "All formulas reproduce; P1 interaction gives LONG faster than EASY (R-04, the decision's own wording)."},
+  {"item": "Q5", "result": "DEVIATES", "note": "P0, P1, P2, P3 eligibility by running and experience, replacement, 42-day limit and one repeat conform. A not-tolerated or symptom-stopped test is re-offered (R-01). Current nonclinical eligibility is not checked (R-02)."},
+  {"item": "Q6", "result": "CONFORMS_WITH_NOTE", "note": "Chest strap, RPE, window, plausibility, zones and labels conform; lab anchors ignore the hold or return floor (R-09)."},
+  {"item": "Q7", "result": "DEVIATES", "note": "Gates, rounding, range-first display, goal comparison, no projection and completion withdrawal conform. Outside-population marathon estimate (R-03); the marathon disclosure is only a flag (R-07)."},
+  {"item": "Q8", "result": "DEVIATES", "note": "Week-boundary stability, domains, bout lengths, steps, caps, withdrawal at the cap and deadband conform. A downward step is taken from sessions reported below the cue (R-05)."},
+  {"item": "Q9", "result": "CONFORMS_WITH_NOTE", "note": "Breaks, holds and walk/jog/restart/return withdraw bands, estimates and the observed maximum (journeys 20, 21); lab anchors excepted (R-09)."},
+  {"item": "Q10", "result": "CONFORMS", "note": "Beginners and walk/jog get P0 only; novices only the 3 km test; no marathon estimate or band from 5K/10K or in the preparatory plan."}
+ ],
+ "findings": [
+  {
+   "id": "SSCTR-V1RC-R-01", "severity": "BLOCKING", "boundary": "V1X-RUN-CAPACITY", "area": "field assessment safety (Q5)",
+   "observed": "A field test declared as stopped and not tolerated (FIELD_TEST, completed:false, tolerated:false, 1.6 km) is followed, from the very next week, by the same TIME_TRIAL_5K offer every week; the engine meanwhile answers KEEP because it never sees the extension's declaration. A completed test declared tolerated:false is offered again after 42 days. Reproduce: ssctr-judge-scratch-r1-7c3e/probe1.mjs D (output: 'D after week 5: PARTIAL OFFERED TIME_TRIAL_5K engine status KEEP', repeated for weeks 6 and 7; 'D2 completed-not-tolerated test: offered again after week 9'). Cause: assessmentOf (v1-run-calibration.mjs lines 473-476) counts tests by completion only and never reads `tolerated`; the decision's repeat rule does not distinguish a stop for a warning sign.",
+   "whyItMatters": "A stop for dizziness, chest pressure, palpitations or faintness during a hard effort is the warning sign the screening model treats as most important (Riebe 2015). Re-offering a near-maximal test as 'optional, no penalty, may be repeated' contradicts the Founder's requirement on what happens on symptoms and the decision's own 'stop and report; the existing screen applies'.",
+   "requiredCorrection": "(1) Add `stoppedFor` to the test declaration (SYMPTOM, PACING, CONDITIONS, TIME, OTHER); a stop with no stated reason is read as SYMPTOM. (2) Any declared evidence (any kind) with tolerated:false, or a test stopped for SYMPTOM, ends field-test offers for the plan in force: assessment NOT_OFFERED with reason SYMPTOM_OR_NOT_TOLERATED_REPORTED, and the calibration output names the evidence id with warningSignScreen: REQUIRED so the client takes the athlete to the existing warning-sign screen; the extension decides no clearance and sets no clinical route. (3) The one repeat after 7 days stays only for a test stopped for PACING, CONDITIONS, TIME or OTHER and tolerated. (4) Directed tests for both probe cases. Decision amendment recorded by the fix: Q5.P3.protocol.incomplete applies only to non-symptom stops."
+  },
+  {
+   "id": "SSCTR-V1RC-R-02", "severity": "BLOCKING", "boundary": "V1X-RUN-CAPACITY", "area": "field assessment eligibility (Q5)",
+   "observed": "The test stays OFFERED in a review where the engine answers ASK because warning-sign items (pain, clinicalConcern) are unanswered. Reproduce: ssctr-judge-scratch-r1-7c3e/probe6.mjs (output: 'day 6 (warning signs unanswered): engine ASK | calibration PARTIAL | assessment OFFERED TIME_TRIAL_3K replaces w5-run-d1'). In probes 3-5 the offer disappeared under ASK only by accident (the unrecorded week left zero weekly minutes). assessmentOf never reads eligibility or the engine's status; v1-run-index.mjs passes only HOLD and CLINICAL_HUMAN_REQUIRED as `hold`.",
+   "whyItMatters": "The decision makes current nonclinical eligibility a P3 criterion and says unknown is not eligible; the constitution reads unknown eligibility as ASK, never permission to prescribe. A test is the hardest effort this extension prescribes.",
+   "requiredCorrection": "Offer a test only when the engine's answer to the review is a prescribing one (not ASK, HOLD, CLINICAL_HUMAN_REQUIRED, UNSUPPORTED or INVALID_INPUT) and the eligibility the engine read for that review is NONCLINICAL_CONFIRMED with every warning-sign item actively answered no, by the engine's own currency rule (no new window invented). Otherwise NOT_OFFERED with reason ELIGIBILITY_NOT_CURRENT. Pass the engine status into runCalibrationOf as `hold` is passed today. Add the probe6 case as a directed test."
+  },
+  {
+   "id": "SSCTR-V1RC-R-03", "severity": "BLOCKING", "boundary": "V1X-RUN-ESTIMATE and V1X-RUN-PACE (MARATHON_EFFORT)", "area": "model population (Q3, Q7)",
+   "observed": "An eligible marathon-block athlete with a half marathon of 2:55:00 (10K equivalent 78:43, outside the 27-75 min population) gets every other band and estimate OUTSIDE_MODEL_POPULATION, yet a MARATHON estimate 5:56:00-6:57:00 (central 6:23:00) and a MARATHON_EFFORT band 9:15-9:55 on the MARATHON_SPECIFIC sessions. Reproduce: probe1.mjs A. Cause: estimateOf's MARATHON branch (v1-run-calibration.mjs line 278) takes the STANDARD reference without checking std.outsidePopulation.",
+   "whyItMatters": "The decision states that outside 27-75 min the model output is UNAVAILABLE. The marathon is where conversion is least reliable and slower runners least consistent (Vickers 2016; Hopkins and Hewson 2001; Emig and Peltonen 2020). The athlete least covered by the model gets the one output most likely to be wrong, as a prescribed training pace.",
+   "requiredCorrection": "In the MARATHON branch, a STANDARD source with outsidePopulation true is not a source; with no other source the estimate is UNAVAILABLE: OUTSIDE_MODEL_POPULATION and the MARATHON_EFFORT band follows. Directed test with half 2:55:00 in an eligible block. (Longer-than-half evidence has no population bound in the decision; see R-11.)"
+  },
+  {
+   "id": "SSCTR-V1RC-R-04", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-PACE", "area": "band coherence (Q4, reading R7)",
+   "observed": "(a) When P1 makes EASY slower, LONG and RECOVERY keep their derived ceilings, so the long-run ceiling is faster than the athlete's own easy ceiling: journey 04 week 5 EASY 6:35 vs LONG 6:20; journey 11 week 7 EASY 6:40 vs LONG 6:35. (b) At the population edge the THRESHOLD fast edge is faster than the TEN_K_EFFORT fast edge: 10K 73:45 OFFICIAL gives THRESHOLD 7:30 vs TEN_K 7:35 (probe2.mjs; the only inversion in a 10K sweep from 27:30 to 75:00, OFFICIAL and GPS).",
+   "whyItMatters": "A long run is easy effort for longer; a ceiling faster than one's own easy pace, or a threshold (6-7 of 10) edge faster than a 10K-effort (7-8) edge, contradicts the session's objective as read by the athlete. Low harm (ceilings, effort governs), but it breaks the Founder's 'a range never contradicts the session's objective'.",
+   "requiredCorrection": "Clamp in the slowing direction only: LONG fast edge at least the EASY fast edge, RECOVERY fast edge at least the LONG fast edge; THRESHOLD fast edge at least the TEN_K_EFFORT fast edge when both are available. This only slows; it derives nothing harder from easy pace. Decision amendment to Q5.P1 ('LONG and RECOVERY are never derived from it' becomes 'never made faster by it')."
+  },
+  {
+   "id": "SSCTR-V1RC-R-05", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-CAPACITY", "area": "recalibration (Q8, reading R4)",
+   "observed": "Two threshold sessions run slower than the band at RPE 4 (cue 6-7, the athlete jogged them) lower the band 2%: probe1.mjs E ('THRESHOLD_CONTROLLED fraction -0.02, rpe 4, rpe 4'). The slower branch (line 395) requires neither RPE inside the cue nor a compatible response. On HALF and MARATHON domains the same step also slows the estimate. Also, partial or incomplete executions are filtered out of `execs`, so a failed session between two fast ones does not break consecutiveness.",
+   "whyItMatters": "Sessions run below the target effort carry no information about capacity at that effort. Lowering an estimate from them is untraceable to evidence, though it is the safe direction for training.",
+   "requiredCorrection": "Downward step only when both sessions are slower than the slow edge by more than 1.5% with RPE inside or above the cue range, or harder than the cue inside the band; RPE below the cue makes a session non-informative. A partial or not-completed execution of the domain between two sessions breaks the pair."
+  },
+  {
+   "id": "SSCTR-V1RC-R-06", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-PACE / V1X-RUN-ESTIMATE", "area": "boundary coherence (reading R14)",
+   "observed": "Race-pace bands (5K, 10K, half, marathon) are shown with PACE on and ESTIMATE off (bandsOf reads the raw estimates; shownEstimates is used only for the estimates and race day).",
+   "whyItMatters": "A race-pace band is the estimate in pace form, labelled 'estimated current race pace'. If ESTIMATE were held back (for example by the Founder/PCG reading of the finish-time rule), the same claim would still be shown.",
+   "requiredCorrection": "RACE_PACE_ESTIMATE bands require both PACE and ESTIMATE; with ESTIMATE off they are UNAVAILABLE with EXTENSION_NOT_ENABLED and the sessions stay by effort."
+  },
+  {
+   "id": "SSCTR-V1RC-R-07", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-ESTIMATE", "area": "marathon disclosure (Q7.marathon, Q4.rule6)",
+   "observed": "The marathon estimate carries only the generic statement and a flag MARATHON_WIDE_RANGE. The decision's required content ('assuming the block's long runs are completed; many runners race the marathon slower than such estimates') is not in the output; nor is it on the MARATHON_EFFORT band.",
+   "whyItMatters": "With MAE about 6% for half-to-marathon (Oficial-Casado 2025) and late-race collapse in 17-28% of recreational marathoners (Smyth 2021), the caution is part of what makes the range honest; a flag can be dropped by a copy layer.",
+   "requiredCorrection": "Carry machine-readable fields on the marathon estimate, the MARATHON_EFFORT band and the marathon race-day reference, for example cautions: ['MANY_RUNNERS_RACE_THE_MARATHON_SLOWER_THAN_SUCH_ESTIMATES'] and assumes: ['BLOCK_LONG_RUNS_COMPLETED'], with the decision's text in the values file. Product copy review (G.8) stays separate."
+  },
+  {
+   "id": "SSCTR-V1RC-R-08", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-PACE", "area": "observed bands (Q5.P1, Q5.P2; Founder band contents)",
+   "observed": "Observed bands (P1 EASY, P2 harder domains) carry confidence null, margin null, validUntil null, and no session dates (bandsOf line 351). A P2 band is a fixed 10 s/km wide from two GPS sessions, narrower than ordinary GPS distance error (3.2-6.1%, SRC13).",
+   "whyItMatters": "The Founder requires every range to carry validity or recency, limits and uncertainty; the runtime already lets them lapse with their windows, but the athlete cannot see when or why.",
+   "requiredCorrection": "Add to observed bands: the session ids with dates, the window, validUntil (the day the observation set no longer qualifies under its window), and an uncertainty cause list (OBSERVED_AT_EFFORT; GPS_DISTANCE_ERROR when GPS). No change to the values."
+  },
+  {
+   "id": "SSCTR-V1RC-R-09", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-HR", "area": "withdrawal of measured anchors (Q9, reading R11)",
+   "observed": "From code reading (heartRateOf, v1-run-calibration.mjs line 447): supplied lab anchors are excluded only by a declared break of 14 days or more, not by the hold or return floor applied to the observed maximum (R11) and to capacity; not probed.",
+   "whyItMatters": "Q9 withdraws heart-rate zones on a hold or a return; after a clinical hold or a return-mode week, pre-hold lab values would reappear as current. Display-only, so low harm.",
+   "requiredCorrection": "Apply the same floor (floorOf and the walk/jog/restart/return floor) to lab anchors, with a directed test."
+  },
+  {
+   "id": "SSCTR-V1RC-R-10", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-CAPACITY", "area": "confidence of aged evidence (Q1.confidence, decision amendment)",
+   "observed": "A 10K 80 days old measured MANUAL (two reductions), or GPS with unknown effort (two reductions), is PRESUMED LOW with margin 0.06, identical to clean aged evidence: probe1.mjs C (four identical outputs).",
+   "whyItMatters": "Aging adds no uncertainty to already-uncertain evidence: an aged manual time of unknown effort gives the same bands and estimates as an aged official race. Capacity changes within weeks of altered training (SRC15, SRC16).",
+   "requiredCorrection": "Count AGING as one reduction toward the unavailability threshold (aged evidence with two or more other reductions is UNAVAILABLE); the LOW cap stays. Decision amendment; correct in the fix cycle if possible, otherwise carried as a condition."
+  },
+  {
+   "id": "SSCTR-V1RC-R-11", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-ESTIMATE", "area": "population bound for longer evidence (Q3, decision gap)",
+   "observed": "Marathon-or-longer evidence has an extra margin from 300 min but no outer population bound; a very slow marathon result yields a same-distance estimate and MARATHON_EFFORT band.",
+   "whyItMatters": "Same-distance use is not a conversion, so the risk is small; a 25-40 km result converted up to the marathon with the MARATHON exponents is a conversion with no stated population.",
+   "requiredCorrection": "Decision amendment: either state an outer bound for longer-than-half evidence converted upward (for example by its marathon-equivalent central time) or restrict longer evidence below the marathon distance to the same population as the half. Until then, record it as a limit in the ESTIMATE conditions."
+  },
+  {
+   "id": "SSCTR-V1RC-R-12", "severity": "NON_BLOCKING", "boundary": "V1X-RUN-CAPACITY", "area": "replaced session (Q5, reading R12)",
+   "observed": "The entry point asks the engine to withhold a MOVE only when the test declaration arrives with, or before, the not-done report of the replaced session. If the session is reported missed in an earlier review, the engine may move it, and the athlete could do the test and the moved harder session in the same week.",
+   "whyItMatters": "The test must replace, never add to, the week's harder session.",
+   "requiredCorrection": "State in the data contract that the test is declared in the same review as the not-done report of the replaced session; and, when a declared test names a session already moved by an earlier review, mark the moved session's guidance with TEST_ALREADY_DONE_THIS_WEEK (effort only, by the engine's own option where available). The R12 reading itself is acceptable."
+  }
+ ],
+ "readings": [
+  {"id": "R1", "verdict": "ACCEPTABLE", "note": "Two tracks keep marathon evidence from ever being converted down; most recent of a current half and the longer reference for the marathon is sound. Subject to R-03."},
+  {"id": "R2", "verdict": "ACCEPTABLE", "note": "Holding the reference inside the 1.5% deadband while CURRENT, and letting the newer take over when it ages out, is the intended hysteresis; resetting training steps then is correct."},
+  {"id": "R3", "verdict": "ACCEPTABLE_WITH_CONDITION", "note": "Factor on band speeds and a single slowing of the half/marathon estimate are right. Condition: an upward-adjusted race-pace band must not be labelled as the estimated current race pace (the note TRAINING_ADJUSTED_UP must reach the label)."},
+  {"id": "R4", "verdict": "ACCEPTABLE_WITH_CONDITION", "note": "Last two executions since the band changed, each against its own week's band, is right; see R-05 for effort and broken pairs."},
+  {"id": "R5", "verdict": "ACCEPTABLE", "note": "Recorded-before-the-week is the correct reading of weekly stability."},
+  {"id": "R6", "verdict": "ACCEPTABLE", "note": "A walk/jog, restart or return week ending earlier evidence is the conservative reading of Q9."},
+  {"id": "R7", "verdict": "FINDING", "note": "R-04: LONG and RECOVERY ceilings must not be faster than the EASY ceiling."},
+  {"id": "R8", "verdict": "ACCEPTABLE_WITH_CONDITION", "note": "Counting executed runs, results on record and the intake figure while recent is acceptable because the gate only withholds an estimate. Condition: the intake figure is self-reported; it must not be read beyond its 28 days (as implemented)."},
+  {"id": "R9", "verdict": "ACCEPTABLE", "note": "Verified: an ineligible marathon goal reaches the plan as PERFORMANCE with the event in contextEvent.preparatory (src/r6-intake.mjs line 260), so 'the plan in force is planned for the marathon as an event' is the engine's own eligibility; completion race day also withdraws."},
+  {"id": "R10", "verdict": "ACCEPTABLE", "note": "All-or-nothing display of supplied lab values keeps them as supplied, unnamed and unmapped."},
+  {"id": "R11", "verdict": "ACCEPTABLE_WITH_CONDITION", "note": "Correct for the observed maximum; extend it to lab anchors (R-09)."},
+  {"id": "R12", "verdict": "ACCEPTABLE_WITH_CONDITION", "note": "Using the engine's own withhold option keeps the planner unchanged; see R-12 for the ordering of declarations."},
+  {"id": "R13", "verdict": "ACCEPTABLE", "note": "Taking the slower result even when it then leaves no capacity is the conservative abstention the decision intends; the typed reason and causes are shown and a new result resolves it."},
+  {"id": "R14", "verdict": "FINDING", "note": "R-06: race-pace bands must also require ESTIMATE."}
+ ],
+ "journeyCoherence": {
+  "summary": "Across the 23 journeys and my probes no band asks an athlete to speed up, nothing is derived from a goal time or from easy pace, no beginner or walk/jog athlete gets a test, band or estimate, no marathon estimate or band comes from a 5K/10K or in the preparatory plan, holds and breaks withdraw everything, and estimates are ranges labelled not a promise. Exceptions: R-01 and R-02 (test offers), R-03 (slow-runner marathon), R-04 (ceiling order).",
+  "notes": [
+   "Journey 03/17: a 5 km test is offered to an athlete who reports by minutes only; the protocol requires a track or GPS course, so the offer is unusable but harmless. Product may want to show it only when a measuring method is available.",
+   "Journey 05: the half-marathon band 5:55-6:10 lies slower than the central estimate (5:47/km) by design (fast edge at half the margin, then slower rounding); conservative and acceptable.",
+   "Journey 14: marathon 3:36-4:08 from a 1:45 half; the low end is optimistic for most recreational runners, which the pacing caution (start at or slower than the slower end) and R-07 must carry.",
+   "Journey 18: a low-quality conflicting result removes capacity (R13), acceptable."
+  ]
+ },
+ "fieldAssessmentSafety": {
+  "eligibility": "Running and experience criteria, prior executed harder session, phases, 14 days before a race, 7 days after an adverse response, 42-day limit and novice 3 km only all conform. Missing: current nonclinical eligibility (R-02).",
+  "protocol": "Warm-up, strides only if already done, flat measured course, 'about 8 of 10, never all-out', cool-down, completion criteria and the stop list are present in the offer.",
+  "symptoms": "Not handled: a not-tolerated or symptom-stopped test is re-offered (R-01).",
+  "replacedSession": "Replaced, never added or moved when declared with the not-done report (directed test and journey 04); see R-12 for declaration order.",
+  "evidence": "No direct trial of 3-5 km test safety in novices was found by the decision author or by me; the restriction to athletes already executing harder work at a controlled cue is the defensible basis."
+ },
+ "limitationC": {
+  "view": "AGREE with the Chief: keep C as it is in this mission.",
+  "reason": "The decision's own opinion says keeping C is safe. Exposing the frozen one-week SYSTEMIC_FATIGUE adaptation would need a new rule (an offer, a repetition limit routed to the persistent-symptom path) and custody/G04 work; the frozen engine has no repetition limit (test/v1rc-limitation-c.test.mjs, third test), so wiring it without that rule would be unsafe. The Q11 conditions are a sound brief for a later mission."
+ },
+ "boundaries": [
+  {"boundaryId": "V1X-RUN-CAPACITY", "disposition": "REJECT", "asTheCandidateStands": true, "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC05", "SRC13", "SRC15", "SRC16", "SRC17", "SRC20"], "blockingFindings": ["SSCTR-V1RC-R-01", "SSCTR-V1RC-R-02"], "nonBlockingFindings": ["SSCTR-V1RC-R-05", "SSCTR-V1RC-R-10", "SSCTR-V1RC-R-12"], "approvableAfter": "R-01 and R-02 closed with directed tests; then APPROVE_WITH_CONDITIONS with the global conditions G.1-G.8 of the decision."},
+  {"boundaryId": "V1X-RUN-PACE", "disposition": "REJECT", "asTheCandidateStands": true, "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC02", "SRC07", "SRC08", "SRC09", "SRC21", "SRC22"], "blockingFindings": ["SSCTR-V1RC-R-03 (MARATHON_EFFORT band)"], "nonBlockingFindings": ["SSCTR-V1RC-R-04", "SSCTR-V1RC-R-06", "SSCTR-V1RC-R-08"], "approvableAfter": "R-03 closed and CAPACITY enabled; then APPROVE_WITH_CONDITIONS: effort governs; ceilings only for EASY, LONG, RECOVERY; R-04, R-06 and R-08 corrected or carried as conditions."},
+  {"boundaryId": "V1X-RUN-HR", "disposition": "APPROVE_WITH_CONDITIONS", "asTheCandidateStands": true, "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC10", "SRC11", "SRC12", "SRC08", "SRC09"], "blockingFindings": [], "nonBlockingFindings": ["SSCTR-V1RC-R-09"], "conditions": ["Display-only reference scale: never a session target, never a gate, never converted to pace or effort, never called thresholds; may only suggest slowing in EASY, LONG or RECOVERY.", "Chest strap only, from a qualifying effort of 10 min or more at RPE 8 or more, 140-220 bpm, within 365 days; never from age; measured lab values shown as supplied and never equated with estimated zones.", "R-09: apply the hold and return floor to lab anchors.", "Inert until V1X-RUN-CAPACITY is enabled; if the fix cycle changes heartRateOf, the withdrawal fold or the heart-rate output fields, the recheck must confirm or remove this record.", "Heart-rate and lab values are health-adjacent data: Security review before integration (not this role)."], "note": "Approved on the values bytes and on runtime bc40218 as read."},
+  {"boundaryId": "V1X-RUN-ESTIMATE", "disposition": "REJECT", "asTheCandidateStands": true, "evidenceStatus": "SUPPORTED_WITH_LIMITS", "sourceIds": ["SRC01", "SRC02", "SRC03", "SRC04", "SRC05", "SRC06"], "blockingFindings": ["SSCTR-V1RC-R-03"], "nonBlockingFindings": ["SSCTR-V1RC-R-06", "SSCTR-V1RC-R-07", "SSCTR-V1RC-R-11"], "approvableAfter": "R-03 closed and CAPACITY enabled; then APPROVE_WITH_CONDITIONS: ranges only, central never alone, 'not a promise', no projection; marathon only from a current half or marathon inside the block, never on a completion race day; R-07 carried; the Founder/PCG reading of the finish-time rule recorded before athlete-facing use."}
+ ],
+ "verdict": {
+  "overall": "NOT_READY",
+  "why": "Three blocking findings, each with a narrow, testable correction inside one fix cycle: a symptom-stopped or not-tolerated test is re-offered (R-01); a test is offered while eligibility is unanswered (R-02); a marathon estimate and band reach a runner outside the model population (R-03). The methods and numbers themselves are defensible and reproduced exactly.",
+  "closesWhen": "R-01, R-02 and R-03 corrected exactly as stated, each with a directed test reproducing my probe input, the 23 journeys and the frozen-engine mirror still identical, and the recheck finding no new deviation. Non-blocking findings should be corrected in the same cycle; any left open become conditions of the enabling records.",
+  "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false
+ },
+ "enablingRecords": {
+  "file": "SSCTR_V1RC_RUN_RECORDS.json (beside this record)",
+  "written": ["V1X-RUN-HR"],
+  "notWritten": ["V1X-RUN-CAPACITY (R-01, R-02)", "V1X-RUN-PACE (R-03)", "V1X-RUN-ESTIMATE (R-03)"],
+  "effect": "The runtime turns a boundary on only with CAPACITY, so with this file every boundary stays off (status DISABLED) until a CAPACITY record exists."
+ },
+ "escalations": [
+  {"to": "Founder / PCG", "what": "The formal reading of the catalog rule against claiming a finish time is still to be recorded before estimates or race-pace bands reach athletes. My sporting opinion matches the decision: a labelled current-capacity range with 'not a promise' is compatible with a no-promise reading."},
+  {"to": "Product / Data via Chief", "what": "Collection of `tolerated` and the new `stoppedFor` in the test report; the declaration-order contract of R-12; showing a test offer only to athletes who can measure the distance."},
+  {"to": "Clinical route (existing)", "what": "R-01 points the athlete to the existing warning-sign screen; this record sets no clinical rule and grants no clearance."},
+  {"to": "Security via Chief", "what": "Heart-rate and lab values."}
+ ],
+ "proposedQueueItems": [
+  {"queue_id": "HQ-V1RC-SSCTR-HR", "decision_id": "SSCTR-V1RC-DECISION-r1#Q6 judged by SSCTR-V1RC-REVIEW-r1", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "note": "Only for the boundary approved here; the CAP, PACE and EST items of the decision are to be proposed by the recheck that approves them. Human revalidation should compare observed-maximum zones with measured anchors where available."},
+  {"queue_id": "HQ-V1RC-SSCTR-EST-CALIBRATION", "decision_id": "SSCTR-V1RC-DECISION-r1#Q7 (when enabled)", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "note": "Proposed for the recheck: the first real estimate-versus-actual race results, the marathon especially, are the empirical test of the ranges."}
+ ],
+ "expiry": {"owner": "Chief / SSCTR", "reviewBy": "the recheck after the single fix cycle, and in any case 2027-05-11", "triggers": ["any change to the values file (its hash binds the record)", "any change to heartRateOf, the withdrawal fold or the heart-rate output fields", "a new systematic review on race-time prediction or heart-rate prescription in recreational runners", "first real estimate-versus-actual data or any adverse event in a test or banded session", "the Founder's funding declaration (human revalidation)"]}
+}

@@ -1,0 +1,281 @@
+{
+ "reviewId": "QRE-V1RC-REVIEW-1",
+ "date": "2026-11-11",
+ "mission": "CoachingCore V1 Run Calibration Extension (Founder request of 2026-11-11)",
+ "role": "quality-reliability-engineer, independent judge (did not author the candidate)",
+ "verdict": "NOT_READY",
+ "gateState": "QUALITY_BLOCKED",
+ "candidate": {
+  "commit": "bc40218",
+  "reviewedAs": "extract without git at scratchpad/v1rc-candidate-bc40218 (read-only; no file changed)",
+  "fileSha256": {
+   "CoachingCore/src/v1-run-calibration.mjs": "135fcf39d450d8e70b0336e86e3d94cb3e314ad385d5ddb100c66df110d5fde0",
+   "CoachingCore/src/v1-run-index.mjs": "8db5c82417634dce229d2b368ed16b055493ca8e433a491fb32626f99e27fda4",
+   "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json": "9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30",
+   "CoachingCore/test/v1rc-calibration.test.mjs": "fa69560b06b100642c5245e9409b54bc60227b63c92b335096416cd40133d912",
+   "CoachingCore/test/v1rc-flow.test.mjs": "bf485fb2472a6bea2955dc5746744e4c014b75668261cfd282c233fadecb9be8",
+   "CoachingCore/test/v1rc-helpers.mjs": "639122d81b39715842aef1a27262a508e5bb63bf8d71f4e3c770f2184da609f9",
+   "CoachingCore/test/v1rc-limitation-c.test.mjs": "1e5a41d00614f598a3229d9ea4a0713e0be3e72753157e17a5e9e8781f5142a0",
+   "CoachingCore/scripts/v1rc-freeze.mjs": "8b90ddb4022bafa5bf6584a1f8eb0eeba1236a795f9c429f1bd56b14b47bdbaa",
+   "CoachingCore/scripts/v1rc-fuzz.mjs": "54a00bc9edc2dafca98f378720300e8c81807c5d6fc7f544c5cfa249c5aaa973",
+   "CoachingCore/scripts/v1rc-journeys.mjs": "81d4970c217357dcb9c8fdc7ccdaf1c6a18fc17efade679b8d228ec4cd77cf32",
+   "audits/coachingcore-v1-run-calibration-2026-11-11/RUN_CALIBRATION_CONTRACT_V1RC.md": "45f08764332422d3f4df6449b04c94d9762f7388de45951b8d60a010edf61131",
+   "audits/coachingcore-v1-run-calibration-2026-11-11/REVIEW_REQUEST_V1RC.md": "fc5615f41e3d4a56fae33fb47b5516b5cd8a79d2a94e04befc58d14637ba503d",
+   "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json": "3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3"
+  }
+ },
+ "environment": {"node": "v24.19.0, Windows 11, Git Bash", "scopeNote": "This verdict covers commit bc40218 only. When the reports were written, the live worktree held uncommitted changes from another session to v1-run-calibration.mjs, v1-run-index.mjs, v1rc-flow.test.mjs, RUN_CALIBRATION_EXTENSION_V1.json and the contract, plus a new test/v1rc-review-fixes.test.mjs. They were not reviewed and were left untouched.", "probeFolder": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/0358d900-e2d8-4e0a-a69c-c1bc6aaf61e6/scratchpad/qre-v1rc-judge-7f3a", "note": "Every probe imports the extract read-only (lib.mjs); mutations and fail-closed variants ran in my own copies base-copy, mut-ws and fc-ws"},
+ "hostContextDisclosure": "The host session injected the global CLAUDE.md (sha256 prefix c75718d0d2fe2cce), the project CLAUDE.md (e657d059e06fd1a2) and the project MEMORY.md (83c04e6c8be2a67b), which name earlier missions and finding labels. They were present; this review is judged only from the extract's files and what was run.",
+ "baseline": {
+  "fullSuite": {"command": "node --test", "passed": 1311, "total": 1311, "durationSeconds": 128},
+  "directedTests": {"command": "node --test test/v1rc-calibration.test.mjs test/v1rc-flow.test.mjs test/v1rc-limitation-c.test.mjs", "passed": 52, "total": 52},
+  "journeys": {"command": "node scripts/v1rc-journeys.mjs <scratch>/journeys", "journeys": 23, "allIdenticalToFrozenEngine": true},
+  "fuzz": {"command": "node scripts/v1rc-fuzz.mjs", "timelines": 250, "calibrations": 1500, "internalErrors": 0, "timelinesDifferentFromFrozenEngine": 0, "statuses": {"CALIBRATED": 434, "PROVISIONAL": 216, "EFFORT_ONLY": 799, "PARTIAL": 51}},
+  "freezePreserved": {"command": "node scripts/v1rc-freeze.mjs --preserved", "identical": 198, "total": 198}
+ },
+ "verification": {
+  "1_baseline": "PASS as numbered above",
+  "2_engineUntouched": "PASS except R12. Independent differential (p1-diff.mjs, own canonical hash, two separate clients, no use of the project mirror): seeds 777 and 4242, 171 timelines, 1164 weekly reviews, 118 missed-session reviews, 60 holds with readiness declarations, 84 breaks of 7-20 days, declarations, 5K/10K/half/marathon goals and a restart per timeline: 0 differences. R12 is the only difference and it can be triggered wrongly (QRE-V1RC-01).",
+  "3_failClosed": "PASS on the records path (fc-check.mjs in fc-ws, fresh process each): no records file, malformed JSON, other hash, a veto, a non-independent CAPACITY record, altered values bytes with enabling records: DISABLED; PACE, HR or ESTIMATE alone: DISABLED; CAPACITY alone: capacity without bands, estimates or zones. FAIL on 'everything off adds only a DISABLED marker': R12 still changes the engine decision (QRE-V1RC-01) and the evidence record still accumulates (QRE-V1RC-10). Caller options: QRE-V1RC-09.",
+  "4_purityDeterminism": "PASS (p7-pure.mjs, p7-tz.mjs): identical hashes across repeated runs, a JSON round trip of plan, ledger, reference and evidence record every week, reversed key order of the intake, host time zones Pacific/Kiritimati, Pacific/Pago_Pago, Asia/Kathmandu and UTC, and LANG tr_TR; every carried row still readable after the trip; input unmutated; frozen outputs unchanged by later calls and not writable.",
+  "5_weeklyStability": "FAIL: QRE-V1RC-02, -03, -04, -05. Held: boundary instants Sunday 23:59:59 and Monday 00:00:00 local, the same instant written with +14:00 and -12:00 offsets, the last week of a plan (nextWeek null), a weekIndex that does not match asOf (engine HOLD, calibration withheld), a late session report.",
+  "6_withdrawal": "PASS for bands and estimates: hold, hold with the reference omitted, hold then readiness (plan goes to RETURN), breaks with an end date, with a start only, with days only, a break declared on return with a result dated during the break (kept as history), restart from the record (RESTART mode, effort only). FAIL for heart-rate zones after the return: QRE-V1RC-06.",
+  "7_robustness": "153 hostile runs (p6-robust.mjs, p10-misc.mjs): no exception, no CALIBRATION_ERROR from plausible input, no NaN or Infinity, no inverted band or estimate, no prototype pollution (__proto__, constructor, toString, hasOwnProperty as measurement, protocol and distance), engine part identical to the frozen engine in every run. Absurd output: QRE-V1RC-07. Implausible size: QRE-V1RC-15.",
+  "8_conformance": "PASS: 17 athletes outside the worked examples recomputed independently from values.paceRules, estimates, model and confidence (p8-conform.mjs): 5 km 22:00; 10 km 62:00 GPS (slow-runner margin 0.05); half 1:45:00 and marathon 3:30:00 and 30 km in the marathon block; 56 days (CURRENT), 57 and 112 days (presumed LOW); 10 km-equivalent of exactly 27:00 (in) and just under (out); 75:00 (in) and 75:01 (out); 4.9 km to half (ratio 4.306, refused) and 5 km to half (4.22, allowed with a 75-minute run); 3 km TRACK RPE 7 (MODERATE lower bound); 15 km GPS without RPE (LOW); a half outside a marathon block. Every band, estimate and margin equal; only the reason precedence differs when both 'not in a marathon block' and 'needs a half or longer' apply (the runtime names the evidence reason first; both are in the decision's list).",
+  "9_testAdequacy": "See mutants. 32 targeted mutants; survivors listed; QRE-V1RC-16.",
+  "10_freezeScript": "Read, not executed with --write/--check (no git in the extract). --check detects a changed added file (drift over the union of recorded and current tracked files), a changed FREEZE-1 file (preserved().changed) and a changed FREEZE-1 record (base.sha256 against additiveTo.sha256). It sees tracked files only (git ls-files): an untracked file is invisible until added. The records file the runtime reads (reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json) is bound only if tracked under the audits path at --write time; one added later shows as drift, which is correct. Transitive imports of v1-run-index.mjs are bound by FREEZE-1 except the three added files (bound by ADDED) and r5/PROGRAM_POLICY_R5.json plus audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json (read by r5-authority.mjs, not bound by FREEZE-1; pre-existing, out of this candidate's scope).",
+  "11_contract": "Incomplete: QRE-V1RC-14.",
+  "12_readings": "See readings."
+ },
+ "findings": [
+  {
+   "id": "QRE-V1RC-01",
+   "severity": "BLOCKING",
+   "title": "R12 changes the engine's decision while the extension is DISABLED, and from data the extension itself does not accept",
+   "where": "CoachingCore/src/v1-run-index.mjs lines 34 and 40-41 (replacedBy, missed)",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p2-r12.mjs",
+    "setup": "runner({id}) with no anchors; weekly reviews through the first week with a QUALITY session; then a MISSED_SESSION review on the day of next week's QUALITY session, that session reported completed:false; the frozen engine alone answers MOVE",
+    "observed": {
+     "extension DISABLED (runCalibrationAuthority with no records), FIELD_TEST naming the session": "runCalibration.status DISABLED; extended action KEEP; frozen engine MOVE",
+     "a RACE_RESULT (not a test), dated last week, with replacedSessionId = the session": "KEEP vs MOVE",
+     "a FIELD_TEST refused by the extension as evidence.dateAfterThisReview": "KEEP vs MOVE (refused, yet it still withholds)",
+     "a carried row of another athlete with a bogus inputHash naming the session": "KEEP vs MOVE",
+     "control without a declaration": "MOVE vs MOVE",
+     "a declaration refused for no time (evidence.distanceAndTime)": "MOVE vs MOVE"
+    }
+   },
+   "expected": "With no enabling record the engine's answer is the frozen one (claim 1, contract 'Rules'). The withhold applies only to the documented case: a field test of this athlete accepted into the record, done instead of the week's harder session.",
+   "requiredCorrection": "Ask for withhold MOVE only when (a) the extension is on (at least CAPACITY enabled by its record), and (b) the replaced session id comes from a FIELD_TEST that is either added by this review (appendEvidence.added) or a readable row of this athlete on the record (readableFact with the inputHash check), and (c) that id is a live QUALITY run session of the plan in force, in the week of the test. Add negative tests for each case above, including DISABLED."
+  },
+  {
+   "id": "QRE-V1RC-02",
+   "severity": "BLOCKING",
+   "title": "Evidence is appended under a review the engine refuses, stamped with that review's own asOf: a backdated or replayed review moves the week in force",
+   "where": "v1-run-index.mjs line 46 (appendEvidence before any check of the engine's status); evidenceFact declaredAt = review asOf",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p3b-backdate.mjs (also p3-week.mjs cases e and f)",
+    "steps": "runner with a 10K 55:00 anchor dated 2026-10-11; weekly reviews of weeks 0 and 1; a review on Monday of week 2; then a well-formed review whose asOf is Thursday of week 1 (earlier than the record) declaring a 10K of 50:00 dated Wednesday of week 1; then a review on Thursday of week 2",
+    "observed": "frozen engine on the backdated review: HOLD 'Reference state integrity, ownership or clock is invalid' (nothing recorded); extension: added ['bd1'] with declaredAt 2026-11-19T13:00:00Z; week 2's THRESHOLD_CONTROLLED fast edge 340 s/km on Monday and 310 s/km on Thursday; capacity reference intake-0 → bd1. Also under an engine ASK (eligibility malformed, p3-week f) the declaration is added."
+   },
+   "expected": "A week's calibration reads only what was on the record before the week started (claim 4). A review the engine does not accept records nothing that can predate the record's own clock.",
+   "requiredCorrection": "Append declarations only under an instant the engine accepted (not on the engine's clock/integrity refusals or INVALID_INPUT), and never with a declaredAt earlier than the last instant of the record (the engine's reference clock or the last row's declaredAt). An offline-queued review synced late is the realistic path. Add a test that kills mutant M03 (a declaration dated before the week, recorded mid-week)."
+  },
+  {
+   "id": "QRE-V1RC-03",
+   "severity": "BLOCKING",
+   "title": "A correction (supersedes) declared mid-week removes the reference in force at once; an older, faster result takes over inside the week",
+   "where": "v1-run-calibration.mjs gatherEvidence lines 188-189 (supersession applied before any cutoff)",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p3-week.mjs case a",
+    "steps": "anchors: 10K 52:30 dated 2026-09-20 (id old-fast) and 10K 55:00 dated 2026-10-31 (id recent); week 0 reviewed; Monday week 1 review; Wednesday week 1 review declares {id:'recent-fixed', supersedes:'recent', 10K 55:10 dated 2026-10-31}",
+    "observed": "Monday: CALIBRATED, reference recent, half estimate 6960-7860, half-marathon band fast edge 355. Wednesday of the same week: PROVISIONAL, reference old-fast (3150 s), half estimate 6420-7740, half-marathon band 345 (faster). The correcting row itself is NOT_YET_IN_FORCE."
+   },
+   "expected": "The week does not move (decision recalibration.frozenWithinWeek; the exception is withdrawal only). A correction takes effect from the first week in which it is in force.",
+   "requiredCorrection": "Apply supersession per week: a row is superseded for week w only when the superseding row is in force for w (dated and recorded before w's cutoff). Add a test (it would also kill mutant M23, which survives today)."
+  },
+  {
+   "id": "QRE-V1RC-04",
+   "severity": "BLOCKING",
+   "title": "The longest recent run reads declared evidence regardless of when it was recorded (and whether it qualifies): a half-marathon estimate and band open inside the week",
+   "where": "v1-run-calibration.mjs longestRecentRun line 263 (fromEvidence has no recordedOn condition and no floor)",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p3-week.mjs case b",
+    "steps": "runner with longestRunMinutes 50 and a 10K 55:00 anchor dated 2026-11-01; week 0 reviewed; Monday week 1 review; Wednesday week 1 review declares {id:'hot15', 15 km in 90:00, conditions:['HEAT']} dated Saturday of week 0",
+    "observed": "Monday: HALF_MARATHON ENDURANCE_NOT_DEMONSTRATED, HALF_MARATHON_EFFORT band unavailable, 6 bands. Wednesday: half estimate 6960-7860 and half-marathon band 355 available, 7 bands, while hot15 itself is NOT_YET_IN_FORCE (RECORDED_IN_OR_AFTER_THIS_WEEK)."
+   },
+   "expected": "A harder band and an estimate never open inside the week from evidence recorded during it.",
+   "requiredCorrection": "Apply recordedOn < cutoff (and the withdrawal floor) to evidence in longestRecentRun, as fromLog already does for session rows. Route to SSCTR: may a result rejected as capacity (HEAT, not tolerated, walk breaks absent, any kind) demonstrate endurance for the 10 km and half gates (R8)?"
+  },
+  {
+   "id": "QRE-V1RC-05",
+   "severity": "BLOCKING",
+   "title": "Week 0's cutoff is the intake day + 1, not the week's first day: week 0 can move inside week 0, and recency is counted from the wrong day",
+   "where": "v1-run-calibration.mjs fold line 377 (cutoff for w===0)",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p3-week.mjs cases c and c2",
+    "observed": {
+     "intake asOf = startDate = 2026-11-09": "generateProgram: EFFORT_ONLY, no band; a review on day 0 at 21:00 declares a 10K 55:00 dated 2026-11-08; the same review and day 3 show week 0 CALIBRATED with 7 bands and every week-0 session pace AVAILABLE",
+     "intake 2026-11-07, start 2026-11-09, anchor dated 2026-09-13 (57 days before the week's first day)": "week 0 capacity CALIBRATED, recency CURRENT, confidence HIGH, validUntil 2026-11-08 (before the week begins); week 1: PRESUMED, AGING, LOW"
+    }
+   },
+   "expected": "Decision values.evidence.recencyDays.countedFrom = 'first day of the week being calibrated'; a week reads only what was recorded before it started.",
+   "requiredCorrection": "Use the plan's startDate as week 0's cutoff (anchors are recorded at intake, before it), in both generateProgram and evaluateProgram; add boundary tests at 56/57 days counted from the start (they would also kill mutant M27)."
+  },
+  {
+   "id": "QRE-V1RC-06",
+   "severity": "BLOCKING",
+   "title": "Heart-rate zones return from a maximum dated before a break or a hold when that evidence is older than 112 days (R11 and the withdrawal rule)",
+   "where": "v1-run-calibration.mjs classify lines 223-224 (HISTORICAL returned before the floor check, so the reason is OLDER_THAN_CAPACITY_WINDOW, not BEFORE_BREAK_HOLD_OR_RETURN); heartRateOf line 449 (qualifies only tests that reason)",
+   "reproduction": {
+    "script": "qre-v1rc-judge-7f3a/p4-withdrawal.mjs cases d and d2",
+    "observed": {
+     "break": "anchors: 10K with a chest-strap maximum 186 dated 150 days before the intake, and a 10K dated 2026-11-01; weeks 0-1; a declared 16-day break and return; after the RETURN weeks (week 6 on, mode EASY) heartRateZones AVAILABLE, ESTIMATED_FROM_OBSERVED_MAXIMUM, reference intake-0 (the 150-day pre-break maximum), while the recent pre-break result is BEFORE_BREAK_HOLD_OR_RETURN",
+     "hold": "the same with a 200-day-old maximum, a pain report (CLINICAL_HUMAN_REQUIRED) and a readiness declaration: from week 4 (EASY) zones AVAILABLE from intake-0"
+    }
+   },
+   "expected": "Decision withdrawal: the withdrawal removes heart-rate zones; preBreakEvidence is not used again; zones return only with evidence dated after the return. Reading R11.",
+   "requiredCorrection": "In heartRateOf, exclude every evidence dated on or before the week's floor (by date, whatever its class), or test the floor before the HISTORICAL class in classify. Add a test of zones after the return weeks (it kills mutant M20, which survives today). Route to SSCTR: should supplied lab values also lapse at a hold or a return (the decision names only declared breaks of 14 days or more)?"
+  },
+  {
+   "id": "QRE-V1RC-07",
+   "severity": "NON_BLOCKING",
+   "title": "One GPS distance glitch gives the EASY band an absurd slow edge; no plausibility window on easy observations",
+   "where": "easyObservation (distance 0.5-80 km, no pace window) and observedEasy (slow edge = the single slowest run)",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p6b-glitch.mjs", "observed": "easy runs at 6:30/km and one 40-minute run reported with distanceKm 0.6: EASY band 395-4500 s/km without a reference and 410-4500 with one (labelled DERIVED_FROM_CAPACITY, reference intake-0); with minutes 1e9 the band reaches 4444444645 s/km (p6-robust actual.minutes#0)"},
+   "expected": "No absurd pace with plausible input.",
+   "requiredCorrection": "Treat an easy observation outside a plausible pace window (for example the 120-900 s/km the work pace already uses) as not comparable; consider a slow edge that is not set by a single run (the rule is SSCTR's)."
+  },
+  {
+   "id": "QRE-V1RC-08",
+   "severity": "NON_BLOCKING",
+   "title": "Boundaries are not independent: CAPACITY alone shows a 10 km central time; PACE without ESTIMATE shows the estimate's race pace (R14)",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p14-r14.mjs", "observed": "CAPACITY only: capacity.tenKEquivalent.centralSeconds 3300 while estimates.10K is EXTENSION_NOT_ENABLED; CAPACITY+PACE: TEN_K_EFFORT band 335-350 s/km (the 10 km estimate's pace) while the estimate is off"},
+   "expected": "An off boundary shows nothing of what it governs.",
+   "requiredCorrection": "Either gate the race-pace domains and the displayed 10 km-equivalent on ESTIMATE, or have the enabling records say explicitly that CAPACITY and PACE cover them. Route to SSCTR (sporting authority of the boundaries)."
+  },
+  {
+   "id": "QRE-V1RC-09",
+   "severity": "NON_BLOCKING",
+   "title": "Caller options enable the extension without the records file",
+   "where": "runCalibrationAuthority: options.runCalibration (returned as is, with any values, pinned or not) and options.runCalibrationRecords",
+   "reproduction": {"observed": "every directed test and probe here runs with {runCalibration: devRunCalibration()}; the authority object carries its own values, which are not hash-checked"},
+   "expected": "Same exposure class as the frozen engine's options.eventExtension / options.eventRecords (v1-events.mjs lines 48-50); not wider in kind. The custody boundary does not import v1-run-index.mjs (grep of src).",
+   "requiredCorrection": "Condition for integration: extend QRE-V1FC-05 to name runCalibration and runCalibrationRecords; the integration passes no options. Optionally refuse an authority whose values hash is not the pinned one unless its source is DEV_TEST_ONLY."
+  },
+  {
+   "id": "QRE-V1RC-10",
+   "severity": "NON_BLOCKING",
+   "title": "With the extension off, declared results, heart rate and lab values still accumulate in runEvidenceRecord",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p2-r12.mjs (extension-DISABLED row)", "observed": "status DISABLED, the declaration is added to runEvidenceRecord"},
+   "expected": "Contract: with no enabling record the output is the frozen V1 behaviour with a DISABLED marker.",
+   "requiredCorrection": "Either record nothing while CAPACITY is off, or state in the contract that the evidence channel records while off. Route to Security: storage of heart-rate and lab values the athlete supplies, and deletion on request."
+  },
+  {
+   "id": "QRE-V1RC-11",
+   "severity": "NON_BLOCKING",
+   "title": "Future-dated intake anchors are accepted and become the reference once their date passes",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p10-misc.mjs futureAnchor", "observed": "intake 2026-11-07 with a 10K 48:20 dated 2026-11-20: week 0 NONE, week 2 CALIBRATED with reference intake-0 dated 2026-11-20"},
+   "expected": "A result after the intake cannot be on the intake; declarations dated after the review are refused (evidence.dateAfterThisReview).",
+   "requiredCorrection": "Refuse anchors dated after the intake's asOf, with a named reason in refusedEvidence."
+  },
+  {
+   "id": "QRE-V1RC-12",
+   "severity": "NON_BLOCKING",
+   "title": "A declaration whose id collides with an intake anchor or a plan race is reported added, stored, and never read",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p10-misc.mjs idCollision", "observed": "a declaration {id:'intake-0', 10K 50:00}: runEvidence.added ['intake-0'], no refusal; the calibration lists only the anchor intake-0 (3300 s); the declared 3000 s is silently shadowed (gatherEvidence push dedupes by id, anchors first; plan races last)"},
+   "expected": "Every declaration is either used or refused with a reason.",
+   "requiredCorrection": "Refuse an id already used by an anchor or a plan race (or namespace declared ids)."
+  },
+  {
+   "id": "QRE-V1RC-13",
+   "severity": "NON_BLOCKING",
+   "title": "The append-only record is rewritten: non-object carried rows are dropped",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p10-misc.mjs junkCarriedRows", "observed": "carried [null, 7, 'x', {fact:'OTHER'}] → returned runEvidenceRecord of length 1; on the NO_DECISION path the same rows are returned unchanged"},
+   "expected": "Carried rows unchanged (appendEvidence comment and contract).",
+   "requiredCorrection": "Carry every row as received; read only the readable ones."
+  },
+  {
+   "id": "QRE-V1RC-14",
+   "severity": "NON_BLOCKING",
+   "title": "The contract does not describe every key, status and reason the runtime emits",
+   "details": {
+    "undocumentedTopLevelKeys": ["version", "asOf", "week", "hash", "representations", "reason (on DISABLED, NOT_APPLICABLE, UNAVAILABLE)"],
+    "undocumentedStatus": "UNAVAILABLE with reason CALIBRATION_ERROR (the safely() fallback) is not in the status list",
+    "undocumentedReasons": ["CALIBRATION_ERROR", "NO_PLAN", "NO_DECISION", "REVIEW_TIME_REQUIRED", "RUNNING_NOT_PROGRAMMED", "HEART_RATE_DATA_NOT_QUALIFYING", "NO_MEASURED_HEART_RATE"],
+    "undocumentedCapacityStates": ["capacity.status NONE, PRESUMED, OUTSIDE_MODEL_POPULATION, WITHHELD, EFFORT_ONLY", "capacity.reason EVIDENCE_BELOW_LOWEST_CONFIDENCE, WITHDRAWN_AFTER_BREAK, MARATHON_EVIDENCE_NOT_CONVERTED_DOWNWARD, NO_QUALIFYING_EVIDENCE, MODE_WALK_JOG_RESTART_RETURN"],
+    "undocumentedEntryFields": ["distanceMeters", "durationSeconds", "durationMinutes", "sport (a non-RUN sport is refused)"],
+    "undocumentedEstimateKeys": ["distanceKm", "referenceKind", "confidenceCauses", "flags (EVIDENCE_IS_A_LOWER_BOUND, MARATHON_WIDE_RANGE, TRAINING_ADJUSTED_DOWN)"],
+    "undocumentedBandKeys": ["estimated", "notes", "event", "referenceKind", "namedFactors", "observed (on an unavailable EASY band)", "until (on a withdrawn band)"],
+    "undocumentedSessionKeys": ["domain", "week", "provisional", "strides", "pacingCaution", "startAtOrSlowerThanSecondsPerKm"],
+    "undocumentedRefusalCodes": "runEvidence.refused[].errors (evidence.object, evidence.kind, evidence.date, evidence.distanceAndTime, evidence.lab, evidence.rpe, evidence.sport, evidence.dateAfterThisReview, evidence.idAlreadyOnRecord, evidence.unreadable, evidence.unreadableRow)",
+    "decisionReasonNotProduced": "values.paceRules.unavailableReasons lists WITHDRAWN_AFTER_BREAK for bands; after a break the bands say NO_QUALIFYING_EVIDENCE (only capacity.reason says WITHDRAWN_AFTER_BREAK)",
+    "contradictedRule": "'With no enabling record ... the output is the frozen V1 behaviour' (QRE-V1RC-01, -10)"
+   },
+   "requiredCorrection": "Complete the contract, or align the runtime, for each item above."
+  },
+  {
+   "id": "QRE-V1RC-15",
+   "severity": "NON_BLOCKING",
+   "title": "A very large evidence list fails the calibration (fail closed, engine intact)",
+   "reproduction": {"script": "qre-v1rc-judge-7f3a/p10-misc.mjs bigArray", "observed": "150000 anchors: engine PROPOSED, runCalibration UNAVAILABLE CALIBRATION_ERROR (argument spreading in Math.max/Math.min overflows); 20000 anchors and 20000 declarations are fine"},
+   "expected": "Implausible input; fail closed is acceptable.",
+   "requiredCorrection": "Optional: replace spreads with loops, or cap the evidence read with a named refusal."
+  },
+  {
+   "id": "QRE-V1RC-16",
+   "severity": "NON_BLOCKING",
+   "title": "Directed tests leave safety-relevant rules unpinned (surviving mutants)",
+   "details": "12 of 32 targeted mutants survive (see survivingMutants). Each survivor on a stated claim needs a killing test in the fix cycle: weekly stability (M02, M03, M32), the upward cap (M11), withdrawal of zones (M20), supersession (M23), the 56-day boundary (M27), the downward step on the half or marathon estimate (M29) and a blanket withhold (M31). M11 was checked on the candidate and behaves correctly today (p11-m11.mjs: 0 → 0.015 → 0.03 → 0.045, then held). M06, M12 and M15 are masked in the flows that can be reached.",
+   "requiredCorrection": "Add one directed test per listed survivor; the blocking findings 02, 03, 05 and 06 each come with the test that kills their mutant."
+  }
+ ],
+ "mutationTesting": {
+  "script": "qre-v1rc-judge-7f3a/p9-mutate.mjs (mutants written over my copy mut-ws, the copy restored after each; killed = a directed test other than the copy's environment failure fails)",
+  "testsRun": "node --test test/v1rc-calibration.test.mjs test/v1rc-flow.test.mjs",
+  "environmentNote": "In my copy the test 'COACHINGCORE-V1-FREEZE-1 is preserved' fails by construction (the copy holds only the audit files the runtime reads); it is excluded from the kill criterion.",
+  "results": {"mutants": 32, "killed": 20, "survived": 12, "rawOutput": "qre-v1rc-judge-7f3a/p9-out.json",
+   "killedList": ["M01 conflict picks the faster result", "M04 easy runs feed a harder observed band", "M05 ignore the hold", "M07 drop the marathon block gate", "M08 round a fast edge faster", "M09 a goal time reaches the race-pace band", "M10 skip the deadband", "M13 read evidence rows of another athlete", "M14 one session moves a band", "M16 aged evidence not capped at LOW", "M17 slow edge uses one margin, not two", "M18 observed easy may make the ceiling faster", "M19 walk/jog, restart and return modes give bands", "M21 no population limit", "M22 conflicts never detected", "M24 a band past the down limit is never withdrawn", "M25 optical heart rate accepted", "M26 the slow-runner margin dropped", "M28 endurance gate for the half dropped", "M30 R12 withhold never asked"]}
+ },
+ "survivingMutants": [
+  {"id": "M02", "mutation": "inForce ignores recordedOn (late session reports)", "safetyRelevant": true, "note": "Weekly stability of P1/P2/training factors from late reports is untested; the candidate's behaviour is correct today (late report probe held)."},
+  {"id": "M03", "mutation": "classify ignores recordedOn for evidence", "safetyRelevant": true, "note": "The flow test declares a result dated inside the week, so only the date check acts. QRE-V1RC-02 shows a live path where this condition is the only guard."},
+  {"id": "M06", "mutation": "the CLINICAL_HOLD day is not a floor", "safetyRelevant": true, "note": "Masked in reachable flows: the readiness release adds its own floor and the engine's RETURN weeks add the mode floor. Add a test or remove the redundancy knowingly."},
+  {"id": "M11", "mutation": "no upward cap of 4.5%", "safetyRelevant": true, "note": "The test stops before the cap is reached. Behaviour verified correct on the candidate (p11-m11.mjs)."},
+  {"id": "M12", "mutation": "session rows of another athlete read", "safetyRelevant": false, "note": "Masked: the frozen engine drops a foreign row from the returned ledger (p13-m12.mjs) and the extension reads the engine's ledger."},
+  {"id": "M15", "mutation": "break withdrawal from 15 days instead of 14", "safetyRelevant": true, "note": "Masked: the engine turns a declared break of 14 days into RETURN weeks (p12-m15.mjs). Add a boundary test anyway."},
+  {"id": "M20", "mutation": "heart-rate maximum read from before a break/hold/return", "safetyRelevant": true, "note": "Untested; and the guard is already insufficient (QRE-V1RC-06)."},
+  {"id": "M23", "mutation": "a correction does not remove the row it supersedes", "safetyRelevant": true, "note": "The correction test passes through the conflict rule (3300 vs 3420 is a conflict, so the slower is chosen either way). Supersession is untested; see QRE-V1RC-03."},
+  {"id": "M27", "mutation": "CURRENT window 56 → 60 days", "safetyRelevant": true, "note": "Test points 54 and 60 (counted from the intake + 1) straddle the mutant; the 56/57 boundary is not pinned (and see QRE-V1RC-05)."},
+  {"id": "M29", "mutation": "a downward step on the half or marathon does not slow its estimate (R3)", "safetyRelevant": true, "note": "No test reaches a downward step on HALF_MARATHON_EFFORT or MARATHON_EFFORT."},
+  {"id": "M31", "mutation": "v1-run-index asks withhold MOVE on every review", "safetyRelevant": true, "note": "No directed test has a missed session the engine would move outside the field-test case, so a blanket change of the engine's decision goes unseen. Pairs with QRE-V1RC-01."},
+  {"id": "M32", "mutation": "longestRecentRun ignores recordedOn for log rows", "safetyRelevant": true, "note": "Untested, and the evidence half of the same function already lacks the guard (QRE-V1RC-04)."}
+ ],
+ "readings": {
+  "R1": "Coherent; the marathon takes the most recent of a STANDARD half and a longer result. No reliability issue found (p8 cases).",
+  "R2": "Deadband compares each newer result with the held one (no ratchet); works (mutant M10 killed). Order-independent.",
+  "R3": "Verified: a downward step slows the half/marathon estimate once and the band once (no double application).",
+  "R4": "Deterministic: executions sorted by date, ties by ledger order. The reliance on o.week (the row's context.weekIndex) to read the band of its own week assumes the plan in force keeps week indices; true for proposals, restarts re-index (they reset factors).",
+  "R5": "Correct for session rows and declarations, but bypassed by four paths: QRE-V1RC-02, -03, -04, -05.",
+  "R6": "Works; the engine itself turns a break of 14 days or more into RETURN weeks, which masks the extension's own 14-day rule (M15).",
+  "R7": "Sporting (EASY may be slower than LONG): SSCTR.",
+  "R8": "Ambiguous and order-dependent in time: reads evidence not yet in force (QRE-V1RC-04) and non-qualifying results (SSCTR question).",
+  "R9": "Holds; the marathon gate is killed by tests (M07).",
+  "R10": "Holds (lab values without protocol, source or units are not shown).",
+  "R11": "Broken for evidence older than 112 days: QRE-V1RC-06.",
+  "R12": "Broken: QRE-V1RC-01.",
+  "R13": "Deterministic, but one slow, low-quality entry (MANUAL, no RPE) inside 28 days of a good race removes all capacity (conflict reduction + 2 = 3). Fail-closed direction; a cheap way to switch calibration off. SSCTR question.",
+  "R14": "See QRE-V1RC-08."
+ },
+ "escalations": [
+  {"to": "SSCTR", "items": ["R8 / QRE-V1RC-04: may a non-qualifying result demonstrate endurance", "QRE-V1RC-06: should supplied lab values lapse at a hold or a return", "QRE-V1RC-07: slow edge of the observed easy range set by one run", "QRE-V1RC-08 / R14: what the CAPACITY and PACE boundaries may show without ESTIMATE", "R7 and R13 as sporting readings"]},
+  {"to": "Security", "items": ["QRE-V1RC-10: storage of athlete-supplied heart-rate and lab values in runEvidenceRecord, including while the extension is off", "QRE-V1RC-09: caller options at integration"]}
+ ],
+ "notVerified": [
+  "scripts/v1rc-freeze.mjs --write and --check were not executed (no git in the extract); judged by reading the code and by --preserved",
+  "The R12 'another session targeted while the replaced one is listed not done' path: in my attempt (p2b-r12-other.mjs) the frozen engine already answered KEEP, so a wrong withhold there is not demonstrated",
+  "No real athlete data, device, sensor or UI; synthetic intakes only",
+  "Sporting value of any number: SSCTR's"
+ ],
+ "fixCycleScope": "Correct QRE-V1RC-01 to -06 (blocking) with a killing test each; address -07 to -16 or record them as conditions with an owner. The recheck runs the baseline, p1-diff.mjs, p2-r12.mjs, p3-week.mjs, p3b-backdate.mjs, p4-withdrawal.mjs and p9-mutate.mjs on the new commit."
+}

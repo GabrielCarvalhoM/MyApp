@@ -1,0 +1,26 @@
+{
+  "records": [
+    {
+      "boundaryId": "V1X-RUN-HR",
+      "extensionSha256": "9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": ["SRC10", "SRC11", "SRC12", "SRC08", "SRC09"],
+      "conditions": [
+        "Synthetic data only; no real athletes and no production use.",
+        "Bound to the extension bytes above and to the heart-rate paths of candidate bc40218 (heartRateOf, the withdrawal fold and the heart-rate output fields of src/v1-run-calibration.mjs sha256 135fcf39d450d8e70b0336e86e3d94cb3e314ad385d5ddb100c66df110d5fde0); a change to any of them requires the recheck to confirm or remove this record.",
+        "Inert until an independent V1X-RUN-CAPACITY record exists: the runtime enables HR only with CAPACITY, which SSCTR-V1RC-REVIEW-r1 did not enable (SSCTR-V1RC-R-01, SSCTR-V1RC-R-02).",
+        "Display-only reference scale: never a session target, never a gate, never converted to pace or effort, never called thresholds; it may only suggest slowing in EASY, LONG or RECOVERY.",
+        "Observed maximum by chest strap only, from a qualifying race, time trial or field test of 10 min or more at RPE 8 or more, 140-220 bpm, within 365 days, never before a break, hold or return; never from age. Supplied lab values are shown as supplied and never equated with estimated zones.",
+        "SSCTR-V1RC-R-09: the hold and return floor must also apply to supplied lab anchors.",
+        "Heart-rate and lab values are health-adjacent data: Security review before integration.",
+        "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1RC-SSCTR-HR (appended by Founder or Chief).",
+        "Review by 2027-05-11 or on the triggers of SSCTR-V1RC-REVIEW-r1."
+      ],
+      "reviewId": "SSCTR-V1RC-REVIEW-r1"
+    }
+  ],
+  "note": "SSCTR-V1RC-REVIEW-r1 (2026-11-11), independent judge of candidate bc40218, values sha256 9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30 verified by the reviewer. Only V1X-RUN-HR is approved as the candidate stands. No record is written for V1X-RUN-CAPACITY (blocking SSCTR-V1RC-R-01, R-02), V1X-RUN-PACE or V1X-RUN-ESTIMATE (blocking SSCTR-V1RC-R-03). Because the runtime requires CAPACITY for every other boundary, this file leaves the whole extension off (status DISABLED). Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation."
+}
