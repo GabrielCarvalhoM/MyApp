@@ -23,7 +23,7 @@ const prog=(i,o=dev)=>{const g=generateProgram(i,o);assert.equal(g.status,'PROPO
 const unmetOf=i=>{const g=generateProgram(i,dev);assert.equal(g.status,'PROPOSED',g.reason);return {p:g.program,ids:(g.program.canonical.goals.contextEvent?.unmet??[]).map(u=>u.id),g};};
 
 test('V1X authority (fail closed): without an independent record bound to the extension bytes a 5K keeps its fallback and a marathon stays outside; a record for other bytes, a rejection or a self-review enables nothing',()=>{
- const none=eventExtensionAuthority({eventRecords:null});assert.ok(!allowsEvent(none,'5K')&&!allowsEvent(none,'MARATHON'));assert.ok(allowsEvent(none,'10K')&&allowsEvent(none,'HALF_MARATHON'));
+ const none=eventExtensionAuthority({eventRecords:{records:[]}});assert.ok(!allowsEvent(none,'5K')&&!allowsEvent(none,'MARATHON'));assert.ok(allowsEvent(none,'10K')&&allowsEvent(none,'HALF_MARATHON'));
  const rec=(o={})=>({records:Object.values(EVENT_BOUNDARIES).map(boundaryId=>({boundaryId,extensionSha256:EXTENSION_SHA256,independent:true,disposition:'APPROVE_WITH_CONDITIONS',evidenceStatus:'SUPPORTED_WITH_LIMITS',sourceIds:['S1'],...o}))});
  for(const bad of [{extensionSha256:'0'.repeat(64)},{disposition:'REJECT'},{independent:false},{evidenceStatus:'PLAUSIBLE_BUT_UNCERTAIN'},{sourceIds:[]}]){const a=eventExtensionAuthority({eventRecords:rec(bad)});assert.ok(!allowsEvent(a,'5K')&&!allowsEvent(a,'MARATHON'),JSON.stringify(bad));}
  // The file is used only as the pinned bytes; when it is pinned, a good record enables both events.
@@ -31,6 +31,8 @@ test('V1X authority (fail closed): without an independent record bound to the ex
   // One record that does not enable vetoes its event, whatever else approves it.
   const mixed=rec();mixed.records.push({...mixed.records[0],disposition:'REQUEST_REVISION'});assert.ok(!allowsEvent(eventExtensionAuthority({eventRecords:mixed}),'5K'));}
  // Off: the R7-B behaviour, unchanged.
+ // The committed records of the independent judge, bound to the pinned bytes, enable both events in the default authority.
+ if(EXTENSION_FILE_SHA256===EXTENSION_SHA256&&fs.existsSync(EVENT_RECORDS_URL)){const committed=eventExtensionAuthority();assert.deepEqual(Object.keys(committed.approved).sort(),['V1X-5K','V1X-MARATHON']);assert.ok(committed.records.every(r=>['APPROVE','APPROVE_WITH_CONDITIONS'].includes(r.disposition)));assert.equal(committed.source,'CURRENT_INDEPENDENT_REVIEW');}
  const f=generateProgram(five(),off);assert.equal(f.status,'PROPOSED');assert.equal(f.program.goal.run.event,null);assert.equal(f.program.canonical.goals.contextEvent.kind,'5K');assert.ok(!all(f.program).some(s=>s.role==='RACE'));
  const m=generateProgram(mar(),off);assert.equal(m.status,'UNSUPPORTED');assert.equal(m.scope,'EVENT_DISTANCE_OUTSIDE_V1');
  // A program planned for an extension event is reviewed only under the same enabled bytes.

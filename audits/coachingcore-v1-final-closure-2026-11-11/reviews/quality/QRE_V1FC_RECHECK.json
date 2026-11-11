@@ -1,0 +1,53 @@
+{
+ "reviewId": "QRE-V1FC-RECHECK-r1",
+ "role": "Quality & Reliability Engineer (same judge as QRE-V1FC-REVIEW-r1; not an author of the fix)",
+ "date": "2026-11-11",
+ "candidate": {"commit": "06bbc7f", "on": "2d089c0", "base": "3b14804", "reviewedAs": "git archive extracts of 06bbc7f in new scratch folders (qre-fix-06bbc7f; qre-mutfix-06bbc7f for mutants; qre-fixext-* for extension file variants), node_modules copied from the worktree"},
+ "scope": "The one narrow recheck the cycle bound allows: QRE's own findings, the differential against 3b14804, and regressions the fixes could cause in what held before. Nothing else reopened.",
+ "question": "Is the V1-scoped CoachingCore ready to freeze, from the reliability side?",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictBasis": "Both blocking findings are closed by executed probes and killed mutants. The differential is byte-identical to 3b14804. The V1 scope sweep, the offer path and the extension fail-closed checks hold on 06bbc7f. What remains is non-blocking and has an owner and a trigger: QRE-V1FC-03, -05 and -06 as named conditions, plus one equivalent-in-environment mutant (M26b).",
+ "rulesFollowed": ["git archive extracts in new folders only", "no verify scripts", "no recursive deletion (files in variant extracts renamed or appended only)", "only new files under reviews/quality/"],
+ "hostContextDisclosure": "As in QRE-V1FC-REVIEW-r1 (same hashes): the injected CLAUDE.md files and MEMORY.md were used only to orient.",
+ "probes": {"folder": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/59c304d8-d767-447e-b589-a66e8b74bd72/scratchpad/qre-probes",
+  "rerun": ["p1c-condition.mjs", "p2-events.mjs (p2-fix-out.txt)", "p3-diff.mjs (p3-fix-r6-dev.txt, p3-fix-v1-dev.txt, p3-fix-v1-def.txt)", "p1-scope.mjs (p1-fix-out.txt)", "p1b-restart.mjs", "p4-offer.mjs (p4-fix-out.txt)", "p6-extfiles.mjs", "p7-custody-events.mjs"],
+  "new": {"p2d-mdate-recheck.mjs": "marathon and 5K date changes by EVENT_DATE_CHANGE and same-kind GOAL_CHANGE at +9 to +105 days; the same event restated", "p1d-screen-recheck.mjs": "the fixed V1 screen across every condition: all signs no (also with odd intent/days/sports/region/speed) keeps; every single warning sign and exercise-response item answered yes holds, with the same guidance level as the research engine", "p5b-mutate-fix.mjs": "13 mutants: the first round's survivors on the fixed code and the fixes themselves (p5b-out.txt)"}},
+ "suite": "1258/1258 pass, twice (suite-fix-run1.txt, suite-fix-run2.txt); 0 flaky",
+ "findings": {
+  "QRE-V1FC-01": {"status": "CLOSED", "evidence": "p2d: a marathon date change by EVENT_DATE_CHANGE or by GOAL_CHANGE with the same kind asks for newProgramInput at +9, +35, +77, +84, +98 and +105 days, with no proposal. The same marathon restated, or a date change to the same date, is KEEP. The 5K and 10K date rule is unchanged. p2: 86 checks, 0 violations. Mutant N01 (the fix's date clause removed) is killed."},
+  "QRE-V1FC-02": {"status": "CLOSED", "evidence": "p1c: no condition asks the 6 systemic signs and the condition; 'FLU' and 7 ask the condition; an unknown sign key asks wellbeing.warningSigns.unrecognized; a non-boolean answer asks that sign. V1 equals the research engine on every case. p1d: 88 checks, 0 violations; V1-unread fields are never asked. Mutant N03 is killed. N02 survives as an equivalent mutant (readWellbeing's only clinical route is a yes sign, which the earlier signsYesIn check already routes)."},
+  "QRE-V1FC-03": {"status": "OPEN (non-blocking; named condition of INTEGRATION_READY)", "evidence": "p4 on 06bbc7f: a second report of a missed session after a declined MOVE is still ENGINE_CONTRACT_VIOLATION; unchanged from 3b14804, as the fix cycle states."},
+  "QRE-V1FC-04": {"status": "CLOSED", "evidence": "p1b: the V1 restart over a record with a temporary-reduction report is HOLD record.outsideV1Scope; p1 also shows v1RestartForeignRecord HOLD. Mutant N04 is killed."},
+  "QRE-V1FC-05": {"status": "OPEN (non-blocking; integration condition, accepted as such)", "evidence": "The comment now states that only the scope is set. p2: caller options eventExtension and eventRecords still enable a marathon in process. Custody passes none."},
+  "QRE-V1FC-06": {"status": "CLOSED as a condition of the freeze record (to be checked in that record)", "evidence": "The freeze script is said to name the records file and its hash; this recheck did not run the freeze script. Fact for the freeze: 06bbc7f commits reviews/ssctr/SSCTR_V1FC_EVENT_RECORDS.json (sha256 b2bcc23a...), whose only record (V1X-5K) is bound to the earlier extension hash e53a282d.... The pin is now 8a4ba9b3... and equals the committed file. So in the default authority of 06bbc7f the 5K is OFF (fallback) and the marathon UNSUPPORTED (p2 'pins', p6 last line). The 5K becomes an event only when a record is bound to 8a4ba9b3... (p6 with such a record: 5K planned and reviewed)."},
+  "QRE-V1FC-07": {"status": "CLOSED, one residual", "evidence": "p5b: M04, M09, M15, M26 (extensionOf), M30 and M35 are all killed by the new tests. Residual M26b (the module constant EXTENSION reading the bytes without extensionOf) survives the full suite: equivalent in the test environment, because the committed file equals the pin, and p6 shows altered and missing bytes fail closed on 06bbc7f. M13 and M14 stay defence in depth, as agreed."}
+ },
+ "differential": {"result": "NOTHING EXISTING MOVED", "evidence": "p3: 990 digest lines over 63 intakes (48 programs: 10 10K, 13 half marathon, 25 non-event) and their reviews. Byte-identical between 3b14804 (r6) and 06bbc7f (r6 and v1, development authority), and between 3b14804 (r6) and 06bbc7f (v1, default authority). The intended MISSED_SESSION difference (a target of another week or still ahead asks) is not exercised by these inputs, whose missed targets are of the review's own week and day; mutant N05 is killed by its test."},
+ "regressionsFromTheFixes": {"result": "NONE FOUND",
+  "evidence": [
+   "V1 scope sweep (p1): 490 checks, 0 violations.",
+   "Offer path (p4): 178 checks, 0 violations (both evaluations agree on the record; MOVE pending, accept, decline, expiry, supersession, retries; the real learned rearrangement offered once and remembered declined; no evidence-applied day move); the custody targetSessionId validation does not affect logRun's missed report.",
+   "Extension fail closed (p2, p6 on new variant extracts): altered bytes, missing file, malformed records and a records file bound to other bytes enable nothing; a correct record enables the 5K only.",
+   "Custody V1CIB-CUSTODY-3 (p7): 5K and marathon plans round-trip through the memory and file stores with the seal verifying, and are UNSUPPORTED when the extension is withdrawn.",
+   "The fixed screen across all conditions (p1d)."
+  ]},
+ "newFindings": [
+  {"id": "QRE-V1FC-08", "severity": "LOW", "blocking": false, "routeTo": "Security (SEC-V1FC-02 is theirs)", "title": "The V1 entry point's version gate has no discriminating test", "reproduction": "p5b mutant N06: replacing v1Intake/v1Program with constant true leaves all 1258 tests passing. The SEC-V1FC-02 test's legacy inputs are refused downstream anyway, as INVALID_INPUT or HOLD.", "smallestFix": "A test with a well-formed R5-INPUT-1 intake (one the legacy generator would plan) asserting INVALID_INPUT and no program from V1.generateProgram."}
+ ],
+ "states": {
+  "RUNTIME_CORRECTNESS": "READY_WITH_CONDITIONS (no blocking defect found in the scope reviewed)",
+  "V1_SCOPE_ENFORCED": "Temporary reduction: enforced. Marathon eligibility on a date change: enforced (asks for a new plan).",
+  "EVENT_EXTENSION": {"5K": "Fails closed. OFF in the default authority of 06bbc7f (the committed record is bound to the earlier hash); ON only under a record bound to 8a4ba9b3...", "MARATHON": "OFF (UNSUPPORTED): no V1X-MARATHON record. The date-change bypass is closed; the marathon's sporting readiness is SSCTR's."},
+  "F08_STATUS": "Situation 1 unreachable in V1; the V1 screen is the instrument's own reading; Situation 2 unchanged",
+  "RECORD_CUSTODY_STATUS": "Reference implementation, synthetic only; schema V1CIB-CUSTODY-3 verified by the round trips; operational items PENDING",
+  "INTEGRATION_READY": "NO: QRE-V1FC-03 and -05 are named conditions, and the operational PENDING items stand",
+  "REAL_ATHLETES": "NOT AUTHORIZED"
+ },
+ "conditions": [
+  {"id": "QRE-V1FC-03", "owner": "integration", "trigger": "before INTEGRATION_READY", "closedWhen": "a repeated session report gets a typed answer, not ENGINE_CONTRACT_VIOLATION"},
+  {"id": "QRE-V1FC-05", "owner": "integration", "trigger": "before INTEGRATION_READY", "closedWhen": "the product calls the engine only through custody with no options (or v1-index drops event options outside development)"},
+  {"id": "QRE-V1FC-06", "owner": "freeze author", "trigger": "the freeze record", "closedWhen": "the freeze names the records file and its sha256 next to the commit and the extension pin, and reports the 5K state against it (OFF at 06bbc7f unless a record bound to 8a4ba9b3... is added)"},
+  {"id": "M26b", "owner": "CoachingCore", "trigger": "next change to v1-events.mjs", "closedWhen": "a test (for instance a child process over altered bytes) fails when the module constant bypasses extensionOf"}
+ ],
+ "notVerified": ["The freeze script and the freeze record (not run here)", "Sporting or clinical adequacy, including Amendment 2 values (SSCTR's)", "Security findings other than where they touch QRE's probes", "The app, a device, a production store"]
+}

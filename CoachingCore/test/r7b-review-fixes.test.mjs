@@ -6,6 +6,10 @@ import fs from 'node:fs';
 import {program,reviewed,weekly,review,evaluateProgram,generateProgram,intake,opts,FULL,live,obs,runs,gen} from '../r7/b/fixtures/helpers.mjs';
 import {repertoireAuthority,allowsCandidate,configurationOf,SKILL_LADDERS} from '../src/r7b-repertoire.mjs';
 import {historicalStateOf} from '../src/r6-adaptation.mjs';
+import {devEventExtension} from '../src/v1-events.mjs';
+// V1 Final Closure (V1X-EVENTS migration): this assertion states the behaviour without the V1 event extension. Since the independent SSCTR records
+// enable the 5K and the marathon in the default authority, the test now says so explicitly (the extension off); the behaviour asserted is unchanged.
+const NO_EXTENSION={eventExtension:devEventExtension([])};
 
 const BAD={performance:'UNDER',recovery:'ADVERSE',effort:'HARDER',nextDayFunction:'IMPAIRED'};
 const correctionOf=(o,actual,correctedAt,response=null)=>({eventId:o.eventId+'-fix',athleteId:o.athleteId,sessionId:o.sessionId,observedAt:o.observedAt,correctionOf:o.eventId,correctedAt,actual,response:{...o.response,...(response??{})}});
@@ -192,9 +196,9 @@ test('QE-R7B-09 / QE-R7B-10: the review-by date reads the instant, not its writt
 
 test('QE-R7B-11: the 5K fallback follows the planner authority, not the default records',()=>{
  const input=intake({id:'fx-5k',goals:{run:'RACE',strength:'NONE'},event:{kind:'5K',date:'2027-01-24'},schedule:{strengthDays:[]},weeks:12});
- assert.ok(generateProgram(input,opts).program,'with B0-C10 the 5K gets the performance fallback');
+ assert.ok(generateProgram(input,{...opts,...NO_EXTENSION}).program,'with B0-C10 the 5K gets the performance fallback');
  const off=repertoireAuthority({asOf:'2026-11-01',repertoireRecords:RECORDS.filter(r=>r.review_id!=='R7B0-SSCTR-B0-C10')});
- const g=generateProgram(input,{...opts,authority:{...opts.authority,repertoire:off}});
+ const g=generateProgram(input,{...opts,...NO_EXTENSION,authority:{...opts.authority,repertoire:off}});
  // Without B0-C10 the frozen R6 behaviour stands: a 5K is not a supported event (no fallback is applied).
  assert.equal(g.program,null);assert.equal(g.status,'INVALID_INPUT',g.reason);
 });

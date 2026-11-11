@@ -5,6 +5,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {program,reviewed,weekly,review,evaluateProgram,opts,runs,live,gen,obs} from '../r7/b/fixtures/helpers.mjs';
 import {runRepertoireOf} from '../src/r7b-repertoire.mjs';
+import {devEventExtension} from '../src/v1-events.mjs';
+// V1 Final Closure (V1X-EVENTS migration): this assertion states the behaviour without the V1 event extension. Since the independent SSCTR records
+// enable the 5K and the marathon in the default authority, the test now says so explicitly (the extension off); the behaviour asserted is unchanged.
+const NO_EXTENSION={...opts,eventExtension:devEventExtension([])};
 import {validateWeeks,skeletonOf} from '../src/r6-program.mjs';
 import {historicalStateOf} from '../src/r6-adaptation.mjs';
 
@@ -126,11 +130,11 @@ test('B0-C10: later-gate familiar tasks fall back and are disclosed; an unclear 
  assert.ok(!quality(hills.program).some(s=>s.prescription.family==='FAMILIAR_REPEATED_BOUTS'));
  const odd=gen({...BOUTS,id:'r-lg-odd',knownRuns:[{...BOUTS_TASK,category:'MYSTERY',prescription:{...BOUTS_TASK.prescription,family:'INTERVALS'}}]});
  assert.ok(odd.negotiation.some(n=>n.id==='FAMILIAR_RUN_TASK_CATEGORY_ASK'));assert.equal(odd.status,'PROPOSED','asked without blocking the plan');
- const fiveK=gen({id:'r-lg-5k',goals:{run:'RACE',strength:'NONE'},event:{kind:'5K',date:'2026-12-20',timeGoalMinutes:24},schedule:{strengthDays:[]}});
+ const fiveK=gen({id:'r-lg-5k',goals:{run:'RACE',strength:'NONE'},event:{kind:'5K',date:'2026-12-20',timeGoalMinutes:24},schedule:{strengthDays:[]}},NO_EXTENSION);
  assert.equal(fiveK.status,'PROPOSED');assert.equal(fiveK.program.goal.run.kind,'PERFORMANCE');assert.equal(fiveK.program.goal.run.event,null);
  assert.ok(!fiveK.program.phases.phases.some(p=>['SPECIFIC','TAPER','RACE_WEEK','POST_EVENT'].includes(p)));assert.ok(!fiveK.program.weeks.some(w=>w.sessions.some(s=>s.role==='RACE')));
  assert.ok(fiveK.negotiation.some(n=>n.id==='EVENT_5K_PERFORMANCE_FALLBACK'));
- assert.equal(gen({id:'r-lg-marathon',goals:{run:'RACE',strength:'NONE'},event:{kind:'MARATHON',date:'2027-01-20'},schedule:{strengthDays:[]}}).status,'UNSUPPORTED');
+ assert.equal(gen({id:'r-lg-marathon',goals:{run:'RACE',strength:'NONE'},event:{kind:'MARATHON',date:'2027-01-20'},schedule:{strengthDays:[]}},NO_EXTENSION).status,'UNSUPPORTED');
 });
 
 test('Event taper (10K, half marathon) with the combined strength taper: one taper week, achieved peaks, reduced strength, nothing new or heavy before the race',()=>{

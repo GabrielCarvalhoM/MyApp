@@ -7,8 +7,12 @@ import {loadR6Policy} from '../src/r6-authority.mjs';
 import {DEFAULT_HYBRID} from '../src/r6-balanced.mjs';
 import {devAuthority} from '../r6/fixtures/dev-authority.mjs';
 import {PROFILES,EDGE_PROFILES,intake} from '../r6/fixtures/profiles.mjs';
+import {devEventExtension} from '../src/v1-events.mjs';
 
 const opts={authority:devAuthority()};
+// V1 Final Closure (V1X-EVENTS migration): this assertion states the behaviour without the V1 event extension. Since the independent SSCTR records
+// enable the 5K and the marathon in the default authority, the test now says so explicitly (the extension off); the behaviour asserted is unchanged.
+const NO_EXTENSION={...opts,eventExtension:devEventExtension([])},WITH_EXTENSION={...opts,eventExtension:devEventExtension()};
 const sessions=p=>p.weeks.flatMap(w=>w.sessions);
 const clone=x=>structuredClone(x);
 
@@ -36,7 +40,9 @@ test('R6 intake: eligibility unknown is ASK, pain is clinical, out-of-V1 events 
  assert.deepEqual(generateProgram(EDGE_PROFILES.ELIGIBILITY_UNKNOWN,opts).missingInputs,['athlete.eligibility.currentNonclinicalAssessment']);
  const clinical=generateProgram(EDGE_PROFILES.CLINICAL_PAIN,opts);
  assert.equal(clinical.status,'CLINICAL_HUMAN_REQUIRED');assert.equal(clinical.program,null);
- assert.equal(generateProgram(EDGE_PROFILES.MARATHON_OUT_OF_SCOPE,opts).status,'UNSUPPORTED');
+ assert.equal(generateProgram(EDGE_PROFILES.MARATHON_OUT_OF_SCOPE,NO_EXTENSION).status,'UNSUPPORTED');
+ // With the extension the same athlete (a long-run day of 60 minutes) gets the preparatory plan, never a marathon block; an ultra stays outside.
+ {const g=generateProgram(EDGE_PROFILES.MARATHON_OUT_OF_SCOPE,WITH_EXTENSION);assert.equal(g.status,'PROPOSED');assert.equal(g.program.goal.run.event,null);assert.equal(g.program.canonical.goals.contextEvent.preparatory,true);}
  const minor=intake('X-minor',{athlete:{ageYears:16,goals:{run:'REGULAR',strength:'GENERAL'}},schedule:{runDays:[1],strengthDays:[3]}});
  assert.equal(generateProgram(minor,opts).status,'UNSUPPORTED');
 });

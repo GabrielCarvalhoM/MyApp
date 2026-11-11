@@ -1,0 +1,62 @@
+{
+  "reviewId": "SSCTR-V1FC-RECHECK-r1",
+  "date": "2026-11-11",
+  "kind": "The single narrow recheck after the one directed fix cycle (Founder cycle bound): no further round.",
+  "candidate": {"commit": "06bbc7f", "parent": "2d089c0", "branch": "claude/coachingcore-v1-final-closure"},
+  "reviewer": "The same independent SSCTR-1.0.0 instance as SSCTR-V1FC-REVIEW-r1 (constitution sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180). An AI agent with no human credentials and no clinical or legal equivalence; not human, clinical or empirical validation. It did not author the fixes, their tests or Amendment 2 (written by the decision-author instance at this judge's request; this instance proposed the principle and judged only the implementation).",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, nonclinical sporting content only; clinical judgment stays CLINICAL_HUMAN_REQUIRED.",
+  "inputs": {
+    "fixCycle": "audits/coachingcore-v1-final-closure-2026-11-11/FIX_CYCLE_V1FC.md sha256 fb96d7a8bb0fb1ab157c66b7d501fbf6bbe35647efda159605d80b308ef32b23",
+    "amendment2": "ssctr-decision/SSCTR_V1FC_DECISION_AMENDMENT_2.json sha256 3f0cdc3cb14ad073ed3f26c9daf4f14cef7aae4601df0bff34cded331021e005",
+    "extension": "CoachingCore/v1/EVENT_EXTENSION_V1.json sha256 8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8, equal to EXTENSION_SHA256 in src/v1-events.mjs at 06bbc7f (verified). Diff from 2d089c0: only Amendment 2's three keys, a semantics string and the decision-record list; 5K values unchanged.",
+    "code": {"src/r6-program.mjs": "c603bada95fed95f0796f793d759c90b048aadd67a9d0ecaaa9e43a1c7111f45", "src/r6-adaptation.mjs": "be280b07fb72d07c556747040dc842795804587911d062f6fc46f895601f9d1d", "src/v1-events.mjs": "2e7c0e31299686c40d3fa48cb0afc6d463cde1ed1cbb674199b42d2cd99e7cd4"},
+    "method": "A fresh git archive extract of 06bbc7f in a new scratch folder (node_modules copied in). The review probes were retargeted to it and rerun. Differentials against the 2d089c0 extract: 16 inputs for the 10K, the half and the normal journeys (missed, partial and adverse scripts included), and 10 inputs for the 5K. Tests run: v1fc-review-fixes, v1fc-review-fixes-qre, v1fc-events, v1fc-scope, v1fc-boundary: 45/45 pass. No verify script was run, nothing was deleted, and the only writes are under reviews/ssctr/ (one new file and an append to the event records file). A probe retargeting slip (the F08 script first selected the research entry point) was caught and rerun on v1-index.mjs; only the corrected run is used.",
+    "literature": "No new search: the recheck judges implementation against Amendment 2, whose sources (SRC06, SRC11, SRC01, SRC02) were re-read in SSCTR-V1FC-REVIEW-r1. Python not installed: skill validator not run; JSON checked with Node.",
+    "hostInjectedContext": "As in SSCTR-V1FC-REVIEW-r1 (global CLAUDE.md, project CLAUDE.md, MEMORY.md): used only to orient, never as approval, evidence or a finding."
+  },
+  "findingStatus": [
+    {"id": "SSCTR-V1FC-R-01", "status": "CLOSED", "evidence": "R-01 reproduction (all long runs of weeks 2-11 missed): race day EASY_CONVERSATIONAL completion. EVENT_AMBITIOUS_FOR_CURRENT_RUNNING is on every proposal from week 6, with options later or shorter first and caution LATER_OR_SHORTER_EVENT_FIRST; it names the windowed long run (70 at week 6, 0 at week 11) and says earlier long runs are too long ago to count. The taper long runs follow the window (45/35 = that week's easy runs when none is inside). Amendment 2's 'to verify' list: the fully executed reference keeps MARATHON_EFFORT (taper 125/100); the athlete missing only the last two specific long runs keeps MARATHON_EFFORT (window holds 175 at day -35; taper 120/95). Further probes: missing weeks 7-9 keeps effort (170 at -42); missing weeks 5-9 gives a completion (no long run on days 21-50); Monday and Wednesday races, 4 run days, and 150 min available all keep effort. The 10K and the half are byte-identical to 2d089c0 (16/16)."},
+    {"id": "SSCTR-V1FC-R-02", "status": "CLOSED", "evidence": "Proposals rebuild the projection: week 3 says 175 (projected weeks counted as executed); from week 6 the completion note replaces it. The creation note adds 'Race day is decided by the longest long run you complete between about 7 and 3 weeks before the race' (Amendment 2 disclosure)."},
+    {"id": "SSCTR-V1FC-R-03", "status": "CLOSED", "evidence": "Monday race: day -20 2x18' (0.6), day -13 2x15' (0.5). Races on Tuesday, Wednesday, Friday and Sunday give 0.6 then 0.5."},
+    {"id": "SSCTR-V1FC-R-04", "status": "CLOSED", "evidence": "Post-race light strength through day 14 is at least 7 days apart: strength days [0,4] give 5, 12; [0,2,4] give 5, 12; [1,5] give 6, 13; [2] gives 10. The next block starts on day 15 or later."},
+    {"id": "SSCTR-V1FC-R-05", "status": "CLOSED", "evidence": "With 4 run days the block notes add the weekly-share sentence; with 5 days they do not."},
+    {"id": "SSCTR-V1FC-R-06", "status": "CLOSED", "evidence": "The walk/jog 5K athlete and a novice with 2 run days no longer get the threshold note; a novice with 3 run days does."},
+    {"id": "SSCTR-V1FC-R-07", "status": "CLOSED", "evidence": "B2 now reads 'do not train for 7 days after it, and report those days as a break'."}
+  ],
+  "newFindings": [
+    {"id": "SSCTR-V1FC-RC-01", "severity": "LOW", "blocking": false, "conditionOf": "V1X-MARATHON (Product copy, before athlete-facing use)", "title": "The marathon completion note opens with a contradictory clause",
+     "reproduction": "R-01 reproduction, any proposal from week 6: 'By race week the plan reaches a longest continuous run of 150 minutes, and its executed long run is below 150 minutes…' The first clause states the program's longest continuous run (the R6 template); the second sentence correctly gives the windowed value (70 or 0) and why.",
+     "smallestFix": "For the windowed basis, open with the windowed long run (e.g. 'Your longest long run between about 7 and 3 weeks before the race is N minutes, below 150…') or drop the continuous-run clause. Copy only; no dose."}
+  ],
+  "regressionCheck": {
+    "fiveK": "No regression: planned sessions and decisions identical to 2d089c0 for 10 inputs (reference, novice, months 5, 2 and 4 run days, walk/jog, restart, Monday race, 8-week plan, missed and adverse script). Only change: the intended R-06 note removal for walk/jog.",
+    "normalJourneys": "No regression: profiles A-E, G and the 10K 8-week plan, with missed, partial and adverse scripts, give byte-identical final programs and decisions to 2d089c0.",
+    "F08Cut": "No regression on the V1 engine: a sign-free report and a check give KEEP with the typed unavailability; a later review with missed sessions is GATED_NEXT_STEP (no debt); any yes is CLINICAL_HUMAN_REQUIRED; an unanswered or non-boolean sign is asked; the hold survives an omitted reference, a return, a goal change and RECOVERED; only a clean readiness declaration releases it, sport by sport, into the same conservative entry (15-min easy runs, 1 set at RIR 4). QRE-V1FC-02: an unknown condition is now asked by name; an unrecognized sign key is asked; a yes beside an unrecognized key still routes to the clinical hold (precedence kept); intent, days, region and sports are not asked, which is correct since V1 does not read them.",
+    "otherJudgesSportingSide": {
+      "SEC-V1FC-03": "Coherent: a missed session of the current week that is already past is handled as before (KEEP, nothing moved); a session of the previous week or one still ahead is asked about, nothing is moved or copied. No make-up path is created.",
+      "QRE-V1FC-01": "Coherent: a later marathon date asks for a new plan (where B1 is read again); the same marathon keeps the plan; a switch from the marathon to the half re-plans future phases as the R6 half does; a 10K date change is unchanged."
+    }
+  },
+  "verdict": "READY_WITH_CONDITIONS",
+  "verdictScope": "The V1-scoped CoachingCore with both events (5K and marathon) as implemented at 06bbc7f, on synthetic data only.",
+  "conditions": [
+    {"id": "V1-C1", "condition": "Synthetic data only: no real athletes, no production use."},
+    {"id": "V1-C2", "condition": "RC-01 corrected in Product copy before any athlete-facing use."},
+    {"id": "V1-C3", "condition": "Athletes reach the engine only through v1-index.mjs; r6-index.mjs stays research-only."},
+    {"id": "V1-C4", "condition": "The prescriptive approvals (5K and marathon) enter QUEUED_FOR_FUNDED_HUMAN_REVALIDATION under HQ-V1FC-SSCTR-A, B1, B2 and B3, appended by Founder or Chief (queue unchanged here)."},
+    {"id": "V1-C5", "condition": "Urgency wording stays INTERIM_PENDING_G04."},
+    {"id": "V1-C6", "condition": "The observations of SSCTR-V1FC-REVIEW-r1 (O-01 to O-05) are carried to the 2027-05-11 re-review."}
+  ],
+  "states": {
+    "RUNTIME_CORRECTNESS": "Sporting view: correct within V1 at 06bbc7f; engineering correctness belongs to QRE.",
+    "V1_SCOPE_ENFORCED": "YES by the sporting probes; bypass testing belongs to QRE.",
+    "EVENT_EXTENSION": {"5K": "APPROVED_WITH_CONDITIONS; record bound to 8a4ba9b3… appended", "MARATHON": "APPROVED_WITH_CONDITIONS; record bound to 8a4ba9b3… appended"},
+    "F08_STATUS": "V1 cut ACCEPTED (unchanged by the fixes).",
+    "RECORD_CUSTODY_STATUS": "Not judged (Security, QRE).",
+    "INTEGRATION_READY": "Not a sporting determination; from the sporting side NO for any real-athlete integration.",
+    "REAL_ATHLETES": "NOT_AUTHORIZED"
+  },
+  "eventRecords": "Appended to reviews/ssctr/SSCTR_V1FC_EVENT_RECORDS.json: V1X-5K and V1X-MARATHON, both APPROVE_WITH_CONDITIONS, SUPPORTED_WITH_LIMITS, bound to 8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8. The earlier 5K record (bound to e53a282d…) stays in the array and enables nothing.",
+  "governance": {"gateStatus": "NOT_CLOSED_BY_THIS_RECORD", "publicationStatus": "NOT_PUBLISHED", "humanValidation": false, "empiricalProductValidation": false, "clinicalClearance": false},
+  "expiry": {"owner": "Chief / SSCTR", "reviewBy": "2027-05-11", "triggers": ["any change to EVENT_EXTENSION_V1.json, the event code paths, the R6 policy or the bound catalog", "a change to the taper length, race window or long-run cadence (Amendment 2 window)", "a new systematic review on marathon tapering, post-marathon recovery or intensity and injury in recreational runners", "first real product data or an adverse event", "the Founder's funding declaration (human revalidation)"]}
+}

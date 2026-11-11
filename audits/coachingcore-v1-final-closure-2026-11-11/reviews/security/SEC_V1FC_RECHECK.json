@@ -1,0 +1,128 @@
+{
+  "reviewId": "SEC-V1FC-RECHECK-r1",
+  "date": "2026-11-11",
+  "role": "Security, Privacy & Abuse Architect (the same judge instance as SEC-V1FC-REVIEW-r1; authored none of the fixes)",
+  "recheckOf": "SEC-V1FC-REVIEW-r1 on 2d089c0",
+  "candidate": {
+    "commit": "06bbc7f",
+    "parent": "2d089c08a92f4d5ab752dcf98512527b9387ae6e",
+    "branch": "claude/coachingcore-v1-final-closure"
+  },
+  "cycleBound": "This is the single narrow recheck the Founder's rule allows; no further round follows.",
+  "method": {
+    "extract": "fresh git archive of 06bbc7f in a new scratchpad folder (secv1fc-recheck-x06bbc7f-1794410226), CoachingCore/node_modules copied from the worktree",
+    "probes": "the review's own probes rerun unchanged (p9c/p9b/p9-tamper, p1c-legacy, p7-target, p5-logged, p2-adopt, p3-restart, p4b, p6-scope, p8-regress, p10-agency, p11-events) plus three new ones: r1-tamper.mjs (what the new link and envelope still leave outside a MAC), r2-legacy.mjs (version refusal, account not locked), r3-target-kinds.mjs (targetSessionId on the other kinds that read it); synthetic data only, in-memory store",
+    "suite": "node --test in CoachingCore of the 06bbc7f extract (V1CP_ROOT = the extract): 1258 tests, 1258 pass, 0 fail",
+    "notRun": [
+      "npm run verify",
+      "any verify-r* script"
+    ],
+    "noRecursiveDeletion": true,
+    "filesWritten": [
+      "reviews/security/SEC_V1FC_RECHECK.json",
+      "reviews/security/SEC_V1FC_RECHECK.md"
+    ],
+    "readFirst": "audits/coachingcore-v1-final-closure-2026-11-11/FIX_CYCLE_V1FC.md and the diff 2d089c0..06bbc7f of the touched modules; other roles' recheck records not read",
+    "hostContextDisclosure": "As in the review: the global CLAUDE.md, the project CLAUDE.md and MEMORY.md were injected by the host; used only to orient; no ruling rests on them.",
+    "noLegalRegulatoryOrClinicalClaim": true
+  },
+  "verdict": "FAIL",
+  "gate": "SECURITY_BLOCKED",
+  "verdictScope": "The V1-scoped synthetic candidate at 06bbc7f and its reference custody boundary only.",
+  "freezeBlockedBy": [
+    "SEC-V1FC-01 (OPEN: residual type-confusion variant of the same keyless tamper)"
+  ],
+  "findings": [
+    {
+      "id": "SEC-V1FC-01",
+      "severity": "HIGH",
+      "blockingForV1Freeze": true,
+      "status": "OPEN",
+      "whatClosed": "The reviewed tamper (null the marker row, erased:true) is now INTEGRITY_FAILURE (document); moving the erased flag from one slot to another fails (document); re-pointing an entry with an integer `of` fails (chain); un-erasing fails; the hold-row variant fails (p8 G1 dropHoldRow).",
+      "residual": "The seal and the verifier read the erased flag differently. The envelope counts a slot as erased only when `erased === true` (`chain.filter(c=>c?.erased===true)`), but verify() accepts a null row for any truthy `erased` (`c.erased ? doc.rows[i]!==null : ...`, custody.mjs line 74). A keyless actor who nulls the marker row and sets `erased` to 1, \"true\", {} or [] leaves the sealed erased set unchanged, so the document verifies, and the erasure hold is gone.",
+      "reproduction": "r1-tamper.mjs: hold, then eraseHealthFacts(hold) (the marker is the only hold, the reference is cleared). In raw storage set rows[m]=null and chain[m].erased=1 (or \"true\", {}, []), with no key. read OK, markers 0, view VALID_PLAN, 4 executable sessions. erased:true on the same slot gives INTEGRITY_FAILURE:document. The fix's own test (v1fc-review-fixes.test.mjs:99-102) tries only erased:true.",
+      "smallestFix": "One predicate in verify(): treat a slot as erased only when `c.erased === true`, and fail 'chain' (or 'shape') for an entry that has an `erased` key with any other value. A closed key set per chain entry (seq, recordedAt, digest, of, mac, erased) would also close it. Add the four values to the tamper test.",
+      "cycleNote": "The single fix cycle is used. Under the Founder's rule this closes as a named blocker unless whoever owns the cycle rule allows the one-line fix. That is not a decision for this role."
+    },
+    {
+      "id": "SEC-V1FC-02",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": true,
+      "status": "CLOSED",
+      "probe": "r2-legacy.mjs and p1c-legacy.mjs. V1.generateProgram(R5-INPUT-1) returns INVALID_INPUT and V1.evaluateProgram on a legacy program returns HOLD. Onboarding with the R5 intake returns INVALID_INPUT and stores nothing: read is NOT_ENROLLED (not INTEGRITY_FAILURE), and the same athlete id then enrolls with a V1 intake (PROPOSED). Restarting with the R5 intake returns INVALID_INPUT and the record still reads. Intake versions undefined, null, 'R6-INTAKE-2' and 'r6-intake-1' are all refused. Custody enroll and restart also check validProgram before committing."
+    },
+    {
+      "id": "SEC-V1FC-03",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": true,
+      "status": "CLOSED",
+      "probe": "p7-target.mjs and p6-scope T. A target that differs from the session the request reports as not done returns INVALID_REQUEST with no state change, and so do an object and a 100 KB string. A quality session two weeks ahead, or a long run later this week, gets ASK (never moved or copied), the program is unchanged, and no offer is made. The other athlete's version is unchanged. r3-target-kinds.mjs: on the six other kinds that read targetSessionId, a future or current target with no evidence changes no week and makes no offer.",
+      "notReopened": "A past-week target whose session is already reported executed still ends in ENGINE_CONTRACT_VIOLATION with no state change. This is the class of QRE-V1FC-03 (a repeated report of a recorded session), which FIX_CYCLE_V1FC.md lists as a condition of INTEGRATION_READY. Recorded there, not reopened here."
+    },
+    {
+      "id": "SEC-V1FC-04",
+      "severity": "MEDIUM",
+      "blockingForV1Freeze": false,
+      "status": "OPEN_AS_NAMED_CONDITION_BEFORE_REAL_DATA",
+      "probe": "p4b.mjs on 06bbc7f: after erasure, program.decisions still holds readinessRecord.cause CLINICAL, the erased hold's kind and time, and the held sports, unchanged. As recorded in FIX_CYCLE_V1FC.md."
+    },
+    {
+      "id": "SEC-V1FC-05",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "status": "CLOSED",
+      "probe": "p5-logged.mjs (a): erasing an ASK 'not 100%' report clears reference.pending. The view goes back to VALID_PLAN with no question, and only the scrubbed entry's event id remains."
+    },
+    {
+      "id": "SEC-V1FC-06",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "status": "CLOSED",
+      "probe": "p5-logged.mjs (b) and (c): on both erasure paths, a weekly review's event named beside the health event keeps its full decision entry, and erased counts only the health event."
+    },
+    {
+      "id": "SEC-V1FC-07",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "status": "CLOSED",
+      "probe": "p2-adopt.mjs A8 (stub engine, valid program hash): after LEARNING is revoked, accept of the learned rearrangement returns NOT_PENDING, because revoking LEARNING closed the waiting change (CONSENT_REVOKED). The code also refuses a LEARNED_REARRANGEMENT in accept without LEARNING."
+    },
+    {
+      "id": "SEC-V1FC-08",
+      "severity": "LOW",
+      "blockingForV1Freeze": false,
+      "status": "CLOSED",
+      "probe": "Inventory rows present for response.unavailable (HEALTH_DERIVED, egress NONE), offer/pending and agency. Every custody error code (18 distinct) is free of canary words, and the refusal over a hold is now CHANGE_NOT_ADOPTABLE. The probe p6-scope L2 still prints FAIL only because it feeds telemetryOf the old literal code by hand; that code no longer exists in custody. L1: telemetry is clean over the new paths."
+    }
+  ],
+  "newFindings": [],
+  "regressionCheck": {
+    "result": "No regression introduced by the fixes on what the review verified.",
+    "evidence": [
+      "CF-OBS-1 engine layer: 7 kinds with the hold on record and no reference are CLINICAL_HUMAN_REQUIRED with no proposal (p8 G6). Custody layer: the 24-kind x 4-payload sweep under a hold stays BLOCKED with nothing executable (p6 S2). Readiness requires HEALTH_SIGNALS (S3).",
+      "V1 gate: 24 kinds x wellbeing payloads open no reduction (p6 S1).",
+      "Seal and chain: tampering with agency, pending, decisions, requests, consents, schema or reference, truncation, reorder and the hold row all give INTEGRITY_FAILURE on read and write. A foreign key fails. The decline memory is sealed (p8 G1, G2; p10 G7). The p8 'dropAgency' line is a no-op on a document with no agency, as in the review.",
+      "Idempotency, stale version, server-owned and unknown fields (no echo), cross-athlete, unauthenticated (p8 G3); HEALTH_SIGNALS gate (G4); pseudonymous tombstone refusing re-enroll and writes (G5).",
+      "Restart gates unchanged: coaching consent, learningConsent, server-owned fields, clinical break, hold, injury flag, SYNTHETIC_ONLY (p3).",
+      "Adoption orderings A1-A7 unchanged (p2).",
+      "Telemetry and push neutral over the new paths (p6 L1).",
+      "Event extension: client values still cannot enable an event (p11). The records file now exists. That it enables nothing under the default authority here is for SSCTR/QRE, not this role."
+    ]
+  },
+  "section7Pending": "The review's additions are carried into the closure record as PENDING (per the dispatch): pinning the authority files, including the event records file; request size limits; erasure reaching the program (SEC-V1FC-04) and backups; the learning model after a LEARNING revocation; per-purpose keys. Section 7's guarantee 'a removed row is an INTEGRITY_FAILURE' still does not hold while SEC-V1FC-01 is open.",
+  "fourDistinctions": {
+    "syntheticCandidate": "FAIL: one blocker remains (SEC-V1FC-01 residual). Its fix is one predicate in verify(). Every other finding of the round is CLOSED, except SEC-V1FC-04, a named condition before real data.",
+    "integrationBoundary": "NOT_READY: SEC-V1FC-01, section 7's operational PENDING parts with the additions, and QRE-V1FC-03 (the ENGINE_CONTRACT_VIOLATION on a repeated report of a recorded session).",
+    "beforeRealData": "SEC-V1FC-01 and SEC-V1FC-04 resolved; authentication, KMS, a production database with access control and encryption at rest, an external monotonic version, backups that reach erasure, monitoring, rate and size limits; authority files pinned; G07 (owner: the Founder with legal counsel, not ruled on here); SEC-V1CP pendings; F08/G04 wording.",
+    "realAthletes": "NO: all of the above plus human and clinical revalidation. CLINICAL_HUMAN_REQUIRED stands."
+  },
+  "states": {
+    "RUNTIME_CORRECTNESS_security_part": "FAIL (one blocker)",
+    "V1_SCOPE_ENFORCED": "YES at the V1 entry point and for every kind and payload probed",
+    "F08_STATUS": "Situation 1 unreachable through V1 custody. A hold is released only by readiness, except by the residual keyless tamper of SEC-V1FC-01.",
+    "RECORD_CUSTODY_STATUS": "IMPLEMENTED_WITH_ONE_BLOCKER",
+    "INTEGRATION_READY": "NO",
+    "authorizationForRealAthletes": "NO"
+  },
+  "escalation": "Applying the one-line fix for SEC-V1FC-01 after the single cycle is a cycle-rule decision for its owner (the Founder through the Chief), not for this role. Without it, SEC-V1FC-01 closes this mission as a named blocker on the freeze."
+}
