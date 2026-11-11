@@ -1,0 +1,307 @@
+CoachingCore V1 Final Closure: representative journeys (synthetic; event extension: DEV_EXTENSION_AUTHORITY_PENDING_RECORD)
+
+## 01 beginner in both sports (start running: walk/jog; strength from zero)
+  run WALK_JOG, strength NONE; goal run REGULAR, strength GENERAL, lead JOINT
+  notes: -
+  w 0 ESTABLISHMENT run 3x  60' long   - WALK_JOG                          | strength 2x 13 sets 
+  w 1 DEVELOPMENT   run 3x  63' long   - WALK_JOG                          | strength 2x 16 sets 
+  w 2 DEVELOPMENT   run 3x  69' long   - WALK_JOG                          | strength 2x 16 sets db-floor-press 2x10@14, db-row 2x10@16
+  w 3 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 2x12@16, db-floor-press 2x12@14
+  w 4 CONSOLIDATION run 3x  84' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@18, db-floor-press 1x8@16
+  w 5 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 18 sets goblet-squat 3x8@18, db-floor-press 3x8@16
+  w 6 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 18 sets goblet-squat 3x10@18, db-floor-press 3x10@16
+  w 7 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 18 sets goblet-squat 3x12@18, db-floor-press 3x12@16
+  decisions {"KEEP":8} actions {"INSTANTIATE_LOGGED_LOADS":3,"KEEP":5}
+  invariants hold: true
+
+## 02 uneven: novice runner, experienced lifter
+  run WALK_JOG, strength KNOWN_LOAD; goal run REGULAR, strength STRENGTH, lead STRENGTH
+  notes: -
+  w 0 ESTABLISHMENT run 3x  60' long   - WALK_JOG                          | strength 3x 38 sets back-squat 4x5@100, barbell-rdl 3x6@100
+  w 1 DEVELOPMENT   run 3x  63' long   - WALK_JOG                          | strength 3x 40 sets back-squat 4x5@100, barbell-rdl 3x6@100
+  w 2 DEVELOPMENT   run 3x  69' long   - WALK_JOG                          | strength 3x 40 sets back-squat 4x5@100, barbell-rdl 3x6@100
+  w 3 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 3x 40 sets back-squat 4x5@102.5, barbell-rdl 3x6@102.5
+  w 4 CONSOLIDATION run 3x  84' long   - WALK_JOG                          | strength 3x 25 sets back-squat 3x5@102.5, barbell-rdl 2x6@102.5
+  w 5 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 3x 52 sets back-squat 4x5@102.5, barbell-rdl 4x6@102.5
+  w 6 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 3x 52 sets back-squat 4x5@105, barbell-rdl 4x6@105
+  w 7 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 3x 52 sets back-squat 4x5@105, barbell-rdl 4x6@105
+  decisions {"KEEP":8} actions {"INSTANTIATE_LOGGED_LOADS":2,"KEEP":6}
+  invariants hold: true
+
+## 03 uneven: experienced runner (10K), new to strength
+  run QUALITY_FAMILIAR, strength NONE; goal run RACE 10K, strength GENERAL, lead RUN
+  notes: PULL_LIMITED_FOR_EQUIPMENT, STRENGTH_TIME_LIMITS_SESSION
+  w 0 ESTABLISHMENT run 4x 190' long  70 EASY+LONG                         | strength 2x  8 sets 
+  w 1 BUILD         run 4x 196' long  70 THRESHOLD 4x5'/2'                 | strength 2x 10 sets 
+  w 2 SPECIFIC      run 4x 198' long  70 THRESHOLD 5x5'/2'                 | strength 2x 10 sets 
+  w 3 SPECIFIC      run 4x 193' long  70 TEN_K_SPECIFIC 5x3'/2'            | strength 2x 10 sets 
+  w 4 SPECIFIC      run 4x 198' long  70 TEN_K_SPECIFIC 6x3'/2'            | strength 2x 10 sets 
+  w 5 TAPER         run 4x 143' long  45 TEN_K_SPECIFIC 3x3'/2'            | strength 2x  6 sets 
+  w 6 RACE_WEEK     run 4x  75' long   - RACE_TOUCH 3x2'/2'                RACE effort | strength 1x  2 sets 
+  w 7 POST_EVENT    run 3x  80' long   - RECOVERY_EASY                     | strength 1x  2 sets 
+  decisions {"KEEP":8} actions {"KEEP":8}
+  invariants hold: true
+
+## 04 balanced hybrid: performance running and strength
+  run EASY_CURRENT, strength KNOWN_LOAD; goal run PERFORMANCE, strength STRENGTH, lead JOINT
+  notes: -
+  w 0 DEVELOPMENT   run 3x 120' long  50 EASY+LONG                         | strength 2x 22 sets back-squat 3x5@80, barbell-rdl 3x6@85
+  w 1 DEVELOPMENT   run 3x 125' long  55 EASY+LONG                         | strength 2x 26 sets back-squat 3x5@80, db-bench-press 3x5@14
+  w 2 DEVELOPMENT   run 3x 134' long  60 THRESHOLD 3x5'/2'                 | strength 2x 26 sets back-squat 3x5@82.5, db-bench-press 3x5@16
+  w 3 CONSOLIDATION run 3x 129' long  55 THRESHOLD 3x5'/2'                 | strength 2x 16 sets back-squat 2x5@82.5, db-bench-press 2x5@16
+  w 4 DEVELOPMENT   run 3x 146' long  65 THRESHOLD 4x5'/2'                 | strength 2x 30 sets back-squat 4x5@82.5, db-bench-press 4x5@16
+  w 5 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 5x5'/2'                 | strength 2x 30 sets back-squat 4x5@85, db-bench-press 4x5@18
+  w 6 DEVELOPMENT   run 3x 153' long  70 THRESHOLD 3x8'/2'                 | strength 2x 30 sets back-squat 4x5@85, db-bench-press 4x5@18
+  w 7 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 26 sets back-squat 3x5@87.5, db-bench-press 3x5@20
+  w 8 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 3x8'/2'                 | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@20
+  w 9 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@20
+  w10 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@90, db-bench-press 4x5@22
+  w11 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 22 sets back-squat 3x5@90, db-bench-press 3x5@22
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":4,"KEEP":8}
+  invariants hold: true
+
+## 05 running first: half marathon
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run RACE HALF_MARATHON, strength RUNNING_SUPPORT, lead RUN
+  notes: -
+  w 0 ESTABLISHMENT run 3x 150' long  60 EASY+LONG                         | strength 2x 16 sets 
+  w 1 BUILD         run 3x 150' long  60 EASY+LONG                         | strength 2x 16 sets db-row 2x8@16, db-row 2x8@16
+  w 2 BUILD         run 3x 155' long  65 EASY+LONG                         | strength 2x 16 sets goblet-squat 2x10@16, db-row 2x10@16
+  w 3 BUILD         run 3x 149' long  65 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x6@18, db-row 2x6@18
+  w 4 CONSOLIDATION run 3x 144' long  60 THRESHOLD 3x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@18, db-row 1x8@18
+  w 5 BUILD         run 3x 161' long  70 THRESHOLD 4x5'/2'                 | strength 2x 26 sets goblet-squat 3x8@18, db-row 3x8@18
+  w 6 BUILD         run 3x 173' long  75 THRESHOLD 5x5'/2'                 | strength 2x 26 sets goblet-squat 3x10@18, db-row 3x10@18
+  w 7 BUILD         run 3x 168' long  75 THRESHOLD 3x8'/2'                 | strength 2x 26 sets goblet-squat 3x6@20, db-row 3x6@20
+  w 8 CONSOLIDATION run 3x 168' long  70 THRESHOLD 3x8'/2'                 | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w 9 SPECIFIC      run 3x 172' long  75 HALF_MARATHON_SPECIFIC 2x12'/3'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w10 SPECIFIC      run 3x 184' long  80 HALF_MARATHON_SPECIFIC 3x10'/2'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w11 SPECIFIC      run 3x 183' long  80 HALF_MARATHON_SPECIFIC 2x15'/3'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w12 SPECIFIC      run 3x 195' long  85 HALF_MARATHON_SPECIFIC 3x12'/2'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w13 TAPER         run 3x 132' long  55 HALF_MARATHON_SPECIFIC 2x10'/2'   | strength 2x 10 sets goblet-squat 1x8@20, db-row 1x8@20
+  w14 RACE_WEEK     run 3x  58' long   - RACE_TOUCH 2x5'/3'                RACE effort | strength 1x  3 sets goblet-squat 1x8@20, db-row 1x8@20
+  w15 POST_EVENT    run 3x  80' long   - RECOVERY_EASY                     | strength 1x  3 sets goblet-squat 1x8@20, db-row 1x8@20
+  decisions {"KEEP":16} actions {"INSTANTIATE_LOGGED_LOADS":2,"KEEP":14}
+  invariants hold: true
+
+## 06 strength first: hypertrophy, running kept regular
+  run EASY_CURRENT, strength KNOWN_LOAD; goal run REGULAR, strength HYPERTROPHY, lead STRENGTH
+  notes: -
+  w 0 DEVELOPMENT   run 2x  70' long  40 EASY+LONG                         | strength 3x 37 sets back-squat 3x8@60, barbell-rdl 3x8@70
+  w 1 DEVELOPMENT   run 2x  70' long  40 EASY+LONG                         | strength 3x 37 sets back-squat 3x10@60, barbell-rdl 3x10@70
+  w 2 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 37 sets back-squat 3x12@60, barbell-rdl 3x12@70
+  w 3 CONSOLIDATION run 2x  65' long  30 EASY+LONG                         | strength 3x 22 sets back-squat 2x8@62.5, barbell-rdl 2x8@72.5
+  w 4 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 52 sets back-squat 4x8@62.5, barbell-rdl 4x8@72.5
+  w 5 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 52 sets back-squat 4x10@62.5, barbell-rdl 4x10@72.5
+  w 6 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 52 sets back-squat 4x12@62.5, barbell-rdl 4x12@72.5
+  w 7 CONSOLIDATION run 2x  65' long  30 EASY+LONG                         | strength 3x 37 sets back-squat 3x8@65, barbell-rdl 3x8@75
+  w 8 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 47 sets back-squat 4x8@65, barbell-rdl 4x8@75
+  w 9 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 47 sets back-squat 4x10@65, barbell-rdl 4x10@75
+  w10 DEVELOPMENT   run 2x  75' long  40 EASY+LONG                         | strength 3x 47 sets back-squat 4x12@65, barbell-rdl 4x12@75
+  w11 CONSOLIDATION run 2x  65' long  30 EASY+LONG                         | strength 3x 32 sets back-squat 3x8@67.5, barbell-rdl 3x8@77.5
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":3,"KEEP":9}
+  invariants hold: true
+
+## 07 10K in eight weeks
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run RACE 10K, strength MAINTAIN, lead RUN
+  notes: EVENT_DAY_OUTSIDE_CHOSEN_DAYS
+  w 0 ESTABLISHMENT run 3x 125' long  55 EASY+LONG                         | strength 2x 16 sets 
+  w 1 BUILD         run 3x 125' long  55 EASY+LONG                         | strength 2x 16 sets db-bench-press 2x8@14, db-row 2x8@16
+  w 2 BUILD         run 3x 125' long  55 EASY+LONG                         | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 3 SPECIFIC      run 3x 134' long  60 THRESHOLD 3x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 4 SPECIFIC      run 3x 146' long  65 THRESHOLD 4x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 5 SPECIFIC      run 3x 143' long  65 TEN_K_SPECIFIC 5x3'/2'            | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 6 TAPER         run 3x  98' long  40 TEN_K_SPECIFIC 3x3'/2'            | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 7 RACE_WEEK     run 4x  60' long   - RACE_TOUCH 3x2'/2'                RACE effort | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 8 POST_EVENT    run 2x  50' long   - RECOVERY_EASY                     | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 9 NEXT_BLOCK    run 3x  99' long  40 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w10 NEXT_BLOCK    run 3x 104' long  45 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w11 NEXT_BLOCK    run 3x 104' long  45 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":4,"KEEP":8}
+  invariants hold: true
+
+## 08 5K, intermediate runner (specific preparation) [DEV_EXTENSION_AUTHORITY_PENDING_RECORD]
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run RACE 5K, strength MAINTAIN, lead RUN
+  notes: EVENT_DAY_OUTSIDE_CHOSEN_DAYS
+  w 0 ESTABLISHMENT run 3x 105' long  45 EASY+LONG                         | strength 2x 16 sets 
+  w 1 BUILD         run 3x 105' long  45 EASY+LONG                         | strength 2x 16 sets db-bench-press 2x8@14, db-row 2x8@16
+  w 2 BUILD         run 3x 105' long  45 EASY+LONG                         | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 3 BUILD         run 3x 114' long  45 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 4 CONSOLIDATION run 3x 109' long  40 THRESHOLD 3x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 5 BUILD         run 3x 119' long  50 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 6 SPECIFIC      run 3x 131' long  55 THRESHOLD 4x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 7 SPECIFIC      run 3x 127' long  55 FIVE_K_SPECIFIC 6x2'/2'           | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 8 SPECIFIC      run 3x 145' long  60 FIVE_K_SPECIFIC 8x2'/2'           | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 9 TAPER         run 3x  99' long  40 FIVE_K_SPECIFIC 4x2'/2'           | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w10 RACE_WEEK     run 4x  57' long   - RACE_TOUCH 3x1'/2'                RACE effort | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w11 POST_EVENT    run 2x  50' long   - RECOVERY_EASY                     | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":2,"KEEP":10}
+  invariants hold: true
+
+## 09 5K, beginner on walk/jog (completion) [DEV_EXTENSION_AUTHORITY_PENDING_RECORD]
+  run WALK_JOG, strength NONE; goal run RACE 5K, strength MAINTAIN, lead RUN
+  notes: LONG_RUN_TIME_LIMITS_EVENT, EVENT_AMBITIOUS_FOR_CURRENT_RUNNING, EVENT_DAY_OUTSIDE_CHOSEN_DAYS, EVENT_5K_THRESHOLD_INTERVALS
+  w 0 ESTABLISHMENT run 3x  60' long   - WALK_JOG                          | strength 2x 13 sets  | double days 2
+  w 1 BUILD         run 3x  63' long   - WALK_JOG                          | strength 2x 16 sets  | double days 2
+  w 2 BUILD         run 3x  69' long   - WALK_JOG                          | strength 2x 16 sets db-floor-press 2x8@14, db-row 2x8@16 | double days 2
+  w 3 BUILD         run 3x  78' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 2x8@16, db-floor-press 2x8@14 | double days 2
+  w 4 CONSOLIDATION run 3x  84' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 2
+  w 5 BUILD         run 3x  84' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 2x8@16, db-floor-press 2x8@14 | double days 2
+  w 6 SPECIFIC      run 3x  78' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 2
+  w 7 SPECIFIC      run 3x  84' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 2
+  w 8 SPECIFIC      run 3x  78' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 2
+  w 9 TAPER         run 3x  84' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 2
+  w10 RACE_WEEK     run 4x  72' long   - WALK_JOG+WALK+RACE                RACE completion | strength 1x  3 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 1
+  w11 POST_EVENT    run 3x  78' long   - WALK_JOG                          | strength 1x  3 sets goblet-squat 1x8@16, db-floor-press 1x8@14 | double days 1
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":3,"KEEP":9}
+  invariants hold: true
+
+## 10 marathon, eligible athlete (block) [DEV_EXTENSION_AUTHORITY_PENDING_RECORD]
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run RACE MARATHON, strength MAINTAIN, lead RUN
+  notes: MARATHON_BLOCK_NOTES, MARATHON_PROJECTION
+  w 0 ESTABLISHMENT run 5x 350' long 150 EASY+LONG                         | strength 1x  8 sets 
+  w 1 BUILD         run 5x 350' long 150 EASY+LONG                         | strength 1x  8 sets 
+  w 2 BUILD         run 5x 355' long 155 EASY+LONG                         | strength 1x  8 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 3 BUILD         run 5x 344' long 155 THRESHOLD 3x5'/2'                 | strength 1x  8 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 4 SPECIFIC      run 5x 356' long 160 THRESHOLD 4x5'/2'                 | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 5 SPECIFIC      run 5x 373' long 165 MARATHON_SPECIFIC 2x15'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 6 SPECIFIC      run 5x 396' long 170 MARATHON_SPECIFIC 3x15'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 7 SPECIFIC      run 5x 398' long 175 MARATHON_SPECIFIC 2x20'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 8 SPECIFIC      run 5x 426' long 180 MARATHON_SPECIFIC 3x20'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 9 SPECIFIC      run 5x 426' long 180 MARATHON_SPECIFIC 3x20'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w10 TAPER         run 5x 314' long 125 MARATHON_SPECIFIC 2x18'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w11 TAPER         run 5x 253' long 100 MARATHON_SPECIFIC 2x15'/3'        | strength 1x  5 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w12 RACE_WEEK     run 5x 118' long   - RACE_TOUCH 2x5'/3'                RACE effort | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w13 POST_EVENT    run 0x   0' long   -                                   | strength 0x  0 sets 
+  w14 POST_EVENT    run 5x 150' long   - RECOVERY_EASY                     | strength 1x  3 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w15 NEXT_BLOCK    run 5x 249' long 110 THRESHOLD 3x5'/2'                 | strength 1x  8 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  decisions {"KEEP":16} actions {"INSTANTIATE_LOGGED_LOADS":2,"KEEP":14}
+  invariants hold: true
+
+## 11 marathon goal, runner whose projection stays below 150 (preparatory plan) [DEV_EXTENSION_AUTHORITY_PENDING_RECORD]
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run PERFORMANCE (context MARATHON: PROJECTED_LONG_RUN), strength MAINTAIN, lead RUN
+  notes: MARATHON_PREPARATORY_PLAN
+  w 0 ESTABLISHMENT run 4x 240' long 105 EASY+LONG                         | strength 2x 16 sets 
+  w 1 DEVELOPMENT   run 4x 240' long 105 EASY+LONG                         | strength 2x 16 sets db-bench-press 2x8@14, db-row 2x8@16
+  w 2 DEVELOPMENT   run 4x 245' long 110 EASY+LONG                         | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 3 DEVELOPMENT   run 4x 239' long 110 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 4 CONSOLIDATION run 4x 234' long 105 THRESHOLD 3x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 5 DEVELOPMENT   run 4x 246' long 110 THRESHOLD 4x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 6 DEVELOPMENT   run 4x 263' long 115 THRESHOLD 5x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 7 DEVELOPMENT   run 4x 258' long 115 THRESHOLD 3x8'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w 8 CONSOLIDATION run 4x 253' long 110 THRESHOLD 3x8'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w 9 DEVELOPMENT   run 4x 273' long 120 THRESHOLD 4x8'/2'                 | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w10 DEVELOPMENT   run 4x 269' long 120 THRESHOLD 3x10'/2'                | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w11 DEVELOPMENT   run 4x 279' long 125 THRESHOLD 3x10'/2'                | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w12 CONSOLIDATION run 4x 278' long 120 THRESHOLD 4x8'/2'                 | strength 2x 10 sets goblet-squat 1x8@16, db-bench-press 1x8@14
+  w13 DEVELOPMENT   run 4x 279' long 125 THRESHOLD 3x10'/2'                | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w14 DEVELOPMENT   run 4x 289' long 130 THRESHOLD 3x10'/2'                | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  w15 DEVELOPMENT   run 4x 289' long 130 THRESHOLD 3x10'/2'                | strength 2x 16 sets goblet-squat 2x8@16, db-bench-press 2x8@14
+  decisions {"KEEP":16} actions {"INSTANTIATE_LOGGED_LOADS":4,"KEEP":12}
+  invariants hold: true
+
+## 12 marathon goal, absolute beginner (ordinary beginner plan) [DEV_EXTENSION_AUTHORITY_PENDING_RECORD]
+  run WALK_JOG, strength NONE; goal run PERFORMANCE (context MARATHON: RUN_EXPERIENCE, LONGEST_RUN, WEEKLY_RUNNING, RUN_DAYS, LONG_RUN_TIME, RACE_BEYOND_THIS_PLAN), strength GENERAL, lead RUN
+  notes: MARATHON_PREPARATORY_PLAN, STRENGTH_TIME_LIMITS_SESSION
+  w 0 ESTABLISHMENT run 3x  60' long   - WALK_JOG                          | strength 2x  9 sets 
+  w 1 DEVELOPMENT   run 3x  63' long   - WALK_JOG                          | strength 2x 12 sets 
+  w 2 DEVELOPMENT   run 3x  69' long   - WALK_JOG                          | strength 2x 12 sets db-floor-press 2x10@14, db-row 2x10@16
+  w 3 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 12 sets goblet-squat 2x12@16, db-floor-press 2x12@14
+  w 4 CONSOLIDATION run 3x  84' long   - WALK_JOG                          | strength 2x  6 sets goblet-squat 1x8@18, db-floor-press 1x8@16
+  w 5 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 3x8@18, db-floor-press 3x8@16
+  w 6 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 15 sets goblet-squat 3x10@18, db-floor-press 3x10@16
+  w 7 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 14 sets goblet-squat 3x12@18, db-floor-press 2x12@16
+  w 8 CONSOLIDATION run 3x  78' long   - WALK_JOG                          | strength 2x 12 sets goblet-squat 2x8@20, db-floor-press 2x8@18
+  w 9 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 3x8@20, db-floor-press 3x8@18
+  w10 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 15 sets goblet-squat 3x10@20, db-floor-press 3x10@18
+  w11 DEVELOPMENT   run 3x  75' long   - EASY                              | strength 2x 14 sets goblet-squat 3x12@20, db-floor-press 2x12@18
+  decisions {"KEEP":12} actions {"INSTANTIATE_LOGGED_LOADS":3,"KEEP":9}
+  invariants hold: true
+
+## 13 balanced hybrid, one long run missed in week 3 (no debt)
+  run EASY_CURRENT, strength KNOWN_LOAD; goal run PERFORMANCE, strength STRENGTH, lead JOINT
+  notes: -
+  w 0 DEVELOPMENT   run 3x 120' long  50 EASY+LONG                         | strength 2x 22 sets back-squat 3x5@80, barbell-rdl 3x6@85
+  w 1 DEVELOPMENT   run 3x 125' long  55 EASY+LONG                         | strength 2x 26 sets back-squat 3x5@80, db-bench-press 3x5@14
+  w 2 DEVELOPMENT   run 3x 134' long  60 THRESHOLD 3x5'/2'                 | strength 2x 26 sets back-squat 3x5@82.5, db-bench-press 3x5@16
+  w 3 CONSOLIDATION run 3x 129' long  55 THRESHOLD 3x5'/2'                 | strength 2x 16 sets back-squat 2x5@82.5, db-bench-press 2x5@16
+  w 4 DEVELOPMENT   run 3x 146' long  65 THRESHOLD 4x5'/2'                 | strength 2x 30 sets back-squat 4x5@82.5, db-bench-press 4x5@16
+  w 5 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 5x5'/2'                 | strength 2x 30 sets back-squat 4x5@85, db-bench-press 4x5@18
+  w 6 DEVELOPMENT   run 3x 153' long  70 THRESHOLD 3x8'/2'                 | strength 2x 30 sets back-squat 4x5@85, db-bench-press 4x5@18
+  w 7 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 26 sets back-squat 3x5@87.5, db-bench-press 3x5@20
+  w 8 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 3x8'/2'                 | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@20
+  w 9 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@20
+  w10 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@90, db-bench-press 4x5@22
+  w11 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 22 sets back-squat 3x5@90, db-bench-press 3x5@22
+  decisions {"KEEP":11,"MODIFY":1} actions {"INSTANTIATE_LOGGED_LOADS":4,"KEEP":7,"GATED_NEXT_STEP":1}
+  invariants hold: true
+
+## 14 balanced hybrid, one strength session done in part in week 2
+  run EASY_CURRENT, strength KNOWN_LOAD; goal run PERFORMANCE, strength STRENGTH, lead JOINT
+  notes: -
+  w 0 DEVELOPMENT   run 3x 120' long  50 EASY+LONG                         | strength 2x 22 sets back-squat 3x5@80, barbell-rdl 3x6@85
+  w 1 DEVELOPMENT   run 3x 125' long  55 EASY+LONG                         | strength 2x 26 sets back-squat 3x5@80, db-bench-press 3x5@14
+  w 2 DEVELOPMENT   run 3x 134' long  60 THRESHOLD 3x5'/2'                 | strength 2x 26 sets back-squat 3x5@82.5, db-bench-press 3x5@16
+  w 3 CONSOLIDATION run 3x 129' long  55 THRESHOLD 3x5'/2'                 | strength 2x 16 sets back-squat 2x5@82.5, db-bench-press 2x5@16
+  w 4 DEVELOPMENT   run 3x 146' long  65 THRESHOLD 4x5'/2'                 | strength 2x 30 sets back-squat 4x5@82.5, db-bench-press 3x5@14
+  w 5 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 5x5'/2'                 | strength 2x 30 sets back-squat 4x5@82.5, db-bench-press 3x5@14
+  w 6 DEVELOPMENT   run 3x 153' long  70 THRESHOLD 3x8'/2'                 | strength 2x 30 sets back-squat 4x5@85, db-bench-press 3x5@16
+  w 7 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 20 sets back-squat 3x5@85, db-bench-press 2x5@16
+  w 8 DEVELOPMENT   run 3x 158' long  70 THRESHOLD 3x8'/2'                 | strength 2x 32 sets back-squat 4x5@85, db-bench-press 4x5@16
+  w 9 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@18
+  w10 DEVELOPMENT   run 3x 169' long  75 THRESHOLD 3x10'/2'                | strength 2x 32 sets back-squat 4x5@87.5, db-bench-press 4x5@18
+  w11 CONSOLIDATION run 3x 153' long  65 THRESHOLD 3x8'/2'                 | strength 2x 22 sets back-squat 3x5@90, db-bench-press 3x5@20
+  decisions {"KEEP":10,"MODIFY":2} actions {"INSTANTIATE_LOGGED_LOADS":4,"GATED_NEXT_STEP":2,"KEEP":6}
+  invariants hold: true
+
+## 15 half marathon, a hard week (adverse responses to the quality run in weeks 5 and 6)
+  run EASY_CURRENT, strength FAMILIAR_UNKNOWN_LOAD; goal run RACE HALF_MARATHON, strength RUNNING_SUPPORT, lead RUN
+  notes: -
+  w 0 ESTABLISHMENT run 3x 150' long  60 EASY+LONG                         | strength 2x 16 sets 
+  w 1 BUILD         run 3x 150' long  60 EASY+LONG                         | strength 2x 16 sets db-row 2x8@16, db-row 2x8@16
+  w 2 BUILD         run 3x 155' long  65 EASY+LONG                         | strength 2x 16 sets goblet-squat 2x10@16, db-row 2x10@16
+  w 3 BUILD         run 3x 149' long  65 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x6@18, db-row 2x6@18
+  w 4 CONSOLIDATION run 3x 144' long  60 THRESHOLD 3x5'/2'                 | strength 2x 10 sets goblet-squat 1x8@18, db-row 1x8@18
+  w 5 BUILD         run 3x 161' long  70 THRESHOLD 4x5'/2'                 | strength 2x 26 sets goblet-squat 3x8@18, db-row 3x8@18
+  w 6 BUILD         run 3x 161' long  70 THRESHOLD 4x5'/2'                 | strength 2x 26 sets goblet-squat 3x10@18, db-row 3x10@18
+  w 7 BUILD         run 3x 154' long  70 THRESHOLD 3x5'/2'                 | strength 2x 26 sets goblet-squat 3x6@20, db-row 3x6@20
+  w 8 CONSOLIDATION run 3x 154' long  65 THRESHOLD 3x5'/2'                 | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w 9 SPECIFIC      run 3x 172' long  75 HALF_MARATHON_SPECIFIC 2x12'/3'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w10 SPECIFIC      run 3x 184' long  80 HALF_MARATHON_SPECIFIC 3x10'/2'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w11 SPECIFIC      run 3x 183' long  80 HALF_MARATHON_SPECIFIC 2x15'/3'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w12 SPECIFIC      run 3x 195' long  85 HALF_MARATHON_SPECIFIC 3x12'/2'   | strength 2x 16 sets goblet-squat 2x8@20, db-row 2x8@20
+  w13 TAPER         run 3x 132' long  55 HALF_MARATHON_SPECIFIC 2x10'/2'   | strength 2x 10 sets goblet-squat 1x8@20, db-row 1x8@20
+  w14 RACE_WEEK     run 3x  58' long   - RACE_TOUCH 2x5'/3'                RACE effort | strength 1x  3 sets goblet-squat 1x8@20, db-row 1x8@20
+  w15 POST_EVENT    run 3x  80' long   - RECOVERY_EASY                     | strength 1x  3 sets goblet-squat 1x8@20, db-row 1x8@20
+  decisions {"KEEP":14,"MODIFY":2} actions {"INSTANTIATE_LOGGED_LOADS":2,"KEEP":12,"GATED_NEXT_STEP":2}
+  invariants hold: true
+
+## 16 low data, no watch (nothing invented)
+  run WALK_JOG, strength NONE; goal run REGULAR, strength GENERAL, lead JOINT
+  notes: -
+  w 0 ESTABLISHMENT run 3x  60' long   - WALK_JOG                          | strength 2x 13 sets 
+  w 1 DEVELOPMENT   run 3x  63' long   - WALK_JOG                          | strength 2x 16 sets 
+  w 2 DEVELOPMENT   run 3x  69' long   - WALK_JOG                          | strength 2x 16 sets db-floor-press 2x10@14, db-row 2x10@16
+  w 3 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 16 sets goblet-squat 2x12@16, db-floor-press 2x12@14
+  w 4 CONSOLIDATION run 3x  84' long   - WALK_JOG                          | strength 2x 10 sets goblet-squat 1x8@18, db-floor-press 1x8@16
+  w 5 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 24 sets goblet-squat 3x8@18, db-floor-press 3x8@16
+  w 6 DEVELOPMENT   run 3x  78' long   - WALK_JOG                          | strength 2x 22 sets goblet-squat 3x10@18, db-floor-press 3x10@16
+  w 7 DEVELOPMENT   run 3x  84' long   - WALK_JOG                          | strength 2x 22 sets goblet-squat 3x12@18, db-floor-press 3x12@16
+  decisions {"KEEP":8} actions {"INSTANTIATE_LOGGED_LOADS":3,"KEEP":5}
+  invariants hold: true
+
+## 17 through the app boundary: availability change, missing answer, restart of the server, "not 100%", hold, new plan under hold, readiness
+  - onboard: PROPOSED → VALID_PLAN (5 executable this week)
+  - week 0 done: weekly check-in: KEEP / INSTANTIATE_LOGGED_LOADS [APPLIED_WITH_ITS_EVIDENCE] → VALID_PLAN (0 executable this week)
+  - availability: run days moved (waits for the athlete): MODIFY / REARRANGE_FUTURE_WEEKS [PENDING] → PENDING_CONFIRMATION (5 executable this week)
+  - athlete accepts the change: OK → VALID_PLAN (5 executable this week)
+  - a report with a screen that is too old (a question, nothing executable): ASK / ASK → NEEDS_INPUT (0 executable this week)
+  - server restarted; week 1 check-in continues on the stored record: KEEP / INSTANTIATE_LOGGED_LOADS [APPLIED_WITH_ITS_EVIDENCE] → VALID_PLAN (0 executable this week)
+  - "not 100%", every sign no (V1: plan kept, typed unavailability): KEEP / KEEP [unavailable: TEMPORARY_REDUCTION] → VALID_PLAN (3 executable this week)
+  - "not 100%" with a warning sign (hold; no prescription): CLINICAL_HUMAN_REQUIRED / CLINICAL_HUMAN_REQUIRED → BLOCKED (0 executable this week)
+  - a session report during the hold (recorded; still held): CLINICAL_HUMAN_REQUIRED / CLINICAL_HUMAN_REQUIRED → BLOCKED (0 executable this week)
+  - a new plan asked during the hold (never a release): CLINICAL_HUMAN_REQUIRED → BLOCKED (0 executable this week)
+  - readiness declaration, both sports (conservative restart): MODIFY / READINESS_RESTART [APPLIED_WITH_ITS_FACT] → VALID_PLAN (0 executable this week)
+  record verifies: true, rows: 13
+
+## 18 missing data at onboarding (eligibility not answered) and a current clinical flag
+  - onboard, eligibility unknown: ASK → NO_DATA
+  - onboard, pain reported: CLINICAL_HUMAN_REQUIRED → NO_DATA

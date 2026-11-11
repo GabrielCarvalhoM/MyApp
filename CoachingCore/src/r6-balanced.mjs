@@ -7,7 +7,7 @@ export const SEVERITY=['NONE','LOW','MODERATE','HIGH'];
 const rank=s=>SEVERITY.indexOf(s??'NONE');
 const level=n=>SEVERITY[Math.max(0,Math.min(3,n))];
 const max=(a,b)=>rank(a)>=rank(b)?a:b;
-const KEY_RUN=['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','LONG','RACE','CRUISE','FASTER','HILLS','EVENT_SPECIFIC','FAMILIAR_REPEATED_BOUTS'];
+const KEY_RUN=['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','LONG','RACE','CRUISE','FASTER','HILLS','EVENT_SPECIFIC','FAMILIAR_REPEATED_BOUTS','FIVE_K_SPECIFIC','MARATHON_SPECIFIC'];
 /** Mirrors PROGRAM_POLICY_R6.operational.hybrid; callers pass the authority-bound values and a test checks equality. */
 export const DEFAULT_HYBRID=Object.freeze({sameSessionGapHours:6,nextDayGapHours:30,twoDayGapHours:54,heavyLowerRepeatGapHours:48,preRaceStrengthGapHours:72,turnHours:Object.freeze({AM:7,PM:18}),backToBackGapHours:1.2,heavyLowerMinimumSets:3,qualityAdjacentToLongForbiddenWhenAlternativeExists:true});
 /** Lower-body demand of a strength session from its rows; R5 rows without a catalogue entry use pattern and volume. */

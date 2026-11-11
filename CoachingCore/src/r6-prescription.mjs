@@ -2,7 +2,7 @@ import {clone,hash} from './value.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {noExternalLoad,ordinalResistance} from './r7b-repertoire.mjs';
 
-export const RUN_FAMILIES=['WALK','WALK_JOG','EASY','LONG','THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','SHAKEOUT','RACE','RECOVERY_EASY','FAMILIAR_REPEATED_BOUTS'];
+export const RUN_FAMILIES=['WALK','WALK_JOG','EASY','LONG','THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','SHAKEOUT','RACE','RECOVERY_EASY','FAMILIAR_REPEATED_BOUTS','FIVE_K_SPECIFIC','MARATHON_SPECIFIC'];
 /** Claims no prescription text may make (B0-C02, B0-C03, B0-C05, B0-C11; safety.productMustNot): prevention, rehabilitation, pain relief, physiological thresholds. */
 export const FORBIDDEN_CLAIM=/\bprevent\w*\s+(?:an?\s+)?(?:injur|pain)|injury[- ]?prevention|injury[- ]?proof|rehabilitat|pain relief|relieves? pain|VO2\s?max|\bLT2\b|critical speed|\bMLSS\b|lactate threshold/i;
 export const STRENGTH_FAMILIES=['PRACTICE','LOWER','UPPER','FULL_BODY','MAINTENANCE'];
@@ -40,8 +40,8 @@ export function easyPrescription(minutes,{family='EASY',strides=null,cue,warmup=
  if(strides){p.strides=clone(strides);p.instructions.push(`In the last part, ${strides.repetitions} × ${strides.workSeconds} s relaxed fast strides with ${strides.recoverySeconds} s easy walk/jog between; smooth, never a sprint`);if(strides.optional)p.instructions.push('The strides are optional: the easy run without them is an equal choice');}
  return p;
 }
-const qualityFamily={THRESHOLD:'THRESHOLD',TEN_K:'TEN_K_SPECIFIC',HALF_MARATHON:'HALF_MARATHON_SPECIFIC',TOUCH:'RACE_TOUCH'};
-const qualityCue={THRESHOLD:'THRESHOLD_CONTROLLED',TEN_K:'TEN_K_EFFORT',HALF_MARATHON:'HALF_MARATHON_EFFORT'};
+const qualityFamily={THRESHOLD:'THRESHOLD',TEN_K:'TEN_K_SPECIFIC',HALF_MARATHON:'HALF_MARATHON_SPECIFIC',FIVE_K:'FIVE_K_SPECIFIC',MARATHON:'MARATHON_SPECIFIC',TOUCH:'RACE_TOUCH'};
+const qualityCue={THRESHOLD:'THRESHOLD_CONTROLLED',TEN_K:'TEN_K_EFFORT',HALF_MARATHON:'HALF_MARATHON_EFFORT',FIVE_K:'FIVE_K_EFFORT',MARATHON:'MARATHON_EFFORT'};
 export function qualityPrescription(kind,work,{cues,warmup=10,cooldown=5,budget=240,firstExposure=false,touchCue=null}={}){
  let w={...work};const length=x=>warmup+cooldown+x.repetitions*x.workMinutes+Math.max(0,x.repetitions-1)*x.recoveryMinutes;
  while(length(w)>budget&&w.repetitions>2)w={...w,repetitions:w.repetitions-1};
@@ -55,10 +55,16 @@ export function qualityPrescription(kind,work,{cues,warmup=10,cooldown=5,budget=
  * after strides were executed in training.
  */
 export function racePrescription(event,{cues,raceDay,completion=false,stridesWarmup=false,stridesOptional=false,walkBreaks=null}){
- const tenK=event.kind==='10K',D=raceDay??{windowMinutes:{'10K':75,HALF_MARATHON:150},warmupMinutes:{'10K':12,HALF_MARATHON:8},cooldownMinutes:5};
+ // V1 Final Closure: the race-day effort of each event kind (the 10K and half-marathon texts are unchanged; the 5K and the marathon by V1X-EVENTS).
+ const RACE={'10K':['TEN_K_EFFORT','Start controlled; hold hard but controlled effort and decide in the final part whether to press'],HALF_MARATHON:['HALF_MARATHON_EFFORT','Start controlled; hold steady-hard effort and decide in the final part whether to press'],
+  '5K':['FIVE_K_EFFORT','Start controlled, a little easier than it feels you could; hold hard but controlled effort and decide in the final part whether to press'],
+  MARATHON:['MARATHON_EFFORT','Start easier than it feels necessary and hold the steady, controlled effort; walk breaks are always allowed; decide only in the last part whether to press']}[event.kind]??['HALF_MARATHON_EFFORT','Start controlled; hold steady-hard effort and decide in the final part whether to press'];
+ const D=raceDay??{windowMinutes:{'10K':75,HALF_MARATHON:150},warmupMinutes:{'10K':12,HALF_MARATHON:8},cooldownMinutes:5};
+ // SSCTR V1FC B3.raceDayText: what the marathon plan does not cover is said on race day.
+ const MARATHON_NOTE=event.kind==='MARATHON'?['This plan does not cover fuelling, drinking or heat; follow the race organiser\'s medical and weather guidance']:[];
  const base={modality:'RUN',family:'RACE',durationMinutes:D.windowMinutes[event.kind],warmupMinutes:D.warmupMinutes[event.kind],cooldownMinutes:D.cooldownMinutes,equipment:[],event:{kind:event.kind,date:event.date},windowMinutesIsUpperBound:true};
- if(completion)return {...base,effortDomain:'EASY_CONVERSATIONAL',effort:cues.EASY_CONVERSATIONAL,calibration:{basis:'COMPLETION',timeGoalUsedForPace:false},completion:true,instructions:['Race day: the goal is to complete the distance at a conversational effort',walkBreaks?'Use walk breaks from the start, as in training: '+walkBreaks:'Walk breaks are part of the plan: walk whenever conversation gets hard','Warm up by walking; no strides and no surges, there is nothing to press','No finish time is promised; effort and how you feel govern the pace','Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
- return {...base,effortDomain:tenK?'TEN_K_EFFORT':'HALF_MARATHON_EFFORT',effort:tenK?cues.TEN_K_EFFORT:cues.HALF_MARATHON_EFFORT,calibration:{basis:'EFFORT_ANCHORED',timeGoalUsedForPace:false},instructions:[stridesWarmup?(stridesOptional?'Race day: easy warm-up; a few relaxed strides are optional, and an easy warm-up alone is just as good':'Race day: easy warm-up with a few relaxed strides'):'Race day: easy warm-up; no strides, as none were done in training','Start controlled; hold '+(tenK?'hard but controlled':'steady-hard')+' effort and decide in the final part whether to press','No finish time is promised; effort and how you feel govern the pace','Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
+ if(completion)return {...base,effortDomain:'EASY_CONVERSATIONAL',effort:cues.EASY_CONVERSATIONAL,calibration:{basis:'COMPLETION',timeGoalUsedForPace:false},completion:true,instructions:['Race day: the goal is to complete the distance at a conversational effort',walkBreaks?'Use walk breaks from the start, as in training: '+walkBreaks:'Walk breaks are part of the plan: walk whenever conversation gets hard','Warm up by walking; no strides and no surges, there is nothing to press','No finish time is promised; effort and how you feel govern the pace',...MARATHON_NOTE,'Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
+ return {...base,effortDomain:RACE[0],effort:cues[RACE[0]],calibration:{basis:'EFFORT_ANCHORED',timeGoalUsedForPace:false},instructions:[stridesWarmup?(stridesOptional?'Race day: easy warm-up; a few relaxed strides are optional, and an easy warm-up alone is just as good':'Race day: easy warm-up with a few relaxed strides'):'Race day: easy warm-up; no strides, as none were done in training',RACE[1],'No finish time is promised; effort and how you feel govern the pace',...MARATHON_NOTE,'Stop for pain, dizziness or unusual symptoms','Afterwards: easy walking; note how you feel today and tomorrow']};
 }
 const INCREMENT_UNITS={TOTAL:'KG',PER_HAND:'KG',SINGLE_IMPLEMENT:'KG',MACHINE_STACK:'STACK_STEP',BODYWEIGHT:'BODYWEIGHT',BAND_TENSION:'LEVEL',ASSISTED_BODYWEIGHT:'LEVEL'};
 // R7-D F03-A: the unit a row's load value is stated in, which is the unit a log of it is read in (policy loadUnits: kilograms inside the engine).
@@ -120,7 +126,8 @@ const bad=(errors,key)=>errors.push(key);
 export function validateR6Prescription(p){
  const errors=[];if(!p||!['RUN','STRENGTH'].includes(p.modality))return ['modality'];
  if([...(p.instructions??[]),...(p.exercises??[]).flatMap(e=>e.instructions??[]),p.effort??''].some(t=>typeof t==='string'&&FORBIDDEN_CLAIM.test(t)))bad(errors,'claim');
- if(!Number.isFinite(p.durationMinutes)||p.durationMinutes<=0||p.durationMinutes>240)bad(errors,'durationMinutes');
+ // A training session lasts at most 240 minutes. A race is not a dose: its duration is the event window, an upper bound (the marathon's 360, V1X-EVENTS).
+ if(!Number.isFinite(p.durationMinutes)||p.durationMinutes<=0||p.durationMinutes>(p.family==='RACE'&&p.windowMinutesIsUpperBound===true?360:240))bad(errors,'durationMinutes');
  if(!Array.isArray(p.equipment))bad(errors,'equipment');
  if(p.modality==='RUN'){
   if(!RUN_FAMILIES.includes(p.family))bad(errors,'run.family');
@@ -129,7 +136,7 @@ export function validateR6Prescription(p){
   if((p.warmupMinutes??0)+(p.cooldownMinutes??0)>p.durationMinutes)bad(errors,'run.preparation');
   if(p.calibration?.basis==='ASPIRATIONAL_GOAL'||p.calibration?.paceFromGoalTime===true||p.calibration?.paceFromEasyRuns===true)bad(errors,'run.goalOrEasyDerivedPace');
   if(['EASY','LONG','WALK','WALK_JOG','SHAKEOUT','RECOVERY_EASY'].includes(p.family)&&p.effortDomain!=='EASY_CONVERSATIONAL')bad(errors,'run.easyDomain');
-  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','RACE_TOUCH','FAMILIAR_REPEATED_BOUTS'].includes(p.family)){
+  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','FIVE_K_SPECIFIC','MARATHON_SPECIFIC','RACE_TOUCH','FAMILIAR_REPEATED_BOUTS'].includes(p.family)){
    const w=p.work;if(!w||!Number.isInteger(w.repetitions)||w.repetitions<1||!(w.workMinutes>0)||!(w.recoveryMinutes>=0))bad(errors,'run.work');
    else if(p.warmupMinutes+p.cooldownMinutes+w.repetitions*w.workMinutes+Math.max(0,w.repetitions-1)*w.recoveryMinutes>p.durationMinutes+0.01)bad(errors,'run.workBudget');
    if(p.calibration?.basis!=='EFFORT_ANCHORED'&&p.calibration?.basis!=='CURRENT_FAMILIAR_TASK')bad(errors,'run.calibration');

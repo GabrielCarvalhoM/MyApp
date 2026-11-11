@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import {hash} from './value.mjs';
 import {programAuthority as r5ProgramAuthority} from './r5-authority.mjs';
+import {eventExtensionAuthority,extendPolicy} from './v1-events.mjs';
 
 const read=url=>fs.existsSync(url)?JSON.parse(fs.readFileSync(url,'utf8').replace(/^﻿/,'')):null;
 export const POLICY_URL=new URL('../r6/PROGRAM_POLICY_R6.json',import.meta.url);
@@ -13,6 +14,13 @@ const EVIDENCE={APPROVED:['WELL_SUPPORTED','SUPPORTED_WITH_LIMITS'],LIMITED:['SU
  * everything else fails closed. Conditions travel with the record for the trace.
  */
 export function r6Authority(options={}){
+ // V1 Final Closure: the event extension (5K, marathon) travels with the authority, and its values are read through the same operational view. The
+ // policy hash stays the R6 policy's: the extension is bound by its own hash and its own records (v1-events.mjs).
+ const a=baseAuthority(options);if(!a?.policy)return a;
+ const ext=a.eventExtension??eventExtensionAuthority(options);
+ return {...a,policy:extendPolicy(a.policy,ext),eventExtension:ext};
+}
+function baseAuthority(options={}){
  if(options.authority)return options.authority;
  const policy=options.policy??loadR6Policy(),review=options.review??read(REVIEW_URL),policyHash=policy?hash(policy):null;
  const approved={},records=[];

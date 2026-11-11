@@ -1,0 +1,97 @@
+{
+  "recordId": "SSCTR-V1FC-DECISION-r1-AMENDMENT-1",
+  "date": "2026-11-11",
+  "amends": "SSCTR-V1FC-DECISION-r1 (SSCTR_V1FC_DECISION.json, not edited). Items not named here stand as decided.",
+  "reviewer": "The same SSCTR-1.0.0 instance that authored SSCTR-V1FC-DECISION-r1, as decision author. An AI agent with no human credentials; no human, clinical or empirical validation. A fresh SSCTR instance judges the implemented candidate.",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, nonclinical sporting content only; clinical judgment stays CLINICAL_HUMAN_REQUIRED.",
+  "trigger": "The Chief corrected the request: with the r1 values the engine projects peak long runs of 105 (MIN profile) and 130 (MID) for athletes eligible at the B1 thresholds, so the block would end in a completion race day by design. The r1 rationale for B1.2 (an entry of 90 reaches 150 in a full build) and the 90-minute keep caution rested on the wrong estimate. The projection table was supplied by the Chief and was not re-run by this instance.",
+  "literature": "No new search. The rulings reuse the r1 sources (SRC04, SRC06, SRC11 and the r1 completion rationale); no value depends on a new source.",
+  "items": [
+    {
+      "id": "B1.8",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"projectedPeakLongRunMinMinutes": 150, "projection": "the conditional projection of the marathon block from the intake, as the engine would plan it for the program's actual horizon: every planned session executed with compatible responses, no EARNED release, all existing caps (0.45 share, singleRunCeiling, first-week rules, time available on the long-run day). The value compared is the highest planned long run before the first taper day."},
+      "conditions": [
+        "B1 changes by adding this criterion. B1.1-B1.7 stand as necessary pre-filters; the block is planned only when all of them hold and the projection reaches 150. Otherwise the athlete gets the preparatory plan (B2), whose disclosure names this criterion.",
+        "Read once at intake (and at any new plan). It is never re-checked to remove a block already planned; later shortfalls follow B3.completion and the keep caution below.",
+        "With the supplied table: MIN (105) and MID (130) get the preparatory plan; HIGH (155) and TOP (180) get the block."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC04", "SRC06", "SRC11"],
+      "rationale": "A block that projects a completion race day from its first day is not a coherent marathon preparation: the athlete would race 5-6 hours with a longest run of 105-130 min (about a third to a half of the race). The long run cannot safely be accelerated (single-session spikes, SRC06), and the share cap is binding because weekly volume is low (SRC04), so a lower static threshold cannot fix it. The projection rule uses the engine's own caps, so it excludes only athletes the block cannot bring to a non-completion race day; static thresholds alone would either still admit MIN/MID-like athletes or exclude HIGH-like ones.",
+      "disclosure": "In the B2 disclosure: 'With your current running, a marathon block on this date would reach a longest run of about N minutes; it needs about 150. This plan builds your long run and weekly running first.' N is the projected value."
+    },
+    {
+      "id": "B2.preparatoryLongRunTarget",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"rule": "max(130, min(150, floor5(longestCurrentRunMinutes)))", "longestCurrentRunMinutes": "the longest run completed within the last 30 days (B1.2); unknown or none counts as 0", "min": 130, "max": 150},
+      "conditions": [
+        "Replaces the r1 value 90. A cap, reached only through the existing executed +5-minute steps, the 0.45 share and the single-run ceiling; week 1 never above the reported longest run (unchanged).",
+        "Never plans a long run below what the first-week rules already give the athlete; an athlete at 110 (MID) keeps building from where they are.",
+        "Easy runs grow under the ordinary rules, so weekly volume, which is what holds the long run, rises too."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["SRC04", "SRC06"],
+      "rationale": "The preparatory plan must build toward the projection criterion: athletes who enter with a long run near 130 and higher weekly volume project to 150 or more (HIGH row). 90 would cap MID-like athletes below their current running. The ceiling of 150 keeps a non-event plan below marathon-block long runs. Safety rests on the existing step and spike rules (SRC06), not on the cap value, which is an implementation choice.",
+      "disclosure": "none beyond B2"
+    },
+    {
+      "id": "B3.completion.keepCaution",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"keepCautionLongRunBelowMinutes": 150, "appliesToEveryMarathonCompletion": true},
+      "conditions": [
+        "Replaces the r1 value 90. Whenever a marathon race day is a completion, for any reason (executed long run below 150, or a WALK_JOG, RESTART or RETURN mode or history), EVENT_AMBITIOUS_FOR_CURRENT_RUNNING shows the later or shorter event first and states the longest continuous run executed against the race's duration. Keeping the race and completing it with walk breaks stays offered and stays the athlete's choice.",
+        "10K and half marathon are unchanged (G.1)."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC11"],
+      "rationale": "Under B1.8 every planned block projects a non-completion race day, so a marathon completion now always means an unplanned shortfall. A completion with walk breaks is feasible (SRC11), but for a 5-6 hour event the conservative default is to offer the later or shorter event first. This is the order of the options, not a dose.",
+      "disclosure": "As the condition."
+    },
+    {
+      "id": "B3.planCreationDisclosure",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "value": {"atPlanCreation": "state the projected peak long run and that race day is planned at marathon effort only if the executed long run reaches 150; below that it becomes a completion with walk breaks and the later or shorter event is offered first", "onReprojection": "when any later proposal projects a peak below 150, or race day becomes a completion, the EVENT_AMBITIOUS_FOR_CURRENT_RUNNING note appears on that proposal with the later or shorter event first (existing recomputation from every proposal)"},
+      "conditions": [
+        "Under B1.8 no block is created with a projected completion, so the existing 'race day is planned as a completion' note at creation applies only to the 5K, 10K and half, unchanged.",
+        "The projection is described as conditional on doing the planned sessions, never as a promise."
+      ],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC06", "SRC11"],
+      "rationale": "The athlete must know at the start that the race-day mode depends on executed long runs, and must see a shortfall as soon as a reprojection shows it, not only in race week.",
+      "disclosure": "'If you complete the planned long runs, your longest run reaches about N minutes and race day is at steady marathon effort. If your longest run stays below 150 minutes, race day becomes a completion with walk breaks, and we will suggest a later or shorter race first.'"
+    },
+    {
+      "id": "B1.2.rationale",
+      "disposition": "APPROVE",
+      "value": {"longestCurrentRunMinutesMin": 90, "withinDays": 30},
+      "conditions": ["The value stands as a pre-filter; the r1 rationale ('an entry of 90 reaches 150 in a full build') is withdrawn. B1.8 replaces it as the criterion that ensures the block can reach a non-completion race day."],
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["SRC06"],
+      "rationale": "Correction of the record; no value change.",
+      "disclosure": "none"
+    }
+  ],
+  "values": {
+    "marathon": {
+      "eligibility": {"projectedPeakLongRunMinMinutes": 150},
+      "preparatoryLongRunTarget": {"rule": "max(130, min(150, floor5(longestCurrentRunMinutes)))", "min": 130, "max": 150},
+      "keepCautionLongRunBelowMinutes": 150
+    }
+  },
+  "proposedQueueItems": [
+    {"queue_id": "HQ-V1FC-SSCTR-B1", "change": "scope now includes B1.8"},
+    {"queue_id": "HQ-V1FC-SSCTR-B2", "change": "preparatory long-run target rule replaces 90"},
+    {"queue_id": "HQ-V1FC-SSCTR-B3", "change": "keep caution 150 and the plan-creation disclosure"}
+  ],
+  "proposedQueueNote": "Proposals only; nothing appended; the queue stays at 235.",
+  "hostInjectedContext": "As in r1: a global CLAUDE.md, the project CLAUDE.md and a MEMORY.md were injected and used only to orient.",
+  "governance": {"gateStatus": "NOT_CLOSED_BY_THIS_RECORD", "publicationStatus": "NOT_PUBLISHED", "humanValidation": false, "empiricalProductValidation": false, "clinicalClearance": false},
+  "verificationNeeded": "Engineering must show the B1.8 projection on the four supplied profiles (MIN and MID get the preparatory plan, HIGH and TOP get the block) and that the projection uses no EARNED release.",
+  "expiry": "As r1 (review by 2027-05-11 or on its triggers); also on any change to the long-run share, step or ceiling rules, since the projection depends on them."
+}

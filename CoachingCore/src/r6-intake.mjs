@@ -1,4 +1,5 @@
 import {clone,freeze,hash} from './value.mjs';
+import {eventExtensionAuthority,allowsEvent} from './v1-events.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
 import {ordinalResistance,allowsCandidate,DEFAULT_REPERTOIRE} from './r7b-repertoire.mjs';
 import {screenInterruptionReason,isYes,reasonQuestion} from './r6-clinical.mjs';
@@ -76,7 +77,7 @@ function historySummary(history,asOf,capabilities){
 /** V1CP Situation 3 (SEC-V1CPI-01): the record's restart facts reach a new plan only from restartProgram, under this key of the call's options;
  * intake data can never carry them (a symbol has no JSON form). */
 export const RESTART_FACTS=Symbol('V1CP restart facts');
-export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE,restartFacts=null}={}){
+export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE,restartFacts=null,eventExtension=eventExtensionAuthority(),runClass=null,projectedPeak=null}={}){
  const source=clone(input??{}),a=source.athlete??source.onboarding??{},s=source.schedule??a.schedule??{},errors=[],missing=[],uncertainty=[],negotiation=[];
  if(source.version!==INTAKE_VERSION||source.synthetic!==true||source.purpose!=='SHADOW_REFERENCE')errors.push('offlineSyntheticContract');
  const asOf=typeof source.asOf==='string'?source.asOf.slice(0,10):null,startDate=source.startDate;
@@ -110,12 +111,15 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE,restartF
   event.date=event.date??event.eventDate??rawRun?.eventDate??null;
   event.timeGoalMinutes=number(event.timeGoalMinutes,10,400)?event.timeGoalMinutes:null;
   // B0-C10 (LATER.EVENT.5K): a 5K has no event recipe in V1; the athlete gets a performance plan without event phases, the race kept as context.
-  if(event.kind==='5K'&&allowsCandidate(repertoire,'B0-C10')){contextEvent={kind:'5K',date:isoDay(event.date)?event.date:null,timeGoalMinutes:event.timeGoalMinutes};event=null;runGoal.kind='PERFORMANCE';uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A 5K has no event recipe in V1: a performance plan without specific, taper or race-week phases; the race date and any time goal are context only'));}
+  if(event.kind==='5K'&&!allowsEvent(eventExtension,'5K')&&allowsCandidate(repertoire,'B0-C10')){contextEvent={kind:'5K',date:isoDay(event.date)?event.date:null,timeGoalMinutes:event.timeGoalMinutes};event=null;runGoal.kind='PERFORMANCE';uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A 5K has no event recipe in V1: a performance plan without specific, taper or race-week phases; the race date and any time goal are context only'));}
   else{
-  if(['MARATHON','ULTRA'].includes(event.kind))scope=scope??'EVENT_DISTANCE_OUTSIDE_V1';
-  else if(!['10K','HALF_MARATHON'].includes(event.kind))errors.push('event.supported10KOrHalfMarathon');
+  // V1 Final Closure (V1X-EVENTS): the marathon is planned as an event only with its enabling record, and only for an athlete who meets every
+  // eligibility criterion (read below, once the athlete's facts are); an ultra stays outside. Without the record a marathon is outside, as before.
+  if(event.kind==='ULTRA'||event.kind==='MARATHON'&&!allowsEvent(eventExtension,'MARATHON'))scope=scope??'EVENT_DISTANCE_OUTSIDE_V1';
+  else if(!allowsEvent(eventExtension,event.kind))errors.push('event.supported10KOrHalfMarathon');
   if(!present(event.date))missing.push('athlete.event.date');
-  else if(!isoDay(event.date)||!isoDay(startDate)||dayGap(startDate,event.date)<7||dayGap(startDate,event.date)>=weeks*7)errors.push('event.withinHorizonAndNotImmediate');
+  // A marathon date outside this plan's horizon or too close is an eligibility fact (the athlete gets the preparatory plan), never an input error.
+  else if(!isoDay(event.date)||!isoDay(startDate)||event.kind!=='MARATHON'&&(dayGap(startDate,event.date)<7||dayGap(startDate,event.date)>=weeks*7)||event.kind==='MARATHON'&&!scope&&dayGap(startDate,event.date)<0)errors.push('event.withinHorizonAndNotImmediate');
   runGoal.kind='RACE';
   }
  }else if(runGoal.kind==='RACE')missing.push('athlete.event');
@@ -230,6 +234,34 @@ export function canonicalizeIntake(input,{repertoire=DEFAULT_REPERTOIRE,restartF
  // V1CP Situation 3 (SSCTR-V1CP Q08): the restart of a new plan from the record (fromRecord), the sports not declared ready, and the MODERATE floor.
  const restartOk=rs&&typeof rs==='object'&&(typeof rs.readinessEventId==='string'||rs.readinessEventId===null&&rs.fromRecord===true)&&Array.isArray(rs.strengthRestrictions??[])&&(rs.strengthRestrictions??[]).every(c=>RX[c])&&(rs.notReady===undefined||Array.isArray(rs.notReady)&&rs.notReady.every(x=>['RUN','STRENGTH'].includes(x)))&&(rs.minimumClass===undefined||rs.minimumClass==='MODERATE')&&(rs.fromRecord===undefined||typeof rs.fromRecord==='boolean')&&(rs.readBreakIds===undefined||Array.isArray(rs.readBreakIds)&&rs.readBreakIds.every(x=>typeof x==='string'));
  if(rs!==undefined&&!restartOk)errors.push('athlete.restart');
+ // V1 Final Closure (V1X-MARATHON; SSCTR V1FC decision B1, B2): a marathon block is planned only when every criterion holds on the athlete's own
+ // facts; nothing is inferred (an unknown fact is a criterion not met). Otherwise the marathon stays on record as the athlete's goal (context only)
+ // and the plan is the ordinary one for their current running, with no specific, taper or race phase and no race session: the preparatory plan.
+ // V1X-5K (SSCTR V1FC A.firstExposure): the 5K-effort ladder is for runners with regular running behind them. A novice, or anyone whose months in
+ // the current continuous period are known and below six, keeps the threshold ladder in the 5K specific weeks.
+ if(event?.kind==='5K'){const F=eventExtension?.values?.fiveK??{};if(!(F.specificLadderRequiresRunExperience??[]).includes(runExperience)||runMonths!==null&&runMonths<F.specificLadderMonthsAtLeastWhenKnown)event.thresholdOnly=true;}
+ if(event?.kind==='MARATHON'&&!scope&&isoDay(event.date)&&isoDay(startDate)){
+  const Q=eventExtension?.values?.marathon?.eligibility??{},days=dayGap(startDate,event.date),unmet=[];
+  const atLeast=(v,min)=>Number.isFinite(v)&&v>=min,no=(id,value,needed)=>unmet.push({id,value:value??null,needed});
+  // The longest current run: the intake's recent fact, or a completed and tolerated race inside its window (V1CP Q04).
+  const longest=Math.max(recentRun.longestRunMinutes??-1,recentRun.longestFromRace??-1),time=longRunMinutes??runMinutes;
+  if(!(Q.runExperience??[]).includes(runExperience))no('RUN_EXPERIENCE',runExperience,Q.runExperience);
+  else if(runMonths!==null&&runMonths<Q.monthsAtLeastWhenKnown)no('RUN_EXPERIENCE_MONTHS',runMonths,Q.monthsAtLeastWhenKnown);
+  if(!atLeast(longest,Q.longestRunMinutesAtLeast))no('LONGEST_RUN',longest<0?null:longest,Q.longestRunMinutesAtLeast);
+  if(!atLeast(recentRun.runMinutesPerWeek,Q.weeklyRunMinutesAtLeast))no('WEEKLY_RUNNING',recentRun.runMinutesPerWeek,Q.weeklyRunMinutesAtLeast);
+  if(!(runDays.length>=Q.runDaysAtLeast))no('RUN_DAYS',runDays.length,Q.runDaysAtLeast);
+  if(!atLeast(time,Q.longRunTimeAvailableMinutesAtLeast))no('LONG_RUN_TIME',time,Q.longRunTimeAvailableMinutesAtLeast);
+  if(days<Q.weeksToRaceAtLeast*7)no('RACE_TOO_CLOSE',Math.floor(days/7),Q.weeksToRaceAtLeast);else if(days>=weeks*7)no('RACE_BEYOND_THIS_PLAN',Math.floor(days/7),weeks);
+  if(pause||restartFacts||rs!==undefined)no('RETURNING_FROM_A_STOP',true,false);
+  if(runClass!==null&&!(Q.runClasses??[]).includes(runClass))no('CURRENT_RUNNING_CLASS',runClass,Q.runClasses);
+  // SSCTR V1FC Amendment 1, B1.8: the block's own conditional projection must reach the long run a non-completion race day needs (read by the planner).
+  if(Number.isFinite(projectedPeak)&&projectedPeak<Q.projectedPeakLongRunMinutesAtLeast)no('PROJECTED_LONG_RUN',projectedPeak,Q.projectedPeakLongRunMinutesAtLeast);
+  if(unmet.length){
+   contextEvent={kind:'MARATHON',date:event.date,timeGoalMinutes:event.timeGoalMinutes,preparatory:true,unmet};event=null;runGoal.kind='PERFORMANCE';
+   for(let i=uncertainty.length-1;i>=0;i--)if(uncertainty[i]?.field==='recent.longestRunMinutes'&&uncertainty[i]?.policy==='LEARN_DURING_FIRST_SESSIONS')uncertainty.splice(i,1);
+   uncertainty.push(unknown('event.kind','SAFE_CONSERVATIVE_ESTABLISHMENT','A marathon block is planned only when every eligibility criterion holds; until then the plan builds the running it needs, and the marathon is context only'));
+  }
+ }
  const restart=restartOk?{readinessEventId:rs.readinessEventId,strengthRegions:[...new Set((rs.strengthRestrictions??[]).map(c=>RX[c]))].sort(),...(rs.notReady?.length?{notReady:[...new Set(rs.notReady)].sort()}:{}),...(rs.minimumClass?{minimumClass:rs.minimumClass}:{}),...(rs.fromRecord===true?{fromRecord:true}:{}),...(isoDay(rs.asOf)?{asOf:rs.asOf}:{}),...(Array.isArray(rs.readBreakIds)?{readBreakIds:[...new Set(rs.readBreakIds)].sort()}:{})}:null;
  const canonical={version:'R6-CANONICAL-INTAKE-1',asOf,startDate,weeks,learningConsent:source.learningConsent===true,timezoneOffsetMinutes:source.timezoneOffsetMinutes??0,
   athlete:{id:a.id??null,ageEligible:!missing.includes('athlete.ageEligibility')&&!scope,eligibility:el,runExperience:runExperience??'NOVICE',strengthExperience:strengthExperience??'NOVICE',experienceDeclared:{run:runStated!==null,strength:strengthStated!==null},...(Object.keys(experienceBasis).length?{experienceBasis}:{}),recentRun,recentStrength:{daysPerWeek:recentSelf.strengthDaysPerWeek},historySummary:summary,knownExercises:dedupedExercises,knownRuns,performanceAnchors:clone(a.performanceAnchors??[]),equipment:Array.isArray(equipment)?[...new Set(equipment.map(upper))]:[],strengthPreferences:{emphasis:emphasis.map(upper),movementPriorities:movementPriorities.map(upper),rotation},profileContext:{sex:a.sex??a.profileContext?.sex??null,heightCm:a.heightCm??a.profileContext?.heightCm??null,weightKg:a.weightKg??a.profileContext?.weightKg??null,doseConsumer:false},wearable,pause},

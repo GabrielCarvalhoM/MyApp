@@ -191,3 +191,13 @@ test('Normal weeks through custody: the week\'s own progression is applied with 
  for(const w of [0,1,2,3]){const r=checkIn(s,w);assert.notEqual(r.adoption,'PENDING',`week ${w}: ${r.decision?.reason}`);assert.equal(r.offer,undefined);assert.equal(doc(s).pending,null);}
  assert.equal(arr(),a0,'four executed weeks: the same arrangement of days');
 });
+test('C.1 and C6: a "not 100%" report that opened nothing is logged (append-only, with its reason) and can be erased by the athlete; no hold is written for it',()=>{
+ const s=server();checkIn(s,0);s.set(1,1,'08:00');
+ const r=s.api.notFeeling100({actor:ME,clientRequestId:rid(),expectedVersion:ver(s),eligibility:elig(s),wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:4}});
+ const logged=doc(s).decisions.find(d=>d.eventId===r.eventId);assert.equal(logged.kind,'NOT_FEELING_100');assert.equal(logged.status,'KEEP');assert.match(logged.reason,/does not adjust the plan for feeling under par/);
+ const e=s.api.eraseHealthFacts({actor:ME,eventIds:[r.eventId],expectedVersion:ver(s)});assert.ok(e.ok,JSON.stringify(e.error));assert.equal(e.erased,1);
+ const d=doc(s),trace=d.decisions.find(x=>x.eventId===r.eventId);assert.deepEqual(Object.keys(trace).sort(),['at','decisionId','eventId','kind','status']);assert.equal(trace.kind,'ERASED');
+ assert.ok(!d.rows.some(x=>x?.fact===F.ERASED_F08),'nothing held was erased, so no hold marker');assert.equal(e.view.state,S.VALID_PLAN);assert.equal(s.custody.verify(d),null);
+ assert.ok(!s.store.raw(ME.athleteId).includes('under par'),'the stored response of the erased event is gone too');
+ assert.equal(s.api.eraseHealthFacts({actor:ME,eventIds:['ev_unknown'],expectedVersion:ver(s)}).error.code,'NOT_FOUND');
+});

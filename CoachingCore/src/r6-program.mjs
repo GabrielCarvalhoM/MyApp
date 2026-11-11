@@ -1,4 +1,5 @@
 import {clone,freeze,hash} from './value.mjs';
+import {recipeOf,recipeOfFamily,EVENT_SPECIFIC_FAMILIES,EVENT_BOUNDARIES,allowsEvent,extensionBinding,postEventFirstRunDays,postEventFirstStrengthDays} from './v1-events.mjs';
 import {canonicalizeIntake,onDate,dayGap,RESTART_FACTS} from './r6-intake.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {catalogueEntry} from './r6-catalogue.mjs';
@@ -68,7 +69,7 @@ export function planPhases(c,cap,op){
   const offset=dayGap(c.startDate,ev.date),E=Math.floor(offset/7),raceDay=offset-E*7;
   const taper=E-est>=4?op.event.taperWeeks[ev.kind]:0,taperStart=E-taper;
   const specificLen=Math.max(0,Math.min(op.event.specificWeeks[ev.kind],taperStart-est-1)),specificStart=taperStart-specificLen;
-  for(let i=0;i<N;i++)phases.push(i<est?'ESTABLISHMENT':i<specificStart?((++dev)%every===0?'CONSOLIDATION':'BUILD'):i<taperStart?'SPECIFIC':i<E?'TAPER':i===E?'RACE_WEEK':i===E+1?'POST_EVENT':(++next)%every===0?'CONSOLIDATION':'NEXT_BLOCK');
+  for(let i=0;i<N;i++)phases.push(i<est?'ESTABLISHMENT':i<specificStart?((++dev)%every===0?'CONSOLIDATION':'BUILD'):i<taperStart?'SPECIFIC':i<E?'TAPER':i===E?'RACE_WEEK':i>E&&i<=E+(op.event.postEventWeeks?.[ev.kind]??1)?'POST_EVENT':(++next)%every===0?'CONSOLIDATION':'NEXT_BLOCK');
   return {phases,establishmentWeeks:est,raceWeek:E,raceDay,specificStart,taperStart};
  }
  for(let i=0;i<N;i++)phases.push(i<est?'ESTABLISHMENT':(++dev)%every===0?'CONSOLIDATION':'DEVELOPMENT');
@@ -117,7 +118,7 @@ export function arrangementCandidates(c,cap,goal,context,ctx,templates,{establis
  const longDay=cap.run.class==='WALK_JOG'?null:s.longRunDay,qualityOptions=qualityAllowed?runDays.filter(d=>d!==longDay):[null];
  const types=templates.map(t=>t.type),perms=types.length>5?[types]:permutations(types),out=[];
  const sameTurnShared=s.sharedDays.filter(d=>!s.runTurn||!s.strengthTurn||s.runTurn===s.strengthTurn);
- const specificFamily=EVENT_PHASES.includes(context)&&goal.run.event?(goal.run.event.kind==='10K'?'TEN_K_SPECIFIC':'HALF_MARATHON_SPECIFIC'):'THRESHOLD';
+ const specificFamily=EVENT_PHASES.includes(context)&&goal.run.event&&!goal.run.event.thresholdOnly?recipeOf(goal.run.event.kind).family:'THRESHOLD';
  for(const q of qualityOptions.length?qualityOptions:[null])for(const perm of perms)for(const runFirst of sameTurnShared.length?[true,false]:[true]){
   const sessions=[];
   for(const d of runDays){const role=d===longDay?'LONG':d===q?'QUALITY':'EASY';sessions.push({id:'RUN-'+d,sport:'RUN',role,day:d,turn:turnOf(c,'RUN'),backToBackOrder:sameTurnShared.includes(d)?(runFirst?0:1):0,prescription:{modality:'RUN',family:role==='QUALITY'?specificFamily:role}});}
@@ -158,6 +159,12 @@ export function repertoireNegotiation(sk,{templates=[],noviceTemplates=null}={})
  }
  // Feasibility: a running quality session needs at least three chosen run days (R6-RUN-QUALITY gate, B0-FIDELITY M1–M3).
  if(cap.run.programmed&&['RACE','PERFORMANCE'].includes(goal.run.kind)&&c.schedule.runDays.length<3)out.push({id:'QUALITY_NEEDS_THREE_RUN_DAYS',blocking:false,detail:`With ${c.schedule.runDays.length} run day(s) the plan keeps easy and long running only: a harder quality session needs at least three chosen run days so it never crowds the long run`,options:['Add a run day','Keep easy and long running only'],authority:'R6-RUN-QUALITY'});
+ // V1 Final Closure (V1X-MARATHON B2): the preparatory plan says which criteria a marathon block still needs; it promises no date.
+ if(c.goals.contextEvent?.kind==='MARATHON')out.push({id:'MARATHON_PREPARATORY_PLAN',blocking:false,informational:true,unmet:clone(c.goals.contextEvent.unmet??[]),detail:'A marathon block is planned only when your current running supports it. This plan builds the running a marathon block needs; it does not prepare you for the marathon date you gave: it has no marathon-specific, taper or race phase and no race session, and no date is promised. Not met yet: '+(c.goals.contextEvent.unmet??[]).map(marathonCriterion).join('; ')+'. If you take part anyway, do not run for 7 days after it, and report those days as a break',options:['Keep the preparatory plan','Choose a later marathon','Choose a 10K or half marathon first']});
+ // SSCTR V1FC B3: what a marathon block's athlete is told (the long run is capped, never promised; strength runs reduced while running leads).
+ if(c.goals.event?.kind==='MARATHON')out.push({id:'MARATHON_BLOCK_NOTES',blocking:false,informational:true,detail:'Your longest training run may stay below 3 hours; that is expected. From the specific weeks to race day (about 9 weeks) strength runs at a reduced maintenance dose so running can lead. The second week after the marathon is short easy runs only; normal training restarts in the third week, below your peak'});
+ // SSCTR V1FC A.firstExposure: the novice's 5K weeks keep the threshold ladder.
+ if(c.goals.event?.kind==='5K'&&c.goals.event.thresholdOnly)out.push({id:'EVENT_5K_THRESHOLD_INTERVALS',blocking:false,informational:true,detail:'Your 5K weeks use controlled threshold intervals; harder 5K-effort repetitions come after about 6 months of continuous running'});
  if(c.goals.contextEvent?.kind==='5K')out.push({id:'EVENT_5K_PERFORMANCE_FALLBACK',blocking:false,informational:true,detail:'5K races have no event recipe in V1: the plan is a performance plan without specific, taper or race-week phases, and the race date and any time goal are context only',options:['Keep the performance plan','Choose a 10K or half marathon'],laterGate:'LATER.EVENT.5K'});
  return out;
 }
@@ -201,7 +208,7 @@ export function walkDays(roles,walks){
  return new Set([...easy].sort((a,b)=>adjacency(b)-adjacency(a)||b.day-a.day).slice(0,walks).map(r=>r.id));
 }
 // ---------- Run state machine: planned trajectory and response-gated transitions ----------
-export function runTarget(sk){const R=sk.op.run,s=sk.c.schedule,ev=sk.goal.run.event;return Math.min(s.longRunMinutes??s.runMinutes??0,ev?R.longRunTargets[ev.kind]:R.longRunTargets[sk.goal.run.kind]??60);}
+export function runTarget(sk){const R=sk.op.run,s=sk.c.schedule,ev=sk.goal.run.event,T=sk.c.goals.contextEvent?.preparatory===true?sk.authority?.eventExtension?.values?.marathon?.preparatoryLongRunTarget:null,now=Math.max(sk.c.athlete.recentRun?.longestRunMinutes??0,sk.c.athlete.recentRun?.longestFromRace??0),prep=T?Math.max(T.min,Math.min(T.max,Math.floor(now/5)*5)):null;return Math.min(s.longRunMinutes??s.runMinutes??0,ev?R.longRunTargets[ev.kind]:prep??R.longRunTargets[sk.goal.run.kind]??60);}
 export function initialRunState(sk){
  const {c,cap,plan,op}=sk,R=op.run,s=c.schedule,budget=s.runMinutes,longBudget=s.longRunMinutes??budget,cls=cap.run.class;
  const runDays=cap.run.programmed?s.runDays:[],hasLong=cls!=='WALK_JOG'&&s.longRunDay!==null&&runDays.includes(s.longRunDay),nEasy=runDays.length-(hasLong?1:0);
@@ -299,7 +306,8 @@ export function advanceRun(sk,st0,w,gate={}){
   if(P.long&&done('LONG'))st.achieved.long=Math.max(st.achieved.long??0,P.long);
   if(P.easy&&done('EASY'))st.achieved.easy=Math.max(st.achieved.easy??0,P.easy);
   if(P.strides&&done('EASY')){st.stridesDone=(st.stridesDone??0)+1;st.achieved.strides=Math.max(st.achieved.strides??0,P.strides);}
-  if(P.quality&&done('QUALITY')&&!bouts){st.qualityDone=(st.qualityDone??0)+1;st.achieved.quality=clone(P.quality);}
+  // V1X-EVENTS: in a taper longer than one week (the marathon) a taper session is never the achieved peak the next taper week reduces from.
+  if(P.quality&&done('QUALITY')&&!bouts){st.qualityDone=(st.qualityDone??0)+1;if(!(phase==='TAPER'&&op.event.taperPoints?.[sk.goal.run.event?.kind]))st.achieved.quality=clone(P.quality);}
   if(P.quality&&bouts&&done('QUALITY')&&Number.isFinite(st.familiarCurrentThrough))st.familiarCurrentThrough=Math.max(st.familiarCurrentThrough,7*w+op.return.moderateMaxDays);
   let smallReferenceStep=false,waitLong=false,otherStep=false,longBefore=null;
   // With no easy run planned (every easy day a walk), the executed long run gates the walk-to-run conversion (SSCTR R12).
@@ -364,14 +372,14 @@ export function familiarBoutsPrescription(task,R,budget){
  return {modality:'RUN',family:'FAMILIAR_REPEATED_BOUTS',durationMinutes:duration,warmupMinutes:warm,cooldownMinutes:cool,effortDomain:'FAMILIAR_HARDER_BOUTS',effort:'Your familiar harder intervals at the effort you already know for them; ease off if they feel harder than usual',equipment:[],work:{repetitions:w.repetitions,workMinutes:w.workMinutes,recoveryMinutes:w.recoveryMinutes},target:{method:String(t.method).toUpperCase(),construct:'FIELD_SESSION_TARGET',...(pace?{paceSecondsPerKm:t.paceSecondsPerKm}:{}),provenance:t.provenance,observedAt:task.observedAt??null},calibration:{basis:'CURRENT_FAMILIAR_TASK',observedAt:task.observedAt??null,paceFromGoalTime:false,paceFromEasyRuns:false},progressionAllowed:false,instructions:['Warm up '+warm+' minutes easy','Your familiar harder intervals exactly as you do them: '+w.repetitions+' × '+w.workMinutes+' min with '+w.recoveryMinutes+' min easy between','Target: '+targetText+'; effort counts as much as the target, and a session that feels harder than usual ends early','Kept as it is: no extra repetition, time or speed is added','Cool down '+cool+' minutes easy','Record repetitions completed, effort and next-day function']};
 }
 /** A self-reported familiar quality task keeps its own work; missing effort text comes from its family's cue, never a pace. */
-const FAMILY_CUE={THRESHOLD:'THRESHOLD_CONTROLLED',TEN_K_SPECIFIC:'TEN_K_EFFORT',HALF_MARATHON_SPECIFIC:'HALF_MARATHON_EFFORT'};
+const FAMILY_CUE={THRESHOLD:'THRESHOLD_CONTROLLED',TEN_K_SPECIFIC:'TEN_K_EFFORT',HALF_MARATHON_SPECIFIC:'HALF_MARATHON_EFFORT',FIVE_K_SPECIFIC:'FIVE_K_EFFORT',MARATHON_SPECIFIC:'MARATHON_EFFORT'};
 function familiarQualityTask(p,R){
  const family=p.family==='CRUISE'?'THRESHOLD':p.family,effortDomain=p.effortDomain??FAMILY_CUE[family];
  return {equipment:[],warmupMinutes:R.qualityWarmupMinutes,cooldownMinutes:R.qualityCooldownMinutes,...clone(p),family,effortDomain,effort:p.effort??R.effortCues[effortDomain]};
 }
 /** The quality task of a week: a current familiar task first (its own work), otherwise the ladder step. */
 function qualityFor(sk,row,budget){
- const R=sk.op.run,ev=sk.goal.run.event,specific=row.phase==='SPECIFIC'&&!!ev&&row.thresholdDone>=R.specificRequiresCompatibleThresholdSessions,ladder=specific?(ev.kind==='10K'?R.tenKSpecificLadder:R.halfMarathonSpecificLadder):R.thresholdLadder;
+ const R=sk.op.run,ev=sk.goal.run.event,specific=row.phase==='SPECIFIC'&&!!ev&&!ev.thresholdOnly&&row.thresholdDone>=R.specificRequiresCompatibleThresholdSessions,ladder=specific?R[recipeOf(ev.kind).ladder]:R.thresholdLadder;
  const step=Math.max(0,Math.min(ladder.length-1,specific?row.specificStep:row.qualityStep)-(row.phase==='CONSOLIDATION'?1:0));
  // B0-C02: a current familiar repeated-bout task is the week's single quality session in BUILD, DEVELOPMENT and NEXT_BLOCK weeks (and their
  // consolidation), held exactly; never in SPECIFIC, taper or event weeks (event ladders and rules replace it), never after an interruption.
@@ -379,7 +387,7 @@ function qualityFor(sk,row,budget){
  if(bouts){const p=familiarBoutsPrescription(bouts,R,budget);if(p)return {prescription:p,progression:{dimension:'FAMILIAR_BOUTS',value:0,ladder:'FAMILIAR_BOUTS'},familiar:true,bouts:true};}
  const familiar=sk.cap.run.familiarQuality[0],fp=familiar?familiarQualityTask(familiar.prescription,R):null;
  if(fp&&row.qualityStep===(row.familiarStep??0)&&!specific&&fp.durationMinutes<=budget&&!validateR6Prescription({...fp,calibration:{basis:'CURRENT_FAMILIAR_TASK'}}).length)return {prescription:{...fp,calibration:{basis:'CURRENT_FAMILIAR_TASK',observedAt:familiar.observedAt}},progression:{dimension:'THRESHOLD_STEP',value:row.familiarStep??0,ladder:'FAMILIAR'},familiar:true};
- const p=qualityPrescription(specific?(ev.kind==='10K'?'TEN_K':'HALF_MARATHON'):'THRESHOLD',ladder[step],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,firstExposure:specific?row.specificStep===0:row.qualityStep===0});
+ const p=qualityPrescription(specific?recipeOf(ev.kind).quality:'THRESHOLD',ladder[step],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,firstExposure:specific?row.specificStep===0:row.qualityStep===0});
  return p?{prescription:p,progression:{dimension:specific?'SPECIFIC_STEP':'THRESHOLD_STEP',value:step,ladder:specific?ev.kind:'THRESHOLD'},familiar:false}:null;
 }
 /** Walk/jog and restart exposures: at most maxWalkJogDaysPerWeek of the chosen run days, spaced by a day where possible. */
@@ -1003,17 +1011,20 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
  const walk=()=>({role:'WALK',prescription:walkPrescription(Math.min(c.schedule.runMinutes,E.keptWalkMinutes)),optional:true,converted:'KEPT_FROM_BUILD'});
  const walkJog=(step,why,optional=false)=>{const s=Math.max(0,Math.min(step,ladder.length-1)),p=walkJogPrescription(s,ladder,{warmup:op.establishment.walkJogWarmupMinutes,cooldown:op.establishment.walkJogCooldownMinutes,budget:c.schedule.runMinutes});return p?{role:'WALK_JOG',prescription:p,essential:!optional,optional,explanation:why,progression:{dimension:'WALK_JOG_STEP',value:s}}:walk();};
  const easyMinutes=fraction=>Math.min(budget,Math.max(R.minimumSessionMinutes,roundTo5((achieved.easy||R.minimumSessionMinutes)*fraction)));
- const kindOf=family=>family==='TEN_K_SPECIFIC'?'TEN_K':family==='HALF_MARATHON_SPECIFIC'?'HALF_MARATHON':'THRESHOLD';
+ const kindOf=family=>recipeOfFamily(family)?.quality??'THRESHOLD';
  // The touch is the run day closest to the race that is still at least raceWeekTouchMinDaysBeforeRace days before it.
  const touchDay=mode==='EASY'&&qualityOk&&achieved.quality?runs.filter(r=>!walkSet.has(r.id)&&ed.windowB(r.day)>=E.raceWeekTouchMinDaysBeforeRace).sort((a,b)=>ed.windowB(a.day)-ed.windowB(b.day))[0]?.day??null:null;
  // V1CP V3 (SSCTR-V1CP Q10): taper and race-week running fractions at the bounds of the approved ranges for LOWER and HIGHER volume.
- const vRun=volumeOf(sk.c,'RUN'),taperVolume=rangePoint(E.taperWeekRunVolumeRange,vRun,ev.kind==='10K'?E.taperWeekRunVolumeRange[1]:mid(E.taperWeekRunVolumeRange)),raceWeekVolume=rangePoint(E.raceWeekRunVolumeRange,vRun,mid(E.raceWeekRunVolumeRange)),taperLong=rangePoint(E.taperWeekLongRunRange,vRun,mid(E.taperWeekLongRunRange));
+ const vRun=volumeOf(sk.c,'RUN'),taperVolume0=rangePoint(E.taperWeekRunVolumeRange,vRun,['10K','5K'].includes(ev.kind)?E.taperWeekRunVolumeRange[1]:mid(E.taperWeekRunVolumeRange)),raceWeekVolume=rangePoint(E.raceWeekRunVolumeRange,vRun,mid(E.raceWeekRunVolumeRange)),taperLong0=rangePoint(E.taperWeekLongRunRange,vRun,mid(E.taperWeekLongRunRange));
+ // V1X-EVENTS: a taper longer than one week (the marathon) steps down by days to the race; each point lies inside the approved taper ranges.
+ const points=E.taperPoints?.[ev.kind]??null,pointAt=b=>points?[...points].sort((x,y)=>y.daysBeforeRaceAtLeast-x.daysBeforeRaceAtLeast).find(p=>b>=p.daysBeforeRaceAtLeast)??points.at(-1):null;
  for(const r of runs){
   const b=ed.before(w,r.day);
   if(b===0)continue;
+  const point=pointAt(b),taperVolume=point?.runVolume??taperVolume0,taperLong=point?.longRun??taperLong0;
   if(b<0){
    const since=-b;
-   if(since<E.postEventFirstRunMinDaysAfterRace){out[r.id]={role:'REST_BY_DESIGN',prescription:null,optional:true,explanation:since===1?'Day after the race: rest or an easy walk; no running is planned':'Too soon after the race: rest or walk'};continue;}
+   if(since<postEventFirstRunDays(E,ev.kind)){out[r.id]={role:'REST_BY_DESIGN',prescription:null,optional:true,explanation:since===1?'Day after the race: rest or an easy walk; no running is planned':'Too soon after the race: rest or walk'};continue;}
    if(mode==='WALK_JOG'){out[r.id]=exposures.has(r.id)?walkJog(runState.walkStep-1,'Easy and optional after the race: an easier walk/jog than before it; stop and report pain, illness or unusual fatigue',true):walk();continue;}
    out[r.id]={role:'RECOVERY_EASY',prescription:easyPrescription(Math.min(budget,E.postEventEasyMinutes[since>=4?1:0],current??Infinity),{family:'RECOVERY_EASY',cue}),optional:true,explanation:'Easy and optional after the race; stop and report pain, illness or unusual fatigue'};continue;
   }
@@ -1022,15 +1033,15 @@ function eventWeekSessions(sk,w,roles,{achieved={},walks=0,ceiling=null,runState
    if(mode==='WALK_JOG'){out[r.id]=b===1?{role:'WALK',prescription:walkPrescription(Math.min(c.schedule.runMinutes,E.keptWalkMinutes),{reason:'Day before the race: an easy walk if you like; no running'}),optional:true,converted:'RACE_EVE_WALK'}:walkJog(runState.walkStep-1,'Final days before the race: an easier walk/jog than your current step');continue;}
    if(mode!=='EASY'){out[r.id]=b===1?{role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0],current),{family:'SHAKEOUT',cue}),optionalByDesign:true},optional:true,explanation:'Optional short easy run the day before the race'}:{role:'EASY',prescription:easyPrescription(heldMinutes(raceWeekVolume),{cue}),explanation:'Final days before the race: shorter than your current runs'};continue;}
    if(b===1){out[r.id]={role:'SHAKEOUT',prescription:{...easyPrescription(Math.min(budget,E.shakeoutMinutes[0]),{family:'SHAKEOUT',cue,strides:strides?{repetitions:Math.min(E.shakeoutStrideRepetitions,achieved.strides),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null}),optionalByDesign:true},optional:true,explanation:'Optional short shakeout the day before the race'};continue;}
-   if(r.day===touchDay){const p=qualityPrescription('TOUCH',E.raceWeekTouch[ev.kind],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,touchCue:ev.kind==='10K'?'TEN_K_EFFORT':'HALF_MARATHON_EFFORT'});if(p){out[r.id]={role:'RACE_TOUCH',prescription:p,key:true,essential:false,explanation:'Brief race-effort touch to stay sharp; only work already done in the build'};continue;}}
+   if(r.day===touchDay){const p=qualityPrescription('TOUCH',E.raceWeekTouch[ev.kind],{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget,touchCue:recipeOf(ev.kind).cue});if(p){out[r.id]={role:'RACE_TOUCH',prescription:p,key:true,essential:false,explanation:'Brief race-effort touch to stay sharp; only work already done in the build'};continue;}}
    out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(raceWeekVolume),{cue}),explanation:'Final days before the race: short and easy'};
    continue;
   }
   if(mode==='WALK_JOG'){out[r.id]=walkJog(runState.walkStep,'Taper: hold your current walk/jog step; nothing new before the race');continue;}
   if(mode!=='EASY'){out[r.id]={role:'EASY',prescription:easyPrescription(heldMinutes(1),{cue}),explanation:'Taper: hold your current easy runs; nothing longer before the race'};continue;}
   // R10: the taper long run is never shorter than that week's easy run.
-  if(r.role==='LONG'&&achieved.long){const minutes=Math.max(roundTo5(achieved.long*taperLong),easyMinutes(taperVolume));out[r.id]={role:'LONG',prescription:easyPrescription(Math.min(budget,Math.max(R.minimumSessionMinutes,minutes)),{family:'LONG',cue}),key:true,essential:true,explanation:'Taper: shorter long run relative to the achieved peak, never shorter than the easy runs'};continue;}
-  if(r.role==='QUALITY'&&qualityOk&&achieved.quality?.work){const q=achieved.quality,work=reducedWork(q.work,((r,l)=>l==='STANDARD'?r:[rangePoint(r,l),rangePoint(r,l)])(E.taperQualityWorkRange,difficultyOf(sk.c,'RUN')),E.reducedWorkMinimums);const p=qualityPrescription(kindOf(q.family),{repetitions:work.repetitions,workMinutes:work.workMinutes,recoveryMinutes:q.work.recoveryMinutes},{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget});if(p){out[r.id]={role:'QUALITY',prescription:p,key:true,essential:true,explanation:'Taper: same effort, less work than the achieved peak session'};continue;}}
+  if(r.role==='LONG'&&achieved.long){const minutes=Math.max(roundTo5(achieved.long*taperLong),easyMinutes(taperVolume));out[r.id]={role:'LONG',prescription:easyPrescription(Math.min(points?capped(c.schedule.longRunMinutes??c.schedule.runMinutes):budget,Math.max(R.minimumSessionMinutes,minutes)),{family:'LONG',cue}),key:true,essential:true,explanation:'Taper: shorter long run relative to the achieved peak, never shorter than the easy runs'};continue;}
+  if(r.role==='QUALITY'&&qualityOk&&achieved.quality?.work){const q=achieved.quality,work=reducedWork(q.work,point?.qualityWork?[point.qualityWork,point.qualityWork]:((r,l)=>l==='STANDARD'?r:[rangePoint(r,l),rangePoint(r,l)])(E.taperQualityWorkRange,difficultyOf(sk.c,'RUN')),E.reducedWorkMinimums);const p=qualityPrescription(kindOf(q.family),{repetitions:work.repetitions,workMinutes:work.workMinutes,recoveryMinutes:q.work.recoveryMinutes},{cues:R.effortCues,warmup:R.qualityWarmupMinutes,cooldown:R.qualityCooldownMinutes,budget});if(p){out[r.id]={role:'QUALITY',prescription:p,key:true,essential:true,explanation:'Taper: same effort, less work than the achieved peak session'};continue;}}
   out[r.id]={role:'EASY',prescription:easyPrescription(easyMinutes(taperVolume),{cue,strides:strides?{repetitions:Math.max(R.strides.entryRepetitions,achieved.strides-1),workSeconds:R.strides.workSeconds,recoverySeconds:R.strides.recoverySeconds,...optionalStrides}:null})};
  }
  return out;
@@ -1054,12 +1065,17 @@ export function peakOf(weeks){
  * return in race week; walk/jog or restart in any earlier week of this program, from the start or applied by a review (SSCTR D47);
  * or a half marathon whose achieved long run is below the declared minimum (SSCTR D43, R9). No other exemption applies.
  */
+/** The executed long run below which race day is a completion, by event kind (the half marathon's R6 value; the marathon's by V1X-EVENTS); null when none. */
+export const completionLongRunBelow=(sk,kind)=>sk.op.event.completionLongRunBelowMinutes?.[kind]??(kind==='HALF_MARATHON'?sk.op.event.raceDayCompletion.halfMarathonAchievedLongRunBelowMinutes:null);
+/** One unmet marathon criterion as the athlete reads it: their value and what the block needs. */
+const marathonCriterion=u=>{const v=u.value===null||u.value===undefined?'not known':u.value;return ({RUN_EXPERIENCE:`running experience ${String(v).toLowerCase()} (an intermediate or experienced runner)`,RUN_EXPERIENCE_MONTHS:`${v} months of continuous running (at least ${u.needed})`,LONGEST_RUN:`longest recent run ${v===`not known`?v:v+' min'} (at least ${u.needed} min in the last 30 days)`,WEEKLY_RUNNING:`current weekly running ${v===`not known`?v:v+' min'} (at least ${u.needed} min)`,RUN_DAYS:`${v} run days a week (at least ${u.needed})`,LONG_RUN_TIME:`${v===`not known`?v:v+' min'} available on the long-run day (at least ${u.needed} min)`,RACE_TOO_CLOSE:`the race is ${v} weeks after this plan starts (at least ${u.needed})`,RACE_BEYOND_THIS_PLAN:`the race is ${v} weeks away, beyond this ${u.needed}-week plan (a later plan holds it)`,RETURNING_FROM_A_STOP:'you are returning from a stop (continuous current running)',PROJECTED_LONG_RUN:`with your current running, a marathon block on this date would reach a longest run of about ${v} minutes; it needs about ${u.needed}. This plan builds your long run and weekly running first`,CURRENT_RUNNING_CLASS:'your current running is not yet continuous at a known weekly volume'})[u.id]??String(u.id);};
 export function raceDayCompletionBasis(sk,rs){
  const C=sk.op.event.raceDayCompletion,ev=sk.goal.run.event;if(!ev)return null;
  const mode=rs?.mode??'EASY';
  if(C.modes.includes(mode))return mode==='RETURN'?'RETURN_IN_RACE_WEEK':'MODE_IN_RACE_WEEK';
  if((rs?.modeHistory??[]).some(m=>(C.historyModes??[]).includes(m)))return 'PROGRAM_HISTORY';
- if(ev.kind==='HALF_MARATHON'&&(rs?.achieved?.long??0)<C.halfMarathonAchievedLongRunBelowMinutes)return 'HALF_MARATHON_LONG_RUN';
+ const below=completionLongRunBelow(sk,ev.kind);
+ if(below!==null&&(rs?.achieved?.long??0)<below)return ev.kind==='HALF_MARATHON'?'HALF_MARATHON_LONG_RUN':'LONG_RUN_BELOW_COMPLETION';
  return null;
 }
 export const raceDayCompletion=(sk,rs)=>raceDayCompletionBasis(sk,rs)!==null;
@@ -1069,12 +1085,14 @@ export const raceDayCompletion=(sk,rs)=>raceDayCompletionBasis(sk,rs)!==null;
  */
 export function eventCompletionItem(sk,rs){
  const basis=raceDayCompletionBasis(sk,rs);if(!basis)return null;
- const ev=sk.goal.run.event,ladder=sk.op.establishment.walkJogLadder,name=ev.kind==='10K'?'10K':'half marathon',L=rs.longestContinuous??0;
+ const ev=sk.goal.run.event,ladder=sk.op.establishment.walkJogLadder,name=recipeOf(ev.kind).name,L=rs.longestContinuous??0;
  const longest=L>0?`a longest continuous run of ${L} minutes`:'no continuous run yet';
  const reach=rs.mode==='WALK_JOG'?`walk/jog step ${Math.min(rs.walkStep,ladder.length-1)+1} of ${ladder.length}${L>0?' and '+longest:''}`:rs.mode==='RETURN'?`easy runs of about ${rs.returnFrom?.easy??sk.op.return.entryRunMinutes} minutes after the break`:longest;
  const built=(rs.modeHistory??[]).map(m=>m==='WALK_JOG'?'from walk/jog':'after a restart').join(' and ');
- const why={MODE_IN_RACE_WEEK:`which is not continuous race-ready running for a ${name}`,RETURN_IN_RACE_WEEK:'while still returning from the break',PROGRAM_HISTORY:`built ${built} in this program, which does not show race-ready running for a ${name}`,HALF_MARATHON_LONG_RUN:'which is not continuous race-ready running for a half marathon'}[basis];
- return {id:'EVENT_AMBITIOUS_FOR_CURRENT_RUNNING',blocking:false,basis,longestContinuousRunMinutes:L,detail:`By race week the plan reaches ${reach}, ${why}: race day is planned as a completion at conversational effort with walk breaks, and no readiness or finish time is promised`,options:['Keep the event and complete it with walk breaks','Choose a later or shorter event']};
+ const why={MODE_IN_RACE_WEEK:`which is not continuous race-ready running for a ${name}`,RETURN_IN_RACE_WEEK:'while still returning from the break',PROGRAM_HISTORY:`built ${built} in this program, which does not show race-ready running for a ${name}`,HALF_MARATHON_LONG_RUN:'which is not continuous race-ready running for a half marathon',LONG_RUN_BELOW_COMPLETION:`and its executed long run is below ${completionLongRunBelow(sk,ev.kind)} minutes, which is not race-ready running for a ${name}`}[basis];
+ // SSCTR V1FC B3.completion: far below the race's duration, the later or shorter event comes first; keeping the race stays the athlete's choice.
+ const caution=sk.op.event.keepCautionLongRunBelowMinutes?.[ev.kind],far=caution!==undefined,options=['Keep the event and complete it with walk breaks','Choose a later or shorter event'];
+ return {id:'EVENT_AMBITIOUS_FOR_CURRENT_RUNNING',blocking:false,basis,longestContinuousRunMinutes:L,detail:`By race week the plan reaches ${reach}, ${why}: race day is planned as a completion at conversational effort with walk breaks, and no readiness or finish time is promised`+(far?`. Your longest executed run is ${rs?.achieved?.long??0} minutes, against a ${name} that lasts several hours: a later or shorter event is what the coach can sustain; keeping the race and completing it with walk breaks stays your choice`:''),options:far?options.reverse():options,...(far?{caution:'LATER_OR_SHORTER_EVENT_FIRST'}:{})};
 }
 /** Builds one week from the run row, the strength state and the context arrangement. */
 export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipmentOverride=null,runCeiling=null,firstWeek=false}={}){
@@ -1109,7 +1127,7 @@ export function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipm
    if(b<=0&&phase==='RACE_WEEK'){sessions.push(restByDesign(common,b===0?'Race day: no strength':'Strength resumes after the post-event check'));continue;}
    if(b>=1&&b<=ed.windowDays&&(b<op.event.raceWeekStrengthMinDaysBeforeRace||r.day!==windowStrengthDay)){sessions.push(restByDesign(common,'Final days before the race: no strength in the last '+op.event.raceWeekStrengthMinDaysBeforeRace+' days, and one short light session at most before that'));continue;}
   }
-  if(phase==='POST_EVENT'){const since=7-plan.raceDay+r.day;if(since<op.event.postEventFirstRunMinDaysAfterRace||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
+  if(phase==='POST_EVENT'){const since=(w-plan.raceWeek)*7-plan.raceDay+r.day;if(since<postEventFirstStrengthDays(op.event,goal.run.event.kind)||sessions.some(x=>x.sport==='STRENGTH'&&x.prescription)){sessions.push(restByDesign(common,'Post-event week: one light strength session is enough; this day is rest or mobility by design'));continue;}}
   // B0-C08: a TPL.CORE day under the novice cap runs at practice dose in the establishment week (practice first), accessory dose after it.
   const firstOfWeek=firstStrength||!!t?.densityCapped&&t?.type==='CORE',built=t?strengthRowsFor(sk,t,w,strengthState,{firstOfWeek,phase:strengthPhase,date:common.date,entryWeek}):{rows:[],used:[]};firstStrength=false;
   // What stood in for, or was left out of, an event-week slot (QE-R7B-OBS-04) travels with the session, so the plan states it: a reason-based slot
@@ -1295,7 +1313,7 @@ export function validateWeeks(sk,weeks,{history=null}={}){
   if(x.sport==='STRENGTH')for(const e of x.prescription.exercises){const cfg=configurationOf(e.id);if(!cfg||!admitted(cfg,rep))errors.push(`${x.id}:notInRepertoire:${e.id}`);else if(cfg.skill==='HIGH'&&!highSkillAdmissible(skw,cfg.id))errors.push(`${x.id}:skillNotAdmissible:${e.id}`);}
   if(x.sport!=='RUN')continue;
   if(!runRepertoireOf(x.prescription))errors.push(`${x.id}:runNotInRepertoire`);
-  if(['THRESHOLD','TEN_K_SPECIFIC','HALF_MARATHON_SPECIFIC','FAMILIAR_REPEATED_BOUTS'].includes(x.prescription.family)&&!qualityGateOpen(skw,contextOf(skw.plan.phases,wk.index)))errors.push(`${x.id}:qualityGate`);
+  if(['THRESHOLD',...EVENT_SPECIFIC_FAMILIES,'FAMILIAR_REPEATED_BOUTS'].includes(x.prescription.family)&&!qualityGateOpen(skw,contextOf(skw.plan.phases,wk.index)))errors.push(`${x.id}:qualityGate`);
   if(x.prescription.family==='FAMILIAR_REPEATED_BOUTS'&&!familiarBoutsTask(skw))errors.push(`${x.id}:familiarBoutsAuthority`);
  }
  if(goal.run.event&&weeks.some(w=>w.index===plan.raceWeek)&&!weeks.find(w=>w.index===plan.raceWeek).sessions.some(x=>x.role==='RACE'))errors.push('raceWeekMissing');
@@ -1364,9 +1382,16 @@ export function rotationFor(sk,w,template){
  return out;
 }
 /** Generates a complete conditional program from onboarding-like input. Never requires a prebuilt week or a static priority. */
+/** The projected long-run peak of a marathon block that did not reach the eligibility value (B1.8), carried to the second reading of the intake. */
+const MARATHON_PROJECTION=Symbol('V1X marathon projection');
 export function generateProgram(input,options={}){
  // The repertoire authority is read at the intake's date (each SSCTR record's review-by date applies), and travels with the R6 authority.
- const authority0=r6Authority(options),repertoire=authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf.slice(0,10):null}),intake=canonicalizeIntake(input,{repertoire,restartFacts:options?.[RESTART_FACTS]??null}),authority={...authority0,repertoire},op=authority.policy?.operational;
+ const authority0=r6Authority(options),repertoire=authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf.slice(0,10):null}),authority={...authority0,repertoire},op=authority.policy?.operational;
+ const read=runClass=>canonicalizeIntake(input,{repertoire,restartFacts:options?.[RESTART_FACTS]??null,eventExtension:authority0.eventExtension,runClass,projectedPeak:options?.[MARATHON_PROJECTION]??null});
+ // V1X-MARATHON B1.1: the running class the planner itself assigns is an eligibility criterion; a marathon read as an event whose class is not
+ // continuous current running is read again with that class, and becomes the preparatory plan.
+ let intake=read(null);
+ if(intake.status==='CANONICAL'&&intake.canonical.goals.event?.kind==='MARATHON'&&op){const cls=assessCapability(intake.canonical,op).run.class;if(!(authority0.eventExtension?.values?.marathon?.eligibility?.runClasses??[]).includes(cls))intake=read(cls);}
  const base={runtimeVersion:'R6-1',mode:'SHADOW',inputHash:hash(input??null),program:null,applied:false,officialPlanState:clone(input?.officialPlanState??null),appliedState:clone(input?.officialPlanState??null),completedWork:clone(input?.completedWork??[]),missingInputs:[...intake.missing],errors:[...intake.errors],uncertainty:clone(intake.uncertainty),negotiation:clone(intake.negotiation),horizonsConsidered:['H0_SESSION','H1_WEEK','H2_BLOCK','H3_GOAL_EVENT'],qualityAssessment:{assessor:'RUNTIME_SELF_CHECK',independent:false,class:'UNREVIEWED'}};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  if(intake.status==='CLINICAL_HUMAN_REQUIRED')return reject('CLINICAL_HUMAN_REQUIRED','Current pain, injury, illness or functional limitation routes to qualified human assessment; no training dose is substituted');
@@ -1379,6 +1404,7 @@ export function generateProgram(input,options={}){
  const c=intake.canonical,s=c.schedule,cap=assessCapability(c,op),goal=buildGoalModel(c),plan=planPhases(c,cap,op),blocks=blocksFrom(plan.phases,goal.priorityByPhase);
  if(cap.strength.programmed&&cap.strength.class!=='KNOWN_LOAD'&&!allows(authority,'R6-LOAD-ESTABLISHMENT'))return reject('UNSUPPORTED','Load-establishment authority is unavailable; unknown strength loads cannot be established');
  if(goal.run.event&&!allows(authority,'R6-EVENT-TRANSITION'))return reject('UNSUPPORTED','Event-transition authority is unavailable; an event program would leave the race week unsupported');
+ if(goal.run.event&&!allowsEvent(authority.eventExtension,goal.run.event.kind))return reject('UNSUPPORTED','This event distance has no enabled recipe; no event program is generated',{scope:'EVENT_DISTANCE_OUTSIDE_V1'});
  if(cap.restartAfterPause&&!allows(authority,'R6-NONCLINICAL-RETURN'))return reject('UNSUPPORTED','Nonclinical-return authority is unavailable; a restart after a pause cannot be programmed');
  const negotiation=[...base.negotiation],gaps=[];
  const rep=authority.repertoire,knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT');
@@ -1415,11 +1441,13 @@ export function generateProgram(input,options={}){
  const weeks=restriction?weeks0.map(wk=>({...wk,sessions:wk.sessions.map(x=>restrictStrengthSession(x,restriction.regions,{budget:s.strengthMinutes})),adaptations:[...(wk.adaptations??[]),clone(restriction)]})):weeks0;
  if(cap.run.programmed&&cap.run.class==='WALK_JOG'&&s.runDays.length>op.establishment.maxWalkJogDaysPerWeek)negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_ESTABLISHMENT',blocking:false,detail:`${s.runDays.length} run days chosen; establishment supports up to ${op.establishment.maxWalkJogDaysPerWeek} walk/jog exposures, so the other chosen days carry brisk walks`,options:['Keep the walks on those days','Choose fewer run days']});
  if(runState.walks>0&&cap.run.class!=='WALK_JOG')negotiation.push({id:'TOO_MANY_RUN_DAYS_FOR_CURRENT_PRACTICE',blocking:false,detail:`Current running (${cap.run.weeklyMinutes??'unknown'} min/week) is spread over fewer runs; ${runState.walks} chosen run day(s) carry brisk walks and convert to runs at block starts when responses allow`,options:['Keep the plan','Choose fewer run days','Report more current running']});
- const target=runTarget(sk);
+ const target0=runTarget(sk);
+ // SSCTR V1FC B3.longRunTarget: where the target is a cap only (the marathon), "below target" is read against the completion threshold.
+ const target=goal.run.event&&op.event.longRunTargetIsCapOnly?.[goal.run.event.kind]?Math.min(target0,completionLongRunBelow(sk,goal.run.event.kind)??target0):target0;
  if(goal.run.event){
-  const minimumDays=goal.run.event.kind==='HALF_MARATHON'?3:2;
+  const minimumDays=op.event.minimumRunDays?.[goal.run.event.kind]??(goal.run.event.kind==='HALF_MARATHON'?3:2);
   if(s.runDays.length<minimumDays)negotiation.push({id:'TOO_FEW_RUN_DAYS_FOR_EVENT',blocking:false,detail:`${s.runDays.length} run day(s) for a ${goal.run.event.kind}; the trajectory stays conservative and completion-focused`,options:['Add a run day','Keep the days with a completion goal','Choose a later or shorter event']});
-  if((s.longRunMinutes??s.runMinutes)<op.run.longRunTargets[goal.run.event.kind])negotiation.push({id:'LONG_RUN_TIME_LIMITS_EVENT',blocking:false,detail:`Long-run time is limited to ${s.longRunMinutes??s.runMinutes} minutes`,options:['More time on the long-run day','Keep the current time with a completion goal']});
+  if((s.longRunMinutes??s.runMinutes)<(op.event.longRunTargetIsCapOnly?.[goal.run.event.kind]?completionLongRunBelow(sk,goal.run.event.kind):op.run.longRunTargets[goal.run.event.kind]))negotiation.push({id:'LONG_RUN_TIME_LIMITS_EVENT',blocking:false,detail:`Long-run time is limited to ${s.longRunMinutes??s.runMinutes} minutes`,options:['More time on the long-run day','Keep the current time with a completion goal']});
   const raceState=states[plan.raceWeek]?.run,completion=raceState?eventCompletionItem(sk,raceState):null;
   if(completion)negotiation.push(completion);
   if(!s.runDays.includes(plan.raceDay))negotiation.push({id:'EVENT_DAY_OUTSIDE_CHOSEN_DAYS',blocking:false,informational:true,detail:'The race date is not a chosen run day; race-week runs keep the chosen days'});
@@ -1435,8 +1463,12 @@ export function generateProgram(input,options={}){
  const errors=validateWeeks(sk,weeks);
  if(errors.length)return reject('UNSUPPORTED','Generated candidate failed complete validation; no partial program is presented as complete',{errors});
  const peak=peakOf(weeks);
- if(goal.run.event&&peak.long<target)gaps.push({id:'LONG_RUN_PEAK_BELOW_TARGET',detail:`Planned long run peaks at ${peak.long} of ${target} minutes before the taper`,owner:'COACHING',materialToGoal:goal.run.event.kind==='HALF_MARATHON'&&peak.long<sk.op.event.raceDayCompletion.halfMarathonAchievedLongRunBelowMinutes});
- const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,...(noviceTemplates?{noviceTemplates}:{}),repertoire:repertoireBinding(rep),archetype:allowsCandidate(rep,'B0-C12')?archetypeOf(goal):null,classification:{run:cap.run.classification??null,strength:cap.strength.class,thresholds:RUN_CLASS_THRESHOLDS},coldStart:{run:{class:cap.run.class,basis:cap.run.basis,weeklyMinutes:cap.run.weeklyMinutes,longestMinutes:cap.run.longestMinutes,entry:cap.run.class==='WALK_JOG'?'walk/jog ladder':cap.run.class==='RESTART'?'restart entry':cap.run.class==='EASY_UNKNOWN'?'reviewed easy entry':'current easy running'},strength:{class:cap.strength.class,known:cap.strength.known.map(k=>k.id),entry:cap.strength.class==='KNOWN_LOAD'?'known doses, others established by effort':cap.strength.class==='NONE'?'movement practice, then effort-guided establishment':'effort-guided establishment'},unknowns:clone(intake.uncertainty).map(u=>({field:u.field,category:u.category})),learning:'Longitudinal learning is R7-C; the first sessions only establish and confirm'},feasibility:feasibilityOf(sk,weeks,negotiation),progression:progressionOf(weeks,blocks),negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
+ // SSCTR V1FC Amendment 1, B1.8: a marathon block is planned only when this conditional projection reaches the long run a non-completion race day
+ // needs. Otherwise the same intake is read again with the projected value as an eligibility fact, and the athlete gets the preparatory plan.
+ if(goal.run.event?.kind==='MARATHON'&&options?.[MARATHON_PROJECTION]===undefined&&peak.long<(authority.eventExtension?.values?.marathon?.eligibility?.projectedPeakLongRunMinutesAtLeast??0))return generateProgram(input,{...options,[MARATHON_PROJECTION]:peak.long});
+ if(goal.run.event?.kind==='MARATHON')negotiation.push({id:'MARATHON_PROJECTION',blocking:false,informational:true,projectedLongRunMinutes:peak.long,detail:`If you complete the planned long runs, your longest run reaches about ${peak.long} minutes and race day is at steady marathon effort. If your longest run stays below ${completionLongRunBelow(sk,'MARATHON')} minutes, race day becomes a completion with walk breaks, and we will suggest a later or shorter race first. This is a conditional projection, never a promise`});
+ if(goal.run.event&&peak.long<target)gaps.push({id:'LONG_RUN_PEAK_BELOW_TARGET',detail:`Planned long run peaks at ${peak.long} of ${target} minutes before the taper`,owner:'COACHING',materialToGoal:completionLongRunBelow(sk,goal.run.event.kind)!==null&&peak.long<completionLongRunBelow(sk,goal.run.event.kind)});
+ const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,...(noviceTemplates?{noviceTemplates}:{}),repertoire:repertoireBinding(rep),...(goal.run.event&&EVENT_BOUNDARIES[goal.run.event.kind]?{eventExtension:extensionBinding(authority.eventExtension)}:{}),archetype:allowsCandidate(rep,'B0-C12')?archetypeOf(goal):null,classification:{run:cap.run.classification??null,strength:cap.strength.class,thresholds:RUN_CLASS_THRESHOLDS},coldStart:{run:{class:cap.run.class,basis:cap.run.basis,weeklyMinutes:cap.run.weeklyMinutes,longestMinutes:cap.run.longestMinutes,entry:cap.run.class==='WALK_JOG'?'walk/jog ladder':cap.run.class==='RESTART'?'restart entry':cap.run.class==='EASY_UNKNOWN'?'reviewed easy entry':'current easy running'},strength:{class:cap.strength.class,known:cap.strength.known.map(k=>k.id),entry:cap.strength.class==='KNOWN_LOAD'?'known doses, others established by effort':cap.strength.class==='NONE'?'movement practice, then effort-guided establishment':'effort-guided establishment'},unknowns:clone(intake.uncertainty).map(u=>({field:u.field,category:u.category})),learning:'Longitudinal learning is R7-C; the first sessions only establish and confirm'},feasibility:feasibilityOf(sk,weeks,negotiation),progression:progressionOf(weeks,blocks),negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
  program.hash=programHash(program);
  return freeze({...base,status:'PROPOSED',reason:'Complete conditional program generated from onboarding-like facts',program,negotiation,requestedScopeSatisfied:gaps.every(g=>!g.materialToGoal),trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace,unknowns:intake.uncertainty},nextObservation:'Record each session: completed or not, actual minutes or sets/reps/load, effort if known and next-day function. Next week’s steps advance only on that evidence.'});
 }

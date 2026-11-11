@@ -1,4 +1,5 @@
 import {clone,freeze,hash} from './value.mjs';
+import {EVENT_BOUNDARIES,allowsEvent} from './v1-events.mjs';
 import {r6Authority,allows} from './r6-authority.mjs';
 import {validProgram,programHash,skeletonOf,noviceDensityApplies,firstStrengthBoundary,slotsInUse,advanceRun,advanceStrength,strengthAtBreak,historicalStrength,historicalRun,loggedLoadDecision,adoptionBasis,asEstablishment,heldKnownLoad,resolveExercisePrescription,dayPhaseOf,startStrengthReturn,eventCompletionItem,validateWeeks,peakOf,contextOf,arrangementCandidates,arrangementDisclosures,strengthTemplates,planPhases,buildGoalModel,blocksFrom,goalDose,runTarget,runMinutesOf,plannedOf,plannedStrengthOf,anchoredStart,projectedStart,WEEK_START,EVENT_PHASES,DEVELOPMENT,BLOCK_INTENT} from './r6-program.mjs';
 import {chooseBalanced,interferenceCosts,SEVERITY} from './r6-balanced.mjs';
@@ -472,6 +473,8 @@ export function evaluateProgram(program,input,options={}){
  const authority0=r6Authority(options),authority={...authority0,repertoire:authority0.repertoire??repertoireAuthority({...options,asOf:typeof input?.asOf==='string'?input.asOf:null})};
  if(!authority.policy||authority.policyHash!==program.policyHash||!allows(authority,'R6-PLANNED-PROGRESSION'))return finish('UNSUPPORTED','UNSUPPORTED','Current independent program authority is missing or does not match the program policy');
  if(!authority.repertoire.valid||program.repertoire?.catalogSha256!==authority.repertoire.catalogSha256)return finish('UNSUPPORTED','UNSUPPORTED','The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable');
+ // V1 Final Closure (V1X-EVENTS, fail closed): a program planned for an extension event is reviewed only under the same extension bytes, enabled.
+ {const k=program.goal?.run?.event?.kind;if(EVENT_BOUNDARIES[k]&&(!allowsEvent(authority.eventExtension,k)||program.eventExtension?.sha256!==authority.eventExtension?.sha256))return finish('UNSUPPORTED','UNSUPPORTED','The program was planned for an event whose recipe is not enabled, or under other extension values; nothing is decided on it');}
  const errors=[],missing=[],kind0=KIND_ALIASES[input?.event?.kind]??input?.event?.kind,tz=program.timezoneOffsetMinutes??0,asOf=utcTimestamp(input?.asOf);
  // R7-D Phase 3.1 (QE-R7D-P3-01, P3-F01; Founder D2: fact retention is not decision application): a break a review declares is a fact whatever
  // event carried it and whatever that review decided. The record keeps it (INTERRUPTION_DECLARED) until a return applies it or a newer
@@ -562,7 +565,7 @@ export function evaluateProgram(program,input,options={}){
   if(last&&!(program.decisions??[]).some(d=>d?.eventId===last.eventId)&&program.canonical?.restart?.readinessEventId!==last.eventId)return finish('HOLD','HOLD','This plan is older than your record: a readiness declaration on record is not in it. Nothing is planned on an older plan; send the plan stored with this record',{errors:['program.behindRecord']});}
  // V1 Final Closure (Founder, 2026-11-11): the temporary reduction (F08 Situation 1) is outside V1. A V1 record never holds one of its reports; a
  // record that does was not kept by V1, and nothing is planned over rules V1 does not run (fail closed, typed).
- if(options.scope===V1_SCOPE&&f08Carried.some(x=>x?.fact===WELLBEING_DECLARED))return finish('HOLD','HOLD','This record holds a temporary-reduction report, which this version does not plan from: nothing is planned over it',{errors:['record.outsideV1Scope'],unavailable:clone(V1_UNAVAILABLE.TEMPORARY_REDUCTION)});
+ if(options.scope===V1_SCOPE&&(f08Carried.some(x=>x?.fact===WELLBEING_DECLARED)||program.weeks.some(x=>(x.adaptations??[]).some(a=>a?.kind==='WELLBEING_REDUCTION'))))return finish('HOLD','HOLD','This record holds a temporary-reduction report, which this version does not plan from: nothing is planned over it',{errors:['record.outsideV1Scope'],unavailable:clone(V1_UNAVAILABLE.TEMPORARY_REDUCTION)});
  if(review.loadConfirmations!==undefined&&review.loadConfirmations!==null&&!Array.isArray(review.loadConfirmations))return finish('HOLD','HOLD','Load confirmations must be a list',{errors:['loadConfirmations.array']});
  // Block choices (QE-R7B-08): a list of ladder steps, main-lift changes with their reason, or keeping or declining the harder session; anything
  // else is asked. They are applied only by the weekly review of a complete week (the block-boundary step); never silently dropped.
@@ -2077,7 +2080,10 @@ function goalChange(ctx){
  if(invalid.length)return {action:'ASK',reason:'The new goal or event is not one the plan can use ('+invalid.join(', ')+'); say the goal and the event date',missingInputs:invalid};
  const run=ch.goals?.run!==undefined?RUN_GOALS[key(word(ch.goals.run))]:c.goals.run.kind,strength=ch.goals?.strength!==undefined?STRENGTH_GOALS[key(word(ch.goals.strength))]:c.goals.strength.kind;
  const event=ch.event===null?null:ch.event?{kind:EVENTS[key(ch.event.kind)],date:ch.event.date,timeGoalMinutes:ch.event.timeGoalMinutes??null}:ctx.kind==='EVENT_DATE_CHANGE'&&ch.eventDate?{...c.goals.event,date:ch.eventDate}:c.goals.event;
- if(event&&(!['10K','HALF_MARATHON'].includes(event.kind)||dayGap(c.startDate,event.date)>=program.weeks.length*7||dayGap(ctx.asOfLocal,event.date)<7))return {action:'ASK',reason:'The new event is outside this program horizon or too close to plan safely; a new program input is needed',missingInputs:['newProgramInput']};
+ // V1X-EVENTS: a 5K or a marathon enters a plan only through a new plan's intake (where eligibility is read); a plan already made for one keeps
+ // it through a date change. Any other change to those distances asks for a new plan.
+ const sameKind=!!event&&!!c.goals.event&&event.kind===c.goals.event.kind&&allowsEvent(ctx.authority.eventExtension,event.kind);
+ if(event&&(!(['10K','HALF_MARATHON'].includes(event.kind)||sameKind)||dayGap(c.startDate,event.date)>=program.weeks.length*7||dayGap(ctx.asOfLocal,event.date)<7))return {action:'ASK',reason:'The new event is outside this program horizon or too close to plan safely; a new program input is needed',missingInputs:['newProgramInput']};
  if(event&&!allows(ctx.authority,'R6-EVENT-TRANSITION'))return {action:'UNSUPPORTED',status:'UNSUPPORTED',reason:'Event transition authority unavailable'};
  const goalKey=g=>hash({run:g.run.kind,strength:g.strength.kind,event:g.event?{kind:g.event.kind,date:g.event.date}:null});
  // The goals a review states, applied to the goals in force: what it does not state keeps each context's own (R7-A.1 C2).
@@ -2985,12 +2991,14 @@ export const V1_UNAVAILABLE=Object.freeze({TEMPORARY_REDUCTION:Object.freeze({co
 function temporaryReductionOutsideV1(ctx,kind){
  const {review}=ctx,yes=[...new Set([review.wellbeing,review.wellbeingCheck].flatMap(signsYesIn))];
  if(yes.length)return signRoute(yes);
- const paths='if you cannot do a session, report it as missed (it is never made up); if you stop for some days, report the break when you are back, and the return starts from what you have done. If any warning sign appears, stop and report it';
- if(kind==='WELLBEING_CHECK')return {action:'KEEP',reason:'No temporary reduction is in progress in this version, so there is nothing to check: your plan stays as it is; '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,counterfactuals:[counter('KEEP','KEEP',true,'Nothing to check',{selected:true})]};
+ // SSCTR V1FC C.1: what the answer says, and never that the athlete is fine to train.
+ const {program,asOfLocal}=ctx,ph=program.phases,race=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null,near=race&&dayGap(asOfLocal,race)>=0&&dayGap(asOfLocal,race)<=20;
+ const paths='You may skip, shorten or stop any session: a missed session is never made up, and the plan does not step up on sessions not done. If you need days off, report a break and the return is planned for you. If symptoms persist or worsen, or any warning sign appears, report it and seek a health professional\'s assessment'+(near?'. Your race is within 20 days: you can mark the race date unavailable or change the event':'');
+ if(kind==='WELLBEING_CHECK')return {action:'KEEP',reason:'No temporary reduction is in progress in this version, so there is nothing to check: your plan stays as it is. '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,counterfactuals:[counter('KEEP','KEEP',true,'Nothing to check',{selected:true})]};
  const w=review.wellbeing&&typeof review.wellbeing==='object'&&!Array.isArray(review.wellbeing)?review.wellbeing:{},asked=signsFor(w.condition),answers=w.warningSigns&&typeof w.warningSigns==='object'&&!Array.isArray(w.warningSigns)?w.warningSigns:{};
  const missing=asked.filter(k=>answers[k]!==false).map(k=>'wellbeing.warningSigns.'+k);
  if(missing.length)return {action:'ASK',reason:'Answer each warning sign (yes or no): an unanswered sign is never read as no',missingInputs:missing};
- return {action:'KEEP',reason:'You told us you are not at 100% and answered no to every warning sign. This version does not reduce the plan on its own, so your plan stays as it is: '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,
+ return {action:'KEEP',reason:'You told us you are not at 100% and answered no to every warning sign. This version does not adjust the plan for feeling under par, so your plan stays as it is. '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,
   counterfactuals:[counter('REDUCE','REDUCE',false,'A temporary reduction with its return is outside this version: no dose is invented for it'),counter('KEEP','KEEP',true,'The plan is kept; the athlete skips or stops by their own report',{selected:true})]};
 }
 const HANDLERS={EXERCISE_SUBSTITUTION:exerciseSubstitution,WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered,PREFERENCE_CHANGE:preferenceChange,NOT_FEELING_100:notFeeling100,WELLBEING_CHECK:wellbeingCheck,READINESS_DECLARATION:readinessRestart};

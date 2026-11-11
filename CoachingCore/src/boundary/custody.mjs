@@ -263,7 +263,14 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed; refresh',{version:doc.version});
    if(!Array.isArray(eventIds)||!eventIds.length||eventIds.some(x=>typeof x!=='string'))return fail('INVALID_REQUEST','Name the facts to erase');
    const rows=doc.rows,gone=new Set(eventIds);
-   if(!rows.some(r=>r&&isF08Fact(r)&&gone.has(r.eventId)))return fail('NOT_FOUND','No such health fact on record');
+   // V1 Final Closure (SSCTR C.1: the report is logged; Security C6: what is logged can be erased): a "not 100%" report that opened nothing leaves no
+   // fact row, only its decision entry. Naming its event erases that entry's content; no hold is lost, so no marker is written.
+   const logged=doc.decisions.some(d=>gone.has(d.eventId)&&F08_KINDS.includes(d.kind));
+   if(!rows.some(r=>r&&isF08Fact(r)&&gone.has(r.eventId))){
+    if(!logged)return fail('NOT_FOUND','No such health fact on record');
+    const stamp=now(),scrubbed=d=>gone.has(d.eventId)?{decisionId:d.decisionId,eventId:d.eventId,kind:'ERASED',at:d.at,status:'ERASED'}:d,kept=Object.fromEntries(Object.entries(doc.requests).filter(([,q])=>!gone.has(q?.response?.eventId)));
+    const n=doc.decisions.filter(d=>gone.has(d.eventId)).length,c=commit(doc,{...doc,requests:kept,decisions:[...doc.decisions.map(scrubbed),{decisionId:id('dc'),kind:'ERASURE',at:new Date(stamp).toISOString(),status:'ERASED',count:n}]});
+    return c.ok?{ok:true,version:doc.version+1,erased:n}:c;}
    for(let changed=true;changed;){changed=false;for(const r of rows)if(r&&isF08Fact(r)&&!gone.has(r.eventId)&&referencesOf(r).some(x=>gone.has(x))){gone.add(r.eventId);changed=true;}}
    const erased=[],chain=doc.chain.map((c,i)=>{const r=rows[i];if(r&&isF08Fact(r)&&gone.has(r.eventId)){erased.push(r.eventId);return {...c,erased:true};}return c;});
    const at=now(),tz=doc.program.timezoneOffsetMinutes??0,marker=erasureFact({athleteId:doc.athleteId,eventId:id('er'),asOf:localIso(at,tz),erased});
