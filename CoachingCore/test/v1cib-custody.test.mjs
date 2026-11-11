@@ -91,8 +91,10 @@ test('custody: a correction of a session report keeps the original on record, an
  assert.ok(doc.chain.some(c=>Number.isInteger(c.of)),'an annotation entry');assert.equal(s.custody.verify(doc),null);
 });
 test('custody order independence: the same journey through custody (arrival order) and through the conforming client (the engine\'s own order) gives the same decisions and the same sessions',async()=>{
+ // V1 Final Closure: this journey uses the temporary reduction (F08 Situation 1), which V1 does not offer (test/v1fc-scope.test.mjs). It runs on the
+ // research engine (r6-index) to keep the custody property over those row kinds; custody's default engine is the V1 one.
  const {timeline,doneWeek:dw}=await import('./v1cib-helpers.mjs');
- const s=enrolled(),t=timeline();
+ const s=enrolled({engine:Engine}),t=timeline();
  const sessions=p=>p.weeks.map(w=>w.sessions.map(x=>`${x.id}|${x.date}|${x.status??'PLANNED'}|${V.hash(x.prescription??null)}`));
  const strip=o=>o.map(({eventId,athleteId,...x})=>x);
  const steps=[[0,6,'20:00','WEEKLY_REVIEW',t=>({observations:dw(t,0)})],[1,1,'08:00','NOT_FEELING_100',()=>({wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO('MILD_ILLNESS'),intent:'REDUCE_SUBSTANTIAL',days:5}})],
@@ -171,7 +173,9 @@ test('custody: synthetic data only; real collection is not authorized',()=>{
  const s=server(),intake=HYBRID();delete intake.synthetic;assert.equal(s.api.onboard({actor:ME,intake,consents:CONSENTS,clientRequestId:rid()}).error.code,'SYNTHETIC_ONLY');
 });
 test('custody erasure of health facts (SEC-V1CPI-06, C6): a report and every row that references it lose their content, the chain still verifies, and the core reads a hold of unknown cause until a readiness declaration',()=>{
- const s=enrolled();checkIn(s,0);s.set(1,1,'08:00');
+ // V1 Final Closure: this journey uses the temporary reduction (F08 Situation 1), which V1 does not offer (test/v1fc-scope.test.mjs). It runs on the
+ // research engine (r6-index) to keep the custody property over those row kinds; custody's default engine is the V1 one.
+ const s=enrolled({engine:Engine});checkIn(s,0);s.set(1,1,'08:00');
  const rep=s.api.notFeeling100({actor:ME,clientRequestId:rid(),expectedVersion:v(s),eligibility:elig(s),wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:4}});assert.ok(rep.ok);
  s.set(1,5,'09:00');const chk=s.api.wellbeingCheck({actor:ME,clientRequestId:rid(),expectedVersion:v(s),eligibility:elig(s),check:{warningSigns:NO('NEED_REST'),improved:true}});assert.ok(chk.ok,JSON.stringify(chk.error));
  const doc=s.custody.read({actor:ME}).doc,report=doc.rows.find(x=>x?.fact===F.WELLBEING_DECLARED);
@@ -191,7 +195,9 @@ test('custody account erasure: the record goes, a tombstone refuses every later 
  const tomb=JSON.stringify(s.store.tombstoneOf(s.custody.subjectOf(ME.athleteId)));assert.ok(!tomb.includes(ME.athleteId),'the tombstone holds no athlete id');
 });
 test('boundary adoption (AEC §2, §3.5): a change that no recorded fact requires waits for the athlete (accept or keep); a later review supersedes it; a change that the athlete\'s own report requires is applied with it',()=>{
- const s=enrolled();checkIn(s,0);s.set(1,1,'08:00');
+ // V1 Final Closure: this journey uses the temporary reduction (F08 Situation 1), which V1 does not offer (test/v1fc-scope.test.mjs). It runs on the
+ // research engine (r6-index) to keep the custody property over those row kinds; custody's default engine is the V1 one.
+ const s=enrolled({engine:Engine});checkIn(s,0);s.set(1,1,'08:00');
  const ch=s.api.updateAvailability({actor:ME,clientRequestId:rid(),expectedVersion:v(s),eligibility:elig(s),changes:{runDays:[0,2,4]}});
  assert.equal(ch.status,'MODIFY',ch.decision?.reason);assert.equal(ch.adoption,'PENDING');assert.equal(ch.view.state,S.PENDING_CONFIRMATION);
  const kept=s.custody.read({actor:ME}).doc.program.hash;
@@ -202,7 +208,9 @@ test('boundary adoption (AEC §2, §3.5): a change that no recorded fact require
  assert.equal(rep.adoption,'APPLIED_WITH_ITS_FACT');assert.equal(rep.view.state,S.REDUCED);
 });
 test('boundary client states: valid plan, a question (no projected session executable), reduced, returning, blocked, integrity failure, operational error, no data; a technical failure is never a rest day',()=>{
- const s=enrolled();assert.equal(s.api.plan({actor:ME}).view.state,S.VALID_PLAN);
+ // V1 Final Closure: this journey uses the temporary reduction (F08 Situation 1), which V1 does not offer (test/v1fc-scope.test.mjs). It runs on the
+ // research engine (r6-index) to keep the custody property over those row kinds; custody's default engine is the V1 one.
+ const s=enrolled({engine:Engine});assert.equal(s.api.plan({actor:ME}).view.state,S.VALID_PLAN);
  checkIn(s,0);s.set(1,1,'08:00');
  const ask=s.api.logRun({actor:ME,clientRequestId:rid(),expectedVersion:v(s),eligibility:{...elig(s),assessedAt:'2026-10-01'},sessionId:'x',occurredOn:'2026-11-17',completed:true,minutes:30});
  assert.equal(ask.status,'ASK');assert.equal(ask.view.state,S.NEEDS_INPUT);assert.ok(ask.view.week.sessions.every(x=>!x.executable),'nothing is executable while a question stands');

@@ -49,8 +49,8 @@
  },
  "response": {
   "ok": true,
-  "decisionId": "dc_fixture_0023",
-  "eventId": "ev_fixture_0022",
+  "decisionId": "dc_fixture_0025",
+  "eventId": "ev_fixture_0024",
   "version": 13,
   "status": "MODIFY",
   "action": "READINESS_RESTART",
@@ -59,8 +59,8 @@
   "adoption": "APPLIED_WITH_ITS_FACT",
   "observationIds": [],
   "decision": {
-   "decisionId": "dc_fixture_0023",
-   "eventId": "ev_fixture_0022",
+   "decisionId": "dc_fixture_0025",
+   "eventId": "ev_fixture_0024",
    "kind": "READINESS_DECLARATION",
    "at": "2026-11-27T12:00:00.000Z",
    "status": "MODIFY",
@@ -69,13 +69,13 @@
    "missingInputs": [],
    "question": null,
    "planValidity": "VALID_WITHIN_CURRENT_BOUNDED_SCOPE",
-   "proposalHash": "e75d6ad6ce95bf2b5257d972d519897c0621eb3661c4f5ba455912252aaf7144",
+   "proposalHash": "1559a1c0ebddfded4638735f1135bd6620fca8754853b0bb012a7c187baf5b50",
    "adoption": "APPLIED_WITH_ITS_FACT"
   },
   "view": {
    "state": "RETURNING",
    "version": 13,
-   "programHash": "e75d6ad6ce95bf2b5257d972d519897c0621eb3661c4f5ba455912252aaf7144",
+   "programHash": "1559a1c0ebddfded4638735f1135bd6620fca8754853b0bb012a7c187baf5b50",
    "today": "2026-11-27",
    "weekIndex": 2,
    "weeks": 8,
@@ -109,7 +109,7 @@
       "prescription": {
        "modality": "STRENGTH",
        "family": "FULL_BODY",
-       "durationMinutes": 19,
+       "durationMinutes": 39,
        "warmupMinutes": 5,
        "cooldownMinutes": 3,
        "secondsPerRep": 4,
@@ -125,31 +125,33 @@
          "region": "LOWER",
          "role": "MAIN",
          "laterality": "BILATERAL",
-         "sets": 1,
+         "sets": 3,
          "reps": 8,
-         "rir": 4,
+         "rir": 3,
          "restSeconds": 120,
          "preparationMinutes": 2,
          "load": {
-          "mode": "ESTABLISH",
+          "mode": "FROM_LOG",
           "unit": "KG",
-          "convention": "SINGLE_IMPLEMENT"
+          "convention": "SINGLE_IMPLEMENT",
+          "rule": "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          },
          "equipment": [
           "DUMBBELLS"
          ],
          "lowerDemand": "MODERATE",
-         "establishment": true,
+         "establishment": false,
          "instructions": [
-          "Much lighter: choose the load by effort, leaving at least 4 reps in reserve; never above the load you used last time",
-          "Stop the set if technique or how you feel changes"
+          "Use the load you logged last time for this exercise",
+          "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8",
+          "One dumbbell or kettlebell: the load is the mass of that one implement"
          ],
          "exposure": {
-          "kind": "FIRST_ESTABLISH",
+          "kind": "FROM_LOG",
           "phase": "DEVELOPMENT",
           "phaseBasis": 3,
-          "phasedSets": 1,
-          "baseSets": 2,
+          "phasedSets": 3,
+          "baseSets": 3,
           "normalSets": 3
          }
         },
@@ -160,32 +162,33 @@
          "region": "UPPER",
          "role": "MAIN",
          "laterality": "BILATERAL",
-         "sets": 1,
+         "sets": 3,
          "reps": 8,
-         "rir": 4,
+         "rir": 3,
          "restSeconds": 120,
          "preparationMinutes": 2,
          "load": {
-          "mode": "ESTABLISH",
+          "mode": "FROM_LOG",
           "unit": "KG",
-          "convention": "PER_HAND"
+          "convention": "PER_HAND",
+          "rule": "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          },
          "equipment": [
           "DUMBBELLS",
           "BENCH"
          ],
          "lowerDemand": "NONE",
-         "establishment": true,
+         "establishment": false,
          "instructions": [
-          "Much lighter: choose the load by effort, leaving at least 4 reps in reserve; never above the load you used last time",
-          "Stop the set if technique or how you feel changes"
+          "Use the load you logged last time for this exercise",
+          "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          ],
          "exposure": {
-          "kind": "FIRST_ESTABLISH",
+          "kind": "FROM_LOG",
           "phase": "DEVELOPMENT",
           "phaseBasis": 3,
-          "phasedSets": 1,
-          "baseSets": 2,
+          "phasedSets": 3,
+          "baseSets": 3,
           "normalSets": 3
          }
         },
@@ -196,31 +199,32 @@
          "region": "UPPER",
          "role": "MAIN",
          "laterality": "BILATERAL",
-         "sets": 1,
+         "sets": 3,
          "reps": 8,
-         "rir": 4,
+         "rir": 3,
          "restSeconds": 120,
          "preparationMinutes": 2,
          "load": {
-          "mode": "ESTABLISH",
+          "mode": "FROM_LOG",
           "unit": "KG",
-          "convention": "PER_HAND"
+          "convention": "PER_HAND",
+          "rule": "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          },
          "equipment": [
           "DUMBBELLS"
          ],
          "lowerDemand": "NONE",
-         "establishment": true,
+         "establishment": false,
          "instructions": [
-          "Much lighter: choose the load by effort, leaving at least 4 reps in reserve; never above the load you used last time",
-          "Stop the set if technique or how you feel changes"
+          "Use the load you logged last time for this exercise",
+          "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          ],
          "exposure": {
-          "kind": "FIRST_ESTABLISH",
+          "kind": "FROM_LOG",
           "phase": "DEVELOPMENT",
           "phaseBasis": 3,
-          "phasedSets": 1,
-          "baseSets": 2,
+          "phasedSets": 3,
+          "baseSets": 3,
           "normalSets": 3
          }
         },
@@ -231,30 +235,31 @@
          "region": "LOWER",
          "role": "ACCESSORY",
          "laterality": "BILATERAL",
-         "sets": 1,
+         "sets": 2,
          "reps": 10,
-         "rir": 4,
+         "rir": 3,
          "restSeconds": 75,
          "preparationMinutes": 1,
          "load": {
-          "mode": "ESTABLISH",
+          "mode": "FROM_LOG",
           "unit": "KG",
-          "convention": "PER_HAND"
+          "convention": "PER_HAND",
+          "rule": "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          },
          "equipment": [
           "DUMBBELLS"
          ],
          "lowerDemand": "LIGHT",
-         "establishment": true,
+         "establishment": false,
          "instructions": [
-          "Much lighter: choose the load by effort, leaving at least 4 reps in reserve; never above the load you used last time",
-          "Stop the set if technique or how you feel changes"
+          "Use the load you logged last time for this exercise",
+          "Add 2 reps per set while at least 2 reps stay in reserve, up to 12; then add the smallest increment and return to 8"
          ],
          "exposure": {
-          "kind": "FIRST_ESTABLISH",
+          "kind": "FROM_LOG",
           "phase": "DEVELOPMENT",
           "phaseBasis": 2,
-          "phasedSets": 1,
+          "phasedSets": 2,
           "baseSets": 2,
           "normalSets": 2
          }
@@ -266,9 +271,9 @@
          "region": "CORE",
          "role": "ACCESSORY",
          "laterality": "BILATERAL",
-         "sets": 1,
-         "reps": 10,
-         "rir": 4,
+         "sets": 2,
+         "reps": 12,
+         "rir": 3,
          "restSeconds": 75,
          "preparationMinutes": 1,
          "load": {
@@ -280,24 +285,22 @@
          "lowerDemand": "NONE",
          "establishment": false,
          "instructions": [
-          "Much lighter: choose the load by effort, leaving at least 4 reps in reserve; bodyweight only",
-          "Stop the set if technique or how you feel changes"
+          "Bodyweight: keep the reps in reserve shown"
          ],
          "exposure": {
           "kind": "BODYWEIGHT",
           "phase": "DEVELOPMENT",
           "phaseBasis": 2,
-          "phasedSets": 1,
+          "phasedSets": 2,
           "baseSets": 2,
           "normalSets": 2
          }
         }
        ],
        "goalMode": "REPS_THEN_LOAD",
-       "establishment": true,
+       "establishment": false,
        "instructions": [
         "Warm up with easy movement and lighter ramp-up sets",
-        "Much lighter while you get back: fewer sets, more reps in reserve",
         "Stop a set when technique slips; reps in reserve are approximate and technique governs",
         "Log actual sets, reps, load and convention; missing effort does not mean a poor response"
        ]
@@ -618,7 +621,7 @@
     ]
    },
    "lastDecision": {
-    "decisionId": "dc_fixture_0023",
+    "decisionId": "dc_fixture_0025",
     "at": "2026-11-27T12:00:00.000Z",
     "status": "MODIFY",
     "action": "READINESS_RESTART",

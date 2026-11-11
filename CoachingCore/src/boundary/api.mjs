@@ -27,9 +27,11 @@ export function createBoundary({custody,now=()=>Date.now(),log=()=>{}}){
   /** Every week's sessions with the same executable/projected flags (a hold returns no prescription). */
   sessions:({actor})=>{const o=custody.read({actor});if(!o.ok)return {ok:false,error:o.error,state:stateOfError(o.error)};return {ok:true,weeks:o.doc.program.weeks.map((_,k)=>planView(o.doc,{nowMs:now(),week:k}).week)};},
   /** A run done (or not): minutes and the athlete's response (performance, recovery, effort, next-day function). */
-  logRun:(req)=>submit('logRun',req,{kind:req.completed===false?'MISSED_SESSION':'WEEKLY_REVIEW',observations:[observation(req)]}),
+  // A session not done names itself as the missed one (V1 Final Closure): the coach may then offer to move a key session to a later day of the week,
+  // an offer that waits for the athlete (custody OFFERED_ACTIONS); nothing is ever made up or moved on its own.
+  logRun:(req)=>submit('logRun',req,{kind:req.completed===false?'MISSED_SESSION':'WEEKLY_REVIEW',observations:[observation(req)],...(req.completed===false&&typeof req.sessionId==='string'?{targetSessionId:req.sessionId}:{})}),
   /** A strength session: exercises with their sets (reps, load {value, unit, convention}, rir). */
-  logStrength:(req)=>submit('logStrength',req,{kind:req.completed===false?'MISSED_SESSION':'WEEKLY_REVIEW',observations:[observation(req)]}),
+  logStrength:(req)=>submit('logStrength',req,{kind:req.completed===false?'MISSED_SESSION':'WEEKLY_REVIEW',observations:[observation(req)],...(req.completed===false&&typeof req.sessionId==='string'?{targetSessionId:req.sessionId}:{})}),
   /** The weekly check-in: the week's remaining reports and, inside a Situation 1 episode, the check. */
   weeklyCheckIn:(req)=>submit('weeklyCheckIn',req,{kind:'WEEKLY_REVIEW',observations:(req.reports??[]).map(observation),...(req.check?{wellbeingCheck:req.check}:{})}),
   /** "Not 100%" (F08 Situation 1) and its check; the readiness declaration after a hold (Situation 2). */

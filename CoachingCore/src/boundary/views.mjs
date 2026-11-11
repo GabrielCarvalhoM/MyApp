@@ -6,6 +6,9 @@ import {readableF08,standingHolds,isF08Fact} from '../v1-f08.mjs';
 export const CLIENT_STATES=Object.freeze({VALID_PLAN:'VALID_PLAN',PENDING_CONFIRMATION:'PENDING_CONFIRMATION',NEEDS_INPUT:'NEEDS_INPUT',REDUCED:'REDUCED',RETURNING:'RETURNING',
  BLOCKED:'BLOCKED',INTEGRITY_FAILURE:'INTEGRITY_FAILURE',OPERATIONAL_ERROR:'OPERATIONAL_ERROR',NO_DATA:'NO_DATA',NOT_SYNCED:'NOT_SYNCED'});
 const S=CLIENT_STATES;
+/** V1 Final Closure: the states the V1 server produces. REDUCED belongs to the temporary reduction (F08 Situation 1), which V1 does not offer: it stays
+ * in the vocabulary for a later version and is never returned by the V1 engine. NOT_SYNCED is the app's own. */
+export const V1_SERVER_STATES=Object.freeze(Object.values(CLIENT_STATES).filter(x=>x!=='NOT_SYNCED'&&x!=='REDUCED'));
 /** The client state of a custody error: a technical failure is never shown as a rest day or as an empty plan. */
 export function stateOfError(error){
  const code=error?.code;
@@ -51,7 +54,7 @@ export function planView(doc,{nowMs,week=null}={}){
  const guidance=blocked?([...doc.decisions].reverse().find(d=>d.guidance)?.guidance??{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}):null;
  return {state,version:doc.version,programHash:p.hash,today,weekIndex:w,weeks:p.weeks.length,sports,
   hold:blocked?{clinical:true,since:holds[0]?.declaredAt??null,guidance,exit:'READINESS_DECLARATION'}:null,
-  pending:doc.pending?{decisionId:doc.pending.decisionId,kind:'CHANGE_WAITING_CONFIRMATION'}:null,
+  pending:doc.pending?{decisionId:doc.pending.decisionId,kind:'CHANGE_WAITING_CONFIRMATION',change:doc.pending.kind??'REQUESTED_CHANGE'}:null,
   question:pendingQuestion?{missingInputs:pendingQuestion.missingInputs??[],eventKind:pendingQuestion.eventKind??null,reason:pendingQuestion.reason??null}:null,
   week:wk?{index:w,startDate:wk.startDate,sessions}:null,
   lastDecision:last?{decisionId:last.decisionId,at:last.at,status:last.status,action:last.action,reason:last.reason??null,missingInputs:last.missingInputs??[],...(last.guidance?{guidance:last.guidance}:{})}:null};

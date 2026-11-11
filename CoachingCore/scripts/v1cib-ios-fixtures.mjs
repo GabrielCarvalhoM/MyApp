@@ -39,9 +39,13 @@ export function buildFixtures(){
  call('09-set-coach','PENDING_CONFIRMATION','setCoach',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),profile:'CONSERVATIVE'});
  // A question: the screen is too old (the plan in force is a projection until it is answered).
  set(1,1,'08:00');call('10-needs-input','NEEDS_INPUT','logRun',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:{...ELIG(),assessedAt:'2026-10-01'},sessionId:'unknown',occurredOn:addDays(START,7),completed:false});
- // Situation 1: a reduction, then the check and the return.
- set(1,2,'08:00');call('11-not-feeling-100-reduced','REDUCED','notFeeling100',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:3,returnSpeed:'BALANCED'}});
- set(1,5,'09:00');call('12-check-returning','RETURNING','wellbeingCheck',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),check:{warningSigns:NO('NEED_REST'),improved:true}});
+ // V1 Final Closure: "not 100%" with every warning sign answered no. V1 opens no temporary reduction: the plan is kept and the answer carries the
+ // typed unavailability (the athlete skips a session or reports a break by their own report).
+ set(1,2,'08:00');call('11-not-feeling-100-plan-kept','VALID_PLAN','notFeeling100',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REST',days:3}});
+ // A session not done: recorded as missed, never made up (when a key session can move to a later day the answer carries an offer that waits for the
+ // athlete: test/v1fc-boundary.test.mjs; this plan has no such day).
+ set(1,3,'21:00');const skipped=custody.read({actor}).doc.program.weeks[1].sessions.find(x=>live(x)&&x.sport==='RUN'&&x.date<=addDays(START,10));
+ call('12-missed-session-no-debt','VALID_PLAN','logRun',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),sessionId:skipped.id,occurredOn:skipped.date,completed:false});
  // A warning sign: the hold (no prescription), and the readiness declaration.
  set(2,2,'08:00');call('13-warning-sign-blocked','BLOCKED','notFeeling100',{actor,clientRequestId:rid(),expectedVersion:ver(),eligibility:ELIG(),wellbeing:{condition:'MILD_ILLNESS',warningSigns:{...NO('MILD_ILLNESS'),[WARNING_SIGNS.W7]:true},intent:'REST',days:4}});
  put('14-status-blocked','BLOCKED','status',{actor},api.status({actor}));

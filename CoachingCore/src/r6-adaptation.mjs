@@ -560,6 +560,9 @@ export function evaluateProgram(program,input,options={}){
  // nothing is decided until the plan stored with this record is sent.
  {const last=standingHolds(readableF08(f08Carried,{athleteId:program.athleteId,at:Date.parse(asOf)})).lastReady;
   if(last&&!(program.decisions??[]).some(d=>d?.eventId===last.eventId)&&program.canonical?.restart?.readinessEventId!==last.eventId)return finish('HOLD','HOLD','This plan is older than your record: a readiness declaration on record is not in it. Nothing is planned on an older plan; send the plan stored with this record',{errors:['program.behindRecord']});}
+ // V1 Final Closure (Founder, 2026-11-11): the temporary reduction (F08 Situation 1) is outside V1. A V1 record never holds one of its reports; a
+ // record that does was not kept by V1, and nothing is planned over rules V1 does not run (fail closed, typed).
+ if(options.scope===V1_SCOPE&&f08Carried.some(x=>x?.fact===WELLBEING_DECLARED))return finish('HOLD','HOLD','This record holds a temporary-reduction report, which this version does not plan from: nothing is planned over it',{errors:['record.outsideV1Scope'],unavailable:clone(V1_UNAVAILABLE.TEMPORARY_REDUCTION)});
  if(review.loadConfirmations!==undefined&&review.loadConfirmations!==null&&!Array.isArray(review.loadConfirmations))return finish('HOLD','HOLD','Load confirmations must be a list',{errors:['loadConfirmations.array']});
  // Block choices (QE-R7B-08): a list of ladder steps, main-lift changes with their reason, or keeping or declining the harder session; anything
  // else is asked. They are applied only by the weekly review of a complete week (the block-boundary step); never silently dropped.
@@ -604,6 +607,9 @@ export function evaluateProgram(program,input,options={}){
   // This week's own context (R7-A.1 C2), the one test of what is still ahead (C1) and the day of a return reported this week (C5).
   Object.assign(ctx,{skw:sk.at(w)??sk,ahead:aheadOf(ctx),returned:returnOf(program,w)});
  if(options[NO_CEILING]===true)ctx.noCeiling=true;
+  // V1 Final Closure: the V1 scope (v1-index.mjs) and the changes custody withholds until the athlete confirms them (PCG-V1CIB-F01).
+  if(options.scope===V1_SCOPE)ctx.v1=true;
+  if(Array.isArray(options.withhold))ctx.withhold=options.withhold.filter(x=>WITHHOLDABLE.includes(x));
   // The start every decision plans from (PlanningView, state model): history from the evidence reducer, targets from the projection.
   ctx.base=planningBase(ctx);
   // A review's load confirmations are facts of its week, recorded on it so every later handler reads them as this review does (QE-R7A1-02).
@@ -667,7 +673,7 @@ export function evaluateProgram(program,input,options={}){
   // paths once, never blocking; the decision after which the race leaves them says the event rules plan it again.
   const raceNote=decision.proposal?raceScope(program,decision.proposal,ctx.ahead):null;
   const status=decision.status??(decision.proposal&&!decision.instantiationOnly?'MODIFY':decision.action==='ASK'?'ASK':'KEEP');
-  return finish(status,decision.action,decision.reason,{...out,...(decision.readinessRestart?{readinessRestart:clone(decision.readinessRestart)}:{}),proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[]),...(raceNote?.disclosure?[raceNote.disclosure]:[])],offers:[...(decision.offers??[]),...(raceNote?.offer?[raceNote.offer]:[])],...(decision.guidance?{guidance:clone(decision.guidance)}:{}),learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(input),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
+  return finish(status,decision.action,decision.reason,{...out,...(decision.readinessRestart?{readinessRestart:clone(decision.readinessRestart)}:{}),proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[]),...(raceNote?.disclosure?[raceNote.disclosure]:[])],offers:[...(decision.offers??[]),...(raceNote?.offer?[raceNote.offer]:[])],...(decision.guidance?{guidance:clone(decision.guidance)}:{}),...(decision.warningSigns?{warningSigns:clone(decision.warningSigns)}:{}),...(decision.unavailable?{unavailable:clone(decision.unavailable)}:{}),learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(input),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
  }catch(e){return finish('HOLD','HOLD','Malformed review facts: '+e.message,{...(out??{}),errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }
 const dayOf=v=>typeof v==='string'&&isoDay(v.slice(0,10))?v.slice(0,10):null;
@@ -686,7 +692,7 @@ function weeklyReview(ctx,{extraReason=null,systemicSignal=false,mustPropose=fal
  if(w+1>=program.weeks.length)return {action:'KEEP',reason:'Final week of the horizon; record outcomes for the next program',counterfactuals:[counter('KEEP','KEEP',true,'No further planned week')]};
  const systemic=systemicSignal||systemicOf(ctx);
  // An athlete-specific pattern is learning: without learning consent it never changes the plan (QRE-R6-16).
- if(!ev.pending&&ctx.consent===true&&allows(ctx.authority,'R6-PARTIAL-NOISY-LEARNING')&&allows(ctx.authority,'R6-HYBRID-ARRANGEMENT')){
+ if(!ev.pending&&ctx.consent===true&&!ctx.withhold?.includes('LEARNED_REARRANGEMENT')&&allows(ctx.authority,'R6-PARTIAL-NOISY-LEARNING')&&allows(ctx.authority,'R6-HYBRID-ARRANGEMENT')){
   const patterns=learnedInterference(ledger,asOf);
   if(patterns.length){
    const athleteSeverity=Object.fromEntries(patterns.map(x=>[x.cause,'HIGH']));
@@ -1108,7 +1114,7 @@ function missedSession(ctx){
  if((ctx.fullLedger??ctx.ledger).some(o=>o.sessionId===target.id&&(o.actual?.completed===true||Number(o.actual?.minutes)>0)))return {action:'ASK',reason:'The record already has an execution report for this session; confirm whether it was missed, or correct the report',missingInputs:['observations.correction'],counterfactuals:[counter('MOVE','MOVE',false,'Moving a session that was reported as executed would repeat its content'),counter('ASK','ASK',true,'Contradictory facts are asked about',{selected:true})]};
  const {best,cands}=missedMove({...ctx,sk:ctx.skw},program.weeks[w].sessions,target);
  const gateReview=weeklyReview(ctx,{extraReason:'Missed work is recorded as zero; next step repeats without debt'});
- if(best.action==='MOVE'){
+ if(best.action==='MOVE'&&!ctx.withhold?.includes('MOVE')){
   // The move is an adaptation of this week (R7-A.1 C4): recorded, so a later re-plan of the week applies it again.
   const next=adaptThisWeek(ctx,program,w,best.proposalSessions,adaptation(ctx,'MISSED_SESSION',{sessionId:target.id,slotId:best.id.replace(/^MOVE_TO_/,'')}));
   const proposal=finishProposal(program,sk,next,{eventId:review.event.id,asOf:ctx.asOf,action:'MOVE',fromWeek:w,throughWeek:w,sessionId:target.id,horizonsConsidered:HORIZONS});
@@ -1736,6 +1742,7 @@ const returningS6=(state,s)=>s==='RUN'?['RETURN','RESTART'].includes(state?.run?
  */
 function withF08Checks(ctx,kind){
  const handler=HANDLERS[kind]??weeklyReview;
+ if(ctx.v1&&['NOT_FEELING_100','WELLBEING_CHECK'].includes(kind))return temporaryReductionOutsideV1(ctx,kind);
  if(['NOT_FEELING_100','READINESS_DECLARATION','WELLBEING_CHECK','RETURN_AFTER_PAUSE','RECOVERED'].includes(kind))return handler(ctx);
  const weekly=['WEEKLY_REVIEW','PARTIAL_SESSION'].includes(kind)&&!ctx.ev.pending;
  if(weekly){const e=episodeWeekly(ctx);if(e)return e;}
@@ -2960,4 +2967,30 @@ function eventWeekConflict(ctx){
  return {action:'SKIP_NO_CATCH_UP',reason:'Event period conflict: the affected session is skipped, the race and freshness are protected, nothing is stacked',proposal,counterfactuals:[counter('MOVE_INTO_TAPER','MOVE',false,'Moving work closer to the race adds fatigue when it should fall'),counter('SKIP_NO_CATCH_UP','SKIP',true,'Smallest safe change',{selected:true})]};
 }
 function recovered(ctx){return weeklyReview(ctx,{extraReason:'Recovered label noted; the next step still follows executed evidence'});}
+// ---------- V1 Final Closure (Founder, 2026-11-11): the V1 scope ----------
+/** The scope marker the V1 entry point passes (v1-index.mjs). */
+export const V1_SCOPE='V1';
+/** The changes a caller may ask a decision to withhold: custody evaluates the same review without them, keeps the change as a proposal waiting for
+ * the athlete, and applies it only when they accept (PCG-V1CIB-F01: moving or rearranging sessions between days is the athlete's act). */
+export const WITHHOLDABLE=Object.freeze(['MOVE','LEARNED_REARRANGEMENT']);
+/** What V1 does not do on its own, as data the app can show without a rule of its own. */
+export const V1_UNAVAILABLE=Object.freeze({TEMPORARY_REDUCTION:Object.freeze({code:'OUTSIDE_V1_SCOPE',capability:'TEMPORARY_REDUCTION',paths:Object.freeze(['MISSED_SESSION','RETURN_AFTER_PAUSE'])})});
+/**
+ * F08 Situation 1 in V1: the report is screened and nothing else. Any warning sign or exercise-response item answered yes routes to the clinical
+ * hold exactly as before (the hold joins the record). A report that leaves a warning sign of its condition unanswered is asked (unknown is never
+ * read as no). With every sign answered no, the plan is kept as it is and the answer says so: V1 opens no reduction window, no rung, no return
+ * ladder and no chain, and records no temporary-reduction fact. The athlete's own paths stay: a session not done is reported as missed (never
+ * made up), and a stop is reported as a break, whose return re-enters conservatively from the executed record.
+ */
+function temporaryReductionOutsideV1(ctx,kind){
+ const {review}=ctx,yes=[...new Set([review.wellbeing,review.wellbeingCheck].flatMap(signsYesIn))];
+ if(yes.length)return signRoute(yes);
+ const paths='if you cannot do a session, report it as missed (it is never made up); if you stop for some days, report the break when you are back, and the return starts from what you have done. If any warning sign appears, stop and report it';
+ if(kind==='WELLBEING_CHECK')return {action:'KEEP',reason:'No temporary reduction is in progress in this version, so there is nothing to check: your plan stays as it is; '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,counterfactuals:[counter('KEEP','KEEP',true,'Nothing to check',{selected:true})]};
+ const w=review.wellbeing&&typeof review.wellbeing==='object'&&!Array.isArray(review.wellbeing)?review.wellbeing:{},asked=signsFor(w.condition),answers=w.warningSigns&&typeof w.warningSigns==='object'&&!Array.isArray(w.warningSigns)?w.warningSigns:{};
+ const missing=asked.filter(k=>answers[k]!==false).map(k=>'wellbeing.warningSigns.'+k);
+ if(missing.length)return {action:'ASK',reason:'Answer each warning sign (yes or no): an unanswered sign is never read as no',missingInputs:missing};
+ return {action:'KEEP',reason:'You told us you are not at 100% and answered no to every warning sign. This version does not reduce the plan on its own, so your plan stays as it is: '+paths,unavailable:V1_UNAVAILABLE.TEMPORARY_REDUCTION,
+  counterfactuals:[counter('REDUCE','REDUCE',false,'A temporary reduction with its return is outside this version: no dose is invented for it'),counter('KEEP','KEEP',true,'The plan is kept; the athlete skips or stops by their own report',{selected:true})]};
+}
 const HANDLERS={EXERCISE_SUBSTITUTION:exerciseSubstitution,WEEKLY_REVIEW:weeklyReview,MISSED_SESSION:missedSession,PARTIAL_SESSION:ctx=>weeklyReview(ctx,{extraReason:'Partial execution counts only what was done; the next comparable step repeats'}),UNDERPERFORMANCE:performanceSignal,PROGRESSION_NOT_TOLERATED:performanceSignal,OVERPERFORMANCE:performanceSignal,PROGRESSION_TOO_EASY:performanceSignal,LOCAL_FATIGUE:fatigue,SYSTEMIC_FATIGUE:fatigue,SCHEDULE_CHANGE:scheduleChange,UNAVAILABLE_DAY:unavailableDay,DOUBLE_CONFLICT:doubleConflict,EQUIPMENT_CHANGE:equipmentChange,GOAL_CHANGE:goalChange,EVENT_DATE_CHANGE:goalChange,RETURN_AFTER_PAUSE:returnAfterPause,EVENT_WEEK_CONFLICT:eventWeekConflict,RECOVERED:recovered,PREFERENCE_CHANGE:preferenceChange,NOT_FEELING_100:notFeeling100,WELLBEING_CHECK:wellbeingCheck,READINESS_DECLARATION:readinessRestart};
