@@ -1562,3 +1562,25 @@ The cycle bound is spent: no further cycle in this mission.
 - nothing pushed, merged or deleted.
 
 **Next:** the Founder's decision on a V1 implementation mission (checkpoint §10). Its first unit would be the integration boundary: the three runtime blockers and CF-OBS-1 in the core, QRE-FF-06, and RECORD-CUSTODY. Until it closes, the F08 entries stay off in the app.
+
+
+## COACHINGCORE V1 FINAL CLOSURE, Founder request of 2026-11-11: CLOSED, V1_SCOPED_COACHING_CORE_READY = YES with conditions (2026-11-11)
+
+<!-- V1FC-20261111-closure-r1 -->
+**CoachingCore V1 Final Closure = CLOSED · V1_SCOPED_COACHING_CORE_READY = YES (the V1-scoped engine and its reference boundary, synthetic data only) · frozen as COACHINGCORE-V1-FREEZE-1 · V1_COACHING_AUTHORITY_READY = NO · INTEGRATION_READY = NO · F08 = F08_OPEN · R7D-FREEZE-6 untouched · no push, merge or Figma change.**
+- **Where:** branch `claude/coachingcore-v1-final-closure` (from `3b14804`, the interrupted V1 Coaching Integration Boundary candidate, whose worktree is left intact), worktree `.claude/worktrees/v1-final-closure`.
+- **Records:** the [checkpoint (PT)](audits/coachingcore-v1-final-closure-2026-11-11/CHECKPOINT_V1FC.md) with the capability contract for the Figma reconciliation, the [review request](audits/coachingcore-v1-final-closure-2026-11-11/REVIEW_REQUEST_V1FC.md), the [fix cycle](audits/coachingcore-v1-final-closure-2026-11-11/FIX_CYCLE_V1FC.md), the SSCTR decision with Amendments 1 and 2 (`ssctr-decision/`), the reviews (`reviews/`), and the freeze record `CoachingCore/v1/RUNTIME_FREEZE_V1_1.json`.
+
+**The Founder's direction:** finish the CoachingCore already built for a bounded V1, with typed limits instead of autonomous prescriptions for anything clinical or complex, and freeze it. The next step, not started here, is reconciling the Figma with the approved capabilities.
+
+**Runtime:**
+- The V1 entry point is `CoachingCore/src/v1-index.mjs` (custody's default engine). F08 Situation 1 (temporary reduction) is not offered: the report is screened with the instrument's own reading, a sign is the clinical hold, and with every sign no the plan is kept with a typed unavailability. A hold is released only by the readiness declaration.
+- Security SEC-V1CIB-01 to -04 closed. A missed session's move and a learned rearrangement are offers that wait for the athlete (PCG-V1CIB-F01).
+- The 5K and the marathon by the event extension V1X-EVENTS (`src/v1-events.mjs`, `v1/EVENT_EXTENSION_V1.json`), enabled per event by an independent SSCTR record bound to the pinned bytes. The R6 policy and its hash are untouched; 10K and half-marathon outputs are byte-identical to `3b14804`.
+- Commits: `9d41d00`, `2d089c0` (the reviewed candidate), `06bbc7f` (the single fix cycle), `438443b` (the rechecks), `a23460b` (the residual of SEC-V1FC-01, by the Founder's authorization as a narrow exception to the cycle bound). Suite 1258/1258.
+
+**Judges (final):** SSCTR READY_WITH_CONDITIONS (both events approved), QRE READY_WITH_CONDITIONS, Security PASS_WITH_CONDITIONS on `a23460b`.
+
+**Open, named:** Product copy RC-01 and the G04 urgency wording before any athlete-facing use; QRE-V1FC-03 and -05 and the operational parts as conditions of integration; SEC-V1FC-04 before real data; the proposed human-queue entries HQ-V1FC-SSCTR-A, -B1, -B2, -B3, -C (not appended: the queue stays at 235); the PDR entry for the V1 scope (PCG). No authorization for real athletes.
+
+**Hard stop:** no backend, SwiftUI, Figma or further mission was started.

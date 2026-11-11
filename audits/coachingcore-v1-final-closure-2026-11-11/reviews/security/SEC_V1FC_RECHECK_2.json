@@ -1,0 +1,64 @@
+{
+  "reviewId": "SEC-V1FC-RECHECK-2",
+  "date": "2026-11-11",
+  "role": "Security, Privacy & Abuse Architect (the same judge instance as SEC-V1FC-REVIEW-r1 and SEC-V1FC-RECHECK-r1; authored none of the fixes)",
+  "scope": "Single-finding recheck of SEC-V1FC-01, under the Founder's narrow exception to the cycle bound. No further fix follows either way.",
+  "candidate": {"commit": "a23460b", "parent": "438443b", "diffChecked": "CoachingCore/src/boundary/custody.mjs (verify: CHAIN_KEYS, entry check, row check reads erased===true) and CoachingCore/test/v1fc-review-fixes.test.mjs; nothing else in the diff"},
+  "method": {
+    "extract": "fresh git archive of a23460b in a new scratchpad folder (secv1fc-recheck2-xa23460b-1794419549); CoachingCore/node_modules copied from the worktree",
+    "probes": "r1-tamper.mjs rerun unchanged; new r4-entry.mjs (b31780f0...74a1) runs 24 forms a chain entry or row slot could take on a record that has an annotation entry, an erased slot and an erasure marker, plus positive checks; p8-regress, p10-agency, p2-adopt and p5-logged rerun as regression; synthetic data only",
+    "suite": "node --test in CoachingCore of the extract (V1CP_ROOT = the extract): 1258 tests, 1258 pass, 0 fail",
+    "notRun": ["npm run verify", "any verify-r* script"],
+    "noRecursiveDeletion": true,
+    "filesWritten": ["reviews/security/SEC_V1FC_RECHECK_2.json", "reviews/security/SEC_V1FC_RECHECK_2.md"],
+    "hostContextDisclosure": "As before: the global CLAUDE.md, the project CLAUDE.md and MEMORY.md were injected by the host. Used to orient only; no ruling rests on them.",
+    "noLegalRegulatoryOrClinicalClaim": true
+  },
+  "finding": {
+    "id": "SEC-V1FC-01", "severity": "HIGH", "status": "CLOSED",
+    "probe": "r1-tamper.mjs: the marker row nulled with erased set to 1, \"true\", {} or [] now fails as INTEGRITY_FAILURE:entry (at 06bbc7f each of these read OK as VALID_PLAN). erased:true and a flag moved between slots fail at the document seal; a string `of` and an extra key fail at entry; an integer `of` pointer fails at chain. r4-entry.mjs: every one of 24 forms either fails verification or leaves the view BLOCKED. That covers erased as false, null or true on an annotation entry; `of` removed, as a string, a float or null; seq as a string; an extra key; a __proto__ key; a null entry; content in an erased or annotation slot; the marker replaced by an older row; rows extended; an entry duplicated. No form releases the hold.",
+    "readTheSameWay": "The seal counts erased===true. The verifier now accepts only erased===true or no erased key, and an integer `of` or none, and refuses any other key. The two read the flag the same way."
+  },
+  "newFindings": [
+    {"id": "SEC-V1FC-09", "severity": "INFO", "blockingForV1Freeze": false,
+     "summary": "link() builds its MAC input as a template string, so the one-element-array form of a field stringifies to the same text. Two such forms still verify: an erased slot's `digest` given as [\"<hex>\"], and an entry's `recordedAt` given as [\"<time>\"]. Nothing reads either field outside link() (I grepped src), so the change has no effect: the view stays BLOCKED, no row content changes, no hold is released.",
+     "reproduction": "r4-entry.mjs: 'digest as one-element array (erased slot)' gives OK/BLOCKED; 'recordedAt as one-element array (marker)' gives OK/BLOCKED.",
+     "smallestFix": "Optional hardening: in the entry check, require typeof recordedAt === 'string' and typeof digest === 'string'."}
+  ],
+  "regressionCheck": {
+    "result": "The change breaks nothing that was verified on the chain and the seal.",
+    "evidence": [
+      "P1: a record with an annotation entry (a corrected report), an erased slot and an erasure marker verifies, and the view is BLOCKED.",
+      "P2: a clean record verifies.",
+      "P3: a file-store round trip verifies when read back through a new store instance and a new custody (server restart).",
+      "P4: the untouched record still verifies after the tamper sweep.",
+      "p8 G1: every tamper is INTEGRITY_FAILURE on read and write: agency, pending, decisions, requests, consents, schema, reference, the hold row, truncation and reorder. The only exception is 'dropAgency', a no-op on a document with no agency, as in earlier rounds.",
+      "p8 G2-G6: a foreign key fails verify. Idempotency, stale versions, server-owned and unknown fields, the cross-athlete check, unauthenticated calls, the HEALTH_SIGNALS gate and the tombstone all hold. CF-OBS-1 holds at the engine layer.",
+      "p10 G7/G8: the decline memory is under the seal.",
+      "p2 A1-A8: adoption orderings hold.",
+      "p5: erasure scope holds.",
+      "Suite: 1258/1258."
+    ]
+  },
+  "verdict": "PASS_WITH_CONDITIONS",
+  "gate": "SECURITY_READY_WITH_CONDITIONS",
+  "verdictScope": "The V1-scoped synthetic candidate at a23460b and its reference custody boundary only. Not production, not operational security, not real athletes.",
+  "anythingBlocksTheFreeze": "No. Nothing in this role's findings blocks the freeze of the V1-scoped CoachingCore on synthetic data.",
+  "conditions": [
+    {"id": "SEC-V1FC-04", "status": "named condition before real data", "what": "After an erasure, the stored program keeps health-derived planning entries of the erased events (the restart's cause CLINICAL, the hold's kind and time, the stop dates, the held sports).", "owner": "the CoachingCore author, before any real data", "resolutionEvidence": "an erasure probe that finds no erased event's health-derived content in the stored program"},
+    {"id": "SECTION-7-PENDING", "status": "PENDING, carried into the closure record", "what": "authentication; KMS with per-purpose keys and rotation; a production database with access control and encryption at rest; an external monotonic version; backups that honour erasure; monitoring; rate and request-size limits; authority files pinned, including the event records file; the learning model after a LEARNING revocation; G07 legal basis, texts and periods (owner: the Founder with legal counsel; not ruled on here)"},
+    {"id": "SEC-V1FC-09", "status": "optional hardening", "what": "type-check recordedAt and digest in the chain entry check"}
+  ],
+  "fourDistinctions": {
+    "syntheticCandidate": "PASS_WITH_CONDITIONS. Every blocking finding of this round is closed; SEC-V1FC-04 is a named condition before real data.",
+    "integrationBoundary": "NOT_READY. It needs section 7's operational PENDING parts with the additions, and QRE-V1FC-03 (QRE's condition).",
+    "beforeRealData": "It needs SEC-V1FC-04 resolved, every section 7 PENDING item built, G07, the SEC-V1CP pendings and the F08/G04 wording.",
+    "realAthletes": "NO. It needs all of the above plus human and clinical revalidation; CLINICAL_HUMAN_REQUIRED stands."
+  },
+  "states": {
+    "RECORD_CUSTODY_STATUS": "IMPLEMENTED_WITH_CONDITIONS",
+    "F08_STATUS": "Situation 1 is unreachable through V1 custody. A hold is released only by the readiness declaration; no keyless storage tamper probed releases it.",
+    "INTEGRATION_READY": "NO",
+    "authorizationForRealAthletes": "NO"
+  }
+}

@@ -1360,3 +1360,32 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing pushed, merged or deleted.
 - **Checkpoint:** `audits/v1cp-fix-forward-2026-11-09/CHECKPOINT_FF.md`.
+
+
+<!-- V1FC-20261111-closure-r1 -->
+2026-11-11 · COACHINGCORE V1 FINAL CLOSURE **CLOSED, V1_SCOPED_COACHING_CORE_READY = YES with conditions**; frozen as COACHINGCORE-V1-FREEZE-1.
+- **Runtime** (branch `claude/coachingcore-v1-final-closure`, from `3b14804`):
+  - candidate `2d089c0`;
+  - the single fix cycle `06bbc7f`;
+  - the recheck records `438443b`;
+  - the residual of SEC-V1FC-01 `a23460b`, by the Founder's authorization (a narrow exception to the cycle bound);
+  - then this closure and the freeze record `CoachingCore/v1/RUNTIME_FREEZE_V1_1.json`.
+- **What it is:**
+  - the V1 entry point `src/v1-index.mjs`; F08 Situation 1 out of V1 in the runtime; holds released only by the readiness declaration;
+  - Security SEC-V1CIB-01 to -04 closed; a move and a learned rearrangement wait for the athlete;
+  - the 5K and the marathon by the event extension, enabled by independent SSCTR records.
+- **Validation:**
+  - suite 1258/1258;
+  - QRE differential against `3b14804`: 990 digest lines byte-identical;
+  - 18 journeys (`evidence/JOURNEYS_V1FC`).
+- **Judges:**
+  - round on `2d089c0`: SSCTR NOT_READY (marathon only), QRE NOT_READY, Security FAIL;
+  - recheck on `06bbc7f`: SSCTR READY_WITH_CONDITIONS, QRE READY_WITH_CONDITIONS, Security FAIL on one residual;
+  - recheck of that residual on `a23460b`: Security PASS_WITH_CONDITIONS.
+- **Named conditions:** RC-01 and G04 wording (Product); QRE-V1FC-03 and -05 and the operational parts (integration); SEC-V1FC-04 (before real data); the proposed queue entries and the PDR entry (Founder, PCG).
+- **Unchanged:**
+  - V1 authority NO, INTEGRATION_READY NO, F08_OPEN;
+  - earlier freezes, the R6 policy, the catalog, canon and Figma;
+  - the queue stays at 235;
+  - nothing pushed, merged or deleted; the interrupted mission's worktree intact.
+- **Checkpoint:** `audits/coachingcore-v1-final-closure-2026-11-11/CHECKPOINT_V1FC.md`.
