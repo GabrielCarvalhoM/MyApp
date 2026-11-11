@@ -1,0 +1,75 @@
+{
+ "revision": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1",
+ "mission": "CoachingCore V1 Run Calibration Extension (Founder request of 2026-11-11)",
+ "scope": "An additive extension of the V1-scoped CoachingCore on synthetic data: run calibration, pace bands, heart-rate zones and current race estimates beside the unchanged prescription. Not production, backend, operational security or a published app; no authorization for real athletes.",
+ "commit": "d1467ded219342a8b271bce18b9af69fc106124b",
+ "created": "2026-11-11T21:15:17.154Z",
+ "additiveTo": {
+  "revision": "COACHINGCORE-V1-FREEZE-1",
+  "record": "CoachingCore/v1/RUNTIME_FREEZE_V1_1.json",
+  "sha256": "14287ec1021a98e5145b6ccfc7aadd8d28e90ba91c29c206b5a73da0e0f329a3",
+  "commit": "7e6e0e0c48299475354bfb4987b1d597a27880a1",
+  "fileCount": 198,
+  "filesDigest": "0f1f437f8289462abb2061447a64fae315cd01472012439f533db96c2de9faff",
+  "identical": 198,
+  "changed": []
+ },
+ "entryPoint": "CoachingCore/src/v1-run-index.mjs",
+ "baseEntryPoint": "CoachingCore/src/v1-index.mjs",
+ "suite": {
+  "passed": 1334,
+  "total": 1334
+ },
+ "extension": {
+  "id": "V1X-RUN-CALIBRATION-1",
+  "file": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json",
+  "sha256": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+  "pinned": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+  "enabledByIndependentRecord": [
+   "V1X-RUN-CAPACITY",
+   "V1X-RUN-ESTIMATE",
+   "V1X-RUN-HR",
+   "V1X-RUN-PACE"
+  ],
+  "records": {
+   "file": "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json",
+   "sha256": "66a6dab57bbdb3afcbc2d871295a1261c59d41729004ef54a3b63e64504511a6",
+   "note": "A boundary this record enables is on; a boundary without an enabling record bound to the extension hash is off (fail closed: effort only, the frozen V1 behaviour)."
+  }
+ },
+ "note": "Additive to COACHINGCORE-V1-FREEZE-1, which is preserved. SSCTR READY_WITH_CONDITIONS and QRE READY_WITH_CONDITIONS on 0098834 (runtime unchanged since). Synthetic data only; V1 authority NO, INTEGRATION_READY NO, F08_OPEN; conditions in CHECKPOINT_V1RC.md section 7.",
+ "files": {
+  "CoachingCore/scripts/v1rc-freeze.mjs": "8b90ddb4022bafa5bf6584a1f8eb0eeba1236a795f9c429f1bd56b14b47bdbaa",
+  "CoachingCore/scripts/v1rc-fuzz.mjs": "54a00bc9edc2dafca98f378720300e8c81807c5d6fc7f544c5cfa249c5aaa973",
+  "CoachingCore/scripts/v1rc-journeys.mjs": "9a6e8a10629d49db085724b7c3a1e49176800aa95fc6f675ffd0e84a4705d9c6",
+  "CoachingCore/src/v1-run-calibration.mjs": "0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01",
+  "CoachingCore/src/v1-run-index.mjs": "a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608",
+  "CoachingCore/test/v1rc-calibration.test.mjs": "55b473293d0d82f2b7f9745e3a1cb3f45fe92f0f6145ce4b6654a93b9d72d88d",
+  "CoachingCore/test/v1rc-flow.test.mjs": "23dee2ad6f1791fb9ba3f784f3653c8328398558fb9f201c04b4f56191d2db93",
+  "CoachingCore/test/v1rc-helpers.mjs": "639122d81b39715842aef1a27262a508e5bb63bf8d71f4e3c770f2184da609f9",
+  "CoachingCore/test/v1rc-limitation-c.test.mjs": "1e5a41d00614f598a3229d9ea4a0713e0be3e72753157e17a5e9e8781f5142a0",
+  "CoachingCore/test/v1rc-review-fixes-qre.test.mjs": "871c89c053074615fd03d33d02621a4262bce5a1b5ed9a4b652141c68a064e81",
+  "CoachingCore/test/v1rc-review-fixes.test.mjs": "0da3524160f2909c9bd4162fb4e7ab584308fa70b5a206b810843dfa39e75d02",
+  "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/CHECKPOINT_V1RC.md": "5edc818022e6840c803ce8a7cc4093ab1882dca19414a9d42b466a333715aae5",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/FIX_CYCLE_V1RC.md": "cddc813ee9ccca206a14769ccf9b017f0ce60c81d5c25cd6e1e35f4a0be9ee27",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/REVIEW_REQUEST_V1RC.md": "fc5615f41e3d4a56fae33fb47b5516b5cd8a79d2a94e04befc58d14637ba503d",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/RUN_CALIBRATION_CONTRACT_V1RC.md": "f678a62be60226174814c4c985962da5f6675b21753236f3657ef2470ab78b65",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/SSCTR_DECISION_REQUEST.md": "693c7589586a8cb8087eb1fe4a6f0a0aafa13ab1acf54fedd5c60163c342586d",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/evidence/JOURNEYS_V1RC.json": "c89e2d6e73b8d916c32542a547b3edd76f2b067ae73e7ffc5b2ee4c196be3a73",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/evidence/JOURNEYS_V1RC.txt": "e2c838fe26ef64d354c73c365b97fecadb121aff309f2fff50a0755fc05fb009",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/quality/QRE_V1RC_RECHECK.json": "6d938544d6308423daf09c17c27541038a613d7a9b332adfed708de06387ab36",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/quality/QRE_V1RC_RECHECK.md": "fb008b415be2894d6dcb0742bd3d27adb3b1701f5a1295c6af2075ecb2816d29",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/quality/QRE_V1RC_REVIEW.json": "471f2e68862986ce31a18d384ccd21ee849d72a75b7668c6df50fbcadb5a3457",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/quality/QRE_V1RC_REVIEW.md": "b41a8e20c538c34b8afa8863cffea138ae02071dba277a3c396ce0651e3fd755",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RECHECK.json": "f0a18bf868438e2f0e0ce7e7729445a512e2a4728720514d494acb4284a012d2",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RECHECK.md": "faa9fdac40768d97dc071fbb57aa4332c3a0bb9dcf1d145de086094bfc1632cc",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_REVIEW.json": "be9797bd271b1620e4551004b90a089af63f0598f70b1829f649d339efeee11b",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_REVIEW.md": "4b1701c347c567923a1738e429119c2b6849f7435167614b90cf7e9cf3f09ff2",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json": "66a6dab57bbdb3afcbc2d871295a1261c59d41729004ef54a3b63e64504511a6",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json": "3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.md": "63516015db7ba79aa3cf2a5e48bde50614bc3e4e29d6f3bad80be08892975b52"
+ },
+ "fileCount": 30,
+ "filesDigest": "8bf46e98428084f99c48d1e6fc3f52b3a731bbe4354abee285b2fe0ba7c9caeb"
+}
