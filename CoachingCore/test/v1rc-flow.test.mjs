@@ -73,9 +73,9 @@ test('V1RC flow: a completed test replaces the harder session (never added, neve
  assert.equal(t.ev.length,1);assert.equal(t.ev[0].fact,RUN_EVIDENCE_DECLARED);
  assert.ok(t.same,t.differences.join(','));
 });
-test('V1RC flow: an incomplete test is recorded, used for nothing and costs nothing; it may be repeated once after a week, and not again',()=>{
+test('V1RC flow: a test stopped for a reason that is not a symptom is recorded, used for nothing and costs nothing; it may be repeated once after a week, and not again',()=>{
  const t=timeline(runner({id:'rc-f-stop'})),q=firstQualityWeek(t);weeks(t,0,q,paced(390,300));
- const stop=w=>{const s=quality(t,w);t.week(w,x=>x.id===s.id?false:paced(390,300)(x),{runEvidence:[test5k(t,s,{distanceKm:2.1,seconds:600,completed:false})],expectWithhold:true});};
+ const stop=w=>{const s=quality(t,w);t.week(w,x=>x.id===s.id?false:paced(390,300)(x),{runEvidence:[test5k(t,s,{distanceKm:2.1,seconds:600,completed:false,stoppedFor:'PACING'})],expectWithhold:true});};
  stop(q+1);t.week(q+2,paced(390,300));
  assert.equal(t.cal.capacity.status,'NONE');assert.ok(t.cal.evidence.find(e=>e.kind==='FIELD_TEST').reasons.includes('NOT_COMPLETED'));assert.ok(Object.values(t.cal.estimates).every(e=>e.status==='UNAVAILABLE'),'nothing is extrapolated from the part done');
  assert.equal(t.cal.assessment.status,'OFFERED','the one repeat');
@@ -108,7 +108,9 @@ test('V1RC flow: easy runs never recalibrate performance, however fast they are;
  assert.equal(t.cal.paceBands.EASY.fastSecondsPerKm,ceiling,'the easy ceiling does not get faster');assert.ok(t.cal.paceBands.EASY.notes.includes('EASY_RUNS_FASTER_THAN_CEILING'));assert.ok(t.same);
  // Slower own easy running is valid: the band follows it slower, never the other way.
  const u=timeline(RECENT({id:'rc-f-easy2'}));weeks(u,0,3,s=>EASY.includes(s.prescription.family)?{pace:ceiling+60,rpe:3}:{pace:400,workPace:u.cal.paceBands[TH].fastSecondsPerKm+5,rpe:7});
- assert.ok(u.cal.paceBands.EASY.fastSecondsPerKm>ceiling);assert.ok(!u.cal.paceBands.EASY.notes.includes('EASY_RUNS_FASTER_THAN_CEILING'));assert.equal(u.cal.paceBands.LONG.fastSecondsPerKm,u.g.runCalibration.paceBands.LONG.fastSecondsPerKm,'and only the easy band');
+ assert.ok(u.cal.paceBands.EASY.fastSecondsPerKm>ceiling);assert.ok(!u.cal.paceBands.EASY.notes.includes('EASY_RUNS_FASTER_THAN_CEILING'));
+ // The long and recovery ceilings are never faster than the easy one (SSCTR-V1RC-R-04); no harder band takes anything from easy running.
+ assert.ok(u.cal.paceBands.LONG.fastSecondsPerKm>=u.cal.paceBands.EASY.fastSecondsPerKm);for(const id of [TH,'TEN_K_EFFORT','FIVE_K_EFFORT'])assert.equal(u.cal.paceBands[id].fastSecondsPerKm,u.g.runCalibration.paceBands[id].fastSecondsPerKm,id);
 });
 test('V1RC flow: one informative session changes nothing; two that agree move that domain\'s band one bounded step, and nothing else',()=>{
  const t=timeline(RECENT({id:'rc-f-recal'})),q=firstQualityWeek(t);weeks(t,0,q-1,paced(400,345));

@@ -147,9 +147,10 @@ test('V1RC an old personal best is history, never current capacity and never an 
  // A dated best inside the current window is read as the result it is.
  assert.equal(cal(runner({id:'rc-t-best3',anchors:[{...best,date:daysBefore(10),seconds:3300}]})).capacity.status,'CALIBRATED');
 });
-test('V1RC recency: current to 56 days, presumed (lowest confidence, wider, never faster) to 112, then history',()=>{
+test('V1RC recency (counted from the first day of the week): current to 56 days, presumed (lowest confidence, wider, never faster) to 112, then history',()=>{
+ // The plan starts two days after the intake: n days before the intake is n + 2 days before the week.
  const at=n=>cal(runner({id:'rc-t-age'+n,anchors:[result('10K',3300,daysBefore(n))]}));
- const current=at(54),aging=at(60),lastAging=at(111),old=at(113);
+ const current=at(54),aging=at(55),lastAging=at(110),old=at(111);
  assert.equal(current.capacity.status,'CALIBRATED');assert.equal(current.capacity.recency,'CURRENT');
  for(const c of [aging,lastAging]){assert.equal(c.capacity.status,'PRESUMED');assert.equal(c.status,'PROVISIONAL');assert.equal(c.capacity.confidence,'LOW');assert.ok(c.capacity.confidenceCauses.includes('PRESUMED_FROM_AGED_EVIDENCE'));assert.equal(c.paceBands.THRESHOLD_CONTROLLED.recency,'AGING');}
  const w=b=>b.slowSecondsPerKm-b.fastSecondsPerKm;assert.ok(w(aging.paceBands.THRESHOLD_CONTROLLED)>w(current.paceBands.THRESHOLD_CONTROLLED));assert.ok(aging.paceBands.THRESHOLD_CONTROLLED.fastSecondsPerKm>=current.paceBands.THRESHOLD_CONTROLLED.fastSecondsPerKm);

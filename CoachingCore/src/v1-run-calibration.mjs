@@ -19,7 +19,7 @@ import {standingHolds,readableF08,isF08Fact} from './v1-f08.mjs';
  * - Every method and number is SSCTR-V1RC-DECISION-r1 (audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision), cited here by question (Q1-Q10).
  */
 export const RUN_EXTENSION_ID='V1X-RUN-CALIBRATION-1';
-export const RUN_EXTENSION_SHA256='9f2cf47d84c68f57f8784c58aebbb236e9777614352cb05f9dcde1ad4e701d30';
+export const RUN_EXTENSION_SHA256='d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa';
 export const RUN_EXTENSION_URL=new URL('../v1/RUN_CALIBRATION_EXTENSION_V1.json',import.meta.url);
 export const RUN_RECORDS_URL=new URL('../../audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json',import.meta.url);
 /** The boundaries, each needing its own enabling record. PACE, HR and ESTIMATE also need CAPACITY. */
@@ -27,6 +27,8 @@ export const RUN_BOUNDARIES=freeze({CAPACITY:'V1X-RUN-CAPACITY',PACE:'V1X-RUN-PA
 export const RUN_CALIBRATION_VERSION='V1X-RUN-CALIBRATION-STATE-1';
 export const RUN_EVIDENCE_DECLARED='RUN_EVIDENCE_DECLARED';
 export const EVIDENCE_KINDS=freeze(['RACE_RESULT','FIELD_TEST','TIME_TRIAL','PERSONAL_BEST','LAB_TEST']);
+/** Why an effort was stopped (SSCTR-V1RC-R-01). A stop with no stated reason is read as a symptom: it is never assumed harmless. */
+export const STOP_REASONS=freeze(['SYMPTOM','PACING','CONDITIONS','TIME','OTHER']);
 
 const readBytes=url=>{try{return fs.readFileSync(url);}catch{return null;}};
 const sha256=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -100,7 +102,7 @@ export function readEvidence(raw,{source='DECLARED',fallbackId=null}={}){
  if(raw.rpe!==undefined&&raw.rpe!==null&&!num(raw.rpe,0,10))errors.push('evidence.rpe');
  if(errors.length)return {evidence:null,errors:[...new Set(errors)]};
  const core={kind,date,distanceKm:distanceKm?Math.round(distanceKm*1000)/1000:null,seconds:seconds?Math.round(seconds):null,measurement:upper(raw.measurement)??'UNKNOWN',rpe:num(raw.rpe,0,10)?raw.rpe:null,
-  completed:raw.completed!==false,tolerated:raw.tolerated===undefined||raw.tolerated===null?null:raw.tolerated===true,walkBreaks:raw.walkBreaks===true,conditions:list(raw.conditions).map(upper).filter(Boolean).sort(),protocol:upper(raw.protocol),
+  completed:raw.completed!==false,tolerated:raw.tolerated===undefined||raw.tolerated===null?null:raw.tolerated===true,walkBreaks:raw.walkBreaks===true,conditions:list(raw.conditions).map(upper).filter(Boolean).sort(),protocol:upper(raw.protocol),stoppedFor:raw.completed===false?(STOP_REASONS.includes(upper(raw.stoppedFor))?upper(raw.stoppedFor):'SYMPTOM'):null,
   replacedSessionId:typeof raw.replacedSessionId==='string'?raw.replacedSessionId:null,supersedes:typeof raw.supersedes==='string'?raw.supersedes:null,heartRate:hr,lab,source};
  const id=typeof raw.id==='string'&&raw.id.trim()?raw.id.trim():fallbackId??('ev-'+hash(core).slice(0,16));
  return {evidence:{id,...core},errors:[]};
@@ -112,13 +114,16 @@ const readableFact=(o,athleteId,atMs)=>isObj(o)&&o.fact===RUN_EVIDENCE_DECLARED&
  * The extension's record after a review: the carried rows unchanged, plus one row per new valid declaration. A declaration dated after the review,
  * malformed, or repeating an id on record is refused and named; nothing is ever rewritten.
  */
-export function appendEvidence(record,declarations,{athleteId,asOf,timezoneOffsetMinutes=0}){
- const carried=list(record).filter(isObj).map(clone),ids=new Set(carried.map(r=>r.eventId)),refused=[],added=[],today=localDate(asOf,timezoneOffsetMinutes);
+export function appendEvidence(record,declarations,{athleteId,asOf,timezoneOffsetMinutes=0,reservedIds=[]}){
+ // The record is append-only: every carried row is returned as received, readable or not (QRE-V1RC-13).
+ const carried=list(record).map(r=>clone(r)),ids=new Set(carried.filter(isObj).map(r=>r.eventId)),reserved=new Set(reservedIds),refused=[],added=[],today=localDate(asOf,timezoneOffsetMinutes);
  for(const raw of list(declarations)){
   const {evidence,errors}=readEvidence(raw,{source:'DECLARED'});
   if(!evidence){refused.push({id:isObj(raw)&&typeof raw.id==='string'?raw.id:null,errors});continue;}
   if(evidence.date&&evidence.date>today){refused.push({id:evidence.id,errors:['evidence.dateAfterThisReview']});continue;}
   if(ids.has(evidence.id)){refused.push({id:evidence.id,errors:['evidence.idAlreadyOnRecord']});continue;}
+  // An id the intake's own anchors or the plan's races use would be stored and never read (QRE-V1RC-12).
+  if(reserved.has(evidence.id)||/^(intake-\d+$|plan-race:)/.test(evidence.id)){refused.push({id:evidence.id,errors:['evidence.idReserved']});continue;}
   ids.add(evidence.id);added.push(evidenceFact(athleteId,asOf,evidence));
  }
  return {record:[...carried,...added],added:added.map(r=>r.eventId),refused};
@@ -147,6 +152,8 @@ const comparableRun=(o,V)=>!V.recalibration.notComparableMeasurements.includes(u
 function runRows(ledger,athleteId){
  return list(ledger).filter(o=>isObj(o)&&!o.fact&&o.superseded!==true&&o.athleteId===athleteId&&o.context?.sport==='RUN'&&o.actual?.completed===true&&o.partial!==true&&o.conflicted!==true&&isoDay(o.localDate));
 }
+/** A running pace outside this window (2:00 to 15:00 per km) is a measurement fault, never an observation (QRE-V1RC-07). */
+const PLAUSIBLE_PACE=[120,900];
 const minutesOf=o=>num(o.actual?.seconds,1)?o.actual.seconds/60:num(o.actual?.minutes,0.1)?o.actual.minutes:null;
 /** The local day a row joined the record. A week's calibration reads only what was on record before the week started, so a late report of an
  * earlier session never moves a band inside the week (it counts from the next one). */
@@ -156,8 +163,8 @@ const inForce=(o,cutoff)=>o.date<cutoff&&o.recordedOn<cutoff;
 function easyObservation(o,V,tz){
  const P=V.assessment.P1,min=minutesOf(o),d=o.actual?.distanceKm,rpe=rpeOf(o);
  if(!P.families.includes(o.context?.family)||o.context?.mode!=='EASY'||!num(d,0.5,80)||!min||min<P.minDurationMinutes||!comparableRun(o,V)||o.actual?.walkBreaks===true)return null;
- if(rpe===null||rpe>P.rpeReportedMax)return null;
- return {eventId:o.eventId,date:o.localDate,recordedOn:recordedOn(o,tz),secondsPerKm:min*60/d};
+ if(rpe===null||rpe>P.rpeReportedMax||!num(min*60/d,PLAUSIBLE_PACE[0],PLAUSIBLE_PACE[1]))return null;
+ return {eventId:o.eventId,date:o.localDate,recordedOn:recordedOn(o,tz),secondsPerKm:min*60/d,measurement:upper(o.actual?.measurement)??'UNKNOWN'};
 }
 /**
  * The execution of a harder session of a domain, with what a calibration may read of it. `comparable`: its work pace is on record under Q8.
@@ -165,9 +172,9 @@ function easyObservation(o,V,tz){
  */
 function hardExecution(o,V,tz,sessions){
  const domain=Object.keys(V.domains).find(d=>V.domains[d].class==='HARDER'&&V.domains[d].families.includes(o.context?.family));if(!domain)return null;
- const w=o.actual?.work,pace=num(w?.paceSecondsPerKm,120,900)?w.paceSecondsPerKm:num(w?.distanceKm,0.2,60)&&num(w?.seconds,30)?w.seconds/w.distanceKm:null;
+ const w=o.actual?.work,raw=num(w?.paceSecondsPerKm)?w.paceSecondsPerKm:num(w?.distanceKm,0.2,60)&&num(w?.seconds,30)?w.seconds/w.distanceKm:null,pace=num(raw,PLAUSIBLE_PACE[0],PLAUSIBLE_PACE[1])?raw:null;
  const rpe=rpeOf(o),[lo,hi]=V.effortCues[V.domains[domain].cue].rpe,planned=sessions.get(o.sessionId)?.prescription?.work??null,T=V.recalibration.training;
- return {eventId:o.eventId,sessionId:o.sessionId,week:o.context?.weekIndex??null,date:o.localDate,recordedOn:recordedOn(o,tz),domain,secondsPerKm:pace,rpe,
+ return {eventId:o.eventId,sessionId:o.sessionId,week:o.context?.weekIndex??null,date:o.localDate,recordedOn:recordedOn(o,tz),domain,secondsPerKm:pace,rpe,measurement:upper(o.actual?.measurement)??'UNKNOWN',belowCue:rpe!==null&&rpe<lo,
   comparable:!!pace&&o.context?.mode==='EASY'&&comparableRun(o,V)&&w?.walkBreaks!==true,onTarget:rpe!==null&&rpe>=lo&&rpe<=hi&&o.response?.effort!=='HARDER'&&compatible(o.response),harder:rpe!==null&&rpe>hi||o.response?.effort==='HARDER',
   // Q8: only a session whose every work bout is 5 minutes or more and whose work adds up to 15 or more can adjust a band.
   longBouts:!!planned&&num(planned.workMinutes,T.everyWorkBoutMinutesMin)&&planned.repetitions*planned.workMinutes>=T.totalWorkMinutesMin};
@@ -175,18 +182,18 @@ function hardExecution(o,V,tz,sessions){
 /** A race of the plan, logged with its distance and time, is a race result (the engine's own row, never a second declaration). */
 function planRaces(rows,tz){
  return rows.filter(o=>o.context?.family==='RACE'&&num(o.actual?.distanceKm,1,100)&&minutesOf(o)).map(o=>{const r=o.response??{},said=[r.performance,r.recovery,r.nextDayFunction].some(x=>typeof x==='string'&&x!=='UNKNOWN');
-  return {id:'plan-race:'+o.eventId,kind:'RACE_RESULT',date:o.localDate,recordedOn:recordedOn(o,tz),distanceKm:o.actual.distanceKm,seconds:Math.round(minutesOf(o)*60),measurement:upper(o.actual.measurement)??'UNKNOWN',rpe:rpeOf(o),completed:true,
+  return {id:'plan-race:'+o.eventId,kind:'RACE_RESULT',date:o.localDate,recordedOn:recordedOn(o,tz),distanceKm:o.actual.distanceKm,seconds:Math.round(minutesOf(o)*60),measurement:upper(o.actual.measurement)??'UNKNOWN',rpe:rpeOf(o),completed:true,stoppedFor:null,
    tolerated:!compatible(r)?false:said?true:null,walkBreaks:o.actual.walkBreaks===true,conditions:list(o.actual.conditions).map(upper).filter(Boolean).sort(),protocol:null,replacedSessionId:null,supersedes:null,
    heartRate:isObj(o.actual.heartRate)?{maxBpm:num(o.actual.heartRate.maxBpm,80,240)?Math.round(o.actual.heartRate.maxBpm):null,sensor:upper(o.actual.heartRate.sensor)}:null,lab:null,source:'PLAN_RACE'};});
 }
 /** Every piece of performance evidence the record holds for this athlete as of an instant, with the reasons any is refused. */
 function gatherEvidence({program,ledger,evidenceRecord,asOfMs,tz}){
+ const intakeDay=isoDay(program.canonical?.asOf?.slice?.(0,10))?program.canonical.asOf.slice(0,10):null;
  const out=[],refused=[],seen=new Set(),push=e=>{if(seen.has(e.id))return;seen.add(e.id);out.push(e);};
- list(program.canonical?.athlete?.performanceAnchors).forEach((raw,i)=>{const {evidence,errors}=readEvidence(raw,{source:'INTAKE',fallbackId:isObj(raw)&&typeof raw.id==='string'?null:'intake-'+i});if(evidence)push(evidence);else refused.push({id:'intake-'+i,errors});});
+ list(program.canonical?.athlete?.performanceAnchors).forEach((raw,i)=>{const {evidence,errors}=readEvidence(raw,{source:'INTAKE',fallbackId:isObj(raw)&&typeof raw.id==='string'?null:'intake-'+i});if(evidence&&evidence.date&&intakeDay&&evidence.date>intakeDay)refused.push({id:evidence.id,errors:['evidence.dateAfterTheIntake']});else if(evidence)push(evidence);else refused.push({id:'intake-'+i,errors});});
  for(const r of list(evidenceRecord)){if(readableFact(r,program.athleteId,asOfMs))push({...clone(r.evidence),recordedOn:localDate(new Date(Date.parse(r.declaredAt)).toISOString(),tz)});else if(isObj(r)&&r.fact===RUN_EVIDENCE_DECLARED&&Date.parse(r.declaredAt)<=asOfMs)refused.push({id:typeof r.eventId==='string'?r.eventId:null,errors:['evidence.unreadableRow']});}
  planRaces(runRows(ledger,program.athleteId),tz).forEach(push);
- const superseded=new Set(out.map(e=>e.supersedes).filter(Boolean));
- return {evidence:out.filter(e=>!superseded.has(e.id)),refused};
+ return {evidence:out,refused};
 }
 /** Declared breaks of the record as [firstDay, lastDay] local dates (a break without an end runs to its declaration). */
 function breaksOf(ledger,program){
@@ -203,9 +210,11 @@ function breaksOf(ledger,program){
  * What one piece of evidence is to the capacity of the week whose first day is `cutoff`: its use, its recency class and the reasons. An old best is
  * history, never capacity; evidence before the last withdrawal (a long break, a hold, a return) is history too.
  */
-function classify(e,{cutoff,floor,V}){
- const E=V.evidence,reasons=[],age=e.date?dayGap(e.date,cutoff):null;
+function classify(e,{cutoff,weekStart,floor,V,correctedBy}){
+ const E=V.evidence,reasons=[],age=e.date?dayGap(e.date,weekStart):null;
  const base={id:e.id,kind:e.kind,date:e.date,distanceKm:e.distanceKm,seconds:e.seconds,source:e.source,ageDays:age};
+ // QRE-V1RC-03: corrected, for this week, only by a row that is itself in force for this week; until then the original stands.
+ if((correctedBy.get(e.id)??[]).some(x=>(!x.date||x.date<cutoff)&&(!x.recordedOn||x.recordedOn<cutoff)))return {...base,use:'SUPERSEDED',recency:null,reasons:['CORRECTED_BY_A_LATER_ROW']};
  if(e.kind==='LAB_TEST')return {...base,use:'HEART_RATE_ONLY',recency:null,reasons};
  if(e.date&&e.date>=cutoff)return {...base,use:'NOT_YET_IN_FORCE',recency:null,reasons:['DATED_IN_OR_AFTER_THIS_WEEK']};
  if(e.recordedOn&&e.recordedOn>=cutoff)return {...base,use:'NOT_YET_IN_FORCE',recency:null,reasons:['RECORDED_IN_OR_AFTER_THIS_WEEK']};
@@ -248,7 +257,8 @@ function selectReference(classified,byId,{cls,cutoff,breaks,V,heldId=null}){
  const [lo,hi]=V.withdrawal.breakDaysTierDown;if(breaks.some(b=>b.days>=lo&&b.days<=hi&&b.to>e.date&&b.from<cutoff)){flags.push('SHORT_BREAK_SINCE_EVIDENCE');reductions+=V.confidence.shortBreakTierReduction;}
  if(e.kind==='FIELD_TEST')flags.push('TEST_NOT_RACE');
  if(presumed)flags.push('PRESUMED_FROM_AGED_EVIDENCE');
- if(reductions>=V.confidence.unavailableFromReductions)return {unsupported:true,flags,evidenceId:e.id};
+ // SSCTR-V1RC-R-10: aged evidence counts as one reduction toward unavailability (aged and two more reasons is no capacity); its cap stays LOW.
+ if(reductions+(presumed?V.confidence.agingCountsAsReductions:0)>=V.confidence.unavailableFromReductions)return {unsupported:true,flags,evidenceId:e.id};
  const tier=presumed?'LOW':TIERS[reductions],P=V.model.population,tenK=cls==='STANDARD'?comparisonTime(e,V)/60:null,marathonMinutes=cls==='STANDARD'?null:comparisonTime(e,V)/60;
  const slowRunner=tenK!==null?tenK>=P.slowRunnerFromTenKEquivalentMinutes:marathonMinutes>=P.slowRunnerFromMarathonMinutesWhenMarathonEvidenceOnly;
  return {evidenceId:e.id,evidence:e,cls,conflictsWith:flags.includes('CONFLICTING_EVIDENCE')?others:[],insideDeadbandOf:flags.includes('NEWER_RESULT_INSIDE_DEADBAND')?others:[],presumed,tier,flags:slowRunner?[...flags,'SLOW_RUNNER_MARGIN']:flags,
@@ -258,11 +268,14 @@ function selectReference(classified,byId,{cls,cutoff,breaks,V,heldId=null}){
 
 // ---------- estimates (Q7) ----------
 /** The longest run the record shows in the days before the week: executed runs, results on record, and the intake's own figure while that recent. */
-function longestRecentRun(program,rows,evidence,cutoff,days,tz){
- const fromLog=rows.filter(o=>o.localDate<cutoff&&recordedOn(o,tz)<cutoff&&dayGap(o.localDate,cutoff)<=days).map(minutesOf).filter(Boolean);
- const fromEvidence=evidence.filter(e=>e.date&&e.date<cutoff&&dayGap(e.date,cutoff)<=days&&e.completed&&num(e.seconds,1)&&!e.walkBreaks).map(e=>e.seconds/60);
- const intake=isoDay(program.canonical?.asOf?.slice?.(0,10))&&dayGap(program.canonical.asOf.slice(0,10),cutoff)<=days?program.capability?.run?.longestMinutes??null:null;
- return Math.max(0,...fromLog,...fromEvidence,intake??0);
+function longestRecentRun(program,rows,evidence,{cutoff,weekStart,floor=null,days,tz,superseded=new Set()}){
+ const recent=d=>d<cutoff&&dayGap(d,weekStart)<=days&&(!floor||d>floor);let longest=0;
+ for(const o of rows)if(recent(o.localDate)&&recordedOn(o,tz)<cutoff)longest=Math.max(longest,minutesOf(o)??0);
+ // A result on record counts as a run of its duration (QRE-V1RC-04: only when it was on record before the week; a corrected row never).
+ for(const e of evidence)if(e.date&&recent(e.date)&&(!e.recordedOn||e.recordedOn<cutoff)&&!superseded.has(e.id)&&e.completed&&num(e.seconds,1)&&!e.walkBreaks)longest=Math.max(longest,e.seconds/60);
+ const intakeDay=program.canonical?.asOf?.slice?.(0,10);
+ if(isoDay(intakeDay)&&dayGap(intakeDay,weekStart)<=days&&(!floor||intakeDay>floor))longest=Math.max(longest,program.capability?.run?.longestMinutes??0);
+ return longest;
 }
 const completionRace=program=>program.weeks.some(w=>w.sessions.some(s=>s.role==='RACE'&&s.prescription?.completion===true));
 /**
@@ -275,8 +288,10 @@ function estimateOf(name,{program,std,long,longest,V}){
  if(name==='MARATHON'){
   const said={statement:X.marathon.statementWhenUnavailable};
   // A current half-marathon-or-longer result first; then the marathon block itself (its eligibility is the frozen engine's, SSCTR-V1FC B1).
-  const sources=[long,std&&!std.presumed&&std.evidence.distanceKm>=X.marathon.evidenceKmMin*(1-M.sameDistanceRatioWithin)?std:null].filter(Boolean).sort((a,b)=>a.evidence.date<b.evidence.date?1:-1);
-  if(!sources.length)return no(std?'MARATHON_NEEDS_HALF_OR_LONGER_RESULT':'NO_QUALIFYING_EVIDENCE',said);
+  const halfOrLonger=std&&!std.presumed&&std.evidence.distanceKm>=X.marathon.evidenceKmMin*(1-M.sameDistanceRatioWithin);
+  // SSCTR-V1RC-R-03: a reference outside the model population is no source for the marathon either.
+  const sources=[long,halfOrLonger&&!std.outsidePopulation?std:null].filter(Boolean).sort((a,b)=>a.evidence.date<b.evidence.date?1:-1);
+  if(!sources.length)return no(halfOrLonger&&std.outsidePopulation?'OUTSIDE_MODEL_POPULATION':std?'MARATHON_NEEDS_HALF_OR_LONGER_RESULT':'NO_QUALIFYING_EVIDENCE',said);
   if(program.goal?.run?.event?.kind!=='MARATHON')return no('NOT_ELIGIBLE_FOR_MARATHON_BLOCK',said);
   if(completionRace(program))return no('COMPLETION_RACE_DAY');
   ref=sources[0];K=M.marathon;if(km/ref.evidence.distanceKm>K.maxDistanceRatio*(1+M.sameDistanceRatioWithin))return no('DISTANCE_RATIO_EXCEEDED',said);
@@ -293,7 +308,8 @@ function estimateOf(name,{program,std,long,longest,V}){
  const central=same?e.seconds:powerLawTime(e.distanceKm,e.seconds,km,K.kCentral),lower=Math.min(...times)*(1-m),upper=Math.max(...times)*(1+m),u=X.roundOutwardSeconds[name];
  return {status:'AVAILABLE',kind:'CURRENT_ESTIMATE',distanceKm:km,lowSeconds:Math.floor(lower/u+1e-9)*u,centralSeconds:Math.round(central/u)*u,highSeconds:Math.ceil(upper/u-1e-9)*u,display:'RANGE_FIRST_CENTRAL_NEVER_ALONE',estimated:true,promise:false,
   basis:same?'SAME_DISTANCE_RESULT':'POWER_LAW_RANGE',model:name==='MARATHON'?'MARATHON':'STANDARD',reference:e.id,referenceKind:e.kind,referenceDate:e.date,recency:ref.recency,confidence:ref.tier,confidenceCauses:clone(ref.flags),margin:m,validUntil:ref.validUntil,
-  flags:[...(ref.flags.includes('SUBMAXIMAL_LOWER_BOUND')?['EVIDENCE_IS_A_LOWER_BOUND']:[]),...(name==='MARATHON'?['MARATHON_WIDE_RANGE']:[])],statement:X.requiredText,unrounded:{central,lower,upper}};
+  flags:[...(ref.flags.includes('SUBMAXIMAL_LOWER_BOUND')?['EVIDENCE_IS_A_LOWER_BOUND']:[]),...(name==='MARATHON'?['MARATHON_WIDE_RANGE']:[])],statement:X.requiredText,
+  ...(name==='MARATHON'?{cautions:clone(X.marathon.cautions),assumes:clone(X.marathon.assumes)}:{}),unrounded:{central,lower,upper}};
 }
 
 // ---------- bands (Q4) ----------
@@ -314,27 +330,30 @@ function bandSpeeds(id,{std,long,estimates,V}){
 }
 const edges=(fastSpeed,slowSpeed,def,V)=>{const step=V.paceRules.roundUpToSecondsPerKm,fast=paceEdge(fastSpeed,step);return {fastSecondsPerKm:fast,slowSecondsPerKm:Math.max(paceEdge(slowSpeed,step),fast+V.paceRules.minimumWidthSecondsPerKm[def.class])};};
 /** The observed easy range (P1): the latest qualifying easy runs of the window; the fast edge is their median pace, never the fastest. */
-function observedEasy(obs,cutoff,floor,V){
- const P=V.assessment.P1,used=obs.filter(o=>inForce(o,cutoff)&&dayGap(o.date,cutoff)<=P.windowDays&&(!floor||o.date>floor)).slice(-P.useLatestRunsMax),paces=used.map(o=>o.secondsPerKm).sort((a,b)=>a-b);
+function observedEasy(obs,cutoff,weekStart,floor,V){
+ const P=V.assessment.P1,used=obs.filter(o=>inForce(o,cutoff)&&dayGap(o.date,weekStart)<=P.windowDays&&(!floor||o.date>floor)).slice(-P.useLatestRunsMax),paces=used.map(o=>o.secondsPerKm).sort((a,b)=>a-b);
  if(paces.length<P.qualifyingRunsMin)return {count:paces.length,needed:P.qualifyingRunsMin,range:null};
  const step=V.paceRules.roundUpToSecondsPerKm,median=paces.length%2?paces[(paces.length-1)/2]:(paces[paces.length/2-1]+paces[paces.length/2])/2,fast=paceEdge(1/median,step);
- return {count:paces.length,needed:P.qualifyingRunsMin,range:{fastSecondsPerKm:fast,slowSecondsPerKm:Math.max(paceEdge(1/paces.at(-1),step),fast+P.slowEdgeAtLeastSecondsPerKmAboveFast)},sessions:used.map(o=>o.eventId)};
+ // The set stops qualifying the day its third-newest run leaves the window.
+ return {count:paces.length,needed:P.qualifyingRunsMin,range:{fastSecondsPerKm:fast,slowSecondsPerKm:Math.max(paceEdge(1/paces.at(-1),step),fast+P.slowEdgeAtLeastSecondsPerKmAboveFast)},sessions:used.map(o=>({eventId:o.eventId,date:o.date})),
+  windowDays:P.windowDays,validUntil:onDate(used.at(-P.qualifyingRunsMin).date,P.windowDays),gps:used.some(o=>o.measurement==='GPS')};
 }
 /** The observed range of a harder domain (P2), only while no reference exists: its last two executions, both on target, comparable and concordant;
  * the fast edge is the slower of the two work paces. */
-function observedHard(execs,domain,cutoff,floor,V){
- const P=V.assessment.P2,last=execs.filter(o=>o.domain===domain&&inForce(o,cutoff)&&dayGap(o.date,cutoff)<=P.windowDays&&(!floor||o.date>floor)).slice(-P.concordantSessionsMin);
+function observedHard(execs,domain,cutoff,weekStart,floor,V){
+ const P=V.assessment.P2,last=execs.filter(o=>o.domain===domain&&inForce(o,cutoff)&&dayGap(o.date,weekStart)<=P.windowDays&&(!floor||o.date>floor)).slice(-P.concordantSessionsMin);
  if(last.length<P.concordantSessionsMin||!last.every(o=>o.comparable&&o.onTarget))return null;
  const p=last.map(o=>o.secondsPerKm),lo=Math.min(...p),hi=Math.max(...p);if(hi/lo-1>P.concordanceFraction)return null;
  const fast=paceEdge(1/hi,V.paceRules.roundUpToSecondsPerKm);
- return {fastSecondsPerKm:fast,slowSecondsPerKm:fast+P.slowEdgeSecondsPerKmAboveFast,sessions:last.map(o=>o.eventId)};
+ return {fastSecondsPerKm:fast,slowSecondsPerKm:fast+P.slowEdgeSecondsPerKmAboveFast,sessions:last.map(o=>({eventId:o.eventId,date:o.date})),windowDays:P.windowDays,validUntil:onDate(last[0].date,P.windowDays),gps:last.some(o=>o.measurement==='GPS')};
 }
 /** Every band of a week: derived from the reference (with the domain's training factor), or observed, or unavailable with its reason. */
-function bandsOf(wk,{std,long,estimates,V,on}){
+function bandsOf(wk,{std,long,estimates,V,on,onEstimate}){
  const out={};
  for(const [id,def] of Object.entries(V.domains)){
   const meta=cueMeta(def,V),none=(reason,extra={})=>({status:'UNAVAILABLE',reason,...extra});
-  if(!on){out[id]=none('EXTENSION_NOT_ENABLED');continue;}
+  // SSCTR-V1RC-R-06: a band that is the athlete's race-pace estimate needs the estimate boundary too.
+  if(!on||def.method==='RACE_PACE_ESTIMATE'&&!onEstimate){out[id]=none('EXTENSION_NOT_ENABLED');continue;}
   if(wk.effortOnly){out[id]=none('MODE_WALK_JOG_RESTART_RETURN');continue;}
   const f=wk.factors[id]??null;
   if(f?.withdrawn){out[id]=none('BAND_WITHDRAWN_AFTER_TRAINING_MISMATCH',{until:'A_RACE_OR_TEST'});continue;}
@@ -344,13 +363,20 @@ function bandsOf(wk,{std,long,estimates,V,on}){
    // P1 with a reference: the fast edge is the slower of the observed median and the derived ceiling; an observed range only ever shows slower.
    if(id==='EASY'&&wk.easy.range){if(wk.easy.range.fastSecondsPerKm<b.fastSecondsPerKm)notes.push('EASY_RUNS_FASTER_THAN_CEILING');b.fastSecondsPerKm=Math.max(b.fastSecondsPerKm,wk.easy.range.fastSecondsPerKm);b.slowSecondsPerKm=Math.max(b.slowSecondsPerKm,wk.easy.range.slowSecondsPerKm,b.fastSecondsPerKm+V.paceRules.minimumWidthSecondsPerKm.EASY);}
    if(f?.fraction)notes.push(f.fraction>0?'TRAINING_ADJUSTED_UP':'TRAINING_ADJUSTED_DOWN');
-   out[id]={status:'AVAILABLE',...b,...meta,label:'ESTIMATED',estimated:true,basis:'DERIVED_FROM_CAPACITY',method:s.method,...(def.event?{event:def.event}:{}),reference:o.reference,referenceKind:o.referenceKind,referenceDate:o.referenceDate,recency:o.recency,confidence:o.confidence,confidenceCauses:clone(o.confidenceCauses),margin:o.margin,validUntil:o.validUntil,trainingFactor:f?.fraction??0,notes};
+   // An adjusted band is no longer the estimate itself, and says so in its label and method.
+   out[id]={status:'AVAILABLE',...b,...meta,label:f?.fraction?'ESTIMATED_TRAINING_ADJUSTED':'ESTIMATED',estimated:true,basis:'DERIVED_FROM_CAPACITY',method:f?.fraction?s.method+'_TRAINING_ADJUSTED':s.method,...(def.event?{event:def.event}:{}),...(s.of.cautions?{cautions:clone(s.of.cautions),assumes:clone(s.of.assumes)}:{}),reference:o.reference,referenceKind:o.referenceKind,referenceDate:o.referenceDate,recency:o.recency,confidence:o.confidence,confidenceCauses:clone(o.confidenceCauses),margin:o.margin,validUntil:o.validUntil,trainingFactor:f?.fraction??0,notes};
    continue;
   }
-  const observed=id==='EASY'?wk.easy.range&&{...wk.easy.range,sessions:wk.easy.sessions}:def.class==='HARDER'&&!std?wk.hard[id]:null;
-  if(observed){out[id]={status:'AVAILABLE',fastSecondsPerKm:observed.fastSecondsPerKm,slowSecondsPerKm:observed.slowSecondsPerKm,...meta,label:'OBSERVED_AT_EFFORT',estimated:false,basis:'OBSERVED_AT_EFFORT',method:id==='EASY'?'MEDIAN_OF_OWN_EASY_RUNS':'SLOWER_OF_TWO_CONCORDANT_SESSIONS',reference:observed.sessions??null,confidence:null,margin:null,validUntil:null,trainingFactor:0,notes:['THIS_DOMAIN_ONLY']};continue;}
+  const observed=id==='EASY'?wk.easy.range&&{...wk.easy,...wk.easy.range}:def.class==='HARDER'&&!std?wk.hard[id]:null;
+  if(observed){out[id]={status:'AVAILABLE',fastSecondsPerKm:observed.fastSecondsPerKm,slowSecondsPerKm:observed.slowSecondsPerKm,...meta,label:'OBSERVED_AT_EFFORT',estimated:false,basis:'OBSERVED_AT_EFFORT',method:id==='EASY'?'MEDIAN_OF_OWN_EASY_RUNS':'SLOWER_OF_TWO_CONCORDANT_SESSIONS',reference:observed.sessions.map(x=>x.eventId),sessions:clone(observed.sessions),windowDays:observed.windowDays,
+    confidence:null,margin:null,uncertaintyCauses:['OBSERVED_AT_EFFORT',...(observed.gps?['GPS_DISTANCE_ERROR']:[])],validUntil:observed.validUntil,trainingFactor:0,notes:['THIS_DOMAIN_ONLY']};continue;}
   out[id]=none(s.reason,id==='EASY'?{observed:{count:wk.easy.count,needed:wk.easy.needed}}:{});
  }
+ // SSCTR-V1RC-R-04: a ceiling is never faster than the one of the easier use above it, and the threshold band's fast edge never faster than the
+ // 10 km band's. This only ever slows an edge: nothing harder is derived from easy pace.
+ const noFasterThan=(id,than)=>{const b=out[id],t=out[than];if(b?.status!=='AVAILABLE'||t?.status!=='AVAILABLE'||b.fastSecondsPerKm>=t.fastSecondsPerKm)return;
+  const fast=t.fastSecondsPerKm,cls=V.domains[id].class;out[id]={...b,fastSecondsPerKm:fast,slowSecondsPerKm:Math.max(b.slowSecondsPerKm,fast+V.paceRules.minimumWidthSecondsPerKm[cls]),notes:[...b.notes,'NOT_FASTER_THAN_'+than]};};
+ noFasterThan('LONG','EASY');noFasterThan('RECOVERY','LONG');noFasterThan('THRESHOLD_CONTROLLED','TEN_K_EFFORT');
  return out;
 }
 
@@ -368,16 +394,21 @@ function floorOf({breaks,f08,cutoff,V,tz}){
  * with the same reference, the last two executions of a training domain, both observed against the band in force, move that domain's factor one
  * bounded step. A new reference, or a withdrawal, resets the factors.
  */
-function fold({program,evidence,byId,rows,breaks,f08,through,asOfDay,V,tz,on}){
+function fold({program,evidence,byId,rows,allRunRows,breaks,f08,through,asOfDay,V,tz,on,onEstimate}){
  const sessions=new Map(program.weeks.flatMap(w=>w.sessions.map(s=>[s.id,s]))),sort=(a,b)=>a.date<b.date?-1:a.date>b.date?1:0;
  const easyObs=rows.map(o=>easyObservation(o,V,tz)).filter(Boolean).sort(sort),execs=rows.map(o=>hardExecution(o,V,tz,sessions)).filter(Boolean).sort(sort);
+ // SSCTR-V1RC-R-05: every attempt at a harder session of a domain, whole or not: a session not completed or done in part breaks a pair.
+ const whole=new Map(execs.map(x=>[x.eventId,x])),domainOfFamily=fam=>Object.keys(V.domains).find(d=>V.domains[d].class==='HARDER'&&V.domains[d].families.includes(fam))??null;
+ const attempts=allRunRows.map(o=>({domain:domainOfFamily(o.context?.family),date:o.localDate,recordedOn:recordedOn(o,tz),exec:whole.get(o.eventId)??null})).filter(a=>a.domain).sort(sort);
+ const correctedBy=new Map();for(const e of evidence)if(e.supersedes)correctedBy.set(e.supersedes,[...(correctedBy.get(e.supersedes)??[]),e]);
  const T=V.recalibration.training,weeks=[];let refId=null,factors={},since=null,modeFloor=null;
  for(let w=0;w<=through;w++){
-  // Week 0 reads what the intake knew; the preview of the week after the review reads through the review's own day.
-  const weekStart=onDate(program.startDate,7*w),cutoff=w===0?onDate(program.canonical?.asOf?.slice?.(0,10)??program.startDate,1):weekStart<=asOfDay?weekStart:onDate(asOfDay,1);
+  // A week reads what was dated and recorded before its first day (QRE-V1RC-05: week 0 as every week). A week that has not started yet (the plan
+  // before its start, the preview of next week) reads through the review's own day. Recency and every window are counted from the week's first day.
+  const weekStart=onDate(program.startDate,7*w),cutoff=weekStart<=asOfDay?weekStart:onDate(asOfDay,1);
   // A week the plan ran by time and effort (walk/jog, restart, return) ends what earlier evidence says about current capacity, as a long break does.
   const mode=modeOf(program,w);if(w>0&&V.paceRules.noBandModes.includes(modeOf(program,w-1)))modeFloor=onDate(weekStart,-1);
-  const floor=[floorOf({breaks,f08,cutoff,V,tz}),modeFloor].filter(Boolean).sort().at(-1)??null,classified=evidence.map(e=>classify(e,{cutoff,floor,V}));
+  const floor=[floorOf({breaks,f08,cutoff,V,tz}),modeFloor].filter(Boolean).sort().at(-1)??null,classified=evidence.map(e=>classify(e,{cutoff,weekStart,floor,V,correctedBy}));
   const effortOnly=V.paceRules.noBandModes.includes(mode)||!mode,pick=cls=>effortOnly?null:selectReference(classified,byId,{cls,cutoff,breaks,V,heldId:cls==='STANDARD'?refId:null});
   const stdRaw=pick('STANDARD'),longRaw=pick('LONGER_THAN_HALF_MARATHON'),std=stdRaw&&!stdRaw.unsupported?stdRaw:null,long=longRaw&&!longRaw.unsupported?longRaw:null;
   const before=weeks.at(-1)??null,change={week:w,weekStart,reason:null,from:before?.std?{evidenceId:before.std.evidenceId,date:before.std.evidence.date,tenKEquivalentSeconds:Math.round(before.std.tenKEquivalentMinutes*60),confidence:before.std.tier}:null,to:null};
@@ -388,11 +419,13 @@ function fold({program,evidence,byId,rows,breaks,f08,through,asOfDay,V,tz,on}){
   }else{
    // Q8, same reference: per training domain, its last two executions, both since the band last changed and both read against the band they ran under.
    for(const d of T.domains){
-    const f=factors[d]??{fraction:0,since,withdrawn:false},last=execs.filter(o=>o.domain===d&&inForce(o,cutoff)&&o.date>=f.since).slice(-T.consecutiveSessionsRequired);
-    if(f.withdrawn||last.length<T.consecutiveSessionsRequired||!last.every(o=>o.comparable&&o.longBouts&&o.rpe!==null))continue;
+    const f=factors[d]??{fraction:0,since,withdrawn:false},tries=attempts.filter(a=>a.domain===d&&inForce(a,cutoff)&&a.date>=f.since).slice(-T.consecutiveSessionsRequired);
+    if(f.withdrawn||tries.length<T.consecutiveSessionsRequired||!tries.every(a=>a.exec))continue;
+    const last=tries.map(a=>a.exec);if(!last.every(o=>o.comparable&&o.longBouts&&o.rpe!==null))continue;
     const band=o=>{const b=weeks[o.week]?.bands?.[d];return b?.status==='AVAILABLE'&&b.basis==='DERIVED_FROM_CAPACITY'?b:null;};if(!last.every(band))continue;
     const up=last.every(o=>o.onTarget&&band(o).fastSecondsPerKm/o.secondsPerKm-1>T.triggerFraction);
-    const down=last.every(o=>o.secondsPerKm/band(o).slowSecondsPerKm-1>T.triggerFraction)||last.every(o=>o.harder&&o.secondsPerKm>=band(o).fastSecondsPerKm&&o.secondsPerKm<=band(o).slowSecondsPerKm);
+    // Down: both slower than the band at an effort inside or above the cue (a session jogged below its cue says nothing), or both harder than the cue inside it.
+    const down=last.every(o=>!o.belowCue&&o.secondsPerKm/band(o).slowSecondsPerKm-1>T.triggerFraction)||last.every(o=>o.harder&&o.secondsPerKm>=band(o).fastSecondsPerKm&&o.secondsPerKm<=band(o).slowSecondsPerKm);
     if(!up&&!down)continue;
     const trace={domain:d,sessions:last.map(o=>({eventId:o.eventId,secondsPerKm:Math.round(o.secondsPerKm*10)/10,rpe:o.rpe})),week:w};
     if(down&&f.fraction<=-T.down.totalMax+1e-9)factors={...factors,[d]:{...f,withdrawn:true,since:weekStart,trace}};
@@ -402,24 +435,24 @@ function fold({program,evidence,byId,rows,breaks,f08,through,asOfDay,V,tz,on}){
    if(!change.reason&&std&&before?.std&&std.tier!==before.std.tier)change.reason='CONFIDENCE_'+before.std.tier+'_TO_'+std.tier;
   }
   if(std)change.to={evidenceId:std.evidenceId,date:std.evidence.date,tenKEquivalentSeconds:Math.round(std.tenKEquivalentMinutes*60),confidence:std.tier};
-  const easy=observedEasy(easyObs,cutoff,floor,V),hard=Object.fromEntries(Object.keys(V.domains).filter(d=>V.domains[d].class==='HARDER').map(d=>[d,observedHard(execs,d,cutoff,floor,V)]));
+  const easy=observedEasy(easyObs,cutoff,weekStart,floor,V),hard=Object.fromEntries(Object.keys(V.domains).filter(d=>V.domains[d].class==='HARDER').map(d=>[d,observedHard(execs,d,cutoff,weekStart,floor,V)]));
   const wk={week:w,weekStart,cutoff,mode,floor,classified,std,long,unsupported:stdRaw?.unsupported?stdRaw:null,effortOnly,factors:clone(factors),easy,hard,change:change.reason?change:null};
-  const longest=longestRecentRun(program,rows,evidence,cutoff,V.estimates.longestRunWithinDays,tz);
+  const superseded=new Set(classified.filter(c=>c.use==='SUPERSEDED').map(c=>c.id)),longest=longestRecentRun(program,rows,evidence,{cutoff,weekStart,floor,days:V.estimates.longestRunWithinDays,tz,superseded});
   wk.estimates=Object.fromEntries(Object.keys(V.estimates.distancesKm).map(name=>[name,effortOnly?{status:'UNAVAILABLE',reason:'MODE_WALK_JOG_RESTART_RETURN'}:estimateOf(name,{program,std,long,longest,V})]));
-  wk.longestRecentRunMinutes=longest;wk.bands=bandsOf(wk,{std,long,estimates:wk.estimates,V,on});
+  wk.longestRecentRunMinutes=longest;wk.bands=bandsOf(wk,{std,long,estimates:wk.estimates,V,on,onEstimate});
   weeks.push(wk);
  }
  return {weeks};
 }
 
 // ---------- outputs of one week ----------
-function capacityOf(wk){
+function capacityOf(wk,showEquivalent){
  if(wk.effortOnly)return {status:'EFFORT_ONLY',reason:'MODE_WALK_JOG_RESTART_RETURN',mode:wk.mode};
  const long=wk.long?{evidenceId:wk.long.evidenceId,reference:wk.long.result,confidence:wk.long.tier,use:'MARATHON_ESTIMATE_ONLY',convertedDownward:false}:null;
  if(!wk.std)return {status:'NONE',reason:wk.unsupported?'EVIDENCE_BELOW_LOWEST_CONFIDENCE':wk.floor&&wk.classified.some(c=>c.reasons.includes('BEFORE_BREAK_HOLD_OR_RETURN'))?'WITHDRAWN_AFTER_BREAK':wk.long?'MARATHON_EVIDENCE_NOT_CONVERTED_DOWNWARD':'NO_QUALIFYING_EVIDENCE',...(wk.unsupported?{confidenceCauses:clone(wk.unsupported.flags)}:{}),...(long?{longerEvidence:long}:{})};
  const r=wk.std;
  return {status:r.outsidePopulation?'OUTSIDE_MODEL_POPULATION':r.presumed?'PRESUMED':'CALIBRATED',basis:r.presumed?'PRESUMED_FROM_AGED_EVIDENCE':r.evidence.kind,evidenceId:r.evidenceId,conflictsWith:r.conflictsWith,insideDeadbandOf:r.insideDeadbandOf,reference:r.result,recency:r.recency,
-  tenKEquivalent:{centralSeconds:Math.round(r.tenKEquivalentMinutes*60),method:'POWER_LAW_CENTRAL_EXPONENT',estimated:true},confidence:r.tier,confidenceCauses:clone(r.flags),margin:r.margin,validUntil:r.validUntil,
+  ...(showEquivalent?{tenKEquivalent:{centralSeconds:Math.round(r.tenKEquivalentMinutes*60),method:'POWER_LAW_CENTRAL_EXPONENT',estimated:true}}:{}),confidence:r.tier,confidenceCauses:clone(r.flags),margin:r.margin,validUntil:r.validUntil,
   trainingFactors:Object.fromEntries(Object.entries(wk.factors).map(([d,f])=>[d,{fraction:f.fraction,withdrawn:f.withdrawn===true,since:f.since,sessions:f.trace?.sessions??[]}])),...(long?{longerEvidence:long}:{})};
 }
 /** The estimates as shown: without the unrounded working values; a downward training factor on the half or the marathon also slows that estimate. */
@@ -442,21 +475,27 @@ function goalOf(program,estimates){
 function heartRateOf(wk,{evidence,breaks,V,on}){
  const none=(reason,extra={})=>({status:'UNAVAILABLE',reason,ageFormula:'AGE_FORMULA_NOT_INDIVIDUAL',...extra});
  if(!on)return none('EXTENSION_NOT_ENABLED');if(wk.effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
- const H=V.heartRate,cutoff=wk.cutoff,known=e=>e.date&&e.date<cutoff&&(!e.recordedOn||e.recordedOn<cutoff),role={role:'REFERENCE_SCALE_ONLY',sessionTarget:false,gatesProgression:false,convertedToPaceOrEffort:false};
+ const use=new Map(wk.classified.map(c=>[c.id,c.use]));
+ const H=V.heartRate,cutoff=wk.cutoff,start=wk.weekStart,known=e=>e.date&&e.date<cutoff&&(!e.recordedOn||e.recordedOn<cutoff)&&(!wk.floor||e.date>wk.floor)&&use.get(e.id)!=='SUPERSEDED',role={role:'REFERENCE_SCALE_ONLY',sessionTarget:false,gatesProgression:false,convertedToPaceOrEffort:false};
  const M=H.measured,labOk=l=>isObj(l)&&typeof l.protocol==='string'&&l.protocol.trim()&&typeof l.source==='string'&&l.source.trim()&&Array.isArray(l.values)&&l.values.length>0&&l.values.every(v=>isObj(v)&&typeof v.name==='string'&&v.name.trim()&&num(v.value)&&typeof v.unit==='string'&&v.unit.trim());
- const lab=evidence.filter(e=>e.kind==='LAB_TEST'&&known(e)&&dayGap(e.date,cutoff)<=M.recencyDaysMax&&labOk(e.lab)&&!breaks.some(b=>b.days>=M.noDeclaredBreakDaysAtLeastSince&&b.to>e.date&&b.from<cutoff)).sort((a,b)=>a.date<b.date?1:-1)[0];
+ const lab=evidence.filter(e=>e.kind==='LAB_TEST'&&known(e)&&dayGap(e.date,start)<=M.recencyDaysMax&&labOk(e.lab)&&!breaks.some(b=>b.days>=M.noDeclaredBreakDaysAtLeastSince&&b.to>e.date&&b.from<cutoff)).sort((a,b)=>a.date<b.date?1:-1)[0];
  if(lab)return {status:'AVAILABLE',basis:M.basis,estimated:false,checkedByTheApp:false,display:M.display,reference:lab.id,date:lab.date,protocol:lab.lab.protocol,source:lab.lab.source,values:lab.lab.values.map(v=>({name:v.name,value:v.value,unit:v.unit})),engineNamesThresholds:false,...role};
  const O=H.observedMaximum,ok=new Map(wk.classified.map(c=>[c.id,c])),qualifies=e=>{const c=ok.get(e.id);return c&&['CAPACITY','HISTORICAL_BEST'].includes(c.use)&&!c.reasons.includes('BEFORE_BREAK_HOLD_OR_RETURN');};
- const max=evidence.filter(e=>O.sourceEvents.includes(e.kind)&&known(e)&&dayGap(e.date,cutoff)<=O.windowDays&&qualifies(e)&&num(e.seconds,O.effortMinutesMin*60)&&e.rpe!==null&&e.rpe>=O.rpeReportedMin&&O.sensors.includes(e.heartRate?.sensor)&&num(e.heartRate?.maxBpm,O.plausibleBpm[0],O.plausibleBpm[1])).sort((a,b)=>b.heartRate.maxBpm-a.heartRate.maxBpm)[0];
+ const max=evidence.filter(e=>O.sourceEvents.includes(e.kind)&&known(e)&&dayGap(e.date,start)<=O.windowDays&&qualifies(e)&&num(e.seconds,O.effortMinutesMin*60)&&e.rpe!==null&&e.rpe>=O.rpeReportedMin&&O.sensors.includes(e.heartRate?.sensor)&&num(e.heartRate?.maxBpm,O.plausibleBpm[0],O.plausibleBpm[1])).sort((a,b)=>b.heartRate.maxBpm-a.heartRate.maxBpm)[0];
  if(!max)return none(evidence.some(e=>e.heartRate?.maxBpm)?'HEART_RATE_DATA_NOT_QUALIFYING':'NO_MEASURED_HEART_RATE');
  const bpm=max.heartRate.maxBpm;
  return {status:'AVAILABLE',basis:O.basis,estimated:true,observedMaximumBpm:bpm,reference:max.id,date:max.date,zones:O.zones.map(z=>({name:z.name,lowBpm:z.fromFraction===null?null:Math.round(bpm*z.fromFraction),highBpm:z.toFraction===null?null:Math.round(bpm*z.toFraction)})),namedThresholds:false,conservativeCueOnly:O.conservativeCueOnly,...role,notes:['NOT_THRESHOLDS','OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM']};
 }
 
 // ---------- assessment (Q5) ----------
-function assessmentOf({program,wk,next,rows,evidence,target,asOfDay,V,cap,tz}){
+function assessmentOf({program,wk,next,rows,evidence:all,target,asOfDay,V,cap,tz,flagged,prescribing,corrected}){
+ const evidence=all.filter(e=>!corrected.has(e.id));
  const A=V.assessment,progress={easyRuns:{count:wk.easy.count,needed:wk.easy.needed}},observation={P1:{name:A.P1.name},P2:{name:A.P2.name}};
  if(wk.effortOnly||(next??wk).effortOnly)return {status:'IN_USE',neverRequired:true,protocol:{id:'P0_'+A.P0.name,...clone(A.P0)},maximal:false,progress};
+ // SSCTR-V1RC-R-01: a result reported as not tolerated, or an effort stopped for a symptom, ends test offers for the plan in force.
+ if(flagged.length)return {status:'NOT_OFFERED',reasons:['SYMPTOM_OR_NOT_TOLERATED_REPORTED'],evidenceIds:flagged,neverRequired:true,decliningHasNoPenalty:true,observation,progress};
+ // SSCTR-V1RC-R-02: a test is offered only on a prescribing answer of the engine, with every warning-sign item of the review answered no.
+ if(!prescribing)return {status:'NOT_OFFERED',reasons:['ELIGIBILITY_NOT_CURRENT'],neverRequired:true,decliningHasNoPenalty:true,observation,progress};
  const P=A.P3,G=P.eligibility,why=[],week=program.weeks?.[target]??null,quality=week?.sessions.find(s=>s.sport==='RUN'&&s.role==='QUALITY'&&s.prescription&&s.status!=='SKIPPED'&&s.date>asOfDay)??null;
  if(cap.status==='CALIBRATED'&&cap.confidence!=='LOW')return {status:'NOT_NEEDED',reason:'CURRENT_EVIDENCE_ON_RECORD',neverRequired:true,observation,progress};
  if(!week)why.push('NO_FURTHER_WEEK');else{
@@ -470,24 +509,25 @@ function assessmentOf({program,wk,next,rows,evidence,target,asOfDay,V,cap,tz}){
  if(past.filter(o=>o.context?.role==='QUALITY'&&compatible(o.response)&&o.response?.effort!=='HARDER').length<G.harderSessionsExecutedCompatibleMin)why.push('NO_HARDER_SESSION_EXECUTED_YET');
  if(past.some(o=>dayGap(o.localDate,day)<=G.daysAfterAdverseOrHarderThanTargetMin&&(o.response?.effort==='HARDER'||!compatible(o.response))))why.push('ADVERSE_OR_HARDER_RESPONSE_WITHIN_'+G.daysAfterAdverseOrHarderThanTargetMin+'_DAYS');
  // One completed test in the interval; an incomplete one may be repeated once, after its own wait, inside the same interval.
+ // (A stop for a symptom never reaches here: it ended the offers above. The repeat is for a stop for pacing, conditions, time or another stated reason.)
  const tests=evidence.filter(e=>e.kind==='FIELD_TEST'&&e.date&&e.date<day&&dayGap(e.date,day)<G.completedTestsPerDaysMax.days),I=P.protocol.incomplete;
  if(tests.filter(e=>e.completed).length>=G.completedTestsPerDaysMax.tests)why.push('TEST_WITHIN_'+G.completedTestsPerDaysMax.days+'_DAYS');
  else if(tests.length>I.repeatAttemptsMax)why.push('REPEAT_ALREADY_USED');
  else if(tests.some(e=>dayGap(e.date,day)<I.repeatAfterDaysMin))why.push('INCOMPLETE_TEST_WITHIN_'+I.repeatAfterDaysMin+'_DAYS');
  const lastWeek=rows.filter(o=>o.localDate<weekStart&&dayGap(o.localDate,weekStart)<=7).reduce((n,o)=>n+(minutesOf(o)??0),0),fresh=isoDay(program.canonical?.asOf?.slice?.(0,10))&&dayGap(program.canonical.asOf.slice(0,10),weekStart)<=G.longestRunWithinDays;
- const weekly=Math.max(lastWeek,fresh?program.capability?.run?.weeklyMinutes??0:0),longest=longestRecentRun(program,rows,evidence,weekStart,G.longestRunWithinDays,tz),exp=program.capability?.run?.experience??null,a=program.canonical?.athlete??{},months=a.experienceBasis?.run?.months??a.runTrainingMonths??null;
+ const weekly=Math.max(lastWeek,fresh?program.capability?.run?.weeklyMinutes??0:0),longest=longestRecentRun(program,rows,evidence,{cutoff:weekStart<=asOfDay?weekStart:onDate(asOfDay,1),weekStart,floor:wk.floor,days:G.longestRunWithinDays,tz,superseded:corrected}),exp=program.capability?.run?.experience??null,a=program.canonical?.athlete??{},months=a.experienceBasis?.run?.months??a.runTrainingMonths??null;
  // Unknown on any criterion is not eligible.
  const fits=p=>weekly>=p.weeklyRunMinutesMin&&longest>=p.longestRunMinutesMin&&p.experience.includes(exp)&&(!p.continuousMonthsMinWhenKnown||months===null||months>=p.continuousMonthsMinWhenKnown);
  const id=Object.keys(P.protocols).filter(k=>fits(P.protocols[k])).sort((x,y)=>P.protocols[y].distanceKm-P.protocols[x].distanceKm)[0]??null;
  if(!id)why.push(exp?'CURRENT_RUNNING_BELOW_TEST_ELIGIBILITY':'EXPERIENCE_UNKNOWN');
  if(why.length)return {status:'NOT_OFFERED',reasons:why,neverRequired:true,decliningHasNoPenalty:true,observation,progress};
  return {status:'OFFERED',optional:true,neverRequired:true,decliningHasNoPenalty:true,protocol:{id,distanceKm:P.protocols[id].distanceKm,...clone(P.protocol)},interpretation:clone(P.interpretation),replacesSessionId:quality.id,week:target,date:quality.date,
-  report:{replacedSession:'NOT_DONE',declare:{kind:'FIELD_TEST',protocol:id,replacedSessionId:quality.id,fields:['date','distanceKm','seconds','rpe','measurement','completed','tolerated']}},observation,progress};
+  report:{replacedSession:'NOT_DONE',inTheSameReviewAsTheDeclaration:true,declare:{kind:'FIELD_TEST',protocol:id,replacedSessionId:quality.id,fields:['date','distanceKm','seconds','rpe','measurement','completed','tolerated','stoppedFor'],stoppedFor:clone(P.stops)}},observation,progress};
 }
 
 // ---------- session guidance ----------
 /** The guidance of one planned run session: its effort cue, and the pace band of its domain when one is available for the session's week. */
-function sessionGuidance(s,{effortOnly,bands,estimates,V,on,hold}){
+function sessionGuidance(s,{effortOnly,bands,estimates,V,on,hold,afterTest}){
  const p=s.prescription,cue=V.effortCues[p.effortDomain]??null,g={sessionId:s.id,date:s.date,family:p.family,effortCue:p.effortDomain,rpe:cue?clone(cue.rpe):null,effortGoverns:true};
  const none=reason=>({...g,pace:{status:'UNAVAILABLE',reason}});
  if(hold)return none('HOLD_NO_PRESCRIPTION');
@@ -498,12 +538,14 @@ function sessionGuidance(s,{effortOnly,bands,estimates,V,on,hold}){
   if(p.completion===true)return none('COMPLETION_RACE_DAY');
   const est=estimates[p.event?.kind],X=V.estimates;if(est?.status!=='AVAILABLE')return none(est?.reason??'NO_QUALIFYING_EVIDENCE');
   const slow=Math.ceil(est.highSeconds/est.distanceKm);
-  return {...g,pace:{status:'REFERENCE_ONLY',unit:V.paceRules.unit,fastSecondsPerKm:Math.ceil(est.lowSeconds/est.distanceKm),slowSecondsPerKm:slow,estimated:true,promise:false,text:X.raceDayText,basis:'CURRENT_ESTIMATE_OF_THIS_EVENT',reference:est.reference,
+  return {...g,pace:{status:'REFERENCE_ONLY',unit:V.paceRules.unit,fastSecondsPerKm:Math.ceil(est.lowSeconds/est.distanceKm),slowSecondsPerKm:slow,estimated:true,promise:false,text:X.raceDayText,basis:'CURRENT_ESTIMATE_OF_THIS_EVENT',reference:est.reference,...(est.cautions?{cautions:clone(est.cautions),assumes:clone(est.assumes)}:{}),
    ...(V.paceRules.raceDayPacingCautionEvents.includes(p.event.kind)?{pacingCaution:X.pacingCaution,startAtOrSlowerThanSecondsPerKm:slow}:{})}};
  }
  // A race-week touch runs at its event's effort: the band of that event's domain.
  const id=Object.keys(V.domains).find(d=>V.domains[d].families.includes(p.family))??(p.family==='RACE_TOUCH'&&V.paceRules.raceTouchUsesEventDomain?Object.keys(V.domains).find(d=>V.domains[d].class==='HARDER'&&V.domains[d].cue===p.effortDomain):null);
  if(!id||!bands[id])return none('NO_BAND_FOR_SESSION_TYPE');
+ // SSCTR-V1RC-R-12: a harder session still standing later in a week in which a test was already done is by effort only, and says why.
+ if(afterTest&&V.domains[id].class==='HARDER')return none('TEST_ALREADY_DONE_THIS_WEEK');
  const out={...g,pace:{...clone(bands[id]),domain:id}};
  if(p.strides)out.strides={pace:{status:'UNAVAILABLE',reason:'NO_BAND_FOR_SESSION_TYPE',note:'BY_FEEL'}};
  return out;
@@ -514,7 +556,7 @@ function sessionGuidance(s,{effortOnly,bands,estimates,V,on,hold}){
  * The run calibration of an athlete's record as of a review: `program` is the plan in force (its sessions get the guidance), `ledger` the engine's
  * record, `evidenceRecord` this extension's record, `asOf` the review's instant and `weekIndex` its week. `hold` withholds every guidance.
  */
-export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekIndex=0,hold=false},options={}){
+export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekIndex=0,hold=false,engineStatus=null,eligibility=null},options={}){
  const ext=runCalibrationAuthority(options),V=ext.values,on={CAPACITY:allowsRun(ext,'CAPACITY'),PACE:allowsRun(ext,'PACE'),HR:allowsRun(ext,'HR'),ESTIMATE:allowsRun(ext,'ESTIMATE')};
  const head={version:RUN_CALIBRATION_VERSION,extension:{id:RUN_EXTENSION_ID,sha256:ext.sha256,source:ext.source,boundaries:on}};
  // A day-only instant (a plan made from an intake) is that local day, read through its end.
@@ -523,18 +565,31 @@ export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekI
  const tz=program.timezoneOffsetMinutes??0,asOfMs=dayOnly?Date.parse(at)-tz*60000:Date.parse(at),asOfDay=dayOnly?asOf:localDate(at,tz),w=Math.max(0,Math.min(Number.isInteger(weekIndex)?weekIndex:0,program.weeks.length-1));
  const {evidence,refused}=gatherEvidence({program,ledger,evidenceRecord,asOfMs,tz}),byId=new Map(evidence.map(e=>[e.id,e])),rows=runRows(ledger,program.athleteId),breaks=breaksOf(ledger,program);
  const f08=readableF08(list(ledger).filter(isF08Fact),{athleteId:program.athleteId,at:asOfMs}),standing=standingHolds(f08).holds.length>0||hold;
- const last=Math.min(w+1,program.weeks.length-1),{weeks}=fold({program,evidence,byId,rows,breaks,f08,through:last,asOfDay,V,tz,on:on.PACE}),wk=weeks[w],nx=last>w?weeks[last]:null;
- const view=k=>({cap:capacityOf(k),bands:k.bands,estimates:shownEstimates(k,V,on.ESTIMATE)});
+ const allRunRows=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.superseded!==true&&o.athleteId===program.athleteId&&o.context?.sport==='RUN'&&isoDay(o.localDate));
+ const last=Math.min(w+1,program.weeks.length-1),{weeks}=fold({program,evidence,byId,rows,allRunRows,breaks,f08,through:last,asOfDay,V,tz,on:on.PACE,onEstimate:on.ESTIMATE}),wk=weeks[w],nx=last>w?weeks[last]:null;
+ // SSCTR-V1RC-R-01: results of this plan's time reported as not tolerated, or stopped for a symptom (a stop with no stated reason is one). Read at
+ // once, not at the week boundary: it is a safety fact. The extension decides no clearance and sets no clinical route; it names the screen.
+ const corrected=new Set(evidence.map(e=>e.supersedes).filter(Boolean));
+ const planDay=isoDay(program.canonical?.asOf?.slice?.(0,10))?program.canonical.asOf.slice(0,10):program.startDate,flagged=evidence.filter(e=>!corrected.has(e.id)&&e.kind!=='LAB_TEST'&&e.date&&e.date>=planDay&&(e.tolerated===false||!e.completed&&e.stoppedFor==='SYMPTOM')).map(e=>e.id).sort();
+ // SSCTR-V1RC-R-02: the engine's answer is a prescribing one and the eligibility it read says nonclinical with every warning-sign item answered no.
+ const SIGNS=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'],el=isObj(eligibility)?{...eligibility,...(isObj(eligibility.flags)?eligibility.flags:{})}:null;
+ const prescribing=!['ASK','HOLD','CLINICAL_HUMAN_REQUIRED','UNSUPPORTED','INVALID_INPUT'].includes(engineStatus)&&typeof engineStatus==='string'&&el?.status==='NONCLINICAL_CONFIRMED'&&SIGNS.every(k=>el[k]===false);
+ // SSCTR-V1RC-R-12: the days a test was done, by plan week.
+ const testDays=evidence.filter(e=>e.kind==='FIELD_TEST'&&e.date&&!corrected.has(e.id)).map(e=>e.date);
+ const view=k=>({cap:capacityOf(k,on.ESTIMATE),bands:k.bands,estimates:shownEstimates(k,V,on.ESTIMATE)});
+ // QRE-V1RC-08: the 10 km equivalent in the record of changes is an estimate too.
+ const shownChange=c=>{const x=clone(c);if(!on.ESTIMATE)for(const k of ['from','to'])if(x[k])delete x[k].tenKEquivalentSeconds;return x;};
  const now=view(wk),after=nx?view(nx):null,sessions={};
  for(const week of program.weeks)for(const s of week.sessions)if(s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&week.index>=w){
   const k=week.index===w||!nx?wk:nx,v=week.index===w||!after?now:after;
   // The week in force is fixed; a later week shows what is known today and is settled when its own week starts. A later week takes its own mode
   // from the plan (a return planned ahead is by time and effort whatever the preview says).
-  sessions[s.id]={...sessionGuidance(s,{effortOnly:k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index)),bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing}),week:week.index,provisional:week.index>w};
+  const weekStart=onDate(program.startDate,7*week.index),afterTest=testDays.some(d=>d>=weekStart&&d<=onDate(weekStart,6)&&s.date>d);
+  sessions[s.id]={...sessionGuidance(s,{effortOnly:k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index)),bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing,afterTest}),week:week.index,provisional:week.index>w};
  }
  const held=reason=>({status:'UNAVAILABLE',reason}),withheld=standing?{status:'WITHHELD',reason:'HOLD_NO_PRESCRIPTION'}:null;
  const historicalBest=wk.classified.filter(c=>c.use==='HISTORICAL_BEST').map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isCurrentCapacity:false,isEstimate:false,reasons:c.reasons}));
- const actualResults=wk.classified.filter(c=>['RACE_RESULT','FIELD_TEST','TIME_TRIAL'].includes(c.kind)&&c.use!=='NOT_YET_IN_FORCE').map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isEstimate:false}));
+ const actualResults=wk.classified.filter(c=>['RACE_RESULT','FIELD_TEST','TIME_TRIAL'].includes(c.kind)&&!['NOT_YET_IN_FORCE','SUPERSEDED'].includes(c.use)).map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isEstimate:false}));
  const body={...head,asOf:at,week:w,status:standing?'WITHHELD_HOLD':wk.effortOnly?'EFFORT_ONLY':now.cap.status==='CALIBRATED'?'CALIBRATED':now.cap.status==='PRESUMED'?'PROVISIONAL':Object.values(now.bands).some(b=>b.status==='AVAILABLE')||Object.values(now.estimates).some(e=>e.status==='AVAILABLE')?'PARTIAL':'EFFORT_ONLY',
   capacity:withheld??now.cap,
   evidence:wk.classified.map(c=>({...c})),refusedEvidence:refused,historicalBest,actualResults,
@@ -543,9 +598,10 @@ export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekI
   heartRateZones:withheld?held('HOLD_NO_PRESCRIPTION'):heartRateOf(wk,{evidence,breaks,V,on:on.HR}),
   estimates:withheld?Object.fromEntries(Object.keys(V.estimates.distancesKm).map(id=>[id,held('HOLD_NO_PRESCRIPTION')])):now.estimates,
   goal:goalOf(program,withheld?{}:now.estimates),
-  projection:{status:'UNAVAILABLE',kind:'FUTURE_PROJECTION',reason:'NO_VALIDATED_PROJECTION_MODEL',comparisons:weeks.filter(x=>x.change&&x.week<=w).map(x=>clone(x.change))},
-  assessment:withheld??assessmentOf({program,wk,next:nx,rows,evidence,target:asOfDay<onDate(program.startDate,7*w)?w:last,asOfDay,V,cap:now.cap,tz}),
-  nextWeek:nx&&!withheld?{week:nx.week,capacity:after.cap,paceBands:after.bands,estimates:after.estimates,change:nx.change?clone(nx.change):null,provisionalUntil:nx.weekStart}:null,
+  projection:{status:'UNAVAILABLE',kind:'FUTURE_PROJECTION',reason:'NO_VALIDATED_PROJECTION_MODEL',comparisons:weeks.filter(x=>x.change&&x.week<=w).map(x=>shownChange(x.change))},
+  assessment:withheld??assessmentOf({program,wk,next:nx,rows,evidence,target:asOfDay<onDate(program.startDate,7*w)?w:last,asOfDay,V,cap:now.cap,tz,flagged,prescribing,corrected}),
+  warningSignScreen:flagged.length?{status:'REQUIRED',evidenceIds:flagged,reason:'SYMPTOM_OR_NOT_TOLERATED_REPORTED',decidedByThisExtension:false,note:'Take the athlete to the existing warning-sign screen; this extension decides no clearance and sets no clinical route'}:{status:'NOT_RAISED_BY_THIS_EXTENSION'},
+  nextWeek:nx&&!withheld?{week:nx.week,capacity:after.cap,paceBands:after.bands,estimates:after.estimates,change:nx.change?shownChange(nx.change):null,provisionalUntil:nx.weekStart}:null,
   sessions,representations:{effortDomains:'ALWAYS',paceBands:'FROM_CALIBRATED_CAPACITY_OR_OBSERVED',heartRateZones:'FROM_MEASURED_HEART_RATE_ONLY',interchangeable:false}};
  return freeze({...body,hash:hash(body)});
 }

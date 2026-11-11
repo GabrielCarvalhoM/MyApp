@@ -15,7 +15,7 @@ const auth=runCalibrationAuthority(),byRecord=Object.keys(auth.approved).length=
 const pct=f=>(f>0?'+':'')+(f*100).toFixed(1)+'%';
 const band=b=>!b?'-':b.status==='AVAILABLE'?mmss(b.fastSecondsPerKm)+'-'+mmss(b.slowSecondsPerKm)+(b.basis==='OBSERVED_AT_EFFORT'?' (observed)':'')+(b.trainingFactor?' (training '+pct(b.trainingFactor)+')':''):b.status==='REFERENCE_ONLY'?'reference '+mmss(b.fastSecondsPerKm)+'-'+mmss(b.slowSecondsPerKm):b.reason;
 const est=e=>e.status==='AVAILABLE'?hms(e.lowSeconds)+' to '+hms(e.highSeconds)+' (central '+hms(e.centralSeconds)+', '+e.confidence+')':e.reason;
-const ten=x=>x?hms(x.tenKEquivalentSeconds):'-';
+const ten=x=>x?.tenKEquivalentSeconds?hms(x.tenKEquivalentSeconds):'-';
 function snap(t,label){
  const c=t.cal;if(!c||!c.capacity)return {label,status:c?.status??null,reason:c?.reason??null};
  const cap=c.capacity,ref=cap.reference,hr=c.heartRateZones,a=c.assessment,ch=c.nextWeek?.change;
@@ -25,6 +25,7 @@ function snap(t,label){
   bands:Object.fromEntries(Object.entries(c.paceBands).map(([k,b])=>[k,band(b)])),estimates:Object.fromEntries(Object.entries(c.estimates).map(([k,e])=>[k,est(e)])),goal:c.goal?c.goal.event+' goal '+hms(c.goal.goalSeconds)+': '+c.goal.relation:null,
   heartRate:hr.status==='AVAILABLE'?hr.basis+': '+[...(hr.zones??[]).map(z=>z.name+' '+(z.lowBpm??'')+'-'+(z.highBpm??'')),...(hr.values??[]).map(v=>v.name+' '+v.value+' '+v.unit)].join(', '):hr.reason,
   assessment:a.status+(a.protocol?' '+a.protocol.id:'')+(a.reasons?' ['+a.reasons.join(', ')+']':a.reason?' ('+a.reason+')':'')+(a.replacesSessionId?' instead of '+a.replacesSessionId:''),
+  screen:c.warningSignScreen?.status==='REQUIRED'?'REQUIRED for '+c.warningSignScreen.evidenceIds.join(', '):null,
   nextWeek:ch?ch.reason+(ch.domain?' ('+ch.domain+')':'')+': 10 km equivalent '+ten(ch.from)+' → '+ten(ch.to):null,projection:c.projection.reason};
 }
 /** One journey: `plan(t, note)` drives the timeline, which mirrors every review on the frozen V1 entry point (v1rc-helpers.mjs). */
@@ -53,7 +54,7 @@ const J=[
  ['06 old personal best far from current capacity',runner({id:'rc-old-best',anchors:[{kind:'PERSONAL_BEST',distance:'10K',seconds:2520,date:'2019-05-12',measurement:'OFFICIAL',tolerated:true,rpe:10},result('10K',3360,'2026-10-25')]}),(t,n)=>{n('plan');}],
  ['07 only an old personal best',runner({id:'rc-only-best',anchors:[{kind:'PERSONAL_BEST',distance:'5K',seconds:1260,measurement:'OFFICIAL',tolerated:true}]}),(t,n)=>{n('plan');}],
  ['08 contradictory recent results (never the fastest)',runner({id:'rc-conflict',anchors:[result('5K',1380,'2026-10-11'),result('10K',3360,'2026-10-25')]}),(t,n)=>{n('plan');}],
- ['09 incomplete test, then the one repeat',runner({id:'rc-incomplete'}),(t,n)=>{const q=firstQualityWeek(t);weeks(t,0,q,paced(390,300),n,q+1);const w=takeTest(t,paced(390,300),{distanceKm:2.1,seconds:600,completed:false});n('week '+w+': test stopped at 2.1 km');const w2=takeTest(t,paced(390,300));n('week '+w2+': repeated and completed');t.week(w2+1,paced(390,300));n('after week '+(w2+1));}],
+ ['09 a test stopped for pacing, then the one repeat',runner({id:'rc-incomplete'}),(t,n)=>{const q=firstQualityWeek(t);weeks(t,0,q,paced(390,300),n,q+1);const w=takeTest(t,paced(390,300),{distanceKm:2.1,seconds:600,completed:false,stoppedFor:'PACING'});n('week '+w+': test stopped at 2.1 km (pacing)');const w2=takeTest(t,paced(390,300));n('week '+w2+': repeated and completed');t.week(w2+1,paced(390,300));n('after week '+(w2+1));}],
  ['10 fast easy runs do not recalibrate performance',runner({id:'rc-fast-easy',anchors:[result('10K',3300,'2026-10-25')]}),(t,n)=>{n('plan');weeks(t,0,3,s=>EASY.includes(s.prescription.family)?{pace:340,rpe:4}:{workPace:345,rpe:7},n,4);}],
  ['11 recalibration: two fast threshold sessions (that band only), then a race',runner({id:'rc-recal',anchors:[result('10K',3300,'2026-10-25')]}),(t,n)=>{n('plan');weeks(t,0,2,paced(400,345),n,3);weeks(t,3,5,paced(400,322),n);
    t.week(6,paced(400,322),{runEvidence:[{id:'race-2',...result('10K',3120,t.day(6,6))}]});n('week 6: a 10 km race in 52:00');t.week(7,paced(400,322));n('after week 7 (race in force)');}],
@@ -70,6 +71,8 @@ const J=[
  ['20 a declared break of 16 days withdraws the calibration',runner({id:'rc-break',anchors:[result('10K',3300,'2026-10-25')]}),(t,n)=>{n('plan');weeks(t,0,1,paced(400,345),n,2);t.step(4,3,'RETURN_AFTER_PAUSE',{interruption:{startDate:t.day(2,0),endDate:t.day(4,1),days:16,nonclinical:true,reasonCategory:'SCHEDULE'}});n('back after 16 days');}],
  ['21 a clinical hold withholds everything',runner({id:'rc-hold',anchors:[result('10K',3300,'2026-10-25')]}),(t,n)=>{n('plan');const d=t.day(0,2);t.step(0,2,'WEEKLY_REVIEW',{eligibility:ELIG(d,{pain:true})});n('pain reported');}],
  ['22 a runner outside the model population (10 km equivalent above 75 minutes)',runner({id:'rc-outside',anchors:[result('5K',2700,'2026-10-25')]}),(t,n)=>{n('plan');}],
+ ['24 a test stopped with no stated reason (read as a symptom): no further test, the warning-sign screen named',runner({id:'rc-symptom'}),(t,n)=>{const q=firstQualityWeek(t);weeks(t,0,q,paced(390,300),n,q+1);const w=takeTest(t,paced(390,300),{distanceKm:1.6,seconds:480,completed:false,tolerated:false});n('week '+w+': test stopped');t.week(w+1,paced(390,300));n('after week '+(w+1));}],
+ ['25 marathon block, half marathon in 2:55 (outside the model population)',runner({id:'rc-mar-slow',...MAR,goal:{kind:'RACE',event:{kind:'MARATHON',date:'2027-02-28'}},anchors:[result('HALF_MARATHON',10500,'2026-10-18')]}),(t,n)=>{n('plan');}],
  ['23 a marathon result only (never converted downward)',runner({id:'rc-mar-only',anchors:[result('MARATHON',14400,'2026-10-11')]}),(t,n)=>{n('plan');}]
 ];
 const out=J.map(([name,input,plan])=>{try{return journey(name,input,plan);}catch(e){return {name,error:String(e?.stack??e).slice(0,700)};}});
@@ -83,7 +86,7 @@ for(const j of out){lines.push('='.repeat(110),j.name,j.error?'ERROR '+j.error:j
   if(!s.bands){if(s.reason)lines.push('    '+s.reason);continue;}
   for(const e of s.evidence)lines.push('    evidence   '+e);for(const r of s.refused)lines.push('    refused    '+(r.id??'(no id)')+': '+r.errors.join(', '));
   lines.push('    pace/km    '+compact(s.bands),'    estimates  '+compact(s.estimates));
-  if(s.goal)lines.push('    goal       '+s.goal);lines.push('    heart rate '+s.heartRate,'    assessment '+s.assessment,'    projection '+s.projection);if(s.nextWeek)lines.push('    next week  '+s.nextWeek);}
+  if(s.goal)lines.push('    goal       '+s.goal);lines.push('    heart rate '+s.heartRate,'    assessment '+s.assessment,'    projection '+s.projection);if(s.screen)lines.push('    warning-sign screen '+s.screen);if(s.nextWeek)lines.push('    next week  '+s.nextWeek);}
  lines.push('');}
 fs.writeFileSync(path.join(dir,'JOURNEYS_V1RC.txt'),lines.join('\n'));
 const bad=out.filter(j=>j.error||j.steps&&!j.engineDecisionsIdenticalToFrozenV1);
