@@ -1,0 +1,137 @@
+{
+ "record": "SEC_V1CIB_REVIEW",
+ "revision": "r1",
+ "date": "2026-11-09",
+ "role": "security-privacy-abuse-architect",
+ "instance": "fresh independent judge instance; author of none of the V1CIB candidate, its code, tests, evidence, or the mission/contract. Carries its own prior record SEC_FF_RECHECK_CYCLE (its criteria, not re-judged). This round's SSCTR, QRE and PCG records were NOT read (the untracked reviews/pcg/PCG_V1CIB_READING.* left unread per the dispatch). No specialist delegation; no global state.",
+ "model": "claude-opus-5-5",
+ "effort": "max",
+ "level": "L3",
+ "mode": "productization; the single consolidated independent round (bounded-cycle rule).",
+ "hostContextDisclosure": "The host injected the global CLAUDE.md (agent-system routing; Vilumo project instructions) and the Vilumo auto-memory MEMORY.md (finding labels for V1CP, V1CP Fix-Forward, the R7-A..R7-D closures, the Growth Layer, etc.). It was used only to orient; none of it is user approval or consent, and no label from it was taken as a finding of this review. Disclosed per the holdout-author-host-context convention (K-QRE-P5H-07).",
+ "reviewed": {
+  "candidate": "3b1480445fc22a5fc3a35875dd26d2c4de891a60 (3b14804)",
+  "base": "0950b0ae481baa19f3310a81cd217e8c15ef35bf (0950b0a)",
+  "branch": "claude/v1-integration-boundary",
+  "worktreeState": "HEAD == 3b14804; only another role's files untracked (evidence/FUZZ_V1CIB.json, reviews/pcg/*). The reviewed trees equal the candidate.",
+  "immutableReference": "git archive 3b14804 (full CoachingCore + audits) and git archive 0950b0a (full CoachingCore + audits) extracted into new folders of the review scratchpad sec-v1cib-1794272574 (full3b14804/, full0950b0a/); node_modules copied from the worktree (ajv 8.20.0). The dispatch's narrow archive list omitted r2/ data files (13 r2-era tests ERR_MODULE_NOT_FOUND); the full extract runs the whole suite.",
+  "files_sha256": {
+   "CoachingCore/src/boundary/custody.mjs": "5be2ed31e88334b2696bdd9119237d8d96f55413ae9e55197b6f28a1637906a7",
+   "CoachingCore/src/boundary/store.mjs": "3bee966aa8b45aea5ac60be2b28498a86b24269f774f5364433c1e8f341ae763",
+   "CoachingCore/src/boundary/views.mjs": "e291e8b8f4be87069e801d46a3a23755cecd8b004d83d411b635beeb0a1e1799",
+   "CoachingCore/src/boundary/inventory.mjs": "35ec79d4e61d89f0d28b8122e56be181ebb478c0cd85e78d0d4f2b804d2daa25",
+   "CoachingCore/src/boundary/api.mjs": "b10802ccbdad44fec3411ba46ed221a05d35362d5896d4bdd532edf15c078419",
+   "CoachingCore/src/v1-f08.mjs": "6fdcae951d6b8efd7159e9c21311fc0663822c436161b0566e679d49f5b483bb",
+   "CoachingCore/src/r6-adaptation.mjs": "6ff40a1d7f4412a0b30a4dad6a875268eb8dceb32a414914843fa2919c9be12a",
+   "CoachingCore/src/value.mjs": "fef5f8206ef3a06148ee93ca2c99f09a456e3530d7680f447e0f37e7b52d2acd"
+  }
+ },
+ "executed": {
+  "fullSuite": "node --test test/*.test.mjs from full3b14804/CoachingCore: 1211 tests, 1211 pass, 0 fail. The four directed V1CIB files plus v1cib-runtime: 68/68. 23 occurrences of the 'V1CIB CF-OBS-1 migration' marker across 6 R7-era files; each migrated test asserts 'dropping the reference never releases; only the readiness declaration releases', keeping the old convention as its named negative twin.",
+  "priorProbesRerun": "the 11 round-1 probes (hashes equal to SEC_FF_RECHECK_CYCLE) run on full3b14804 and full0950b0a. Base matches that record exactly. Candidate: p4/p8/p10/p11 now clinical over the record hold where the base planned over it (CF-OBS-1 core enforcement); p1/p3/p5/p6/p9 identical class; p7 87/2 and p2 40/2 — the extra 'fails' are my own assertion choices, not defects (one reason-string parity line now CLINICAL from the record with the same status and level; the OBS-FFC-01 ledger-field line that custody compensates for).",
+  "newProbes": {
+   "location": "sec-v1cib-1794272574/probes/ over the boundary of the extract; synthetic data and canaries only",
+   "q1-hold-api": "52/0. Across 17 app operations with a standing hold: no prescription leaves custody (status without proposal, program hash unchanged, BLOCKED view, hold row not duplicated); custody refuses every ENGINE_OWNED_FIELD and an explicit null reference; restart makes no plan; a valid declaration releases per sport (the undeclared sport stays HELD through a later preference change and a restart); core sweep: 88 cases (every review kind x {absent, stale, re-sealed clean, altered} reference) plan over the hold = none.",
+   "q1b-adoption-restart / q1d-write-path-gaps": "the three non-review write-path gaps, each confirmed and bounded (SEC-V1CIB-01/02/03).",
+   "q2-custody-integrity": "21/1 (the 1 is a probe-expectation error: declaredAt is the server UTC instant, which is correct). Opaque server ids stable on retry; athlete binding (FORBIDDEN/UNAUTHENTICATED); future screen refused and instant normalized; unknown field refused without echo; 8 tamper/reorder/truncation variants -> INTEGRITY_FAILURE on read and write; the seal is keyed (a foreign-key re-mac fails).",
+   "q3-reconcile-concurrency": "11/0. Reconcile rejects drop/change/duplicate (ENGINE_CONTRACT_VIOLATION, nothing kept); absent actualLedger keeps the stored rows; a correction annotates and verifies; same-key-different-request CONFLICT; stale version refused; file-store lock -> BUSY; restart continuity; the documented whole-document-rollback residual verifies.",
+   "q4-egress-canary": "10/0. A full journey (reports, reduction, hold, warning sign, erasure, declaration): no log/push/telemetry carries a health or health-derived word; a hold reads as a plain change class; the inventory classes every field and HEALTH/HEALTH_DERIVED egress is NONE; the C8 decision entry is closed; history summarises F08 by type.",
+   "q5-erasure": "17/0. Erasure cascades over cross-row references; the chain verifies with erased slots; one marker; the core reads it as a standing hold until a readiness declaration (the legitimate way back); account tombstone pseudonymous, checked before load, no resurrection by a re-synced device.",
+   "q6-erasure-digest-consent": "13/0 + 1 INFO. The erased slot retains the KEYLESS sha256 of the original row while the marker keeps the eventId and the chain the recordedAt (SEC-V1CIB-04); consents (COACHING/HEALTH_SIGNALS/LEARNING) and SYNTHETIC_ONLY enforced; real data refused at onboarding and restart."
+  },
+  "notRun": "npm run verify and verify-r* scripts (prohibited). No server, KMS, production database, authentication, monitoring, analytics or OS push surface exists here or was verified. No real data path exists. No inversion of any digest was performed (SEC-V1CIB-04 is established structurally, on synthetic data)."
+ },
+ "verdict": {
+  "result": "PASS_WITH_CONDITIONS",
+  "gate": "SECURITY_READY_WITH_CONDITIONS",
+  "scope": "the offline synthetic shadow coaching boundary at 3b14804 only",
+  "summary": "CF-OBS-1 is enforced in both layers. The core reads the record's standing hold and keeps every review kind but the readiness declaration clinical whatever reference is sent (absent, stale, client-re-sealed, altered): 88 core cases and every app operation, no prescription over the hold. Custody composes the engine input from its stored copies, refuses every server-owned field and an explicit null reference, and suppresses any prescription while the record holds (defence in depth). The keyed chain and seal reject every edit, re-seal, reorder and truncation, and a foreign-key re-mac; ids are opaque and server-assigned; the clock is the server's; the closed payload refuses unknown fields without echo; reconciliation keeps the stored record (drop/change/duplicate refused, absent ledger = unchanged); idempotency, version conflict and the file lock hold; the whole-document-rollback residual is documented and PENDING an external monotonic version. No health word leaves custody across a full journey. Erasure cascades, the chain verifies with erased slots, the marker is read as a standing hold until a readiness declaration, and the account tombstone refuses resurrection: this is the SEC-V1CPI-06 tombstone design required in round 1. C8 now keeps a durable minimised trace, closing the prior C8 residual. Four new findings, all new, narrow and runtime-only, none a prescription leak or a hold bypass: SEC-V1CIB-01 (the adopt path does not re-check the standing hold after an erasure leaves a pending change) is the one integration-level defence-in-depth hole, bounded because the view still suppresses; SEC-V1CIB-02/03 (restart does not gate COACHING consent nor bind learningConsent) and SEC-V1CIB-04 (the erased slot keeps a keyless digest oracle) bound real collection, not this synthetic candidate.",
+  "blockingFindings": ["SEC-V1CIB-01"],
+  "statesKeptDistinct": {
+   "1_securityOfTheSyntheticCandidate": "PASS_WITH_CONDITIONS: CF-OBS-1 both layers, custody integrity, egress, erasure and the tombstone all hold on synthetic data; SEC-V1CIB-01 is bounded by planView suppression (no prescription leaks).",
+   "2_securityOfTheIntegrationBoundary": "NOT_READY: SEC-V1CIB-01 is an integration-level defence-in-depth hole on the adopt path; the Section 7 operational parts (auth, KMS, production DB, external monotonic version, monitoring, rate limits) are PENDING and bind.",
+   "3_conditionsBeforeRealData": "SEC-V1CIB-01..04 resolved; the Section 7 PENDING operational parts built; at-rest encryption and access control of the store; erasure propagation to backups; G07 (legal basis, consent texts and periods, retention); the SEC-V1CP pendings and the F08/G04 interim wording.",
+   "4_authorizationForRealAthletes": "NO: all of (3) plus human/clinical revalidation. No AI clearance; CLINICAL_HUMAN_REQUIRED stays; no legal, regulatory (LGPD) or clinical determination is made or implied."
+  },
+  "readinessDimensions": {
+   "RUNTIME_CORRECTNESS": "security part: PASS_WITH_CONDITIONS (SSCTR owns the sporting reading; QRE the reliability).",
+   "F08_STATUS": "F08_OPEN (warning-sign wording INTERIM_PENDING_G04).",
+   "RECORD_CUSTODY_STATUS": "IMPLEMENTED_WITH_CONDITIONS (SEC-V1CIB-01..04 and the Section 7 operational PENDING parts).",
+   "JSON_PERSISTENCE_STATUS": "QRE's gate; from security the file store persists and verifies across a new process and a rollback (documented residual).",
+   "INTEGRATION_READY": "NO; may not be declared while SEC-V1CIB-01 is open and the Section 7 operational parts are PENDING.",
+   "V1_COACHING_AUTHORITY_READY": "NO (SHADOW; no AI authority by mission).",
+   "authorizationForRealAthletes": "NO."
+  },
+  "noLegalClaim": "No legal, regulatory (LGPD) or clinical compliance determination is made or implied. The sporting or clinical reading of any guidance level is the SSCTR's; the governance reading of the contract is the PCG's.",
+  "invalidatedBy": "any change to src/boundary/* (custody, store, views, inventory, api), standingHolds, recordHoldGuard, withHoldFact, readableF08, erasureFact/ERASED_F08/referencesOf, the evaluateProgram guard/finish/behindRecord check, readinessRestart, value.canonical/hash, or the integration contract Sections 2-9 and 12."
+ },
+ "conditions": [
+  {"id": "C2 (CF-OBS-1)", "status": "CLOSED (both layers) for this shadow candidate; stays a named integration gate until SEC-V1CIB-01 and the Section 7 operational parts are closed", "evidence": "q1 (88 core cases + 17 app ops, no leak), p4/p8/p10/p11 now clinical over the record hold; custody holdsOf suppresses (defence in depth, q1 and the directed custody tests)."},
+  {"id": "C4", "status": "CLOSED_WITH_CONDITIONS (synthetic): inventory and egress built; health/health-derived egress NONE; telemetry/push neutral; canary clean across a journey", "what": "before real data: the real logging/analytics/crash/push stack must honour the inventory; the health-derived decision.reason prose must stay non-egressing (it is, here)."},
+  {"id": "C5", "status": "CLOSED: the HMAC row chain and document seal are keyed; inputHash/rowHash/reference digest are payload (keyless) and never proof; a keyless re-seal fails because the keyed chain and seal do not", "evidence": "q2 tamper variants, the keyed-seal probe."},
+  {"id": "C6", "status": "IMPLEMENTED_WITH_CONDITION (SEC-V1CIB-04): cascade + chain-verifying erased slots + marker-as-hold + no-resurrection tombstone all correct; the retained erased-slot digest is a keyless oracle", "evidence": "q5, q6."},
+  {"id": "C7", "status": "IMPLEMENTED_WITH_CONDITIONS: opaque server ids, binding, server clock, closed payload, keyed chain/seal, reconciliation, idempotency, concurrency, file lock all verified; conditions SEC-V1CIB-01/02/03 and the Section 7 PENDING operational parts", "evidence": "q2, q3; OBS-FFC-01 (absent ledger = unchanged) handled by custody reconcile (q3)."},
+  {"id": "C8", "status": "CLOSED: a durable minimised trace is kept (closed sign names, guidance level, event id, time); the engine reason prose is health-derived and egress NONE (canary clean). Closes the prior C8 residual", "evidence": "q4 (closed decision shape), the directed custody C8 test. The wording of the trace stays INTERIM_PENDING_G04."},
+  {"id": "SEC-V1CPI-06", "status": "IMPLEMENTED (mechanism): the erasure marker and the account tombstone are the design required in round 1. The legal basis, retention periods and erasure-to-backups are G07's. My round-1 named blocker is resolved in mechanism", "evidence": "q5, q6."},
+  {"id": "SEC-V1CP pendings touched", "status": "C1 CLOSED (no free-text echo; p3/p7); C3 CLOSED for the guidance level and wording during a record hold (p8: signs set URGENT/PROFESSIONAL over the hold); SB-2..SB-5 intact on the touched paths (p1/p2/p3/p7). The catalogue/interim wording (SEC-V1CP-21, G04) and the server operational parts (-22/-23/-24/-26/-27, auth, KMS) stay PENDING before real use."}
+ ],
+ "findings": [
+  {
+   "id": "SEC-V1CIB-01",
+   "severity": "MEDIUM",
+   "blocking": "YES for INTEGRATION_READY (a defence-in-depth hole on the adopt path); NOT for the closure of this synthetic shadow candidate (no prescription leaks: planView re-derives from the record and suppresses).",
+   "title": "After an erasure leaves a pending confirmation, the adopt path installs it over the standing hold",
+   "where": "custody.eraseHealthFacts (does not clear doc.pending) and custody.accept/decline (do not re-check standingHolds).",
+   "minimalReproduction": "q1d G1 and q1b: a Situation-1 report (state REDUCED, not a hold) with a pending SCHEDULE_CHANGE, then eraseHealthFacts of the report. The ERASED_F08 marker now stands as a hold (view BLOCKED), but doc.pending survives, and accept swaps doc.program to the pre-hold proposal (programChanged=true). A normal review that forms a hold (submit) clears doc.pending; the erasure path does not.",
+   "bound": "planView computes blocked from standingHolds (the marker included), so the view stays BLOCKED with no prescription: no prescription leaves custody to the athlete. What leaks is a program-state mutation over a standing clinical hold.",
+   "eligibility": "new, narrow, runtime-only. Eligible for one narrow fix cycle and recheck. Fix: eraseHealthFacts clears doc.pending exactly as submit does when a hold forms, or accept/decline refuse while standingHolds is non-empty.",
+   "owner": "Engineering (fix), Security re-verifies."
+  },
+  {
+   "id": "SEC-V1CIB-02",
+   "severity": "MEDIUM",
+   "blocking": "YES for real collection (consent is the lawful basis); NOT for this synthetic candidate.",
+   "title": "A restart makes and stores a new plan after COACHING consent is revoked",
+   "where": "custody.restart: no consent check (enroll and submit both check COACHING).",
+   "minimalReproduction": "q1d G2: setConsent COACHING=false, then restart -> status PROPOSED, the stored program replaced. A later review is still refused (CONSENT_REQUIRED), so the plan is unusable, but it was computed and stored without the lawful basis the other write paths require.",
+   "eligibility": "new, narrow, runtime-only. Same cause and fix family as SEC-V1CIB-03: custody.restart applies the enroll consent gate.",
+   "owner": "Engineering (fix), Security re-verifies."
+  },
+  {
+   "id": "SEC-V1CIB-03",
+   "severity": "LOW",
+   "blocking": "YES for real collection (consent-record integrity, minimisation); NOT for this synthetic candidate.",
+   "title": "A restart lets the app assert learningConsent into the new program",
+   "where": "custody.restart: the intake's learningConsent is not stripped nor bound to the stored consent (enroll binds it: learningConsent = consents.LEARNING === true).",
+   "minimalReproduction": "q1d G3: an intake with learningConsent:true at restart stores a program with learningConsent=true although the LEARNING consent is false.",
+   "bound": "review time re-derives learning from custody's stored consent (false), so learning stays off (q1d G3 bound): no learning-without-consent in fact. The stored program nonetheless records a consent the athlete did not grant.",
+   "eligibility": "new, narrow, runtime-only. Fix (with -02): custody.restart binds learningConsent (and the athlete id) from the stored consents exactly as enroll does.",
+   "owner": "Engineering (fix), Security re-verifies."
+  },
+  {
+   "id": "SEC-V1CIB-04",
+   "severity": "LOW_MEDIUM",
+   "blocking": "NO for this synthetic candidate; a condition on C6 before real collection.",
+   "title": "The erased slot retains a keyless digest oracle of the erased health row",
+   "where": "custody.eraseHealthFacts keeps the chain entry's keyless digest (sha256 of canonical(row)) for an erased slot; the ERASED_F08 marker keeps the erased eventId in clear and the chain keeps recordedAt.",
+   "minimalReproduction": "q6 (a): chainDigest == keyless(row) before erasure; after erasure the digest is unchanged while rows[i]=null; the marker lists the eventId. For an operator with storage access, the digest is a brute-force oracle over bounded-entropy health content (condition x5, intent x4, ~20 sign booleans, days 3-14) with its identifiers known, so 'lose their content' is weaker than it appears. No inversion was performed; the fact is structural.",
+   "bound": "requires storage/operator access (the same actor the whole-document-rollback residual already flags) and real health data; the chain MAC (c.mac) is already keyed.",
+   "eligibility": "new, narrow, runtime-only. Fix: for an erased slot keep a keyed digest (HMAC) or verify from the chain mac alone, so the chain verifies without leaving the keyless oracle. Joint with G07 retention.",
+   "owner": "Engineering (fix), Security re-verifies; G07 for retention."
+  }
+ ],
+ "observations": [
+  {"id": "OBS-V1CIB-A", "note": "declaredAt on an F08 fact is stored as the server's UTC instant (e.g. 13:00Z for a 10:00 -03:00 clock), not with the plan-offset suffix. This is the engine's canonical instant and is correct; it is the server clock, never a client-supplied time."},
+  {"id": "OBS-V1CIB-B", "note": "OBS-FFC-01: which clinical-guard paths return the actualLedger field changed between base and candidate (p9); custody treats an absent actualLedger as the record unchanged (q3) and falls back to the stored rows for the hold check, so the hold stands regardless. No data loss. Folded into C7."},
+  {"id": "OBS-V1CIB-C", "note": "The file store writes plaintext JSON (store.mjs notes 'access control at rest' as PENDING). Encryption and access control at rest, and erasure propagation to backups, belong in the Section 7 / G07 PENDING list."},
+  {"id": "OBS-V1CIB-D", "note": "The plan offset (timezoneOffsetMinutes) is athlete-provided at enroll and restart by design; an athlete can set their own plan's day boundaries. It does not bypass a hold (the hold comparison uses the same offset consistently). Acceptable; noted for completeness."},
+  {"id": "OBS-V1CIB-E", "note": "The clinical-carrier path no longer reaching G01's guard (the coverage gap QRE was asked to rule on) is QRE's; from security, every review kind still stays clinical over the record hold (q1 88 cases), so the gap creates no prescription leak."}
+ ],
+ "section7PendingReview": {
+  "assessment": "The Section 7 PENDING list (authentication/session, KMS/rotation/per-environment keys, production DB with transactions and backups, external monotonic version vs a whole-document rollback, monitoring, rate limits, G07 legal basis/texts/periods) is substantially complete.",
+  "additions": ["encryption and access control of the store at rest (store.mjs already names it; make it explicit in Section 7)", "erasure propagation to backups and the external version store (erasure must reach every copy; part of G07 retention)", "the SEC-V1CIB-04 erased-slot digest hardening if not folded into G07", "abuse/rate limits specifically on the F08 and erasure endpoints (named under 'rate limits', keep explicit)"]
+ },
+ "cycleBound": "Single consolidated round. All four findings are new, narrow and runtime-only; the Chief may elect one narrow fix cycle covering SEC-V1CIB-01..04 (all in custody.mjs: clear pending on erasure or re-check the hold on adopt; gate consent and bind learningConsent on restart; keyed digest for erased slots), followed by one narrow Security recheck of the same scope. Otherwise they close as the named conditions above. No automatic further round.",
+ "escalations": "None to the Founder from Security. No release form beyond the athlete's readiness declaration is introduced or needed (consistent with the round-1 CF-OBS-1 reading). No medical or clinical judgment is made.",
+ "notDone": "No code, test, canon, product document, mission, ledger, freeze or other repository file was edited; nothing committed, pushed or frozen; no npm run verify or verify-r* script; no recursive deletion. This round's SSCTR, QRE and PCG records were not read. The only repository files written are this record and SEC_V1CIB_REVIEW.md. No real data, no server, no KMS, no production store was exercised; the whole review is on synthetic data in new scratch folders."
+}

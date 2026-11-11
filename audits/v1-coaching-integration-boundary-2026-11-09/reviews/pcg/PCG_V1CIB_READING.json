@@ -1,0 +1,163 @@
+{
+  "record": "PCG-V1CIB-READING-r1",
+  "role": "Product Constitution & Governance 1.2.0 (fresh independent instance; authored none of the V1CIB work)",
+  "date": "2026-11-09",
+  "status": "GOVERNANCE_READY_FOR_REVIEW",
+  "statusNote": "This record reads decided sources. It changes no doctrine, adds no DR and edits no canon, product, runtime or test file. It carries one narrow DOWNSTREAM_VIOLATION finding (PCG-V1CIB-F01) against the boundary's adoption predicate. Chief consolidates it with this round's SSCTR, QRE and Security records. Self-check is delivery, not approval.",
+  "prevails": "This JSON prevails over PCG_V1CIB_READING.md.",
+  "trigger": "REVIEW_REQUEST_V1CIB.md, PCG section: (a) the adoption reading of AEC §2 and §3.4 (CONFIRMATION_KINDS, applied-with-fact, applied-with-evidence); (b) the C8 form; (c) 'facts are still recorded' during a hold. Chief dispatch: route L2, productization, owner PCG, no judges.",
+  "revisions": {
+    "artifact_revision": "r1",
+    "inputs_revision": "worktree claude/v1-integration-boundary at 3b1480445fc2 (clean when read)",
+    "contract_revision": "audits/v1-coaching-integration-boundary-2026-11-09/TASK_CONTRACT_V1CIB.md at 3b14804",
+    "sourceBlobs": {
+      "product/ADAPTIVE_ENGINE_CONTRACT.md": "588e0c191d8c",
+      "product/ADAPTIVE_ENGINE_OPERATIONAL_SPEC.md": "1af8791a78a1",
+      "product/PRODUCT_DECISION_REGISTER.md": "f9604e104fc3",
+      "canon/CANONICAL_INDEX.md": "7498f21b8641",
+      "audits/v1-coaching-integration-boundary-2026-11-09/INTEGRATION_BOUNDARY_V1.md": "aaf6ebbc405c",
+      "audits/v1-coaching-integration-boundary-2026-11-09/REVIEW_REQUEST_V1CIB.md": "98dd795a300b",
+      "audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_CFOBS1.json": "3f1242bcd780",
+      "audits/v1cp-fix-forward-2026-11-09/reviews/security/SEC_FF_RECHECK_CYCLE.json": "6c9d342ce2e6",
+      "audits/v1-coaching-productization-2026-11-08/INTEGRATION_CONTRACT_V1CP.md": "6601b4e48c48",
+      "CoachingCore/src/boundary/custody.mjs": "c34cda03cf5d",
+      "CoachingCore/src/boundary/views.mjs": "75ff2620fc0b",
+      "CoachingCore/src/boundary/inventory.mjs": "53d9d64b1cc4",
+      "CoachingCore/src/r6-adaptation.mjs": "19d85b3ceffd",
+      "CoachingCore/src/v1-f08.mjs": "65520940703c",
+      "CoachingCore/test/v1cib-custody.test.mjs": "72476c8d10c6",
+      "CoachingCore/test/r6-adaptation.test.mjs": "b842e54dc161"
+    }
+  },
+  "authorityFilter": "canon/CANONICAL_INDEX.md: PDM-1.3/AEC-1.3 keep the agency, confirmation and inspect-versus-execute semantics (index rows 122, 124, 175). DR-148 and DR-149 are DECIDED / CURRENT_PRODUCT_DECISION. AEOS is the operational realization of the AEC. INTEGRATION_BOUNDARY_V1.md and INTEGRATION_CONTRACT_V1CP.md are derived handoffs and not canonical. The Security record is an independent judge's condition, read as data.",
+  "sources": [
+    {"id": "S1", "ref": "AEC §1.2 'Agência' (product/ADAPTIVE_ENGINE_CONTRACT.md line 50; the dispatch's 'AEC §2 Agência')", "authority": "AEC-1.3, domain authority retained (EXP-AUTH-r1)", "quote": "alteração material mostra o que/por quê/evidência/objetivo protegido, alcance e ato de aceitar, manter vigente quando ainda válido ou ver motivo. Recusa registra restrição de agência ... sem reapresentar mesma mudança sem fato material novo. Safety/invalidade impede recomendar 'manter' proibido; registro do que a pessoa decidiu fazer permanece veraz."},
+    {"id": "S2", "ref": "AEC §3 items 4, 5, 7 and the trace paragraph", "authority": "AEC-1.3", "quote": "4. Recomendação recalculada pode ser apresentada sem confirmação a cada cálculo. Mudança que a pessoa aplica em seu contexto/plano, ou troca de sessão já escolhida/exportada, mostra alcance e exige confirmação. Nunca iniciar sessão, enviar workout ou publicar por esse recálculo. 5. Se contexto/plano mudou enquanto a proposta era preparada, invalidá-la, explicar e apresentar uma nova proposta. Nenhuma confirmação antiga autoriza efeitos novos. 7. ... Motor readapta sem punição. Trace: ... Trace referencia fatos mínimos e acesso privado, sem copiar narrativa de saúde para cada decisão/export/log."},
+    {"id": "S3", "ref": "AEC §2.2 'Mover / reordenar'", "authority": "AEC-1.3", "quote": "Propor sessões afetadas e trade-off de prioridade/agenda dentro dos dias e turnos escolhidos (DR-112); mover para outro dia só por ato da pessoa. Verificar viabilidade nas duas modalidades e confirmar o ajuste."},
+    {"id": "S4", "ref": "AEC §1.3 (PROGRAMMED VARIATION, REACTIVE ADAPTATION, SYSTEMATIC BETWEEN-CYCLE PROGRESSION)", "authority": "AEC-1.3", "quote": "PROGRAMMED VARIATION: Se já contida no plano aceito, executar essa estrutura não o altera; se proposta nova, respeita o alcance, validade e confirmação. REACTIVE ADAPTATION: Fato novo material torna vigente inadequado ... Continuação do próximo ciclo permanece proposta/adoção versionada sob AEOS§13.1."},
+    {"id": "S5", "ref": "AEOS §6 rule 5, §13.1, §14, §14.1, line 179", "authority": "AEOS (operational realization of the AEC)", "quote": "Alteração de prioridade/objetivo é ato confirmado, versionado. / Revogação/hold/approval/capability/sessão/ato crítico mudou antes do ponto: a guarda falha ... Proposta fica STALE. / não a reapresentar após recusa sem fato/declaração/policy material nova. / Próxima sessão já vista/escolhida é sticky ... 'Manter plano atual' só é opção recomendável se ainda válido; recusa não libera HOLD. / Mutação só existe se delta material for aceito/aplicado sob §13.1."},
+    {"id": "S6", "ref": "PDR DR-112", "authority": "Founder, DECIDED / CURRENT_PRODUCT_DECISION", "quote": "no session of that sport is placed on another day without the person's own move. The coach decides content, dose, order and how the weekly load ... is spread across the chosen days ... HOLD, limitation and out-of-coverage may reduce, replace with recovery or retain a session — always explained."},
+    {"id": "S7", "ref": "PDR DR-148 (2), (3), (4), (6), (7) and Protections", "authority": "Founder, DECIDED / CURRENT_PRODUCT_DECISION", "quote": "(2) ... the product offers a 3–14 day reduction for each affected sport with one intent ... (3) ... holds the prescription. When the person actively declares ... the product offers a conservative sporting restart ... (6) One sport can be reduced or held without suspending the other ... (7) The history of executed training, ... interruption episodes, availability changes and the coach's decisions with their state and reasons are preserved."},
+    {"id": "S8", "ref": "PDR DR-149 (1), (4), (5)", "authority": "Founder, DECIDED / CURRENT_PRODUCT_DECISION", "quote": "Clinical first applies at every check ... (5) For a warning sign: stop and seek an appropriate professional assessment. For a potentially serious sign ...: urgent care proportional to the risk."},
+    {"id": "S9", "ref": "PCG-V1CPFF-CFOBS1-r1 Q1-Q4 (audits/v1cp-fix-forward-2026-11-09/pcg/PCG_V1CPFF_CFOBS1.json)", "authority": "PCG reading of DR-148 (earlier record; GOVERNANCE_READY_FOR_REVIEW, consolidated by the Chief in the Fix-Forward)", "quote": "Q3 WEEKLY_REVIEW ... MISSED_SESSION ...: Reports and facts are recorded (the record keeps being kept) and are read after a valid release by the restart rules. / SCHEDULE_CHANGE ... PREFERENCE_CHANGE: The fact may be recorded; no prescription follows while the hold stands. / RETURN_AFTER_PAUSE: Recorded; screened as stated ...; never releases. / NOT_FEELING_100, WELLBEING_CHECK: Never open a reduction, a window or a return (P-2-r2: 'a Situation 1 report included'). Clinical first: signs answered yes still set the D5 guidance level. / Q4: the facts recorded during the hold are kept and read by the restart rules (DR-148 (7))."},
+    {"id": "S10", "ref": "Security SEC_FF_RECHECK_CYCLE.json, condition C8 and SEC-FFR-02 recordOfTheSign", "authority": "independent judge (data)", "quote": "C8: A warning sign answered during a standing clinical hold leaves a durable, minimised trace (closed sign names, event id, time; no free text) or the decision is recorded otherwise, as decided by SSCTR/PCG with Security; it enters the SEC-V1CP-01 inventory and the C6 tombstone. / What is lost is accountability: no durable trace ... for the athlete's history, a later professional review, an incident review or a subject-access export. Adding it is new health-data collection, so the form (which row, which fields, closed vocabulary only, retention, tombstone) is a joint decision."},
+    {"id": "S11", "ref": "INTEGRATION_CONTRACT_V1CP.md §3 status table", "authority": "derived handoff (historical for adoption; superseded for custody by INTEGRATION_BOUNDARY_V1.md)", "quote": "MODIFY: Adopt proposal after the athlete's explicit adoption, per the product flow."},
+    {"id": "S12", "ref": "INTEGRATION_BOUNDARY_V1.md §5, §8 (C8), §9, §10", "authority": "derived integration handoff, not canonical (the object read)", "quote": "§5: This list is the boundary's reading of the AEC; Product/UX may change it without any engine change."}
+  ],
+  "codeRead": {
+    "adoption": "custody.mjs submit: confirm = !!proposal && !factBound && CONFIRMATION_KINDS.includes(kind), with factBound = an added F08 fact or INTERRUPTION_DECLARED row; adoption PENDING / APPLIED_WITH_ITS_FACT / APPLIED_WITH_ITS_EVIDENCE; every later review sets pending:null; accept checks only expectedVersion and pending.decisionId; decline records ADOPTION DECLINED in the custody log only.",
+    "c8": "custody.mjs entryOf keeps decisionId, eventId, kind, at, status, action, reason (the engine's string), missingInputs, question, planValidity, guidance {level, wordingStatus}, warningSigns (closed keys), questionDetail. Test 'custody C8' (v1cib-custody.test.mjs line 147) asserts this closed key set for a sign answered during a hold. eraseHealthFacts changes record rows and the chain only; decision entries are untouched.",
+    "hold": "r6-adaptation.mjs evaluateProgram guard (line 538 on): previousValidity ?? recordHoldGuard; signs answered yes in wellbeing, wellbeingCheck or readiness set signRoute's guidance and warningSigns; with CLINICAL_HUMAN_REQUIRED, the review's observations are normalized, bound and recorded with the declared break; keep() appends a declared break also when no observation is sent; no WELLBEING_DECLARED or WELLBEING_CHECKED row is written. v1-f08.mjs standingHolds: a CLINICAL_HOLD or ERASED_F08 row with no later READINESS_DECLARED.",
+    "reachability": "r6-adaptation.mjs missedSession returns action MOVE with a proposal (a missed key session placed on a later chosen day of the same sport, replacing an easy one); engine test r6-adaptation.test.mjs line 50 'a missed key run in the specific phase moves only to a later chosen day'. weeklyReview returns LEARNED_REARRANGEMENT ('The arrangement changes for future weeks at the same doses (association, not causation)') under learning consent.",
+    "executed": "Nothing was executed through custody by PCG: these are readings of code at 3b14804 plus the existing engine test. QRE confirms by probe where a condition depends on behaviour."
+  },
+  "readings": [
+    {
+      "id": "a",
+      "clauseId": "I-V1CIB-A",
+      "question": "Adoption: athlete-applied context/plan changes wait for confirmation; changes that follow an athlete-recorded fact are applied with it; changes that follow the evidence are applied as a recalculated recommendation with their reason.",
+      "ruling": "FAITHFUL_WITH_CONDITIONS",
+      "byPart": [
+        {"part": "Athlete-applied changes wait for confirmation (CONFIRMATION_KINDS); decline keeps the plan in force; a later review supersedes the pending change.", "ruling": "FAITHFUL (with A-C2, A-C3)", "basis": "S2 item 4 second sentence ('Mudança que a pessoa aplica em seu contexto/plano ... exige confirmação') and item 5; S1 (act of accepting or keeping the plan in force); S5 AEOS §6 rule 5 (goal and priority changes are confirmed acts); S6 DR-112 (days are the person's own move). The nine kinds (schedule, unavailable day, double conflict, preferences, goal, equipment, event date, event-week conflict, substitution) are all changes the athlete brings to their own context or plan."},
+        {"part": "Changes that follow a fact the athlete recorded (Situation 1 report or check, readiness declaration, declared break) are applied with it.", "ruling": "FAITHFUL", "basis": "S7 DR-148 (2), (3): the structured report or declaration is the athlete's act that takes up the offered reduction or restart (intent, days and speed are chosen in it); S1 'Safety/invalidade impede recomendar manter proibido'; keeping the pre-report plan would contradict the athlete's own report and would be the inadmissible 'keep'. A declared break makes the pre-break doses inadequate (S4 REACTIVE ADAPTATION; DR-148 (5)). Clinical holds stay suppressed by custody (CF-OBS-1, S9)."},
+        {"part": "Changes that follow the evidence are applied as a recalculated recommendation, shown with their reason.", "ruling": "FAITHFUL where the change is the accepted plan's own structure gated by executed evidence (GATED_NEXT_STEP, logged loads replacing placeholders: S4 PROGRAMMED VARIATION 'se já contida no plano aceito, executar essa estrutura não o altera'; PROGRESSION earned) or a reactive adaptation that makes the plan in force inadequate (a reduction after reported fatigue, a re-plan from reports of missed or partial work: S4 REACTIVE ADAPTATION; S1 safety/invalidity; S6 'HOLD, limitation ... may reduce ... always explained'; S2 item 4 first sentence). DEVIATES where the evidence-driven change moves or rearranges sessions between days while the plan in force stays admissible (finding PCG-V1CIB-F01).", "basis": "S2 item 4 lets a recalculated recommendation be presented without a confirmation at each calculation; S1 still gives every material change the act of accepting or keeping the plan in force when it is still valid, and S3 requires a move or reorder to be proposed and the adjustment confirmed."}
+      ],
+      "conditions": [
+        {"id": "A-C1", "binding": true, "text": "PCG-V1CIB-F01: a proposal that moves or rearranges sessions between days (at least MOVE from MISSED_SESSION and LEARNED_REARRANGEMENT from WEEKLY_REVIEW, and any other action that changes a session's day while the plan in force stays admissible) waits for the athlete's confirmation whatever event kind produced it, unless it follows an athlete-recorded fact or a safety/invalidity. A decline is kept as the athlete's agency constraint, so the same change is not presented again without a new material fact (S1; S5 §14)."},
+        {"id": "A-C2", "binding": true, "text": "Supersession (S2 item 5: 'invalidá-la, explicar e apresentar uma nova proposta'): when a later review supersedes a pending change, the custody log closes it as superseded and the athlete is told. The requested change is then evaluated on the current version as a new proposal, or the athlete is asked to send it again. It is never dropped silently. Read from code: any later review sets pending:null, the view drops it, and the log keeps adoption PENDING with no closing entry."},
+        {"id": "A-C3", "binding": true, "text": "Confirmation on current authority (S2 item 5 'Nenhuma confirmação antiga autoriza efeitos novos'; S5 §13.1, where a new hold or a revoked permission fails the guard and the proposal goes STALE): accept refuses a pending change once a hold stands on the record or coaching consent was revoked after the change was prepared. Read from code, not executed: eraseHealthFacts appends an ERASED_F08 marker (a standing hold) and leaves doc.pending in place, and accept checks only the version and the decision id. QRE and Security confirm."},
+        {"id": "A-C4", "binding": false, "text": "Documentary: §5's 'Product/UX may change it without any engine change' is read as giving Product/UX how a confirmation is shown (DESIGN_SPACE, for example a preview and confirm in one step). It does not give Product/UX whether an athlete-applied change or a move waits for the athlete's act (S1, S2, S3, S6)."}
+      ],
+      "productUxOrFounder": "Founder: none. AEC §1.2, §2.2, §3.4–3.5 and DR-112 already decide the rule. Product/UX: manifestation only (the confirmation step, the explanation of a superseded change, and how the reason of an applied change is shown under G03 copy). Mechanism: Engineering. Verification: QRE.",
+      "classification": {"epistemic": "INFERRED (reading of DECIDED sources and of code at 3b14804)", "normative": "application of AEC-1.3 and DR-112; no new doctrine"}
+    },
+    {
+      "id": "b",
+      "clauseId": "I-V1CIB-B",
+      "question": "C8's form: for a sign answered during a hold, the custody decision log keeps the closed sign names, the guidance level, the event id and the time, with no free text and no new record fact in the engine.",
+      "ruling": "FAITHFUL_WITH_CONDITIONS",
+      "acceptableBecause": [
+        "C8 itself admits 'or the decision is recorded otherwise' (S10). The decision log is durable: it sits in the sealed document (§7: the seal covers decisions), and RETENTION keeps it with the record.",
+        "It serves the accountability purposes Security named (athlete history, a later professional review, an incident review, a subject-access export) in closed vocabulary.",
+        "No engine fact is needed. The hold already stands on the record (S9 Q1), and the only release, the readiness declaration, re-asks every warning sign at that moment (S10 'why'). No clearance, clinical field or release form is introduced (DR-148 (1); PCG-R7D-F08-r1 P-1).",
+        "DR-148 (7) asks that the coach's decisions with their state and reasons be preserved. The log does that."
+      ],
+      "conditions": [
+        {"id": "B-C1", "binding": true, "text": "C8 also says the trace 'enters ... the C6 tombstone' (S10). Health-fact erasure must reach the decision log's health content tied to the erased facts (warningSigns, guidance, and the engine reason that names a sign or condition, e.g. 'You reported a warning sign (swelling)'). The C8 trace of a sign answered during a hold must itself be erasable by the athlete. Read from code: eraseHealthFacts touches record rows only, and the C8 entry has no F08 row id, so naming its event id returns NOT_FOUND. Mechanism and retention: Security, Engineering, G07."},
+        {"id": "B-C2", "binding": true, "text": "Minimisation (S2 trace: 'sem copiar narrativa de saúde para cada decisão/export/log'): the entry also carries the engine's templated reason and questionDetail. That is the coach's own wording, not athlete free text, and DR-148 (7) keeps it, so it stays inside custody (inventory: egress NONE; telemetry carries none of it) and follows B-C1. Security confirms that C8's 'no free text' means no athlete-authored text. If Security also excludes the templated reason, the log renders it from the closed fields instead. PCG has no doctrinal objection either way."},
+        {"id": "B-C3", "binding": true, "text": "The form is decided by 'SSCTR/PCG with Security' (S10). This reading covers PCG's part only; SSCTR's part and Security's re-verification stand."}
+      ],
+      "productUxOrFounder": "Founder: none. G07 owns retention periods and legal basis.",
+      "classification": {"epistemic": "INFERRED", "normative": "admissible representation of an obligation (C8) under DR-148 (7) and AEC §3 trace; mechanism DESIGN_SPACE for Security and Engineering"}
+    },
+    {
+      "id": "c",
+      "clauseId": "I-V1CIB-C",
+      "question": "'Facts are still recorded' during a hold (PCG Q3): session reports and declared breaks are recorded; Situation 1 reports and checks are screened (a sign sets the guidance; the custody log keeps the sign names) but open no window while nothing is prescribed; the readiness declaration's restart reads the record.",
+      "ruling": "FAITHFUL_WITH_CONDITIONS",
+      "basis": [
+        "Session reports recorded: S9 Q3 ('Reports and facts are recorded ... read after a valid release by the restart rules'); code: observations normalized, bound and recorded under CLINICAL_HUMAN_REQUIRED.",
+        "Declared breaks recorded and never releasing: S9 Q3 RETURN_AFTER_PAUSE; code: keep() appends the declared break even without observations; the release path applies a kept break once at the restart (S9 Q4).",
+        "Situation 1 reports and checks open nothing: S9 Q3 NOT_FEELING_100/WELLBEING_CHECK; P-2-r2 ('Every other item of C02 still opens nothing, a Situation 1 report included'). Clinical first: signs set the D5 guidance (DR-149 (5); S9 Q6 N6).",
+        "Not writing a WELLBEING_DECLARED or WELLBEING_CHECKED row during a hold is consistent with Q3, which requires session reports and breaks to be recorded and is silent on recording a Situation 1 report that opens nothing. It is also consistent with DR-148 (7): no interruption episode is opened, the clinical episode stays on record, and the decision with its state and reason is kept in the custody log. Minimisation (AEC §3 trace) supports not storing health content that has no use, because the readiness declaration takes the current state afresh.",
+        "Restart reads the record: S9 Q4 legitimateResumption."
+      ],
+      "conditions": [
+        {"id": "C-C1", "binding": true, "text": "'While nothing is prescribed' is read per sport (DR-148 (6)). Once a readiness declaration has released a sport and it is prescribed again, a Situation 1 report for that sport follows DR-148 (2), and a sport not declared ready stays HELD. Code: standingHolds ends the record hold at any later declaration, and the sports not declared ready stay held in the custodied program. SSCTR and QRE verify this on a partial declaration."},
+        {"id": "C-C2", "binding": false, "text": "The app does not tell the athlete that a Situation 1 report or check answered during a hold was recorded or will shape the restart. It shows the hold, the guidance and the readiness declaration as the path (Product/UX, G03 copy)."}
+      ],
+      "productUxOrFounder": "Founder: none. Product/UX: copy only (C-C2).",
+      "classification": {"epistemic": "INFERRED", "normative": "application of the earlier PCG Q3/Q4 reading of DR-148; no new doctrine"}
+    }
+  ],
+  "findings": [
+    {
+      "id": "PCG-V1CIB-F01",
+      "type": "DOWNSTREAM_VIOLATION",
+      "state": "DOWNSTREAM_VIOLATION (narrow; blocking for the adoption contract the app consumes)",
+      "where": "CoachingCore/src/boundary/custody.mjs submit (adoption predicate keyed only on the event kind and on fact-bound rows) and INTEGRATION_BOUNDARY_V1.md §5 third bullet.",
+      "what": "Two evidence-driven changes are adopted into the plan in force without the athlete's act: the engine's MISSED_SESSION -> MOVE (a missed key session placed on a later chosen day, replacing an easy session already planned there) and WEEKLY_REVIEW -> LEARNED_REARRANGEMENT (future weeks rearranged at the same doses on a learned association). In both, the engine treats keeping the plan as admissible: skip without debt, or the current arrangement.",
+      "violates": "AEC §2.2 Mover/reordenar 'Propor ... confirmar o ajuste' (S3); AEC §1.2 'ato de aceitar, manter vigente quando ainda válido' (S1); AEC §1.3 'Continuação ... proposta/adoção versionada' and PROGRAMMED VARIATION 'se proposta nova, respeita ... confirmação' (S4); AEOS §14.1 sticky next session (S5). The earlier derived contract also required explicit adoption for every MODIFY (S11).",
+      "notAConflict": "DR-112 'the coach decides ... order' allocates authorship of the arrangement across the chosen days. It does not exempt an in-flight move from the confirmation AEC §2.2 requires, and §2.2 cites DR-112 itself. No THESIS_CONFLICT.",
+      "impact": "An athlete's seen week changes day assignments without their act; integration of the adoption contract as written would make that the app's behaviour.",
+      "dependentsSuspended": "the adoption part of INTEGRATION_READY; nothing in the engine's sporting content",
+      "owner": "Engineering (custody predicate and decline constraint); QRE verifies; Product/UX for the confirmation manifestation",
+      "decider": "Chief",
+      "smallestResolution": "A-C1: key the adoption predicate also on the change class (a day move or rearrangement waits for confirmation unless it follows an athlete-recorded fact or a safety/invalidity), and keep a decline as the athlete's agency constraint so the same change is not presented again without a new material fact.",
+      "qualifiesForNarrowCycle": "YES. It is new in V1CIB (custody's adoption rule is new), narrow (one predicate plus the decline constraint) and runtime-only, with no doctrine or engine sporting change. If keeping the decline constraint against re-presentation turns out not to be narrow, close with this finding as a named blocker of INTEGRATION_READY."
+    }
+  ],
+  "observations": [
+    {"id": "PCG-V1CIB-O01", "text": "Next to (c), outside the three readings: an athlete's own context change sent during a hold (availability, preferences, goal, equipment, event date) is neither recorded (the record has no such fact type) nor kept pending (custody suppresses the proposal and clears pending; a change pending before the hold is cleared too). Q3 permits this ('The fact may be recorded'), so it is not a Q3 deviation. AEC §3 item 5 (explain) and DR-148 (7) ('availability changes ... preserved') still require that it is not lost silently: either it is kept for the restart, or the athlete is told to send it again after the readiness declaration. Owner: Product/UX and Engineering. Founder: none."},
+    {"id": "PCG-V1CIB-O02", "text": "C-C1 rests on the per-sport hold after a partial declaration living in the custodied program (SPORT_HELD) and in program.behindRecord, not in the record predicate (standingHolds releases on any later declaration). That matches the earlier Q2 gap note. Whether it is sufficient is QRE's and Security's to verify, not a doctrine question."}
+  ],
+  "conflicts": "No THESIS_CONFLICT. Two tensions were resolved by reading, with no Founder question: (1) DR-112 'coach decides order' and AEC §2.2 'confirmar o ajuste' (see F01 notAConflict); (2) DR-148 (7), which preserves reasons, and AEC §3 trace minimisation with C8 'no free text' (see B-C2).",
+  "founderDecisionNeeded": "None. Every ruling applies DECIDED sources (AEC-1.3, AEOS, DR-112, DR-148, DR-149) and the earlier PCG CF-OBS-1 reading. No DR change and no new doctrine is needed.",
+  "statesKeptDistinct": {
+    "RUNTIME_CORRECTNESS": "not ruled by PCG",
+    "F08_STATUS": "F08_OPEN (unchanged)",
+    "RECORD_CUSTODY_STATUS": "not ruled by PCG; B-C1 and A-C3 bear on it",
+    "INTEGRATION_READY": "not decided by PCG; may not be declared while PCG-V1CIB-F01 stands",
+    "V1_COACHING_AUTHORITY_READY": "NO",
+    "authorizationForRealAthletes": "NO"
+  },
+  "reviewsAndInvalidation": {
+    "consolidation": "Chief, with this round's SSCTR, QRE and Security records (not read by PCG).",
+    "invalidatedBy": "Any change to custody.mjs submit/accept/decline/entryOf/eraseHealthFacts or CONFIRMATION_KINDS, to INTEGRATION_BOUNDARY_V1.md §5, §8 or §9, to the evaluateProgram guard, recordHoldGuard or standingHolds, to the engine actions MOVE or LEARNED_REARRANGEMENT, to AEC §1.2, §1.3, §2.2 or §3, AEOS §13.1 or §14, DR-112, DR-148 or DR-149, or to Security C8."
+  },
+  "disclosure": {
+    "hostContext": "The host injected three files into this instance's context: C:/Users/carva/Desktop/myApp/MyApp/CLAUDE.md (sha256 e657d059e06fd1a2…), C:/Users/carva/.claude/CLAUDE.md (sha256 c75718d0d2fe2cce…) and the project auto-memory MEMORY.md (sha256 2b8e060945aef80f…). MEMORY.md carries earlier mission states and finding labels (e.g. CF-OBS-1 decided as 'record is truth, only readiness declaration releases'). No ruling here rests on them: each cites repository sources at 3b14804.",
+    "notRead": "This round's SSCTR, QRE and Security records (the reviews/ folder held none when read). No Figma was opened.",
+    "readFromEarlierRounds": "Only the Security record named in the dispatch (SEC_FF_RECHECK_CYCLE.json, for C8's text) and PCG_V1CPFF_CFOBS1.json."
+  },
+  "selfCheck": {
+    "rubric": "C:/Users/carva/.claude/agent-system/evals/PRODUCT_GOVERNANCE.md (PCG section applied). Sources are quoted with paths and blob ids; the epistemic and normative axes are kept separate; no hypothesis is promoted; no strategy, UI or mechanism is chosen; sporting content is left to SSCTR and mechanism to Engineering, QRE and Security; no canon edit; no Founder decision invented.",
+    "deterministicChecks": "git ls-tree blob ids at 3b14804; the code paths read and cited by line; the engine test for MISSED_SESSION -> MOVE located (r6-adaptation.test.mjs line 50). No suite was run, which proportionality allows for an interpretation record; QRE owns behavioural confirmation.",
+    "note": "Self-check is delivery, not approval."
+  },
+  "writes": [
+    "audits/v1-coaching-integration-boundary-2026-11-09/reviews/pcg/PCG_V1CIB_READING.json",
+    "audits/v1-coaching-integration-boundary-2026-11-09/reviews/pcg/PCG_V1CIB_READING.md"
+  ],
+  "notChanged": "canon/, product/, the PDR, INTEGRATION_BOUNDARY_V1.md, every other record, the runtime and the tests. No commit and no push."
+}
