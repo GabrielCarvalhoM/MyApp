@@ -1,0 +1,354 @@
+{
+  "recordId": "SSCTR-RWS-R3A-AMENDMENT",
+  "date": "2026-11-13",
+  "amends": "SSCTR-RWS-R3-DECISION (values RWS-R3-1): only RWS3-C3 (target met) and RWS3-C1 CT-3 with RWS3-C2 (history sources). Every other r3 item, value, worked example and condition stands unless listed in values.replacesInR3 or supersededWorkedExamplesInR3.",
+  "mission": "RUN WORKOUT STRUCTURE (Founder, 2026-11-13), request r3a: final product consistency check. A1 separates measured, declared, reliability and target met and removes the automatic GPS 0.97 completion. A2 makes the CT-3 history bound proportional to history and data availability. Branch claude/v1-run-workout-structure from c8104c1.",
+  "reviewer": {
+    "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision author",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+    "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5, effort high). It cannot verify from inside the run whether it was dispatched through the project's native adapter, so it claims no native dispatch. This is a fresh context: it read SSCTR-RWS-R3-DECISION as a standing record and amends it in the decision-author role.",
+    "nature": "An AI software reviewer. It has no human credentials, licence, degree or registration, and no clinical or legal equivalence. This record is an internal literature-based sporting decision. It is not human validation, empirical product validation or medical clearance.",
+    "independence": "Independent of the author of the request (the Chief). This instance authors the amended rules below. Under SSCTR-08 it must not judge an implementation of them or issue the V1X-RUN-NATIVE enabling record. No self-check is counted as independent approval."
+  },
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, for bounded nonclinical sporting decisions only. Clinical judgment stays CLINICAL_HUMAN_REQUIRED. This record has no runtime sovereignty. It publishes no Product Truth, closes no gate, changes no frozen record and enables no boundary. The Founder rule is a product decision, recorded as given and not reopened.",
+  "founderRule": "A distance session reaches its target only when the distance was actually covered. A measured 15.52 km does not by itself show that 16 km were run. Executed distance is never invented to offset GPS error. An explicit correction or confirmation is allowed when there is reasonable evidence of a measurement failure, and the originally recorded value is preserved. Absolute sensor precision is never demanded. A technical tolerance never becomes a fictitious sporting completion. (Founder, 2026-11-13, via SSCTR_DECISION_REQUEST_RWS_R3A.md; recorded as given.)",
+  "inputs": {
+    "request": "audits/v1-run-workout-structure-2026-11-13/SSCTR_DECISION_REQUEST_RWS_R3A.md (sha256 ac4ecba5c9df42067e449d92a541b0e4db07d5e4c9ae349bb50f6fbd1ac75a5d)",
+    "amendedRecord": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R3_DECISION.json (SSCTR-RWS-R3-DECISION, sha256 6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2), read in full for items, values, sources, worked examples and expiry",
+    "standingR2": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R2_DECISION.json (sha256 daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213), not re-read; it stands through r3",
+    "codeReadOnly": "CoachingCore/src/r6-intake.mjs (sha256 aa35e295e1b58031daeb27e039bf32e8e7f7c29dc37df6f8023483bd39ecbb09): the intake's recent.longestRunMinutes is minutes only, with no distance and no run date; race anchors may carry distanceKm. CoachingCore/src/v1-run-calibration.mjs (sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01): longestRecentRun dates the intake figure at the intake day. CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): P1 needs 3 qualifying easy runs in 28 days; measurementTierReductions OFFICIAL 0, TRACK 0, GPS 1, MANUAL 2, TREADMILL 2. All read only; none changed.",
+    "worktreeHead": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+    "hostInjectedContext": "The host injected the global and project CLAUDE.md files and the project MEMORY.md index into this instance. They were used only for routing and limits, not as evidence.",
+    "notReviewed": "No implementation exists, so none is judged. The handoff was read only through the lines that restate r3 C2/C3."
+  },
+  "literatureAccess": {
+    "tools": "The Europe PMC REST API, called with Node fetch from the shell. Access was confirmed this run: the search endpoint resolved PMID 40623829 (Frandsen 2025). WebSearch and WebFetch were not used.",
+    "newSearches": "None. The Chief asked for no extensive new research. No amended rule needs a source beyond those r3 already holds: every number kept is a value r3 already tied, and the new parts are structural (fact separation, history reference) or data requirements.",
+    "sourcesReused": "All sources are reused from SSCTR-RWS-R3-DECISION, as r3 summarised them. None was re-read in full text this run.",
+    "validator": "Python is not available in this environment (only the Windows Store alias), so .agents/skills/sports-science-review/scripts/validate_records.py did not run. JSON well-formedness was checked with Node.",
+    "rule": "Search snippets were not used as evidence. No effect estimate, participant count or endpoint is stated beyond what r3 recorded from the accessed text."
+  },
+  "sources": [
+    {"id": "SRC-RWS-01", "from": "r3", "citation": "Gilgen-Ammann R, Schweizer T, Wyss T. JMIR Mhealth Uhealth 2020;8(6):e17118", "findingsUsed": "Eight wrist watches, MAPE 3.2-6.1% across areas; underestimation up to 9% in urban and forest areas, overestimation on the track.", "usedFor": "the 0.91 correction floor (largest documented under-reading of a functioning watch); obstructed sky (urban, forest) as a failure reason; measurement error runs in both directions"},
+    {"id": "SRC-RWS-02", "from": "r3", "citation": "Jacko T, et al. Sensors 2024;24(14):4675", "findingsUsed": "Track 4000 m: seven of ten watches within 2% on average; MAPE 0.8-12.1%.", "usedFor": "device error varies by device; a single reading is not ground truth"},
+    {"id": "SRC-RWS-03", "from": "r3", "citation": "Jennings D, et al. IJSPP 2010;5(3):328-41", "findingsUsed": "GPS error is larger over short distances.", "usedFor": "repetitions stay decided by the lap (unchanged)"},
+    {"id": "SRC-RWS-07", "from": "r3", "citation": "Frandsen JSB, et al. Br J Sports Med 2025;59(17):1203-1210 (PMC12421110)", "findingsUsed": "Single sessions more than 10% above the longest run of the previous 30 days had higher overuse-injury rates than the <=10% reference; in a sensitivity analysis increases of 1-10% were also associated with a higher rate. Observational; GPS-measured distance.", "usedFor": "CT-3 classification and its 30-day window"},
+    {"id": "SRC-RWS-08", "from": "r3", "citation": "Dideriksen M, Soegaard C, Nielsen RO. J Strength Cond Res 2016;30(6):1592-6", "findingsUsed": "Single-run self-reported distance agreed with GPS on average, with individual 95% limits of agreement of -28% to +40%.", "usedFor": "declared distances are the lowest tier; a declaration never raises a measured run's history reference"},
+    {"id": "SRC-RWS3-01", "from": "r3", "citation": "Pobiruchin M, et al. JMIR Mhealth Uhealth 2017;5(2):e24 (PMC5350460)", "findingsUsed": "On certified courses watches had a mean absolute error of 0.6% and phones 1.7%, mostly overestimating, partly from the real path run.", "usedFor": "a measurement at or above target is accepted as met, not as exact (no absolute precision demanded); GPS can over-read"},
+    {"id": "SRC-RWS3-02", "from": "r3", "citation": "Bullock G, et al. JMIR Form Res 2024;8:e39211 (PMC10797502)", "findingsUsed": "Weekly self-reported distance against watch data, ICC 0.88. Auxiliary only: weekly totals from watch wearers.", "usedFor": "auxiliary: weekly self-report is reasonable, which says nothing about single runs; weekly totals never feed L30"}
+  ],
+  "items": [
+    {
+      "id": "RWS3A-A1",
+      "amends": "RWS3-C3 (continuous runs only; repetitions unchanged)",
+      "question": "Separate measured distance, declared distance, source reliability and target met. Remove the automatic GPS >= 0.97 completion. Rule the bases on which a continuous distance target is met, and the statuses otherwise.",
+      "ruling": "APPROVE_WITH_CONDITIONS (the author's proposal, with seven changes listed in changedFromProposal)",
+      "category": "b on a (new fact model and bases over r3 C3, C5 and the tied 0.91; the Founder rule as given)",
+      "value": "values.runFacts, values.completion.continuous, values.historyReference, values.statuses, values.exposure.X-2.counting, values.textRequirements.afterRun",
+      "summary": "Each run keeps four separate facts. (1) Measured distance: immutable, with its source and quality. (2) Declared distance: the athlete's own figure, with a reason when it corrects a measurement. (3) Source reliability: OK, UNKNOWN or POOR, set by the device or by the athlete's failure reason. (4) Target met: yes or no, with its basis. A continuous distance target is met on exactly three bases. MEASURED: a usable measurement (track count, measured course, treadmill display, or GPS/device not POOR) is at or above the target, and the athlete has not declared less. CONFIRMED_CORRECTION: a measurement exists below the target (or is device-flagged POOR); the athlete declares at least the target with a listed measurement-failure reason (or the device's own POOR flag); the measurement is recorded as POOR, its original value is preserved, and it is at least 0.91 x target. This is the lowest tier. DECLARED: no measurement exists and the athlete explicitly declares at least the target. This is also the lowest tier. Every other case is not met. A usable measurement below target with no answer is PARTIAL with one ASK offering the stop reasons and the correction. A declaration of at least the target without a listed reason against a usable shorter measurement is UNKNOWN (MEASUREMENT_CONFLICT) with an ASK. A declaration with a reason but a measurement below 0.91 x target is UNKNOWN with an ASK offering a measurement of the missing part. A device-flagged POOR measurement with no declaration is UNKNOWN. A declaration below target is PARTIAL whatever the measurement says. No measurement and no declaration is UNKNOWN. The automatic 0.97 is removed: no tolerance ever turns a shorter measurement into a met target. Repetitions are unchanged: the lap decides (r2 N7, r3 C3).",
+      "kindByPart": {
+        "fourFactSeparation": "TECHNICAL_DATA_REQUIREMENT (required by the Founder rule; owned jointly with Data/G03)",
+        "MEASURED basis": "PRODUCT_RULE_AS_GIVEN (Founder: distance actually covered, no absolute precision demanded); sporting-neutral",
+        "CONFIRMED_CORRECTION basis": "PRODUCT_RULE_AS_GIVEN (Founder allows correction on reasonable evidence of failure) bounded by a CONSERVATIVE_HEURISTIC (the 0.91 floor, tied to SRC-RWS-01)",
+        "failureReasonList": "TECHNICAL_DATA_REQUIREMENT (measurement failure modes); obstructed sky is tied to SRC-RWS-01 (urban and forest under-reading)",
+        "DECLARED basis": "PRODUCT_RULE_AS_GIVEN (r3 MANUAL tier, kept); lowest tier because of SRC-RWS-08",
+        "PARTIAL and UNKNOWN routing": "PRODUCT_RULE_AS_GIVEN (statuses) with TECHNICAL_DATA_REQUIREMENT (ASK flows)",
+        "X-2 counting exception": "CONSERVATIVE_HEURISTIC (a shortfall within documented device error is not evidence that the format misfits)",
+        "repetitionsLapRule": "SPORTING_RULE carried from r2 N7 (unchanged)"
+      },
+      "changedFromProposal": [
+        "The 0.91 floor bounds what a declaration alone can bridge. It does not bound measurement failures. 9% is the largest under-reading documented for a functioning watch (SRC-RWS-01); a device restart or a long tunnel can lose more than that. So a larger shortfall stays UNKNOWN until the athlete adds a measurement of the missing part (a second recording file, a track lap count, a measured course). The segments are then summed as a measured distance, and the run classifies as MEASURED.",
+        "The reason list is closed: SIGNAL_LOSS, OBSTRUCTED_SKY (tunnel, tall buildings, dense tree cover), AUTO_PAUSE, DEVICE_RESTART. Tree cover is added because SRC-RWS-01 documents under-reading in forest. Product may word these reasons but may not add any without SSCTR re-review.",
+        "A device-flagged POOR measurement counts as the failure evidence. A declaration of at least the target then follows CONFIRMED_CORRECTION, with the same 0.91 floor. With no declaration, it stays UNKNOWN (r3).",
+        "A declaration below the target is PARTIAL even when the measurement is at or above it. The athlete's account of a shortfall is never overridden by a device that can over-read (SRC-RWS-01 track; SRC-RWS3-01).",
+        "Consequential change to X-2: a PARTIAL that rests only on a usable measurement of at least 0.91 x target, with no stop and no answer confirming a shortfall, neither counts nor resets X-2. Without this, removing the 0.97 would let two device under-readings pause a class for 28 days.",
+        "Consequential change to history: a run's history reference distance is the smaller of its usable facts (values.historyReference). A correction never raises a run's history above its measurement.",
+        "Quality UNKNOWN (for example an imported workout with no quality flag) is treated as usable, not as POOR. POOR needs a device flag or an athlete failure reason."
+      ],
+      "conditions": [
+        "The measured value is immutable. A correction adds a declared fact with its reason and time; it never edits or deletes the measured distance, source or quality. The engine's actual.distanceKm stays the measured value. Declared and corrected values travel in separate fields, and actual.completed stays coherent with the status (r3).",
+        "The classification runs after the run. The live target is never shortened, and a run is never shown as met early (r3). The athlete is never prompted to run extra so that a device matches.",
+        "The ASK after a usable measurement below target is one non-blocking question. It offers: a stop with its reason (then STOPPED, r3 C4 routes); 'I covered the distance; the measurement failed' with the closed reason list (then reclassified under values.completion.continuous); and 'I ran less, without stopping' (stays PARTIAL). With no answer it stays PARTIAL and is never read as SYMPTOM (r3 C5).",
+        "A CONFIRMED_CORRECTION or DECLARED distance never reaches a calibration or estimate consumer as a measured distance. How the V1RC input marks it (excluded, or MANUAL, which V1RC already reduces by two tiers) is for Engineering/QRE under the frozen V1RC rules; this record does not amend V1RC. r3 S3 is unchanged: GPS POOR is excluded, so corrected runs are excluded; DECLARED runs with entered minutes and distance remain a slow-only source.",
+        "Tiers never change progression credit (r3). DISTANCE on any basis credits as completed; PARTIAL and UNKNOWN hold the step (r3 C5).",
+        "A later answer or source correction reclassifies the run under the existing provenance rules of the record (first-recorded facts preserved)."
+      ],
+      "rationale": "r3 met a run automatically when GPS read at least 0.97 x target. The Founder rejects that because it is a technical tolerance standing in for a sporting fact: a watch reading 15.52 km does not show 16 km were covered, and watches err in both directions (under-reading up to 9% off-track and over-reading on the track, SRC-RWS-01; mostly over-reading on certified courses, SRC-RWS3-01). Neither a shortfall nor a sufficient reading is ground truth. The honest model therefore keeps what was measured, what the athlete declares, and how reliable the source was, and states on which basis the target was met. A usable measurement at or above target is accepted without demanding precision. Below target, only the athlete can say whether the distance was covered, and the Founder requires a reasonable failure cause. The 0.91 floor keeps a declaration within the error documented for a functioning device. Beyond that, the record needs a measurement of what was lost, not a larger declaration. A declaration with no device is accepted at the lowest tier, because single-run self-report is accurate on average but wide individually (SRC-RWS-08). The X-2 exception keeps device error from being read as format misfit, which would be the mirror of the fictitious completion the Founder forbids.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "SUPPORTED_WITH_LIMITS that single wrist-GNSS readings err in both directions by up to about 9% (SRC-RWS-01, SRC-RWS-02, SRC-RWS3-01), which supports the fact separation and the 0.91 bound as a description of device error. Using 0.91 as a bound on declarations is a heuristic, not a validated threshold. No study validates athlete correction behaviour (PLAUSIBLE_BUT_UNCERTAIN), which is why corrections are lowest tier and bounded.",
+      "confidence": "LOW",
+      "confidenceReason": "The device evidence is single-participant (SRC-RWS-01), from an older device generation (SRC-RWS3-01) or from track runs (SRC-RWS-02). The fact model itself is structural and follows the Founder rule directly (moderate confidence for that part only).",
+      "sourceIds": ["SRC-RWS-01", "SRC-RWS-02", "SRC-RWS-03", "SRC-RWS-08", "SRC-RWS3-01"],
+      "applicabilityLimits": "Continuous EASY and LONG distance targets on roads, tracks, measured courses and treadmills. Trail stays TIME-recommended (r2 G.4). Repetitions are unchanged."
+    },
+    {
+      "id": "RWS3A-A2",
+      "amends": "RWS3-C1 CT-3 and RWS3-C2 (L30 and the comparable long run's history sources)",
+      "question": "Make CT-3 (D <= 1.10 x the longest run of the last 30 days) proportional to history and data availability: (i) classify it; (ii) its history sources; (iii) confirm that failing it only changes the expression; (iv) whether EXPERIENCED athletes may use a longer window when the 30-day window is empty for a recorded reason.",
+      "ruling": "(i) APPROVE: classified as a conservative expression heuristic. (ii) APPROVE_WITH_CONDITIONS (sources and the reference-distance rule; three changes from the proposal). (iii) CONFIRMED, with one precision. (iv) NOT ADOPTED: the window stays 30 days for every athlete, and the record abstains on any longer window.",
+      "category": "(i) a (r3 already called 1.10 an outer bound); (ii) b; (iii) a; (iv) c",
+      "value": "values.continuous.checks.CT-3, values.historyReference, values.eligibility.continuous.LONG.comparableLongRun, values.continuous.paceSizingSources.S2, values.suppression.newDefinitions.DISTANCE_HISTORY_UNKNOWN",
+      "parts": {
+        "i_classification": {
+          "kind": "CONSERVATIVE_HEURISTIC",
+          "ruling": "CT-3 is an expression bound. It is not a safe threshold, not a dose rule and not a progression rule. It keeps a native distance target, which has no time ceiling, inside the reference category of Frandsen 2025 (single sessions up to 10% above the longest run of the previous 30 days). Frandsen is observational, and in its sensitivity analysis even 1-10% increases were associated with a higher rate. So 1.10 is the outer edge of the reference group, never evidence that a 10% increase is safe. The engine's own minute progression is not judged here (r3 observation, kept as a trigger).",
+          "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+          "confidence": "LOW"
+        },
+        "ii_sources": {
+          "kind": "TECHNICAL_DATA_REQUIREMENT with a CONSERVATIVE_HEURISTIC (the reference-distance rule)",
+          "ruling": "L30 is the largest history reference distance (values.historyReference) among executed runs of any family and any status, races included, dated within the last 30 days. Eligible sources are the engine ledger, HealthKit-imported workouts, manual entries, and an intake declaration of one recent run that carries a distance and a run date. The same run counts once: a ledger entry and an import of the same run merge their facts. The reference distance follows one rule. With a usable measurement only, it is the measured value. With a declaration only (no device), it is the declared value. With both, it is the smaller of the two, whatever the measurement's quality. With only a device-POOR measurement, there is none. Never used: undated declarations, weekly totals, and minutes-only figures (the current intake's recent.longestRunMinutes). Minutes are never converted to kilometres.",
+          "changedFromProposal": [
+            "The proposal says a DECLARED distance counts only up to its measured value, which would give a no-device declaration nothing. Yet it accepts an intake declaration at face value. The two are the same kind of fact, so this record applies one rule: where no measurement of the run exists, the declaration is the reference; where a measurement exists, the smaller value is. A declaration never raises a measured run's reference.",
+            "An intake declaration needs a distance and a run date. The current intake stores minutes only, dated at the intake day, so today it contributes nothing to L30. Adding the field is a Product/Data choice; the handoff states no new intake inputs.",
+            "The same reference-distance rule applies wherever C2 reads a run's distance as history (the comparable long run and its S2 pace), so that L30 and C2 cannot disagree on one run."
+          ],
+          "rationale": "CT-3 governs only how a dose is expressed, so its sources should be the best fact the record holds of each run, not only device data. The dose itself already comes from self-reported intake history (r6-intake). Excluding self-report from an expression bound would be stricter than the dose it expresses. The bound also rarely decides alone. CT-1 caps D at the planning minutes at the athlete's own slow pace. For LONG, C2 already requires an executed run within 28 days of nearly the same minutes, whose pace (S2) enters P_size. That keeps D at or below about M/(M-5) times that run's distance, below 1.10 for M of 55 min or more. P1 requires recorded easy runs within 28 days. A generous source therefore enables a distance expression only within minutes the engine has already prescribed. The smaller-value rule keeps a correction from inflating history (SRC-RWS-08).",
+          "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN for the accuracy of declared references (SRC-RWS-08); acceptable as an explicitly reversible limited rule because the bound controls expression only and is dominated by CT-1, C2 and P1",
+          "confidence": "LOW"
+        },
+        "iii_effect": {
+          "kind": "TECHNICAL_DATA_REQUIREMENT (a restatement of r3 structure)",
+          "ruling": "CONFIRMED. CT-3 never changes the planning minutes M, the family, the ladder step, the engine's credit or any load sum (r2 G.1, r3 G.2). It never blocks, cancels or shortens a session. One precision: CT-3 can select a smaller native D, provided CT-2's dose-parity floor (0.9 x M at P_typ) still holds. If no D passes CT-1 to CT-3, the session is the TIME expression of the same dose (NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE). An unknown L30 also gives TIME (DISTANCE_HISTORY_UNKNOWN).",
+          "evidenceStatus": "WELL_SUPPORTED (structural; read from r3 values.continuous and r2 G.1)",
+          "confidence": "MODERATE"
+        },
+        "iv_longerWindow": {
+          "kind": "ABSTENTION",
+          "ruling": "NOT ADOPTED. The window stays 30 days for every experience level, whatever the recorded reason for the gap.",
+          "rationale": "(1) No evidence: Frandsen's reference is defined on the previous 30 days, and no source supports a longer reference after a gap. (2) Inert: P1 needs 3 qualifying easy runs within 28 days, and a LONG distance target needs a comparable executed run within 28 days (C2). With an empty 30-day window, both fail first, so a longer L30 window would enable no session. (3) A recorded reason (taper, travel) explains the gap but does not restore recent distance exposure. (4) The cost is the TIME expression only, and the window refills from the first recorded runs after the gap. Mode and phase rules (RESTART, RETURN, POST_EVENT) stay with the engine and V1RC and are not changed.",
+          "evidenceStatus": "INSUFFICIENT_EVIDENCE (for any longer window)",
+          "confidence": "MODERATE (that the extension would be inert)"
+        }
+      },
+      "sourceIds": ["SRC-RWS-07", "SRC-RWS-08", "SRC-RWS3-02"],
+      "applicabilityLimits": "As r3 C1 and C2: nonclinical recreational adults, INTERMEDIATE or EXPERIENCED, EASY mode, continuous EASY and LONG only."
+    }
+  ],
+  "values": {
+    "targetFile": "CoachingCore/v1/RUN_FORMATS_V1.json (to be created from SSCTR-RWS-R2-DECISION values as amended by RWS-R3-1 and RWS-R3A-1, pinned by sha256)",
+    "valuesVersion": "RWS-R3A-1",
+    "basedOn": "RWS-R3-1 (SSCTR-RWS-R3-DECISION values). Every block not named in replacesInR3 stands unchanged.",
+    "replacesInR3": [
+      "values.tiedValues.gpsMetFraction (removed; no automatic GPS completion)",
+      "values.tiedValues.gpsConfirmedFloorFraction (renamed values.tiedValues.correctionFloorFraction; value 0.91 unchanged; scope: the measured value of a CONFIRMED_CORRECTION)",
+      "values.tiedValues.distanceReferenceMaxFraction (value 1.10 unchanged; classification restated)",
+      "values.completion.continuousBySource (replaced by values.completion.continuous)",
+      "values.statuses.PARTIAL",
+      "values.statuses.UNKNOWN",
+      "values.exposure.X-2.counting",
+      "values.continuous.checks.CT-3",
+      "values.continuous.paceSizingSources.S2 (comparable long run that is a CONFIRMED_CORRECTION only)",
+      "values.eligibility.continuous.LONG.comparableLongRun",
+      "values.suppression.newDefinitions.DISTANCE_HISTORY_UNKNOWN",
+      "values.textRequirements.afterRun"
+    ],
+    "added": ["values.runFacts", "values.historyReference"],
+    "unchangedExplicitly": [
+      "values.completion.countedSteps",
+      "values.completion.repetitions (the lap decides; no GPS tolerance)",
+      "values.completion.tiersAffectProgression (false)",
+      "values.completion.overDistance",
+      "values.completion.liveTarget",
+      "values.completion.timeSessions",
+      "values.statuses.values, precedence, engineMapping",
+      "values.stops",
+      "values.exposure.flag, X-1, X-2 (rule), numericAcceptableExcess, engineLoad",
+      "values.continuous.checks.CT-1, CT-2; paceTypical; paceSizingSources S1, S3, S4; distanceKm; estimate; onNone",
+      "values.eligibility (all but LONG.comparableLongRun)",
+      "values.suppression.order"
+    ],
+    "tiedValues": {
+      "correctionFloorFraction": {"value": 0.91, "tiedTo": "largest documented under-reading of a functioning wrist GNSS watch, up to 9% (SRC-RWS-01); bounds what a declaration alone can bridge, not a measurement failure"},
+      "distanceReferenceDays": {"value": 30, "tiedTo": "SRC-RWS-07 (longest run of the previous 30 days)"},
+      "distanceReferenceMaxFraction": {"value": 1.1, "tiedTo": "SRC-RWS-07 reference category (<= 10%); a conservative expression heuristic, not a safe threshold"}
+    },
+    "runFacts": {
+      "measured": {
+        "fields": ["distanceKm", "source", "quality", "recordedAt"],
+        "sources": ["TRACK_COUNT", "MEASURED_COURSE", "TREADMILL_DISPLAY", "GPS (device or phone, including device laps and HealthKit-imported device distance)"],
+        "segments": "Several recordings of one run (for example after a device restart) are each preserved and summed as the measured distance",
+        "immutable": true
+      },
+      "declared": {
+        "fields": ["distanceKm", "reason", "declaredAt"],
+        "failureReasons": ["SIGNAL_LOSS", "OBSTRUCTED_SKY (tunnel, tall buildings, dense tree cover)", "AUTO_PAUSE", "DEVICE_RESTART"],
+        "reasonListClosed": true,
+        "note": "A declaration adds a fact and never edits the measurement. A declaration with no measurement needs no reason."
+      },
+      "reliability": {
+        "quality": ["OK", "UNKNOWN", "POOR"],
+        "POOR": "set by a device flag, or by an athlete failure reason in a correction",
+        "UNKNOWN": "no quality reported (for example an import); treated as usable, not as POOR",
+        "usableMeasurement": "a measurement whose quality is OK or UNKNOWN"
+      },
+      "targetMet": {
+        "fields": ["met", "basis"],
+        "bases": ["MEASURED", "CONFIRMED_CORRECTION", "DECLARED"],
+        "notMet": "basis null"
+      }
+    },
+    "completion": {
+      "continuous": {
+        "MEASURED": {"when": "a usable measurement >= target, and no declaration below target", "status": "DISTANCE", "tier": "the measurement source (TRACK, MEASURED_COURSE, TREADMILL, GPS)"},
+        "CONFIRMED_CORRECTION": {"when": "a measurement exists that is below target or device-flagged POOR; the athlete declares >= target with a listed failure reason (or the device POOR flag is the reason); measured >= 0.91 x target", "status": "DISTANCE", "tier": "CONFIRMED_CORRECTION (lowest)", "quality": "recorded POOR; the original measured value is preserved"},
+        "DECLARED": {"when": "no measurement of the run exists, and the athlete explicitly declares >= target", "status": "DISTANCE", "tier": "DECLARED (lowest)"},
+        "notMet": [
+          {"when": "a usable measurement < target, no declaration, no stop", "status": "PARTIAL", "ask": "one ASK: stop reasons, correction with the closed reason list, or 'I ran less'"},
+          {"when": "a declaration >= target without a listed reason, against a usable measurement < target", "status": "UNKNOWN", "flag": "MEASUREMENT_CONFLICT", "ask": "a failure reason or a source correction"},
+          {"when": "a declaration >= target with a reason (or device POOR), but measured < 0.91 x target", "status": "UNKNOWN", "flag": "MEASUREMENT_CONFLICT", "ask": "a measurement of the missing part (second recording, track lap count, measured course); the segments summed then classify as MEASURED"},
+          {"when": "a device-flagged POOR measurement, any value, no declaration", "status": "UNKNOWN", "ask": "confirm or correct"},
+          {"when": "a declaration < target, whatever the measurement", "status": "PARTIAL"},
+          {"when": "no measurement and no declaration", "status": "UNKNOWN"}
+        ],
+        "noAutomaticTolerance": "No tolerance ever turns a measurement below target into a met target",
+        "precedence": "r3 unchanged: STOPPED, then PARTIAL, then UNKNOWN, then met"
+      },
+      "paceUse": "CONFIRMED_CORRECTION and DECLARED distances never reach a calibration or estimate consumer as measured distances (V1RC marking: Engineering/QRE, V1RC unchanged). r3 S3 is unchanged."
+    },
+    "historyReference": {
+      "definition": "the distance a run contributes as history to L30 and to the comparable long run",
+      "rule": {
+        "usableMeasurementOnly": "measured",
+        "declarationOnly": "declared",
+        "measurementAndDeclaration": "min(measured, declared), whatever the measurement's quality",
+        "devicePoorMeasurementOnly": "none"
+      },
+      "neverUsed": ["undated declarations", "weekly totals", "minutes-only figures (intake recent.longestRunMinutes)", "minutes converted to kilometres"],
+      "dedup": "the same run counts once; ledger and import facts of one run merge under this rule"
+    },
+    "continuous": {
+      "checks": {
+        "CT-3": "D <= 1.10 x L30. L30 = the largest values.historyReference among executed runs (any family, any status, races included) dated within the last 30 days, from the engine ledger, HealthKit imports, manual entries, and an intake declaration of one recent run with a distance and a run date",
+        "CT-3.kind": "CONSERVATIVE_HEURISTIC (expression bound); not a safe threshold, dose rule or progression rule",
+        "CT-3.effect": "may lower D within CT-2's dose-parity floor; if no D passes, TIME (NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE); never changes M, family, step, credit or load; never blocks a session",
+        "CT-3.window": "30 days for every experience level; no extension for a recorded reason (not adopted)"
+      },
+      "paceSizingSources": {
+        "S2": "r3 unchanged, except that when the comparable long run is a CONFIRMED_CORRECTION its pace is computed from its measured distance (a lower bound both facts support, so the pace can only be slower). S2 stays slow-only through P_size = max(...)."
+      }
+    },
+    "eligibility": {
+      "continuous": {
+        "LONG": {
+          "comparableLongRun": "an executed run in the record (engine ledger or HealthKit import) dated within the last 28 days, with actual minutes >= M - 5 and a values.historyReference. A CONFIRMED_CORRECTION run qualifies by its minutes, with its measured distance. A device-POOR run with no declaration does not qualify. An intake declaration never qualifies (it is not an executed run in the record; the first LONG of a plan is TIME, r3 C2). Otherwise TIME (LONG_HISTORY_NOT_COMPARABLE).",
+          "engineLongestContinuous": "not used (r3)"
+        }
+      }
+    },
+    "statuses": {
+      "PARTIAL": "known execution below target with no stop declared: a usable measurement below target with no declaration, or a declaration below target. The step holds; the existing PARTIAL_SESSION review applies; one non-blocking ASK (values.completion.continuous.notMet). A stop answer makes it STOPPED; a correction answer reclassifies it; no answer leaves it PARTIAL, never read as SYMPTOM.",
+      "UNKNOWN": "no measurement and no declaration; a device-POOR measurement with no declaration; or MEASUREMENT_CONFLICT (a declaration >= target without a listed reason against a usable shorter measurement, or with a reason but measured < 0.91 x target). Not adverse; no symptom read; not counted by X-2; the step holds; correctable later through the record's correction path."
+    },
+    "exposure": {
+      "X-2.counting": "r3 unchanged (a TIME session of the class executed without a stop resets; HEAT, HILLY, TRAIL or WIND_STRONG sessions, TREADMILL sessions and UNKNOWN sessions neither count nor reset), plus: a PARTIAL that rests only on a usable measurement >= 0.91 x target, with no stop and no athlete answer confirming a shortfall, neither counts nor resets. An answer confirming the shortfall makes it a counted PARTIAL."
+    },
+    "suppression": {
+      "newDefinitions": {
+        "DISTANCE_HISTORY_UNKNOWN": "no executed run with a values.historyReference dated within the last 30 days (L30 unknown)"
+      }
+    },
+    "textRequirements": {
+      "afterRun": [
+        "r3 lines stand: statuses are shown neutrally; STOPPED, PARTIAL and UNKNOWN are never worded as failure; a MEASUREMENT_CONFLICT asks and never accuses",
+        "the original measured distance is always shown next to any declared correction",
+        "no text says a run was met 'within tolerance' or that the device 'probably' measured short",
+        "the correction ask names the closed reasons and the option to add a measurement of the missing part; it never pressures toward confirming"
+      ],
+      "owner": "Product copy review; required content, not wording"
+    }
+  },
+  "workedExamplesNote": "Athlete A is r3's: INTERMEDIATE, EASY mode; LONG band 345-420 s/km; P1 median 340, slow edge 370; comparable long run 95 min / 15.5 km; L30 15.5 km; 16 km LONG at M 100 (r3 WE3-01). Athlete B: EXPERIENCED, EASY mode; P_typ 345, P_size 370; four recorded P1 easy runs (7 to 8 km) in the last 28 days and no longer recorded run in 30 days; EASY session M 60, available 60. Athlete C: EXPERIENCED; recorded taper and race more than 30 days ago, then no recorded run (travel). The numbers come from a scratch Node computation of values.continuous; this is not a test of any implementation. 0.91 x 16 = 14.56 km.",
+  "workedExamples": [
+    {"id": "WE3A-01", "case": "16 km, GPS 15.52 km (quality OK), no answer", "athlete": "A", "fraction": 0.97, "expected": {"status": "PARTIAL", "basis": null, "ask": "one ASK: stop reasons, correction, or 'I ran less'", "X-2": "neither counts nor resets (usable measurement >= 0.91 x target, no stop, no shortfall answer)", "step": "holds", "historyReferenceKm": 15.52}, "ruleKind": "PRODUCT_RULE_AS_GIVEN + CONSERVATIVE_HEURISTIC (X-2)", "evidenceTier": "GPS (measurement)"},
+    {"id": "WE3A-02", "case": "Same, the athlete declares 16 km with reason SIGNAL_LOSS", "athlete": "A", "expected": {"status": "DISTANCE", "basis": "CONFIRMED_CORRECTION", "quality": "POOR (by the athlete's reason); 15.52 preserved", "floorCheck": "15.52 >= 14.56", "historyReferenceKm": 15.52, "paceUse": "not calibration evidence; excluded from S3 (r3); qualifies as the comparable long run by its 95+ min, with S2 from 15.52 km (slow-only)"}, "ruleKind": "PRODUCT_RULE_AS_GIVEN bounded by CONSERVATIVE_HEURISTIC (0.91)", "evidenceTier": "CONFIRMED_CORRECTION (lowest)"},
+    {"id": "WE3A-03", "case": "Same, the athlete declares 16 km without a reason", "athlete": "A", "expected": {"status": "UNKNOWN", "flag": "MEASUREMENT_CONFLICT", "ask": "a failure reason or a source correction", "adverse": false, "X-2": "not counted", "step": "holds", "historyReferenceKm": 15.52}, "ruleKind": "PRODUCT_RULE_AS_GIVEN", "evidenceTier": "GPS (measurement); declaration recorded"},
+    {"id": "WE3A-04", "case": "16 km, GPS 14.0 km (quality OK, 0.875), the athlete declares 16 km", "athlete": "A", "expected": {"withoutReason": "UNKNOWN (MEASUREMENT_CONFLICT) + ASK for a reason or a source correction", "withReason": "quality becomes POOR, but 14.0 < 14.56: UNKNOWN (MEASUREMENT_CONFLICT) + ASK offering a measurement of the missing part", "historyReferenceKm": 14.0, "X-2": "not counted", "step": "holds"}, "ruleKind": "CONSERVATIVE_HEURISTIC (0.91 bounds declarations)", "evidenceTier": "GPS (measurement)"},
+    {"id": "WE3A-05", "case": "16 km, no device, the athlete declares 16 km", "athlete": "A", "expected": {"status": "DISTANCE", "basis": "DECLARED", "historyReferenceKm": 16, "paceUse": "never calibration evidence as a measured distance; a slow-only S3 source only if minutes and distance are both entered (r3)"}, "ruleKind": "PRODUCT_RULE_AS_GIVEN", "evidenceTier": "DECLARED (lowest)"},
+    {"id": "WE3A-06", "case": "16 km on a track, 40 counted laps of 400 m in lane 1", "athlete": "A", "expected": {"status": "DISTANCE", "basis": "MEASURED", "historyReferenceKm": 16}, "ruleKind": "PRODUCT_RULE_AS_GIVEN", "evidenceTier": "TRACK"},
+    {"id": "WE3A-07", "case": "EXPERIENCED athlete whose only recent long run (15 km, 20 days ago) is an intake declaration", "athlete": "B", "expected": {"LONG": "TIME (LONG_HISTORY_NOT_COMPARABLE): no executed run in the record within 28 days of at least M - 5 min; an intake declaration never qualifies; the first LONG of the plan is TIME (r3 C2)", "EASY_ifIntakeCarriesDistanceAndDate": "L30 = 15 (DECLARED reference); CT-3 bound 16.5; NATIVE 9.5 km, estimate about 55-59 min (1-km multiples fail: 9 km fails CT-2 at 51.8 < 54; 10 km fails CT-1 at 61.7 > 60)", "EASY_withCurrentIntake": "the intake stores minutes only, so it contributes nothing; L30 = 8 (recorded); CT-3 bound 8.8; 8.5 km fails CT-2 (48.9 < 54): TIME (NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE)", "dose": "60 min either way; CT-3 changes only the expression"}, "ruleKind": "TECHNICAL_DATA_REQUIREMENT + CONSERVATIVE_HEURISTIC", "evidenceTier": "DECLARED (intake) for L30"},
+    {"id": "WE3A-08", "case": "EXPERIENCED athlete with an empty 30-day window after a recorded taper (then travel)", "athlete": "C", "expected": {"L30": "unknown; no longer window (not adopted)", "continuous": "TIME. Reported reason: the first in r3 order. MODE_WALK_JOG_RESTART_RETURN if the engine set that mode; PHASE_NOT_ELIGIBLE in POST_EVENT; otherwise CONTINUOUS_PACE_UNOBSERVED (P1 empty), with DISTANCE_HISTORY_UNKNOWN also true", "repetitions": "not affected by CT-3; r2 eligibility and V1RC band availability decide", "dose": "unchanged; training is never blocked", "recovery": "distance expression returns once P1 is back (3 qualifying easy runs) and L30 refills from those runs"}, "ruleKind": "ABSTENTION (longer window) + TECHNICAL_DATA_REQUIREMENT", "evidenceTier": "none"},
+    {"id": "WE3A-09", "case": "16 km, GPS 16.4 km flagged POOR by the device", "athlete": "A", "expected": {"noDeclaration": "UNKNOWN + ASK; historyReference none", "declares16": "DISTANCE, basis CONFIRMED_CORRECTION (the device flag is the reason; 16.4 >= 14.56); historyReferenceKm 16 = min(16.4, 16)"}, "ruleKind": "PRODUCT_RULE_AS_GIVEN", "evidenceTier": "CONFIRMED_CORRECTION (lowest)"},
+    {"id": "WE3A-10", "case": "16 km, GPS 14.0 km, DEVICE_RESTART, the athlete adds the second recording of 2.1 km", "athlete": "A", "expected": {"measuredKm": 16.1, "status": "DISTANCE", "basis": "MEASURED (segments summed, each preserved)", "historyReferenceKm": 16.1}, "ruleKind": "TECHNICAL_DATA_REQUIREMENT", "evidenceTier": "GPS"},
+    {"id": "WE3A-11", "case": "16 km, GPS 16.3 km (OK); later the athlete corrects: 'cut it short, about 15 km'", "athlete": "A", "expected": {"status": "PARTIAL (a declaration below target is never overridden by the device)", "historyReferenceKm": 15, "X-2": "counted (the shortfall is the athlete's own answer)"}, "ruleKind": "PRODUCT_RULE_AS_GIVEN", "evidenceTier": "DECLARED"}
+  ],
+  "supersededWorkedExamplesInR3": {
+    "WE3-07": "GPS 15.6 of 16 is no longer met by measurement. With no answer: PARTIAL + ASK (as WE3A-01). With a listed reason: DISTANCE, CONFIRMED_CORRECTION. Confirmed without a reason: UNKNOWN (as WE3A-03).",
+    "WE3-08": "GPS 15.0: with a listed reason, DISTANCE (CONFIRMED_CORRECTION); without a reason, UNKNOWN; unconfirmed, PARTIAL + ASK (X-2 not counted, 15.0 >= 14.56).",
+    "WE3-09": "GPS 14.0 confirmed: UNKNOWN in both quality cases (as WE3A-04). r3's 'poor GPS: DISTANCE (MANUAL tier)' below the floor is withdrawn; a measurement of the missing part is needed.",
+    "WE3-10": "Same outcome, renamed: DISTANCE, basis DECLARED (was tier MANUAL).",
+    "WE3-23": "Same outcome, renamed: DISTANCE, basis MEASURED, tier TREADMILL."
+  },
+  "aeReview": {
+    "1_adequate": "The plan and dose are untouched. Only completion classification and an expression bound change.",
+    "2_materialFact": "The Founder rule, plus documented two-directional device error (SRC-RWS-01, SRC-RWS3-01).",
+    "3_keepDefensible": "Keeping r3's automatic 0.97 is not defensible under the Founder rule: it turns a tolerance into a completion.",
+    "4_changeNecessary": "Yes for A1 (the Founder rule). For A2, only clarification of sources and classification; the bound itself is kept.",
+    "5_smallest": "Remove the automatic tolerance; keep the tied 0.91 for declarations only; keep 30 days and 1.10; add one history rule and one X-2 exception.",
+    "6_smallerInsufficient": "Without the X-2 exception, device under-reading would pause distance targets. Without the history rule, corrections could inflate L30. Without the 0.91 bound, declarations would be unbounded against a good measurement.",
+    "7_priority": "No Run or Strength priority is involved.",
+    "8_evidence": "SUPPORTED_WITH_LIMITS for device error. The 0.91 bound and the CT-3 bound are heuristics. Declared-reference accuracy is PLAUSIBLE_BUT_UNCERTAIN, accepted only because CT-3 does not control dose.",
+    "9_uncertainty": "Correction behaviour, the share of runs that become PARTIAL or UNKNOWN, and the accuracy of declarations are unmeasured.",
+    "10_askHoldClinical": "ASK for conflicts and shortfalls; HOLD of the step on PARTIAL and UNKNOWN (r3). No clinical item: STOPPED SYMPTOM routes are unchanged."
+  },
+  "abstentions": [
+    "Any L30 window longer than 30 days, for any experience level or recorded reason (A2 iv): no evidence, and inert under P1 and C2.",
+    "Any numeric GPS quality metric that sets POOR: device flag or athlete reason only (Data owns the semantics).",
+    "Any tolerance under which a measurement below target counts as met (A1): withdrawn under the Founder rule.",
+    "A GPS tolerance for single repetitions (r3, unchanged)."
+  ],
+  "escalations": [
+    {"to": "Founder", "kind": "information", "item": "Consequences of A1. A watch reading slightly short is no longer met without the athlete's answer and a listed cause. Shortfalls beyond 9% cannot be bridged by a declaration alone; they need a measurement of the missing part, or they stay UNKNOWN with the step held. A no-device declaration still meets the target at the lowest tier (r3 kept): this rests on the athlete's explicit word, recorded as such, never on missing data. Founder to confirm that this stays the intent; it is not a blocker."},
+    {"to": "Chief", "kind": "handoff", "item": "Update handoff sections 3-5: remove 0.97; the four facts and three bases; the notMet table; the closed reason list; the history-reference rule; L30 sources; the X-2 exception; CT-3 classification and effect; superseded r3 worked examples."},
+    {"to": "Product", "kind": "ownership", "item": "The ASK flows (one combined question after a shortfall; the conflict ask; the add-a-measurement path); wording of the four reasons; showing the original measurement next to a correction; neutral statuses."},
+    {"to": "Data/G03", "kind": "ownership", "item": "The four-fact schema and immutability; quality states OK, UNKNOWN and POOR; segment summation; dedup of ledger and imports; history reference. Whether to add a dated single-run distance to the intake (none exists today; the handoff says no new intake inputs)."},
+    {"to": "Engineering/QRE", "kind": "verification", "item": "Deterministic classification per the notMet table; the X-2 counting exception; actual.distanceKm stays measured; corrected and declared distances never reach V1RC as measured (V1RC unchanged); the L30 source union and dedup; the S2 lower-bound case."},
+    {"to": "Clinical", "kind": "none", "item": "No new clinical item. STOPPED SYMPTOM routes are unchanged (r3 C4)."}
+  ],
+  "proposedQueueItems": [
+    {"queue_id": "HQ-RWS3A-SSCTR-COMPLETION-BASIS", "decision_id": "SSCTR-RWS-R3A-AMENDMENT#RWS3A-A1", "scope": "measured, declared, reliability and target-met facts; bases MEASURED, CONFIRMED_CORRECTION and DECLARED; the 0.91 declaration floor; the closed failure-reason list; the X-2 counting exception. Amends the proposed HQ-RWS3-SSCTR-COMPLETION."},
+    {"queue_id": "HQ-RWS3A-SSCTR-L30-HISTORY", "decision_id": "SSCTR-RWS-R3A-AMENDMENT#RWS3A-A2", "scope": "CT-3 classification; L30 sources and the history-reference rule; the comparable long run's sources; the 30-day window kept. Amends the proposed HQ-RWS3-SSCTR-CONTINUOUS-DISTANCE."}
+  ],
+  "proposedQueueItemCommon": {
+    "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "appended": false,
+    "appendOwner": "Founder / Chief (this instance writes only its two files; the queue is unchanged)",
+    "human_review": null,
+    "approval_date": "2026-11-13",
+    "reReviewTrigger": "see expiry.triggers"
+  },
+  "validation": {
+    "skillValidator": "not run (Python not available; only the Windows Store alias)",
+    "schema": "an amendment record in the shape of SSCTR-RWS-R3-DECISION, not decision.schema.json",
+    "jsonWellFormed": "checked with Node",
+    "workedExamples": "WE3A-07 numbers computed by a scratch Node script implementing values.continuous; not a test of any implementation"
+  },
+  "governance": {
+    "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+    "wholeGateClosure": false,
+    "publicationStatus": "NOT_PUBLISHED",
+    "humanValidation": false,
+    "empiricalProductValidation": false,
+    "clinicalClearance": false,
+    "enablesBoundaries": false,
+    "enablingRecord": "V1X-RUN-NATIVE is enabled only by a separate record from a fresh SSCTR judge, bound to the pinned RUN_FORMATS_V1.json sha256"
+  },
+  "expiry": {
+    "owner": "Chief / SSCTR",
+    "reviewBy": "2027-05-11 (the same date as the amended r3)",
+    "dependsOn": "SSCTR-RWS-R3-DECISION and, through it, SSCTR-RWS-R2-DECISION and SSCTR-V1RC-DECISION-r1. If r3 is superseded, this amendment is invalid until re-reviewed.",
+    "triggers": [
+      "any Founder change to the distance-completion rule or to the acceptance of no-device declarations",
+      "supersession or amendment of SSCTR-RWS-R3-DECISION, SSCTR-V1RC-DECISION-r1 or RUN_CALIBRATION_EXTENSION_V1.json (P1, measurement tiers)",
+      "first real product data: shares of PARTIAL, UNKNOWN and MEASUREMENT_CONFLICT; CONFIRMED_CORRECTION share and reason mix; DECLARED share; share of distance sessions whose L30 comes from a declaration; X-2 pauses",
+      "a new wrist-GNSS or phone validation on continuous runs, or any study of self-reported single-run distance",
+      "an intake change that adds a dated single-run distance, or a HealthKit quality semantics change",
+      "any adverse event or symptom stop in a distance session",
+      "a runtime inconsistency found by the candidate judges",
+      "the Founder's funding declaration (human revalidation)"
+    ]
+  }
+}

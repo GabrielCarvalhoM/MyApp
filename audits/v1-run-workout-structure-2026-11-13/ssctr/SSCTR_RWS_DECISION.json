@@ -1,0 +1,1280 @@
+{
+ "recordId": "SSCTR-RWS-DECISION-r1",
+ "date": "2026-11-13",
+ "mission": "RUN WORKOUT STRUCTURE · PRE-IMPLEMENTATION DOMAIN CLOSURE (Founder, 2026-11-13); branch claude/v1-run-workout-structure from c8104c1 (COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1, untouched)",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision author",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+  "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5). Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed.",
+  "nature": "An AI software reviewer with no human credentials, licence, degree or registration and no clinical or legal equivalence. This record is an internal literature-based sporting decision, not human validation, empirical product validation or medical clearance.",
+  "independence": "Independent of the author of the proposals (the Chief). This instance authors the rulings and values below and must not judge the implemented candidate; a fresh SSCTR instance does that (SSCTR-08). Nothing here is a self-check counted as independent approval."
+ },
+ "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical sporting decisions only. Clinical judgment stays CLINICAL_HUMAN_REQUIRED. No runtime sovereignty, no publication of Product Truth, no gate closure, no change to any frozen record. This record does not by itself enable the V1X-RUN-DISTANCE boundary: the enabling record bound to the pinned values sha is a separate step after the candidate review.",
+ "inputs": {
+  "request": "audits/v1-run-workout-structure-2026-11-13/SSCTR_DECISION_REQUEST_RWS.md (sha256 fe9221a2f104f4107bbac83db9379c9c536cb9fbfcd1417a8be6c360c1cd9fa2)",
+  "handoff": "audits/v1-run-workout-structure-2026-11-13/HANDOFF_RUN_WORKOUT_STRUCTURE.md sections 1-6 and 8 (sha256 234cebe99bf92095546faf0377ec3a9d384fc42c11fc7f33d66541bb81f332b6)",
+  "standingDecision": "SSCTR-V1RC-DECISION-r1: audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json (sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3) and .md; items Q4.*, Q8.*, Q9.withdrawal, Q1.measurement, values.domains, values.paceRules, values.recalibration, values.withdrawal, values.workedExamples",
+  "standingConditionsRead": "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RECHECK.md lines on R-12 and condition (c) (no MARATHON_EFFORT band with a central estimate above 6:00:00); CHECKPOINT_V1RC.md line 77",
+  "valuesInForce": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): paceRules only",
+  "eventValues": "CoachingCore/v1/EVENT_EXTENSION_V1.json (sha256 8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8): fiveK.specificLadder, fiveK.raceWeekTouch, marathon.specificLadder, marathon.raceWeekTouch",
+  "ladders": "CoachingCore/r6/INITIAL_PROGRAM_GENERATION_R6.json (sha256 f759f912c513a2495cac31c0bb24dda8caa3ae72e5263e4baeeceb40bfba9259): run.thresholdLadder, tenKSpecificLadder, halfMarathonSpecificLadder, strides, qualityWarmupMinutes 10, qualityCooldownMinutes 5; CoachingCore/r6/EVENT_TRANSITION_R6.json (sha256 9d88df56b342625b8974d0f3effe8144e4d47d8d12ac6ac5c3c1dd92eda792dc): raceWeekTouch 10K and HALF_MARATHON, taperQualityWorkRange",
+  "codeReadOnly": "CoachingCore/src/r6-prescription.mjs (sha256 35e3844c...): qualityPrescription, reducedWork, easyPrescription; CoachingCore/src/r6-adaptation.mjs (sha256 be280b07...): doseKeyOf and bindObservations line 195 (minutesOk = actual.minutes >= 0.9 x durationMinutes); CoachingCore/src/v1-run-calibration.mjs: header and sessionGuidance (lines 530-552)",
+  "worktreeHead": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+  "hostInjectedContext": "The host injected the global and project CLAUDE.md files and the project MEMORY.md index into this instance. They were used only for routing and limits, not as evidence.",
+  "notReviewed": "No other repository file was audited. No implementation exists; none is judged."
+ },
+ "literatureAccess": {
+  "tools": "Europe PMC REST API (search and fullTextXML endpoints, called with Node fetch from the shell) worked. WebSearch (standard mode) was loaded and used once to look for a direct time- versus distance-prescription comparison; its result pages were not used as evidence. PubMed web pages and publisher sites were not fetched.",
+  "fullTextRead": [
+   "SRC-RWS-01 Gilgen-Ammann 2020 (PMC7381051): Methods (setting, track lane 1, reference distances, 1 Hz), Tables 2 and 4 (urban and track per-watch systematic error, limits of agreement, MAPE), Discussion on track overestimation and running error, Limitations. Read in those passages.",
+   "SRC-RWS-02 Jacko 2024 (PMC11281193): Methods on the 4000 m track and 3.4 km road protocol and Results 3.2.1 (track). Read in those passages; the per-watch Table 5 was not read in full.",
+   "SRC-RWS-07 Frandsen 2025 (PMC12421110): Introduction, eligibility (500 m to 100 km session filter), Discussion of distance as a load measure and Limitations. Read in those passages; the results tables were not read."
+  ],
+  "abstractOnly": "SRC-RWS-03 Jennings 2010, SRC-RWS-04 Rawstorn 2014, SRC-RWS-05 Biernacki 2023, SRC-RWS-06 Seiler and Hetlelid 2005, SRC-RWS-08 Dideriksen 2016 were read as abstracts only. Each is used only for what its abstract reports and none is the sole basis of a ruling.",
+  "reusedFromStandingRecord": "V1RC:SRC05 (Hopkins and Hewson 2001), V1RC:SRC07 (Jones et al 2019), V1RC:SRC21 and V1RC:SRC22 (talk test) are cited as summarised in SSCTR-V1RC-DECISION-r1; they were not re-read in this run.",
+  "notRead": "Pobiruchin 2017 (half-marathon device field study) is cited only as described inside SRC-RWS-01. No study comparing interval sessions prescribed by time with the same sessions prescribed by distance was found (see searches); none is cited.",
+  "validator": "Python is not installed in this environment, so .agents/skills/sports-science-review/scripts/validate_records.py did not run. JSON well-formedness was checked with Node.",
+  "rule": "Search snippets and consumer pages were not used as evidence. No effect estimate, participant count or endpoint is stated beyond what the accessed text reports."
+ },
+ "searches": [
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "TITLE:(GPS OR \"global positioning\" OR \"sport watch\" OR smartwatch) AND (running) AND (distance) AND (accuracy OR validity)",
+   "purpose": "GPS distance error in running; 301 hits, mostly team-sport and clinical; screened by title"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "TITLE:(\"sport watch\" OR \"sport watches\" OR \"GPS watch\" OR \"wrist-worn\" OR smartphone) AND TITLE:(distance OR speed) AND (running OR runners)",
+   "purpose": "wrist-worn distance accuracy; found SRC-RWS-01"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "TITLE:(\"validity and reliability of GPS\" OR \"GPS units\") AND TITLE:(running OR \"team sport\")",
+   "purpose": "short-distance GPS error; found SRC-RWS-03"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "TITLE:(GNSS OR GPS OR \"sport watch\" OR smartwatch OR wearable) AND TITLE:(running OR runners) AND distance/speed/pace AND accuracy/validity, 2012-2026",
+   "purpose": "recent running-specific validations; found SRC-RWS-04, SRC-RWS-05"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "ABSTRACT:(\"sport watch\" OR \"GPS watch\" OR GNSS OR smartwatch) AND distance AND running AND accuracy/validity, 2015-2026, title accuracy/validity/validation",
+   "purpose": "current devices; found SRC-RWS-02, SRC-RWS-08"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "(\"time-based\" OR \"distance-based\" OR isotime OR isodistance) AND interval AND (running OR runners)",
+   "purpose": "direct comparison of time- and distance-prescribed intervals: NEGATIVE (2 irrelevant hits)"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "(\"time-matched\" OR \"distance-matched\" OR \"duration-matched\") AND interval* AND (running OR runners)",
+   "purpose": "same: NEGATIVE (matched-protocol studies about immune and vascular outcomes only)"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "\"interval training\" AND prescription AND (running OR runners OR endurance); individualised HIIT by critical speed or anaerobic speed reserve",
+   "purpose": "same: NEGATIVE for time versus distance; individualisation studies are in team sports and not applicable"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "WebSearch (standard)",
+   "query": "interval training prescribed by time versus distance runners comparison study pubmed",
+   "purpose": "same: NEGATIVE; result pages not used as evidence"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "TITLE:\"rest duration\" AND TITLE:\"interval training\"",
+   "purpose": "recoveries by time; found SRC-RWS-06"
+  },
+  {
+   "date": "2026-11-13",
+   "db": "Europe PMC REST",
+   "query": "(TITLE:\"single-session\" OR \"single session\") AND running AND injur*; TITLE:\"How much running is too much\"",
+   "purpose": "counterevidence and risk of distance targets in continuous runs; found SRC-RWS-07"
+  }
+ ],
+ "counterevidenceSearch": "Directed attempts to refute the proposals: (1) evidence that interval sessions prescribed by distance differ in stimulus from the same sessions prescribed by time: none found in either direction, so equivalence rests on arithmetic (same time at the same effort domain) plus the standing band, not on a trial; (2) evidence that GPS is accurate enough for short repetitions: none for wrist devices at repetition scale; the one study at 10-40 m (team-sport units) shows large errors, the wrist-watch studies use 0.4-4.3 km references and report percent errors of 3-6% with wide absolute limits of agreement and frequent underestimation off-track, and on a 400 m track some current watches erred by up to 12.1% (MAPE over 4000 m); (3) evidence that a session-distance target is harmless in continuous runs: the largest cohort found associates single-session distance spikes above the 30-day longest run with overuse injury (observational), which argues against adding distance targets to easy and long runs; (4) evidence that recoveries should be distance-based: none; the one trial found limited effect of 1-4 min time-based rest on self-paced 4-min bouts in well-trained men.",
+ "sources": [
+  {
+   "id": "SRC-RWS-01",
+   "citation": "Gilgen-Ammann R, Schweizer T, Wyss T. Accuracy of distance recordings in eight positioning-enabled sport watches: instrument validation study. JMIR Mhealth Uhealth 2020;8(6):e17118.",
+   "pmid": "32396865",
+   "pmcid": "PMC7381051",
+   "doi": "10.2196/17118",
+   "type": "VALIDATION_STUDY",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Trundle-wheel references of 404-4297 m in urban, forest and track areas at 1 Hz; running at about 10.2 km/h. MAPE 3.2-6.1% across areas; distances underestimated in urban and forest areas, overestimated on the track (track MAPE 0.9-4.1%; Apple Watch Series 4 track MAPE 4.1%, limits of agreement +/-137.6 m on a mean 2104 m; urban limits of agreement +/-47 to +/-439 m across watches). Running increased error in 6 of 8 watches, attributed to arm swing. Underestimation up to 9%.",
+   "limitations": [
+    "single participant",
+    "2019 device generation",
+    "error by reference length was not reported separately, so no per-repetition error can be read from it",
+    "1 Hz recording"
+   ]
+  },
+  {
+   "id": "SRC-RWS-02",
+   "citation": "Jacko T, Bartsch J, von Diecken C, Ueberschar O. Validity of current smartwatches for triathlon training: how accurate are heart rate, distance, and swimming readings? Sensors (Basel) 2024;24(14):4675.",
+   "pmid": "39066072",
+   "pmcid": "PMC11281193",
+   "doi": "10.3390/s24144675",
+   "type": "VALIDATION_STUDY",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Ten 2024 smartwatches (including Apple Watch SE); 4000 m on a 400 m track in lane 1: seven watches within 80 m (<2%) on average, MAPE range 0.8-12.1%, three watches with large mean deviations; 3.4 km hilly road MAPE 0.2-7.5%.",
+   "limitations": [
+    "six measurements per watch",
+    "4000 m continuous runs, not repetitions",
+    "per-watch table not read in full"
+   ]
+  },
+  {
+   "id": "SRC-RWS-03",
+   "citation": "Jennings D, Cormack S, Coutts AJ, Boyd L, Aughey RJ. The validity and reliability of GPS units for measuring distance in team sport specific running patterns. Int J Sports Physiol Perform 2010;5(3):328-41.",
+   "pmid": "20861523",
+   "doi": "10.1123/ijspp.5.3.328",
+   "type": "VALIDATION_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Over 10-40 m straight lines, GPS distance differed from criterion by 9.0-32.4%; reliability improved as distance increased and worsened as speed increased.",
+   "limitations": [
+    "abstract only",
+    "trunk-worn 1-5 Hz team-sport units, not wrist watches",
+    "distances far shorter than any V1 repetition"
+   ]
+  },
+  {
+   "id": "SRC-RWS-04",
+   "citation": "Rawstorn JC, Maddison R, Ali A, Foskett A, Gant N. Rapid directional change degrades GPS distance measurement validity during intermittent intensity running. PLoS One 2014;9(4):e93693.",
+   "pmid": "24733158",
+   "pmcid": "PMC3986049",
+   "doi": "10.1371/journal.pone.0093693",
+   "type": "VALIDATION_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Intermittent running over 13.2 km: distance over-estimated on curvilinear tracks (+2.6%) and under-estimated with shuttles (-3.2%); absolute agreement worse with direction changes.",
+   "limitations": [
+    "abstract only",
+    "team-sport protocol and device"
+   ]
+  },
+  {
+   "id": "SRC-RWS-05",
+   "citation": "Biernacki P. Software correction of speed measurement determined by phone GNSS modules in applications for runners. Sensors (Basel) 2023;23(5):2678.",
+   "pmid": "36904882",
+   "pmcid": "PMC10007219",
+   "doi": "10.3390/s23052678",
+   "type": "TECHNICAL_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Phone and watch GNSS speed and distance fluctuate, including in interval running; filtering reduced distance error by about 70% and interval speed error by up to 80% against a high-accuracy receiver.",
+   "limitations": [
+    "abstract only",
+    "engineering simulation on recorded data; magnitudes of raw error not stated in the abstract"
+   ]
+  },
+  {
+   "id": "SRC-RWS-06",
+   "citation": "Seiler S, Hetlelid KJ. The impact of rest duration on work intensity and RPE during interval training. Med Sci Sports Exerc 2005;37(9):1601-7.",
+   "pmid": "16177614",
+   "doi": "10.1249/01.mss.0000177560.18014.d8",
+   "type": "EXPERIMENTAL_CROSSOVER",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Six 4-min self-paced bouts with 1, 2 or 4 min recovery in nine well-trained men: rest duration in that range had limited effect on work speed; about 2 min of active recovery was a reasonable balance.",
+   "limitations": [
+    "abstract only",
+    "nine well-trained men on a treadmill at 5% incline",
+    "not recreational runners"
+   ]
+  },
+  {
+   "id": "SRC-RWS-07",
+   "citation": "Frandsen JSB, Hulme A, Parner ET, et al. How much running is too much? Identifying high-risk running sessions in a 5200-person cohort study. Br J Sports Med 2025.",
+   "pmid": "40623829",
+   "pmcid": "PMC12421110",
+   "doi": "10.1136/bjsports-2024-109380",
+   "type": "PROSPECTIVE_COHORT",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "5205 adult runners with GPS devices, 18 months: a single-session distance more than 10% above the longest run of the previous 30 days was associated with a higher rate of overuse injury (small spike HRR 1.64); authors note distance may not be the optimal load measure and the design is observational.",
+   "limitations": [
+    "observational association, not causation",
+    "self-reported injury",
+    "GPS-recorded distance",
+    "does not test time-based prescription"
+   ]
+  },
+  {
+   "id": "SRC-RWS-08",
+   "citation": "Dideriksen M, Soegaard C, Nielsen RO. Validity of self-reported running distance. J Strength Cond Res 2016;30(6):1592-6.",
+   "pmid": "26479023",
+   "doi": "10.1519/JSC.0000000000001244",
+   "type": "VALIDATION_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "Self-reported run distance agreed with GPS on average but individual 95% limits of agreement were -28% to +40%.",
+   "limitations": [
+    "abstract only",
+    "one run of free choice per participant"
+   ]
+  }
+ ],
+ "globalConditions": [
+  {
+   "id": "RWS-G.1",
+   "condition": "The canonical dose stays in minutes, decided by the frozen engine. Distance is a re-expression of one time-defined work repetition, never a second dose: it never enters a gate, budget, ramp, taper, progression, review, interference read or the record. With the extension off or any distance unavailable, every output is byte-identical to c8104c1."
+  },
+  {
+   "id": "RWS-G.2",
+   "condition": "Every standing V1RC global condition (G.1-G.8) and item condition applies unchanged. The distance reads the week's band from the V1RC output for that session and never recomputes, widens, narrows or extrapolates it. When V1RC shows no band for a session, there is no distance."
+  },
+  {
+   "id": "RWS-G.3",
+   "condition": "Effort governs every distance repetition: the existing instruction to end the hard part early when effort climbs above the cue stays with the distance, and the distance is never a \"complete at any cost\" target."
+  },
+  {
+   "id": "RWS-G.4",
+   "condition": "The time version of every session stays available; the distance is an alternative expression offered beside it, never the only one. Which one is shown first is a Product decision."
+  },
+  {
+   "id": "RWS-G.5",
+   "condition": "Population as V1RC G.7: nonclinical recreational adults on roads or tracks, outdoors. A treadmill run goes by time (belt speed and calibration are not verified; V1RC Q8.comparability). Trail and hilly runs keep the time expression as the reference."
+  },
+  {
+   "id": "RWS-G.6",
+   "condition": "Every athlete-facing text needs Product copy review; the texts here state required content, not final wording."
+  }
+ ],
+ "items": [
+  {
+   "id": "RWS-Q1",
+   "question": "May a time-defined work repetition of THRESHOLD, FIVE_K_SPECIFIC, TEN_K_SPECIFIC, HALF_MARATHON_SPECIFIC, MARATHON_SPECIFIC and RACE_TOUCH be offered as an equivalent distance from the week's band of its domain? Does this exceed V1RC Q4?",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "NEW_DECISION",
+   "answerOnV1RC": "Yes, it is a new use of the band. V1RC Q4 approved the band as guidance beside the effort cue that changes no dose; it did not approve deriving any prescribed quantity from it. This record makes that new decision, bounded so that the time dose stays the dose and the ceiling of the repetition.",
+   "value": {
+    "eligibleFamilies": [
+     "THRESHOLD",
+     "FIVE_K_SPECIFIC",
+     "TEN_K_SPECIFIC",
+     "HALF_MARATHON_SPECIFIC",
+     "MARATHON_SPECIFIC",
+     "RACE_TOUCH"
+    ],
+    "effectivelyEligibleUnderQ3": "only repetitions of 5 min or more, which in the current ladders means THRESHOLD (all steps), HALF_MARATHON_SPECIFIC (all steps), MARATHON_SPECIFIC (all steps), the half-marathon and marathon race-week touches (2 x 5 min), and taper-reduced repetitions that remain 5 min or longer; FIVE_K_SPECIFIC, TEN_K_SPECIFIC and the 5K and 10K touches stay time-only"
+   },
+   "conditions": [
+    "The distance is a function of the canonical work minutes and the V1RC band of the repetition's domain for the session's week, by the rule of RWS-Q2. plannedPrescriptionHash and doseKey are unchanged.",
+    "The time dose is an upper bound of each distance repetition: the repetition ends at the distance or when its time dose has passed, whichever comes first, and either end counts as the repetition done. This keeps the hard work at or under the prescribed minutes when GPS under-reads (up to 9%, SRC-RWS-01) or when heat, hills, wind or fatigue slow the athlete at the same effort.",
+    "Each distance repetition shows its time dose beside it (\"about N min\") and the effort cue; no text asks the athlete to speed up to reach the distance.",
+    "RACE_TOUCH uses its event's domain band (V1RC raceTouchUsesEventDomain). The race-week touch keeps its standing semantics (brief, only work already done); a distance adds no work.",
+    "Distance is offered only where RWS-Q7 lists no suppression."
+   ],
+   "rationale": "The training stimulus of a repetition is set by its effort domain and its duration; the domains themselves are defined by sustainable duration (V1RC:SRC07). A distance computed from the slowest in-band pace covers no more than the time dose for any in-band runner, so the dose is not increased; it is shortened at most by the band width for a runner at the fast edge, which is the uncertainty V1RC already accepted. No trial compares the same session prescribed by time and by distance (negative searches), so the equivalence is arithmetic and conditional on the band, not demonstrated. The one asymmetry found is that a fixed distance does not shrink the work when conditions or GPS error slow the runner, while a fixed time does; the time-dose ceiling removes that asymmetry without a new number.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "LOW",
+   "confidenceReason": "No direct comparative evidence; the ruling rests on the standing band (itself LOW confidence for the race-pace domains) and on GPS validation studies that do not test repetitions.",
+   "sourceIds": [
+    "V1RC:SRC07",
+    "V1RC:SRC21",
+    "SRC-RWS-01",
+    "SRC-RWS-02"
+   ],
+   "applicabilityLimits": "Outdoor road or track running by nonclinical recreational adults with a current V1RC band. Not treadmill, trail or hilly courses as a reference. No claim that distance-based sessions improve adherence or outcomes."
+  },
+  {
+   "id": "RWS-Q2",
+   "question": "Which band edge converts minutes to metres, the rounding unit and direction, and the largest shortfall below which the session stays in time.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "NEW_DECISION (tolerance tied to an approved V1RC value)",
+   "value": {
+    "edge": "SLOW",
+    "direction": "DOWN",
+    "unitsMetresCoarsestFirst": [
+     100,
+     50,
+     10
+    ],
+    "tolerance": 0.015,
+    "rule": "slowEdgeMetres = workMinutes x 60 / slowSecondsPerKm x 1000; for U in [100, 50, 10], R = floor(slowEdgeMetres / U) x U; take the first (coarsest) U with R x (1 + 0.015) >= slowEdgeMetres; if none, UNAVAILABLE: ROUNDING_TOLERANCE_EXCEEDED"
+   },
+   "conditions": [
+    "The slow edge is the V1RC band edge as output (already rounded to the slower 5 s/km); the unrounded estimate is never used.",
+    "Rounding is always down, so at the slowest in-band pace the distance never takes longer than the time dose.",
+    "The tolerance 0.015 is not a new number: it is the V1RC fraction by which a work pace must differ from a band edge before V1RC treats it as off the band (values.recalibration.training up and down triggers; Q8.raceOrTest deadband). Covering the rounded distance in exactly the time dose corresponds to a pace at most 1.5% slower than the slow edge, which V1RC still reads as on the band.",
+    "The units 100, 50 and 10 m are display units, not sporting values: 10 m is the 0.01 km resolution of watch displays; coarser units are used only when they still meet the tolerance. The sporting constraint is the tolerance, not the unit.",
+    "Shown values: metres per repetition, and the expected repetition duration as a range from R x fastSecondsPerKm to R x slowSecondsPerKm, never a single time."
+   ],
+   "rationale": "The slow edge and down-rounding keep the expression conservative in the same direction as V1RC (both edges rounded to the slower 5 s; slower is always valid; start at the slower end on race day). Tying the shortfall tolerance to the V1RC on-band fraction avoids inventing a tolerance: the rounded distance stays a distance the time dose covers at a pace V1RC still counts as in the band.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "confidenceReason": "The rule is arithmetic and tied to approved values; it inherits the band's own uncertainty, which is not reduced.",
+   "sourceIds": [
+    "V1RC:SRC05"
+   ],
+   "applicabilityLimits": "Applies only to repetitions admitted by RWS-Q3."
+  },
+  {
+   "id": "RWS-Q3",
+   "question": "Minimum repetition distance by GPS, and whether a track or measured course allows shorter repetitions.",
+   "ruling": "APPROVE_WITH_CONDITIONS (minimum by time, tied to V1RC) + ABSTAIN (any GPS distance minimum and any shorter repetition on a track)",
+   "category": "NEW_DECISION tied to approved value; EVIDENCE_DEPENDENT for shorter repetitions",
+   "value": {
+    "minimumRepetitionWorkMinutes": 5,
+    "tiedTo": "SSCTR-V1RC-DECISION-r1 values.recalibration.training.sessionRequires.everyWorkBoutMinutesMin (5), set there because GPS error is comparable to the adjustment step in shorter bouts",
+    "gpsMinimumMetres": null,
+    "trackException": false,
+    "measurementClass": "single class; no TRACK_OR_MEASURED variant"
+   },
+   "conditions": [
+    "A work repetition whose canonical time dose is under 5 min gets no distance (UNAVAILABLE: REPETITION_SHORTER_THAN_MINIMUM). This applies equally to ladder steps, race-week touches and taper-reduced repetitions.",
+    "No distance-based minimum (in metres) is set: no wrist-watch evidence at repetition scale was found.",
+    "A track or measured course does not unlock shorter repetitions in V1: the app cannot verify the surface, current watches still err on tracks (MAPE up to 12.1%, SRC-RWS-02), and with 100 m track markings the RWS-Q2 tolerance cannot be met for most short repetitions. The handoff's measurement: GPS_OK | TRACK_OR_MEASURED field is not needed; every distance has the same class."
+   ],
+   "rationale": "Wrist GPS errors of 3-6% on 0.4-4.3 km references, with wide absolute limits of agreement and underestimation off-track (SRC-RWS-01), and large percent errors at very short distances in team-sport units (SRC-RWS-03), mean that for a 1-4 min repetition the measured distance error can be of the order of the band width or larger, so a distance target there would mostly express measurement noise. The literature gives no defensible number for a GPS minimum, so this record sets none and reuses the 5-min bout already approved in V1RC for the same reason. This also makes the distance domains exactly the V1RC domains that already trust measured bouts (THRESHOLD, HALF, MARATHON).",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS (5-min tie); INSUFFICIENT_EVIDENCE (GPS minimum in metres; track exception)",
+   "confidence": "LOW",
+   "confidenceReason": "Indirect evidence: no validation study of wrist GNSS on individual repetitions was found.",
+   "sourceIds": [
+    "SRC-RWS-01",
+    "SRC-RWS-02",
+    "SRC-RWS-03",
+    "SRC-RWS-04",
+    "SRC-RWS-05",
+    "V1RC:SRC13"
+   ],
+   "applicabilityLimits": "Outdoor GNSS watch or phone. Re-review on a validation of wrist GNSS on 200-1600 m repetitions or on a Product/Data proposal with a verified measured-course context."
+  },
+  {
+   "id": "RWS-Q4",
+   "question": "Recoveries between repetitions stay in time, never a distance.",
+   "ruling": "APPROVE",
+   "category": "NEW_DECISION (consistent with the engine)",
+   "value": {
+    "recoveryUnit": "TIME",
+    "recoveryAlwaysWalkOrEasyJog": true,
+    "recoveryDistance": false,
+    "noRecoveryAfterLastRepetition": true
+   },
+   "conditions": [
+    "Recovery keeps the engine's minutes and the existing text \"easy jog or walk\"; it is excluded from every distance figure (it may be walked)."
+   ],
+   "rationale": "The engine's budget and duration count recoveries in minutes; a distance recovery would lengthen recovery time for slower or walking athletes and change the session duration the engine reads. Time-based recovery in the 1-4 min range had limited effect on self-paced work in the one trial found.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "SRC-RWS-06"
+   ],
+   "applicabilityLimits": "SRC-RWS-06 is in well-trained men; the ruling relies mainly on consistency with the frozen dose."
+  },
+  {
+   "id": "RWS-Q5",
+   "question": "Warm-up and cool-down stay in time; strides stay in seconds, optional, by feel.",
+   "ruling": "APPROVE",
+   "category": "ALREADY_APPROVED (strides no band: V1RC Q4.rule5) + NEW_DECISION (warm-up and cool-down by time)",
+   "value": {
+    "warmupUnit": "TIME",
+    "cooldownUnit": "TIME",
+    "stridesUnit": "SECONDS",
+    "stridesOptionalWhereEngineSaysSo": true,
+    "stridesBand": false,
+    "stridesDistance": false
+   },
+   "conditions": [
+    "Strides keep the engine's text (smooth, never a sprint; optional where the engine marks them optional)."
+   ],
+   "rationale": "Warm-up and cool-down are easy running whose purpose is time at low effort; strides of about 20 s are too short for a pace or distance reading (V1RC Q4.rule5).",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "V1RC:SRC21"
+   ],
+   "applicabilityLimits": "None beyond V1RC."
+  },
+  {
+   "id": "RWS-Q6",
+   "question": "EASY, LONG, RECOVERY_EASY, SHAKEOUT (including the marathon long run) get no distance target; an approximate km range is informational only.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "ALREADY_APPROVED (ceilings: V1RC Q4.rule2) + NEW_DECISION (no distance target; upper bound only)",
+   "value": {
+    "continuousFamiliesWithoutDistanceTarget": [
+     "EASY",
+     "LONG",
+     "RECOVERY_EASY",
+     "SHAKEOUT",
+     "WALK",
+     "WALK_JOG"
+    ],
+    "approximateDistance": "UPPER_BOUND_ONLY"
+   },
+   "conditions": [
+    "Time governs these runs. No distance target, minimum or goal, including for the marathon long run.",
+    "An approximate distance, if Product shows one, is an upper bound only (\"up to about N km\"): minutes x speed at the fast edge (the ceiling) of the session's V1RC band, rounded down to 0.1 km. No lower figure is shown, because the slow side of an easy band is never a minimum pace (V1RC Q4.EASY) and a low figure would read as a floor.",
+    "If the session has no band, there is no approximate distance."
+   ],
+   "rationale": "Easy bands are ceilings: slower is always valid. A distance target would make slower runners run longer and reward speed. Single-session distance spikes above recent longest runs are associated with overuse injury in a large cohort (observational, SRC-RWS-07); keeping these runs governed by the engine's time caps avoids introducing a distance goal that could create such spikes.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "SRC-RWS-07",
+    "V1RC:SRC21",
+    "V1RC:SRC22"
+   ],
+   "applicabilityLimits": "No claim that time-based prescription prevents injury (SRC-RWS-07 is an association measured in distance); no injury-prevention text."
+  },
+  {
+   "id": "RWS-Q7",
+   "question": "Cases with no distance; add or remove.",
+   "ruling": "APPROVE_WITH_CONDITIONS (author list kept, six reasons added)",
+   "category": "ALREADY_APPROVED (V1RC no-band cases) + NEW_DECISION (additions)",
+   "value": "see values.unavailableReasons",
+   "conditions": [
+    "Kept from the author: band unavailable (any V1RC reason); first exposure to a ladder (the engine says there is no pace target); WALK_JOG, RESTART, RETURN modes; hold, clinical route, warning-sign screen required; harder session after a test in the same week (V1RC R-12, TEST_ALREADY_DONE_THIS_WEEK); completion race day; FAMILIAR_REPEATED_BOUTS; race day.",
+    "Added: repetition under 5 min (RWS-Q3); rounding tolerance not met (RWS-Q2); completion-read risk (values.completionRead); marathon-effort band whose central marathon estimate is above 6:00:00 (V1RC recheck condition (c): such a band is not shown, so no distance may be derived from it; the extension must apply this itself, it cannot rely on the client); session converted by the engine to an easy run or walk (it is no longer a repetition family); structure or extension error, wrong values sha or missing enabling record.",
+    "Removed: none.",
+    "Withdrawal is immediate as in V1RC Q9: a hold, a break of 14 days or more or a return removes the distance at once, inside the week."
+   ],
+   "rationale": "Each case either has no band (so no distance can exist), is effort-led by standing design (first exposure, familiar task, completion), or is a case where the distance would be noise, mis-rounded or misread by the engine.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "SRC-RWS-01"
+   ],
+   "applicabilityLimits": "Each reason must be produced by a test and no other reason may produce UNAVAILABLE (handoff T5)."
+  },
+  {
+   "id": "RWS-Q8",
+   "question": "The distance of the same time dose follows the band at each week boundary. Acceptable as not a progression step?",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "ALREADY_APPROVED (week-boundary stability: V1RC Q8.weekBoundary) + NEW_DECISION",
+   "value": {
+    "changesOnlyAtWeekBoundary": true,
+    "frozenWithinWeek": true,
+    "exception": "withdrawal (V1RC Q9)",
+    "isProgression": false,
+    "doseKeyUnchanged": true
+   },
+   "conditions": [
+    "The change is not bounded by 4.5%: training adjustments move a band at most 1.5% a week and 4.5% in total, but a new race or test can move it further (V1RC Q2, Q8.raceOrTest). That is acceptable because the time dose does not change and stays the ceiling of each repetition.",
+    "A change in distance is never described as progression, harder work or a reward (\"same time; distance from your current pace\"). Progression stays the ladder step.",
+    "Future weeks are provisional exactly as their V1RC bands are."
+   ],
+   "rationale": "The stimulus is time in the effort domain; distance follows current capacity. V1RC week-boundary stability and immediate withdrawal already bound how and when the band moves.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "V1RC:SRC05"
+   ],
+   "applicabilityLimits": "Depends on V1RC Q2, Q8 and Q9 staying in force."
+  },
+  {
+   "id": "RWS-Q9",
+   "question": "No new session family in V1; VO2 de novo, hills, fartlek, progression runs and long run with marathon-effort finish stay out.",
+   "ruling": "APPROVE",
+   "category": "ALREADY_APPROVED (standing V1 repertoire; LATER.RUN.VO2_DE_NOVO and LATER.RUN.STEADY stay open)",
+   "value": {
+    "newFamilies": [],
+    "outOfV1": [
+     "VO2 intervals de novo",
+     "hills",
+     "fartlek",
+     "progression runs",
+     "long run with marathon-effort finish",
+     "moderate-continuous (steady) run"
+    ]
+   },
+   "conditions": [
+    "Any of these needs its own SSCTR decision with dose, gates and progression; a distance expression never creates one."
+   ],
+   "rationale": "This record re-expresses existing doses only; it is not a repertoire decision and makes no claim that the V1 repertoire is optimal.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [],
+   "applicabilityLimits": "Scope statement; no new literature consulted."
+  },
+  {
+   "id": "RWS-Q10",
+   "question": "A familiar quality task reported by distance with the athlete's stated pace normalised to minutes for B0-C02 intake.",
+   "ruling": "ABSTAIN (deferred to a later mission)",
+   "category": "EVIDENCE_DEPENDENT / NOT_TRIVIALLY_SAFE",
+   "value": null,
+   "conditions": [
+    "Until decided, a familiar task stated only in distance is not converted; the intake behaves as today."
+   ],
+   "rationale": "The normalised minutes would come from a self-reported pace (individual self-report of distance disagrees with GPS by -28% to +40%, SRC-RWS-08) and would then feed engine comparisons that read workMinutes, including the rule that the race-week touch is never more than the familiar task. That is a new input to the dose, not a re-expression, and needs Data semantics for the stated pace and its provenance before a sporting decision.",
+   "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+   "confidence": "LOW",
+   "sourceIds": [
+    "SRC-RWS-08"
+   ],
+   "applicabilityLimits": "Re-open with a Data proposal for stated-pace provenance and a list of every engine read of the familiar workMinutes."
+  },
+  {
+   "id": "RWS-Q11",
+   "question": "Planned weekly km is informational only and never feeds a gate, cap, progression or taper.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "NEW_DECISION",
+   "value": {
+    "weeklyKm": "INFORMATIONAL_UPPER_BOUND_ONLY",
+    "feedsNothing": true
+   },
+   "conditions": [
+    "Weekly km, if shown, is the sum of the sessions' upper bounds (\"up to about\"), only when every planned run session of the week has one; otherwise it is unavailable (a partial sum would understate).",
+    "It never feeds a gate, cap, ramp, progression, taper, review, interference read or the record, and mutating it changes no engine output (handoff T8).",
+    "Planned km is never compared with executed km as an adherence or completion measure; any such comparison is a G03 question that needs Product/UX and Data semantics first."
+   ],
+   "rationale": "The engine's load is time; km derived from bands carries the band's uncertainty and the device's 3-9% error, so using it as load would double-count the dose and import measurement noise into decisions.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "SRC-RWS-01",
+    "SRC-RWS-07"
+   ],
+   "applicabilityLimits": "No km-based safety cap is introduced or implied (SRC-RWS-07 is observational and in distance; adopting a km cap would be a new policy)."
+  }
+ ],
+ "values": {
+  "eligibleFamilies": [
+   "THRESHOLD",
+   "FIVE_K_SPECIFIC",
+   "TEN_K_SPECIFIC",
+   "HALF_MARATHON_SPECIFIC",
+   "MARATHON_SPECIFIC",
+   "RACE_TOUCH"
+  ],
+  "domainOfRepetition": "V1RC values.domains[*].families; RACE_TOUCH by the event's domain (raceTouchUsesEventDomain)",
+  "bandSource": "runCalibration.sessions[sessionId].pace of the session's own week (V1RC output, status AVAILABLE), never recomputed",
+  "conversion": {
+   "edge": "SLOW",
+   "slowEdgeMetres": "workMinutes x 60 / slowSecondsPerKm x 1000",
+   "roundingDirection": "DOWN",
+   "unitsMetresCoarsestFirst": [
+    100,
+    50,
+    10
+   ],
+   "tolerance": 0.015,
+   "accept": "R x (1 + tolerance) >= slowEdgeMetres",
+   "toleranceTiedTo": "SSCTR-V1RC-DECISION-r1 values.recalibration (training up/down trigger 0.015; newRaceOrTest deadbandFraction 0.015)"
+  },
+  "minimumRepetitionWorkMinutes": 5,
+  "minimumRepetitionTiedTo": "SSCTR-V1RC-DECISION-r1 values.recalibration.training.sessionRequires.everyWorkBoutMinutesMin",
+  "timeDoseIsRepetitionUpperBound": true,
+  "repetitionEnds": "at the distance or when the time dose has passed, whichever comes first; both count as the repetition done",
+  "expectedRepetitionSeconds": {
+   "fast": "R / 1000 x fastSecondsPerKm",
+   "slow": "R / 1000 x slowSecondsPerKm",
+   "shownAs": "range, never a single time"
+  },
+  "completionRead": {
+   "engineRule": "CoachingCore/src/r6-adaptation.mjs:195: a run is complete when actual.minutes >= 0.9 x durationMinutes (engine value, read, not set here)",
+   "paceAllowanceBeyondFastEdge": 0.015,
+   "paceAllowanceTiedTo": "the same V1RC on-band fraction",
+   "check": "warmupMinutes + cooldownMinutes + (repetitions - 1) x recoveryMinutes + repetitions x min(workMinutes, R / 1000 x fastSecondsPerKm / (1 + 0.015) / 60) >= 0.9 x durationMinutes",
+   "onFail": "UNAVAILABLE: COMPLETION_READ_RISK (the session stays in time)",
+   "warmupCooldownRecoveryFrom": "the canonical prescription fields, never defaults"
+  },
+  "stepUnits": {
+   "WARMUP": "TIME",
+   "COOLDOWN": "TIME",
+   "RECOVERY": "TIME",
+   "STRIDES": "SECONDS (optional where the engine says so; no band)",
+   "STEADY_CONTINUOUS": "TIME",
+   "WORK": "TIME, plus distance when available"
+  },
+  "approximateDistance": {
+   "kind": "UPPER_BOUND_ONLY",
+   "edge": "FAST (ceiling) of the band of each step's domain; warm-up and cool-down use the EASY band",
+   "excludes": [
+    "RECOVERY",
+    "STRIDES"
+   ],
+   "workWithDistance": "repetitions x R metres",
+   "roundingKm": 0.1,
+   "roundingDirection": "DOWN",
+   "requires": "a band for every non-recovery, non-stride step, else UNAVAILABLE",
+   "isTarget": false,
+   "isFloor": false,
+   "feedsNothing": true
+  },
+  "weeklyKm": {
+   "kind": "UPPER_BOUND_ONLY",
+   "sum": "of session approximate upper bounds",
+   "requires": "every planned run session of the week has one, else UNAVAILABLE",
+   "feedsNothing": true,
+   "notAnAdherenceMeasure": true
+  },
+  "weekBoundary": {
+   "changesOnlyAtWeekBoundary": true,
+   "frozenWithinWeek": true,
+   "exception": "V1RC Q9 withdrawal, immediate",
+   "provisionalFutureWeeks": true
+  },
+  "unavailableReasons": [
+   "EXTENSION_NOT_ENABLED",
+   "HOLD_NO_PRESCRIPTION",
+   "CLINICAL_ROUTE",
+   "WARNING_SIGN_SCREEN_REQUIRED",
+   "MODE_WALK_JOG_RESTART_RETURN",
+   "BAND_UNAVAILABLE (carrying the V1RC reason)",
+   "MARATHON_ESTIMATE_ABOVE_360_MIN",
+   "FIRST_EXPOSURE",
+   "TEST_ALREADY_DONE_THIS_WEEK",
+   "NOT_A_REPETITION_FAMILY (WALK, WALK_JOG, EASY, LONG, RECOVERY_EASY, SHAKEOUT, RACE incl. completion race day, and any session the engine converted to easy)",
+   "NO_BAND_FOR_SESSION_TYPE (FAMILIAR_REPEATED_BOUTS)",
+   "REPETITION_SHORTER_THAN_MINIMUM",
+   "ROUNDING_TOLERANCE_EXCEEDED",
+   "COMPLETION_READ_RISK",
+   "STRUCTURE_ERROR"
+  ],
+  "reasonPrecedence": "the first applicable reason in the order listed",
+  "textRequirements": [
+   "every distance repetition carries the effort cue, the time dose (\"about N min\") and the existing line \"if effort climbs above the cue, end the hard part early; an easy finish is fine\"",
+   "no \"complete at any cost\", no request to speed up, no progression wording for a distance change",
+   "FORBIDDEN_CLAIM filter applies to every step text"
+  ],
+  "workedExamplesNote": "Bands are taken from SSCTR-V1RC-DECISION-r1 values.workedExamples (named by profile); warm-up 10 and cool-down 5 min as the R6 quality defaults; reproduced by a scratch calculation outside the repository. The last two cases are synthetic band inputs that only exercise the suppression rules.",
+  "workedExamples": [
+   {
+    "label": "THRESHOLD step 0 (3x5 min), 10K_50min_HIGH threshold band",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 5,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 310,
+    "bandSlowSecondsPerKm": 330,
+    "bandDisplay": "5:10-5:30 /km",
+    "canonicalDurationMinutes": 34,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 900,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 909.09,
+     "shortfallVsSlowEdge": 0.01,
+     "repetitionSecondsAtFastEdge": 279,
+     "repetitionSecondsAtSlowEdge": 297,
+     "timeDoseSecondsUpperBound": 300,
+     "completionCheck": {
+      "predictedMinutes": 32.74,
+      "floor": 30.6,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "THRESHOLD step 0 (3x5 min), 10K_70min_MODERATE threshold band",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 5,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 440,
+    "bandSlowSecondsPerKm": 475,
+    "bandDisplay": "7:20-7:55 /km",
+    "canonicalDurationMinutes": 34,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 630,
+     "roundingUnitMetres": 10,
+     "slowEdgeMetresUnrounded": 631.58,
+     "shortfallVsSlowEdge": 0.0025,
+     "repetitionSecondsAtFastEdge": 277.2,
+     "repetitionSecondsAtSlowEdge": 299.3,
+     "timeDoseSecondsUpperBound": 300,
+     "completionCheck": {
+      "predictedMinutes": 32.66,
+      "floor": 30.6,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "THRESHOLD step 5 (3x10 min), 10K_50min_HIGH threshold band",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 10,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 310,
+    "bandSlowSecondsPerKm": 330,
+    "bandDisplay": "5:10-5:30 /km",
+    "canonicalDurationMinutes": 49,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 1800,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 1818.18,
+     "shortfallVsSlowEdge": 0.01,
+     "repetitionSecondsAtFastEdge": 558,
+     "repetitionSecondsAtSlowEdge": 594,
+     "timeDoseSecondsUpperBound": 600,
+     "completionCheck": {
+      "predictedMinutes": 46.49,
+      "floor": 44.1,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "THRESHOLD step 3 (3x8 min), 5K_30min_MODERATE threshold band",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 8,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 395,
+    "bandSlowSecondsPerKm": 445,
+    "bandDisplay": "6:35-7:25 /km",
+    "canonicalDurationMinutes": 43,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 1070,
+     "roundingUnitMetres": 10,
+     "slowEdgeMetresUnrounded": 1078.65,
+     "shortfallVsSlowEdge": 0.008,
+     "repetitionSecondsAtFastEdge": 422.7,
+     "repetitionSecondsAtSlowEdge": 476.2,
+     "timeDoseSecondsUpperBound": 480,
+     "completionCheck": {
+      "predictedMinutes": 39.82,
+      "floor": 38.7,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "FIVE_K_SPECIFIC step 0 (6x2 min), 5K_30min_MODERATE 5K band",
+    "family": "FIVE_K_SPECIFIC",
+    "work": {
+     "repetitions": 6,
+     "workMinutes": 2,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 370,
+    "bandSlowSecondsPerKm": 400,
+    "bandDisplay": "6:10-6:40 /km",
+    "canonicalDurationMinutes": 37,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "REPETITION_SHORTER_THAN_MINIMUM",
+     "timeOnly": true
+    }
+   },
+   {
+    "label": "TEN_K_SPECIFIC step 0 (5x3 min), 10K_50min_HIGH 10K band",
+    "family": "TEN_K_SPECIFIC",
+    "work": {
+     "repetitions": 5,
+     "workMinutes": 3,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 305,
+    "bandSlowSecondsPerKm": 320,
+    "bandDisplay": "5:05-5:20 /km",
+    "canonicalDurationMinutes": 38,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "REPETITION_SHORTER_THAN_MINIMUM",
+     "timeOnly": true
+    }
+   },
+   {
+    "label": "HALF_MARATHON_SPECIFIC step 0 (2x12 min), 10K_50min_HIGH half band",
+    "family": "HALF_MARATHON_SPECIFIC",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 12,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 325,
+    "bandSlowSecondsPerKm": 340,
+    "bandDisplay": "5:25-5:40 /km",
+    "canonicalDurationMinutes": 42,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 2100,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 2117.65,
+     "shortfallVsSlowEdge": 0.0083,
+     "repetitionSecondsAtFastEdge": 682.5,
+     "repetitionSecondsAtSlowEdge": 714,
+     "timeDoseSecondsUpperBound": 720,
+     "completionCheck": {
+      "predictedMinutes": 40.41,
+      "floor": 37.8,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "HALF_MARATHON_SPECIFIC step 0 (2x12 min), 10K_70min_MODERATE half band",
+    "family": "HALF_MARATHON_SPECIFIC",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 12,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 455,
+    "bandSlowSecondsPerKm": 495,
+    "bandDisplay": "7:35-8:15 /km",
+    "canonicalDurationMinutes": 42,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 1450,
+     "roundingUnitMetres": 50,
+     "slowEdgeMetresUnrounded": 1454.55,
+     "shortfallVsSlowEdge": 0.0031,
+     "repetitionSecondsAtFastEdge": 659.8,
+     "repetitionSecondsAtSlowEdge": 717.8,
+     "timeDoseSecondsUpperBound": 720,
+     "completionCheck": {
+      "predictedMinutes": 39.67,
+      "floor": 37.8,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "MARATHON_SPECIFIC step 0 (2x15 min), HALF_110min_HIGH marathon band",
+    "family": "MARATHON_SPECIFIC",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 15,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 350,
+    "bandSlowSecondsPerKm": 370,
+    "bandDisplay": "5:50-6:10 /km",
+    "canonicalDurationMinutes": 48,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 2400,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 2432.43,
+     "shortfallVsSlowEdge": 0.0133,
+     "repetitionSecondsAtFastEdge": 840,
+     "repetitionSecondsAtSlowEdge": 888,
+     "timeDoseSecondsUpperBound": 900,
+     "completionCheck": {
+      "predictedMinutes": 45.59,
+      "floor": 43.2,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "MARATHON_SPECIFIC step 3 (3x20 min), HALF_110min_HIGH marathon band",
+    "family": "MARATHON_SPECIFIC",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 20,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 350,
+    "bandSlowSecondsPerKm": 370,
+    "bandDisplay": "5:50-6:10 /km",
+    "canonicalDurationMinutes": 81,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 3200,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 3243.24,
+     "shortfallVsSlowEdge": 0.0133,
+     "repetitionSecondsAtFastEdge": 1120,
+     "repetitionSecondsAtSlowEdge": 1184,
+     "timeDoseSecondsUpperBound": 1200,
+     "completionCheck": {
+      "predictedMinutes": 76.17,
+      "floor": 72.9,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "RACE_TOUCH half marathon (2x5 min), 10K_50min_HIGH half band",
+    "family": "RACE_TOUCH",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 5,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 325,
+    "bandSlowSecondsPerKm": 340,
+    "bandDisplay": "5:25-5:40 /km",
+    "canonicalDurationMinutes": 28,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 880,
+     "roundingUnitMetres": 10,
+     "slowEdgeMetresUnrounded": 882.35,
+     "shortfallVsSlowEdge": 0.0027,
+     "repetitionSecondsAtFastEdge": 286,
+     "repetitionSecondsAtSlowEdge": 299.2,
+     "timeDoseSecondsUpperBound": 300,
+     "completionCheck": {
+      "predictedMinutes": 27.39,
+      "floor": 25.2,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "RACE_TOUCH marathon (2x5 min), HALF_110min_HIGH marathon band",
+    "family": "RACE_TOUCH",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 5,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 350,
+    "bandSlowSecondsPerKm": 370,
+    "bandDisplay": "5:50-6:10 /km",
+    "canonicalDurationMinutes": 28,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 800,
+     "roundingUnitMetres": 100,
+     "slowEdgeMetresUnrounded": 810.81,
+     "shortfallVsSlowEdge": 0.0133,
+     "repetitionSecondsAtFastEdge": 280,
+     "repetitionSecondsAtSlowEdge": 296,
+     "timeDoseSecondsUpperBound": 300,
+     "completionCheck": {
+      "predictedMinutes": 27.2,
+      "floor": 25.2,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "RACE_TOUCH 5K (3x1 min), 5K_20min_HIGH 5K band",
+    "family": "RACE_TOUCH",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 1,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 245,
+    "bandSlowSecondsPerKm": 255,
+    "bandDisplay": "4:05-4:15 /km",
+    "canonicalDurationMinutes": 22,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "REPETITION_SHORTER_THAN_MINIMUM",
+     "timeOnly": true
+    }
+   },
+   {
+    "label": "RACE_TOUCH 10K (3x2 min), 10K_50min_HIGH 10K band",
+    "family": "RACE_TOUCH",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 2,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 305,
+    "bandSlowSecondsPerKm": 320,
+    "bandDisplay": "5:05-5:20 /km",
+    "canonicalDurationMinutes": 25,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "REPETITION_SHORTER_THAN_MINIMUM",
+     "timeOnly": true
+    }
+   },
+   {
+    "label": "Taper of THRESHOLD 3x10 to 2x8 min (reducedWork, range 0.5-0.6), 10K_50min_HIGH",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 2,
+     "workMinutes": 8,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 310,
+    "bandSlowSecondsPerKm": 330,
+    "bandDisplay": "5:10-5:30 /km",
+    "canonicalDurationMinutes": 33,
+    "expected": {
+     "status": "AVAILABLE",
+     "metresPerRepetition": 1450,
+     "roundingUnitMetres": 50,
+     "slowEdgeMetresUnrounded": 1454.55,
+     "shortfallVsSlowEdge": 0.0031,
+     "repetitionSecondsAtFastEdge": 449.5,
+     "repetitionSecondsAtSlowEdge": 478.5,
+     "timeDoseSecondsUpperBound": 480,
+     "completionCheck": {
+      "predictedMinutes": 31.76,
+      "floor": 29.7,
+      "passes": true
+     }
+    }
+   },
+   {
+    "label": "Synthetic rounding-tolerance case: THRESHOLD 3x5 min, band 9:00-9:50 (outside every V1RC worked example; tests the rule only)",
+    "family": "THRESHOLD",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 5,
+     "recoveryMinutes": 2
+    },
+    "bandFastSecondsPerKm": 540,
+    "bandSlowSecondsPerKm": 590,
+    "bandDisplay": "9:00-9:50 /km",
+    "canonicalDurationMinutes": 34,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "ROUNDING_TOLERANCE_EXCEEDED",
+     "slowEdgeMetresUnrounded": 508.47,
+     "timeOnly": true
+    }
+   },
+   {
+    "label": "Synthetic completion-read case: MARATHON_SPECIFIC 3x20 min, band 3:15-3:40 (very wide; tests the rule only)",
+    "family": "MARATHON_SPECIFIC",
+    "work": {
+     "repetitions": 3,
+     "workMinutes": 20,
+     "recoveryMinutes": 3
+    },
+    "bandFastSecondsPerKm": 195,
+    "bandSlowSecondsPerKm": 220,
+    "bandDisplay": "3:15-3:40 /km",
+    "canonicalDurationMinutes": 81,
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "COMPLETION_READ_RISK",
+     "completionCheck": {
+      "metresPerRepetition": 5400,
+      "predictedMinutes": 72.87,
+      "floor": 72.9,
+      "passes": false
+     },
+     "timeOnly": true
+    }
+   }
+  ],
+  "workedExamplesOtherCases": [
+   {
+    "case": "THRESHOLD 3 x 5 min, firstExposure true, any band",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "FIRST_EXPOSURE",
+     "timeOnly": true
+    }
+   },
+   {
+    "case": "THRESHOLD 3 x 5 min in the week after a 14-day break (plan in RETURN mode)",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "MODE_WALK_JOG_RESTART_RETURN",
+     "timeOnly": true
+    }
+   },
+   {
+    "case": "THRESHOLD later in a week in which a field test was declared done",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "TEST_ALREADY_DONE_THIS_WEEK",
+     "timeOnly": true
+    }
+   },
+   {
+    "case": "MARATHON_SPECIFIC 2 x 15 min with a MARATHON_EFFORT band whose marathon estimate central is 6:10:00",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "MARATHON_ESTIMATE_ABOVE_360_MIN",
+     "timeOnly": true
+    }
+   },
+   {
+    "case": "FAMILIAR_REPEATED_BOUTS (athlete's own target)",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "NO_BAND_FOR_SESSION_TYPE",
+     "timeOnly": true
+    }
+   },
+   {
+    "case": "RACE (non-completion) day",
+    "expected": {
+     "status": "UNAVAILABLE",
+     "reason": "NOT_A_REPETITION_FAMILY",
+     "note": "V1RC race-day reference rules unchanged"
+    }
+   },
+   {
+    "case": "EASY 40 min, EASY band 6:15-7:30 /km (10K_50min_HIGH)",
+    "expected": {
+     "distanceTarget": null,
+     "approximateDistanceKm": {
+      "upperBound": 6.4,
+      "lowerBound": null,
+      "label": "up to about"
+     }
+    }
+   },
+   {
+    "case": "THRESHOLD 3 x 5 min, 900 m per repetition, EASY band 6:15-7:30 and threshold band 5:10-5:30 (10K_50min_HIGH)",
+    "expected": {
+     "approximateDistanceKm": {
+      "upperBound": 5.1,
+      "lowerBound": null,
+      "computation": "15 min warm-up+cool-down at 375 s/km = 2.4 km; 3 x 900 m = 2.7 km; recoveries excluded"
+     }
+    }
+   }
+  ]
+ },
+ "completionReadInteraction": "r6-adaptation.mjs:195 reads a run as complete only if actual.minutes >= 0.9 x durationMinutes. A distance session is shorter than the time session for a runner faster than the slow edge. With the slow edge, down-rounding and the check at 1.5% faster than the fast edge, every current ladder step with the V1RC worked-example bands passes with margin; a sweep of slow edges 200-700 s/km and band ratios up to 1.17 failed only for 3 x 20 min with very wide bands, which become time-only. Residual effect, accepted: a runner who executes distance repetitions clearly faster than the band (off the band by V1RC's own rule) can be read partial and repeat the step; that is the conservative direction and the time version remains available. Engineering/QRE must confirm whether V1RC Q8 recalibration reads the engine's partial flag; if it does, such a session also cannot feed an upward band adjustment, which is acceptable (upward steps change only bands) but must be stated in the contract.",
+ "aeReview": {
+  "level": "Expression of an unchanged dose; no adaptive decision changes.",
+  "q1_currentPlanAdequate": "The plan and its doses are unchanged; adequacy is the engine's.",
+  "q2_materialFact": "The V1RC band of the session's week, with its evidence and date; without it, no distance.",
+  "q3_keepDefensible": "Yes: time-only stays available and is the default fallback for every suppression.",
+  "q4_changeNecessary": "No change to training; the extension is an optional expression requested by the Founder.",
+  "q5_smallestIntervention": "Re-expression only, never a dose; time dose as ceiling.",
+  "q6_smallerAlternativesInsufficient": "Not applicable: no training change is proposed.",
+  "q7_priorityAndProgression": "Progression stays the ladder step; doseKey unchanged; hybrid coordination unchanged.",
+  "q8_evidenceSupportsDose": "No dose is set. The conversion rests on the standing band (LOW confidence for race-pace domains) and on arithmetic; GPS evidence supports keeping short repetitions in time.",
+  "q9_uncertainty": "Band accuracy for the individual; device error 3-9% and up to 12% on some watches on a track; athlete behaviour with a distance target (untested).",
+  "q10_askHoldClinical": "Holds, clinical route and warning-sign screen suppress distance; no new clinical judgment."
+ },
+ "changedFromProposal": [
+  "Q1: added the time dose as an upper bound of each distance repetition (ends at distance or time, whichever first), and the time version always available.",
+  "Q2: tolerance set at 0.015 by tying it to the V1RC on-band fraction; units 100/50/10 m chosen coarsest-first only when the tolerance holds.",
+  "Q3: the author's fallback (5-min bouts) adopted and tied to V1RC; no metres minimum; no track exception; the TRACK_OR_MEASURED class dropped.",
+  "Q6: the approximate distance is an upper bound only; no lower figure.",
+  "Q7: added REPETITION_SHORTER_THAN_MINIMUM, ROUNDING_TOLERANCE_EXCEEDED, COMPLETION_READ_RISK, MARATHON_ESTIMATE_ABOVE_360_MIN, NOT_A_REPETITION_FAMILY for engine-converted sessions, and the extension-error reasons; precedence fixed.",
+  "Q8: the bound is not 4.5% (a race or test can move the band further); acceptable because the time dose is the ceiling.",
+  "Completion invariant: checked at 1.5% faster than the fast edge, not at the fast edge, with the canonical warm-up, cool-down and recoveries.",
+  "Q10: deferred (not trivially safe).",
+  "Q11: weekly km only when every run session has an upper bound; never an adherence measure."
+ ],
+ "abstentions": [
+  {
+   "item": "A GPS minimum repetition distance in metres",
+   "status": "INSUFFICIENT_EVIDENCE (no wrist GNSS validation at repetition scale)",
+   "result": "none set; the 5-min time minimum applies"
+  },
+  {
+   "item": "Shorter repetitions on a track or measured course",
+   "status": "INSUFFICIENT_EVIDENCE plus unverifiable context",
+   "result": "time only"
+  },
+  {
+   "item": "Claim that time- and distance-prescribed intervals produce equivalent adaptations",
+   "status": "INSUFFICIENT_EVIDENCE (no comparative study found)",
+   "result": "equivalence stated only as arithmetic under the band; no outcome claim"
+  },
+  {
+   "item": "Familiar quality task normalised from distance and stated pace (Q10)",
+   "status": "INSUFFICIENT_EVIDENCE / Data dependency",
+   "result": "deferred"
+  },
+  {
+   "item": "Any km-based cap or safety rule",
+   "status": "not requested; SRC-RWS-07 is observational",
+   "result": "none"
+  }
+ ],
+ "proposedQueueItems": [
+  {
+   "queue_id": "HQ-RWS-SSCTR-DIST",
+   "decision_id": "SSCTR-RWS-DECISION-r1#RWS-Q1,Q2,Q3,Q7,Q8",
+   "scope": "distance re-expression of time-defined quality repetitions (boundary V1X-RUN-DISTANCE): slow edge, down-rounding, 0.015 tolerance, 5-min minimum, time-dose ceiling, suppressions, completion-read check"
+  },
+  {
+   "queue_id": "HQ-RWS-SSCTR-APPROX",
+   "decision_id": "SSCTR-RWS-DECISION-r1#RWS-Q6,Q11",
+   "scope": "informational upper-bound distance for continuous runs and planned weekly km"
+  }
+ ],
+ "proposedQueueItemCommon": {
+  "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+  "appended": false,
+  "appendOwner": "Founder / Chief (this instance writes only its two files; the queue is unchanged)",
+  "human_review": null,
+  "approval_date": "2026-11-13",
+  "reReviewTrigger": "see expiry.triggers"
+ },
+ "escalations": [
+  {
+   "to": "Product",
+   "item": "Default expression (time or distance), the wording of \"ends at the distance or at about N min, whichever first\", the \"up to about\" approximate distance and whether to show it at all, treadmill guidance. Not blocking the sporting values."
+  },
+  {
+   "to": "Data",
+   "item": "Semantics of actual.expression and of a repetition ended by the time ceiling; G03: planned versus executed km is not an adherence measure until Product/UX and Data define it."
+  },
+  {
+   "to": "Engineering / QRE",
+   "item": "Confirm whether V1RC Q8 reads the engine partial flag (completionReadInteraction); implement MARATHON_ESTIMATE_ABOVE_360_MIN inside the extension; read warm-up, cool-down and recovery from the canonical prescription."
+  },
+  {
+   "to": "Founder",
+   "item": "None required. Q10 is deferred to a later mission at the Founder's discretion."
+  },
+  {
+   "to": "Clinical",
+   "item": "None new: symptoms stay on the existing route."
+  }
+ ],
+ "validation": {
+  "skillValidator": "not run (Python is not installed)",
+  "schema": "Multi-item record in the shape of SSCTR-V1RC-DECISION-r1, not decision.schema.json (one decision per record).",
+  "jsonWellFormed": "checked with Node",
+  "workedExamples": "computed by a scratch script implementing values.conversion and values.completionRead; not a test of any implementation"
+ },
+ "governance": {
+  "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+  "wholeGateClosure": false,
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "enablesBoundaries": false
+ },
+ "expiry": {
+  "owner": "Chief / SSCTR",
+  "reviewBy": "2027-05-11",
+  "dependsOn": "SSCTR-V1RC-DECISION-r1 (same review date); if that record is superseded or its bands change, this record is invalid until re-reviewed",
+  "triggers": [
+   "supersession or amendment of SSCTR-V1RC-DECISION-r1 or a change to RUN_CALIBRATION_EXTENSION_V1.json",
+   "a validation study of wrist GNSS on individual running repetitions, or a study comparing time- and distance-prescribed interval sessions",
+   "any change to the ladders, taper reduction, race-week touches, warm-up and cool-down defaults or the 0.9 completion read",
+   "the first real product data on distance-expressed sessions (completion, partial reads, repetitions ended by the time ceiling), or any adverse event in such a session",
+   "a runtime inconsistency found by the candidate judges",
+   "a change of V1 population, events, session families or effort cues",
+   "the Founder's funding declaration (human revalidation)"
+  ]
+ }
+}

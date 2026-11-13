@@ -1,0 +1,595 @@
+{
+  "recordId": "SSCTR-RWS-R2-DECISION",
+  "date": "2026-11-13",
+  "mission": "RUN WORKOUT STRUCTURE, corrected by the Founder on 2026-11-13 (native prescription by distance or time); branch claude/v1-run-workout-structure at c8104c1 (COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1, untouched)",
+  "reviewer": {
+    "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision author",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+    "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5, effort high). Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed. This instance did not author SSCTR-RWS-DECISION-r1 or SSCTR-V1RC-DECISION-r1 as far as it can tell; it read them as standing records.",
+    "nature": "An AI software reviewer with no human credentials, licence, degree or registration and no clinical or legal equivalence. This record is an internal literature-based sporting decision, not human validation, empirical product validation or medical clearance.",
+    "independence": "Independent of the author of the proposals (the Chief). This instance authors the rulings and values below and must not judge the implemented candidate or issue the V1X-RUN-NATIVE enabling record; a fresh SSCTR instance does that (SSCTR-08). Nothing here is a self-check counted as independent approval."
+  },
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical sporting decisions only. Clinical judgment stays CLINICAL_HUMAN_REQUIRED. No runtime sovereignty, no Product Truth publication, no gate closure, no change to any frozen record, no boundary enabled.",
+  "inputs": {
+    "request": "audits/v1-run-workout-structure-2026-11-13/SSCTR_DECISION_REQUEST_RWS_R2.md (sha256 67265ae03809ea3a958007c6b05b463fec00926164851c46e95d93be17930823)",
+    "handoff": "audits/v1-run-workout-structure-2026-11-13/HANDOFF_RUN_WORKOUT_STRUCTURE.md r2, sections 1-8 (sha256 7a932cddc90cb2875cb313cc693c72b065b2483012d9357d212445e1077b90cc; status, section 9 and section 13 are placeholders)",
+    "history": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_DECISION.json (SSCTR-RWS-DECISION-r1, sha256 e17e2519b01e13b516379f33abde702567944d4976ae559490b3d3a8aed415d1): history for this request; its values remain the EQUIVALENT mode",
+    "standingDecision": "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json (SSCTR-V1RC-DECISION-r1, sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3): values.domains, paceRules, recalibration, withdrawal, workedExamples",
+    "valuesInForce": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): domains, paceRules, assessment.P1/P2, recalibration",
+    "eventValues": "CoachingCore/v1/EVENT_EXTENSION_V1.json (sha256 8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8): fiveK.specificLadder (+ specificLadderRequiresRunExperience), fiveK.raceWeekTouch, marathon.specificLadder, marathon.raceWeekTouch, marathon.longRunTarget 180",
+    "ladders": "CoachingCore/r6/INITIAL_PROGRAM_GENERATION_R6.json (sha256 f759f912c513a2495cac31c0bb24dda8caa3ae72e5263e4baeeceb40bfba9259): run.thresholdLadder, tenKSpecificLadder, halfMarathonSpecificLadder, strides, qualityWarmupMinutes 10, qualityCooldownMinutes 5, longRunStepMinutes, easyStepMinutes; CoachingCore/r6/EVENT_TRANSITION_R6.json (sha256 9d88df56b342625b8974d0f3effe8144e4d47d8d12ac6ac5c3c1dd92eda792dc): raceWeekTouch 10K/HALF_MARATHON, taperQualityWorkRange, reducedWorkMinimums",
+    "codeReadOnly": "CoachingCore/src/r6-prescription.mjs (sha256 35e3844cbf64d58baed672d5f9645eac6de76ad6d142164d5beea963ec8f0da4): reducedWork, easyPrescription, qualityPrescription, validateR6Prescription; CoachingCore/src/r6-adaptation.mjs (sha256 be280b07fb72d07c556747040dc842795804587911d062f6fc46f895601f9d1d) line 195 (minutesOk = actual.minutes >= 0.9 x durationMinutes) and doseKeyOf; CoachingCore/src/r6-program.mjs (sha256 c603bada95fed95f0796f793d759c90b048aadd67a9d0ecaaa9e43a1c7111f45): qualityFor (firstExposure = ladder step 0), phases, run classes; CoachingCore/src/v1-run-calibration.mjs (sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01): observedEasy, bandsOf",
+    "worktreeHead": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+    "hostInjectedContext": "The host injected the global and project CLAUDE.md files and the project MEMORY.md index into this instance. They were used only for routing and limits, not as evidence.",
+    "notReviewed": "No other repository file was audited. No implementation exists; none is judged."
+  },
+  "literatureAccess": {
+    "tools": "Europe PMC REST API (search, core metadata and fullTextXML endpoints) called with Node fetch from the shell. WebSearch and WebFetch were available as deferred tools but were not used; no consumer or commercial page was used as evidence.",
+    "fullTextRead": [
+      "SRC-RWS2-01 Haugen 2022 (PMC8975965): Table 2 (training methods: threshold intervals, VO2max intervals, progressive long runs), Table 3 (intensity scale, interval and recovery durations) and the taper passage. Read in those passages.",
+      "SRC-RWS2-07 Schoenmakers 2026 (PMC13480085): abstract, the active-versus-passive recovery meta-analysis passage, Discussion on recovery modality, Limitations, Table 5. Read in those passages.",
+      "SRC-RWS2-08 Segev 2026 (PMC13611252): abstract, participants, protocol (250 m base interval, 8% steps, treadmill, walking recovery), main results. Read in those passages.",
+      "SRC-RWS2-09 Knopp 2024 (PMC11065819): abstract, methods on plan units, Table 1 (plans prescribed in time, distance or both), results and limitations. Read in those passages.",
+      "SRC-RWS2-10 Grivas 2026 (PMC12832444): abstract and the passages on progression runs and interval ladders. Read in those passages; it is a mini-review with experience-based guidance and is auxiliary only.",
+      "SRC-RWS2-11 Zouhal 2024 (PMC10914654): results summary and conclusions. Read in those passages."
+    ],
+    "abstractOnly": "SRC-RWS2-02 Seiler 2013, SRC-RWS2-03 Buchheit and Laursen 2013 Part I, SRC-RWS2-04 Casado 2022, SRC-RWS2-05 Ranieri 2026 and SRC-RWS2-06 Varela-Sanz 2023 were read as abstracts only. Each is used only for what its abstract reports and none is the sole basis of a ruling.",
+    "reusedFromStandingRecords": "SRC-RWS-01 Gilgen-Ammann 2020, SRC-RWS-02 Jacko 2024, SRC-RWS-03 Jennings 2010, SRC-RWS-06 Seiler and Hetlelid 2005 and SRC-RWS-07 Frandsen 2025 are cited as summarised in SSCTR-RWS-DECISION-r1; V1RC:SRC07 (Jones et al. 2019) and the V1RC talk-test sources as summarised in SSCTR-V1RC-DECISION-r1. None was re-read in this run.",
+    "notRead": "Buchheit and Laursen 2013 Part II, Billat 2001 and Seiler and Tonnessen 2009 are known only as cited inside SRC-RWS2-01; they are not used. No study comparing interval sessions prescribed by time with the same sessions prescribed by distance, no study of pyramid sessions in runners and no trial of progression runs in recreational runners was found (see searches).",
+    "validator": "Python is not installed in this environment, so .agents/skills/sports-science-review/scripts/validate_records.py did not run. JSON well-formedness was checked with Node.",
+    "rule": "Search snippets were not used as evidence. No effect estimate, participant count or endpoint is stated beyond what the accessed text reports."
+  },
+  "searches": [
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "TITLE:(\"interval training\") AND (runners OR running) AND (recreational OR \"moderately trained\") AND (duration OR \"work-to-rest\" OR \"work:rest\" OR recovery)", "purpose": "interval prescription and work:recovery in recreational runners; 126 hits screened by title; found SRC-RWS2-07, SRC-RWS2-08"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "TITLE:(\"training characteristics of world-class distance runners\"); TITLE:(\"training periodization, methods, intensity distribution, and volume in highly trained and elite distance runners\"); TITLE:(\"adaptations to aerobic interval training\") AND AUTH:\"Seiler\"; TITLE:(\"high-intensity interval training, solutions to the programming puzzle\")", "purpose": "known reviews and trials on interval duration, recovery and session formats; found SRC-RWS2-01..04"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "(ABSTRACT:\"pyramid interval\" OR \"pyramid session\" OR \"ladder interval\" OR \"pyramid training session\") AND (running OR runners); (pyramid) AND (\"interval training\" OR \"interval session\") AND (running OR runners OR endurance) NOT neuron; (\"decreasing interval\" OR \"increasing interval\" OR \"descending interval\" OR \"varied-distance\" OR \"mixed-distance\") AND (running OR runners)", "purpose": "pyramid sessions: NEGATIVE (0 hits for session pyramids; 'pyramidal' hits concern intensity distribution, not sessions)"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "TITLE:(\"progression run\" OR \"progressive run\" OR \"progressive running\" OR \"negative split\") AND training; (ABSTRACT:\"progression run\" OR \"progressive long run\" OR \"progressive tempo\" OR \"fast finish\") AND (runners OR running)", "purpose": "progression runs: NEGATIVE for trials; found SRC-RWS2-10 (mini-review) and practice descriptions in SRC-RWS2-01"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "(ABSTRACT:\"time-based\" OR ABSTRACT:\"distance-based\") AND ABSTRACT:(interval*) AND (runners OR running) AND PUB_YEAR:[2023 TO 2026]", "purpose": "re-check for a time- versus distance-prescribed interval comparison since r1: NEGATIVE"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "(GPS OR GNSS OR smartwatch OR \"sport watch\") AND (interval OR repetition* OR \"auto-lap\" OR lap) AND (running) AND (accuracy OR validity) 2020-2026; TITLE:(GPS OR GNSS OR watch OR smartwatch OR wearable) AND TITLE:(running OR runners OR track) AND (400 OR \"400 m\" OR \"200 m\" OR \"800 m\" OR lap) AND (accuracy OR validity OR error) 2015-2026; TITLE:(distance) AND TITLE:(smartwatch OR \"sport watch\" OR \"running watch\" OR GNSS) 2024-2026", "purpose": "wrist GNSS error on short repetitions: NEGATIVE (no wrist-device validation at repetition scale beyond the r1 sources)"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "(recreational runners) AND (\"interval training\") AND (800 m OR 1000 m OR 400 m) AND (randomized OR randomised)", "purpose": "distance-prescribed sessions in recreational runners; found SRC-RWS2-05"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "TITLE:(\"active recovery\" OR \"passive recovery\" OR \"recovery mode\" OR \"recovery modality\") AND (running OR runners) AND interval", "purpose": "jog versus walk recoveries; found SRC-RWS2-06, SRC-RWS2-11"},
+    {"date": "2026-11-13", "db": "Europe PMC REST", "query": "(pyramid) AND (marathon training plans); core metadata for PMC11065819", "purpose": "prescription units in recreational plans; found SRC-RWS2-09"}
+  ],
+  "counterevidenceSearch": "Directed attempts to refute the proposals: (1) evidence that the same work prescribed by distance and by time differs in stimulus: none found in either direction, so equivalence rests on arithmetic over the standing V1RC band, not on a trial; (2) evidence that small changes of repetition length or count at a fixed effort domain change the acute response more than intensity does: one exploratory treadmill study (SRC-RWS2-08, 22 male physical-education students) found 8% steps in speed raised acute responses more than 8% steps in distance or recovery; this supports keeping the effort domain fixed and bounding length, but it is not a tolerance for runners; (3) evidence that interval duration and accumulated work interact with adaptation: SRC-RWS2-02 (cyclists) shows the interval format matters at maximal tolerable effort, which argues for pinning repetition length to the ladder rather than letting a format change it freely; (4) evidence that walking recoveries are inferior to jogging: none; active and passive recovery gave similar time near VO2max and passive recovery allowed more bouts (SRC-RWS2-06, SRC-RWS2-07), so walk-or-jog by time stays the default; (5) evidence that execution of race-pace targets is accurate in recreational runners: SRC-RWS2-05 reports low time-in-zone during 5 x 800 m at race-pace prescription, which argues that effort governs and that distances must not become pace pressure; (6) evidence that distance targets in continuous runs are harmless: SRC-RWS-07 (observational) associates single-session distance spikes with overuse injury, so a continuous distance target here carries the canonical minutes as a time ceiling and can never produce more running time than the time prescription.",
+  "sources": [
+    {"id": "SRC-RWS2-01", "citation": "Haugen T, Sandbakk O, Seiler S, Tonnessen E. The training characteristics of world-class distance runners: an integration of scientific literature and results-proven practice. Sports Med Open 2022;8(1):46.", "pmid": "35362850", "pmcid": "PMC8975965", "doi": "10.1186/s40798-022-00438-7", "type": "NARRATIVE_REVIEW_WITH_PRACTICE", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Interval sessions are routinely prescribed by distance with recoveries by time or by easy-jog distance: threshold intervals of 3-15 min (e.g., 10-12 x 1000 m with 1 min, 6-8 x 1500-2000 m with 1-2 min, 4 x 5000 m with 1000 m jog); VO2max intervals of 2-4 min at 3-10K pace with 2-3 min recovery (e.g., 4-7 x 800-1000 m). Progressive long runs: easy first half, pace rising in the final portion to half-marathon pace or past it; athletes slow down when strenuous. Taper: volume reduced, intensity maintained.", "limitations": ["world-class athletes; not applicable to recreational dose or density", "practice description, not outcome evidence", "elite progressive runs go beyond the easy domain, which V1 does not admit"]},
+    {"id": "SRC-RWS2-02", "citation": "Seiler S, Joranson K, Olesen BV, Hetlelid KJ. Adaptations to aerobic interval training: interactive effects of exercise intensity and total work duration. Scand J Med Sci Sports 2013;23(1):74-83.", "pmid": "21812820", "doi": "10.1111/j.1600-0838.2011.01351.x", "type": "RCT", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Trained recreational cyclists (n=35): 4 x 4, 4 x 8 and 4 x 16 min at maximal tolerable intensity were done at different intensities; 4 x 8 min gave larger gains; interval intensity and accumulated duration interact.", "limitations": ["abstract only", "cycling", "self-paced maximal sessions, not effort-anchored domains"]},
+    {"id": "SRC-RWS2-03", "citation": "Buchheit M, Laursen PB. High-intensity interval training, solutions to the programming puzzle: Part I: cardiopulmonary emphasis. Sports Med 2013;43(5):313-38.", "pmid": "23539308", "doi": "10.1007/s40279-013-0029-x", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Interval prescription has up to nine variables (work intensity and duration, relief intensity and duration, modality, repetitions, series, between-series recovery); manipulating any of them changes the acute response.", "limitations": ["abstract only", "no numeric tolerance usable here"]},
+    {"id": "SRC-RWS2-04", "citation": "Casado A, Gonzalez-Mohino F, Gonzalez-Rave JM, Foster C. Training periodization, methods, intensity distribution, and volume in highly trained and elite distance runners: a systematic review. Int J Sports Physiol Perform 2022;17(6):820-33.", "pmid": "35418513", "doi": "10.1123/ijspp.2021-0435", "type": "SYSTEMATIC_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Highly trained runners use continuous tempo runs or interval sessions near the second threshold (medium and long aerobic intervals) and shorter zone-3 intervals; pyramidal intensity distribution in preparation.", "limitations": ["abstract only", "highly trained and elite, ten studies"]},
+    {"id": "SRC-RWS2-05", "citation": "Ranieri LE, Del Coso J, Garcia-Ortiz C, Jimenez A, Solano V, Casado A. Comparison of heart rate- and race pace-based training prescriptions on training execution accuracy in recreational distance runners. Int J Sports Physiol Perform 2026.", "pmid": "41875873", "doi": "10.1123/ijspp.2025-0578", "type": "RANDOMISED_CROSSOVER", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "37 distance runners (VO2max about 54): a 5 x 800 m session with 90 s rest prescribed by race pace kept 27% of time in the prescribed zone (41% by heart rate); execution accuracy at high intensity was low.", "limitations": ["abstract only", "fairly fit recreational runners", "measures zone adherence, not adaptation"]},
+    {"id": "SRC-RWS2-06", "citation": "Varela-Sanz A, Sanchez-Otero T, Tuimil JL, Boullosa D, Iglesias-Soler E. Influence of recovery mode on the maximum number of intervals until exhaustion during an aerobic interval training session. J Strength Cond Res 2023;37(9):e510-e520.", "pmid": "36723090", "doi": "10.1519/jsc.0000000000004463", "type": "RANDOMISED_CROSSOVER", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Eight well-trained male runners, 2-min bouts at maximal aerobic speed with 2-min recoveries: passive recovery allowed more bouts; time above 90% VO2max, lactate and RPE did not differ between active and passive recovery.", "limitations": ["abstract only", "n=8 men", "exhaustive protocol"]},
+    {"id": "SRC-RWS2-07", "citation": "Schoenmakers P, Murray K, White J, Matta G, Bossi AH. Time spent at or near VO2max during high-intensity interval training: a systematic review and meta-analysis. BMC Sports Sci Med Rehabil 2026;18(1):358.", "pmid": "42237396", "pmcid": "PMC13480085", "doi": "10.1186/s13102-026-01766-x", "type": "SYSTEMATIC_REVIEW_META_ANALYSIS", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Active versus passive recovery showed no difference in time near VO2max (SMD -0.15, 95% CI -0.42 to 0.13); in exhaustive protocols passive recovery allowed more work-recovery cycles; work intervals longer than 2 min associated with more time near VO2max.", "limitations": ["mixed modalities, mostly cycling and running in laboratory settings", "acute outcome, not adaptation"]},
+    {"id": "SRC-RWS2-08", "citation": "Segev D, Kodesh E, Dunsky A, Eliakim A, Meckel Y. Acute physiological responses to different load components during interval training. Sports (Basel) 2026;14(9):405.", "pmid": "42784401", "pmcid": "PMC13611252", "doi": "10.3390/sports14090405", "type": "RANDOMISED_CROSSOVER_EXPLORATORY", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "22 male physical-education students on a treadmill, base interval 250 m at 92% of vVO2max with 180 s walking recovery; progressing speed by 8% steps produced larger acute cardiorespiratory, metabolic and RPE responses than 8% steps in distance or in recovery reduction; RPE did not differ between the distance and recovery protocols.", "limitations": ["young men, not runners", "treadmill, very short repetitions", "authors state the 8% steps were not physiologically matched"]},
+    {"id": "SRC-RWS2-09", "citation": "Knopp M, Appelhans D, Schonfelder M, Seiler S, Wackerhage H. Quantitative analysis of 92 12-week sub-elite marathon training plans. Sports Med Open 2024;10(1):50.", "pmid": "38695978", "pmcid": "PMC11065819", "doi": "10.1186/s40798-024-00717-5", "type": "DESCRIPTIVE_ANALYSIS_OF_PLANS", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Published sub-elite marathon plans prescribe sessions in time, in distance or in both; build-up weekly increases of about 5-9%; no effectiveness data.", "limitations": ["plans, not outcomes", "authors state there is no evidence for the plans' effectiveness"]},
+    {"id": "SRC-RWS2-10", "citation": "Grivas GV, Safari K, Hemmatinafar M. Developing negative split pacing in endurance athletes: practical guidelines and training models. Front Physiol 2026;17:1741125.", "pmid": "41602121", "pmcid": "PMC12832444", "doi": "10.3389/fphys.2026.1741125", "type": "MINI_REVIEW_EXPERIENCE_BASED", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Describes progression runs, split-pace long runs and interval ladders as practice tools for pacing; experience-based.", "limitations": ["auxiliary only; never the sole basis of a rule", "no trial data on these formats"]},
+    {"id": "SRC-RWS2-11", "citation": "Zouhal H, Abderrahman AB, Jayavel A, et al. Effects of passive or active recovery regimes applied during long-term interval training on physical fitness in healthy trained and untrained individuals: a systematic review. Sports Med Open 2024;10(1):21.", "pmid": "38443585", "pmcid": "PMC10914654", "doi": "10.1186/s40798-024-00673-0", "type": "SYSTEMATIC_REVIEW", "access": "FULL_TEXT_PASSAGES", "verified": true, "accessedOn": "2026-11-13", "findingsUsed": "Interval training with active or passive recovery can improve fitness in trained and untrained adults; claims that active recovery yields larger adaptation are inconclusive.", "limitations": ["24 heterogeneous studies", "conclusions passage read"]},
+    {"id": "SRC-RWS-01", "citation": "Gilgen-Ammann R, Schweizer T, Wyss T. JMIR Mhealth Uhealth 2020;8(6):e17118 (as summarised in SSCTR-RWS-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "Wrist GNSS distance MAPE 3.2-6.1%; underestimation up to 9% off-track, overestimation on track."},
+    {"id": "SRC-RWS-02", "citation": "Jacko T, et al. Sensors 2024;24(14):4675 (as summarised in SSCTR-RWS-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "4000 m on a 400 m track: MAPE 0.8-12.1% across ten 2024 watches."},
+    {"id": "SRC-RWS-03", "citation": "Jennings D, et al. IJSPP 2010;5(3):328-41 (as summarised in SSCTR-RWS-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "Over 10-40 m, GPS error 9-32%; reliability improves with distance."},
+    {"id": "SRC-RWS-06", "citation": "Seiler S, Hetlelid KJ. Med Sci Sports Exerc 2005;37(9):1601-7 (as summarised in SSCTR-RWS-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "1-4 min recoveries had limited effect on speed of self-paced 4-min bouts in well-trained men."},
+    {"id": "SRC-RWS-07", "citation": "Frandsen JSB, et al. Br J Sports Med 2025 (as summarised in SSCTR-RWS-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "Single-session distance above the 30-day longest run associated with overuse injury (observational)."},
+    {"id": "V1RC:SRC07", "citation": "Jones AM, et al. 2019 (as summarised in SSCTR-V1RC-DECISION-r1).", "access": "REUSED_FROM_STANDING_RECORD", "findingsUsed": "Exercise intensity domains are defined by sustainable duration; the standing basis of the V1RC bands."}
+  ],
+  "globalConditions": [
+    {"id": "RWS2-G.1", "condition": "The planning dose is the frozen engine's session (family, ladder, step, work minutes, duration, budget). A native format only expresses it; it never enters a gate, budget, ramp, taper, progression, review, interference read or load sum. The doseKey and plannedPrescriptionHash are unchanged. With the extension off or any fallback, engine outputs are byte-identical to c8104c1."},
+    {"id": "RWS2-G.2", "condition": "Every standing V1RC global and item condition applies unchanged. The selector reads the week's band of the step's domain from the V1RC output for that session (status AVAILABLE) and never recomputes, widens, narrows or extrapolates it."},
+    {"id": "RWS2-G.3", "condition": "Effort governs every step. Every native step carries the existing effort cue and the existing line 'if effort climbs above the cue, end the hard part early; an easy finish is fine'. A distance is never a 'complete at any cost' target and no text asks the athlete to speed up to reach it."},
+    {"id": "RWS2-G.4", "condition": "The TIME expression of every session stays available to the athlete before the session starts. In heat, hills, strong wind, on trail or on a treadmill the time version is the recommended choice (V1RC notComparable conditions)."},
+    {"id": "RWS2-G.5", "condition": "Population as V1RC G.7: nonclinical recreational adults on roads or tracks. Nothing here assesses eligibility; unknown eligibility stays ASK, symptoms stay on the clinical route."},
+    {"id": "RWS2-G.6", "condition": "Every athlete-facing text needs Product copy review; the texts here state required content, not final wording."},
+    {"id": "RWS2-G.7", "condition": "No claim that a native format is better, more effective or equivalent in adaptation to the time version. The equivalence is only that the planned dose is respected within the stated envelope."}
+  ],
+  "items": [
+    {
+      "id": "RWS-N1",
+      "question": "Format catalog by family: admissible repetition distances, repetition duration bounds relative to the ladder step, recovery type and length, admissible patterns.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "NEW_DECISION built on already approved values (b on a)",
+      "value": "values.catalog, values.distances, values.patterns",
+      "summary": "One catalog per family, all derived from the approved ladders: each family keeps its domain (V1RC), its ladder repetition minutes and recovery minutes, and its shortest ladder repetition. Repetition distances are 200-950 m in 50 m units and 1000-6000 m in 100 m units; E2 decides which fit a step. Recoveries are the step's own recovery minutes, walk-or-jog by time (default), or jog by distance (RWS-N5). Patterns: THRESHOLD, HALF_MARATHON_SPECIFIC and MARATHON_SPECIFIC admit EVEN_REPEATS, MIXED, PYRAMID and PROGRESSIVE_REPEATS; FIVE_K_SPECIFIC and TEN_K_SPECIFIC admit EVEN_REPEATS, MIXED and PYRAMID; RACE_TOUCH admits EVEN_REPEATS only; EASY and LONG admit CONTINUOUS_DISTANCE and PROGRESSIVE_EASY; RECOVERY_EASY and SHAKEOUT admit CONTINUOUS_DISTANCE; WALK, WALK_JOG, RACE and FAMILIAR_REPEATED_BOUTS stay TIME.",
+      "conditions": [
+        "Repetition length is pinned to the step: an EVEN_REPEATS or MIXED distance repetition, and the peak of a PYRAMID, must satisfy E2 against the step's own work minutes. Only PYRAMID flanks may be shorter, down to the family's shortest ladder repetition. No format lengthens a repetition beyond the step's repetition by more than the 1.5% on-band fraction, because repetition length is a progression dimension of the ladders (steps with equal work differ only in repetition length).",
+        "The 50 m / 100 m units are a measurement convention, not a dose: their granularity is below the documented GNSS error (SRC-RWS-01, SRC-RWS-02) and all dose control sits in E1-E4.",
+        "Recovery length per gap is the step's recoveryMinutes. A format with more repetitions than the step therefore has more recovery, never less.",
+        "The format never changes the family, the domain, the warm-up (10 min) or the cool-down (5 min) of the canonical prescription; both stay TIME."
+      ],
+      "rationale": "The ladders encode the approved stimulus per family as repetition minutes, count and recovery at one effort domain. Practice in recreational plans and in elite running prescribes the same kinds of sessions by distance (SRC-RWS2-01, SRC-RWS2-09), but no study shows that a distance-prescribed session equals its time-prescribed version (negative searches); the only defensible equivalence is to keep the domain fixed and the duration of each repetition and of the total work inside narrow bounds around the step. Changing duration by a few percent at a fixed domain alters acute responses less than changing intensity (SRC-RWS2-08, exploratory), while the interval format itself can matter at maximal effort (SRC-RWS2-02), which is why repetition length is pinned rather than free.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "that a format inside the envelope delivers no more than the planned work in the planned domain (arithmetic over the standing band); any adaptation claim is INSUFFICIENT_EVIDENCE and none is made",
+      "confidence": "LOW",
+      "confidenceReason": "No comparative evidence; rests on the standing band (LOW confidence for race-pace domains) and on arithmetic.",
+      "sourceIds": ["SRC-RWS2-01", "SRC-RWS2-02", "SRC-RWS2-03", "SRC-RWS2-08", "SRC-RWS2-09", "V1RC:SRC07"],
+      "applicabilityLimits": "Outdoor road or track running by nonclinical recreational adults with a current V1RC band for the step's domain."
+    },
+    {
+      "id": "RWS-N2",
+      "question": "Envelope tolerances E1 (estimated work minutes versus the step's work minutes at both band edges) and E2 (single repetition versus ladder repetition).",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "NEW_DECISION tied to approved values (b on a)",
+      "value": "values.envelope",
+      "summary": "E1: work at the slow edge <= 1.015 x step work; work at the fast edge >= 0.9 x step work. E2: each repetition at the slow edge <= 1.015 x step repetition minutes; at the fast edge >= 0.9 x step repetition minutes (PYRAMID flanks: >= 0.9 x the family's shortest ladder repetition). Upper value 1.015 = V1RC on-band fraction (also r1's rounding tolerance); lower value 0.9 = the engine completion read (r6-adaptation.mjs:195).",
+      "conditions": [
+        "Both are conservative rules tied to approved values, not evidence-derived tolerances. The upper side is tight on purpose: no in-band runner does more than 1.5% more work or a 1.5% longer repetition than the step. The lower side lets the fastest in-band runner do down to 90% of the step's work, the same fraction the engine already reads as a complete session; applying it to the work alone is stricter than the engine's read of the whole session.",
+        "Edges are the V1RC band edges of the step's domain for the session's week, unadjusted. Time-defined steps (MIXED time repetitions) count at their exact minutes.",
+        "Widening either value requires new evidence (a comparative study or a validation of distance-prescribed repetitions) or human revalidation; this record abstains on any wider tolerance.",
+        "Consequence accepted and disclosed: with these values, native formats exist for about 39-58% of plausible bands in the 5K ladder, 58-65% in the 10K ladder, 68-73% in the threshold ladder and 73-82% in the half and marathon ladders (scratch sweep in values.coverage); the remainder falls back to EQUIVALENT (repetitions of 5 min or more) or TIME."
+      ],
+      "rationale": "No study supplies a tolerance for distance-prescribed repetitions (negative searches). The two numbers already approved for this system that bound 'the same dose' are the V1RC on-band fraction (1.5%, the deadband inside which a pace is not distinguished from its band) and the 0.9 completion read. Using the stricter one upward and the engine's one downward keeps every in-band execution inside what the engine already treats as the step done, and never above it by more than the band's own deadband.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "dose-preservation arithmetic only",
+      "confidence": "LOW",
+      "confidenceReason": "Values are conservative ties, not measured tolerances; GPS error of 3-9% (SRC-RWS-01) is larger than the upper tolerance and is handled by N7, not by E1.",
+      "sourceIds": ["SRC-RWS-01", "SRC-RWS2-08"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N3",
+      "question": "Eligibility of patterns by runExperience, phase and goal.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "NEW_DECISION (b), stricter than the author proposal for continuous runs and distance recoveries",
+      "value": "values.eligibility",
+      "summary": "NOVICE (including unknown experience, which the engine treats as NOVICE): EVEN_REPEATS with time recoveries only, never on the step-0 first exposure; continuous runs stay TIME. INTERMEDIATE and EXPERIENCED: every pattern the family and phase admit. Phases: ESTABLISHMENT and POST_EVENT TIME; BUILD, DEVELOPMENT, NEXT_BLOCK all patterns; CONSOLIDATION EVEN_REPEATS and CONTINUOUS_DISTANCE only; SPECIFIC no PYRAMID; TAPER EVEN_REPEATS (N9) and CONTINUOUS_DISTANCE; RACE_WEEK RACE_TOUCH EVEN_REPEATS and CONTINUOUS_DISTANCE for SHAKEOUT and EASY. Goal acts only through the family the engine chose (and the marathon estimate rule).",
+      "conditions": [
+        "The NOVICE restriction on continuous distance targets is a behavioural precaution (walk breaks are part of easy running for novices and the effect of a distance target on their pacing is untested), not a dose rule; it never reduces training, the time prescription stays.",
+        "PYRAMID is out of SPECIFIC phases because the specific ladders progress race-effort repetition length and even repetitions rehearse the even effort of the race; this is a conservative choice without direct evidence and is reversible.",
+        "No experience level unlocks a larger tolerance, a longer repetition or a new domain."
+      ],
+      "rationale": "The engine already gates the dose by experience (5K specific ladder only for INTERMEDIATE+, NOVICE starts in EASY_LOW or WALK_JOG and reaches quality only by graduation). The format eligibility adds only presentation complexity limits for less experienced runners, consistent with execution accuracy at race-pace targets being low even in fit recreational runners (SRC-RWS2-05).",
+      "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+      "evidenceStatusScope": "the restrictions are precautionary; they withhold formats and never prescribe a dose, so they are a reversible limited recommendation",
+      "confidence": "LOW",
+      "sourceIds": ["SRC-RWS2-05"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N4",
+      "question": "Continuous distance targets for EASY, LONG, RECOVERY_EASY and SHAKEOUT: band, rounding, E3 tolerance, and what the athlete does when slower.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "NEW_DECISION (b); supersedes SSCTR-RWS-DECISION-r1 RWS-Q6 for native prescription",
+      "value": "values.continuous",
+      "summary": "A continuous run gets a distance target D AND the canonical minutes M as a time ceiling: 'D km, or M min if that comes first; either ends the run and counts as done'. Band: the V1RC band of the session's own domain for the week (EASY band, which already folds in the athlete's observed P1 easy pace; LONG band; RECOVERY band for RECOVERY_EASY and SHAKEOUT). D = the largest multiple of 1 km, else of 0.5 km, with D x fastEdge <= M (a runner at the ceiling of the easy domain reaches D within M) and D x fastEdge / 1.015 >= 0.9 x M (E4). If no such D exists, TIME.",
+      "conditions": [
+        "The time ceiling is the canonical minutes exactly, which is r1's approved principle (the time dose caps the distance) applied to continuous runs; no new tolerance is introduced and E3 is met by construction (no in-band or slower runner, walking or not, runs longer than the time prescription). This replaces the author's 'may end short, read as shortened run': ending at the ceiling is not a shortened run and reads complete.",
+        "The observed easy band is never substituted for LONG: long runs are slower than short easy runs and the substitution would understate their time.",
+        "Because the ceiling equals the time prescription, the distance actually run never exceeds what the time version would produce at the same pace, so the distance-spike association in SRC-RWS-07 adds no new exposure; no separate distance-spike guard is set.",
+        "With wide derived bands most runners slower than the ceiling end by time before D; this is disclosed (values.workedExamples give the reach pace) and is a Product presentation question, not a dose question.",
+        "EASY runs with strides: D is sized on M minus the strides block (repetitions x (work + recovery) seconds from the canonical prescription); the strides stay in seconds, optional where the engine says so, after the distance.",
+        "Marathon long runs keep the engine's 180-min cap and the event rules; D is sized on the canonical minutes as above.",
+        "Text: 'run D km at conversational effort, or stop at M minutes if that comes first - either is a complete run'; walk breaks remain allowed; 'do not speed up to reach the distance'."
+      ],
+      "rationale": "Easy and long runs are dosed by time on feet; their bands are ceilings that are 20-27% wide (V1RC worked examples), so any distance alone would let a slower in-band runner run 20% or more longer than prescribed, and walk breaks make the time unbounded. A distance with the time ceiling keeps the planned time as the maximum and the engine's 0.9 read as the minimum for any runner at or slower than the ceiling.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "dose bound by construction; no claim about benefits of distance targets",
+      "confidence": "LOW",
+      "confidenceReason": "Behavioural effect of a distance target with a time ceiling is untested.",
+      "sourceIds": ["SRC-RWS-07", "SRC-RWS2-09", "V1RC:SRC07"],
+      "applicabilityLimits": "As RWS-N1; NOVICE stays TIME (RWS-N3)."
+    },
+    {
+      "id": "RWS-N5",
+      "question": "Recovery by distance: where admissible and with what estimation pace.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "NEW_DECISION (b); supersedes SSCTR-RWS-DECISION-r1 RWS-Q4 for native prescription only",
+      "value": "values.recoveryByDistance",
+      "summary": "Jog recoveries by distance are admissible for INTERMEDIATE and EXPERIENCED runners with EVEN_REPEATS in THRESHOLD, FIVE_K_SPECIFIC, TEN_K_SPECIFIC, HALF_MARATHON_SPECIFIC and MARATHON_SPECIFIC, in BUILD, DEVELOPMENT, NEXT_BLOCK and SPECIFIC phases, when the RECOVERY band is AVAILABLE. Distance = step recoveryMinutes at the RECOVERY band's fast edge, rounded UP to 50 m (never shorter in time than the step's recovery for a jogger at or slower than that edge). E3 estimate at the RECOVERY slow edge, E4 at the fast edge / 1.015. Walk-or-jog recoveries stay by time.",
+      "conditions": [
+        "Text: 'easy jog, as slow as you like; walk if you need to - the recovery then simply lasts longer'. Walking never fails the recovery.",
+        "Recovery distance never counts as work or as load in any figure.",
+        "Not in RACE_TOUCH, TAPER, RACE_WEEK or CONSOLIDATION, and not with MIXED, PYRAMID or PROGRESSIVE_REPEATS (simplest structure where the session is protective or already varied)."
+      ],
+      "rationale": "Active and passive recovery give similar time near VO2max and passive recovery allows more bouts (SRC-RWS2-06, SRC-RWS2-07, SRC-RWS2-11); recovery length in the 1-4 min range changes little (SRC-RWS-06). A distance recovery therefore needs only to be at least as long in time as the approved recovery; rounding up at the recovery ceiling guarantees that.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["SRC-RWS2-06", "SRC-RWS2-07", "SRC-RWS2-11", "SRC-RWS-06", "SRC-RWS2-01"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N6",
+      "question": "Progressive runs in V1: slots, domains, and whether harder segments count as work for E1.",
+      "ruling": "REJECT (author proposal as written) + APPROVE_WITH_CONDITIONS (two bounded progressive forms) + ABSTAIN (cross-domain progression runs)",
+      "category": "b for the bounded forms; c for cross-domain progressions; partially supersedes r1 RWS-Q9 'progression runs out of V1' only for progressions inside one domain",
+      "value": "values.patterns.PROGRESSIVE_REPEATS, values.patterns.PROGRESSIVE_EASY",
+      "summary": "The author's continuous run rising from easy through steady into the slot's domain is rejected for V1: its middle segments are in a moderate domain that has no family and no band (V1RC moderateContinuous, LATER.RUN.STEADY), so counting only the slot-domain minutes in E1 would add unplanned, unbanded load; and its final continuous block would be longer than the step's repetition (no ladder step has one repetition). Approved instead: PROGRESSIVE_REPEATS (THRESHOLD, HALF_MARATHON_SPECIFIC, MARATHON_SPECIFIC quality slots; the EVEN_REPEATS format of the step, at least 3 repetitions, the first at the slow end of the band and each next equal or a little quicker, the last never quicker than the band's fast edge) and PROGRESSIVE_EASY (EASY and LONG continuous runs; relaxed first half, the second half may rise toward the top of the easy range, never above the band's fast edge, conversational throughout). Every work minute is in the slot's domain, so E1-E4 are the EVEN_REPEATS or CONTINUOUS_DISTANCE checks unchanged.",
+      "conditions": [
+        "INTERMEDIATE and EXPERIENCED only; BUILD, DEVELOPMENT, NEXT_BLOCK and SPECIFIC phases only; never in CONSOLIDATION, TAPER, RACE_WEEK or POST_EVENT.",
+        "No segment in any domain other than the slot's (PROGRESSIVE_REPEATS) or EASY (PROGRESSIVE_EASY). No marathon-effort or threshold finish on a long run.",
+        "Text keeps the effort cue as the governor; the band edges are the only pace references and are shown as ranges."
+      ],
+      "rationale": "Progressive long runs and progression runs are described in elite practice and in an experience-based mini-review (SRC-RWS2-01, SRC-RWS2-10) but no trial in recreational runners was found; their usual form crosses into moderate and threshold intensities, which the V1 system cannot dose. Progressing inside one approved band adds no domain and no work, only an ordering of paces the band already allows.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "for the bounded forms (no added domain or work); cross-domain progression runs: INSUFFICIENT_EVIDENCE plus no V1 domain",
+      "confidence": "LOW",
+      "sourceIds": ["SRC-RWS2-01", "SRC-RWS2-10", "SRC-RWS2-07"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N7",
+      "question": "Completion and measurement of distance steps; faster-than-band residual; short repetitions and calibration.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "a (V1RC Q8 rules) + b; supersedes SSCTR-RWS-DECISION-r1 RWS-Q3 (5-min minimum) and RWS-Q1 (time-dose ceiling per repetition) for native prescription only; both remain for EQUIVALENT",
+      "value": "values.completion",
+      "summary": "A distance step is done when the athlete or the device lap confirms the distance (targetMet true), not by GPS equality; the measured distance is recorded as is with its source. A continuous run ended at its time ceiling has targetMet true. GPS affects only the pace-evidence tier (V1RC). Native repetitions shorter than 5 min may be prescribed; their pace is never calibration evidence (V1RC everyWorkBoutMinutesMin 5). E4 guarantees that a faithful in-band execution (up to 1.5% faster than the fast edge) is read complete by the engine; a runner far faster than the band can be read partial and repeat the step, which is accepted as the conservative direction.",
+      "conditions": [
+        "No time ceiling on native quality repetitions (the handoff contract); this is acceptable only together with E2's 1.5% upper bound, the effort-governs line and RWS2-G.4 (time version in heat, hills, wind, trail, treadmill). The accepted residual is GPS under-reading on roads (up to about 9%, SRC-RWS-01), which can lengthen a repetition by that much at the same effort; it stays under the smallest work increment between adjacent ladder steps (11%) and is not corrected by a number.",
+        "Every native repetition shows its estimated time range (from the band edges) as an estimate, never as a target; text: 'if a repetition takes clearly longer than this range, keep the effort, do not speed up'.",
+        "Repetitions under 1000 m carry the guidance that a track or a measured segment gives a closer distance; a GPS-measured execution still counts.",
+        "A WORK step with targetMet false makes the session partial (today's semantics). A report citing an unknown formatHash is ASK; nothing is recorded.",
+        "Engineering/QRE must confirm whether V1RC Q8 recalibration reads the engine partial flag (carried from r1)."
+      ],
+      "rationale": "Wrist GNSS error is 3-6% on average and larger on tracks for some devices (SRC-RWS-01, SRC-RWS-02), with no validation at repetition scale (negative search), so equality of GPS distance cannot be the completion test. Pace evidence rules are already set by V1RC.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "confidenceReason": "Measurement evidence is from continuous runs, not repetitions; behaviour with distance targets is untested.",
+      "sourceIds": ["SRC-RWS-01", "SRC-RWS-02", "SRC-RWS-03", "SRC-RWS2-05"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N8",
+      "question": "Suppressions (handoff section 6): add, remove, order.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "a (r1 and V1RC reasons) + b (new reasons and order)",
+      "value": "values.suppression",
+      "summary": "The author list is kept and ordered; added: EXTENSION_NOT_ENABLED, PHASE_NOT_ELIGIBLE, EXPRESSION_PREFERENCE_TIME, EXPERIENCE_NOT_ELIGIBLE, NO_FORMAT_WITHIN_ENVELOPE, NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE, TEXT_CHECK_FAILED. Nothing removed. Only NO_FORMAT_WITHIN_ENVELOPE may fall back to EQUIVALENT (r1), and only for repetitions of 5 min or more under every r1 condition; every other reason gives TIME.",
+      "conditions": [
+        "FIRST_EXPOSURE uses the engine's own flag (calibration.firstExposure, ladder step 0), so the whole entry step of a ladder stays TIME.",
+        "ENGINE_CONVERTED_TO_EASY covers every session the engine made easy for protection (race-week close-to-race easy runs, adverse or partial conversions): TIME even though its family is EASY.",
+        "The first applicable reason in values.suppression.order is the one reported."
+      ],
+      "rationale": "Safety and protective states first, then the athlete's choice, then eligibility, then band availability, then the envelope.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "confidenceReason": "Each reason withholds a format and leaves the approved time prescription; ordering affects only the reported reason.",
+      "sourceIds": [],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N9",
+      "question": "Taper and race-week touch: keep the peak session's format with fewer repetitions when it fits the reduced envelope.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "b",
+      "value": "values.taper, values.raceWeekTouch",
+      "summary": "In TAPER the selector first tries the repetition distance of the achieved peak session as recorded (its formatHash), as EVEN_REPEATS with the engine's reduced repetition count and time recoveries; it is kept only if E1-E5 pass against the reduced canonical step (E2 against the taper repetition minutes, which change when the engine shortened repetitions). Otherwise EVEN_REPEATS selection, then fallbacks. RACE_TOUCH: EVEN_REPEATS with time recoveries against the touch step; otherwise TIME (or EQUIVALENT for 5-min touches under r1).",
+      "conditions": [
+        "No PYRAMID, MIXED, PROGRESSIVE_REPEATS or distance recoveries in TAPER or RACE_WEEK.",
+        "A peak executed in TIME, EQUIVALENT or a non-EVEN pattern has no peak distance to keep; the peak of a PYRAMID is not reused.",
+        "The race-week touch keeps its standing semantics: brief, only work already done; the format adds no work."
+      ],
+      "rationale": "Taper evidence supports reducing volume while keeping intensity (SRC-RWS2-01); keeping a familiar distance with fewer repetitions changes nothing in the engine's reduced dose and is the least novel option.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["SRC-RWS2-01"],
+      "applicabilityLimits": "As RWS-N1."
+    },
+    {
+      "id": "RWS-N10",
+      "question": "Variety: rotating admissible formats by week index within the same ladder step is not a progression step and adds no load.",
+      "ruling": "APPROVE_WITH_CONDITIONS",
+      "category": "b",
+      "value": "values.rotation",
+      "summary": "Rotation picks, among the rotation entries that the family, experience and phase admit and that have at least one candidate passing E1-E5, entry index = weekIndex mod count, in catalog order; within an entry, the first candidate in candidate order. It is never progression, never changes doseKey, and the format is fixed for the week.",
+      "conditions": [
+        "After a partial, missed or harder-than-target session at a step, the next session at the same step uses the first rotation entry (EVEN_REPEATS with time recoveries) if it passes; rotation resumes after a complete session.",
+        "A band change at the week boundary may change the distances; that is not progression and is never worded as progression.",
+        "Rotation never introduces a pattern the athlete is not eligible for and never selects at random."
+      ],
+      "rationale": "Same domain, same work within the envelope, same recovery: rotation varies only the expression. No evidence was sought or needed for a claim of benefit; none is made.",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusScope": "no added load by construction; no benefit claim",
+      "confidence": "LOW",
+      "sourceIds": [],
+      "applicabilityLimits": "As RWS-N1."
+    }
+  ],
+  "values": {
+    "targetFile": "CoachingCore/v1/RUN_FORMATS_V1.json (to be created by the implementation from these values and pinned by sha256)",
+    "valuesVersion": "RWS-R2-1",
+    "tiedValues": {
+      "onBandFraction": {"value": 0.015, "tiedTo": "SSCTR-V1RC-DECISION-r1 values.recalibration (training up/down trigger 0.015; newRaceOrTest deadbandFraction 0.015); SSCTR-RWS-DECISION-r1 conversion tolerance"},
+      "completionRead": {"value": 0.9, "tiedTo": "CoachingCore/src/r6-adaptation.mjs:195 (engine value, read only)"},
+      "qualityWarmupMinutes": {"value": 10, "tiedTo": "R6 run.qualityWarmupMinutes"},
+      "qualityCooldownMinutes": {"value": 5, "tiedTo": "R6 run.qualityCooldownMinutes"},
+      "calibrationBoutMinutesMin": {"value": 5, "tiedTo": "V1RC recalibration.training.sessionRequires.everyWorkBoutMinutesMin"}
+    },
+    "bandSource": "runCalibration.sessions[sessionId].pace for the step's domain, the session's own week, status AVAILABLE (V1RC output, never recomputed). Repetition domains: THRESHOLD -> THRESHOLD_CONTROLLED, FIVE_K_SPECIFIC -> FIVE_K_EFFORT, TEN_K_SPECIFIC -> TEN_K_EFFORT, HALF_MARATHON_SPECIFIC -> HALF_MARATHON_EFFORT, MARATHON_SPECIFIC -> MARATHON_EFFORT, RACE_TOUCH -> the event's domain. Continuous: EASY -> EASY, LONG -> LONG, RECOVERY_EASY and SHAKEOUT -> RECOVERY. Distance recoveries -> RECOVERY.",
+    "distances": {
+      "repetitionMetres": {"from": 200, "below1000UnitMetres": 50, "from1000UnitMetres": 100, "max": 6000},
+      "candidateUnitPreferenceCoarsestFirst": [1000, 400, 200, 100, 50],
+      "recoveryUnitMetres": 50,
+      "recoveryRounding": "UP",
+      "continuousKmUnitsCoarsestFirst": [1, 0.5],
+      "continuousRounding": "DOWN (largest multiple meeting the rule)",
+      "note": "Units are a measurement convention below documented GNSS error; they carry no dose."
+    },
+    "envelope": {
+      "estimates": "minutes(distance, pace) = distance_m / 1000 x pace_s_per_km / 60; fast = band fastSecondsPerKm, slow = band slowSecondsPerKm",
+      "E1": {"workHighAt": "SLOW", "workHighMaxFractionOfStepWork": 1.015, "workLowAt": "FAST", "workLowMinFractionOfStepWork": 0.9, "timeStepsCountExact": true, "stepWork": "repetitions x workMinutes of the canonical (possibly taper-reduced or touch) prescription"},
+      "E2": {"repetitionHighAt": "SLOW", "repetitionHighMaxFractionOfStepRepetition": 1.015, "repetitionLowAt": "FAST", "repetitionLowMinFraction": 0.9, "repetitionLowReference": {"EVEN_REPEATS": "step workMinutes", "MIXED": "step workMinutes", "PROGRESSIVE_REPEATS": "step workMinutes", "PYRAMID_PEAK": "step workMinutes", "PYRAMID_FLANKS": "family shortest ladder repetition (values.catalog.*.familyMinRepetitionMinutes)"}},
+      "E3": {"quality": "durationHigh <= min(sessionBudgetMinutes, canonicalDurationMinutes + step recoveryMinutes)", "durationHigh": "warmup + cooldown + sum(work at SLOW; time steps exact) + gaps x recoveryHigh", "recoveryHigh": "TIME: recoveryMinutes; DISTANCE: distance at RECOVERY slow edge", "continuous": "met by construction: time ceiling = canonical minutes (<= budget)", "tiedTo": "conservative SSCTR rule: at most one extra recovery interval of the step's own length (ladder value)"},
+      "E4": {"rule": "durationLow >= 0.9 x canonical durationMinutes", "durationLow": "warmup + cooldown + sum(work at FAST / 1.015; time steps exact) + gaps x recoveryLow", "recoveryLow": "TIME: recoveryMinutes; DISTANCE: distance at RECOVERY fast edge / 1.015", "continuous": "D x EASY|LONG|RECOVERY fast edge / 1.015 (+ strides block minutes when present) >= 0.9 x M"},
+      "E5": {"rule": "every step text passes FORBIDDEN_CLAIM and the run.effortBoundary filter of validateR6Prescription; carries the effort cue and the effort-governs line; no pace shown as a target", "onFail": "TEXT_CHECK_FAILED"}
+    },
+    "catalog": {
+      "THRESHOLD": {"domain": "THRESHOLD_CONTROLLED", "ladderRepetitionMinutes": [5, 8, 10], "familyMinRepetitionMinutes": 5, "recoveryMinutesFromStep": true, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true},
+      "FIVE_K_SPECIFIC": {"domain": "FIVE_K_EFFORT", "ladderRepetitionMinutes": [2, 3], "familyMinRepetitionMinutes": 2, "recoveryMinutesFromStep": true, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID"], "equivalentFallback": false},
+      "TEN_K_SPECIFIC": {"domain": "TEN_K_EFFORT", "ladderRepetitionMinutes": [3, 4], "familyMinRepetitionMinutes": 3, "recoveryMinutesFromStep": true, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID"], "equivalentFallback": false},
+      "HALF_MARATHON_SPECIFIC": {"domain": "HALF_MARATHON_EFFORT", "ladderRepetitionMinutes": [10, 12, 15], "familyMinRepetitionMinutes": 10, "recoveryMinutesFromStep": true, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true},
+      "MARATHON_SPECIFIC": {"domain": "MARATHON_EFFORT", "ladderRepetitionMinutes": [15, 20], "familyMinRepetitionMinutes": 15, "recoveryMinutesFromStep": true, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true, "extraSuppression": "MARATHON_ESTIMATE_ABOVE_360_MIN"},
+      "RACE_TOUCH": {"domain": "event domain (V1RC raceTouchUsesEventDomain)", "touchRepetitionMinutes": {"5K": 1, "10K": 2, "HALF_MARATHON": 5, "MARATHON": 5}, "rotationEntries": ["EVEN_REPEATS"], "recovery": "TIME only", "equivalentFallback": "only 5-min touches, under r1", "extraSuppression": "MARATHON_ESTIMATE_ABOVE_360_MIN for the marathon touch"},
+      "EASY": {"domain": "EASY", "rotationEntries": ["CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"], "strides": "seconds, optional where the engine says so, after the distance; D sized on M minus the strides block"},
+      "LONG": {"domain": "LONG", "rotationEntries": ["CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"], "observedEasyBandSubstitution": false},
+      "RECOVERY_EASY": {"domain": "RECOVERY", "rotationEntries": ["CONTINUOUS_DISTANCE"]},
+      "SHAKEOUT": {"domain": "RECOVERY", "rotationEntries": ["CONTINUOUS_DISTANCE"]},
+      "TIME_ONLY_FAMILIES": ["WALK", "WALK_JOG", "RACE", "FAMILIAR_REPEATED_BOUTS"]
+    },
+    "patterns": {
+      "EVEN_REPEATS": {"definition": "k equal distance repetitions with the step's recovery minutes (walk-or-jog, TIME) between them; no recovery after the last", "repetitionCountCandidates": ["n", "n-1", "n+1"], "minRepetitions": 2, "checks": ["E1", "E2", "E3", "E4", "E5"]},
+      "EVEN_REPEATS_DISTANCE_RECOVERY": {"definition": "EVEN_REPEATS with jog recoveries by distance (values.recoveryByDistance)", "checks": ["E1", "E2", "E3", "E4", "E5"]},
+      "MIXED": {"definition": "floor(n/2) distance repetitions first, then n - floor(n/2) time repetitions of exactly the step's work minutes, all in the step's domain, step recovery minutes (TIME) between", "minRepetitions": 2, "distanceRepetitionE2": "as EVEN_REPEATS"},
+      "PYRAMID": {"definition": "symmetric sequence of distance repetitions, non-decreasing to the middle, with at least two distinct distances; step recovery minutes (TIME) between", "requires": "step workMinutes > familyMinRepetitionMinutes", "peak": "E2 against the step repetition", "flanks": "E2 high against the step repetition, E2 low against 0.9 x familyMinRepetitionMinutes", "flankStepMetres": {"peakAtLeast1000": [400, 200], "peakBelow1000": [200, 100]}, "shapesInOrder": [[1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1], [2, 1, 0, 1, 2], [2, 1, 0, 0, 1, 2]], "shapeNote": "each entry is the number of flank steps below the peak for each repetition", "maxRepetitions": "n + 1"},
+      "PROGRESSIVE_REPEATS": {"definition": "the EVEN_REPEATS format of the step with the cue: first repetition at the slow end of the band, each next equal or a little quicker, the last never quicker than the fast edge", "families": ["THRESHOLD", "HALF_MARATHON_SPECIFIC", "MARATHON_SPECIFIC"], "minRepetitions": 3, "checks": "identical to EVEN_REPEATS (edges bound all paces)"},
+      "CONTINUOUS_DISTANCE": {"definition": "one easy-domain run of D km with the canonical minutes as a time ceiling", "rule": "values.continuous"},
+      "PROGRESSIVE_EASY": {"definition": "CONTINUOUS_DISTANCE with the cue: relaxed first half; in the second half the pace may rise toward the top of the easy range, never above the band's fast edge; conversational throughout", "families": ["EASY", "LONG"]}
+    },
+    "candidateOrder": {
+      "EVEN_REPEATS": "distance unit coarsest first (1000, 400, 200, 100, 50); then repetition count n, n-1, n+1; then longer distance first",
+      "MIXED": "distance unit coarsest first; then longer distance first",
+      "PYRAMID": "peak distance unit coarsest first, longer first; then flank step larger first; then shapes in listed order"
+    },
+    "recoveryByDistance": {
+      "experience": ["INTERMEDIATE", "EXPERIENCED"],
+      "families": ["THRESHOLD", "FIVE_K_SPECIFIC", "TEN_K_SPECIFIC", "HALF_MARATHON_SPECIFIC", "MARATHON_SPECIFIC"],
+      "patterns": ["EVEN_REPEATS_DISTANCE_RECOVERY"],
+      "phases": ["BUILD", "DEVELOPMENT", "NEXT_BLOCK", "SPECIFIC"],
+      "requiresBand": "RECOVERY AVAILABLE",
+      "metres": "ceil50(step recoveryMinutes x 60 / RECOVERY fastSecondsPerKm x 1000)",
+      "mode": "JOG (walking allowed; then longer)",
+      "estimateHigh": "RECOVERY slow edge",
+      "estimateLow": "RECOVERY fast edge / 1.015",
+      "countsAsWork": false
+    },
+    "continuous": {
+      "families": ["EASY", "LONG", "RECOVERY_EASY", "SHAKEOUT"],
+      "timeCeilingMinutes": "canonical durationMinutes M (minus the strides block when the EASY session has strides)",
+      "distanceKm": "largest multiple of 1, else of 0.5, with D x fast / 60 <= ceiling minutes and D x fast / 60 / 1.015 (+ strides block) >= 0.9 x M",
+      "endsAt": "distance or time ceiling, whichever first; both are targetMet true",
+      "onNone": "TIME, reason NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE",
+      "walkBreaksAllowed": true,
+      "noDistanceSpikeGuard": "not needed: executed time never exceeds the time prescription",
+      "marathonLongRun": "engine cap 180 min and event rules unchanged"
+    },
+    "eligibility": {
+      "experienceMapping": "athlete.runExperience as the engine stores it (unknown -> NOVICE; NONE treated as NOVICE)",
+      "experience": {
+        "NOVICE": {"rotationEntries": ["EVEN_REPEATS"], "distanceRecovery": false, "continuousDistance": false},
+        "INTERMEDIATE": {"rotationEntries": "all of the family", "distanceRecovery": true, "continuousDistance": true},
+        "EXPERIENCED": {"rotationEntries": "all of the family", "distanceRecovery": true, "continuousDistance": true}
+      },
+      "phase": {
+        "ESTABLISHMENT": "TIME",
+        "BUILD": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+        "DEVELOPMENT": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+        "NEXT_BLOCK": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+        "CONSOLIDATION": ["EVEN_REPEATS", "CONTINUOUS_DISTANCE"],
+        "SPECIFIC": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+        "TAPER": ["EVEN_REPEATS (values.taper)", "CONTINUOUS_DISTANCE"],
+        "RACE_WEEK": ["EVEN_REPEATS (RACE_TOUCH only)", "CONTINUOUS_DISTANCE (EASY, SHAKEOUT)"],
+        "POST_EVENT": "TIME"
+      },
+      "goal": "acts only through the engine's family choice; marathon sessions also under MARATHON_ESTIMATE_ABOVE_360_MIN",
+      "load": "the planning dose; the envelope is the only load control"
+    },
+    "taper": {
+      "first": "EVEN_REPEATS at the achieved peak session's recorded repetition distance (its formatHash), with the engine's reduced repetition count, TIME recoveries, if E1-E5 pass against the reduced step",
+      "else": "EVEN_REPEATS selection against the reduced step, then fallbacks",
+      "noPatterns": ["MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY"]
+    },
+    "raceWeekTouch": {"pattern": "EVEN_REPEATS", "recovery": "TIME", "against": "the touch step", "else": "EQUIVALENT for 5-min touches under r1, else TIME"},
+    "rotation": {
+      "rule": "entries = family rotationEntries filtered by experience and phase, keeping those with at least one passing candidate; entry = entries[weekIndex mod entries.length]; candidate = first in candidateOrder",
+      "afterPartialOrHarderThanTarget": "next session at the same step uses entries[0] if it passes; rotation resumes after a complete session",
+      "fixedWithinWeek": true,
+      "changesOnlyAtWeekBoundary": true,
+      "exception": "V1RC Q9 withdrawal (immediate, to TIME)",
+      "isProgression": false,
+      "doseKeyUnchanged": true
+    },
+    "completion": {
+      "targetMet": "athlete or device lap confirmation that the step was done as prescribed; continuous run ended at the time ceiling = true",
+      "measuredDistance": "recorded as measured, with its source; never a failed target",
+      "engineMapping": "actual.completed = every WORK step targetMet !== false and the session finished; actual.minutes = real total minutes",
+      "partial": "a WORK step with targetMet false",
+      "unknownFormatHash": "ASK; nothing recorded",
+      "paceEvidence": "V1RC rules unchanged: repetitions under 5 min never recalibrate; GPS loses one tier; treadmill and flagged conditions not comparable",
+      "acceptedResidual": "a runner far faster than the band can be read partial and repeat the step"
+    },
+    "suppression": {
+      "order": [
+        "EXTENSION_NOT_ENABLED",
+        "HOLD_NO_PRESCRIPTION",
+        "CLINICAL_ROUTE",
+        "WARNING_SIGN_SCREEN_REQUIRED",
+        "MODE_WALK_JOG_RESTART_RETURN",
+        "ENGINE_CONVERTED_TO_EASY",
+        "TEST_ALREADY_DONE_THIS_WEEK",
+        "NOT_A_NATIVE_FAMILY",
+        "PHASE_NOT_ELIGIBLE",
+        "FIRST_EXPOSURE",
+        "EXPRESSION_PREFERENCE_TIME",
+        "EXPERIENCE_NOT_ELIGIBLE",
+        "BAND_UNAVAILABLE",
+        "MARATHON_ESTIMATE_ABOVE_360_MIN",
+        "NO_FORMAT_WITHIN_ENVELOPE",
+        "NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE",
+        "TEXT_CHECK_FAILED",
+        "STRUCTURE_ERROR"
+      ],
+      "definitions": {
+        "NOT_A_NATIVE_FAMILY": "WALK, WALK_JOG, RACE (including completion race day), FAMILIAR_REPEATED_BOUTS",
+        "PHASE_NOT_ELIGIBLE": "ESTABLISHMENT, POST_EVENT",
+        "FIRST_EXPOSURE": "the canonical prescription carries calibration.firstExposure true (ladder step 0)",
+        "EXPERIENCE_NOT_ELIGIBLE": "a NOVICE continuous run (pattern-level NOVICE limits filter rotation entries instead)",
+        "BAND_UNAVAILABLE": "the step's domain band is not AVAILABLE; carries the V1RC reason",
+        "MARATHON_ESTIMATE_ABOVE_360_MIN": "MARATHON_SPECIFIC or marathon RACE_TOUCH with a central marathon estimate above 6:00:00 (V1RC recheck condition c)",
+        "TEST_ALREADY_DONE_THIS_WEEK": "a harder session after a test in the same week (V1RC R-12)"
+      },
+      "fallback": {"NO_FORMAT_WITHIN_ENVELOPE": "EQUIVALENT if the family's equivalentFallback and every r1 condition hold, else TIME", "all other reasons": "TIME"},
+      "reported": "first applicable reason in order"
+    },
+    "textRequirements": [
+      "every native step carries the effort cue and 'if effort climbs above the cue, end the hard part early; an easy finish is fine'",
+      "every distance repetition shows its estimated time range as an estimate, never as a target, and 'if it takes clearly longer, keep the effort, do not speed up'",
+      "continuous: 'D km at conversational effort, or stop at M minutes if that comes first - either is a complete run'; walk breaks allowed; 'do not speed up to reach the distance'",
+      "recoveries by distance: 'easy jog, as slow as you like; walk if you need to'",
+      "repetitions under 1000 m: a track or measured segment gives a closer distance; GPS execution still counts",
+      "the time version is available, and recommended in heat, hills, strong wind, on trail or on a treadmill",
+      "no format, rotation or band change is worded as progression; FORBIDDEN_CLAIM applies to every text"
+    ],
+    "coverage": {
+      "method": "scratch sweep outside the repository: fast edges 3:30-8:00 /km by 5 s, widths 10, 15, 20 s and 8%, 12%; share of bands with at least one passing candidate per step (EVEN_REPEATS / PYRAMID / MIXED)",
+      "THRESHOLD": "even 68-73%, pyramid 0-30% (steps 3-5 only), mixed 68-73%",
+      "FIVE_K_SPECIFIC": "even 39% (2-min steps), 58% (3-min steps); pyramid 7-12% (3-min steps only)",
+      "TEN_K_SPECIFIC": "even 58% (3-min), 65% (4-min); pyramid 11-18% (4-min steps only)",
+      "HALF_MARATHON_SPECIFIC": "even 73-80%; pyramid 15% (step 3 only)",
+      "MARATHON_SPECIFIC": "even 80-82%; pyramid 52% (step 3 only)",
+      "RACE_TOUCH": "5K 8%, 10K 39%, half or marathon 68%",
+      "continuous": "95% over M 20-180 min and EASY/LONG/RECOVERY widths 30 s, x1.20, x1.27",
+      "note": "step 0 of every ladder is TIME by FIRST_EXPOSURE regardless of coverage"
+    }
+  },
+  "workedExamples": [
+    {"id": "WE-01", "founderExample": "6 x 800 m", "family": "TEN_K_SPECIFIC", "ladderStep": 3, "step": {"repetitions": 6, "workMinutes": 4, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "6 x 800 m, 2 min walk-or-jog between", "workMinutes": [23.2, 24.0], "stepWork": 24, "durationMinutes": [47.86, 49.0], "canonicalDuration": 49, "E3max": 51, "E4min": 44.1}},
+    {"id": "WE-02", "founderExample": "6 x 800 m (not admitted at this band)", "family": "TEN_K_SPECIFIC", "ladderStep": 3, "step": {"repetitions": 6, "workMinutes": 4, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 305, "bandSlowSecondsPerKm": 320, "bandNote": "V1RC worked example 10K_50min_HIGH, 10K band", "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "6 x 750 m, 2 min walk-or-jog between", "why800Fails": "800 m at 5:20 = 4.27 min > 1.015 x 4", "workMinutes": [22.88, 24.0], "durationMinutes": [47.54, 49.0], "canonicalDuration": 49}},
+    {"id": "WE-03", "founderExample": "6 x 800 m at 5K effort", "family": "FIVE_K_SPECIFIC", "ladderStep": 3, "step": {"repetitions": 6, "workMinutes": 3, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 220, "bandSlowSecondsPerKm": 225, "experience": "EXPERIENCED", "phase": "SPECIFIC", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "6 x 800 m, 2 min walk-or-jog between", "workMinutes": [17.6, 18.0], "durationMinutes": [42.34, 43.0], "canonicalDuration": 43}, "contrast": "with band 220/230 the result is 6 x 750 m"},
+    {"id": "WE-04", "founderExample": "8 x 400 m", "family": "FIVE_K_SPECIFIC", "ladderStep": 1, "step": {"repetitions": 8, "workMinutes": 2, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "SPECIFIC", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "8 x 400 m, 2 min walk-or-jog between", "workMinutes": [15.47, 16.0], "durationMinutes": [44.24, 45.0], "canonicalDuration": 45, "E3max": 47, "E4min": 40.5}},
+    {"id": "WE-05", "founderExample": "8 x 400 m (fallback)", "family": "FIVE_K_SPECIFIC", "ladderStep": 1, "step": {"repetitions": 8, "workMinutes": 2, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 305, "bandNote": "V1RC 10K_50min_HIGH 5K band", "experience": "INTERMEDIATE", "phase": "SPECIFIC", "expected": {"expression": "TIME", "reason": "NO_FORMAT_WITHIN_ENVELOPE", "why": "400 m at 5:05 = 2.03 min > 1.015 x 2; 350 m at 4:50 = 1.69 min < 0.9 x 2; repetitions under 5 min have no EQUIVALENT"}},
+    {"id": "WE-06", "founderExample": "5 x 1000 m", "family": "THRESHOLD", "ladderStep": 2, "step": {"repetitions": 5, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "BUILD", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "5 x 1000 m, 2 min walk-or-jog between", "workMinutes": [24.17, 25.0], "durationMinutes": [46.81, 48.0], "canonicalDuration": 48, "E3max": 50, "E4min": 43.2}},
+    {"id": "WE-07", "founderExample": "5 x 1000 m at 10K effort", "family": "TEN_K_SPECIFIC", "ladderStep": 2, "step": {"repetitions": 5, "workMinutes": 4, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 230, "bandSlowSecondsPerKm": 240, "experience": "EXPERIENCED", "phase": "DEVELOPMENT", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "5 x 1000 m, 2 min walk-or-jog between", "workMinutes": [19.17, 20.0], "durationMinutes": [41.88, 43.0], "canonicalDuration": 43}},
+    {"id": "WE-08", "founderExample": "8 km continuous", "family": "EASY", "canonicalMinutes": 50, "bandFastSecondsPerKm": 375, "bandSlowSecondsPerKm": 450, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "CONTINUOUS_DISTANCE", "expected": {"expression": "NATIVE", "format": "8 km easy, or stop at 50 min if that comes first", "reachedBeforeCeilingAtPaceAtMostSecondsPerKm": 375, "E4lowMinutes": 49.26, "E4min": 45.0}},
+    {"id": "WE-09", "founderExample": "8 km continuous (novice)", "family": "EASY", "canonicalMinutes": 50, "bandFastSecondsPerKm": 375, "bandSlowSecondsPerKm": 450, "experience": "NOVICE", "phase": "DEVELOPMENT", "expected": {"expression": "TIME", "reason": "EXPERIENCE_NOT_ELIGIBLE"}},
+    {"id": "WE-10", "founderExample": "16 km long run", "family": "LONG", "canonicalMinutes": 90, "bandFastSecondsPerKm": 325, "bandSlowSecondsPerKm": 410, "bandNote": "V1RC 5K_20min_HIGH LONG band", "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "CONTINUOUS_DISTANCE", "expected": {"expression": "NATIVE", "format": "16 km long run, or stop at 90 min if that comes first", "reachedBeforeCeilingAtPaceAtMostSecondsPerKm": 337.5, "E4lowMinutes": 85.39, "E4min": 81.0, "reachNote": "slower in-band runners end by time at 90 min"}},
+    {"id": "WE-11", "founderExample": "16 km long run (not admitted for this athlete)", "family": "LONG", "canonicalMinutes": 100, "bandFastSecondsPerKm": 380, "bandSlowSecondsPerKm": 460, "bandNote": "V1RC 10K_50min_HIGH LONG band", "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "expected": {"expression": "NATIVE", "format": "15 km long run, or stop at 100 min if that comes first", "why16Fails": "16 km x 6:20 = 101.3 min > 100"}},
+    {"id": "WE-12", "founderExample": "marathon long run", "family": "LONG", "canonicalMinutes": 180, "bandFastSecondsPerKm": 325, "bandSlowSecondsPerKm": 410, "experience": "EXPERIENCED", "phase": "SPECIFIC", "expected": {"expression": "NATIVE", "format": "33 km long run, or stop at 180 min if that comes first", "E4lowMinutes": 176.11, "E4min": 162.0}},
+    {"id": "WE-13", "founderExample": "pyramid", "family": "TEN_K_SPECIFIC", "ladderStep": 3, "step": {"repetitions": 6, "workMinutes": 4, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "PYRAMID", "expected": {"expression": "NATIVE", "format": "700-800-800-800-800-700 m, 2 min walk-or-jog between", "workMinutes": [22.23, 23.0], "durationMinutes": [46.9, 48.0], "canonicalDuration": 49}},
+    {"id": "WE-14", "founderExample": "pyramid", "family": "THRESHOLD", "ladderStep": 4, "step": {"repetitions": 4, "workMinutes": 8, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "BUILD", "rotationEntry": "PYRAMID", "expected": {"expression": "NATIVE", "format": "1400-1600-1600-1400 m, 2 min walk-or-jog between", "workMinutes": [29.0, 30.0], "durationMinutes": [49.57, 51.0], "canonicalDuration": 53}},
+    {"id": "WE-15", "founderExample": "pyramid (phase not eligible)", "family": "THRESHOLD", "ladderStep": 4, "step": {"repetitions": 4, "workMinutes": 8, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "SPECIFIC", "expected": {"pyramid": "not a rotation entry in SPECIFIC", "expressionIfEntryEVEN": "4 x 1600 m, 2 min walk-or-jog between", "workMinutes": [30.93, 32.0], "durationMinutes": [51.48, 53.0]}},
+    {"id": "WE-16", "founderExample": "mixed", "family": "THRESHOLD", "ladderStep": 4, "step": {"repetitions": 4, "workMinutes": 8, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 295, "bandSlowSecondsPerKm": 305, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "MIXED", "expected": {"expression": "NATIVE", "format": "2 x 1500 m + 2 x 8 min, 2 min walk-or-jog between", "workMinutes": [30.75, 31.25], "durationMinutes": [51.53, 52.25], "canonicalDuration": 53}},
+    {"id": "WE-17", "founderExample": "mixed", "family": "HALF_MARATHON_SPECIFIC", "ladderStep": 2, "step": {"repetitions": 2, "workMinutes": 15, "recoveryMinutes": 3}, "bandFastSecondsPerKm": 320, "bandSlowSecondsPerKm": 330, "experience": "EXPERIENCED", "phase": "SPECIFIC", "rotationEntry": "MIXED", "expected": {"expression": "NATIVE", "format": "1 x 2700 m + 1 x 15 min, 3 min walk-or-jog between", "workMinutes": [29.4, 29.85], "durationMinutes": [47.19, 47.85], "canonicalDuration": 48}},
+    {"id": "WE-18", "founderExample": "progressive", "family": "THRESHOLD", "ladderStep": 2, "step": {"repetitions": 5, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "PROGRESSIVE_REPEATS", "expected": {"expression": "NATIVE", "format": "5 x 1000 m progressive inside 4:50-5:00 /km (first near 5:00, last no quicker than 4:50), 2 min walk-or-jog between", "checks": "as WE-06"}},
+    {"id": "WE-19", "founderExample": "progressive", "family": "HALF_MARATHON_SPECIFIC", "ladderStep": 1, "step": {"repetitions": 3, "workMinutes": 10, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 320, "bandSlowSecondsPerKm": 330, "experience": "EXPERIENCED", "phase": "SPECIFIC", "rotationEntry": "PROGRESSIVE_REPEATS", "expected": {"expression": "NATIVE", "format": "3 x 1800 m progressive inside 5:20-5:30 /km, 2 min walk-or-jog between", "workMinutes": [28.8, 29.7], "durationMinutes": [47.37, 48.7], "canonicalDuration": 49}},
+    {"id": "WE-20", "founderExample": "progressive (continuous)", "family": "EASY", "canonicalMinutes": 50, "bandFastSecondsPerKm": 375, "bandSlowSecondsPerKm": 450, "experience": "INTERMEDIATE", "phase": "BUILD", "rotationEntry": "PROGRESSIVE_EASY", "expected": {"expression": "NATIVE", "format": "8 km easy, second half may rise toward 6:15 /km, never quicker; or stop at 50 min", "checks": "as WE-08"}},
+    {"id": "WE-21", "founderExample": "recovery by distance", "family": "THRESHOLD", "ladderStep": 1, "step": {"repetitions": 4, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 310, "bandSlowSecondsPerKm": 330, "recoveryBandFastSecondsPerKm": 400, "recoveryBandSlowSecondsPerKm": 490, "bandNote": "V1RC 10K_50min_HIGH threshold and RECOVERY bands", "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "EVEN_REPEATS_DISTANCE_RECOVERY", "expected": {"expression": "NATIVE", "format": "4 x 900 m, 300 m easy jog between", "workMinutes": [18.6, 19.8], "durationMinutes": [39.24, 42.15], "canonicalDuration": 41, "E3max": 43, "E4min": 36.9}},
+    {"id": "WE-22", "founderExample": "6 x 800 m with distance recoveries", "family": "TEN_K_SPECIFIC", "ladderStep": 3, "step": {"repetitions": 6, "workMinutes": 4, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "recoveryBandFastSecondsPerKm": 350, "recoveryBandSlowSecondsPerKm": 440, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "rotationEntry": "EVEN_REPEATS_DISTANCE_RECOVERY", "expected": {"expression": "NATIVE", "format": "6 x 750 m, 350 m easy jog between", "why800Fails": "6 x 800 m with five 350 m jogs exceeds E3 (duration high above 51 min)", "workMinutes": [21.75, 22.5], "durationMinutes": [46.49, 50.33], "canonicalDuration": 49, "E3max": 51}},
+    {"id": "WE-23", "founderExample": "recovery by distance (novice)", "family": "THRESHOLD", "ladderStep": 1, "step": {"repetitions": 4, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 310, "bandSlowSecondsPerKm": 330, "experience": "NOVICE", "phase": "DEVELOPMENT", "expected": {"expression": "NATIVE", "format": "4 x 900 m, 2 min walk-or-jog between", "note": "distance recoveries are not a NOVICE entry"}},
+    {"id": "WE-24", "founderExample": "first exposure", "family": "THRESHOLD", "ladderStep": 0, "step": {"repetitions": 3, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 310, "bandSlowSecondsPerKm": 330, "experience": "INTERMEDIATE", "phase": "BUILD", "expected": {"expression": "TIME", "reason": "FIRST_EXPOSURE"}},
+    {"id": "WE-25", "founderExample": "wide band fallback", "family": "THRESHOLD", "ladderStep": 1, "step": {"repetitions": 4, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 395, "bandSlowSecondsPerKm": 445, "bandNote": "V1RC 5K_30min_MODERATE threshold band", "experience": "INTERMEDIATE", "phase": "BUILD", "expected": {"expression": "EQUIVALENT", "reason": "NO_FORMAT_WITHIN_ENVELOPE", "equivalent": "r1: 670 m per repetition, ends at the distance or at 5 min whichever first; r1 completion check 38.38 >= 36.9"}},
+    {"id": "WE-26", "founderExample": "taper keeps the peak format", "family": "THRESHOLD", "peakExecuted": "5 x 1000 m (WE-06)", "taperStep": {"repetitions": 3, "workMinutes": 5, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 300, "experience": "INTERMEDIATE", "phase": "TAPER", "expected": {"expression": "NATIVE", "format": "3 x 1000 m, 2 min walk-or-jog between", "workMinutes": [14.5, 15.0], "durationMinutes": [33.29, 34.0], "canonicalDuration": 34}},
+    {"id": "WE-27", "founderExample": "race-week touch", "family": "RACE_TOUCH", "event": "HALF_MARATHON", "step": {"repetitions": 2, "workMinutes": 5, "recoveryMinutes": 3}, "bandFastSecondsPerKm": 325, "bandSlowSecondsPerKm": 340, "experience": "INTERMEDIATE", "phase": "RACE_WEEK", "expected": {"expression": "NATIVE", "format": "2 x 850 m, 3 min walk-or-jog between", "workMinutes": [9.21, 9.63], "durationMinutes": [27.07, 27.63], "canonicalDuration": 28}},
+    {"id": "WE-28", "founderExample": "race-week touch (fallback)", "family": "RACE_TOUCH", "event": "5K", "step": {"repetitions": 3, "workMinutes": 1, "recoveryMinutes": 2}, "bandFastSecondsPerKm": 290, "bandSlowSecondsPerKm": 305, "experience": "INTERMEDIATE", "phase": "RACE_WEEK", "expected": {"expression": "TIME", "reason": "NO_FORMAT_WITHIN_ENVELOPE"}},
+    {"id": "WE-29", "founderExample": "marathon-specific repeats", "family": "MARATHON_SPECIFIC", "ladderStep": 1, "step": {"repetitions": 3, "workMinutes": 15, "recoveryMinutes": 3}, "bandFastSecondsPerKm": 350, "bandSlowSecondsPerKm": 370, "bandNote": "V1RC HALF_110min_HIGH marathon band", "experience": "EXPERIENCED", "phase": "SPECIFIC", "rotationEntry": "EVEN_REPEATS", "expected": {"expression": "NATIVE", "format": "3 x 2400 m, 3 min walk-or-jog between", "workMinutes": [42.0, 44.4], "durationMinutes": [62.38, 65.4], "canonicalDuration": 66, "E3max": 69, "E4min": 59.4}},
+    {"id": "WE-30", "founderExample": "easy run with strides", "family": "EASY", "canonicalMinutes": 45, "strides": {"repetitions": 4, "workSeconds": 20, "recoverySeconds": 90}, "bandFastSecondsPerKm": 375, "bandSlowSecondsPerKm": 450, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "expected": {"expression": "NATIVE", "format": "6 km easy, or stop at 37.7 min if that comes first; then 4 x 20 s strides as prescribed (optional where the engine says so)", "E4lowMinutes": 44.28, "E4min": 40.5}},
+    {"id": "WE-31", "founderExample": "short shakeout (fallback)", "family": "SHAKEOUT", "canonicalMinutes": 15, "bandFastSecondsPerKm": 380, "bandSlowSecondsPerKm": 470, "experience": "INTERMEDIATE", "phase": "RACE_WEEK", "expected": {"expression": "TIME", "reason": "NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE", "why": "admissible D between 2.16 and 2.37 km; no 0.5 km multiple"}},
+    {"id": "WE-32", "founderExample": "recovery run", "family": "RECOVERY_EASY", "canonicalMinutes": 20, "bandFastSecondsPerKm": 400, "bandSlowSecondsPerKm": 490, "experience": "INTERMEDIATE", "phase": "DEVELOPMENT", "expected": {"expression": "NATIVE", "format": "3 km easy, or stop at 20 min if that comes first", "E4lowMinutes": 19.7, "E4min": 18.0}},
+    {"id": "WE-33", "founderExample": "restart mode", "family": "EASY", "mode": "RESTART", "experience": "EXPERIENCED", "phase": "BUILD", "expected": {"expression": "TIME", "reason": "MODE_WALK_JOG_RESTART_RETURN"}},
+    {"id": "WE-34", "founderExample": "slow marathon estimate", "family": "MARATHON_SPECIFIC", "ladderStep": 1, "marathonCentralEstimate": "6:10:00", "experience": "INTERMEDIATE", "phase": "SPECIFIC", "expected": {"expression": "TIME", "reason": "MARATHON_ESTIMATE_ABOVE_360_MIN"}}
+  ],
+  "workedExamplesNote": "Computed by a scratch script outside the repository implementing values.envelope, values.patterns, values.candidateOrder and values.continuous with the stated bands; not a test of any implementation. Where a rotationEntry is given, the example shows the candidate for that entry; which entry a week gets follows values.rotation. All bands are synthetic or V1RC worked-example bands.",
+  "founderExamplesAdmission": {
+    "6 x 800 m": "ADMITTED where 800 m at the band takes between 0.9 and 1.015 of the step repetition: TEN_K step 3 (4-min reps) for a 10K band near 4:50-5:00 /km, FIVE_K step 3 (3-min reps) for a 5K band near 3:40-3:45 /km. Not for slower bands (6 x 750 m instead), not at step 0 (first exposure).",
+    "8 x 400 m": "ADMITTED at FIVE_K step 1 (8 x 2 min) for a 5K band near 4:50-5:00 /km; FIVE_K requires INTERMEDIATE+ (engine). Not admitted for a 5:05 slow edge (TIME).",
+    "5 x 1000 m": "ADMITTED at THRESHOLD step 2 (5 x 5 min) for a threshold band near 4:50-5:00 /km, and at TEN_K step 2 (5 x 4 min) for a 10K band near 3:50-4:00 /km.",
+    "8 km continuous": "ADMITTED for INTERMEDIATE+ at EASY 50 min with an easy ceiling of 6:15 /km, as '8 km or 50 min'. NOVICE stays TIME.",
+    "16 km long run": "ADMITTED at LONG 90 min with a long-run ceiling of 5:25 /km, as '16 km or 90 min'; most slower in-band runners end by time. For a 6:20 ceiling at 100 min it is 15 km.",
+    "pyramid": "ADMITTED for INTERMEDIATE+ outside SPECIFIC/CONSOLIDATION/TAPER/RACE_WEEK, only at steps whose repetition is longer than the family's shortest (THRESHOLD 3-5, FIVE_K 2-3, TEN_K 2-3, HALF 3, MARATHON 3), e.g. 1400-1600-1600-1400 m.",
+    "mixed": "ADMITTED for INTERMEDIATE+, e.g. 2 x 1500 m + 2 x 8 min.",
+    "progressive": "ADMITTED only inside one domain: PROGRESSIVE_REPEATS (threshold, half, marathon) and PROGRESSIVE_EASY (easy, long). NOT admitted: easy-to-steady-to-threshold progression runs or long runs with a race-effort finish (no V1 domain).",
+    "recovery by time": "DEFAULT everywhere (walk-or-jog, the step's minutes).",
+    "recovery by distance": "ADMITTED for INTERMEDIATE+ with EVEN_REPEATS outside CONSOLIDATION, TAPER and RACE_WEEK, e.g. 4 x 900 m with 300 m jog; fewer-repetition sessions pass E3 more often."
+  },
+  "aeReview": {
+    "level": "Expression of an unchanged dose; no adaptive decision changes.",
+    "q1_currentPlanAdequate": "The plan and its doses are the engine's and unchanged.",
+    "q2_materialFact": "The V1RC band of the step's domain for the session's week; the athlete's experience and phase as the engine stores them; without a band, TIME.",
+    "q3_keepDefensible": "Yes: TIME stays available and is the fallback for every suppression.",
+    "q4_changeNecessary": "No training change; native expression is a Founder product requirement.",
+    "q5_smallestIntervention": "Re-expression inside an envelope tied to approved values; repetition length pinned; continuous runs capped by their own minutes.",
+    "q6_smallerAlternativesInsufficient": "The r1 conversion alone does not produce native formats, which the Founder requires; the envelope is the smallest addition that keeps the dose.",
+    "q7_priorityAndProgression": "Progression stays the ladder step; doseKey unchanged; rotation is not progression; hybrid coordination unchanged.",
+    "q8_evidenceSupportsDose": "No dose is set. The bounds are arithmetic over the standing band and approved values; no comparative evidence exists for distance- versus time-prescribed sessions.",
+    "q9_uncertainty": "Individual band accuracy (LOW for race-pace domains); GNSS error 3-9% and up to 12% on some watches; behaviour with distance targets untested; coverage gaps.",
+    "q10_askHoldClinical": "Holds, clinical route and warning-sign screen suppress native formats; no new clinical judgment."
+  },
+  "changedFromProposal": [
+    "N1: repetition length pinned to the step (E2), not only 'near' it; PYRAMID flanks the only exception; recoveries stay the step's own minutes.",
+    "N2: E1 [0.9, 1.015] and E2 [0.9, 1.015] tied to the engine read and the V1RC on-band fraction; E3 quality tolerance set at one extra recovery interval of the step.",
+    "N3: NOVICE also kept off continuous distance targets and distance recoveries; PYRAMID excluded from SPECIFIC; CONSOLIDATION limited to EVEN_REPEATS.",
+    "N4: the author's 'may end short' replaced by a time ceiling equal to the canonical minutes (both ends count as done); the observed easy band is never used for LONG; strides handled.",
+    "N5: author proposal kept; distance rounded up at the RECOVERY fast edge; walking allowed with a longer recovery; restricted to EVEN_REPEATS and to build/development/specific phases.",
+    "N6: author's cross-domain progressive rejected; two within-domain progressive forms approved.",
+    "N7: author proposal kept, with no per-repetition ceiling only under E2's 1.5% bound, the estimate range shown and the time version recommended in adverse conditions.",
+    "N8: seven reasons added, order fixed, EQUIVALENT only after NO_FORMAT_WITHIN_ENVELOPE.",
+    "N9: peak distance kept as EVEN_REPEATS only when E2 passes against the taper repetition; no other pattern in taper or race week.",
+    "N10: rotation returns to EVEN_REPEATS after a partial or harder-than-target session at the same step."
+  ],
+  "supersedesForNativePrescription": {
+    "SSCTR-RWS-DECISION-r1 RWS-Q1 (time-dose ceiling per repetition)": "not applied to NATIVE quality repetitions (kept for EQUIVALENT)",
+    "SSCTR-RWS-DECISION-r1 RWS-Q3 (distance only for repetitions of 5 min or more)": "superseded by RWS-N7 for NATIVE (kept for EQUIVALENT)",
+    "SSCTR-RWS-DECISION-r1 RWS-Q4 (recoveries in time only)": "superseded by RWS-N5 for NATIVE",
+    "SSCTR-RWS-DECISION-r1 RWS-Q6 (no distance target for continuous runs)": "superseded by RWS-N4 for NATIVE",
+    "SSCTR-RWS-DECISION-r1 RWS-Q9 (progression runs out of V1)": "partially superseded by RWS-N6 for progressions inside one domain only",
+    "SSCTR-RWS-DECISION-r1 other items": "unchanged; r1 remains the authority for the EQUIVALENT mode"
+  },
+  "abstentions": [
+    {"item": "Any wider E1/E2 tolerance than [0.9, 1.015]", "status": "INSUFFICIENT_EVIDENCE", "result": "none; coverage gaps fall back to EQUIVALENT or TIME"},
+    {"item": "Easy-to-steady-to-threshold progression runs and long runs with a race-effort finish", "status": "INSUFFICIENT_EVIDENCE and no V1 domain (LATER.RUN.STEADY)", "result": "out of V1 unless the Founder opens the steady domain in a later mission"},
+    {"item": "A GNSS minimum repetition distance or a track-only rule", "status": "INSUFFICIENT_EVIDENCE (no wrist validation at repetition scale)", "result": "guidance text only"},
+    {"item": "Claims that pyramids, mixed or progressive formats improve adaptation", "status": "INSUFFICIENT_EVIDENCE", "result": "none made"},
+    {"item": "Familiar task by distance (r1 RWS-Q10)", "status": "unchanged", "result": "still deferred"}
+  ],
+  "proposedQueueItems": [
+    {"queue_id": "HQ-RWS2-SSCTR-NATIVE", "decision_id": "SSCTR-RWS-R2-DECISION#RWS-N1,N2,N3,N5,N8,N9,N10", "scope": "native interval formats (boundary V1X-RUN-NATIVE): catalog, E1-E4 tolerances, eligibility, distance recoveries, suppressions, taper and touch, rotation"},
+    {"queue_id": "HQ-RWS2-SSCTR-CONTINUOUS", "decision_id": "SSCTR-RWS-R2-DECISION#RWS-N4,N6", "scope": "continuous distance targets with the canonical-minutes ceiling; within-domain progressive forms"},
+    {"queue_id": "HQ-RWS2-SSCTR-MEASURE", "decision_id": "SSCTR-RWS-R2-DECISION#RWS-N7", "scope": "completion by lap confirmation, measurement handling, short repetitions and the accepted residuals"}
+  ],
+  "proposedQueueItemCommon": {"proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "appendOwner": "Founder / Chief (this instance writes only its two files; the queue is unchanged)", "human_review": null, "approval_date": "2026-11-13", "reReviewTrigger": "see expiry.triggers"},
+  "escalations": [
+    {"to": "Chief (handoff author)", "item": "Handoff section 3 says a native distance never ends by time; for continuous runs this record requires the canonical minutes as a time ceiling (RWS-N4). Section 4 E3 tolerance, the rotation entries, the pattern definitions and the suppression order are in values. The handoff's E3 'slow edge' estimate for continuous runs is replaced by the ceiling."},
+    {"to": "Founder (information; decision only if unacceptable)", "item": "Coverage: with tolerances tied to approved values, native formats are produced for about 39-58% of plausible bands in the 5K ladder and 58-65% in the 10K ladder; the rest are TIME (no EQUIVALENT under 5 min). Widening needs evidence or funded human review, not an SSCTR choice. Separately, progression runs that cross into a steady or race effort need the steady domain (LATER.RUN.STEADY), which is a scope decision."},
+    {"to": "Product", "item": "Wording of 'D km or M min, whichever comes first' and of estimated ranges; whether to show reach; time-version recommendation in heat, hills, wind, trail, treadmill; default expression; how many slower athletes end long runs by time."},
+    {"to": "Data / G03", "item": "targetMet semantics (lap confirmation, ceiling end), measurement source per step, recovery distance never as adherence; planned versus executed km not an adherence measure."},
+    {"to": "Engineering / QRE", "item": "T3 (steps and formatHash survive in actualLedger and custody); whether V1RC Q8 reads the partial flag (from r1); strides deduction in continuous sizing; E3/E4 with distance recoveries; candidate order determinism; taper reads the peak format from the record."},
+    {"to": "Clinical", "item": "None new: symptoms stay on the existing route."}
+  ],
+  "validation": {
+    "skillValidator": "not run (Python is not installed)",
+    "schema": "Multi-item record in the shape of SSCTR-RWS-DECISION-r1 and SSCTR-V1RC-DECISION-r1, not decision.schema.json (one decision per record).",
+    "jsonWellFormed": "checked with Node",
+    "workedExamples": "computed by a scratch script implementing values.envelope, patterns, candidateOrder and continuous; not a test of any implementation"
+  },
+  "governance": {
+    "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+    "wholeGateClosure": false,
+    "publicationStatus": "NOT_PUBLISHED",
+    "humanValidation": false,
+    "empiricalProductValidation": false,
+    "clinicalClearance": false,
+    "enablesBoundaries": false,
+    "enablingRecord": "V1X-RUN-NATIVE is enabled only by a separate record from a fresh SSCTR judge bound to the pinned RUN_FORMATS_V1.json sha256"
+  },
+  "expiry": {
+    "owner": "Chief / SSCTR",
+    "reviewBy": "2027-05-11",
+    "dependsOn": "SSCTR-V1RC-DECISION-r1 and SSCTR-RWS-DECISION-r1 (EQUIVALENT); if either is superseded or the bands change, this record is invalid until re-reviewed",
+    "triggers": [
+      "supersession or amendment of SSCTR-V1RC-DECISION-r1, SSCTR-RWS-DECISION-r1 or RUN_CALIBRATION_EXTENSION_V1.json",
+      "any change to the ladders, warm-up or cool-down defaults, taper reduction, race-week touches, first-exposure semantics or the 0.9 completion read",
+      "a study comparing time- and distance-prescribed sessions, a wrist GNSS validation on repetitions, or a trial of pyramid or progression formats in recreational runners",
+      "the first real product data on native sessions (partial reads, repetition times outside the estimate range, continuous runs ended by the ceiling, coverage) or any adverse event in such a session",
+      "a runtime inconsistency found by the candidate judges",
+      "a Founder decision opening a steady domain or changing V1 population, events, families or effort cues",
+      "the Founder's funding declaration (human revalidation)"
+    ]
+  }
+}

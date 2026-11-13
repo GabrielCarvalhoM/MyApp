@@ -1,0 +1,1169 @@
+{
+ "recordId": "SSCTR-RWS-R3-DECISION",
+ "date": "2026-11-13",
+ "mission": "RUN WORKOUT STRUCTURE (Founder, 2026-11-13), request r3: make the Founder's binding product rule 'distance is the completion criterion of a native distance target; no automatic time ceiling; duration only an estimate; the athlete may always stop' sporting-safe (C1-C6). Branch claude/v1-run-workout-structure from c8104c1.",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision author",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+  "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5, effort high). Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed. As far as it can tell this instance did not author SSCTR-RWS-R2-DECISION, SSCTR-RWS-DECISION-r1 or SSCTR-V1RC-DECISION-r1; it read them as standing records.",
+  "nature": "An AI software reviewer with no human credentials, licence, degree or registration and no clinical or legal equivalence. This record is an internal literature-based sporting decision, not human validation, empirical product validation or medical clearance.",
+  "independence": "Independent of the author of the request (the Chief). This instance authors the rulings and values below; it must not judge the implemented candidate or issue the V1X-RUN-NATIVE enabling record (SSCTR-08). No self-check is counted as independent approval."
+ },
+ "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical sporting decisions only. Clinical judgment stays CLINICAL_HUMAN_REQUIRED. No runtime sovereignty, no Product Truth publication, no gate closure, no change to any frozen record, no boundary enabled. The Founder rule is a product decision recorded as given; this record does not reopen it.",
+ "inputs": {
+  "request": "audits/v1-run-workout-structure-2026-11-13/SSCTR_DECISION_REQUEST_RWS_R3.md (sha256 0e0573368f865af02e42c5920aca004ee671966bbb525ca298008318ae1ede33)",
+  "standingR2": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R2_DECISION.json (SSCTR-RWS-R2-DECISION, sha256 daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213): values, items N1-N10, sources; N4 read as history only (rejected by the Founder for the product)",
+  "historyR1": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_DECISION.json (SSCTR-RWS-DECISION-r1, sha256 e17e2519b01e13b516379f33abde702567944d4976ae559490b3d3a8aed415d1): sources only",
+  "standingV1RC": "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json (SSCTR-V1RC-DECISION-r1, sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3): Q4 easy ceilings, q11 fatigue opinion, P3 stops",
+  "valuesInForce": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): domains EASY/LONG/RECOVERY (ceiling true), assessment.P1, assessment.P3.stops (reasons; missingReasonReadAs SYMPTOM = R-01), recalibration (0.015, consecutiveSessionsRequired 2, notComparableConditions), estimates.longestRunWithinDays 28",
+  "eventValues": "CoachingCore/v1/EVENT_EXTENSION_V1.json (sha256 8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8): marathon.longRunTarget 180, longRunTargetIsCapOnly true",
+  "r6Values": "CoachingCore/r6/INITIAL_PROGRAM_GENERATION_R6.json (sha256 f759f912c513a2495cac31c0bb24dda8caa3ae72e5263e4baeeceb40bfba9259): run.longRunStepMinutes 5, run.easyStepMinutes 5, run.longRunTargets, run.longRunShareOfWeeklyMinutesMax 0.45",
+  "codeReadOnly": "CoachingCore/src/r6-adaptation.mjs (sha256 be280b07fb72d07c556747040dc842795804587911d062f6fc46f895601f9d1d) line 195 minutesOk and complete, REVIEW_KINDS (PARTIAL_SESSION, SYSTEMIC_FATIGUE), fatigue(); CoachingCore/src/r6-program.mjs (sha256 c603bada95fed95f0796f793d759c90b048aadd67a9d0ecaaa9e43a1c7111f45) lines 270-279 longestContinuous (planned minutes of done runs, no window); CoachingCore/src/v1-run-calibration.mjs (sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01) easyObservation, observedEasy (median fast edge, slow edge max(slowest, median+30)), bandsOf, longestRecentRun",
+  "handoff": "audits/v1-run-workout-structure-2026-11-13/HANDOFF_RUN_WORKOUT_STRUCTURE.md (sha256 9d2f0152b3596776e4ffedb492baadb6cea0eaae012d782cc9a13cc2ffed1335) sections 3-6 as context; its header still reads r2",
+  "worktreeHead": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+  "hostInjectedContext": "The host injected the global and project CLAUDE.md files and the project MEMORY.md index into this instance. They were used only for routing and limits, not as evidence.",
+  "notReviewed": "No implementation exists; none is judged. No other repository file was audited."
+ },
+ "literatureAccess": {
+  "tools": "Europe PMC REST API (search, core metadata and fullTextXML endpoints) called with Node fetch from the shell. WebSearch and WebFetch were not used. No consumer, commercial or social page was used as evidence.",
+  "fullTextReadThisRun": [
+   "SRC-RWS3-01 Pobiruchin 2017 (PMC5350460): Methods (AIMS-certified half and full marathon courses), Analysis on recorded distance, Results on recorded distances by device category, Discussion and Limitations. Read in those passages.",
+   "SRC-RWS-07 Frandsen 2025 (PMC12421110): re-read this run in the abstract, the exposure definition (four states relative to the longest run of the previous 30 days), Table 1, and the sensitivity note that a 1% cut-off also associated increases of 1-10% with a higher injury rate.",
+   "SRC-RWS3-02 Bullock 2024 (PMC10797502): abstract, methods, Table 3 and the principal findings. Read in those passages; auxiliary only."
+  ],
+  "reusedFromStandingRecords": "SRC-RWS-01 Gilgen-Ammann 2020, SRC-RWS-02 Jacko 2024, SRC-RWS-03 Jennings 2010 and SRC-RWS-08 Dideriksen 2016 as summarised in SSCTR-RWS-DECISION-r1; SRC-RWS2-01 Haugen 2022 and SRC-RWS2-09 Knopp 2024 as summarised in SSCTR-RWS-R2-DECISION; V1RC:SRC08/SRC09 (fixed fractions do not place individuals in one domain), V1RC:SRC21/SRC22 (talk test) and V1RC:SRC25 (no validated marker separates ordinary tiredness from early overreaching or illness) as summarised in SSCTR-V1RC-DECISION-r1. None of these was re-read in this run.",
+  "negativeSearches": "No study was found that compares distance-prescribed continuous runs without a time limit with time-prescribed runs in recreational runners, or that links an excess of session duration at constant distance to injury or overreaching. No wrist-GNSS validation at repetition scale was found (inherited from r1/r2).",
+  "validator": "Python is not available in this environment (only the Windows Store alias), so .agents/skills/sports-science-review/scripts/validate_records.py did not run. JSON well-formedness was checked with Node.",
+  "rule": "Search snippets were not used as evidence. No effect estimate, participant count or endpoint is stated beyond what the accessed text reports."
+ },
+ "searches": [
+  {
+   "q": "(TITLE:GPS OR GNSS OR sport watch OR smartwatch) AND TITLE:distance AND (marathon OR half marathon OR road race)",
+   "engine": "Europe PMC",
+   "result": "2 hits, both animal telemetry; not relevant"
+  },
+  {
+   "q": "(accuracy OR validity) AND (GPS OR GNSS) AND (watch OR wearable OR smartphone) AND running AND distance AND (marathon OR half-marathon OR road race OR race course)",
+   "engine": "Europe PMC",
+   "result": "175 hits; no device validation over long continuous runs on the first page; Pobiruchin 2017 located by a direct query"
+  },
+  {
+   "q": "Pobiruchin AND marathon AND wearable",
+   "engine": "Europe PMC",
+   "result": "PMC5350460 read (SRC-RWS3-01)"
+  },
+  {
+   "q": "distance/positioning/GNSS/GPS + watch/wearable/smartphone + running + validity, 2020-2026",
+   "engine": "Europe PMC",
+   "result": "32 hits; team-sport and pedestrian positioning; Bullock 2024 (self-report versus watch) read as auxiliary"
+  },
+  {
+   "q": "self-reported AND running AND distance AND (GPS OR validity)",
+   "engine": "Europe PMC",
+   "result": "672 hits, first page off-topic; Dideriksen 2016 reused from r1"
+  },
+  {
+   "q": "(running OR runners) AND (session duration OR running time OR time-based) AND (spike OR single session) AND injury",
+   "engine": "Europe PMC",
+   "result": "624 hits, first page off-topic: negative for duration spikes at constant distance"
+  },
+  {
+   "q": "(runners OR running) AND (distance-based OR time-based) AND (prescription OR training plan) AND (recreational OR novice)",
+   "engine": "Europe PMC",
+   "result": "172 hits; only Knopp 2024 (plans in time, distance or both; no outcomes) relevant: negative for a comparison"
+  }
+ ],
+ "counterevidenceSearch": "Attempted refutations: (1) 'Sizing at the band's slow edge is the conservative choice' - refuted for dose: the EASY and LONG bands are ceilings derived from fixed fractions (V1RC Q4) and are about 20-27% wide (r2 coverage sweep; r2 WE-10/WE-11 bands 325-410 and 380-460 s/km), so a distance sized at the slow edge plans only about 79-83% of the minutes for a runner at the ceiling and the 0.9 dose floor cannot hold; fixed fractions do not place individuals in one domain (V1RC:SRC08/SRC09), so an individual observed pace is the better sizing basis. (2) 'A 10% single-session distance increase is safe' - Frandsen 2025 used <=10% only as the reference category and reports that increases of 1-10% were also associated with a higher rate in a sensitivity analysis; 1.10 is therefore used only as an outer bound that the distance expression never exceeds, not as a safe threshold, and the engine's own minute ramp is not judged here. (3) 'GPS error is small on long runs' - on a certified half-marathon course watches had a mean absolute error of 0.6% but individual recordings ranged from 20.00 to 22.55 km (SRC-RWS3-01), and off-track wrist watches under-read by up to 9% (SRC-RWS-01): one automatic tolerance cannot cover both, hence two bounds and confirmation. (4) 'Self-report can replace measurement' - single-run self-reports have individual limits of agreement of -28% to +40% (SRC-RWS-08); weekly self-report agrees well with watches (ICC 0.88, SRC-RWS3-02), but those are weekly totals by watch wearers: confirmation is accepted only at the lowest evidence tier. (5) 'Running the same distance slower is riskier' - no study found either way (negative search); the residual is accepted with monitoring, not claimed safe.",
+ "sources": [
+  {
+   "id": "SRC-RWS3-01",
+   "citation": "Pobiruchin M, Suleder J, Zowalla R, Wiesner M. Accuracy and adoption of wearable technology used by active citizens: a marathon event field study. JMIR Mhealth Uhealth 2017;5(2):e24.",
+   "pmid": "28246070",
+   "pmcid": "PMC5350460",
+   "doi": "10.2196/mhealth.6395",
+   "type": "FIELD_VALIDATION_STUDY",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "On AIMS-certified courses, recorded distances ranged from 20.00 to 22.55 km (half marathon) and 41.48 to 43.7 km (marathon); GPS sport watches had a mean absolute error of 0.12 km (0.6%) on the half marathon and phones 0.35 km (1.7%), overestimating; the authors note runners do not follow the ideal line, so part of the overestimation is real distance.",
+   "limitations": [
+    "2016 device generation",
+    "race conditions, one event",
+    "no per-device error on training routes",
+    "overestimation partly real path, not device error"
+   ]
+  },
+  {
+   "id": "SRC-RWS3-02",
+   "citation": "Bullock G, Stocks J, Feakins B, Alizadeh Z, Arundale A, Kluzek S. Comparing self-reported running distance and pace with a commercial fitness watch data: reliability study. JMIR Form Res 2024;8:e39211.",
+   "pmid": "38175696",
+   "pmcid": "PMC10797502",
+   "doi": "10.2196/39211",
+   "type": "RELIABILITY_STUDY",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "475 recreational runners, 3602 participant-weeks: weekly self-reported distance against Garmin data ICC 0.88 (good), pace ICC 0.72 (moderate), no discernible systematic bias.",
+   "limitations": [
+    "auxiliary only",
+    "weekly totals, not single sessions",
+    "participants wore the watch, so self-report may be informed by it"
+   ]
+  },
+  {
+   "id": "SRC-RWS-07",
+   "citation": "Frandsen JSB, Hulme A, Parner ET, et al. How much running is too much? Identifying high-risk running sessions in a 5200-person cohort study. Br J Sports Med 2025;59(17):1203-1210.",
+   "pmid": "40623829",
+   "pmcid": "PMC12421110",
+   "doi": "10.1136/bjsports-2024-109380",
+   "type": "PROSPECTIVE_COHORT",
+   "access": "FULL_TEXT_PASSAGES",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "findingsUsed": "5205 adult runners with GPS devices: relative to sessions up to 10% above the longest run of the previous 30 days (reference), single sessions >10-30% above it had a higher overuse-injury rate (adjusted HRR 1.64, 95% CI 1.31-2.05), >30-100% HRR 1.52 and >100% HRR 2.28; a sensitivity analysis with a 1% cut-off also associated 1-10% increases with a higher rate; acute:chronic and week-to-week ratios showed no or inverse associations.",
+   "limitations": [
+    "observational association, not causation",
+    "self-reported injury",
+    "GPS distance",
+    "distance may not be the optimal load measure (authors)",
+    "no time-based exposure tested"
+   ]
+  },
+  {
+   "id": "SRC-RWS-01",
+   "citation": "Gilgen-Ammann R, Schweizer T, Wyss T. JMIR Mhealth Uhealth 2020;8(6):e17118 (as summarised in SSCTR-RWS-DECISION-r1).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Eight wrist watches, references 404-4297 m: MAPE 3.2-6.1% across areas; underestimation up to 9% in urban and forest areas, overestimation on the track."
+  },
+  {
+   "id": "SRC-RWS-02",
+   "citation": "Jacko T, et al. Sensors 2024;24(14):4675 (as summarised in SSCTR-RWS-DECISION-r1).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "4000 m on a track: seven of ten 2024 watches within 2% on average; MAPE 0.8-12.1%; 3.4 km road MAPE 0.2-7.5%."
+  },
+  {
+   "id": "SRC-RWS-03",
+   "citation": "Jennings D, et al. IJSPP 2010;5(3):328-41 (as summarised in SSCTR-RWS-DECISION-r1).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "GPS error is larger over short distances; reliability improves with distance."
+  },
+  {
+   "id": "SRC-RWS-08",
+   "citation": "Dideriksen M, Soegaard C, Nielsen RO. J Strength Cond Res 2016;30(6):1592-6 (as summarised in SSCTR-RWS-DECISION-r1).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Single-run self-reported distance agreed with GPS on average, with individual 95% limits of agreement of -28% to +40%."
+  },
+  {
+   "id": "SRC-RWS2-01",
+   "citation": "Haugen T, et al. Sports Med Open 2022;8:46 (as summarised in SSCTR-RWS-R2-DECISION).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Practice: sessions are routinely prescribed by distance; practice, not outcomes."
+  },
+  {
+   "id": "SRC-RWS2-09",
+   "citation": "Knopp M, et al. Sports Med Open 2024;10:50 (as summarised in SSCTR-RWS-R2-DECISION).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Sub-elite marathon plans prescribe sessions in time, distance or both; no effectiveness data."
+  },
+  {
+   "id": "V1RC:SRC08-09",
+   "citation": "As summarised in SSCTR-V1RC-DECISION-r1.",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Fixed fractions of maximal values place individuals in different intensity domains; the easy bands are ceilings, not domains."
+  },
+  {
+   "id": "V1RC:SRC21-22",
+   "citation": "Talk-test sources as summarised in SSCTR-V1RC-DECISION-r1.",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "Speech-based effort cue as the governing easy-run cue."
+  },
+  {
+   "id": "V1RC:SRC25",
+   "citation": "As summarised in SSCTR-V1RC-DECISION-r1 (q11).",
+   "access": "REUSED_FROM_STANDING_RECORD",
+   "findingsUsed": "No validated marker distinguishes ordinary tiredness from early overreaching or illness."
+  }
+ ],
+ "globalConditions": [
+  {
+   "id": "RWS3-G.0",
+   "condition": "Founder rule, recorded as given (product decision, not reopened): a native distance target is met by its distance; there is no automatic time ceiling as an alternative completion condition; duration is an estimate shown, never a completion criterion; the athlete may stop at any time; the real execution is recorded and a stop never counts as the target met; statuses DISTANCE, TIME, PARTIAL, STOPPED, UNKNOWN; absence of measurement is never success; absolute GPS precision is never demanded."
+  },
+  {
+   "id": "RWS3-G.1",
+   "condition": "SSCTR-RWS-R2-DECISION global conditions RWS2-G.1 to RWS2-G.7 stand. In particular the planning dose (engine minutes) stays the only load the engine reads (G.1), and the TIME version stays available and is recommended in heat, hills, strong wind, on trail or on a treadmill (G.4)."
+  },
+  {
+   "id": "RWS3-G.2",
+   "condition": "Executed minutes, distance and status are recorded as real and read by the selector for the exposure rules of C1 and the format-fit rule X-2. They never enter an engine load sum, gate, ramp or taper (r2 G.1), and executed pace stays outside calibration except under the unchanged V1RC rules."
+  },
+  {
+   "id": "RWS3-G.3",
+   "condition": "Effort governs. No text asks the athlete to speed up, to finish at any cost or to reach the distance by a time. Every distance session shows its estimated duration range as an estimate and says that stopping and walking are always allowed and are recorded as done."
+  },
+  {
+   "id": "RWS3-G.4",
+   "condition": "Nothing here assesses eligibility in the clinical sense. Unknown eligibility stays ASK; symptoms use the existing warning-sign screen and clinical route; this record creates no clinical rule."
+  }
+ ],
+ "items": [
+  {
+   "id": "RWS3-C1",
+   "question": "Exposure sizing of a distance target without a time ceiling: which pace sizes D for continuous runs and repetitions, and what excess over the planning minutes and over available time is acceptable.",
+   "ruling": "APPROVE_WITH_CONDITIONS (continuous sizing CT-1 to CT-3) + KEEP (repetitions: r2 E1-E3, E5) + ABSTAIN (a numeric acceptable excess for execution slower than the sizing pace; replaced by the structural rules X-1 and X-2)",
+   "category": "b on a (continuous: new rule over V1RC bands and P1, the R6 step and Frandsen); a (repetitions: r2 N2 unchanged); c (numeric excess: abstained)",
+   "value": "values.continuous, values.exposure",
+   "summary": "D is sized at the athlete's own slow pace, not at the ceiling and not at the band's slow edge. Sizing pace P_size = the slowest of: the P1 observed easy range's slow edge; the pace of the latest comparable run of the class (rounded up to 5 s); for a LONG run whose minutes equal the marathon cap (180, cap only), also the LONG band's slow edge; and never faster than P_typ. P_typ (the fastest compliant pace) = the slower of the class band's fast edge (ceiling) and the P1 observed median. D is the largest multiple of 1 km, else 0.5 km, with CT-1 D x P_size <= min(planning minutes, available minutes) (no planned excess), CT-2 D x P_typ >= 0.9 x planning minutes (dose floor, C6) and CT-3 D <= 1.10 x the longest run executed in the last 30 days. If none passes, the session is TIME. Repetitions keep r2: E1/E2 at the band edges, E3 budget, no time ceiling. Available time is covered by CT-1 for continuous runs and by E3 for repetitions. Execution slower than P_size can exceed the planning minutes; no number is supported for how much is acceptable, so the record abstains on a number and bounds it structurally: X-1 the latest run's pace enters the next sizing; X-2 two consecutive continuous sessions of a class with exposure above the estimate, a stop or a partial switch that class to TIME for 28 days.",
+   "changedFromProposal": [
+    "The band's slow edge is not the default sizing pace: EASY and LONG bands are 20-27% wide ceilings, so sizing there plans about 79-83% of the minutes for a runner at the ceiling and cannot meet the 0.9 dose floor; it would send almost every session to TIME. It is used only for cap-bound marathon long runs.",
+    "The athlete's observed easy pace is required, not optional (see C2), and the latest comparable run of the class is added as a sizing source.",
+    "A distance bound tied to evidence is added (CT-3, Frandsen 2025).",
+    "The acceptable excess is abstained as a number and replaced by X-1/X-2.",
+    "RECOVERY_EASY and SHAKEOUT become time-only (see C2)."
+   ],
+   "conditions": [
+    "P1 is the V1RC P1 observed easy range of the session's week (3 to 5 qualifying easy runs in 28 days, at least 20 min, effort 4 or less, distance recorded, comparable conditions, no walk breaks), as V1RC computes it; never recomputed or widened.",
+    "Comparable run of the class (sizing source S3): the latest executed run of that class in the last 28 days with recorded minutes and distance, whatever its status, excluding TREADMILL, GPS flagged POOR, the V1RC notComparableConditions (HEAT, HILLY, TRAIL, WIND_STRONG) and stops for SYMPTOM. Its pace only ever slows P_size.",
+    "Longest run L30: the longest single executed run distance (any family, races included, any recorded source except none or GPS POOR) in the last 30 days; unknown L30 means TIME (DISTANCE_HISTORY_UNKNOWN).",
+    "EASY with strides: the run part is the planning minutes minus the strides block; CT-1 and CT-2 apply to the run part plus the block (as r2).",
+    "PROGRESSIVE_EASY (r2 N6) is sized exactly as CONTINUOUS_DISTANCE.",
+    "The estimate shown is [D x P_typ, D x P_size] minutes, labelled as an estimate.",
+    "Exposure above the estimate (record flag EXPOSURE_ABOVE_ESTIMATE): executed minutes > 1.015 x the high estimate. It is a record flag, not a status, not adverse and not a symptom.",
+    "X-2 counts only distance-expressed continuous sessions of one class (EASY or LONG) in sequence; a TIME session of that class executed without a stop resets the count; sessions flagged with a notComparable condition, treadmill sessions and UNKNOWN sessions neither count nor reset."
+   ],
+   "rationale": "Without a ceiling the only exposure controls before the run are the size of D and who receives it. The band ceilings are deliberately loose (fixed fractions do not place individuals, V1RC:SRC08/SRC09), so a distance that is both dose-faithful and free of planned excess needs an individual pace range; P1 already gives one (median and slowest of the athlete's own easy runs) and the latest comparable run adds the class's own pace. CT-1 keeps the planned high estimate within the planning minutes and the athlete's available time; CT-2 keeps the dose floor; CT-3 keeps the distance expression inside the reference category of the largest prospective data on single-session distance increases (Frandsen 2025), without claiming that category is safe. What remains is execution slower than the athlete's own recent slow pace (walk breaks, fatigue, a hard day): no evidence quantifies an acceptable excess of duration at constant distance (negative search), so no number is set; X-1 makes the next sizing follow the slower execution and X-2 removes the distance expression when it repeatedly does not fit, both reversible.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "evidenceStatusScope": "SUPPORTED_WITH_LIMITS for individual-pace sizing (V1RC P1, V1RC:SRC08/SRC09) and for CT-3 as an outer bound (SRC-RWS-07); PLAUSIBLE_BUT_UNCERTAIN for the acceptability of the residual slower-than-sizing excess, hence the abstention on a number.",
+   "confidence": "LOW",
+   "confidenceReason": "No study tests distance targets without a time limit in recreational runners; Frandsen is observational; the residual is bounded structurally, not quantified.",
+   "sourceIds": [
+    "SRC-RWS-07",
+    "V1RC:SRC08-09",
+    "V1RC:SRC21-22",
+    "SRC-RWS2-01",
+    "SRC-RWS2-09"
+   ],
+   "applicabilityLimits": "Nonclinical recreational adults on roads or tracks (V1RC G.7), INTERMEDIATE or EXPERIENCED, EASY mode."
+  },
+  {
+   "id": "RWS3-C2",
+   "question": "Eligibility for distance targets without a ceiling: who gets native distance continuous runs or repetitions and who gets time or mixed; does r2 N3 suffice without N4.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "b",
+   "value": "values.eligibility",
+   "summary": "r2 N3 suffices for repetitions and stays unchanged (NOVICE: even distance repeats with time recoveries only, the justified mixed form; INTERMEDIATE/EXPERIENCED: all patterns; phase lists; first exposure in TIME). It does not suffice for continuous runs once the ceiling is gone. A continuous distance target (EASY, LONG) also needs: INTERMEDIATE or EXPERIENCED; EASY mode; the P1 observed easy range AVAILABLE for the week; the class band AVAILABLE; L30 known; the class not paused by X-2. LONG also needs a comparable long run: an executed run in the last 28 days with actual minutes >= planning minutes - 5 (R6 longRunStepMinutes) and a recorded distance. RECOVERY_EASY and SHAKEOUT are time-only. NOVICE, unknown experience, WALK_JOG, RESTART, RETURN, ESTABLISHMENT, POST_EVENT and first exposure stay TIME for continuous runs; no new mixed continuous format is approved for NOVICE or RETURN.",
+   "changedFromProposal": [
+    "The engine's longestContinuous is not used: it is the largest planned minutes of any run ever completed (r6-program.mjs 278-279), with no window and not executed; the requirement reads the executed run of the last 28 days (V1RC longestRunWithinDays 28) with its distance.",
+    "'With a band' is made concrete: the class band AVAILABLE and the P1 observed range AVAILABLE.",
+    "RECOVERY_EASY and SHAKEOUT leave the continuous-distance families: no individual recovery-pace observation exists, the RECOVERY ceiling is not the pace these runs are run at, and their purpose is low exposure, so a distance adds excess risk with no dose benefit."
+   ],
+   "conditions": [
+    "Experience as the engine stores it; unknown is NOVICE (r2).",
+    "After a RETURN or RESTART ends, continuous runs stay TIME until V1RC again reports a P1 observed range and the class band is AVAILABLE; repetitions return to native only when their band is AVAILABLE (V1RC withdrawal rules unchanged).",
+    "First LONG of a plan, or a LONG step more than one engine step above the latest executed run: TIME (LONG_HISTORY_NOT_COMPARABLE).",
+    "Eligibility here is sporting eligibility for an expression only; it never changes the dose, the engine's family choice or any clinical route."
+   ],
+   "rationale": "The Founder rule itself allows time or justified mixed sessions for novices and returning athletes. The remaining question is who can carry a distance with no ceiling: the athlete whose own recent continuous pace is known (P1) and, for long runs, who has run nearly this long within the last four weeks, so that both the sizing pace and the distance reference are individual and current. Frandsen's 30-day longest-run reference supports reading recent executed history rather than lifetime planned minutes.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "LOW",
+   "sourceIds": [
+    "SRC-RWS-07",
+    "V1RC:SRC08-09"
+   ],
+   "applicabilityLimits": "As C1."
+  },
+  {
+   "id": "RWS3-C3",
+   "question": "What target met is, by measurement source; tolerances; role of athlete or device-lap confirmation; the 15.6 km versus confirmed 16 km conflict; which steps count.",
+   "ruling": "APPROVE_WITH_CONDITIONS + ABSTAIN (a GPS tolerance for single repetitions)",
+   "category": "b (continuous tolerances tied to evidence) + a (r2 N7 lap rule for repetitions) + c (per-repetition GPS tolerance: abstained)",
+   "value": "values.completion",
+   "summary": "Counted steps: WORK steps for repetition sessions; the main run for continuous sessions; warm-up, cool-down, recoveries and strides are never required. Continuous runs by source: TRACK or measured course - counted distance >= target, no tolerance. GPS (quality not POOR) - measured >= 0.97 x target is met (tier GPS) with or without confirmation; from 0.91 to below 0.97 it is met only with the athlete's confirmation (tier CONFIRMED), otherwise PARTIAL and one ASK; below 0.91 with confirmation it is UNKNOWN (MEASUREMENT_CONFLICT) with an ASK through the record's correction path, without confirmation PARTIAL. GPS POOR - the measurement is kept but not used: confirmation is met (tier MANUAL), otherwise UNKNOWN. TREADMILL - display >= target is met (tier TREADMILL), otherwise PARTIAL. MANUAL - an entered distance >= target or an explicit confirmation is met (tier MANUAL); an entered distance below 0.97 x target without confirmation is PARTIAL. No measurement and no confirmation - UNKNOWN. Repetitions: r2 N7 stands - a WORK step is met by an athlete lap or a device lap (an auto-lap at the target distance is a device lap); GPS distance never decides a repetition and no GPS tolerance is set for it; no lap and no confirmation makes that step UNKNOWN. The tier never changes progression credit; it only feeds V1RC pace evidence (unchanged) and Data/G03 reporting.",
+   "conditions": [
+    "The 15.6 km of 16 km case is 0.975 x target: met by measurement (tier GPS); the confirmation is recorded but not needed.",
+    "The classification is applied after the run; it never shortens the live target. The athlete is never asked to run extra to make a watch match, and never told a run is met early.",
+    "A MEASUREMENT_CONFLICT is not adverse and not a refusal of the athlete's word: the athlete may correct the source (for example a measured course or poor GPS) through the existing correction path; the correction then classifies under its source.",
+    "Over-distance is recorded as executed and is DISTANCE; it enters L30 and the exposure flags like any execution.",
+    "Treadmill completion counts for the session but never for pace evidence (V1RC); the TIME version stays the recommended choice on a treadmill (r2 G.4).",
+    "TIME-expressed sessions keep the engine's existing completion read unchanged (status TIME)."
+   ],
+   "rationale": "0.97 lies below the smallest per-area mean absolute percentage error of eight wrist watches (3.2%, SRC-RWS-01) and above the mean absolute error of watches (0.6%) and phones (1.7%) on a certified half-marathon course (SRC-RWS3-01), so most faithful executions read met without asking. 0.91 is the largest documented under-reading (up to 9% off-track, SRC-RWS-01); between the two bounds device error alone can explain the shortfall, so the athlete's confirmation decides; below 0.91 a good-quality measurement contradicts the confirmation beyond documented device error, so the honest status is UNKNOWN until the athlete corrects the source. Confirmation without any measurement is accepted only at the lowest tier because single-run self-reports have wide individual limits of agreement (SRC-RWS-08). Repetitions are too short for the validated range (SRC-RWS-03; no repetition-scale validation found), so the lap remains the completion test as in r2.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "LOW",
+   "confidenceReason": "Device validation is single-participant (SRC-RWS-01), an older device generation (SRC-RWS3-01) or continuous track runs (SRC-RWS-02); no study validates confirmation behaviour.",
+   "sourceIds": [
+    "SRC-RWS-01",
+    "SRC-RWS-02",
+    "SRC-RWS-03",
+    "SRC-RWS-08",
+    "SRC-RWS3-01",
+    "SRC-RWS3-02"
+   ],
+   "applicabilityLimits": "Road or track running; trail and treadmill per conditions; continuous-run tolerances only for continuous runs."
+  },
+  {
+   "id": "RWS3-C4",
+   "question": "STOPPED: reasons, missing reason, SYMPTOM routing, effect on progression, repeated stops.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "a (V1RC P3 stop reasons and R-01, existing warning-sign screen and review kinds) + b (FATIGUE, CHOICE, format-fit counter)",
+   "value": "values.stops",
+   "summary": "Reasons: SYMPTOM, FATIGUE, PACING, CONDITIONS, TIME, CHOICE, OTHER. A stop with no reason is read as SYMPTOM (V1RC R-01). SYMPTOM opens the existing warning-sign screen (WARNING_SIGN_SCREEN_REQUIRED keeps run sessions in TIME until it is answered; any yes takes the existing clinical route). FATIGUE is offered as the existing SYSTEMIC_FATIGUE review, which stays behind the existing screen under the V1RC q11 conditions. PACING, CONDITIONS, TIME, CHOICE and OTHER are recorded only. Every STOPPED session is not complete: the engine's partial semantics apply (no ADVANCE, no EARNED; the step holds). Executed distance and time are recorded as real. Repeated stops: repetitions keep r2 N10 (the next session at that step uses even repeats); continuous classes use X-2; repeated SYMPTOM stops follow the existing screen's persistence routes. No new clinical rule.",
+   "conditions": [
+    "The stop can be declared during the run or afterwards; the athlete picks one reason; no justification is asked beyond it.",
+    "No wording treats a stop as failure; the plan text says stopping is always allowed.",
+    "A SYMPTOM stop never feeds sizing (C1 S3) and never counts as a compatible response.",
+    "FATIGUE is never itself read as illness or as clearance; it never enters ADVANCE, EARNED or calibration (V1RC q11)."
+   ],
+   "rationale": "The reasons and the missing-reason reading reuse the approved V1RC test rules; FATIGUE and CHOICE are additions that only record and route to existing paths. Holding progression after an unmet target keeps the engine's existing meaning of a partial session and never turns a stop into an earned step.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "MODERATE",
+   "confidenceReason": "Reuses approved rules and existing routes; the only added number is the two-session counter tied to V1RC consecutiveSessionsRequired.",
+   "sourceIds": [
+    "V1RC:SRC25"
+   ],
+   "applicabilityLimits": "All native distance sessions."
+  },
+  {
+   "id": "RWS3-C5",
+   "question": "PARTIAL and UNKNOWN semantics.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "b",
+   "value": "values.statuses",
+   "summary": "PARTIAL: a known execution below the target with no stop declared (14 of 16 km; 5 of 6 repetitions): not complete, the step holds, the existing PARTIAL_SESSION review applies, and one non-blocking ASK offers the stop reasons; an answer turns it into STOPPED with that reason and its routes; no answer keeps PARTIAL and is not read as SYMPTOM, because no stop was declared. UNKNOWN: completion cannot be established (no measurement and no confirmation, or a measurement conflict): not complete, not adverse, no symptom read, the step holds, not counted by X-2; the athlete can confirm later through the record's correction path, which reclassifies under the existing provenance rules. Session status precedence: STOPPED, then PARTIAL, then UNKNOWN, then met (DISTANCE when any WORK target is a distance, TIME when all are time).",
+   "conditions": [
+    "UNKNOWN is never success (Founder rule) and never failure.",
+    "A later correction does not silently rewrite a decision already taken from the earlier read; the existing correction path and its provenance rule decide what a later review reads."
+   ],
+   "rationale": "Separating a declared stop (R-01 applies) from a known shortfall without a declaration avoids reading every imported short run as a symptom while still offering the symptom route at the one ASK. UNKNOWN keeps absent evidence from being counted either way.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "LOW",
+   "sourceIds": [],
+   "applicabilityLimits": "As C4."
+  },
+  {
+   "id": "RWS3-C6",
+   "question": "Envelope re-tie: keep [0.9, 1.015] as a dose tolerance; remove E4 for distance sessions.",
+   "ruling": "APPROVE_WITH_CONDITIONS",
+   "category": "a (values unchanged) + b (re-tie; E4 scope)",
+   "value": "values.envelope",
+   "summary": "E1 and E2 keep [0.9, 1.015] at the band edges as a planning dose tolerance. 1.015 stays tied to the V1RC on-band fraction. 0.9 is re-tied from the engine's completion read to dose parity with the TIME expression: the engine credits a TIME session delivered at 0.9 of its minutes, so a native format never plans less work, at the fastest allowed pace, than a TIME session the engine would credit. E3 and E5 unchanged. E4 is removed as a sporting requirement for every session completed by distance (native repetition formats and continuous distance); for continuous runs CT-2 is the dose floor. r2's 'a continuous run ended at the time ceiling counts as met' and 'a runner far faster than the band may be read partial' are superseded.",
+   "conditions": [
+    "Engineering/QRE: a DISTANCE-met session must not be read partial by the engine's minutes read (r6-adaptation.mjs:195). If the integration cannot achieve that without a frozen edit, E4 may stay as an engineering compatibility check (it only removes formats; sporting-neutral). The selector never fabricates minutes."
+   ],
+   "rationale": "The values keep their meaning for the planned dose; only their justification changes, because completion no longer uses minutes for distance sessions.",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "confidence": "LOW",
+   "sourceIds": [],
+   "applicabilityLimits": "Native formats only; EQUIVALENT keeps r1."
+  }
+ ],
+ "values": {
+  "targetFile": "CoachingCore/v1/RUN_FORMATS_V1.json (to be created from SSCTR-RWS-R2-DECISION values as amended here, pinned by sha256)",
+  "valuesVersion": "RWS-R3-1",
+  "basedOn": "RWS-R2-1 (SSCTR-RWS-R2-DECISION values); every block not named here stands unchanged",
+  "replacesInR2": [
+   "values.continuous",
+   "values.completion",
+   "values.envelope.E4 (scope)",
+   "values.envelope.E3.continuous",
+   "values.patterns.CONTINUOUS_DISTANCE.definition",
+   "values.catalog.RECOVERY_EASY",
+   "values.catalog.SHAKEOUT",
+   "values.catalog.TIME_ONLY_FAMILIES",
+   "values.eligibility.experience.*.continuousDistance (now values.eligibility.continuous)",
+   "values.eligibility.phase.RACE_WEEK (EASY only)",
+   "values.suppression",
+   "values.textRequirements (continuous line)"
+  ],
+  "tiedValues": {
+   "onBandFraction": {
+    "value": 0.015,
+    "tiedTo": "V1RC recalibration.deadbandFraction and triggerFraction"
+   },
+   "doseFloor": {
+    "value": 0.9,
+    "tiedTo": "dose parity with the TIME expression: the engine credits a TIME session at actual.minutes >= 0.9 x durationMinutes (r6-adaptation.mjs:195)"
+   },
+   "windowDays": {
+    "value": 28,
+    "tiedTo": "V1RC assessment.P1.windowDays and estimates.longestRunWithinDays"
+   },
+   "distanceReferenceDays": {
+    "value": 30,
+    "tiedTo": "SRC-RWS-07 (longest run of the previous 30 days)"
+   },
+   "distanceReferenceMaxFraction": {
+    "value": 1.1,
+    "tiedTo": "SRC-RWS-07 reference category (<=10%); an outer bound, not a safe threshold"
+   },
+   "longRunStepMinutes": {
+    "value": 5,
+    "tiedTo": "R6 run.longRunStepMinutes"
+   },
+   "consecutiveSessions": {
+    "value": 2,
+    "tiedTo": "V1RC recalibration.training.consecutiveSessionsRequired"
+   },
+   "paceRoundUpSeconds": {
+    "value": 5,
+    "tiedTo": "V1RC paceRules.roundUpToSecondsPerKm"
+   },
+   "gpsMetFraction": {
+    "value": 0.97,
+    "tiedTo": "below the smallest per-area MAPE of wrist watches (3.2%, SRC-RWS-01); above certified-course watch and phone MAE (0.6%, 1.7%, SRC-RWS3-01)"
+   },
+   "gpsConfirmedFloorFraction": {
+    "value": 0.91,
+    "tiedTo": "largest documented wrist-GNSS under-reading, up to 9% (SRC-RWS-01)"
+   },
+   "marathonLongRunCapMinutes": {
+    "value": 180,
+    "tiedTo": "EVENT_EXTENSION_V1 marathon.longRunTarget, longRunTargetIsCapOnly true"
+   }
+  },
+  "continuous": {
+   "families": [
+    "EASY",
+    "LONG"
+   ],
+   "patterns": [
+    "CONTINUOUS_DISTANCE",
+    "PROGRESSIVE_EASY"
+   ],
+   "definition": "one easy-domain run of D km; completion by distance (values.completion); no time ceiling; the estimated duration range is shown as an estimate",
+   "planningMinutes": "canonical durationMinutes M (EASY with strides: run part = M - strides block minutes)",
+   "availableMinutes": "the athlete's declared minutes for the session as the engine stores them: schedule.longRunMinutes for LONG, schedule.runMinutes for EASY",
+   "paceTypical": "P_typ = max(class band fastSecondsPerKm, P1 observed range fastSecondsPerKm (median))",
+   "paceSizingSources": {
+    "S1": "P1 observed easy range slowSecondsPerKm (required)",
+    "S2": "LONG only: pace of the comparable long run (values.eligibility.continuous.LONG), rounded up to 5 s, unless TREADMILL or condition-flagged",
+    "S3": "pace of the latest executed run of the same class in the last 28 days with recorded minutes and distance, any status, rounded up to 5 s; excluded: TREADMILL, GPS POOR, HEAT, HILLY, TRAIL, WIND_STRONG, STOPPED for SYMPTOM",
+    "S4": "LONG only, when M equals the marathon cap (180, cap only): the LONG band slowSecondsPerKm"
+   },
+   "paceSizing": "P_size = max(P_typ, S1, S2, S3, S4) over the sources present (seconds per km; max = slowest)",
+   "distanceKm": "the largest multiple of 1 km, else of 0.5 km, that passes CT-1, CT-2 and CT-3",
+   "checks": {
+    "CT-1": "D x P_size / 60 (+ strides block) <= min(M, availableMinutes)",
+    "CT-2": "D x P_typ / 60 (+ strides block) >= 0.9 x M",
+    "CT-3": "D <= 1.10 x L30, L30 = longest single executed run distance in the last 30 days (any family, races included; sources TRACK, OFFICIAL, GPS not POOR, TREADMILL, MANUAL)"
+   },
+   "estimate": "[D x P_typ / 60, D x P_size / 60] minutes (+ strides block), labelled estimate",
+   "onNone": "TIME, reason NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE",
+   "walkBreaksAllowed": true,
+   "timeCeiling": "none (Founder rule)"
+  },
+  "exposure": {
+   "flag": "EXPOSURE_ABOVE_ESTIMATE when executed actual.minutes > 1.015 x estimate high",
+   "X-1": "the latest executed run of the class enters the next sizing as S3 (only ever slower)",
+   "X-2": "two consecutive distance-expressed continuous sessions of the same class, each with EXPOSURE_ABOVE_ESTIMATE, STOPPED (any reason) or PARTIAL: that class is TIME for 28 days from the second (reason CONTINUOUS_FORMAT_PAUSED)",
+   "X-2.counting": "a TIME session of the class executed without a stop resets the count; sessions flagged HEAT, HILLY, TRAIL or WIND_STRONG, TREADMILL sessions and UNKNOWN sessions neither count nor reset",
+   "numericAcceptableExcess": "ABSTAINED (no evidence); no runtime value",
+   "engineLoad": "executed minutes never enter an engine load sum, gate, ramp or taper (r2 G.1)"
+  },
+  "eligibility": {
+   "repetitions": "SSCTR-RWS-R2-DECISION values.eligibility unchanged (experience, phase, first exposure)",
+   "continuous": {
+    "experience": [
+     "INTERMEDIATE",
+     "EXPERIENCED"
+    ],
+    "mode": "EASY",
+    "phases": "r2 values.eligibility.phase lists for CONTINUOUS_DISTANCE and PROGRESSIVE_EASY; RACE_WEEK: EASY only",
+    "requires": [
+     "class band AVAILABLE",
+     "P1 observed easy range AVAILABLE for the week",
+     "L30 known",
+     "class not paused by X-2"
+    ],
+    "LONG": {
+     "comparableLongRun": "an executed run in the last 28 days with actual minutes >= M - 5 and a recorded distance (not GPS POOR); first long run of a plan or none: TIME (LONG_HISTORY_NOT_COMPARABLE)",
+     "engineLongestContinuous": "not used"
+    }
+   },
+   "timeOnly": [
+    "NOVICE (continuous)",
+    "unknown experience (continuous)",
+    "WALK_JOG, RESTART, RETURN modes (all run sessions)",
+    "ESTABLISHMENT, POST_EVENT",
+    "first exposure (ladder step 0)",
+    "RECOVERY_EASY",
+    "SHAKEOUT",
+    "WALK",
+    "WALK_JOG",
+    "RACE",
+    "FAMILIAR_REPEATED_BOUTS"
+   ],
+   "noviceRepetitions": "EVEN_REPEATS with time recoveries only (r2), the justified mixed form",
+   "newMixedContinuousForNoviceOrReturn": "not approved (abstained: no evidence, no need)"
+  },
+  "catalog": {
+   "RECOVERY_EASY": {
+    "domain": "RECOVERY",
+    "rotationEntries": [],
+    "expression": "TIME"
+   },
+   "SHAKEOUT": {
+    "domain": "RECOVERY",
+    "rotationEntries": [],
+    "expression": "TIME"
+   },
+   "TIME_ONLY_FAMILIES": [
+    "WALK",
+    "WALK_JOG",
+    "RACE",
+    "FAMILIAR_REPEATED_BOUTS",
+    "RECOVERY_EASY",
+    "SHAKEOUT"
+   ],
+   "note": "distance recoveries between repetitions (r2 N5) are unchanged; they advance by their distance and are never required for completion"
+  },
+  "envelope": {
+   "E1": "unchanged [0.9, 1.015] at FAST/SLOW band edges; 0.9 re-tied to dose parity (tiedValues.doseFloor)",
+   "E2": "unchanged [0.9, 1.015]",
+   "E3": "unchanged for repetition formats; continuous: CT-1",
+   "E4": "removed as a sporting requirement for sessions completed by distance; may remain only as an engineering compatibility check (C6 condition)",
+   "E5": "unchanged"
+  },
+  "completion": {
+   "countedSteps": {
+    "repetitionSessions": "WORK steps only",
+    "continuousSessions": "the main run only",
+    "neverRequired": [
+     "WARMUP",
+     "COOLDOWN",
+     "RECOVERY",
+     "STRIDES"
+    ]
+   },
+   "continuousBySource": {
+    "TRACK_OR_MEASURED_COURSE": {
+     "met": "counted distance >= target",
+     "tier": "TRACK",
+     "tolerance": 0
+    },
+    "GPS": {
+     "qualityNotPoor": true,
+     "metByMeasurement": "measured >= 0.97 x target (tier GPS)",
+     "metWithConfirmation": "0.91 x target <= measured < 0.97 x target and athlete confirmation (tier CONFIRMED)",
+     "withoutConfirmationBetween": "PARTIAL + one ASK",
+     "belowFloorWithConfirmation": "UNKNOWN (MEASUREMENT_CONFLICT) + ASK via correction path",
+     "belowFloorWithoutConfirmation": "PARTIAL"
+    },
+    "GPS_POOR": {
+     "measurementUsed": false,
+     "withConfirmation": "DISTANCE (tier MANUAL)",
+     "withoutConfirmation": "UNKNOWN"
+    },
+    "TREADMILL": {
+     "met": "display >= target (tier TREADMILL)",
+     "else": "PARTIAL",
+     "paceEvidence": false
+    },
+    "MANUAL": {
+     "met": "entered distance >= target, or explicit confirmation (tier MANUAL)",
+     "else": "entered distance < 0.97 x target without confirmation: PARTIAL"
+    },
+    "NONE": "UNKNOWN"
+   },
+   "repetitions": {
+    "met": "athlete lap or device lap (an auto-lap at the target distance is a device lap)",
+    "gpsDecides": false,
+    "gpsTolerance": "ABSTAINED",
+    "noLapNoConfirmation": "step UNKNOWN",
+    "measured": "recorded as is with its source; affects only the V1RC evidence tier"
+   },
+   "tiersAffectProgression": false,
+   "overDistance": "recorded; DISTANCE",
+   "liveTarget": "never shortened by the tolerance; never met early",
+   "timeSessions": "engine completion read unchanged (status TIME)"
+  },
+  "stops": {
+   "reasons": [
+    "SYMPTOM",
+    "FATIGUE",
+    "PACING",
+    "CONDITIONS",
+    "TIME",
+    "CHOICE",
+    "OTHER"
+   ],
+   "missingReasonReadAs": "SYMPTOM (V1RC R-01)",
+   "routes": {
+    "SYMPTOM": "existing warning-sign screen (WARNING_SIGN_SCREEN_REQUIRED); any yes: existing clinical route",
+    "FATIGUE": "offer the existing SYSTEMIC_FATIGUE review (behind the existing screen, V1RC q11 conditions)",
+    "others": "recorded only"
+   },
+   "progression": "not complete: engine partial semantics (no ADVANCE, no EARNED; step holds)",
+   "repeated": {
+    "repetitions": "r2 N10 (next session at the step uses even repeats)",
+    "continuous": "X-2",
+    "symptom": "existing screen persistence routes"
+   },
+   "sizing": "a SYMPTOM stop never enters S3"
+  },
+  "statuses": {
+   "values": [
+    "DISTANCE",
+    "TIME",
+    "PARTIAL",
+    "STOPPED",
+    "UNKNOWN"
+   ],
+   "precedence": [
+    "STOPPED",
+    "PARTIAL",
+    "UNKNOWN",
+    "MET (DISTANCE if any WORK target is a distance, else TIME)"
+   ],
+   "engineMapping": {
+    "DISTANCE": "completed",
+    "TIME": "existing read",
+    "PARTIAL": "not completed",
+    "STOPPED": "not completed",
+    "UNKNOWN": "not completed; not adverse"
+   },
+   "PARTIAL": "known execution below target with no stop declared; existing PARTIAL_SESSION review; one non-blocking ASK offering the stop reasons; an answer makes it STOPPED; no answer stays PARTIAL and is not read as SYMPTOM",
+   "UNKNOWN": "no measurement and no confirmation, or MEASUREMENT_CONFLICT; not adverse; no symptom read; not counted by X-2; correctable later through the record's correction path under existing provenance rules"
+  },
+  "suppression": {
+   "order": [
+    "EXTENSION_NOT_ENABLED",
+    "HOLD_NO_PRESCRIPTION",
+    "CLINICAL_ROUTE",
+    "WARNING_SIGN_SCREEN_REQUIRED",
+    "MODE_WALK_JOG_RESTART_RETURN",
+    "ENGINE_CONVERTED_TO_EASY",
+    "TEST_ALREADY_DONE_THIS_WEEK",
+    "NOT_A_NATIVE_FAMILY",
+    "PHASE_NOT_ELIGIBLE",
+    "FIRST_EXPOSURE",
+    "EXPRESSION_PREFERENCE_TIME",
+    "EXPERIENCE_NOT_ELIGIBLE",
+    "BAND_UNAVAILABLE",
+    "CONTINUOUS_PACE_UNOBSERVED",
+    "LONG_HISTORY_NOT_COMPARABLE",
+    "DISTANCE_HISTORY_UNKNOWN",
+    "CONTINUOUS_FORMAT_PAUSED",
+    "MARATHON_ESTIMATE_ABOVE_360_MIN",
+    "NO_FORMAT_WITHIN_ENVELOPE",
+    "NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE",
+    "TEXT_CHECK_FAILED",
+    "STRUCTURE_ERROR"
+   ],
+   "newDefinitions": {
+    "NOT_A_NATIVE_FAMILY": "WALK, WALK_JOG, RACE (including completion race day), FAMILIAR_REPEATED_BOUTS, RECOVERY_EASY, SHAKEOUT",
+    "CONTINUOUS_PACE_UNOBSERVED": "continuous session without a P1 observed easy range AVAILABLE for the week",
+    "LONG_HISTORY_NOT_COMPARABLE": "LONG without a comparable long run (values.eligibility.continuous.LONG)",
+    "DISTANCE_HISTORY_UNKNOWN": "no recorded run distance in the last 30 days (L30 unknown)",
+    "CONTINUOUS_FORMAT_PAUSED": "class paused by X-2, for 28 days from the second counted session"
+   },
+   "fallback": "r2 unchanged: NO_FORMAT_WITHIN_ENVELOPE may use EQUIVALENT; every other reason TIME",
+   "reported": "first applicable reason in order"
+  },
+  "textRequirements": {
+   "continuous": [
+    "D km at conversational effort, with the estimated range (about X-Y min) marked as an estimate, never a target",
+    "walk breaks are fine; do not speed up to reach the distance",
+    "you can stop at any time; the run is recorded as you did it; if it is taking clearly longer than the estimate, stopping or walking is fine",
+    "the time version is available and recommended in heat, hills, strong wind, on trail or on a treadmill"
+   ],
+   "afterRun": [
+    "statuses are shown neutrally; STOPPED, PARTIAL and UNKNOWN are never worded as failure",
+    "a MEASUREMENT_CONFLICT asks, never accuses; the athlete can correct the source"
+   ],
+   "repetitionsUnchanged": "r2 textRequirements for repetitions stand",
+   "owner": "Product copy review (r2 G.6); required content, not wording"
+  },
+  "coverage": "not measured by this record; expected partial (continuous distance needs P1 and P_size/P_typ within about 1.11 after rounding). Engineering/QRE to sweep on the candidate."
+ },
+ "workedExamplesNote": "Athlete A: INTERMEDIATE, EASY mode, DEVELOPMENT; LONG band 345-420 s/km; EASY band 340-405 (fast edge = P1 median); P1 observed range 340-370 (median 340, slowest 365, slow edge max(365, 340+30) = 370); comparable long run 95 min / 15.5 km GPS (367.7 s/km, rounded up 370); L30 15.5 km; available minutes LONG 120, EASY 60. Numbers computed by a scratch script implementing values.continuous; not a test of any implementation.",
+ "workedExamples": [
+  {
+   "id": "WE3-01",
+   "case": "16 km long run: sizing",
+   "athlete": "A",
+   "inputs": {
+    "family": "LONG",
+    "M": 100,
+    "available": 120
+   },
+   "calc": {
+    "P_typ": "max(345, 340) = 345",
+    "P_size": "max(345, S1 370, S2 370) = 370",
+    "CT-1": "16 x 370/60 = 98.67 <= 100",
+    "CT-2": "16 x 345/60 = 92.0 >= 90",
+    "CT-3": "16 <= 1.10 x 15.5 = 17.05"
+   },
+   "expected": {
+    "expression": "NATIVE",
+    "format": "16 km long run at conversational effort, about 92-99 min (estimate)",
+    "exposureFlagAbove": "100.15 min (1.015 x 98.67)"
+   }
+  },
+  {
+   "id": "WE3-02",
+   "case": "16 km run faster (5:35/km, faster than the LONG ceiling)",
+   "athlete": "A",
+   "execution": {
+    "km": 16,
+    "minutes": 89.33,
+    "source": "GPS",
+    "quality": "OK"
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "tier": "GPS",
+    "exposureFlag": false,
+    "note": "pace faster than the ceiling is recorded; the existing effort and V1RC reads apply unchanged; completion is by distance"
+   }
+  },
+  {
+   "id": "WE3-03",
+   "case": "16 km run in band and inside the estimate (6:00/km)",
+   "athlete": "A",
+   "execution": {
+    "km": 16,
+    "minutes": 96,
+    "source": "GPS"
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "tier": "GPS",
+    "exposureFlag": false,
+    "progression": "completed (engine semantics)"
+   }
+  },
+  {
+   "id": "WE3-04",
+   "case": "16 km run in band but slower than the sizing pace (6:45/km)",
+   "athlete": "A",
+   "execution": {
+    "km": 16,
+    "minutes": 108,
+    "source": "GPS"
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "exposureFlag": "EXPOSURE_ABOVE_ESTIMATE (108.0 > 100.15)",
+    "X2count": 1,
+    "nextLong": {
+     "M": 105,
+     "P_size": 405,
+     "result": "TIME 105 min, reason NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE (15.5 km: CT-1 104.6 <= 105 but CT-2 89.1 < 94.5; 15 km: CT-2 86.3 < 94.5)"
+    }
+   }
+  },
+  {
+   "id": "WE3-05",
+   "case": "16 km run slower than the band (7:15/km)",
+   "athlete": "A",
+   "execution": {
+    "km": 16,
+    "minutes": 116,
+    "source": "GPS"
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "exposureFlag": "EXPOSURE_ABOVE_ESTIMATE (116.0 > 100.15)",
+    "X2count": 1,
+    "nextLong": "TIME (P_size 435), as WE3-04",
+    "note": "accepted residual: 16% more minutes than planned at the same distance; bounded by X-1/X-2, not by a number"
+   }
+  },
+  {
+   "id": "WE3-06",
+   "case": "16 km stopped at 12 km for fatigue",
+   "athlete": "A",
+   "execution": {
+    "km": 12,
+    "minutes": 75,
+    "stop": "FATIGUE"
+   },
+   "expected": {
+    "status": "STOPPED",
+    "reason": "FATIGUE",
+    "route": "offer the existing SYSTEMIC_FATIGUE review (behind the existing screen)",
+    "progression": "not complete; the long run holds at M 100",
+    "X2count": 1,
+    "nextLong": "16 km again (S3 375: 16 x 375/60 = 100.0 <= 100; CT-2 92.0 >= 90), about 92-100 min"
+   }
+  },
+  {
+   "id": "WE3-07",
+   "case": "16 km, GPS 15.6 km, athlete confirms 16 km",
+   "athlete": "A",
+   "execution": {
+    "gpsKm": 15.6,
+    "quality": "OK",
+    "confirmed": true
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "tier": "GPS",
+    "fraction": 0.975,
+    "note": "met by measurement (>= 0.97); confirmation recorded, not needed; the same result without confirmation"
+   }
+  },
+  {
+   "id": "WE3-08",
+   "case": "16 km, GPS 15.0 km (0.9375)",
+   "athlete": "A",
+   "execution": {
+    "gpsKm": 15,
+    "quality": "OK"
+   },
+   "expected": {
+    "confirmed": "DISTANCE, tier CONFIRMED",
+    "unconfirmed": "PARTIAL + one ASK"
+   }
+  },
+  {
+   "id": "WE3-09",
+   "case": "16 km, GPS 14.0 km (0.875), athlete confirms",
+   "athlete": "A",
+   "execution": {
+    "gpsKm": 14,
+    "confirmed": true
+   },
+   "expected": {
+    "gpsQualityOK": "UNKNOWN (MEASUREMENT_CONFLICT) + ASK via correction path; not adverse",
+    "gpsQualityPOOR": "DISTANCE, tier MANUAL (measurement kept, not used)"
+   }
+  },
+  {
+   "id": "WE3-10",
+   "case": "16 km, no device, athlete confirms",
+   "athlete": "A",
+   "execution": {
+    "source": "NONE",
+    "confirmed": true
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "tier": "MANUAL",
+    "note": "lowest evidence tier; never pace evidence; not S3 (no minutes and distance pair) unless both are entered"
+   }
+  },
+  {
+   "id": "WE3-11",
+   "case": "16 km, no device, no confirmation",
+   "athlete": "A",
+   "execution": {
+    "source": "NONE",
+    "confirmed": false
+   },
+   "expected": {
+    "status": "UNKNOWN",
+    "progression": "not complete; not adverse; not counted by X-2",
+    "later": "the athlete may confirm through the correction path"
+   }
+  },
+  {
+   "id": "WE3-12",
+   "case": "6 x 800 m, 5 of 6 done, no stop declared",
+   "athlete": "B (INTERMEDIATE, TEN_K_SPECIFIC step 3, band 4:50-5:00, r2 WE-01)",
+   "execution": {
+    "workLapsConfirmed": 5,
+    "sixth": "not run"
+   },
+   "expected": {
+    "status": "PARTIAL",
+    "progression": "not complete; the step holds; existing PARTIAL_SESSION review",
+    "ask": "one non-blocking ASK offering the stop reasons; an answer makes it STOPPED",
+    "next": "next session at the step uses EVEN_REPEATS (r2 N10)"
+   }
+  },
+  {
+   "id": "WE3-13",
+   "case": "6 x 800 m, stop after repetition 3 for a symptom",
+   "athlete": "B",
+   "execution": {
+    "workLapsConfirmed": 3,
+    "stop": "SYMPTOM"
+   },
+   "expected": {
+    "status": "STOPPED",
+    "reason": "SYMPTOM",
+    "route": "existing warning-sign screen; WARNING_SIGN_SCREEN_REQUIRED keeps run sessions in TIME until answered; any yes: existing clinical route",
+    "progression": "not complete; the step holds",
+    "sizing": "never enters S3"
+   }
+  },
+  {
+   "id": "WE3-14",
+   "case": "6 x 800 m, stop with no reason",
+   "athlete": "B",
+   "execution": {
+    "workLapsConfirmed": 4,
+    "stop": null
+   },
+   "expected": {
+    "status": "STOPPED",
+    "reasonReadAs": "SYMPTOM (V1RC R-01)",
+    "route": "as WE3-13"
+   }
+  },
+  {
+   "id": "WE3-15",
+   "case": "NOVICE easy run",
+   "athlete": "N (NOVICE, EASY mode, DEVELOPMENT)",
+   "inputs": {
+    "family": "EASY",
+    "M": 30
+   },
+   "expected": {
+    "expression": "TIME",
+    "reason": "EXPERIENCE_NOT_ELIGIBLE",
+    "format": "30 min easy, conversational",
+    "note": "a NOVICE quality step after step 0 may still be EVEN_REPEATS by distance with time recoveries (r2 N3)"
+   }
+  },
+  {
+   "id": "WE3-16",
+   "case": "RETURN athlete",
+   "athlete": "R (INTERMEDIATE, mode RETURN after a declared 3-week break)",
+   "expected": {
+    "allRunSessions": "TIME, reason MODE_WALK_JOG_RESTART_RETURN",
+    "mixed": "no mixed session in RETURN mode (no band to size a distance part)",
+    "afterReturn": "see WE3-17"
+   }
+  },
+  {
+   "id": "WE3-17",
+   "case": "after the return ends (EASY mode): threshold band AVAILABLE again, P1 not yet re-established",
+   "athlete": "R",
+   "expected": {
+    "threshold": "NATIVE even repeats if r2 E1-E5 pass (else r2 fallbacks)",
+    "easyAndLong": "TIME, reason CONTINUOUS_PACE_UNOBSERVED",
+    "week": "a mixed week: repetitions by distance, continuous runs by time, until V1RC reports a P1 range again"
+   }
+  },
+  {
+   "id": "WE3-18",
+   "case": "8 km easy run sizing",
+   "athlete": "A",
+   "inputs": {
+    "family": "EASY",
+    "M": 50,
+    "available": 60,
+    "latestEasyPace": 360
+   },
+   "calc": {
+    "P_typ": "max(340, 340) = 340",
+    "P_size": "max(340, 370, 360) = 370",
+    "CT-1": "8 x 370/60 = 49.33 <= 50",
+    "CT-2": "8 x 340/60 = 45.33 >= 45",
+    "CT-3": "8 <= 17.05"
+   },
+   "expected": {
+    "expression": "NATIVE",
+    "format": "8 km easy, about 45-49 min (estimate)",
+    "exposureFlagAbove": "50.07 min"
+   }
+  },
+  {
+   "id": "WE3-19",
+   "case": "marathon long run at the 180-min cap",
+   "athlete": "C (EXPERIENCED, marathon SPECIFIC, LONG band 330-415, P1 median 335 / slow edge 365, comparable long run 175 min / 29 km, L30 29 km)",
+   "calc": {
+    "P_typ": 335,
+    "P_size": "max(335, 365, S2 365, S4 415) = 415",
+    "1 km": "26 km: CT-1 179.8 <= 180 but CT-2 145.2 < 162",
+    "0.5 km": "no value passes"
+   },
+   "expected": {
+    "expression": "TIME",
+    "reason": "NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE",
+    "format": "180 min long run",
+    "comparison": "without S4 the same athlete would get 29.5 km (about 164.7-179.5 min)"
+   }
+  },
+  {
+   "id": "WE3-20",
+   "case": "long run without a comparable recent run",
+   "athlete": "A' (as A, latest long run 80 min)",
+   "inputs": {
+    "family": "LONG",
+    "M": 100
+   },
+   "expected": {
+    "expression": "TIME",
+    "reason": "LONG_HISTORY_NOT_COMPARABLE (80 < 95)"
+   }
+  },
+  {
+   "id": "WE3-21",
+   "case": "two consecutive easy distance runs above the estimate",
+   "athlete": "A",
+   "execution": [
+    {
+     "family": "EASY",
+     "km": 8,
+     "minutes": 53,
+     "flag": "EXPOSURE_ABOVE_ESTIMATE (> 50.07)"
+    },
+    {
+     "family": "EASY",
+     "km": 8,
+     "minutes": 52.5,
+     "flag": "EXPOSURE_ABOVE_ESTIMATE"
+    }
+   ],
+   "expected": {
+    "status": "both DISTANCE",
+    "then": "EASY class TIME for 28 days from the second, reason CONTINUOUS_FORMAT_PAUSED; LONG unaffected"
+   }
+  },
+  {
+   "id": "WE3-22",
+   "case": "recovery run",
+   "athlete": "A",
+   "inputs": {
+    "family": "RECOVERY_EASY",
+    "M": 25
+   },
+   "expected": {
+    "expression": "TIME",
+    "reason": "NOT_A_NATIVE_FAMILY"
+   }
+  },
+  {
+   "id": "WE3-23",
+   "case": "8 km easy run on a treadmill",
+   "athlete": "A",
+   "execution": {
+    "source": "TREADMILL",
+    "displayKm": 8
+   },
+   "expected": {
+    "status": "DISTANCE",
+    "tier": "TREADMILL",
+    "paceEvidence": false,
+    "note": "not S3; the TIME version was the recommended choice (r2 G.4)"
+   }
+  }
+ ],
+ "aeReview": {
+  "1_adequate": "The planning dose and the engine's choices stay as they are (r2 G.1); only the expression and its completion change.",
+  "2_materialFact": "The Founder's product rule removes the ceiling; the material sporting fact is that execution can now exceed the planning minutes.",
+  "3_keepDefensible": "Keeping r2 N4 is not available (Founder). Keeping r2's ceiling-sized D without the ceiling is not defensible: sized at the ceiling, every slower runner exceeds M.",
+  "4_changeNecessary": "Yes, relative to r2 N4 without its ceiling.",
+  "5_smallest": "Individual sizing pace, one distance bound, one exposure flag and a two-session pause; no new number beyond tied values.",
+  "6_smallerInsufficient": "Sizing at the band slow edge fails the dose floor for nearly all athletes; sizing at the ceiling leaves unbounded excess; eligibility alone leaves slow days unaddressed.",
+  "7_priority": "Progression is credited by distance as the Founder rule says; stops and partials hold; nothing is earned from a stop.",
+  "8_evidence": "Supported with limits for individual sizing and measurement tolerances; the residual is plausible but uncertain, so no number is set.",
+  "9_uncertainty": "Acceptability of a slower-than-sizing execution; coverage; confirmation behaviour.",
+  "10_askHoldClinical": "ASK for PARTIAL and for measurement conflicts; existing screen for SYMPTOM; no CLINICAL_HUMAN_REQUIRED item arises."
+ },
+ "changedFromProposal": [
+  "C1: individual sizing pace instead of the band slow edge; CT-3 added; numeric excess abstained, X-1/X-2 added.",
+  "C2: executed 28-day comparable long run instead of engine longestContinuous; P1 required; RECOVERY_EASY and SHAKEOUT time-only.",
+  "C3: two GPS bounds (0.97 automatic, 0.91 with confirmation) with MEASUREMENT_CONFLICT below; repetitions keep the lap rule with no GPS tolerance.",
+  "C4: FATIGUE routed to the existing SYSTEMIC_FATIGUE review; X-2 for repeated continuous stops.",
+  "C5: PARTIAL gets one ASK and is not read as SYMPTOM without a declared stop.",
+  "C6: as proposed, with 0.9 re-tied to dose parity and an engineering compatibility condition on E4."
+ ],
+ "supersedesInR2": {
+  "RWS-N4": "history only (rejected by the Founder); its continuous values are replaced by values.continuous here",
+  "RWS-N7": "the continuous parts (ceiling counts as met; faster runner read partial) are superseded; the repetition lap rule stands",
+  "RWS-N1": "RECOVERY_EASY and SHAKEOUT leave the native catalog",
+  "RWS-N2": "E4 scope (C6)",
+  "RWS-N8": "suppression order extended"
+ },
+ "abstentions": [
+  "A numeric acceptable excess of executed minutes over the planning minutes for execution slower than the sizing pace (C1): no evidence; structural rules X-1/X-2 instead.",
+  "A GPS distance tolerance for single repetitions (C3): no repetition-scale validation; the lap decides as in r2.",
+  "New mixed continuous formats for NOVICE or RETURN athletes (C2).",
+  "Whether running a given distance slower than planned changes injury or overreaching risk (negative search)."
+ ],
+ "escalations": [
+  {
+   "to": "Founder",
+   "kind": "INFORMATION",
+   "text": "No part of the rule was judged unsafe for an eligible population, and no clinical item arises. Making it safe has product consequences: continuous distance targets reach only INTERMEDIATE/EXPERIENCED athletes with recent qualifying easy runs (V1RC P1); long runs also need a run of nearly that length in the last 4 weeks; recovery runs and shakeouts stay in time; marathon long runs at the 180-min cap will mostly be time; a long run run much slower than usual makes the next long run a time session, and two in a row pause distance for that run type for 28 days. The accepted residual is that a run executed slower than the athlete's own recent slow pace lasts longer than planned; it is bounded by these rules, not by a number. A numeric bound would need a time ceiling (rejected by the Founder), evidence that does not exist, or funded human review."
+  },
+  {
+   "to": "Chief",
+   "kind": "HANDOFF",
+   "text": "Update handoff sections 3-5: no ceiling on continuous distance steps; completion by status with sources and tiers (values.completion, values.statuses); stop reasons and routes; the new suppression reasons and order; RECOVERY_EASY and SHAKEOUT time-only; E4 scope; the estimate range from P_typ/P_size."
+  },
+  {
+   "to": "Product",
+   "kind": "COPY_AND_FLOW",
+   "text": "Wording of the estimate and the stop-any-time line; neutral status wording; a stop control with the seven reasons; the one ASK for PARTIAL and for MEASUREMENT_CONFLICT; the TIME-version recommendation."
+  },
+  {
+   "to": "Data/G03",
+   "kind": "SEMANTICS",
+   "text": "Statuses, evidence tiers, MEASUREMENT_CONFLICT, correction path and EXPOSURE_ABOVE_ESTIMATE; planned versus executed distance or minutes is not an adherence measure."
+  },
+  {
+   "to": "Engineering/QRE",
+   "kind": "INTEGRATION",
+   "text": "(1) The engine's minutes read must not mark a DISTANCE-met session partial, or E4 stays as a compatibility check (C6). (2) T3: steps, formatHash, status, stop reason, measurement source, GPS quality, confirmation and executed minutes and distance must survive in actualLedger. (3) P1, S2/S3, L30 and X-2 read recorded rows under the existing provenance rules, deterministically. (4) Coverage sweep on the candidate. (5) The 0.97/0.91 classification applies to continuous runs only."
+  },
+  {
+   "to": "Chief (observation outside this record's scope)",
+   "kind": "OBSERVATION",
+   "text": "In the TIME expression the engine's 5-min long-run step is an increase above 10% for long runs under 50 min; SRC-RWS-07 associates single-session distance increases above 10% (and, in sensitivity, 1-10%) with a higher overuse-injury rate. Not a ruling and not reopened here; listed as a re-review trigger."
+  },
+  {
+   "to": "Clinical",
+   "kind": "NONE",
+   "text": "No new clinical rule; SYMPTOM and FATIGUE use existing routes."
+  }
+ ],
+ "proposedQueueItems": [
+  {
+   "queue_id": "HQ-RWS3-SSCTR-CONTINUOUS-DISTANCE",
+   "decision_id": "SSCTR-RWS-R3-DECISION#RWS3-C1,RWS3-C2",
+   "scope": "continuous distance targets without a time ceiling: individual sizing pace, CT-1..CT-3, exposure flag, X-2 pause, eligibility; supersedes the proposed HQ-RWS2-SSCTR-CONTINUOUS (r2 N4 rejected by the Founder)"
+  },
+  {
+   "queue_id": "HQ-RWS3-SSCTR-COMPLETION",
+   "decision_id": "SSCTR-RWS-R3-DECISION#RWS3-C3,RWS3-C4,RWS3-C5,RWS3-C6",
+   "scope": "target met by source and tolerances, stops, PARTIAL/UNKNOWN, envelope re-tie and E4 scope; amends the proposed HQ-RWS2-SSCTR-MEASURE and HQ-RWS2-SSCTR-NATIVE"
+  }
+ ],
+ "proposedQueueItemCommon": {
+  "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+  "appended": false,
+  "appendOwner": "Founder / Chief (this instance writes only its two files; the queue is unchanged)",
+  "human_review": null,
+  "approval_date": "2026-11-13",
+  "reReviewTrigger": "see expiry.triggers"
+ },
+ "validation": {
+  "skillValidator": "not run (Python not available; only the Windows Store alias)",
+  "schema": "Multi-item record in the shape of SSCTR-RWS-R2-DECISION, not decision.schema.json",
+  "jsonWellFormed": "checked with Node",
+  "workedExamples": "computed by a scratch script implementing values.continuous; not a test of any implementation"
+ },
+ "governance": {
+  "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+  "wholeGateClosure": false,
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "enablesBoundaries": false,
+  "enablingRecord": "V1X-RUN-NATIVE is enabled only by a separate record from a fresh SSCTR judge bound to the pinned RUN_FORMATS_V1.json sha256"
+ },
+ "expiry": {
+  "owner": "Chief / SSCTR",
+  "reviewBy": "2027-05-11",
+  "dependsOn": "SSCTR-RWS-R2-DECISION (except N4) and SSCTR-V1RC-DECISION-r1; if either is superseded or the bands or P1 change, this record is invalid until re-reviewed",
+  "triggers": [
+   "any Founder change to the distance-completion rule",
+   "supersession or amendment of SSCTR-RWS-R2-DECISION, SSCTR-V1RC-DECISION-r1, RUN_CALIBRATION_EXTENSION_V1.json (P1, bands, stops) or the R6/event long-run values (longRunStepMinutes, marathon cap)",
+   "first real product data on distance sessions: share and size of EXPOSURE_ABOVE_ESTIMATE, X-2 pauses, STOPPED reasons, PARTIAL and UNKNOWN shares, MEASUREMENT_CONFLICT rate, coverage",
+   "any adverse event or symptom stop in a distance session",
+   "a new wrist-GNSS validation on continuous runs or repetitions, a study of distance- versus time-prescribed sessions, or of session-duration excess at constant distance",
+   "a runtime inconsistency found by the candidate judges",
+   "the Founder's funding declaration (human revalidation)"
+  ]
+ }
+}
