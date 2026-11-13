@@ -1,0 +1,1622 @@
+{
+ "recordId": "SSCTR-RFC-DECISION-r1",
+ "date": "2026-11-13",
+ "mission": "V1 Race Forecast + Pace Insights (Founder mission of 2026-11-13), branch claude/v1-race-forecast from c8104c1 (COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1, untouched)",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision author",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+  "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+  "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31), hash checked, file not re-read in this run",
+  "instance": "A subagent instance dispatched by the Chief of this mission (model claude-opus-5-5). Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed.",
+  "nature": "An AI software reviewer with no human credentials, licence or clinical or legal equivalence. This record is an internal literature-based sporting decision. It is not human validation, not empirical product validation and not medical clearance. AI review is not empirical validation.",
+  "independence": "This instance authors these values and must not judge their implementation; a fresh SSCTR instance does that (SSCTR-08). No self-check here counts as independent approval."
+ },
+ "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical sporting decisions only. Clinical judgment stays CLINICAL_HUMAN_REQUIRED. No runtime sovereignty, no Product Truth publication, no gate closure, no change to any frozen record.",
+ "inputs": {
+  "request": "audits/v1-race-forecast-2026-11-13/SSCTR_DECISION_REQUEST_RFC.md (sha256 2cb8372db3d9fcc5ac6ef357eb18df6e90e820ad8fba07459f74a8e72924172b)",
+  "priorDecision": "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json (sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3), read: Q3, Q7, Q8, Q9 items, values, sources, abstentions, escalations",
+  "recheck": "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RECHECK.json (sha256 f0a18bf868438e2f0e0ce7e7729445a512e2a4728720514d494acb4284a012d2), read through its .md summary (R-11 ruling (c), RC-01 to RC-04)",
+  "values": "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa)",
+  "catalog": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json (sha256 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9), productMustNot line only",
+  "codeReadOnly": "CoachingCore/src/v1-run-calibration.mjs (estimateOf, shownEstimates, hardExecution, the Q8 comparison) and CoachingCore/v1/EVENT_EXTENSION_V1.json (taper weeks), CoachingCore/src/r6-program.mjs phase names; read only, nothing run",
+  "worktreeHead": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+  "hostInjectedContext": "The host injected a CLAUDE.md and a MEMORY.md; used for orientation only, never as evidence."
+ },
+ "literatureAccess": {
+  "tools": "Europe PMC REST API (search, core records with abstracts, fullTextXML) through a Node script; NCBI E-utilities efetch tried once for RFC02 and returned front matter only. WebSearch/WebFetch were not used.",
+  "fullTextRead": [
+   "RFC01 (passages re-opened in this run)",
+   "RFC05",
+   "RFC14",
+   "RFC15 (passages listed in each locator)"
+  ],
+  "abstractOnly": [
+   "RFC02",
+   "RFC03",
+   "RFC04",
+   "RFC06",
+   "RFC07",
+   "RFC08",
+   "RFC09",
+   "RFC10",
+   "RFC11",
+   "RFC12",
+   "RFC13",
+   "RFC16",
+   "RFC17"
+  ],
+  "notAvailable": "The body of Hellard 2006 (RFC02): only its abstract was retrievable. Banister 1975/1991 originals and Busso 2003 were not searched for directly. No direct study of running-performance gains in novices was found (negative searches logged).",
+  "settledFromV1RC": "V1RC SRC04, SRC05, SRC06, SRC08, SRC10-SRC16 are cited as settled by the predecessor record and were not re-read.",
+  "rule": "No effect estimate, participant count or endpoint is stated beyond what the accessed text reports. Abstract-only sources are never the sole basis of a value; where values lean on them the confidence is LOW and the value is labelled a placeholder."
+ },
+ "searches": [
+  "Hellard Banister model limitations monitoring training -> RFC02",
+  "Bosquet tapering performance meta-analysis -> RFC14 (and RFC13 by a second query)",
+  "Smyth Lawlor taper marathon recreational runners -> RFC15, RFC16",
+  "Mujika Padilla scientific bases precompetition tapering -> RFC12",
+  "recreational runners training intervention 10 km performance randomized weeks -> nothing applicable",
+  "novice runners training program 5 km time trial improvement weeks -> nothing applicable (negative)",
+  "Mann Lamberts Lambert high responders low responders -> RFC08",
+  "polarized training recreational runners 10 km; Festa polarized threshold recreational runners -> RFC07 (RFC06 by a direct query)",
+  "Vesterinen individual endurance training HRV recreational runners -> RFC05",
+  "Hottenrott high intensity continuous recreationally active runners -> found, lab markers only, not used",
+  "untrained sedentary adults running training 5 km performance weeks -> nothing applicable (negative)",
+  "individual response endurance running performance true responders -> nothing applicable; Atkinson Batterham by a direct query -> RFC09",
+  "Bacon Carter Ogle Joyner VO2max trainability -> RFC17",
+  "Scharhag-Rosenberger 1-yr training study -> RFC11; Montero Lundby non-response -> RFC10",
+  "beginner runners program 10 weeks 5-km time trial -> nothing applicable (negative)",
+  "fitness-fatigue model prediction systematic review; impulse-response individual prediction accuracy -> nothing applicable; Banister model running -> RFC03, RFC04",
+  "parkrun performance improvement repeated participation; recreational runners race time improvement longitudinal real-world -> nothing applicable (negative)"
+ ],
+ "counterevidence": "Sought: (1) evidence that individual training-response models predict race performance well enough for an individual forecast: none found in recreational runners; elite modelling shows wide parameter uncertainty and poor generalisation (RFC02, RFC03, RFC04). (2) Evidence that recreational gains are larger than the ceilings: individualised programmes reached -6.2% in 12 weeks (RFC05) and a sub-40 group about -5% in 10 weeks (RFC06), above the INTERMEDIATE fast-edge gain alone; the fast edge also carries the V1RC margin, and the conservative choice is retained because an over-fast forecast is the harmful error (RFC01) and uncontrolled pre-post changes overstate response (RFC09). (3) Evidence against a no-taper rule: a taper benefit is real (RFC12-RFC15); omitted for the reasons in F5. (4) Evidence that no improvement should be forecast at all: low responders are common (RFC05) and disruptions frequent (RFC16), which is why the slow edge is the current estimate. Negative searches are logged in searches, not taken as proof of absence.",
+ "rulings": [
+  {
+   "id": "F1",
+   "disposition": "APPROVE_WITH_CONDITIONS (5K, 10K, half marathon; NOVICE, INTERMEDIATE, EXPERIENCED); MODIFY (marathon: no training gain, the forecast is the current estimate); REFUSE (experience NONE, WALK_JOG/RESTART/RETURN)",
+   "ruling": "A bounded, conditional forecast is admissible in V1 only as an explicitly reversible, limited scenario, not as a prediction model. It is admissible because its slow edge is the current estimate itself (no further improvement), so the forecast never asserts that a gain will happen; its fast edge is a fixed, experience-bounded ceiling scaled by observed adherence; and it is withheld whenever it is too wide, the race is far away, the evidence slows, or V1RC withholds. The predecessor abstention stands for what it said: no individually validated improvement model exists, and this record does not create one.",
+   "values": {
+    "events": [
+     "5K",
+     "10K",
+     "HALF_MARATHON"
+    ],
+    "marathon": "forecast = V1RC current estimate unchanged (trainingGain false)",
+    "refused": [
+     "experience NONE",
+     "WALK_JOG",
+     "RESTART",
+     "RETURN"
+    ]
+   },
+   "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN (magnitude and time course of an individual gain); SUPPORTED_WITH_LIMITS (recreational runners in structured 8-15-week training improve a few percent on average with wide individual variation, including low responders)",
+   "basis": "Literature for the direction and order of magnitude; sporting judgement for the envelope form; every number is a placeholder for empirical calibration",
+   "confidence": "LOW",
+   "sourceIds": [
+    "RFC01",
+    "RFC02",
+    "RFC03",
+    "RFC04",
+    "RFC05",
+    "RFC06",
+    "RFC07",
+    "RFC08",
+    "RFC09",
+    "V1RC:SRC04",
+    "V1RC:SRC05"
+   ],
+   "rationale": "Individual impulse-response models are poorly identifiable even with dense elite data (RFC02, RFC03, RFC04); race-time conversion error is large and the fast error is the harmful one (RFC01). Group improvement in recreational runners is real but heterogeneous (RFC05: -2.9% +/- 2.4% in 12 weeks with a predefined programme; RFC06, RFC07; RFC08), and uncontrolled pre-post changes overstate true individual differences (RFC09). This supports a range anchored on measured current capacity whose slow side claims nothing, not a point prediction. Marathon: see F6.",
+   "conditions": [
+    "Never a single time; range first; central never alone",
+    "Never a pace source, never an input to bands, P3, eligibility, dose, progression or the goal comparison",
+    "Experience NONE and the walk/jog, restart and return modes: no forecast",
+    "AI review is not empirical validation: every value here is to be recalibrated against estimate-versus-actual race results before any claim of accuracy"
+   ]
+  },
+  {
+   "id": "F2",
+   "disposition": "APPROVE (G_x values, unknown = EXPERIENCED, NONE = no forecast, tau, no half modifier); MODIFY (marathon gain 0)",
+   "ruling": "G_x NOVICE 0.08, INTERMEDIATE 0.05, EXPERIENCED 0.03 (log of time, 10K-equivalent, R = 1, full adherence, infinite block); unknown experience uses EXPERIENCED; NONE no forecast; tau 10 weeks; half marathon: no modifier; marathon: no training gain at all (see F6).",
+   "values": {
+    "gainCeilingLogTime": {
+     "NOVICE": 0.08,
+     "INTERMEDIATE": 0.05,
+     "EXPERIENCED": 0.03
+    },
+    "unknownUses": "EXPERIENCED",
+    "tauWeeks": 10,
+    "distanceModifier": {
+     "5K": 1,
+     "10K": 1,
+     "HALF_MARATHON": 1,
+     "MARATHON": 0
+    }
+   },
+   "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+   "basis": "Sporting judgement, consistent in magnitude with (and for the central, below) recreational trial means; placeholders for empirical calibration",
+   "confidence": "LOW",
+   "sourceIds": [
+    "RFC05",
+    "RFC06",
+    "RFC07",
+    "RFC09",
+    "RFC10",
+    "RFC11"
+   ],
+   "rationale": "With tau 10 weeks, 12 counted weeks at full adherence give Gamma = G_x x 0.699: INTERMEDIATE 3.5% at R = 1, 1.7% at the central R 0.5. The closest trial analogue (RFC05, predefined programme, 12 weeks) reports -2.9% +/- 2.4%, other recreational trials 3-5% over 8-10 weeks (RFC06, RFC07). The central therefore sits below trial means, which is the right side: trial changes include test learning, supervision and regression to the mean (RFC09), and an over-fast forecast is the harmful error (RFC01). The fast edge also carries the V1RC margin, so it reaches a high responder of about 5-7%. NOVICE larger (larger, faster, less predictable gains in less trained people, RFC11), EXPERIENCED smaller (closer to their ceiling); an unknown class takes the smallest gain. tau 10 weeks makes gains near-linear over a typical block and saturating beyond it, consistent with a plateau under unchanged stimulus (RFC11) and with dose dependence (RFC10); its exact value is not supported by any study. No half modifier: the 10K-equivalent log gain applied to the half keeps the V1RC exponent range unchanged, and the half endurance gate stays in force.",
+   "conditions": [
+    "The experience class is the one in force when the plan was created and never changes the gains already credited",
+    "The class is self-declared at intake: its use here is a coarse prior, not an assessment"
+   ]
+  },
+  {
+   "id": "F3",
+   "disposition": "APPROVE (R_c0 0.5, s0 0.3, minPairDays 28, deltaGammaMin 0.005); MODIFY (the slow edge never uses R; one endpoint pair, same kind; pair eligibility; clipping; slowdown rule)",
+   "ruling": "Prior R central 0.5, sd 0.3. Update from one pair only: A = the earliest eligible reference dated no more than 28 days before the plan start or later, B = the current V1RC standard reference; same kind (RACE with RACE, field test or time trial with field test or time trial); B - A >= 28 days; Gamma(B) - Gamma(A) >= 0.005; neither presumed, lower bound (RPE <= 7), unknown effort, outside the population, nor marathon class; no declared break of 7 days or more between them. R_c clipped to [0, 1]; fast edge R_hi = min(1, R_c + 1.2816 sd); the slow edge uses R = 0 always. If B is 3% or more slower than the previous eligible same-kind reference (10K-equivalent central), g = 0 (no gain assumed) until a later reference is not slower.",
+   "values": {
+    "priorCentral": 0.5,
+    "priorSd": 0.3,
+    "minPairDays": 28,
+    "minDeltaGamma": 0.005,
+    "earliestReferenceDaysBeforePlanStartMax": 28,
+    "slowEdgeR": 0,
+    "slowdownFractionAtLeast": 0.03
+   },
+   "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+   "basis": "Sporting judgement (prior and pair rules); the noise model reuses the V1RC margins, which rest on V1RC SRC05",
+   "confidence": "LOW",
+   "sourceIds": [
+    "RFC05",
+    "RFC08",
+    "RFC09",
+    "V1RC:SRC05"
+   ],
+   "rationale": "The proposal has an internal inconsistency: with R_c0 0.5 and s0 0.3, R_lo = 0.5 - 1.2816 x 0.3 = 0.116, not 0, so the slow edge would assume some improvement although the text says it assumes none. The slow edge is set to the current estimate in every case: training disruptions are common (RFC16), low responders are about one in five (RFC05) and recreational race-to-race variation is 2.6-4.2% (V1RC SRC05), so \"no further gain\" must stay inside the range. A prior centred at 0.5 with sd 0.3 (90% band 0.12-0.88) states that most athletes realise part of the ceiling and that the spread is wide (RFC08). Pair noise from the V1RC margins is the right order (pair sd 2.8-8%), so one pair moves R only a little, as it should (RFC09). Sequential updating over consecutive pairs reuses the shared reference twice and overstates precision; a single endpoint pair avoids it. Mixed race/test pairs are excluded because a race and a non-race test differ systematically in context and motivation (no quantified source: judgement). A slowdown of 3% or more (the V1RC conflict threshold, about the upper race-to-race CV) is treated as a signal, not noise: no further gain is assumed; the slower level is already in the current estimate.",
+   "conditions": [
+    "No inference of illness, overtraining or any clinical state from a slower result; the existing symptom routes are unchanged"
+   ]
+  },
+  {
+   "id": "F4",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "ruling": "a_min 0.5, a_full 0.9; a session counts its planned minutes when reported completed, else min(actual, planned); a missing report counts 0; a week with no planned run minutes is not counted and not in the mean; pre-plan weeks earn 0; future adherence = mean a of the last <= 4 completed counted weeks, then f applied once; with none, a = 1 flagged ASSUMES_PLAN_FOLLOWED (wording: \"if you follow the plan\").",
+   "values": {
+    "aMin": 0.5,
+    "aFull": 0.9,
+    "futureFromLastCountedWeeksMax": 4
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS (adaptation depends on dose and non-response falls with dose); PLAUSIBLE_BUT_UNCERTAIN (the 0.5 / 0.9 ramp)",
+   "basis": "Literature for dose dependence; sporting judgement for the ramp; placeholders",
+   "confidence": "LOW",
+   "sourceIds": [
+    "RFC10",
+    "RFC16",
+    "V1RC:SRC15",
+    "V1RC:SRC16"
+   ],
+   "rationale": "Fitness response rises with weekly dose and non-response falls with it (RFC10). Below half of the planned running the plan is not being executed and the engine does not progress on missing data, so no gain is credited; reduced training mostly maintains (V1RC SRC16). At 90% or more the plan is effectively done. Missing reports earn nothing, as DR-149 reads absence: it is not intolerance, but it cannot justify a progression, nor a forecast gain.",
+   "conditions": [
+    "Counted phases: ESTABLISHMENT, BUILD, CONSOLIDATION, DEVELOPMENT, SPECIFIC; zero credit: TAPER, RACE_WEEK, POST_EVENT, NEXT_BLOCK, hold weeks, WALK_JOG/RESTART/RETURN weeks, weeks before the plan",
+    "A week is credited to Gamma(d) only when its last day is on or before d",
+    "Run sessions only; strength sessions never count"
+   ]
+  },
+  {
+   "id": "F5",
+   "disposition": "APPROVE",
+   "ruling": "No taper benefit is added; TAPER and RACE_WEEK earn nothing.",
+   "values": {
+    "taperBenefit": 0
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS (a taper benefit exists in trained athletes); INSUFFICIENT_EVIDENCE (a quantified individual taper bonus for recreational runners)",
+   "basis": "Literature",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "RFC12",
+    "RFC13",
+    "RFC14",
+    "RFC15"
+   ],
+   "rationale": "Tapering improves performance in trained athletes (about 3%, range 0.5-6%, RFC12; ES 0.45-0.59, RFC13, RFC14), largest after pre-taper overload, which a conservative V1 plan does not prescribe. In recreational marathoners the association is 2.6% for a strict 3-week taper against a minimal one (RFC15), observational and marathon only. V1 tapers are 1 week (2 for the marathon). The current estimate usually rests on a race, already run rested, so a taper bonus would double-count. Leaving it out biases the forecast slightly slow, the safe direction.",
+   "conditions": []
+  },
+  {
+   "id": "F6",
+   "disposition": "MODIFY",
+   "ruling": "Plan event only, on its date; shown when the race date is at most 112 days (16 weeks) after the start of the current week, and only until the day before RACE_WEEK starts; from RACE_WEEK on only the V1RC current estimate with its race-day text and pacing caution is shown (this replaces \"at horizon 0 the forecast equals the current estimate\", which the proposed formula does not produce: unobserved gains of past weeks would still be added). Marathon: no training gain (forecast = current estimate unchanged), every V1RC marathon gate, the block assumption, the caution, R-11 (central <= 6:00:00) and the completion-race withdrawal; the proposed fast-edge cap is moot. 5K, 10K, half: no gate beyond the V1RC endurance gates and the width test; while any V1RC Q8 down factor is in force, g = 0.",
+   "values": {
+    "horizonDaysMax": 112,
+    "shownUntil": "day before RACE_WEEK",
+    "marathonTrainingGain": false,
+    "marathonCentralMaxSeconds": 21600
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS (marathon refusal; horizon bounded by studied durations); PLAUSIBLE_BUT_UNCERTAIN (exact horizon)",
+   "basis": "Literature for the marathon refusal and the horizon bound; sporting judgement for 16 weeks",
+   "confidence": "LOW",
+   "sourceIds": [
+    "RFC01",
+    "RFC05",
+    "RFC06",
+    "RFC07",
+    "RFC16",
+    "V1RC:SRC04",
+    "V1RC:SRC06"
+   ],
+   "rationale": "Marathon: the conversion is where prediction fails and errs fast (RFC01; V1RC SRC04, SRC06); the V1RC marathon estimate already assumes the block's long runs are completed, so adding the block's gain counts the block twice; the outcome depends on pacing and fuelling more than a fitness gain captures (V1RC SRC06), and late disruptions cost 5-8% (RFC16). Horizon: the performance evidence for training gains comes from 8-15-week programmes (RFC05, RFC06, RFC07); beyond 16 weeks the curve is extrapolation. Race week: a forecast faster than the current estimate must not become a race-day pacing reference, because starting too fast is the costly error (RFC01).",
+   "conditions": []
+  },
+  {
+   "id": "F7",
+   "disposition": "APPROVE (defaults) with a permitted band for the Founder",
+   "ruling": "Default W_max: 5K 0.12, 10K 0.12, half 0.15, marathon 0.18, measured on the rounded displayed values as high/low - 1. The Founder may set each anywhere up to 5K 0.18, 10K 0.18, half 0.20, marathon 0.20 without a new sporting review. The range is never narrowed to pass: it is shown whole or withheld (TOO_UNCERTAIN_TO_SHOW, the current estimate still shown by V1RC).",
+   "values": {
+    "wMaxDefault": {
+     "5K": 0.12,
+     "10K": 0.12,
+     "HALF_MARATHON": 0.15,
+     "MARATHON": 0.18
+    },
+    "wMaxPermittedUpTo": {
+     "5K": 0.18,
+     "10K": 0.18,
+     "HALF_MARATHON": 0.2,
+     "MARATHON": 0.2
+    }
+   },
+   "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+   "basis": "Sporting judgement against race-to-race variability; usefulness is a product choice",
+   "confidence": "LOW",
+   "sourceIds": [
+    "V1RC:SRC05",
+    "RFC01"
+   ],
+   "rationale": "Recreational race-to-race variation of about 3-4% (more in slower runners, V1RC SRC05) gives a single race-day spread of roughly 10-14%; ranges narrower than that would be false precision, and ranges wider than about 20% say little beyond \"about your current level\". Consequence the Founder should know: at the defaults, a 10K forecast from a 5K reference (the current estimate alone is about 11.9% wide) and most novice forecasts are TOO_UNCERTAIN (examples c and h); forecasts mostly appear from same-distance race references.",
+   "conditions": []
+  },
+  {
+   "id": "F8",
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "ruling": "All proposed withdrawals stand (hold, break >= 14 days, WALK_JOG/RESTART/RETURN, warning-sign screen required, completion race, after the race date, event estimate unavailable). Added: from RACE_WEEK on; outside the 112-day horizon; experience NONE; the V1RC extension or ESTIMATE boundary disabled; any V1RC Q8 down factor in force (g = 0, forecast = current estimate); latest result 3% or more slower (g = 0); marathon central above 6:00:00. Withdrawal applies at once; everything else changes only at the week boundary. Pace Insights withdraw on the same conditions except the slowdown and Q8 rules (they still explain).",
+   "values": {
+    "withdrawImmediately": true
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "basis": "Inherited V1RC rulings plus sporting judgement",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "V1RC:SRC15",
+    "V1RC:SRC16",
+    "RFC16"
+   ],
+   "rationale": "Each added condition only withholds a claim or removes a gain; none prescribes anything.",
+   "conditions": [
+    "The goal is compared with the current estimate only (V1RC Q7.goal), never with the forecast"
+   ]
+  },
+  {
+   "id": "F9",
+   "disposition": "APPROVE_WITH_CONDITIONS; MODIFY (EXCEPTIONAL floor 0.05)",
+   "ruling": "Comparability, the 42-day window, 3 executions, 14-day span, 2/3 majority with the latest included, STABLE/MIXED/INSUFFICIENT_DATA and the week-boundary computation are approved. FASTER/INSIDE/SLOWER use the same comparison as V1RC Q8 (band in force in the execution's own week, trigger 1.5%). EXCEPTIONAL: |d - median(d)| > max(3 MAD, 0.05), with d = ln(band midpoint pace / execution pace), each against the band of its own week. A confirmed insight never changes capacity, an estimate or the forecast in V1: only a qualifying race or test does. Actions as proposed (explain Q8 where it has room; otherwise offer the V1RC field test when P3 offers one, else suggest reporting a race; accepting runs the existing P3 flow).",
+   "values": {
+    "windowDays": 42,
+    "minExecutions": 3,
+    "minSpanDays": 14,
+    "majority": "2/3, latest included",
+    "triggerFraction": 0.015,
+    "exceptional": {
+     "madMultiple": 3,
+     "floorFraction": 0.05
+    },
+    "changesCapacity": false
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "basis": "V1RC rulings and literature for no capacity change; sporting judgement for thresholds",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "V1RC:SRC05",
+    "V1RC:SRC13",
+    "V1RC:SRC14",
+    "V1RC:SRC08"
+   ],
+   "rationale": "Training pace at a reported effort is not race capacity: it varies with conditions, fatigue and GPS error (3.2-6.1% mean distance error, V1RC SRC13), and V1RC already rules that upward training evidence moves bands only, never estimates. A 3% floor would discard ordinary in-band sessions as exceptional (example PI-1); 5% sits above typical GPS error.",
+   "conditions": [
+    "Suggestions are offers under every P3 rule (no test in TAPER/RACE_WEEK/POST_EVENT, not within 14 days of the race, at most 1 per 42 days, novices 3 km only, not while the screen is required, RC-01 respected); never a prompt to race",
+    "Short reps (< 5 min bouts) and easy runs faster at RPE <= 4: informative only, never a suggestion; the easy ceiling never moves faster from them and no copy invites faster easy running",
+    "SLOWER_THAN_BAND: \"effort governs, slow to the cue\"",
+    "Harder-than-cue executions (excluded from the vote by the RPE rule) may be stated as a fact: \"these sessions felt harder than intended\"; the copy may name only the V1RC factors (heat, hills, wind, fatigue) and say the plan's weekly review already reads harder-than-intended sessions. It never mentions illness, overtraining, readiness or anything clinical, never suggests a deload or rest of its own, and points to symptoms only through the existing warning-sign entry, never by inference"
+   ]
+  },
+  {
+   "id": "F10",
+   "disposition": "APPROVE",
+   "ruling": "No heart-rate input to the forecast or the insights in V1; V1RC zones stay display-only.",
+   "values": {
+    "heartRateInput": false
+   },
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "basis": "V1RC ruling and literature",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "V1RC:SRC08",
+    "V1RC:SRC10",
+    "V1RC:SRC11",
+    "V1RC:SRC12",
+    "RFC05"
+   ],
+   "rationale": "HR-speed indices were used in RFC05 only under research conditions (chest strap, standardized protocols); in the app HR drifts with heat, hydration and fatigue, wrist sensors are less accurate, and no index is validated for forecasting.",
+   "conditions": []
+  },
+  {
+   "id": "F11",
+   "disposition": "OPINION: ACCEPTABLE_WITH_CONDITIONS (the formal reading of the catalog rule is Founder/PCG)",
+   "ruling": "Sporting opinion: compatible with \"claim ... finish time or fitness gain\" only because the slow edge assumes no further improvement, so no gain is claimed, and only with these changes. Before any completed week: \"Forecast for <race> on <date>, if you follow the plan: <low>-<high>. The slower end assumes no further improvement. Not a promise.\" After: \"... if you keep training as you have over the last <n> weeks: ...\". Always state the reference and its date and \"individual results vary\". Never \"you will run\", \"predicted time\", \"on track\", \"achievable\", never a single time, never next to the goal as a verdict. Marathon: \"Your current marathon estimate, assuming the block's long runs are completed: <low>-<high>. No further improvement is assumed for the marathon. Not a promise.\"",
+   "values": {},
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "basis": "Sporting judgement",
+   "confidence": "MODERATE",
+   "sourceIds": [
+    "RFC01",
+    "V1RC:SRC04"
+   ],
+   "rationale": "A conditional range that contains \"no gain\" does not assert a gain or a time; the risk is the reader taking the fast edge as the expectation, which the wording and the race-week cut contain. This opinion does not interpret the product rule; that reading belongs to the Founder and PCG and is still required before athlete-facing use (V1RC recheck).",
+   "conditions": []
+  },
+  {
+   "id": "F12",
+   "disposition": "PROVIDED",
+   "ruling": "Ten forecast examples (a-h with d2, e1, e2) plus horizon, race-week and one Pace Insights example, in workedExamples.",
+   "values": {},
+   "evidenceStatus": "N/A",
+   "basis": "Computation",
+   "confidence": "N/A",
+   "sourceIds": [],
+   "rationale": "Computed from values.forecast by a scratch script; the implementation must reproduce them to the second.",
+   "conditions": []
+  }
+ ],
+ "values": {
+  "id": "SSCTR-RFC-VALUES-r1",
+  "scope": "Additive over COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1. No V1RC value, gate or behaviour changes. Nonclinical recreational adults, synthetic data only.",
+  "forecast": {
+   "start": "The V1RC current estimate of the plan's event, its unrounded {lower, central, upper} as V1RC computes them (after any Q8 down adjustment). No forecast when that estimate is UNAVAILABLE or not shown.",
+   "events": {
+    "5K": {
+     "trainingGain": true,
+     "wMax": 0.12,
+     "wMaxPermittedUpTo": 0.18
+    },
+    "10K": {
+     "trainingGain": true,
+     "wMax": 0.12,
+     "wMaxPermittedUpTo": 0.18
+    },
+    "HALF_MARATHON": {
+     "trainingGain": true,
+     "wMax": 0.15,
+     "wMaxPermittedUpTo": 0.2
+    },
+    "MARATHON": {
+     "trainingGain": false,
+     "wMax": 0.18,
+     "wMaxPermittedUpTo": 0.2,
+     "centralMaxSeconds": 21600,
+     "flag": "NO_TRAINING_GAIN_APPLIED_MARATHON"
+    }
+   },
+   "gainCeilingLogTime": {
+    "NOVICE": 0.08,
+    "INTERMEDIATE": 0.05,
+    "EXPERIENCED": 0.03
+   },
+   "unknownExperienceUses": "EXPERIENCED",
+   "noForecastExperience": [
+    "NONE"
+   ],
+   "experienceClassFrom": "PLAN_CREATION",
+   "tauWeeks": 10,
+   "countedPhases": [
+    "ESTABLISHMENT",
+    "BUILD",
+    "CONSOLIDATION",
+    "DEVELOPMENT",
+    "SPECIFIC"
+   ],
+   "zeroCreditPhases": [
+    "TAPER",
+    "RACE_WEEK",
+    "POST_EVENT",
+    "NEXT_BLOCK"
+   ],
+   "zeroCreditWeeks": [
+    "HOLD",
+    "WALK_JOG",
+    "RESTART",
+    "RETURN",
+    "BEFORE_PLAN_START"
+   ],
+   "weekCreditedWhen": "Its last day is on or before the date at which Gamma is evaluated",
+   "adherence": {
+    "aMin": 0.5,
+    "aFull": 0.9,
+    "sessionMinutes": "Run sessions only: planned minutes if reported completed, else min(actual minutes, planned minutes); a missing report counts 0",
+    "weekWithoutPlannedRunMinutes": "Not counted (0 credit) and left out of the mean",
+    "futureFromLastCountedWeeksMax": 4,
+    "futureMeanOf": "a (the weekly adherence), then f applied once",
+    "noCompletedCountedWeek": {
+     "assumeA": 1,
+     "flag": "ASSUMES_PLAN_FOLLOWED"
+    }
+   },
+   "response": {
+    "priorCentral": 0.5,
+    "priorSd": 0.3,
+    "z": 1.2816,
+    "pair": "One pair: A = the earliest eligible reference dated on or after (plan start - 28 days); B = the current V1RC standard reference. Same kind (RACE_RESULT with RACE_RESULT; TIME_TRIAL or FIELD_TEST with TIME_TRIAL or FIELD_TEST). Neither presumed, SUBMAXIMAL_LOWER_BOUND, unknown effort, OUTSIDE_MODEL_POPULATION, nor longer than the half marathon. No declared break of 7 days or more between A and B.",
+    "earliestReferenceDaysBeforePlanStartMax": 28,
+    "minPairDays": 28,
+    "minDeltaGamma": 0.005,
+    "timeScale": "V1RC 10K-equivalent central time (power law, kCentral 1.07)",
+    "sigma": "The V1RC margin of each reference (tier margin plus any slow-runner margin) / 1.2816",
+    "update": "R_obs = ln(T10_A / T10_B) / dGamma; var = (sigma_A^2 + sigma_B^2) / dGamma^2; R_c = (R_c0/s0^2 + R_obs/var) / (1/s0^2 + 1/var); sd = (1/s0^2 + 1/var)^(-1/2); then R_c clipped to [0, 1]. No pair: R_c = 0.5, sd = 0.3.",
+    "fastEdgeR": "min(1, R_c + 1.2816 sd)",
+    "slowEdgeR": 0
+   },
+   "slowdown": {
+    "comparedWith": "the most recent eligible same-kind reference dated before B (pair rules except spacing)",
+    "fractionAtLeast": 0.03,
+    "effect": "g = 0 until a later reference is not 3% slower",
+    "flag": "NO_GAIN_LATEST_RESULT_SLOWER"
+   },
+   "q8DownInForce": {
+    "anyDomain": true,
+    "effect": "g = 0",
+    "flag": "NO_GAIN_RECENT_SESSIONS_SLOWER"
+   },
+   "formulas": {
+    "H_eff": "sum of f(a_w) over credited counted plan weeks; future counted weeks before RACE_WEEK each earn f(a_future)",
+    "f": "f(a) = 0 if a < 0.5; (a - 0.5) / 0.4 if 0.5 <= a < 0.9; 1 if a >= 0.9",
+    "Gamma": "G_x * (1 - exp(-H_eff / 10))",
+    "g": "Gamma(start of RACE_WEEK) - Gamma(date of the current reference); 0 for the marathon, after a slowdown, or while a Q8 down factor is in force",
+    "central": "central_E * exp(-R_c * g)",
+    "low": "lower_E * exp(-R_hi * g)",
+    "high": "upper_E (no improvement)"
+   },
+   "rounding": "V1RC roundOutwardSeconds (5K/10K 15 s, half/marathon 60 s): low floored, high ceiled, central to nearest",
+   "width": "rounded high / rounded low - 1; shown only if <= wMax, else TOO_UNCERTAIN_TO_SHOW; never narrowed",
+   "horizonDaysMax": 112,
+   "shownUntil": "The day before RACE_WEEK starts; from RACE_WEEK only the V1RC current estimate, race-day text and pacing caution",
+   "confidence": {
+    "withGain": "LOW",
+    "withoutGain": "the current estimate tier, at most MODERATE"
+   },
+   "recompute": "At the week boundary only; withdrawal applies at once",
+   "neverFeeds": [
+    "pace bands",
+    "P1/P2/P3",
+    "Q8 factors",
+    "estimates",
+    "goal comparison",
+    "dose",
+    "progression",
+    "phase",
+    "eligibility",
+    "race-day mode"
+   ],
+   "goalComparison": "With the V1RC current estimate only, never with the forecast",
+   "withdrawal": [
+    "hold",
+    "declared break of 14 days or more",
+    "WALK_JOG, RESTART or RETURN mode",
+    "warning-sign screen REQUIRED",
+    "completion race day",
+    "after the race date",
+    "from RACE_WEEK",
+    "race more than 112 days away",
+    "event estimate unavailable or not shown",
+    "experience NONE",
+    "extension or ESTIMATE boundary not enabled",
+    "marathon central above 6:00:00"
+   ],
+   "requiredText": {
+    "beforeAnyWeek": "Forecast for <race> on <date>, if you follow the plan: <low>-<high>. The slower end assumes no further improvement. Not a promise.",
+    "afterWeeks": "Forecast for <race> on <date>, if you keep training as you have over the last <n> weeks: <low>-<high>. The slower end assumes no further improvement. Not a promise.",
+    "basis": "Based on your <reference> of <date>; individual results vary.",
+    "marathon": "Your current marathon estimate, assuming the block's long runs are completed: <low>-<high>. No further improvement is assumed for the marathon. Not a promise."
+   }
+  },
+  "paceInsights": {
+   "domains": [
+    "FIVE_K_EFFORT",
+    "TEN_K_EFFORT",
+    "THRESHOLD_CONTROLLED",
+    "HALF_MARATHON_EFFORT",
+    "MARATHON_EFFORT"
+   ],
+   "comparable": "V1RC comparableRun (no HEAT, HILLY, TRAIL, WIND_STRONG; no treadmill; GPS not poor), completed, RPE inside the cue, every work bout >= 5 min",
+   "windowDays": 42,
+   "minExecutions": 3,
+   "minSpanDays": 14,
+   "classify": "As V1RC Q8 against the band in force in the execution's own week: FASTER if fast edge pace / pace - 1 > 0.015; SLOWER if pace / slow edge pace - 1 > 0.015; else INSIDE",
+   "exceptional": {
+    "measure": "d = ln(band midpoint pace / execution pace), band of its own week",
+    "madMultiple": 3,
+    "floorFraction": 0.05,
+    "rule": "|d - median(d)| > max(3 * MAD(d), 0.05): shown, never voted"
+   },
+   "outcomes": {
+    "IMPROVING": ">= 2/3 FASTER, the latest included",
+    "SLOWER_THAN_BAND": ">= 2/3 SLOWER",
+    "STABLE": "majority INSIDE",
+    "MIXED": "otherwise",
+    "INSUFFICIENT_DATA": "fewer than 3 non-exceptional or span < 14 days"
+   },
+   "actions": {
+    "q8HasRoom": "EXPLAIN_ONLY",
+    "q8NoRoomOr5K10K": "OFFER_V1RC_FIELD_TEST if P3 offers one now, else SUGGEST_REPORTING_A_RACE",
+    "slower": "EFFORT_GOVERNS_SLOW_TO_CUE",
+    "shortRepsOrEasy": "INFORMATIVE_ONLY"
+   },
+   "changesCapacity": false,
+   "changesEstimateOrForecast": false,
+   "heartRateInput": false,
+   "computedAt": "WEEK_BOUNDARY"
+  }
+ },
+ "workedExamples": {
+  "note": "Computed by a scratch Node script outside the repository from the rules in values.forecast (no repository code was run). Times are h:mm:ss or m:ss; seconds arrays are [low, central, high] after outward rounding. The implementation must reproduce forecastSeconds, status and flags exactly; intermediate quantities are given to 5-6 decimals for debugging.",
+  "forecast": [
+   {
+    "id": "a",
+    "title": "(a) Intermediate, 10K reference HIGH, 12 weeks to race, no individual data, adherence 0.95",
+    "inputs": "Plan for a 10K, 16 weeks, starts Mon 2027-01-04; weeks 1-14 counted phases, 15 TAPER, 16 RACE_WEEK; race Sun 2027-04-25. Reference: 10K race 50:00, OFFICIAL timing, effort known, dated 2027-01-01 (pre-plan, so Gamma at the reference = 0), the only reference. Experience INTERMEDIATE. Computed at the start of week 5 (Mon 2027-02-01; race 83 days away, inside the 112-day horizon). Weeks 1-4 adherence 0.95 each. Future adherence = mean of weeks 1-4 = 0.95, f = 1. Counted weeks still to come before RACE_WEEK: 5-14 = 10.",
+    "output": {
+     "currentEstimate": {
+      "low": "48:45",
+      "central": "50:00",
+      "high": "51:15",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 2925,
+       "central": 3000,
+       "upper": 3075
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 10,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 14,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.03767,
+     "g_future_applied": 0.03767,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 2829.149,
+      "central": 2944.024,
+      "high": 3075
+     },
+     "forecastSeconds": [
+      2820,
+      2940,
+      3075
+     ],
+     "forecast": {
+      "low": "47:00",
+      "central": "49:00",
+      "high": "51:15"
+     },
+     "width": 0.09043,
+     "wMax": 0.12,
+     "status": "SHOWN",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "b",
+    "title": "(b) As (a) with adherence 0.6",
+    "inputs": "As (a) but weeks 1-4 adherence 0.6 each: f(0.6) = 0.25 per week, past H = 1.0, future 10 x 0.25 = 2.5.",
+    "output": {
+     "currentEstimate": {
+      "low": "48:45",
+      "central": "50:00",
+      "high": "51:15",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 2925,
+       "central": 3000,
+       "upper": 3075
+      }
+     },
+     "futureAdherence": 0.6,
+     "fFuture": 0.25,
+     "futureCountedWeeks": 10,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 3.5,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.014766,
+     "g_future_applied": 0.014766,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 2887.048,
+      "central": 2977.933,
+      "high": 3075
+     },
+     "forecastSeconds": [
+      2880,
+      2985,
+      3075
+     ],
+     "forecast": {
+      "low": "48:00",
+      "central": "49:45",
+      "high": "51:15"
+     },
+     "width": 0.06771,
+     "wMax": 0.12,
+     "status": "SHOWN",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "c",
+    "title": "(c) Novice, two 5K races 6 weeks apart showing improvement, 8 weeks to a 10K",
+    "inputs": "Plan for a 10K, 14 weeks, starts 2027-01-04; weeks 1-12 counted, 13 TAPER, 14 RACE_WEEK; race Sun 2027-04-11. Experience NOVICE. Reference A: 5K race 30:00, OFFICIAL, 2027-01-02 (2 days before the plan, Gamma 0). Reference B: 5K race 29:00, OFFICIAL, Sun 2027-02-14 = last day of week 6 (43 days after A, same kind RACE). V1RC: no conflict (more than 28 days apart), B outside the 1.5% deadband, so B is the reference, HIGH, with the slow-runner margin (10K-equivalent 60.9 min >= 60): m = 0.035. Longest run in the last 28 days 50 min (10K gate of 40 min met). Weeks 1-6 adherence 0.9 (f = 1). Computed at the start of week 7 (Mon 2027-02-15; race 55 days away). Future counted weeks 7-12 = 6. Note: V1RC gives novices no 5 km field test (3 km only), so both references here are races, not tests.",
+    "output": {
+     "currentEstimate": {
+      "low": "57:30",
+      "central": "1:01:00",
+      "high": "1:05:15",
+      "margin": 0.035,
+      "unrounded": {
+       "lower": 3452.612,
+       "central": 3653.014,
+       "upper": 3914.202
+      }
+     },
+     "futureAdherence": 0.9,
+     "fFuture": 1,
+     "futureCountedWeeks": 6,
+     "H_eff_reference": 6,
+     "H_eff_raceWeekStart": 12,
+     "gamma_reference": 0.036095,
+     "gamma_raceWeekStart": 0.055904,
+     "g_future_applied": 0.019809,
+     "pair": {
+      "T10_A": 3778.98,
+      "T10_B": 3653.014,
+      "dGamma": 0.036095,
+      "slowerByFraction": -0.03333,
+      "Robs": 0.93923,
+      "sdObs": 1.07
+     },
+     "R_c": 0.53201,
+     "sd": 0.28886,
+     "R_hi": 0.90222,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 3391.454,
+      "central": 3614.718,
+      "high": 3914.202
+     },
+     "forecastSeconds": [
+      3390,
+      3615,
+      3915
+     ],
+     "forecast": {
+      "low": "56:30",
+      "central": "1:00:15",
+      "high": "1:05:15"
+     },
+     "width": 0.15487,
+     "wMax": 0.12,
+     "status": "TOO_UNCERTAIN_TO_SHOW",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "d",
+    "title": "(d) Half-marathon athlete whose second reference is 2% slower",
+    "inputs": "Plan for a half marathon, 16 weeks, starts 2027-01-04; weeks 1-14 counted, 15 TAPER, 16 RACE_WEEK; race 2027-04-25. Experience INTERMEDIATE. A: 10K race 50:00 OFFICIAL 2027-01-01. B: 10K race 51:00 OFFICIAL 2027-02-14 (end of week 6), 2.0% slower: below the 3% slowdown threshold, so the response update applies. B is the V1RC reference (44 days after A, outside the deadband), HIGH, m = 0.025. Longest run in the last 28 days 75 min (half gate 60 met). Weeks 1-6 adherence 0.95. Computed at the start of week 7; future counted weeks 7-14 = 8.",
+    "output": {
+     "currentEstimate": {
+      "low": "1:48:00",
+      "central": "1:53:00",
+      "high": "2:01:00",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 6485.243,
+       "central": 6802.187,
+       "upper": 7237.424
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 8,
+     "H_eff_reference": 6,
+     "H_eff_raceWeekStart": 14,
+     "gamma_reference": 0.022559,
+     "gamma_raceWeekStart": 0.03767,
+     "g_future_applied": 0.015111,
+     "pair": {
+      "T10_A": 3000,
+      "T10_B": 3060,
+      "dGamma": 0.022559,
+      "slowerByFraction": 0.02,
+      "Robs": -0.8778,
+      "sdObs": 1.22285
+     },
+     "R_c": 0.42178,
+     "sd": 0.29136,
+     "R_hi": 0.79519,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 6407.784,
+      "central": 6758.972,
+      "high": 7237.424
+     },
+     "forecastSeconds": [
+      6360,
+      6780,
+      7260
+     ],
+     "forecast": {
+      "low": "1:46:00",
+      "central": "1:53:00",
+      "high": "2:01:00"
+     },
+     "width": 0.14151,
+     "wMax": 0.15,
+     "status": "SHOWN",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "d2",
+    "title": "(d2) As (d) with B 4% slower: no gain assumed",
+    "inputs": "As (d) but B = 10K race 52:00 (4.0% slower than A, at or above the 3% threshold): g = 0, the forecast equals the current estimate, flag NO_GAIN_LATEST_RESULT_SLOWER.",
+    "output": {
+     "currentEstimate": {
+      "low": "1:50:00",
+      "central": "1:56:00",
+      "high": "2:03:00",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 6612.405,
+       "central": 6935.564,
+       "upper": 7379.334
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 8,
+     "H_eff_reference": 6,
+     "H_eff_raceWeekStart": 14,
+     "gamma_reference": 0.022559,
+     "gamma_raceWeekStart": 0.03767,
+     "g_future_applied": 0,
+     "pair": {
+      "T10_A": 3000,
+      "T10_B": 3120,
+      "dGamma": 0.022559,
+      "slowerByFraction": 0.04
+     },
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 6612.405,
+      "central": 6935.564,
+      "high": 7379.334
+     },
+     "forecastSeconds": [
+      6600,
+      6960,
+      7380
+     ],
+     "forecast": {
+      "low": "1:50:00",
+      "central": "1:56:00",
+      "high": "2:03:00"
+     },
+     "width": 0.11818,
+     "wMax": 0.15,
+     "status": "SHOWN",
+     "flags": [
+      "NO_GAIN_LATEST_RESULT_SLOWER"
+     ],
+     "confidence": "current estimate tier, at most MODERATE"
+    }
+   },
+   {
+    "id": "e1",
+    "title": "(e1) Marathon that passes",
+    "inputs": "Marathon block, 16 weeks, starts 2027-01-04, race 2027-04-25, every V1RC/V1FC marathon eligibility criterion met, race day not a completion. Reference: half marathon 1:50:00 OFFICIAL 2026-12-20 (CURRENT at week 5), HIGH. Experience INTERMEDIATE. The marathon earns no training gain: the forecast is the V1RC current marathon estimate unchanged, with its caution and assumption; central 4:01:00 <= 6:00:00 (R-11 met); width 15.0% <= 0.18.",
+    "output": {
+     "currentEstimate": {
+      "low": "3:46:00",
+      "central": "4:01:00",
+      "high": "4:20:00",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 13603.822,
+       "central": 14444.677,
+       "upper": 15541.889
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 9,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 13,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.036373,
+     "g_future_applied": 0,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 13603.822,
+      "central": 14444.677,
+      "high": 15541.889
+     },
+     "forecastSeconds": [
+      13560,
+      14460,
+      15600
+     ],
+     "forecast": {
+      "low": "3:46:00",
+      "central": "4:01:00",
+      "high": "4:20:00"
+     },
+     "width": 0.15044,
+     "wMax": 0.18,
+     "status": "SHOWN",
+     "flags": [
+      "NO_TRAINING_GAIN_APPLIED_MARATHON"
+     ],
+     "confidence": "current estimate tier, at most MODERATE"
+    }
+   },
+   {
+    "id": "e2",
+    "title": "(e2) Marathon that fails",
+    "inputs": "As (e1) but the half is 2:45:00 (10K-equivalent 74.2 min, inside the V1RC population). Marathon central 6:01:00 > 6:00:00: withheld under recheck ruling (c)/R-11; neither forecast nor current marathon estimate is shown.",
+    "output": {
+     "currentEstimate": {
+      "low": "5:36:00",
+      "central": "6:01:00",
+      "high": "6:33:00",
+      "margin": 0.035,
+      "unrounded": {
+       "lower": 20196.444,
+       "central": 21667.015,
+       "upper": 23540.275
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 9,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 13,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.036373,
+     "g_future_applied": 0,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 20196.444,
+      "central": 21667.015,
+      "high": 23540.275
+     },
+     "forecastSeconds": [
+      20160,
+      21660,
+      23580
+     ],
+     "forecast": {
+      "low": "5:36:00",
+      "central": "6:01:00",
+      "high": "6:33:00"
+     },
+     "width": 0.16964,
+     "wMax": 0.18,
+     "status": "WITHHELD_R11_CENTRAL_ABOVE_6H",
+     "flags": [
+      "NO_TRAINING_GAIN_APPLIED_MARATHON"
+     ],
+     "confidence": "current estimate tier, at most MODERATE"
+    }
+   },
+   {
+    "id": "f",
+    "title": "(f) Plan start, no completed week: ASSUMES_PLAN_FOLLOWED",
+    "inputs": "Plan for a 5K, 10 weeks, starts 2027-01-04; weeks 1-8 counted, 9 TAPER, 10 RACE_WEEK; race 2027-03-14. Reference 5K race 25:00 OFFICIAL 2026-12-25, HIGH. INTERMEDIATE. Computed at the start of week 1: no completed week, future adherence assumed 1 and flagged; the wording says \"if you follow the plan\".",
+    "output": {
+     "currentEstimate": {
+      "low": "24:15",
+      "central": "25:00",
+      "high": "25:45",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 1462.5,
+       "central": 1500,
+       "upper": 1537.5
+      }
+     },
+     "futureAdherence": 1,
+     "fFuture": 1,
+     "futureCountedWeeks": 8,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 8,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.027534,
+     "g_future_applied": 0.027534,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 1427.314,
+      "central": 1479.491,
+      "high": 1537.5
+     },
+     "forecastSeconds": [
+      1425,
+      1485,
+      1545
+     ],
+     "forecast": {
+      "low": "23:45",
+      "central": "24:45",
+      "high": "25:45"
+     },
+     "width": 0.08421,
+     "wMax": 0.12,
+     "status": "SHOWN",
+     "flags": [
+      "ASSUMES_PLAN_FOLLOWED"
+     ],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "g",
+    "title": "(g) Experienced (or unknown experience), GPS-measured 10K, MODERATE",
+    "inputs": "As (a) but experience EXPERIENCED (an unknown class uses the same value), reference 10K race 45:00 measured by GPS (one tier down: MODERATE, m = 0.04), adherence 1.0 in weeks 1-4.",
+    "output": {
+     "currentEstimate": {
+      "low": "43:00",
+      "central": "45:00",
+      "high": "47:00",
+      "margin": 0.04,
+      "unrounded": {
+       "lower": 2592,
+       "central": 2700,
+       "upper": 2808
+      }
+     },
+     "futureAdherence": 1,
+     "fFuture": 1,
+     "futureCountedWeeks": 10,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 14,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.022602,
+     "g_future_applied": 0.022602,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 2540.698,
+      "central": 2669.659,
+      "high": 2808
+     },
+     "forecastSeconds": [
+      2535,
+      2670,
+      2820
+     ],
+     "forecast": {
+      "low": "42:15",
+      "central": "44:30",
+      "high": "47:00"
+     },
+     "width": 0.11243,
+     "wMax": 0.12,
+     "status": "SHOWN",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   },
+   {
+    "id": "h",
+    "title": "(h) 10K forecast from a 5K reference: too uncertain at the default width",
+    "inputs": "As (a) but the reference is a 5K race 22:00 OFFICIAL, HIGH, longest run 55 min. The current 10K estimate alone is 11.9% wide; with the gain the forecast is 15.9% wide > 0.12: TOO_UNCERTAIN_TO_SHOW (the current estimate is still shown by V1RC). It would show only if the Founder chose a 10K width of 0.16 or more inside the permitted band (<= 0.18).",
+    "output": {
+     "currentEstimate": {
+      "low": "44:00",
+      "central": "46:15",
+      "high": "49:15",
+      "margin": 0.025,
+      "unrounded": {
+       "lower": 2646.365,
+       "central": 2771.252,
+       "upper": 2940.705
+      }
+     },
+     "futureAdherence": 0.95,
+     "fFuture": 1,
+     "futureCountedWeeks": 10,
+     "H_eff_reference": 0,
+     "H_eff_raceWeekStart": 14,
+     "gamma_reference": 0,
+     "gamma_raceWeekStart": 0.03767,
+     "g_future_applied": 0.03767,
+     "pair": null,
+     "R_c": 0.5,
+     "sd": 0.3,
+     "R_hi": 0.88448,
+     "R_slowEdge": 0,
+     "unrounded": {
+      "low": 2559.645,
+      "central": 2719.544,
+      "high": 2940.705
+     },
+     "forecastSeconds": [
+      2550,
+      2715,
+      2955
+     ],
+     "forecast": {
+      "low": "42:30",
+      "central": "45:15",
+      "high": "49:15"
+     },
+     "width": 0.15882,
+     "wMax": 0.12,
+     "status": "TOO_UNCERTAIN_TO_SHOW",
+     "flags": [],
+     "confidence": "LOW"
+    }
+   }
+  ],
+  "horizon": {
+   "id": "i",
+   "title": "(i) Race beyond the horizon",
+   "inputs": "10K race Sun 2027-06-27, 26-week plan starting 2027-01-04, computed at the start of week 1.",
+   "output": {
+    "status": "NOT_YET_IN_HORIZON",
+    "reason": "174 days > 112",
+    "firstWeekShown": "week 10 (Mon 2027-03-08: 111 days to the race)"
+   }
+  },
+  "raceWeek": {
+   "id": "j",
+   "title": "(j) Race week",
+   "inputs": "Example (a) at the start of week 16 (RACE_WEEK).",
+   "output": {
+    "status": "NOT_SHOWN_FROM_RACE_WEEK",
+    "shown": "the V1RC current estimate 48:45-51:15 with its race-day text and pacing caution only"
+   }
+  },
+  "paceInsights": [
+   {
+    "id": "PI-1",
+    "domain": "THRESHOLD_CONTROLLED",
+    "cue": "RPE 6-7",
+    "bandInForceEveryWeek": "5:10-5:30 /km (310-330 s/km)",
+    "trainingFactorInForce": "+1.5% (room left under +4.5%)",
+    "executions": [
+     {
+      "date": "2027-02-01",
+      "pace": 305,
+      "rpe": 7,
+      "paceText": "5:05",
+      "comparable": true,
+      "everyWorkBoutMinutes": 8,
+      "class": "FASTER",
+      "logDeviationFromBandMidpoint": 0.04801
+     },
+     {
+      "date": "2027-02-08",
+      "pace": 318,
+      "rpe": 7,
+      "paceText": "5:18",
+      "comparable": true,
+      "everyWorkBoutMinutes": 8,
+      "class": "INSIDE",
+      "logDeviationFromBandMidpoint": 0.00627
+     },
+     {
+      "date": "2027-02-15",
+      "pace": 303,
+      "rpe": 6,
+      "paceText": "5:03",
+      "comparable": true,
+      "everyWorkBoutMinutes": 8,
+      "class": "FASTER",
+      "logDeviationFromBandMidpoint": 0.05459
+     },
+     {
+      "date": "2027-02-22",
+      "pace": 302,
+      "rpe": 7,
+      "paceText": "5:02",
+      "comparable": true,
+      "everyWorkBoutMinutes": 8,
+      "class": "FASTER",
+      "logDeviationFromBandMidpoint": 0.05789
+     }
+    ],
+    "median": 0.0513,
+    "MAD": 0.00494,
+    "exceptionalThresholdRuled": 0.05,
+    "exceptionalUnderRuledFloor": [],
+    "exceptionalThresholdProposed": 0.03,
+    "exceptionalUnderProposedFloor": [
+     "2027-02-08"
+    ],
+    "result": "IMPROVING (3 of 4 non-exceptional executions FASTER = 0.75 >= 2/3, the latest FASTER, span 21 days >= 14)",
+    "action": "EXPLAIN_ONLY: the existing weekly rule (V1RC Q8) adjusts the threshold band; no test is suggested because Q8 has room in this domain; capacity, estimates and the forecast are unchanged",
+    "note": "Under the proposed 3% floor the 2027-02-08 execution (an ordinary in-band session, 4.5% from the median) would be EXCEPTIONAL and dropped from the vote; under the ruled 5% floor it votes. GPS distance error of 3.2-6.1% (V1RC SRC13) is why the floor is 5%."
+   }
+  ]
+ },
+ "abstentions": [
+  {
+   "item": "Training gain in the marathon forecast",
+   "status": "INSUFFICIENT_EVIDENCE for an added gain on top of the V1RC marathon conversion",
+   "result": "forecast = current estimate, NO_TRAINING_GAIN_APPLIED_MARATHON"
+  },
+  {
+   "item": "Any improvement on the slow edge",
+   "status": "CONFLICTING with common non-response and disruption (RFC05, RFC16)",
+   "result": "slow edge = current estimate high edge, always"
+  },
+  {
+   "item": "A taper bonus",
+   "status": "INSUFFICIENT_EVIDENCE for a quantified recreational individual bonus",
+   "result": "no bonus"
+  },
+  {
+   "item": "Forecast beyond 16 weeks",
+   "status": "PLAUSIBLE_BUT_UNCERTAIN extrapolation beyond studied durations",
+   "result": "NOT_YET_IN_HORIZON"
+  },
+  {
+   "item": "Forecast in race week",
+   "status": "pacing risk (RFC01)",
+   "result": "current estimate only"
+  },
+  {
+   "item": "Capacity change from Pace Insights",
+   "status": "training pace at effort is not race capacity (V1RC Q8)",
+   "result": "never"
+  },
+  {
+   "item": "Heart-rate inputs",
+   "status": "not validated for this use",
+   "result": "none"
+  },
+  {
+   "item": "Fitting individual impulse-response parameters",
+   "status": "INSUFFICIENT_EVIDENCE (RFC02-RFC04)",
+   "result": "fixed population ceilings and one scalar R with a strong prior"
+  }
+ ],
+ "conditions": [
+  "C1: Additive only: no V1RC value, gate, band, estimate or behaviour changes; the forecast reads V1RC outputs and never writes to them.",
+  "C2: The forecast never feeds pace bands, tests, estimates, goal comparison, dose, progression, phase, eligibility or race-day mode.",
+  "C3: The slow edge is always the current estimate high edge; the forecast is a range, central never alone, never a single time.",
+  "C4: Before any athlete-facing use, the Founder/PCG reading of the catalog rule \"finish time or fitness gain\" is recorded (V1RC escalation still open).",
+  "C5: Every value is a placeholder until calibrated against estimate-versus-actual race results; the first such data is a re-review trigger. No accuracy claim in copy.",
+  "C6: Wording per values.forecast.requiredText (Product owns final copy; meaning may not drift).",
+  "C7: No clinical inference from any slowdown, harder-than-cue session or missing data; existing symptom routes only.",
+  "C8: A fresh SSCTR instance judges the implementation against these worked examples; the implementation reproduces every forecastSeconds, status and flag exactly.",
+  "C9: Synthetic data only in this mission; V1 authority NO."
+ ],
+ "aeReview": {
+  "level": "Offline sporting decision on a display-only forecast and an explanation-only insight; no plan mutation.",
+  "q1_currentPlanAdequate": "Not assessed by the forecast; the forecast never judges or changes the plan.",
+  "q2_materialFact": "Facts are V1RC references, logged sessions and the plan calendar, with provenance.",
+  "q3_keepDefensible": "Yes: the plan is unchanged by design.",
+  "q4_changeNecessary": "No plan change; Pace Insights may offer the existing P3 test, which the athlete accepts or not.",
+  "q5_smallestIntervention": "Explain only, or an offer under existing P3 rules.",
+  "q6_smallerAlternativesInsufficient": "Not applicable: no intervention is made.",
+  "q7_priorityAndProgression": "Untouched.",
+  "q8_evidenceSupportsDose": "No dose is set.",
+  "q9_uncertainty": "Individual gain magnitude and time course are uncertain; ranges, withholding and the no-gain slow edge carry it.",
+  "q10_askHoldClinical": "No ASK or HOLD added; clinical routes unchanged."
+ },
+ "changedFromProposal": [
+  "Slow edge always = current estimate (the proposal's R_lo was 0.116 with no data, contradicting its own text)",
+  "Marathon: no training gain; forecast = current estimate",
+  "Horizon 26 -> 16 weeks (112 days); not shown from RACE_WEEK (replaces \"horizon 0 = current estimate\")",
+  "One endpoint pair of the same kind instead of sequential consecutive pairs; pair eligibility rules; reference A no earlier than 28 days before the plan",
+  "R_c clipped to [0, 1]",
+  "Slowdown rule: latest reference >= 3% slower -> g = 0",
+  "Q8 down factor in force -> g = 0",
+  "W_max: defaults kept, a permitted band up to 0.18/0.18/0.20/0.20 for the Founder",
+  "Pace Insights EXCEPTIONAL floor 0.03 -> 0.05",
+  "Goal compared with the current estimate only, not the forecast",
+  "Wording: \"if you follow the plan\" before any week; \"the slower end assumes no further improvement\" added"
+ ],
+ "escalations": [
+  {
+   "to": "Founder / PCG",
+   "what": "Formal reading of catalog productMustNot \"Claim injury prevention, readiness, finish time or fitness gain\" for a conditional forecast whose fast edge includes possible gain. Sporting opinion in F11. Blocks athlete-facing use, not these values."
+  },
+  {
+   "to": "Founder",
+   "what": "Product choices inside sporting bounds: (1) whether to show the marathon \"forecast\" at all, given it equals the current estimate; (2) W_max within the permitted band (at the defaults most forecasts from converted references are TOO_UNCERTAIN, examples c and h); (3) plans longer than 16 weeks show the forecast only from 16 weeks out."
+  },
+  {
+   "to": "Product / Data via Chief",
+   "what": "Copy for every required text; semantics of the self-declared experience class, the \"completed\" flag, missing reports and reference kinds (RACE_RESULT vs TIME_TRIAL/FIELD_TEST)."
+  },
+  {
+   "to": "Engineering via Chief",
+   "what": "The proposal's inconsistencies corrected here (R_lo, horizon 0, sequential pairs, clipping); week-boundary and immediate-withdrawal semantics."
+  },
+  {
+   "to": "Clinical route (existing)",
+   "what": "Unchanged. Nothing here infers or routes a clinical state."
+  }
+ ],
+ "queueProposals": [
+  {
+   "queue_id": "HQ-RFC-SSCTR-FORECAST",
+   "decision_id": "SSCTR-RFC-DECISION-r1#F1-F8,F10-F12",
+   "scope": "race forecast envelope, ceilings, response prior, adherence, horizon, width, withdrawal, wording opinion"
+  },
+  {
+   "queue_id": "HQ-RFC-SSCTR-INSIGHTS",
+   "decision_id": "SSCTR-RFC-DECISION-r1#F9",
+   "scope": "Pace Insights comparability, thresholds, actions, no capacity change"
+  }
+ ],
+ "queueProposalCommon": {
+  "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+  "appended": false,
+  "appendOwner": "Founder / Chief (the queue stays at 235; this instance wrote only its two files)",
+  "human_review": null,
+  "approval_date": "2026-11-13",
+  "reReviewTrigger": "see expiry.triggers"
+ },
+ "literature": [
+  {
+   "id": "RFC01",
+   "citation": "Vickers AJ, Vertosick EA. An empirical study of race times in recreational endurance runners. BMC Sports Sci Med Rehabil 2016;8:26.",
+   "pmid": "27570626",
+   "pmcid": "PMC5000509",
+   "doi": "10.1186/s13102-016-0052-y",
+   "type": "OBSERVATIONAL_CROSS_SECTIONAL_SURVEY_WITH_VALIDATION_SPLIT",
+   "access": "FULL_TEXT",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Re-opened in this run: Abstract; Methods passage on k = 1.07 and the penalized error. Settled detail as V1RC SRC01.",
+   "findingsUsed": "Riegel well calibrated to the half marathon, at least 10 min too fast in the marathon for half of runners (settled in V1RC). New passage used here: the authors penalize over-estimation of velocity because \"a runner who starts too fast will slow dramatically\", whereas one who starts too slow can speed up: the error that matters is the fast one.",
+   "limitations": [
+    "cross-sectional: predicts across distances, not across time",
+    "self-reported"
+   ]
+  },
+  {
+   "id": "RFC02",
+   "citation": "Hellard P, Avalos M, Lacoste L, Barale F, Chatard JC, Millet GP. Assessing the limitations of the Banister model in monitoring training. J Sports Sci 2006;24(5):509-20.",
+   "pmid": "16608765",
+   "pmcid": "PMC1974899",
+   "doi": "10.1080/02640410500244697",
+   "type": "MODELLING_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract (Europe PMC and NCBI efetch returned the front matter only; the body was not retrievable)",
+   "findingsUsed": "Nine elite swimmers over a season: the impulse-response model fitted (R2 0.79) but 95% CIs of the useful time constants were wide (e.g. fitness 38 [17-59] d, fatigue 19 [6-32] d) and parameters were highly correlated, making interpretation \"worthless\".",
+   "limitations": [
+    "abstract only",
+    "elite swimmers, dense data: a recreational runner with 1-3 references per block is far less identifiable"
+   ]
+  },
+  {
+   "id": "RFC03",
+   "citation": "Imbach F, Perrey S, Chailan R, Meline T, Candau R. Training load responses modelling and model generalisation in elite sports. Sci Rep 2022;12:1586.",
+   "pmid": "35091649",
+   "pmcid": "PMC8799698",
+   "type": "MODELLING_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "Seven elite skaters over three months: the variable dose-response model generalised worse than regularised statistical models under time-series cross-validation; the authors make a generalisation procedure a prerequisite for any predictive model.",
+   "limitations": [
+    "abstract only",
+    "n = 7 elite"
+   ]
+  },
+  {
+   "id": "RFC04",
+   "citation": "Wang W, Zhao Y, Hou X, et al. Advancing training effectiveness prediction in mass sport through longitudinal data: a mathematical model approach based on the Fitness-Fatigue Model. PLoS One 2025;20(12):e0337824.",
+   "pmid": "41335608",
+   "pmcid": "PMC12674547",
+   "type": "MODELLING_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "Individually fitted fitness-fatigue models with dense daily data in 13 cyclists: predictive MAPE 4-32%, up to 87% for some individuals.",
+   "limitations": [
+    "abstract only",
+    "cycling, n = 13, single training type"
+   ]
+  },
+  {
+   "id": "RFC05",
+   "citation": "Nuuttila OP, Nummela A, Korhonen E, Hakkinen K, Kyrolainen H. Individualized endurance training based on recovery and training status in recreational runners. Med Sci Sports Exerc 2022;54(10):1690-1701.",
+   "pmid": "35975912",
+   "pmcid": "PMC9473708",
+   "doi": "10.1249/MSS.0000000000002968",
+   "type": "RANDOMISED_CONTROLLED_COMPARISON",
+   "access": "FULL_TEXT",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract; Methods (participants, protocol); Table 1; Results summary; Limitations",
+   "findingsUsed": "Recreational runners running at least 4 times a week (VO2max about 46 mL/kg/min, age 34-37): over 12 weeks (6-wk volume + 6-wk interval periods) 10-km time changed -2.9% +/- 2.4% with a predefined programme and -6.2% +/- 2.8% with individualised adjustment; 21-23% low responders in the predefined group.",
+   "limitations": [
+    "small groups (14 and 16)",
+    "no non-training control: changes include test learning and within-subject noise",
+    "supervised trial volunteers"
+   ]
+  },
+  {
+   "id": "RFC06",
+   "citation": "Munoz I, Seiler S, Bautista J, Espana J, Larumbe E, Esteve-Lanao J. Does polarized training improve performance in recreational runners? Int J Sports Physiol Perform 2014;9(2):265-72.",
+   "pmid": "23752040",
+   "doi": "10.1123/ijspp.2012-0350",
+   "type": "RANDOMISED_COMPARISON",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract (results sentence truncated in the record)",
+   "findingsUsed": "30 recreational runners, 10 weeks, 10-km race before and after: both groups improved; the polarized group from 39:18 to 37:19 (about -5%). Same paper as V1RC SRC24.",
+   "limitations": [
+    "abstract only, second group values not visible",
+    "fast recreational runners (sub-40 10K)"
+   ]
+  },
+  {
+   "id": "RFC07",
+   "citation": "Festa L, Tarperi C, Skroce K, La Torre A, Schena F. Effects of different training intensity distribution in recreational runners. Front Sports Act Living 2019;1:70.",
+   "pmid": "33344993",
+   "pmcid": "PMC7739641",
+   "doi": "10.3389/fspor.2019.00070",
+   "type": "RANDOMISED_COMPARISON",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "38 recreational runners, 8 weeks: 2-km average velocity +3.5% and +3.0% in the two TRIMP-matched programmes.",
+   "limitations": [
+    "abstract only",
+    "2-km test, not a race"
+   ]
+  },
+  {
+   "id": "RFC08",
+   "citation": "Mann TN, Lamberts RP, Lambert MI. High responders and low responders: factors associated with individual variation in response to standardized training. Sports Med 2014;44(8):1113-24.",
+   "pmid": "24807838",
+   "doi": "10.1007/s40279-014-0197-3",
+   "type": "NARRATIVE_REVIEW",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "A wide range of individual responses to standardized endurance training is common; pre-training phenotype predicts little of the response; stimulus, recovery, lifestyle and measurement error all contribute.",
+   "limitations": [
+    "abstract only",
+    "narrative review"
+   ]
+  },
+  {
+   "id": "RFC09",
+   "citation": "Atkinson G, Batterham AM. True and false interindividual differences in the physiological response to an intervention. Exp Physiol 2015;100(6):577-88.",
+   "pmid": "25823596",
+   "doi": "10.1113/EP085070",
+   "type": "METHODOLOGICAL_REVIEW",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "Within-subject random variation and regression to the mean can explain apparent individual response differences; true variation needs a comparator SD.",
+   "limitations": [
+    "abstract only"
+   ]
+  },
+  {
+   "id": "RFC10",
+   "citation": "Montero D, Lundby C. Refuting the myth of non-response to exercise training: \"non-responders\" do respond to higher dose of training. J Physiol 2017;595(11):3377-87.",
+   "pmid": "28133739",
+   "doi": "10.1113/JP273480",
+   "type": "CONTROLLED_TRIAL",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "78 healthy adults, 1-5 x 60 min/week for 6 weeks: non-response of fitness declined with weekly dose and was abolished by 2 more sessions a week.",
+   "limitations": [
+    "abstract only",
+    "cycling fitness, not race performance"
+   ]
+  },
+  {
+   "id": "RFC11",
+   "citation": "Scharhag-Rosenberger F, Meyer T, Walitzek S, Kindermann W. Time course of changes in endurance capacity: a 1-yr training study. Med Sci Sports Exerc 2009;41(5):1130-7.",
+   "pmid": "19346973",
+   "doi": "10.1249/MSS.0b013e3181935a11",
+   "type": "LONGITUDINAL_TRAINING_STUDY",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract (results partly truncated)",
+   "findingsUsed": "18 previously untrained adults, 3 x 45 min/week jogging at a constant 60% HR reserve for 12 months: VO2max +16% median; no further significant change after 6 months at an unchanged stimulus.",
+   "limitations": [
+    "abstract only",
+    "VO2max, not race time",
+    "constant, non-progressive stimulus"
+   ]
+  },
+  {
+   "id": "RFC12",
+   "citation": "Mujika I, Padilla S. Scientific bases for precompetition tapering strategies. Med Sci Sports Exerc 2003;35(7):1182-7.",
+   "pmid": "12840640",
+   "doi": "10.1249/01.MSS.0000074448.73931.11",
+   "type": "NARRATIVE_REVIEW",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "Tapering usually improves performance by about 3% (usual range 0.5-6%), keeping intensity and cutting volume.",
+   "limitations": [
+    "abstract only",
+    "mostly trained and competitive athletes"
+   ]
+  },
+  {
+   "id": "RFC13",
+   "citation": "Bosquet L, Montpetit J, Arvisais D, Mujika I. Effects of tapering on performance: a meta-analysis. Med Sci Sports Exerc 2007;39(8):1358-65.",
+   "pmid": "17762369",
+   "doi": "10.1249/mss.0b013e31806010e0",
+   "type": "META_ANALYSIS",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract (results truncated)",
+   "findingsUsed": "27 studies of competitive athletes: a 2-week taper with volume cut 41-60% gave the largest effect (ES 0.59 +/- 0.33).",
+   "limitations": [
+    "abstract only",
+    "competitive athletes",
+    "effect sizes, not percent"
+   ]
+  },
+  {
+   "id": "RFC14",
+   "citation": "Wang Z, Wang YT, Gao W, Zhong Y. Effects of tapering on performance in endurance athletes: a systematic review and meta-analysis. PLoS One 2023;18(5):e0282838.",
+   "pmid": "37163550",
+   "pmcid": "PMC10171681",
+   "doi": "10.1371/journal.pone.0282838",
+   "type": "META_ANALYSIS",
+   "access": "FULL_TEXT",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract; Methods (analysis); Results passages on volume reduction",
+   "findingsUsed": "14 studies: time-trial SMD -0.45 after tapering; no change in VO2max or economy; tapering after pre-taper overload had the larger effect.",
+   "limitations": [
+    "endurance athletes, not recreational novices",
+    "standardized effects"
+   ]
+  },
+  {
+   "id": "RFC15",
+   "citation": "Smyth B, Lawlor A. Longer disciplined tapers improve marathon performance for recreational runners. Front Sports Act Living 2021;3:735220.",
+   "pmid": "34651125",
+   "pmcid": "PMC8506252",
+   "doi": "10.3389/fspor.2021.735220",
+   "type": "OBSERVATIONAL_DATABASE",
+   "access": "FULL_TEXT",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract; Methods (taper definition, finish-time benefit vs a relaxed 1-week taper); Limitations; Conclusions",
+   "findingsUsed": "More than 158,000 recreational marathoners: strict 3-week tapers were associated with a median finish-time saving of 5 min 32 s (2.6%) relative to a minimal (relaxed 1-week) taper.",
+   "limitations": [
+    "association only",
+    "ability proxied by fastest training 10 km",
+    "baseline is a minimal taper, not no taper",
+    "marathon only"
+   ]
+  },
+  {
+   "id": "RFC16",
+   "citation": "Feely C, Smyth B, Caulfield B, Lawlor A. Estimating the cost of training disruptions on marathon performance. Front Sports Act Living 2022;4:1096124.",
+   "pmid": "36704260",
+   "pmcid": "PMC9871827",
+   "doi": "10.3389/fspor.2022.1096124",
+   "type": "OBSERVATIONAL_DATABASE",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "300,000 recreational marathoners: over half had short disruptions (<= 6 days); disruptions of 7 days or more were associated with a 5-8% slower finish (within-runner comparison), more when late in training.",
+   "limitations": [
+    "abstract only",
+    "association",
+    "marathon only"
+   ]
+  },
+  {
+   "id": "RFC17",
+   "citation": "Bacon AP, Carter RE, Ogle EA, Joyner MJ. VO2max trainability and high intensity interval training in humans: a meta-analysis. PLoS One 2013;8(9):e73182.",
+   "pmid": "24066036",
+   "pmcid": "PMC3774727",
+   "type": "META_ANALYSIS",
+   "access": "ABSTRACT_ONLY",
+   "verified": true,
+   "accessedOn": "2026-11-13",
+   "locator": "Abstract",
+   "findingsUsed": "Sedentary or recreationally active adults, 6-13 weeks of interval training: VO2max +0.51 L/min on average, heterogeneity I2 = 70.",
+   "limitations": [
+    "abstract only",
+    "VO2max is not race time",
+    "context only"
+   ]
+  }
+ ],
+ "validation": {
+  "skillValidator": "not run (Python is not installed in this environment)",
+  "schema": "Multi-item record in the caller's requested shape (like SSCTR-V1RC-DECISION-r1), not decision.schema.json",
+  "jsonWellFormed": "checked with Node after writing"
+ },
+ "governance": {
+  "gateStatus": "NOT_CLOSED_BY_THIS_RECORD",
+  "wholeGateClosure": false,
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "enablesBoundaries": false
+ },
+ "expiry": {
+  "owner": "Chief / SSCTR",
+  "reviewBy": "2027-05-13",
+  "triggers": [
+   "the first estimate-versus-actual or forecast-versus-actual race results from real use",
+   "a new systematic review or meta-analysis on training response in recreational runners, tapering, or race-time prediction",
+   "any change to V1RC values, the V1 population, events, phases or experience classes",
+   "an adverse event linked to race-day pacing or a suggested test",
+   "a runtime inconsistency found by the candidate judges",
+   "the Founder's funding declaration (human revalidation)"
+  ]
+ }
+}
