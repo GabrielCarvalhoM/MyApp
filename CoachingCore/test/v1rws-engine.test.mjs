@@ -102,7 +102,8 @@ test('I7, T3: a replayed review is an exact replay; a report\'s new facts surviv
  const o=nativeReport(t,t.long,{minutes:91,km:14.2,actual:facts}),rv=t.review(1,6,'WEEKLY_REVIEW',{observations:[o],eventId:'rw-replay'});
  const first=t.take(F.evaluateProgram(t.p,rv,DEV)),row=t.row(t.long.id);
  for(const k of ['formatHash','steps','stop','declared','segments','conditions'])assert.deepEqual(row.actual[k],o.actual[k],k);
- assert.deepEqual([row.actual.distanceKm,row.actual.gpsQuality,row.actual.deviceGpsQuality],[14.2,'POOR',null],'a listed failure reason marks the measurement POOR; the measured value stays');
+ assert.deepEqual([row.actual.distanceKm,'gpsQuality' in row.actual,'deviceGpsQuality' in row.actual],[14.2,false,false],'the measurement stays as it was sent: nothing of it is rewritten');
+ assert.deepEqual([first.runSessions[t.long.id].execution.reliability,first.runFormat.paceEvidenceWithheld.map(x=>[x.sessionId,x.reason])],['POOR',[[t.long.id,'SEVERAL_RECORDINGS']]],'its reliability is read from its facts, and no pace reader is handed its distance');
  const again=F.evaluateProgram(t.p,{...rv,actualLedger:t.ledger,referenceState:t.ref,runFormatRecord:t.fmt,runEvidenceRecord:t.ev},DEV);
  assert.ok(again.provenance.duplicates.some(d=>d.eventId===o.eventId&&d.reason==='EXACT_REPLAY'));assert.equal(hash(again.actualLedger.filter(x=>!x.fact)),hash(first.actualLedger.filter(x=>!x.fact)));
  // A run imported outside the plan keeps its stated sport.
@@ -137,7 +138,7 @@ test('A report that cites a format the record does not hold is not recorded and 
  t.week(1,weekWith(t,1,t.long.id,o));
  const lost=F.evaluateProgram(t.p,{...t.review(2,6,'WEEKLY_REVIEW'),runFormatRecord:[]},DEV);
  assert.deepEqual([lost.status,lost.errors,lost.proposal],['HOLD',['runFormatRecord.missingFormat'],null]);
- const altered=F.evaluateProgram(t.p,{...t.review(2,6,'WEEKLY_REVIEW'),runFormatRecord:t.fmt.map(r=>r.sessionId===t.long.id?{...r,format:{...r.format,blocks:[{repeat:1,steps:[{...r.format.blocks[0].steps[0],target:{type:'DISTANCE',metres:1000}}]}]}}:r)},DEV);
+ const altered=F.evaluateProgram(t.p,{...t.review(2,6,'WEEKLY_REVIEW'),runFormatRecord:t.fmt.map(r=>r.sessionId===t.long.id&&r.format?{...r,format:{...r.format,blocks:[{repeat:1,steps:[{...r.format.blocks[0].steps[0],target:{type:'DISTANCE',metres:1000}}]}]}}:r)},DEV);
  assert.equal(altered.status,'HOLD','an altered format row is unreadable, never read as a shorter target');
 });
 test('I9, V4: the order of the records is irrelevant; and the one source of a band is V1RC unless a wrapping entry point hands another through the hook',async()=>{
@@ -162,8 +163,12 @@ test('I10, V6: every file the two earlier freezes bind is byte-identical here ex
  assert.deepEqual(changed(v1),[AMENDED]);assert.deepEqual(changed(rc),[],'the 30 files of the calibration freeze are untouched');assert.equal(Object.keys(v1.files).length,198);
  assert.equal(sha(execFileSync('git',['show',`${rc.commit}:${AMENDED}`],{cwd:root,maxBuffer:1<<28})),v1.files[AMENDED],'the amendment starts from exactly the bytes the first freeze recorded');
  const diff=execFileSync('git',['diff','--no-color','--no-ext-diff','-U0',rc.commit,'--',AMENDED],{cwd:root,encoding:'utf8',maxBuffer:1<<28}).split('\n'),plus=diff.filter(l=>l.startsWith('+')&&!l.startsWith('+++')),minus=diff.filter(l=>l.startsWith('-')&&!l.startsWith('---'));
- assert.equal(minus.length,10);assert.ok(plus.length<=24,String(plus.length));
- // Every changed line is the reader: its declaration, its comment, or the argument that carries it. Nothing else of the engine moved.
+ assert.deepEqual([plus.length,minus.length],[22,10]);
+ // The amendment is the authorized one, byte for byte (QRE-RWS-B-03: nothing lexical stands in for it): the file's own hash, and the hash of its
+ // whole diff from the base (hunk headers and changed lines), the same two the freeze verifier of this line holds.
+ const FILE='6cedcb72be4e2bc6434a1f86a20d8c4447498b73c1157706cc91554847ac6e50',DIFF='6675741d38b2ec2a375656b055cf03cf5c442ae145c75a3f2e5922572afbe370',verifier=fs.readFileSync(root+'CoachingCore/scripts/v1rws-freeze.mjs','utf8');
+ assert.equal(sha(fs.readFileSync(root+AMENDED)),FILE);assert.equal(sha(Buffer.from(diff.filter(l=>/^(@@|[+-])/.test(l)&&!/^(\+\+\+|---)/.test(l)).join('\n'),'utf8')),DIFF);
+ assert.ok(verifier.includes(`sha256:'${FILE}'`)&&verifier.includes(`diffSha256:'${DIFF}'`),'the verifier of this line authorizes these two and no other');
+ // Every changed line is the reader: its declaration, its comment, or the argument that carries it (what the two hashes above pin).
  for(const l of plus)assert.ok(/READS_COMPLETION|READ_STATUSES|completionRead|\breads\b/.test(l)||/^\+\s*(\/\*\*|\*)/.test(l),l.slice(0,120));
- for(const l of minus){const twin=plus.find(p=>p.slice(1).replace(/,options\[READS_COMPLETION\]|,reads:options\[READS_COMPLETION\]|,reads:ctx\.reads|,reads=null|,reads\b/g,'').replace('const read=completionRead(reads,o,s),complete=o.actual.completed===true&&(read?read===\'DISTANCE\':minutesOk&&setsOk);','const complete=o.actual.completed===true&&minutesOk&&setsOk;')===l.slice(1));assert.ok(twin,'a removed line returns with only the reader added: '+l.slice(0,100));}
 });

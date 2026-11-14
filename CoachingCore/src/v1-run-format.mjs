@@ -240,7 +240,7 @@ export function suppressionOf(x,V){
  if(!x.enabled)return {reason:'EXTENSION_NOT_ENABLED'};
  if(x.engineStatus==='HOLD'||pace?.reason==='HOLD_NO_PRESCRIPTION'&&x.engineStatus!=='CLINICAL_HUMAN_REQUIRED')return {reason:'HOLD_NO_PRESCRIPTION'};
  if(x.engineStatus==='CLINICAL_HUMAN_REQUIRED')return {reason:'CLINICAL_ROUTE'};
- if(x.screenRequired)return {reason:'WARNING_SIGN_SCREEN_REQUIRED'};
+ if(x.screenRequired)return {reason:'WARNING_SIGN_SCREEN_REQUIRED',...(typeof x.screenRequired==='string'?{detail:x.screenRequired}:{})};
  if(!x.mode||G.timeOnlyModes.includes(x.mode)||pace?.reason==='MODE_WALK_JOG_RESTART_RETURN')return {reason:'MODE_WALK_JOG_RESTART_RETURN'};
  if(s.converted!==null&&s.converted!==undefined)return {reason:'ENGINE_CONVERTED_TO_EASY',detail:String(s.converted)};
  if(pace?.reason==='TEST_ALREADY_DONE_THIS_WEEK')return {reason:'TEST_ALREADY_DONE_THIS_WEEK'};
@@ -427,6 +427,69 @@ export function appendFormats(record,sessions,{athleteId,recordedAt}){
  return {record:[...carried,...added],added:added.map(r=>r.eventId)};
 }
 
+// ---------- what each run report said (fix-forward of 2026-11-14: QRE-RWS-B-01, SSCTR-RWS-B-01) ----------
+/**
+ * The engine keeps one row per execution: two reports of one run that agree become one row, and a report that contradicts another is refused and
+ * its row marked in conflict. Two things a report says can therefore be on no row, or on a row nothing reads: a stop it declares, and the distance
+ * it measured. They are kept here, in the same append-only record as the formats, one row per report received that states either:
+ * - `stop`: the stop as it is read (a reason of the closed list; none stated, or one not listed, is SYMPTOM). A safety signal only: it asks for
+ *   the warning-sign screen and is never credit, never the pause rule and never sizing. It is kept whatever the engine does with the report.
+ * - `distanceKm`: the distance the report itself measured (a measured source), and `timed`: whether the report carried the duration of that run.
+ *   Read only to withhold a distance from pace readers (reportsVerdict), never to add one.
+ * No free text is kept: a reason is the closed word it is read as.
+ */
+export const RUN_REPORT_RECEIVED='RUN_REPORT_RECEIVED';
+/** The longest id of a report a fact row names it by (the custody's own bound on a request id); a longer one is named by its content. */
+const REPORT_ID_MAX=128;
+const reportKey=(reportId,inputHash)=>`report|${reportId}|${inputHash.slice(0,16)}`;
+/**
+ * What one received run report states, or null when it states neither a stop nor a measured distance. `fromDevice`: a device activity's report.
+ * A report with no id of its own (the engine refuses it) is named by its content, so a stop it declares is still kept.
+ */
+export function reportFactOf(o,V,{fromDevice=false}={}){
+ if(!isObj(o)||!isObj(o.actual)||typeof o.sessionId!=='string')return null;
+ const a=o.actual,F=V.runFacts,stop=stopOf(a,V),measured=num(a.distanceKm,0.01,F.runDistanceKmMax)&&F.measuredSources.includes(upper(a.measurement)??(fromDevice?'GPS':null));
+ if(!stop&&!measured)return null;
+ const reportId=typeof o.eventId==='string'&&o.eventId&&o.eventId.length<=REPORT_ID_MAX?o.eventId:'unidentified:'+hash({sessionId:o.sessionId,actual:clean(a)}).slice(0,16);
+ return {sessionId:o.sessionId,reportId,stop:stop?{reason:stop.reason,stated:stop.stated}:null,distanceKm:measured?a.distanceKm:null,timed:minutesOfActual(a)!==null};
+}
+const readableReport=(o,athleteId,V)=>isObj(o)&&o.fact===RUN_REPORT_RECEIVED&&o.athleteId===athleteId&&isObj(o.report)&&typeof o.sessionId==='string'&&o.report.sessionId===o.sessionId&&typeof o.report.reportId==='string'&&o.report.reportId.length>0&&o.report.reportId.length<=REPORT_ID_MAX&&Object.keys(o.report).length===5&&typeof o.inputHash==='string'&&o.inputHash===hash(o.report)
+ &&o.eventId===reportKey(o.report.reportId,o.inputHash)&&Number.isFinite(Date.parse(o.recordedAt))&&(o.report.stop===null||isObj(o.report.stop)&&V.stops.reasons.includes(o.report.stop.reason)&&typeof o.report.stop.stated==='boolean')
+ &&(o.report.distanceKm===null||num(o.report.distanceKm,0.01,V.runFacts.runDistanceKmMax))&&typeof o.report.timed==='boolean'&&(o.report.stop!==null||o.report.distanceKm!==null);
+/** The record with one row per fact it does not hold yet (append-only; the same report sent again adds nothing). */
+export function appendReportFacts(record,facts,{athleteId,recordedAt}){
+ const carried=list(record).map(r=>clone(r)),ids=new Set(carried.filter(isObj).map(r=>r.eventId)),added=[];
+ for(const f of list(facts)){if(!f)continue;const report=clean(f),inputHash=hash(report),id=reportKey(report.reportId,inputHash);if(ids.has(id))continue;ids.add(id);added.push({fact:RUN_REPORT_RECEIVED,eventId:id,athleteId,recordedAt,sessionId:report.sessionId,report,inputHash});}
+ return {record:[...carried,...added],added:added.map(r=>r.eventId)};
+}
+/**
+ * The report facts of a carried record: by the report that stated them (`of`), every declared stop with the instant the record first held it
+ * (`stops`), and the rows that failed their integrity check, named and never read.
+ */
+export function readReportFacts(record,athleteId,V){
+ const by=new Map(),stops=[],unreadable=[];
+ for(const r of list(record)){
+  if(!readableReport(r,athleteId,V)){if(isObj(r)&&r.fact===RUN_REPORT_RECEIVED)unreadable.push(typeof r.eventId==='string'?r.eventId:null);continue;}
+  if(!by.has(r.report.reportId))by.set(r.report.reportId,[]);by.get(r.report.reportId).push(r.report);
+  if(r.report.stop)stops.push({sessionId:r.sessionId,reportId:r.report.reportId,reason:r.report.stop.reason,at:Date.parse(r.recordedAt)});
+ }
+ return {of:reportId=>by.get(reportId)??[],stops,unreadable:unreadable.sort(),size:by.size};
+}
+/** The reports a row of the engine's record was made of: the reports merged into it, or its own. */
+export const sourcesOf=row=>Array.isArray(row?.provenance?.mergedSourceIds)&&row.provenance.mergedSourceIds.length?row.provenance.mergedSourceIds.filter(x=>typeof x==='string'):typeof row?.eventId==='string'?[row.eventId]:[];
+/**
+ * What the reports a row was made of say about its distance, for pace readers only: DURATION_REQUIRED when one of them measured a distance with
+ * no duration of its own (the row's minutes are then another report's: the pace is of no single recording), DISTANCE_DISPUTED when two of them
+ * measured distances further apart than a working device is known to read (the tied 0.91: one of them is not the whole run), else null.
+ */
+export function reportsVerdict(row,facts,V){
+ if(!facts||!isObj(row))return null;
+ const said=sourcesOf(row).flatMap(id=>facts.of(id)).filter(f=>f.sessionId===row.sessionId&&f.distanceKm!==null);
+ if(said.some(f=>!f.timed))return 'DURATION_REQUIRED';
+ const d=said.map(f=>f.distanceKm);
+ return d.length>1&&Math.min(...d)<V.tied.correctionFloorFraction*Math.max(...d)-EPS?'DISTANCE_DISPUTED':null;
+}
+
 // ---------- reading an execution (handoff section 5; R3 C3-C5; R3A A1) ----------
 const mainSteps=format=>flatSteps(format.blocks).filter(s=>CONTINUOUS.has(format.pattern)?s.kind==='STEADY':s.kind==='WORK');
 const minutesOfActual=a=>num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null;
@@ -438,22 +501,27 @@ export const stopOf=(a,V)=>{if(!isObj(a?.stop))return null;const stated=upper(a.
  * Precedence (R3 values.statuses): STOPPED, PARTIAL, UNKNOWN, then met. Null status for a format with no distance target: the engine's own read.
  * - STOPPED: a declared stop, with its reason (none stated is read as SYMPTOM, V1RC R-01). Never the target met.
  * - A continuous run (R3A values.completion.continuous): met as MEASURED (a usable measurement at or above the target and no declaration below
- *   it), as CONFIRMED_CORRECTION (a measurement below the target or flagged by the device, at least 0.91 of the target, and the athlete declaring
- *   the target with a listed failure reason or under the device's own flag; the row is marked POOR and the measured value stays), or as DECLARED
- *   (no measurement and an explicit declaration). No tolerance turns a shorter measurement into a met target. A declaration below the target, or
- *   a usable shorter measurement with no answer, is PARTIAL; no evidence, a flagged measurement with no answer, or a conflict, is UNKNOWN.
+ *   it; several recordings of one run are summed), as CONFIRMED_CORRECTION (a measurement below the target or flagged by the device, at least
+ *   0.91 of the target, and the athlete declaring the target with a listed failure reason or under the device's own flag; its reliability is
+ *   POOR and the measured value stays as it was measured), or as DECLARED (no measurement and an explicit declaration). No tolerance turns a
+ *   shorter measurement into a met target. A declaration below the target, or a usable shorter measurement with no answer, is PARTIAL; no
+ *   evidence, a flagged measurement with no answer, a measurement no duration lets be checked, or a conflict, is UNKNOWN.
+ * - Every fact is read from the row as the record holds it now (distanceFacts): the reading never depends on which report brought a fact, or on
+ *   a mark set when a report arrived (QRE-RWS-B-01).
  * - Repetitions (R2 N7, R3 C3): each WORK step is met by a lap (the athlete's or the device's), never by a GPS distance; a step by time, by its
  *   seconds when reported. A step not met is PARTIAL; a step with no lap and no confirmation is UNKNOWN.
  * `exposure.aboveEstimate` is a record flag, not a status: the real minutes exceeded 1.015 of the high estimate.
  */
-export function readCompletion(actual,format,V,{wearable=false}={}){
+export function readCompletion(actual,format,V,{wearable=false,reports=null}={}){
  const a=isObj(actual)?actual:{},minutes=minutesOfActual(a),est=format.estimate?.durationMinutes??null,above=minutes!==null&&!!est&&minutes>(1+V.tied.onBandFraction)*est.high+EPS;
- const f=distanceFacts(a,V,{wearable}),evidence={source:f.source,quality:f.quality,measuredKm:f.measuredKm,declaredKm:f.declaredKm};
+ const f=distanceFacts(a,V,{wearable,reports}),evidence={source:f.source,quality:f.quality,measuredKm:f.measuredKm,declaredKm:f.declaredKm};
  const out=(status,extra={})=>({status,basis:null,tier:null,flag:null,ask:null,stop:null,formatHash:format.formatHash,evidence,...extra,exposure:{estimateMinutes:est?{low:est.low,high:est.high}:null,actualMinutes:minutes,aboveEstimate:above}});
  const main=mainSteps(format);if(!main.some(s=>s.target.type==='DISTANCE'))return out(null);
  if(isObj(a.stop))return out('STOPPED',{stop:stopOf(a,V)});
  if(CONTINUOUS.has(format.pattern)){
-  const target=main[0].target.metres/1000,floor=V.tied.correctionFloorFraction*target,usable=f.measuredKm!==null&&!f.devicePoor&&!f.implausible&&(f.segments>0?f.markedPoor:!f.markedPoor),SHORT='STOP_REASON_OR_CORRECTION_OR_RAN_LESS';
+  // Usable: measured, checked against its duration, not flagged by its source, and either the sum of several recordings or a single one the
+  // athlete did not correct.
+  const target=main[0].target.metres/1000,floor=V.tied.correctionFloorFraction*target,usable=f.measuredKm!==null&&!f.devicePoor&&!f.implausible&&!f.untimed&&(f.segments>0||!f.markedPoor),SHORT='STOP_REASON_OR_CORRECTION_OR_RAN_LESS';
   const own=f.declaredKm??f.manualKm;
   if(own!==null&&own<target-EPS)return out('PARTIAL',{flag:'SHORTFALL_DECLARED',countsForPause:true});
   if(a.completed===false)return out('PARTIAL',{flag:'REPORTED_NOT_COMPLETED',ask:SHORT,countsForPause:true});
@@ -463,17 +531,17 @@ export function readCompletion(actual,format,V,{wearable=false}={}){
    if(f.measuredKm===null)return out('DISTANCE',{basis:'DECLARED',tier:'DECLARED'});
    if(f.reason===null&&!f.devicePoor)return out('UNKNOWN',{flag:'MEASUREMENT_CONFLICT',ask:'FAILURE_REASON_OR_SOURCE_CORRECTION'});
    if(f.measuredKm<floor-EPS)return out('UNKNOWN',{flag:'MEASUREMENT_CONFLICT',ask:'MEASURE_THE_MISSING_PART'});
-   // A corrected run is never pace evidence: it is met only as a row marked POOR, which the calibration excludes (SC-3).
-   if(!f.markedPoor)return out('UNKNOWN',{flag:'CORRECTION_NOT_MARKED_POOR',ask:'FAILURE_REASON_OR_SOURCE_CORRECTION'});
+   // A corrected run is never pace evidence: its reliability is POOR by its own facts, and no reader of pace is handed its distance (SC-3;
+   // v1-run-format-index.mjs admits the record before the calibration reads it).
    return out('DISTANCE',{basis:'CONFIRMED_CORRECTION',tier:'CONFIRMED_CORRECTION'});
   }
   if(f.measuredKm===null)return out('UNKNOWN',{ask:'CONFIRM_OR_MEASURE'});
-  // A measurement that is a fault (an impossible pace), or a run in several files not marked as one, is no usable measurement.
-  if(!usable)return out('UNKNOWN',{flag:f.implausible?'MEASUREMENT_IMPLAUSIBLE':f.segments>0&&!f.devicePoor&&!f.markedPoor?'SEGMENTS_NOT_MARKED_POOR':'MEASUREMENT_FLAGGED_POOR',ask:'CONFIRM_OR_CORRECT'});
+  // A measurement that is a fault (an impossible pace), that no duration lets be checked, or that its source flagged, is no usable measurement.
+  if(!usable)return out('UNKNOWN',f.implausible?{flag:'MEASUREMENT_IMPLAUSIBLE',ask:'CONFIRM_OR_CORRECT'}:f.untimed?{flag:'DURATION_REQUIRED',ask:'SEND_THE_DURATION_OF_THE_RUN'}:{flag:'MEASUREMENT_FLAGGED_POOR',ask:'CONFIRM_OR_CORRECT'});
   // A usable measurement a little short, with no stop and no answer: it neither counts for the pause rule nor resets it (R3A X-2 counting).
   return out('PARTIAL',{ask:SHORT,countsForPause:f.measuredKm<floor-EPS});
  }
- const reports=list(a.steps).slice(0,400).filter(isObj),reportOf=s=>reports.find(e=>e.block===s.block&&e.rep===s.rep&&upper(e.kind)==='WORK')??null;
+ const laps=list(a.steps).slice(0,400).filter(isObj),reportOf=s=>laps.find(e=>e.block===s.block&&e.rep===s.rep&&upper(e.kind)==='WORK')??null;
  const met=main.map(s=>{const e=reportOf(s);if(!e)return null;if(s.target.type==='TIME'&&num(e.seconds,0))return e.targetMet!==false&&e.seconds>=s.target.seconds-0.5;return e.targetMet===true?true:e.targetMet===false?false:null;});
  const done=met.filter(m=>m===true).length;
  if(met.includes(false)||a.completed===false)return out('PARTIAL',{ask:'STOP_REASON_OR_RAN_LESS',stepsMet:done,stepsPlanned:main.length,countsForPause:true});
@@ -483,20 +551,22 @@ export function readCompletion(actual,format,V,{wearable=false}={}){
 /**
  * What an executed session exposes to a reader beside the engine (the contract a later Race Forecast reads; nothing here is credit): the status and
  * its basis, the target, the measured and the declared distance, the smaller usable distance (`extentKm`, the history rule), the real and the
- * estimated minutes, whether the execution may be pace evidence (never a declared or corrected distance, a treadmill, a POOR measurement or a
- * flagged condition), and the planning weight of each main step with whether its target was met. `completed` is the engine's own reading of the row.
+ * estimated minutes, whether the execution may be pace evidence (never a declared or corrected distance, a treadmill, a POOR measurement, a
+ * distance withheld from pace readers (`paceWithheld`, with its reason) or a flagged condition), and the planning weight of each main step with
+ * whether its target was met. `completed` is the engine's own reading of the row. `reports`: what the reports the row was made of say about its
+ * distance (reportsVerdict), when the caller holds them.
  */
-export function executionOf(row,format,V,{boutMinutes=null}={}){
- const a=row.actual??{},wearable=String(row.provenance?.sourceQuality??'').startsWith('WEARABLE'),f=distanceFacts(a,V,{wearable}),ref=historyReference(f),base={eventId:row.eventId,completed:row.partial!==true&&a.completed===true&&row.conflicted!==true,actualMinutes:minutesOfActual(a),measuredKm:f.measuredKm,declaredKm:f.declaredKm,extentKm:ref,reliability:f.quality};
+export function executionOf(row,format,V,{boutMinutes=null,reports=null}={}){
+ const a=row.actual??{},wearable=String(row.provenance?.sourceQuality??'').startsWith('WEARABLE'),f=distanceFacts(a,V,{wearable,reports}),ref=historyReference(f),base={eventId:row.eventId,completed:row.partial!==true&&a.completed===true&&row.conflicted!==true,actualMinutes:minutesOfActual(a),measuredKm:f.measuredKm,declaredKm:f.declaredKm,extentKm:ref,reliability:f.quality,paceWithheld:f.paceWithheld};
  // A session done by time (or whose cited format expresses another dose) is the engine's own reading; a stop it declares is still a stop.
  if(!format||format.expression!=='NATIVE')return {...base,status:'TIME',basis:null,expression:'TIME',formatHash:format?.formatHash??null,paceEvidence:null,stop:stopOf(a,V)};
- const read=readCompletion(a,format,V,{wearable}),main=mainSteps(format),continuous=CONTINUOUS.has(format.pattern),targetKm=continuous?main[0].target.metres/1000:r2(main.filter(s=>s.target.type==='DISTANCE').reduce((n,s)=>n+s.target.metres,0)/1000);
- const reports=list(a.steps).slice(0,400).filter(isObj),clear=upper(a.measurement)!=='TREADMILL'&&upper(a.gpsQuality)!=='POOR'&&!f.devicePoor&&!f.implausible&&f.segments===0&&!notComparable(a,V);
+ const read=readCompletion(a,format,V,{wearable,reports}),main=mainSteps(format),continuous=CONTINUOUS.has(format.pattern),targetKm=continuous?main[0].target.metres/1000:r2(main.filter(s=>s.target.type==='DISTANCE').reduce((n,s)=>n+s.target.metres,0)/1000);
+ const laps=list(a.steps).slice(0,400).filter(isObj),clear=upper(a.measurement)!=='TREADMILL'&&!f.markedPoor&&!f.implausible&&!f.paceWithheld&&f.segments===0&&!notComparable(a,V);
  // Repetitions shorter than the calibration's bout (5 minutes of the planned step) are never pace evidence (R2 N7; V1RC Q8).
  const bouts=num(boutMinutes,V.tied.calibrationBoutMinutesMin);
  return {...base,status:read.status,basis:read.basis,tier:read.tier,flag:read.flag,ask:read.ask,stop:read.stop,expression:'NATIVE',pattern:format.pattern,formatHash:format.formatHash,targetKm,estimateMinutes:read.exposure.estimateMinutes,aboveEstimate:read.exposure.aboveEstimate,
   paceEvidence:read.status==='DISTANCE'&&clear&&(read.basis==='MEASURED'||read.basis==='LAP'&&bouts),countsForPause:read.countsForPause===true,
-  steps:main.map(s=>{const e=reports.find(r=>r.block===s.block&&r.rep===s.rep&&upper(r.kind)===s.kind)??null,q=s.estimate?.seconds,weightSeconds=s.target.type==='TIME'?s.target.seconds:num(q?.low)&&num(q?.high)?Math.round((q.low+q.high)/2):null;
+  steps:main.map(s=>{const e=laps.find(r=>r.block===s.block&&r.rep===s.rep&&upper(r.kind)===s.kind)??null,q=s.estimate?.seconds,weightSeconds=s.target.type==='TIME'?s.target.seconds:num(q?.low)&&num(q?.high)?Math.round((q.low+q.high)/2):null;
    return {block:s.block,rep:s.rep,kind:s.kind,target:clone(s.target),weightSeconds,targetMet:continuous?read.status==='DISTANCE':e?.targetMet===true?true:e?.targetMet===false?false:null,...(continuous&&read.status!=='DISTANCE'&&ref!==null?{extentFraction:Math.min(1,r2(ref/targetKm))}:{})};})};
 }
 /**

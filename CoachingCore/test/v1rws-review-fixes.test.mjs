@@ -18,14 +18,16 @@ test('QRE-RWS-A-01: a run sent in two files never reaches the calibration with t
   t.week(1,weekWith(t,1,s.id,nativeReport(t,s,{minutes:60,rpe:4,...actual(d)})));t.week(2,weekWith(t,2,null,null));return {t,s,d};};
  const one=run(d=>({km:d})),two=run(d=>({km:Math.round(d*0.6*10)/10,actual:{gpsQuality:'OK',segments:[{distanceKm:Math.round(d*0.4*10)/10,measurement:'GPS'}]}}));
  const row=two.t.row(two.s.id),e=exec(two.t,two.s.id);
- assert.deepEqual([row.actual.gpsQuality,row.actual.deviceGpsQuality,row.actual.segments.length,row.partial],['POOR','OK',1,false],'recorded as one run whose first file is not the run');
- assert.deepEqual([e.status,e.basis,e.paceEvidence,e.measuredKm],['DISTANCE','MEASURED',false,two.d],'the two files together are the run; never pace evidence');
+ assert.deepEqual([row.actual.gpsQuality,'deviceGpsQuality' in row.actual,row.actual.segments.length,row.partial],['OK',false,1,false],'recorded as it was sent: one run in two files, nothing of it rewritten');
+ assert.deepEqual([e.status,e.basis,e.paceEvidence,e.measuredKm,e.reliability,e.paceWithheld],['DISTANCE','MEASURED',false,two.d,'POOR','SEVERAL_RECORDINGS'],'the two files together are the run; never pace evidence');
+ assert.deepEqual(two.t.state.paceEvidenceWithheld.map(x=>[x.sessionId,x.reason]),[[two.s.id,'SEVERAL_RECORDINGS']],'the calibration is not handed its distance');
  assert.deepEqual(two.t.cal.paceBands.EASY.slowSecondsPerKm,one.t.cal.paceBands.EASY.slowSecondsPerKm,'the easy band is the one of the same run in one file');
  const edges=t=>Object.fromEntries(Object.entries(t.cal.paceBands).map(([k,b])=>[k,[b.status,b.fastSecondsPerKm??null,b.slowSecondsPerKm??null]]));
  assert.deepEqual(edges(two.t),edges(one.t),'every band has the edges of the control');
- // The same on the time version: a report with several files is marked whatever it cites.
+ // The same on the time version: a report with several files is withheld from the calibration whatever it cites.
  const t=atSixteen(),s=t.runsOf(1,x=>x.role==='EASY')[0];t.week(1,weekWith(t,1,s.id,{...report(t.p,s,{rpe:4}),actual:{completed:true,minutes:65,distanceKm:6,measurement:'GPS',rpe:4,segments:[{distanceKm:5,measurement:'GPS'}]}}));
- assert.equal(t.row(s.id).actual.gpsQuality,'POOR');
+ assert.deepEqual([t.row(s.id).actual.distanceKm,'gpsQuality' in t.row(s.id).actual,t.state.paceEvidenceWithheld.map(x=>[x.sessionId,x.reason])],[6,false,[[s.id,'SEVERAL_RECORDINGS']]]);
+ t.week(2,weekWith(t,2,null,null));assert.deepEqual(edges(t),edges(one.t),'and every band has the edges of the control');
 });
 test('QRE-RWS-A-03, SEC-RWS-A-02: a fabricated settled format is never delivered: the week\'s format is built again and must pass today\'s envelope',()=>{
  const t=atSixteen();t.step(1,0,'WEEKLY_REVIEW');const real=t.runs[t.long.id],row=t.fmt.find(r=>r.sessionId===t.long.id&&r.settled===true);
@@ -79,14 +81,20 @@ test('QRE-RWS-A-05: a review the engine refuses, or one earlier than the record,
  const early=F.evaluateProgram(t.p,backdated,DEV);assert.deepEqual([early.runFormatRecord.length,Object.keys(early.runSessions).length],[size,0]);assert.ok(['REVIEW_BEFORE_THE_RECORD','NO_DECISION'].includes(early.runFormat.reason));
  const malformed=F.evaluateProgram(t.p,{...t.review(3,0,'WEEKLY_REVIEW'),observations:'x'},DEV);assert.deepEqual([malformed.status,malformed.runFormatRecord.length,Object.keys(malformed.runSessions).length],['HOLD',size,0]);
 });
-test('QRE-RWS-A-06 (M03, M04): a correction that is not marked POOR is never met; a format that expresses another dose credits nothing by distance',()=>{
+test('QRE-RWS-A-06 (M03, M04): a correction merged from two sources is the correction it is, and never pace evidence; a format that expresses another dose credits nothing by distance',()=>{
  // M03: the app report declares 16 km with a listed reason and has no distance; the device import of the same session measured 15.6 km, GPS OK.
- // The engine merges them into one row that is not marked: UNKNOWN, never a correction the calibration would read as pace evidence.
+ // The engine merges them into one row. It is read by its facts, as the same correction sent in one report (WE3A-02): met as a confirmed
+ // correction, its reliability POOR, and the calibration is never handed its distance (fix-forward, QRE-RWS-B-01: no mark has to survive).
  const t=atSixteen(),app=nativeReport(t,t.long,{minutes:96,rpe:4,actual:{declared:{distanceKm:16,reason:'SIGNAL_LOSS'}}});
  const device={eventId:'rw-device',athleteId:t.p.athleteId,sessionId:t.long.id,occurrenceDate:t.long.date,source:{provider:'HEALTHKIT',activityId:'hk-long',quality:'WEARABLE_FULL'},actual:{completed:true,minutes:96,distanceKm:15.6,measurement:'GPS',gpsQuality:'OK'}};
  t.week(1,s=>s.id===t.long.id?app:asPrescribed(t,s),{});t.step(2,0,'WEEKLY_REVIEW',{observations:[device]});
  const row=t.row(t.long.id);assert.deepEqual([row.actual.distanceKm,row.actual.gpsQuality,row.actual.declared.reason],[15.6,'OK','SIGNAL_LOSS'],'one merged row');
- assert.deepEqual([exec(t,t.long.id).status,exec(t,t.long.id).flag,row.partial],['UNKNOWN','CORRECTION_NOT_MARKED_POOR',true]);
+ const m=exec(t,t.long.id);assert.deepEqual([m.status,m.basis,m.paceEvidence,m.reliability,m.extentKm,row.partial],['DISTANCE','CONFIRMED_CORRECTION',false,'POOR',15.6,false]);
+ assert.deepEqual(t.state.paceEvidenceWithheld.map(x=>[x.sessionId,x.reason]),[[t.long.id,'CORRECTED_MEASUREMENT']]);
+ assert.ok(F.admitted(t.ledger,{athleteId:t.p.athleteId},VALUES).ledger.every(o=>o.sessionId!==t.long.id||o.fact||o.superseded||!('distanceKm' in o.actual)&&o.actual.gpsQuality==='POOR'),'what the calibration is handed');
+ // Below the floor it is no correction, merged or not (WE3A-04).
+ const far=atSixteen(),low={...device,actual:{...device.actual,distanceKm:14}};far.week(1,s=>s.id===far.long.id?nativeReport(far,far.long,{minutes:96,rpe:4,actual:{declared:{distanceKm:16,reason:'SIGNAL_LOSS'}}}):asPrescribed(far,s),{});far.step(2,0,'WEEKLY_REVIEW',{observations:[low]});
+ assert.deepEqual([exec(far,far.long.id).status,exec(far,far.long.id).ask,far.row(far.long.id).partial],['UNKNOWN','MEASURE_THE_MISSING_PART',true]);
  // M04: a self-consistent row that says it expresses another planned prescription, cited by a fast 16 km: the minutes read (85 of 100).
  const u=atSixteen(),real=u.fmt.find(r=>r.sessionId===u.long.id),other=forge(real,{plannedPrescriptionHash:'f'.repeat(64)}),o=nativeReport(u,u.long,{minutes:85,km:16,rpe:4,actual:{formatHash:other.formatHash}});
  u.fmt=[...u.fmt,other];u.week(1,weekWith(u,1,u.long.id,o));

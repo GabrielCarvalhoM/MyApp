@@ -4,7 +4,7 @@
 // Forecast reads; UNKNOWN is neither done nor failed). Synthetic athletes only.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {F,DEV,ELIG,hash,timeline,atSixteen,sixteen,paced,nativeReport,weekWith,asPrescribed,raceTen,flatSteps,line,live} from './v1rws-helpers.mjs';
+import {F,DEV,VALUES,ELIG,hash,timeline,atSixteen,sixteen,paced,nativeReport,weekWith,asPrescribed,raceTen,flatSteps,line,live} from './v1rws-helpers.mjs';
 
 const km=run=>run.blocks[0].steps[0].target.metres/1000;
 const longOf=(t,w)=>t.runsOf(w,s=>s.role==='LONG')[0];
@@ -56,7 +56,8 @@ test('T7, T20: the evidence of the distance through the engine: a short reading 
  // The athlete answers the next day: the measurement failed (signal loss) and the distance was run. A correction row, never an edit.
  const fix={...nativeReport(short,short.long,{minutes:96,km:15.52,rpe:4,eventId:'rw-fix',actual:{gpsQuality:'OK',declared:{distanceKm:16,reason:'SIGNAL_LOSS',confirmedAt:short.day(2,0)}}}),correctionOf:row.eventId,correctedAt:`${short.day(2,0)}T09:00:00-03:00`};
  short.step(2,0,'WEEKLY_REVIEW',{observations:[fix]});const now=short.row(short.long.id),old=short.ledger.find(o=>o.eventId===row.eventId);
- assert.deepEqual([now.eventId,now.partial,now.actual.distanceKm,now.actual.gpsQuality,now.actual.deviceGpsQuality,now.actual.declared.distanceKm],['rw-fix',false,15.52,'POOR','OK',16]);
+ assert.deepEqual([now.eventId,now.partial,now.actual.distanceKm,now.actual.gpsQuality,'deviceGpsQuality' in now.actual,now.actual.declared.distanceKm],['rw-fix',false,15.52,'OK',false,16],'the measurement and its quality stay as the device reported them');
+ assert.equal(exec(short,short.long.id).reliability,'POOR','POOR by the athlete\'s reason (WE3A-02), read from the facts of the row');
  assert.deepEqual([old.superseded,old.actual.distanceKm,old.actual.gpsQuality],[true,15.52,'OK'],'the corrected row stays, with the value first measured');
  assert.deepEqual([exec(short,short.long.id).status,exec(short,short.long.id).basis,exec(short,short.long.id).paceEvidence,exec(short,short.long.id).extentKm],['DISTANCE','CONFIRMED_CORRECTION',false,15.52],'history keeps the smaller distance');
  // A declaration with no listed reason against a usable measurement is a conflict: neither done nor failed.
@@ -85,7 +86,11 @@ test('I3, I4, SC-3: of three easy runs by distance, only the measured one is an 
  const all=run(['MEASURED','MEASURED','MEASURED']),mixed=run(['MEASURED','DECLARED','CORRECTED']);
  for(const [i,basis] of [['0','MEASURED'],['1','DECLARED'],['2','CONFIRMED_CORRECTION']]){const s=mixed.easy[Number(i)],e=exec(mixed.t,s.id);assert.deepEqual([e.status,e.basis,e.completed,e.paceEvidence],['DISTANCE',basis,true,basis==='MEASURED'],s.id);}
  // V1RC reads the easy runs of the last 28 days: every measured one is there, the declared and the corrected one are not (its own rules, unchanged).
- const obs=t=>t.cal.paceBands.EASY.sessions?.length??null,used=t=>new Set(t.ledger.filter(o=>!o.fact&&!o.superseded&&o.context?.family==='EASY'&&o.partial!==true&&o.actual.rpe<=4&&Number.isFinite(o.actual.distanceKm)&&o.actual.gpsQuality!=='POOR').map(o=>o.sessionId));
+ // What V1RC is handed is the record as admitted: the corrected run's distance is withheld there, and its row in the record is untouched.
+ const handed=t=>F.admitted(t.ledger,{athleteId:t.p.athleteId},VALUES).ledger;
+ const obs=t=>t.cal.paceBands.EASY.sessions?.length??null,used=t=>new Set(handed(t).filter(o=>!o.fact&&!o.superseded&&o.context?.family==='EASY'&&o.partial!==true&&o.actual.rpe<=4&&Number.isFinite(o.actual.distanceKm)&&o.actual.gpsQuality!=='POOR').map(o=>o.sessionId));
+ assert.deepEqual(mixed.t.state.paceEvidenceWithheld.map(x=>[x.sessionId,x.reason]),[[mixed.easy[2].id,'CORRECTED_MEASUREMENT']]);assert.deepEqual(all.t.state.paceEvidenceWithheld,[]);
+ assert.ok(mixed.t.row(mixed.easy[2].id).actual.distanceKm>0&&mixed.t.row(mixed.easy[2].id).actual.gpsQuality==='OK');
  assert.equal(used(all.t).has(all.easy[1].id)&&used(all.t).has(all.easy[2].id),true);assert.equal(used(mixed.t).has(mixed.easy[1].id)||used(mixed.t).has(mixed.easy[2].id),false);
  assert.ok(count(all.t)>=count(mixed.t));assert.equal(obs(all.t),obs(mixed.t),'the band shown is derived either way');
 });

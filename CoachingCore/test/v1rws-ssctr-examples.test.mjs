@@ -119,15 +119,15 @@ test('T13 R3A: WE3A-01 to WE3A-06 and WE3A-09 to WE3A-11: status, basis and the 
  const f=longA(),G={completed:true,minutes:97,measurement:'GPS'},ref=a=>historyReference(distanceFacts(a,VALUES));
  const cases=[
   ['WE3A-01',{...G,distanceKm:15.52,gpsQuality:'OK'},'PARTIAL',null,15.52],
-  ['WE3A-02',{...G,distanceKm:15.52,gpsQuality:'POOR',deviceGpsQuality:'OK',declared:{distanceKm:16,reason:'SIGNAL_LOSS'}},'DISTANCE','CONFIRMED_CORRECTION',15.52],
+  ['WE3A-02',{...G,distanceKm:15.52,gpsQuality:'OK',declared:{distanceKm:16,reason:'SIGNAL_LOSS'}},'DISTANCE','CONFIRMED_CORRECTION',15.52],
   ['WE3A-03',{...G,distanceKm:15.52,gpsQuality:'OK',declared:{distanceKm:16}},'UNKNOWN',null,15.52],
   ['WE3A-04 without a reason',{...G,distanceKm:14,gpsQuality:'OK',declared:{distanceKm:16}},'UNKNOWN',null,14],
-  ['WE3A-04 with a reason',{...G,distanceKm:14,gpsQuality:'POOR',deviceGpsQuality:'OK',declared:{distanceKm:16,reason:'OBSTRUCTED_SKY'}},'UNKNOWN',null,14],
+  ['WE3A-04 with a reason',{...G,distanceKm:14,gpsQuality:'OK',declared:{distanceKm:16,reason:'OBSTRUCTED_SKY'}},'UNKNOWN',null,14],
   ['WE3A-05',{completed:true,minutes:97,declared:{distanceKm:16}},'DISTANCE','DECLARED',16],
   ['WE3A-06',{completed:true,minutes:97,distanceKm:16,measurement:'TRACK'},'DISTANCE','MEASURED',16],
   ['WE3A-09 no declaration',{...G,distanceKm:16.4,gpsQuality:'POOR'},'UNKNOWN',null,null],
   ['WE3A-09 declared',{...G,distanceKm:16.4,gpsQuality:'POOR',declared:{distanceKm:16}},'DISTANCE','CONFIRMED_CORRECTION',16],
-  ['WE3A-10',{...G,distanceKm:14,gpsQuality:'POOR',deviceGpsQuality:null,segments:[{distanceKm:2.1,measurement:'GPS',reason:'DEVICE_RESTART'}]},'DISTANCE','MEASURED',16.1],
+  ['WE3A-10',{...G,distanceKm:14,segments:[{distanceKm:2.1,measurement:'GPS',reason:'DEVICE_RESTART'}]},'DISTANCE','MEASURED',16.1],
   ['WE3A-11',{...G,distanceKm:16.3,gpsQuality:'OK',declared:{distanceKm:15}},'PARTIAL',null,15],
  ];
  for(const [id,actual,status,basis,reference] of cases){const r=read(f,actual);assert.deepEqual([r.status,r.basis],[status,basis],id);assert.equal(ref(actual),reference,id+' history reference');assert.equal(actual.distanceKm,cases.find(c=>c[0]===id)[1].distanceKm,'the measured value is never rewritten');}
@@ -136,8 +136,15 @@ test('T13 R3A: WE3A-01 to WE3A-06 and WE3A-09 to WE3A-11: status, basis and the 
  assert.equal(read(f,cases[0][1]).countsForPause,false,'WE3A-01: a usable measurement a little short neither counts for the pause nor resets it');
  assert.equal(read(f,cases[10][1]).countsForPause,true,'WE3A-11: the shortfall is the athlete\'s own answer');
  assert.equal(we3a('WE3A-01').expected?.status??we3a('WE3A-01').status,'PARTIAL');assert.equal(we3a('WE3A-05').basis,'DECLARED');assert.equal(we3a('WE3A-10').historyReferenceKm,16.1);assert.equal(we3a('WE3A-11').historyReferenceKm,15);
- // A run in several files is read as one only as the entry point records it (marked POOR, so the calibration never reads the first file alone).
- const twoFiles=read(f,{...G,distanceKm:14,segments:[{distanceKm:2.1,measurement:'GPS'}]});assert.deepEqual([twoFiles.status,twoFiles.flag],['UNKNOWN','SEGMENTS_NOT_MARKED_POOR']);
+ // The cases above are the record's own (the quality as the device reported it, never a mark added to the report): the reliability is read from
+ // the facts. WE3A-02: POOR by the athlete's reason, the 15.52 km preserved. WE3A-10: the recordings summed, whatever quality is stated; the
+ // device's own flag still makes it no usable measurement. Neither is ever handed to a reader of pace.
+ const facts=a=>distanceFacts(a,VALUES);
+ assert.deepEqual([facts(cases[1][1]).quality,facts(cases[1][1]).measuredKm,facts(cases[1][1]).paceWithheld],['POOR',15.52,'CORRECTED_MEASUREMENT'],'WE3A-02');
+ assert.deepEqual([facts(cases[9][1]).quality,facts(cases[9][1]).measuredKm,facts(cases[9][1]).paceWithheld],['POOR',16.1,'SEVERAL_RECORDINGS'],'WE3A-10');
+ for(const quality of ['OK','UNKNOWN'])assert.deepEqual([read(f,{...cases[9][1],gpsQuality:quality}).status,read(f,{...cases[9][1],gpsQuality:quality}).basis],['DISTANCE','MEASURED'],'WE3A-10 with the quality '+quality);
+ assert.deepEqual([read(f,{...cases[9][1],gpsQuality:'POOR'}).status,read(f,{...cases[9][1],gpsQuality:'POOR'}).flag],['UNKNOWN','MEASUREMENT_FLAGGED_POOR'],'a first recording the device itself flagged is not made usable by a second one');
+ for(const [id,actual] of cases)assert.equal(facts(actual).paceWithheld!==null,['WE3A-02','WE3A-04 without a reason','WE3A-04 with a reason','WE3A-10'].includes(id),id+' pace use');
  // No tolerance ever meets a target: every measurement below 16 km without a correction is not DISTANCE.
  for(const d of [15.99,15.9,15.6,15.52])assert.notEqual(read(f,{...G,distanceKm:d}).status,'DISTANCE');
 });
