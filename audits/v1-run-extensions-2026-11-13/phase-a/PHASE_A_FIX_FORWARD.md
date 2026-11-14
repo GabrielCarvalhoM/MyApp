@@ -23,7 +23,7 @@ Com isso:
 | QRE-RWS-B-01 | `probe-a01-paths.mjs` (12 cenários) | 3 fusões davam EASY `[345,575]` | os 12 dão `[345,420]` |
 | SSCTR-RWS-B-01 | `p1c-conflict-realistic.mjs` (18 casos) | 6 casos sem triagem, 1 a 4 sessões nativas | os 18 com triagem `REQUIRED` e 0 nativas |
 
-Os testes novos (`test/v1rws-fix-forward.test.mjs`, 12) reproduzem os dois achados e mostram o defeito ainda visível para quem lê o registro cru (a V1RC congelada sobre a mesma linha dá `[345,575]`), ao lado do resultado pelo ponto de entrada.
+Os testes novos (`test/v1rws-fix-forward.test.mjs`, 13) reproduzem os dois achados e mostram o defeito ainda visível para quem lê o registro cru (a V1RC congelada sobre a mesma linha dá `[345,575]`), ao lado do resultado pelo ponto de entrada.
 
 Cobertura pedida na missão:
 
@@ -43,7 +43,8 @@ Cobertura pedida na missão:
 | QRE-RWS-B-03 (nota) | A emenda de `r6-adaptation.mjs` é conferida por hash exato do arquivo e do diff (`6cedcb72…6e50`, `6675741d…e370`), no verificador e no teste I10. A checagem lexical saiu. |
 | QRE-RWS-B-02 (plausibilidade) | Distância medida sem duração: nunca MEASURED (`UNKNOWN`, `DURATION_REQUIRED`), nunca `paceEvidence`, nunca histórico. Vale para o relato e para a linha de histórico do intake. |
 | SSCTR-RWS-B-02 (ASK de elegibilidade) | Enquanto o motor pede a elegibilidade atual, toda corrida sai por tempo (`WARNING_SIGN_SCREEN_REQUIRED`, detalhe `ENGINE_ASKS_CURRENT_ELIGIBILITY`). `prescribing` segue a leitura da V1RC (falso sob qualquer ASK, hold ou rota clínica). Outro ASK não muda a expressão. |
-| QRE-RWS-B-05 (testes fracos) | M04 agora forja a linha NATIVA; M08a e M18 têm teste pelo ponto de entrada. |
+| QRE-RWS-B-05 (testes fracos) | M04 agora forja a linha NATIVA. M18 tem teste pelo ponto de entrada (15,5 km guardados, onde uma seleção nova daria 16). M08a também: num plano de 16 semanas, a sessão de limiar da semana 13 muda de formato conforme o relato da semana 11 estava ou não no registro quando a semana começou. Nos planos de 12 semanas dos testes anteriores essa regra não tinha efeito visível, por isso o teste antigo passava sem exercitá-la. |
+| QRE-RWS-B-06 (nota) | N02 (exceção da prova) e N35 (linha carregada nunca renormalizada) ganharam teste. |
 | Registros (Security A-01, A-06) | O cabeçalho do ponto de entrada diz o contrato: os três registros sob a cadeia com chave da custódia, gravados no mesmo commit selado. **Essa integração não existe**; nada aqui a representa. |
 
 ## 4. Leituras deste ciclo que pedem a palavra do juiz
@@ -63,11 +64,20 @@ Três resultados, separados:
 
 | O quê | Onde | Resultado |
 |---|---|---|
-| Verificação histórica | os testes e verificadores antigos, intactos, no snapshot que cada freeze amarra (`c8104c1`) | verdes lá (medido pelos juízes da R2; a confirmar pelo QRE deste ciclo) |
-| Suíte nova | `test/v1rws-*.test.mjs` nesta linha | 73 de 73 |
-| Execução conjunta | tudo nesta linha | 1408 entradas, 1407 passam; a única falha é `V1RC COACHINGCORE-V1-FREEZE-1 is preserved`, acusando só `src/r6-adaptation.mjs` |
+| Verificação histórica | os testes e verificadores antigos, intactos, no snapshot que cada freeze amarra (`c8104c1`) | verdes lá: o teste histórico passa e `v1rc-freeze --check 1` dá 198 de 198 e 30 de 30 (rodado pelo autor no worktree `v1-run-calibration`; a confirmar pelo QRE) |
+| Suíte nova | `test/v1rws-*.test.mjs` nesta linha | 74 de 74 |
+| Execução conjunta | tudo nesta linha | 1409 entradas, 1408 passam; a única falha é `V1RC COACHINGCORE-V1-FREEZE-1 is preserved`, acusando só `src/r6-adaptation.mjs` |
 
 Nenhum teste de `c8104c1` foi editado, excluído ou teve a expectativa mudada. A linha tem verificação própria: `scripts/v1rws-freeze.mjs` (197 de 197 arquivos do primeiro freeze idênticos, 1 emendado conferido por hash e diff autorizados, 30 de 30 do segundo).
+
+### Apoio do autor (não é evidência independente)
+
+- **Mutação**, em cópias de rascunho, nunca no worktree: 87 mutantes sobre as linhas deste ciclo e os que a R2 achou vivos (M04, M08a, M18, N02, N35). 81 são mortos. Os que sobreviveram à primeira passagem viraram asserção nova; 2 caíram com a linha (uma condição redundante que nenhum teste distinguia foi simplificada). Sobram 4, equivalentes:
+  - o `hold` passado à calibração refeita: sob rota clínica o próprio motor grava `CLINICAL_HOLD` no registro, e a V1RC lê o hold de lá;
+  - as duas cláusulas de `prescribing` copiadas da V1RC (triagem respondida, hold vigente): quando a resposta do motor é prescritiva, o portão de elegibilidade do motor já as garante;
+  - "uma medida só já é disputa": com uma medida, a menor e a maior são a mesma.
+- **Ensaio do verificador de freeze**, de ponta a ponta, num clone de rascunho de `8dc849c` com um registro habilitador de teste que só existe lá: recusa sem registro, recusa com árvore suja, roda a suíte ele mesmo (1407 de 1408 naquele commit, com a falha histórica pelo nome, também com a fronteira ligada por padrão), grava, `--check` passa, recusa regravar, acusa drift e acusa mudança no arquivo emendado.
+- **Sondas da R2 reexecutadas**: 154 entradas malformadas, 0 exceções; jornada só com GPS, 0 chaves do motor diferentes do `v1-run-index.mjs`; revisões recusadas não mudam o registro.
 
 ## 6. Testes do próprio candidato que mudaram, e por quê
 

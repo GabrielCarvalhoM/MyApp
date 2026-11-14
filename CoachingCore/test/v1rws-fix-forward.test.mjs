@@ -227,8 +227,11 @@ test('QRE-RWS-B-01: with no race result the easy band is the athlete\'s own obse
  const rows=merged.t.ledger.filter(o=>!o.fact&&[2,3].includes(o.context?.weekIndex)&&['EASY','LONG'].includes(o.context?.family));
  assert.ok(rows.length>=6&&rows.every(o=>o.partial===false&&o.provenance.mergedSourceIds.length===2&&o.actual.minutes*60/o.actual.distanceKm>560),'each row: the watch\'s distance over the whole minutes');
  assert.deepEqual(merged.r.runFormat.paceEvidenceWithheld.map(x=>x.reason),rows.map(()=>'DISTANCE_DISPUTED'));assert.deepEqual(merged.r.runFormat.pausedContinuous,{});
- assert.ok(sizingOf(merged.r).length>=2&&sizingOf(merged.r).every(x=>x[4]!==null),'the easy runs of the week in force are delivered by distance, sized with the latest easy run that is a whole measurement');
- for(const [id,pTyp,pSize,S1,S3] of sizingOf(merged.r))assert.ok(pTyp<400&&pSize<420&&S1<420&&S3<420,`${id}: sized at ${pTyp} to ${pSize} seconds per km (S3 ${S3})`);
+ // The easy runs of the week that follows those two weeks are delivered by distance, sized with the latest easy run that is a whole
+ // measurement (5:45 per km): were a disputed run read as the latest of its class, they would be sized at 9:30 per km and fit no distance.
+ const next=merged.t.runsOf(4,s=>s.role==='EASY').map(s=>merged.r.runSessions[s.id]);
+ assert.deepEqual(next.map(x=>[x.expression,x.dose?.sizing?.sources?.S3??null,x.dose?.sizing?.pSize<420]),next.map(()=>['NATIVE',345,true]));assert.ok(next.length>=2);
+ for(const [id,pTyp,pSize,S1,S3] of sizingOf(merged.r))assert.ok(pTyp<400&&pSize<420&&S1<420&&(S3===null||S3<420),`${id}: sized at ${pTyp} to ${pSize} seconds per km (S3 ${S3})`);
 });
 
 // ---------- SSCTR-RWS-B-01 ----------
@@ -291,8 +294,8 @@ test('SSCTR-RWS-B-01: the signal survives time, duplicates, updates and correcti
  legacy.t.fmt=bare;const corrected=legacy.t.step(2,2,'WEEKLY_REVIEW',{eligibility:ELIG(legacy.stopDay),observations:[{...legacy.said,eventId:'app-fix',correctionOf:'app-stop',correctedAt:`${legacy.t.day(2,2)}T19:00:00-03:00`,actual:{completed:true,minutes:100}}]});
  assert.deepEqual([legacy.t.ledger.filter(o=>o.sessionId===legacy.s.id&&o.superseded===true&&o.actual.stop).length,legacy.t.fmt.filter(r=>isReport(r)&&r.report.stop).length,screen(corrected)],[1,0,['REQUIRED',[legacy.s.id],0,true]]);
  // A carried row with no fact beside it (a record older than the facts), whatever binding it carries: the engine binds every row again to the
- // plan in force, and a stop on a row of a run session of that plan is read. A row of a session the plan does not name is no run row of this
- // plan: its stop is read from the report fact, which names no plan (a record carried into a new plan keeps its facts).
+ // plan in force, and a stop on a row it binds to a run session is read. A row of a session the plan does not name is bound to none: its stop
+ // is read from the report fact, which names no plan (a record carried into a new plan keeps its facts).
  const plan=atSixteen(),base=plan.ledger.find(o=>!o.fact&&o.context?.sport==='RUN'),when=`${plan.day(1,1)}T12:00:00.000Z`,lone=(sessionId,context)=>({...base,eventId:'lone-'+sessionId,sessionId,context,actual:{completed:false,minutes:20,stop:{reason:'SYMPTOM'}},provenance:{...base.provenance,firstRecordedAt:when,inputHashes:{}}});
  const withRow=(row,fmt=plan.fmt)=>F.evaluateProgram(plan.p,{...plan.review(1,2,'WEEKLY_REVIEW',{eligibility:ELIG(plan.day(1,1))}),actualLedger:[...plan.ledger,row],runFormatRecord:fmt},DEV).runFormat.warningSignScreen;
  const elsewhere=lone('a-session-of-another-plan',{...base.context,sessionId:'a-session-of-another-plan'}),itsFact=appendReportFacts(plan.fmt,[reportFactOf(elsewhere,VALUES)],{athleteId:plan.p.athleteId,recordedAt:when}).record;
@@ -341,8 +344,8 @@ test('SSCTR-RWS-B-01: what is and is not a signal: the reason as it is read, the
  // do not hold together; the stop is still named in the answer, from the request alone.
  const u=atSixteen(),unreadStop={...stop,athleteId:u.p.athleteId,actual:{...stop.actual,formatHash:'0'.repeat(64)}},named=r=>[r.runFormat.status,hash(r.runFormatRecord),r.runFormat.warningSignScreen?.status??null,r.runFormat.warningSignScreen?.sessionIds??null];
  const notATime=F.evaluateProgram(u.p,{...u.review(1,6,'WEEKLY_REVIEW',{observations:[unreadStop]}),asOf:'not a time'},DEV),malformed=F.evaluateProgram(u.p,{...u.review(1,6,'WEEKLY_REVIEW',{observations:[stop]}),version:'R0'},DEV);
- const {referenceState:_r,...backdated}=u.review(0,5,'WEEKLY_REVIEW',{observations:[stop]}),before=F.evaluateProgram(u.p,backdated,DEV);
- assert.deepEqual([named(notATime),named(malformed),named(before)],[['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]]]);
+ const {referenceState:_r,...backdated}=u.review(0,5,'WEEKLY_REVIEW',{observations:[stop]}),before=F.evaluateProgram(u.p,backdated,DEV),beforeUnread=F.evaluateProgram(u.p,{...backdated,observations:[unreadStop]},DEV);
+ assert.deepEqual([named(notATime),named(malformed),named(before),named(beforeUnread)],[['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]]]);
  assert.ok(['HOLD','INVALID_INPUT','UNSUPPORTED'].includes(malformed.status)&&malformed.runFormat.reason==='NO_DECISION'&&['REVIEW_BEFORE_THE_RECORD','NO_DECISION'].includes(before.runFormat.reason));
  u.week(1,weekWith(u,1,null,null));const lostFormats=F.evaluateProgram(u.p,{...u.review(2,6,'WEEKLY_REVIEW',{observations:[{...stop,athleteId:u.p.athleteId,sessionId:u.runsOf(2)[0].id,occurrenceDate:u.runsOf(2)[0].date}]}),runFormatRecord:[]},DEV);
  assert.deepEqual([lostFormats.status,lostFormats.errors,lostFormats.runFormatRecord,lostFormats.runFormat.warningSignScreen.sessionIds],['HOLD',['runFormatRecord.missingFormat'],[],[u.runsOf(2)[0].id]]);
@@ -392,7 +395,7 @@ test('SSCTR-RWS-B-02: while the engine asks for the current eligibility every ru
   const r=F.evaluateProgram(t.p,review,DEV);
   assert.deepEqual([r.status,r.missingInputs,r.proposal,r.runFormat.prescribing,r.runFormat.native,r.runFormat.warningSignScreen.status],['ASK',['eligibility.currentAssessment'],null,false,0,'NOT_RAISED_BY_THIS_EXTENSION'],what);
   assert.ok(ahead(r).length>=8&&ahead(r).every(s=>s.expression==='TIME'&&s.unavailable.native==='WARNING_SIGN_SCREEN_REQUIRED'&&s.unavailable.detail==='ENGINE_ASKS_CURRENT_ELIGIBILITY'),what);
-  assert.equal(r.runCalibration.assessment.fieldTest?.status??r.runCalibration.assessment.test?.status??'NOT_OFFERED','NOT_OFFERED',what);
+  assert.deepEqual([r.runCalibration.assessment.status,r.runCalibration.assessment.reasons],['NOT_OFFERED',['ELIGIBILITY_NOT_CURRENT']],what+': V1RC\'s own reading of the same answer');
  }
  // An ASK for something else: the expressions stand as they were; `prescribing` still follows V1RC's reading (an ASK prescribes nothing).
  const other=F.evaluateProgram(t.p,{...t.review(1,2,'WEEKLY_REVIEW'),choices:[{type:'NOT_A_CHOICE'}]},DEV);
@@ -432,15 +435,30 @@ test('QRE-RWS-B-05 (M08a, M18), through the entry point: a session reported late
   return F.evaluateProgram(t.p,{...wednesday,runFormatRecord:t.fmt.map(r=>r===settled?row:r)},DEV).runSessions[t.long.id];};
  assert.deepEqual([settledAt(15500).expression,settledAt(15500).blocks[0].steps[0].target.metres,settledAt(15000).blocks[0].steps[0].target.metres],['NATIVE',15500,16000],'the week\'s structure is built again from the settled one (M18: a selection would give 16 km)');
  assert.ok(!JSON.stringify(settledAt(15500)).includes(settled.formatHash)&&settledAt(15500).dose.checks['CT-2'].value>=90,'built with today\'s inputs, never delivered as stored');
- // M08a: the prior of a quality session is read only from what the record held when the week started. The quality session of one week is
- // reported, as done harder than its cue, inside the next week: that week's quality format does not change; the week after reads it.
- const q=timeline(raceTen());let w=0;const qual=k=>q.runsOf(k,s=>s.role==='QUALITY')[0];
- while(w<q.p.weeks.length-3&&!(qual(w)&&qual(w+1)&&q.runs[qual(w+1).id]?.expression==='NATIVE'&&qual(w).prescription.family===qual(w+1).prescription.family&&hash(qual(w).progression)===hash(qual(w+1).progression))){q.week(w,weekWith(q,w,null,null));w++;}
- const a=qual(w),b=qual(w+1);assert.ok(a&&b&&q.runs[b.id].expression==='NATIVE',`two quality sessions at one step in weeks ${w} and ${w+1}`);
- // Week w is reviewed without its quality session; week w+1 starts; the format of its quality session is delivered.
- q.step(w,6,'WEEKLY_REVIEW',{observations:others(q,w,a.id)});q.step(w+1,0,'WEEKLY_REVIEW');const delivered=q.runs[b.id];
- // The late report, harder than its cue, arrives on the Wednesday of week w+1.
- const late=q.runs[a.id]?.expression==='NATIVE'?nativeReport(q,a,{rpe:9,response:{effort:'HARDER'}}):report(q.p,a,{rpe:9,effort:'HARDER'});
- const mid=q.step(w+1,2,'WEEKLY_REVIEW',{observations:[late]});
- if(q.p.weeks[w+1].sessions.find(s=>s.id===b.id)?.plannedPrescriptionHash===b.plannedPrescriptionHash)assert.equal(mid.runSessions[b.id].formatHash,delivered.formatHash,'this week reads what its first day found');
+ // M08a: what a week reads of the earlier session at its step is what the record held when the week began (R2 N10). A 16-week plan: the
+ // threshold session of week 13 is at the step of week 11's. With week 11's on record before week 13 began, done as prescribed, the week's
+ // rotation gives the recovery by distance. With that same report first recorded on the Tuesday of week 13, the week reads what its Monday
+ // found (that session not yet reported: even repetitions, recovery by time), exactly as if the report were not on record at all.
+ const q=timeline(sixteen({weeks:16}));for(let k=0;k<13;k++)q.week(k,weekWith(q,k,null,null));
+ const quality=k=>q.runsOf(k,s=>s.role==='QUALITY')[0],now=quality(13),earlier=quality(11),row=q.ledger.find(o=>o.sessionId===earlier.id&&!o.fact&&!o.superseded),review=q.review(13,2,'WEEKLY_REVIEW');
+ assert.deepEqual([hash(now.progression),now.prescription.family,row.partial],[hash(earlier.progression),earlier.prescription.family,false],'the same step, two weeks apart, the earlier one done');
+ const given=ledger=>{const r=F.evaluateProgram(q.p,{...review,actualLedger:ledger},DEV);assert.deepEqual([r.status,r.proposal],['KEEP',null]);const x=r.runSessions[now.id];return [x.expression,x.pattern,x.blocks[1].steps[1].target.type];};
+ const onTime=given(q.ledger),late=given(q.ledger.map(o=>o===row?{...o,provenance:{...o.provenance,firstRecordedAt:`${q.day(13,1)}T12:00:00.000Z`}}:o)),absent=given(q.ledger.filter(o=>o!==row));
+ assert.deepEqual([onTime,late,absent],[['NATIVE','EVEN_REPEATS_DISTANCE_RECOVERY','DISTANCE'],['NATIVE','EVEN_REPEATS','TIME'],['NATIVE','EVEN_REPEATS','TIME']],'a report that joined the record inside the week changes nothing this week');
+});
+
+test('QRE-RWS-B-06 (N02, N35): a race keeps its own evidence rules; a row the record already holds is never normalized again',()=>{
+ // N02: the race of a 10 km plan, its distance typed by the athlete with no source. On any other run the figure is kept beside; on the race it
+ // stays where V1RC reads it by its own rules (a result with no stated measurement is refused there, never read as measured).
+ const t=timeline(raceTen());for(let k=0;k<10;k++)t.week(k,weekWith(t,k,null,null));
+ const race=t.runsOf(10,s=>s.prescription.family==='RACE')[0],easy=t.runsOf(10,s=>s.role==='EASY'||s.prescription.family==='SHAKEOUT'||s.prescription.family==='RECOVERY_EASY')[0],typed=s=>({...report(t.p,s,{rpe:s===race?9:3}),actual:{completed:true,minutes:s===race?50:s.prescription.durationMinutes,distanceKm:s===race?10:4,rpe:s===race?9:3}});
+ t.step(10,6,'WEEKLY_REVIEW',{observations:t.p.weeks[10].sessions.filter(live).map(s=>s===race||s===easy?typed(s):report(t.p,s,s.sport==='RUN'?paced(s):{}))});
+ const raceRow=t.row(race.id),easyRow=t.row(easy.id);
+ assert.deepEqual([raceRow.actual.distanceKm,'manualDistanceKm' in raceRow.actual,easyRow.actual.distanceKm,easyRow.actual.manualDistanceKm],[10,false,undefined,4]);
+ assert.ok(t.cal.refusedEvidence.some(e=>e.id==='plan-race:'+raceRow.eventId)||t.cal.evidence.some(e=>e.id==='plan-race:'+raceRow.eventId),'the race result is V1RC\'s to read or refuse');
+ // N35: a carried row with an unsourced figure in the measured slot (as an older record, or another entry point, would hold it) comes back
+ // byte for byte: only a new report is recorded with its figure kept beside.
+ const u=atSixteen(),kept=u.ledger.find(o=>!o.fact&&o.context?.family==='EASY'),older={...kept,actual:{completed:true,minutes:kept.actual.minutes,rpe:4,distanceKm:9}},ledger=u.ledger.map(o=>o===kept?older:o);
+ const back=F.evaluateProgram(u.p,{...u.review(1,1,'WEEKLY_REVIEW'),actualLedger:ledger},DEV).actualLedger.find(o=>o.eventId===older.eventId);
+ assert.deepEqual([back.actual.distanceKm,'manualDistanceKm' in back.actual,hash(back.actual)],[9,false,hash(older.actual)]);
 });

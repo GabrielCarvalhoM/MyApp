@@ -154,11 +154,11 @@ function finish(base0,c){
   const answeredAfter=instant=>!!screened&&(isoDay(screened)?screened>localDate(new Date(instant).toISOString(),tz):Number.isFinite(Date.parse(screened))&&Date.parse(screened)>instant);
   // A reported symptom is a safety signal, apart from the evidence of execution (SSCTR-RWS-B-01). It is read on every run report this record
   // received (the report facts: also a report the engine refused because it contradicts another) and on every row the engine's record holds for
-  // a run session of the plan in force (as the engine bound the row, or as the plan names its session), whatever its expression, in conflict or
-  // replaced by a correction as well. A stop on a row of a session this plan does not name is read from its report fact, which names no plan.
-  // A contradiction between sources, a merge or a later correction never removes the signal: only the screen answered after the record first
-  // held it does. It is nothing else: no credit, no pause count, no sizing.
-  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===program.athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&(o.context?.sport==='RUN'||sessions.get(o.sessionId)?.sport==='RUN')).map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
+  // a run session (as the engine bound the row), whatever its expression, in conflict or replaced by a correction as well. A stop on a row the
+  // engine binds to no run session is read from its report fact, which names no plan. A contradiction between sources, a merge or a later
+  // correction never removes the signal: only the screen answered after the record first held it does. It is nothing else: no credit, no pause
+  // count, no sizing.
+  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===program.athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&o.context?.sport==='RUN').map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
   const symptomStops=[...facts.stops,...rowStops].filter(x=>x.reason==='SYMPTOM'&&Number.isFinite(x.at)&&!answeredAfter(x.at)),symptomSessions=[...new Set(symptomStops.map(x=>x.sessionId))].sort();
   // SSCTR-RWS-B-02: while the engine asks for the current eligibility, the screen it asks for is not answered: run sessions are by time.
   const screenRequired=symptomStops.length>0?true:c.eligibilityAsked===true?'ENGINE_ASKS_CURRENT_ELIGIBILITY':false;

@@ -484,10 +484,12 @@ export const sourcesOf=row=>Array.isArray(row?.provenance?.mergedSourceIds)&&row
  */
 export function reportsVerdict(row,facts,V){
  if(!facts||!isObj(row))return null;
- const said=sourcesOf(row).flatMap(id=>facts.of(id)).filter(f=>f.sessionId===row.sessionId&&f.distanceKm!==null);
- if(said.some(f=>!f.timed))return 'DURATION_REQUIRED';
- const d=said.map(f=>f.distanceKm);
- return d.length>1&&Math.min(...d)<V.tied.correctionFloorFraction*Math.max(...d)-EPS?'DISTANCE_DISPUTED':null;
+ let shortest=Infinity,longest=-Infinity,measured=0,untimed=false;
+ for(const id of sourcesOf(row))for(const f of facts.of(id)){
+  if(f.sessionId!==row.sessionId||f.distanceKm===null)continue;
+  measured++;if(!f.timed)untimed=true;if(f.distanceKm<shortest)shortest=f.distanceKm;if(f.distanceKm>longest)longest=f.distanceKm;
+ }
+ return untimed?'DURATION_REQUIRED':measured>1&&shortest<V.tied.correctionFloorFraction*longest-EPS?'DISTANCE_DISPUTED':null;
 }
 
 // ---------- reading an execution (handoff section 5; R3 C3-C5; R3A A1) ----------
