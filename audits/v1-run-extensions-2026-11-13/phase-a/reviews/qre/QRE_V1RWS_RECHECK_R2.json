@@ -1,0 +1,110 @@
+{
+ "review": "QRE_V1RWS_RECHECK_R2",
+ "role": "Quality & Reliability Engineer (fresh independent instance)",
+ "date": "2026-11-13",
+ "verdict": "NOT_READY",
+ "verdictReason": "QRE-RWS-B-01: QRE-RWS-A-01 still reachable through the two-source merge (app report by time with segments + import of the first file): EASY band [345,420] -> [345,575]. The single corrective cycle is spent; the phase closes blocked with it named.",
+ "versions": {"fixedCandidate": "d6381bb", "firstCandidate": "bcac30d", "frozenBase": "c8104c1"},
+ "enablingRecord": {"path": "audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_RUN_RECORDS.json", "existedDuringSuite": false, "existedAtEnd": false, "note": "checked 2026-11-14T02:27:57Z and 02:29:59Z (suite window) and at the end; the default authority was off; probes used the helpers' DEV authority"},
+ "suite": {"command": "node --test (CoachingCore/)", "entries": 1396, "pass": 1395, "fail": 1, "failing": ["V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here (actual: ['CoachingCore/src/r6-adaptation.mjs'])"], "matchesAuthorClaim": true},
+ "preExistingTestsEdited": false,
+ "freezes": {
+  "v1rwsPreserved": {"exit": 0, "output": "197/197 files byte-identical, 1 amended (its base is the recorded bytes; its diff is the reader alone, 22+/10-); V1RC 30/30"},
+  "v1rcCheck1": {"exit": 1, "drift": ["(FREEZE-1) CoachingCore/src/r6-adaptation.mjs"], "expected": true},
+  "readerAloneStrength": [
+   {"change": "unrelated constant on an untouched line", "preservedExit": 1, "I10": "FAIL"},
+   {"change": "the completion line changed", "preservedExit": 1, "I10": "FAIL"},
+   {"change": "added line changing behaviour without a reader, mentioning reads in a comment", "preservedExit": 0, "I10": "PASS"},
+   {"change": "added line naming reads, changing behaviour", "preservedExit": 1, "I10": "FAIL"}
+  ]
+ },
+ "firstReviewFindings": [
+  {"id": "QRE-RWS-A-01", "status": "OPEN", "evidence": "probe-a01-paths: control [345,420]; closed (were [345,575] on bcac30d): two files native/time/no-format, correction adding a file native/time, carried unmarked row, merge with a native report (UNKNOWN SEGMENTS_NOT_MARKED_POOR); open: merge of app time-version report with segments + HealthKit import of the first file, same review [345,575], app-then-import [345,575], import-then-app [345,575]", "see": "QRE-RWS-B-01"},
+  {"id": "QRE-RWS-A-02", "status": "CLOSED_AS_RECORDED_READING", "evidence": "PHASE_A_CORRECTIVE_CYCLE.md section 2 records the Chief's reading of the Founder rule, exposed to the Founder, not a new Founder decision; --write records expectedFailures but cannot run (QRE-RWS-B-04)"},
+  {"id": "QRE-RWS-A-03", "status": "CLOSED", "residual": "UNCHANGED_AS_RECORDED", "evidence": "F3-fabricated-row: shown 16000 m (was 1000); seven forged distances 1-42.195 km all deliver 16 km, no stored text; a 1.1 km / 7 min report citing the forged row still gives partial:false DISTANCE/MEASURED paceEvidence:true, identical to R1 and SEC-RWS-A-01"},
+  {"id": "QRE-RWS-A-04", "status": "OPEN_PARTIAL", "evidence": "with a duration: 40 km / 60 min UNKNOWN MEASUREMENT_IMPLAUSIBLE, paceEvidence false, history null, CT-3 max 18.084; edges 119/121/899/901 s/km UNKNOWN/DISTANCE/DISTANCE/UNKNOWN; without a duration: DISTANCE/MEASURED paceEvidence true, history 40, CT-3 max 44; intake row without durationMinutes ref 40", "see": "QRE-RWS-B-02"},
+  {"id": "QRE-RWS-A-05", "status": "CLOSED", "evidence": "HOLD (observations string, other athlete, invalid version), UNSUPPORTED, backdated with and without referenceState: runSessions empty, runFormatRecord hash equal to the input (29 rows); stale replay 39 -> 39"},
+  {"id": "QRE-RWS-A-06", "status": "OPEN", "evidence": "killed M03 M06 M08b M14 M17 M32; surviving M04 (the cycle's test forges the TIME row; with the NATIVE row original partial:true, mutant partial:false), M08a, M18", "see": "QRE-RWS-B-05"},
+  {"id": "QRE-RWS-A-07", "status": "CLOSED_LABELLING", "openDecision": "Product/SSCTR: label or withhold", "evidence": "CLINICAL_HUMAN_REQUIRED: runFormat.prescribing false, 12/12 future sessions prescribed:false TIME CLINICAL_ROUTE, continuation too; normal: prescribing true, 0 prescribed:false; under HOLD nothing is delivered"},
+  {"id": "QRE-RWS-A-08", "status": "CLOSED", "residual": "frozen copy not done (optional): reader-mutates-row still writes minutes:1", "evidence": "reader-returns-DISTANCE-always easyPartial:true (was false); reader-throws partial"},
+  {"id": "QRE-RWS-A-09", "status": "CLOSED_WITH_NOTE", "see": "QRE-RWS-B-03"},
+  {"id": "QRE-RWS-A-10", "status": "CLOSED", "evidence": "fail-optionsRunFormatsGarbage no throw, DISABLED; 0/29 failclosed cases throw"},
+  {"id": "QRE-RWS-A-11", "status": "UNCHANGED_BY_DESIGN", "evidence": "custody with records 6/6 ok verify null; without records 4 ASK, 10 rows"},
+  {"id": "QRE-RWS-A-12", "status": "UNCHANGED_BY_DESIGN", "evidence": "composed 47 ms vs 24 ms; format record 118 rows 208 KB (was 262 KB)"},
+  {"id": "QRE-RWS-A-13", "status": "CLOSED", "evidence": "M14 and M32 killed by SEC-RWS-A-03 test"}
+ ],
+ "otherChecks": {
+  "cost": {"repeat2e6Row": {"ms": 27, "unreadable": 1}, "fiftyRepeat2e6Rows": {"ms": 30}, "baselineMs": 28, "steps1e5": {"composedMs": 973, "v1RunIndexMs": 922}, "segments1e5": {"composedMs": 717, "v1RunIndexMs": 650}, "conditions1e5": {"composedMs": 153, "v1RunIndexMs": 120}},
+  "frozenEngineIdentity": {"probeIdentityR1Journeys": "194/194 equal c8104c1 vs d6381bb", "probeIdentity2": "82/82 equal (typed distance, two files, correction adding a file, stop by time, two-source merge, clinical hold, late report, historicalStateOf)", "noReaderExpression": "completionRead returns null without a function; complete reduces exactly to o.actual.completed===true&&minutesOk&&setsOk"},
+  "composedVsRunIndex": {"gpsOnlyJourney": "0 engine keys differ in 10 steps (missed, late, correction, clinical route and continuation)", "typedAndSegments": ["actualLedger", "runCalibration", "inputHash", "trace"]},
+  "custodyByteIdentity": {"submits": "6/6 ok", "verify": null, "storedKept": ["5/5", "9/10 (correction annotation)", "16/16", "21/21", "26/26"], "storedRowChanged": false},
+  "replay": {"identicalInput": true, "replayWithUpdatedRecords": "runSessions, ledger and calibration equal; proposal becomes null as in v1-run-index"},
+  "order": {"differs": ["inputHash", "trace", "runFormatRecord (order only; equal as a set)"]},
+  "throws": {"cases": 154, "threw": 0}
+ },
+ "mutants": {
+  "runner": "mutate-r2.mjs on a git clone of d6381bb, 61 v1rws tests, restored by sha",
+  "old": [
+   {"id": "M03", "result": "killed"}, {"id": "M04", "result": "survives", "note": "cycle test vacuous (forges TIME row)"}, {"id": "M06", "result": "killed"},
+   {"id": "M08a", "result": "survives"}, {"id": "M08b", "result": "killed"}, {"id": "M14", "result": "killed"}, {"id": "M17", "result": "killed"},
+   {"id": "M18", "result": "survives"}, {"id": "M32", "result": "killed"}
+  ],
+  "new": [
+   {"id": "N01", "what": "typed figure not moved", "result": "killed"},
+   {"id": "N02", "what": "RACE exemption removed", "result": "survives"},
+   {"id": "N03", "what": "device origin ignored", "result": "killed"},
+   {"id": "N04", "what": "segments not marked POOR", "result": "killed"},
+   {"id": "N05", "what": "window lower bound", "result": "killed"},
+   {"id": "N06", "what": "window upper bound", "result": "killed"},
+   {"id": "N07", "what": "implausible ignored in completion", "result": "killed"},
+   {"id": "N08", "what": "implausible ignored in history reference", "result": "killed"},
+   {"id": "N09", "what": "implausible ignored in paceEvidence", "result": "survives", "note": "near-equivalent for continuous"},
+   {"id": "N10", "what": "several files allowed in clear", "result": "survives", "note": "equivalent given POOR marking"},
+   {"id": "N11", "what": "reselect ignores recovery", "result": "survives", "note": "equivalent: recovery constant per entry"},
+   {"id": "N12", "what": "reselect pattern not a rotation entry", "result": "survives"},
+   {"id": "N13", "what": "reselect r.ok removed", "result": "survives", "note": "equivalent via try/catch"},
+   {"id": "N13c", "what": "delivered repetitions kept although failing today", "result": "killed"},
+   {"id": "N14", "what": "kept distance CT-2", "result": "killed"},
+   {"id": "N15", "what": "kept distance CT-3", "result": "survives", "note": "forged rows only"},
+   {"id": "N16", "what": "kept distance CT-1", "result": "killed"},
+   {"id": "N17", "what": "repeat limit 60 -> 2e6", "result": "survives", "note": "masked by the 400-step limit"},
+   {"id": "N18", "what": "400 steps -> 4e6", "result": "survives", "note": "masked by the repeat limit"},
+   {"id": "N19", "what": "24 blocks -> 1000", "result": "killed"},
+   {"id": "N20", "what": "HOLD not inert", "result": "killed"},
+   {"id": "N21", "what": "review before the record not refused", "result": "killed"},
+   {"id": "N22", "what": "engine: completed===true not required with a reader", "result": "killed"},
+   {"id": "N23", "what": "X-2 old reset rule", "result": "killed"},
+   {"id": "N24", "what": "prescribed always true", "result": "killed"},
+   {"id": "N25", "what": "prescribing always true", "result": "killed"},
+   {"id": "N26", "what": "shaped() check removed", "result": "killed"},
+   {"id": "N27", "what": "short repetitions pace evidence", "result": "killed"},
+   {"id": "N28", "what": "symptom stop only on native STOPPED", "result": "killed"},
+   {"id": "N29", "what": "time execution carries no stop", "result": "killed"},
+   {"id": "N30", "what": "segments count limit dropped", "result": "survives", "note": "masked by the 300 km limit"},
+   {"id": "N31", "what": "total distance limit dropped", "result": "survives", "note": "masked by the segments limit"},
+   {"id": "N32", "what": "history stop reason not aligned", "result": "killed"},
+   {"id": "N33", "what": "old segments usability rule", "result": "killed"},
+   {"id": "N34", "what": "intake implausible skip reason", "result": "survives", "note": "only the skipped report"},
+   {"id": "N35", "what": "normalisation applied to carried rows", "result": "survives", "note": "no test of custody byte identity with typed/segments"}
+  ]
+ },
+ "newFindings": [
+  {"id": "QRE-RWS-B-01", "severity": "BLOCKING", "what": "Segments are marked POOR per observation before the engine merges sources: an app report by time with segments and no distance plus the HealthKit import of the first file become one unmarked canonical row (distanceKm 6.6, gpsQuality OK, segments 1, partial false); V1RC reads 6.6 km over 63 min and the EASY band shown moves [345,420] -> [345,575].", "evidence": "probe-a01-paths: merge-app-segments-time+import-first-same-review, merge-app-segments-time-then-import-first-later-review, merge-import-first-then-app-segments-later-review", "closes": "No canonical row with segments and a distance, merged included, reaches V1RC as pace evidence; a test in the three orders comparing the band with the one-file control."},
+  {"id": "QRE-RWS-B-02", "severity": "CONDITION", "what": "The plausibility window applies only with a duration: a native report completed:true, 40 km GPS, no minutes/seconds is DISTANCE/MEASURED, paceEvidence true, history 40, CT-3 max 44; an intake history row without durationMinutes gives ref 40.", "evidence": "probe-r2 plaus spike40NoMinutes, intakeSpikeNoDuration", "closes": "No MEASURED, paceEvidence or history without a duration (or require it), with a test."},
+  {"id": "QRE-RWS-B-03", "severity": "NOTE", "what": "readerAlone and I10 accept any added line containing the word reads; an added behaviour change with '// reads' passes --preserved (exit 0) and I10.", "evidence": "verifier-strength.mjs case 3", "closes": "Compare added lines to the exact expected text or the recorded diff."},
+  {"id": "QRE-RWS-B-04", "severity": "CONDITION", "what": "scripts/v1rws-freeze.mjs --write: line 79 uses passed/total declared by const on line 82 of the same block (temporal dead zone): ReferenceError once every other check passes; the V1RWS-1 record cannot be written. The one-failure check also trusts operator-typed numbers and never checks which test failed.", "evidence": "code reading of lines 66-82 and reproduction of the pattern (ReferenceError: Cannot access 'total' before initialization); --write not run (prohibited)", "closes": "Declare before use; verify the identity of the one failure."},
+  {"id": "QRE-RWS-B-05", "severity": "CONDITION", "what": "A-06 closed only in part: the M04 test passes for the wrong reason (forges the TIME row); M08a (index use in the quality prior) and M18 (reselectRunSession wiring in the index) have no test through the entry point.", "evidence": "mutate-r2 M04/M08a/M18 survive; probe-m04 vs probe-m04-native", "closes": "A test killing each of the three."},
+  {"id": "QRE-RWS-B-06", "severity": "NOTE", "what": "Test gaps on new lines: N02 (RACE exemption), N35 (carried rows byte identity), N12, N15, N34, masked pairs N17/N18 and N30/N31.", "closes": "Optional, or with B-05."},
+  {"id": "QRE-RWS-B-07", "severity": "NOTE", "what": "A continuous run met with heavy walking beyond 15:00/km (for example 15:30) is UNKNOWN MEASUREMENT_IMPLAUSIBLE with a confirm-or-correct ask: not credited and not counted for the pause.", "closes": "SSCTR reading of the window (already routed by the cycle)."}
+ ],
+ "ran": ["node --test (whole suite, worktree)", "node scripts/v1rws-freeze.mjs --preserved", "node scripts/v1rc-freeze.mjs --check 1", "old-probe-p1control/attack/more/identity/custody/m03", "probe-a01-paths (d6381bb and bcac30d copy)", "probe-r2 (cost plaus refused clinical forge replay throws compare)", "probe-replay-x", "probe-identity2 (both worktrees)", "probe-custody2", "probe-m04 / probe-m04-native", "verifier-strength", "mutate-r2 (45 mutants)"],
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/2e948744-f019-40c7-9630-ece3b7d8a9e9/scratchpad/judges/qre-r2/",
+ "incident": "A redirection of mine created four stray output files at the worktree root (id-c8104c1.json and attack-d6381bb.json empty; id-b.err and attack.err with module-not-found errors); removed by name; git status clean afterwards and at the end.",
+ "notVerified": ["sporting values: window 120-900, RACE exemption, the WE3A-10 example input change (SSCTR)", "behaviour with the enabling record present", "v1rws-freeze --write/--check (prohibited; no record)", "V1RC journeys and fuzz (prohibited)", "whole suite under each mutant (61 v1rws tests only)", "real HealthKit", "custody security"],
+ "hostInjectedContext": {
+  "note": "Injected by the host; not used as evidence",
+  "globalClaudeMd": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectClaudeMd": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "memoryMd": "0ca62e8bd22cf8b3653c200906f59300d472af0bf7f7526e0e4b59b8adbbb4fd"
+ }
+}
