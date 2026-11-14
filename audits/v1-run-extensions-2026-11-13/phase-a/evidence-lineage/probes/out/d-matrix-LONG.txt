@@ -1,0 +1,135 @@
+## 01 one source, one whole measurement (control)
+   live app-x done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["app-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): null
+## 02 two complementary files: the app lists the 2nd, the import brings the 1st | one review
+   live app-x done=true km=9.6 min=95 list=1 merged=["app-x","dev-x"]
+   today    SEVERAL_RECORDINGS     easy [345,420] withheld ["SEVERAL_RECORDINGS"] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract SEVERAL_RECORDINGS     in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 02 two complementary files: the app lists the 2nd, the import brings the 1st | app, then import
+   live app-x done=true km=9.6 min=95 list=1 merged=["app-x","dev-x"]
+   today    SEVERAL_RECORDINGS     easy [345,420] withheld ["SEVERAL_RECORDINGS"] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract SEVERAL_RECORDINGS     in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 02 two complementary files: the app lists the 2nd, the import brings the 1st | import, then app
+   live dev-x done=true km=9.6 min=95 list=1 merged=["dev-x","app-x"]
+   today    SEVERAL_RECORDINGS     easy [345,420] withheld ["SEVERAL_RECORDINGS"] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract SEVERAL_RECORDINGS     in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 03 D-01: then the import re-syncs its part (names its own report) | one review
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 03 D-01: then the import re-syncs its part (names its own report) | app, then import
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 03 D-01: then the import re-syncs its part (names its own report) | import, then app
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 04 D-01: the re-sync names the row id (the app's report)
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 05 D-01: correction of the correction
+   live dev-x-v3 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v3"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2","dev-x-v2":"dev-x-v3"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 06 D-01: the reports and the re-sync all in one review
+   live app-x done=true km=9.6 min=95 list=1 merged=["app-x","dev-x"] | rejected dev-x-v2:INVALID_CORRECTION_CHAIN
+   today    SEVERAL_RECORDINGS     easy [345,420] withheld ["SEVERAL_RECORDINGS"] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract SEVERAL_RECORDINGS     in force ["app-x","dev-x","dev-x-v2"] not carried ["dev-x-v2"] replaced {}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 07 D-01, then every report sent again (replay)
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 08 the app corrects itself to one whole measurement; the import of the 1st file stands
+   live app-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x-v2","dev-x"] not carried ["dev-x"] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): DISTANCE_DISPUTED
+## 09 the same three reports, the import arriving last
+   live app-x-v2 done=true km=9.6 min=95 list=0 merged=["app-x-v2","dev-x"]
+   today    DISTANCE_DISPUTED      easy [345,420] withheld ["DISTANCE_DISPUTED"] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract DISTANCE_DISPUTED      in force ["app-x-v2","dev-x"] not carried [] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): DISTANCE_DISPUTED
+## 10 the same facts with no correction: the app says the whole, the import the 1st file
+   live app-x done=true km=9.6 min=95 list=0 merged=["app-x","dev-x"]
+   today    DISTANCE_DISPUTED      easy [345,420] withheld ["DISTANCE_DISPUTED"] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract DISTANCE_DISPUTED      in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): DISTANCE_DISPUTED
+## 11 the app corrects itself to the whole; the import measured the whole too
+   live app-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x-v2","dev-x"] not carried ["dev-x"] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
+## 12 both sources corrected to the whole (the app, then the re-sync)
+   live dev-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x-v2","dev-x-v2"] not carried ["app-x-v2"] replaced {"app-x":"app-x-v2","dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
+## 13 one speaker: the app lists, then corrects itself to the whole
+   live app-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["app-x-v2"] not carried [] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
+## 14 one speaker: the import alone, then its re-sync
+   live dev-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["dev-x-v2"] not carried [] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
+## 15 two whole sources that agree | one review
+   live app-x done=true km=16 min=95 list=0 merged=["app-x","dev-x"]
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): null
+## 15 two whole sources that agree | app, then import
+   live app-x done=true km=16 min=95 list=0 merged=["app-x","dev-x"]
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): null
+## 15 two whole sources that agree | import, then app
+   live dev-x done=true km=16 min=95 list=0 merged=["dev-x","app-x"]
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract null                   in force ["app-x","dev-x"] not carried [] replaced {}
+   weaker reading (kept distance facts on every report in force): null
+## 16 retraction by the import: its re-sync says the run was not done
+   live dev-x-v2 done=false km=null min=0 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist null screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x-v2"] not carried ["app-x"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 17 retraction by the athlete: the app's correction says not done
+   live app-x-v2 done=false km=null min=0 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist null screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x-v2","dev-x"] not carried ["dev-x"] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
+## 18 conflict: the import first, the app's report (other minutes, lists the 2nd file) refused, then the re-sync
+   live dev-x-v2 done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["dev-x-v2","zz-app"] not carried ["zz-app"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 19 conflict: the app first (other minutes, lists), the import refused, then the app corrects itself to the whole
+   live app-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x-v2","dev-x"] not carried ["dev-x"] replaced {"app-x":"app-x-v2"}
+   weaker reading (kept distance facts on every report in force): DISTANCE_DISPUTED
+## 20 a re-sync under another activity id (identity not shown)
+   live dev-y done=true km=9.6 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 9.6 screen NOT_RAISED_BY_THIS_EXTENSION
+   contract REPORT_NOT_CARRIED     in force ["app-x","dev-x","dev-y"] not carried ["app-x","dev-x"] replaced {}
+   weaker reading (kept distance facts on every report in force): SEVERAL_RECORDINGS
+## 21 symptom stop in the app's report, the import says done (conflict), then the import re-syncs
+   live dev-x-v2 done=true km=16 min=95 list=0 merged=null
+   today    null                   easy [345,420] withheld [] hist 16 screen REQUIRED
+   contract REPORT_NOT_CARRIED     in force ["app-stop","dev-x-v2"] not carried ["app-stop"] replaced {"dev-x":"dev-x-v2"}
+   weaker reading (kept distance facts on every report in force): null
