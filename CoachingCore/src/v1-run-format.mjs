@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {clone,freeze,hash} from './value.mjs';
 import {validateR6Prescription} from './r6-prescription.mjs';
-import {distanceFacts,historyReference} from './v1-run-history.mjs';
+import {distanceFacts,historyReference,statedStop} from './v1-run-history.mjs';
+import {utcTimestamp} from './r6-provenance.mjs';
 
 /**
  * CoachingCore V1 Run Workout Structure (Founder request of 2026-11-13, handoff r3 with r3a): V1X-RUN-FORMATS. The frozen engine plans every run
@@ -427,77 +428,107 @@ export function appendFormats(record,sessions,{athleteId,recordedAt}){
  return {record:[...carried,...added],added:added.map(r=>r.eventId)};
 }
 
-// ---------- what each run report said (fix-forward of 2026-11-14: QRE-RWS-B-01, SSCTR-RWS-B-01) ----------
+// ---------- what each run report said (fix-forwards of 2026-11-14: QRE-RWS-B-01, SSCTR-RWS-B-01, QRE-RWS-C-01) ----------
 /**
- * The engine keeps one row per execution: two reports of one run that agree become one row, and a report that contradicts another is refused and
- * its row marked in conflict. Two things a report says can therefore be on no row, or on a row nothing reads: a stop it declares, and the distance
- * it measured. They are kept here, in the same append-only record as the formats, one row per report received that states either:
+ * The engine keeps one row per execution: two reports of one run that agree become one row, one value per field (the better source's, else the
+ * first's), and a report that contradicts another is refused and its row marked in conflict. So what one report says can be on no row, or on a row
+ * nothing reads, or replaced on the row by what another report sent in the same field, an empty value as well. It is kept here, in the same
+ * append-only record as the formats, one row per report received that states any of it, each report read alone by the same reader as a row:
  * - `stop`: the stop as it is read (a reason of the closed list; none stated, or one not listed, is SYMPTOM). A safety signal only: it asks for
  *   the warning-sign screen and is never credit, never the pause rule and never sizing. It is kept whatever the engine does with the report.
  * - `distanceKm`: the distance the report itself measured (a measured source), and `timed`: whether the report carried the duration of that run.
- *   Read only to withhold a distance from pace readers (reportsVerdict), never to add one.
- * No free text is kept: a reason is the closed word it is read as.
+ * - `several`: the report lists further recordings of the run. `corrected`: it declares a distance with a listed measurement-failure reason.
+ *   `ownKm`: the athlete's own figure (a declaration, or a figure no device measured).
+ * The distance facts are read only to withhold a distance from pace readers (reportsVerdict), never to add one, and never as credit.
+ * No free text is kept: a reason is the closed word it is read as, and a row holds exactly these keys.
  */
 export const RUN_REPORT_RECEIVED='RUN_REPORT_RECEIVED';
 /** The longest id of a report a fact row names it by (the custody's own bound on a request id); a longer one is named by its content. */
 const REPORT_ID_MAX=128;
-const reportKey=(reportId,inputHash)=>`report|${reportId}|${inputHash.slice(0,16)}`;
+const ROW_KEYS=['athleteId','eventId','fact','inputHash','recordedAt','report','sessionId'],REPORT_KEYS=['corrected','distanceKm','ownKm','reportId','several','sessionId','stop','timed'],STOP_KEYS=['reason','stated'];
+const exactly=(o,keys)=>Object.keys(o).length===keys.length&&keys.every(k=>Object.hasOwn(o,k));
+/** A fact row is named by what its report states (the same report sent again adds nothing), and sealed with the athlete and the instant it was recorded under. */
+const reportKey=(reportId,report)=>`report|${reportId}|${hash(report).slice(0,16)}`;
+const sealOf=(report,athleteId,recordedAt)=>hash({athleteId,recordedAt,report});
 /**
- * What one received run report states, or null when it states neither a stop nor a measured distance. `fromDevice`: a device activity's report.
+ * What one received run report states, or null when it states none of the facts above. `fromDevice`: a device activity's report.
  * A report with no id of its own (the engine refuses it) is named by its content, so a stop it declares is still kept.
  */
 export function reportFactOf(o,V,{fromDevice=false}={}){
  if(!isObj(o)||!isObj(o.actual)||typeof o.sessionId!=='string')return null;
- const a=o.actual,F=V.runFacts,stop=stopOf(a,V),measured=num(a.distanceKm,0.01,F.runDistanceKmMax)&&F.measuredSources.includes(upper(a.measurement)??(fromDevice?'GPS':null));
- if(!stop&&!measured)return null;
+ const a=o.actual,F=V.runFacts,stop=stopOf(a,V),measured=num(a.distanceKm,0.01,F.runDistanceKmMax)&&F.measuredSources.includes(upper(a.measurement)??(fromDevice?'GPS':null)),said=distanceFacts(a,V,{wearable:fromDevice});
+ if(!stop&&!measured&&!said.lists&&said.ownKm===null)return null;
  const reportId=typeof o.eventId==='string'&&o.eventId&&o.eventId.length<=REPORT_ID_MAX?o.eventId:'unidentified:'+hash({sessionId:o.sessionId,actual:clean(a)}).slice(0,16);
- return {sessionId:o.sessionId,reportId,stop:stop?{reason:stop.reason,stated:stop.stated}:null,distanceKm:measured?a.distanceKm:null,timed:minutesOfActual(a)!==null};
+ return {sessionId:o.sessionId,reportId,stop:stop?{reason:stop.reason,stated:stop.stated}:null,distanceKm:measured?a.distanceKm:null,timed:minutesOfActual(a)!==null,several:said.lists,corrected:said.corrects,ownKm:said.ownKm};
 }
-const readableReport=(o,athleteId,V)=>isObj(o)&&o.fact===RUN_REPORT_RECEIVED&&o.athleteId===athleteId&&isObj(o.report)&&typeof o.sessionId==='string'&&o.report.sessionId===o.sessionId&&typeof o.report.reportId==='string'&&o.report.reportId.length>0&&o.report.reportId.length<=REPORT_ID_MAX&&Object.keys(o.report).length===5&&typeof o.inputHash==='string'&&o.inputHash===hash(o.report)
- &&o.eventId===reportKey(o.report.reportId,o.inputHash)&&Number.isFinite(Date.parse(o.recordedAt))&&(o.report.stop===null||isObj(o.report.stop)&&V.stops.reasons.includes(o.report.stop.reason)&&typeof o.report.stop.stated==='boolean')
- &&(o.report.distanceKm===null||num(o.report.distanceKm,0.01,V.runFacts.runDistanceKmMax))&&typeof o.report.timed==='boolean'&&(o.report.stop!==null||o.report.distanceKm!==null);
-/** The record with one row per fact it does not hold yet (append-only; the same report sent again adds nothing). */
-export function appendReportFacts(record,facts,{athleteId,recordedAt}){
- const carried=list(record).map(r=>clone(r)),ids=new Set(carried.filter(isObj).map(r=>r.eventId)),added=[];
- for(const f of list(facts)){if(!f)continue;const report=clean(f),inputHash=hash(report),id=reportKey(report.reportId,inputHash);if(ids.has(id))continue;ids.add(id);added.push({fact:RUN_REPORT_RECEIVED,eventId:id,athleteId,recordedAt,sessionId:report.sessionId,report,inputHash});}
+/** The same report with only its stop: what is kept of a report that is itself not recorded (its distance is of no row). */
+export const stopOnly=f=>({...f,distanceKm:null,timed:false,several:false,corrected:false,ownKm:null});
+/** A row this module wrote and nobody changed: exactly its keys, each of its closed kind, named by its content and sealed with its instant. */
+function readableReport(o,athleteId,V){
+ if(!isObj(o)||o.fact!==RUN_REPORT_RECEIVED||o.athleteId!==athleteId||!exactly(o,ROW_KEYS)||!isObj(o.report)||!exactly(o.report,REPORT_KEYS))return false;
+ const r=o.report,km=v=>v===null||num(v,0.01,V.runFacts.runDistanceKmMax);
+ return typeof o.sessionId==='string'&&r.sessionId===o.sessionId&&typeof r.reportId==='string'&&r.reportId.length>0&&r.reportId.length<=REPORT_ID_MAX
+  &&(r.stop===null||isObj(r.stop)&&exactly(r.stop,STOP_KEYS)&&V.stops.reasons.includes(r.stop.reason)&&typeof r.stop.stated==='boolean')
+  &&km(r.distanceKm)&&km(r.ownKm)&&typeof r.timed==='boolean'&&typeof r.several==='boolean'&&typeof r.corrected==='boolean'
+  &&(r.stop!==null||r.distanceKm!==null||r.several||r.ownKm!==null)&&(!r.corrected||r.ownKm!==null)
+  &&typeof o.recordedAt==='string'&&utcTimestamp(o.recordedAt)===o.recordedAt&&o.eventId===reportKey(r.reportId,r)&&o.inputHash===sealOf(r,athleteId,o.recordedAt);
+}
+/** The record with one row per fact it does not hold yet (append-only; the same report sent again adds nothing; a row that cannot be read stands for no report). */
+export function appendReportFacts(record,facts,{athleteId,recordedAt},V){
+ const carried=list(record).map(r=>clone(r)),ids=new Set(carried.filter(r=>readableReport(r,athleteId,V)).map(r=>r.eventId)),added=[];
+ for(const f of list(facts)){if(!f)continue;const report=clean(f),id=reportKey(report.reportId,report);if(ids.has(id))continue;ids.add(id);added.push({fact:RUN_REPORT_RECEIVED,eventId:id,athleteId,recordedAt,sessionId:report.sessionId,report,inputHash:sealOf(report,athleteId,recordedAt)});}
  return {record:[...carried,...added],added:added.map(r=>r.eventId)};
 }
 /**
- * The report facts of a carried record: by the report that stated them (`of`), every declared stop with the instant the record first held it
- * (`stops`), and the rows that failed their integrity check, named and never read.
+ * The report facts of a carried record, read once: what each report said of each session, as one sum per report and session (`of`: a record of
+ * any size is read in one pass, and a row of the engine's record then costs one look per report it was made of, SEC-RWS-C-02), every declared
+ * stop with the instant the record first held it (`stops`), and the rows that cannot be read (`unreadable`).
+ * A row of this record that is no format row and no report fact as this module wrote it, whatever it holds, cannot be read: it may have been a
+ * stop, or what withheld a distance. It is named, never read as what it now says, and never read as nothing either: while one is there the
+ * record of reports is not whole (the entry point then asks for the screen and hands no distance to a pace reader; SEC-RWS-C-06).
  */
 export function readReportFacts(record,athleteId,V){
  const by=new Map(),stops=[],unreadable=[];
  for(const r of list(record)){
-  if(!readableReport(r,athleteId,V)){if(isObj(r)&&r.fact===RUN_REPORT_RECEIVED)unreadable.push(typeof r.eventId==='string'?r.eventId:null);continue;}
-  if(!by.has(r.report.reportId))by.set(r.report.reportId,[]);by.get(r.report.reportId).push(r.report);
-  if(r.report.stop)stops.push({sessionId:r.sessionId,reportId:r.report.reportId,reason:r.report.stop.reason,at:Date.parse(r.recordedAt)});
+  if(isObj(r)&&r.fact===RUN_FORMAT_EMITTED)continue; // a format row: readFormatRecord reads it, and names it when it cannot
+  if(!readableReport(r,athleteId,V)){unreadable.push(isObj(r)&&typeof r.eventId==='string'?r.eventId:null);continue;}
+  const f=r.report;let sessions=by.get(f.reportId);if(!sessions)by.set(f.reportId,sessions=new Map());
+  let g=sessions.get(f.sessionId);if(!g)sessions.set(f.sessionId,g={several:false,corrected:false,untimed:false,shortest:Infinity,longest:-Infinity});
+  if(f.several)g.several=true;if(f.corrected)g.corrected=true;if(f.distanceKm!==null&&!f.timed)g.untimed=true;
+  for(const km of [f.distanceKm,f.ownKm])if(km!==null){if(km<g.shortest)g.shortest=km;if(km>g.longest)g.longest=km;}
+  if(f.stop)stops.push({sessionId:r.sessionId,reportId:f.reportId,reason:f.stop.reason,at:Date.parse(r.recordedAt)});
  }
- return {of:reportId=>by.get(reportId)??[],stops,unreadable:unreadable.sort(),size:by.size};
+ return {of:(reportId,sessionId)=>by.get(reportId)?.get(sessionId)??null,stops,unreadable:unreadable.sort(),size:by.size};
 }
-/** The reports a row of the engine's record was made of: the reports merged into it, or its own. */
-export const sourcesOf=row=>Array.isArray(row?.provenance?.mergedSourceIds)&&row.provenance.mergedSourceIds.length?row.provenance.mergedSourceIds.filter(x=>typeof x==='string'):typeof row?.eventId==='string'?[row.eventId]:[];
+/** The reports a row of the engine's record was made of, each once: the reports merged into it, or its own. */
+export const sourcesOf=row=>{const merged=row?.provenance?.mergedSourceIds;return Array.isArray(merged)&&merged.length?[...new Set(merged.filter(x=>typeof x==='string'))]:typeof row?.eventId==='string'?[row.eventId]:[];};
 /**
- * What the reports a row was made of say about its distance, for pace readers only: DURATION_REQUIRED when one of them measured a distance with
- * no duration of its own (the row's minutes are then another report's: the pace is of no single recording), DISTANCE_DISPUTED when two of them
- * measured distances further apart than a working device is known to read (the tied 0.91: one of them is not the whole run), else null.
+ * What the reports a row was made of say about its distance, for pace readers only. Each reason is the one a row gives of itself
+ * (v1-run-history.mjs distanceFacts), read here on every report the row was made of, so no merge and no value another report sent can remove it:
+ * - SEVERAL_RECORDINGS: one of them lists further recordings (the row's distance may be the first recording alone);
+ * - CORRECTED_MEASUREMENT: one of them declares a distance with a listed measurement-failure reason;
+ * - DURATION_REQUIRED: one of them measured a distance with no duration of its own (the row's minutes are then another report's);
+ * - DISTANCE_DISPUTED: two figures among them (a measured distance, the athlete's own) are further apart than a working device is known to read
+ *   (the tied 0.91): one of them is not the whole run;
+ * - REPORTS_UNREADABLE: the record of reports holds a row that cannot be read: none of the above can be ruled out for any run.
+ * Else null.
  */
 export function reportsVerdict(row,facts,V){
  if(!facts||!isObj(row))return null;
- let shortest=Infinity,longest=-Infinity,measured=0,untimed=false;
- for(const id of sourcesOf(row))for(const f of facts.of(id)){
-  if(f.sessionId!==row.sessionId||f.distanceKm===null)continue;
-  measured++;if(!f.timed)untimed=true;if(f.distanceKm<shortest)shortest=f.distanceKm;if(f.distanceKm>longest)longest=f.distanceKm;
+ let several=false,corrected=false,untimed=false,shortest=Infinity,longest=-Infinity;
+ for(const id of sourcesOf(row)){
+  const g=facts.of(id,row.sessionId);if(!g)continue;
+  if(g.several)several=true;if(g.corrected)corrected=true;if(g.untimed)untimed=true;if(g.shortest<shortest)shortest=g.shortest;if(g.longest>longest)longest=g.longest;
  }
- return untimed?'DURATION_REQUIRED':measured>1&&shortest<V.tied.correctionFloorFraction*longest-EPS?'DISTANCE_DISPUTED':null;
+ return several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':shortest<V.tied.correctionFloorFraction*longest-EPS?'DISTANCE_DISPUTED':facts.unreadable.length?'REPORTS_UNREADABLE':null;
 }
 
 // ---------- reading an execution (handoff section 5; R3 C3-C5; R3A A1) ----------
 const mainSteps=format=>flatSteps(format.blocks).filter(s=>CONTINUOUS.has(format.pattern)?s.kind==='STEADY':s.kind==='WORK');
 const minutesOfActual=a=>num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null;
 const notComparable=(a,V)=>list(a.conditions).slice(0,20).map(upper).some(c=>V.exposure.neutralConditions.includes(c));
-/** A declared stop, with its reason: one the catalog lists, or SYMPTOM when none is stated or the one stated is not listed (V1RC R-01). */
-export const stopOf=(a,V)=>{if(!isObj(a?.stop))return null;const stated=upper(a.stop.reason),known=V.stops.reasons.includes(stated);return {reason:known?stated:V.stops.missingReasonReadAs,stated:known,atStep:a.stop.atStep??null,metres:num(a.stop.metres,0)?a.stop.metres:null,seconds:num(a.stop.seconds,0)?a.stop.seconds:null};};
+/** A declared stop, with its reason: one the catalog lists, or SYMPTOM when none is stated, the one stated is not listed, or the stop cannot be read (V1RC R-01; statedStop). */
+export const stopOf=(a,V)=>{const stop=statedStop(a);if(!stop)return null;const stated=upper(stop.reason),known=V.stops.reasons.includes(stated);return {reason:known?stated:V.stops.missingReasonReadAs,stated:known,atStep:stop.atStep??null,metres:num(stop.metres,0)?stop.metres:null,seconds:num(stop.seconds,0)?stop.seconds:null};};
 /**
  * The completion of a native session, derived from the raw facts of its report and the format the report cites; never accepted from anywhere.
  * Precedence (R3 values.statuses): STOPPED, PARTIAL, UNKNOWN, then met. Null status for a format with no distance target: the engine's own read.
@@ -519,7 +550,7 @@ export function readCompletion(actual,format,V,{wearable=false,reports=null}={})
  const f=distanceFacts(a,V,{wearable,reports}),evidence={source:f.source,quality:f.quality,measuredKm:f.measuredKm,declaredKm:f.declaredKm};
  const out=(status,extra={})=>({status,basis:null,tier:null,flag:null,ask:null,stop:null,formatHash:format.formatHash,evidence,...extra,exposure:{estimateMinutes:est?{low:est.low,high:est.high}:null,actualMinutes:minutes,aboveEstimate:above}});
  const main=mainSteps(format);if(!main.some(s=>s.target.type==='DISTANCE'))return out(null);
- if(isObj(a.stop))return out('STOPPED',{stop:stopOf(a,V)});
+ const stop=stopOf(a,V);if(stop)return out('STOPPED',{stop});
  if(CONTINUOUS.has(format.pattern)){
   // Usable: measured, checked against its duration, not flagged by its source, and either the sum of several recordings or a single one the
   // athlete did not correct.
@@ -584,7 +615,7 @@ export function pausedUntil(rows,V,addDays){
  for(const r of rows){
   const e=r.execution,a=r.actual??{};
   if(V.exposure.neutralMeasurements.includes(upper(a.measurement))||notComparable(a,V)||e.status==='UNKNOWN')continue;
-  if(e.expression!=='NATIVE'){if(e.completed===true&&!isObj(a.stop))count=0;continue;}
+  if(e.expression!=='NATIVE'){if(e.completed===true&&!statedStop(a))count=0;continue;}
   if(e.status==='PARTIAL'&&!e.countsForPause)continue;
   if(e.status==='STOPPED'||e.status==='PARTIAL'||e.status==='DISTANCE'&&e.aboveEstimate){count++;if(count>=V.tied.consecutiveSessions){until=addDays(r.date,V.tied.windowDays);count=0;}}else count=0;
  }

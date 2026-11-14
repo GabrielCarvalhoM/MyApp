@@ -44,17 +44,31 @@ const km=v=>Math.round(v*1000)/1000;
  * - `disputed`: the athlete's own figure and the measurement differ by more than a working device is known to (the tied 0.91, R3A A1): one of
  *   them is not the run.
  * - `paceWithheld`: why this run's distance is never handed to a reader of pace or capacity (the calibration, a later forecast), or null. Beside
- *   the reasons above, `reports` is what the caller found in the reports the row was made of (v1-run-format.mjs reportsVerdict): two of them
- *   measured distances that cannot both be the run, or one measured a distance with no duration of its own.
+ *   the reasons above, `reports` is what the caller found in the reports the row was made of (v1-run-format.mjs reportsVerdict): each reason
+ *   above as any one of those reports states it on its own, whatever the merged row kept of it, or REPORTS_UNREADABLE when the record of what
+ *   the reports said cannot be read whole.
+ * - `lists`, `corrects`, `ownKm`: what the report states whether or not it carries a distance itself (it lists further recordings; it declares
+ *   with a listed failure reason; the athlete's own figure). They are what a report fact keeps (v1-run-format.mjs reportFactOf): the engine's
+ *   merge keeps one value per field, so a row can lose what one of its reports said, and no reader of pace may lose it with the row.
  */
-export const PACE_WITHHELD=Object.freeze(['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED']);
+export const PACE_WITHHELD=Object.freeze(['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORTS_UNREADABLE']);
+/**
+ * The further recordings a report lists (`actual.segments`). No list, or an empty one, states nothing: it is never read as "one recording only".
+ * A value that is there and is no list cannot be read, and is one recording nobody can read: the run is not one whole measurement (fail closed).
+ */
+export const recordingsOf=a=>{const v=isObj(a)?a.segments:undefined;return Array.isArray(v)?v:v===undefined||v===null?[]:[null];};
+/**
+ * The stop a report declares, as it was sent, or null. No stop is no key, null or false. Anything else is a stop: one that is no object has no
+ * reason anybody can read, and is read as a stop with no stated reason (never as no stop: a safety signal fails closed).
+ */
+export const statedStop=a=>{const v=isObj(a)?a.stop:undefined;return v===undefined||v===null||v===false?null:isObj(v)?v:{};};
 export function distanceFacts(actual,V,{wearable=false,reports=null}={}){
  const a=isObj(actual)?actual:{},F=V.runFacts,stated=upper(a.measurement),source=stated??(wearable&&num(a.distanceKm,0.01,F.runDistanceKmMax)?'GPS':null);
- const has=num(a.distanceKm,0.01,F.runDistanceKmMax),measuredSource=F.measuredSources.includes(source),all=list(a.segments).filter(isObj),segs=all.slice(0,F.segmentsMax);
+ const has=num(a.distanceKm,0.01,F.runDistanceKmMax),measuredSource=F.measuredSources.includes(source),listed=recordingsOf(a),all=listed.filter(isObj),segs=all.slice(0,F.segmentsMax);
  const segOk=all.length<=F.segmentsMax&&segs.every(s=>num(s.distanceKm,0.01,F.runDistanceKmMax)&&F.measuredSources.includes(upper(s.measurement)??source));
  const deviceQuality=upper(a.gpsQuality),devicePoor=deviceQuality==='POOR'||segs.some(s=>upper(s.gpsQuality)==='POOR');
  const d=isObj(a.declared)&&num(a.declared.distanceKm,0.01,F.runDistanceKmMax)?a.declared:null,reason=d?upper(d.reason):null;
- const several=list(a.segments).length>0,corrected=!!d&&F.declaredFailureReasons.includes(reason),markedPoor=devicePoor||has&&(several||corrected);
+ const several=listed.length>0,corrected=!!d&&F.declaredFailureReasons.includes(reason),markedPoor=devicePoor||has&&(several||corrected);
  const total=has&&measuredSource&&segOk?km(a.distanceKm+segs.reduce((n,s)=>n+s.distanceKm,0)):null,measuredKm=total!==null&&total<=F.runDistanceKmMax?total:null;
  // A pace outside the calibration's own fault window (2:00 to 15:00 per km) is a measurement fault, never a distance run (QRE-V1RC-07).
  const minutes=num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null,pace=measuredKm!==null&&minutes!==null?minutes*60/measuredKm:null,[fastest,slowest]=F.plausiblePaceSecondsPerKm;
@@ -63,7 +77,7 @@ export function distanceFacts(actual,V,{wearable=false,reports=null}={}){
  const paceWithheld=!has?null:several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':PACE_WITHHELD.includes(reports)?reports:null;
  return {measuredKm,source:measuredKm!==null?source:null,segments:segs.length,implausible:has&&measuredSource&&(measuredKm===null||pace!==null&&(pace<fastest||pace>slowest)),untimed,
   quality:measuredKm!==null?(markedPoor?'POOR':deviceQuality==='OK'?'OK':'UNKNOWN'):null,devicePoor:measuredKm!==null&&devicePoor,
-  manualKm:typed,declaredKm:d?d.distanceKm:null,reason:corrected?reason:null,reasonGiven:!!reason,markedPoor,several:has&&several,corrected:has&&corrected,disputed,paceWithheld};
+  manualKm:typed,declaredKm:d?d.distanceKm:null,reason:corrected?reason:null,reasonGiven:!!reason,markedPoor,several:has&&several,corrected:has&&corrected,disputed,paceWithheld,lists:several,corrects:corrected,ownKm:own};
 }
 /**
  * The distance a run contributes as history (R3A values.historyReference): a usable measurement alone is the measured value; a declaration alone
@@ -132,7 +146,7 @@ export function factsFromLedger(ledger,{athleteId,tz=0,reportsOf=null},V){
   if(!(o.actual.completed===true||num(o.actual.minutes,0.01)))continue; // a report that the session was not done is no run
   const wearable=String(o.provenance?.sourceQuality??'').startsWith('WEARABLE'),f=distanceFacts(o.actual,V,{wearable,reports:typeof reportsOf==='function'?reportsOf(o):null});
   out.push({id:'ledger:'+o.eventId,eventId:o.eventId,sessionId:planned?o.sessionId:null,activityIds:idsOfRow(o),date:o.localDate,recordedOn:recordedDay(o,tz),minutes:num(o.actual.seconds,1)?o.actual.seconds/60:num(o.actual.minutes,0.01)?o.actual.minutes:null,
-   ...f,family:planned?o.context.family:null,mode:planned?o.context.mode:null,partial:o.partial===true,stopReason:isObj(o.actual.stop)?(V.stops.reasons.includes(upper(o.actual.stop.reason))?upper(o.actual.stop.reason):V.stops.missingReasonReadAs):null,conditions:list(o.actual.conditions).map(upper).filter(Boolean).sort(),formatHash:typeof o.actual.formatHash==='string'?o.actual.formatHash:null,origin:planned?HISTORY_ORIGINS.LEDGER:HISTORY_ORIGINS.LEDGER_UNPLANNED});
+   ...f,family:planned?o.context.family:null,mode:planned?o.context.mode:null,partial:o.partial===true,stopReason:(stop=>stop?(V.stops.reasons.includes(upper(stop.reason))?upper(stop.reason):V.stops.missingReasonReadAs):null)(statedStop(o.actual)),conditions:list(o.actual.conditions).map(upper).filter(Boolean).sort(),formatHash:typeof o.actual.formatHash==='string'?o.actual.formatHash:null,origin:planned?HISTORY_ORIGINS.LEDGER:HISTORY_ORIGINS.LEDGER_UNPLANNED});
  }
  return out;
 }
@@ -151,7 +165,7 @@ export function runHistory({ledger,record,athleteId,tz=0,reportsOf=null},V){
   if(seen.has(r.eventId))continue;seen.add(r.eventId);
   const f=r.run;if(f.activityId&&held.has(f.activityId))continue;
   // A run an intake brought was on record when its plan was made: it is in force by its own date.
-  runs.push({...clone(f),activityIds:f.activityId?[f.activityId]:[],recordedOn:f.date,manualKm:null,reason:null,reasonGiven:false,markedPoor:f.quality==='POOR',untimed:false,paceWithheld:null,segments:0,family:null,mode:null,partial:false,stopReason:null,formatHash:null,sessionId:null});
+  runs.push({...clone(f),activityIds:f.activityId?[f.activityId]:[],recordedOn:f.date,manualKm:null,reason:null,reasonGiven:false,markedPoor:f.quality==='POOR',untimed:false,paceWithheld:null,lists:false,corrects:false,ownKm:f.declaredKm??null,segments:0,family:null,mode:null,partial:false,stopReason:null,formatHash:null,sessionId:null});
  }
  return {runs:runs.map(r=>({...r,referenceKm:historyReference(r)})).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.id<b.id?-1:1),unreadable};
 }

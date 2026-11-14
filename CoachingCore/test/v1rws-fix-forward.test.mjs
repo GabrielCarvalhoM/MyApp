@@ -151,12 +151,12 @@ test('QRE-RWS-B-01: a distance another source disputes, or one with no duration 
   assert.deepEqual([withheld(m.after),m.row.actual.distanceKm,m.exec.paceWithheld],[[],10.4,null],name);assert.equal(m.after.runCalibration.hash,m.frozen.hash,name+': the frozen calibration over the record as it is');
  }
  // The verdict of the reports, by itself: order of the facts, a report of another session, and the edge of the tolerance.
- const fact=(reportId,distanceKm,timed=true,sessionId='s')=>({sessionId,reportId,stop:null,distanceKm,timed}),rec=facts=>readReportFacts(appendReportFacts([],facts,{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'}).record,'a',VALUES);
+ const fact=(reportId,distanceKm,timed=true,sessionId='s')=>({sessionId,reportId,stop:null,distanceKm,timed,several:false,corrected:false,ownKm:null}),rec=facts=>readReportFacts(appendReportFacts([],facts,{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'},VALUES).record,'a',VALUES);
  const row={eventId:'r1',sessionId:'s',provenance:{mergedSourceIds:['r1','r2']}},verdict=facts=>reportsVerdict(row,rec(facts),VALUES);
  assert.equal(VALUES.tied.correctionFloorFraction,0.91);
  assert.deepEqual([verdict([fact('r1',10),fact('r2',9.1)]),verdict([fact('r1',10),fact('r2',9.09)]),verdict([fact('r2',9.09),fact('r1',10)]),verdict([fact('r1',10),fact('r2',6,false)]),verdict([fact('r1',10),fact('r3',2)]),verdict([fact('r1',10),fact('r2',2,true,'other')]),verdict([fact('r1',10)]),reportsVerdict(row,null,VALUES)],
   [null,'DISTANCE_DISPUTED','DISTANCE_DISPUTED','DURATION_REQUIRED',null,null,null,null]);
- assert.deepEqual([...PACE_WITHHELD],['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED']);
+ assert.deepEqual([...PACE_WITHHELD],['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORTS_UNREADABLE']);
 });
 
 test('QRE-RWS-B-01: every reader of pace and capacity reads the admitted record: the sizing source, the exported calibration, a restart, the historical state and a race',()=>{
@@ -258,7 +258,7 @@ test('SSCTR-RWS-B-01 reproduced and closed: a symptom stop the watch import cont
   const x=last.runSessions[s.id].execution,runs=runHistory({ledger:t.ledger,record:t.hist,athleteId:t.p.athleteId,tz:-180},VALUES).runs;
   assert.deepEqual([x.completed,last.runFormat.pausedContinuous,runs.some(r=>r.sessionId===s.id),last.weekEvidence.rows.find(r=>r.sessionId===s.id).status],[false,{},false,'CONFLICTED'],id);
   // The stop is kept as a fact of the extension's record, with the closed word it is read as and nothing else of the report.
-  const kept=t.fmt.filter(r=>isReport(r)&&r.report.stop);assert.deepEqual(kept.map(r=>[r.sessionId,r.report.reportId,r.report.stop,Object.keys(r.report).sort()]),[[s.id,'app-stop',{reason:'SYMPTOM',stated:true},['distanceKm','reportId','sessionId','stop','timed']]],id);
+  const kept=t.fmt.filter(r=>isReport(r)&&r.report.stop);assert.deepEqual(kept.map(r=>[r.sessionId,r.report.reportId,r.report.stop,Object.keys(r.report).sort()]),[[s.id,'app-stop',{reason:'SYMPTOM',stated:true},['corrected','distanceKm','ownKm','reportId','sessionId','several','stop','timed']]],id);
  }
  // Before the fix (the finding): the extension read stops only on unconflicted rows. The engine's own answer is unchanged by the extension:
  // the same reports through the frozen entry point give the same decision and the same rows.
@@ -298,7 +298,7 @@ test('SSCTR-RWS-B-01: the signal survives time, duplicates, updates and correcti
  // is read from the report fact, which names no plan (a record carried into a new plan keeps its facts).
  const plan=atSixteen(),base=plan.ledger.find(o=>!o.fact&&o.context?.sport==='RUN'),when=`${plan.day(1,1)}T12:00:00.000Z`,lone=(sessionId,context)=>({...base,eventId:'lone-'+sessionId,sessionId,context,actual:{completed:false,minutes:20,stop:{reason:'SYMPTOM'}},provenance:{...base.provenance,firstRecordedAt:when,inputHashes:{}}});
  const withRow=(row,fmt=plan.fmt)=>F.evaluateProgram(plan.p,{...plan.review(1,2,'WEEKLY_REVIEW',{eligibility:ELIG(plan.day(1,1))}),actualLedger:[...plan.ledger,row],runFormatRecord:fmt},DEV).runFormat.warningSignScreen;
- const elsewhere=lone('a-session-of-another-plan',{...base.context,sessionId:'a-session-of-another-plan'}),itsFact=appendReportFacts(plan.fmt,[reportFactOf(elsewhere,VALUES)],{athleteId:plan.p.athleteId,recordedAt:when}).record;
+ const elsewhere=lone('a-session-of-another-plan',{...base.context,sessionId:'a-session-of-another-plan'}),itsFact=appendReportFacts(plan.fmt,[reportFactOf(elsewhere,VALUES)],{athleteId:plan.p.athleteId,recordedAt:when},VALUES).record;
  assert.deepEqual([withRow(lone(plan.long.id,{sessionType:'UNPLANNED'})).sessionIds,withRow(lone(plan.long.id,base.context)).sessionIds,withRow({...lone(plan.long.id,base.context),athleteId:'someone-else'}).status,withRow(elsewhere).status,withRow(elsewhere,itsFact).sessionIds],
   [[plan.long.id],[plan.long.id],'NOT_RAISED_BY_THIS_EXTENSION','NOT_RAISED_BY_THIS_EXTENSION',['a-session-of-another-plan']]);
  const refusedFirst=stopped({order:'the import, then the app'});assert.ok(refusedFirst.t.ledger.every(o=>!o.actual?.stop),'no row of the engine\'s record holds the stop');
@@ -340,12 +340,17 @@ test('SSCTR-RWS-B-01: what is and is not a signal: the reason as it is read, the
  assert.deepEqual([unread.status,unread.question.kind,unread.actualLedger,unread.runFormat.status,unread.runFormat.warningSignScreen.status,unread.runFormat.warningSignScreen.sessionIds],['ASK','UNKNOWN_RUN_FORMAT',undefined,'NOT_APPLICABLE','REQUIRED',[s.id]]);
  assert.deepEqual([hash(unread.runFormatRecord.slice(0,t.fmt.length)),added.map(r=>[r.fact,r.report.reportId,r.report.stop.reason,r.report.distanceKm])],[hash(t.fmt),[[RUN_REPORT_RECEIVED,'x-stop','SYMPTOM',null]]]);
  t.fmt=unread.runFormatRecord;assert.deepEqual(screen(t.step(2,0,'WEEKLY_REVIEW',{eligibility:ELIG(t.day(1,6))})),['REQUIRED',[s.id],0,true]);
- // Nothing is kept under an instant the engine did not accept (a malformed review, a review earlier than the record), or when the records sent
- // do not hold together; the stop is still named in the answer, from the request alone.
+ // Nothing is kept under an instant the engine did not accept (a malformed review), or when the records sent do not hold together; the stop is
+ // still named in the answer, from the request alone. A review earlier than the record that the engine accepts delivers nothing and adds no
+ // format, but the stop its report declares is kept under the instant the engine accepted, as in any review it accepts (final fix-forward,
+ // QRE-RWS-C-05: before, nothing of it was kept, and the next review no longer asked for the screen).
  const u=atSixteen(),unreadStop={...stop,athleteId:u.p.athleteId,actual:{...stop.actual,formatHash:'0'.repeat(64)}},named=r=>[r.runFormat.status,hash(r.runFormatRecord),r.runFormat.warningSignScreen?.status??null,r.runFormat.warningSignScreen?.sessionIds??null];
  const notATime=F.evaluateProgram(u.p,{...u.review(1,6,'WEEKLY_REVIEW',{observations:[unreadStop]}),asOf:'not a time'},DEV),malformed=F.evaluateProgram(u.p,{...u.review(1,6,'WEEKLY_REVIEW',{observations:[stop]}),version:'R0'},DEV);
  const {referenceState:_r,...backdated}=u.review(0,5,'WEEKLY_REVIEW',{observations:[stop]}),before=F.evaluateProgram(u.p,backdated,DEV),beforeUnread=F.evaluateProgram(u.p,{...backdated,observations:[unreadStop]},DEV);
- assert.deepEqual([named(notATime),named(malformed),named(before),named(beforeUnread)],[['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]]]);
+ assert.deepEqual([named(notATime),named(malformed)],[['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]],['NOT_APPLICABLE',hash(u.fmt),'REQUIRED',[s.id]]]);
+ const keptEarly=r=>[r.runFormat.status,hash(r.runFormatRecord.slice(0,u.fmt.length))===hash(u.fmt),r.runFormatRecord.slice(u.fmt.length).map(x=>[x.fact,x.recordedAt,x.report.reportId,x.report.stop,x.report.distanceKm]),Object.keys(r.runSessions).length,r.runFormat.warningSignScreen.sessionIds];
+ const stopFact=[[RUN_REPORT_RECEIVED,utcTimestamp(backdated.asOf),'x-stop',{reason:'SYMPTOM',stated:true},null]];
+ assert.deepEqual([keptEarly(before),keptEarly(beforeUnread)],[['NOT_APPLICABLE',true,stopFact,0,[s.id]],['NOT_APPLICABLE',true,stopFact,0,[s.id]]]);
  assert.ok(['HOLD','INVALID_INPUT','UNSUPPORTED'].includes(malformed.status)&&malformed.runFormat.reason==='NO_DECISION'&&['REVIEW_BEFORE_THE_RECORD','NO_DECISION'].includes(before.runFormat.reason));
  u.week(1,weekWith(u,1,null,null));const lostFormats=F.evaluateProgram(u.p,{...u.review(2,6,'WEEKLY_REVIEW',{observations:[{...stop,athleteId:u.p.athleteId,sessionId:u.runsOf(2)[0].id,occurrenceDate:u.runsOf(2)[0].date}]}),runFormatRecord:[]},DEV);
  assert.deepEqual([lostFormats.status,lostFormats.errors,lostFormats.runFormatRecord,lostFormats.runFormat.warningSignScreen.sessionIds],['HOLD',['runFormatRecord.missingFormat'],[],[u.runsOf(2)[0].id]]);
@@ -353,17 +358,17 @@ test('SSCTR-RWS-B-01: what is and is not a signal: the reason as it is read, the
  const v=atSixteen(),longId=F.evaluateProgram(v.p,v.review(1,6,'WEEKLY_REVIEW',{observations:[{...stop,athleteId:v.p.athleteId,eventId:'x'.repeat(5000)}]}),DEV).runFormatRecord.filter(r=>isReport(r)&&r.report.stop);
  assert.ok(longId.length===1&&/^unidentified:[0-9a-f]{16}$/.test(longId[0].report.reportId)&&JSON.stringify(longId).length<700);
  // A forged or altered fact row is unreadable, named, and never read; a readable one cannot carry anything but the closed structure.
- const f=reportFactOf({eventId:'e1',sessionId:'s',actual:{completed:false,stop:{reason:'SYMPTOM'}}},VALUES),rec=appendReportFacts([],[f],{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'}).record,row=rec[0];
+ const f=reportFactOf({eventId:'e1',sessionId:'s',actual:{completed:false,stop:{reason:'SYMPTOM'}}},VALUES),rec=appendReportFacts([],[f],{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'},VALUES).record,row=rec[0];
  const read=r=>{const x=readReportFacts(r,'a',VALUES);return [x.stops.length,x.unreadable.length];};
  assert.deepEqual([read([{...row,report:{...row.report,stop:{reason:'FATIGUE',stated:true}}}]),read([{...row,eventId:'report|e1|0000000000000000'}]),read([{...row,sessionId:'other'}])],[[0,1],[0,1],[0,1]],'a row whose content, key or session was changed');
- // A row made self-consistent again by a client (it can recompute every hash) still cannot carry anything beside the five closed fields.
- const remade=report=>{const inputHash=hash(report);return {...row,report,inputHash,eventId:`report|${report.reportId}|${inputHash.slice(0,16)}`};};
+ // A row made self-consistent again by a client (it can recompute every hash) still cannot carry anything beside the closed fields.
+ const remade=report=>({...row,report,inputHash:hash({athleteId:row.athleteId,recordedAt:row.recordedAt,report}),eventId:`report|${report.reportId}|${hash(report).slice(0,16)}`});
  assert.deepEqual([read([remade({...row.report})]),read([remade({...row.report,note:'<b>knee</b>'})]),read([remade({...row.report,reportId:'x'.repeat(200)})]),read([remade({...row.report,timed:'yes'})]),read([remade({...row.report,stop:null,distanceKm:null})]),read([remade({...row.report,distanceKm:1e9})])],[[1,0],[0,1],[0,1],[0,1],[0,1],[0,1]]);
- assert.deepEqual([read(rec),read([{...row,report:{...row.report,stop:null}}]),read([{...row,athleteId:'b'}]),read([{...row,report:{...row.report,stop:{reason:'<x>',stated:true}},inputHash:hash({...row.report,stop:{reason:'<x>',stated:true}}),eventId:`report|e1|${hash({...row.report,stop:{reason:'<x>',stated:true}}).slice(0,16)}`}]),read([{...row,recordedAt:'never'}]),readReportFacts(rec,'b',VALUES).stops.length],
+ assert.deepEqual([read(rec),read([{...row,report:{...row.report,stop:null}}]),read([{...row,athleteId:'b'}]),read([remade({...row.report,stop:{reason:'<x>',stated:true}})]),read([{...row,recordedAt:'never'}]),readReportFacts(rec,'b',VALUES).stops.length],
   [[1,0],[0,1],[0,1],[0,1],[0,1],0]);
- assert.equal(reportFactOf({eventId:'e2',sessionId:'s',actual:{completed:true,minutes:40}},VALUES),null,'a report that states neither a stop nor a measured distance leaves no fact');
- assert.deepEqual(reportFactOf({eventId:'e3',sessionId:'s',actual:{completed:true,minutes:40,distanceKm:7}},VALUES,{fromDevice:true}),{sessionId:'s',reportId:'e3',stop:null,distanceKm:7,timed:true});
- assert.equal(reportFactOf({eventId:'e4',sessionId:'s',actual:{completed:true,minutes:40,distanceKm:7}},VALUES),null,'a typed figure is no measured distance of a report');
+ assert.equal(reportFactOf({eventId:'e2',sessionId:'s',actual:{completed:true,minutes:40}},VALUES),null,'a report that states no stop and nothing about its distance leaves no fact');
+ assert.deepEqual(reportFactOf({eventId:'e3',sessionId:'s',actual:{completed:true,minutes:40,distanceKm:7}},VALUES,{fromDevice:true}),{sessionId:'s',reportId:'e3',stop:null,distanceKm:7,timed:true,several:false,corrected:false,ownKm:null});
+ assert.deepEqual(reportFactOf({eventId:'e4',sessionId:'s',actual:{completed:true,minutes:40,distanceKm:7}},VALUES),{sessionId:'s',reportId:'e4',stop:null,distanceKm:null,timed:true,several:false,corrected:false,ownKm:7},'a typed figure is no measured distance of a report: it is kept as the athlete\'s own figure');
 });
 
 // ---------- QRE-RWS-B-02 ----------
