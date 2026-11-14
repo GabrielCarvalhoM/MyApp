@@ -35,7 +35,12 @@ test('values: the file is the pinned bytes, binds the three records by hash, and
  assert.deepEqual(VALUES.runFacts.declaredFailureReasons,c.runFacts.declared.failureReasons.map(plain));assert.deepEqual(VALUES.runFacts.bases,c.runFacts.targetMet.bases);assert.deepEqual(VALUES.runFacts.quality,c.runFacts.reliability.quality);
 });
 test('authority: off without an independent record bound to the pinned bytes; a record of the author, of other bytes or without sources enables nothing',()=>{
- assert.equal(M.allowsFormat(M.runFormatAuthority()),false,'no enabling record exists yet: fail closed');
+ // With no record at all the boundary is off. The default authority is on only once an independent record bound to the pinned bytes exists at
+ // the path the module reads (the judge of the candidate writes it, never the author), and then only by that record.
+ assert.equal(M.allowsFormat(M.runFormatAuthority({runFormatRecords:{records:[]}})),false,'no enabling record: fail closed');assert.equal(M.allowsFormat(M.runFormatAuthority({runFormatRecords:null})),fs.existsSync(M.FORMAT_RECORDS_URL)&&M.allowsFormat(M.runFormatAuthority()));
+ if(fs.existsSync(M.FORMAT_RECORDS_URL)){const on=M.runFormatAuthority();assert.equal(on.source,'CURRENT_INDEPENDENT_REVIEW');
+  for(const r of JSON.parse(fs.readFileSync(M.FORMAT_RECORDS_URL,'utf8')).records.filter(x=>x.boundaryId==='V1X-RUN-NATIVE'))assert.deepEqual([r.extensionSha256,r.independent],[M.FORMAT_VALUES_SHA256,true],'the record binds these bytes and is not the author\'s');}
+ else assert.equal(M.allowsFormat(M.runFormatAuthority()),false);
  const rec=x=>({records:[{boundaryId:'V1X-RUN-NATIVE',extensionSha256:M.FORMAT_VALUES_SHA256,independent:true,disposition:'APPROVE_WITH_CONDITIONS',evidenceStatus:'SUPPORTED_WITH_LIMITS',sourceIds:['SRC-1'],...x}]});
  assert.equal(M.allowsFormat(M.runFormatAuthority({runFormatRecords:rec({})})),true);
  for(const bad of [{independent:false},{extensionSha256:'0'.repeat(64)},{sourceIds:[]},{disposition:'REJECT'},{evidenceStatus:'INSUFFICIENT_EVIDENCE'},{boundaryId:'V1X-RUN-DISTANCE'}])assert.equal(M.allowsFormat(M.runFormatAuthority({runFormatRecords:rec(bad)})),false,JSON.stringify(bad));
