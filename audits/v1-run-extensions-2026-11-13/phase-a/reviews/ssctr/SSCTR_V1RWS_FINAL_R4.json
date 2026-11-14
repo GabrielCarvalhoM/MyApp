@@ -1,0 +1,116 @@
+{
+ "reviewId": "SSCTR-V1RWS-FINAL-R4",
+ "date": "2026-11-14",
+ "agent": {
+  "id": "sports-science-concurrent-training-reviewer",
+  "version": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "model": "claude-opus-5-5",
+  "instance": "fresh; not the author of the candidate, the decisions, the earlier reviews or the correction",
+  "delegation": false,
+  "humanReview": false,
+  "empiricalValidation": false,
+  "clinicalJudgment": false
+ },
+ "candidateCommit": "5289667",
+ "diffJudged": "9aed5e2..5289667",
+ "comparedWith": {"frozenBase": "c8104c1", "lastJudged": "644cd8e", "closedBlocked": "9aed5e2 (runtime identical to 644cd8e)"},
+ "branch": "claude/v1-run-extensions",
+ "scope": "synthetic candidate, no real athletes, no integration",
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "newBlockingFindings": 0,
+ "recordIssued": false,
+ "recordFilePresent": false,
+ "recordWouldBeIssued": true,
+ "recordIssueConditions": [
+  "only after the Quality and Security verdicts allow it",
+  "only for the commit this review judged (5289667) unless a later runtime change is judged again",
+  "SSCTR-RWS-A-04 before phase B reads paceEvidence",
+  "before integration or real-athlete use: SSCTR-RWS-C-01 (removed fact), C-02 (carried future-dated screen), C-03, C-04, B-03 with D-01, D-02, and QRE-RWS-A-07",
+  "SSCTR-RWS-C-08: the composed entry point enters no custody or integration until the custody accepts engine merges and conflict marks, keeps facts and formats in one sealed commit and returns the screen",
+  "Security A-01, A-04, A-06 to A-08 (integration) and the focal-review conditions the Security judge keeps"
+ ],
+ "humanQueueProposed": ["HQ-V1RWS-A-SSCTR-F1-MIXED-ORDER", "HQ-V1RWS-A-SSCTR-R2-ELIGIBILITY-ASK", "HQ-V1RWS-A-SSCTR-R3-SYMPTOM-SIGNAL", "HQ-V1RWS-A-SSCTR-R4-EMPTY-FIELD-MERGE"],
+ "humanQueueAppended": false,
+ "hashesVerified": {
+  "SSCTR_RWS_R2_DECISION.json": {"sha256": "daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213", "match": true},
+  "SSCTR_RWS_R3_DECISION.json": {"sha256": "6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2", "match": true},
+  "SSCTR_RWS_R3A_AMENDMENT.json": {"sha256": "37047d212c8cf98ddbf81b89b601702e60310025e95efc59083206f9f9d4d412", "match": true},
+  "CoachingCore/v1/RUN_FORMATS_V1.json": {"sha256": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c", "match": true}
+ },
+ "judgedFiles": {
+  "CoachingCore/src/v1-run-format-index.mjs": "52c334d449118b26236ee737f54dbb3690af13d1e4630823662c19337e4966e6",
+  "CoachingCore/src/v1-run-format.mjs": "7b3b4e0dab00571c3c2690a5e537341a27756ec14f2d571306b3986592a5fbc4",
+  "CoachingCore/src/v1-run-history.mjs": "e54dc8068ba11139d26a2a3c354753698a0377790d5ae83f4629b441bf0f7e18",
+  "CoachingCore/test/v1rws-final-fix.test.mjs": "804e00d6f6e7fb2860b289fee2263d78eecf39b04b576c83654e09aaf4bdb21a"
+ },
+ "reproductionBeforeCandidate": {
+  "commit": "9aed5e2",
+  "QRE-RWS-C-01": {"probe": "qre-r3/p-merge-paths.mjs", "before": "A1,A2,A3,B1,B2 EASY [345,575], nothing withheld", "candidate": "[345,420], SEVERAL_RECORDINGS, the row keeps the app's list"},
+  "QRE-RWS-C-05": {"probe": "qre-r3/p-inert.mjs", "before": "REVIEW_BEFORE_THE_RECORD, CALIBRATED [345,575], no screen", "candidate": "[345,420], screen REQUIRED"}
+ },
+ "differentialAgainst644cd8e": {
+  "selector": {"repetitions": 5616, "continuous": 10368, "differences": 0},
+  "reader": {"cases": 725760, "identical": 241056, "causes": {"STOP_NOT_OBJECT": 290304, "SEGMENTS_NOT_LIST": 194400}, "moreCredit": 0, "morePaceEvidence": 0, "largerExtent": 0, "largerHistoryReference": 0},
+  "journeys": {"reviews": 270, "ordinaryShapesDifferences": 0, "emptyFieldShapes": "same decision, sessions, executions and calibration; the stored row is 644cd8e's minus exactly the empty keys (405 rows)", "oddStop": "screen REQUIRED, 0 native (reading 5)", "segmentsNotList": "long run UNKNOWN, step gated, one easy run of the same 70 minutes native later from a calibration with less evidence"},
+  "mergePaths": {"r3aWithEmptyList": "644cd8e PARTIAL 10 km; candidate DISTANCE/MEASURED 16 km, never pace: the single-report reading (WE3A-10)", "overlapWithEmptyList": "history reference 16 -> 22 km, CT-3 18.084 -> 24.2, next long run 16 km / 100 min unchanged (D-01)"},
+  "race": "only typed or MANUAL race vs an import beyond 0.91 changes: the race is no longer a V1RC result; credit, engine, bands and screen unchanged",
+  "frozen": "V1RC three files unchanged since c8104c1; r6-adaptation.mjs and v1/ unchanged since d6381bb; v1rws-freeze --preserved 197/197 + 1 authorized amendment, 30/30",
+  "examples": "v1rws-ssctr-examples.test.mjs and helpers unchanged since 644cd8e; node --test test/v1rws-*.test.mjs 88/88"
+ },
+ "priorFindings": [
+  {"id": "SSCTR-RWS-C-01", "state": "PARTIAL", "evidence": "altered, other athlete's or junk rows fail closed (REQUIRED, 0 native); a removed fact is still NOT_RAISED with 6 native", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-C-02", "state": "PARTIAL", "evidence": "same review closed (+1, +60, +180 min: REQUIRED, 0 native); the same future-dated screen carried into the next review clears there (6 and 11 native)", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-C-03", "state": "OPEN", "evidence": "eligibility ASK: 12 time sessions prescribed:true, prescribing:false", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-C-04", "state": "OPEN", "evidence": "u1: unplanned run stop unread, 11 native", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-C-07", "state": "CLOSED", "evidence": "every inert answer names the screen the record asks for; REVIEW_BEFORE_THE_RECORD carries the admitted calibration [345,420]", "remainsRecordCondition": false},
+  {"id": "SSCTR-RWS-C-08", "state": "OPEN", "evidence": "x1 p4 identical on both commits", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-A-04", "state": "OPEN", "evidence": "not touched by the diff", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-B-03", "state": "OPEN", "evidence": "Data/iOS; weighed by D-01", "remainsRecordCondition": true},
+  {"id": "SSCTR-RWS-C-05", "state": "RAISED_TO_CONDITION_BY_D-01", "evidence": "m2-empty-merge"},
+  {"id": "SSCTR-RWS-C-06", "state": "CORRECTED", "evidence": "the engine keeps the rows of an earlier review it accepts, the conflicted one as well (s3); the note holds for refused reviews only"}
+ ],
+ "readings": [
+  {"n": 1, "ruling": "ACCEPTED", "with": ["QRE"], "why": "a single report reads the same with or without the empty field; in a merge the row keeps what the other source said (Founder rule; r3a WE3A-10)", "related": ["SSCTR-RWS-D-01", "SSCTR-RWS-D-03"]},
+  {"n": 2, "ruling": "ACCEPTED", "why": "only removes a race result from V1RC; aligns typed and MANUAL with OFFICIAL and GPS; no new number; inherited limit: within tolerance the merged (device) distance is read, also against OFFICIAL (slower bands)"},
+  {"n": 3, "ruling": "ACCEPTED", "why": "pace withheld; completion PARTIAL and history at what the row holds: conservative; only for records made elsewhere"},
+  {"n": 4, "ruling": "ACCEPTED_WITH_CONDITION", "with": ["Security"], "why": "compatible with r3 C4: existing screen, no clinical classification, own reason, decidedByThisExtension false, yes takes the clinical route, sessions by time (the frozen dose); a state the athlete's answer cannot clear is acceptable for a synthetic candidate but not for integration", "related": ["SSCTR-RWS-D-02"]},
+  {"n": 5, "ruling": "ACCEPTED", "with": ["Security"], "why": "fail closed; false, null and absent stay no stop; the string FATIGUE reads SYMPTOM, conservative and answerable; V1RC R-01"},
+  {"n": 6, "ruling": "ACCEPTED", "why": "UNKNOWN, no credit, never pace, step held; UNKNOWN does not count for X-2 (WE3A-03)", "related": ["SSCTR-RWS-D-03"]},
+  {"n": 7, "ruling": "ACCEPTED", "why": "closes C-02 within the review; the carried residual stays an integration condition"},
+  {"n": 8, "ruling": "ACCEPTED", "with": ["QRE", "Security"], "why": "verified: the engine keeps the rows of an earlier review it accepts; the facts now stay with them, the answer names both stops and delivers nothing", "related": ["SSCTR-RWS-D-04"]}
+ ],
+ "newFindings": [
+  {"id": "SSCTR-RWS-D-01", "severity": "CONDITION", "scope": "Data/Product before integration, with B-03; extends C-05", "what": "with the import sending segments: [], the app's list now adds to the import's distance; when both sources measured the same run the history reference goes 16 -> 22 km and CT-3 18.084 -> 24.2; next long run 16 km / 100 min unchanged; never pace; no credit gained; the absent-key path already gave 22 in 644cd8e", "evidence": "probes/m2-empty-merge.mjs overlapEmptyList vs overlapNoKey, three orders", "closes": "Data contract: each recording in one report only, deduplicated by activity id (B-03); or a source's list sum is no history reference when another source measured the whole run beyond 0.91"},
+  {"id": "SSCTR-RWS-D-02", "severity": "CONDITION", "scope": "integration; Product and custody engineering", "what": "an unreadable row of the record of reports keeps the screen REQUIRED after it is answered and through a restart; safe now (by time is the canonical dose), a loop in integration", "evidence": "probes/s2-readings.mjs reading4; probes/s4-signal-more.mjs restartRecordUnreadable", "closes": "route the unreadable state to the custody's record repair (A-01, A-06); once the athlete answered, show it as a data hold, not a pending screen"},
+  {"id": "SSCTR-RWS-D-03", "severity": "NOTE", "what": "segments {} and 0 are dropped on receipt (read as nothing) but read as an unreadable recording on a row made elsewhere", "evidence": "d2 reader causes; s2 reading6", "closes": "read {} and 0 the same on both paths"},
+  {"id": "SSCTR-RWS-D-04", "severity": "NOTE", "what": "a queued review's stop is held under its own instant; a screen answered between that instant and the arrival clears it (physically after the stop); same as 644cd8e for row stops; unreachable under the server's monotonic asOf", "evidence": "probes/s3-reading8.mjs nextWithScreenOfDay4", "closes": "nothing in the Core; server asOf in integration"},
+  {"id": "SSCTR-RWS-D-05", "severity": "NOTE", "what": "a removed report fact still reads NOT_RAISED: the open part of C-01, stated by the author's own test", "evidence": "x1 p1 dropped", "closes": "custody keyed chain"}
+ ],
+ "safetySignal": {
+  "symptomStopReadOnEveryReportAndRow": true,
+  "conflictQuarantineCorrectionDuplicateJsonRestart": "REQUIRED, 0 native",
+  "clearsOnlyByScreenAnsweredAfter": "yes within a review; carried future-dated screen residual (C-02)",
+  "noNativeUnder": ["hold", "clinical route", "screen asked", "eligibility ASK", "unreadable report row"],
+  "clinicalRouteOffersNoPrescription": true,
+  "inertAnswersNameTheScreen": true,
+  "newClinicalClassification": false
+ },
+ "commandsRun": [
+  "git archive 9aed5e2 / 644cd8e into scratch + node_modules",
+  "node --test test/v1rws-*.test.mjs (worktree): 88/88",
+  "node scripts/v1rws-freeze.mjs --preserved (worktree): exit 0",
+  "sha256sum of decisions, values, judged files and host files"
+ ],
+ "notRun": ["npm run verify", "scripts/verify-r*.mjs", "*-freeze.mjs --write", "scripts/v1rc-journeys.mjs", "scripts/v1rc-fuzz.mjs", "validate_records.py", "v1rc-freeze --check 1", "whole suite", "mutation"],
+ "notVerified": ["whole suite (1423 claimed)", "mutation", "QRE-RWS-C-01 and C-05 as reliability", "custody, keyed chain and data classification", "F08 hold in execution", "readingOf ok:false and REVIEW_TIME_REQUIRED (no access by valid input; code read)", "--write success path", "coverage outside the grids", "whether a real Health importer sends segments: []", "phase B"],
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/f7907645-2532-4d04-8be4-fa62a06fa225/scratchpad/ssctr-r4-1794674197/",
+ "literature": {"newScientificClaims": 0, "toolsAvailable": ["WebSearch (deferred)", "WebFetch (deferred)"], "used": false},
+ "hostContext": {
+  "globalCLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectCLAUDE.md (MyApp/)": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "MEMORY.md": "76baefc6c32d7e247d5a2b3efd0153a9857e28d4dba493bb79081587e3496afc",
+  "usedAsEvidence": false
+ }
+}

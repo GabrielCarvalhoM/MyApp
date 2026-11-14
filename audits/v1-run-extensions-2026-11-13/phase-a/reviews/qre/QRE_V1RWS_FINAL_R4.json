@@ -1,0 +1,49 @@
+{
+ "review": "QRE_V1RWS_FINAL_R4",
+ "role": "Quality & Reliability, independent judge (new instance; did not write the candidate, the earlier reports or the correction)",
+ "date": "2026-11-14",
+ "candidate": "52896679d45501ec9f8fb170b640de07075dd1d6",
+ "previousClosure": "9aed5e2",
+ "lastJudged": "644cd8e",
+ "frozenBase": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+ "verdict": "NOT_READY",
+ "verdictReason": "QRE-RWS-C-01 and QRE-RWS-C-05 are CLOSED (seen failing on 9aed5e2 and closing on the candidate in every variant built). QRE-RWS-B-01 stays PARTIAL through a new equivalent path, QRE-RWS-D-01 (BLOCKING): a correction by the other source of a merged row retires the merged row and the app's report facts are no longer read, so a partial distance reaches V1RC as pace evidence (EASY [345,420] -> [345,575]; a race in two files read as a 6 km result in 50 min). Pre-existing on 9aed5e2, not a regression. The mission allows no further correction.",
+ "enablingRecordPresent": false,
+ "earlierFindings": [
+  {"id":"QRE-RWS-C-01","was":"BLOCKING","state":"CLOSED","evidence":"q4-c01-matrix: 2 versions x 9 list shapes x 4 orders; 9aed5e2 20/72 at [345,575], candidate 0/72, all 72 withheld SEVERAL_RECORDINGS with the app's list kept on the row. Controls unchanged (one file whole [345,420]; single 6.6 km report [345,575]). q4-c01-paths: three reports, duplicate, JSON round trip, week-6 re-read, restart, exported runCalibrationOf, facts removed, 140-char id with segments:false: all withheld. p-wiring oracle equal in returned, restart and exported."},
+  {"id":"QRE-RWS-C-05","was":"BLOCKING","state":"CLOSED","evidence":"q4-c05: 14 answers x 2 records; every calibration equals my oracle or is none (stricter by design with an unreadable fact row); EASY never [345,575]; the screen named in all 14 answers of record B; no session in any inert answer; refused/early/unknown-format leave the format record unchanged; identical after JSON round trip 28/28. On 9aed5e2 three answers [345,575] and no screen in B's inert answers. Every return of v1-run-format-index.mjs enumerated."},
+  {"id":"QRE-RWS-B-01","was":"BLOCKING","state":"PARTIAL","evidence":"Closed for every merge order, shape and family tested; open through QRE-RWS-D-01 (correction of part of a merged row)."},
+  {"id":"QRE-RWS-C-02","was":"CONDITION","state":"CLOSED","evidence":"q4-robust c02: altered stop fact or junk row -> screen REQUIRED (RUN_REPORT_UNREADABLE), 0 native, every distance withheld (REPORTS_UNREADABLE), not released by the answered screen. Deletion stays silent: custody keyed chain (Security A-01, integration)."},
+  {"id":"QRE-RWS-C-06","was":"CONDITION","state":"CLOSED","evidence":"sourcesOf deduplicated; facts summed in one pass; 1e5 merged ids 364 ms; linear (see D-04)."},
+  {"id":"QRE-RWS-C-07","was":"NOTE","state":"CLOSED","evidence":"Extra key on the row, in the report or in stop: unreadable; recordedAt moved without reseal or non-canonical: unreadable; other athlete: unreadable. Resealed by a client: read (unkeyed seal, Security)."},
+  {"id":"QRE-RWS-C-03","was":"NOTE","state":"CLOSED","evidence":"K14 (N38) and K32 (N33) killed by a test each; K29 (N34) killed as well."},
+  {"id":"QRE-RWS-C-04","was":"NOTE","state":"OPEN","evidence":"v1rws-execution I3/I4/SC-3 unchanged this cycle; optional."}
+ ],
+ "readings": [
+  {"n":1,"ruling":"ACCEPTED","note":"Closes C-01 at the source (72/72). Side effect recorded as QRE-RWS-D-03."},
+  {"n":8,"ruling":"CONSISTENT_WITH_QRE-RWS-A-05_NOT_REOPENED","evidence":"q4-early: queued review accepted by the engine (KEEP, REVIEW_BEFORE_THE_RECORD): 0 sessions, 0 format rows, one fact per report under the review's own instant (the same instant the engine keeps its row under); replay adds nothing; a refused review adds nothing. On 9aed5e2 the stop of a report refused by conflict in that review vanished at the next review (NOT_RAISED, 3 native); on the candidate REQUIRED, 0 native. For SSCTR: on both commits a screen dated between the queued review's instant and its arrival releases the stop."},
+  {"n":11,"ruling":"ACCEPTED","note":"RECORD_NOT_ADMITTED not reachable by JSON input; see D-05."},
+  {"n":12,"ruling":"ACCEPTED","note":"Only withholds more; non-object plan or boundary off is raw V1RC as before."}
+ ],
+ "newFindings": [
+  {"id":"QRE-RWS-D-01","severity":"BLOCKING","title":"A correction by the other source of a merged row drops what the app's report said","evidence":"q4-corr: app time version listing the 2nd file + import of the 1st (6.6 km, 63 min, []): merged row withheld SEVERAL_RECORDINGS [345,420]. The import's re-sync (correctionOf dev-x, same figures) retires the merged row; live row dev-x-v2 alone, reportsVerdict null. With an effort on the re-sync (rpe allowed by the ADF observation shape): EASY [345,575] in weeks 4 and 5, nothing withheld; without effort P1 does not read it but history keeps 6.6 km unwithheld. q4-corr-disputed: app 11 km vs import 6.6 km, DISTANCE_DISPUTED, then the import's correction: [345,575]. q4-corr-race (rows as the engine keeps them): merged race no result; after the import's correction plan-race:dev-race-v2 6 km in 3000 s read as a race result, no effort needed. Same on 9aed5e2. Author tested only app-side corrections.","closes":"Read the report facts of every report in a live row's correction chain (the sources of the rows it supersedes), with tests for the import's re-sync correction on an easy run, a long run and a race, in the three orders."},
+  {"id":"QRE-RWS-D-02","severity":"NOTE","title":"With the native boundary off (today's default) the C-01 input is the frozen [345,575]","evidence":"q4-off-c01: same calibration hash as v1-run-index.mjs; record begun through the frozen entry point and continued here (q4-c01-paths E6): [345,575] on both commits. Required frozen behavior; declared by the author.","closes":"Decision at enabling (SSCTR, Founder): accept, or re-read the earlier record before enabling."},
+  {"id":"QRE-RWS-D-03","severity":"NOTE","title":"Stripping empty fields changes the observation the engine hashes","evidence":"q4-replay: the same report (segments: [], same eventId) sent with the boundary off and re-sent once on marks the stored row EVENT_ID_REUSED_WITH_DIFFERENT_FACTS; not on 9aed5e2. Same class pre-existing for the typed distance. Across a restart with the session still planned: no effect.","closes":"At enabling: compare re-sends by the report as received, or declare re-sends across enabling as conflicts."},
+  {"id":"QRE-RWS-D-04","severity":"NOTE","title":"Fact reading linear, larger constant","evidence":"q4-robust under concurrent load: valid facts 1e3/1e4/1e5 164/631/5952 ms; forged seal 115/684/6160 ms; junk 48/70/333 ms; 1e5 merged ids 364 ms. Each fact row checked twice per answer, two hashes each.","closes":"Optional: custody bound on fact rows per request (Security)."},
+  {"id":"QRE-RWS-D-05","severity":"NOTE","title":"The ok:false path of readingOf is untested","evidence":"Mutants N12 (bare calibration) and N36 (no screen) survive; path not reachable by any input built.","closes":"Optional: a test forcing the reading to throw, or declare the path defensive."}
+ ],
+ "mutation": {"written":39,"applied":39,"killed":37,"survived":["N12","N36"],"suite":"88 v1rws tests on a scratch copy (I10/V6 discounted, no git)","restoredBySha":true},
+ "frozen": {"v1-run-calibration.mjs":"0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01","v1-run-index.mjs":"a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608","v1-index.mjs":"8a9bdd500663967ceed8eaedfc514665da8cef61e0a64536b7a02b9dd2cebd2d","r6-adaptation.mjs":"6cedcb72be4e2bc6434a1f86a20d8c4447498b73c1157706cc91554847ac6e50","identity":"194/194 and 82/82 against c8104c1; boundary off 8/8 steps identical"},
+ "storedRecord": {"custody":"6/6 ok, stored rows 5/5, 9/10 (engine's own correction annotation), 16/16, 21/21, 26/26","replayAndOrder":"identical; shuffled records differ only in inputHash, trace and runFormatRecord order","refused":"record hash unchanged","throws":"154 + 27 malformed, 0 exceptions"},
+ "historicalTests": {
+  "confirmation":"The only failure of the joint run on this line is the historical test 'V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here', actual ['CoachingCore/src/r6-adaptation.mjs'] and nothing else.",
+  "historicalVerification":"v1-run-calibration worktree at c8104c1: v1rc-calibration.test.mjs 30/30; v1rc-freeze --check 1 exit 0, 198/198, 30 added files match",
+  "extensionTests":"88/88",
+  "jointRun":"1423 tests, 1422 pass, 1 fail (historical); tap-parse onlyHistorical true; v1rws-freeze --preserved exit 0; v1rc-freeze --check 1 here DRIFT only r6-adaptation.mjs, exit 1",
+  "c8104cTestsEdited":false,
+  "suiteAnnouncedGreen":false
+ },
+ "notVerified":["D-01 for a race through a whole engine journey to race week (shown through the engine on an easy run, and on the calibration with rows as the engine keeps them)","whether a real HealthKit re-sync arrives as correctionOf with the same minutes, and whether the app will attach the asked effort to imported observations (G6/RUN-08, PD-1)","--write with an enabling record","sporting values (SSCTR) and custody security (Security)","the whole suite under each mutant","V1RC journeys and fuzz (forbidden)"],
+ "scratch":"C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/f7907645-2532-4d04-8be4-fa62a06fa225/scratchpad/qre-r4-judge-1794674195/",
+ "hostContext": {"globalClaudeMd":"c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6","projectClaudeMd":"e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6","memoryMd":"76baefc6c32d7e247d5a2b3efd0153a9857e28d4dba493bb79081587e3496afc","usedAsEvidence":false}
+}
