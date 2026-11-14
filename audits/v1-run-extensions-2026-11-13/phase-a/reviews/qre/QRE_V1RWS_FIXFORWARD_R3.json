@@ -1,0 +1,69 @@
+{
+ "review": "QRE_V1RWS_FIXFORWARD_R3",
+ "role": "Quality & Reliability, independent judge (new instance; did not write the candidate, the earlier reports or the correction)",
+ "date": "2026-11-14",
+ "candidate": "644cd8e38ffb3668aed8afaeda47d639081946bd",
+ "phaseAClosed": "a8e9b05",
+ "lastJudged": "d6381bb",
+ "frozenBase": "c8104c1aba2cc5a1aa9a0e37f8ed2d2d3675ebe9",
+ "verdict": "NOT_READY",
+ "verdictReason": "QRE-RWS-B-01 is PARTIAL: closed for the judge's example and every variant tested by the R2 judge and the author, open by two paths (QRE-RWS-C-01, QRE-RWS-C-05). The mission allows no further cycle: the phase closes BLOCKED and returns to the Founder.",
+ "enablingRecordPresent": false,
+ "earlierFindings": [
+  {"id":"QRE-RWS-B-01","was":"BLOCKING","state":"PARTIAL","evidence":"probe-a01-paths on a8e9b05: 3 merges [345,575]; on 644cd8e all 12 scenarios [345,420] with SEVERAL_RECORDINGS withheld and the stored row intact. Open through QRE-RWS-C-01 and QRE-RWS-C-05."},
+  {"id":"QRE-RWS-B-02","was":"CONDITION","state":"CLOSED","evidence":"probe-r2 plaus: 40 km without minutes or seconds -> UNKNOWN DURATION_REQUIRED, paceEvidence false, history null, CT-3 max 18.084; intake row without durationMinutes -> ref null."},
+  {"id":"QRE-RWS-B-03","was":"NOTE","state":"CLOSED","evidence":"I10 and --preserved check the file sha 6cedcb72...6e50 and the diff sha 6675741d...e370; no lexical check decides alone."},
+  {"id":"QRE-RWS-B-04","was":"CONDITION","state":"CLOSED","evidence":"--write in a scratch git clone of 644cd8e refused without an enabling record (exit 1, nothing written); the script's TAP reading applied to the clone's joint run gives 1409/1408/1, only the historical test by name. Success path with an enabling record not exercised."},
+  {"id":"QRE-RWS-B-05","was":"CONDITION","state":"CLOSED","evidence":"M04, M08a, M18 each killed by a test that names the mutant (mutate-r3)."},
+  {"id":"QRE-RWS-B-06","was":"NOTE","state":"CLOSED_AS_ASKED","evidence":"N02 and N35 have tests; not re-mutated."},
+  {"id":"QRE-RWS-B-07","was":"NOTE","state":"UNCHANGED","evidence":"walkHeavy930 still UNKNOWN MEASUREMENT_IMPLAUSIBLE; SSCTR reading."}
+ ],
+ "findings": [
+  {"id":"QRE-RWS-C-01","severity":"BLOCKING","title":"A merge in which one report lists an empty segments array drops the app's list of recordings; the first file's distance over the whole minutes reaches V1RC",
+   "evidence":"p-merge-paths.mjs, time version, 11 km in 63 min, app report with segments [4.4 km] and no distance + Apple Health import of the first file (6.6 km, GPS OK) with segments []: same review, app then import, import then app all give EASY [345,575] and paceEvidenceWithheld []; two app reports (first with segments [], second listing the second file), both orders: [345,575]. p-wiring.mjs: the same through restartProgram and the exported runCalibrationOf. Native version: row partial, excluded. reportFactOf keeps only stop and measured distance, so the app report leaves no fact; mergeActual (frozen) lets the better-ranked source's [] win. Same result on a8e9b05 (not a regression; B-01 by another merge).",
+   "closes":"Keep, as a fact of each report received, that it lists more than one recording, and withhold it in reportsVerdict as SEVERAL_RECORDINGS; test in the three orders and with two app reports."},
+  {"id":"QRE-RWS-C-02","severity":"CONDITION","title":"An unreadable report fact loses the safety signal (same as SEC-RWS-C-06, found independently)",
+   "evidence":"p-facts.mjs alter: a stop fact with a garbled recordedAt, a reason changed to FATIGUE, an extra key or another athlete is listed in unreadableReports, the screen is NOT_RAISED and 6 native sessions are delivered; a dropped fact disappears without trace. A lost cited format goes to HOLD.",
+   "closes":"Before integration: an unreadable RUN_REPORT_RECEIVED row keeps runs by time with the screen required (or HOLD); the custody's keyed chain for deletion. Security and SSCTR decide."},
+  {"id":"QRE-RWS-C-03","severity":"NOTE","title":"Surviving mutants","evidence":"see mutation"},
+  {"id":"QRE-RWS-C-04","severity":"NOTE","title":"I3/I4/SC-3 computes 'used' over F.admitted, the function under test","evidence":"v1rws-execution.test.mjs diff a8e9b05..644cd8e; compensated by the new paceEvidenceWithheld and intact-row assertions.","closes":"Optional: compare against the bare record with a rule written in the test."},
+  {"id":"QRE-RWS-C-05","severity":"BLOCKING","title":"Ruling on SEC-RWS-C-01: an inert answer on a decision the engine accepted carries the calibration of the unadmitted record and does not name the screen the record requires",
+   "evidence":"p-inert.mjs: two-file run in week 3; accepted review 4/2; unknown-format ASK with a SYMPTOM stop on 4/4 keeps 1 stop fact (screen REQUIRED); the queued review of 4/3 with the last accepted reference state: engine KEEP, extension REVIEW_BEFORE_THE_RECORD, runCalibration CALIBRATED with EASY [345,575], no warningSignScreen. On a8e9b05 the same sequence: ACTIVE, [345,420]. HOLD and clinical answers: WITHHELD_HOLD, bands UNAVAILABLE; unknown/lost-format shells: NOT_APPLICABLE. FORMAT_ERROR and REVIEW_TIME_REQUIRED return base0 by the same code but could not be triggered. Mitigating: no sessions delivered, nothing stored, the next accepted review is back to [345,420]; under the custody's monotonic server clock the path needs a regressing clock (Security's reading, not verified).",
+   "closes":"Every inert answer on an accepted engine decision carries the calibration made over admitted (or none) and names the screen the record requires; test with an ASK followed by an earlier review.",
+   "routedFrom":"SEC-RWS-C-01"},
+  {"id":"QRE-RWS-C-06","severity":"CONDITION","title":"Ruling on SEC-RWS-C-02: quadratic cost of repeated mergedSourceIds over facts sharing a report id",
+   "evidence":"p-sec.mjs: n=1000 68 ms, 3000 368 ms, 10000 2270 ms (3.4 MB) against 39, 65, 132 ms with distinct ids.","closes":"Deduplicate sourcesOf; bound facts per reportId and ids read per row; cost test.","routedFrom":"SEC-RWS-C-02"},
+  {"id":"QRE-RWS-C-07","severity":"NOTE","title":"Ruling on SEC-RWS-C-05: a fact row accepts extra keys at the top level and inside stop; recordedAt is outside the hash",
+   "evidence":"p-sec.mjs shape: extra top-level key and extra stop key (rehashed) read, screen REQUIRED; recordedAt moved back 7 days lets an older screen clear the stop (NOT_RAISED).","closes":"Exact key sets on the row and in stop; recordedAt under the hash or the chain.","routedFrom":"SEC-RWS-C-05"}
+ ],
+ "frozen": {
+  "sha256": {"v1-run-calibration.mjs":"0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01","v1-run-index.mjs":"a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608","v1-index.mjs":"8a9bdd500663967ceed8eaedfc514665da8cef61e0a64536b7a02b9dd2cebd2d","r6-adaptation.mjs":"6cedcb72be4e2bc6434a1f86a20d8c4447498b73c1157706cc91554847ac6e50"},
+  "identicalTo": {"v1-run-calibration.mjs":"c8104c1","v1-run-index.mjs":"c8104c1","v1-index.mjs":"c8104c1","r6-adaptation.mjs":"d6381bb"},
+  "identityNoReader": {"old-probe-identity":"194/194","probe-identity2":"82/82"},
+  "boundaryOff": "p-off.mjs: 8/8 steps identical to v1-run-index.mjs outside the four extension keys",
+  "recalibrationWiring": "p-wiring.mjs: own oracle (frozen V1RC, v1-run-index.mjs arguments, own admission rule) equals the returned calibration in evaluateProgram, restartProgram and the exported runCalibrationOf (4 scenarios)"
+ },
+ "record": {"custody":"probe-custody2: 6/6 ok, verify null, stored rows kept 5/5, 9/10 (engine's correction annotation), 16/16, 21/21, 26/26","replay":"identical input -> identical output; proposal null as in v1-run-index","order":"only inputHash, trace and runFormatRecord order differ (equal as sets)","refused":"records unchanged","throws":"154 + 15 malformed, 0 exceptions","cost":"repeat 2e6 28 ms; steps 1e5 958 ms (914 frozen); segments 1e5 758 ms (668); 1e5 forged facts 1.1 s"},
+ "historical": {
+  "confirmation": "CONFIRMED: the one failure of the joint run on this line is exclusively 'V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here', actual ['CoachingCore/src/r6-adaptation.mjs'].",
+  "historicalOnOwnSnapshot": {"where":".claude/worktrees/v1-run-calibration at c8104c1","v1rcCalibrationTests":"30/30","v1rcFreezeCheck1":"30 added files match; COACHINGCORE-V1-FREEZE-1 preserved 198/198 (exit 0)"},
+  "extensionOwnTests": "74/74 (test/v1rws-*.test.mjs)",
+  "jointRun": {"tests":1409,"pass":1408,"fail":1,"failed":["V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here"]},
+  "lineVerifier": "v1rws-freeze --preserved: 197/197 + 1 amended with authorized sha and diff (22+/10-) + 30/30, exit 0; v1rc-freeze --check 1 on the line: DRIFT only (FREEZE-1) CoachingCore/src/r6-adaptation.mjs, exit 1 as expected",
+  "testsOfC8104c1Edited": false,
+  "note": "The joint suite is not green and must not be announced as green; the documented historical exception does not replace the approval of the candidate, which this review denies."
+ },
+ "changedEarlierTests": [
+  {"test":"v1rws-engine I7/T3","ruling":"legitimate restatement, one assertion added"},
+  {"test":"v1rws-engine I10/V6","ruling":"stronger: exact counts and the file and diff sha"},
+  {"test":"v1rws-execution T7/T20","ruling":"legitimate restatement"},
+  {"test":"v1rws-execution I3/I4/SC-3","ruling":"legitimate outcome; partial circularity (QRE-RWS-C-04)"},
+  {"test":"v1rws-review-fixes A-01","ruling":"legitimate and stronger"},
+  {"test":"v1rws-review-fixes A-06 (M03)","ruling":"expected outcome changed (UNKNOWN partial -> DISTANCE CONFIRMED_CORRECTION, never pace); not weaker as a test; the new credit is an SSCTR reading"},
+  {"test":"v1rws-ssctr-examples WE3A-02, WE3A-04, WE3A-10 inputs","ruling":"legitimate: inputs back to the r3a wording, no expected status, basis or history reference changed"}
+ ],
+ "mutation": {"copy":"git archive of 644cd8e in the scratch folder (c644/), 74 v1rws tests per mutant, files restored and checked by sha","written":37,"applied":36,"notApplied":["K36"],"killed":33,"survived":["K14 (screen answered at the same instant as the stop counts: boundary untested)","K29 (hold false in the recalibration: declared equivalent by the author, not disproved)","K32 (recalibration with evidenceRecord []: no test recalibrates with a declared result; not equivalent)"],"m04":"killed by 'QRE-RWS-B-05 (M04)' only","m08a":"killed by 'QRE-RWS-B-05 (M08a, M18), through the entry point'","m18":"killed by the same test","raw":"mutants-r3.json in the scratch folder"},
+ "notVerified": ["--write success path with an enabling record","sporting values and SSCTR readings","full suite under each mutant (74 v1rws tests only)","V1RC journeys and fuzz (forbidden)","real HealthKit, and whether a real importer sends segments []","custody security; SEC-RWS-C-03 merge across two custody requests"],
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c10c7f19-99c9-449b-b28b-312cccb82112/scratchpad/qre-r3-judge-1794656631/",
+ "hostInjectedContext": {"note":"disclosed, not used as evidence","globalClaudeMd":"c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6","projectClaudeMd":"e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6","memoryMd":"afd187467bec0da84e92007bd03cb902a4c0039f6b9e41f0927ace7ff7c349a8"}
+}

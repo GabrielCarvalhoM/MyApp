@@ -1,0 +1,337 @@
+{
+ "reviewId": "SSCTR-V1RWS-FIXFORWARD-R3",
+ "date": "2026-11-14",
+ "agent": {
+  "id": "sports-science-concurrent-training-reviewer",
+  "version": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "model": "claude-opus-5-5",
+  "instance": "fresh; not the author of the candidate, the decisions, the earlier reviews or the correction",
+  "humanReview": false,
+  "empiricalValidation": false,
+  "clinicalJudgment": false
+ },
+ "candidateCommit": "644cd8e",
+ "diffJudged": "a8e9b05..644cd8e",
+ "comparedWith": {
+  "frozenBase": "c8104c1",
+  "lastJudged": "d6381bb",
+  "closedBlocked": "a8e9b05"
+ },
+ "branch": "claude/v1-run-extensions",
+ "scope": "synthetic candidate, no real athletes, no integration",
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "newBlockingFindings": 0,
+ "recordIssued": false,
+ "recordWouldBeIssued": true,
+ "recordIssueConditions": [
+  "only after the Quality and Security verdicts allow it",
+  "only for the commit this review judged (644cd8e) unless a later runtime change is judged again",
+  "SSCTR-RWS-A-04 before phase B reads paceEvidence",
+  "SSCTR-RWS-C-01, C-02, C-03, C-04, C-07, SSCTR-RWS-B-03 and QRE-RWS-A-07 before integration or real-athlete use",
+  "SSCTR-RWS-C-08: the composed entry point enters no custody or integration until the custody accepts engine merges and conflict marks, keeps facts and formats in one sealed commit and returns the screen",
+  "Security A-01, A-04, A-06 to A-08 (integration) and SEC-RWS-C-02 to C-06 of the focal review"
+ ],
+ "hashesVerified": {
+  "SSCTR_RWS_R2_DECISION.json": {
+   "sha256": "daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213",
+   "match": true
+  },
+  "SSCTR_RWS_R3_DECISION.json": {
+   "sha256": "6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2",
+   "match": true
+  },
+  "SSCTR_RWS_R3A_AMENDMENT.json": {
+   "sha256": "37047d212c8cf98ddbf81b89b601702e60310025e95efc59083206f9f9d4d412",
+   "match": true
+  },
+  "CoachingCore/v1/RUN_FORMATS_V1.json": {
+   "sha256": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c",
+   "match": true,
+   "pinnedInFORMAT_VALUES_SHA256": true
+  }
+ },
+ "judgedFiles": {
+  "CoachingCore/src/v1-run-format-index.mjs": "b6282288179947d704b0baac3670ba3d5f077b10768a999cb4a0607093181bba",
+  "CoachingCore/src/v1-run-format.mjs": "b9efd3b99f37b5b43a344a1c3921bde6cd093bf5bf8a0356f09b9ef63a497edd",
+  "CoachingCore/src/v1-run-history.mjs": "ab4b09a1a395db5d9702c3597183360e6508547f4d49fd50cad670a4bf71dbe7",
+  "CoachingCore/test/v1rws-fix-forward.test.mjs": "beede27e181739c0f48070572d068516c9928bc32dd121c502c066d3d77eb2d9",
+  "audits/v1-run-extensions-2026-11-13/phase-a/PHASE_A_FIX_FORWARD.md": "fa943380dc49e1a3bf28ce4984f842f4dac43c732da3527c7969e54b700569e1"
+ },
+ "earlierFindings": [
+  {
+   "id": "SSCTR-RWS-B-01",
+   "wasSeverity": "BLOCKING",
+   "status": "CLOSED",
+   "reproducedBefore": "a8e9b05, probe p1c-conflict-realistic (judge r2), app symptom stop + import completed:true: 6 of 6 cases in three orders x two expressions with the screen NOT_RAISED and 1 to 4 native sessions next week",
+   "after": "644cd8e, same probe: 18 of 18 REQUIRED and 0 native; engine rows unchanged (CONFLICTED; with the import first the stop is on no row)",
+   "ownProbes": [
+    "s1-signal.mjs: three reports in 6 orders x 2 expressions 12/12 REQUIRED at the review and the next day; a further report on the quarantined identity REQUIRED; a stop on the watch import REQUIRED; non-symptom reasons in conflict never; clinical route prescribing false, prescribed false; eligibility ASK with the stop REQUIRED and 0 native; screen answered the next day clears; restart from the record with only the fact REQUIRED until a later screen"
+   ],
+   "separation": "the conflicted execution gets no credit (completed false), no pause count, no history, no sizing; the screen is the existing one (decidedByThisExtension false); the engine's decision and rows are those of the frozen entry point",
+   "residuals": [
+    "SSCTR-RWS-C-01",
+    "SSCTR-RWS-C-02",
+    "SSCTR-RWS-C-04",
+    "SSCTR-RWS-C-06"
+   ]
+  },
+  {
+   "id": "SSCTR-RWS-B-02",
+   "wasSeverity": "CONDITION",
+   "status": "CLOSED",
+   "evidence": "b2-ask.mjs on two plans: missing, null, UNKNOWN or 20-day-old eligibility give ASK eligibility.currentAssessment, 0 native, every session TIME with WARNING_SIGN_SCREEN_REQUIRED:ENGINE_ASKS_CURRENT_ELIGIBILITY, prescribing false, V1RC assessment NOT_OFFERED (a8e9b05: 11 and 7 native, prescribing true). An ASK for choices keeps the same native sessions with prescribing false. 6- and 8-day screens unchanged. A sign answered yes: clinical route as before.",
+   "residual": "SSCTR-RWS-C-03"
+  },
+  {
+   "id": "SSCTR-RWS-A-04",
+   "status": "OPEN_AS_RECORD_CONDITION",
+   "note": "not touched by this cycle"
+  },
+  {
+   "id": "SSCTR-RWS-B-03",
+   "status": "OPEN_INTEGRATION",
+   "note": "declared untreated by the author (record section 8)"
+  },
+  {
+   "id": "SSCTR-RWS-B-04",
+   "status": "NOTE"
+  },
+  {
+   "id": "SSCTR-RWS-B-05",
+   "status": "NOTE"
+  },
+  {
+   "id": "SSCTR-RWS-B-06",
+   "status": "NOTE"
+  }
+ ],
+ "qreB02SportingSide": {
+  "ruling": "ACCEPTABLE",
+  "why": "a measured distance with no duration cannot be checked against the plausibility window; UNKNOWN DURATION_REQUIRED with an ask, never pace evidence or history reference; UNKNOWN does not count for X-2 (r3a WE3A-03); without the reference L30 changes only the expression (WE3A-07); the native session stays partial (the step holds); in the differential 1,736 untimed cases change and none gains credit, pace evidence or a larger reference"
+ },
+ "newFindings": [
+  {
+   "id": "SSCTR-RWS-C-01",
+   "severity": "CONDITION",
+   "when": "before integration or real-athlete use",
+   "what": "With the import first, the symptom stop exists only as a RUN_REPORT_RECEIVED fact in runFormatRecord. Facts dropped by the client, or a damaged fact row (only named in unreadableReports), lose the stop: screen not raised and 6 native sessions. The engine's conflicted row does not reference the quarantined report. A missing cited format gives HOLD; an unreadable safety fact fails open.",
+   "evidence": [
+    "probes/s1-signal.mjs factsContract",
+    "test/v1rws-fix-forward.test.mjs:305 states the dependency"
+   ],
+   "closesWith": "An unreadable report fact fails closed (runs by time, or HOLD as for a lost format), and the integration keeps the facts with the engine record under the keyed chain in one commit (Security A-01/A-06), as safety data."
+  },
+  {
+   "id": "SSCTR-RWS-C-02",
+   "severity": "CONDITION",
+   "when": "integration",
+   "preExisting": "a8e9b05",
+   "what": "A screen stamped later the same day than the review that brings the stop (assessedAt 21:00, review 20:00) is accepted by the engine as current (it checks the date) and taken by the extension as answered after the stop: 7 native at once. Date-only same day, or an earlier instant, keeps the screen required; a next-day date makes the engine ASK.",
+   "evidence": [
+    "probes/s1-signal.mjs screenAt/* (identical on a8e9b05)"
+   ],
+   "closesWith": "The instant of the screen that clears a stop may not be later than the review's own instant (or the custody stamps it)."
+  },
+  {
+   "id": "SSCTR-RWS-C-03",
+   "severity": "CONDITION",
+   "when": "Product, before real-athlete use; extends QRE-RWS-A-07",
+   "what": "Under an eligibility ASK runFormat.prescribing is false but each TIME session keeps prescribed true. Unassessed eligibility is no permission to prescribe (SSCTR-05); a consumer reading only the session flag would offer training.",
+   "evidence": [
+    "probes/b2-ask.mjs (prescribed flags 'true' under ASK)"
+   ],
+   "closesWith": "A session under prescribing false (ASK) is not offered as training to do until the screen is answered, as already holds for prescribed false."
+  },
+  {
+   "id": "SSCTR-RWS-C-04",
+   "severity": "CONDITION",
+   "when": "Data/Product, integration",
+   "preExisting": "a8e9b05",
+   "what": "A run report outside the plan (no sessionId) that declares a symptom stop is stored by the engine as UNPLANNED and its stop is never read: screen not raised, 11 native. The ADF contract today defines loose runs only as imports, which carry no stop, so it does not block.",
+   "evidence": [
+    "probes/u1-unplanned.mjs",
+    "audits/v1-athlete-data-foundation-2026-11-13/ATHLETE_DATA_FOUNDATION.md:46"
+   ],
+   "closesWith": "The app never offers a stop reason on a run outside the plan, or the stop on such a row is read for the screen like any other."
+  },
+  {
+   "id": "SSCTR-RWS-C-07",
+   "severity": "CONDITION",
+   "when": "before integration",
+   "sameAs": "SEC-RWS-C-01 (sporting side)",
+   "what": "A REVIEW_BEFORE_THE_RECORD answer on a decision the engine accepted names only a stop in the request itself, not one the record already holds (a fact kept by an unknown-format ASK, then a review queued earlier): screen null, 0 extension sessions. No native session is delivered by that inert answer, the fact stays on record and the next accepted review is REQUIRED with 0 native. Under the custody asOf is the server clock, so the path needs a clock that goes back.",
+   "evidence": [
+    "probes/x1-security-points.mjs p2"
+   ],
+   "closesWith": "Every inert answer on an accepted decision names the screen the record requires (and, on the QRE side, carries the calibration over the admitted record)."
+  },
+  {
+   "id": "SSCTR-RWS-C-08",
+   "severity": "CONDITION",
+   "when": "condition of the enabling record; gates integration",
+   "sameAs": "SEC-RWS-C-03",
+   "preExisting": "frozen v1-index under the custody",
+   "what": "Under the custody (src/boundary/custody.mjs) the app report and the import of one run in two requests fail closed in both orders: the second request returns ok:false, nothing is kept, the answer carries only ok and error. Import first: the symptom stop is nowhere and no screen reaches the app. In one request the stored row is conflicted without the stop and the custody keeps no runFormatRecord, so the fact is lost too. The custody runs the frozen v1-index by default, delivers no native session today, and the composed entry point is not integrated: not blocking for the synthetic candidate.",
+   "evidence": [
+    "probes/x1-security-points.mjs p4 (default and composed engine)"
+   ],
+   "closesWith": "The composed entry point with V1X-RUN-NATIVE on enters no custody or integration until the custody accepts the engine merge and conflict mark on a stored row, keeps facts and formats in the same sealed commit, and the answer carries the required screen; test in both orders with the stop."
+  },
+  {
+   "id": "SSCTR-RWS-C-05",
+   "severity": "NOTE",
+   "what": "The merge sums the import's distance and the app's segments. An app that also lists the recording the import brought double-counts: 26 km on a 16 km target, MEASURED, history reference 26, CT-3 ceiling 18.084 to 28.6. The same fault in one report gives the same result, so it is not the merge's. Never pace evidence; the next long run stays 16 km (the dose is by time).",
+   "evidence": [
+    "probes/m1-merge.mjs"
+   ],
+   "closesWith": "Data contract: each recording in one report only (dedupe by activity id), with SSCTR-RWS-B-03."
+  },
+  {
+   "id": "SSCTR-RWS-C-06",
+   "severity": "NOTE",
+   "what": "A refused review (integrity HOLD, invalid input, earlier than the record) keeps nothing; the engine does not record the report either. The stop is named only in the answer.",
+   "closesWith": "The client shows the named screen and sends the report again, as for any refused report."
+  }
+ ],
+ "rulingsOnAuthorReadings": {
+  "1_disputeTolerance091": {
+   "ruling": "ACCEPTED",
+   "why": "only withholds the distance from pace readers (differential: only paceEvidence changes, 40 cases); no new number; conservative direction",
+   "limit": "within 9% the distance the engine kept is read, possibly the larger; accepted as an engineering bound; no new GPS-accuracy claim is made"
+  },
+  "2_raceSeveralOrCorrected": {
+   "ruling": "ACCEPTED",
+   "why": "before, V1RC read the first file over the whole time as a race result (6 km in 50 min); losing it is better than calibrating with a wrong number; the athlete declares a result through its own route; races measured whole, typed, MANUAL or OFFICIAL read identically (r1-race.mjs); N02 intact"
+  },
+  "3_mergeAsOneReport": {
+   "ruling": "ACCEPTED",
+   "why": "r3a WE3A-10 and WE3A-02; three orders identical to one report (16 km, reference 16, SEVERAL_RECORDINGS, S2 kept) in m1-merge.mjs",
+   "caveat": "SSCTR-RWS-C-05"
+  },
+  "4_monotoneSignalAndPrescribedFlags": {
+   "ruling": "ACCEPTED",
+   "why": "r3 C4 letter: WARNING_SIGN_SCREEN_REQUIRED keeps run sessions in TIME until it is answered; any yes takes the existing clinical route; a required screen is no clinical classification and TIME is the canonical dose",
+   "caveat": "SSCTR-RWS-C-03 for the eligibility ASK"
+  },
+  "5_unknownFormatStopKept": {
+   "ruling": "ACCEPTED",
+   "why": "not an execution and no credit; the signal is kept under the instant the engine accepted and named at once",
+   "caveat": "SSCTR-RWS-C-06"
+  }
+ },
+ "nothingElseMoved": {
+  "status": "CONFIRMED",
+  "selector": {
+   "repetitions": {
+    "selections": 378000,
+    "differences": 0
+   },
+   "continuous": {
+    "selections": 380160,
+    "differences": 0
+   }
+  },
+  "executionReader": {
+   "cases": 118800,
+   "identical": 117024,
+   "differences": {
+    "untimed": 1736,
+    "disputedPaceEvidenceOnly": 40
+   },
+   "moreCredit": 0,
+   "morePaceEvidence": 0,
+   "largerHistoryReference": 0,
+   "segmentsAndCorrectionsVsOldMarks": "identical"
+  },
+  "entryPointJourneys": {
+   "reviews": 135,
+   "differences": 0,
+   "compared": [
+    "engine status, action, proposal and ledger",
+    "run sessions",
+    "executions",
+    "runFormat screen, prescribing, native, paused",
+    "calibration hash"
+   ]
+  },
+  "frozen": "v1rws-freeze --preserved: 197/197 + 1 authorized amendment (22+/10-), 30/30; v1-run-calibration, v1-run-index, v1-index no diff since c8104c1; r6-adaptation and v1/ no diff since d6381bb; no c8104c1 test edited",
+  "examples": "r2/r3/r3a pass (74/74 v1rws); no expected result changed; WE3A-02, WE3A-04, WE3A-10 inputs match the r3a record as written (WE3A-10 as in bcac30d)"
+ },
+ "humanQueueProposedNotAppended": [
+  "HQ-V1RWS-A-SSCTR-R3-SYMPTOM-SIGNAL"
+ ],
+ "ran": [
+  "sha256sum of the records, values and host files",
+  "node --test test/v1rws-*.test.mjs (74/74)",
+  "node scripts/v1rws-freeze.mjs --preserved",
+  "probes p1c, p1d, p1f (judge r2, root rewritten) on a8e9b05 and 644cd8e",
+  "own probes d1-differential, s1-signal (both commits), b2-ask (both commits), m1-merge, r1-race, u1-unplanned (both commits)",
+  "own probe x1-security-points (the four Security points, including the custody with the default and the composed engine); read SEC_V1RWS_FOCAL_R2.md, its outputs and its probes early-queued.mjs and custody-stop.mjs as reference only"
+ ],
+ "notRun": [
+  "npm run verify",
+  "scripts/verify-r*.mjs",
+  "*-freeze.mjs --write",
+  "scripts/v1rc-journeys.mjs",
+  "scripts/v1rc-fuzz.mjs",
+  "validate_records.py"
+ ],
+ "notVerified": [
+  "the whole suite (1409 entries, author's claim)",
+  "v1rc-freeze --check 1",
+  "mutation",
+  "QRE-RWS-B-01 beyond its sporting effect",
+  "QRE B-04, B-05, B-06",
+  "custody and data classification (Security)",
+  "F08 hold executed",
+  "eligibility.assessedOnOrAfterRace, assessedAfterHold and assessedToday ASKs executed (read in code only)",
+  "coverage outside the grids",
+  "final wording",
+  "phase B"
+ ],
+ "scratchFolder": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/c10c7f19-99c9-449b-b28b-312cccb82112/scratchpad/ssctr-r3-ff-1794656658/",
+ "literature": {
+  "newClaims": false,
+  "toolsAvailable": [
+   "WebSearch (deferred)",
+   "WebFetch (deferred)"
+  ],
+  "used": false
+ },
+ "hostInjectedContext": {
+  "globalCLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectCLAUDE.md": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "MEMORY.md": "afd187467bec0da84e92007bd03cb902a4c0039f6b9e41f0927ace7ff7c349a8",
+  "usedAsEvidence": false
+ },
+ "securityPointsRulings": {
+  "source": "audits/v1-run-extensions-2026-11-13/phase-a/reviews/security/SEC_V1RWS_FOCAL_R2.md lines 55-61, verified with probes/x1-security-points.mjs, not taken on its word",
+  "SEC-RWS-C-06": {
+   "ruling": "CONDITION",
+   "as": "SSCTR-RWS-C-01",
+   "evidence": "import first, no row holds the stop; intact fact REQUIRED 0 native; altered without rehash or another athlete's: unreadableReports, NOT_RAISED, 6 native; dropped: same, nothing named",
+   "why": "fail-open on safety data, but needs loss or damage of a record the client keeps; closes before integration"
+  },
+  "SEC-RWS-C-01": {
+   "ruling": "CONDITION",
+   "as": "SSCTR-RWS-C-07"
+  },
+  "SEC-RWS-C-07": {
+   "ruling": "CONDITION",
+   "as": [
+    "SSCTR-RWS-C-02",
+    "SSCTR-RWS-C-04"
+   ],
+   "evidence": "same-request screen at +1 and +4 min: NOT_RAISED, 7 native; at asOf or -5 min: REQUIRED; unplanned run stop not read; both on a8e9b05 too",
+   "why": "Security rated NOTE; kept as CONDITION because it clears or loses the signal; not blocking: older than this cycle and outside the current client contract"
+  },
+  "SEC-RWS-C-03": {
+   "ruling": "CONDITION_OF_THE_ENABLING_RECORD",
+   "as": "SSCTR-RWS-C-08",
+   "why": "not a condition of the verdict on the unintegrated synthetic candidate; the record does not authorize integrating the composed entry point until it closes"
+  },
+  "anyBlocking": false
+ }
+}
