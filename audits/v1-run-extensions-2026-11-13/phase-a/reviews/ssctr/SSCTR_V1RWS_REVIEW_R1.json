@@ -1,0 +1,246 @@
+{
+ "reviewId": "SSCTR-V1RWS-REVIEW-R1",
+ "date": "2026-11-13",
+ "candidateCommit": "bcac30d382611dab993c5844925bd8ca6c6454fa",
+ "branch": "claude/v1-run-extensions",
+ "valuesSha256": "5ca33b9b848cc65c8b5c693a5dd67a156fb56dfd27cadc1f3dd5df46422ea60d",
+ "decisionsInForce": {
+  "SSCTR_RWS_R2_DECISION.json": {"sha256": "daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213", "verified": true},
+  "SSCTR_RWS_R3_DECISION.json": {"sha256": "6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2", "verified": true},
+  "SSCTR_RWS_R3A_AMENDMENT.json": {"sha256": "37047d212c8cf98ddbf81b89b601702e60310025e95efc59083206f9f9d4d412", "verified": true}
+ },
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "wouldEnableV1XRunNative": {
+  "onTheseBytes": false,
+  "enablingRecordIssued": false,
+  "wouldIssueOnFinalBytesWhen": [
+   "SSCTR-RWS-A-01, SSCTR-RWS-A-02 and SSCTR-RWS-A-03 are closed, each with a directed test, and rechecked by a fresh SSCTR instance on the final bytes",
+   "SSCTR-RWS-A-04 and SSCTR-RWS-A-05 are carried as conditions of the enabling record (A-04 closed before any consumer of runSessions[id].execution; A-05 through Product copy review, RWS2-G.6)",
+   "every standing condition of SSCTR-RWS-R2/R3/R3A stays satisfied (RWS2-G.1 to G.7, RWS3-G.0 to G.4, r3a text requirements)",
+   "F-3 (records carried by the client) is closed by Data and Security before integration; this reviewer does not own it"
+  ]
+ },
+ "findings": [
+  {
+   "id": "SSCTR-RWS-A-01",
+   "severity": "CONDITION",
+   "enablingPrecondition": true,
+   "what": "A stop for a symptom (or with no stated reason) is read only from a report that cites a NATIVE format whose planned hash still matches. On the time version of a session (no formatHash), or under D-5 (the engine planned the session again), the execution is status TIME, the stop is never read: no WARNING_SIGN_SCREEN_REQUIRED, and the next run sessions can be native.",
+   "evidence": [
+    "CoachingCore/src/v1-run-format.mjs:432 (a non-native format returns status TIME; actual.stop is not read)",
+    "CoachingCore/src/v1-run-format-index.mjs:96 (D-5 recasts the cited format to TIME) and :105 (symptomStops only from execution.status STOPPED)",
+    "probe D case 2: long run of week 1 done as the time version, actual.stop {reason: SYMPTOM}: warningSignScreen NOT_RAISED_BY_THIS_EXTENSION, week-2 LONG NATIVE",
+    "probe D case 3 (reference): the same stop on the native format: REQUIRED, every week-2 run TIME (WARNING_SIGN_SCREEN_REQUIRED)",
+    "probe D case 4: executionOf of the same stop under a D-5 recast format: [TIME, no stop]"
+   ],
+   "decisions": "r3 values.stops.routes.SYMPTOM; WE3-13/WE3-14; handoff section 5 (STOPPED: 'SYMPTOM leva a triagem de sinais existente, e a sessao seguinte fica por tempo ate a resposta'); D-5 is a credit rule and does not remove a reported fact",
+   "toClose": "Read actual.stop (listed reason, otherwise SYMPTOM) on every run report of the record, whatever the expression and whatever D-5 does to the credit, for the warning-sign screen requirement (and keep 'a stop never resets X-2'); or a Product/Data contract, verified by QRE, under which a stop reason exists only for native executions and a symptom on the time version always goes through the existing screen. Directed test for both paths."
+  },
+  {
+   "id": "SSCTR-RWS-A-02",
+   "severity": "CONDITION",
+   "enablingPrecondition": true,
+   "what": "A distance typed into actual.distanceKm with measurement MANUAL, or with no source on a non-wearable report, on the time version of an easy run, is an easy-pace observation for V1RC (unchanged: notComparableMeasurements = [TREADMILL]). That P1 is what sizes native continuous runs (D-7: P_typ, S1). A declared distance thus reaches a calibration consumer as if measured, and an inflated figure makes the sized distance longer.",
+   "evidence": [
+    "probe E (athlete sixteen without anchors, two weeks of easy runs reported as the time version): GPS, MANUAL and no-source figures give the same EASY band OBSERVED_AT_EFFORT 365-395 s/km (3 runs); typed figures at 5:00/km give 300-330; actual.declared gives UNAVAILABLE",
+    "CoachingCore/src/v1-run-calibration.mjs:150 (comparableRun), :165 (easyObservation needs only a distanceKm); CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json recalibration.notComparableMeasurements",
+    "CoachingCore/src/v1-run-format-index.mjs:66-71 (P1 read from V1RC)",
+    "the candidate protects native reports only: v1-run-format.mjs:402 (manual figure on a native report is UNKNOWN, DISTANCE_SOURCE_REQUIRED)"
+   ],
+   "decisions": "r3a values.completion.paceUse ('CONFIRMED_CORRECTION and DECLARED distances never reach a calibration or estimate consumer as measured distances'; V1RC unchanged, marking owned by Engineering/QRE); r3 C1 condition (P1 as V1RC computes it); Founder decision on DECLARED (adherence only)",
+   "toClose": "The composed entry point keeps any manual or source-less figure on a fresh run report, whatever the expression, out of the measured slot V1RC reads (the same rule as D-6 a), V1RC untouched; or QRE/Data verify a client contract that makes such a report impossible. Directed test: P1 never counts a typed distance. L30 may keep reading a manual figure as a declaration (r3a allows manual entries for L30)."
+  },
+  {
+   "id": "SSCTR-RWS-A-03",
+   "severity": "CONDITION",
+   "enablingPrecondition": true,
+   "what": "X-2 counting: a time session of the class that the athlete did not complete (minutes > 0, completed false, no stop) resets the count. Two native runs above the estimate around an aborted 5-minute time run never pause the class.",
+   "evidence": [
+    "CoachingCore/src/v1-run-format.mjs:452 (a non-native row resets when completed === true OR minutes > 0, with no stop)",
+    "probe D case 5: above / none / above -> pause until 2026-12-31; above / 5 of 50 min not completed / above -> no pause; above / 0 min / above -> pause"
+   ],
+   "decisions": "r3 values.exposure.X-2.counting ('a TIME session of the class executed without a stop resets the count'); a time session read incomplete by the engine is the time analog of PARTIAL, which r3/r3a never treat as a neutral or favourable fact",
+   "toClose": "Ruling of this review: a time session resets the count only when the engine's own completion read of that row is complete (row not partial) and it carries no stop; a time session read incomplete neither counts nor resets. Directed test."
+  },
+  {
+   "id": "SSCTR-RWS-A-04",
+   "severity": "CONDITION",
+   "enablingPrecondition": false,
+   "what": "runSessions[id].execution.paceEvidence is true for repetitions met by laps whatever their length (6 x 800 m, about 4 min each: true). The V1RC rules the decisions keep say repetitions under 5 minutes never recalibrate and GPS loses one tier. No consumer reads the flag in phase A (V1RC applies its own rules to the engine's record), so there is no effect on an athlete today.",
+   "evidence": ["CoachingCore/src/v1-run-format.mjs:436", "probe C: executionOf of 6 x 800 m with six laps -> paceEvidence true"],
+   "decisions": "r2 values.completion.paceEvidence ('V1RC rules unchanged: repetitions under 5 min never recalibrate; GPS loses one tier; treadmill and flagged conditions not comparable'); handoff section 5 Race Forecast contract",
+   "toClose": "Before any reader of execution (phase B, Race Forecast): paceEvidence false for any session with a work bout under 5 minutes or failing V1RC Q8, and the tier carried (GPS one tier down); or the flag renamed to say it only reports the measurement exclusions. Judged again by the phase B SSCTR."
+  },
+  {
+   "id": "SSCTR-RWS-A-05",
+   "severity": "CONDITION",
+   "enablingPrecondition": false,
+   "what": "Instructions of native repetition sessions do not carry the r3 G.3 content 'stopping and walking are always allowed and are recorded as done', and do not show the session's estimated duration range as text (the estimates exist as data: estimate.durationMinutes and each step's estimate.seconds). Continuous instructions carry every required item.",
+   "evidence": ["CoachingCore/src/v1-run-format.mjs:280-281", "probe D texts (6 x 800 m and the 16 km long run)"],
+   "decisions": "RWS3-G.3; r2 textRequirements (repetitions); RWS2-G.6 (wording is Product's)",
+   "toClose": "Product copy review (or the fixed instruction set) adds the stop-any-time / recorded-as-done content to repetition sessions and shows the per-repetition and session estimates, each labelled as an estimate."
+  },
+  {
+   "id": "SSCTR-RWS-A-06",
+   "severity": "NOTE",
+   "what": "F-1 ruled: the written MIXED order stands; WE-17 is to be read as 1 x 2600 m + 1 x 15 min. The candidate already implements this; no change.",
+   "evidence": ["rulings.F1"],
+   "toClose": "Nothing. T13 keeps WE-17 named as a ruled divergence, citing SSCTR-V1RWS-REVIEW-R1."
+  },
+  {
+   "id": "SSCTR-RWS-A-07",
+   "severity": "NOTE",
+   "what": "WE-25 and D-2: TIME in place of the EQUIVALENT fallback is accepted. TIME is the canonical dose and the r2 fallback when EQUIVALENT is unavailable; it prescribes nothing new.",
+   "evidence": ["test/v1rws-ssctr-examples.test.mjs:24-27", "v1-run-format.mjs:329"],
+   "toClose": "Nothing."
+  },
+  {
+   "id": "SSCTR-RWS-A-08",
+   "severity": "NOTE",
+   "what": "Week-bound inputs (P1, L30, comparable long run, S3) are read at the week's first day. A run done during the week resizes nothing until the next week; X-2, the symptom screen, holds and the clinical route act at once (probe D case 1: the third easy run of the same week went to TIME, CONTINUOUS_FORMAT_PAUSED). Faithful to r2 rotation.fixedWithinWeek, and the same convention V1RC uses for P1. Relative to the session date the 30/28-day windows can reach back up to 6 more days; this is the delivery-week anchor, not the longer window r3a abstained from.",
+   "evidence": ["v1-run-format-index.mjs:121-123, :107, :138", "v1-run-calibration.mjs:406-408"],
+   "toClose": "Nothing; state the anchor in the data contract."
+  },
+  {
+   "id": "SSCTR-RWS-A-09",
+   "severity": "NOTE",
+   "what": "The history reader maps only a missing stop reason to SYMPTOM. The completion reader maps any unlisted reason to SYMPTOM. A stop read as SYMPTOM with an unlisted reason string can therefore enter S3. S3 only slows sizing, so the effect is not unsafe; align for r3 stops.sizing.",
+   "evidence": ["v1-run-history.mjs:116", "v1-run-format.mjs:395", "v1-run-history.mjs:167"],
+   "toClose": "Map unlisted reasons to SYMPTOM in the history reader as well."
+  },
+  {
+   "id": "SSCTR-RWS-A-10",
+   "severity": "NOTE",
+   "what": "actual.completed === false on a continuous native report makes it PARTIAL, counted for X-2, even with a measurement at or above the target (probe C: 16.2 km GPS -> PARTIAL). This is stricter and acceptable as the athlete's own shortfall answer.",
+   "evidence": ["v1-run-format.mjs:401"],
+   "toClose": "The client contract does not send completed false for a run the athlete finished."
+  },
+  {
+   "id": "SSCTR-RWS-A-11",
+   "severity": "NOTE",
+   "what": "D-6 (a) is protective, not only acceptable. Without it, a manual figure in the measured slot of a native report would be read as MEASURED and would reach V1RC as pace evidence (see A-02 for the time version).",
+   "evidence": ["probe C: MANUAL and no-source figures -> UNKNOWN DISTANCE_SOURCE_REQUIRED; a wearable report -> MEASURED"],
+   "toClose": "Nothing."
+  },
+  {
+   "id": "SSCTR-RWS-A-12",
+   "severity": "NOTE",
+   "what": "The taper keeps the peak distance only when the achieved peak was executed as EVEN_REPEATS. A peak executed as progressive, distance-recovery or pyramid repetitions falls to the regular taper selection, which is even repetitions only. This is conservative and faithful to r2 N9.",
+   "evidence": ["v1-run-format-index.mjs:130", "v1-run-format.mjs:324-327"],
+   "toClose": "Nothing."
+  },
+  {
+   "id": "SSCTR-RWS-A-13",
+   "severity": "NOTE",
+   "what": "Documentation: RUN_FORMATS_V1.json 'note' cites test/v1rws-values.test.mjs, which does not exist. The value-by-value comparison is the 'values:' test in test/v1rws-format.test.mjs.",
+   "evidence": ["CoachingCore/v1/RUN_FORMATS_V1.json:11", "test/v1rws-format.test.mjs:13-35"],
+   "toClose": "Correct the reference when the values file is next revised (changing it changes the pinned hash)."
+  },
+  {
+   "id": "SSCTR-RWS-A-14",
+   "severity": "NOTE",
+   "what": "An import with no activity id is keyed by date, distance and minutes, so the same run from two sources without an id can appear twice. L30 is a maximum and the comparable long run is the latest, so this has no sporting effect. Deduplication by identity only is respected: nothing is merged by date.",
+   "evidence": ["v1-run-history.mjs:79, :125-136"],
+   "toClose": "Nothing (iOS dependency 2 keeps the HKWorkout UUID)."
+  }
+ ],
+ "rulings": {
+  "F1": {
+   "question": "r2 values.candidateOrder.MIXED ('distance unit coarsest first; then longer distance first') versus the r2 worked example WE-17 (2700 m).",
+   "ruling": "WRITTEN_ORDER_STANDS",
+   "order": "For the floor(n/2) distance repetitions of MIXED: take the units 1000, 400, 200, 100, 50 m in that order; within a unit, the grid distances that are multiples of it, longest first; the first distance with which the whole session passes E1-E3 and E5 is the format. This is the EVEN_REPEATS order without the count step, the same unit-before-length principle as PYRAMID.",
+   "we17AsRuled": {"format": "1 x 2600 m + 1 x 15 min, 3 min walk-or-jog between", "workMinutes": [28.87, 29.30], "durationMinutes": [46.66, 47.30], "canonicalDuration": 48},
+   "we17AsWrittenInR2": {"format": "1 x 2700 m + 1 x 15 min", "workMinutes": [29.4, 29.85], "durationMinutes": [47.19, 47.85], "note": "these figures are exactly the 2700 m candidate's: the example was computed with a longer-first order, not the written one"},
+   "rationale": [
+    "The normative layer of r2 is values.candidateOrder; the worked examples are labelled as a scratch computation illustrating the values ('not a test of any implementation'). Where they disagree, the rule governs, and the example is the error.",
+    "Both 2600 m and 2700 m pass E1-E3 (E2: 13.87-14.30 and 14.40-14.85 min against [13.5, 15.225]). r2 makes the envelope the only load control ('the envelope is the only load control') and says units 'carry no dose'. Choosing either is not a dose decision, and no evidence distinguishes 2600 m from 2700 m at about 14 minutes of half-marathon effort.",
+    "The written order is the one EVEN_REPEATS and PYRAMID use (unit first, then length), and the handoff section 4 states it. A longer-first MIXED would be the only pattern ranking length before unit.",
+    "The orders differ widely (probe A: 7,348 of the swept selections), so the choice must follow one stated rule, not one example."
+   ],
+   "otherExamplesThatDistinguish": "None. WE-16 is the only other MIXED example in r2, and only 1500 m passes there (1600 m fails E2 at the slow edge), so both orders give 2 x 1500 m + 2 x 8 min. The EVEN_REPEATS and PYRAMID examples are not governed by the MIXED order.",
+   "evidenceStatus": "OUT_OF_SCOPE_OF_LITERATURE (a convention inside an approved envelope; no sporting claim made)",
+   "confidence": "HIGH that the written order is the record's rule; no claim that either distance is better",
+   "candidateChange": "none",
+   "proposedQueueItem": {"id": "HQ-V1RWS-A-SSCTR-F1-MIXED-ORDER", "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION", "appended": false, "appendOwner": "Chief (human queue unchanged by this reviewer)"}
+  },
+  "X2_TIME_RESET": {"ruling": "A time session of the class resets the X-2 count only when the engine reads it complete and it carries no stop; a time session read incomplete neither counts nor resets.", "finding": "SSCTR-RWS-A-03"}
+ },
+ "answers": {
+  "Q1_values": "Every number and list of RUN_FORMATS_V1.json matches r2 <- r3 <- r3a (read by the judge and by the candidate's 'values:' test). Nothing superseded remains: no gpsMetFraction 0.97, no time ceiling, RECOVERY_EASY and SHAKEOUT time-only, race week continuous EASY only. Absent by design: the EQUIVALENT values (D-2).",
+  "Q2_catalog_selector": "Probe A, an independent oracle written from r2 text, swept 159,600 selections (6 families, 25 steps, fast edges 200-470 s/km, widths 5-25 s, 9 phases, 4 experience values, week index): 0 mismatches. No produced format fails E1-E3, eligibility or the step's own time steps and recoveries. E4 is not applied. The 22 suppression reasons and their order were checked (probe B). Return to even repetitions: 4,082 native cases after a partial, all EVEN_REPEATS.",
+  "Q3_F1": "Written order stands (rulings.F1).",
+  "Q4_continuous": "Probe B, an independent oracle of P_typ, P_size (S1-S4) and CT-1..CT-3, swept 54,432 selections including strides: 0 mismatches, no breach. D-7 is acceptable: the bare V1RC call strips the three evidence sources (anchors, evidence record, plan races; v1-run-calibration.mjs:190-196), and with no reference V1RC's EASY band is the P1 range itself (:371). Week-cutoff reading is faithful (A-08). The comparable long run, L30 and the history rule match r3a. The dose never changes.",
+  "Q5_completion": "Probe C, an independent r3a table over 660 fact combinations: 0 differences, nothing below target without a declaration ever DISTANCE, measured value never rewritten. The eleven r3a examples and the r3 examples pass. D-6 (a) is stricter and protective (A-11). D-6 (b) is faithful (handoff section 5 requires POOR). D-6 (c) is stricter and acceptable. D-6 (d) / D-5 is faithful as a credit rule but must not hide a stop (A-01).",
+  "Q6_exposure": "EXPOSURE_ABOVE_ESTIMATE starts at 1.015 x the high estimate (probe C), and X-1 enters as S3 at the next sizing. X-2 is immediate (probe D case 1). The r3a 0.91 PARTIAL neither counts nor resets. One reset gap (A-03). FATIGUE only offers the existing review (decidedByThisExtension false).",
+  "Q7_never": "No counterexample on native reports: declared, corrected, treadmill, POOR and flagged executions are never pace evidence or records, distances never enter the engine (T10), and minutes never become km. No native format appears under hold, clinical route, WALK_JOG/RESTART/RETURN, first exposure, ESTABLISHMENT or POST_EVENT (probes A and B). Two counterexamples outside the native report path: A-02 (a typed distance on the time version reaches P1) and A-04 (a flag with no consumer yet).",
+  "Q8_texts": "Continuous texts carry all required content. Repetition texts carry effort-governs, estimate-not-target, do-not-speed-up, the track note, the time version and the recovery walk. They lack the stop-any-time / recorded-as-done line and a visible duration estimate (A-05). Nothing is worded as progression, and E5 is applied.",
+  "Q9_scope": "No sporting objection to D-2 (TIME is the canonical dose) or to D-3 (only the week in force and the next two are delivered; a session outside the record is executed as the time version).",
+  "Q10_ADF": "H1-H6 and H8 hold as implemented: sources are ledger, imports, manual entries and dated intake declarations; deduplication is by identity only (A-14); sport is required for a run outside the plan; treadmill counts for L30 and gives no pace; POOR alone gives no reference; the intake declaration is stripped before the engine and never qualifies as a comparable run; declared distances are adherence only on native reports (A-02 for the time version)."
+ },
+ "conditions": [
+  "SSCTR-RWS-A-01 closed before V1X-RUN-NATIVE is enabled",
+  "SSCTR-RWS-A-02 closed before V1X-RUN-NATIVE is enabled",
+  "SSCTR-RWS-A-03 closed before V1X-RUN-NATIVE is enabled",
+  "SSCTR-RWS-A-04 closed before any reader of runSessions[id].execution (phase B)",
+  "SSCTR-RWS-A-05 through Product copy review before any athlete-facing use",
+  "Standing conditions of SSCTR-RWS-R2/R3/R3A unchanged; no real athletes; V1_COACHING_AUTHORITY_READY = NO; INTEGRATION_READY = NO"
+ ],
+ "ran": [
+  "sha256 of the three decision records and of RUN_FORMATS_V1.json: all match the pinned values",
+  "node --test test/v1rws-*.test.mjs in CoachingCore: 49/49 pass",
+  "probe A (scratchpad judges/ssctr/probeA-repetitions.mjs): independent r2 repetition oracle, 159,600 selections, 0 mismatches, 0 invalid formats; MIXED order sweep",
+  "probe B (probeB-continuous.mjs): independent r3 C1 sizing oracle, 54,432 selections, 0 mismatches; suppression order on continuous runs",
+  "probe C (probeC-completion.mjs): independent r3a completion table, 660 combinations, 0 differences; manual figures, exposure edge, laps, paceEvidence",
+  "probe D (probeD-engine.mjs): through the engine with the candidate's conforming client: X-2 mid-week, symptom stop on the time version and on the native format, D-5, X-2 reset, return to even repetitions, texts",
+  "probe E (probeE-manual-p1.mjs): typed distances on the time version and P1",
+  "WE-16 and WE-17 under both MIXED orders"
+ ],
+ "notReviewed": [
+  "Code correctness and byte preservation of the r6-adaptation.mjs amendment, freeze scripts, replay identity, custody (QRE; T1/I1/I10/T16/T18/T19 were only run, not audited)",
+  "F-2 (historical test failing on the common line) and F-3 (records carried by the client): QRE, Founder, Data, Security",
+  "Phase B: H7, H9, Race Forecast, I8 pace revision",
+  "The EQUIVALENT mode and SSCTR-RWS-DECISION r1",
+  "Final athlete-facing wording (Product)",
+  "Coverage measurement beyond the probes' synthetic grids",
+  "The Athlete Data Foundation outside sections 3, 5.2 and 6; CURRENT_MISSION.md beyond its latest section (this extension is governed by the handoff and the phase A record)",
+  "New literature: no new material scientific claim is made here; the standing sources of r2/r3/r3a were not re-verified"
+ ],
+ "literatureAccess": {
+  "tools": "WebSearch and WebFetch were available to this instance as deferred tools; neither was used.",
+  "reason": "The review is a fidelity judgment of an implementation against standing SSCTR decisions. The F-1 ruling and the X-2 reset ruling are conventions inside approved envelopes and make no new sporting claim.",
+  "validator": "validate_records.py was not run: this record follows the format the Chief asked for, not decision.schema.json"
+ },
+ "hostInjectedContext": {
+  "disclosed": true,
+  "files": [
+   {"path": "C:/Users/carva/.claude/CLAUDE.md", "sha256": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6"},
+   {"path": "C:/Users/carva/Desktop/myApp/MyApp/CLAUDE.md", "sha256": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6"},
+   {"path": "C:/Users/carva/.claude/projects/C--Users-carva-Desktop-myApp-MyApp/memory/MEMORY.md", "sha256": "0ca62e8bd22cf8b3653c200906f59300d472af0bf7f7526e0e4b59b8adbbb4fd"}
+  ],
+  "use": "Read as host context only. Memory entries about earlier missions were not used as evidence; every conclusion rests on the files and probe outputs cited."
+ },
+ "reviewer": {
+  "role": "Sports Science & Concurrent Training Reviewer (SSCTR)",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "governance/agents/sports-science-reviewer/CONSTITUTION.md (SSCTR-CONST-1.0.0)",
+  "skill": ".agents/skills/sports-science-review/SKILL.md (1.0.0)",
+  "evidenceProtocol": "EVIDENCE_PROTOCOL 1.0.0 (referenced; no new evidence search was needed)",
+  "instance": "A fresh Claude subagent instance (model claude-opus-5-5, effort high), launched by the calling session with the SSCTR project adapter's instructions. Whether the dispatch went through the native project adapter file cannot be verified from inside this instance. It inherited the caller's tools and permissions and delegated nothing.",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for bounded nonclinical sporting decisions; no human credentials, no clinical equivalence, no runtime sovereignty; no clinical judgment made (none was needed)",
+  "independence": "Did not author the candidate (Fable 5.2), the handoff (Chief) or SSCTR-RWS-R2/R3/R3A (earlier SSCTR instances). This is not a human review and not an empirical validation.",
+  "filesWritten": ["audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_REVIEW_R1.md", "audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_REVIEW_R1.json"]
+ },
+ "governance": {
+  "gateStatus": "CANDIDATE_REVIEWED_NOT_CLOSED",
+  "enablingRecordIssued": false,
+  "publicationStatus": "NOT_PUBLISHED",
+  "humanValidation": false,
+  "empiricalProductValidation": false,
+  "clinicalClearance": false,
+  "humanQueue": "one proposed item (HQ-V1RWS-A-SSCTR-F1-MIXED-ORDER), not appended"
+ },
+ "expiry": {
+  "owner": "Chief",
+  "reReviewOn": "the corrective cycle's final bytes (recheck by a fresh SSCTR instance), or any change of RUN_FORMATS_V1.json, of SSCTR-RWS-R2/R3/R3A, of v1-run-format.mjs, v1-run-history.mjs, v1-run-format-index.mjs, or of V1RC"
+ }
+}
