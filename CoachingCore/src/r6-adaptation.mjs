@@ -186,7 +186,19 @@ export function phaseClassOf(policy,phase,mode){
 /** Dose key: family plus ladder and step for quality, family for other runs, the planned prescription for strength. */
 export const doseKeyOf=s=>!s?.prescription?null:s.sport==='RUN'?(s.role==='QUALITY'?`${s.prescription.family}:${s.progression?.ladder??'-'}:${s.progression?.value??'-'}`:s.prescription.family):s.plannedPrescriptionHash??null;
 const modeOf=(program,s)=>s.sport==='RUN'?program.stateTrace[s.weekIndex]?.run?.mode??'EASY':program.stateTrace[s.weekIndex]?.strength?.returnEntry===true||Object.values(program.stateTrace[s.weekIndex]?.strength?.exercises??{}).some(e=>Number.isInteger(e.returnStep))?'RETURN':'NORMAL';
-function bindObservations(program,accepted,hybrid,policy){
+/**
+ * V1RWS (Run Workout Structure, Founder decision of 2026-11-13): the one amendment of this file after COACHINGCORE-V1-FREEZE-1. The key, internal
+ * and never serialized, under which the native run format entry point (v1-run-format-index.mjs) hands its completion reader to every binding of a
+ * record (the review, the record kept under a clinical hold, viewMovedBy, gapAnsweredBy and historicalStateOf). Without it every binding reads
+ * exactly as before. With it, a run report the reader classifies (DISTANCE, PARTIAL, STOPPED, UNKNOWN) is complete only as DISTANCE: a native
+ * distance target is met by its distance, never by the minutes it took. The reader is called on the canonical row (duplicates already merged), so
+ * no reading a client sends is ever read; a report it does not classify, and every strength report, keeps the minutes read below. A reader that
+ * fails classifies nothing as complete. An integration passes no options (QRE-V1FC-05).
+ */
+export const READS_COMPLETION=Symbol('V1RWS: the completion reader of the native run format entry point');
+const READ_STATUSES=new Set(['DISTANCE','PARTIAL','STOPPED','UNKNOWN']);
+const completionRead=(reads,o,s)=>{if(typeof reads!=='function'||s.sport!=='RUN')return null;let r;try{r=reads(o,s);}catch{return 'UNKNOWN';}return READ_STATUSES.has(r)?r:null;};
+function bindObservations(program,accepted,hybrid,policy,reads=null){
  const sessions=new Map(program.weeks.flatMap(w=>w.sessions.map(s=>[s.id,{s,w}]))),bound=[],unbound=[];
  for(const o of accepted){
   const x=sessions.get(o.sessionId);
@@ -194,7 +206,7 @@ function bindObservations(program,accepted,hybrid,policy){
   // A race's duration is the event window (operational.event.raceDay), not a target: a finished race is complete however fast (R7-A).
  const {s,w}=x,p=s.prescription,minutesOk=s.sport==='STRENGTH'||s.role==='RACE'||!Number.isFinite(o.actual.minutes)||o.actual.minutes>=0.9*p.durationMinutes;
   const logs=s.sport==='STRENGTH'?strengthLogs(o,s):{},setsOk=s.sport!=='STRENGTH'||!Object.keys(logs).length||Object.values(logs).every(l=>l.setsDone>=l.plannedSets);
-  const complete=o.actual.completed===true&&minutesOk&&setsOk;
+  const read=completionRead(reads,o,s),complete=read?read==='DISTANCE':o.actual.completed===true&&minutesOk&&setsOk;
   bound.push({...o,partial:!complete,comparable:o.comparable!==false&&complete&&o.confounded!==true,confounded:o.confounded===true,logs,context:{sessionId:s.id,sessionType:sessionType(s),sport:s.sport,role:s.role,family:p.family,doseKey:doseKeyOf(s),runMinutes:runMinutesOf(s)||null,mode:modeOf(program,s),phaseClass:phaseClassOf(policy,w.phase,modeOf(program,s)),weekIndex:w.index,phase:w.phase,arrangementId:w.arrangementId,plannedHash:s.plannedPrescriptionHash,plannedMinutes:p.durationMinutes,dateShift:dayGap(s.date,o.localDate),interferenceBefore:interferenceBefore(program,s,hybrid)}});
  }
  return {bound,unbound};
@@ -550,7 +562,7 @@ export function evaluateProgram(program,input,options={}){
   if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
    try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
     const n=normalizeObservations(review.observations,{athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
-    const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy);
+    const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
     recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
   }
   return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:recorded?x=>({...x,actualLedger:recorded}):keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
@@ -586,7 +598,7 @@ export function evaluateProgram(program,input,options={}){
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
   // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
   const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
-  const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy),ledger=[...bound,...unbound];
+  const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);
   model=model??createLearningModel({athleteId:program.athleteId,purposeAllowed:consent,asOf,policy:authority.policy.operational.learning});
@@ -597,7 +609,7 @@ export function evaluateProgram(program,input,options={}){
   out={...base,updatedModel:model,actualLedger:[...ledger,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])],provenance:{excluded:n.excluded,duplicates:n.duplicates,conflicts:n.conflicts,superseded:n.superseded,causalCutoff:n.causalCutoff},weekEvidence:ev,loadQuestions:[],inputHash:hash({programHash:program.hash,review:input})};
   // R7-D Phase 3.4: the declarations the record carries, which a re-read of a recorded return finds its separate breaks in (recordedStop). R7-D
   // Phase 3.5 (QRE2-P34-01): with this review's own row, so a re-read this review makes reads the restatement it carries.
-  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,f08:readableF08(f08Carried,{athleteId:program.athleteId,at:Date.parse(asOf)}),holds:{continuation:input?.referenceState?.pending?.status==='CLINICAL_HUMAN_REQUIRED'?{eventId:input.referenceState.pending.eventId??null,eventKind:input.referenceState.pending.eventKind??null,asOf:input.referenceState.asOf??null}:null,episodes:(kept?.groups??[]).filter(g=>g.clinicalCause&&!g.applied).map(g=>({identity:g.identity,start:g.live.i.startDate??null,end:g.live.i.endDate??null,days:Number.isInteger(g.live.i.days)?g.live.i.days:null}))},programmedSports,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable),carried:declared?[...carried,declared]:carried};
+  const ctx={program,sk,review,kind,w,week,asOf,asOfLocal,ev,f08:readableF08(f08Carried,{athleteId:program.athleteId,at:Date.parse(asOf)}),holds:{continuation:input?.referenceState?.pending?.status==='CLINICAL_HUMAN_REQUIRED'?{eventId:input.referenceState.pending.eventId??null,eventKind:input.referenceState.pending.eventKind??null,asOf:input.referenceState.asOf??null}:null,episodes:(kept?.groups??[]).filter(g=>g.clinicalCause&&!g.applied).map(g=>({identity:g.identity,start:g.live.i.startDate??null,end:g.live.i.endDate??null,days:Number.isInteger(g.live.i.days)?g.live.i.days:null}))},programmedSports,ledger:usable,fullLedger:ledger,quarantined:n.quarantinedIdentities,model,consent,authority,out,confirmations,completedRuns:completedRuns(program,usable),carried:declared?[...carried,declared]:carried,reads:options[READS_COMPLETION]};
   // R7-D Phase 3.1: the break the record holds, read by this decision as if this review stated it: the report that declared it names its
   // interruption (episode identity) and is recorded with the return that applies it.
   // V1CP Fix-Forward QRE-V1CPR-08 (RC-15): the clinical holds the record holds and no later readiness declaration released, whatever reference
@@ -2298,7 +2310,7 @@ function viewMovedBy(ctx){
  const obs=(Array.isArray(ctx.review.observations)?ctx.review.observations:[]).filter(o=>o&&typeof o==='object'),start=ctx.program.weeks[ctx.w].startDate,dates=new Map(ctx.program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s.date])));
  const corrects=obs.some(o=>o.correctionOf!==undefined&&o.correctionOf!==null);
  if(!corrects&&!obs.some(o=>(dates.get(o.sessionId)??start)<start))return false;
- const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf});
+ const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf,reads:ctx.reads});
  if(!corrects&&!(ctx.quarantined??[]).some(q=>!quarantined.includes(q)))return false;
  return hash(planningBase({...ctx,fullLedger:ledger,ledger:ledger.filter(o=>!o.conflicted),quarantined,evidence:undefined}))!==hash(ctx.base);
 }
@@ -2356,7 +2368,7 @@ function factualReplan(ctx0){
 function gapAnsweredBy(ctx){
  const obs=(Array.isArray(ctx.review.observations)?ctx.review.observations:[]).filter(o=>o&&typeof o==='object'),start=ctx.program.weeks[ctx.w].startDate,dates=new Map(ctx.program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s.date])));
  if(ctx.kind==='RETURN_AFTER_PAUSE'||!obs.some(o=>(dates.get(o.sessionId)??start)<start)||runGapInForce(ctx))return false;
- const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf});
+ const {ledger,quarantined}=canonicalRecord(ctx.program,Array.isArray(ctx.review.actualLedger)?ctx.review.actualLedger:[],{authority:ctx.authority,cut:ctx.asOf,reads:ctx.reads});
  const usable=ledger.filter(o=>!o.conflicted),carried={...ctx,fullLedger:ledger,ledger:usable,quarantined,completedRuns:completedRuns(ctx.program,usable),evidence:undefined};
  carried.base=planningBase(carried);
  return !!runGapInForce(carried);
@@ -2477,7 +2489,7 @@ export function historicalStateOf(program,{asOf,actualLedger=[]},options={}){
  const k=program.weeks.findIndex(x=>day>=x.startDate&&day<=onDate(x.startDate,6));if(k<0)return null;
  // The record as the runtime reads it (canonicalRecord), never the carried rows as given: a superseded or retracted fact is not evidence here
  // either (Property B, QE-R7ASM-04), so this reader and the decisions' own reducer read one HistoricalState (P7).
- const {ledger,quarantined}=canonicalRecord(program,actualLedger,{authority,cut});
+ const {ledger,quarantined}=canonicalRecord(program,actualLedger,{authority,cut,reads:options[READS_COMPLETION]});
  const ctx={program,sk,authority,quarantined,fullLedger:ledger,ledger:ledger.filter(o=>!o.conflicted)};
  const E=evidenceState(ctx,{cut,day,ledger,ret:returnInForce({...program,decisions:program.decisions.filter(d=>Date.parse(d.asOf)<Date.parse(cut))})});
  // The reducer's reading of week k itself: facts while the week is under way (nothing closes or completes it yet), its closed or complete result
@@ -2496,11 +2508,11 @@ export const HISTORICAL_STATE_VERSION='R7-HISTORICAL-STATE-1';
  * the cut if later. Every fact the record holds is therefore read, a correction made after the cut still replaces what it corrects, and only the
  * reducer's cut (executions observed before it) limits what counts. The superseded rows the record carries stay inert history, as in a decision.
  */
-function canonicalRecord(program,actualLedger,{authority,cut}){
+function canonicalRecord(program,actualLedger,{authority,cut,reads=null}){
  const rows=(Array.isArray(actualLedger)?actualLedger:[]).filter(o=>o&&typeof o==='object'&&!isDeclaration(o)),op=authority.policy.operational;
  const latest=rows.reduce((m,o)=>Math.max(m,...[o.correctedAt,o.reportedAt,o.supersededAt,o.observedAt].map(utcTimestamp).filter(Boolean).map(Date.parse)),Date.parse(cut));
  const n=normalizeObservations([],{athleteId:program.athleteId,asOf:new Date(latest).toISOString(),prior:rows,maximumAgeDays:36500,futureSkewSeconds:op.learning.futureClockSkewSeconds,timezoneOffsetMinutes:program.timezoneOffsetMinutes??0,loadIncrements:{...op.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(op.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(op.strength,'MACHINE_STACK')}});
- const {bound,unbound}=bindObservations(program,n.accepted,op.hybrid,authority.policy);
+ const {bound,unbound}=bindObservations(program,n.accepted,op.hybrid,authority.policy,reads);
  return {ledger:[...bound,...unbound],quarantined:n.quarantinedIdentities};
 }
 /**
