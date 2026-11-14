@@ -9,7 +9,7 @@
 // This script writes nothing but its own record.
 //   node scripts/v1rws-freeze.mjs --write <n> --commit <sha> --suite <passed>/<total> [--note "..."]   writes v1/RUNTIME_FREEZE_V1RWS_<n>.json
 //   node scripts/v1rws-freeze.mjs --check <n>                                                              recomputes and compares; exit 1 on drift
-//   node scripts/v1rws-freeze.mjs --preserved                                                              (i), (ii) base and (iii) only
+//   node scripts/v1rws-freeze.mjs --preserved                                                              (i), (ii) on the bytes here, and (iii)
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -42,11 +42,25 @@ function preserved(){
  return {v1:{revision:base.revision,record:V1,sha256:sha(path.join(ROOT,V1)),commit:base.commit,fileCount:base.fileCount,filesDigest:base.filesDigest,identical:base.fileCount-1-v1Changed.length,amended:[AMENDED],changed:v1Changed},
   v1rc:{revision:rc.revision,record:V1RC,sha256:sha(path.join(ROOT,V1RC)),commit:rc.commit,fileCount:rc.fileCount,filesDigest:rc.filesDigest,identical:rc.fileCount-rcChanged.length,changed:rcChanged}};
 }
+/**
+ * The amendment is the reader alone: every added line is its declaration, its comment or the argument that carries it, and every removed line
+ * returns with only the reader added. A change of anything else in the amended file fails here, on the bytes compared (never only on the base).
+ */
+function readerAlone(lines){
+ const plus=lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')),minus=lines.filter(l=>l.startsWith('-')&&!l.startsWith('---')),bad=[];
+ const strip=l=>l.slice(1).replace(/,options\[READS_COMPLETION\]|,reads:options\[READS_COMPLETION\]|,reads:ctx\.reads|,reads=null|,reads\b/g,'').replace("const read=completionRead(reads,o,s),complete=o.actual.completed===true&&(read?read==='DISTANCE':minutesOk&&setsOk);",'const complete=o.actual.completed===true&&minutesOk&&setsOk;');
+ for(const l of plus)if(!(/READS_COMPLETION|READ_STATUSES|completionRead|\breads\b/.test(l)||/^\+\s*(\/\*\*|\*)/.test(l)))bad.push(l.slice(0,120));
+ for(const l of minus)if(!plus.some(p=>strip(p)===l.slice(1)))bad.push(l.slice(0,120));
+ return {ok:bad.length===0&&minus.length===10&&plus.length<=24,linesAdded:plus.length,linesRemoved:minus.length,unexplained:bad};
+}
+/** The one historical test that names the amended file on this line, by design (Founder governance rule of 2026-11-13; QRE-RWS-A-02). */
+const HISTORICAL={test:'CoachingCore/test/v1rc-calibration.test.mjs',name:'V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here',names:[AMENDED],greenOn:'c8104c1 (its own snapshot)',
+ reading:'A freeze verifier of the calibration extension written as a test, inside a file that freeze binds: it is not edited. On this line it must fail naming only the amended file; the living invariant is test I10 of v1rws-engine.test.mjs and this verifier.'};
 /** (ii): the amended file from the base the earlier record keeps to the bytes here, with the whole diff. */
 function amendment(commit){
  const base=read(V1),rc=read(V1RC),baseBytes=blob(rc.commit,AMENDED),diff=execFileSync('git',['diff','--no-color','--no-ext-diff','-U0',rc.commit,commit,'--',AMENDED],{cwd:ROOT,encoding:'utf8',maxBuffer:1<<28});
  const lines=diff.split('\n'),plus=lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')),minus=lines.filter(l=>l.startsWith('-')&&!l.startsWith('---'));
- return {file:AMENDED,baseCommit:rc.commit,baseSha256:shaOf(baseBytes),baseIsTheRecorded:shaOf(baseBytes)===base.files[AMENDED],recordedIn:base.revision,newSha256:shaOf(blob(commit,AMENDED)),
+ return {file:AMENDED,readerAlone:readerAlone(lines),baseCommit:rc.commit,baseSha256:shaOf(baseBytes),baseIsTheRecorded:shaOf(baseBytes)===base.files[AMENDED],recordedIn:base.revision,newSha256:shaOf(blob(commit,AMENDED)),
   what:'bindObservations takes the completion reader of the native run format entry point (the exported key READS_COMPLETION), carried to its five bindings: the review, the record kept under a clinical hold, viewMovedBy, gapAnsweredBy and historicalStateOf. Without the key every binding reads exactly as before.',
   diff:{sha256:shaOf(Buffer.from(diff,'utf8')),linesAdded:plus.length,linesRemoved:minus.length,hunks:lines.filter(l=>l.startsWith('@@')).length,text:lines.filter(l=>/^(@@|[+-])/.test(l)&&!/^(\+\+\+|---)/.test(l))}};
 }
@@ -61,12 +75,14 @@ if(arg('--write')){
  const p=preserved();if(p.v1.changed.length||p.v1rc.changed.length)throw new Error('an earlier freeze is not preserved: '+[...p.v1.changed,...p.v1rc.changed].join(', '));
  const a=amendment(full);if(!a.baseIsTheRecorded)throw new Error('the base of the amended file is not the bytes COACHINGCORE-V1-FREEZE-1 recorded');
  if(a.newSha256!==sha(path.join(ROOT,AMENDED)))throw new Error('the amended file here is not the one of the commit named');
+ if(!a.readerAlone.ok)throw new Error('the amended file changes more than the reader: '+a.readerAlone.unexplained.join(' | '));
+ if(total-passed!==1)throw new Error('on this line the suite is green except the one historical test that names the amended file: expected exactly one failure');
  const srcChanged=git('diff','--name-only',p.v1rc.commit,full,'--','CoachingCore/src','CoachingCore/r6','CoachingCore/r7','CoachingCore/fixtures','CoachingCore/package.json','CoachingCore/package-lock.json').split('\n').filter(Boolean).filter(f=>f!==AMENDED&&!ADDED.includes(f));
  if(srcChanged.length)throw new Error('files outside the declared amendment and additions changed since the base: '+srcChanged.join(', '));
  const ext=await import('../src/v1-run-format.mjs'),files=filesNow(),[passed,total]=suite.split('/').map(Number),auth=ext.runFormatAuthority(),records='audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_RUN_RECORDS.json';
  const record={revision:`COACHINGCORE-V1-RUN-FORMAT-FREEZE-${n}`,mission:'CoachingCore V1 Run Extensions, phase A: Run Workout Structure and Athlete Data Foundation (Founder request of 2026-11-13)',
   scope:'An additive extension of the V1-scoped CoachingCore on synthetic data: native prescription of run sessions by distance or by time, the reading of their execution, the record of formats delivered and the record of dated run distances. Not production, backend, operational security or a published app; no authorization for real athletes. Race Forecast and Pace Insights are not part of it.',
-  commit:full,created:new Date().toISOString(),additiveTo:p,amendment:a,entryPoint:'CoachingCore/src/v1-run-format-index.mjs',baseEntryPoint:'CoachingCore/src/v1-run-index.mjs',composition:'v1-run-format-index -> v1-run-index -> v1-index',suite:{passed,total},
+  commit:full,created:new Date().toISOString(),additiveTo:p,amendment:a,entryPoint:'CoachingCore/src/v1-run-format-index.mjs',baseEntryPoint:'CoachingCore/src/v1-run-index.mjs',composition:'v1-run-format-index -> v1-run-index -> v1-index',suite:{passed,total,expectedFailures:[HISTORICAL]},
   extension:{id:ext.FORMAT_EXTENSION_ID,file:'CoachingCore/v1/RUN_FORMATS_V1.json',sha256:ext.FORMAT_VALUES_FILE_SHA256,pinned:ext.FORMAT_VALUES_SHA256,enabledByIndependentRecord:Object.keys(auth.approved).sort(),
    records:{file:records,sha256:fs.existsSync(path.join(ROOT,records))?sha(path.join(ROOT,records)):null,note:'The boundary V1X-RUN-NATIVE is on only with an independent SSCTR record bound to the values hash; without one it is off (fail closed: every run session is its time expression, the frozen behaviour).'}},
   authority:Object.fromEntries(AUTHORITY.map(f=>[f,sha(path.join(ROOT,f))])),
@@ -75,12 +91,14 @@ if(arg('--write')){
  console.log(`${record.revision}: ${record.fileCount} added files, digest ${record.filesDigest}, binds ${full}; 1 amended file (${a.diff.linesAdded}+/${a.diff.linesRemoved}-); ${p.v1.revision} preserved ${p.v1.identical}/${p.v1.fileCount-1}; ${p.v1rc.revision} preserved ${p.v1rc.identical}/${p.v1rc.fileCount}`);
 }else if(arg('--check')){
  const r=JSON.parse(fs.readFileSync(recordPath(arg('--check')),'utf8')),now=filesNow(),drift=[...new Set([...Object.keys(r.files),...Object.keys(now)])].filter(f=>r.files[f]!==now[f]),p=preserved(),a=amendment(r.commit);
- const amended=fs.existsSync(path.join(ROOT,AMENDED))&&sha(path.join(ROOT,AMENDED))===r.amendment.newSha256&&a.baseIsTheRecorded&&a.baseSha256===r.amendment.baseSha256&&a.newSha256===r.amendment.newSha256&&a.diff.sha256===r.amendment.diff.sha256;
+ const amended=fs.existsSync(path.join(ROOT,AMENDED))&&sha(path.join(ROOT,AMENDED))===r.amendment.newSha256&&a.baseIsTheRecorded&&a.baseSha256===r.amendment.baseSha256&&a.newSha256===r.amendment.newSha256&&a.diff.sha256===r.amendment.diff.sha256&&a.readerAlone.ok;
  const authority=Object.entries(r.authority).filter(([f,h])=>!fs.existsSync(path.join(ROOT,f))||sha(path.join(ROOT,f))!==h).map(([f])=>f);
  const ok=!drift.length&&digest(r.files)===r.filesDigest&&!p.v1.changed.length&&!p.v1rc.changed.length&&p.v1.sha256===r.additiveTo.v1.sha256&&p.v1rc.sha256===r.additiveTo.v1rc.sha256&&amended&&!authority.length;
  console.log(ok?`${r.revision}: ${r.fileCount} added files match; 1 amended file matches its recorded diff (${r.amendment.diff.linesAdded}+/${r.amendment.diff.linesRemoved}-); ${p.v1.revision} preserved ${p.v1.identical}/${p.v1.fileCount-1}; ${p.v1rc.revision} preserved ${p.v1rc.identical}/${p.v1rc.fileCount}`
   :`${r.revision}: DRIFT\n`+[...drift,...p.v1.changed.map(f=>'(V1-FREEZE-1) '+f),...p.v1rc.changed.map(f=>'(V1RC-FREEZE-1) '+f),...(amended?[]:['(amendment) '+AMENDED]),...authority.map(f=>'(authority) '+f)].slice(0,40).join('\n'));process.exit(ok?0:1);
 }else if(process.argv.includes('--preserved')){
+ // The amended file as it is here (the working tree), against the base: the reader alone.
  const p=preserved(),rc=read(V1RC),base=read(V1),baseOk=shaOf(blob(rc.commit,AMENDED))===base.files[AMENDED],bad=[...p.v1.changed,...p.v1rc.changed];
- console.log(`${p.v1.revision}: ${p.v1.identical}/${p.v1.fileCount-1} files byte-identical, 1 amended (${AMENDED}; its base is ${baseOk?'':'NOT '}the recorded bytes); ${p.v1rc.revision}: ${p.v1rc.identical}/${p.v1rc.fileCount} files byte-identical`+(bad.length?'\nCHANGED:\n'+bad.join('\n'):''));process.exit(bad.length||!baseOk?1:0);
+ const alone=readerAlone(execFileSync('git',['diff','--no-color','--no-ext-diff','-U0',rc.commit,'--',AMENDED],{cwd:ROOT,encoding:'utf8',maxBuffer:1<<28}).split('\n'));
+ console.log(`${p.v1.revision}: ${p.v1.identical}/${p.v1.fileCount-1} files byte-identical, 1 amended (${AMENDED}; its base is ${baseOk?'':'NOT '}the recorded bytes; its diff is ${alone.ok?'':'NOT '}the reader alone, ${alone.linesAdded}+/${alone.linesRemoved}-); ${p.v1rc.revision}: ${p.v1rc.identical}/${p.v1rc.fileCount} files byte-identical`+(bad.length?'\nCHANGED:\n'+bad.join('\n'):'')+(alone.ok?'':'\nUNEXPLAINED:\n'+alone.unexplained.join('\n')));process.exit(bad.length||!baseOk||!alone.ok?1:0);
 }else{console.log('usage: --write <n> --commit <sha> --suite <passed>/<total> | --check <n> | --preserved');process.exit(2);}

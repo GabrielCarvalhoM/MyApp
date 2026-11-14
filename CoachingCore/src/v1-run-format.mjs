@@ -20,7 +20,7 @@ import {distanceFacts,historyReference} from './v1-run-history.mjs';
  * - Every rule and number is SSCTR-RWS-R2-DECISION as amended by SSCTR-RWS-R3-DECISION and SSCTR-RWS-R3A-AMENDMENT, cited here by item.
  */
 export const FORMAT_EXTENSION_ID='V1X-RUN-FORMATS-1';
-export const FORMAT_VALUES_SHA256='5ca33b9b848cc65c8b5c693a5dd67a156fb56dfd27cadc1f3dd5df46422ea60d';
+export const FORMAT_VALUES_SHA256='26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c';
 export const FORMAT_VALUES_URL=new URL('../v1/RUN_FORMATS_V1.json',import.meta.url);
 export const FORMAT_RECORDS_URL=new URL('../../audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_RUN_RECORDS.json',import.meta.url);
 export const FORMAT_BOUNDARIES=freeze({NATIVE:'V1X-RUN-NATIVE'});
@@ -155,34 +155,36 @@ export function checkRepetitions(works,recovery,c,V){
 export const recoveryMetres=(recoveryMinutes,recoveryBand,V)=>Math.ceil(recoveryMinutes*60/recoveryBand.fastSecondsPerKm*1000/V.distances.recoveryUnitMetres-EPS)*V.distances.recoveryUnitMetres;
 const byUnit=(grid,unit)=>grid.filter(d=>d%unit===0).sort((a,b)=>b-a);
 /**
- * The candidates of a rotation entry in the catalog's order (R2 values.candidateOrder), each checked; the first that passes is the entry's format.
+ * The candidates of a rotation entry, in the catalog's order (R2 values.candidateOrder; the SSCTR review of the candidate ruled, on F-1, that the
+ * written order stands for MIXED as for the others).
  * - EVEN_REPEATS: the distance unit, coarsest first (1000, 400, 200, 100, 50); then the repetition count n, n-1, n+1; then the longer distance.
  * - MIXED: floor(n/2) distance repetitions, then the rest by time at exactly the step's minutes; the unit, coarsest first, then the longer distance.
  * - PYRAMID: the peak's unit, coarsest first, the longer peak first; then the larger flank step; then the shapes in their listed order.
  */
-export function repetitionCandidate(entry,c,V){
+export function* repetitionCandidates(entry,c,V){
  const grid=repetitionGrid(V),units=V.distances.candidateUnitPreferenceCoarsestFirst,n=c.step.repetitions,P=V.patterns,time={minutes:c.step.recoveryMinutes};
- const found=(works,recovery,r)=>({pattern:entry,works,recovery,...r});
  if(entry==='EVEN_REPEATS'||entry==='PROGRESSIVE_REPEATS'||entry==='EVEN_REPEATS_DISTANCE_RECOVERY'){
-  if(entry==='EVEN_REPEATS_DISTANCE_RECOVERY'&&!c.recoveryBand)return null;
+  if(entry==='EVEN_REPEATS_DISTANCE_RECOVERY'&&!c.recoveryBand)return;
   const recovery=entry==='EVEN_REPEATS_DISTANCE_RECOVERY'?{metres:recoveryMetres(c.step.recoveryMinutes,c.recoveryBand,V)}:time,min=Math.max(P.EVEN_REPEATS.minRepetitions,entry==='PROGRESSIVE_REPEATS'?P.PROGRESSIVE_REPEATS.minRepetitions:0);
-  for(const unit of units)for(const offset of P.EVEN_REPEATS.repetitionCountOffsets){const k=n+offset;if(k<min)continue;
-   for(const d of byUnit(grid,unit)){const works=Array.from({length:k},()=>({metres:d})),r=checkRepetitions(works,recovery,c,V);if(r.ok)return found(works,recovery,r);}}
-  return null;
+  for(const unit of units)for(const offset of P.EVEN_REPEATS.repetitionCountOffsets){const k=n+offset;if(k<min)continue;for(const d of byUnit(grid,unit))yield {works:Array.from({length:k},()=>({metres:d})),recovery};}
+  return;
  }
  if(entry==='MIXED'){
-  if(n<P.MIXED.minRepetitions)return null;const a=Math.floor(n/2);
-  for(const unit of units)for(const d of byUnit(grid,unit)){const works=[...Array.from({length:a},()=>({metres:d})),...Array.from({length:n-a},()=>({minutes:c.step.workMinutes}))],r=checkRepetitions(works,time,c,V);if(r.ok)return found(works,time,r);}
-  return null;
+  if(n<P.MIXED.minRepetitions)return;const a=Math.floor(n/2);
+  for(const unit of units)for(const d of byUnit(grid,unit))yield {works:[...Array.from({length:a},()=>({metres:d})),...Array.from({length:n-a},()=>({minutes:c.step.workMinutes}))],recovery:time};
+  return;
  }
  if(entry==='PYRAMID'){
-  if(!(c.step.workMinutes>c.familyMinRepetitionMinutes))return null;const Y=P.PYRAMID,from=V.distances.repetitionMetres.from;
+  if(!(c.step.workMinutes>c.familyMinRepetitionMinutes))return;const Y=P.PYRAMID,from=V.distances.repetitionMetres.from;
   for(const unit of units)for(const peak of byUnit(grid,unit))for(const flank of peak>=1000?Y.flankStepMetres.peakAtLeast1000:Y.flankStepMetres.peakBelow1000)for(const shape of Y.shapesInOrder){
    if(shape.length>n+Y.maxRepetitionsAboveStep)continue;
    const works=shape.map(k=>({metres:peak-k*flank,...(k?{flank:true}:{})}));if(works.some(w=>w.metres<from))continue;
-   const r=checkRepetitions(works,time,c,V);if(r.ok)return found(works,time,r);}
-  return null;
+   yield {works,recovery:time};}
  }
+}
+/** The first candidate of an entry that passes the envelope: the entry's format. */
+export function repetitionCandidate(entry,c,V){
+ for(const cand of repetitionCandidates(entry,c,V)){const r=checkRepetitions(cand.works,cand.recovery,c,V);if(r.ok)return {pattern:entry,...cand,...r};}
  return null;
 }
 
@@ -197,15 +199,22 @@ export function repetitionCandidate(entry,c,V){
  *   CT-3  D <= 1.10 x L30                                                     a conservative expression bound, never a dose rule
  * Null when no D passes: the session is the TIME expression of the same dose.
  */
-export function sizeContinuous({minutes,stridesMinutes=0,availableMinutes,bandFast,bandSlow,p1,comparablePace=null,latestPace=null,atMarathonCap=false,l30Km},V){
- const Q=V.tied,up=x=>Math.ceil(x/Q.paceRoundUpSeconds-EPS)*Q.paceRoundUpSeconds;
+export function sizeContinuous({minutes,stridesMinutes=0,availableMinutes,bandFast,bandSlow,p1,comparablePace=null,latestPace=null,atMarathonCap=false,l30Km,fixedKm=null},V){
+ const Q=V.tied,units=V.distances.continuousKmUnitsCoarsestFirst,up=x=>Math.ceil(x/Q.paceRoundUpSeconds-EPS)*Q.paceRoundUpSeconds;
  const pTyp=Math.max(bandFast,p1.fastSecondsPerKm),sources={S1:p1.slowSecondsPerKm,...(num(comparablePace,1)?{S2:up(comparablePace)}:{}),...(num(latestPace,1)?{S3:up(latestPace)}:{}),...(atMarathonCap?{S4:bandSlow}:{})};
- const pSize=Math.max(pTyp,...Object.values(sources)),ceiling=Math.min(minutes,availableMinutes),bound=Q.distanceReferenceMaxFraction*l30Km;
+ const pSize=Math.max(pTyp,...Object.values(sources)),ceiling=Math.min(minutes,availableMinutes),bound=Q.distanceReferenceMaxFraction*l30Km,floor=Q.doseFloor*minutes;
  const base={pTyp,pSize,sources,ceilingMinutes:ceiling,boundKm:Math.round(bound*1000)/1000};
- for(const unit of V.distances.continuousKmUnitsCoarsestFirst)for(let k=Math.floor(Math.min((ceiling-stridesMinutes)*60/pSize,bound)/unit+EPS);k>=1;k--){
-  const d=k*unit,high=d*pSize/60+stridesMinutes,low=d*pTyp/60+stridesMinutes;
-  if(low<Q.doseFloor*minutes-EPS)break; // a shorter distance fails the dose floor too
-  if(high<=ceiling+EPS&&d<=bound+EPS)return {...base,distanceKm:d,unitKm:unit,estimate:{low,high},checks:{'CT-1':{value:r2(high),max:ceiling},'CT-2':{value:r2(low),min:r2(Q.doseFloor*minutes)},'CT-3':{value:d,max:base.boundKm}}};
+ const at=d=>({high:d*pSize/60+stridesMinutes,low:d*pTyp/60+stridesMinutes});
+ const found=(d,unit,t)=>({...base,distanceKm:d,unitKm:unit,estimate:t,checks:{'CT-1':{value:r2(t.high),max:ceiling},'CT-2':{value:r2(t.low),min:r2(floor)},'CT-3':{value:d,max:base.boundKm}}});
+ // A distance delivered earlier in the week is kept only while it still passes the three checks with today's inputs: never taken as given.
+ if(fixedKm!==null){
+  const unit=num(fixedKm,0.5)?units.find(u=>Math.abs(fixedKm/u-Math.round(fixedKm/u))<EPS)??null:null,t=unit?at(fixedKm):null;
+  return t&&t.high<=ceiling+EPS&&t.low>=floor-EPS&&fixedKm<=bound+EPS?found(fixedKm,unit,t):{...base,distanceKm:null};
+ }
+ for(const unit of units)for(let k=Math.floor(Math.min((ceiling-stridesMinutes)*60/pSize,bound)/unit+EPS);k>=1;k--){
+  const d=k*unit,t=at(d);
+  if(t.low<floor-EPS)break; // a shorter distance fails the dose floor too
+  if(t.high<=ceiling+EPS&&d<=bound+EPS)return found(d,unit,t);
  }
  return {...base,distanceKm:null};
 }
@@ -278,7 +287,7 @@ function repetitionSession(x,cand,V){
  const blocks=clean([{repeat:1,steps:[step('WARMUP',T(p.warmupMinutes*60),easy)]},...groups.map((g,i)=>({repeat:g.n,steps:[work(g.w),recovery],...(i===groups.length-1?{omitLastRecovery:true}:{})})),{repeat:1,steps:[step('COOLDOWN',T(p.cooldownMinutes*60),easy)]}]);
  const metres=cand.works.filter(w=>num(w.metres)),shortest=Math.min(...metres.map(w=>w.metres)),what=label(cand.works)+(cand.pattern==='PROGRESSIVE_REPEATS'?' progressive':'');
  const instructions=[`Warm up ${p.warmupMinutes} minutes easy`,`${what} - ${p.effort}; `+(byDistance?`${cand.recovery.metres} m between: ${X.recoveryByDistance}`:`${cand.recovery.minutes} min between: ${X.recoveryByTime}`),
-  ...(cand.pattern==='PROGRESSIVE_REPEATS'?[`${X.progressiveRepeats} (${mmss(band.slowSecondsPerKm)} to ${mmss(band.fastSecondsPerKm)} per km)`]:[]),`Cool down ${p.cooldownMinutes} minutes easy`,X.effortGoverns,X.repetitionEstimate,...(shortest<1000?[X.shortRepetition]:[]),X.timeVersion,'Record the repetitions you completed, your effort and how you feel the next day'];
+  ...(cand.pattern==='PROGRESSIVE_REPEATS'?[`${X.progressiveRepeats} (${mmss(band.slowSecondsPerKm)} to ${mmss(band.fastSecondsPerKm)} per km)`]:[]),`Cool down ${p.cooldownMinutes} minutes easy`,`Whole session ${range(cand.duration.low,cand.duration.high)} (estimate)`,X.effortGoverns,X.repetitionStop,X.repetitionEstimate,...(shortest<1000?[X.shortRepetition]:[]),X.timeVersion,'Record the repetitions you completed, your effort and how you feel the next day'];
  const core={sessionId:s.id,plannedPrescriptionHash:s.plannedPrescriptionHash,expression:'NATIVE',pattern:cand.pattern,blocks},time=timeSession(x,null);
  if(!textsPass(instructions,p))return null;
  return {...core,formatId:`${cand.pattern}:${p.family}:${what.replace(/\s+/g,'')}`,formatHash:hashOf(core),timeFormatHash:time.formatHash,week:s.weekIndex,date:s.date,role:s.role,family:p.family,planning:planningOf(s,x.budgetMinutes),
@@ -298,6 +307,11 @@ function continuousSession(x,pattern,size,V){
   estimate:{durationMinutes:{low:r2(size.estimate.low),high:r2(size.estimate.high)},distanceKm:{low:size.distanceKm,high:size.distanceKm,of:'TARGET'},basis:'OWN_PACE_P_TYP_TO_P_SIZE'},
   dose:{planningMinutes:p.durationMinutes,withinEnvelope:true,checks:size.checks,sizing:{pTyp:size.pTyp,pSize:size.pSize,sources:size.sources}},unavailable:null,instructions,timeVersion:{formatHash:time.formatHash,blocks:time.blocks,durationMinutes:p.durationMinutes}};
 }
+/** What a candidate of a repetition session is checked against: the canonical step, the band of its domain, the session's budget. */
+const contextOf=(x,V)=>{const p=x.session.prescription;return {step:p.work,band:x.guidance.pace,recoveryBand:x.recoveryBand?.status==='AVAILABLE'?x.recoveryBand:null,familyMinRepetitionMinutes:V.catalog[p.family].familyMinRepetitionMinutes??p.work.workMinutes,warmupMinutes:p.warmupMinutes,cooldownMinutes:p.cooldownMinutes,budgetMinutes:x.budgetMinutes,canonicalDurationMinutes:p.durationMinutes};};
+/** The sizing of a continuous session from the band and the record (`fixedKm`: the one distance to check, instead of the largest that passes). */
+const sizingOf=(x,V,fixedKm=null)=>{const p=x.session.prescription,band=x.guidance.pace,h=x.history,long=p.family==='LONG';
+ return sizeContinuous({minutes:p.durationMinutes,stridesMinutes:stridesBlockMinutes(p),availableMinutes:x.availableMinutes,bandFast:band.fastSecondsPerKm,bandSlow:band.slowSecondsPerKm,p1:h.p1,comparablePace:long?h.comparable?.secondsPerKm??null:null,latestPace:h.latest?.secondsPerKm??null,atMarathonCap:long&&p.durationMinutes>=V.tied.marathonLongRunCapMinutes,l30Km:h.l30.km,fixedKm},V);};
 /**
  * The prescribed form of one planned run session (deterministic; handoff section 4). `x`: the session and its week (`phase`, `mode`), the athlete
  * (`experience`, `eventKind`), the V1RC guidance of the session (`guidance`, its band never recomputed), the RECOVERY band and the marathon
@@ -311,15 +325,13 @@ export function selectRunSession(x,V){
   const why=suppressionOf(x,V);if(why)return timeSession(x,why);
   const C=V.catalog[family],experience=experienceOf(x.experience);
   if(V.eligibility.continuous.families.includes(family)){
-   const band=x.guidance.pace,h=x.history,entries=C.rotationEntries.filter(e=>admitted(e,{family,experience,phase:x.phase},V));
-   const size=sizeContinuous({minutes:p.durationMinutes,stridesMinutes:stridesBlockMinutes(p),availableMinutes:x.availableMinutes,bandFast:band.fastSecondsPerKm,bandSlow:band.slowSecondsPerKm,p1:h.p1,comparablePace:family==='LONG'?h.comparable?.secondsPerKm??null:null,latestPace:h.latest?.secondsPerKm??null,
-    atMarathonCap:family==='LONG'&&p.durationMinutes>=V.tied.marathonLongRunCapMinutes,l30Km:h.l30.km},V);
+   const entries=C.rotationEntries.filter(e=>admitted(e,{family,experience,phase:x.phase},V)),size=sizingOf(x,V);
    if(size.distanceKm===null)return timeSession(x,{reason:'NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE'});
    return continuousSession(x,x.prior?.evenOnly?entries[0]:entries[x.weekIndex%entries.length],size,V)??timeSession(x,{reason:'TEXT_CHECK_FAILED'});
   }
   const band=x.guidance.pace;
   if(C.domain!=='EVENT'&&band.domain!==C.domain)return timeSession(x,{reason:'STRUCTURE_ERROR',detail:'BAND_DOMAIN'});
-  const c={step:p.work,band,recoveryBand:x.recoveryBand?.status==='AVAILABLE'?x.recoveryBand:null,familyMinRepetitionMinutes:C.familyMinRepetitionMinutes??p.work.workMinutes,warmupMinutes:p.warmupMinutes,cooldownMinutes:p.cooldownMinutes,budgetMinutes:x.budgetMinutes,canonicalDurationMinutes:p.durationMinutes};
+  const c=contextOf(x,V);
   // R2 N9: in taper the achieved peak's own repetition distance is kept, with the engine's reduced count, when the reduced step still admits it.
   if(x.phase==='TAPER'&&num(x.prior?.peakMetres)&&admitted('EVEN_REPEATS',{family,experience,phase:x.phase},V)){
    const works=Array.from({length:p.work.repetitions},()=>({metres:x.prior.peakMetres})),recovery={minutes:p.work.recoveryMinutes},r=p.work.repetitions>=V.patterns.EVEN_REPEATS.minRepetitions?checkRepetitions(works,recovery,c,V):{ok:false};
@@ -334,13 +346,58 @@ export function selectRunSession(x,V){
  }
 }
 
+/** What a selection chose, read back from a delivered format: the work sequence and what lies between, or the distance. Never its texts or its band. */
+function structureOf(format){
+ const steps=flatSteps(format.blocks);
+ if(CONTINUOUS.has(format.pattern)){const run=steps.find(s=>s.kind==='STEADY'&&s.target.type==='DISTANCE');return run?{distanceKm:run.target.metres/1000}:null;}
+ const work=steps.filter(s=>s.kind==='WORK'),rec=steps.find(s=>s.kind==='RECOVERY')??null;if(!work.length||!rec)return null;
+ return {works:work.map(s=>s.target.type==='DISTANCE'?{metres:s.target.metres}:{minutes:s.target.seconds/60}),recovery:rec.target.type==='DISTANCE'?{metres:rec.target.metres}:{minutes:rec.target.seconds/60}};
+}
+const sameWork=(a,b)=>a.length===b.length&&a.every((w,i)=>w.metres===b[i].metres&&w.minutes===b[i].minutes);
+/**
+ * The format of a session is fixed for its week once a selection delivered it (R2 N10; handoff section 3): its structure is kept while it is
+ * still a candidate of the catalog that passes the envelope with today's band and record, and the session is built again from that structure.
+ * Nothing of the stored row is delivered as it is (a row is carried by the client): its texts, its estimates and its band are today's, and a
+ * structure that is no candidate, or passes no more, gives way to a new selection. A protective state still withdraws the session to time at once.
+ */
+export function reselectRunSession(x,settled,V){
+ const s=x.session,family=s.prescription.family;
+ try{
+  if(!isObj(settled)||settled.plannedPrescriptionHash!==s.plannedPrescriptionHash||suppressionOf(x,V))return selectRunSession(x,V);
+  if(settled.expression==='TIME')return SELECTION_REASONS.includes(settled.unavailable?.native)?timeSession(x,{reason:settled.unavailable.native}):selectRunSession(x,V);
+  const C=V.catalog[family],st=structureOf(settled);
+  if(!st||!C.rotationEntries.includes(settled.pattern)||!admitted(settled.pattern,{family,experience:experienceOf(x.experience),phase:x.phase},V))return selectRunSession(x,V);
+  if(V.eligibility.continuous.families.includes(family)){
+   const size=num(st.distanceKm)?sizingOf(x,V,st.distanceKm):null;
+   return size&&size.distanceKm!==null?continuousSession(x,settled.pattern,size,V)??selectRunSession(x,V):selectRunSession(x,V);
+  }
+  if(!st.works)return selectRunSession(x,V);
+  const c=contextOf(x,V);
+  for(const cand of repetitionCandidates(settled.pattern,c,V)){
+   if(!sameWork(cand.works,st.works)||cand.recovery.metres!==st.recovery.metres||cand.recovery.minutes!==st.recovery.minutes)continue;
+   const r=checkRepetitions(cand.works,cand.recovery,c,V);
+   return r.ok?repetitionSession(x,{pattern:settled.pattern,...cand,...r},V)??selectRunSession(x,V):selectRunSession(x,V);
+  }
+  return selectRunSession(x,V);
+ }catch{return selectRunSession(x,V);}
+}
+
 // ---------- the record of formats delivered (preflight V2) ----------
-/** The content a format row keeps: the session as prescribed, without what changes between reviews of the same format. */
-const kept=session=>{const {execution,provisional,...rest}=session;return rest;};
-/** A format delivered ahead of its week is kept as what a report can be read against, no more: it is delivered again, whole, when its week comes. */
+/** What a format row keeps: the structure a report is read against and what identifies it. No instruction, no free text of the session. */
 const compact=s=>({sessionId:s.sessionId,plannedPrescriptionHash:s.plannedPrescriptionHash,expression:s.expression,pattern:s.pattern,blocks:s.blocks,formatId:s.formatId,formatHash:s.formatHash,timeFormatHash:s.timeFormatHash,week:s.week,date:s.date,role:s.role,family:s.family,estimate:s.estimate,unavailable:s.unavailable});
 const formatKey=(sessionId,formatHash,settled)=>`${sessionId}|${formatHash}|${settled?'W':'P'}`;
-const readableFormat=(o,athleteId)=>isObj(o)&&o.fact===RUN_FORMAT_EMITTED&&o.athleteId===athleteId&&isObj(o.format)&&typeof o.sessionId==='string'&&o.format.sessionId===o.sessionId&&o.inputHash===hash(o.format)
+const STEP_KINDS=new Set(['WARMUP','WORK','RECOVERY','COOLDOWN','STEADY','STRIDES']);
+/** The blocks of a format are a small closed structure; anything else is no format (so a row can cost nothing to read, whatever it holds). */
+function boundedBlocks(blocks){
+ if(!Array.isArray(blocks)||blocks.length<1||blocks.length>24)return false;let steps=0;
+ for(const b of blocks){
+  if(!isObj(b)||!Number.isInteger(b.repeat)||b.repeat<1||b.repeat>60||!Array.isArray(b.steps)||b.steps.length<1||b.steps.length>4)return false;
+  for(const s of b.steps){const t=isObj(s)?s.target:null;if(!isObj(t)||!STEP_KINDS.has(s.kind)||!(t.type==='TIME'&&num(t.seconds,1,6*3600)||t.type==='DISTANCE'&&num(t.metres,50,100000)))return false;}
+  steps+=b.repeat*b.steps.length;if(steps>400)return false;
+ }
+ return true;
+}
+const readableFormat=(o,athleteId)=>isObj(o)&&o.fact===RUN_FORMAT_EMITTED&&o.athleteId===athleteId&&isObj(o.format)&&typeof o.sessionId==='string'&&o.format.sessionId===o.sessionId&&EXPRESSIONS.includes(o.format.expression)&&boundedBlocks(o.format.blocks)&&o.inputHash===hash(o.format)
  &&o.format.formatHash===o.formatHash&&hashOf(o.format)===o.formatHash&&o.eventId===formatKey(o.sessionId,o.formatHash,o.settled===true)&&Number.isFinite(Date.parse(o.recordedAt));
 /**
  * The carried record read: every readable format by session and hash (what a report cites is resolved here, never recomputed with today's bands),
@@ -364,7 +421,7 @@ export function appendFormats(record,sessions,{athleteId,recordedAt}){
  const carried=list(record).map(r=>clone(r)),ids=new Set(carried.filter(isObj).map(r=>r.eventId)),added=[];
  for(const s of sessions){
   const settled=s.provisional!==true&&(s.expression==='NATIVE'||SELECTION_REASONS.includes(s.unavailable?.native)),id=formatKey(s.sessionId,s.formatHash,settled);
-  if(ids.has(id))continue;ids.add(id);const format=clean(settled?kept(s):compact(s));
+  if(ids.has(id))continue;ids.add(id);const format=clean(compact(s));
   added.push({fact:RUN_FORMAT_EMITTED,eventId:id,athleteId,recordedAt,sessionId:s.sessionId,formatHash:s.formatHash,settled,week:s.week,format,inputHash:hash(format)});
  }
  return {record:[...carried,...added],added:added.map(r=>r.eventId)};
@@ -373,7 +430,9 @@ export function appendFormats(record,sessions,{athleteId,recordedAt}){
 // ---------- reading an execution (handoff section 5; R3 C3-C5; R3A A1) ----------
 const mainSteps=format=>flatSteps(format.blocks).filter(s=>CONTINUOUS.has(format.pattern)?s.kind==='STEADY':s.kind==='WORK');
 const minutesOfActual=a=>num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null;
-const notComparable=(a,V)=>list(a.conditions).map(upper).some(c=>V.exposure.neutralConditions.includes(c));
+const notComparable=(a,V)=>list(a.conditions).slice(0,20).map(upper).some(c=>V.exposure.neutralConditions.includes(c));
+/** A declared stop, with its reason: one the catalog lists, or SYMPTOM when none is stated or the one stated is not listed (V1RC R-01). */
+export const stopOf=(a,V)=>{if(!isObj(a?.stop))return null;const stated=upper(a.stop.reason),known=V.stops.reasons.includes(stated);return {reason:known?stated:V.stops.missingReasonReadAs,stated:known,atStep:a.stop.atStep??null,metres:num(a.stop.metres,0)?a.stop.metres:null,seconds:num(a.stop.seconds,0)?a.stop.seconds:null};};
 /**
  * The completion of a native session, derived from the raw facts of its report and the format the report cites; never accepted from anywhere.
  * Precedence (R3 values.statuses): STOPPED, PARTIAL, UNKNOWN, then met. Null status for a format with no distance target: the engine's own read.
@@ -392,10 +451,9 @@ export function readCompletion(actual,format,V,{wearable=false}={}){
  const f=distanceFacts(a,V,{wearable}),evidence={source:f.source,quality:f.quality,measuredKm:f.measuredKm,declaredKm:f.declaredKm};
  const out=(status,extra={})=>({status,basis:null,tier:null,flag:null,ask:null,stop:null,formatHash:format.formatHash,evidence,...extra,exposure:{estimateMinutes:est?{low:est.low,high:est.high}:null,actualMinutes:minutes,aboveEstimate:above}});
  const main=mainSteps(format);if(!main.some(s=>s.target.type==='DISTANCE'))return out(null);
- if(isObj(a.stop)){const stated=upper(a.stop.reason),reason=V.stops.reasons.includes(stated)?stated:V.stops.missingReasonReadAs;
-  return out('STOPPED',{stop:{reason,stated:V.stops.reasons.includes(stated),atStep:a.stop.atStep??null,metres:num(a.stop.metres,0)?a.stop.metres:null,seconds:num(a.stop.seconds,0)?a.stop.seconds:null}});}
+ if(isObj(a.stop))return out('STOPPED',{stop:stopOf(a,V)});
  if(CONTINUOUS.has(format.pattern)){
-  const target=main[0].target.metres/1000,floor=V.tied.correctionFloorFraction*target,usable=f.measuredKm!==null&&!f.devicePoor&&(!f.markedPoor||f.segments>0),SHORT='STOP_REASON_OR_CORRECTION_OR_RAN_LESS';
+  const target=main[0].target.metres/1000,floor=V.tied.correctionFloorFraction*target,usable=f.measuredKm!==null&&!f.devicePoor&&!f.implausible&&(f.segments>0?f.markedPoor:!f.markedPoor),SHORT='STOP_REASON_OR_CORRECTION_OR_RAN_LESS';
   const own=f.declaredKm??f.manualKm;
   if(own!==null&&own<target-EPS)return out('PARTIAL',{flag:'SHORTFALL_DECLARED',countsForPause:true});
   if(a.completed===false)return out('PARTIAL',{flag:'REPORTED_NOT_COMPLETED',ask:SHORT,countsForPause:true});
@@ -410,11 +468,12 @@ export function readCompletion(actual,format,V,{wearable=false}={}){
    return out('DISTANCE',{basis:'CONFIRMED_CORRECTION',tier:'CONFIRMED_CORRECTION'});
   }
   if(f.measuredKm===null)return out('UNKNOWN',{ask:'CONFIRM_OR_MEASURE'});
-  if(!usable)return out('UNKNOWN',{flag:'MEASUREMENT_FLAGGED_POOR',ask:'CONFIRM_OR_CORRECT'});
+  // A measurement that is a fault (an impossible pace), or a run in several files not marked as one, is no usable measurement.
+  if(!usable)return out('UNKNOWN',{flag:f.implausible?'MEASUREMENT_IMPLAUSIBLE':f.segments>0&&!f.devicePoor&&!f.markedPoor?'SEGMENTS_NOT_MARKED_POOR':'MEASUREMENT_FLAGGED_POOR',ask:'CONFIRM_OR_CORRECT'});
   // A usable measurement a little short, with no stop and no answer: it neither counts for the pause rule nor resets it (R3A X-2 counting).
   return out('PARTIAL',{ask:SHORT,countsForPause:f.measuredKm<floor-EPS});
  }
- const reports=list(a.steps).filter(isObj),reportOf=s=>reports.find(e=>e.block===s.block&&e.rep===s.rep&&upper(e.kind)==='WORK')??null;
+ const reports=list(a.steps).slice(0,400).filter(isObj),reportOf=s=>reports.find(e=>e.block===s.block&&e.rep===s.rep&&upper(e.kind)==='WORK')??null;
  const met=main.map(s=>{const e=reportOf(s);if(!e)return null;if(s.target.type==='TIME'&&num(e.seconds,0))return e.targetMet!==false&&e.seconds>=s.target.seconds-0.5;return e.targetMet===true?true:e.targetMet===false?false:null;});
  const done=met.filter(m=>m===true).length;
  if(met.includes(false)||a.completed===false)return out('PARTIAL',{ask:'STOP_REASON_OR_RAN_LESS',stepsMet:done,stepsPlanned:main.length,countsForPause:true});
@@ -427,20 +486,24 @@ export function readCompletion(actual,format,V,{wearable=false}={}){
  * estimated minutes, whether the execution may be pace evidence (never a declared or corrected distance, a treadmill, a POOR measurement or a
  * flagged condition), and the planning weight of each main step with whether its target was met. `completed` is the engine's own reading of the row.
  */
-export function executionOf(row,format,V){
+export function executionOf(row,format,V,{boutMinutes=null}={}){
  const a=row.actual??{},wearable=String(row.provenance?.sourceQuality??'').startsWith('WEARABLE'),f=distanceFacts(a,V,{wearable}),ref=historyReference(f),base={eventId:row.eventId,completed:row.partial!==true&&a.completed===true&&row.conflicted!==true,actualMinutes:minutesOfActual(a),measuredKm:f.measuredKm,declaredKm:f.declaredKm,extentKm:ref,reliability:f.quality};
- if(!format||format.expression!=='NATIVE')return {...base,status:'TIME',basis:null,expression:'TIME',formatHash:format?.formatHash??null,paceEvidence:null};
+ // A session done by time (or whose cited format expresses another dose) is the engine's own reading; a stop it declares is still a stop.
+ if(!format||format.expression!=='NATIVE')return {...base,status:'TIME',basis:null,expression:'TIME',formatHash:format?.formatHash??null,paceEvidence:null,stop:stopOf(a,V)};
  const read=readCompletion(a,format,V,{wearable}),main=mainSteps(format),continuous=CONTINUOUS.has(format.pattern),targetKm=continuous?main[0].target.metres/1000:r2(main.filter(s=>s.target.type==='DISTANCE').reduce((n,s)=>n+s.target.metres,0)/1000);
- const reports=list(a.steps).filter(isObj),clear=upper(a.measurement)!=='TREADMILL'&&upper(a.gpsQuality)!=='POOR'&&!f.devicePoor&&!notComparable(a,V);
+ const reports=list(a.steps).slice(0,400).filter(isObj),clear=upper(a.measurement)!=='TREADMILL'&&upper(a.gpsQuality)!=='POOR'&&!f.devicePoor&&!f.implausible&&f.segments===0&&!notComparable(a,V);
+ // Repetitions shorter than the calibration's bout (5 minutes of the planned step) are never pace evidence (R2 N7; V1RC Q8).
+ const bouts=num(boutMinutes,V.tied.calibrationBoutMinutesMin);
  return {...base,status:read.status,basis:read.basis,tier:read.tier,flag:read.flag,ask:read.ask,stop:read.stop,expression:'NATIVE',pattern:format.pattern,formatHash:format.formatHash,targetKm,estimateMinutes:read.exposure.estimateMinutes,aboveEstimate:read.exposure.aboveEstimate,
-  paceEvidence:read.status==='DISTANCE'&&['MEASURED','LAP'].includes(read.basis)&&clear,countsForPause:read.countsForPause===true,
-  steps:main.map(s=>{const e=reports.find(r=>r.block===s.block&&r.rep===s.rep&&upper(r.kind)===s.kind)??null,weightSeconds=s.target.type==='TIME'?s.target.seconds:Math.round((s.estimate.seconds.low+s.estimate.seconds.high)/2);
+  paceEvidence:read.status==='DISTANCE'&&clear&&(read.basis==='MEASURED'||read.basis==='LAP'&&bouts),countsForPause:read.countsForPause===true,
+  steps:main.map(s=>{const e=reports.find(r=>r.block===s.block&&r.rep===s.rep&&upper(r.kind)===s.kind)??null,q=s.estimate?.seconds,weightSeconds=s.target.type==='TIME'?s.target.seconds:num(q?.low)&&num(q?.high)?Math.round((q.low+q.high)/2):null;
    return {block:s.block,rep:s.rep,kind:s.kind,target:clone(s.target),weightSeconds,targetMet:continuous?read.status==='DISTANCE':e?.targetMet===true?true:e?.targetMet===false?false:null,...(continuous&&read.status!=='DISTANCE'&&ref!==null?{extentFraction:Math.min(1,r2(ref/targetKm))}:{})};})};
 }
 /**
  * The pause of a class of continuous runs (R3 X-2, counting as amended by R3A): two consecutive distance-expressed continuous sessions of one
  * class (EASY or LONG), each above its estimate, stopped or partial, put that class in TIME for 28 days from the second. A session of the class
- * done by time without a stop, or a distance session that met its target inside its estimate, starts the count again. A treadmill session, one
+ * by time that the engine reads as complete, with no stop, or a distance session that met its target inside its estimate, starts the count again;
+ * a time session not completed neither counts nor resets (SSCTR review of the candidate, A-03). A treadmill session, one
  * under a flagged condition, an UNKNOWN one, and a PARTIAL resting only on a usable measurement of at least 0.91 of the target neither count nor
  * reset. `rows` are the class's executions in date order, each {date, execution, actual}. Returns the day the pause ends, or null.
  */
@@ -449,7 +512,7 @@ export function pausedUntil(rows,V,addDays){
  for(const r of rows){
   const e=r.execution,a=r.actual??{};
   if(V.exposure.neutralMeasurements.includes(upper(a.measurement))||notComparable(a,V)||e.status==='UNKNOWN')continue;
-  if(e.expression!=='NATIVE'){if((a.completed===true||num(a.minutes,0.01))&&!isObj(a.stop))count=0;continue;}
+  if(e.expression!=='NATIVE'){if(e.completed===true&&!isObj(a.stop))count=0;continue;}
   if(e.status==='PARTIAL'&&!e.countsForPause)continue;
   if(e.status==='STOPPED'||e.status==='PARTIAL'||e.status==='DISTANCE'&&e.aboveEstimate){count++;if(count>=V.tied.consecutiveSessions){until=addDays(r.date,V.tied.windowDays);count=0;}}else count=0;
  }

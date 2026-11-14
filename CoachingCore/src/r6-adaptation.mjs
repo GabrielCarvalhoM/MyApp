@@ -190,8 +190,8 @@ const modeOf=(program,s)=>s.sport==='RUN'?program.stateTrace[s.weekIndex]?.run?.
  * V1RWS (Run Workout Structure, Founder decision of 2026-11-13): the one amendment of this file after COACHINGCORE-V1-FREEZE-1. The key, internal
  * and never serialized, under which the native run format entry point (v1-run-format-index.mjs) hands its completion reader to every binding of a
  * record (the review, the record kept under a clinical hold, viewMovedBy, gapAnsweredBy and historicalStateOf). Without it every binding reads
- * exactly as before. With it, a run report the reader classifies (DISTANCE, PARTIAL, STOPPED, UNKNOWN) is complete only as DISTANCE: a native
- * distance target is met by its distance, never by the minutes it took. The reader is called on the canonical row (duplicates already merged), so
+ * exactly as before. With it, a run report the reader classifies (DISTANCE, PARTIAL, STOPPED, UNKNOWN) is complete only as DISTANCE, and only
+ * when the report itself says completed: a native distance target is met by its distance, never by the minutes it took. The reader is called on the canonical row (duplicates already merged), so
  * no reading a client sends is ever read; a report it does not classify, and every strength report, keeps the minutes read below. A reader that
  * fails classifies nothing as complete. An integration passes no options (QRE-V1FC-05).
  */
@@ -206,7 +206,7 @@ function bindObservations(program,accepted,hybrid,policy,reads=null){
   // A race's duration is the event window (operational.event.raceDay), not a target: a finished race is complete however fast (R7-A).
  const {s,w}=x,p=s.prescription,minutesOk=s.sport==='STRENGTH'||s.role==='RACE'||!Number.isFinite(o.actual.minutes)||o.actual.minutes>=0.9*p.durationMinutes;
   const logs=s.sport==='STRENGTH'?strengthLogs(o,s):{},setsOk=s.sport!=='STRENGTH'||!Object.keys(logs).length||Object.values(logs).every(l=>l.setsDone>=l.plannedSets);
-  const read=completionRead(reads,o,s),complete=read?read==='DISTANCE':o.actual.completed===true&&minutesOk&&setsOk;
+  const read=completionRead(reads,o,s),complete=o.actual.completed===true&&(read?read==='DISTANCE':minutesOk&&setsOk);
   bound.push({...o,partial:!complete,comparable:o.comparable!==false&&complete&&o.confounded!==true,confounded:o.confounded===true,logs,context:{sessionId:s.id,sessionType:sessionType(s),sport:s.sport,role:s.role,family:p.family,doseKey:doseKeyOf(s),runMinutes:runMinutesOf(s)||null,mode:modeOf(program,s),phaseClass:phaseClassOf(policy,w.phase,modeOf(program,s)),weekIndex:w.index,phase:w.phase,arrangementId:w.arrangementId,plannedHash:s.plannedPrescriptionHash,plannedMinutes:p.durationMinutes,dateShift:dayGap(s.date,o.localDate),interferenceBefore:interferenceBefore(program,s,hybrid)}});
  }
  return {bound,unbound};

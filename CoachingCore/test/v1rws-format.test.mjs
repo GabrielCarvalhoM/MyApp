@@ -14,7 +14,7 @@ test('values: the file is the pinned bytes, binds the three records by hash, and
  assert.equal(M.FORMAT_VALUES_FILE_SHA256,M.FORMAT_VALUES_SHA256);assert.ok(M.RUN_FORMATS);
  for(const d of VALUES.decisionRecords)assert.equal(sha(d.file),d.sha256,d.file);
  const a=R2.values,b=R3.values,c=R3A.values,T=VALUES.tied;
- assert.deepEqual([T.onBandFraction,T.qualityWarmupMinutes,T.qualityCooldownMinutes],[a.tiedValues.onBandFraction.value,a.tiedValues.qualityWarmupMinutes.value,a.tiedValues.qualityCooldownMinutes.value]);
+ assert.deepEqual([T.onBandFraction,T.qualityWarmupMinutes,T.qualityCooldownMinutes,T.calibrationBoutMinutesMin],[a.tiedValues.onBandFraction.value,a.tiedValues.qualityWarmupMinutes.value,a.tiedValues.qualityCooldownMinutes.value,a.tiedValues.calibrationBoutMinutesMin.value]);
  assert.deepEqual([T.doseFloor,T.windowDays,T.longRunStepMinutes,T.consecutiveSessions,T.paceRoundUpSeconds,T.marathonLongRunCapMinutes],[b.tiedValues.doseFloor.value,b.tiedValues.windowDays.value,b.tiedValues.longRunStepMinutes.value,b.tiedValues.consecutiveSessions.value,b.tiedValues.paceRoundUpSeconds.value,b.tiedValues.marathonLongRunCapMinutes.value]);
  assert.deepEqual([T.correctionFloorFraction,T.distanceReferenceDays,T.distanceReferenceMaxFraction],[c.tiedValues.correctionFloorFraction.value,c.tiedValues.distanceReferenceDays.value,c.tiedValues.distanceReferenceMaxFraction.value]);
  assert.ok(!('gpsMetFraction' in T),'no automatic GPS completion (R3A removed it)');assert.equal(T.marathonEstimateCentralMaxSeconds,6*3600);

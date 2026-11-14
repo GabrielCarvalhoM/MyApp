@@ -30,21 +30,26 @@ const km=v=>Math.round(v*1000)/1000;
  * The distance facts of one run, read from an execution (`actual`): never rewritten, never inferred from minutes.
  * - `measuredKm`: the distance a device or a course measured (the first recording plus any further recording of the same run, `segments`), only
  *   from a measured source. `wearable` says the report came from a device activity, whose distance is device distance when no source is stated.
- * - `manualKm`: a figure in the measured slot that no device measured (`measurement: 'MANUAL'`, or no source on a manual report): the athlete's
- *   own figure, which history reads as a declaration and the completion reader never reads as a measurement.
+ * - `manualKm`: a figure no device measured (typed into the measured slot: `measurement: 'MANUAL'`, or no source on a manual report; the composed
+ *   entry point keeps it as `manualDistanceKm`): the athlete's own figure, which history reads as a declaration and no reader as a measurement.
+ * - `implausible`: the measurement gives a pace outside the calibration's fault window, or more than one report may carry: a fault, never a run.
  * - `declaredKm`, `reason`: the athlete's explicit declaration (`actual.declared`) and its measurement-failure reason when it is one of the closed list.
  * - `devicePoor`: the device itself flagged the measurement (the quality as the device reported it, kept in `deviceGpsQuality` when the athlete's
  *   failure reason later marked the row POOR).
  */
 export function distanceFacts(actual,V,{wearable=false}={}){
- const a=isObj(actual)?actual:{},F=V.runFacts,stated=upper(a.measurement),source=stated??(wearable&&num(a.distanceKm,0.01,300)?'GPS':null);
- const has=num(a.distanceKm,0.01,300),measuredSource=F.measuredSources.includes(source),segs=list(a.segments).filter(isObj);
- const segOk=segs.every(s=>num(s.distanceKm,0.01,300)&&F.measuredSources.includes(upper(s.measurement)??source));
+ const a=isObj(actual)?actual:{},F=V.runFacts,stated=upper(a.measurement),source=stated??(wearable&&num(a.distanceKm,0.01,F.runDistanceKmMax)?'GPS':null);
+ const has=num(a.distanceKm,0.01,F.runDistanceKmMax),measuredSource=F.measuredSources.includes(source),all=list(a.segments).filter(isObj),segs=all.slice(0,F.segmentsMax);
+ const segOk=all.length<=F.segmentsMax&&segs.every(s=>num(s.distanceKm,0.01,F.runDistanceKmMax)&&F.measuredSources.includes(upper(s.measurement)??source));
  const deviceQuality=upper(a.deviceGpsQuality!==undefined?a.deviceGpsQuality:a.gpsQuality),devicePoor=deviceQuality==='POOR'||segs.some(s=>upper(s.gpsQuality)==='POOR');
- const d=isObj(a.declared)&&num(a.declared.distanceKm,0.01,300)?a.declared:null,reason=d?upper(d.reason):null;
- return {measuredKm:has&&measuredSource&&segOk?km(a.distanceKm+segs.reduce((n,s)=>n+s.distanceKm,0)):null,source:has&&measuredSource?source:null,segments:segs.length,
-  quality:has&&measuredSource?(upper(a.gpsQuality)==='POOR'||devicePoor?'POOR':deviceQuality==='OK'?'OK':'UNKNOWN'):null,devicePoor:has&&measuredSource&&devicePoor,
-  manualKm:has&&!measuredSource?a.distanceKm:null,declaredKm:d?d.distanceKm:null,reason:reason&&F.declaredFailureReasons.includes(reason)?reason:null,reasonGiven:!!reason,markedPoor:upper(a.gpsQuality)==='POOR'};
+ const d=isObj(a.declared)&&num(a.declared.distanceKm,0.01,F.runDistanceKmMax)?a.declared:null,reason=d?upper(d.reason):null;
+ const total=has&&measuredSource&&segOk?km(a.distanceKm+segs.reduce((n,s)=>n+s.distanceKm,0)):null,measuredKm=total!==null&&total<=F.runDistanceKmMax?total:null;
+ // A pace outside the calibration's own fault window (2:00 to 15:00 per km) is a measurement fault, never a distance run (QRE-V1RC-07).
+ const minutes=num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null,pace=measuredKm!==null&&minutes!==null?minutes*60/measuredKm:null,[fastest,slowest]=F.plausiblePaceSecondsPerKm;
+ const typed=num(a.manualDistanceKm,0.01,F.runDistanceKmMax)?a.manualDistanceKm:has&&!measuredSource?a.distanceKm:null;
+ return {measuredKm,source:measuredKm!==null?source:null,segments:segs.length,implausible:has&&measuredSource&&(measuredKm===null||pace!==null&&(pace<fastest||pace>slowest)),
+  quality:measuredKm!==null?(upper(a.gpsQuality)==='POOR'||devicePoor?'POOR':deviceQuality==='OK'?'OK':'UNKNOWN'):null,devicePoor:measuredKm!==null&&devicePoor,
+  manualKm:typed,declaredKm:d?d.distanceKm:null,reason:reason&&F.declaredFailureReasons.includes(reason)?reason:null,reasonGiven:!!reason,markedPoor:upper(a.gpsQuality)==='POOR'};
 }
 /**
  * The distance a run contributes as history (R3A values.historyReference): a usable measurement alone is the measured value; a declaration alone
@@ -54,7 +59,7 @@ export function distanceFacts(actual,V,{wearable=false}={}){
 export function historyReference(f){
  const declared=f.declaredKm??f.manualKm??null;
  if(f.measuredKm!==null&&declared!==null)return Math.min(f.measuredKm,declared);
- if(f.measuredKm!==null)return f.devicePoor?null:f.measuredKm;
+ if(f.measuredKm!==null)return f.devicePoor||f.implausible?null:f.measuredKm;
  return declared;
 }
 
@@ -72,17 +77,17 @@ export function factsFromIntake(input,V){
  historyRows(input).forEach((h,i)=>{
   if(!isObj(h))return;const day=typeof h.startedAt==='string'&&isoDay(h.startedAt.slice(0,10))?h.startedAt.slice(0,10):isoDay(h.date)?h.date:null,activityId=typeof(h.canonicalActivityId??h.activityId)==='string'?(h.canonicalActivityId??h.activityId):null;
   if(upper(h.sport)!=='RUN'){if(num(h.distanceKm,0.01)&&!upper(h.sport))skipped.push({index:i,reason:'SPORT_NOT_STATED'});return;}
-  const f=distanceFacts({distanceKm:h.distanceKm,measurement:h.measurement,gpsQuality:h.gpsQuality,segments:h.segments},V,{wearable:true});
+  const f=distanceFacts({distanceKm:h.distanceKm,measurement:h.measurement,gpsQuality:h.gpsQuality,segments:h.segments,minutes:h.durationMinutes},V,{wearable:true});
   if(!day||(asOf&&day>asOf)){skipped.push({index:i,reason:'DATE_REQUIRED'});return;}
-  if(f.measuredKm===null&&f.manualKm===null)return; // minutes only: the engine's own reading, never a distance
+  if(f.measuredKm===null&&f.manualKm===null){if(f.implausible)skipped.push({index:i,reason:'MEASUREMENT_IMPLAUSIBLE'});return;} // minutes only: the engine's own reading, never a distance
   if(h.completeness==='PARTIAL'){skipped.push({index:i,reason:'PARTIAL_ACTIVITY'});return;}
   const id='import:'+(activityId??day+':'+hash({d:h.distanceKm,m:h.durationMinutes??null}).slice(0,12));
-  facts.push({id,activityId,date:day,minutes:num(h.durationMinutes,0.5,1440)?h.durationMinutes:null,measuredKm:f.measuredKm,source:f.source,quality:f.quality,devicePoor:f.devicePoor,declaredKm:f.manualKm,conditions:list(h.conditions).map(upper).filter(Boolean).sort(),origin:HISTORY_ORIGINS.IMPORT});
+  facts.push({id,activityId,date:day,minutes:num(h.durationMinutes,0.5,1440)?h.durationMinutes:null,measuredKm:f.measuredKm,source:f.source,quality:f.quality,devicePoor:f.devicePoor,implausible:f.implausible,declaredKm:f.manualKm,conditions:list(h.conditions).map(upper).filter(Boolean).sort(),origin:HISTORY_ORIGINS.IMPORT});
  });
  const r=isObj(input?.athlete)?input.athlete.recentLongestRun:undefined;
  if(r!==undefined&&r!==null){
   // An intake declaration is the athlete's word about one run: a distance and the run's own date, never a measurement (R3A A2 ii).
-  if(isObj(r)&&num(r.distanceKm,0.01,300)&&isoDay(r.date)&&(!asOf||r.date<=asOf))facts.push({id:'intake-declared:'+r.date,activityId:null,date:r.date,minutes:num(r.minutes,0.5,1440)?r.minutes:null,measuredKm:null,source:null,quality:null,devicePoor:false,declaredKm:r.distanceKm,conditions:[],origin:HISTORY_ORIGINS.INTAKE_DECLARED});
+  if(isObj(r)&&num(r.distanceKm,0.01,300)&&isoDay(r.date)&&(!asOf||r.date<=asOf))facts.push({id:'intake-declared:'+r.date,activityId:null,date:r.date,minutes:num(r.minutes,0.5,1440)?r.minutes:null,measuredKm:null,source:null,quality:null,devicePoor:false,implausible:false,declaredKm:r.distanceKm,conditions:[],origin:HISTORY_ORIGINS.INTAKE_DECLARED});
   else skipped.push({index:'recentLongestRun',reason:'DISTANCE_AND_RUN_DATE_REQUIRED'});
  }
  return {facts,skipped};
@@ -113,7 +118,7 @@ export function factsFromLedger(ledger,{athleteId,tz=0},V){
   if(!(o.actual.completed===true||num(o.actual.minutes,0.01)))continue; // a report that the session was not done is no run
   const wearable=String(o.provenance?.sourceQuality??'').startsWith('WEARABLE'),f=distanceFacts(o.actual,V,{wearable});
   out.push({id:'ledger:'+o.eventId,eventId:o.eventId,sessionId:planned?o.sessionId:null,activityIds:idsOfRow(o),date:o.localDate,recordedOn:recordedDay(o,tz),minutes:num(o.actual.seconds,1)?o.actual.seconds/60:num(o.actual.minutes,0.01)?o.actual.minutes:null,
-   ...f,family:planned?o.context.family:null,mode:planned?o.context.mode:null,partial:o.partial===true,stopReason:isObj(o.actual.stop)?(upper(o.actual.stop.reason)??'SYMPTOM'):null,conditions:list(o.actual.conditions).map(upper).filter(Boolean).sort(),formatHash:typeof o.actual.formatHash==='string'?o.actual.formatHash:null,origin:planned?HISTORY_ORIGINS.LEDGER:HISTORY_ORIGINS.LEDGER_UNPLANNED});
+   ...f,family:planned?o.context.family:null,mode:planned?o.context.mode:null,partial:o.partial===true,stopReason:isObj(o.actual.stop)?(V.stops.reasons.includes(upper(o.actual.stop.reason))?upper(o.actual.stop.reason):V.stops.missingReasonReadAs):null,conditions:list(o.actual.conditions).map(upper).filter(Boolean).sort(),formatHash:typeof o.actual.formatHash==='string'?o.actual.formatHash:null,origin:planned?HISTORY_ORIGINS.LEDGER:HISTORY_ORIGINS.LEDGER_UNPLANNED});
  }
  return out;
 }
@@ -136,7 +141,7 @@ export function runHistory({ledger,record,athleteId,tz=0},V){
  return {runs:runs.map(r=>({...r,referenceKm:historyReference(r)})).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.id<b.id?-1:1),unreadable};
 }
 /** What a week reads: runs dated and recorded before its cutoff (the week's first day, or the day after the review for a week not yet started). */
-const inForce=(r,cutoff)=>r.date<cutoff&&r.recordedOn<cutoff;
+export const inForce=(r,cutoff)=>r.date<cutoff&&r.recordedOn<cutoff;
 /**
  * L30 (R3A values.continuous.checks.CT-3): the largest history reference among executed runs of any family and status, races included, dated
  * within the 30 days before the week's first day, from any source. Null when no such run has a reference (DISTANCE_HISTORY_UNKNOWN).

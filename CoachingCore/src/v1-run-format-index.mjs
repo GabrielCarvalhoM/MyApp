@@ -18,8 +18,8 @@ import {READS_COMPLETION,historicalStateOf as engineHistoricalState,doseKeyOf} f
 import {runCalibrationOf} from './v1-run-calibration.mjs';
 import {utcTimestamp,localDate} from './r6-provenance.mjs';
 import {clone,freeze} from './value.mjs';
-import {runFormatAuthority,allowsFormat,selectRunSession,suppressionOf,readFormatRecord,appendFormats,readCompletion,executionOf,pausedUntil,flatSteps,FORMAT_EXTENSION_ID,RUN_FORMAT_VERSION} from './v1-run-format.mjs';
-import {runHistory,factsFromIntake,appendHistory,L30,comparableLongRun,latestClassRun,onDate} from './v1-run-history.mjs';
+import {runFormatAuthority,allowsFormat,selectRunSession,reselectRunSession,readFormatRecord,appendFormats,readCompletion,executionOf,pausedUntil,flatSteps,FORMAT_EXTENSION_ID,RUN_FORMAT_VERSION} from './v1-run-format.mjs';
+import {runHistory,factsFromIntake,appendHistory,L30,comparableLongRun,latestClassRun,onDate,inForce as inForceAt} from './v1-run-history.mjs';
 export {validProgram,V1_SCOPE,V1_UNAVAILABLE,WITHHOLDABLE,V1_ENGINE,V1_RUN_ENGINE};
 export {runCalibrationOf,runCalibrationAuthority,readEvidence,RUN_BOUNDARIES,RUN_EXTENSION_ID,RUN_EVIDENCE_DECLARED} from './v1-run-index.mjs';
 export {runFormatAuthority,FORMAT_BOUNDARIES,FORMAT_EXTENSION_ID,RUN_FORMAT_EMITTED} from './v1-run-format.mjs';
@@ -45,7 +45,8 @@ const without=(o,keys)=>Object.fromEntries(Object.entries(o).filter(([k])=>!keys
 const MINE=['runFormatRecord','runHistoryRecord','runExpression'];
 /** A caller's options without the reader's key: only this module sets it (handoff section 5, SC-6). */
 const internal=options=>{const {[READS_COMPLETION]:_never,...rest}=isObj(options)?options:{};return rest;};
-const authorityOf=opts=>{try{const ext=runFormatAuthority(opts);return {ext,on:allowsFormat(ext)};}catch{return {ext:null,on:false};}};
+const shaped=v=>isObj(v)&&['tied','distances','envelope','catalog','patterns','recoveryByDistance','eligibility','sizingExclusions','exposure','stops','runFacts','statuses','suppression','texts'].every(k=>isObj(v[k]))&&Array.isArray(v.runFacts.declaredFailureReasons)&&Array.isArray(v.runFacts.measuredSources)&&Array.isArray(v.runFacts.plausiblePaceSecondsPerKm);
+const authorityOf=opts=>{try{const ext=runFormatAuthority(opts);return {ext,on:allowsFormat(ext)&&shaped(ext.values)};}catch{return {ext:null,on:false};}};
 const preferenceOf=v=>upper(v)==='TIME'?'TIME':'NATIVE';
 /** An intake without this extension's keys (the engine hashes what it is given), and what they said. */
 function takeIntake(input){
@@ -94,7 +95,7 @@ function finish(base,c){
   const done=new Map();
   for(const o of list(ledger).filter(o=>liveRun(o,program.athleteId)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt))){
    const cited=typeof o.actual.formatHash==='string'?fr.resolve(o.sessionId,o.actual.formatHash):null,format=cited&&cited.expression==='NATIVE'&&cited.plannedPrescriptionHash!==sessions.get(o.sessionId)?.plannedPrescriptionHash?{...cited,expression:'TIME',pattern:'TIME'}:cited;
-   done.set(o.sessionId,{row:o,format,execution:executionOf(o,format,V),date:o.localDate,recordedOn:Number.isFinite(Date.parse(o.provenance?.firstRecordedAt))?localDate(new Date(Date.parse(o.provenance.firstRecordedAt)).toISOString(),tz):o.localDate});
+   done.set(o.sessionId,{row:o,format,execution:executionOf(o,format,V,{boutMinutes:sessions.get(o.sessionId)?.prescription?.work?.workMinutes??null}),date:o.localDate,recordedOn:Number.isFinite(Date.parse(o.provenance?.firstRecordedAt))?localDate(new Date(Date.parse(o.provenance.firstRecordedAt)).toISOString(),tz):o.localDate});
   }
   const executed=[...done.values()].filter(x=>!x.row.conflicted);
   // R3 C4: a stop for a symptom (or with no stated reason) keeps every run session by time until the warning-sign screen is answered after it:
@@ -102,7 +103,8 @@ function finish(base,c){
   const signs=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'],el=isObj(eligibility)?{...eligibility,...(isObj(eligibility.flags)?eligibility.flags:{})}:null;
   const screened=el?.status==='NONCLINICAL_CONFIRMED'&&signs.every(k=>el[k]===false)&&typeof el.assessedAt==='string'?el.assessedAt:null;
   const answeredAfter=x=>!!screened&&(isoDay(screened)?screened>localDate(new Date(recordedInstant(x.row)).toISOString(),tz):Number.isFinite(Date.parse(screened))&&Date.parse(screened)>recordedInstant(x.row));
-  const symptomStops=executed.filter(x=>x.execution.status==='STOPPED'&&x.execution.stop?.reason==='SYMPTOM'&&!answeredAfter(x));
+  // Read on every run report, whatever its expression (SSCTR review of the candidate, A-01): a stop by time is a stop.
+  const symptomStops=executed.filter(x=>x.execution.stop?.reason==='SYMPTOM'&&!answeredAfter(x));
   // R3 X-2: a class of continuous runs paused by two consecutive flagged distance sessions (read at once: a withdrawal to time is immediate).
   const pause=Object.fromEntries(V.eligibility.continuous.families.map(family=>[family,pausedUntil(executed.filter(x=>x.row.context.family===family).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).map(x=>({date:x.date,execution:x.execution,actual:x.row.actual})),V,onDate)]));
   const p1=observedEasyOf({program,ledger,asOf,weekIndex:w,engineStatus,eligibility},opts),schedule=program.canonical?.schedule??{};
@@ -113,13 +115,13 @@ function finish(base,c){
    if(s.sport!=='RUN'||!s.prescription||s.status==='SKIPPED')continue;
    const seen=done.get(s.id)??null;
    if(week.index<w){ // a past week: only what was executed, with the format its report cites (never selected again)
-    if(seen)runSessions[s.id]={...(seen.format?.expression==='NATIVE'?clone(seen.format):{sessionId:s.id,expression:'TIME',pattern:'TIME',formatHash:seen.format?.formatHash??null,week:week.index,date:s.date,role:s.role,family:s.prescription.family}),past:true,provisional:false,execution:seen.execution};
+    if(seen)runSessions[s.id]={sessionId:s.id,expression:seen.execution.expression,pattern:seen.execution.pattern??'TIME',formatHash:seen.execution.formatHash,week:week.index,date:s.date,role:s.role,family:s.prescription.family,past:true,provisional:false,execution:seen.execution};
     continue;
    }
    // Only what the record then holds is delivered: the week in force and the two after it (a report can cite nothing else).
    if(week.index>w+HORIZON_WEEKS)continue;
    const weekStart=week.startDate??onDate(program.startDate,7*week.index),cutoff=weekStart<=asOfDay?weekStart:onDate(asOfDay,1),inWeek=week.index===w,view=inWeek||!cal?.nextWeek?cal:cal.nextWeek,p=s.prescription,family=p.family,long=family==='LONG';
-   const inForce=x=>x.date<cutoff&&x.recordedOn<cutoff,continuous=V.eligibility.continuous.families.includes(family);
+   const inForce=x=>inForceAt(x,cutoff),continuous=V.eligibility.continuous.families.includes(family);
    const history=continuous?{p1:inWeek?p1.now:p1.next,l30:L30(H.runs,{cutoff,weekStart},V),comparable:long?comparableLongRun(H.runs,{cutoff,weekStart,minutes:p.durationMinutes},V):null,latest:latestClassRun(H.runs,{cutoff,weekStart,family},V),pausedUntil:pause[family]??null}:null;
    let prior=null;
    if(s.role==='QUALITY'){
@@ -133,18 +135,19 @@ function finish(base,c){
    const x={session:s,weekIndex:week.index,phase:week.phase,mode:program.stateTrace?.[Math.max(0,Math.min(week.index,(program.stateTrace?.length??1)-1))]?.run?.mode??null,experience:program.capability?.run?.experience??null,eventKind:program.goal?.run?.event?.kind??null,
     guidance:(g=>g?.pace?.status==='AVAILABLE'?{...g,pace:inForceBand(week.index,g.pace,g.pace.domain)}:g)(cal?.sessions?.[s.id]??null),recoveryBand:(b=>b?inForceBand(week.index,{...b,domain:'RECOVERY'},'RECOVERY'):null)(view?.paceBands?.RECOVERY??null),marathonEstimate:view?.estimates?.MARATHON??null,cues,budgetMinutes:long?schedule.longRunMinutes??schedule.runMinutes:schedule.runMinutes,availableMinutes:long?schedule.longRunMinutes??schedule.runMinutes:schedule.runMinutes,
     preference,enabled:true,engineStatus,screenRequired:symptomStops.length>0,history,prior};
-   // The format of a session is fixed for its week once a selection delivered it (R2 N10; handoff section 3): it is given again as it was, unless
-   // the engine planned the session again or a state now withdraws it to time.
-   const settled=inWeek&&!suppressionOf(x,V)?fr.settledOf(s.id):null,session=settled&&settled.plannedPrescriptionHash===s.plannedPrescriptionHash?clone(settled):selectRunSession(x,V);
+   // The format of a session is fixed for its week once a selection delivered it (R2 N10; handoff section 3): its structure is kept while it still
+   // passes with today's inputs, unless the engine planned the session again or a state now withdraws it to time (reselectRunSession).
+   const settled=inWeek?fr.settledOf(s.id):null,session=settled?reselectRunSession(x,settled,V):selectRunSession(x,V);
    if(!session)continue;
-   const given={...session,provisional:week.index>w};emitted.push(given);
+   // Under a clinical route or a standing hold the engine prescribes nothing: the session is laid out by time and says it is not prescribed.
+   const given={...session,provisional:week.index>w,prescribed:!['HOLD_NO_PRESCRIPTION','CLINICAL_ROUTE'].includes(session.unavailable?.native)};emitted.push(given);
    runSessions[s.id]=seen?{...given,execution:seen.execution}:given;
   }
   const appended=notes.keepRecord?{record:clone(list(formats)),added:[]}:appendFormats(formats,emitted,{athleteId:program.athleteId,recordedAt:dayOnly?asOf:at});
   const asks=executed.filter(x=>x.execution.ask).map(x=>({sessionId:x.row.sessionId,eventId:x.row.eventId,status:x.execution.status,flag:x.execution.flag??null,ask:x.execution.ask,blocking:false}));
-  const offers=executed.filter(x=>x.execution.status==='STOPPED'&&x.execution.stop?.reason==='FATIGUE').map(x=>({kind:'SYSTEMIC_FATIGUE_REVIEW',sessionId:x.row.sessionId,eventId:x.row.eventId,behindTheWarningSignScreen:true,decidedByThisExtension:false}));
+  const offers=executed.filter(x=>x.execution.stop?.reason==='FATIGUE').map(x=>({kind:'SYSTEMIC_FATIGUE_REVIEW',sessionId:x.row.sessionId,eventId:x.row.eventId,behindTheWarningSignScreen:true,decidedByThisExtension:false}));
   const count=k=>Object.values(runSessions).filter(x=>!x.past&&x.expression===k).length;
-  return {...base,runSessions,runFormat:{...head(ext,on),status:'ACTIVE',asOf:at,week:w,expressionPreference:preference,native:count('NATIVE'),time:count('TIME'),asks,offers,
+  return {...base,runSessions,runFormat:{...head(ext,on),status:'ACTIVE',asOf:at,week:w,prescribing:!['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(engineStatus),expressionPreference:preference,native:count('NATIVE'),time:count('TIME'),asks,offers,
    warningSignScreen:symptomStops.length?{status:'REQUIRED',reason:'RUN_STOPPED_FOR_A_SYMPTOM',sessionIds:symptomStops.map(x=>x.row.sessionId),decidedByThisExtension:false,note:'Take the athlete to the existing warning-sign screen; run sessions are by time until it is answered after the stop'}:{status:'NOT_RAISED_BY_THIS_EXTENSION'},
    pausedContinuous:Object.fromEntries(Object.entries(pause).filter(([,until])=>until&&until>asOfDay)),history:{runs:H.runs.length,unreadable:H.unreadable,...(notes.history??{})},unreadableFormats:fr.unreadable,...(notes.notRecorded?{notRecorded:notes.notRecorded}:{})},
    runFormatRecord:appended.record,runHistoryRecord:clone(list(historyRecord))};
@@ -172,13 +175,22 @@ export function evaluateProgram(program,review,options={}){
  const opts=internal(options),{ext,on}=authorityOf(opts),formats=isObj(review)&&Array.isArray(review.runFormatRecord)?review.runFormatRecord:[],history=isObj(review)&&Array.isArray(review.runHistoryRecord)?review.runHistoryRecord:[];
  const plain=isObj(review)?without(review,MINE):review,readable=validProgram(program)&&program.version==='R6-PROGRAM-1';
  if(!on||!isObj(review)||!readable)return freeze(inert(evaluate(program,plain,opts),ext,on,on?'NOT_APPLICABLE':'DISABLED',on?'NO_DECISION':'EXTENSION_NOT_ENABLED',formats,history));
- const V=ext.values,fr=readFormatRecord(formats,program.athleteId),reasons=V.runFacts.declaredFailureReasons;
- // Every observation received loses any reading it carries. A new report that corrects a measurement with a listed failure reason is recorded as
- // the athlete's statement that the measurement failed: marked POOR, the device's own flag kept beside it and the measured value untouched (R3A A1).
+ const V=ext.values,fr=readFormatRecord(formats,program.athleteId),reasons=V.runFacts.declaredFailureReasons,planned=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s])));
+ const fromDevice=o=>typeof(o.source?.activityId??o.canonicalActivityId)==='string'||String(o.source?.quality??'').startsWith('WEARABLE');
+ // Every observation received loses any reading it carries; a new report is recorded with what it may carry as a measurement (below).
  const tidy=fresh=>o=>{
   if(!isObj(o)||!isObj(o.actual))return o;let a=o.actual;
   if('completionRead' in a)a=without(a,['completionRead']);
-  if(fresh&&isObj(a.declared)&&num(a.declared.distanceKm,0.01)&&reasons.includes(upper(a.declared.reason))&&num(a.distanceKm,0.01)&&upper(a.gpsQuality)!=='POOR')a={...a,deviceGpsQuality:a.gpsQuality??null,gpsQuality:'POOR'};
+  if(fresh){
+   // A figure typed into the measured slot of a planned run is the athlete's own figure, never a measurement: it is kept beside, so no reader of
+   // the record takes it for a measured distance (R3A paceUse; SSCTR review of the candidate, A-02). A race keeps its own evidence rules (V1RC).
+   const s=planned.get(o.sessionId);
+   if(s?.sport==='RUN'&&s.prescription?.family!=='RACE'&&num(a.distanceKm,0)&&!V.runFacts.measuredSources.includes(upper(a.measurement)??(fromDevice(o)?'GPS':null)))a={...without(a,['distanceKm']),manualDistanceKm:a.distanceKm};
+   // A correction with a listed failure reason, and a run sent in several files, say the first measurement is not the run: marked POOR, the
+   // device's own flag kept beside it, so the calibration never reads its distance over the whole minutes (R3A A1; QRE-RWS-A-01).
+   const reasoned=isObj(a.declared)&&num(a.declared.distanceKm,0.01)&&reasons.includes(upper(a.declared.reason)),several=Array.isArray(a.segments)&&a.segments.length>0;
+   if((reasoned||several)&&num(a.distanceKm,0.01)&&upper(a.gpsQuality)!=='POOR')a={...a,deviceGpsQuality:a.gpsQuality??null,gpsQuality:'POOR'};
+  }
   return a===o.actual?o:{...o,actual:a};};
  const input={...plain};
  if(Array.isArray(plain.observations))input.observations=plain.observations.map(tidy(true));
@@ -199,7 +211,9 @@ export function evaluateProgram(program,review,options={}){
   notes={notRecorded:unknownNew.map(o=>({sessionId:o.sessionId??null,eventId:o.eventId??null,reason:'UNKNOWN_RUN_FORMAT'}))};
  }else base=evaluate(program,input,engineOpts);
  const asOf=utcTimestamp(review.asOf);
- if(!asOf||['UNSUPPORTED','INVALID_INPUT'].includes(base.status))return freeze(inert(base,ext,on,'NOT_APPLICABLE','NO_DECISION',formats,history));
+ if(!asOf||['UNSUPPORTED','INVALID_INPUT','HOLD'].includes(base.status))return freeze(inert(base,ext,on,'NOT_APPLICABLE','NO_DECISION',formats,history));
+ const instants=[...list(formats).filter(isObj).map(r=>Date.parse(r.recordedAt)),...list(input.actualLedger).filter(isObj).map(o=>Date.parse(o.provenance?.firstRecordedAt??o.declaredAt))].filter(Number.isFinite);
+ if(instants.some(t=>t>Date.parse(asOf)))return freeze(inert(base,ext,on,'NOT_APPLICABLE','REVIEW_BEFORE_THE_RECORD',formats,history));
  const inForce=validProgram(base.proposal)?base.proposal:program,ledger=Array.isArray(base.actualLedger)?base.actualLedger:Array.isArray(input.actualLedger)?input.actualLedger:[];
  return freeze(finish(base,{program:inForce,ledger,formats,historyRecord:history,asOf,weekIndex:review.weekIndex,preference:preferenceOf(review.runExpression),engineStatus:base.status,eligibility:review.eligibility??null,opts,ext,on,notes}));
 }

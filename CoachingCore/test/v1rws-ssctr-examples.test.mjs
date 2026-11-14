@@ -127,7 +127,7 @@ test('T13 R3A: WE3A-01 to WE3A-06 and WE3A-09 to WE3A-11: status, basis and the 
   ['WE3A-06',{completed:true,minutes:97,distanceKm:16,measurement:'TRACK'},'DISTANCE','MEASURED',16],
   ['WE3A-09 no declaration',{...G,distanceKm:16.4,gpsQuality:'POOR'},'UNKNOWN',null,null],
   ['WE3A-09 declared',{...G,distanceKm:16.4,gpsQuality:'POOR',declared:{distanceKm:16}},'DISTANCE','CONFIRMED_CORRECTION',16],
-  ['WE3A-10',{...G,distanceKm:14,segments:[{distanceKm:2.1,measurement:'GPS',reason:'DEVICE_RESTART'}]},'DISTANCE','MEASURED',16.1],
+  ['WE3A-10',{...G,distanceKm:14,gpsQuality:'POOR',deviceGpsQuality:null,segments:[{distanceKm:2.1,measurement:'GPS',reason:'DEVICE_RESTART'}]},'DISTANCE','MEASURED',16.1],
   ['WE3A-11',{...G,distanceKm:16.3,gpsQuality:'OK',declared:{distanceKm:15}},'PARTIAL',null,15],
  ];
  for(const [id,actual,status,basis,reference] of cases){const r=read(f,actual);assert.deepEqual([r.status,r.basis],[status,basis],id);assert.equal(ref(actual),reference,id+' history reference');assert.equal(actual.distanceKm,cases.find(c=>c[0]===id)[1].distanceKm,'the measured value is never rewritten');}
@@ -136,6 +136,8 @@ test('T13 R3A: WE3A-01 to WE3A-06 and WE3A-09 to WE3A-11: status, basis and the 
  assert.equal(read(f,cases[0][1]).countsForPause,false,'WE3A-01: a usable measurement a little short neither counts for the pause nor resets it');
  assert.equal(read(f,cases[10][1]).countsForPause,true,'WE3A-11: the shortfall is the athlete\'s own answer');
  assert.equal(we3a('WE3A-01').expected?.status??we3a('WE3A-01').status,'PARTIAL');assert.equal(we3a('WE3A-05').basis,'DECLARED');assert.equal(we3a('WE3A-10').historyReferenceKm,16.1);assert.equal(we3a('WE3A-11').historyReferenceKm,15);
+ // A run in several files is read as one only as the entry point records it (marked POOR, so the calibration never reads the first file alone).
+ const twoFiles=read(f,{...G,distanceKm:14,segments:[{distanceKm:2.1,measurement:'GPS'}]});assert.deepEqual([twoFiles.status,twoFiles.flag],['UNKNOWN','SEGMENTS_NOT_MARKED_POOR']);
  // No tolerance ever meets a target: every measurement below 16 km without a correction is not DISTANCE.
  for(const d of [15.99,15.9,15.6,15.52])assert.notEqual(read(f,{...G,distanceKm:d}).status,'DISTANCE');
 });

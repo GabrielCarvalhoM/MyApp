@@ -165,5 +165,5 @@ test('I10, V6: every file the two earlier freezes bind is byte-identical here ex
  assert.equal(minus.length,10);assert.ok(plus.length<=24,String(plus.length));
  // Every changed line is the reader: its declaration, its comment, or the argument that carries it. Nothing else of the engine moved.
  for(const l of plus)assert.ok(/READS_COMPLETION|READ_STATUSES|completionRead|\breads\b/.test(l)||/^\+\s*(\/\*\*|\*)/.test(l),l.slice(0,120));
- for(const l of minus){const twin=plus.find(p=>p.slice(1).replace(/,options\[READS_COMPLETION\]|,reads:options\[READS_COMPLETION\]|,reads:ctx\.reads|,reads=null|,reads\b/g,'').replace('const read=completionRead(reads,o,s),complete=read?read===\'DISTANCE\':','const complete=')===l.slice(1));assert.ok(twin,'a removed line returns with only the reader added: '+l.slice(0,100));}
+ for(const l of minus){const twin=plus.find(p=>p.slice(1).replace(/,options\[READS_COMPLETION\]|,reads:options\[READS_COMPLETION\]|,reads:ctx\.reads|,reads=null|,reads\b/g,'').replace('const read=completionRead(reads,o,s),complete=o.actual.completed===true&&(read?read===\'DISTANCE\':minutesOk&&setsOk);','const complete=o.actual.completed===true&&minutesOk&&setsOk;')===l.slice(1));assert.ok(twin,'a removed line returns with only the reader added: '+l.slice(0,100));}
 });

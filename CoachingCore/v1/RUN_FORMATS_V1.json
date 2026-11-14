@@ -8,7 +8,7 @@
   {"file": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R3_DECISION.json", "sha256": "6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2", "valuesVersion": "RWS-R3-1", "inForce": "every block not replaced by RWS-R3A-1"},
   {"file": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R3A_AMENDMENT.json", "sha256": "37047d212c8cf98ddbf81b89b601702e60310025e95efc59083206f9f9d4d412", "valuesVersion": "RWS-R3A-1", "inForce": "all"}
  ],
- "note": "A machine-readable transcription of the numbers and lists of those three records; the rules that use them are in src/v1-run-format.mjs and src/v1-run-history.mjs, each citing its item. test/v1rws-values.test.mjs compares every value here with the records. The EQUIVALENT conversion (SSCTR-RWS-DECISION-r1, boundary V1X-RUN-DISTANCE) is not part of this file: where the catalog would fall back to it, the session is TIME.",
+ "note": "A machine-readable transcription of the numbers and lists of those three records; the rules that use them are in src/v1-run-format.mjs and src/v1-run-history.mjs, each citing its item. test/v1rws-format.test.mjs compares every value here with the records. The EQUIVALENT conversion (SSCTR-RWS-DECISION-r1, boundary V1X-RUN-DISTANCE) is not part of this file: where the catalog would fall back to it, the session is TIME.",
  "tied": {
   "onBandFraction": 0.015,
   "doseFloor": 0.9,
@@ -22,7 +22,8 @@
   "marathonLongRunCapMinutes": 180,
   "marathonEstimateCentralMaxSeconds": 21600,
   "qualityWarmupMinutes": 10,
-  "qualityCooldownMinutes": 5
+  "qualityCooldownMinutes": 5,
+  "calibrationBoutMinutesMin": 5
  },
  "distances": {
   "repetitionMetres": {"from": 200, "below1000UnitMetres": 50, "from1000UnitMetres": 100, "max": 6000},
@@ -85,6 +86,10 @@
   "declaredFailureReasons": ["SIGNAL_LOSS", "OBSTRUCTED_SKY", "AUTO_PAUSE", "DEVICE_RESTART"],
   "measuredSources": ["TRACK", "MEASURED_COURSE", "OFFICIAL", "TREADMILL", "GPS"],
   "declaredSources": ["MANUAL"],
+  "plausiblePaceSecondsPerKm": [120, 900],
+  "segmentsMax": 20,
+  "runDistanceKmMax": 300,
+  "engineeringNote": "plausiblePaceSecondsPerKm is the measurement-fault window of the run calibration (v1-run-calibration.mjs PLAUSIBLE_PACE, QRE-V1RC-07), applied here to every measured distance; segmentsMax and runDistanceKmMax bound what one report may carry. They are engineering bounds on what counts as a measurement, never sporting values.",
   "quality": ["OK", "UNKNOWN", "POOR"],
   "bases": ["MEASURED", "CONFIRMED_CORRECTION", "DECLARED"]
  },
@@ -98,6 +103,7 @@
   "shortRepetition": "A track or a measured segment gives a closer distance; a run measured by GPS still counts",
   "recoveryByTime": "Easy jog or walk between repetitions",
   "recoveryByDistance": "Easy jog, as slow as you like; walk if you need to, the recovery then simply lasts longer",
+  "repetitionStop": "You can stop at any time and the session is recorded as you did it; walking is always allowed",
   "continuous": "Conversational effort all the way; the duration shown is an estimate, never a target",
   "continuousWalk": "Walk breaks are fine; do not speed up to reach the distance",
   "continuousStop": "You can stop at any time and the run is recorded as you did it; if it is taking clearly longer than the estimate, stopping or walking is fine",
