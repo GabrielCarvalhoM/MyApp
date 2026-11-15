@@ -1,0 +1,96 @@
+{
+ "review": "QRE_V1RWS_E01_PATCH_R6",
+ "role": "Quality & Reliability Engineer 1.3.0, independent judge (new instance; not author of the patch, its record, its tests or earlier reviews)",
+ "model": "claude-opus-5-5",
+ "effort": "xhigh",
+ "date": "2026-11-15",
+ "candidate": "f8b08aaf4516f5376a31a67b43e72ec9a2d64f29",
+ "previous": {"runtime": "4b1622f55e3d66e6e381bf33cc659fbed1f1713a", "freezeCommit": "08d2dc8998386e3eca97df2d32cb2ed19f169e23", "freeze": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-1", "freezeRecordSha256": "a3ca14a520491c47cbc75a28664da5aa94b7e357ba0192edd08920605a8821d1", "binds": "f1177c8950d495dd46469eb56a9f34061e1aff65"},
+ "verdict": "READY_WITH_CONDITIONS",
+ "blocking": 0,
+ "E01": {
+  "id": "QRE-RWS-E-01",
+  "status": "CLOSED",
+  "evidence": [
+   "Judge probes of this role, unchanged (lib.mjs 4aca94c3, q5-workpace.mjs 9944228c, q5-workpace2.mjs 8467d915, sha256 checked against the R5 originals): frozen copy (src+v1 63/63 = 4b1622f) lists variant nothing withheld [290,325] a7a23d20; patch 4x REPORT_NOT_CARRIED [300,335] c65ab1fd (= control). Unit: SEVERAL_RECORDINGS / CORRECTED_MEASUREMENT masked -> withheld REPORT_NOT_CARRIED, handed POOR.",
+   "CORRECTED_MEASUREMENT through the composed entry point (r6-entry.mjs): frozen [290,325] +0.03 nothing withheld; patch [300,335] 0, 4x REPORT_NOT_CARRIED, hash c65ab1fd. Same for lists, lists+declares; watch POOR, OK, PARTIAL, minutes only; laps; work distance+seconds; late correction (until week 8).",
+   "Hand-built table (r6-table.mjs): 96 combinations, 0 outside the rule; 40 change, exactly the no-distance rows with an own distance reason (all four) and a whole-row reason (five forms incl. 65 reports and an unreadable format row); the one word identical frozen/patch in all 96; rows with a distance unchanged.",
+   "Strict lockstep differential with an independent oracle (r6-diff.mjs; patch driver and frozen driver): 2133 calls each, R1-R5 hold, patch == oracle 2133/2133, nothing delivered that frozen withholds, no reason changed.",
+   "Order/JSON (r6-order.mjs): same withheld rows, calibration and sessions with records through JSON and shuffled (3 seeds), 5 masked scenarios.",
+   "New tests: 0/6 on the frozen runtime, 6/6 on the patch; mutant M01 (frozen reader, wholeRow present) killed by all six."
+  ],
+  "enablingRecordCondition": "met: on a row with no distance a whole-row reason withholds even when the row's own reports give a distance-only reason; outcome test of the quality session is test 1 of v1rws-e01.test.mjs"
+ },
+ "findings": [
+  {"id": "QRE-RWS-F-01", "severity": "CONDITION", "title": "Non-distance comparability facts lost by the engine's merge", "newToThisRound": true, "preExisting": true, "changedByPatch": false,
+   "evidence": "r6-bypass2.mjs (quality sessions weeks 3-6, work pace 255, effort 7; week 7): athlete HEAT + watch no condition -> [300,335] 0; athlete HEAT + watch conditions ['RAIN'] -> row conditions RAIN, [290,325] +0.03 (534083..); app gpsQuality OK without distance + watch WEARABLE_PARTIAL 9 km POOR -> row 9 km OK, [290,325] +0.03. r6-bypass.mjs row level: walkBreaks true -> false; TREADMILL -> GPS against a WEARABLE_FULL watch. Identical in frozen and patch. Cause: mergeActual keeps one value per field by source rank (first on a tie); reportFactOf keeps only the stop and distance facts.",
+   "whyNotBlocking": "not E-01 (no whole-row reason hidden), not created or worsened by the patch, outside the authorized scope, needs an integration that sends athlete fields from the device or device fields from the app",
+   "whyNotNote": "same class as the Founder's rule for this patch; moves a band 10 s/km; the iOS contract avoids it only by omission, with no explicit never and no test",
+   "closes": "before integration or real athletes: (a) the integration contract states that the device report never carries conditions, walkBreaks or the athlete's surface, and the athlete report never carries gpsQuality or a device measurement, with adapter outcome tests of the four shapes; or (b) SSCTR and Founder decide the Core keeps these facts per report (a runtime change outside this patch, with its own authorization and review)",
+   "owner": "integration (adapter contract) / SSCTR+Founder for option b"},
+  {"id": "QRE-RWS-F-02", "severity": "NOTE", "title": "Two new tests go red on the frozen candidate first on the reading's shape", "evidence": "frozen-e01: 6/6 fail by ERR_ASSERTION; tests 1, 3, 4, 6 on behaviour; test 2 fails on its first case 'plain' (already withheld by frozen) only because reading.wholeRow is undefined; test 5 at line 217 on wholeRow presence. Author's claim (E01_PATCH s6) inexact for these two. M01 (frozen reader with wholeRow present) is killed by all six. Test 4: the 'by the word alone' assertion sits inside if(format) (reached: 3/3 native sessions found in my rebuild).", "closes": "optional: split shape from behaviour; assert the format exists instead of if(format)"},
+  {"id": "QRE-RWS-F-03", "severity": "NOTE", "title": "reportsVerdict still exported with the one word", "evidence": "on a row with no distance the word can be a distance reason (what hid E-01); test 4 shows laps as pace evidence and S3 source at 442.5 s/km by the word alone; no runtime caller (grep src); call sites covered by M14-M16", "closes": "before phase B: Race Forecast reads execution.paceEvidence/paceWithheld or the whole reading, never reportsVerdict (preflight or handoff)"},
+  {"id": "QRE-RWS-F-04", "severity": "NOTE", "title": "Author's section 9 says more than is so", "evidence": "1454 plan answers: report facts identical in all; history, evidence and engine records identical in all; format rows differ in 186, always with the delivered sessions (0 with sessions equal). No new key, seal, readability or speaker change.", "closes": "correct the sentence; no focal Security review needed for this diff"},
+  {"id": "QRE-RWS-F-05", "severity": "NOTE", "title": "Enabling record binds the runtime only by text", "evidence": "SSCTR_V1RWS_RUN_RECORDS.json (a5b915c6..) condition 2 binds the 4b1622f runtime; runFormatAuthority() on f8b08aa: approved V1X-RUN-NATIVE true, CURRENT_INDEPENDENT_REVIEW, allowsFormat true, with v1-run-format.mjs e8f364e3.. and v1-run-history.mjs 06deb84c..; only the values hash is machine-checked", "closes": "successor freeze only after the independent SSCTR verification of the new bytes; optionally bind runtime hashes verifiably later"},
+  {"id": "QRE-RWS-F-06", "severity": "NOTE", "title": "L1-f cost measured", "evidence": "newly withheld by corrections listing/declaring/both with watch POOR, OK, PARTIAL or minutes only: 27 quality clients, 4 class, 2 race, 1 S3; with watch OK or minutes only the band that moved in frozen ([290,325]) no longer moves ([300,335])", "closes": "none in Core; integration states the fraction (L1-f condition)"}
+ ],
+ "previousFindings": [
+  {"id": "QRE-RWS-E-01", "status": "CLOSED"},
+  {"id": "QRE-RWS-B-01", "status": "CLOSED", "note": "also for the work pace of a row with no distance"},
+  {"id": "QRE-RWS-E-02", "status": "UNCHANGED_NOT_REEXERCISED"},
+  {"id": "QRE-RWS-E-03..E-07, D-02..D-05, C-04", "status": "UNCHANGED_NOT_REEXERCISED"}
+ ],
+ "authorReadings": [
+  {"n": 1, "reading": "no-distance row carrying every report in force stays admitted despite its own distance reason", "judgment": "ACCEPTED", "note": "letter of the SSCTR condition; also applies to S3 and L30 with the declared figure (one speaker declaring 8 km with a failure reason is an S3 source in both trees); whether to go further is SSCTR's"},
+  {"n": 2, "reading": "withheld run is no S3 source; a session may move from time to distance", "judgment": "ACCEPTED_AS_DIRECT_EFFECT", "note": "oracle byte-identical; easy: 4 easy sessions of weeks 4-5 TIME -> NATIVE; long: S3 360 -> 365, long run stays 16 km (CT-3 18.084); needs SSCTR's express word"},
+  {"n": 3, "reading": "shown reason is the whole-row reason; reportsVerdict keeps the one word", "judgment": "ACCEPTED", "note": "with F-03"},
+  {"n": 4, "reading": "both whole-row reasons -> REPORT_NOT_CARRIED shown", "judgment": "ACCEPTED", "note": "table 'both' forms; M06 killed by 2 tests"},
+  {"n": 5, "reading": "masked conflicted row now named as withheld", "judgment": "ACCEPTED", "note": "r6-conflict.mjs: 4 conflicted rows named, calibration c65ab1fd in both"},
+  {"n": 6, "reading": "L1-f cost increases", "judgment": "ACCEPTED", "note": "numbers in F-06"}
+ ],
+ "security": {"focalReviewNeededBeforeFreeze": false, "basis": "report facts, history, evidence and engine records byte-identical in 1454 plan answers; format rows change only with delivered sessions; readableReport, readableFormat, sealOf, reportKey, appendReportFacts, appendFormats, speakerOf unchanged; wholeRow lives only in the in-memory reading (patch == oracle without the key in every answer)", "authorSentence": "needs correcting (F-04)", "note": "F-01 belongs with the integration's source and custody review, not this diff"},
+ "iosContract": {"file": "audits/v1-run-extensions-2026-11-13/e01-patch/IOS_RUN_REPORT_INTEGRATION_CONTRACT.md", "sha256": "2e417347ec561e83570f82e40ddab957afeccafd448f6243b26813dab728b1d6", "presentsAnythingAsDone": false, "hardGateE1": "stated NOT MET (line 4, section 6); E01_PATCH s10 and the unchanged entry-point header say the same", "gaps": ["does not state F-01 explicitly", "section 3 declares a binding reading of hash-bound ATHLETE_DATA_FOUNDATION.md: governance question for its owner and the Founder, not judged"]},
+ "suites": {
+  "joint": {"where": "worktree f8b08aa", "entries": 1449, "pass": 1448, "fail": 1, "failed": ["V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here"], "names": ["CoachingCore/src/r6-adaptation.mjs"], "seconds": 268, "green": false, "note": "the known historical failure, by design; the only one"},
+  "extension": {"where": "worktree", "pass": 114, "total": 114},
+  "preserved": {"exit": 0, "v1Freeze1": "197/197, 1 amended (base recorded, bytes authorized, reader alone 22+/10-)", "v1rcFreeze1": "30/30"},
+  "check1Snapshot": {"where": "judge clone at 08d2dc8 (HEAD checked, clean)", "exit": 0, "result": "97 added files match; amended file matches its recorded diff; 197/197; 30/30"},
+  "check1Worktree": {"exit": 1, "drift": ["CoachingCore/src/v1-run-format.mjs", "CoachingCore/src/v1-run-history.mjs", "CoachingCore/test/v1rws-e01.test.mjs"], "note": "expected: V1RWS-1 binds the 4b1622f bytes and is not loosened"},
+  "newTestsOnFrozen": {"pass": 0, "total": 6, "allAssertion": true},
+  "historicalEdits": "none: git diff --name-status 08d2dc8 f8b08aa shows M only for src/v1-run-format.mjs and src/v1-run-history.mjs, everything else A"
+ },
+ "differential": {
+  "design": "lockstep: one client, every call made with the same bytes on frozen, patch and the judge's oracle (frozen + the word replaced at the two entry-point call sites on a live no-distance row not carrying a report in force or with an unreadable record); no consequence classifier",
+  "clients": 98, "erroredClients": ["EASY off self-correction lists (probe artifact: no native session with the boundary off)"],
+  "callsPerDriver": 2133, "drivers": ["patch", "frozen"],
+  "byFn": {"generateProgram": 98, "evaluateProgram": 1259, "runCalibrationOf": 582, "historicalStateOf": 97, "restartProgram": 97},
+  "frozenPatchIdentical": 1617, "patchOracleIdentical": 2133,
+  "rules": {"R1_engineDiffers": 0, "R2_sideDiffers": 0, "R3_delivered": 0, "R3_reasonChanged": 0, "R4_violations": 0, "R5_patchNotOracle": 0},
+  "newlyWithheld": 1093, "calibrationReader": {"calls": 582, "identical": 463, "differAsOracle": 119},
+  "records": {"planAnswers": 1454, "factsDiffer": 0, "formatsDiffer": 186, "formatsDifferSessionsSame": 0, "historyDiffer": 0, "evidenceDiffer": 0, "ledgerDiffer": 0},
+  "identicalClients": 59, "differingClients": 39,
+  "differingKeys": ["runCalibration", "runFormat.paceEvidenceWithheld", "runFormat.native", "runFormat.time", "runSessions (executions: paceWithheld, paceEvidence only)", "runFormatRecord (format rows of changed sessions)"]
+ },
+ "mutation": {
+  "where": "judge copy of f8b08aa, extension tests (114)", "control": {"tests": 114, "pass": 113, "failed": ["I10, V6 (needs git; the copy has none)"]},
+  "mutants": 17, "killed": 17, "survived": 0, "killedOnlyByCostTests": 0,
+  "detail": {"M01": 6, "M02": 6, "M03": 2, "M04": 12, "M05": 1, "M06": 2, "M07": 3, "M08": 25, "M09": 6, "M10": 6, "M11": 5, "M12": 7, "M13": 4, "M14": 6, "M15": 8, "M16": 3, "M17": 6},
+  "thinCoverage": ["M05 (1 test)", "M03 (2)", "M06 (2)"]
+ },
+ "hashes": {
+  "v1-run-format.mjs": {"4b1622f": "419cac2d99600da459080cfd5cc470e412f7993d650b2aee38376c303949e8fe", "f8b08aa": "e8f364e3c977d1127205a83a1bdae557dd503913a713b0df56dc8ad64cac6a99"},
+  "v1-run-history.mjs": {"4b1622f": "50f178e2a76af3c90a96b338a75f0173b6a045c5f318c4e3074dc4213264b3b6", "f8b08aa": "06deb84c3bb22c5af99108d8169d58fde3c319887dab5404c308ed4537676902"},
+  "unchanged (sha256 prefix, equal in 4b1622f, 08d2dc8, f8b08aa)": {"v1-run-format-index.mjs": "fd38ebb01aade9ba", "r6-provenance.mjs": "2b9c5ccc023e80a6", "r6-adaptation.mjs": "6cedcb72be4e2bc6", "v1-run-calibration.mjs": "0eae652116915342", "v1-run-index.mjs": "a86b6f1e7c62b7b6", "v1-index.mjs": "8a9bdd500663967c", "RUN_FORMATS_V1.json": "26c6e3fbfeee8643"},
+  "v1rws-e01.test.mjs": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+  "E01_PATCH.md": "06cac423249db07e7ff23ff1ba1d6e7da118c55959d9545f9be2a99168c45bc9",
+  "IOS_RUN_REPORT_INTEGRATION_CONTRACT.md": "2e417347ec561e83570f82e40ddab957afeccafd448f6243b26813dab728b1d6",
+  "SSCTR_V1RWS_RUN_RECORDS.json": "a5b915c66f942e17e5e3eb39ef187921e4e65684866c7687af4f6997d44cbf02",
+  "judgeProbes": {"lib.mjs": "4aca94c336fadf6d5b68e1ae09e835591d4f8a92aefe4212e55379fe165ebf9c", "q5-workpace.mjs": "9944228ce8798972af104ec74c210194d2951c947aeb2080bc6298c4b5d566fd", "q5-workpace2.mjs": "8467d915cd0f6e0cb561363f755b8d2eb3572a419fbfffda6a158f0c003b3368"}
+ },
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/cc877d93-9457-4c53-b263-90eed80e7399/scratchpad/judges/qre-r6/r6-1794767342/",
+ "worktreeWrites": ["audits/v1-run-extensions-2026-11-13/e01-patch/reviews/qre/QRE_V1RWS_E01_PATCH_R6.md", "audits/v1-run-extensions-2026-11-13/e01-patch/reviews/qre/QRE_V1RWS_E01_PATCH_R6.json"],
+ "notRead": ["audits/v1-run-extensions-2026-11-13/e01-patch/reviews/ssctr/ (SSCTR review of this round)"],
+ "authorProbesUsedAsEvidence": "none, except the three judge probes of this role, unchanged",
+ "notVerified": ["half and marathon; a race journey with a no-distance correction beyond the 10 km plan", "DURATION_REQUIRED on a no-distance row through the entry point (unreachable by the merge; hand-built only)", "F-01 effect on an observed easy band (runner without a result)", "whole suite under each mutant; the author's 19 mutants and differential", "R5 findings other than E-01 (E-02..E-07) not re-exercised", "declared evidence channel (runEvidence)", "sporting values and readings, custody and integration security, real HealthKit behaviour"],
+ "hostContext": {"usedAsEvidence": false, "files": {"C:/Users/carva/.claude/CLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6", "C:/Users/carva/Desktop/myApp/MyApp/CLAUDE.md": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6", "C:/Users/carva/.claude/projects/C--Users-carva-Desktop-myApp-MyApp/memory/MEMORY.md": "e1b1cd9a98c19f036b22dbc6dda4b13b69c41bfb011ac9b775d6f14527165538"}}
+}

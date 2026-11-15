@@ -1,0 +1,61 @@
+{
+ "confirmation": {
+  "id": "SSCTR-V1RWS-E01-PATCH-R6-CONFIRMATION",
+  "date": "2026-11-15",
+  "decision": "CONFIRMED_WITH_CONDITIONS",
+  "confirms": {
+   "path": "audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_RUN_RECORDS.json",
+   "sha256": "a5b915c66f942e17e5e3eb39ef187921e4e65684866c7687af4f6997d44cbf02",
+   "reviewId": "SSCTR-V1RWS-LINEAGE-R5",
+   "originalCandidate": "4b1622f55e3d66e6e381bf33cc659fbed1f1713a",
+   "edited": false
+  },
+  "forCandidate": "f8b08aaf4516f5376a31a67b43e72ec9a2d64f29",
+  "judgedBy": ["SSCTR-V1RWS-E01-PATCH-R6 (audits/v1-run-extensions-2026-11-13/e01-patch/reviews/ssctr/SSCTR_V1RWS_E01_PATCH_R6.md sha256 88eb7dc4a57027edf24cd8a568a2fbe997a12a030ab82d1fbfc8e01846aa5fb3; .json 2b8e9321a0f5a3e0a7fbe948b17f5097decf1596f9a6360d196adfbe03d1acb0)", "addendum SSCTR_V1RWS_E01_PATCH_R6_ADDENDUM.md"],
+  "qualityReviewRead": {"path": "audits/v1-run-extensions-2026-11-13/e01-patch/reviews/qre/QRE_V1RWS_E01_PATCH_R6.md", "sha256": "d430b5787d14da31f85ab794c61ddd1da466191eb2e149bd0b92e2c0f21560c7", "json": "f4e457bc1720d7c4143abe6411b7e13dedf3c58eb53682c1bb38d87c5f6f5686", "verdict": "READY_WITH_CONDITIONS", "blocking": 0},
+  "reviewer": {"agent": "sports-science-concurrent-training-reviewer", "version": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "skill": "sports-science-review 1.0.0", "model": "claude-opus-5-5", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "instance": "the SSCTR R6 instance; not the author of the patch", "humanReview": false, "empiricalValidation": false, "clinicalJudgment": false},
+  "notAFreeze": true,
+  "authorizes": "nothing beyond the synthetic candidate: no real athlete, integration or production"
+ },
+ "records": [
+  {
+   "boundaryId": "V1X-RUN-NATIVE",
+   "extensionSha256": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c",
+   "runtimeSha256": {
+    "src/v1-run-format.mjs": "e8f364e3c977d1127205a83a1bdae557dd503913a713b0df56dc8ad64cac6a99",
+    "src/v1-run-format-index.mjs": "fd38ebb01aade9ba56dd9991ab58f2a7d11425c020727a1821c9dc829c9641e7",
+    "src/v1-run-history.mjs": "06deb84c3bb22c5af99108d8169d58fde3c319887dab5404c308ed4537676902",
+    "src/v1-run-calibration.mjs": "0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01",
+    "src/v1-run-index.mjs": "a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608",
+    "src/v1-index.mjs": "8a9bdd500663967ceed8eaedfc514665da8cef61e0a64536b7a02b9dd2cebd2d",
+    "src/r6-adaptation.mjs": "6cedcb72be4e2bc6434a1f86a20d8c4447498b73c1157706cc91554847ac6e50",
+    "src/r6-provenance.mjs": "2b9c5ccc023e80a698c3f155acd6873ee2a9c3407e66f491c3a90baf90fb9419"
+   },
+   "independent": true,
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "sourceIds": ["SRC-RWS-01", "SRC-RWS-02", "SRC-RWS-03", "SRC-RWS-07", "SRC-RWS-08", "SRC-RWS2-01", "SRC-RWS3-01", "SRC-RWS3-02"],
+   "conditions": [
+    "Synthetic data only; no real athletes and no production use. V1 authority NO; integration not decided here.",
+    "Bound to the values bytes above and to the runtime of candidate f8b08aaf4516f5376a31a67b43e72ec9a2d64f29 as judged by SSCTR-V1RWS-E01-PATCH-R6 (the eight runtimeSha256 above, checked by the reviewer on the worktree bytes); a change to any of them requires a new independent SSCTR check to confirm or remove this record. The runtime machine-checks only the values hash (QRE-RWS-F-05): this confirmation, not the runtime's reading of the phase-a record, is what binds these bytes.",
+    "Before phase B reads paceEvidence: SSCTR-RWS-A-04; and extentFraction is description only, never credit or completion (SSCTR-RWS-E-03). SSCTR-RWS-F-01 (with QRE-RWS-F-03): every new reader of pace, capacity or race result takes the whole reading (reportsReading with wholeRow) or the paceWithheld/paceEvidence computed with it, never the reportsVerdict word alone; outcome test with a masked row with no distance.",
+    "HARD GATE before any integration or real athlete (engine finding E-1, SSCTR lineage item L5, not met here): an outcome test shows that every import re-sync of a session the athlete also reported keeps what the athlete declared last (recovery, effort, next-day function, stop, pain, conditions, walk breaks; cases ADVERSE, SYMPTOM, FATIGUE, HEAT), the screen stays asked for a symptom stop and the athlete's statements stay in force; also in the single-report form, where one report under a device activity id carries the athlete's additions (SSCTR-RWS-E-01, QRE-RWS-E-02). If the minimum needs a change of the frozen engine, the decision is the Founder's.",
+    "QRE-RWS-E-01: MET in the Core at f8b08aa. On a row with no distance a whole-row reason (REPORT_NOT_CARRIED, REPORTS_UNREADABLE) withholds the row even when the row's own reports give a distance-only reason; outcome test of the quality session in both variants (listing a recording, declaring a failure) by the SSCTR and QRE judges' own probes through the entry point and test 1 of test/v1rws-e01.test.mjs. SSCTR reading unchanged: the work pace of a row that does not carry every report in force is inside the lineage rule. Consequence accepted expressly (reading 2): a withheld run is no S3 source, and a session may move from time to distance at the same minutes within CT-1 to CT-3.",
+    "Before integration or real athletes: SSCTR-RWS-C-01 (removed fact), C-02 (carried future-dated screen), C-03, C-04, B-03 with D-01 (D-01 stays open in its 26 km form and on the credit side; L3-c), D-02, and QRE-RWS-A-07.",
+    "SSCTR-RWS-C-08: the composed entry point enters no custody or integration until the custody accepts engine merges and conflict marks, keeps facts and formats in one sealed commit and returns the screen.",
+    "Speaker and source (L1-c, L1-d; SEC-RWS-E-01, QRE-RWS-E-02): the custody or the adapter records the source by the input channel, never by what the report body says; every import carries its activity id, the same on every re-sync (I-1); an athlete's edit never carries a device activity id (I-2); a correction repeats all its speaker says of the run (I-4); the athlete's own report names no provider but MANUAL or SELF_REPORT (I-8); cross-source resend and correction contract (I-5); the engine's record is kept with its replaced rows (I-6); outcome tests of the Security and Quality shapes (B1, B2, C1; K1, K4, K5) retained or refused. The data contract's single observation with source and athlete fields is reconciled with I-2 and I-4. SSCTR-RWS-F-02: a value the device measured (work pace, laps, distance, recordings) reaches the Core only in the device's report with the device's quality; the athlete's report carries as work pace only what the athlete states, never a value prefilled from the HKWorkout.",
+    "QRE-RWS-F-01, before integration or real athletes (pre-existing, identical in 4b1622f and f8b08aa): a comparability fact one speaker states that is not a distance fact (gpsQuality POOR, an excluding condition such as HEAT, walk breaks, treadmill or another non-GPS measurement) must never be overridden by another speaker's value of the same field in the engine's merge. Closure (a) is accepted as the minimum only if the adapter contract makes the two speakers' fields disjoint for every such fact (the device report never carries conditions, walk breaks or the athlete's surface; the athlete report never carries gpsQuality or a device measurement; the athlete's surface statement travels in a field the device never writes), with adapter outcome tests showing that each such fact, said by either speaker, keeps the run out of comparable pace evidence. Where disjointness cannot be shown (for example a device indoor flag or weather metadata on the same field), (a) is insufficient for that field and closure (b) is required: the Core keeps these facts per report and the non-comparable reading wins, a runtime change outside this patch whose authorization is the Founder's, with its own SSCTR and QRE review.",
+    "L1-f: before integration or real athletes the integration states what fraction of planned runs stays withheld from pace evidence for good (REPORT_NOT_CARRIED, including athlete self-corrections kept out by provider tagging, SSCTR-RWS-E-04) and, if material, gives the way back. SSCTR-RWS-F-03 (with QRE-RWS-F-06): the fraction counts apart the runs withheld by the E-01 patch (athlete corrections that list or declare after an import) and how often the S3 source falls back to an earlier run because of withholding, with the sessions that move from time to distance.",
+    "Security, before integration: A-01, A-04, A-06 to A-08, C-03, C-04 widened by SEC-RWS-E-04 (the speaker is an unkeyed stable pseudonym of the activity id; every run report now leaves a fact with wholeKm), D-02 widened (an unreadable format row also locks; audited repair in the custody), and the focal conditions the Security judge keeps.",
+    "When warningSignScreen.status is REQUIRED the client takes the athlete to the existing warning-sign screen at once; the extension decides no clearance. Clinical content of any pain or symptom route stays CLINICAL_HUMAN_REQUIRED.",
+    "Not a freeze. COACHINGCORE-V1-RUN-FORMAT-FREEZE-1 (V1RWS-1) binds the 4b1622f bytes and reports DRIFT on f8b08aa as expected; any successor freeze is a separate record by its owner, issued after this confirmation.",
+    "An AI reviewer's provisional internal sporting judgment, not human, clinical or empirical validation.",
+    "Proposed for funded human revalidation under HQ-V1RWS-A-SSCTR-LINEAGE-L1L2, HQ-V1RWS-A-SSCTR-LINEAGE-L3L4, HQ-V1RWS-A-SSCTR-R5-TWO-VOICES and HQ-V1RWS-E01-SSCTR-R6, with the earlier HQ-V1RWS-A-SSCTR items (appended by Founder or Chief).",
+    "Review by 2027-05-15, or on: a runtime change asked by any judge; the start of phase B or the Race Forecast; the data contract (B-03) or the iOS contract; importer data or the retained fraction; a Founder decision on the engine or on QRE-RWS-F-01 closure (b)."
+   ],
+   "hardGateE1": {"met": false},
+   "reviewId": "SSCTR-V1RWS-E01-PATCH-R6"
+  }
+ ],
+ "note": "Confirmation of the enabling record of V1X-RUN-NATIVE (phase-a record a5b915c6..., not edited) for the runtime bytes of f8b08aa, issued after the Quality review QRE_V1RWS_E01_PATCH_R6 (READY_WITH_CONDITIONS, no blocking finding) was read whole by the reviewer. Source ids are those verified in the SSCTR RWS decisions r1 to r3a; no new scientific claim; sources not re-verified in this pass. Synthetic data only. Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation. The runtime does not read this file."
+}

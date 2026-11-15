@@ -1,0 +1,129 @@
+{
+ "reviewId": "SSCTR-V1RWS-E01-PATCH-R6",
+ "date": "2026-11-15",
+ "agent": {
+  "id": "sports-science-concurrent-training-reviewer",
+  "version": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "constitutionSha256": "9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180",
+  "skill": "sports-science-review 1.0.0",
+  "skillSha256": "67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "model": "claude-opus-5-5",
+  "instance": "fresh; focal independent judge; not the author of the patch, the new test, the author's record, the iOS contract or any probe under e01-patch/probes; not independent of earlier decisions of the same role (lineage items r1/r2, r4, r5, the r5 addendum and the enabling record)",
+  "dispatch": "instructions received match the project adapter .claude/agents/sports-science-concurrent-training-reviewer.md; the dispatch mechanism itself was not verifiable by this instance",
+  "delegation": false,
+  "humanReview": false,
+  "empiricalValidation": false,
+  "clinicalJudgment": false,
+  "literature": "no new scientific claim made or needed; WebSearch/WebFetch deferred and not loaded; sourceIds of the enabling record not re-verified"
+ },
+ "candidateCommit": "f8b08aaf4516f5376a31a67b43e72ec9a2d64f29",
+ "baseCommit": "08d2dc8",
+ "diffJudged": "08d2dc8..f8b08aa -- CoachingCore/src (v1-run-format.mjs, v1-run-history.mjs)",
+ "branch": "claude/v1-run-extensions",
+ "worktreeCleanAtStart": true,
+ "worktreeCleanBeforeWriting": true,
+ "qreReviewOfThisRoundRead": false,
+ "scope": "synthetic candidate, no real athletes, no integration; focal review of the E-01 patch, L1 to L5 and RWS r1 to r3a not reopened",
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "blockingFindings": 0,
+ "bytes": {
+  "candidate": {"src/v1-run-format.mjs": "e8f364e3c977d1127205a83a1bdae557dd503913a713b0df56dc8ad64cac6a99", "src/v1-run-history.mjs": "06deb84c3bb22c5af99108d8169d58fde3c319887dab5404c308ed4537676902", "v1/RUN_FORMATS_V1.json": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c"},
+  "base08d2dc8": {"src/v1-run-format.mjs": "419cac2d99600da459080cfd5cc470e412f7993d650b2aee38376c303949e8fe", "src/v1-run-history.mjs": "50f178e2a76af3c90a96b338a75f0173b6a045c5f318c4e3074dc4213264b3b6", "v1/RUN_FORMATS_V1.json": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c"},
+  "otherBoundFilesInCandidateEqualRecord": ["src/v1-run-format-index.mjs fd38ebb0", "src/v1-run-calibration.mjs 0eae6521", "src/v1-run-index.mjs a86b6f1e", "src/v1-index.mjs 8a9bdd50", "src/r6-adaptation.mjs 6cedcb72", "src/r6-provenance.mjs 2b9c5ccc"],
+  "baseCopyCheckedAgainst4b1622f": "every file of src/ and v1/ in the git-archive extract of 08d2dc8 equals git show 4b1622f: by sha256",
+  "diff4b1622fToCandidate": "only src/v1-run-format.mjs, src/v1-run-history.mjs and v1/RUNTIME_FREEZE_V1RWS_1.json"
+ },
+ "questions": {
+  "Q1_conditionMet": {
+   "answer": "MET_IN_CORE",
+   "evidence": [
+    "QRE R5 probes unchanged (q5-workpace 9944228c, q5-workpace2 8467d915, lib 4aca94c3) on both trees: outputs byte-identical to e01-patch/probes/out/judge-*.json",
+    "q5-workpace2 lists: 08d2dc8 nothing withheld, THRESHOLD_CONTROLLED [290,325], a7a23d20; f8b08aa 4x REPORT_NOT_CARRIED, [300,335], c65ab1fd (the control's)",
+    "q5-workpace unit: lists and declares readings SEVERAL_RECORDINGS / CORRECTED_MEASUREMENT with withheld [] on 08d2dc8; wholeRow REPORT_NOT_CARRIED, withheld, handed POOR on f8b08aa",
+    "own r6-quality.mjs (e8be2bc6), four weeks through the entry point: watch+declares 08d2dc8 [290,325] +0.03, f8b08aa 4x REPORT_NOT_CARRIED [300,335] {} control hash; dose of weeks 7 and 8 and run expressions identical in 14 runs, engine KEEP, screen NOT_RAISED",
+    "node --test test/v1rws-e01.test.mjs: 6/6 on the candidate, 0/6 on the 08d2dc8 copy; test/v1rws-*.test.mjs 114/114 on the candidate (author's tests, run as a check only)",
+    "code: on a row with a distance the result is unchanged by construction; on a row with no distance it changes only to withhold"
+   ]
+  },
+  "Q2_sportingDecisionsPreserved": {
+   "answer": "PRESERVED",
+   "newToleranceThresholdOrCriterion": false,
+   "items": {
+    "engineDoseProgressionRunStrengthLoad": "identical (r6-quality dose hash of weeks 7 and 8, strength included; engine files at the record's hashes)",
+    "formatSelectionAndExpression": "identical except the masked S3 case (reading 2), which is L1 applied",
+    "completionByDistanceAndAdherenceCredit": "readCompletion does not read paceWithheld; execution TIME, completed, identical",
+    "historyReferenceL30ComparableLongRun": "historyReference, L30, comparableLongRun do not read paceWithheld; r6-s3 extentKm 8 both, long run 14 km S2 360 both",
+    "screenAndClinicalHolds": "r6-symptom: REQUIRED with 0 natives on the correction answer in both trees; week after NOT_RAISED with 1 native in both (pre-existing, not this patch)",
+    "v1rcCalibration": "v1-run-calibration.mjs 0eae6521 unchanged; masked variants give the control's calibration hash"
+   }
+  },
+  "Q3_authorReadings": {
+   "1": {"position": "ACCEPTED_WITHIN_DECIDED_RULE", "expressWord": true, "note": "L1 is lineage; distance-only reasons are of the measured distance (r3a A1 fact 3, QRE-RWS-B-01). The athlete alone moves the band also with no correction at all (r6-quality alone+none [290,325] +0.03, both trees): it is the frozen V1RC reading of a declared work pace at effort 7, not the list or declaration. Excluding a work pace because a measurement failure was declared would be a new V1RC criterion without evidence; not created. Integration risk closed by SSCTR-RWS-F-02.", "condition": "SSCTR-RWS-F-02"},
+   "2": {"position": "ACCEPTED_EXPRESSLY_IT_IS_WHAT_L1_REQUIRES", "expressWord": true, "evidence": "r6-s3.mjs (1f2515dc): 08d2dc8 watch+declares EASY 70 and 65 min TIME (NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE, S3 442.5 s/km); f8b08aa NATIVE 11 km / 70 min and 9 km / 65 min, S1 370, S3 345, CT-1 67.83<=70 and 62.83<=65, CT-2 63.25>=63 and 59.08>=58.5, CT-3 11 and 9 <=18.084; minutes identical; same as the merged POOR, the plain correction and the minutes-only controls; athlete alone declaring 8 km with a failure reason stays the S3 source and TIME in both trees", "note": "not merely more conservative: the withheld observation was slower; an admission rule cannot depend on the direction of inadmissible evidence; residual risk (athlete truly slower than the last admissible run) bounded by the 28-day S3 window, CT-1 to CT-3 and the V1RC effort-governs condition, measured by SSCTR-RWS-F-03", "condition": "SSCTR-RWS-F-03"},
+   "3": {"position": "ACCEPTED", "note": "label only; a future reader using reportsVerdict alone would reopen E-01", "condition": "SSCTR-RWS-F-01"},
+   "4": {"position": "ACCEPTED", "note": "precedence accepted in R5; label only; both withhold"},
+   "5": {"position": "ACCEPTED_BY_CODE_READING", "note": "factsFromLedger skips conflicted rows; the calibration never read it; client L19 not run"},
+   "6": {"position": "ACCEPTED", "expressWord": true, "note": "same cost class accepted in L1 r2: one run's pace observation, never dose, credit or completion; the new cases are REPORT_NOT_CARRIED and fall under L1-f", "condition": "SSCTR-RWS-F-03"}
+  },
+  "Q4_enablingRecord": {
+   "wouldConfirm": true,
+   "issuedNow": false,
+   "conditions": [
+    "bound to f8b08aa runtime: src/v1-run-format.mjs e8f364e3c977d1127205a83a1bdae557dd503913a713b0df56dc8ad64cac6a99, src/v1-run-history.mjs 06deb84c3bb22c5af99108d8169d58fde3c319887dab5404c308ed4537676902, the other six files at the hashes the record lists, values 26c6e3fb",
+    "all 14 conditions of the record stand; the QRE-RWS-E-01 condition becomes met in Core at f8b08aa with the same sporting reading; SSCTR-RWS-F-01 to F-03 added; hard gate E-1 (L5), single-report form included, stays NOT MET",
+    "prerequisite: the QRE R6 review requests no runtime change and shows no sporting effect not seen here (nothing previously withheld delivered; no dose, credit or screen change)",
+    "issued as a new record outside phase-a naming the existing record a5b915c66f942e17e5e3eb39ef187921e4e65684866c7687af4f6997d44cbf02; the phase-a record is not edited",
+    "the runtime already treats V1X-RUN-NATIVE as on with these bytes (it binds only the values hash): that is not this confirmation; the V1RWS-1 freeze binds 4b1622f bytes and no freeze is issued or relaxed here"
+   ],
+   "wouldWithdraw": false
+  },
+  "Q5_iosContract": {
+   "contradictsL1toL5": false,
+   "presentsHardGateE1AsMet": false,
+   "note": "section 6 calls both hard gates not met and says the voice separation does not solve E-1 alone; one point tightened by SSCTR-RWS-F-02 (work pace and laps in the athlete's voice must not be device values stripped of the device quality)"
+  }
+ },
+ "conditions": [
+  {"id": "SSCTR-RWS-F-01", "when": "before phase B or the Race Forecast read paceEvidence or rows (with A-04)", "text": "Every new reader of pace, capacity or race result takes the whole reading (reportsReading with wholeRow) or the paceWithheld/paceEvidence distanceFacts computed with it; never the reportsVerdict word alone as admission criterion; outcome test with a masked row with no distance.", "owner": "Engineering; SSCTR check at phase B"},
+  {"id": "SSCTR-RWS-F-02", "when": "before integration or real athletes", "text": "A value the device measured (work pace, laps, distance, recordings) reaches the Core only in the device's report with the device's quality; the athlete's report carries as work pace only what the athlete states, never a value prefilled from the HKWorkout; if shown to the athlete to confirm, the device quality travels with it. Applies the decided devicePoor exclusion (r3a A1 fact 3); no new criterion.", "owner": "Integration and Data; Security for channel origin"},
+  {"id": "SSCTR-RWS-F-03", "when": "before integration or real athletes (part of L1-f)", "text": "The fraction the integration states counts apart the runs withheld by this patch (athlete corrections that list or declare after an import) and how often the S3 source falls back to an earlier run because of withholding, with the sessions that move from time to distance; if material, the L1-f way back.", "owner": "Integration; SSCTR re-reading"}
+ ],
+ "recordConditionQreRwsE01": "MET_IN_CORE at f8b08aa; sporting reading unchanged (the work pace of a row that does not carry every report in force is inside L1)",
+ "hardGateE1L5": {"met": false},
+ "notVerified": [
+  "full suite, v1rws-freeze --preserved/--check, npm run verify, verify-r*, v1rc-journeys, v1rc-fuzz, validate_records.py",
+  "the author's differential, mutation and p1-decompose probes (not run, not used as evidence)",
+  "through the entry point: DURATION_REQUIRED and DISTANCE_DISPUTED on a row with no distance, REPORTS_UNREADABLE, late correction, native-session laps, four orders (seen only in the author's tests, which pass)",
+  "the conflicted row of reading 5 (code reading only)",
+  "half marathon, marathon, race through a whole journey",
+  "real retained fraction, HealthKit importer, custody; channel origin and guard are Security's",
+  "the QRE review of this round (not read, as instructed)"
+ ],
+ "humanQueueProposedNotAppended": ["HQ-V1RWS-E01-SSCTR-R6 (S3 source after withholding, reading 2; declared work pace with a declared measurement failure, reading 1 and F-02)"],
+ "expiry": {"reviewBy": "2027-05-15", "events": ["a runtime change asked by any judge", "start of phase B or the Race Forecast (F-01)", "a change of the data contract or the iOS contract", "importer data or the retained fraction (F-03)", "a Founder decision on the engine"]},
+ "probes": {
+  "dir": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/cc877d93-9457-4c53-b263-90eed80e7399/scratchpad/judges/ssctr-r6/",
+  "r6-quality.mjs": "e8be2bc65ffc3d61", "r6-s3.mjs": "1f2515dc9db93bd8", "r6-symptom.mjs": "7e9f5ea9a3b9cf26",
+  "outputs": {"r6-quality.base": "1b7fd142bfbe49df", "r6-quality.cand": "dbc7abcd85954f63", "r6-s3.base": "36e60e28e90e711b", "r6-s3.cand": "5bcc55fb54b9a545", "r6-symptom.base": "336c7ff4897d5824", "r6-symptom.cand": "ced76ca2a0df9f95"}
+ },
+ "artifactsRead": {
+  "E01_PATCH.md": "06cac423249db07e7ff23ff1ba1d6e7da118c55959d9545f9be2a99168c45bc9",
+  "IOS_RUN_REPORT_INTEGRATION_CONTRACT.md": "2e417347ec561e83570f82e40ddab957afeccafd448f6243b26813dab728b1d6",
+  "test/v1rws-e01.test.mjs": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+  "SSCTR_V1RWS_RUN_RECORDS.json": "a5b915c66f942e17e5e3eb39ef187921e4e65684866c7687af4f6997d44cbf02",
+  "SSCTR_V1RWS_LINEAGE_R5_ADDENDUM.md": "dd174b5380ace9157614fe8119095f2faeff404015e256eb85498ba496dd9356",
+  "SSCTR_RWS_LINEAGE_ITEMS.md": "6cb5d83ce4ca7924d8a5d67e2ec2dc0d2128e04caf0d40754ccc8aa78c710c84",
+  "SSCTR_V1RWS_LINEAGE_R5.md": "44f511c405ccdccfe1964d7877c2cab2c6830216b707e6b630bbc0920dc06cc0",
+  "QRE_V1RWS_LINEAGE_R5.md": "be216a23e1ff726cb36c55ba62c8bdba39483f4a133bcf045ce587bc46e0d015"
+ },
+ "hostInjectedContext": {
+  "globalClaudeMd": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectClaudeMd": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "memoryMd": "e1b1cd9a98c19f036b22dbc6dda4b13b69c41bfb011ac9b775d6f14527165538",
+  "usedAsEvidence": false
+ },
+ "writes": "only this file and the .md beside it; no git write command",
+ "note": "Written by an AI SSCTR instance under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation. Synthetic data only."
+}
