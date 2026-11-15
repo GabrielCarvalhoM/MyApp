@@ -1,0 +1,145 @@
+{
+ "reviewId": "SSCTR-V1RWS-LINEAGE-R5",
+ "date": "2026-11-15",
+ "agent": {
+  "id": "sports-science-concurrent-training-reviewer",
+  "version": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "model": "claude-opus-5-5",
+  "instance": "fresh; not the author of the candidate, the contract, the author's record or the probes; not independent of earlier decisions of the same role (lineage items r1/r2, r2, r3, r3a, r4)",
+  "delegation": false,
+  "humanReview": false,
+  "empiricalValidation": false,
+  "clinicalJudgment": false
+ },
+ "candidateCommit": "4b1622f55e3d66e6e381bf33cc659fbed1f1713a",
+ "diffJudged": "a4a434f..4b1622f -- CoachingCore",
+ "branch": "claude/v1-run-extensions",
+ "worktreeCleanAtStart": true,
+ "scope": "synthetic candidate, no real athletes, no integration",
+ "decisionsImplemented": "evidence-lineage/SSCTR_RWS_LINEAGE_ITEMS.md r2 (L1, L2, L3, L4); L5 is an integration gate and is not resolved here",
+ "verdict": "ACCEPT_WITH_CONDITIONS",
+ "blockingFindings": 0,
+ "items": {
+  "L1": {"met": true, "conditions": {
+   "L1-a": {"met": true, "evidence": "d-matrix EASY+LONG on a4a434f vs candidate (cmp-before-cand.mjs): 0 violations; r5-entry 36 cases: 0 violations, no paceEvidence false->true; differential.mjs: 0 UNEXPECTED, identical to the author's output byte for byte"},
+   "L1-b": {"met": true, "evidence": "r5-inforce scenarios 16/17: the retraction leaves a fact and replaces its own speaker's earlier report; REPORT_NOT_CARRIED; history null"},
+   "L1-c": {"met": true, "evidence": "speaker sealed on receipt from source fields; r5-wholekm table; fromDevice never ATHLETE"},
+   "L1-d": {"met": "not this role", "evidence": "Security; stated in the author's record I-10"},
+   "L1-e": {"met": true, "evidence": "easy and long three orders (d-matrix, r5-entry); heat/walk breaks three orders and the race through a whole journey in three orders in the author's tests (108/108 run by me), plus d-other-statements, the L-heat client of the differential and q4-corr-race"},
+   "L1-f": {"met": "integration condition, recorded", "evidence": "author's record section 6; synthetic differential: 110 newly withheld answers over 40 clients"}
+  }},
+  "L2": {"met": true, "evidence": "r5-inforce 18 (zz-app) and 19 (dev-x) in force and on no row, REPORT_NOT_CARRIED; screen as before"},
+  "L3": {"met": true, "conditions": {
+   "L3-a": {"met": true, "evidence": "differential: execution reading (status, basis, completion, measuredKm) identical in 647 reviews, overlap cases included (history 15.4->11, 22.4->16)"},
+   "L3-b": {"met": true, "evidence": "historyReference returns null when the row gives none; no null->value in the differential"},
+   "L3-c": {"met": true, "evidence": "D-01 and B-03 stay open in the record (I-3), 26 km form and credit side"},
+   "L3-d": {"met": true, "evidence": "ssctr-m2-empty-merge on the candidate, three orders: extentKm 22->16, CT-3 24.2->18.084, next long run 16 km / 100 min, status DISTANCE/MEASURED unchanged"}
+  }},
+  "L4": {"met": true, "conditions": {
+   "L4-a": {"met": true, "evidence": "r5-wholekm: POOR, untimed, implausible -> wholeKm null"},
+   "L4-b": {"met": true, "evidence": "code and scenarios 16/17 null->null; differential"},
+   "L4-c": {"met": true, "evidence": "r5-wholekm: a listed 4.4 km file alone -> null; a device 6 km with its own list of 4 -> 10"},
+   "L4-d": {"met": true, "evidence": "status, basis, completion, measuredKm, credit unchanged (r5-entry, differential); see note SSCTR-RWS-E-03"},
+   "L4-e": {"met": true, "evidence": "r5-entry: easy 6.6 and long 9.6 in 03/09/10/18; 08 and 19 long 16->9.6; next long run TIME at the same 100 min (r5-dose); on easy the long runs ahead are the control's; author's L4-e test passes"}
+  }},
+  "L5": {"resolved": false, "recordedAsNotMet": true, "evidence": "d-engine-frozen identical on both commits (ADVERSE->UNKNOWN, adverseSessions 1->0); record section 4 'E-1 nao esta resolvido' with the L5 minimum; entry-point header and test 'HARD GATE OF A REAL INTEGRATION, NOT MET HERE' pin the defect"}
+ },
+ "changedExpectations": {
+  "wholeCases": "changed in the terms accepted in r2 section 3: REPORT_NOT_CARRIED, paceEvidence false, merged/row/status/basis/completion/measuredKm/edges unchanged, hash asserts dropped, 08/09/10 added with extent 6.6",
+  "lateCase": "unchanged (SEVERAL_RECORDINGS by precedence); r2 accepted both words",
+  "otherChanges": "direct consequences of the contract (every report leaves a fact; new fact shape) or of L1/L2 (a report in force not carried withholds; refused reports withhold their session's row); only withholding or record shape; no status, credit, screen or native change",
+  "securityNote": "a re-sealed fact with no stop and no distance is now readable; the power to re-seal already existed (sec-s1-signal V3: NOT_RAISED, 8 native on both commits); Security domain, C-01"
+ },
+ "safety": {
+  "symptomStopOutsideRule": true,
+  "evidence": "r5-entry 21/22/23 both families REQUIRED, 0 native, same as a4a434f; r5-inforce: stop kept when its report is replaced (22) or not carried (21); single-report form keeps the screen (r5-two-voices)",
+  "noNativeUnderScreen": true,
+  "sec-RWS-D-01": "sec-s1-signal V10 on the candidate: REQUIRED, 0 native (a4a434f: NOT_RAISED, 8 native)",
+  "dose": "cmp-dose: 912 sessions over 36 scenarios, canonical minutes/family/prescribed/hold identical; only expression moves (08 and 19 long: NATIVE 16 km -> TIME 100 min)",
+  "engineDownstream": "r5-engine-follow: the only engine difference after an expression change is the athlete's own next report sent as prescribed; no plan, decision or credit change",
+  "frozenFilesUnchanged": true,
+  "RUN_FORMATS_V1.json": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c"
+ },
+ "authorReadings": [
+  {"n": 1, "ruling": "ACCEPTED", "why": "a work pace from a row that does not carry every report in force is no comparable observation either; withholding only"},
+  {"n": 2, "ruling": "ACCEPTED", "why": "the engine kept no such report; the re-sent one is in force; its stop is kept"},
+  {"n": 3, "ruling": "ACCEPTED", "why": "what cannot be shown stays in force; cost is withholding only"},
+  {"n": 4, "ruling": "ACCEPTED_WITH_CONDITION", "condition": "I-8 and the L1-f fraction", "related": ["SSCTR-RWS-E-04"]},
+  {"n": "4b", "ruling": "ACCEPTED", "why": "executed: the next long run goes by time at the same 100 min; bounded under-progression of expression, never more dose"},
+  {"n": "5-8", "ruling": "ACCEPTED", "why": "no sporting values; all withhold"}
+ ],
+ "declaredLimitTwoVoices": {"position": "CONDITION of integration together with L5; does not block the synthetic candidate", "regression": false, "finding": "SSCTR-RWS-E-01"},
+ "findings": [
+  {"id": "SSCTR-RWS-E-01", "severity": "CONDITION", "scope": "integration, with the L5 hard gate", "what": "one report under a device activity id carrying the athlete's additions (HEAT, walk breaks, ADVERSE), re-synced without them: pace evidence returns ([345,575]) and adverseSessions goes to 0; identical in a4a434f; a symptom stop in that form still asks the screen (REQUIRED, 0 native)", "probe": "r5-two-voices.mjs", "output": "out/cand-two-voices2.json, out/before-two-voices2.json", "closes": "the L5 outcome test also in the single-report form; I-2 and I-4"},
+  {"id": "SSCTR-RWS-E-02", "severity": "NOTE", "what": "cost of L1/L4 on expression: in 08 and 19 long, two long runs ahead in the same answer and the next week's go by time (100 min) instead of 16 km native; dose identical over 912 sessions", "probe": "r5-dose.mjs, cmp-dose.mjs, r5-engine-follow.mjs", "closes": "nothing in the Core; part of the L1-f fraction"},
+  {"id": "SSCTR-RWS-E-03", "severity": "NOTE", "what": "extentFraction (descriptive, on continuous steps of a PARTIAL execution) is computed from the history reference L4 can lower; no consumer in src/", "probe": "code reading of executionOf; grep of src/", "closes": "before phase B (with A-04): never read extentFraction as credit or completion"},
+  {"id": "SSCTR-RWS-E-04", "severity": "NOTE", "what": "a named provider with no activity id is DEVICE_UNIDENTIFIED; an app tagging the athlete's report with a provider would keep every athlete self-correction withheld for good", "probe": "r5-wholekm.mjs", "closes": "I-8 and the L1-f fraction"},
+  {"id": "SSCTR-RWS-E-05", "severity": "NOTE", "what": "scenario 22: the athlete's own correction replaces their stopped report and the run returns to pace evidence; the stop is still read (REQUIRED, 0 native); identical in a4a434f; the decided rule; no clinical judgment", "probe": "r5-inforce.mjs, r5-entry.mjs scenario 22", "closes": "nothing in the Core; clinical content stays CLINICAL_HUMAN_REQUIRED"}
+ ],
+ "reproductionOnA4a434f": {
+  "copy": "author's before-a4a434f/CoachingCore; src/ and v1/ (63 files) sha256-identical to git show a4a434f",
+  "q4-corr": "after re-sync with effort: dev-x-v2 alone, nothing withheld, EASY [345,575]",
+  "q4-corr-disputed": "after the correction [345,575]",
+  "q4-corr-race": "entry reads plan-race:dev-race-v2, 6 km in 3000 s",
+  "d-other-statements": "heat and walk breaks after re-sync [345,575]",
+  "ssctr-m2-empty-merge": "overlap extentKm 22, CT-3 24.2",
+  "matchesStoredOutputs": true
+ },
+ "candidateReadings": {
+  "q4-corr": "REPORT_NOT_CARRIED, [345,420]",
+  "q4-corr-disputed": "[345,420], REPORT_NOT_CARRIED",
+  "q4-corr-race": "entry []",
+  "d-other-statements": "[345,420], REPORT_NOT_CARRIED (control withheld too: the cost)",
+  "ssctr-m2-empty-merge": "extentKm 16, CT-3 18.084, next long 16 km / 100 min",
+  "matchesAuthorOutputs": true,
+  "compare-matrix": "0 differences against the oracle, EASY and LONG",
+  "differential": "102 clients, 647 reviews, 110 NEWLY_WITHHELD, 34 HISTORY_LOWER, 241 FOLLOWS, 0 UNEXPECTED; byte-identical to the author's stored output",
+  "tests": "node --test test/v1rws-*.test.mjs: 108/108"
+ },
+ "recordIssued": false,
+ "recordWouldBeIssued": true,
+ "recordIssueConditions": [
+  "only after the Quality and Security verdicts allow it",
+  "only for 4b1622f unless a later runtime change is judged again",
+  "from r4, still in force: SSCTR-RWS-A-04 before phase B reads paceEvidence; before integration or real athletes C-01, C-02, C-03, C-04, B-03 with D-01, D-02, QRE-RWS-A-07; C-08; Security A-01, A-04, A-06 to A-08 and the focal conditions the Security judge keeps",
+  "L5 hard gate before any integration or real athlete, by its minimum, including the single-report form (SSCTR-RWS-E-01, I-2, I-4); a needed engine change is the Founder's decision",
+  "L1-d (Security), L1-f (the fraction withheld for good, with the way back if material), I-1, I-5, I-6, I-8 (SSCTR-RWS-E-04)",
+  "L3-c: D-01 stays open (26 km form and credit side)",
+  "before phase B (with A-04): extentFraction is description, never credit or completion (SSCTR-RWS-E-03)"
+ ],
+ "humanQueueProposed": ["HQ-V1RWS-A-SSCTR-F1-MIXED-ORDER", "HQ-V1RWS-A-SSCTR-R2-ELIGIBILITY-ASK", "HQ-V1RWS-A-SSCTR-R3-SYMPTOM-SIGNAL", "HQ-V1RWS-A-SSCTR-R4-EMPTY-FIELD-MERGE", "HQ-V1RWS-A-SSCTR-LINEAGE-L1L2", "HQ-V1RWS-A-SSCTR-LINEAGE-L3L4", "HQ-V1RWS-A-SSCTR-R5-TWO-VOICES"],
+ "humanQueueAppended": false,
+ "judgedFiles": {
+  "CoachingCore/src/v1-run-format-index.mjs": "fd38ebb01aade9ba56dd9991ab58f2a7d11425c020727a1821c9dc829c9641e7",
+  "CoachingCore/src/v1-run-format.mjs": "419cac2d99600da459080cfd5cc470e412f7993d650b2aee38376c303949e8fe",
+  "CoachingCore/src/v1-run-history.mjs": "50f178e2a76af3c90a96b338a75f0173b6a045c5f318c4e3074dc4213264b3b6",
+  "CoachingCore/test/v1rws-lineage.test.mjs": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+  "CoachingCore/test/v1rws-fix-forward.test.mjs": "ec26b27a25dd014cfe3e339ad84b5e396b4d78d252caa40e8a67656d04440d1e",
+  "CoachingCore/test/v1rws-final-fix.test.mjs": "e04ac56ad41463ececbd9982d7923ed971308219075fbdf1d8e059451a4abdd9",
+  "audits/.../phase-a/PHASE_A_LINEAGE_FIX_FORWARD.md": "165a313fe14fed7cdf180c35b0801aec0f63a5104a008381a9b01eeaf8e8a884",
+  "audits/.../evidence-lineage/SSCTR_RWS_LINEAGE_ITEMS.md": "6cb5d83ce4ca7924d8a5d67e2ec2dc0d2128e04caf0d40754ccc8aa78c710c84",
+  "audits/.../evidence-lineage/EVIDENCE_LINEAGE_CONTRACT.md": "ce7217f8df1f9e7061fc0e6f9da866a3df818a285feab956553537193e1e918f"
+ },
+ "commandsRun": [
+  "git rev-parse HEAD / status / diff a4a434f 4b1622f (read only)",
+  "sha256 of the author's before copy against git show a4a434f (src/, v1/)",
+  "probes q4-corr, q4-corr-disputed, q4-corr-race, d-other-statements, ssctr-m2-empty-merge, d-matrix EASY/LONG, d-engine-frozen, d-recompose, d-late-race, sec-s1-signal on both commits",
+  "fix-forward/probes/compare-matrix.mjs and differential.mjs",
+  "node --test test/v1rws-*.test.mjs in the worktree: 108/108",
+  "own probes: cmp-before-cand, r5-entry + cmp-entry + cmp-dose, r5-dose, r5-engine-follow, r5-inforce, r5-wholekm, r5-two-voices"
+ ],
+ "notRun": ["npm run verify", "scripts/verify-r*.mjs", "validate_records.py", "scripts/v1rc-journeys.mjs", "scripts/v1rc-fuzz.mjs", "v1rws-freeze --preserved / --write", "whole suite", "mutation"],
+ "notVerified": ["whole suite", "mutation", "half and marathon race through a whole journey", "D-01 C-05 26 km form and the credit side", "real retained fraction (L1-f), HealthKit re-sync ids and correctionOf, provider tagging", "custody, speaker trust, guard of the new fact rows (Security)", "engine reuse of session ids across plans", "inputs outside the grids and listed clients", "heat/walk-break three orders by my own probes (one order by mine; three by the author's tests)"],
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/1b05889e-fc1c-402a-93ef-5134acd2c65e/scratchpad/judges/ssctr/r5-1794748575/",
+ "literature": {"newScientificClaims": 0, "toolsAvailable": ["WebSearch (deferred)", "WebFetch (deferred)"], "used": false},
+ "expiry": ["a runtime change asked by Quality or Security", "the data contract (B-03)", "importer data or the retained fraction", "a Founder decision on the engine"],
+ "hostContext": {
+  "globalCLAUDE.md": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectCLAUDE.md (MyApp/)": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "MEMORY.md": "407dd7b73228e9b19d25a64bcf8349d6ab3057ef381b25883c137bc814004e09",
+  "usedAsEvidence": false
+ },
+ "filesWrittenInWorktree": ["audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_LINEAGE_R5.md", "audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_LINEAGE_R5.json"]
+}

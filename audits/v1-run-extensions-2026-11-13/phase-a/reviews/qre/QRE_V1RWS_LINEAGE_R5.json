@@ -1,0 +1,47 @@
+{
+ "review": "QRE_V1RWS_LINEAGE_R5",
+ "role": "Quality & Reliability Engineer (independent judge)",
+ "date": "2026-11-15",
+ "candidate": "4b1622f55e3d66e6e381bf33cc659fbed1f1713a",
+ "before": "a4a434f",
+ "frozenBase": "c8104c1",
+ "verdict": "READY_WITH_CONDITIONS",
+ "blocking": [],
+ "previous": {
+  "QRE-RWS-D-01": {"state": "CLOSED", "evidence": "judge probes q4-corr, q4-corr-disputed, q4-corr-race unchanged: a4a434f [345,575] / 6 km in 3000 s read as a race; 4b1622f REPORT_NOT_CARRIED, [345,420], no race result by the entry point. Class probes q5-classes (84 cases), q5-paths, q5-paths2, q5-diff: nothing withheld is delivered, no partial distance reaches a pace reader."},
+  "QRE-RWS-B-01": {"state": "CLOSED (distance)", "note": "the work pace of a row with no distance is QRE-RWS-E-01"},
+  "QRE-RWS-D-02": {"state": "UPDATED_NOTE", "note": "merged row from before the boundary is retained after a re-sync; a report the engine refused while the boundary was off left no fact (not probed)"},
+  "QRE-RWS-D-03": {"state": "UNCHANGED_NOTE"},
+  "QRE-RWS-D-04": {"state": "UNCHANGED_NOTE"},
+  "QRE-RWS-D-05": {"state": "UNCHANGED_NOTE"},
+  "QRE-RWS-C-04": {"state": "UNCHANGED_NOTE"}
+ },
+ "findings": [
+  {"id": "QRE-RWS-E-01", "severity": "CONDITION", "title": "A whole-row reason is masked on a row with no distance when the row's own reports state a distance-only reason", "cause": "reportsReading returns one word by precedence (own reasons first); distanceFacts keeps only WHOLE_ROW_WITHHELD on a row with no distance, so SEVERAL_RECORDINGS or CORRECTED_MEASUREMENT hides REPORT_NOT_CARRIED", "probes": ["q5-workpace.mjs", "q5-workpace2.mjs"], "output": "unit: plain correction REPORT_NOT_CARRIED handed POOR; correction listing a recording or declaring a failure: withheld [], handed without POOR, work pace 270. Entry point, quality sessions weeks 3-6 at 255 s/km, watch POOR, athlete corrects: THRESHOLD_CONTROLLED [300,335] (plain correction, withheld x4) vs [290,325] (correction lists a recording, nothing withheld). a4a434f gives [290,325] for both.", "preExisting": true, "whyNotBlocking": "the authorized rule (contract 3.3 rule 2, V4, table 3.5) is written for a row's distance, which is closed; this is the work pace of a row with no distance, covered only by the author's reading 1; pre-existing and reduced by the candidate", "closes": "before integration or a real athlete: a whole-row reason withholds a row with no distance even when the row has its own distance reason, with a test of the quality-session case; or SSCTR and Founder state that the work pace of a row with no distance is outside the rule"},
+  {"id": "QRE-RWS-E-02", "severity": "CONDITION", "title": "Two voices read as one speaker", "probes": ["q5-collapse.mjs", "q5-classes.mjs E1-E3"], "output": "EASY: K1 one report (device measure + athlete's 2nd file), device-only re-sync -> [345,575]; K2 re-sync repeats the list -> SEVERAL_RECORDINGS [345,420]; K5 app report carries the activity id -> [345,575]; K4 import with no source fields -> [345,575]; E3 app report source.provider MANUAL + activityId -> DEVICE, [345,575]. Same in a4a434f.", "whyNotBlocking": "the Core cannot tell two voices in one report or a voice under the other's identity; the authorized contract assigns it to integration (section 8: I-1, I-2, I-4; I-8)", "closes": "before integration: data contract and adapter adopt I-1, I-2, I-4, I-8 verifiably; ATHLETE_DATA_FOUNDATION section 2.2 (device-sourced observation that also carries the athlete's RWS fields steps/declared) reconciled with I-2; result tests of K1, K4, K5 in the adapter"},
+  {"id": "QRE-RWS-E-03", "severity": "NOTE", "title": "L4 lowers the history reference through a correction the engine refused", "probes": ["q5-classes.mjs H2"], "output": "EASY 11 -> 6.6, LONG 16 -> 9.6, next long run by TIME at the same dose; contract matrix row 16 says history unchanged; conservative", "closes": "SSCTR confirms L4 literal or matrix row 16"},
+  {"id": "QRE-RWS-E-04", "severity": "NOTE", "title": "The author's differential classifier FOLLOWS is too broad", "probes": ["q5-diff.mjs"], "output": "after the first new retention in a client, engine, screen, asks, pause and format differences are all FOLLOWS, the same review included. Strict differential: 25 clients, 134 reviews, 128 with the same engine request and 0 engine differences, 0 screen/asks/offers/pause differences, 0 delivered after withheld, 0 reason changes"},
+  {"id": "QRE-RWS-E-05", "severity": "NOTE", "title": "A lone app report with an id over 128 characters is withheld for good", "probes": ["q5-classes.mjs G2"], "output": "REPORT_NOT_CARRIED with no other report; conservative"},
+  {"id": "QRE-RWS-E-06", "severity": "NOTE", "title": "Cost of the lineage reading", "probes": ["q5-cost.mjs"], "output": "1000/10000/40000 sessions 121/1104/2933 ms; one session 1000/4000/16000 live rows 28/79/334 ms; 200 rows naming 1000/4000/16000 ids 38/129/585 ms; linear, bound short-circuits"},
+  {"id": "QRE-RWS-E-07", "severity": "NOTE", "title": "Two mutants survive", "probes": ["mut/run.mjs", "q5-j03.mjs"], "output": "J03 (lineage not transitive): equivalent for a one-speaker chain, only retains more with a mixed chain; J15 (latest instant for a report id seen twice): only with a correction id resent with other content"}
+ ],
+ "authorReadings": {"1": "ACCEPTED_DIRECTION_INCOMPLETE (E-01)", "2": "ACCEPTED", "3": "ACCEPTED", "4": "ACCEPTED", "5": "ACCEPTED", "6": "ACCEPTED_FOR_ROWS_WITH_DISTANCE (cause of E-01)", "7": "ACCEPTED (E-05)", "8": "ACCEPTED_AS_DEFENSIVE"},
+ "testExpectationChanges": "no weakening; the two whole cases accepted by SSCTR; every other change a direct consequence of the contract (every report leaves a fact, new fact shape, L1/L2), several stronger",
+ "suites": {
+  "joint": {"entries": 1443, "pass": 1442, "fail": 1, "onlyFailure": "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here", "actual": ["CoachingCore/src/r6-adaptation.mjs"], "green": false},
+  "extension": {"tests": 108, "pass": 108},
+  "v1rwsFreezePreserved": {"exit": 0, "freeze1": "197/197 + 1 amended (authorized)", "runCalibrationFreeze1": "30/30"},
+  "historicalAtSnapshot": {"where": "snap-c8104c1 (273 files checked against git show c8104c1, 0 differ)", "tests": 30, "pass": 30},
+  "historicalTestsOrVerifiersEdited": false
+ },
+ "mutation": {"method": "in-memory module load hook on the worktree source, no file written", "control": {"pass": 108, "fail": 0}, "sanity": "S0 killed (9 test files)", "mutants": 18, "killed": 16, "survived": ["J03", "J15"]},
+ "frozenFiles": {"r6-provenance.mjs": "6216cbfc", "v1-run-calibration.mjs": "125079f6", "v1-run-index.mjs": "ba21c193", "v1-index.mjs": "92d5a116", "r6-adaptation.mjs": "75d26d5a (as a4a434f)", "RUN_FORMATS_V1.json": "53dc6d76"},
+ "scratch": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/1b05889e-fc1c-402a-93ef-5134acd2c65e/scratchpad/judges/qre/r5-1794748569/",
+ "notVerified": ["a race through the engine in a whole journey (judge probe and author's test only); half and marathon", "E-01 band move via CORRECTED_MEASUREMENT through the entry point", "a report refused while the boundary was off", "the whole suite under each mutant; the author's 53 mutants", "sporting values and custody security", "real cross-correction frequency (L1-f) and real HealthKit re-sync behaviour"],
+ "injectedContext": {
+  "globalClaudeMd": "c75718d0d2fe2cce1332cf7240ef0b8013ca2901d52b4d6778480c1c333709c6",
+  "projectClaudeMd": "e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "memoryMd": "407dd7b73228e9b19d25a64bcf8349d6ab3057ef381b25883c137bc814004e09",
+  "usedAsEvidence": false
+ }
+}
