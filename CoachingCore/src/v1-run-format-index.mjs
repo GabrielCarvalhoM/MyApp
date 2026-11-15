@@ -30,6 +30,20 @@
 //   * A row of the record of reports that cannot be read is never read as nothing: while it is there the screen is asked, run sessions are by
 //     time and no distance is handed to a pace reader. Data proven invalid is told apart from data that is not there (which only the custody's
 //     keyed chain can tell), and is never read as a confirmed symptom either.
+// - A row goes to a reader of pace, capacity or a race result only when it carries every run report still in force for its session (evidence
+//   lineage fix-forward of 2026-11-15, QRE-RWS-D-01; SSCTR lineage items L1 to L4):
+//   * The engine replaces a whole row on any correction, whoever sent it, and refuses a report that contradicts another. So every run report
+//     received leaves a report fact with who it speaks for (the athlete, one identified device activity, or a device that is not identified),
+//     and a report stays in force until an applied correction of its own speaker replaces it. A row that is not made of every report in force
+//     is withheld from pace readers (REPORT_NOT_CARRIED), whatever the missing report said. The lineage only withholds: it adds no distance,
+//     no credit and no source, and completion, credit, load and the stops are read as before, on the row and on the report facts.
+//   * Known cost, accepted for the synthetic candidate (SSCTR L1-f): with the engine as frozen, a run one source corrects after the other also
+//     reported it is out of pace evidence for good. Before any real athlete an integration states how often, and gives the way back if it matters.
+//   * HARD GATE OF A REAL INTEGRATION, not met by anything here (engine finding E-1, SSCTR item L5): a device re-sync of an execution the athlete
+//     also reported, sent as a correction, makes the frozen engine's row lose the athlete's answers (recovery, effort, next-day function,
+//     conditions, walk breaks). This extension then withholds the run's pace evidence; it does not give the engine those answers back. An
+//     integration shows, by result, that such a re-sync never erases the athlete's answers in the engine's record, or asks the Founder for a
+//     controlled change of the engine.
 // - The records this entry point returns (`runFormatRecord`, which also holds the report facts, `runHistoryRecord`, and the calibration's
 //   `runEvidenceRecord`) are kept by the caller. An integration keeps the three under the custody's keyed chain, stored atomically with the
 //   engine's record in one sealed commit (Security A-01, A-06): that integration does not exist yet and nothing here stands for it.
@@ -38,12 +52,12 @@ import {READS_COMPLETION,historicalStateOf as engineHistoricalState,doseKeyOf} f
 import {runCalibrationOf as calibrate} from './v1-run-calibration.mjs';
 import {utcTimestamp,localDate} from './r6-provenance.mjs';
 import {clone,freeze} from './value.mjs';
-import {runFormatAuthority,allowsFormat,selectRunSession,reselectRunSession,readFormatRecord,appendFormats,readCompletion,executionOf,pausedUntil,flatSteps,stopOf,reportFactOf,stopOnly,appendReportFacts,readReportFacts,reportsVerdict,FORMAT_EXTENSION_ID,RUN_FORMAT_VERSION} from './v1-run-format.mjs';
+import {runFormatAuthority,allowsFormat,selectRunSession,reselectRunSession,readFormatRecord,appendFormats,readCompletion,executionOf,pausedUntil,flatSteps,stopOf,reportFactOf,stopOnly,appendReportFacts,readReportFacts,reportsReading,FORMAT_EXTENSION_ID,RUN_FORMAT_VERSION} from './v1-run-format.mjs';
 import {runHistory,factsFromIntake,appendHistory,distanceFacts,L30,comparableLongRun,latestClassRun,onDate,inForce as inForceAt} from './v1-run-history.mjs';
 export {validProgram,V1_SCOPE,V1_UNAVAILABLE,WITHHOLDABLE,V1_ENGINE,V1_RUN_ENGINE};
 export {runCalibrationAuthority,readEvidence,RUN_BOUNDARIES,RUN_EXTENSION_ID,RUN_EVIDENCE_DECLARED} from './v1-run-index.mjs';
 export {runFormatAuthority,FORMAT_BOUNDARIES,FORMAT_EXTENSION_ID,RUN_FORMAT_EMITTED,RUN_REPORT_RECEIVED} from './v1-run-format.mjs';
-export {RUN_HISTORY_FACT,PACE_WITHHELD} from './v1-run-history.mjs';
+export {RUN_HISTORY_FACT,PACE_WITHHELD,WHOLE_ROW_WITHHELD} from './v1-run-history.mjs';
 export const V1_RUN_FORMAT_ENGINE=V1_RUN_ENGINE+'+'+FORMAT_EXTENSION_ID;
 
 /**
@@ -99,7 +113,8 @@ const SIGNS=['pain','persistentPain','injury','illness','functionalLimitation','
 /**
  * What a record asks for and what it admits, read once, the same way, for every answer this entry point gives on it (QRE-RWS-C-05). `c` is what
  * the answer is about: the plan in force, the engine's record, the record of formats and report facts, the instant and the eligibility read.
- * - `facts`, `adm`: what each report said, and the engine's record as a pace reader may read it (admitted).
+ * - `facts`, `adm`: what each report said and which reports are in force (read with the engine's record, which shows the corrections applied),
+ *   and the engine's record as a pace reader may read it (admitted).
  * - `symptomStops`: every stop for a symptom, on every run report this record received (the report facts: also a report the engine refused
  *   because it contradicts another) and on every row the engine's record holds for a run session (as the engine bound the row), whatever its
  *   expression, in conflict or replaced by a correction as well, that no screen was answered after. A stop on a row the engine binds to no run
@@ -114,7 +129,7 @@ const SIGNS=['pain','persistentPain','injury','illness','functionalLimitation','
 function readingOf(c,V){
  try{
   const {program,ledger,formats,asOf,eligibility}=c,athleteId=program.athleteId,tz=program.timezoneOffsetMinutes??0,dayOnly=isoDay(asOf),at=dayOnly?asOf+'T23:59:59.000Z':utcTimestamp(asOf),asOfDay=!at?null:dayOnly?asOf:localDate(at,tz);
-  const facts=readReportFacts(formats,athleteId,V),adm=admitted(ledger,{athleteId,facts},V);
+  const facts=readReportFacts(formats,athleteId,V,ledger),adm=admitted(ledger,{athleteId,facts},V);
   const el=isObj(eligibility)?{...eligibility,...(isObj(eligibility.flags)?eligibility.flags:{})}:null,screened=el?.status==='NONCLINICAL_CONFIRMED'&&SIGNS.every(k=>el[k]===false)&&typeof el.assessedAt==='string'?el.assessedAt:null;
   const answeredAfter=instant=>!!screened&&!!at&&(isoDay(screened)?screened>localDate(new Date(instant).toISOString(),tz)&&screened<=asOfDay:Number.isFinite(Date.parse(screened))&&Date.parse(screened)>instant&&Date.parse(screened)<=Date.parse(at));
   const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&o.context?.sport==='RUN').map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
@@ -154,16 +169,18 @@ function heldAnswer(base0,c,r,status,reason,record){
 /**
  * The record as a reader of pace or capacity may read it (QRE-RWS-B-01; R3A A1 condition 4: how the calibration's input marks a distance that is
  * not a measured distance of the whole run). The engine's record is read row by row, each as the record holds it now (reports of one run already
- * merged), with what the reports it was made of said (`facts`, readReportFacts). A live run row whose distance is withheld (distanceFacts'
+ * merged), with what the reports of its session said (`facts`, readReportFacts). A live run row that is withheld (distanceFacts'
  * `paceWithheld`: several recordings, a correction with a listed failure reason, no duration, a figure of the athlete's or of another report
- * that disputes it) is handed over without that distance and marked POOR, so the calibration reads it as no easy-pace observation, no comparable
- * harder session and no race result. Every other row is handed over as it is, and when nothing is withheld the record itself is returned.
+ * that disputes it; or, of the row whole, a report in force the row does not carry, or a record of reports that cannot be read) is handed over
+ * without its distance and marked POOR, so the calibration reads it as no easy-pace observation, no comparable harder session and no race
+ * result. The reasons of the row whole stand on a row that carries no distance as well: its work pace is no pace evidence either. Every other
+ * row is handed over as it is, and when nothing is withheld the record itself is returned.
  * Nothing is rewritten: the record the caller keeps is the engine's, whole. `withheld` names each row and why.
  */
 export function admitted(ledger,{athleteId,facts=null},V){
  const withheld=[],rows=list(ledger).map(o=>{
-  if(!liveRun(o,athleteId)||!('distanceKm' in o.actual))return o;
-  const why=distanceFacts(o.actual,V,{wearable:wearableRow(o),reports:reportsVerdict(o,facts,V)}).paceWithheld;if(!why)return o;
+  if(!liveRun(o,athleteId))return o;
+  const why=distanceFacts(o.actual,V,{wearable:wearableRow(o),reports:reportsReading(o,facts,V)}).paceWithheld;if(!why)return o;
   withheld.push({sessionId:o.sessionId,eventId:typeof o.eventId==='string'?o.eventId:null,reason:why});
   return {...o,actual:{...without(o.actual,['distanceKm']),gpsQuality:'POOR'}};
  });
@@ -177,7 +194,7 @@ export function admitted(ledger,{athleteId,facts=null},V){
 export function runCalibrationOf(input,options={}){
  const opts=internal(options),{ext,on}=authorityOf(opts);
  if(!on||!isObj(input)||!isObj(input.program))return calibrate(input,opts);
- const {runFormatRecord,...rest}=input,facts=readReportFacts(runFormatRecord,input.program.athleteId,ext.values);
+ const {runFormatRecord,...rest}=input,facts=readReportFacts(runFormatRecord,input.program.athleteId,ext.values,input.ledger);
  return calibrate({...rest,ledger:admitted(input.ledger,{athleteId:input.program.athleteId,facts},ext.values).ledger},opts);
 }
 
@@ -211,7 +228,7 @@ function finish(base0,c){
  try{
   // What each report said, and the record as a pace reader may read it. When a row's distance is withheld, the calibration v1-run-index.mjs
   // made over the bare record is made again over the admitted one, with the same arguments; when none is, it is the one v1-run-index.mjs made.
-  const {tz,dayOnly,at,asOfDay,facts,adm,el}=r,reportsOf=o=>reportsVerdict(o,facts,V),base=admittedCalibration(base0,c,r);
+  const {tz,dayOnly,at,asOfDay,facts,adm,el}=r,reportsOf=o=>reportsReading(o,facts,V),base=admittedCalibration(base0,c,r);
   const w=Math.max(0,Math.min(Number.isInteger(weekIndex)?weekIndex:0,program.weeks.length-1)),cal=base.runCalibration??null;
   const fr=readFormatRecord(formats,program.athleteId),H=runHistory({ledger,record:historyRecord,athleteId:program.athleteId,tz,reportsOf},V);
   const sessions=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s]))),cues=Object.fromEntries(list(cal?.effortDomains).map(d=>[d.id,{rpe:d.rpe,talk:d.talk}]));
@@ -264,7 +281,7 @@ function finish(base0,c){
    const given={...session,provisional:week.index>w,prescribed:!['HOLD_NO_PRESCRIPTION','CLINICAL_ROUTE'].includes(session.unavailable?.native)};emitted.push(given);
    runSessions[s.id]=seen?{...given,execution:seen.execution}:given;
   }
-  const appended=notes.keepRecord?{record:clone(list(formats)),added:[]}:appendFormats(formats,emitted,{athleteId:program.athleteId,recordedAt:dayOnly?asOf:at});
+  const appended=notes.keepRecord?{record:clone(list(formats)),added:[],notKept:[]}:appendFormats(formats,emitted,{athleteId:program.athleteId,recordedAt:dayOnly?asOf:at});
   const asks=executed.filter(x=>x.execution.ask).map(x=>({sessionId:x.row.sessionId,eventId:x.row.eventId,status:x.execution.status,flag:x.execution.flag??null,ask:x.execution.ask,blocking:false}));
   const offers=executed.filter(x=>x.execution.stop?.reason==='FATIGUE').map(x=>({kind:'SYSTEMIC_FATIGUE_REVIEW',sessionId:x.row.sessionId,eventId:x.row.eventId,behindTheWarningSignScreen:true,decidedByThisExtension:false}));
   const count=k=>Object.values(runSessions).filter(x=>!x.past&&x.expression===k).length;
@@ -274,7 +291,7 @@ function finish(base0,c){
   return {...base,runSessions,runFormat:{...head(ext,on),status:'ACTIVE',asOf:at,week:w,prescribing,expressionPreference:preference,native:count('NATIVE'),time:count('TIME'),asks,offers,
    warningSignScreen:screenOf(r),
    pausedContinuous:Object.fromEntries(Object.entries(pause).filter(([,until])=>until&&until>asOfDay)),history:{runs:H.runs.length,unreadable:H.unreadable,...(notes.history??{})},unreadableFormats:fr.unreadable,unreadableReports:facts.unreadable,
-   paceEvidenceWithheld:adm.withheld,...(notes.notRecorded?{notRecorded:notes.notRecorded}:{})},
+   paceEvidenceWithheld:adm.withheld,...(appended.notKept.length?{formatsNotKept:appended.notKept}:{}),...(notes.notRecorded?{notRecorded:notes.notRecorded}:{})},
    runFormatRecord:appended.record,runHistoryRecord:clone(list(historyRecord))};
  }catch{return held('UNAVAILABLE','FORMAT_ERROR');}
 }
@@ -331,9 +348,10 @@ export function evaluateProgram(program,review,options={}){
  const early=!!asOf&&instants.some(t=>t>Date.parse(asOf)),refused=b=>!asOf||['UNSUPPORTED','INVALID_INPUT','HOLD'].includes(b.status);
  const cites=o=>isObj(o)&&isObj(o.actual)&&o.actual.formatHash!==undefined&&o.actual.formatHash!==null,resolves=o=>typeof o.actual.formatHash==='string'&&typeof o.sessionId==='string'&&!!fr.resolve(o.sessionId,o.actual.formatHash);
  const unknownNew=list(input.observations).filter(o=>cites(o)&&!resolves(o)),lost=list(input.actualLedger).filter(o=>cites(o)&&!o.fact&&o.superseded!==true&&!resolves(o));
- // What each run report of this review states that the engine's record may not keep (a declared stop, what it says of its distance), read
- // before the engine merges or refuses it. A report that names another athlete is not this athlete's. A report that cites a format this
- // record does not hold is itself not recorded: only a stop it declares is a fact (its distance is of no row).
+ // What each run report of this review states that the engine's record may not keep (who it speaks for, a declared stop, what it says of its
+ // distance), read before the engine merges or refuses it: every report leaves a fact, whatever it states, and is then a report in force for
+ // its session. A report that names another athlete is not this athlete's. A report that cites a format this record does not hold is itself
+ // not recorded, and the review is asked again: only a stop it declares is a fact (its distance is of no row).
  const received=list(input.observations).filter(o=>isObj(o)&&planned.get(o.sessionId)?.sport==='RUN'&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)).map(o=>{const f=reportFactOf(o,V,{fromDevice:fromDevice(o)});return f&&unknownNew.includes(o)?(f.stop?stopOnly(f):null):f;}).filter(Boolean);
  // A symptom stop a report of this request declares is named in every answer, from the request alone when nothing of it is recorded.
  const requested=[...new Set(received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId))].sort();

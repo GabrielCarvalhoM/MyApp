@@ -120,15 +120,24 @@ test('QRE-RWS-C-01: a duplicate, a late correction, a later re-reading, a stored
   const again=x.review([a,d],'21:00');x.replay=[again.provenance.duplicates.map(y=>y.reason).sort(),x.t.fmt.filter(isReport).length-before];});
  assert.deepEqual(dup.replay,[['EXACT_REPLAY','EXACT_REPLAY'],0]);assert.deepEqual([edges(dup.after.runCalibration),withheld(dup.after),dup.row.actual.segments],[edges(one.after.runCalibration),[[dup.easy.id,'SEVERAL_RECORDINGS']],list(dup)]);
  // Late correction, the import first: its file alone (with an empty list) reads as a short run; the app's later correction of its own report
- // adds the second file. And the reverse: the merged row corrected to one whole measurement is pace evidence again, as the control is.
+ // adds the second file. And the reverse, the merged row corrected by the app to one whole measurement: THE EXPECTED RESULT CHANGED with the
+ // evidence lineage fix-forward of 2026-11-15 (SSCTR lineage item L1, SSCTR_RWS_LINEAGE_ITEMS.md section 3). Before, the run was pace evidence
+ // again: that rested on the app's correction removing what the import had said (6.6 km over the whole minutes) and on the order of arrival.
+ // The import's report is still in force (only the import replaces it) and the row in force, the app's correction alone, does not carry it.
  const late=easyWeek(x=>{const a=app(x,'NATIVE',{}),d=firstFile(x,{segments:[]});x.review([d,a],'18:00');x.before=[x.t.row(x.easy.id).partial,x.t.results.at(-1).runSessions[x.easy.id].execution.status];
   x.review([{...a,eventId:'corr-easy',correctionOf:a.eventId,correctedAt:at(x,'20:30'),actual:{...a.actual,distanceKm:x.first,measurement:'GPS',gpsQuality:'OK',segments:list(x)}}],'21:00');});
  assert.deepEqual([late.before,late.exec.status,late.exec.basis,late.exec.paceEvidence,late.row.partial],[[true,'PARTIAL'],'DISTANCE','MEASURED',false,false]);
  assert.deepEqual([edges(late.after.runCalibration),withheld(late.after)],[edges(one.after.runCalibration),[[late.easy.id,'SEVERAL_RECORDINGS']]]);
  const whole=easyWeek(x=>{const [a,d]=send(x);x.review([a],'18:00');x.review([d],'19:00');x.merged=withheld(x.t.results.at(-1));
   x.review([{...app(x,'NATIVE',{distanceKm:x.km,measurement:'GPS',gpsQuality:'OK'}),eventId:'corr-easy',correctionOf:'app-easy',correctedAt:at(x,'20:30')}],'21:00');});
- assert.deepEqual([whole.merged,withheld(whole.after),whole.exec.paceEvidence,whole.exec.paceWithheld,whole.row.eventId],[[[whole.easy.id,'SEVERAL_RECORDINGS']],[],true,null,'corr-easy']);
- assert.equal(whole.after.runCalibration.hash,bareCalibration(whole,whole.after.actualLedger).hash,'with nothing withheld the calibration is the frozen one over the record, byte for byte');
+ assert.deepEqual([whole.merged,withheld(whole.after),whole.exec.paceEvidence,whole.exec.paceWithheld,whole.row.eventId],[[[whole.easy.id,'SEVERAL_RECORDINGS']],[[whole.easy.id,'REPORT_NOT_CARRIED']],false,'REPORT_NOT_CARRIED','corr-easy']);
+ assert.deepEqual([whole.exec.status,whole.exec.basis,whole.exec.completed,whole.exec.measuredKm,whole.row.partial,edges(whole.after.runCalibration)],['DISTANCE','MEASURED',true,11,false,edges(one.after.runCalibration)],'complete by its distance as before, and every band has the edges of the control');
+ // The same statements in the two other orders were withheld before and still are, as a disputed distance: the three orders read the same,
+ // with the same edges and the same history reference, the smaller of the two figures in force (L4).
+ const importLast=easyWeek(x=>{const [a,d]=send(x);x.review([a],'18:00');x.review([{...app(x,'NATIVE',{distanceKm:x.km,measurement:'GPS',gpsQuality:'OK'}),eventId:'corr-easy',correctionOf:'app-easy',correctedAt:at(x,'18:30')}],'19:00');x.review([d],'21:00');});
+ const neverCorrected=easyWeek(x=>{x.review([app(x,'NATIVE',{distanceKm:x.km,measurement:'GPS',gpsQuality:'OK'})],'18:00');x.review([firstFile(x,{segments:[]})],'19:00');});
+ for(const [name,m,word] of [['the app corrects itself last',whole,'REPORT_NOT_CARRIED'],['the import arrives last',importLast,'DISTANCE_DISPUTED'],['no correction',neverCorrected,'DISTANCE_DISPUTED']])
+  assert.deepEqual([withheld(m.after),m.exec.paceEvidence,m.exec.paceWithheld,m.exec.extentKm,edges(m.after.runCalibration)],[[[m.easy.id,word]],false,word,6.6,edges(one.after.runCalibration)],name);
  // A later re-reading (two more weeks), the same records through JSON as a store holds them, and the history rebuilt at an earlier instant.
  const m=easyWeek(x=>ORDERS['the import, then the app'](x.review,...send(x))),silent=easyWeek(x=>ORDERS['the import, then the app'](x.review,app(x,'TIME',{segments:list(x)}),firstFile(x)));
  const earlier=x=>F.runCalibrationOf({program:x.t.p,ledger:x.t.ledger,evidenceRecord:x.t.ev,asOf:x.reported.runFormat.asOf,weekIndex:3,hold:false,engineStatus:'KEEP',eligibility:ELIG(x.t.day(3,6)),runFormatRecord:x.t.fmt},DEV);
@@ -166,19 +175,21 @@ test('QRE-RWS-C-01: what each report said is read on the report, whatever the ro
  assert.deepEqual(edges(F.evaluateProgram(t.p,{...review(),runFormatRecord:t.fmt.filter(r=>!isReport(r))},DEV).runCalibration).EASY,['AVAILABLE',345,575]);
 
  // Each report read alone: every reason a row gives of itself is kept per report and read on every report the row was made of.
- const fact=(reportId,x={})=>({sessionId:'s',reportId,stop:null,distanceKm:null,timed:true,several:false,corrected:false,ownKm:null,...x}),rec=fs=>readReportFacts(appendReportFacts([],fs,{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'},VALUES).record,'a',VALUES);
+ const fact=(reportId,x={})=>({sessionId:'s',reportId,speaker:'ATHLETE',standing:true,stop:null,distanceKm:null,timed:true,several:false,corrected:false,ownKm:null,wholeKm:null,...x}),rec=fs=>readReportFacts(appendReportFacts([],fs,{athleteId:'a',recordedAt:'2026-12-01T10:00:00.000Z'},VALUES).record,'a',VALUES);
  const merged={eventId:'r1',sessionId:'s',provenance:{mergedSourceIds:['r1','r2']}},verdict=fs=>reportsVerdict(merged,rec(fs),VALUES),ten=fact('r1',{distanceKm:10});
  assert.deepEqual([verdict([ten]),verdict([ten,fact('r2',{several:true})]),verdict([fact('r2',{several:true}),ten]),verdict([ten,fact('r2',{corrected:true,ownKm:10.5})]),verdict([ten,fact('r2',{ownKm:11})]),verdict([ten,fact('r2',{ownKm:10.9})]),verdict([fact('r1',{ownKm:11}),fact('r2',{ownKm:6})]),verdict([ten,fact('r2',{distanceKm:9.5,timed:false})])],
   [null,'SEVERAL_RECORDINGS','SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DISTANCE_DISPUTED',null,'DISTANCE_DISPUTED','DURATION_REQUIRED']);
- // The order of the reasons is the row's own, a report of another run or of another session says nothing of this one, and the same report
- // sent twice with different facts is read with both.
+ // The order of the reasons is the row's own, a report of another session says nothing of this one, and the same report sent twice with
+ // different facts is read with both. A report of this session that the row is not made of (r3) said nothing of the row before; since the
+ // evidence lineage fix-forward it is a report in force the row does not carry (SSCTR lineage items L1 and L2): the row is withheld.
  assert.deepEqual([verdict([fact('r1',{distanceKm:10,timed:false}),fact('r2',{several:true,corrected:true,ownKm:5})]),verdict([ten,fact('r2',{corrected:true,ownKm:5}),fact('r1',{distanceKm:9,timed:false})]),verdict([ten,fact('r3',{several:true})]),verdict([ten,fact('r2',{several:true,sessionId:'other'})]),verdict([ten,fact('r1',{distanceKm:10,several:true})])],
-  ['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT',null,null,'SEVERAL_RECORDINGS']);
- // What a report states, with or without a distance of its own.
+  ['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','REPORT_NOT_CARRIED',null,'SEVERAL_RECORDINGS']);
+ // What a report states, with or without a distance of its own. A report that states nothing of it (an empty list, an empty declaration) left
+ // no fact before; every report leaves one since the evidence lineage fix-forward, and that fact states nothing.
  const said=(actual,o={})=>{const f=reportFactOf({eventId:'e',sessionId:'s',actual:{completed:true,minutes:60,...actual}},VALUES,o);return f&&[f.distanceKm,f.several,f.corrected,f.ownKm];};
  assert.deepEqual([said({segments:[{distanceKm:4,measurement:'GPS'}]}),said({segments:[]}),said({segments:'x'}),said({distanceKm:10,measurement:'GPS',declared:{distanceKm:11,reason:'signal loss'}}),said({declared:{distanceKm:11,reason:'felt long'}}),said({declared:{distanceKm:11,reason:'AUTO_PAUSE'}}),said({manualDistanceKm:9}),said({distanceKm:10},{fromDevice:true}),said({declared:{}})],
-  [[null,true,false,null],null,[null,true,false,null],[10,false,true,11],[null,false,false,11],[null,false,true,11],[null,false,false,9],[10,false,false,null],null]);
- assert.deepEqual(stopOnly(reportFactOf({eventId:'e',sessionId:'s',actual:{completed:false,minutes:20,distanceKm:4,measurement:'GPS',segments:[{distanceKm:1}],stop:{reason:'SYMPTOM'}}},VALUES)),{sessionId:'s',reportId:'e',stop:{reason:'SYMPTOM',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null});
+  [[null,true,false,null],[null,false,false,null],[null,true,false,null],[10,false,true,11],[null,false,false,11],[null,false,true,11],[null,false,false,9],[10,false,false,null],[null,false,false,null]]);
+ assert.deepEqual(stopOnly(reportFactOf({eventId:'e',sessionId:'s',actual:{completed:false,minutes:20,distanceKm:4,measurement:'GPS',segments:[{distanceKm:1}],stop:{reason:'SYMPTOM'}}},VALUES)),{sessionId:'s',reportId:'e',speaker:'ATHLETE',standing:false,stop:{reason:'SYMPTOM',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null,wholeKm:null});
 });
 
 test('QRE-RWS-C-01: a field of a run report that states nothing is not handed to the merge, and reads the same present or absent',()=>{
@@ -239,11 +250,11 @@ test('QRE-RWS-C-05 reproduced and closed: a queued review that arrives after an 
  // Thursday: a report cites a format nobody holds and declares a stop for a symptom. The engine is asked again; the stop is kept, alone.
  const ask=F.evaluateProgram(t.p,t.review(4,4,'WEEKLY_REVIEW',{observations:[{...report(t.p,s4,{}),eventId:'unk',actual:{completed:false,minutes:20,distanceKm:3,measurement:'GPS',segments:[{distanceKm:1}],formatHash:'f'.repeat(64),stop:{reason:'SYMPTOM'}}}]}),DEV),kept=ask.runFormatRecord;
  assert.deepEqual([ask.status,ask.runFormat.reason,ask.runCalibration.status,ask.runFormat.warningSignScreen,kept.length-fmt.length],['ASK','NO_DECISION','NOT_APPLICABLE',REQUIRED(s4.id),1]);
- assert.deepEqual(kept.at(-1).report,{sessionId:s4.id,reportId:'unk',stop:{reason:'SYMPTOM',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null},'only the stop of a report that is itself not recorded');
+ assert.deepEqual(kept.at(-1).report,{sessionId:s4.id,reportId:'unk',speaker:'ATHLETE',standing:false,stop:{reason:'SYMPTOM',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null,wholeKm:null},'only the stop of a report that is itself not recorded, which is no report in force');
  // The ASK decides nothing, so no report of that review is recorded, the readable ones neither: of another run reported with it (its format
  // held, 5 km measured, stopped for fatigue) only the stop is kept too.
  const s5=t.runsOf(4,s=>s.role==='EASY')[1],two=F.evaluateProgram(t.p,t.review(4,4,'WEEKLY_REVIEW',{observations:[{...report(t.p,s4,{}),eventId:'unk-3',actual:{completed:true,minutes:40,formatHash:'f'.repeat(64)}},{...report(t.p,s5,{}),eventId:'tired',actual:{completed:false,minutes:25,distanceKm:5,measurement:'GPS',stop:{reason:'FATIGUE'}}}]}),DEV);
- assert.deepEqual([two.status,two.actualLedger,two.runFormatRecord.slice(fmt.length).map(r=>r.report)],['ASK',undefined,[{sessionId:s5.id,reportId:'tired',stop:{reason:'FATIGUE',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null}]]);
+ assert.deepEqual([two.status,two.actualLedger,two.runFormatRecord.slice(fmt.length).map(r=>r.report)],['ASK',undefined,[{sessionId:s5.id,reportId:'tired',speaker:'ATHLETE',standing:false,stop:{reason:'FATIGUE',stated:true},distanceKm:null,timed:false,several:false,corrected:false,ownKm:null,wholeKm:null}]]);
  // The same report under a clinical route (the athlete answers yes to a warning sign): the engine's route stands, the report is still not
  // recorded, and still only its stop is kept.
  const routed=F.evaluateProgram(t.p,t.review(4,4,'WEEKLY_REVIEW',{eligibility:ELIG(t.day(4,4),{pain:true}),observations:[{...report(t.p,s4,{}),eventId:'unk',actual:{completed:false,minutes:20,distanceKm:3,measurement:'GPS',segments:[{distanceKm:1}],formatHash:'f'.repeat(64),stop:{reason:'SYMPTOM'}}}]}),DEV);
@@ -279,14 +290,17 @@ test('QRE-RWS-C-05: every answer on a record that holds a withheld distance and 
   'a record of formats that lost the formats its reports cite':[()=>({...t.review(4,2,'WEEKLY_REVIEW',{eligibility:screened}),runFormatRecord:t.fmt.filter(r=>r.fact!==RUN_FORMAT_EMITTED)}),'HOLD','NOT_APPLICABLE','NO_DECISION','NOT_APPLICABLE',null,0],
   'the engine asks for the current eligibility':[noEligibility,'ASK','ACTIVE',undefined,'CALIBRATED',0,'some'],
   'a clinical hold':[()=>t.review(4,2,'WEEKLY_REVIEW',{eligibility:ELIG(t.day(4,2),{pain:true})}),'CLINICAL_HUMAN_REQUIRED','ACTIVE',undefined,'WITHHELD_HOLD',0,'some'],
-  'two reports of one session that contradict':[()=>t.review(4,2,'WEEKLY_REVIEW',{eligibility:screened,observations:[{...report(t.p,s1,{}),eventId:'c-1'},{...report(t.p,s1,{completed:false}),eventId:'c-2'}]}),'KEEP','ACTIVE',undefined,'CALIBRATED',0,'some'],
-  'a correction outside the window the engine admits':[()=>t.review(4,2,'WEEKLY_REVIEW',{eligibility:screened,observations:[late]}),'KEEP','ACTIVE',undefined,'CALIBRATED',0,'some']};
- for(const [name,[make,status,ext,reason,cal,native,added]] of Object.entries(PATHS)){
+  'two reports of one session that contradict':[()=>t.review(4,2,'WEEKLY_REVIEW',{eligibility:screened,observations:[{...report(t.p,s1,{}),eventId:'c-1'},{...report(t.p,s1,{completed:false}),eventId:'c-2'}]}),'KEEP','ACTIVE',undefined,'CALIBRATED',0,'some',{reports:['c-1','c-2'],notCarried:s1.id}],
+  'a correction outside the window the engine admits':[()=>t.review(4,2,'WEEKLY_REVIEW',{eligibility:screened,observations:[late]}),'KEEP','ACTIVE',undefined,'CALIBRATED',0,'some',{reports:['late-corr'],notCarried:s0.id}]};
+ // The last two requests bring a run report the engine refuses (one that contradicts another; a correction outside the window). Since the
+ // evidence lineage fix-forward of 2026-11-15 each run report received leaves a report fact, and a report the engine refused is still a report
+ // in force its session's row does not carry (SSCTR lineage items L1 and L2): that row is withheld from pace readers too. `lineage` names it.
+ for(const [name,[make,status,ext,reason,cal,native,added,lineage={}]] of Object.entries(PATHS)){
   const review={...sent(),...make()},r=F.evaluateProgram(t.p,review,DEV);
   assert.deepEqual([r.status,r.runFormat.status,r.runFormat.reason,r.runCalibration.status],[status,ext,reason,cal],name);
   // 1. The calibration shown is the one over the record as admitted (the frozen calibration with the same arguments), or none.
-  const ledger=Array.isArray(r.actualLedger)?r.actualLedger:review.actualLedger,handed=F.admitted(ledger,{athleteId:t.p.athleteId,facts:readReportFacts(r.runFormatRecord,t.p.athleteId,VALUES)},VALUES);
-  assert.deepEqual(handed.withheld.map(x=>x.reason),['SEVERAL_RECORDINGS'],name);assert.deepEqual(r.runFormat.paceEvidenceWithheld,handed.withheld,name+': the answer says what it withheld');
+  const ledger=Array.isArray(r.actualLedger)?r.actualLedger:review.actualLedger,handed=F.admitted(ledger,{athleteId:t.p.athleteId,facts:readReportFacts(r.runFormatRecord,t.p.athleteId,VALUES,ledger)},VALUES);
+  assert.deepEqual(handed.withheld.map(x=>[x.sessionId,x.reason]).sort(),[[easy.id,'SEVERAL_RECORDINGS'],...(lineage.notCarried?[[lineage.notCarried,'REPORT_NOT_CARRIED']]:[])].sort(),name);assert.deepEqual(r.runFormat.paceEvidenceWithheld,handed.withheld,name+': the answer says what it withheld');
   if(cal==='NOT_APPLICABLE')assert.deepEqual(r.runCalibration,{status:'NOT_APPLICABLE',reason:'NO_DECISION',sessions:{}},name);
   else{assert.equal(r.runCalibration.hash,oracle(t.p,r,review,handed.ledger).hash,name);if(cal==='CALIBRATED')assert.deepEqual([edges(r.runCalibration).EASY,edges(oracle(t.p,r,review,ledger)).EASY],[['AVAILABLE',345,420],['AVAILABLE',345,575]],name);}
   // 2. The safety signal the record holds is named.
@@ -295,10 +309,10 @@ test('QRE-RWS-C-05: every answer on a record that holds a withheld distance and 
   if(native===null)assert.deepEqual(r.runSessions,{},name);
   else{assert.equal(r.runFormat.native,0,name);assert.ok(ahead(r).length>0&&ahead(r).every(s=>s.expression==='TIME'&&s.prescribed===(status!=='CLINICAL_HUMAN_REQUIRED')),name);assert.equal(r.runFormat.prescribing,status==='KEEP',name+': prescribing is the reading the calibration makes of the answer of the engine');}
   // 4. What the answer records: an answer that delivers no session returns the record of formats as it was sent; one that delivers sessions
-  //    may add the formats it delivers and nothing else (no report of these requests states a fact), and none turns a refused report into
-  //    an execution.
+  //    may add the formats it delivers and one fact for each run report the request brought, and nothing else; none turns a refused report
+  //    into an execution.
   const sentRows=review.runFormatRecord.length;
-  if(added===0)assert.equal(hash(r.runFormatRecord),hash(review.runFormatRecord),name);else{assert.equal(hash(r.runFormatRecord.slice(0,sentRows)),hash(review.runFormatRecord),name);assert.ok(r.runFormatRecord.slice(sentRows).every(x=>x.fact===RUN_FORMAT_EMITTED),name);}
+  if(added===0)assert.equal(hash(r.runFormatRecord),hash(review.runFormatRecord),name);else{assert.equal(hash(r.runFormatRecord.slice(0,sentRows)),hash(review.runFormatRecord),name);const more=r.runFormatRecord.slice(sentRows);assert.ok(more.every(x=>x.fact===RUN_FORMAT_EMITTED||isReport(x)&&x.report.standing===true),name);assert.deepEqual(more.filter(isReport).map(x=>x.report.reportId).sort(),lineage.reports??[],name+': one fact for each run report the request brought');}
   assert.equal(hash(r.runHistoryRecord),hash(t.hist),name);
   if(['HOLD','ASK'].includes(status)&&ext==='NOT_APPLICABLE')assert.ok(!Array.isArray(r.actualLedger)||hash(r.actualLedger)===hash(t.ledger),name+': the engine\'s record is as it was sent');
   // 5. The same request after a round trip through a store gives the same answer, byte for byte.
@@ -436,7 +450,7 @@ test('SEC-RWS-C-06: a stop that cannot be read is a stop, never the absence of o
 });
 
 test('SEC-RWS-C-02, C-05: the reader of report facts is linear in what it is sent, and a fact row holds exactly its keys under its seal',()=>{
- const fact=(reportId,x={})=>({sessionId:'s',reportId,stop:null,distanceKm:10,timed:true,several:false,corrected:false,ownKm:null,...x}),recordedAt='2026-12-01T10:00:00.000Z',opt={athleteId:'a',recordedAt};
+ const fact=(reportId,x={})=>({sessionId:'s',reportId,speaker:'ATHLETE',standing:true,stop:null,distanceKm:10,timed:true,several:false,corrected:false,ownKm:null,wholeKm:null,...x}),recordedAt='2026-12-01T10:00:00.000Z',opt={athleteId:'a',recordedAt};
  // A row made of one report named ten thousand times, and ten thousand facts under that one name: each report is looked up once, and what
  // the record said of it was summed when the record was read.
  const n=10000,many=Array.from({length:n},(_,i)=>fact('x',{distanceKm:10+i/1e6})),record=appendReportFacts([],many,opt,VALUES).record;assert.equal(record.length,n);
@@ -448,21 +462,24 @@ test('SEC-RWS-C-02, C-05: the reader of report facts is linear in what it is sen
  // The whole entry point on a hostile record: 30 000 facts under one name and a row naming it 30 000 times (about 10 MB) is read in a time
  // of the order of its size (the round on 644cd8e measured 23 s for it; a linear control with the same bytes took under 1 s).
  const t=atSixteen(),s=t.long,big=30000,row=t.row(t.runsOf(0)[0].id),name=row.eventId;
- const flood=appendReportFacts(t.fmt,Array.from({length:big},(_,i)=>({sessionId:row.sessionId,reportId:name,stop:null,distanceKm:11.47+i/1e7,timed:true,several:false,corrected:false,ownKm:null})),{athleteId:t.p.athleteId,recordedAt:utcTimestamp(`${t.day(0,6)}T20:00:00-03:00`)},VALUES).record;
+ const flood=appendReportFacts(t.fmt,Array.from({length:big},(_,i)=>({sessionId:row.sessionId,reportId:name,speaker:'ATHLETE',standing:true,stop:null,distanceKm:11.47+i/1e7,timed:true,several:false,corrected:false,ownKm:null,wholeKm:null})),{athleteId:t.p.athleteId,recordedAt:utcTimestamp(`${t.day(0,6)}T20:00:00-03:00`)},VALUES).record;
  const ledger=t.ledger.map(o=>o===row?{...o,provenance:{...o.provenance,mergedSourceIds:Array.from({length:big},()=>name)}}:o),started=Date.now();
  const r=F.evaluateProgram(t.p,{...t.review(1,6,'WEEKLY_REVIEW',{observations:t.p.weeks[1].sessions.filter(live).map(x=>plain(t,x))}),actualLedger:ledger,runFormatRecord:flood},DEV),ms=Date.now()-started;
  assert.ok(['KEEP','MODIFY','HOLD'].includes(r.status)&&r.runFormatRecord.length>=flood.length);assert.ok(ms<8000,`read in ${ms} ms`);
  // A fact row is exactly its keys, each of its closed kind, named by its report and sealed with its athlete and its instant.
  const [row1]=appendReportFacts([],[fact('e1',{stop:{reason:'SYMPTOM',stated:true}})],opt,VALUES).record,read=r=>{const x=readReportFacts(r,'a',VALUES);return [x.stops.length,x.unreadable.length];};
- assert.deepEqual([Object.keys(row1).sort(),Object.keys(row1.report).sort(),row1.eventId,row1.inputHash],[['athleteId','eventId','fact','inputHash','recordedAt','report','sessionId'],['corrected','distanceKm','ownKm','reportId','sessionId','several','stop','timed'],`report|e1|${hash(row1.report).slice(0,16)}`,hash({athleteId:'a',recordedAt,report:row1.report})]);
+ assert.deepEqual([Object.keys(row1).sort(),Object.keys(row1.report).sort(),row1.eventId,row1.inputHash],[['athleteId','eventId','fact','inputHash','recordedAt','report','sessionId'],['corrected','distanceKm','ownKm','reportId','sessionId','several','speaker','standing','stop','timed','wholeKm'],`report|e1|${hash(row1.report).slice(0,16)}`,hash({athleteId:'a',recordedAt,report:row1.report})]);
  const sealed=(report,at=recordedAt,athleteId='a')=>({...row1,athleteId,report,recordedAt:at,eventId:`report|${report.reportId}|${hash(report).slice(0,16)}`,inputHash:hash({athleteId,recordedAt:at,report})});
  assert.deepEqual(read([sealed(row1.report)]),[1,0]);
  const BAD=[{...row1,recordedAt:'2026-11-24T10:00:00.000Z'},{...sealed(row1.report),extra:1},sealed({...row1.report,extra:1}),sealed({...row1.report,stop:{reason:'SYMPTOM',stated:true,extra:1}}),sealed({...row1.report,stop:{reason:'SYMPTOM'}}),sealed({...row1.report,several:'no'}),sealed({...row1.report,corrected:1}),sealed({...row1.report,ownKm:-1}),sealed({...row1.report,ownKm:1e9}),sealed({...row1.report,distanceKm:0}),
-  sealed({...row1.report,stop:null,distanceKm:null}),sealed({...row1.report,reportId:''}),sealed({...row1.report,reportId:'x'.repeat(129)}),sealed({...row1.report,sessionId:'other'}),sealed(row1.report,'2026-12-01T07:00:00-03:00'),sealed(row1.report,'2026-12-01'),sealed(row1.report,recordedAt,'b'),{...sealed(row1.report),eventId:'report|e1|0000000000000000'},{...sealed(row1.report),inputHash:hash(row1.report)},(({report,...r})=>r)(row1),(({timed,...report})=>sealed(report))(row1.report)];
+  sealed({...row1.report,speaker:'<b>me</b>'}),sealed({...row1.report,speaker:'DEVICE:hk-1'}),sealed({...row1.report,speaker:null}),sealed((({speaker,...report})=>report)(row1.report)),sealed({...row1.report,standing:1}),sealed({...row1.report,standing:false}),sealed({...row1.report,wholeKm:0}),sealed({...row1.report,wholeKm:1e9}),sealed({...row1.report,reportId:''}),sealed({...row1.report,reportId:'x'.repeat(129)}),sealed({...row1.report,sessionId:'other'}),sealed(row1.report,'2026-12-01T07:00:00-03:00'),sealed(row1.report,'2026-12-01'),sealed(row1.report,recordedAt,'b'),{...sealed(row1.report),eventId:'report|e1|0000000000000000'},{...sealed(row1.report),inputHash:hash(row1.report)},(({report,...r})=>r)(row1),(({timed,...report})=>sealed(report))(row1.report)];
  BAD.forEach((row,i)=>assert.deepEqual(read([row]),[0,1],'row '+i));
- // The same report sent again adds nothing, whenever it comes; a report fact with only one of the closed facts is a fact.
+ // The same report sent again adds nothing, whenever it comes; a report fact with only one of the closed facts is a fact, and so is one with
+ // none of them (every report leaves a fact since the evidence lineage fix-forward: before, a row that stated nothing was unreadable). A
+ // stop-only row (a report itself not recorded) carries its stop and nothing of a distance.
+ assert.deepEqual([read([sealed({...row1.report,stop:null,distanceKm:null})]),read([sealed({...row1.report,standing:false,distanceKm:null,timed:false})]),read([sealed({...row1.report,speaker:'DEVICE_UNIDENTIFIED'})]),read([sealed({...row1.report,speaker:'DEVICE:'+'a'.repeat(32),wholeKm:10})])],[[0,0],[1,0],[1,0],[1,0]]);
  assert.deepEqual([appendReportFacts([row1],[row1.report],{athleteId:'a',recordedAt:'2026-12-09T10:00:00.000Z'},VALUES).added,read([sealed({...row1.report,stop:null,distanceKm:null,several:true})]),read([sealed({...row1.report,stop:null,distanceKm:null,ownKm:9})]),read([sealed({...row1.report,stop:null,distanceKm:null,ownKm:9,corrected:true})]),read([sealed({...row1.report,stop:null,distanceKm:null,corrected:true})]),read([sealed({...row1.report,corrected:true})])],[[],[0,0],[0,0],[0,0],[0,1],[0,1]],'a correction with no figure declared is no fact this module writes');
- assert.deepEqual([...PACE_WITHHELD],['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORTS_UNREADABLE']);
+ assert.deepEqual([...PACE_WITHHELD],['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORT_NOT_CARRIED','REPORTS_UNREADABLE']);
 });
 
 test('SSCTR-RWS-C-02: a screen dated after its own review answers nothing yet, and one answered at the instant of the stop is not after it',()=>{

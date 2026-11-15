@@ -45,13 +45,20 @@ const km=v=>Math.round(v*1000)/1000;
  *   them is not the run.
  * - `paceWithheld`: why this run's distance is never handed to a reader of pace or capacity (the calibration, a later forecast), or null. Beside
  *   the reasons above, `reports` is what the caller found in the reports the row was made of (v1-run-format.mjs reportsVerdict): each reason
- *   above as any one of those reports states it on its own, whatever the merged row kept of it, or REPORTS_UNREADABLE when the record of what
- *   the reports said cannot be read whole.
+ *   above as any one of those reports states it on its own, whatever the merged row kept of it; REPORT_NOT_CARRIED when a report still in force
+ *   for the session is none of the reports the row was made of (evidence lineage, SSCTR item L1: the row no longer says all that was said of the
+ *   run, and what it lost is not enumerated); or REPORTS_UNREADABLE when the record of what the reports said cannot be read whole. `reports` is
+ *   that word, or the whole reading ({withheld, firstKm, wholeKm}). The last two reasons are of the row, not of its distance (WHOLE_ROW_WITHHELD):
+ *   they stand on a row that carries no distance too, whose work pace is then no pace evidence either.
+ * - `firstKm`: the first recording's own distance, when it is a measurement. `said`: what the reports in force say that can only lower this
+ *   run's history reference (historyReference; SSCTR items L3 and L4), or null.
  * - `lists`, `corrects`, `ownKm`: what the report states whether or not it carries a distance itself (it lists further recordings; it declares
  *   with a listed failure reason; the athlete's own figure). They are what a report fact keeps (v1-run-format.mjs reportFactOf): the engine's
  *   merge keeps one value per field, so a row can lose what one of its reports said, and no reader of pace may lose it with the row.
  */
-export const PACE_WITHHELD=Object.freeze(['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORTS_UNREADABLE']);
+export const PACE_WITHHELD=Object.freeze(['SEVERAL_RECORDINGS','CORRECTED_MEASUREMENT','DURATION_REQUIRED','DISTANCE_DISPUTED','REPORT_NOT_CARRIED','REPORTS_UNREADABLE']);
+/** The reasons that are of the row whole and not of its distance: they withhold a row from pace readers whether or not it carries a distance. */
+export const WHOLE_ROW_WITHHELD=Object.freeze(['REPORT_NOT_CARRIED','REPORTS_UNREADABLE']);
 /**
  * The further recordings a report lists (`actual.segments`). No list, or an empty one, states nothing: it is never read as "one recording only".
  * A value that is there and is no list cannot be read, and is one recording nobody can read: the run is not one whole measurement (fail closed).
@@ -74,21 +81,30 @@ export function distanceFacts(actual,V,{wearable=false,reports=null}={}){
  const minutes=num(a.seconds,1)?a.seconds/60:num(a.minutes,0.01)?a.minutes:null,pace=measuredKm!==null&&minutes!==null?minutes*60/measuredKm:null,[fastest,slowest]=F.plausiblePaceSecondsPerKm;
  const typed=num(a.manualDistanceKm,0.01,F.runDistanceKmMax)?a.manualDistanceKm:has&&!measuredSource?a.distanceKm:null;
  const untimed=has&&measuredSource&&minutes===null,own=d?d.distanceKm:typed,disputed=own!==null&&measuredKm!==null&&Math.min(own,measuredKm)<V.tied.correctionFloorFraction*Math.max(own,measuredKm)-1e-9;
- const paceWithheld=!has?null:several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':PACE_WITHHELD.includes(reports)?reports:null;
+ const reading=isObj(reports)?reports:null,word=reading?reading.withheld:reports,told=PACE_WITHHELD.includes(word)?word:null;
+ const paceWithheld=!has?(WHOLE_ROW_WITHHELD.includes(told)?told:null):several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':told;
  return {measuredKm,source:measuredKm!==null?source:null,segments:segs.length,implausible:has&&measuredSource&&(measuredKm===null||pace!==null&&(pace<fastest||pace>slowest)),untimed,
   quality:measuredKm!==null?(markedPoor?'POOR':deviceQuality==='OK'?'OK':'UNKNOWN'):null,devicePoor:measuredKm!==null&&devicePoor,
-  manualKm:typed,declaredKm:d?d.distanceKm:null,reason:corrected?reason:null,reasonGiven:!!reason,markedPoor,several:has&&several,corrected:has&&corrected,disputed,paceWithheld,lists:several,corrects:corrected,ownKm:own};
+  manualKm:typed,declaredKm:d?d.distanceKm:null,reason:corrected?reason:null,reasonGiven:!!reason,markedPoor,several:has&&several,corrected:has&&corrected,disputed,paceWithheld,lists:several,corrects:corrected,ownKm:own,
+  firstKm:measuredKm!==null?a.distanceKm:null,said:reading?{firstKm:num(reading.firstKm,0.01)?reading.firstKm:null,wholeKm:num(reading.wholeKm,0.01)?reading.wholeKm:null}:null};
 }
 /**
  * The distance a run contributes as history (R3A values.historyReference): a usable measurement alone is the measured value; a declaration alone
  * (an explicit one, or a manual figure) the declared value; both, the smaller, whatever the measurement's quality; a device-flagged measurement
  * alone, none; a measurement that is a fault, or that no duration lets be checked, alone, none. A correction therefore never raises a run's history.
+ * What the reports in force say of the run (`f.said`, v1-run-format.mjs reportsReading) only ever lowers it, and never gives a reference to a
+ * run that has none of its own (SSCTR lineage items L3-b, L4-b; R3A A1 (6): the smaller of the usable facts):
+ * - L3: the further recordings a row lists are added to the smaller of the row's first recording and the first distance the report that listed
+ *   them states for itself. After a merge the row's distance can be one report's and its list another's: two sources that each measured the
+ *   whole run, one of them listing a further recording, are one run counted once. The measured distance a completion reads is not touched.
+ * - L4: the smaller of that and the smallest distance a report in force states for the whole run, when that report is none of the reports the
+ *   row was made of, or when the row's own reports dispute its distance. The same statements then give the same reference in any arrival order.
  */
 export function historyReference(f){
- const declared=f.declaredKm??f.manualKm??null;
- if(f.measuredKm!==null&&declared!==null)return Math.min(f.measuredKm,declared);
- if(f.measuredKm!==null)return f.devicePoor||f.implausible||f.untimed?null:f.measuredKm;
- return declared;
+ const declared=f.declaredKm??f.manualKm??null,said=isObj(f.said)?f.said:null;
+ const measured=f.measuredKm!==null&&f.segments>0&&said&&said.firstKm!==null&&said.firstKm<f.firstKm?km(f.measuredKm-f.firstKm+said.firstKm):f.measuredKm;
+ const own=measured!==null&&declared!==null?Math.min(measured,declared):measured!==null?(f.devicePoor||f.implausible||f.untimed?null:measured):declared;
+ return own!==null&&said&&said.wholeKm!==null&&said.wholeKm<own?said.wholeKm:own;
 }
 
 // ---------- the extension's record of runs the engine does not keep ----------
@@ -154,7 +170,7 @@ export function factsFromLedger(ledger,{athleteId,tz=0,reportsOf=null},V){
  * Every run on record as one list, each run once: the engine's rows, then the extension's rows that are no run the engine already holds (the same
  * device activity). Two runs on one day with different identities stay two runs; nothing is merged by date. `unreadable` names the extension rows
  * that failed their own integrity check: they are never read and never rewritten. `reportsOf` gives, for a row of the engine's record, what the
- * reports it was made of say about its distance (see distanceFacts).
+ * reports of its session say of it (see distanceFacts): the word that withholds it from pace readers, or the whole reading.
  */
 export function runHistory({ledger,record,athleteId,tz=0,reportsOf=null},V){
  const runs=factsFromLedger(ledger,{athleteId,tz,reportsOf},V),held=new Set(runs.flatMap(r=>r.activityIds)),unreadable=[],seen=new Set();
