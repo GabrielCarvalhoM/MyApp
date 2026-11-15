@@ -48,8 +48,9 @@ const km=v=>Math.round(v*1000)/1000;
  *   above as any one of those reports states it on its own, whatever the merged row kept of it; REPORT_NOT_CARRIED when a report still in force
  *   for the session is none of the reports the row was made of (evidence lineage, SSCTR item L1: the row no longer says all that was said of the
  *   run, and what it lost is not enumerated); or REPORTS_UNREADABLE when the record of what the reports said cannot be read whole. `reports` is
- *   that word, or the whole reading ({withheld, firstKm, wholeKm}). The last two reasons are of the row, not of its distance (WHOLE_ROW_WITHHELD):
- *   they stand on a row that carries no distance too, whose work pace is then no pace evidence either.
+ *   that word, or the whole reading ({withheld, wholeRow, firstKm, wholeKm}). The last two reasons are of the row, not of its distance
+ *   (WHOLE_ROW_WITHHELD): they stand on a row that carries no distance too, whose work pace is then no pace evidence either, and there no
+ *   reason of the distance hides them: the reading gives them apart (`wholeRow`), since the one word names a reason of the distance first.
  * - `firstKm`: the first recording's own distance, when it is a measurement. `said`: what the reports in force say that can only lower this
  *   run's history reference (historyReference; SSCTR items L3 and L4), or null.
  * - `lists`, `corrects`, `ownKm`: what the report states whether or not it carries a distance itself (it lists further recordings; it declares
@@ -82,7 +83,10 @@ export function distanceFacts(actual,V,{wearable=false,reports=null}={}){
  const typed=num(a.manualDistanceKm,0.01,F.runDistanceKmMax)?a.manualDistanceKm:has&&!measuredSource?a.distanceKm:null;
  const untimed=has&&measuredSource&&minutes===null,own=d?d.distanceKm:typed,disputed=own!==null&&measuredKm!==null&&Math.min(own,measuredKm)<V.tied.correctionFloorFraction*Math.max(own,measuredKm)-1e-9;
  const reading=isObj(reports)?reports:null,word=reading?reading.withheld:reports,told=PACE_WITHHELD.includes(word)?word:null;
- const paceWithheld=!has?(WHOLE_ROW_WITHHELD.includes(told)?told:null):several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':told;
+ // The reason of the row whole is read apart from the one word (QRE-RWS-E-01): in the word a reason of the distance comes first, and on a row
+ // that carries no distance it withholds nothing, so it would hide that the row does not carry every report in force.
+ const ofRow=[reading?.wholeRow,told].find(w=>WHOLE_ROW_WITHHELD.includes(w))??null;
+ const paceWithheld=!has?ofRow:several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':told??ofRow;
  return {measuredKm,source:measuredKm!==null?source:null,segments:segs.length,implausible:has&&measuredSource&&(measuredKm===null||pace!==null&&(pace<fastest||pace>slowest)),untimed,
   quality:measuredKm!==null?(markedPoor?'POOR':deviceQuality==='OK'?'OK':'UNKNOWN'):null,devicePoor:measuredKm!==null&&devicePoor,
   manualKm:typed,declaredKm:d?d.distanceKm:null,reason:corrected?reason:null,reasonGiven:!!reason,markedPoor,several:has&&several,corrected:has&&corrected,disputed,paceWithheld,lists:several,corrects:corrected,ownKm:own,

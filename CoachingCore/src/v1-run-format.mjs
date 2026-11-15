@@ -600,6 +600,9 @@ export const sourcesOf=row=>{const merged=row?.provenance?.mergedSourceIds;retur
  * - REPORT_NOT_CARRIED: a report in force for the session is none of the reports the row was made of (another speaker's, after a correction
  *   replaced the row; one the engine refused in a conflict; a correction the engine refused). Whatever that report said, the row no longer says it.
  * - REPORTS_UNREADABLE: the record of reports holds a row that cannot be read: none of the above can be ruled out for any run.
+ * `wholeRow`: the last two reasons, which are of the row whole and not of its distance, given apart from the one word, whatever comes before
+ * them in it. A reason of the distance withholds nothing on a row that carries no distance, so it may never hide that the row is not all
+ * that was said of the run: a reader that withholds takes the whole reading, and reads this on a row with no distance (QRE-RWS-E-01).
  * `firstKm`, `wholeKm`: what the reports in force say that lowers the run's history reference, and nothing else (v1-run-history.mjs
  * historyReference; SSCTR lineage items L3 and L4): the smallest first distance a report that lists further recordings states for itself, and
  * the smallest distance stated for the whole run by a report in force the row does not carry, or by the row's own reports when they dispute.
@@ -614,8 +617,8 @@ export function reportsReading(row,facts,V){
  const disputed=shortest<V.tied.correctionFloorFraction*longest-EPS,L=typeof row.sessionId==='string'?facts.inForce(row.sessionId):null;
  if(L&&!L.bounded){missing=true;if(L.wholeKm!==null)outside=L.wholeKm;} // too many reports to walk: every one in force, none shown carried
  else if(L){const has=new Set(carried);for(const id of L.ids)if(!has.has(id)){missing=true;const g=facts.of(id,row.sessionId);if(g&&g.whole<outside)outside=g.whole;}}
- const lowest=Math.min(outside,disputed?own:Infinity);
- return {withheld:several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':missing?'REPORT_NOT_CARRIED':facts.unreadable.length?'REPORTS_UNREADABLE':null,
+ const lowest=Math.min(outside,disputed?own:Infinity),wholeRow=missing?'REPORT_NOT_CARRIED':facts.unreadable.length?'REPORTS_UNREADABLE':null;
+ return {withheld:several?'SEVERAL_RECORDINGS':corrected?'CORRECTED_MEASUREMENT':untimed?'DURATION_REQUIRED':disputed?'DISTANCE_DISPUTED':wholeRow,wholeRow,
   firstKm:L?L.firstKm:null,wholeKm:lowest<Infinity?lowest:null};
 }
 /** Why a row goes to no pace reader, by what the reports of its session say of it, or null (reportsReading). */
