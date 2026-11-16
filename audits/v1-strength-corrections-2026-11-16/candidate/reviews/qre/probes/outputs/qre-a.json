@@ -1,0 +1,234 @@
+{
+ "checks": [
+  {
+   "name": "control: without rules this plan holds a plank",
+   "ok": true
+  },
+  {
+   "name": "control: DEV turns the plank off",
+   "ok": true
+  },
+  {
+   "name": "option key STRENGTH_RULES is taken off",
+   "ok": true
+  },
+  {
+   "name": "a strength field on a supplied repertoire is taken off",
+   "ok": true
+  },
+  {
+   "name": "a non-enumerable strength on a supplied repertoire",
+   "ok": true,
+   "detail": "non-enumerable strength survives spread? false"
+  },
+  {
+   "name": "an inherited strength on a supplied repertoire",
+   "ok": true,
+   "detail": "inherited strength reaches the selection: false"
+  },
+  {
+   "name": "a strength field on authority.repertoire is taken off",
+   "ok": true,
+   "detail": "PROPOSED"
+  },
+  {
+   "name": "authority none",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority nullRecords",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority recordsNotArray",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority recordsArrayTop",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority good",
+   "ok": true,
+   "detail": "[\"HOLD\"]"
+  },
+  {
+   "name": "authority independentString",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority sourceIdsString",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority wrongBoundaryCase",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority shaUpper",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority mixedVeto",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "name": "authority mixedOtherSha",
+   "ok": true,
+   "detail": "[\"HOLD\"]"
+  },
+  {
+   "name": "authority nullEntries",
+   "ok": true,
+   "detail": "[\"UPPER\"]"
+  },
+  {
+   "name": "authority hostileGetter: a throwing records object",
+   "ok": true,
+   "detail": "\"THROW boom\""
+  },
+  {
+   "name": "entry point: a throwing records object leaves every boundary off and the engine answers",
+   "ok": true,
+   "detail": "PROPOSED"
+  },
+  {
+   "name": "determinism: same input, same answer",
+   "ok": true
+  }
+ ],
+ "counts": {
+  "offIdentityGenerate": {
+   "population": 432,
+   "identical": 432
+  },
+  "offIdentityReviews": {
+   "compared": 70,
+   "identical": 70
+  },
+  "frozenness": {
+   "baseFrozen": true,
+   "newFrozen": true
+  },
+  "inject_symbolKey": {
+   "holds": true,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": false,
+    "V1X-STRENGTH-UPPER-LOADING": false,
+    "V1X-STRENGTH-PLANE": false,
+    "V1X-STRENGTH-EXPOSURE": false
+   },
+   "status": "PROPOSED"
+  },
+  "inject_repertoireStrength": {
+   "holds": true,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": false,
+    "V1X-STRENGTH-UPPER-LOADING": false,
+    "V1X-STRENGTH-PLANE": false,
+    "V1X-STRENGTH-EXPOSURE": false
+   },
+   "status": "PROPOSED"
+  },
+  "inject_repertoireStrengthNonEnumerable": {
+   "holds": true,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": false,
+    "V1X-STRENGTH-UPPER-LOADING": false,
+    "V1X-STRENGTH-PLANE": false,
+    "V1X-STRENGTH-EXPOSURE": false
+   },
+   "status": "PROPOSED"
+  },
+  "inject_repertoireProtoStrength": {
+   "holds": true,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": false,
+    "V1X-STRENGTH-UPPER-LOADING": false,
+    "V1X-STRENGTH-PLANE": false,
+    "V1X-STRENGTH-EXPOSURE": false
+   },
+   "status": "PROPOSED"
+  },
+  "inject_strengthRecordsForged": {
+   "holds": false,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": true,
+    "V1X-STRENGTH-UPPER-LOADING": true,
+    "V1X-STRENGTH-PLANE": true,
+    "V1X-STRENGTH-EXPOSURE": true
+   },
+   "status": "PROPOSED"
+  },
+  "inject_strengthExtensionForged": {
+   "holds": false,
+   "boundaries": {
+    "V1X-STRENGTH-HOLD-DOSE": true,
+    "V1X-STRENGTH-UPPER-LOADING": true,
+    "V1X-STRENGTH-PLANE": true,
+    "V1X-STRENGTH-EXPOSURE": true
+   },
+   "status": "PROPOSED"
+  },
+  "devAffordances": {
+   "forgedRecordsTurnOn": true,
+   "suppliedAuthorityTurnsOn": true
+  },
+  "suppliedArbitraryValues": {
+   "status": "PROPOSED",
+   "trunkRowsWeek0": [],
+   "missing": [
+    [
+     "TRUNK"
+    ],
+    [
+     "PULL",
+     "TRUNK"
+    ],
+    [
+     "TRUNK"
+    ]
+   ]
+  },
+  "auth_none": [],
+  "auth_nullRecords": [],
+  "auth_recordsNotArray": [],
+  "auth_recordsArrayTop": [],
+  "auth_good": [
+   "HOLD"
+  ],
+  "auth_independentString": [],
+  "auth_sourceIdsString": [],
+  "auth_wrongBoundaryCase": [],
+  "auth_shaUpper": [],
+  "auth_mixedVeto": [],
+  "auth_mixedOtherSha": [
+   "HOLD"
+  ],
+  "auth_nullEntries": [
+   "UPPER"
+  ],
+  "auth_hostileGetter": "THROW boom",
+  "withdrawnRulesFreshWarningSign": {
+   "status": "UNSUPPORTED",
+   "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+  },
+  "underRulesFreshWarningSign": {
+   "status": "CLINICAL_HUMAN_REQUIRED"
+  },
+  "planUnderRulesViaFrozenEntryPoints": {
+   "forecastIndex": "MODIFY",
+   "v1Index": "MODIFY"
+  }
+ },
+ "fails": 0
+}

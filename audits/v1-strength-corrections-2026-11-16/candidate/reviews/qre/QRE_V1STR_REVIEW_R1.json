@@ -1,0 +1,1044 @@
+{
+ "reviewId": "QRE-V1STR-REVIEW-R1",
+ "date": "2026-11-16",
+ "judge": {
+  "role": "Quality & Reliability Engineer",
+  "constitution": "1.3.0",
+  "model": "claude-opus-5-5",
+  "effort": "xhigh",
+  "independent": true,
+  "authoredTarget": false,
+  "note": "Subagent instance; the author is the Chief (Fable 5.2). Nothing outside reviews/qre/ was edited."
+ },
+ "target": {
+  "branch": "claude/v1-strength-corrections",
+  "commit": "21838cb",
+  "base": "2dfa216",
+  "baseFreeze": "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1",
+  "sha256Prefix": {
+   "CoachingCore/src/r7b-repertoire.mjs": "6bd4f365cd34b416",
+   "CoachingCore/src/v1-strength.mjs": "7e5eb85bde28893e",
+   "CoachingCore/src/v1-strength-index.mjs": "937a083949adde7a",
+   "CoachingCore/v1/STRENGTH_EXTENSION_V1.json": "e375a8be02e4be6d",
+   "CoachingCore/scripts/v1str-freeze.mjs": "06672449f726d21c",
+   "audits/v1-strength-corrections-2026-11-16/candidate/V1STR_CANDIDATE.md": "dc5f2d4c2bf399af"
+  }
+ },
+ "verdict": "NOT_READY",
+ "verdictBasis": "One BLOCKING finding (QRE-STR-A-01): the N4 in-force anchor is rewritten from a fallback, so after a permanent equipment loss and regain the plane slots stay on band/bodyweight or lose the vertical, where the frozen engine returns to external loading. Freezing would bake it into the authorized bytes of a frozen file. The fix is bounded.",
+ "findings": [
+  {
+   "id": "QRE-STR-A-01",
+   "severity": "BLOCKING",
+   "area": "N4 / SQ-4 c3, c5 / D-2",
+   "statement": "planeAlternation.built is rewritten from the natural pick on every rebuild; once the built configuration stops fitting, the fallback becomes the anchor and is kept after the built one fits again.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-b2-anchor-variants.mjs",
+    "also": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-b-selection-paths.mjs (case B1)",
+    "steps": "INTERMEDIATE, full gym, 2 days, DEV; weeks 0-1 reviewed; EQUIPMENT_CHANGE (permanent) to [BANDS] at week 2; weeks 2-3; EQUIPMENT_CHANGE back to the full gym at week 4.",
+    "observed": {
+     "withRules": {
+      "FULL_B:1": "band-row",
+      "FULL_B:2": "push-up"
+     },
+     "withoutRules": {
+      "FULL_B:1": "db-row",
+      "FULL_B:2": "db-bench-press"
+     },
+     "newPlan": {
+      "FULL_B:1": "lat-pulldown",
+      "FULL_B:2": "db-overhead-press"
+     }
+    },
+    "variants": {
+     "full->none->full": "FULL_B:2 push-up (OFF db-bench-press)",
+     "full->machines->full": "FULL_B:2 machine-chest-press (vertical never returns)",
+     "full->dumbbells->full": "FULL_B:1 db-row (vertical pull never returns)"
+    }
+   },
+   "suggestedFix": "Keep the in-force anchor S.inForce[type:slot] as built when there is one (record natural.list[0] only for a new plan)."
+  },
+  {
+   "id": "QRE-STR-A-02",
+   "severity": "CONDITION",
+   "area": "N1 / SQ-1 c3 / V-EXT-06",
+   "statement": "After a trunk set-aside (dead-bug, SKILL_MISMATCH or preference) in a bodyweight 5-day plan, the CORE template's second TRUNK slot is unfilled (6 -> 5 trunk rows a week) and the gap is not declared (plan negotiation lists only PULL; no disclosure); only template.missingPatterns holds it. OFF fills it with a plank.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-f-trunk-gap-and-binding.mjs",
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/qre-f.txt"
+   }
+  },
+  {
+   "id": "QRE-STR-A-03",
+   "severity": "CONDITION",
+   "area": "freeze verifier",
+   "statement": "--preserved and --write never check the four earlier freeze records against their committed bytes; (iv) excludes them. An edited RUNTIME_FREEZE_V1RFC_1.json (alone, or with the runtime-read SSCTR_V1RFC_RUN_RECORDS.json changed and its hash updated in the record) passes with exit 0. --check catches a record change only after a write.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/scratch-only/freeze-rehearsal.mjs",
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/freeze-preserved-rehearsal.json"
+   },
+   "note": "Records unchanged at 21838cb (git diff 2dfa216 21838cb -- CoachingCore/v1 shows only the values file)."
+  },
+  {
+   "id": "QRE-STR-A-04",
+   "severity": "CONDITION",
+   "area": "integration (D-11)",
+   "statement": "The binding program.repertoire.strengthExtension is enforced only by v1-strength-index.mjs; through v1-index.mjs (custody today) and v1-run-forecast-index.mjs a plan built under the rules is reviewed without them, and an equipment change through v1-index.mjs brings front-plank back.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-e-frozen-entry-points.mjs mixed"
+   }
+  },
+  {
+   "id": "QRE-STR-A-05",
+   "severity": "CONDITION",
+   "area": "integration / D-1 + D-9",
+   "statement": "Any change in the selection-boundary state strands every plan in force (UNSUPPORTED), including a review with a fresh warning sign (UNSUPPORTED, not CLINICAL_HUMAN_REQUIRED). Mirrors the frozen event-extension mismatch; four new triggers. Integration needs a restart path.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-a-off-and-authority.mjs",
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/qre-a.json (withdrawnRulesFreshWarningSign)"
+   }
+  },
+  {
+   "id": "QRE-STR-A-06",
+   "severity": "OBSERVATION",
+   "area": "frozen entry points / D-12",
+   "statement": "The amended frozen file makes the frozen entry points honour a strength field on a caller-supplied repertoire authority (inert at 2dfa216): v1-index plan hash 29f0b2dd -> 10a89640, dead-bug and front-plank removed, malformed binding {id:null,sha256:null,boundaries:[]}. Dev/test path only.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-e-frozen-entry-points.mjs hash",
+    "runIn": [
+     "2dfa216 clone",
+     "21838cb clone"
+    ]
+   }
+  },
+  {
+   "id": "QRE-STR-A-07",
+   "severity": "OBSERVATION",
+   "area": "D-6 / preservation",
+   "statement": "N4 changes the dose of exercises it did not select (db-row 282 rows, seated-cable-row 144 rows: reps 8 -> 10 to the last week) and lat-pulldown (112 rows) in 66 of 432 lifter plans, all NONE/NOVICE. N1 changes the replacement trunk row set count (x1 -> x2) and session minutes (+2..3) in 2,160 / 2,242 sessions. No session exceeds the strength minutes (0 of 31,104).",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-c-preservation-differential.mjs; audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-c2-dose-detail.mjs"
+   }
+  },
+  {
+   "id": "QRE-STR-A-08",
+   "severity": "CONDITION",
+   "area": "tests",
+   "statement": "52 of 74 mutants killed; 15 non-equivalent survivors; add tests killing at least R18, V05, V17, V25, X03, X15, X19, X20, each guarding a claimed behaviour (listed under measured.mutation.survivors).",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/scratch-only/mutate.mjs"
+   }
+  },
+  {
+   "id": "QRE-STR-A-09",
+   "severity": "OBSERVATION",
+   "area": "freeze verifier scope (pre-existing)",
+   "statement": "outside() omits CoachingCore/r2-r5, artifacts and root JSONs; committed changes to runtime-read r5/PROGRAM_POLICY_R5.json, r4/PRESCRIPTION_ENVELOPE_REGISTRY.json, a new file in r5/, and an unbound runtime-read r5 SSCTR review pass --preserved and --check. Untracked files are ignored by --preserved and --check.",
+   "reproduction": {
+    "output": [
+     "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/freeze-preserved-rehearsal.json",
+     "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/freeze-check-rehearsal.json"
+    ]
+   }
+  },
+  {
+   "id": "QRE-STR-A-10",
+   "severity": "OBSERVATION",
+   "area": "freeze process",
+   "statement": "ADDED binds the whole candidate/ folder: any later committed file there makes --check drift.",
+   "reproduction": {
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/freeze-check-rehearsal.json"
+   }
+  },
+  {
+   "id": "QRE-STR-A-11",
+   "severity": "OBSERVATION",
+   "area": "author record accuracy",
+   "statement": "On 21838cb v1rfc-freeze --check 1 names r7b-repertoire.mjs and the 8 added files plus the nested V1RWS drift (not r7b-repertoire.mjs alone); v1rws --check 2 names only r7b-repertoire.mjs; v1rc --check 1 names r6-adaptation.mjs and r7b-repertoire.mjs and already failed at 2dfa216.",
+   "reproduction": {
+    "commands": [
+     "node scripts/v1rfc-freeze.mjs --check 1",
+     "node scripts/v1rws-freeze.mjs --check 2",
+     "node scripts/v1rc-freeze.mjs --check 1"
+    ],
+    "where": "scratch clones of 2dfa216 and 21838cb"
+   }
+  },
+  {
+   "id": "QRE-STR-A-12",
+   "severity": "OBSERVATION",
+   "area": "suite coverage",
+   "statement": "I10, V6 fails at its first assertion, so its remaining checks no longer run in the suite on this line; only v1str-freeze --preserved/--write carry them.",
+   "reproduction": {
+    "where": "CoachingCore/test/v1rws-engine.test.mjs:157; joint suite TAP"
+   }
+  },
+  {
+   "id": "QRE-STR-A-13",
+   "severity": "OBSERVATION",
+   "area": "N3 robustness",
+   "statement": "No upper bound on logged sets (200,000 counted), fractional reps count, rows without athleteId accepted, restarted plans reuse session ids (24 shared; the date window keeps old reports out in the tested restart). Engine-made corrections and conflicts read correctly.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-d-exposure.mjs",
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/qre-d.json"
+   }
+  }
+ ],
+ "measured": {
+  "jointSuite": {
+   "commit": "21838cb",
+   "tests": 1583,
+   "pass": 1581,
+   "fail": 2,
+   "failed": [
+    "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here",
+    "I10, V6: every file the two earlier freezes bind is byte-identical here except the one amended file; its base is the recorded bytes and its diff is the reader alone"
+   ],
+   "base": {
+    "commit": "2dfa216",
+    "tests": 1535,
+    "pass": 1534,
+    "fail": 1,
+    "failed": [
+     "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here"
+    ]
+   },
+   "passingAtBaseNotHere": [
+    "I10, V6: …"
+   ],
+   "newPassing": 48,
+   "testFilesEdited": 0,
+   "testFilesAdded": 4
+  },
+  "ownTests": {
+   "tests": 47,
+   "pass": 47
+  },
+  "offIdentity": {
+   "generateNoOptions": {
+    "population": 432,
+    "identical": 432
+   },
+   "reviewsAndRestarts": {
+    "compared": 70,
+    "identical": 70
+   },
+   "frozenEntryPointAcrossCommits": {
+    "answers": 360,
+    "digest2dfa216": "a0c2ab8c6a6ff78e",
+    "digest21838cb": "a0c2ab8c6a6ff78e"
+   }
+  },
+  "injection": {
+   "strippedByNewEntryPoint": [
+    "STRENGTH_RULES option key",
+    "repertoire.strength (own, non-enumerable, inherited)",
+    "authority.repertoire.strength"
+   ],
+   "turnOnByDesign": [
+    "strengthRecords",
+    "strengthExtension (supplied values not validated)"
+   ]
+  },
+  "authorityFailClosed": {
+   "variants": 13,
+   "asExpected": 13,
+   "throwingRecordsContainedByEntryPoint": true
+  },
+  "selectionPaths": {
+   "plansLengthsDaysEquipment": 432,
+   "anomalies": 0,
+   "holdsSeenOnEveryN1Path": 0,
+   "noviceClash": 0,
+   "determinism": true,
+   "strippedAnnotationsRefused": "HOLD",
+   "tamperedBindingRefused": "HOLD"
+  },
+  "preservationDifferential": {
+   "plans": 486,
+   "rowsCompared": 77940,
+   "outsideScope": 0,
+   "statusRunsShapePhasesInterference": 0,
+   "rowsChanged": {
+    "DEV": 12075,
+    "HOLD": 3960,
+    "UPPER": 3334,
+    "PLANE": 5684
+   },
+   "sameExerciseDoseDiffRows": {
+    "DEV": 562,
+    "HOLD": 0,
+    "UPPER": 0,
+    "PLANE": 574
+   },
+   "sessionMinutesDiffer": {
+    "DEV": 3430,
+    "HOLD": 2242,
+    "UPPER": 1369,
+    "PLANE": 658
+   },
+   "sessionsOverStrengthMinutes": {
+    "withRules": 0,
+    "withoutRules": 0,
+    "of": 31104
+   },
+   "setsTotalDiffer": {
+    "HOLD": 2160,
+    "PLANE": 56,
+    "UPPER": 0
+   }
+  },
+  "exposure": {
+   "plannedVsCatalogOracleWeeks": 1728,
+   "mismatches": 0,
+   "unilateralRowsSeen": 3087,
+   "nothingReadsIt": {
+    "compared": 18,
+    "identical": 18
+   },
+   "ledger100kRowsMs": 53
+  },
+  "freezeVerifier": {
+   "preservedOnWorktree": {
+    "exit": 0,
+    "V1": "196/196",
+    "V1RC": "30/30",
+    "V1RWS-2": "98/98",
+    "V1RFC-1": "163/163"
+   },
+   "writeRehearsal": {
+    "enablingRecord": "TEST-ONLY, scratch clone",
+    "result": "written",
+    "joint": "1581/1583 (same two)",
+    "own": "47/47",
+    "checkAfter": 0
+   },
+   "earlierVerifiers": {
+    "2dfa216": {
+     "v1rfc": 0,
+     "v1rws": 0,
+     "v1rc": 1
+    },
+    "21838cb": {
+     "v1rfc": 1,
+     "v1rws": 1,
+     "v1rc": 1
+    }
+   }
+  },
+  "mutation": {
+   "control": {
+    "tests": 47,
+    "pass": 47,
+    "fail": 0,
+    "failed": []
+   },
+   "mutants": 74,
+   "killed": 52,
+   "survived": 22,
+   "invalid": 0,
+   "byFile": {
+    "r7b-repertoire.mjs": {
+     "total": 24,
+     "killed": 19,
+     "survived": 5,
+     "invalid": 0
+    },
+    "v1-strength.mjs": {
+     "total": 30,
+     "killed": 20,
+     "survived": 10,
+     "invalid": 0
+    },
+    "v1-strength-index.mjs": {
+     "total": 20,
+     "killed": 13,
+     "survived": 7,
+     "invalid": 0
+    }
+   },
+   "survivors": [
+    {
+     "id": "R01",
+     "file": "CoachingCore/src/r7b-repertoire.mjs",
+     "what": "rules dropped on a supplied repertoire",
+     "equivalent": false,
+     "note": "Non-equivalent, development path: a caller-supplied repertoire with the rules on is built without them while the answer says ACTIVE and the binding records nothing."
+    },
+    {
+     "id": "R21",
+     "file": "CoachingCore/src/r7b-repertoire.mjs",
+     "what": "N2 lost in the B0-C09 downgrade list",
+     "equivalent": true,
+     "note": "Equivalent under the pinned catalog: the B0-C09 downgrade list is reached only without MACHINES, and then holds no externally loaded accessory pull."
+    },
+    {
+     "id": "V02",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "catalog binding unchecked",
+     "equivalent": true,
+     "note": "Equivalent under the hash pin: the pinned values bind the catalog in use, and the file-against-expected catalog check stays."
+    },
+    {
+     "id": "V17",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "novice set not read",
+     "equivalent": false,
+     "note": "Non-equivalent: NONE athletes with 5+ days (novice keys FULL_B:* differ from regular UPPER_B:*) lose the novice set anchors on a rebuild during the novice weeks."
+    },
+    {
+     "id": "V27",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "skipped session counted",
+     "equivalent": false,
+     "note": "Non-equivalent: SKIPPED (moved) sessions are counted in planned exposure."
+    },
+    {
+     "id": "X03",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "caller authority.repertoire.strength kept",
+     "equivalent": false,
+     "note": "Non-equivalent, development path: a caller rule on authority.repertoire.strength is not stripped (probe A shows the original strips it; no test)."
+    },
+    {
+     "id": "R18",
+     "file": "CoachingCore/src/r7b-repertoire.mjs",
+     "what": "N4 preference kept when own no longer fits",
+     "equivalent": false,
+     "note": "Non-equivalent: once the in-force configuration no longer fits, the mutant keeps preferring the vertical and brings a vertical exercise into a running plan; the declared \"nothing is preferred once it no longer fits\" is untested."
+    },
+    {
+     "id": "V19",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "zero-rep set counted",
+     "equivalent": false,
+     "note": "Non-equivalent: a logged set with reps 0 is counted."
+    },
+    {
+     "id": "V24",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "earliest report read",
+     "equivalent": true,
+     "note": "Equivalent for engine-normalized ledgers (at most one live row per session); non-equivalent only for a direct caller passing two live rows."
+    },
+    {
+     "id": "X04",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "rules do not reach a supplied authority.repertoire",
+     "equivalent": false,
+     "note": "Non-equivalent, development path: with a caller-supplied authority.repertoire the rules never reach the selection while the answer says ACTIVE."
+    },
+    {
+     "id": "X09",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "limitation shown for a plan not under the rule",
+     "equivalent": false,
+     "note": "Non-equivalent: the known limitation is shown on reviews of plans built without, or under other, rules."
+    },
+    {
+     "id": "X19",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "authority error not contained",
+     "equivalent": false,
+     "note": "Non-equivalent: an error while reading the authority is not contained (probe A: the original contains a throwing records object; no test)."
+    },
+    {
+     "id": "R14",
+     "file": "CoachingCore/src/r7b-repertoire.mjs",
+     "what": "N4 trigger with one slot",
+     "equivalent": true,
+     "note": "Equivalent: with one slot the only index is 0, which never asks."
+    },
+    {
+     "id": "V05",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "independence loosened",
+     "equivalent": false,
+     "note": "Non-equivalent: a record whose independent is missing or any value but false enables its boundary; only independent:false is tested."
+    },
+    {
+     "id": "V25",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "executed PRACTICE counted",
+     "equivalent": false,
+     "note": "Non-equivalent: logged PRACTICE rows are counted as executed working sets (SQ-3 c1)."
+    },
+    {
+     "id": "V30",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "zero-set rows listed",
+     "equivalent": false,
+     "note": "Non-equivalent: an exercise logged with only rep-less sets lists its muscles with 0 (SQ-3 c4)."
+    },
+    {
+     "id": "X15",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "inherited strength kept",
+     "equivalent": false,
+     "note": "Non-equivalent, development path: an inherited strength on a supplied repertoire survives the strip and turns rules on (probe A shows the original strips it)."
+    },
+    {
+     "id": "X20",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "exposure error not contained",
+     "equivalent": false,
+     "note": "Non-equivalent: an error inside the exposure would lose the engine answer; containment untested."
+    },
+    {
+     "id": "R15",
+     "file": "CoachingCore/src/r7b-repertoire.mjs",
+     "what": "N4 accessory slots counted",
+     "equivalent": true,
+     "note": "Equivalent under the pinned catalog: accessory slots carry no subpatterns, so the both-planes filter already excludes them."
+    },
+    {
+     "id": "V01",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "time dose accepted",
+     "equivalent": true,
+     "note": "Equivalent under the hash pin: the pinned values bytes carry timeDose null."
+    },
+    {
+     "id": "V16",
+     "file": "CoachingCore/src/v1-strength.mjs",
+     "what": "clashing slots kept",
+     "equivalent": true,
+     "note": "Unreachable for engine-built plans (no clash arises, probe B7); non-equivalent only for hand-made programs."
+    },
+    {
+     "id": "X16",
+     "file": "CoachingCore/src/v1-strength-index.mjs",
+     "what": "exposure reads the plan before the proposal",
+     "equivalent": false,
+     "note": "Non-equivalent: the exposure describes the plan before the proposal when a review modifies the reviewed week."
+    }
+   ],
+   "killedBy": [
+    {
+     "id": "R06",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+      "SQ-4 c6 no exercise enters in the taper, the race week or the post-event week because of the plane rule"
+     ]
+    },
+    {
+     "id": "R11",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-2 c1, c5 outside its scope, and where no external upper option exists, the selection is the same"
+     ]
+    },
+    {
+     "id": "R16",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+      "a row of a session whose exercises are all the same with and without the rules is the same row in every week (dose, load and exposure)"
+     ]
+    },
+    {
+     "id": "V07",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V12",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-1 c6 with only this rule, only trunk accessory rows that held a hold change: no MAIN row and no other row, in any week",
+      "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band"
+     ]
+    },
+    {
+     "id": "V22",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 a report that is superseded, in conflict, of another athlete or dated outside the week is not counted"
+     ]
+    },
+    {
+     "id": "X02",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 only this entry point turns a rule on: rules a caller passes itself are taken off"
+     ]
+    },
+    {
+     "id": "X07",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off",
+      "a plan built under rules that are not the rules in force is not reviewed: the engine answers UNSUPPORTED and proposes nothing"
+     ]
+    },
+    {
+     "id": "X12",
+     "failed": 3,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c3, V-INT-01 nothing reads the exposure: every plan, decision and record is the same with it on or off",
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off"
+     ]
+    },
+    {
+     "id": "X17",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "a plan built under rules that are not the rules in force is not reviewed: the engine answers UNSUPPORTED and proposes nothing"
+     ]
+    },
+    {
+     "id": "R02",
+     "failed": 21,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off"
+     ]
+    },
+    {
+     "id": "R07",
+     "failed": 10,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second"
+     ]
+    },
+    {
+     "id": "R12",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-2, V-EXT-03 under RUNNING_SUPPORT with equipment, the upper MAIN rows are externally loaded; lower, calf and trunk selection is unchanged",
+      "C.6 the upper-body rules change upper rows only: every run, every lower-body and trunk row, each day and the arrangement of every week are the same"
+     ]
+    },
+    {
+     "id": "R17",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+      "SQ-4 c6 no exercise enters in the taper, the race week or the post-event week because of the plane rule"
+     ]
+    },
+    {
+     "id": "R22",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built"
+     ]
+    },
+    {
+     "id": "V03",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V08",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V13",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+      "SQ-4 c6 no exercise enters in the taper, the race week or the post-event week because of the plane rule"
+     ]
+    },
+    {
+     "id": "V18",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-3 c1 a unilateral set counts once, and a practice row never counts"
+     ]
+    },
+    {
+     "id": "V23",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 a report that is superseded, in conflict, of another athlete or dated outside the week is not counted"
+     ]
+    },
+    {
+     "id": "V28",
+     "failed": 4,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-3 c1 a unilateral set counts once, and a practice row never counts"
+     ]
+    },
+    {
+     "id": "X08",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+      "SQ-4 c6 no exercise enters in the taper, the race week or the post-event week because of the plane rule"
+     ]
+    },
+    {
+     "id": "X13",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "a new plan from the record is built under the rules in force"
+     ]
+    },
+    {
+     "id": "X18",
+     "failed": 20,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off"
+     ]
+    },
+    {
+     "id": "R03",
+     "failed": 7,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off",
+      "SQ-1 c2 a hold is no substitution target, named or chosen, and no ladder offer"
+     ]
+    },
+    {
+     "id": "R08",
+     "failed": 5,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second"
+     ]
+    },
+    {
+     "id": "R13",
+     "failed": 10,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second"
+     ]
+    },
+    {
+     "id": "R23",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built"
+     ]
+    },
+    {
+     "id": "V04",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V09",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V14",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "a plan built under rules that are not the rules in force is not reviewed: the engine answers UNSUPPORTED and proposes nothing"
+     ]
+    },
+    {
+     "id": "V29",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 a report that is superseded, in conflict, of another athlete or dated outside the week is not counted"
+     ]
+    },
+    {
+     "id": "X14",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 executed exposure is counted from logged sets only, apart from the planned one, and nothing is imputed"
+     ]
+    },
+    {
+     "id": "R04",
+     "failed": 13,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 executed exposure is counted from logged sets only, apart from the planned one, and nothing is imputed",
+      "SQ-3 c4, c5 the exposure says what it is and judges nothing: no target, range, threshold, score or comparison, and no muscle listed with nothing"
+     ]
+    },
+    {
+     "id": "R09",
+     "failed": 4,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-2 c2 the order is familiar, established, external loading, purpose, then the rest unchanged; without the rule purpose comes first",
+      "SQ-2, V-EXT-03 under RUNNING_SUPPORT with equipment, the upper MAIN rows are externally loaded; lower, calf and trunk selection is unchanged"
+     ]
+    },
+    {
+     "id": "R19",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built"
+     ]
+    },
+    {
+     "id": "R24",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "a row of a session whose exercises are all the same with and without the rules is the same row in every week (dose, load and exposure)"
+     ]
+    },
+    {
+     "id": "V10",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "a plan records the rules it was built under; a plan built without them is reviewed without them and never adopts one",
+      "a new plan from the record is built under the rules in force"
+     ]
+    },
+    {
+     "id": "V15",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off",
+      "a plan built under rules that are not the rules in force is not reviewed: the engine answers UNSUPPORTED and proposes nothing"
+     ]
+    },
+    {
+     "id": "V20",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 a report that is superseded, in conflict, of another athlete or dated outside the week is not counted"
+     ]
+    },
+    {
+     "id": "X05",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off",
+      "a plan built under rules that are not the rules in force is not reviewed: the engine answers UNSUPPORTED and proposes nothing"
+     ]
+    },
+    {
+     "id": "X10",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off"
+     ]
+    },
+    {
+     "id": "R05",
+     "failed": 6,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-1 c2, V-EXT-06 no hold configuration is in a slot, an alternative, a practice row or any week of any profile",
+      "SQ-1 c2 declared familiarity or a rotation preference does not make a hold selectable"
+     ]
+    },
+    {
+     "id": "R10",
+     "failed": 4,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-2 c2 the order is familiar, established, external loading, purpose, then the rest unchanged; without the rule purpose comes first",
+      "SQ-2, V-EXT-03 under RUNNING_SUPPORT with equipment, the upper MAIN rows are externally loaded; lower, calf and trunk selection is unchanged"
+     ]
+    },
+    {
+     "id": "R20",
+     "failed": 10,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+      "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second"
+     ]
+    },
+    {
+     "id": "V06",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 a boundary is on only with an independent enabling record bound to the pinned values, each boundary by its own record"
+     ]
+    },
+    {
+     "id": "V11",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-2 c1, c5 outside its scope, and where no external upper option exists, the selection is the same",
+      "SQ-4 c1, V-EXT-05 two MAIN slots of a pattern: the second in template order asks for the vertical plane, at most half ask, a single slot asks for nothing"
+     ]
+    },
+    {
+     "id": "V21",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 a report that is superseded, in conflict, of another athlete or dated outside the week is not counted"
+     ]
+    },
+    {
+     "id": "V26",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c2 executed exposure is counted from logged sets only, apart from the planned one, and nothing is imputed"
+     ]
+    },
+    {
+     "id": "X01",
+     "failed": 1,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "V-EXT-01 only this entry point turns a rule on: rules a caller passes itself are taken off"
+     ]
+    },
+    {
+     "id": "X06",
+     "failed": 4,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "SQ-3 c3, V-INT-01 nothing reads the exposure: every plan, decision and record is the same with it on or off",
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off"
+     ]
+    },
+    {
+     "id": "X11",
+     "failed": 2,
+     "tests": 47,
+     "timedOut": false,
+     "examples": [
+      "the exposure follows the engine's answer: nothing under a hold or a clinical route, nothing where no decision was made, disabled when off",
+      "fatigue reports and the clinical route decide as before: local fatigue leaves the MAIN rows, systemic fatigue keeps MAIN rows only, pain with an exercise goes to a person"
+     ]
+    }
+   ],
+   "unexpectedControlFailures": []
+  }
+ },
+ "declaredReadings": {
+  "D-1": "Sound and fail-closed (binding integrity-hashed; plans without the rules reviewed exactly as before, 70/70). SQ-1 c7 unimplemented; with D-9 every boundary-state change strands plans (A-05).",
+  "D-2": "Declared costs reproduce (no adoption on gain; none for slots new after a schedule change: 2->4 and 4->2 days lose both verticals, 2->3 keeps them). The mechanism does not do what D-2 says on loss then regain: A-01.",
+  "D-3": "Implemented as the head of the ordinary order (with N2 when on); the three examples reproduce. The guard does not cover rotation alternatives (pike-push-up is an alternative of an external vertical slot).",
+  "D-4": "Implemented as described; sporting reading is SSCTR's.",
+  "D-5": "Implemented as described; N2 changed no row outside the upper region in 486 plans.",
+  "D-6": "Real and broader than written: A-07.",
+  "D-7": "Matches code and probes; edges in A-13.",
+  "D-8": "Same as the run extensions; switching off by withdrawing the record drifts --check and strands plans (A-05).",
+  "D-9": "Verified (other bytes, other boundaries, none). A prior clinical hold answers first; a fresh warning sign answers UNSUPPORTED (A-05).",
+  "D-10": "Verified exactly by name on both commits; see A-12.",
+  "D-11": "Confirmed: src/boundary/custody.mjs untouched, still calls v1-index.mjs; A-04 and A-06 are integration conditions.",
+  "D-12": "Consistent with the frozen run extensions; the new entry point strips caller rules; the frozen entry points now honour a strength field on a supplied repertoire (A-06)."
+ },
+ "security": {
+  "focalReviewNeededNow": false,
+  "focalReviewNeededAtIntegration": true,
+  "reason": "No custody code touched; one read-only, hash-bound authority file added; option affordances mirror the run extensions; plan binding integrity-protected. At integration: options never forwarded from clients (A-06), routing by binding (A-04), custody of SSCTR_V1STR_RECORDS.json."
+ },
+ "notVerified": [
+  "Sporting content of rules and readings (SSCTR)",
+  "Integration through custody; real data; any UI",
+  "Exhaustive event sequences (hand-built paths, not fuzzed)",
+  "The author's own probes were not rerun",
+  "The SSCTR review files were not read (independence)"
+ ]
+}
