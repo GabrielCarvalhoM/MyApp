@@ -17,7 +17,7 @@ import {CATALOG,CATALOG_REVISION,CATALOG_SHA256,CATALOG_FILE_SHA256,configuratio
  * This module imports no engine: the composed entry point (v1-strength-index.mjs) hands it plain data.
  */
 export const STRENGTH_EXTENSION_ID='V1X-STRENGTH-1';
-export const STRENGTH_VALUES_SHA256='15a51f55e847ad01d683912d50319629ead68a1cfa00d3c69c5061b3e596850f';
+export const STRENGTH_VALUES_SHA256='06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33';
 export const STRENGTH_VALUES_URL=new URL('../v1/STRENGTH_EXTENSION_V1.json',import.meta.url);
 export const STRENGTH_RECORDS_URL=new URL('../../audits/v1-strength-corrections-2026-11-16/candidate/reviews/ssctr/SSCTR_V1STR_RECORDS.json',import.meta.url);
 export const STRENGTH_BOUNDARIES=freeze({HOLD:'V1X-STRENGTH-HOLD-DOSE',UPPER:'V1X-STRENGTH-UPPER-LOADING',PLANE:'V1X-STRENGTH-PLANE',EXPOSURE:'V1X-STRENGTH-EXPOSURE'});

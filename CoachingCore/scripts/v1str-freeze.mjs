@@ -20,7 +20,8 @@
 // A freeze binds every tracked file under audits/v1-strength-corrections-2026-11-16/candidate: a record written after it goes outside that folder.
 // This script writes nothing but its own record.
 //   node scripts/v1str-freeze.mjs --write <n> --commit <sha> [--note "..."]   runs the suites, then writes v1/RUNTIME_FREEZE_V1STR_<n>.json
-//   node scripts/v1str-freeze.mjs --check <n>                                  recomputes and compares; exit 1 on drift
+//   node scripts/v1str-freeze.mjs --check <n>                                  recomputes and compares; exit 1 on drift (the order is write,
+//                                                                              commit the record, check: an uncommitted record is an untracked file)
 //   node scripts/v1str-freeze.mjs --preserved                                  (i) to (iv) on the tree here
 import fs from 'node:fs';
 import path from 'node:path';
@@ -73,7 +74,7 @@ function preserved(){
  * and its whole diff from the base, each by hash. The diff is the hunk headers and the changed lines of `git diff -U0 <base> -- <file>`, joined
  * by a line feed.
  */
-const AMENDMENT={sha256:'0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477',diffSha256:'e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be',linesAdded:43,linesRemoved:11};
+const AMENDMENT={sha256:'1997a4e5e0e6090829686ed1a277036436b326543bfc1ac923ed6fc10eba776b',diffSha256:'4b52eb740ea1b6d8eabc6008218f41ff6311e5f28544f94b8738c41f519fbef4',linesAdded:44,linesRemoved:11};
 const diffText=lines=>lines.filter(l=>/^(@@|[+-])/.test(l)&&!/^(\+\+\+|---)/.test(l));
 function rulesAlone(lines){
  const plus=lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')),minus=lines.filter(l=>l.startsWith('-')&&!l.startsWith('---')),found=shaOf(Buffer.from(diffText(lines).join('\n'),'utf8'));
@@ -85,7 +86,7 @@ const diffOf=(base,commit=null)=>execFileSync('git',['diff','--no-color','--no-e
 function amendment(commit=null){
  const v1=read(PRIOR.v1),baseBytes=blob(v1.commit,AMENDED),diff=diffOf(v1.commit,commit),lines=diff.split('\n');
  return {file:AMENDED,rulesAlone:rulesAlone(lines),baseCommit:v1.commit,baseSha256:shaOf(baseBytes),baseIsTheRecorded:shaOf(baseBytes)===v1.files[AMENDED],recordedIn:v1.revision,newSha256:commit?shaOf(blob(commit,AMENDED)):sha(path.join(ROOT,AMENDED)),authorizedSha256:AMENDMENT.sha256,
-  what:'The repertoire authority carries the strength rules handed under the exported key STRENGTH_RULES, under that same key and never under a field a JSON value can carry, and the binding of a plan records them. With them: a hold configuration is not admitted (SQ-1); in an upper-body slot where RUNNING_SUPPORT is a matching purpose external loading ranks before purpose (SQ-2); with two MAIN slots of PUSH or PULL that admit both planes, a new plan that does not open with movement practice asks the second for the vertical plane, inside the loading guard and never for a configuration an earlier session of the week holds in another role, and a plan in force keeps the configuration each such slot was built with, preferring the plane otherwise only among the configurations it already uses (SQ-4). Without the key every authority, binding and selection is exactly as before.',
+  what:'The repertoire authority carries the strength rules handed under the exported key STRENGTH_RULES, under that same key and never under a field a JSON value can carry, and the binding of a plan records them. With them: a hold configuration is not admitted (SQ-1); in an upper-body slot where RUNNING_SUPPORT is a matching purpose external loading ranks before purpose (SQ-2); with two MAIN slots of PUSH or PULL that admit both planes, a new plan that does not open with movement practice asks the second for the vertical plane, inside the loading guard and never for a configuration an earlier session of the week holds in another role; in a plan in force a slot asks only where the plan was built with it asking, keeps the configuration it was built with while that fits, and prefers nothing while it does not (SQ-4). Without the key every authority, binding and selection is exactly as before.',
   diff:{sha256:shaOf(Buffer.from(diff,'utf8')),linesAdded:lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')).length,linesRemoved:lines.filter(l=>l.startsWith('-')&&!l.startsWith('---')).length,hunks:lines.filter(l=>l.startsWith('@@')).length,text:diffText(lines)}};
 }
 /** (iv): what changed under CoachingCore since the commit the last freeze binds, to a commit (or to the tree here), beyond this extension. */

@@ -292,11 +292,12 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
  // SQ-4 plane alternation: with two or more MAIN slots of one pattern that admit both planes, every second one (template order, then slot index)
  // asks for the other plane; a single slot keeps the default. At most half ask. A new plan that opens with movement practice (strength class
  // NONE: experience below intermediate and no named exercise) asks nothing: there a second configuration of a pattern has its first exposure a
- // week after the first, at another dose, and the session's time fit then leaves a row out.
+ // week after the first, at another dose, and the session's time fit then leaves a row out. In a plan in force (`inForce`) a slot asks only
+ // where the plan was built with it asking: a review gives a running plan no asking slot, whatever its class and whatever its days now are.
  const planeSlot=new Map(),practiceStart=!['INTERMEDIATE','EXPERIENCED'].includes(experience)&&!knownExercises.length;
  // The roles in which the earlier sessions of the week hold each configuration: one configuration has one dose state, whichever row carries it.
  const heldAs=new Map();
- if(S?.inForce||!practiceStart)for(const [p,sub] of Object.entries(S?.planeAlternation??{})){const both=defs.flatMap((d,ti)=>(d?.slots??[]).map((s,si)=>({ti,si,s})).filter(x=>x.s.pattern===p&&x.s.role==='MAIN'&&[sub,DEFAULT_SUBPATTERN[p]].every(q=>(x.s.subpatterns??[]).includes(q))));if(both.length>=2)both.forEach((x,i)=>{if(i%2===1)planeSlot.set(x.ti+':'+x.si,sub);});}
+ if(S?.inForce||!practiceStart)for(const [p,sub] of Object.entries(S?.planeAlternation??{})){const both=defs.flatMap((d,ti)=>(d?.slots??[]).map((s,si)=>({ti,si,s})).filter(x=>x.s.pattern===p&&x.s.role==='MAIN'&&[sub,DEFAULT_SUBPATTERN[p]].every(q=>(x.s.subpatterns??[]).includes(q))));if(both.length>=2)both.forEach((x,i)=>{if(i%2===1&&(!S.inForce||typeof S.inForce[types[x.ti]+':'+x.si]==='string'))planeSlot.set(x.ti+':'+x.si,sub);});}
  const templates=defs.map((def,index)=>{
   const used=new Set(),rows=[],missing=[],missingLimits={},asideGaps=[];
   (def?.slots??[]).forEach((slot,si)=>{
@@ -315,11 +316,11 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
    // external loading down to bodyweight, assistance or a band (the guard: when the slot's choice without this rule is externally loaded, only an
    // externally loaded configuration of that plane is preferred). And it never prefers a configuration an earlier session of the week holds in
    // another role: the MAIN row would take that row's dose state. In a plan in force (`inForce`) the slot keeps the configuration it was built
-   // with (`own`) while that one fits, the rest in the order it was built in. A slot with none (the days changed and the templates with them),
-   // or whose own no longer fits, prefers that plane only among the configurations the plan already uses (`established`): the rule never
-   // brings an exercise into a running plan, and a change of days does not drop the vertical lift the plan was built with.
+   // with (`own`) while that one fits, the rest in the order it was built in. While its own does not fit it prefers nothing and takes the
+   // ordinary order, and goes back to its own when that fits again. In a running plan the rule only keeps: it moves no configuration into a
+   // MAIN row, so no MAIN row takes the dose state another role built, after a change of days or of equipment alike.
    const wantPlane=planeSlot.get(index+':'+si)??null;
-   const planeFor=list=>{if(!wantPlane)return null;const plain=[...list].sort(order(rolePurposes,preferred,{pattern}))[0],prefers=e=>e.subpattern===wantPlane&&(e.loading==='EXTERNAL'||plain?.loading!=='EXTERNAL')&&!(heldAs.get(e.id)??[]).some(r=>r!=='MAIN');if(!S.inForce)return {own:null,prefers};const own=S.inForce[types[index]+':'+si]??null;return {own,prefers:list.some(e=>e.id===own)?prefers:e=>prefers(e)&&established.includes(e.id)};};
+   const planeFor=list=>{if(!wantPlane)return null;const plain=[...list].sort(order(rolePurposes,preferred,{pattern}))[0],prefers=e=>e.subpattern===wantPlane&&(e.loading==='EXTERNAL'||plain?.loading!=='EXTERNAL')&&!(heldAs.get(e.id)??[]).some(r=>r!=='MAIN');if(!S.inForce)return {own:null,prefers};const own=S.inForce[types[index]+':'+si]??null;return {own,prefers:list.some(e=>e.id===own)?prefers:()=>false};};
    // `keep` narrows the candidates (the direction of a SKILL_MISMATCH fallback, QE-R7B-R2-03), in the MAIN list and in its B0-C09 downgrade alike.
    const optionsFor=(aside,keep=()=>true)=>{
     let list=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used,aside})&&keep(e)),r=role,down=false;

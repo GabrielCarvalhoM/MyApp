@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {S,P,DEV,OFF,only,B,HOLDS,VALUES,ELIG,lifter,hybrid,familiar,timeline,report,rowsOf,idsOf,slots,mainsOf,planesOf,configurationOf,CONFIGURATIONS,hash,live,EQUIPMENT,FULL,devStrength,addDays} from './v1str-helpers.mjs';
-import {STRENGTH_RULES,repertoireAuthority,selectionCompare,TEMPLATE_DEFS} from '../src/r7b-repertoire.mjs';
+import {STRENGTH_RULES,repertoireAuthority,selectionCompare,buildTemplates,TEMPLATE_DEFS} from '../src/r7b-repertoire.mjs';
 import {strengthAuthority,strengthRules,strengthValuesOf,allowsStrength,slotsInForce,STRENGTH_VALUES_SHA256,STRENGTH_VALUES_FILE_SHA256,STRENGTH_VALUES_URL,STRENGTH_EXTENSION_ID} from '../src/v1-strength.mjs';
 import {substitutesFor} from '../src/r6-catalogue.mjs';
 import {r6Authority} from '../src/r6-authority.mjs';
@@ -334,7 +334,7 @@ test('a new plan from the record is built under the rules in force', ()=>{
  assert.ok(r.program,r.status+' '+r.reason);assert.deepEqual(r.program.repertoire.strengthExtension.boundaries,[B.HOLD,B.PLANE,B.UPPER]);assert.ok(planesOf(r.program).includes('VERTICAL_PULL'));assert.ok(!idsOf(r.program).some(id=>HOLDS.includes(id)));
 });
 
-// ---------- the corrective cycle (SSCTR-STR-A-01, A-02, A-06, A-08) ----------
+// ---------- the corrective cycle (SSCTR-STR-A-01, A-02, A-06) ----------
 test('SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row\'s dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule', ()=>{
  const DOSES=JSON.parse(fs.readFileSync(new URL('../r6/PROGRAM_POLICY_R6.json',import.meta.url),'utf8')).operational.strength.goalDoses;
  const NAMED={none:[],barbell:['back-squat','bench-press','deadlift','barbell-overhead-press','barbell-row'].map(familiar),press:[familiar('db-overhead-press')],pulldown:[familiar('lat-pulldown')]};
@@ -388,25 +388,111 @@ test('SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first 
  const off=mainsOf(S.generateProgram(hybrid({equipment:FULL,days:[0,2,4,6],months:24}),OFF).program);
  assert.deepEqual(Object.keys(m).filter(k=>configurationOf(m[k]).region!=='UPPER').map(k=>m[k]),Object.keys(off).filter(k=>configurationOf(off[k]).region!=='UPPER').map(k=>off[k]),'the lower-body MAIN rows are as without the rules');
 });
-test('SQ-4 c5 (SSCTR-STR-A-08) a change of strength days keeps the vertical lifts the plan was built with, and brings no exercise into a running plan', ()=>{
- for(const [from,to,stayMain] of [[[1,4],[0,2,4,6],false],[[0,2,4,6],[1,4],true],[[1,4],[1,3,5],true],[[1,3,5],[1,4],true],[[1,3,5],[0,2,4,6],true]]){
-  const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days:from})),label=`${from.length} to ${to.length} days`;t.weeks(0,1);
-  const before=new Set(idsOf(t.p)),vertical=Object.values(mainsOf(t.p)).filter(id=>/^VERTICAL_/.test(planeOf(id)));assert.equal(vertical.length,2,label);
-  const r=t.step(2,0,'SCHEDULE_CHANGE',{changes:{strengthDays:to}},'06:00');assert.equal(r.status,'MODIFY',label+': '+r.reason);
-  const rows=t.p.templates.flatMap(x=>x.rows),upper=rows.filter(x=>x.entry.region==='UPPER'),ahead=new Set(idsOf({weeks:t.p.weeks.slice(3)}));
-  // Each vertical lift is still done in the weeks ahead, and no upper-body MAIN row is an exercise the plan did not hold.
-  for(const id of vertical)assert.ok(ahead.has(id),`${label}: ${id} left the plan`);
-  for(const x of upper.filter(x=>x.role==='MAIN'))assert.ok(before.has(x.entry.id),`${label}: ${x.entry.id} is new to the plan`);
-  // It stays a MAIN row wherever no earlier session of the new week holds it as an accessory (the engine's own continuity puts an exercise in
-  // use into an open accessory slot first; the asking slot then keeps the default rather than share that row's dose state).
-  if(stayMain)for(const id of vertical)assert.ok(upper.some(x=>x.role==='MAIN'&&x.entry.id===id),`${label}: ${id} is no longer a MAIN row`);
-  else for(const id of vertical)assert.deepEqual([...new Set(upper.filter(x=>x.entry.id===id).map(x=>x.role))],['ACCESSORY'],`${label}: ${id}`);
+// ---------- the focused fix-forward of the plane rule (SSCTR-STR-B-01 = QRE-STR-B-01): in a plan in force the rule only keeps ----------
+const GOAL_DOSES=JSON.parse(fs.readFileSync(new URL('../r6/PROGRAM_POLICY_R6.json',import.meta.url),'utf8')).operational.strength.goalDoses;
+const NAMED_BARBELL=['back-squat','bench-press','deadlift','barbell-overhead-press','barbell-row'].map(familiar),STRENGTH_DAYS={1:[3],2:[1,4],3:[1,3,5],4:[0,2,4,6],5:[0,1,2,4,6]};
+const NO_PLANE=only('HOLD','UPPER');
+const changeDays=(t,w,days)=>t.step(w,0,'SCHEDULE_CHANGE',{changes:{strengthDays:STRENGTH_DAYS[days]}},'06:00');
+/** The roles in which the templates of a plan hold each configuration. */
+const rolesOf=p=>{const m=new Map();for(const t of templatesOf(p))for(const r of t.rows)m.set(r.entry.id,(m.get(r.entry.id)??new Set()).add(r.role));return m;};
+/** The configurations with an externally loaded MAIN row outside the goal's repetition range, in the weeks from `from` on. */
+const outsideFrom=(p,goal,from)=>{const out=new Set(),[lo,hi]=GOAL_DOSES[goal].repRange;for(let w=from;w<p.weeks.length;w++)for(const {e} of rowsOf(p,w))if(e.role==='MAIN'&&loadingOf(e.id)==='EXTERNAL'&&(e.reps<lo||e.reps>hi))out.add(e.id);return out;};
+/** What a plan holds: the slots that ask, and its selection and every prescribed row. */
+const held=p=>({asking:templatesOf(p).flatMap(t=>t.rows).filter(r=>r.planeAlternation).length,hash:hash([p.templates,p.noviceTemplates??null,p.weeks.map((_,w)=>rowsOf(p,w).map(x=>[x.s.id,x.e]))])});
+test('SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule', ()=>{
+ let n=0;
+ const sixty=['NONE','NOVICE'].flatMap(experience=>['MACHINES','FULL'].flatMap(eq=>['GENERAL','STRENGTH'].flatMap(goal=>[[3,2],[5,2],[4,3]].map(([a,b])=>({experience,eq,goal,a,b,minutes:60})))));
+ // And under a tight session time, where the time fit decides which rows a session keeps.
+ for(const {experience,eq,goal,a,b,minutes} of [...sixty,{experience:'NONE',eq:'MACHINES',goal:'STRENGTH',a:5,b:2,minutes:30},{experience:'NOVICE',eq:'FULL',goal:'GENERAL',a:4,b:3,minutes:45}]){
+  const label=`${experience} ${eq} ${goal} ${a} to ${b} days, ${minutes} min`;
+  const run=opts=>{const t=timeline(lifter({experience,goal,equipment:EQUIPMENT[eq],days:STRENGTH_DAYS[a],minutes}),{opts});assert.equal(held(t.p).asking,0,label+': built with no asking slot');t.weeks(0,1);
+   assert.equal(changeDays(t,2,b).status,'MODIFY',label);const changed=held(t.p);t.week(2);return {t,changed};};
+  const on=run(DEV),off=run(NO_PLANE);n++;
+  for(const [when,x,y] of [['at the change',on.changed,off.changed],['a review later',held(on.t.p),held(off.t.p)]]){assert.equal(x.asking,0,`${label}, ${when}: a slot asks`);assert.equal(x.hash,y.hash,`${label}, ${when}: not the plan without the plane rule`);}
+  assert.deepEqual(slotsInForce(on.t.p),{},label);
  }
- // One day to two: the plan holds no vertical lift, and the new second slots bring none in.
- const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days:[3]}));t.weeks(0,1);const before=new Set(idsOf(t.p));
- assert.equal(t.step(2,0,'SCHEDULE_CHANGE',{changes:{strengthDays:[1,4]}},'06:00').status,'MODIFY');
+ assert.equal(n,26);
+});
+test('SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule', ()=>{
+ // Strength, hypertrophy, general and running-support plans; named barbell lifts; a novice past movement practice; a hybrid race plan.
+ const of=(goal,eq,experience,known=[])=>[goal,eq,days=>lifter({goal,experience,equipment:EQUIPMENT[eq],days,known})];
+ const CASES=[of('STRENGTH','FULL','INTERMEDIATE',NAMED_BARBELL),of('STRENGTH','BAR','EXPERIENCED',NAMED_BARBELL),of('STRENGTH','MACHINES','INTERMEDIATE'),of('HYPERTROPHY','MACHINES','INTERMEDIATE'),of('HYPERTROPHY','BANDS','INTERMEDIATE'),of('GENERAL','FULL','INTERMEDIATE'),
+  of('GENERAL','MACH_DB','NOVICE',[familiar('goblet-squat')]),['RUNNING_SUPPORT','DB_BANDS',days=>hybrid({equipment:EQUIPMENT.DB_BANDS,days})]];
+ let changes=0,kept=0,dropped=0;const mains={};
+ for(const [goal,eq,intake] of CASES)for(const [a,b] of [[4,2],[5,2],[4,3],[3,4],[2,4],[2,3],[3,2]]){
+  const label=`${goal} ${eq} ${a} to ${b} days`,res={};
+  for(const [k,opts] of [['on',DEV],['noPlane',NO_PLANE]]){
+   const t=timeline(intake(STRENGTH_DAYS[a]),{opts});t.week(0);
+   const built=slotsInForce(t.p),before=rolesOf(t.p);assert.equal(changeDays(t,1,b).status,'MODIFY',label);
+   res[k]={t,built,before,mains:upperMains(t.p),out:outsideFrom(t.p,goal,1)};
+  }
+  changes++;mains[label]=mainsOf(res.on.t.p);
+  const {t,built,before}=res.on,after=slotsInForce(t.p),sameTemplate=a<=3&&b<=3;
+  assert.ok(Object.keys(built).length>0,label+': the control, the plan was built with asking slots');
+  // The slots that ask after the change: the ones the plan was built with where their template is still in the week (two and three days share
+  // FULL_B), each on the configuration it was built with; none where the templates changed.
+  if(sameTemplate){assert.deepEqual(after,built,label);for(const m of res.on.mains.filter(m=>m.row.planeAlternation)){assert.equal(m.id,built[m.type+':'+m.slot],label);kept++;}}
+  else{assert.deepEqual(after,{},label+': a slot asks that the plan was not built with');dropped++;}
+  // A MAIN row on a configuration the plan held before only in another role: never an asking slot (the SSCTR measure), and never one the same
+  // slot does not hold without the plane rule (the QRE measure).
+  for(const m of res.on.mains){const was=before.get(m.id);if(!was||was.has('MAIN'))continue;
+   assert.ok(!m.row.planeAlternation,`${label}: the asking slot ${m.type}:${m.slot} took ${m.id}, held before as ${[...was]}`);
+   assert.equal(res.noPlane.mains.find(x=>x.type===m.type&&x.slot===m.slot)?.id,m.id,`${label}: ${m.type}:${m.slot} took ${m.id}, held before as ${[...was]}, and does not without the plane rule`);}
+  for(const id of res.on.out)assert.ok(res.noPlane.out.has(id),`${label}: ${id} is a MAIN row outside ${GOAL_DOSES[goal].repRange} after the change, and is not without the plane rule`);
+ }
+ assert.equal(changes,56);assert.equal(kept,32);assert.equal(dropped,40);
+ // The cases the judges traced: each slot is the one the plan has without the plane rule.
+ assert.equal(mains['STRENGTH FULL 4 to 2 days']['FULL_B:2'],'bench-press');assert.equal(mains['STRENGTH BAR 5 to 2 days']['FULL_B:2'],'bench-press');
+ assert.equal(mains['HYPERTROPHY MACHINES 4 to 2 days']['FULL_B:1'],'seated-cable-row');assert.equal(mains['STRENGTH MACHINES 4 to 2 days']['FULL_B:1'],'seated-cable-row');
+ assert.equal(mains['HYPERTROPHY BANDS 4 to 2 days']['FULL_B:2'],'push-up');
+ // One day to two: the plan was built with no asking slot and is given none; the new second slots bring no vertical lift in.
+ const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days:STRENGTH_DAYS[1]}));t.weeks(0,1);const before=new Set(idsOf(t.p));
+ assert.equal(changeDays(t,2,2).status,'MODIFY');assert.deepEqual(slotsInForce(t.p),{});
  const upper=Object.values(mainsOf(t.p)).filter(id=>configurationOf(id).region==='UPPER');assert.equal(upper.length,4);
  assert.ok(upper.every(id=>before.has(id)&&!/^VERTICAL_/.test(planeOf(id))),JSON.stringify(upper));
+});
+test('SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper', ()=>{
+ // The same number of days on other weekdays: the sessions are rearranged, every slot and every anchor stays.
+ for(const [days,other] of [[[1,4],[2,5]],[[0,2,4,6],[0,1,3,5]]]){
+  const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days}));t.weeks(0,1);const start=slots(t.p),built=slotsInForce(t.p);assert.equal(Object.keys(built).length,2);
+  assert.equal(t.step(2,0,'SCHEDULE_CHANGE',{changes:{strengthDays:other}},'06:00').status,'MODIFY');assert.deepEqual(slots(t.p),start,`${days} to ${other}`);assert.deepEqual(slotsInForce(t.p),built);
+ }
+ // A substitution for skill of the vertical MAIN: the athlete's decision takes the slot, with its reason; the anchor and every other slot stay.
+ const v=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL}));v.weeks(0,1);const start=slots(v.p),built=slotsInForce(v.p);
+ const sub=v.step(2,0,'EXERCISE_SUBSTITUTION',{substitution:{exerciseId:'db-overhead-press',reason:'SKILL_MISMATCH',nonclinicalConfirmed:true}},'06:00'),to=sub.substitutions[0].selected;
+ assert.equal(sub.status,'MODIFY');assert.notEqual(skillOf(to),'HIGH');
+ const check=()=>{const now=slots(v.p),row=v.p.templates.flatMap(x=>x.rows).find(r=>r.planeAlternation?.asks==='VERTICAL_PUSH');
+  assert.deepEqual(Object.keys(start).filter(k=>start[k]!==now[k]),['FULL_B:2']);assert.equal(row.entry.id,to);assert.equal(row.directive.reason,'SKILL_MISMATCH');assert.deepEqual(slotsInForce(v.p),built);};
+ check();v.weeks(2,3);check();
+ // A change of days inside the taper of a race plan: where the template of the asking slots stays (two to three days) they stay as built, where
+ // it does not (two to four) no slot asks, and in neither case is an exercise new in the taper, the race week or the week after.
+ for(const [days,keeps] of [[3,true],[4,false]]){
+  const t=timeline(hybrid({equipment:FULL,weeks:8})),phases=t.p.phases.phases,taper=phases.indexOf('TAPER'),anchors=slotsInForce(t.p);assert.ok(taper>0);assert.equal(Object.keys(anchors).length,2);
+  t.weeks(0,taper-1);const earlier=new Set(idsOf({weeks:t.p.weeks.slice(0,taper)}));
+  assert.equal(changeDays(t,taper,days).status,'MODIFY');assert.deepEqual(slotsInForce(t.p),keeps?anchors:{},`two to ${days} days in the taper`);
+  for(let w=taper;w<phases.length;w++)for(const {e} of rowsOf(t.p,w))assert.ok(earlier.has(e.id),`${e.id} is new in ${phases[w]}`);
+ }
+});
+test('SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor', ()=>{
+ const goal={strength:{kind:'STRENGTH'}},uses=['bench-press','barbell-row','barbell-overhead-press','db-row','lat-pulldown','db-overhead-press','pike-push-up','band-assisted-pull-up'];
+ const auth=rules=>repertoireAuthority({[STRENGTH_RULES]:rules}),absent=auth(strengthRules(devStrength([B.HOLD,B.UPPER]))),under=inForce=>auth(strengthRules(devStrength(),{inForce}));
+ const build=(a,types,equipment=FULL)=>buildTemplates({types,equipment,experience:'INTERMEDIATE',knownExercises:NAMED_BARBELL,established:uses,goal,auth:a});
+ const SETS=[['FULL_A','FULL_B'],['LOWER','UPPER','FULL_B'],['LOWER','UPPER','LOWER_B','UPPER_B']],asking=ts=>ts.flatMap(t=>t.rows.filter(r=>r.planeAlternation).map(r=>t.type+':'+r.slot));
+ // The control: a new plan of each set asks twice, so what follows is not vacuous.
+ for(const types of SETS)assert.equal(asking(build(auth(strengthRules(devStrength())),types)).length,2,types.join());
+ // No anchor at all (a plan built with no asking slot) and the anchors of another week (the days changed): the selection without the plane rule.
+ for(const types of SETS)for(const inForce of [{},{'UPPER_B:0':'lat-pulldown','UPPER_B:1':'db-overhead-press'},{'FULL_B:1':'lat-pulldown','FULL_B:2':'db-overhead-press'}]){
+  const got=build(under(inForce),types),keys=asking(got),label=`${types.join()} with the anchors ${JSON.stringify(inForce)}`;
+  assert.deepEqual(keys,Object.keys(inForce).filter(k=>types.includes(k.split(':')[0])),label);
+  if(!keys.length)assert.equal(hash(got),hash(build(absent,types)),label+': not the selection without the plane rule');
+  else for(const t of got)for(const r of t.rows.filter(r=>r.planeAlternation)){assert.equal(r.entry.id,inForce[t.type+':'+r.slot],label);assert.equal(r.planeAlternation.built,r.entry.id,label);}
+ }
+ // An anchored slot whose own configuration does not fit (the dumbbells and the machines went): what the slot takes without the plane rule,
+ // never the vertical lift the plan uses in another row; the anchor is still the configuration the plan was built with.
+ const anchors={'FULL_B:1':'lat-pulldown','FULL_B:2':'db-overhead-press'},lost=build(under(anchors),['FULL_A','FULL_B'],EQUIPMENT.BAR),plain=build(absent,['FULL_A','FULL_B'],EQUIPMENT.BAR);
+ const row=(ts,key)=>ts.find(t=>t.type===key.split(':')[0]).rows.find(r=>r.slot===Number(key.split(':')[1]));
+ for(const key of Object.keys(anchors)){assert.equal(row(lost,key).entry.id,row(plain,key).entry.id,key);assert.equal(row(lost,key).planeAlternation.built,anchors[key],key);}
+ assert.equal(row(lost,'FULL_B:2').entry.id,'bench-press','the familiar overhead press the plan uses is not moved into the MAIN row');
 });
 
 // ---------- the corrective cycle (QRE-STR-A-01, A-02, A-08) ----------
