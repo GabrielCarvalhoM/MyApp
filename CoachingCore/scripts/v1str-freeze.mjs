@@ -1,21 +1,23 @@
 // CoachingCore V1 Strength Extension (Founder request of 2026-11-16; SI-V1-SSCTR-SQ-1 to SQ-4): the additive freeze record
 // (COACHINGCORE-V1-STRENGTH-FREEZE-n). No earlier freeze record or verifier is edited to accept it (Founder governance rule of 2026-11-13): the
 // historical checks keep running on their own frozen snapshots, and this verifier declares the one amendment it authorizes. It binds one commit:
-//   (i)   every file the four earlier freezes bind is byte-identical here (COACHINGCORE-V1-FREEZE-1, -RUN-CALIBRATION-FREEZE-1,
-//         -RUN-FORMAT-FREEZE-2 and -RACE-FORECAST-FREEZE-1), and so is the authority each of the last two bound, except the two amended files
-//         of COACHINGCORE-V1-FREEZE-1;
+//   (i)   the four earlier freeze records are the bytes pinned below (COACHINGCORE-V1-FREEZE-1, -RUN-CALIBRATION-FREEZE-1, -RUN-FORMAT-FREEZE-2
+//         and -RACE-FORECAST-FREEZE-1), every file each of them binds is byte-identical here, and so is the authority each of the last two
+//         bound, except the two amended files of COACHINGCORE-V1-FREEZE-1;
 //   (ii)  src/r6-adaptation.mjs is the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized (its own amendment, untouched here);
 //   (iii) src/r7b-repertoire.mjs, the one file this extension amends: its base is exactly the bytes COACHINGCORE-V1-FREEZE-1 recorded, and its
 //         new hash and its whole diff are the authorized ones below, read again from git on every check. Nothing lexical is accepted in their
 //         place: any other byte in the file, on any line, fails;
-//   (iv)  nothing else under CoachingCore's source, values, tests, scripts, policy, catalog or fixtures changed since the commit
-//         COACHINGCORE-V1-RACE-FORECAST-FREEZE-1 binds, but what this extension adds;
+//   (iv)  no other tracked file of CoachingCore, and none of the review records its runtime reads that no earlier freeze binds, changed since
+//         the commit COACHINGCORE-V1-RACE-FORECAST-FREEZE-1 binds, but what this extension adds; and no untracked file sits in its source,
+//         values, tests or scripts;
 //   (v)   the files this extension adds, each by hash, and the authority it was built from.
 // The earlier verifiers are not run here. On this line each of them names the amended file, by design, and each passes on the commit its own
 // record binds (the historical check stays green on its own snapshot). For the same reason the joint suite has exactly two failures on this
 // line, the two historical freeze tests that name the amended file: `--write` runs the suite itself, never trusts a typed count, and refuses
 // unless those two tests, by name, are the only failures and every test of this extension passes.
 // A freeze is written only over independent SSCTR records that enable the four boundaries for the pinned values.
+// A freeze binds every tracked file under audits/v1-strength-corrections-2026-11-16/candidate: a record written after it goes outside that folder.
 // This script writes nothing but its own record.
 //   node scripts/v1str-freeze.mjs --write <n> --commit <sha> [--note "..."]   runs the suites, then writes v1/RUNTIME_FREEZE_V1STR_<n>.json
 //   node scripts/v1str-freeze.mjs --check <n>                                  recomputes and compares; exit 1 on drift
@@ -35,6 +37,10 @@ const digest=o=>createHash('sha256').update(JSON.stringify(o)).digest('hex');
 const read=f=>JSON.parse(fs.readFileSync(path.join(ROOT,f),'utf8'));
 /** The earlier freezes this one is additive to, each by its own record. */
 const PRIOR={v1:'CoachingCore/v1/RUNTIME_FREEZE_V1_1.json',v1rc:'CoachingCore/v1/RUNTIME_FREEZE_V1RC_1.json',v1rws:'CoachingCore/v1/RUNTIME_FREEZE_V1RWS_2.json',v1rfc:'CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json'};
+/** The bytes of those four records at the last commit of the run extensions line (2dfa216): an edited record is no record (QRE-STR-A-03). */
+const PRIOR_SHA256={v1:'14287ec1021a98e5145b6ccfc7aadd8d28e90ba91c29c206b5a73da0e0f329a3',v1rc:'b5825891caed67c870a9b7a015d20a64a0eee4bca021447a4ec8f6dd6e5a650d',v1rws:'a4d8b8900c18c34166230f41d1b0e478d7d7dca2422ec61169ad10b9d0f641ad',v1rfc:'1ea971dc516014fd730975b0eddabf0cfa18173c826eac80b8dc39a69caeca3e'};
+/** The review records the runtime reads that no earlier freeze binds: unchanged since the last freeze, like everything else (QRE-STR-A-09). */
+const RUNTIME_READ=['audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json','audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json','audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json'];
 /** The file of COACHINGCORE-V1-FREEZE-1 that COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 amended, and the one this extension amends. */
 const AMENDED_BEFORE='CoachingCore/src/r6-adaptation.mjs',AMENDED='CoachingCore/src/r7b-repertoire.mjs';
 /** What this extension adds: tracked files only, under these paths. */
@@ -59,7 +65,7 @@ function preserved(){
  // (ii): the earlier amendment is the bytes its own record authorized.
  const earlier={file:AMENDED_BEFORE,recordedIn:rec.v1rws.revision,authorizedSha256:rec.v1rws.amendment.newSha256,sha256:fs.existsSync(path.join(ROOT,AMENDED_BEFORE))?sha(path.join(ROOT,AMENDED_BEFORE)):null};
  earlier.ok=earlier.sha256===earlier.authorizedSha256;
- const bad=[...Object.entries(out).flatMap(([k,x])=>[...x.changed.map(f=>`(${x.revision}) ${f}`),...(x.authorityChanged??[]).map(f=>`(${x.revision}, authority) ${f}`)]),...(earlier.ok?[]:[`(${earlier.recordedIn}, amendment) ${AMENDED_BEFORE}`])];
+ const bad=[...Object.keys(PRIOR).filter(k=>out[k].sha256!==PRIOR_SHA256[k]).map(k=>`(record) ${PRIOR[k]} is not the pinned bytes`),...Object.entries(out).flatMap(([k,x])=>[...x.changed.map(f=>`(${x.revision}) ${f}`),...(x.authorityChanged??[]).map(f=>`(${x.revision}, authority) ${f}`)]),...(earlier.ok?[]:[`(${earlier.recordedIn}, amendment) ${AMENDED_BEFORE}`])];
  return {records:out,earlierAmendment:earlier,bad};
 }
 /**
@@ -67,7 +73,7 @@ function preserved(){
  * and its whole diff from the base, each by hash. The diff is the hunk headers and the changed lines of `git diff -U0 <base> -- <file>`, joined
  * by a line feed.
  */
-const AMENDMENT={sha256:'6bd4f365cd34b4165c3bafb838ad0cd20429f0841fb90b53b12a94481ec53833',diffSha256:'f053482ff60f5f3264416d544bd050d477bf652977c6aaf482c39a20c140c17b',linesAdded:36,linesRemoved:10};
+const AMENDMENT={sha256:'0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477',diffSha256:'e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be',linesAdded:43,linesRemoved:11};
 const diffText=lines=>lines.filter(l=>/^(@@|[+-])/.test(l)&&!/^(\+\+\+|---)/.test(l));
 function rulesAlone(lines){
  const plus=lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')),minus=lines.filter(l=>l.startsWith('-')&&!l.startsWith('---')),found=shaOf(Buffer.from(diffText(lines).join('\n'),'utf8'));
@@ -79,11 +85,13 @@ const diffOf=(base,commit=null)=>execFileSync('git',['diff','--no-color','--no-e
 function amendment(commit=null){
  const v1=read(PRIOR.v1),baseBytes=blob(v1.commit,AMENDED),diff=diffOf(v1.commit,commit),lines=diff.split('\n');
  return {file:AMENDED,rulesAlone:rulesAlone(lines),baseCommit:v1.commit,baseSha256:shaOf(baseBytes),baseIsTheRecorded:shaOf(baseBytes)===v1.files[AMENDED],recordedIn:v1.revision,newSha256:commit?shaOf(blob(commit,AMENDED)):sha(path.join(ROOT,AMENDED)),authorizedSha256:AMENDMENT.sha256,
-  what:'The repertoire authority carries the strength rules handed under the exported key STRENGTH_RULES (as `strength`), and the binding of a plan records them. With them: a hold configuration is not admitted (SQ-1); in an upper-body slot where RUNNING_SUPPORT is a matching purpose external loading ranks before purpose (SQ-2); with two MAIN slots of PUSH or PULL that admit both planes, the second asks for the vertical plane in a new plan, inside the loading guard, and keeps the configuration it was built with in a plan in force (SQ-4). Without the key every authority, binding and selection is exactly as before.',
+  what:'The repertoire authority carries the strength rules handed under the exported key STRENGTH_RULES, under that same key and never under a field a JSON value can carry, and the binding of a plan records them. With them: a hold configuration is not admitted (SQ-1); in an upper-body slot where RUNNING_SUPPORT is a matching purpose external loading ranks before purpose (SQ-2); with two MAIN slots of PUSH or PULL that admit both planes, a new plan that does not open with movement practice asks the second for the vertical plane, inside the loading guard and never for a configuration an earlier session of the week holds in another role, and a plan in force keeps the configuration each such slot was built with, preferring the plane otherwise only among the configurations it already uses (SQ-4). Without the key every authority, binding and selection is exactly as before.',
   diff:{sha256:shaOf(Buffer.from(diff,'utf8')),linesAdded:lines.filter(l=>l.startsWith('+')&&!l.startsWith('+++')).length,linesRemoved:lines.filter(l=>l.startsWith('-')&&!l.startsWith('---')).length,hunks:lines.filter(l=>l.startsWith('@@')).length,text:diffText(lines)}};
 }
 /** (iv): what changed under CoachingCore since the commit the last freeze binds, to a commit (or to the tree here), beyond this extension. */
-const outside=(from,to=null)=>git('diff','--name-only',from,...(to?[to]:[]),'--','CoachingCore/src','CoachingCore/v1','CoachingCore/test','CoachingCore/scripts','CoachingCore/r6','CoachingCore/r7','CoachingCore/fixtures','CoachingCore/package.json','CoachingCore/package-lock.json').split('\n').filter(Boolean).filter(f=>!isMine(f)&&f!==AMENDED&&!Object.values(PRIOR).includes(f));
+const outside=(from,to=null)=>git('diff','--name-only',from,...(to?[to]:[]),'--','CoachingCore',...RUNTIME_READ).split('\n').filter(Boolean).filter(f=>!isMine(f)&&f!==AMENDED&&!Object.values(PRIOR).includes(f));
+/** Untracked files where a tracked one would be bound: none may sit there (only `git status` sees them). */
+const untracked=()=>git('ls-files','--others','--exclude-standard','--','CoachingCore/src','CoachingCore/v1','CoachingCore/test','CoachingCore/scripts').split('\n').filter(Boolean);
 /** A run of the test runner here: the counts and the names of the tests that failed, read from its own report (never typed in). */
 function runSuite(files=[]){
  const r=spawnSync(process.execPath,['--test','--test-reporter=tap',...files],{cwd:CC,encoding:'utf8',maxBuffer:1<<30}),out=String(r.stdout??''),count=k=>{const m=out.match(new RegExp(`^# ${k} (\\d+)$`,'m'));return m?Number(m[1]):null;};
@@ -134,17 +142,17 @@ if(arg('--write')){
  fs.writeFileSync(out,JSON.stringify(record,null,1)+'\n');
  console.log(`${record.revision}: ${record.fileCount} added files, digest ${record.filesDigest}, binds ${full}; 1 amended file (${a.diff.linesAdded}+/${a.diff.linesRemoved}-); ${Object.values(p.records).map(x=>`${x.revision} preserved ${x.identical}/${x.fileCount-(x.amended?.length??0)}`).join('; ')}`);
 }else if(arg('--check')){
- const r=JSON.parse(fs.readFileSync(recordPath(arg('--check')),'utf8')),now=filesNow(),drift=[...new Set([...Object.keys(r.files),...Object.keys(now)])].filter(f=>r.files[f]!==now[f]),p=preserved(),a=amendment(r.commit),changed=outside(p.records.v1rfc.commit),{on}=await boundaries();
+ const r=JSON.parse(fs.readFileSync(recordPath(arg('--check')),'utf8')),now=filesNow(),drift=[...new Set([...Object.keys(r.files),...Object.keys(now)])].filter(f=>r.files[f]!==now[f]),p=preserved(),a=amendment(r.commit),changed=outside(p.records.v1rfc.commit),loose=untracked(),{on}=await boundaries();
  const amended=fs.existsSync(path.join(ROOT,AMENDED))&&sha(path.join(ROOT,AMENDED))===r.amendment.newSha256&&r.amendment.newSha256===AMENDMENT.sha256&&a.baseIsTheRecorded&&a.baseSha256===r.amendment.baseSha256&&a.newSha256===r.amendment.newSha256&&a.diff.sha256===r.amendment.diff.sha256&&a.rulesAlone.ok;
  const authority=Object.entries(r.authority).filter(differs).map(([f])=>f),switched=Object.keys(r.extension.boundaries).filter(k=>r.extension.boundaries[k]!==on[k]),priors=Object.keys(PRIOR).filter(k=>p.records[k].sha256!==r.additiveTo[k].sha256);
- const ok=!drift.length&&digest(r.files)===r.filesDigest&&!p.bad.length&&!priors.length&&amended&&!changed.length&&!authority.length&&!switched.length;
+ const ok=!drift.length&&digest(r.files)===r.filesDigest&&!p.bad.length&&!priors.length&&amended&&!changed.length&&!loose.length&&!authority.length&&!switched.length;
  console.log(ok?`${r.revision}: ${r.fileCount} added files match; 1 amended file matches its recorded diff (${r.amendment.diff.linesAdded}+/${r.amendment.diff.linesRemoved}-); ${Object.values(p.records).map(x=>`${x.revision} preserved ${x.identical}/${x.fileCount-(x.amended?.length??0)}`).join('; ')}`
-  :`${r.revision}: DRIFT\n`+[...drift,...p.bad,...priors.map(k=>'(record) '+PRIOR[k]),...(amended?[]:['(amendment) '+AMENDED]),...changed.map(f=>'(outside this extension) '+f),...authority.map(f=>'(authority) '+f),...switched.map(k=>'(boundary) '+k)].slice(0,40).join('\n'));process.exit(ok?0:1);
+  :`${r.revision}: DRIFT\n`+[...drift,...p.bad,...priors.map(k=>'(record) '+PRIOR[k]),...(amended?[]:['(amendment) '+AMENDED]),...changed.map(f=>'(outside this extension) '+f),...loose.map(f=>'(untracked) '+f),...authority.map(f=>'(authority) '+f),...switched.map(k=>'(boundary) '+k)].slice(0,40).join('\n'));process.exit(ok?0:1);
 }else if(process.argv.includes('--preserved')){
- const p=preserved(),a=amendment(),changed=outside(p.records.v1rfc.commit),bytesOk=a.newSha256===AMENDMENT.sha256;
+ const p=preserved(),a=amendment(),changed=outside(p.records.v1rfc.commit),loose=untracked(),bytesOk=a.newSha256===AMENDMENT.sha256;
  console.log(Object.values(p.records).map(x=>`${x.revision}: ${x.identical}/${x.fileCount-(x.amended?.length??0)} files byte-identical${x.amended?` (${x.amended.length} amended)`:''}`).join('\n')
   +`\n${AMENDED_BEFORE}: ${p.earlierAmendment.ok?'':'NOT '}the bytes ${p.earlierAmendment.recordedIn} authorized`
   +`\n${AMENDED}: its base is ${a.baseIsTheRecorded?'':'NOT '}the recorded bytes; it is ${bytesOk?'':'NOT '}the authorized bytes; its diff is ${a.rulesAlone.ok?'':'NOT '}the authorized one (${a.rulesAlone.linesAdded}+/${a.rulesAlone.linesRemoved}-; file ${a.newSha256}; diff ${a.rulesAlone.diffSha256})`
-  +`\n${changed.length?'CHANGED outside this extension:\n'+changed.join('\n'):'nothing else changed since '+p.records.v1rfc.commit.slice(0,7)}`+(p.bad.length?'\nNOT PRESERVED:\n'+p.bad.join('\n'):''));
- process.exit(p.bad.length||!a.baseIsTheRecorded||!a.rulesAlone.ok||!bytesOk||changed.length?1:0);
+  +`\n${changed.length?'CHANGED outside this extension:\n'+changed.join('\n'):'nothing else changed since '+p.records.v1rfc.commit.slice(0,7)}`+(loose.length?'\nUNTRACKED:\n'+loose.join('\n'):'')+(p.bad.length?'\nNOT PRESERVED:\n'+p.bad.join('\n'):''));
+ process.exit(p.bad.length||!a.baseIsTheRecorded||!a.rulesAlone.ok||!bytesOk||changed.length||loose.length?1:0);
 }else{console.log('usage: --write <n> --commit <sha> | --check <n> | --preserved');process.exit(2);}

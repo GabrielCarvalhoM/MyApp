@@ -7,6 +7,7 @@ import {S,P,DEV,OFF,only,B,HOLDS,VALUES,ELIG,lifter,hybrid,familiar,timeline,rep
 import {STRENGTH_RULES,repertoireAuthority,selectionCompare,TEMPLATE_DEFS} from '../src/r7b-repertoire.mjs';
 import {strengthAuthority,strengthRules,strengthValuesOf,allowsStrength,slotsInForce,STRENGTH_VALUES_SHA256,STRENGTH_VALUES_FILE_SHA256,STRENGTH_VALUES_URL,STRENGTH_EXTENSION_ID} from '../src/v1-strength.mjs';
 import {substitutesFor} from '../src/r6-catalogue.mjs';
+import {r6Authority} from '../src/r6-authority.mjs';
 
 // ---------- the sweep: equipment x goal x strength days x experience, each plan built once per authority ----------
 const GOALS=['GENERAL','HYPERTROPHY','STRENGTH','RUNNING_SUPPORT'],DAYS=[[1,4],[1,3,5],[0,2,4,6]],EXPERIENCE=['NONE','NOVICE','INTERMEDIATE','EXPERIENCED'];
@@ -44,7 +45,7 @@ test('V-EXT-01 a boundary is on only with an independent enabling record bound t
  assert.deepEqual(on([]),[]);
  assert.deepEqual(on([record(B.HOLD)]),['HOLD']);
  assert.deepEqual(on(Object.values(B).map(id=>record(id))),['HOLD','UPPER','PLANE','EXPOSURE']);
- for(const bad of [{extensionSha256:'0'.repeat(64)},{independent:false},{disposition:'REQUEST_REVISION'},{disposition:'REJECT'},{evidenceStatus:'PLAUSIBLE_BUT_UNCERTAIN'},{sourceIds:[]}])assert.deepEqual(on([record(B.PLANE,bad)]),[],JSON.stringify(bad));
+ for(const bad of [{extensionSha256:'0'.repeat(64)},{independent:false},{independent:undefined},{independent:'true'},{independent:1},{disposition:'REQUEST_REVISION'},{disposition:'REJECT'},{evidenceStatus:'PLAUSIBLE_BUT_UNCERTAIN'},{sourceIds:[]},{sourceIds:'SI-V1-SSCTR-SQ-4'}])assert.deepEqual(on([record(B.PLANE,bad)]),[],JSON.stringify(bad));
  assert.deepEqual(on([record(B.PLANE),record(B.PLANE,{disposition:'REJECT'})]),[],'a record bound to the values that does not enable vetoes its boundary');
  // Other bytes are not the values, whatever they say.
  const bytes=fs.readFileSync(STRENGTH_VALUES_URL);
@@ -52,15 +53,39 @@ test('V-EXT-01 a boundary is on only with an independent enabling record bound t
  // No selection boundary on: no rules at all.
  assert.equal(strengthRules(devStrength([])),null);assert.equal(strengthRules(devStrength([B.EXPOSURE])),null);
 });
-test('V-EXT-01 only this entry point turns a rule on: rules a caller passes itself are taken off', ()=>{
- const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW}),rules=strengthRules(devStrength()),base=S.generateProgram(intake,OFF);
- const byKey=S.generateProgram(intake,{...OFF,[STRENGTH_RULES]:rules}),byAuthority=S.generateProgram(intake,{...OFF,repertoire:{...repertoireAuthority({asOf:intake.asOf}),strength:rules}});
- assert.equal(hash(byKey.program),hash(base.program));assert.equal(hash(byAuthority.program),hash(base.program));
- // The control: the same rules through this entry point's own authority do change this plan (its planks go).
- assert.notEqual(hash(S.generateProgram(intake,DEV).program.templates),hash(base.program.templates));
+test('V-EXT-01 only this entry point turns a rule on: rules a caller passes itself are taken off, wherever it puts them', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW}),rules=strengthRules(devStrength()),plain=repertoireAuthority({asOf:intake.asOf}),A0=r6Authority(OFF);
+ const hidden=Object.defineProperty({...plain},STRENGTH_RULES,{value:rules,enumerable:false}),inherited=Object.assign(Object.create({[STRENGTH_RULES]:rules}),plain);
+ // Each carrier: the caller's options without rules, and the same options with rules of its own.
+ const tries={optionKey:[{},{[STRENGTH_RULES]:rules}],repertoire:[{repertoire:plain},{repertoire:{...plain,[STRENGTH_RULES]:rules}}],hiddenOnRepertoire:[{repertoire:plain},{repertoire:hidden}],inheritedByRepertoire:[{repertoire:plain},{repertoire:inherited}],
+  authorityRepertoire:[{authority:{...A0,repertoire:plain}},{authority:{...A0,repertoire:{...plain,[STRENGTH_RULES]:rules}}}],inheritedByAuthorityRepertoire:[{authority:{...A0,repertoire:plain}},{authority:{...A0,repertoire:inherited}}],jsonField:[{repertoire:plain},{repertoire:{...plain,strength:rules}}]};
+ for(const [name,[clean,carrying]] of Object.entries(tries)){const a=S.generateProgram(intake,{...OFF,...clean}),r=S.generateProgram(intake,{...OFF,...carrying});
+  assert.ok(a.program&&idsOf(a.program).some(id=>HOLDS.includes(id)),name+': the plan without rules holds a plank');
+  assert.equal(hash(r.program),hash(a.program),name);assert.equal(r.program.repertoire.strengthExtension,undefined,name);assert.equal(r.strengthExtension.status,'DISABLED',name);}
+ // The control: each carrier does turn the rules on when it reaches the engine untouched, through the entry point below (a development
+ // authority, never an integration): there the planks go.
+ for(const name of ['optionKey','repertoire','hiddenOnRepertoire','inheritedByRepertoire','authorityRepertoire'])assert.ok(!idsOf(P.generateProgram(intake,{...OFF,...tries[name][1]}).program).some(id=>HOLDS.includes(id)),name);
+ // A field a JSON value can carry is inert at every entry point, as it was before this extension.
+ assert.equal(hash(P.generateProgram(intake,{...OFF,...tries.jsonField[1]}).program),hash(P.generateProgram(intake,{...OFF,...tries.jsonField[0]}).program));
+});
+test('the rules reach the selection whichever way the caller supplies its authority, and the answer says what the plan was built under', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW}),plain=repertoireAuthority({asOf:intake.asOf}),want=hash(S.generateProgram(intake,DEV).program.templates);
+ for(const [name,extra] of Object.entries({repertoire:{repertoire:plain},authority:{authority:{...r6Authority(DEV),repertoire:plain}}})){
+  const r=S.generateProgram(intake,{...DEV,...extra});assert.equal(hash(r.program.templates),want,name);assert.ok(!idsOf(r.program).some(id=>HOLDS.includes(id)),name);
+  assert.deepEqual(r.program.repertoire.strengthExtension.boundaries,[B.HOLD,B.PLANE,B.UPPER],name);assert.equal(r.strengthExtension.status,'ACTIVE',name);}
+});
+test('an error inside this extension never fails the engine: the authority fails closed and the exposure is unavailable', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW}),base=P.generateProgram(intake,OFF);
+ // The records cannot be read: every boundary off, and the answer is the entry point below's.
+ const broken=S.generateProgram(intake,{...OFF,strengthExtension:undefined,strengthRecords:{get records(){throw new Error('unreadable');}}});
+ assert.equal(hash(without(broken,MINE)),hash(base));assert.deepEqual(Object.values(broken.strengthExtension.boundaries),[false,false,false,false]);assert.equal(broken.strengthExposure.status,'DISABLED');
+ // The exposure throws: the plan and the decision are whole, the exposure says it is unavailable.
+ const ext=devStrength(),failing={...ext,values:Object.defineProperty({...ext.values},'exposure',{get(){throw new Error('unreadable');},enumerable:true})};
+ const good=S.generateProgram(intake,DEV),bad=S.generateProgram(intake,{...DEV,strengthExtension:failing});
+ assert.equal(hash(without(bad,MINE)),hash(without(good,MINE)));assert.deepEqual(without(bad.strengthExposure,['version']),{status:'UNAVAILABLE',reason:'EXPOSURE_ERROR'});assert.equal(bad.strengthExtension.status,'ACTIVE');
 });
 test('V-INT-01 the rules are read by the repertoire selection only: no other source file names them', ()=>{
- const dir=new URL('../src/',import.meta.url),names=/STRENGTH_RULES|upperLoadingFirst|planeAlternation|strengthExtension|(auth|rep|repertoire)\??\.strength\b|\bS\??\.(inForce|hold)\b/;
+ const dir=new URL('../src/',import.meta.url),names=/STRENGTH_RULES|upperLoadingFirst|planeAlternation|strengthExtension|\bS\??\.(inForce|hold)\b/;
  const readers=fs.readdirSync(dir,{recursive:true}).filter(f=>String(f).endsWith('.mjs')&&names.test(fs.readFileSync(new URL(String(f).replace(/\\/g,'/'),dir),'utf8'))).map(String).sort();
  assert.deepEqual(readers,['r7b-repertoire.mjs','v1-strength-index.mjs','v1-strength.mjs']);
 });
@@ -114,7 +139,8 @@ test('SQ-1 c4 no duration or seconds value is prescribed for any row: a row is s
 });
 test('SQ-1 c5 the loss of anti-lateral-flexion coverage is stated as a known limitation, and nothing is claimed equivalent', ()=>{
  const r=S.generateProgram(lifter({}),DEV);
- assert.deepEqual(r.strengthExtension.knownLimitations.map(x=>x.id),['NO_ANTI_LATERAL_FLEXION_ROW']);assert.match(r.strengthExtension.knownLimitations[0].detail,/not claimed to be equivalent/);
+ assert.deepEqual(r.strengthExtension.knownLimitations.map(x=>x.id),['NO_ANTI_LATERAL_FLEXION_ROW','TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME']);assert.match(r.strengthExtension.knownLimitations[0].detail,/not claimed to be equivalent/);
+ assert.match(r.strengthExtension.knownLimitations[1].detail,/fewer trunk rows/);assert.match(r.strengthExtension.knownLimitations[1].detail,/No dose is changed/);
  assert.ok(!CONFIGURATIONS.some(e=>e.pattern==='TRUNK'&&e.subpattern==='ANTI_LATERAL_FLEXION'&&!HOLDS.includes(e.id)),'side-plank is the catalog\'s only anti-lateral-flexion configuration');
  assert.equal(S.generateProgram(lifter({}),only('UPPER','PLANE')).strengthExtension.knownLimitations,undefined);
 });
@@ -169,7 +195,7 @@ test('SQ-2 c1, c5 outside its scope, and where no external upper option exists, 
  for(const profile of PROFILES){
   const a=plan(profile,'OFF'),b=plan(profile,'UPPER'),same=hash(a.templates)===hash(b.templates)&&hash(a.noviceTemplates??null)===hash(b.noviceTemplates??null)&&hash(a.weeks)===hash(b.weeks);
   if(profile.goal!=='RUNNING_SUPPORT')assert.ok(same,`${profile.name}: another goal with no event`);
-  if(['BW','BANDS'].includes(profile.eq))assert.ok(same,`${profile.name}: no external upper option`);
+  if(['BW','BANDS','BANDS_PULLUP','PULLUP'].includes(profile.eq))assert.ok(same,`${profile.name}: no external upper option`);
  }
 });
 test('SQ-2 c1 with an event programmed, the rule reaches the upper accessory slots of another strength goal and no MAIN row', ()=>{
@@ -215,11 +241,12 @@ test('SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from exte
  assert.equal(mainsOf(S.generateProgram(lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BANDS}),only('PLANE')).program)['FULL_B:1'],'band-pulldown');
  const bw=mainsOf(S.generateProgram(lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW}),only('PLANE')).program);assert.equal(bw['FULL_A:1'],'push-up');assert.equal(bw['FULL_B:2'],'pike-push-up');
 });
-test('SQ-4 c4 admissibility is unchanged: no vertical push for NONE and NOVICE, they do get a pulldown; a HIGH vertical lift needs familiarity', ()=>{
- for(const profile of PROFILES.filter(p=>['NONE','NOVICE'].includes(p.experience))){const p=plan(profile,'PLANE');
-  assert.ok(!idsOf(p).some(id=>planeOf(id)==='VERTICAL_PUSH'),profile.name);
-  if(['MACHINES','MACH_DB','FULL'].includes(profile.eq))assert.ok(templatesOf(p).some(t=>t.rows.some(r=>r.entry.id==='lat-pulldown')),profile.name);
-  if(profile.eq==='BANDS')assert.ok(templatesOf(p).some(t=>t.rows.some(r=>r.entry.id==='band-pulldown')),profile.name);}
+test('SQ-4 c4 admissibility is unchanged: no vertical push at LOW skill, a pulldown for a novice past movement practice; a HIGH vertical lift needs familiarity', ()=>{
+ for(const profile of PROFILES.filter(p=>['NONE','NOVICE'].includes(p.experience)))assert.ok(!idsOf(plan(profile,'PLANE')).some(id=>planeOf(id)==='VERTICAL_PUSH'),profile.name);
+ // A novice who names an exercise is past movement practice (strength class FAMILIAR_UNKNOWN_LOAD): the second pull slot takes the pulldown the
+ // equipment allows, and the push slots stay horizontal.
+ const novice=eq=>S.generateProgram(lifter({experience:'NOVICE',equipment:EQUIPMENT[eq],known:[familiar('glute-bridge')]}),only('PLANE')).program;
+ for(const [eq,id] of [['MACHINES','lat-pulldown'],['MACH_DB','lat-pulldown'],['FULL','lat-pulldown'],['BANDS','band-pulldown']]){const p=novice(eq);assert.equal(p.capability.strength.class,'FAMILIAR_UNKNOWN_LOAD');assert.equal(mainsOf(p)['FULL_B:1'],id,eq);assert.ok(!idsOf(p).some(x=>planeOf(x)==='VERTICAL_PUSH'),eq);}
  for(const profile of PROFILES)assert.ok(!idsOf(plan(profile,'PLANE')).some(id=>['barbell-overhead-press','pull-up','chin-up'].includes(id)),profile.name);
  const p=S.generateProgram(lifter({experience:'EXPERIENCED',equipment:EQUIPMENT.BAR,known:[familiar('bench-press'),familiar('barbell-overhead-press')]}),only('PLANE')).program;
  assert.equal(mainsOf(p)['FULL_B:2'],'barbell-overhead-press');
@@ -228,11 +255,19 @@ test('SQ-4 c4 practice rows are unchanged', ()=>{
  for(const profile of PROFILES.filter(p=>p.experience==='NONE')){const a=plan(profile,'OFF'),b=plan(profile,'PLANE');
   for(let w=0;w<a.weeks.length;w++)assert.equal(hash(rowsOf(b,w).filter(x=>x.e.role==='PRACTICE').map(x=>[x.s.id,x.e])),hash(rowsOf(a,w).filter(x=>x.e.role==='PRACTICE').map(x=>[x.s.id,x.e])),`${profile.name} week ${w}`);}
 });
+test('SQ-4 (SSCTR-STR-A-04a) a new plan that opens with movement practice (strength class NONE) asks nothing of the plane rule: it is the plan without the rule', ()=>{
+ let n=0;
+ for(const profile of PROFILES.filter(p=>['NONE','NOVICE'].includes(p.experience))){const a=plan(profile,'OFF'),b=plan(profile,'PLANE');n++;
+  assert.equal(a.capability.strength.class,'NONE',profile.name);
+  assert.equal(hash(b.templates),hash(a.templates),profile.name);assert.equal(hash(b.noviceTemplates??null),hash(a.noviceTemplates??null),profile.name);assert.equal(hash(b.weeks),hash(a.weeks),profile.name);
+  assert.ok(!templatesOf(b).some(t=>t.rows.some(r=>r.planeAlternation)),profile.name);}
+ assert.ok(n>100);
+});
 test('SQ-4 c9 the sweep: vertical pull where machines or bands give an equal-or-better loaded option, vertical push for intermediate and experienced dumbbell profiles, dumbbell-only pull unchanged', ()=>{
- for(const profile of PROFILES){
+ for(const profile of PROFILES.filter(p=>['INTERMEDIATE','EXPERIENCED'].includes(p.experience))){
   const p=plan(profile,'PLANE'),planes=planesOf(p),label=profile.name;
-  if(['FULL','MACH_DB','MACHINES','BANDS'].includes(profile.eq))assert.ok(planes.includes('VERTICAL_PULL'),label);
-  if(['INTERMEDIATE','EXPERIENCED'].includes(profile.experience)&&['FULL','MACH_DB','DB_BENCH','DB','DB_BANDS'].includes(profile.eq))assert.ok(planes.includes('VERTICAL_PUSH'),label);
+  if(['FULL','MACH_DB','MACHINES','BANDS','BANDS_PULLUP'].includes(profile.eq))assert.ok(planes.includes('VERTICAL_PULL'),label);
+  if(['FULL','MACH_DB','DB_BENCH','DB','DB_BANDS'].includes(profile.eq))assert.ok(planes.includes('VERTICAL_PUSH'),label);
   if(['DB','DB_BENCH'].includes(profile.eq)){const a=plan(profile,'OFF');assert.equal(hash(upperMains(p).filter(m=>m.pattern==='PULL').map(m=>[m.type,m.slot,m.id])),hash(upperMains(a).filter(m=>m.pattern==='PULL').map(m=>[m.type,m.slot,m.id])),label);assert.ok(!planes.includes('VERTICAL_PULL'),label);}
   assert.ok(planes.includes('HORIZONTAL_PUSH')||!planes.some(x=>x.endsWith('PUSH')),label+': the default plane stays');
  }
@@ -297,4 +332,133 @@ test('a new plan from the record is built under the rules in force', ()=>{
  const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.MACH_DB}),t=timeline(intake);t.weeks(0,1);
  const r=S.restartProgram(restartOf(t,intake),DEV);
  assert.ok(r.program,r.status+' '+r.reason);assert.deepEqual(r.program.repertoire.strengthExtension.boundaries,[B.HOLD,B.PLANE,B.UPPER]);assert.ok(planesOf(r.program).includes('VERTICAL_PULL'));assert.ok(!idsOf(r.program).some(id=>HOLDS.includes(id)));
+});
+
+// ---------- the corrective cycle (SSCTR-STR-A-01, A-02, A-06, A-08) ----------
+test('SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row\'s dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule', ()=>{
+ const DOSES=JSON.parse(fs.readFileSync(new URL('../r6/PROGRAM_POLICY_R6.json',import.meta.url),'utf8')).operational.strength.goalDoses;
+ const NAMED={none:[],barbell:['back-squat','bench-press','deadlift','barbell-overhead-press','barbell-row'].map(familiar),press:[familiar('db-overhead-press')],pulldown:[familiar('lat-pulldown')]};
+ /** The configurations of a plan with an externally loaded MAIN row outside the goal's repetition range in some week. */
+ const outside=(p,goal)=>{const out=new Set(),[lo,hi]=DOSES[goal].repRange;for(let w=0;w<p.weeks.length;w++)for(const {e} of rowsOf(p,w))if(e.role==='MAIN'&&loadingOf(e.id)==='EXTERNAL'&&(e.reps<lo||e.reps>hi))out.add(e.id);return out;};
+ let plans=0,asking=0,control=0;
+ for(const goal of ['STRENGTH','HYPERTROPHY'])for(const eq of ['FULL','MACHINES','MACH_DB','DB','DB_BANDS','BAR'])for(const days of [[1,3,5],[0,2,4,6],[0,1,2,4,6]])for(const experience of ['INTERMEDIATE','EXPERIENCED'])for(const [name,known] of Object.entries(NAMED)){
+  const intake=lifter({goal,experience,equipment:EQUIPMENT[eq],days,known}),off=S.generateProgram(intake,OFF).program,was=outside(off,goal),label=`${goal} ${eq} ${days.length}d ${experience} named=${name}`;plans++;control+=was.size;
+  for(const auth of ['PLANE','DEV']){
+   const p=S.generateProgram(intake,AUTH[auth]).program,rows=p.templates.flatMap(t=>t.rows.map(r=>({t,r})));
+   for(const id of outside(p,goal))assert.ok(was.has(id),`${label} under ${auth}: ${id} is prescribed outside ${DOSES[goal].repRange} as a MAIN row, and is not without the rule`);
+   for(const {t,r} of rows.filter(x=>x.r.planeAlternation)){asking++;
+    const before=off.templates.find(x=>x.type===t.type).rows.find(x=>x.slot===r.slot)?.entry.id;if(r.entry.id===before)continue;
+    assert.ok(!rows.some(x=>x.r.entry.id===r.entry.id&&x.r.role!=='MAIN'),`${label} under ${auth}: ${r.entry.id} is the MAIN of ${t.type} and an accessory elsewhere`);}
+  }
+ }
+ assert.equal(plans,288);assert.ok(asking>500);
+ assert.ok(control>0,'the control: the frozen engine already prescribes such rows for other configurations (pre-existing, SSCTR-STR-A-11); they are not added to');
+ // The case the judge named: a strength athlete with a barbell set and named barbell lifts, three days.
+ const p=S.generateProgram(lifter({goal:'STRENGTH',experience:'EXPERIENCED',equipment:EQUIPMENT.BAR,days:[1,3,5],known:NAMED.barbell}),only('PLANE')).program,press=p.templates.flatMap(t=>t.rows).filter(r=>r.entry.id==='barbell-overhead-press');
+ assert.ok(press.length>0&&new Set(press.map(r=>r.role)).size===1,JSON.stringify(press.map(r=>r.role)));
+});
+test('SSCTR-STR-A-02 a change of the rules never stands before the clinical answer: for a plan built under other rules, a warning sign, pain with an exercise and a hold on the record are answered as the entry point below answers them', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE'}),foreign={...DEV,strengthExtension:{...devStrength(),sha256:'f'.repeat(64)}};
+ const sign=(day,flag)=>({status:'NONCLINICAL_CONFIRMED',assessedAt:day,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false,[flag]:true});
+ for(const [name,opts] of [['no rule on',OFF],['the hold rule alone',only('HOLD')],['other bytes',foreign],['the exposure alone',only('EXPOSURE')]]){
+  const t=timeline(intake);t.week(0);
+  const answers=rv=>({mine:S.evaluateProgram(t.p,rv,opts),below:P.evaluateProgram(t.p,rv,opts)});
+  // Each warning sign of the eligibility screen, fresh in this review.
+  for(const flag of ['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern']){
+   const {mine,below}=answers(t.review(1,0,'WEEKLY_REVIEW',{eligibility:sign(t.day(1,0),flag)},'06:00'));
+   assert.equal(below.status,'CLINICAL_HUMAN_REQUIRED',`${name}, ${flag}: the control`);assert.equal(mine.status,'CLINICAL_HUMAN_REQUIRED',`${name}, ${flag}`);assert.equal(mine.proposal??null,null);
+   assert.equal(hash(without(mine,MINE)),hash(below),`${name}, ${flag}: the answer of the entry point below, as it is`);assert.equal(mine.strengthExtension.status,'PLAN_BUILT_UNDER_OTHER_RULES');assert.notEqual(mine.strengthExposure.status,'ACTIVE');
+  }
+  // Pain with an exercise.
+  const target=rowsOf(t.p,1).find(x=>x.e.role==='MAIN').e.id,pain=answers(t.review(1,0,'EXERCISE_SUBSTITUTION',{substitution:{exerciseId:target,reason:'NONCLINICAL_DISCOMFORT_OR_PREFERENCE',pain:true}},'06:00'));
+  assert.equal(pain.mine.status,'CLINICAL_HUMAN_REQUIRED',name);assert.equal(pain.mine.proposal??null,null);assert.equal(hash(without(pain.mine,MINE)),hash(pain.below));
+  // Everything else is still refused: no plan is adapted under rules it was not built under.
+  for(const [kind,extra] of [['WEEKLY_REVIEW',{observations:t.p.weeks[1].sessions.filter(live).map(s=>report(t.p,s))}],['SYSTEMIC_FATIGUE',{}],['EXERCISE_SUBSTITUTION',{substitution:{exerciseId:target,reason:'NONCLINICAL_DISCOMFORT_OR_PREFERENCE',nonclinicalConfirmed:true}}]]){
+   const r=S.evaluateProgram(t.p,t.review(1,6,kind,extra),opts);assert.equal(r.status,'UNSUPPORTED',`${name}, ${kind}`);assert.equal(r.proposal??null,null);}
+  // A hold already on the record answers first as well.
+  const held=t.step(1,0,'WEEKLY_REVIEW',{eligibility:sign(t.day(1,0),'injury')},'06:00');assert.equal(held.status,'CLINICAL_HUMAN_REQUIRED');
+  const later=answers(t.review(1,6,'WEEKLY_REVIEW',{observations:[]}));
+  assert.equal(later.mine.status,'CLINICAL_HUMAN_REQUIRED',name);assert.equal(later.mine.proposal??null,null);assert.equal(hash(without(later.mine,MINE)),hash(later.below));
+ }
+});
+test('SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first upper session loaded and horizontal, the second vertical', ()=>{
+ const p=S.generateProgram(hybrid({equipment:FULL,days:[0,2,4,6],months:24}),DEV).program,m=mainsOf(p);
+ assert.deepEqual([m['UPPER:0'],m['UPPER:1'],m['UPPER_B:0'],m['UPPER_B:1']],['db-bench-press','db-row','lat-pulldown','db-overhead-press']);
+ for(const id of [m['UPPER:0'],m['UPPER:1'],m['UPPER_B:0'],m['UPPER_B:1']]){assert.equal(loadingOf(id),'EXTERNAL');assert.notEqual(skillOf(id),'HIGH');}
+ const off=mainsOf(S.generateProgram(hybrid({equipment:FULL,days:[0,2,4,6],months:24}),OFF).program);
+ assert.deepEqual(Object.keys(m).filter(k=>configurationOf(m[k]).region!=='UPPER').map(k=>m[k]),Object.keys(off).filter(k=>configurationOf(off[k]).region!=='UPPER').map(k=>off[k]),'the lower-body MAIN rows are as without the rules');
+});
+test('SQ-4 c5 (SSCTR-STR-A-08) a change of strength days keeps the vertical lifts the plan was built with, and brings no exercise into a running plan', ()=>{
+ for(const [from,to,stayMain] of [[[1,4],[0,2,4,6],false],[[0,2,4,6],[1,4],true],[[1,4],[1,3,5],true],[[1,3,5],[1,4],true],[[1,3,5],[0,2,4,6],true]]){
+  const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days:from})),label=`${from.length} to ${to.length} days`;t.weeks(0,1);
+  const before=new Set(idsOf(t.p)),vertical=Object.values(mainsOf(t.p)).filter(id=>/^VERTICAL_/.test(planeOf(id)));assert.equal(vertical.length,2,label);
+  const r=t.step(2,0,'SCHEDULE_CHANGE',{changes:{strengthDays:to}},'06:00');assert.equal(r.status,'MODIFY',label+': '+r.reason);
+  const rows=t.p.templates.flatMap(x=>x.rows),upper=rows.filter(x=>x.entry.region==='UPPER'),ahead=new Set(idsOf({weeks:t.p.weeks.slice(3)}));
+  // Each vertical lift is still done in the weeks ahead, and no upper-body MAIN row is an exercise the plan did not hold.
+  for(const id of vertical)assert.ok(ahead.has(id),`${label}: ${id} left the plan`);
+  for(const x of upper.filter(x=>x.role==='MAIN'))assert.ok(before.has(x.entry.id),`${label}: ${x.entry.id} is new to the plan`);
+  // It stays a MAIN row wherever no earlier session of the new week holds it as an accessory (the engine's own continuity puts an exercise in
+  // use into an open accessory slot first; the asking slot then keeps the default rather than share that row's dose state).
+  if(stayMain)for(const id of vertical)assert.ok(upper.some(x=>x.role==='MAIN'&&x.entry.id===id),`${label}: ${id} is no longer a MAIN row`);
+  else for(const id of vertical)assert.deepEqual([...new Set(upper.filter(x=>x.entry.id===id).map(x=>x.role))],['ACCESSORY'],`${label}: ${id}`);
+ }
+ // One day to two: the plan holds no vertical lift, and the new second slots bring none in.
+ const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL,days:[3]}));t.weeks(0,1);const before=new Set(idsOf(t.p));
+ assert.equal(t.step(2,0,'SCHEDULE_CHANGE',{changes:{strengthDays:[1,4]}},'06:00').status,'MODIFY');
+ const upper=Object.values(mainsOf(t.p)).filter(id=>configurationOf(id).region==='UPPER');assert.equal(upper.length,4);
+ assert.ok(upper.every(id=>before.has(id)&&!/^VERTICAL_/.test(planeOf(id))),JSON.stringify(upper));
+});
+
+// ---------- the corrective cycle (QRE-STR-A-01, A-02, A-08) ----------
+test('SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in', ()=>{
+ const change=(t,w,d,equipment)=>t.step(w,d,'EQUIPMENT_CHANGE',{changes:{equipment}},'06:00');
+ const asking=p=>Object.fromEntries(p.templates.flatMap(x=>x.rows.filter(r=>r.planeAlternation).map(r=>[x.type+':'+r.slot,r])));
+ for(const [name,meanwhile,stoodIn] of [['bands only',EQUIPMENT.BANDS,{'FULL_B:1':'band-row','FULL_B:2':'push-up'}],['no equipment',EQUIPMENT.BW,{'FULL_B:2':'push-up'}],['machines only',EQUIPMENT.MACHINES,{'FULL_B:1':'lat-pulldown','FULL_B:2':'machine-chest-press'}]]){
+  const t=timeline(lifter({experience:'INTERMEDIATE',equipment:FULL})),built=slotsInForce(t.p),start=slots(t.p);
+  assert.deepEqual(built,{'FULL_B:1':'lat-pulldown','FULL_B:2':'db-overhead-press'},name);t.weeks(0,1);
+  const used=new Set(idsOf(t.p));
+  assert.ok(['MODIFY','KEEP'].includes(change(t,2,0,meanwhile).status),name);
+  // While the equipment is gone: the slot takes what the ordinary order gives it. The plane is not preferred for an exercise the plan never used.
+  for(const [key,id] of Object.entries(stoodIn))assert.equal(asking(t.p)[key]?.entry.id,id,`${name}: ${key} meanwhile`);
+  for(const r of Object.values(asking(t.p)))if(r.entry.id!==r.planeAlternation.built)assert.ok(!/^VERTICAL_/.test(r.entry.subpattern)||used.has(r.entry.id),`${name}: ${r.entry.id} is a vertical exercise new to the plan`);
+  assert.deepEqual(slotsInForce(t.p),built,`${name}: the anchor is still the configuration the plan was built with`);
+  t.week(2);assert.deepEqual(slotsInForce(t.p),built,name);
+  // The equipment is back: every slot is the one the plan was built with.
+  assert.ok(['MODIFY','KEEP'].includes(change(t,3,0,FULL).status),name);
+  assert.deepEqual(slots(t.p),start,`${name}: after the regain`);assert.deepEqual(slotsInForce(t.p),built,name);
+  t.weeks(3,4);assert.deepEqual(slots(t.p),start,name);
+ }
+});
+test('SQ-1 c3 (QRE-STR-A-02) a trunk slot left unfilled after an athlete set a trunk exercise aside is declared in the answer, never left silent', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.BW,days:[0,1,2,4,6]}),aside={substitution:{exerciseId:'dead-bug',reason:'NONCLINICAL_DISCOMFORT_OR_PREFERENCE',nonclinicalConfirmed:true}};
+ const t=timeline(intake);assert.equal(t.g.strengthExtension.disclosures,undefined,'the plan as built has every trunk slot filled');
+ const trunk=p=>p.templates.find(x=>x.type==='CORE').rows.filter(r=>r.pattern==='TRUNK').length;assert.equal(trunk(t.p),2);t.week(0);
+ const r=t.step(1,0,'EXERCISE_SUBSTITUTION',aside,'06:00');assert.equal(r.status,'MODIFY');
+ assert.equal(trunk(t.p),1,'bodyweight only, dead-bug set aside, the holds out: one trunk configuration is left for two slots');
+ assert.deepEqual(r.strengthExtension.disclosures.map(d=>[d.id,d.pattern,d.templates,d.blocking]),[['TRUNK_SLOT_UNFILLED','TRUNK',['CORE'],false]]);assert.match(r.strengthExtension.disclosures[0].detail,/nothing is claimed equivalent/);
+ assert.ok(!idsOf(t.p).some(id=>HOLDS.includes(id)));
+ // It stays declared while it stands, and no answer of a plan with every trunk slot filled carries it.
+ assert.equal(t.week(1).strengthExtension.disclosures?.[0]?.id,'TRUNK_SLOT_UNFILLED');
+ const u=timeline(intake,{opts:OFF});u.week(0);u.step(1,0,'EXERCISE_SUBSTITUTION',aside,'06:00');assert.equal(trunk(u.p),2,'the control: without the rule a plank fills the slot');
+ for(const profile of PROFILES.filter((_,i)=>i%7===0))assert.ok(!plan(profile,'DEV').templates.some(x=>x.missingPatterns.includes('TRUNK')),profile.name);
+});
+test('the known limitations are stated for a plan built under the hold rule, and for no other plan', ()=>{
+ const intake=lifter({experience:'INTERMEDIATE'}),review=t=>t.review(0,6,'WEEKLY_REVIEW',{observations:t.p.weeks[0].sessions.filter(live).map(s=>report(t.p,s))});
+ const under=timeline(intake),without=timeline(intake,{opts:OFF});
+ assert.equal(S.evaluateProgram(under.p,review(under),DEV).strengthExtension.knownLimitations.length,2);
+ assert.equal(S.evaluateProgram(without.p,review(without),DEV).strengthExtension.knownLimitations,undefined,'a plan built without the rules');
+ assert.equal(S.evaluateProgram(under.p,review(under),only('HOLD')).strengthExtension.knownLimitations,undefined,'a plan built under other rules');
+});
+test('a plan that opens with movement practice: an equipment gain changes exactly the slots it changes without the rules, in both of its template sets, and no MAIN row', ()=>{
+ const run=opts=>{const t=timeline(lifter({experience:'NONE',equipment:EQUIPMENT.MACHINES,days:[0,1,2,4,6]}),{opts});assert.ok(t.p.noviceTemplates?.length);
+  const start=slots(t.p),mains=mainsOf(t.p);t.weeks(0,1);
+  assert.ok(['KEEP','MODIFY'].includes(t.step(2,0,'EQUIPMENT_CHANGE',{changes:{equipment:[...EQUIPMENT.MACHINES,'DUMBBELLS','BANDS']}},'06:00').status));
+  const after=slots(t.p),moved=Object.fromEntries(Object.keys(start).filter(k=>start[k]!==after[k]).map(k=>[k,[start[k],after[k]]]));
+  assert.deepEqual(mainsOf(t.p),mains);t.weeks(2,5);assert.deepEqual(slots(t.p),after);assert.deepEqual(mainsOf(t.p),mains);
+  return {t,moved};};
+ const off=run(OFF),on=run(only('UPPER','PLANE'));
+ // The frozen engine re-picks two accessory slots that are not yet in use; the upper-body rules add nothing to that and take nothing from it.
+ assert.deepEqual(on.moved,off.moved);assert.ok(Object.keys(off.moved).length>0);
+ assert.ok(!idsOf(on.t.p).some(id=>planeOf(id)==='VERTICAL_PUSH'));
+ assert.ok(!idsOf(run(DEV).t.p).some(id=>HOLDS.includes(id)));
 });

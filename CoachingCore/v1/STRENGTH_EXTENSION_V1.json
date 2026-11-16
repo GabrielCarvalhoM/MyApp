@@ -16,7 +16,16 @@
   "configurations": ["front-plank", "side-plank"],
   "rule": "NOT_ADMITTED_UNTIL_A_TIME_DOSE_IS_APPROVED",
   "timeDose": null,
-  "knownLimitation": "While side-plank is out no anti-lateral-flexion trunk configuration is selectable. The remaining trunk work is not claimed to be equivalent."
+  "knownLimitations": [
+   {
+    "id": "NO_ANTI_LATERAL_FLEXION_ROW",
+    "detail": "While side-plank is out no anti-lateral-flexion trunk configuration is selectable. The remaining trunk work is not claimed to be equivalent."
+   },
+   {
+    "id": "TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME",
+    "detail": "With a short time per strength session, some weeks hold fewer trunk rows than the same plan held with a plank prescribed in repetitions, and some hold none: the trunk row that replaces the plank has no rotation alternative, keeps progressing, and the session's time fit then leaves it out, as it already leaves trunk rows out of other weeks. No dose is changed to keep it."
+   }
+  ]
  },
  "upperLoading": {
   "decision": "SI-V1-SSCTR-SQ-2",
@@ -40,8 +49,10 @@
    "PULL": "VERTICAL_PULL"
   },
   "trigger": "TWO_OR_MORE_MAIN_SLOTS_OF_THE_PATTERN_THAT_ADMIT_BOTH_PLANES",
+  "notInANewPlanThat": "OPENS_WITH_MOVEMENT_PRACTICE_STRENGTH_CLASS_NONE",
+  "neverPrefers": "A_CONFIGURATION_AN_EARLIER_SESSION_OF_THE_WEEK_HOLDS_IN_ANOTHER_ROLE",
   "sequence": "TEMPLATE_ORDER_THEN_SLOT_INDEX_EVERY_SECOND_SLOT",
   "loadingGuard": "WHEN_THE_SLOT_WOULD_OTHERWISE_TAKE_AN_EXTERNALLY_LOADED_CONFIGURATION_ONLY_AN_EXTERNALLY_LOADED_ONE_OF_THE_PLANE_IS_PREFERRED",
-  "planInForce": "THE_SLOT_KEEPS_THE_CONFIGURATION_IT_WAS_BUILT_WITH_WHILE_IT_FITS_AND_NOTHING_IS_PREFERRED_ONCE_IT_DOES_NOT"
+  "planInForce": "THE_SLOT_KEEPS_THE_CONFIGURATION_IT_WAS_BUILT_WITH_WHILE_IT_FITS_OTHERWISE_THE_PLANE_IS_PREFERRED_ONLY_AMONG_CONFIGURATIONS_THE_PLAN_ALREADY_USES"
  }
 }

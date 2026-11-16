@@ -19,7 +19,8 @@ export const only=(...names)=>({...RUN_DEV,strengthExtension:devStrength(names.m
 
 export const AS_OF='2026-11-13',START='2026-11-16';
 export const FULL=['BARBELL','RACK','BENCH','DUMBBELLS','KETTLEBELL','MACHINES','BANDS','PULL_UP_BAR'];
-export const EQUIPMENT={FULL,DB_BENCH:['DUMBBELLS','BENCH'],DB:['DUMBBELLS'],BW:[],MACH_DB:['DUMBBELLS','BENCH','MACHINES'],MACHINES:['MACHINES'],BANDS:['BANDS'],DB_BANDS:['DUMBBELLS','BANDS'],BAR:['BARBELL','RACK','BENCH']};
+/** The nine equipment profiles of the catalog (FULL, MACH_DB, DB_BENCH, DB, KB, BANDS, BANDS_PULLUP, PULLUP, BW) and three more (MACHINES, DB_BANDS, BAR). */
+export const EQUIPMENT={FULL,DB_BENCH:['DUMBBELLS','BENCH'],DB:['DUMBBELLS'],BW:[],MACH_DB:['DUMBBELLS','BENCH','MACHINES'],MACHINES:['MACHINES'],BANDS:['BANDS'],DB_BANDS:['DUMBBELLS','BANDS'],BAR:['BARBELL','RACK','BENCH'],KB:['KETTLEBELL'],BANDS_PULLUP:['BANDS','PULL_UP_BAR'],PULLUP:['PULL_UP_BAR']};
 /** A strength intake: `months` of strength training set the experience class the intake derives; `known` are the athlete's named exercises. */
 export const MONTHS={NONE:0,NOVICE:6,INTERMEDIATE:24,EXPERIENCED:60};
 /** `experience` states the strength experience class (NONE: new to strength, nothing done recently); `months` alone leaves the intake to derive it. */

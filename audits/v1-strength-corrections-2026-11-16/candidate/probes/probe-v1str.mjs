@@ -10,7 +10,7 @@
 import * as X from '../../../../CoachingCore/src/v1-strength-index.mjs';
 import * as FROZEN from '../../../../CoachingCore/src/v1-run-index.mjs';
 import {devStrength,allowsStrength} from '../../../../CoachingCore/src/v1-strength.mjs';
-import {configurationOf,CONFIGURATIONS} from '../../../../CoachingCore/src/r7b-repertoire.mjs';
+import {configurationOf,CONFIGURATIONS,STRENGTH_RULES} from '../../../../CoachingCore/src/r7b-repertoire.mjs';
 import {substitutesFor} from '../../../../CoachingCore/src/r6-catalogue.mjs';
 import {interferenceCosts} from '../../../../CoachingCore/src/r6-balanced.mjs';
 
@@ -54,6 +54,7 @@ const check=(scenario,claim,ok,observed,tag='')=>results.push({scenario,claim:(t
  check('A','week 0 is movement practice or effort-guided establishment, never a kilogram',w0.every(x=>x.e.role==='PRACTICE'||x.e.load.mode==='ESTABLISH'||x.e.load.mode==='BODYWEIGHT'),w0.map(x=>x.e.id+':'+x.e.load.mode));
  check('A','novice density B0-C08: at most two full templates, the third day lighter (CORE)',p.weeks[0].sessions.filter(s=>live(s)&&s.sport==='STRENGTH'&&['FULL_BODY','PRACTICE'].includes(s.prescription.family)).length<=3&&(p.negotiation??[]).some(n=>/STRENGTH_DAYS_ABOVE_CURRENT_PRACTICE/.test(JSON.stringify(n))),p.weeks[0].sessions.filter(s=>live(s)&&s.sport==='STRENGTH').map(s=>s.prescription.family));
  check('A','identical MAIN set in weeks 1 and 2 (no week-to-week reshuffle)',JSON.stringify(mains(p,1))===JSON.stringify(mains(p,2)),{w1:mains(p,1),w2:mains(p,2)});
+ check('A','a plan that opens with movement practice asks nothing of the plane rule: its upper MAIN rows are the frozen entry point\'s',JSON.stringify(p.templates.map(t=>t.rows.filter(z=>z.role==='MAIN').map(z=>z.entry.id)))===JSON.stringify(FROZEN.generateProgram(intake({strengthTrainingMonths:0,runTrainingMonths:0,goals:{run:'NONE',strength:'GENERAL'},equipment:['DUMBBELLS'],recent:{strengthDaysPerWeek:0}},{strengthDays:[1,3,5],strengthMinutes:45})).program.templates.map(t=>t.rows.filter(z=>z.role==='MAIN').map(z=>z.entry.id))),null,'N4');
  check('A','a novice gets no vertical push (none is admissible at LOW skill): the push slots stay horizontal',[...new Set(p.weeks.flatMap((_,i)=>strengthRows(p,i).map(x=>configurationOf(x.e.id)?.subpattern)))].every(s=>s!=='VERTICAL_PUSH'),null,'N4');
 }
 
@@ -162,7 +163,7 @@ let B;
  const frozen=planks(FROZEN.generateProgram(bw).program),trunk=r.program.weeks.map((w,i)=>strengthRows(r.program,i).filter(x=>x.e.pattern==='TRUNK').length);
  check('I','no plank is prescribed in repetitions in any of the 12 weeks (the frozen entry point prescribes '+frozen.length+' such rows for the same athlete), and trunk work is in every week',planks(r.program).length===0&&frozen.length>0&&trunk.every(n=>n>0),{frozen:frozen.slice(0,3),trunkRowsPerWeek:trunk},'N1 (GAP-S2 closed by exclusion)');
  check('I','the catalog still holds no time dose: the hold configurations are out of selection, not given a dose',CONFIGURATIONS.filter(e=>HOLDS.includes(e.id)).length===2&&!CONFIGURATIONS.some(e=>'holdSeconds' in e||'doseUnit' in e),null,'N1');
- check('I','a plank is not a ranked substitute under the rules',!substitutesFor('dead-bug',{equipment:[],experience:'INTERMEDIATE',auth:{valid:true,approved:{'B0-C03':'APPROVE_WITH_CONDITIONS'},strength:{hold:HOLDS}}}).some(e=>HOLDS.includes(e.id)),null,'N1');
+ check('I','a plank is not a ranked substitute under the rules',!substitutesFor('dead-bug',{equipment:[],experience:'INTERMEDIATE',auth:{valid:true,approved:{'B0-C03':'APPROVE_WITH_CONDITIONS'},[STRENGTH_RULES]:{hold:HOLDS}}}).some(e=>HOLDS.includes(e.id)),null,'N1');
  const planes=(eq,goal,days)=>{const p=gen(intake({strengthTrainingMonths:24,runTrainingMonths:0,goals:{run:'NONE',strength:goal},equipment:eq,recent:{strengthDaysPerWeek:days.length},exerciseRotationPreference:'COACH_DECIDES'},{strengthDays:days,strengthMinutes:60})).program;return [...new Set(p.weeks.flatMap((w,i)=>strengthRows(p,i).map(x=>configurationOf(x.e.id)?.subpattern)))].filter(s=>/VERTICAL|HORIZONTAL/.test(s)).sort();};
  const pv=[['FULL','HYPERTROPHY',[0,2,4,6]],['FULL','GENERAL',[1,4]],['MACHINES+DB','STRENGTH',[1,3,5]]].map(([n,g,d])=>({profile:n,goal:g,days:d.length,planes:planes(n==='FULL'?FULL:['DUMBBELLS','BENCH','MACHINES'],g,d)}));
  check('I','12 weeks, full gym or machines: horizontal and vertical push and pull are all selected',pv.every(x=>['HORIZONTAL_PULL','HORIZONTAL_PUSH','VERTICAL_PULL','VERTICAL_PUSH'].every(s=>x.planes.includes(s))),pv,'N4 (GAP-S8 closed)');
@@ -182,10 +183,10 @@ let B;
  console.log(`sweep (${n} profiles x 12 weeks): profiles in which a plane is never selected`);
  for(const x of PLANES)console.log(`  ${x.padEnd(16)} before ${String(count.before[x]).padStart(3)}   after ${String(count.after[x]).padStart(3)}`);
  console.log(`  profiles with a plank row in any week after: ${holds}`);
- const why=s=>/ (DB|DB_BENCH) .*VERTICAL_PULL/.test(' '+s)?'no vertical pull exists for dumbbells (catalog)':/^BW .*VERTICAL_PULL/.test(s)?'no pull-down or pull-up without equipment':/ 0mo: VERTICAL_PUSH/.test(s)?'no vertical push is admissible at LOW skill':/^BW/.test(s)?'bodyweight':'see the profile';
+ const why=s=>/ 0mo: VERTICAL_PUSH/.test(s)?'a plan that opens with movement practice: no vertical push is admissible at LOW skill':/ 0mo: VERTICAL_PULL/.test(s)?'a plan that opens with movement practice: the plane rule asks nothing of it':/ (DB|DB_BENCH) .*VERTICAL_PULL/.test(' '+s)?'no vertical pull exists for dumbbells (catalog)':/^BW .*VERTICAL_PULL/.test(s)?'no pull-down or pull-up without equipment':'see the profile';
  const groups={};for(const s of still){const k=why(s);groups[k]=(groups[k]??0)+1;}
  console.log('  vertical planes still absent after, by reason: '+JSON.stringify(groups)+(VERBOSE?'\n   '+still.join('\n   '):''));
- check('sweep','vertical pull is selected wherever machines exist; no profile holds a plank; the horizontal planes are as before',count.after.HORIZONTAL_PUSH===count.before.HORIZONTAL_PUSH&&count.after.HORIZONTAL_PULL===count.before.HORIZONTAL_PULL&&holds===0&&!still.some(s=>/^(FULL|MACH_DB) .*VERTICAL_PULL/.test(s))&&count.after.VERTICAL_PULL<count.before.VERTICAL_PULL&&count.after.VERTICAL_PUSH<count.before.VERTICAL_PUSH,count,'N4');
+ check('sweep','past movement practice (24 months), vertical pull is selected wherever machines exist and vertical push in every profile; no profile holds a plank; the horizontal planes are as before',count.after.HORIZONTAL_PUSH===count.before.HORIZONTAL_PUSH&&count.after.HORIZONTAL_PULL===count.before.HORIZONTAL_PULL&&holds===0&&!still.some(s=>/^(FULL|MACH_DB) .* 24mo: VERTICAL_PULL/.test(s))&&!still.some(s=>/ 24mo: VERTICAL_PUSH/.test(s))&&count.after.VERTICAL_PULL<count.before.VERTICAL_PULL&&count.after.VERTICAL_PUSH<count.before.VERTICAL_PUSH,count,'N4');
 }
 
 console.log('');

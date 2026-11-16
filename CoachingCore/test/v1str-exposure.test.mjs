@@ -97,3 +97,35 @@ test('the exposure follows the engine\'s answer: nothing under a hold or a clini
  const noPlan=S.generateProgram({...lifter({}),athlete:{...lifter({}).athlete,eligibility:{status:'NONCLINICAL_CONFIRMED',assessedAt:'2026-11-13',pain:true,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false}}},DEV);
  assert.equal(noPlan.program,null);assert.equal(noPlan.strengthExposure.status,'NOT_APPLICABLE');
 });
+
+// ---------- the corrective cycle (QRE-STR-A-08, A-13) ----------
+test('SQ-3 c1 (QRE-STR-A-08) a logged practice row is never counted as executed, and a session the plan skipped is not planned exposure', ()=>{
+ const t=timeline(lifter({experience:'NONE',equipment:EQUIPMENT.DB,days:[1,4]})),practice=rowsOf(t.p,0).filter(r=>r.e.role==='PRACTICE');assert.ok(practice.length>0);
+ // Every session of week 0 is logged as prescribed, its practice rows included.
+ const x=t.week(0).strengthExposure;
+ assert.deepEqual(x.executed.byPrimaryMuscle,oracle(rowsOf(t.p,0).map(r=>r.e)));assert.deepEqual(x.executed.byPrimaryMuscle,x.planned.byPrimaryMuscle);
+ assert.deepEqual(x.executed.notCounted.map(r=>r.reason),practice.map(()=>'PRACTICE_ROW'));assert.ok(!x.executed.rows.some(r=>practice.some(q=>q.e.id===r.exerciseId&&q.s.id===r.sessionId)));
+ // A session marked skipped in the plan is not a planned session: its rows are no planned exposure.
+ const p=structuredClone(S.generateProgram(lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.DB}),DEV).program),[first,second]=strengthSessions(p,1);first.status='SKIPPED';
+ assert.deepEqual(weeklyStrengthExposure({program:p,weekIndex:1}).planned.byPrimaryMuscle,oracle(second.prescription.exercises));
+});
+test('SQ-3 c2 (QRE-STR-A-13) only a set with a whole, positive repetition count is a logged set, and only this athlete\'s report is read', ()=>{
+ const p=S.generateProgram(lifter({experience:'INTERMEDIATE',equipment:EQUIPMENT.DB}),DEV).program,s=strengthSessions(p,1)[0],o=report(p,s),[a,b,c]=s.prescription.exercises;
+ const logged=sets=>({...o,localDate:s.date,actual:{...o.actual,exercises:[{id:a.id,sets},{id:b.id,sets:[{reps:b.reps},{reps:b.reps}]}]}});
+ const read=sets=>weeklyStrengthExposure({program:p,weekIndex:1,ledger:[logged(sets)]}).executed;
+ for(const [name,sets] of Object.entries({zero:[{reps:0},{reps:0}],negative:[{reps:-3}],fraction:[{reps:7.5}],text:[{reps:'8'}],missing:[{},{rir:2}],notANumber:[{reps:NaN},{reps:Infinity}]})){
+  const x=read(sets);assert.deepEqual(x.byPrimaryMuscle,oracle([{...b,sets:2}]),name);assert.ok(!x.rows.some(r=>r.exerciseId===a.id),name+': no row with nothing counted');
+  assert.deepEqual(x.notCounted,[{sessionId:s.id,exerciseId:a.id,reason:'SET_WITHOUT_REPETITIONS',sets:sets.length}],name);}
+ assert.deepEqual(read([{reps:a.reps},{reps:0},{reps:a.reps}]).byPrimaryMuscle,oracle([{...a,sets:2},{...b,sets:2}]));
+ // A report that names no athlete, or another one, is not this athlete's.
+ const {athleteId:_none,...anonymous}=logged([{reps:a.reps}]);
+ assert.equal(weeklyStrengthExposure({program:p,weekIndex:1,ledger:[anonymous]}).executed.sessionsReported,0);
+ assert.equal(weeklyStrengthExposure({program:p,weekIndex:1,ledger:[{...anonymous,athleteId:p.athleteId}]}).executed.sessionsReported,1);
+ void c;
+});
+test('the exposure describes the plan in force after the review, not the plan the review was asked about', ()=>{
+ const t=timeline(lifter({goal:'GENERAL',experience:'INTERMEDIATE',equipment:FULL,run:'PERFORMANCE',recent:{runDaysPerWeek:3,runMinutesPerWeek:150,longestRunMinutes:60},schedule:{runDays:[1,3,6],runMinutes:45,longRunMinutes:75,longRunDay:6},days:[0,4],minutes:50}));t.weeks(0,1);
+ const before=oracle(rowsOf(t.p,2).map(r=>r.e)),r=t.step(2,0,'LOCAL_FATIGUE',{signals:{region:'LOWER'}},'06:00');
+ assert.ok(r.proposal);const after=oracle(rowsOf(r.proposal,2).map(q=>q.e));assert.notDeepEqual(after,before,'the review changes the week it was asked about');
+ assert.deepEqual(r.strengthExposure.planned.byPrimaryMuscle,after);
+});

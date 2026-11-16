@@ -8,7 +8,8 @@ import {CATALOG,CATALOG_REVISION,CATALOG_SHA256,CATALOG_FILE_SHA256,configuratio
  * four corrections of the strength module the bound repertoire already runs. It is no second selector and adds no dose.
  * - V1X-STRENGTH-HOLD-DOSE (SQ-1): a configuration whose dose is a hold is not admitted anywhere while no time dose is approved.
  * - V1X-STRENGTH-UPPER-LOADING (SQ-2): in an upper-body slot where RUNNING_SUPPORT is a matching purpose, external loading ranks before purpose.
- * - V1X-STRENGTH-PLANE (SQ-4): with two MAIN slots of PUSH (or PULL) that admit both planes, a new plan asks the second for the vertical plane.
+ * - V1X-STRENGTH-PLANE (SQ-4): with two MAIN slots of PUSH (or PULL) that admit both planes, a new plan asks the second for the vertical plane,
+ *   unless the plan opens with movement practice; a plan in force keeps each slot as it was built.
  * - V1X-STRENGTH-EXPOSURE (SQ-3): a descriptive count of working sets per primary muscle, planned and executed. Nothing reads it.
  * The first three act inside the repertoire's own selection (src/r7b-repertoire.mjs reads the rules this module hands over; it reads nothing
  * else of this file). The values are CoachingCore/v1/STRENGTH_EXTENSION_V1.json, used only as the pinned bytes and only over the catalog bytes
@@ -16,7 +17,7 @@ import {CATALOG,CATALOG_REVISION,CATALOG_SHA256,CATALOG_FILE_SHA256,configuratio
  * This module imports no engine: the composed entry point (v1-strength-index.mjs) hands it plain data.
  */
 export const STRENGTH_EXTENSION_ID='V1X-STRENGTH-1';
-export const STRENGTH_VALUES_SHA256='e375a8be02e4be6df44f06f4d0bd51bb4e68692c153b145239ae81b9fd32cacb';
+export const STRENGTH_VALUES_SHA256='15a51f55e847ad01d683912d50319629ead68a1cfa00d3c69c5061b3e596850f';
 export const STRENGTH_VALUES_URL=new URL('../v1/STRENGTH_EXTENSION_V1.json',import.meta.url);
 export const STRENGTH_RECORDS_URL=new URL('../../audits/v1-strength-corrections-2026-11-16/candidate/reviews/ssctr/SSCTR_V1STR_RECORDS.json',import.meta.url);
 export const STRENGTH_BOUNDARIES=freeze({HOLD:'V1X-STRENGTH-HOLD-DOSE',UPPER:'V1X-STRENGTH-UPPER-LOADING',PLANE:'V1X-STRENGTH-PLANE',EXPOSURE:'V1X-STRENGTH-EXPOSURE'});
@@ -39,6 +40,7 @@ function shaped(v){
  if(v.binds.catalogRevision!==CATALOG_REVISION||v.binds.catalogSha256!==CATALOG_SHA256||CATALOG_FILE_SHA256!==CATALOG_SHA256||!CATALOG)return false;
  const holds=v.holdDose.configurations,planes=Object.entries(v.planeAlternation.patterns),defaults=CATALOG.strength.templateRules.patternDefaultSubpattern;
  if(!Array.isArray(holds)||!holds.length||!holds.every(id=>typeof id==='string'&&!!configurationOf(id))||v.holdDose.timeDose!==null)return false;
+ if(!Array.isArray(v.holdDose.knownLimitations)||!v.holdDose.knownLimitations.length||!v.holdDose.knownLimitations.every(x=>isObj(x)&&typeof x.id==='string'&&typeof x.detail==='string'))return false;
  if(v.upperLoading.region!=='UPPER'||v.upperLoading.matchingPurpose!=='RUNNING_SUPPORT')return false;
  if(!planes.length||!planes.every(([p,sub])=>typeof sub==='string'&&typeof defaults[p]==='string'&&sub!==defaults[p]&&CATALOG.strength.configurations.some(e=>e.pattern===p&&e.sub===sub)))return false;
  return Array.isArray(v.exposure.consumers)&&v.exposure.consumers.length===0;
@@ -100,14 +102,14 @@ export function slotsInForce(program){
 const MUSCLES=CATALOG?[...CATALOG.vocabulary.muscles]:[];
 const addDays=(day,n)=>new Date(Date.parse(day+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
 const tally=()=>{const by=new Map();return {add(primary,sets){for(const m of primary)by.set(m,(by.get(m)??0)+sets);},out(){return Object.fromEntries(MUSCLES.filter(m=>by.has(m)).map(m=>[m,by.get(m)]));}};};
-/** A logged set that can be counted: an entry with a finite, positive repetition count (no set is imputed from a session marked complete). */
-const loggedSet=s=>isObj(s)&&typeof s.reps==='number'&&Number.isFinite(s.reps)&&s.reps>0;
+/** A logged set that can be counted: an entry with a whole, positive repetition count (no set is imputed from a session marked complete). */
+const loggedSet=s=>isObj(s)&&Number.isInteger(s.reps)&&s.reps>0;
 /**
  * Weekly strength exposure of one week of a plan (SI-V1-SSCTR-SQ-3; catalog muscleCounting): each working set once for every primary muscle of
  * its configuration. Secondary muscles are not counted, a unilateral set counts once, and a PRACTICE row never counts; the plan holds no
  * warm-up row. `planned` reads the prescription; `executed` reads only sets logged in the record for that week's sessions (the latest report of
- * each session that is neither superseded nor in conflict, dated inside the week), and attributes a logged exercise only when it is a counted
- * row of that session. The two are separate quantities and neither is a target: there is no range, threshold, score or comparison here, and
+ * each session that is this athlete's, neither superseded nor in conflict, and dated inside the week), and attributes a logged exercise only
+ * when it is a counted row of that session. The two are separate quantities and neither is a target: there is no range, threshold, score or comparison here, and
  * nothing in CoachingCore reads this value.
  */
 export function weeklyStrengthExposure({program,weekIndex,ledger=[]},values=STRENGTH_VALUES){
@@ -123,7 +125,7 @@ export function weeklyStrengthExposure({program,weekIndex,ledger=[]},values=STRE
  }
  const executed={rows:[],notCounted:[]},E=tally(),last=addDays(week.startDate,6);let reported=0;
  for(const s of sessions){
-  const reports=(Array.isArray(ledger)?ledger:[]).filter(o=>isObj(o)&&o.sessionId===s.id&&o.superseded!==true&&o.conflicted!==true&&(o.athleteId===undefined||o.athleteId===program.athleteId)&&typeof o.localDate==='string'&&o.localDate>=week.startDate&&o.localDate<=last);
+  const reports=(Array.isArray(ledger)?ledger:[]).filter(o=>isObj(o)&&o.sessionId===s.id&&o.superseded!==true&&o.conflicted!==true&&o.athleteId===program.athleteId&&typeof o.localDate==='string'&&o.localDate>=week.startDate&&o.localDate<=last);
   const o=reports.at(-1);if(!o)continue;
   reported++;
   for(const x of Array.isArray(o.actual?.exercises)?o.actual.exercises:[]){

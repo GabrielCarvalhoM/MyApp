@@ -43,13 +43,13 @@ const ENABLING=new Set(['APPROVE','APPROVE_WITH_CONDITIONS']),EVIDENCE=new Set([
 const utcDayOf=v=>{if(typeof v!=='string')return null;const t=Date.parse(v);return /T/.test(v)&&Number.isFinite(t)?new Date(t).toISOString().slice(0,10):v.slice(0,10);};
 /**
  * V1X strength rules (src/v1-strength.mjs; SI-V1-SSCTR-SQ-1, SQ-2, SQ-4): the option key under which the strength entry point, and nothing else,
- * hands over the rules its own authority enabled. They travel on the authority as `strength`. Without the key the authority, the binding and
- * every selection are exactly as before.
+ * hands over the rules its own authority enabled. They travel on the authority under the same key, never under a field a JSON value can
+ * carry. Without the key the authority, the binding and every selection are exactly as before.
  */
 export const STRENGTH_RULES=Symbol('V1X strength rules');
 export function repertoireAuthority(options={}){
  const rules=options[STRENGTH_RULES]??null;
- if(options.repertoire)return rules?{...options.repertoire,strength:rules}:options.repertoire;
+ if(options.repertoire)return rules?{...options.repertoire,[STRENGTH_RULES]:rules}:options.repertoire;
  const asOf=utcDayOf(options.asOf),records=options.repertoireRecords??DEFAULT_RECORDS,approved={},bound=[],vetoed=new Set();
  for(const r of Array.isArray(records)?records:[]){
   const id=String(r?.review_id??'').replace(/^R7B0-SSCTR-/,'');
@@ -61,7 +61,7 @@ export function repertoireAuthority(options={}){
  }
  for(const id of vetoed)delete approved[id];
  const valid=!!CATALOG&&CORE_RECORDS.every(id=>approved[id]);
- return {version:R7B_REPERTOIRE_VERSION,valid,catalogRevision:CATALOG?CATALOG.revision:null,catalogSha256:CATALOG_FILE_SHA256,recordsSha256:options.repertoireRecords?hash(options.repertoireRecords):RECORDS_FILE_SHA256,approved,records:bound.filter(b=>!vetoed.has(b.id)).sort((a,b)=>a.id<b.id?-1:1),...(rules?{strength:rules}:{})};
+ return {version:R7B_REPERTOIRE_VERSION,valid,catalogRevision:CATALOG?CATALOG.revision:null,catalogSha256:CATALOG_FILE_SHA256,recordsSha256:options.repertoireRecords?hash(options.repertoireRecords):RECORDS_FILE_SHA256,approved,records:bound.filter(b=>!vetoed.has(b.id)).sort((a,b)=>a.id<b.id?-1:1),...(rules?{[STRENGTH_RULES]:rules}:{})};
 }
 export const allowsCandidate=(auth,id)=>!!auth?.valid&&!!auth.approved?.[id];
 /** The repertoire authority without a decision date (used when a caller supplies an authority object without one). */
@@ -69,7 +69,7 @@ export const DEFAULT_REPERTOIRE=freeze(repertoireAuthority());
 /** The repertoire authority a planner or review reads from an R6 authority object (attached at the entry points with the decision date). */
 export const repertoireOf=authority=>authority?.repertoire??DEFAULT_REPERTOIRE;
 /** The binding a program records (and every review checks): which catalog and which records it was planned under. */
-export const repertoireBinding=auth=>({version:R7B_REPERTOIRE_VERSION,catalogRevision:auth?.catalogRevision??null,catalogSha256:auth?.catalogSha256??null,recordsSha256:auth?.recordsSha256??null,approvedCandidates:Object.keys(auth?.approved??{}).sort(),...(auth?.strength?{strengthExtension:{id:auth.strength.id??null,sha256:auth.strength.sha256??null,boundaries:[...(auth.strength.boundaries??[])]}}:{})});
+export const repertoireBinding=auth=>({version:R7B_REPERTOIRE_VERSION,catalogRevision:auth?.catalogRevision??null,catalogSha256:auth?.catalogSha256??null,recordsSha256:auth?.recordsSha256??null,approvedCandidates:Object.keys(auth?.approved??{}).sort(),...(auth?.[STRENGTH_RULES]?{strengthExtension:{id:auth[STRENGTH_RULES].id??null,sha256:auth[STRENGTH_RULES].sha256??null,boundaries:[...(auth[STRENGTH_RULES].boundaries??[])]}}:{})});
 
 // ---------- vocabulary ----------
 const DEMAND=['NONE','LIGHT','MODERATE','HEAVY'],ORDINAL=['NONE','LOW','MODERATE','HIGH'],SKILL={LOW:0,MODERATE:1,HIGH:2};
@@ -102,7 +102,7 @@ const BY_ID=new Map(CONFIGURATIONS.map(e=>[e.id,e]));
 export const configurationOf=id=>BY_ID.get(id)??null;
 /** B0-origin configurations are admitted only with B0-C03; R6-origin ones are approved-envelope materializations. Under the V1X strength rules a
  * configuration whose dose is a hold, not repetitions, is not admitted anywhere until a time dose is approved (SI-V1-SSCTR-SQ-1). */
-export const admitted=(entry,auth)=>!!entry&&(entry.origin==='R6'||allowsCandidate(auth,'B0-C03'))&&!(auth?.strength?.hold??[]).includes(entry.id);
+export const admitted=(entry,auth)=>!!entry&&(entry.origin==='R6'||allowsCandidate(auth,'B0-C03'))&&!(auth?.[STRENGTH_RULES]?.hold??[]).includes(entry.id);
 export const PRACTICE_FOR=freeze(CATALOG?{...CATALOG.strength.skillLadders.practiceFor}:{});
 export const DEFAULT_SUBPATTERN=freeze(CATALOG?{...CATALOG.strength.templateRules.patternDefaultSubpattern}:{});
 export const TEMPLATE_DEFS=freeze(CATALOG?Object.fromEntries(CATALOG.strength.templates.map(t=>[t.id.replace(/^TPL\./,''),t])):{});
@@ -278,9 +278,9 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
  // reason-based substitution (SKILL_MISMATCH), never rotation (QE-R7B-02, Q-R7B-01).
  const surpassed=new Set([...reached].flatMap(ladderBelow));
  const contextKeys=goalContextKeys(goal),purposes=new Set([GOAL_PURPOSE[goal?.strength?.kind]??'GENERAL']),accessoryPurposes=new Set([...purposes,...(contextKeys.includes('EVENT')||goal?.strength?.kind==='RUNNING_SUPPORT'?['RUNNING_SUPPORT']:[])]);
- // V1X strength rules (auth.strength; absent unless the strength entry point enabled them). SQ-2: in an upper-body slot where RUNNING_SUPPORT is a
+ // V1X strength rules (on the authority under STRENGTH_RULES; absent unless the strength entry point enabled them). SQ-2: in an upper-body slot where RUNNING_SUPPORT is a
  // matching purpose, external loading ranks before purpose; admissibility and every other criterion are unchanged.
- const S=auth?.strength??null,upperPattern=p=>CONFIGURATIONS.some(e=>e.pattern===p&&e.region==='UPPER');
+ const S=auth?.[STRENGTH_RULES]??null,upperPattern=p=>CONFIGURATIONS.some(e=>e.pattern===p&&e.region==='UPPER');
  const order=(rolePurposes,sub,{pattern=null,plane=null}={})=>selectionCompare({familiar,established:new Set(established),purposes:rolePurposes,loadingFirst:!!S?.upperLoadingFirst&&rolePurposes.has('RUNNING_SUPPORT')&&upperPattern(pattern),plane},sub);
  const emph=new Set(emphasis.map(x=>String(x).toUpperCase())),disclosures=[];
  const usable=(e,role,{pattern,subpatterns=null,used,aside=false})=>e.pattern===pattern&&(!subpatterns||subpatterns.includes(e.subpattern))&&admitted(e,auth)&&e.equipment.every(q=>available.has(q))&&e.roles.includes(role)&&skillOk(e)&&!used.has(e.id)&&(aside||!setAside.has(e.id))&&(!knownOnly||noExternalLoad(e)||withDose.has(e.id));
@@ -290,9 +290,13 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
  const calfSub=new Map();let bent=0;
  alternating.forEach((x,i)=>{const want=i%2===1&&bent<bentAllowed?'BENT_KNEE':'STRAIGHT_KNEE';if(want==='BENT_KNEE')bent++;calfSub.set(x.ti+':'+x.si,want);});
  // SQ-4 plane alternation: with two or more MAIN slots of one pattern that admit both planes, every second one (template order, then slot index)
- // asks for the other plane; a single slot keeps the default. At most half ask.
- const planeSlot=new Map();
- for(const [p,sub] of Object.entries(S?.planeAlternation??{})){const both=defs.flatMap((d,ti)=>(d?.slots??[]).map((s,si)=>({ti,si,s})).filter(x=>x.s.pattern===p&&x.s.role==='MAIN'&&[sub,DEFAULT_SUBPATTERN[p]].every(q=>(x.s.subpatterns??[]).includes(q))));if(both.length>=2)both.forEach((x,i)=>{if(i%2===1)planeSlot.set(x.ti+':'+x.si,sub);});}
+ // asks for the other plane; a single slot keeps the default. At most half ask. A new plan that opens with movement practice (strength class
+ // NONE: experience below intermediate and no named exercise) asks nothing: there a second configuration of a pattern has its first exposure a
+ // week after the first, at another dose, and the session's time fit then leaves a row out.
+ const planeSlot=new Map(),practiceStart=!['INTERMEDIATE','EXPERIENCED'].includes(experience)&&!knownExercises.length;
+ // The roles in which the earlier sessions of the week hold each configuration: one configuration has one dose state, whichever row carries it.
+ const heldAs=new Map();
+ if(S?.inForce||!practiceStart)for(const [p,sub] of Object.entries(S?.planeAlternation??{})){const both=defs.flatMap((d,ti)=>(d?.slots??[]).map((s,si)=>({ti,si,s})).filter(x=>x.s.pattern===p&&x.s.role==='MAIN'&&[sub,DEFAULT_SUBPATTERN[p]].every(q=>(x.s.subpatterns??[]).includes(q))));if(both.length>=2)both.forEach((x,i)=>{if(i%2===1)planeSlot.set(x.ti+':'+x.si,sub);});}
  const templates=defs.map((def,index)=>{
   const used=new Set(),rows=[],missing=[],missingLimits={},asideGaps=[];
   (def?.slots??[]).forEach((slot,si)=>{
@@ -307,13 +311,15 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
     if(pick){pattern=pick;altCount[pick]=(altCount[pick]??0)+1;preferred=DEFAULT_SUBPATTERN[pick]??null;}
    }
    if(slot.pattern==='CALF'&&calfSub.has(index+':'+si))preferred=calfSub.get(index+':'+si);
-   // SQ-4: a slot that asks for the other plane. In a new plan it prefers that plane before familiarity, and never from external loading down to
-   // bodyweight, assistance or a band (the guard: when the slot's choice without this rule is externally loaded, only an externally loaded
-   // configuration of that plane is preferred). In a plan in force (`inForce`) the slot keeps the configuration it was built with (`own`) while
-   // that one fits, the rest in the order it was built in; once it no longer fits nothing is preferred, so the rule never changes a slot or
-   // brings an exercise into a running plan.
+   // SQ-4: a slot that asks for the other plane. In a new plan it prefers that plane before familiarity, with two limits. It never goes from
+   // external loading down to bodyweight, assistance or a band (the guard: when the slot's choice without this rule is externally loaded, only an
+   // externally loaded configuration of that plane is preferred). And it never prefers a configuration an earlier session of the week holds in
+   // another role: the MAIN row would take that row's dose state. In a plan in force (`inForce`) the slot keeps the configuration it was built
+   // with (`own`) while that one fits, the rest in the order it was built in. A slot with none (the days changed and the templates with them),
+   // or whose own no longer fits, prefers that plane only among the configurations the plan already uses (`established`): the rule never
+   // brings an exercise into a running plan, and a change of days does not drop the vertical lift the plan was built with.
    const wantPlane=planeSlot.get(index+':'+si)??null;
-   const planeFor=list=>{if(!wantPlane)return null;const plain=[...list].sort(order(rolePurposes,preferred,{pattern}))[0],prefers=e=>e.subpattern===wantPlane&&(e.loading==='EXTERNAL'||plain?.loading!=='EXTERNAL');if(!S.inForce)return {own:null,prefers};const own=S.inForce[types[index]+':'+si]??null;return {own,prefers:list.some(e=>e.id===own)?prefers:()=>false};};
+   const planeFor=list=>{if(!wantPlane)return null;const plain=[...list].sort(order(rolePurposes,preferred,{pattern}))[0],prefers=e=>e.subpattern===wantPlane&&(e.loading==='EXTERNAL'||plain?.loading!=='EXTERNAL')&&!(heldAs.get(e.id)??[]).some(r=>r!=='MAIN');if(!S.inForce)return {own:null,prefers};const own=S.inForce[types[index]+':'+si]??null;return {own,prefers:list.some(e=>e.id===own)?prefers:e=>prefers(e)&&established.includes(e.id)};};
    // `keep` narrows the candidates (the direction of a SKILL_MISMATCH fallback, QE-R7B-R2-03), in the MAIN list and in its B0-C09 downgrade alike.
    const optionsFor=(aside,keep=()=>true)=>{
     let list=CONFIGURATIONS.filter(e=>usable(e,role,{pattern,subpatterns:slot.subpatterns??null,used,aside})&&keep(e)),r=role,down=false;
@@ -354,9 +360,9 @@ export function buildTemplates({types,equipment=[],experience='NOVICE',knownExer
    const skillLimited=r=>CONFIGURATIONS.some(e=>fitsSlot(e,r)&&e.equipment.every(q=>available.has(q))&&!skillOk(e));
    const helpFor=r=>[...new Set(CONFIGURATIONS.filter(e=>fitsSlot(e,r)&&skillOk(e)&&!e.equipment.every(q=>available.has(q))).flatMap(e=>e.equipment.filter(q=>!available.has(q))))].sort();
    if(!pick){missing.push(slot.pattern);missingLimits[slot.pattern]=asideGaps.some(g=>g.slot===si)?'SKILL':helpFor(role).length?'EQUIPMENT':skillLimited(role)?'SKILL':'EQUIPMENT';return;}
-   used.add(pick.id);
+   used.add(pick.id);heldAs.set(pick.id,[...(heldAs.get(pick.id)??[]),rowRole]);
    const alternatives=options.filter(o=>o.id!==pick.id&&!surpassed.has(o.id)&&admissibleAlternative(pick,o,{role:rowRole,goalPatterns,available,skillOk,auth})).slice(0,3).map(o=>o.id);
-   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(wantPlane?{planeAlternation:{asks:wantPlane,built:natural.list[0]?.id??null}}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT',limit:skillLimited('MAIN')?'SKILL':'EQUIPMENT',addEquipment:helpFor('MAIN')}:{}),...(directive?{directive}:{}),...(fallbackFor?{fallbackFor}:{}),familiar:familiar.has(pick.id)});
+   rows.push({slot:si,pattern:pick.pattern,slotPattern:slot.pattern,role:rowRole,entry:clone(pick),alternatives,emphasized:emph.has(pick.pattern)||emph.has(slot.pattern)||emph.has(pick.region),...(pattern!==slot.pattern?{goalContextPattern:pattern}:{}),...(slot.pattern==='CALF'&&calfSub.has(index+':'+si)?{calfAlternation:calfSub.get(index+':'+si)}:{}),...(wantPlane?{planeAlternation:{asks:wantPlane,built:S.inForce?.[types[index]+':'+si]??natural.list[0]?.id??null}}:{}),...(downgraded?{downgradedFrom:'MAIN',coverage:'PULL_LIMITED_FOR_EQUIPMENT',limit:skillLimited('MAIN')?'SKILL':'EQUIPMENT',addEquipment:helpFor('MAIN')}:{}),...(directive?{directive}:{}),...(fallbackFor?{fallbackFor}:{}),familiar:familiar.has(pick.id)});
   });
   rows.sort((x,y)=>Number(y.role==='MAIN')-Number(x.role==='MAIN')||Number(y.emphasized)-Number(x.emphasized)||x.slot-y.slot);
   return {index,type:types[index],templateId:'TPL.'+types[index],family:STRENGTH_PRESCRIPTION_FAMILY[types[index]]??null,sessionFamily:FAMILY_OF_TEMPLATE[types[index]]??null,rows,missingPatterns:missing,missingLimits,...(asideGaps.length?{asideGaps}:{})};
