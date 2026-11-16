@@ -1,0 +1,220 @@
+{
+ "reviewId": "SSCTR-V1RFC-REVIEW-R1",
+ "date": "2026-11-16",
+ "verdict": "BLOCK",
+ "verdictScope": "These bytes only (candidate 400edb7). One narrow blocking finding (SSCTR-RFC-A-01) and one condition to close in the same cycle (SSCTR-RFC-A-02). Everything else holds: every worked example reproduces exactly, the limits of the projection hold, Pace Insights are observational, and the evidence boundary holds on my own athletes.",
+ "reviewer": {
+  "role": "Sports Science and Concurrent Training Reviewer (SSCTR), independent judge of the implementation (SSCTR-RFC-DECISION-r1 C8, r2 C14)",
+  "agentVersion": "SSCTR-1.0.0",
+  "constitution": "SSCTR-CONST-1.0.0, governance/agents/sports-science-reviewer/CONSTITUTION.md sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180, read in this run",
+  "skill": "sports-science-review 1.0.0, .agents/skills/sports-science-review/SKILL.md sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf, read in this run",
+  "evidenceProtocol": "SSCTR-EP-1.0.0, not re-read (no new research in this round)",
+  "instance": "A fresh subagent instance dispatched by the coordinator (model claude-opus-5-5). It did not author SSCTR-RFC-DECISION-r1 or r2, nor this implementation. Whether it ran through the project native adapter cannot be verified from inside the run; no native dispatch is claimed.",
+  "nature": "An AI software reviewer with no human credentials, licence or clinical or legal equivalence. Internal sporting judgment of an implementation against decided rules. Not human review, not empirical validation, not medical clearance.",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, bounded nonclinical; synthetic data only; no authorization for real athletes, integration or production"
+ },
+ "hostInjectedContext": {
+  "received": "The host injected the user's global CLAUDE.md, the project CLAUDE.md and the auto-memory MEMORY.md index. Orientation only; never used as evidence.",
+  "projectClaudeMd": "C:/Users/carva/Desktop/myApp/MyApp/CLAUDE.md sha256 e657d059e06fd1a21613250753a8c79ac605b69d955191d634966b3c8fc922e6",
+  "memoryIndex": "MEMORY.md sha256 be12c509c2132683fa870a31ce030780201e36aac26617765e13da77478f3d9a"
+ },
+ "literatureAccess": "None used in this round, by instruction: no new research. Sources are cited only as settled by r1, r2 and V1RC (RFC01, RFC05, RFC09, RFC10, V1RC:SRC05, V1RC:SRC07, V1RC:SRC13). No effect estimate beyond those records.",
+ "target": {
+  "worktree": "C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-run-extensions",
+  "branch": "claude/v1-run-extensions",
+  "candidate": "400edb77d35cb4a1234075c549bff54c9987824b",
+  "base": "f32a711 (COACHINGCORE-V1-RUN-FORMAT-FREEZE-2, V1RWS-2)",
+  "diff": "git diff f32a711 400edb7: 15 new files, nothing amended (checked with --stat)",
+  "files": {
+   "CoachingCore/src/v1-race-forecast.mjs": "8ab1815b16e27092774a12d2666011d99cded5b1364db1fe57cda86e2bc4a92e",
+   "CoachingCore/src/v1-pace-insights.mjs": "7a9999e22845b44f3adf700be82ddcbcd5e1faa042cd1a66ff5ac4bb2bc2224e",
+   "CoachingCore/src/v1-run-forecast-index.mjs": "392b48ca3dad941d0fca95ce12df66721470d568e4900f94b3b18446b5123033",
+   "CoachingCore/v1/RACE_FORECAST_EXTENSION_V1.json": "eae0111744d904211963ecc76a964a59d214dd84c541c9ac799480fd3f3de840",
+   "CoachingCore/scripts/v1rfc-simulate.mjs": "f5565b19a1f125318b2456207e104493ecbf61899372380c292464cd9266b866"
+  },
+  "authorities": {
+   "SSCTR_RFC_DECISION_R2.json": "51bec86bd0efb1f89dc9f6947da5630b6e591d52b3b33d9d36754c140beb1fe4",
+   "SSCTR_RFC_DECISION.json": "1d032c4036e80bda7fc2a3ce06850149bb7765920a3e415d8f32fc205f256e72",
+   "HANDOFF_RACE_FORECAST.md": "45b17893f9c5ff3389bae011aa310e07b48026c3e03a7ebc0a6769f9ccf600fa",
+   "PHASE_B_CANDIDATE.md": "f9ace1823dbd5e74b5f958a813dbc36621ad85fc3eb26d68725138605f10c10b"
+  },
+  "read": "r2 (rulings A1-A7, values, workedExamples, conditions, escalations), r1 (F1-F12, values, workedExamples incl. PI-1), handoff r3 sections 3-11, PREFLIGHT V5 and its verification lines, E01_PATCH_CLOSURE sections 3-5, SSCTR_V1RWS_E01_PATCH_R6_ADDENDUM.md in full, ATHLETE_DATA_FOUNDATION.md section 6, PHASE_B_CANDIDATE.md in full, the three src files and the values file in full, v1-run-format.mjs executionOf/readCompletion (read only), the five test files of the extension (read, not taken as proof)"
+ },
+ "executed": {
+  "authorTests": "node --test test/v1rfc-*.test.mjs: 78/78 pass (both 'LIMIT, open' tests pass as written, i.e. they assert the open behaviour). Run once; not taken as proof.",
+  "simulation": "node scripts/v1rfc-simulate.mjs and --noise TOTAL, without --out: output identical to the committed evidence files (EACH: insideAll 0.638; TOTAL: 0.7755)",
+  "neverRun": "npm run verify, scripts/verify-r*.mjs, v1rc-journeys.mjs, v1rc-fuzz.mjs, any freeze verifier",
+  "probes": "phase-b/reviews/ssctr/probes/ (copied from my scratch directory); inputs and expected values built from the decision text, not from the candidate's helpers; the composed probes use only the client mechanics of the test helpers (timeline, report, asPrescribed)"
+ },
+ "results": {
+  "p01-examples": "224/224: every r2 forecast example (a, b, c, d, d2, e1, e2, f, g, h, A1-1, A1-2, A2-1, A2-2, A2-3, A4-1) with my own inputs: forecastSeconds of both ranges, status, display, flags, confidence, R_c/R_hi, H; slow edge = current upper; g = U + F. A4-1..A4-3 and every not-shown cause of race week; i (window, 111/112/113 days); the nine A5 goal relations; AD-1 (S1-S6 and the week a = 0.8172); PI-1 (states, median, MAD, floor 5%, EXPLAIN_ONLY); PR-2, PR-3",
+  "p02-revision": "61/61: PR-1 through paceRevisionOf with my own week snapshots (offer week 9 step 0.02, band 295-315 from week 10, no offer weeks 10-13, offer week 14 step 0.01 total 0.03, band 295-315 by rounding, end 2027-04-21 HARDER_THAN_CUE, no later offer); every offeredWhen condition one at a time; every ending; lapse at 2027-05-03; STABLE keeps it",
+  "p03-composed": "48/49 on the composed entry point: default authority all DISABLED and key for key the run formats; my own adherence journey (a = 1, 0.6, 1, 0.5938) reproduces both ranges to the second; fast easy runs change neither forecast nor insights; clinical sign: forecast and insights withdrawn; unknown experience reads EXPERIENCED; marathon only as the current estimate; heat and treadmill never vote and are adherence 1; insights on leave every run-format key and the calibration hash unchanged; revision INERT with the V1RC band; B-1 reproduced. The one failure is SSCTR-RFC-A-01",
+  "p04-bouts-break": "56 native WORK distance steps in harder families sampled, 12 with weight >= 300 s, 0 whose bout falls under 300 s when run FASTER; the in-week answer of a declared 14-day break: forecast SHOWN, insights ACTIVE (SSCTR-RFC-A-01)",
+  "p05-masked": "7/7: on my own half-marathon athlete, the athlete's correction by time with no distance after a POOR device import: execution TIME, completed true, paceEvidence null, paceWithheld REPORT_NOT_CARRIED, raw work pace 262 s/km still on the row; 0 votes; credit 1 COMPLETED",
+  "p06-copy": "21 distinct sentences emitted over two whole journeys: 0 forbidden-copy hits, 0 FORBIDDEN_CLAIM hits, no percent beside a range, 'critical speed' never emitted (B-4)",
+  "p07-gzero": "Q8 down and slowdown at exactly 3%: g = 0, forecast = current estimate, MODERATE; 2.9%: gain kept; NONE: UNAVAILABLE; unknown: EXPERIENCED",
+  "p08-revbreak": "an active revision survives a declared 8-day break (SSCTR-RFC-A-03)"
+ },
+ "findings": [
+  {
+   "id": "SSCTR-RFC-A-01",
+   "severity": "BLOCKING",
+   "what": "A declared break of 14 days or more does not withdraw the forecast or the insights at once. r2 values.forecast.withdrawal lists 'declared break of 14 days or more'; r1 F8: 'Withdrawal applies at once', and the insights withdraw on the same conditions. forecastAt has no break check; withdrawalNow covers hold and the warning-sign screen only; insightsWithdrawn likewise. In the week the break is declared (engine ASK) both ranges stay SHOWN ('If you keep training as you have over the last 4 weeks...') and the insights stay ACTIVE until the next week boundary (checked again on Friday of that week). A retroactive break is withdrawn, but only through the calibration (estimate unavailable, then RETURN mode).",
+   "why": "Sporting: the observed forecast is conditional on continued training and the plan scenario on following the plan. Once the athlete declares two weeks without training, both conditions are known to be false; showing them is the claim the withdrawal exists to remove. It is a decided rule, not a new criterion.",
+   "probe": "probes/p03-composed.mjs (S4), probes/p04-bouts-break.mjs (2)",
+   "closes": "The forecast and the insights are withdrawn from the answer in which a declared break of 14 days or more is on record (declared on or before asOf) and while it is in progress or still to come; afterwards the existing paths (estimate, RETURN mode, zero-credit weeks) apply. Outcome test on the composed entry point: the declaring review, a later day of that week, and a break whose start is in the future. Nothing else changes; no value changes."
+  },
+  {
+   "id": "SSCTR-RFC-A-02",
+   "severity": "CONDITION",
+   "what": "HOLD weeks are not zero-credit weeks in the composed reading. r2 values.forecast.zeroCreditWeeks includes HOLD; weeksAt marks a week zeroCredit only for the noBandModes (WALK_JOG, RESTART, RETURN). Holds in this engine are review-level (standing F08 holds), not a week mode, so a week spent under a standing hold earns f(a) of whatever was reported and enters the mean of the last weeks. Found by code reading; not reproduced end to end (I did not build a hold followed by a readiness release).",
+   "why": "If sessions are reported completed during a hold, gain would be credited for a week the decision credits nothing; the other direction (low a lowering the mean) is conservative. The forecast is withdrawn while the hold stands, so the effect is after release only.",
+   "probe": "code reading: v1-run-forecast-index.mjs weeksAt (zeroCredit: RC.paceRules.noBandModes.includes(modeOf(...))); probes/p07-gzero.mjs shows the pure function credits a zeroCredit week as nothing and leaves it out of the mean",
+   "closes": "Before the V1X-RUN-FORECAST record, in the same cycle as A-01: a week whose calibration was WITHHELD_HOLD, or that a standing hold covered, is zeroCredit, with an outcome test; or Engineering shows with a test that a week under a hold can never carry a credited report."
+  },
+  {
+   "id": "SSCTR-RFC-A-03",
+   "severity": "CONDITION",
+   "what": "V1X-PACE-REVISION only: an active revision is not ended at once by a declared break of 7 days or more (A3 endsAtOnce: 'any V1RC withdrawal (hold, declared break >= 7 days, WALK_JOG/RESTART/RETURN mode, warning-sign screen REQUIRED)'). paceRevisionOf ends at a boundary only on w.withdrawal, which the composed entry sets from V1RC withholding or today's hold/screen; an 8-day break leaves V1RC calibrated and mode EASY, so the revision stays in force. A mode change ends it only if V1RC withholds that week.",
+   "probe": "probes/p08-revbreak.mjs; probes/p03-composed.mjs S4 (8-day break: mode EASY, calibration calibrated)",
+   "closes": "Before any V1X-PACE-REVISION record (which waits for IC-2 in any case): a declared break >= 7 days and a WALK_JOG/RESTART/RETURN mode end the revision at once, with outcome tests."
+  },
+  {
+   "id": "SSCTR-RFC-A-04",
+   "severity": "NOTE",
+   "what": "AD-1 S4 (continuous TIME work step stopped at 15 of 20 min) reproduces 0.75 in the pure sessionCredit, but end to end the RWS execution exposes no per-step measured seconds, so an unmet continuous TIME WORK step earns 0. This is the decision's own fallback ('when measured, else 0') and errs low, the safe direction for a forecast.",
+   "probe": "code reading: v1-run-format.mjs executionOf steps (no measured extent per step); v1-run-forecast-index.mjs creditInput",
+   "closes": "Nothing now. When the RWS contract exposes lap seconds (Data/Engineering, E4/E5), pass them as the measured extent and recheck S4 end to end."
+  },
+  {
+   "id": "SSCTR-RFC-A-05",
+   "severity": "NOTE",
+   "what": "L-14 checks the planned step (>= 5 min) and each native main step's planning weight (midpoint estimate >= 300 s), not the bout as run. A distance step whose weight is just above 300 s, run FASTER, is a bout under 5 min. In 56 sampled native harder-domain distance steps none falls under 300 s when run FASTER; and under the ADF report contract native reports carry no work pace, so native sessions do not reach a vote today.",
+   "probe": "probes/p04-bouts-break.mjs (1)",
+   "closes": "Re-open on any change to the RWS format catalogue or conversion, or if native reports start to carry a work pace: then the check reads the bout at the band's fast edge or the executed bout."
+  },
+  {
+   "id": "SSCTR-RFC-A-06",
+   "severity": "CONDITION",
+   "what": "B-3: the handoff's sanity thresholds are not met (inside the envelope 63.8% against >= 80%; per arm 56.6-67.7% against >= 60%; truth faster than the fast edge 14.8% in the no-response arm against <= 10%). Reproduced exactly. The two central-error criteria are met. In the generator the truth was slower than the slow edge ('assumes no further improvement') in 9-26% of cases per arm.",
+   "why": "The envelope was never a probability interval: its slow edge is the V1RC current estimate itself and its width is the V1RC single-source margin; r1 C5 and r2 A2 record no measured coverage, the interval is labelled PLAUSIBILITY_ENVELOPE, probabilistic false, calibrated false, and no copy may state a coverage. The slow-side misses come from the V1RC estimate the forecast starts from, not from anything phase B adds. The result confirms the abstentions; it does not block a synthetic candidate. The generator and the values must not be tuned to pass.",
+   "probe": "node scripts/v1rfc-simulate.mjs; --noise TOTAL (identical to the committed evidence)",
+   "closes": "Conditions on the record: the thresholds are recorded as not met and never presented as met; nothing claims coverage or accuracy; before athlete-facing use the copy owners (E3, E4) are told that the slower end is not a floor (in the generator the truth fell slower than it in up to about a quarter of cases); empirical recalibration against real estimate-versus-race results (r1 F1 condition, handoff D7) stays the gate for any accuracy claim. The post-hoc TOTAL description carries no weight beyond explaining the mechanism."
+  },
+  {
+   "id": "SSCTR-RFC-A-07",
+   "severity": "CONDITION",
+   "what": "B-1: with one pre-plan result, a 10K forecast is SHOWN in weeks 1-8 and TOO_UNCERTAIN_TO_SHOW from week 9 (the V1RC estimate goes to LOW, margin 0.06, after 56 days); a half-marathon forecast from a 10K never shows. Reproduced.",
+   "why": "This is the abstention working: the forecast never outlives the currency of the evidence it starts from. Relaxing the currency or the widths to keep it on screen would show a projection from aged capacity.",
+   "probe": "probes/p03-composed.mjs (S9)",
+   "closes": "Before athlete-facing use: the Founder and Product are told that in the commonest case (one pre-plan result) the forecast exists only in the first half of a 16-week plan and race week then shows nothing; the TOO_UNCERTAIN state states the V1RC reason and only the decided routes (report a race result at the event distance, never a prompt to enter one; the P3 test only when offered). Nothing is required in the code; no currency, margin or wMax changes (F-2 is the Founder's and was decided)."
+  },
+  {
+   "id": "SSCTR-RFC-A-08",
+   "severity": "NOTE",
+   "what": "Pair and slowdown readings are stricter than r1 in a safe direction: a week without a reference between two periods voids the earlier one (L-7), which leaves the prior (a wider fast edge, more TOO_UNCERTAIN); the slowdown comparison ('previous') does not apply the 7-day-break rule, so a slowdown is found more often (g = 0).",
+   "probe": "code reading: forecastAt pair/previous",
+   "closes": "Nothing."
+  },
+  {
+   "id": "SSCTR-RFC-A-09",
+   "severity": "CONDITION",
+   "what": "B-5: an exceptional last session (more than max(3 MAD, 5%) from the median) is shown and does not vote, so earlier FASTER sessions may read IMPROVING. For the insights this is the decided contract (r1 F9) and the exceptional session is listed in the output. For the revision it means a much slower in-cue session can be outvoted into an offer.",
+   "probe": "code reading: insightOf exceptional; the session stays in sessions[] with exceptional true",
+   "closes": "Insights: nothing. Revision: the SSCTR that judges the IC-2 integration decides whether an exceptional execution of class SLOWER in the window blocks an offer; it is a question about the offer rule (an amendment of A3 offeredWhen), not an implementation fault, so I do not decide it here."
+  },
+  {
+   "id": "SSCTR-RFC-A-10",
+   "severity": "NOTE",
+   "what": "INSUFFICIENT_DATA maps to INFORMATIVE_ONLY (values actions.shortRepsOrEasy) for every reason, not only short reps or easy runs; STABLE and MIXED map to NONE (L-10). Neither suggests anything.",
+   "probe": "code reading: actionOf; probes/p01-examples.mjs PR-2",
+   "closes": "Nothing."
+  },
+  {
+   "id": "SSCTR-RFC-A-11",
+   "severity": "NOTE",
+   "what": "V1X-PACE-REVISION only: when a revision ends at a week boundary (taper, new reference, withdrawal, factor down, slower-than-band, lapse), fractionAt still counts it on that boundary day, so an execution on the first day of that week is classified against the revised band. The band read by the selector (fractionOn) is correct.",
+   "probe": "code reading: paceRevisionOf end(start, ...) with endedOn = start and fractionAt including endedOn",
+   "closes": "With A-03, before any V1X-PACE-REVISION record."
+  }
+ ],
+ "rulings": {
+  "V5": {"ruling": "COUNTED_WITH_CREDIT_ZERO ('ZERO', the candidate's provisional value) — this answer prevails", "reason": "r2's own last credit rule gives 0 to a report with no recorded extent, and the forecast's adherence is a proxy for the stimulus received that must err low (A6). Excluding the session from both sides would let an athlete with many unreadable sessions keep a high weekly adherence from the few readable ones: the over-credit direction. A later correction reclassifies the session. Credit 0 only slows the fast edge and feeds nothing else."},
+  "L-1": {"ruling": "ACCEPT", "reason": "A conflicted row is no readable execution; same reading as V5. The engine's completed is false for a conflicted row, so it never reaches credit 1."},
+  "L-2": {"ruling": "ACCEPT", "reason": "The credit measures the dose received; a session the plan skipped and did not move is dose not received, whatever the cause, and counting it errs low. A moved session counts once, where it lives; an optional one only when reported. G03 semantics stay with Product/UX + Data (C13)."},
+  "L-3": {"ruling": "ACCEPT", "reason": "The smaller usable distance over the target is the conservative extent; extentFraction is never read (grep: one comment only). Closes SSCTR-RWS-E-03 for this phase's readers."},
+  "L-4": {"ruling": "ACCEPT", "reason": "ADF section 6 and r1 F2: an unstated class reads EXPERIENCED, the smallest ceiling; reading the intake's stored NOVICE would overstate the gain of someone who said nothing. Verified end to end (p03 S6)."},
+  "L-5": {"ruling": "ACCEPT", "reason": "The evidence boundary (admitted record, A6 credit, pace admission) exists only through the run-format entry point; without V1X-RUN-NATIVE there is no conforming reading."},
+  "L-6": {"ruling": "ACCEPT", "reason": "Matches A1's one condition and 'recompute at the week boundary only'."},
+  "L-7": {"ruling": "ACCEPT", "reason": "Eligibility read as the calibration read the reference; voiding a pair across a gap leaves the prior, which is wider, never more confident (A-08)."},
+  "L-8": {"ruling": "ACCEPT", "reason": "A4's intent is a frozen range never shown altered; recomputing from the record and withholding it when anything that week read has changed since, or a break was declared since, is stricter."},
+  "L-9": {"ruling": "MODIFY", "how": "Accept not applying the 112-day window and 'estimate unavailable' to the insights: those guard a projection, and the insights read the band of each session's own week and stand without an event estimate. But a declared break of 14 days or more must withdraw the insights at once too (r1 F8 'the same conditions'); see SSCTR-RFC-A-01."},
+  "L-10": {"ruling": "ACCEPT", "reason": "The decision names no action for STABLE or MIXED; NONE suggests nothing, and the state itself is shown."},
+  "L-11": {"ruling": "ACCEPT", "reason": "Checking the lapse at every boundary from 56 days is stricter than 'the first boundary' and cannot keep a revision longer."},
+  "L-12": {"ruling": "ACCEPT_WITH_CONDITION", "reason": "The V1 vocabulary has no GOOD: device quality is OK, POOR or absent (v1-run-history). OK is the positive assessment; absent is 'merely not poor' and does not count, which is what A3 meant.", "condition": "Before any V1X-PACE-REVISION record: only a device-authored quality counts (the app never says OK for a device: QRE-RWS-F-01 closure (a), SSCTR-RWS-F-02), and Data confirms the HealthKit mapping sets OK only on a positive assessment (E4)."},
+  "L-13": {"ruling": "ACCEPT", "reason": "Reported effort is the athlete's word, not pace evidence; ending the revision and blocking an offer on a harder-than-cue report even with the pace withheld is the conservative reading of A3."},
+  "L-14": {"ruling": "ACCEPT", "reason": "Planned step >= 5 min and every native main step >= 300 s closes SSCTR-RWS-A-04 for this phase's readers, which never rely on paceEvidence === true. A-04 stays open for any other reader of the flag. Residual: SSCTR-RFC-A-05."},
+  "L-15": {"ruling": "ACCEPT", "reason": "R-11 stays an inherited integration condition; the extension withholds above 6:00:00 on the displayed central (the comparison the athlete would read; the edge is under 30 s)."},
+  "B-1": {"ruling": "CONFIRMED; consequence of V1RC currency; nothing in the code", "requires": "SSCTR-RFC-A-07 before athlete-facing use"},
+  "B-2": {"ruling": "ACCEPT", "reason": "Unreachable while the engine plans at most 16 weeks (111 days); the state is implemented and passes example i. Re-test end to end if plan lengths change."},
+  "B-3": {"ruling": "CONDITION, not blocking for a synthetic candidate; confirms r1 C5 and the abstentions", "requires": "SSCTR-RFC-A-06"},
+  "B-4": {"ruling": "ACCEPT", "reason": "Decision reasons, never athlete copy; nothing emits them (p06: 0 hits)."},
+  "B-5": {"ruling": "ACCEPT for the insights; open question for the revision", "requires": "SSCTR-RFC-A-09"}
+ },
+ "evidenceBoundary": {
+  "distinction": "Held on my own athletes: adherence (execution.completed, extentKm, weights), pace evidence (three-condition admission), training load (never read here), race results (only through the calibration of the admitted record). A completed session withheld from pace readers is adherence 1 and votes in nothing (p03 S8, p05).",
+  "SSCTR-RWS-F-01": "CLOSED for this phase's readers: they read paceWithheld (computed with the whole reading), runFormat.paceEvidenceWithheld and paceEvidence, never reportsVerdict (grep: none); the masked row with no distance never votes (p05, my own athlete).",
+  "SSCTR-RWS-A-04": "CLOSED for this phase's readers by L-14; open for any other reader of paceEvidence.",
+  "SSCTR-RWS-E-03": "CLOSED for this phase's readers by L-3."
+ },
+ "openLimits": {
+  "QRE-RWS-F-01": "Shown as open by its LIMIT test (the merged device report hides the athlete's HEAT and the session votes). Nothing claims it closed. It need not close before a SYNTHETIC enabling record of the forecast or the insights (observational, synthetic, effort governs every band); it must close before integration or real athletes, by closure (a) with an adapter outcome test, else (b) by Founder decision.",
+  "hardGateE1": "Shown as open by its LIMIT test (a device re-sync erases the athlete's ADVERSE recovery; the revision's 7-day rule inherits it). PHASE_B_CANDIDATE section 7 declares no hard gate met, and nothing in the candidate claims one. It need not close before a SYNTHETIC record of the forecast or the insights; it must close before any integration or real athlete, and before any V1X-PACE-REVISION record."
+ },
+ "limitsOfTheProjection": "Held: slow edge always the current estimate (every example and every composed week); O never added (g = U + F); the reference week credited at the reference (A1-1, A1-2); two ranges, observed first, plan scenario never the headline while the observed is SHOWN, coincidence rule; the plan scenario can never be shown alone while an observed forecast is available (its low is never above the observed low); marathon only as the current estimate with no range kind and no goal relation; 112-day window; race week: frozen observed low-high only, dated, after the V1RC caution, never on race day, never with a goal relation, every not-shown cause; goal relation on rounded edges, inclusive, neutral, never the central; adherence by extent never intensity; each g = 0 rule (marathon, slowdown >= 3%, Q8 down); withdrawals: hold, clinical route, screen, modes, completion race, after the race date, race week, window, estimate unavailable, experience NONE, boundaries not enabled, marathon above 6:00:00, with the exception of SSCTR-RFC-A-01.",
+ "uncertaintyAndUnavailable": "No more precision or confidence than decided: confidence LOW whenever a gain is applied, else the current tier capped at MODERATE; outward rounding of V1RC; no z, percentage or probability beside a range (the basis text says 'not a probability', as decided); thin evidence gives TOO_UNCERTAIN_TO_SHOW or a typed UNAVAILABLE with the V1RC reason and the decided routes, never a fabricated value; a non-current personal best is HISTORICAL_BEST in V1RC and never capacity; aged evidence is PRESUMED with a reduced tier and the forecast then goes TOO_UNCERTAIN (B-1).",
+ "paceInsights": "Observational: with the insights on, every key of the run formats and the calibration hash are unchanged (p03 S8); a single easy run, or several fast easy runs, change neither the forecast nor any insight state (p03 S3; easy runs are no insight domain). Classification, exceptional rule, states and actions as decided (PI-1, PR-2, PR-3). The revision: every offer condition, the step, the 3% total, every ending and the lapse reproduce (p02); race-pace domains are never revised (PR-2, PR-3). With no enabling record of its own, V1X-PACE-REVISION is INERT: nothing offered or recorded, the effective band is the V1RC band, nothing re-sized (p03 S8, and the default authority approves nothing).",
+ "aeReview": "No adaptive training decision is made by this review or by the forecast and insights, which feed nothing (neverFeeds). The revision's AE answers are those of r2 A3, unchanged; it stays off.",
+ "wouldIssue": {
+  "V1X-RUN-FORECAST": {
+   "onTheseBytes": "WOULD_NOT_ISSUE",
+   "why": "SSCTR-RFC-A-01 (a decided at-once withdrawal is missing) and SSCTR-RFC-A-02 open",
+   "after": "Would issue on a successor that closes A-01 and A-02 (judged on that diff only), after reading the Quality and Security reviews in full, as APPROVE_WITH_CONDITIONS / SUPPORTED_WITH_LIMITS, sources RFC01, RFC05, RFC09, RFC10, V1RC:SRC05",
+   "conditions": [
+    "Synthetic data only; no real athletes, integration or production; V1 authority NO.",
+    "Bound to the values eae01117...e840 and to the runtime bytes then judged; any change needs a new independent SSCTR check.",
+    "A plausibility envelope, never a probability; the handoff's simulation thresholds recorded as not met; no coverage or accuracy claim (SSCTR-RFC-A-06).",
+    "Before athlete-facing use: E3 (Founder/PCG reading of the catalog rule), E4 copy and semantics, and SSCTR-RFC-A-06 and A-07 information to the copy owners and the Founder.",
+    "Before integration: QRE-RWS-F-01 and hard gate E-1 closed; R-11 and the V1RC inherited conditions.",
+    "Empirical recalibration of G, tau, wMax before any accuracy claim (r1 F1, D7); re-review on the first real estimate-versus-race data."
+   ]
+  },
+  "V1X-PACE-INSIGHTS": {
+   "onTheseBytes": "WOULD_NOT_ISSUE",
+   "why": "SSCTR-RFC-A-01 applies to the insights (r1 F8 'the same conditions')",
+   "after": "Would issue on the same successor, after reading the Quality and Security reviews, as APPROVE_WITH_CONDITIONS / SUPPORTED_WITH_LIMITS, sources V1RC:SRC05, V1RC:SRC07, V1RC:SRC13",
+   "conditions": [
+    "Synthetic data only; observational: changes no capacity, estimate, forecast, band, dose or progression.",
+    "Bound to the values and runtime bytes then judged.",
+    "Before integration: QRE-RWS-F-01 (a merged device report can hide a non-comparable fact and the session votes) and hard gate E-1.",
+    "SSCTR-RFC-A-05 re-opens on any RWS format change or if native reports start to carry a work pace.",
+    "No copy invites faster running than the cue; the exceptional session is shown, never voted."
+   ]
+  },
+  "V1X-PACE-REVISION": {
+   "onTheseBytes": "NO_RECORD",
+   "why": "By instruction it waits for an integration that meets IC-2; and SSCTR-RFC-A-03, A-11, L-12's condition, A-09's question and hard gate E-1 must be settled first by the SSCTR that judges that integration."
+  }
+ },
+ "humanQueue": "Proposed only, not appended: HQ-V1RFC-SSCTR-REVIEW-R1 (this review; it approves nothing prescriptive).",
+ "notVerified": [
+  "A hold followed by a readiness release, end to end (A-02 rests on code reading)",
+  "The warning-sign screen and completion-race withdrawals end to end (code reading and the author's tests only)",
+  "Real HealthKit behaviour (quality vocabulary, re-sync)",
+  "Custody and the record of revision answers (Security)",
+  "The sources cited in r1/r2/V1RC, not re-verified; no scientific claim here is new"
+ ],
+ "reReview": "On the successor that closes A-01/A-02 (diff only); on any change to the bound files; on the first real data; at IC-2 for the revision; by 2027-05-13 at the latest (handoff D7).",
+ "writes": "Only phase-b/reviews/ssctr/SSCTR_V1RFC_REVIEW_R1.md, this file, and probes/ (copies of my scratch probes). No tracked file edited; no git write; SSCTR_V1RFC_RUN_RECORDS.json not written."
+}

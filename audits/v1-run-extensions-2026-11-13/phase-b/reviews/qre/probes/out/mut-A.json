@@ -1,0 +1,261 @@
+{
+ "control": {
+  "total": 78,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "R01",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "minutes reading credits a stop in full (AD-1)",
+   "killed": true,
+   "killers": 5,
+   "firstKillers": [
+    "the credit of a session is its extent as the engine reads it: completed is 1 however fast; a stop is never the target; a declaration is adherence only",
+    "a conflict between the app and the device: the session is no execution anyone can read; no credit and no vote, and the forecast says so",
+    "T1 adherence credit S3: RWS_STEPS_EXTENT"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R02",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "unmet repetition earns half",
+   "killed": true,
+   "killers": 2,
+   "firstKillers": [
+    "T1 adherence credit S2: RWS_STEPS_EXTENT",
+    "T1 AD-1: the week reads a 0.8172 and f 0.79301; a 16 km run stopped at 12 km is not credited whole"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R03",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "f(0.9) below 1",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R04",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "A1 reference week credit off by one",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "T6 the temporal accounting: g = U + F; the reference week is credited at the reference; what the reference measured is never added"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R05",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "slowdown threshold 4.5%",
+   "killed": true,
+   "killers": 2,
+   "firstKillers": [
+    "T1 forecast example d2: forecastSeconds, status, display and flags as the decision gives them",
+    "T9 a slower result: under 3% it lowers the response; from 3%, or with a downward training factor in force, no gain is assumed and the forecast is the estimate"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R06",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "fast edge without z",
+   "killed": true,
+   "killers": 18,
+   "firstKillers": [
+    "the journey of a 10 km plan: the plan scenario from the first day, the observed forecast from two weeks done, a new reference without double counting, and race week",
+    "T1 forecast example a: forecastSeconds, status, display and flags as the decision gives them",
+    "T1 forecast example b: forecastSeconds, status, display and flags as the decision gives them"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R07",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "fast edge with R_c",
+   "killed": true,
+   "killers": 19,
+   "firstKillers": [
+    "the journey of a 10 km plan: the plan scenario from the first day, the observed forecast from two weeks done, a new reference without double counting, and race week",
+    "a week's forecast does not move inside the week, and what race week shows is never shown changed",
+    "T1 forecast example a: forecastSeconds, status, display and flags as the decision gives them"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R08",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "slow edge assumes gain",
+   "killed": true,
+   "killers": 21,
+   "firstKillers": [
+    "the journey of a 10 km plan: the plan scenario from the first day, the observed forecast from two weeks done, a new reference without double counting, and race week",
+    "who gets a forecast: no history, an old best alone, an unknown or absent experience, and a reference too short for the event",
+    "missed training: the observed forecast slows with the adherence observed; the plan scenario is the alternative, never the headline"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R09",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "width test loosened by 1 pp",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R10",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "mean of last 3 weeks",
+   "killed": true,
+   "killers": 14,
+   "firstKillers": [
+    "missed training: the observed forecast slows with the adherence observed; the plan scenario is the alternative, never the headline",
+    "T1 forecast example a: forecastSeconds, status, display and flags as the decision gives them",
+    "T1 forecast example b: forecastSeconds, status, display and flags as the decision gives them"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R11",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "observed forecast from one week",
+   "killed": true,
+   "killers": 2,
+   "firstKillers": [
+    "the journey of a 10 km plan: the plan scenario from the first day, the observed forecast from two weeks done, a new reference without double counting, and race week",
+    "T1 forecast example A2-1: forecastSeconds, status, display and flags as the decision gives them"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R12",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "coincide only by triples",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R13",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "Q8 down ignored",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "T9 a slower result: under 3% it lowers the response; from 3%, or with a downward training factor in force, no gain is assumed and the forecast is the estimate"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R14",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "O double counted (reference gain added again)",
+   "killed": true,
+   "killers": 8,
+   "firstKillers": [
+    "the journey of a 10 km plan: the plan scenario from the first day, the observed forecast from two weeks done, a new reference without double counting, and race week",
+    "a week's forecast does not move inside the week, and what race week shows is never shown changed",
+    "T1 forecast example c: forecastSeconds, status, display and flags as the decision gives them"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R15",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "reference inside an unfinished week computed",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "T6 the temporal accounting: g = U + F; the reference week is credited at the reference; what the reference measured is never added"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R16",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "goal relation not inclusive at low",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R17",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "race week ignores changes since frozen",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "a week's forecast does not move inside the week, and what race week shows is never shown changed"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R18",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "race week shows g=0 forecast",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R19",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "window 119 days",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "T8 the window (example i): beyond 112 days nothing is shown yet, and the day a forecast appears is the first week start inside it"
+   ],
+   "total": 78
+  },
+  {
+   "id": "R20",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "R-11 at 6:01",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R21",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "pair spacing ignored",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R22",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "R_c not clipped",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 78
+  },
+  {
+   "id": "R23",
+   "file": "src/v1-race-forecast.mjs",
+   "what": "race week shown on race day",
+   "killed": true,
+   "killers": 2,
+   "firstKillers": [
+    "race week: never on race day; not after a new reference in the taper (A4-2); not when the last forecast was not shown (A4-3)",
+    "T1 A4-1, A4-2, A4-3: race week shows the frozen observed forecast of the week before, or nothing"
+   ],
+   "total": 78
+  }
+ ]
+}

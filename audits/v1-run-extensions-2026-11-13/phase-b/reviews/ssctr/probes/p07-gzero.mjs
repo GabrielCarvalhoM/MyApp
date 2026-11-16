@@ -1,0 +1,14 @@
+const ROOT='C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-run-extensions/';
+const M=await import('file:///'+ROOT+'CoachingCore/src/v1-race-forecast.mjs');
+const fs=await import('node:fs');const V=JSON.parse(fs.readFileSync(ROOT+'CoachingCore/v1/RACE_FORECAST_EXTENSION_V1.json','utf8')).forecast;
+const day=(s,n)=>new Date(Date.parse(s+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
+const weeks=Array.from({length:16},(_,i)=>({index:i,startDate:day('2027-01-04',7*i),phase:i<14?'BUILD':i<15?'TAPER':'RACE_WEEK',zeroCredit:false,planned:true,a:i<4?0.95:null}));
+const base={event:'10K',experience:'INTERMEDIATE',unitSeconds:15,estimate:{lower:2925,central:3000,upper:3075,tier:'HIGH'},weeks,completedWeeks:4,raceWeekIndex:15,reference:{date:'2027-01-01',t10:3000,sigma:0.025/1.2816},pairA:null,previous:null,q8Down:false};
+const s=x=>{const f=M.forecastOf({...base,...x},V);return [f.status,(f.flags??[]).join(),JSON.stringify(f.planScenario?.forecastSeconds),JSON.stringify(f.observedForecast?.forecastSeconds),f.confidence,f.reason??''].join(' | ');};
+console.log('control      ',s({}));
+console.log('q8Down       ',s({q8Down:true}));
+console.log('slower 3.0%  ',s({reference:{...base.reference,t10:3090},previous:{t10:3000}}));
+console.log('slower 2.9%  ',s({reference:{...base.reference,t10:3087},previous:{t10:3000}}));
+console.log('NONE         ',s({experience:'NONE'}));
+console.log('unknown(null)',s({experience:null}));
+console.log('hold weeks   ',s({weeks:weeks.map(w=>w.index<4?{...w,zeroCredit:w.index>=2}:w)}));
