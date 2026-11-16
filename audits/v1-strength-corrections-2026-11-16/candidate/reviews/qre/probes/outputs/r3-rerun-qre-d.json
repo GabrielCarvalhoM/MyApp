@@ -1,0 +1,225 @@
+{
+ "cases": {
+  "D1 planned vs catalog oracle": {
+   "weeks": 2304,
+   "mismatches": 0,
+   "unilateralRowsSeen": 4648,
+   "examples": []
+  },
+  "D2 correction through the engine": {
+   "statuses": [
+    "KEEP",
+    "MODIFY"
+   ],
+   "ledgerRows": [
+    {
+     "eventId": "str-done-ab33b3-w1-str-d1-corr",
+     "superseded": false,
+     "conflicted": false,
+     "sets": [
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "eventId": "str-done-ab33b3-w1-str-d1",
+     "superseded": true,
+     "conflicted": false,
+     "sets": [
+      3,
+      3,
+      3,
+      2,
+      2
+     ]
+    }
+   ],
+   "executed": {
+    "QUADRICEPS": 1,
+    "GLUTEUS_MAXIMUS": 1,
+    "GASTROCNEMIUS": 1,
+    "PECTORALS": 1,
+    "ANTERIOR_DELTOID": 1,
+    "TRICEPS": 1,
+    "LATISSIMUS": 1,
+    "UPPER_BACK": 1,
+    "ABDOMINALS": 1
+   },
+   "expectedIfCorrected": {
+    "QUADRICEPS": 1,
+    "GLUTEUS_MAXIMUS": 1,
+    "PECTORALS": 1,
+    "TRICEPS": 1,
+    "ANTERIOR_DELTOID": 1,
+    "LATISSIMUS": 1,
+    "UPPER_BACK": 1,
+    "GASTROCNEMIUS": 1,
+    "ABDOMINALS": 1
+   },
+   "expectedIfOriginal": {
+    "QUADRICEPS": 3,
+    "GLUTEUS_MAXIMUS": 3,
+    "PECTORALS": 3,
+    "TRICEPS": 3,
+    "ANTERIOR_DELTOID": 3,
+    "LATISSIMUS": 3,
+    "UPPER_BACK": 3,
+    "GASTROCNEMIUS": 2,
+    "ABDOMINALS": 2
+   }
+  },
+  "D2b conflicting reports through the engine": {
+   "status": "MODIFY",
+   "ledgerRows": [
+    {
+     "eventId": "str-done-ab33b3-w1-str-d4",
+     "superseded": false,
+     "conflicted": true,
+     "completed": true
+    }
+   ],
+   "engineSessionStatus": "CONFLICTED",
+   "provenanceConflicts": 1,
+   "exposureCountsS2": false,
+   "sessionsReported": 1
+  },
+  "D3 hostile ledgers": [
+   {
+    "label": "ledger null",
+    "sessionsReported": 0,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "ledger string",
+    "sessionsReported": 0,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "junk rows",
+    "sessionsReported": 0,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "odd reps: only 8.5 counts",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {},
+    "notCounted": 1
+   },
+   {
+    "label": "200000 logged sets",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {
+     "QUADRICEPS": 200000,
+     "GLUTEUS_MAXIMUS": 200000
+    },
+    "notCounted": 0
+   },
+   {
+    "label": "the same exercise logged twice",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {
+     "QUADRICEPS": 2,
+     "GLUTEUS_MAXIMUS": 2
+    },
+    "notCounted": 0
+   },
+   {
+    "label": "prototype names",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {},
+    "notCounted": 2
+   },
+   {
+    "label": "no athleteId on the row",
+    "sessionsReported": 0,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "latest row dated outside the week",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {
+     "QUADRICEPS": 2,
+     "GLUTEUS_MAXIMUS": 2,
+     "GASTROCNEMIUS": 1,
+     "PECTORALS": 2,
+     "TRICEPS": 2,
+     "LATISSIMUS": 2,
+     "UPPER_BACK": 2,
+     "ABDOMINALS": 1
+    },
+    "notCounted": 0
+   },
+   {
+    "label": "latest row: not done",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "no localDate",
+    "sessionsReported": 0,
+    "byPrimaryMuscle": {},
+    "notCounted": 0
+   },
+   {
+    "label": "localDate with a time",
+    "sessionsReported": 1,
+    "byPrimaryMuscle": {
+     "QUADRICEPS": 2,
+     "GLUTEUS_MAXIMUS": 2,
+     "GASTROCNEMIUS": 1,
+     "PECTORALS": 2,
+     "TRICEPS": 2,
+     "LATISSIMUS": 2,
+     "UPPER_BACK": 2,
+     "ABDOMINALS": 1
+    },
+    "notCounted": 0
+   }
+  ],
+  "D3b 100000-row ledger ms": 37,
+  "D3c weekIndex": [
+   "NOT_APPLICABLE",
+   "NOT_APPLICABLE",
+   "NOT_APPLICABLE",
+   "NOT_APPLICABLE",
+   "NOT_APPLICABLE"
+  ],
+  "D3d odd prescription rows": [
+   {
+    "sessionId": "w1-str-d1",
+    "exerciseId": "zercher-squat",
+    "reason": "NOT_A_CONFIGURATION"
+   },
+   {
+    "sessionId": "w1-str-d1",
+    "exerciseId": "goblet-squat",
+    "reason": "NO_SET_COUNT"
+   }
+  ],
+  "D4 restart ids": {
+   "status": "PROPOSED",
+   "sharedSessionIds": 24,
+   "exampleOld": [
+    "w0-str-d1",
+    "w0-str-d4"
+   ],
+   "exampleNew": [
+    "w0-str-d1",
+    "w0-str-d4"
+   ],
+   "oldLedgerCountedInNewWeek0": 0
+  },
+  "D5 nothing reads the exposure": {
+   "compared": 18,
+   "identicalButTheKey": 18
+  }
+ }
+}

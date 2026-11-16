@@ -1,0 +1,133 @@
+TAP version 13
+# Subtest: SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule
+not ok 1 - SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule
+  ---
+  duration_ms: 1948.4841
+  type: 'test'
+  location: 'C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3\\scratchpad\\judges\\qre-n4\\r3-red\\CoachingCore\\test\\v1str-extension.test.mjs:402:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    NONE MACHINES GENERAL 3 to 2 days, 60 min, at the change: a slot asks
+    
+    4 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 4
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3/scratchpad/judges/qre-n4/r3-red/CoachingCore/test/v1str-extension.test.mjs:411:124)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule
+not ok 2 - SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule
+  ---
+  duration_ms: 1236.8049
+  type: 'test'
+  location: 'C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3\\scratchpad\\judges\\qre-n4\\r3-red\\CoachingCore\\test\\v1str-extension.test.mjs:416:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    STRENGTH FULL 4 to 2 days: a slot asks that the plan was not built with
+    + actual - expected
+    
+    + {
+    +   'FULL_B:1': 'lat-pulldown',
+    +   'FULL_B:2': 'barbell-overhead-press'
+    + }
+    - {}
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    FULL_B:1: 'lat-pulldown'
+    FULL_B:2: 'barbell-overhead-press'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3/scratchpad/judges/qre-n4/r3-red/CoachingCore/test/v1str-extension.test.mjs:435:15)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper
+not ok 3 - SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper
+  ---
+  duration_ms: 6290.6026
+  type: 'test'
+  location: 'C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3\\scratchpad\\judges\\qre-n4\\r3-red\\CoachingCore\\test\\v1str-extension.test.mjs:454:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    two to 4 days in the taper
+    + actual - expected
+    
+    + {
+    +   'UPPER_B:0': 'db-row',
+    +   'UPPER_B:1': 'db-bench-press'
+    + }
+    - {}
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    UPPER_B:0: 'db-row'
+    UPPER_B:1: 'db-bench-press'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3/scratchpad/judges/qre-n4/r3-red/CoachingCore/test/v1str-extension.test.mjs:472:65)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor
+not ok 4 - SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor
+  ---
+  duration_ms: 24.2918
+  type: 'test'
+  location: 'C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3\\scratchpad\\judges\\qre-n4\\r3-red\\CoachingCore\\test\\v1str-extension.test.mjs:476:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    FULL_A,FULL_B with the anchors {}
+    + actual - expected
+    
+    + [
+    +   'FULL_B:1',
+    +   'FULL_B:2'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'FULL_B:1'
+    1: 'FULL_B:2'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3/scratchpad/judges/qre-n4/r3-red/CoachingCore/test/v1str-extension.test.mjs:486:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 0
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10260.8079

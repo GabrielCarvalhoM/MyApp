@@ -1,0 +1,375 @@
+{
+ "reviewId": "QRE-V1STR-N4-RECHECK-R3",
+ "date": "2026-11-16",
+ "round": "the one independent recheck of the N4 focused fix-forward",
+ "judge": {
+  "role": "Quality & Reliability Engineer",
+  "constitution": "1.3.0",
+  "model": "claude-opus-5-5",
+  "independent": true,
+  "authoredTarget": false,
+  "sameInstanceAsR1R2": false,
+  "readSsctr": "R2 statements of SSCTR-STR-B-01, B-02, B-04 and the six closing criteria only; no SSCTR R3 file and no SSCTR working folder; SSCTR_V1STR_N4_RECHECK_R3.md/.json appeared during the review and were not read",
+  "hostContextUsed": "operating rules only (never npm run verify, no recursive deletion, ajv in scratch copies); no evidence taken from CLAUDE.md or the memory index"
+ },
+ "target": {
+  "commit": "5f7f6f6fae64dbe0ad7a90ca550dce7bdc517636",
+  "from": "76b8448 (code of 3342a1d)",
+  "headConfirmed": true,
+  "treeCleanConfirmed": true,
+  "sha256Prefix": {
+   "CoachingCore/src/r7b-repertoire.mjs": "1997a4e5e0e60908",
+   "CoachingCore/src/v1-strength.mjs": "6ea7486c009809d3",
+   "CoachingCore/src/v1-strength-index.mjs": "36666ab27894cf21",
+   "CoachingCore/v1/STRENGTH_EXTENSION_V1.json": "06d4731de7cf748a",
+   "CoachingCore/scripts/v1str-freeze.mjs": "0da887ff8c20d53c",
+   "CoachingCore/test/v1str-extension.test.mjs": "07ce5a4df0354875"
+  }
+ },
+ "verdict": "READY_WITH_CONDITIONS",
+ "qualityPosition": {
+  "enablingRecordOver5f7f6f6": {
+   "valuesSha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "V1X-STRENGTH-HOLD-DOSE": "MAY BE ISSUED (no quality blocker; carried integration conditions)",
+   "V1X-STRENGTH-UPPER-LOADING": "MAY BE ISSUED (no quality blocker)",
+   "V1X-STRENGTH-PLANE": "MAY BE ISSUED (QRE-STR-B-01 closed; no quality blocker; criterion 5 / SSCTR-STR-B-02 and the declared cost QRE-STR-C-02 are the SSCTR's sporting ruling)",
+   "V1X-STRENGTH-EXPOSURE": "MAY BE ISSUED (unchanged; G03 before any screen)"
+  },
+  "freezeOverCommitAddingOnlyReviewAndEnablingRecords": "YES from the quality side: rehearsed in a scratch clone with TEST-ONLY records (write ok, check ok after commit, 6 drift kinds detected). The verifier itself refuses unless independent records enable all four boundaries over 06d4731d. Order: write, commit the record, check."
+ },
+ "earlierFindingsStatus": {
+  "QRE-STR-B-01": {
+   "status": "CLOSED",
+   "evidence": "r2-b rerun: roleSwitchByRule 0/308 (was 16), newExercise 0, noneInForceActedOn 0 (was 76); r2-c rerun: 4 traced cases, no switch; r3-a: 7140 sequences / 36006 reviews, 0 not-keep vs same-state counterfactual, 0 role switch, 0 out-of-range; r3-f: 714 late changes, all 0; new own tests fail 4/4 on 76b8448 code for the right reasons and pass here"
+  },
+  "QRE-STR-B-02": {
+   "status": "CLOSED (documented)",
+   "evidence": "header gives write, commit, check; rehearsal: check before commit exits 1 '(untracked) ...RUNTIME_FREEZE_V1STR_1.json', passes after commit"
+  },
+  "QRE-STR-B-03": {
+   "status": "OPEN, unchanged, as declared (OBSERVATION, development path)",
+   "evidence": "r2-a A6 still throws; qre-a stops on it after off-identity, as in R2"
+  },
+  "QRE-STR-B-04": {
+   "status": "CLOSED",
+   "evidence": "r2-d: 0 of 35 NONE sequences differ even in annotations (was 35); r3-a: 1680 practice-start sequences whole-plan identical to the plan without the plane rule; r3-f: 168 at week 6"
+  },
+  "QRE-STR-A-04": {
+   "status": "OPEN (integration), as in R2",
+   "evidence": "qre-e mixed: the frozen entry point still brings front-plank back"
+  },
+  "QRE-STR-A-05": {
+   "status": "PARTIAL (integration), as in R2"
+  }
+ },
+ "findings": [
+  {
+   "id": "QRE-STR-C-01",
+   "severity": "OBSERVATION",
+   "boundary": "V1X-STRENGTH-PLANE",
+   "statement": "A restart's new plan can make a former accessory the vertical MAIN. restartProgram builds a new plan, so the plane rule asks as in any new plan and heldAs sees only earlier sessions of the new week (D-14). In 46 of 780 restarts, all 4 strength days to 2 (1- or 6-week pause), the asking MAIN slot takes a configuration the plan before held only as ACCESSORY (lat-pulldown, db-overhead-press, barbell-overhead-press, pike-push-up) where the same restart without the plane rule takes the horizontal default. The MAIN row is re-established at the MAIN dose (no accessory dose state reaches it): 0 of 46 loaded MAIN rows outside the goal range through nine weeks, set and repetition trails mirror the slot without the rule. New-plan output is byte-identical on 76b8448 and 5f7f6f6, so this is not changed by the fix. Whether a restart may promote a former accessory into the vertical MAIN slot is a sporting reading for the SSCTR (criterion 2 is stated for plans in force).",
+   "probes": [
+    "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r3-b-restart-roles.mjs",
+    "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r3-h-restart-trail.mjs"
+   ]
+  },
+  {
+   "id": "QRE-STR-C-02",
+   "severity": "OBSERVATION",
+   "boundary": "V1X-STRENGTH-PLANE",
+   "statement": "The declared cost of D-18, measured: after a change of days that changes the templates the plan stops alternating, permanently and silently. With the predecessor's r2-b, 88 of 308 sequences lose a vertical the plan held as MAIN (was 2): 2->4 9, 4->2 28, 3->4 14, 4->3 14, 2->5 9, 5->2 14; none in 2<->3. No slot asks again afterwards, also after a return to the original days (2->4->2), because the anchors are gone. Deterministic, pinned by the new tests, equal to the engine without the rule, no dose consequence; no athlete-facing text claims plane coverage and none discloses the end of alternation. No quality reason against; acceptability is the SSCTR's, disclosure is an integration matter.",
+   "probes": [
+    "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-b-cycle-regressions.mjs",
+    "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r3-a-inforce-same-state.mjs"
+   ]
+  }
+ ],
+ "measured": {
+  "jointSuite": {
+   "where": "worktree",
+   "tests": 1603,
+   "pass": 1601,
+   "fail": 2,
+   "skipped": 0,
+   "cancelled": 0,
+   "failed": [
+    "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here",
+    "I10, V6: every file the two earlier freezes bind is byte-identical here except the one amended file; its base is the recorded bytes and its diff is the reader alone"
+   ],
+   "historicalTestFilesChangedSince2dfa216": 0
+  },
+  "ownTests": {
+   "tests": 67,
+   "pass": 67,
+   "files": 5,
+   "skipped": 0,
+   "removed": [
+    "SQ-4 c5 (SSCTR-STR-A-08) ..."
+   ],
+   "added": 4,
+   "removedTestOnTheseBytes": {
+    "keepsVerticalFails": "4/10",
+    "staysMainFails": "4/10",
+    "noNewUpperMainHolds": "20/20",
+    "oneToTwoDaysHolds": "3/3",
+    "statusHolds": "5/5",
+    "reading": "it pinned only the rejected D-15 reading"
+   },
+   "redOn76b8448": {
+    "newTests": 4,
+    "fail": 4,
+    "reasons": [
+     "NONE plan gains 4 asking rows at 3->2",
+     "4->2 asks slots not built with",
+     "2->4 in taper asks",
+     "buildTemplates with {} anchors asks FULL_B:1/2"
+    ]
+   }
+  },
+  "inForceSameStateCounterfactual": {
+   "probe": "r3-a",
+   "profiles": 204,
+   "sequenceKinds": 46,
+   "sequences": 7140,
+   "reviews": 36006,
+   "reviewsWithProposal": 20259,
+   "askNotBuilt": 0,
+   "notKeep": 0,
+   "cascades": 0,
+   "askingNotOrdinary": 0,
+   "anchorNotFittingReviews": 751,
+   "weeksDifferSameSelection": 0,
+   "roleSwitchVsCounterfactual": 0,
+   "outOfRangeVsCounterfactual": 0,
+   "anchorKeptReviews": 2618,
+   "statusDiffers": {
+    "count": 31,
+    "all": "KEEP with the rule vs MODIFY in the counterfactual at an equipment change to BANDS or back (26 BANDS, 5 BANDS_PULLUP): the rule keeps the plan as built"
+   },
+   "twinFromScratch": {
+    "sequences": 5424,
+    "roleSwitchByRule": 0,
+    "newExerciseByRule": 0,
+    "outOfRangeByRule": 0,
+    "practiceStartSequencesNotIdentical": "0 of 1680"
+   }
+  },
+  "lateChanges": {
+   "probe": "r3-f",
+   "atWeek": 6,
+   "sequences": 714,
+   "counterfactualReviews": 2142,
+   "allChecks": 0,
+   "practiceStartIdentical": "168 of 168"
+  },
+  "anchorSurvival": {
+   "probe": "r3-e",
+   "plans": 216,
+   "backOnOwnAfterRegain": 216,
+   "anchorsLostDuringLoss": 0
+  },
+  "taper": {
+   "probe": "r3-e",
+   "plans": 28,
+   "counterfactualReviews": 84,
+   "notKeep": 0,
+   "asksNotBuilt": 0,
+   "statusDiffers": 0,
+   "newInEventWeeks": 0
+  },
+  "newPlansUnchanged": {
+   "probe": "r3-g",
+   "firstPlans": 2412,
+   "restarts": 54,
+   "digest76b8448": [
+    "b8afd657b57b8fcc",
+    "5142e7fb3eac2949"
+   ],
+   "digest5f7f6f6": [
+    "b8afd657b57b8fcc",
+    "5142e7fb3eac2949"
+   ]
+  },
+  "offIdentity": {
+   "qreA": "576/576 first plans, 70/70 reviews and restarts; then stops on B-03 as in R2",
+   "qreEPopulation": "a0c2ab8c6a6ff78e over 360 answers (same as 2dfa216 and 3342a1d)",
+   "qreEHash": "29f0b2dda0e270fa (same as 2dfa216)"
+  },
+  "preservationDifferential": {
+   "probe": "qre-c",
+   "identicalToR2": true,
+   "plans": 648,
+   "rows": 103834,
+   "rowsChanged": 13088,
+   "byBoundary": {
+    "HOLD": 5340,
+    "UPPER": 3334,
+    "PLANE": 5195
+   },
+   "outsideScope": 0,
+   "sameExerciseDoseDiffersPlane": 24
+  },
+  "rerunsAgainstR2": {
+   "qre-b": "identical except B3 2d->4d and 4d->2d (now the plan without the rule, as declared)",
+   "qre-b2": "identical",
+   "qre-c2": "identical",
+   "qre-d": "identical but a timing",
+   "qre-f": "identical",
+   "r2-a": "identical but the values sha",
+   "r2-b": "B1, B1b, B3 identical; B2 roleSwitch 16->0, NONE acted on 76->0, verticalLost 2->88, statusDiffers 3 (same as R2)",
+   "r2-c": "no switch in the 4 traced cases",
+   "r2-d": "0 of 35 differ"
+  },
+  "keptAnchorsThrough2to3": {
+   "probe": "r3-c",
+   "trails": 108,
+   "mainTrailsEqualToNoChange": 108,
+   "trailsWithMainAndAccessoryInOneWeek": 62
+  },
+  "restarts": {
+   "probe": "r3-b",
+   "restarts": 780,
+   "statusDiffers": 0,
+   "askingMainFromAccessoryOnly": 46,
+   "traced": {
+    "probe": "r3-h",
+    "cases": 46,
+    "loadedMainOutsideRange": 0
+   }
+  },
+  "amendmentPins": {
+   "baseCommit": "7e6e0e0",
+   "baseBlobSha256": "8bdd5d5d59c1440456f0b695df0957cbbdc14a3202164c3754fde74216b6a483",
+   "baseIsRecorded": true,
+   "fileSha256": "1997a4e5e0e6090829686ed1a277036436b326543bfc1ac923ed6fc10eba776b",
+   "filteredDiffSha256": "4b52eb740ea1b6d8eabc6008218f41ff6311e5f28544f94b8738c41f519fbef4",
+   "linesAdded": 44,
+   "linesRemoved": 11,
+   "equalToVerifierPins": true,
+   "hunksAgainst3342a1d": 4
+  },
+  "valuesFile": {
+   "changedLines": 1,
+   "field": "planInForce",
+   "readByRuntime": false,
+   "sha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "previous": "15a51f55e847ad01d683912d50319629ead68a1cfa00d3c69c5061b3e596850f"
+  },
+  "freezeVerifier": {
+   "preservedOnWorktree": "exit 0",
+   "preservedRefusals": "12/12 refused; changed values file passes by design (own file, --check covers it)",
+   "writeRefusals": [
+    "no records file",
+    "records bound to 15a51f55"
+   ],
+   "writeOverScratchCommit": {
+    "commitAdds": [
+     "candidate/reviews/qre/QRE_V1STR_N4_RECHECK_R3.md (stand-in)",
+     "candidate/reviews/ssctr/SSCTR_V1STR_N4_RECHECK_R3.md (stand-in)",
+     "candidate/reviews/ssctr/SSCTR_V1STR_RECORDS.json (TEST-ONLY)"
+    ],
+    "exit": 0,
+    "jointWithFourBoundariesOn": "1601/1603, the two named failures",
+    "own": "67/67",
+    "addedFiles": 74,
+    "amendment": "44+/11-, authorized"
+   },
+   "checkBeforeCommit": "exit 1 (untracked record; documented order)",
+   "checkAfterCommit": "exit 0",
+   "driftDetected": [
+    "enabling record withdrawn",
+    "amended file one byte",
+    "later file under candidate/",
+    "untracked src file",
+    "values file changed (all four boundaries off)",
+    "earlier record edited"
+   ],
+   "rewriteRefused": true
+  }
+ },
+ "mutation": {
+  "mutants": 20,
+  "killed": 17,
+  "survived": [
+   "R3-06",
+   "R3-09",
+   "R3-18"
+  ],
+  "control": "66/66",
+  "testFiles": [
+   "v1str-extension",
+   "v1str-preservation",
+   "v1str-exposure",
+   "v1str-time"
+  ],
+  "survivors": {
+   "R3-06": "equivalent: no review changes experience or named exercises; practice-start plans hold no anchor",
+   "R3-09": "equivalent on the measured space: own ranks first; the preference only orders alternatives of an anchored row, read for rotation only on ACCESSORY rows; own-fits branch unchanged by the fix",
+   "R3-18": "equivalent: anchors are always strings"
+  },
+  "digestCheck": {
+   "probe": "r3-i",
+   "sequences": 384,
+   "candidate": "27ced03d266c1613",
+   "R3-06": "27ced03d266c1613",
+   "R3-09": "27ced03d266c1613",
+   "R3-18": "27ced03d266c1613"
+  },
+  "score": "17/17 over non-equivalent mutants"
+ },
+ "declaredReadings": {
+  "D-18": "Verified as implemented; cost is QRE-STR-C-02.",
+  "D-19": "Mechanism measured for 2->3 (r3-c): kept MAIN dose unchanged 108/108; the vertical also occupies an UPPER accessory slot in 62 trails, at MAIN repetitions with fewer sets. The author's counts were not rerun with their probe. Sporting decision is the SSCTR's.",
+  "D-13 (new plans), D-14, D-16, D-17": "Unchanged (new-plan digest identical); D-14 is the scope of QRE-STR-C-01."
+ },
+ "conditions": [
+  {
+   "id": "SSCTR-STR-A-03",
+   "what": "plans built before the rules are not migrated",
+   "owner": "integration mission (Chief)",
+   "trigger": "before any non-synthetic use or integration"
+  },
+  {
+   "id": "SSCTR-STR-A-04b / QRE-STR-A-05",
+   "what": "no continuation path for a plan built under other rules (only the clinical answer passes)",
+   "owner": "integration mission (Chief)",
+   "trigger": "before any non-synthetic use or integration"
+  },
+  {
+   "id": "SSCTR-STR-A-05",
+   "what": "the runtime does not read the review date",
+   "owner": "integration mission (Chief)",
+   "trigger": "before any non-synthetic use or integration"
+  },
+  {
+   "id": "QRE-STR-A-04",
+   "what": "only the new entry point enforces the plan's binding",
+   "owner": "integration mission (Chief)",
+   "trigger": "before integration"
+  },
+  {
+   "id": "G03",
+   "what": "N3 data semantics review",
+   "owner": "data review",
+   "trigger": "before any screen"
+  },
+  {
+   "id": "SECURITY-INTEGRATION",
+   "what": "focal Security review",
+   "owner": "Security",
+   "trigger": "at integration"
+  }
+ ],
+ "security": {
+  "focalReviewNeededNow": false,
+  "focalReviewNeededAtIntegration": true,
+  "reason": "narrows behaviour; no new input surface or parsing; only a descriptor string changed and was re-pinned; a changed values file fails closed (all boundaries off in the rehearsal)"
+ },
+ "notVerified": [
+  "Sporting acceptability of any dose, of the declared cost (QRE-STR-C-02), of D-19 / criterion 5 and of QRE-STR-C-01",
+  "Integration, real data, UI",
+  "Exhaustive event sequences (the listed space only; dated equipment windows only via the unchanged qre-b B2 rerun; restarts 780 combinations)",
+  "The SSCTR probes and the author's n4-b02-counts.mjs were not rerun",
+  "The four historical freeze verifiers on their own snapshots were not rerun"
+ ]
+}

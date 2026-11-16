@@ -1,0 +1,159 @@
+{
+ "record_id": "SSCTR-V1STR-N4-RECHECK-R3",
+ "record_kind": "CANDIDATE_CONFORMANCE_RECHECK (the one independent SSCTR recheck of the N4 fix-forward; not a decision.schema.json decision record; no enabling record issued)",
+ "review_date": "2026-11-16",
+ "agent_version": "SSCTR-1.0.0",
+ "constitution_revision": "SSCTR-CONST-1.0.0",
+ "protocol_revision": "SSCTR-EP-1.0.0",
+ "reviewer": {
+  "actor_type": "AI_AGENT",
+  "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+  "instance_id": "ssctr-v1str-n4-r3-2026-11-16: fresh subagent instance (not the R1/R2 instance) launched by the Chief with the project SSCTR adapter text; model inherited (claude-opus-5-5); dispatch mechanism not verifiable by this instance",
+  "independent_of_candidate_author": true,
+  "human_credentials_claimed": false
+ },
+ "supersedes_in_part": "SSCTR-V1STR-RECHECK-R2 dispositions for V1X-STRENGTH-PLANE (R1 and R2 files not edited)",
+ "read_before_writing": [
+  "audits/v1-strength-corrections-2026-11-16/V1STR_CLOSURE.md (sha256 0e873e462e2c5a0f267d5173becb560aee568414010ecd91dbe100f8c15b1363)",
+  "audits/v1-strength-corrections-2026-11-16/candidate/reviews/ssctr/SSCTR_V1STR_RECHECK_R2.md (0eccccef386db80c41c709f29ad023005a18716d901694325b0c90f638b512e6) and .json (4e937802653c1c62b07ca91309e9feecc5937296cb80b196b1ed8eefff6026e3); R1 .md sections on D-2, D-3, D-4, A-07 to A-09",
+  "audits/v1-strength-intelligence-2026-11-13/reviews/SSCTR_SI_V1_DECISION.md (SQ-1 to SQ-4); SSCTR_SI_V1_DECISION.json sha verified f8dee36756f2a85184b6a61465dc3a3dced489382e7772f88975689c1347d379",
+  "audits/v1-strength-corrections-2026-11-16/candidate/V1STR_N4_FIX_FORWARD.md (8729dfd55034ac1a1b287c493a0dc98640f1fcb10a37d2f89e4f1a80820a5010)",
+  "git diff 76b8448 5f7f6f6; CoachingCore/src/r7b-repertoire.mjs buildTemplates and selectionCompare; CoachingCore/src/v1-strength.mjs strengthRules and slotsInForce; CoachingCore/v1/STRENGTH_EXTENSION_V1.json; the four new tests"
+ ],
+ "qre_recheck_read": false,
+ "qre_recheck_note": "Not read by instruction (independence); the enabling records are decided after reading it, in a follow-up step.",
+ "host_context_used": "The host CLAUDE.md and the author's memory index were in context. Nothing taken from them as evidence; one operational hint (an archive extract of CoachingCore needs its dependency folder) used to build scratch trees, verified by running them.",
+ "literature_access": {
+  "confirmed": true,
+  "service": "Europe PMC REST",
+  "queries": ["\"exercise variation\" AND (hypertrophy OR strength) AND (systematic review): 10 hits on page 1"],
+  "sources_read": [
+   {"id": "SRC-KASSIANO-2022", "citation": "Kassiano W, Nunes JP, Costa B, Ribeiro AS, Schoenfeld BJ, Cyrino ES. Does Varying Resistance Exercises Promote Superior Muscle Hypertrophy and Strength Gains? A Systematic Review. J Strength Cond Res. 2022;36(6):1753-1762.", "pmid": "35438660", "doi": "10.1519/jsc.0000000000004258", "read_depth": "record and abstract summary; not full text", "accessed": "2026-11-16", "relevance": "auxiliary context for D-18 and D-19 (8 studies, N=241, all young men; systematic variation may help, excessive or random variation may compromise gains); no ruling rests on it"}
+  ],
+  "new_scientific_claim_relied_on": false
+ },
+ "target": {
+  "commits": {"candidate": "5f7f6f6fae64dbe0ad7a90ca550dce7bdc517636", "previous_judged_bytes": "3342a1dc013ff72da34f530cfa7028797ac6fb4a", "closure_same_code": "76b84480a87a8c273c93d92acbb8547097b14912", "r1_candidate": "21838cb739e733308abd6d00b9bc9386688aac0c"},
+  "head_and_clean_tree_verified": true,
+  "files_sha256": {
+   "CoachingCore/v1/STRENGTH_EXTENSION_V1.json": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "CoachingCore/src/r7b-repertoire.mjs": "1997a4e5e0e6090829686ed1a277036436b326543bfc1ac923ed6fc10eba776b",
+   "CoachingCore/src/v1-strength.mjs": "6ea7486c009809d342943d3983592bdbfda409c6ddb29126761c8d7990328dda",
+   "CoachingCore/src/v1-strength-index.mjs": "36666ab27894cf212c341cc373b303c71e0e77766626efdb6f4be8fd93bc1b10",
+   "CoachingCore/test/v1str-extension.test.mjs": "07ce5a4df0354875a5c356dd8af3c194cb8ed069965948f0b8e04f14e1624c20",
+   "CoachingCore/test/v1str-time.test.mjs": "b110cd8b5736ac18f14113a57492cafad85b99c7777d886a549daa1195c47d0e",
+   "CoachingCore/test/v1str-exposure.test.mjs": "a5bb757c7586815f7977a1eb20f5c73317152be730a65b5f125405b0ba658fdc",
+   "CoachingCore/test/v1str-preservation.test.mjs": "d9df86d5cc7dc8aedf380d8c458aaaf7e510dbb6686138e8321c28355c9317d3",
+   "CoachingCore/test/v1str-freeze.test.mjs": "6149e8e3084de8e1cf07d8ccfd75b22cc3092d0da927c8c53b42b29868d774d9",
+   "CoachingCore/test/v1str-helpers.mjs": "4b492c39597c5fb39edd5165bf4f4e747948f539e6eb077ae1a2b568d92e2a8f",
+   "CoachingCore/scripts/v1str-freeze.mjs": "0da887ff8c20d53cd74fb7fc8ae52d13c5082141efcb89d4b6ddf548454c4b98",
+   "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+   "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+   "audits/v1-strength-corrections-2026-11-16/candidate/V1STR_N4_FIX_FORWARD.md": "8729dfd55034ac1a1b287c493a0dc98640f1fcb10a37d2f89e4f1a80820a5010",
+   "audits/v1-strength-corrections-2026-11-16/candidate/probes/n4-b02-counts.mjs": "074567cbc34fa4fc96f742647d79e664a655419c42f9081678bf2e823b0242aa"
+  },
+  "values_sha_verified_against_bytes": true,
+  "values_still_bind": {"catalog": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9", "decision_json": "f8dee36756f2a85184b6a61465dc3a3dced489382e7772f88975689c1347d379"},
+  "coachingcore_bytes_3342a1d_equal_76b8448": true,
+  "frozen_engine_files_changed_since_2dfa216": false
+ },
+ "dispositions": {
+  "V1X-STRENGTH-HOLD-DOSE": {"r1": "BLOCK", "r2": "ACCEPT_WITH_CONDITIONS", "r3": "ACCEPT_WITH_CONDITIONS"},
+  "V1X-STRENGTH-UPPER-LOADING": {"r1": "BLOCK", "r2": "ACCEPT_WITH_CONDITIONS", "r3": "ACCEPT_WITH_CONDITIONS"},
+  "V1X-STRENGTH-PLANE": {"r1": "BLOCK", "r2": "BLOCK", "r3": "ACCEPT_WITH_CONDITIONS", "named_blocker_closed": "SSCTR-STR-B-01"},
+  "V1X-STRENGTH-EXPOSURE": {"r1": "ACCEPT_WITH_CONDITIONS", "r2": "ACCEPT_WITH_CONDITIONS", "r3": "ACCEPT_WITH_CONDITIONS"}
+ },
+ "new_blocking_finding": false,
+ "evidence_run": {
+  "directed_tests": "node --test on the five v1str test files -> 67/67 pass, 0 skipped",
+  "new_tests_on_pre_fix_file": "scratch copy of 5f7f6f6 with 76b8448's r7b-repertoire.mjs: the four new tests 0/4 pass (first failures: a running NONE plan 'a slot asks: 4'; STRENGTH FULL 4->2 keeps FULL_B:1=lat-pulldown, FULL_B:2=barbell-overhead-press)",
+  "scan_roles_1500": "identical to R2: OFF/PLANE/DEV 128/128/128; sharing 680/680/680",
+  "probe_ssctr": "byte-identical output to R2",
+  "probe_time3_600": "byte-identical output to R2: DEV 85/32, HOLD 85/32, UPPER 0/0, PLANE 0/0; OFF 1801 trunk-free weeks",
+  "probe_binding": "byte-identical output to R2: pain, injury, pain with an exercise -> CLINICAL_HUMAN_REQUIRED without proposal under every authority",
+  "probe_catalog_profiles": "byte-identical output to R2",
+  "r2_probe": "differs only in section 1 (changes of days: no asking slot after a template-replacing change; horizontal defaults as without the rule) and section 4 (beginner 3->2 identical to NOPLANE); sections 2, 3, 5, 6, 7, 8 byte-identical",
+  "r2_scan_changes": {"STRENGTH": {"out_of_range_main_added": 0, "r2": 44, "new_upper_exercise": 56}, "GENERAL": {"out_of_range_main_added": 0, "new_upper_exercise": 104}, "HYPERTROPHY": {"out_of_range_main_added": 0, "new_upper_exercise": 0}, "RUNNING_SUPPORT": {"out_of_range_main_added": 0, "new_upper_exercise": 160}, "total_changes": 2688},
+  "r2_b01_strength": "0 added out-of-range MAIN configurations (R2 44); 2->4 and 2->3 new exercises unchanged (pike-push-up, band-assisted-pull-up, w9 DEVELOPMENT ACCESSORY 2x7)",
+  "r2_b01_detail": "NONE machines 3->2 at week 7: DEV identical to NOPLANE; no asking slot after the change (inForce {} is inert)",
+  "r2_scan_inforce_small": {"NONE_NOVICE_64": "0 given a slot (R2 64); 0 accessory->MAIN (R2 12); 0 out of range (R2 6); 0 MAIN sets differ", "default_128_with_INTERMEDIATE": "0 given a slot; 0 accessory->MAIN; 0 out of range; 12 MAIN sets differ (INTERMEDIATE 3->2, anchored slots keeping their built lifts)"},
+  "r2_scan_inforce_full": {"NONE_280": "0 given a slot; 0 accessory->MAIN; 0 MAIN sets differ; 0 out of range", "NOVICE_280": "0; 0; 0; 0", "INTERMEDIATE_560": "built with slots; 0 accessory->MAIN on a plane slot; 0 out of range; 136 MAIN sets differ from the no-plane timeline", "note": "never completed in R2"},
+  "r3_main_dose_672": "(A) MAIN rows whose configuration first entered the plan as ACCESSORY and absent from the no-plane timeline at the same week/session/role: 0; (B) 384 anchored MAINs kept after the change: dose trail differs from the same plan with no change 0/384; 120 also an ACCESSORY row ahead; out of range 0",
+  "r3_chain_1152": "chains of two changes, 4 goals: asking slots not built with 0; out-of-range external MAIN added against NOPLANE 0; MAIN on an accessory-only configuration before the second change in 336 chains, all identical to NOPLANE's same slot, none on an asking slot",
+  "r3_45_192": "4<->5 days: anchors as built 192/192; out of range added 0; accessory->MAIN not in NOPLANE 0; 384 anchored MAIN rows, dose trail differs 0",
+  "r3_off_rotation_582": "frozen engine alone (OFF), new plans, no change: 150 plans / 378 events of an external upper ACCESSORY rotating into a non-external one of the same pattern (DEVELOPMENT 264, CONSOLIDATION 114; db-overhead-press->pike-push-up 60); DEV 169 / 439",
+  "r3_b02_versions": "STRENGTH matrix on 21838cb, 76b8448 and 5f7f6f6: 56/672 changes and 64 rows each (pike-push-up 40, band-assisted-pull-up 24; ACCESSORY, w9 DEVELOPMENT, 2x7; 0 on a plane-asking row); per-case lists byte-identical across the three trees",
+  "r3_b02_running_support": "plane rule alone: 104/672 changes, 112 rows (pike-push-up 88, band-assisted-pull-up 24), ACCESSORY, w9 DEVELOPMENT, 1x10, 0 on a plane-asking row; every rule but the plane rule: 160/672, 320 accessory rows, 208 external, 184 in the week of the change and 136 in week 9, pike-push-up 48 in week 9 (N2's loaded accessory rotated by the engine)",
+  "r3_hybrid": "240 hybrid race plans in force (10K 12 w, half marathon 16 w; FULL, DB_BANDS, MACH_DB, BANDS; 30 and 45 min; 2->3, 3->2, 2->4, 3->4, 4->2; early, mid-plan, taper), DEV vs NOPLANE vs OFF: status differs 0; runs differ 0; strength placement differs 0; sessions over the athlete's minutes 0; exercise new in TAPER/RACE_WEEK/POST_EVENT 0; loaded MAIN outside 6-10 0",
+  "scratch_dirs": {"predecessor_scripts_rerun_unchanged": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/21ffbd32-da9f-43c9-b8b9-3f3dffe707fe/scratchpad/ssctr-v1str/", "r3_scripts_and_outputs": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/5e4a7765-3b4b-44f4-a8e4-e5048aab9bf3/scratchpad/judges/ssctr-n4/"}
+ },
+ "closing_criteria_r2_section_7": {
+  "1_no_plane_slots_not_built_with": {"status": "MET", "counts": "by construction (asks only with a string anchor); built-without plans 0 given one (64; 280 NONE; 280 NOVICE; test 26); chains 0/1152 violations; 4<->5 192/192 as built"},
+  "2_anchorless_slot_never_takes_other_role_configuration": {"status": "MET", "counts": "no anchorless asking slot in a plan in force; plane MAIN from accessory-only 0 (128; 1120); chains 0 on asking slots; wider measure 0/672 accessory-first MAIN rows absent without the rule"},
+  "3_scans_zero": {"status": "MET", "counts": "r2-scan-changes 0/2688 (STRENGTH 0, was 44); inforce-small 0/64 (was 6) and 0/128; full in-force 0/1120; r2-b01-strength 0 (was 44); chains 0/1152; 4<->5 0/192"},
+  "4_directed_tests": {"status": "MET", "counts": "four new tests read and judged adequate; 67/67 on the candidate; 0/4 on the pre-fix file; coverage note C-01 (4<->5)"},
+  "5_b02": {"status": "MET_BY_RULING", "ruling": "D-19 ACCEPT_WITH_CONDITION on the record"},
+  "6_fresh_ssctr_review": {"status": "MET (this record); QRE recheck is the other half and was not read here"}
+ },
+ "findings_status": {
+  "SSCTR-STR-B-01": "CLOSED (selection and MAIN dose verified; SQ4-C6 dose clause MET in plans in force)",
+  "SSCTR-STR-B-02": "RULED: ACCEPT_WITH_CONDITION on the record (D-19)",
+  "SSCTR-STR-B-03": "OBSERVATION unchanged; scope widened by D-18 (a running plan of any class never starts alternating)",
+  "SSCTR-STR-B-04": "OBSERVATION unchanged (descriptors not read by the runtime; the planInForce phrase now accurate)",
+  "SSCTR-STR-A-03": "OPEN (before non-synthetic use)",
+  "SSCTR-STR-A-04b": "OPEN (before non-synthetic use)",
+  "SSCTR-STR-A-05": "OPEN (before non-synthetic use)",
+  "SSCTR-STR-A-11": "OPEN, pre-existing, routed to the Founder"
+ },
+ "conditions_changed": {
+  "SQ-4 c5": {"r2": "PARTIAL", "r3": "MET under D-18 (stricter than adoption at a block boundary: a plan in force never adopts; directives still win)"},
+  "SQ-4 c6": {"r2": "PARTIAL", "r3": "MET (phase clause as before; dose clause MET in plans in force)"}
+ },
+ "rulings": {
+  "D-18": {"ruling": "ACCEPT_WITH_CONDITIONS", "reason": "R1's accepted D-2 reading extended to plans built without plane slots; stricter than SQ4-C5 and admissible because SQ-4 rests on admissibility, stability and the Founder's request with benefit PLAUSIBLE_BUT_UNCERTAIN; the cost (no alternation after a template-replacing change of days; the built vertical lifts can leave) is stated, touches no dose, role or stability, and is a Founder-accepted remaining condition; KEEP is the minimum effective change.", "conditions": ["The PLANE record states D-18 as the in-force rule: asks only where built asking; keeps its own while it fits, prefers nothing while it does not, returns when it fits again; no adoption in plans in force; alternation resumes only in a new plan.", "No copy for a plan in force claims both planes or alternation unless the current week's rows hold them (SQ4-C7, C8), and none presents the loss as a coaching choice.", "Any later adoption mechanism in plans in force is a new SQ-4 c5 question with its own SSCTR review and must keep R2 criteria 1-3."], "author_count_not_rerun": "88 of 308 QRE sequences losing a vertical MAIN"},
+  "D-19": {"ruling": "ACCEPT_WITH_CONDITION on the record", "claims_checked": {"unchanged_and_present_on_21838cb": "CONFIRMED: identical per-case lists (56 changes, 64 rows) on 21838cb, 76b8448 and 5f7f6f6; r2-scan-changes 56 on 3342a1d (recorded) and 56 here; GENERAL 104 and RS 160 match the author's table", "frozen_continuity_and_B0-C06_rotation_no_plane_row": "CONFIRMED: every new row is an UPPER ACCESSORY row with no planeAlternation (STRENGTH 0/64 on a plane-asking row; RS plane alone 0/112); traced case: the moved verticals rotate at w9 DEVELOPMENT into pike-push-up / band-assisted-pull-up 2x7 where OFF's accessories rotate into machine-chest-press / seated-cable-row", "frozen_engine_alone_and_N2_alone_rotate_the_same_way": "CONFIRMED: OFF, new plans, no change: 150/582 plans, 378 events of a loaded upper accessory rotating into a bodyweight, assisted or band one (db-overhead-press->pike-push-up 60); RS with every rule but the plane rule: N2's db-overhead-press rotated into pike-push-up in week 9, 48 rows in 672 changes"}, "reason": "Not a plane-rule selection; no MAIN row touched (0/384 dose differences); accessory at the goal's sets and reps with effort-based establishment; one swap at a block boundary; outside event phases; the missing loading guard is a property of the frozen B0-C06 rotation (C-02), not of SQ-4; the rules bring fewer new exercises after a change than the plan without them.", "condition": "The PLANE record states, as a known behaviour of plans in force, that after a change from two to three or four strength days the built vertical configurations can occupy upper accessory slots through the engine's continuity and, at the next block boundary, be replaced by the engine's rotation with admissible bodyweight or assisted alternatives of the same plane; that this is the frozen B0-C06 rotation, not a plane-rule choice; no copy presents it as a progression or as the plane rule's doing; a change of these counts is a re-review trigger.", "related_observation": "After 2->4 (and while shared after 2->3) the vertical configuration's UPPER accessory row carries the MAIN-built state (STRENGTH 1x5 where OFF's accessories are 1x7): A-11 seen from the accessory side; reps inside the goal range; MAIN dose unaffected."}
+ },
+ "new_findings": [
+  {"id": "SSCTR-STR-C-01", "severity": "OBSERVATION", "boundaries": ["V1X-STRENGTH-PLANE"], "statement": "Neither the directed tests nor the R2 change matrices include a change between 4 and 5 strength days, the only change besides 2<->3 that keeps the asking template (UPPER_B). Measured right: 192 changes, anchors as built, 0 out of range, 0 accessory->MAIN, 0/384 dose differences. A test is QRE's call; not a condition.", "evidence": "r3-45.mjs"},
+  {"id": "SSCTR-STR-C-02", "severity": "OBSERVATION", "boundaries": [], "pre_existing": true, "statement": "The frozen B0-C06 accessory rotation has no loading guard: with every strength boundary off, 150 of 582 new plans rotate an externally loaded upper accessory into a bodyweight, assisted or band one of the same pattern (378 events, DEVELOPMENT and CONSOLIDATION). This is the mechanism of B-02 and of N2's rotation under RUNNING_SUPPORT. To route with A-11 to the Founder as a frozen-engine question; not a condition of SQ-2 or SQ-4.", "evidence": "r3-off-rotation.mjs"}
+ ],
+ "proposed_enabling_record_conditions": {
+  "common": [
+   "Synthetic data only; no integration (D-11, D-12, QRE A-04).",
+   "Bound to values 06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33, catalog ceee276a...92f9, R6-POLICY-5 a75be1aa...e100, decision JSON f8dee367...d379.",
+   "review_by 2027-04-30 plus the 2026-11-13 event triggers and any change of templates, template order or the template set of a number of days (D-14, D-18); owner Chief.",
+   "Before any non-synthetic use: A-03, A-04(b), A-05 and QRE A-04 closed.",
+   "The issuing SSCTR reads the QRE recheck of this fix first; a QRE blocking finding on a boundary's bytes prevents that boundary's record.",
+   "If the four records are issued together, plans are built under [HOLD, PLANE, UPPER]; if PLANE's record is issued after the others, that is a change of the rules in force for every plan already built and belongs to A-04(b)."
+  ],
+  "V1X-STRENGTH-HOLD-DOSE": ["Both known limitations in every answer of a plan built under the rule; no equivalence, injury-prevention or hold-time claim", "v1str-time pins 85/32 and every-lost-row-a-hold; a change is a re-review trigger, not a test update", "TRUNK_SLOT_UNFILLED declared while it stands", "A hold time dose (option b) needs its own SSCTR decision"],
+  "V1X-STRENGTH-UPPER-LOADING": ["Scope exactly SQ2-C1", "No copy that loaded upper work improves running or prevents injury", "Re-review if added load for bodyweight exercises or new RS-tagged upper configurations are admitted"],
+  "V1X-STRENGTH-PLANE": ["D-13 as amended: a class NONE new plan is identical to the plan without PLANE; SQ4-C4 and C9 hold past movement practice only; no copy suggests plane coverage to a class NONE plan", "D-18 conditions 1-3", "D-19 condition (B-02 stated as a known behaviour of plans in force; frozen B0-C06 rotation, not a plane-rule choice)", "D-3 as the guard's definition", "No coverage or benefit claim (SQ4-C7, C8)", "Re-review on new vertical configurations, templates, template order, a template set per number of days, or any adoption mechanism in plans in force", "The four tests pinning criteria 1-3 are re-review triggers if changed, not test updates"],
+  "V1X-STRENGTH-EXPOSURE": ["consumers [] and V-INT-01 green", "SQ3-C4/C5 on every surface", "Executed described as sets logged in this week's sessions", "Data/G03 joint review before athlete-facing display", "Targets, fractions or auto-increase only through G02"]
+ },
+ "human_revalidation": {
+  "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION (proposed)",
+  "queue_entry_status": "PROPOSED_ONLY (HQ-SI-V1-SSCTR-SQ-1..4); this instance may not edit the human queue",
+  "items": ["anti-lateral-flexion loss and a hold time dose", "the declared trunk loss under tight time", "loaded upper work for runners", "whether plane coverage matters, the D-13 exclusion of beginners and the D-18 loss of alternation after a change of days", "accessory rotation from loaded to bodyweight or assisted variants for strength-goal athletes (B-02, C-02)", "primary-only counting convention", "pre-existing shared-state dose and time-fit trunk questions (A-11)"]
+ },
+ "could_not_verify": [
+  "This instance's dispatch mechanism",
+  "Full text of any source (one record at abstract-summary level; no ruling rests on it)",
+  "The QRE recheck of this fix (not read by instruction), hence whether a QRE blocking finding exists",
+  "The joint suite, v1str-freeze --preserved and the historical freezes (QRE-owned; not run)",
+  "The QRE probe counts cited by the author (88/308 vertical MAIN lost; role switches 16 -> 0): not rerun",
+  "The author's draft probes outside the repository: not read; own probes built instead",
+  "Exhaustive event chains (sampled widely, not fuzzed)",
+  "Any app copy or integration (none exists)",
+  "Any physiological effect; no human, empirical or clinical validation"
+ ],
+ "governance": {
+  "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+  "publication_status": "NOT_PUBLISHED",
+  "enabling_records_issued": false,
+  "human_validation": false,
+  "empirical_product_validation": false,
+  "clinical_clearance": false,
+  "next_owner": "Chief: send the QRE recheck of 5f7f6f6 to the SSCTR; the four records (HOLD, UPPER, PLANE, EXPOSURE) are decided then, each bound to values 06d4731d...9b33"
+ }
+}

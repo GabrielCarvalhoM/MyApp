@@ -1,0 +1,592 @@
+{
+ "checks": [
+  {
+   "k": "control: the plank is there without rules",
+   "ok": true,
+   "d": ""
+  },
+  {
+   "k": "control: DEV takes it off",
+   "ok": true,
+   "d": ""
+  },
+  {
+   "k": "new entry point strips optionKey",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips repertoireSymbol",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips repertoireHidden",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips repertoireInherited",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips repertoireStrengthField",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips authorityRepertoireSymbol",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips authorityRepertoireHidden",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips authorityRepertoireInherited",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "new entry point strips authorityItselfSymbol",
+   "ok": true,
+   "d": "PROPOSED"
+  },
+  {
+   "k": "frozen v1-index: a JSON strength field is inert",
+   "ok": true,
+   "d": ""
+  },
+  {
+   "k": "no hold through rebuilds",
+   "ok": true,
+   "d": ""
+  },
+  {
+   "k": "only a clinical answer passes (OFF / painSign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (OFF / injurySign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (OFF / painWithExercise)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (HOLD only / painSign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (HOLD only / injurySign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (HOLD only / painWithExercise)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (EXPOSURE only / painSign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (EXPOSURE only / injurySign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (EXPOSURE only / painWithExercise)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (other bytes / painSign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (other bytes / injurySign)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "only a clinical answer passes (other bytes / painWithExercise)",
+   "ok": true,
+   "d": "CLINICAL_HUMAN_REQUIRED"
+  },
+  {
+   "k": "trunk gap declared at the substitution and after (SKILL_MISMATCH)",
+   "ok": true,
+   "d": ""
+  },
+  {
+   "k": "trunk gap declared at the substitution and after (NONCLINICAL_DISCOMFORT_OR_PREFERENCE)",
+   "ok": true,
+   "d": ""
+  }
+ ],
+ "A1 carrier": {
+  "optionKey": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "repertoireSymbol": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "repertoireHidden": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "repertoireInherited": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "repertoireStrengthField": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "authorityRepertoireSymbol": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "authorityRepertoireHidden": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "authorityRepertoireInherited": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "authorityItselfSymbol": {
+   "plankKept": true,
+   "status": "PROPOSED"
+  },
+  "frozenJsonFieldInert": true,
+  "frozenSymbolActs": true,
+  "frozenSymbolBinding": {
+   "id": "V1X-STRENGTH-1",
+   "sha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "boundaries": [
+    "V1X-STRENGTH-HOLD-DOSE",
+    "V1X-STRENGTH-PLANE",
+    "V1X-STRENGTH-UPPER-LOADING"
+   ]
+  },
+  "jsonRoundTripDropsRules": true
+ },
+ "A2 rules through rebuilds": {
+  "statuses": [
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "SCHEDULE_CHANGE:MODIFY:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "EQUIPMENT_CHANGE:MODIFY:ACTIVE",
+   "LOCAL_FATIGUE:MODIFY:ACTIVE",
+   "SYSTEMIC_FATIGUE:MODIFY:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "EQUIPMENT_CHANGE:MODIFY:ACTIVE",
+   "EXERCISE_SUBSTITUTION:MODIFY:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "SCHEDULE_CHANGE:MODIFY:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE",
+   "WEEKLY_REVIEW:KEEP:ACTIVE"
+  ],
+  "holdsSeen": [],
+  "binding": {
+   "id": "V1X-STRENGTH-1",
+   "sha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "boundaries": [
+    "V1X-STRENGTH-HOLD-DOSE",
+    "V1X-STRENGTH-PLANE",
+    "V1X-STRENGTH-UPPER-LOADING"
+   ]
+  }
+ },
+ "A3 clinical pass-through": {
+  "OFF / painSign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "OFF / injurySign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "OFF / painWithExercise": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "OFF / weekly": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "OFF / systemic": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "OFF / adverse": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "OFF / substitutionNoPain": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "OFF / equipment": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "OFF / schedule": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / painSign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "HOLD only / injurySign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "HOLD only / painWithExercise": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "HOLD only / weekly": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / systemic": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / adverse": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / substitutionNoPain": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / equipment": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "HOLD only / schedule": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / painSign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "EXPOSURE only / injurySign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "EXPOSURE only / painWithExercise": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "EXPOSURE only / weekly": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / systemic": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / adverse": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / substitutionNoPain": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / equipment": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "EXPOSURE only / schedule": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / painSign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "other bytes / injurySign": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "other bytes / painWithExercise": {
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "exactlyBelow": true,
+   "belowStatus": "CLINICAL_HUMAN_REQUIRED",
+   "belowProposal": false
+  },
+  "other bytes / weekly": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / systemic": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / adverse": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / substitutionNoPain": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / equipment": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "other bytes / schedule": {
+   "status": "UNSUPPORTED",
+   "proposal": false,
+   "ext": "PLAN_BUILT_UNDER_OTHER_RULES",
+   "belowStatus": "MODIFY",
+   "belowProposal": true
+  },
+  "heldThenWeekly": {
+   "first": "CLINICAL_HUMAN_REQUIRED",
+   "next": "CLINICAL_HUMAN_REQUIRED",
+   "nextProposal": false
+  }
+ },
+ "A4 trunk gap and limitations": {
+  "SKILL_MISMATCH": {
+   "atSubstitution": [
+    {
+     "id": "TRUNK_SLOT_UNFILLED",
+     "blocking": false,
+     "informational": true,
+     "pattern": "TRUNK",
+     "templates": [
+      "CORE"
+     ],
+     "detail": "A trunk slot of these sessions has no configuration left that fits: a hold is not selectable while it has no time dose, and the other trunk configurations are already in the session, were set aside, or need equipment this plan does not have. The sessions keep their other rows; nothing is claimed equivalent.",
+     "options": [
+      "Accept the gap",
+      "Add a band for another trunk exercise"
+     ]
+    }
+   ],
+   "atWeekly": [
+    "TRUNK_SLOT_UNFILLED:CORE"
+   ],
+   "later": [
+    "TRUNK_SLOT_UNFILLED"
+   ],
+   "knownLimitations": [
+    "NO_ANTI_LATERAL_FLEXION_ROW",
+    "TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME"
+   ],
+   "missing": [
+    "CORE"
+   ]
+  },
+  "NONCLINICAL_DISCOMFORT_OR_PREFERENCE": {
+   "atSubstitution": [
+    {
+     "id": "TRUNK_SLOT_UNFILLED",
+     "blocking": false,
+     "informational": true,
+     "pattern": "TRUNK",
+     "templates": [
+      "CORE"
+     ],
+     "detail": "A trunk slot of these sessions has no configuration left that fits: a hold is not selectable while it has no time dose, and the other trunk configurations are already in the session, were set aside, or need equipment this plan does not have. The sessions keep their other rows; nothing is claimed equivalent.",
+     "options": [
+      "Accept the gap",
+      "Add a band for another trunk exercise"
+     ]
+    }
+   ],
+   "atWeekly": [
+    "TRUNK_SLOT_UNFILLED:CORE"
+   ],
+   "later": [
+    "TRUNK_SLOT_UNFILLED"
+   ],
+   "knownLimitations": [
+    "NO_ANTI_LATERAL_FLEXION_ROW",
+    "TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME"
+   ],
+   "missing": [
+    "CORE"
+   ]
+  },
+  "OFF": null,
+  "NONE 5d BW": {
+   "sub": "MODIFY",
+   "noviceMissing": [
+    "CORE",
+    "CORE",
+    "CORE"
+   ],
+   "regularMissing": [
+    "CORE"
+   ],
+   "disclosedAfterBoundary": [
+    [
+     "CORE"
+    ]
+   ],
+   "weekAfterBoundaryTrunkRows": 5
+  },
+  "NONE 5d BANDS": {
+   "sub": "MODIFY",
+   "noviceMissing": [],
+   "regularMissing": [],
+   "disclosedAfterBoundary": [],
+   "weekAfterBoundaryTrunkRows": 6
+  },
+  "newPlanLimitations": [
+   "NO_ANTI_LATERAL_FLEXION_ROW",
+   "TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME"
+  ],
+  "newPlanUnderPlaneOnly": null
+ },
+ "A5 exposure strictness": {
+  "noAthleteId": 0,
+  "fractional": {
+   "QUADRICEPS": 1,
+   "GLUTEUS_MAXIMUS": 1
+  },
+  "bigSets": 5000
+ },
+ "A6 supplied values without knownLimitations": "THROW Cannot read properties of undefined (reading 'map')",
+ "fails": 0
+}

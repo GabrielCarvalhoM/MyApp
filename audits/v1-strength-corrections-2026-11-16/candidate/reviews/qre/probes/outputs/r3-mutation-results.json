@@ -1,0 +1,375 @@
+[
+ {
+  "id": "CONTROL",
+  "tests": 66,
+  "pass": 66,
+  "fail": 0,
+  "failed": [],
+  "timedOut": false
+ },
+ {
+  "id": "R3-01",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "in-force guard removed: every second slot asks again in a plan in force (3342a1d asking)",
+  "ms": 427629,
+  "tests": 66,
+  "pass": 62,
+  "fail": 4,
+  "failed": [
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-02",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "guard reads only \"the plan has some anchor\"",
+  "ms": 737461,
+  "tests": 66,
+  "pass": 63,
+  "fail": 3,
+  "failed": [
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-03",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "a new plan never asks",
+  "ms": 722591,
+  "tests": 66,
+  "pass": 50,
+  "fail": 16,
+  "failed": [
+   "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+   "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second",
+   "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+   "SQ-4 c4 admissibility is unchanged: no vertical push at LOW skill, a pulldown for a novice past movement practice; a HIGH vertical lift needs familiarity",
+   "SQ-4 c9 the sweep: vertical pull where machines or bands give an equal-or-better loaded option, vertical push for intermediate and experienced dumbbell profiles, dumbbell-only pull unchanged",
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-2 c8, SQ-4 c2 the joint order: vertical inside its guard, then familiar, established, external loading, purpose",
+   "a new plan from the record is built under the rules in force",
+   "SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row's dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first upper session loaded and horizontal, the second vertical",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in",
+   "V-PRG-01 progression is the engine's: at most one smallest increment a week on executed evidence for a vertical MAIN the rule selected, identity kept through the block",
+   "V-PRG-01 hypertrophy: repetitions rise inside 8 to 12 before any load step, for the rows the rules selected"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-04",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "anchor looked up by template index, not type (never found)",
+  "ms": 730629,
+  "tests": 66,
+  "pass": 61,
+  "fail": 5,
+  "failed": [
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-05",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "guard inverted: in force only slots without an anchor ask",
+  "ms": 395195,
+  "tests": 66,
+  "pass": 60,
+  "fail": 6,
+  "failed": [
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-06",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "the class consulted in a plan in force (R2-04)",
+  "ms": 561846,
+  "tests": 66,
+  "pass": 66,
+  "fail": 0,
+  "failed": [],
+  "timedOut": false,
+  "killed": false
+ },
+ {
+  "id": "R3-07",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "plane preferred without limit while the own configuration does not fit",
+  "ms": 560414,
+  "tests": 66,
+  "pass": 64,
+  "fail": 2,
+  "failed": [
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-08",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "3342a1d restored: established preference while own does not fit",
+  "ms": 564004,
+  "tests": 66,
+  "pass": 65,
+  "fail": 1,
+  "failed": [
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-09",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "in force nothing preferred even while own fits (own still first)",
+  "ms": 368573,
+  "tests": 66,
+  "pass": 66,
+  "fail": 0,
+  "failed": [],
+  "timedOut": false,
+  "killed": false
+ },
+ {
+  "id": "R3-10",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "preference whenever anchored, fitting or not",
+  "ms": 450546,
+  "tests": 66,
+  "pass": 64,
+  "fail": 2,
+  "failed": [
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-11",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "anchor never read at selection",
+  "ms": 411837,
+  "tests": 66,
+  "pass": 61,
+  "fail": 5,
+  "failed": [
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-12",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "a new plan never prefers the plane",
+  "ms": 444975,
+  "tests": 66,
+  "pass": 53,
+  "fail": 13,
+  "failed": [
+   "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+   "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second",
+   "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+   "SQ-4 c4 admissibility is unchanged: no vertical push at LOW skill, a pulldown for a novice past movement practice; a HIGH vertical lift needs familiarity",
+   "SQ-4 c9 the sweep: vertical pull where machines or bands give an equal-or-better loaded option, vertical push for intermediate and experienced dumbbell profiles, dumbbell-only pull unchanged",
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-2 c8, SQ-4 c2 the joint order: vertical inside its guard, then familiar, established, external loading, purpose",
+   "a new plan from the record is built under the rules in force",
+   "SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first upper session loaded and horizontal, the second vertical",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in",
+   "V-PRG-01 progression is the engine's: at most one smallest increment a week on executed evidence for a vertical MAIN the rule selected, identity kept through the block",
+   "V-PRG-01 hypertrophy: repetitions rise inside 8 to 12 before any load step, for the rows the rules selected"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-13",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "anchor drifts to the current pick (A-01 revert)",
+  "ms": 243384,
+  "tests": 66,
+  "pass": 64,
+  "fail": 2,
+  "failed": [
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-14",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "heldAs ignored (new plan)",
+  "ms": 315982,
+  "tests": 66,
+  "pass": 64,
+  "fail": 2,
+  "failed": [
+   "SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row's dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SSCTR-STR-A-04a the upper-body rules cost no trunk row under a tight session time: with the plane rule or the loading rule alone, no week holds fewer trunk rows than without it"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-15",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "the first slot asks instead of the second",
+  "ms": 268128,
+  "tests": 66,
+  "pass": 49,
+  "fail": 17,
+  "failed": [
+   "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+   "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second",
+   "SQ-4 c1, V-EXT-05 two MAIN slots of a pattern: the second in template order asks for the vertical plane, at most half ask, a single slot asks for nothing",
+   "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+   "SQ-4 c4 admissibility is unchanged: no vertical push at LOW skill, a pulldown for a novice past movement practice; a HIGH vertical lift needs familiarity",
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-2 c8, SQ-4 c2 the joint order: vertical inside its guard, then familiar, established, external loading, purpose",
+   "SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row's dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first upper session loaded and horizontal, the second vertical",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in",
+   "C.6 the upper-body rules change upper rows only: every run, every lower-body and trunk row, each day and the arrangement of every week are the same",
+   "a row of a session whose exercises are all the same with and without the rules is the same row in every week (dose, load and exposure)",
+   "V-PRG-01 progression is the engine's: at most one smallest increment a week on executed evidence for a vertical MAIN the rule selected, identity kept through the block",
+   "SSCTR-STR-A-04a the upper-body rules cost no trunk row under a tight session time: with the plane rule or the loading rule alone, no week holds fewer trunk rows than without it"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-16",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "no annotation: anchors never recorded",
+  "ms": 339900,
+  "tests": 66,
+  "pass": 59,
+  "fail": 7,
+  "failed": [
+   "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-4 c6 (SSCTR-STR-A-01) the plane rule gives no MAIN row another row's dose: an asking slot never takes a configuration an earlier session holds in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-17",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "in force no plane ordering at all (own not kept)",
+  "ms": 141940,
+  "tests": 66,
+  "pass": 61,
+  "fail": 5,
+  "failed": [
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01) after a change of strength days an asking slot is one the plan was built with, no MAIN row is given by the rule a configuration the plan held only in another role, and no loaded MAIN leaves its goal range that stays inside it without the rule",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-18",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "anchor presence by !== undefined (anchors are strings)",
+  "ms": 207650,
+  "tests": 66,
+  "pass": 66,
+  "fail": 0,
+  "failed": [],
+  "timedOut": false,
+  "killed": false
+ },
+ {
+  "id": "R3-19",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "practiceStart off (new NONE plans ask)",
+  "ms": 234642,
+  "tests": 66,
+  "pass": 62,
+  "fail": 4,
+  "failed": [
+   "SQ-4 (SSCTR-STR-A-04a) a new plan that opens with movement practice (strength class NONE) asks nothing of the plane rule: it is the plan without the rule",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 1) a plan in force is never given an asking slot it was not built with: a plan built with none is, through a change of strength days, the plan without the plane rule",
+   "a plan that opens with movement practice: an equipment gain changes exactly the slots it changes without the rules, in both of its template sets, and no MAIN row",
+   "SSCTR-STR-A-04a the upper-body rules cost no trunk row under a tight session time: with the plane rule or the loading rule alone, no week holds fewer trunk rows than without it"
+  ],
+  "timedOut": false,
+  "killed": true
+ },
+ {
+  "id": "R3-20",
+  "file": "CoachingCore/src/r7b-repertoire.mjs",
+  "what": "the plane ordering removed entirely",
+  "ms": 194700,
+  "tests": 66,
+  "pass": 52,
+  "fail": 14,
+  "failed": [
+   "SQ-3 c1 planned exposure: each working set once per primary muscle, secondary muscles never, for novice, intermediate and experienced plans",
+   "SQ-4 c2 an intermediate athlete with a full gym who is familiar with the bench gets bench-press in the first push slot and db-overhead-press in the second",
+   "SQ-4 c3, V-EXT-07 the loading guard: vertical never takes a slot from external loading down to bodyweight, assistance or a band",
+   "SQ-4 c4 admissibility is unchanged: no vertical push at LOW skill, a pulldown for a novice past movement practice; a HIGH vertical lift needs familiarity",
+   "SQ-4 c9 the sweep: vertical pull where machines or bands give an equal-or-better loaded option, vertical push for intermediate and experienced dumbbell profiles, dumbbell-only pull unchanged",
+   "SQ-4 c5 the configuration is fixed per slot: weekly reviews, an equipment gain and a substitution leave every other slot as it was built",
+   "SQ-2 c8, SQ-4 c2 the joint order: vertical inside its guard, then familiar, established, external loading, purpose",
+   "a new plan from the record is built under the rules in force",
+   "SQ-2 c8 (SSCTR-STR-A-06) the joint order on four strength days: the first upper session loaded and horizontal, the second vertical",
+   "SQ-4 c5, c6 what does not change the templates of a plan in force leaves its asking slots as built: the same number of strength days on other weekdays, a substitution for skill, a change of days in the taper",
+   "SQ-4 c5 (SSCTR-STR-B-01, criterion 2) in a plan in force a slot with no anchor is selected as if the plane rule were absent, whatever the plan already uses; an anchored slot whose own configuration does not fit takes the ordinary order and keeps its anchor",
+   "SQ-4 c5 (QRE-STR-A-01) the slot a plan was built with is its anchor through a loss and a regain of equipment: what stands in meanwhile never becomes the anchor, and no vertical exercise new to the plan is brought in",
+   "V-PRG-01 progression is the engine's: at most one smallest increment a week on executed evidence for a vertical MAIN the rule selected, identity kept through the block",
+   "V-PRG-01 hypertrophy: repetitions rise inside 8 to 12 before any load step, for the rows the rules selected"
+  ],
+  "timedOut": false,
+  "killed": true
+ }
+]
