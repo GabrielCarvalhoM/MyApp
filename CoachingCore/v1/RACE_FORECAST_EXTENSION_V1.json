@@ -1,0 +1,395 @@
+{
+ "id": "SSCTR-RFC-VALUES-r2",
+ "scope": "Additive over COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1. No V1RC value, gate, computation or file changes. Nonclinical recreational adults, synthetic data only. paceInsights.athleteConfirmedRevision adds a separate effective-band layer for THRESHOLD_CONTROLLED only, conditional on escalation E1.",
+ "forecast": {
+  "start": "The V1RC current estimate of the plan's event, its unrounded {lower, central, upper} as V1RC computes them (after any Q8 down adjustment). No forecast when that estimate is UNAVAILABLE or not shown.",
+  "events": {
+   "5K": {
+    "trainingGain": true,
+    "wMax": 0.12,
+    "wMaxPermittedUpTo": 0.18
+   },
+   "10K": {
+    "trainingGain": true,
+    "wMax": 0.12,
+    "wMaxPermittedUpTo": 0.18
+   },
+   "HALF_MARATHON": {
+    "trainingGain": true,
+    "wMax": 0.15,
+    "wMaxPermittedUpTo": 0.2
+   },
+   "MARATHON": {
+    "trainingGain": false,
+    "wMax": 0.18,
+    "wMaxPermittedUpTo": 0.2,
+    "centralMaxSeconds": 21600,
+    "flag": "NO_TRAINING_GAIN_APPLIED_MARATHON"
+   }
+  },
+  "gainCeilingLogTime": {
+   "NOVICE": 0.08,
+   "INTERMEDIATE": 0.05,
+   "EXPERIENCED": 0.03
+  },
+  "unknownExperienceUses": "EXPERIENCED",
+  "noForecastExperience": [
+   "NONE"
+  ],
+  "experienceClassFrom": "PLAN_CREATION",
+  "tauWeeks": 10,
+  "countedPhases": [
+   "ESTABLISHMENT",
+   "BUILD",
+   "CONSOLIDATION",
+   "DEVELOPMENT",
+   "SPECIFIC"
+  ],
+  "zeroCreditPhases": [
+   "TAPER",
+   "RACE_WEEK",
+   "POST_EVENT",
+   "NEXT_BLOCK"
+  ],
+  "zeroCreditWeeks": [
+   "HOLD",
+   "WALK_JOG",
+   "RESTART",
+   "RETURN",
+   "BEFORE_PLAN_START"
+  ],
+  "adherence": {
+   "aMin": 0.5,
+   "aFull": 0.9,
+   "sessionCredit": {
+    "order": "First applicable rule wins",
+    "rules": [
+     {
+      "when": "No report for a planned run session",
+      "c": 0
+     },
+     {
+      "when": "actual.completed === true (the engine's reading; under the RWS amendment completion of a distance-target session is the distance)",
+      "c": 1,
+      "note": "minutes and steps ignored"
+     },
+     {
+      "when": "Not completed and RWS actual.steps with at least one WORK or STEADY step",
+      "c": "sum(w_s * m_s) / sum(w_s) over WORK and STEADY steps",
+      "w_s": "the step's planning share: target seconds for a TIME step; the midpoint of its estimated seconds for a DISTANCE step",
+      "m_s": "extent only, never intensity: 1 if targetMet === true; a step that is one repetition of a repeated block and not met: 0; any other WORK or STEADY step not met (continuous TIME or DISTANCE): min(1, measured extent / target extent) in its own unit (seconds or metres) when measured, else 0"
+     },
+     {
+      "when": "Not completed, no usable steps, distance-target session with a recorded distance",
+      "c": "min(1, actual distance / target distance)"
+     },
+     {
+      "when": "Not completed, otherwise",
+      "c": "min(actual minutes, planned minutes) / planned minutes",
+      "note": "r1 reading; 0 if no extent is recorded"
+     }
+    ],
+    "neverAbove": 1,
+    "runSessionsOnly": true
+   },
+   "weekly": "a_w = sum(planned minutes x c) / sum(planned minutes), planned minutes = prescription.durationMinutes (the canonical planning dose)",
+   "weekWithoutPlannedRunMinutes": "Not counted (0 credit) and left out of the mean",
+   "futureFromLastCountedWeeksMax": 4,
+   "futureMeanOf": "a (the weekly adherence), then f applied once",
+   "scope": "Credit for the forecast only. It never feeds dose, progression, the engine's adherence or completion judgments, or any G03 reading (Product/UX + Data own those)."
+  },
+  "response": {
+   "priorCentral": 0.5,
+   "priorSd": 0.3,
+   "z": 1.2816,
+   "pair": "One pair: A = the earliest eligible reference dated on or after (plan start - 28 days); B = the current V1RC standard reference. Same kind (RACE_RESULT with RACE_RESULT; TIME_TRIAL or FIELD_TEST with TIME_TRIAL or FIELD_TEST). Neither presumed, SUBMAXIMAL_LOWER_BOUND, unknown effort, OUTSIDE_MODEL_POPULATION, nor longer than the half marathon. No declared break of 7 days or more between A and B.",
+   "earliestReferenceDaysBeforePlanStartMax": 28,
+   "minPairDays": 28,
+   "minDeltaGamma": 0.005,
+   "timeScale": "V1RC 10K-equivalent central time (power law, kCentral 1.07)",
+   "sigma": "The V1RC margin of each reference (tier margin plus any slow-runner margin) / 1.2816",
+   "update": "R_obs = ln(T10_A / T10_B) / dGamma; var = (sigma_A^2 + sigma_B^2) / dGamma^2; R_c = (R_c0/s0^2 + R_obs/var) / (1/s0^2 + 1/var); sd = (1/s0^2 + 1/var)^(-1/2); then R_c clipped to [0, 1]. No pair: R_c = 0.5, sd = 0.3.",
+   "fastEdgeR": "min(1, R_c + 1.2816 sd)",
+   "slowEdgeR": 0
+  },
+  "slowdown": {
+   "comparedWith": "the most recent eligible same-kind reference dated before B (pair rules except spacing)",
+   "fractionAtLeast": 0.03,
+   "effect": "g = 0 until a later reference is not 3% slower",
+   "flag": "NO_GAIN_LATEST_RESULT_SLOWER"
+  },
+  "q8DownInForce": {
+   "anyDomain": true,
+   "effect": "g = 0",
+   "flag": "NO_GAIN_RECENT_SESSIONS_SLOWER"
+  },
+  "formulas": {
+   "H_eff": "sum of f(a_w) over credited counted plan weeks (fc.weekCredit); each future counted week before RACE_WEEK earns f(future adherence of the range): 1 for the plan scenario, f(mean a) for the observed forecast",
+   "f": "f(a) = 0 if a < 0.5; (a - 0.5) / 0.4 if 0.5 <= a < 0.9; 1 if a >= 0.9",
+   "Gamma": "G_x * (1 - exp(-H_eff / 10))",
+   "g": "Gamma(start of RACE_WEEK) - Gamma(reference date), per range; 0 for the marathon, after a slowdown, or while a Q8 down factor is in force",
+   "central": "central_E * exp(-R_c * g)",
+   "low": "lower_E * exp(-R_hi * g)",
+   "high": "upper_E (no improvement)"
+  },
+  "rounding": "V1RC roundOutwardSeconds (5K/10K 15 s, half/marathon 60 s): low floored, high ceiled, central to nearest",
+  "width": "rounded high / rounded low - 1; shown only if <= wMax, else TOO_UNCERTAIN_TO_SHOW; never narrowed",
+  "horizonDaysMax": 112,
+  "shownUntil": "Live ranges: the day before RACE_WEEK starts. In RACE_WEEK: only fc.raceWeek.",
+  "confidence": {
+   "withGain": "LOW",
+   "withoutGain": "the current estimate tier, at most MODERATE"
+  },
+  "recompute": "At the week boundary only; withdrawal applies at once",
+  "neverFeeds": [
+   "pace bands",
+   "P1/P2/P3",
+   "Q8 factors",
+   "estimates",
+   "goal comparison",
+   "dose",
+   "progression",
+   "phase",
+   "eligibility",
+   "race-day mode"
+  ],
+  "withdrawal": [
+   "hold",
+   "declared break of 14 days or more",
+   "WALK_JOG, RESTART or RETURN mode",
+   "warning-sign screen REQUIRED",
+   "completion race day",
+   "after the race date",
+   "from RACE_WEEK (only fc.raceWeek)",
+   "race more than 112 days away (NOT_YET_IN_WINDOW)",
+   "event estimate unavailable or not shown",
+   "experience NONE",
+   "extension or ESTIMATE boundary not enabled",
+   "marathon central above 6:00:00"
+  ],
+  "requiredText": {
+   "observedForecast": "If you keep training as you have over the last <n> weeks, <race> on <date>: <low>-<high>. The slower end assumes no further improvement. Not a promise.",
+   "planScenario": "If you follow the plan from now on, <race> on <date>: <low>-<high>. The slower end assumes no further improvement. Not a promise.",
+   "coincide": "If you keep training as you have over the last <n> weeks, in line with the plan, <race> on <date>: <low>-<high>. The slower end assumes no further improvement. Not a promise.",
+   "basis": "Based on your <reference> of <date>; individual results vary. A plausible span, not a probability.",
+   "raceWeek": "Forecast of <date>, not updated in race week: <low>-<high>. For pacing, use your current estimate and its caution.",
+   "goal": "Your goal <time> is faster than / within / slower than this range.",
+   "notYetInWindow": "A forecast appears from <availableFrom>, 16 weeks before the race. Until then, your current estimate.",
+   "marathon": "Your current marathon estimate, assuming the block's long runs are completed: <low>-<high>. No further improvement is assumed for the marathon. Not a promise."
+  },
+  "weekCredit": {
+   "atReferenceDate": "Gamma(d) at a reference date d credits every counted plan week whose first day is on or before d: the week that contains the reference is credited at its observed adherence (a reference dated before the plan credits nothing).",
+   "atWeekStart": "Gamma(t) at a week start t (t_now = start of the week in force; t_RW = start of RACE_WEEK) credits every counted plan week whose last day is before t.",
+   "pair": "Gamma(t_A) and Gamma(t_B) of the response pair use atReferenceDate.",
+   "referenceWeekAdherence": "Always observed: V1RC reads a reference only from the week after it is dated and recorded, so the week containing it is complete."
+  },
+  "decomposition": {
+   "O": "ln(T10_A / T10_B): observed gain, already inside the V1RC current estimate; never added",
+   "U": "Gamma(t_now) - Gamma(t_ref): executed weeks after the reference, at observed adherence, not yet measured",
+   "F": "Gamma(t_RW) - Gamma(t_now): counted weeks still to come before RACE_WEEK, at the range's future adherence",
+   "g": "U + F = Gamma(t_RW) - Gamma(t_ref); 0 for the marathon, after a slowdown, or while a Q8 down factor is in force (both ranges)"
+  },
+  "ranges": {
+   "planScenario": {
+    "kind": "PLAN_SCENARIO",
+    "futureAdherence": 1,
+    "pastWeeks": "observed adherence (U as observed)",
+    "computedWhen": "the forecast is eligible",
+    "conditionalOn": "PLAN_FOLLOWED_FROM_NOW"
+   },
+   "observedForecast": {
+    "kind": "OBSERVED_FORECAST",
+    "futureAdherence": "mean a of the last <= 4 completed counted weeks, then f once",
+    "minCompletedCountedWeeks": 2,
+    "beforeThat": {
+     "status": "UNAVAILABLE",
+     "reason": "NOT_ENOUGH_HISTORY"
+    },
+    "conditionalOn": "CONTINUED_TRAINING_AT_OBSERVED_ADHERENCE"
+   },
+   "coincide": "If f(mean a) = 1, or the rounded [low, central, high] of both ranges are identical: one range, kind OBSERVED_FORECAST, coincidesWithPlanScenario true",
+   "eachRange": "Own width test against wMax, shown whole or TOO_UNCERTAIN_TO_SHOW, never narrowed; same slow edge (current estimate upper), same R_c and R_hi, same g = 0 rules",
+   "presentation": "When both are shown: the observed forecast first, the plan scenario as the conditional alternative; the plan scenario is never the headline while the observed forecast is SHOWN; range first, central never alone. If only the observed forecast passes the width test, only it is shown.",
+   "interval": {
+    "kind": "PLAUSIBILITY_ENVELOPE",
+    "probabilistic": false,
+    "calibrated": false
+   },
+   "zMeaning": "z = 1.2816 is a spread constant on the response prior; never displayed, never described as a coverage, a percentage or a probability"
+  },
+  "flags": [
+   "NO_GAIN_LATEST_RESULT_SLOWER",
+   "NO_GAIN_RECENT_SESSIONS_SLOWER",
+   "NO_TRAINING_GAIN_APPLIED_MARATHON"
+  ],
+  "retiredFlags": {
+   "ASSUMES_PLAN_FOLLOWED": "replaced by the range kind PLAN_SCENARIO"
+  },
+  "notYetInWindow": {
+   "status": "NOT_YET_IN_WINDOW",
+   "availableFrom": "the first plan week start on or after (race date - 112 days)",
+   "meanwhile": "the V1RC current estimate"
+  },
+  "raceWeek": {
+   "frozenForecast": "The observed forecast that was SHOWN for the last week before RACE_WEEK (including the coincide case), frozen: never recomputed, no gain added",
+   "shownFrom": "the first day of RACE_WEEK",
+   "shownThrough": "the day before race day; never on race day or in race-day mode",
+   "display": {
+    "position": "after the V1RC current estimate, its race-day text and its pacing caution",
+    "range": "low-high only",
+    "central": false,
+    "label": "Forecast of <date>; not updated in race week",
+    "goalRelation": false
+   },
+   "notShownIf": [
+    "any withdrawal applies",
+    "the observed forecast was not SHOWN for that week (TOO_UNCERTAIN_TO_SHOW, UNAVAILABLE, NOT_ENOUGH_HISTORY, plan scenario only)",
+    "its g was 0 (it equals the current estimate)",
+    "the V1RC reference in force differs from the one it was computed from, its confidence tier changed, or a Q8 down factor took effect since",
+    "marathon",
+    "completion race"
+   ],
+   "pacingSource": false
+  },
+  "marathonPresentation": "Shown only as the current marathon estimate with requiredText.marathon; never labelled a forecast; no plan scenario, no observed forecast, no race-week frozen forecast and no goal relation to a range (the V1RC goal comparison only)",
+  "goal": {
+   "primary": "The V1RC goal comparison with the current estimate, unchanged and always first",
+   "relationToRange": {
+    "values": [
+     "FASTER_THAN_RANGE",
+     "INSIDE_RANGE",
+     "SLOWER_THAN_RANGE"
+    ],
+    "against": "the rounded displayed low and high of each SHOWN range, inclusive (low <= goal <= high is INSIDE_RANGE); never the central",
+    "perRange": "stated beside its own range under that range's condition",
+    "notWhen": [
+     "race week (frozen forecast)",
+     "marathon",
+     "no range SHOWN"
+    ]
+   },
+   "neverEvidence": true,
+   "changesNothing": true
+  },
+  "unavailableGuidance": "Unavailable, too-uncertain and not-yet-in-window states state the V1RC reason and name only existing V1RC routes: report a race result at the event distance (never a prompt to enter one), or the P3 field test only when assessment.status is OFFERED. Never instruct a longer run, more training, a test P3 does not offer, or a race entry; the plan's own sessions are the route to the endurance gates.",
+  "forbiddenInCopy": [
+   "you will run",
+   "predicted time",
+   "on track",
+   "achievable",
+   "likely",
+   "probability",
+   "chance",
+   "confidence interval",
+   "a coverage or percentage attached to a range",
+   "a single time",
+   "success or failure styling of the goal relation"
+  ]
+ },
+ "paceInsights": {
+  "domains": [
+   "FIVE_K_EFFORT",
+   "TEN_K_EFFORT",
+   "THRESHOLD_CONTROLLED",
+   "HALF_MARATHON_EFFORT",
+   "MARATHON_EFFORT"
+  ],
+  "comparable": "V1RC comparableRun (no HEAT, HILLY, TRAIL, WIND_STRONG; no treadmill; GPS not poor), completed, RPE inside the cue, every work bout >= 5 min",
+  "windowDays": 42,
+  "minExecutions": 3,
+  "minSpanDays": 14,
+  "classify": "As V1RC Q8 against the band in force in the execution's own week: FASTER if fast edge pace / pace - 1 > 0.015; SLOWER if pace / slow edge pace - 1 > 0.015; else INSIDE",
+  "exceptional": {
+   "measure": "d = ln(band midpoint pace / execution pace), band of its own week",
+   "madMultiple": 3,
+   "floorFraction": 0.05,
+   "rule": "|d - median(d)| > max(3 * MAD(d), 0.05): shown, never voted"
+  },
+  "outcomes": {
+   "IMPROVING": ">= 2/3 FASTER, the latest included",
+   "SLOWER_THAN_BAND": ">= 2/3 SLOWER",
+   "STABLE": "majority INSIDE",
+   "MIXED": "otherwise",
+   "INSUFFICIENT_DATA": "fewer than 3 non-exceptional or span < 14 days"
+  },
+  "actions": {
+   "q8HasRoom": "EXPLAIN_ONLY",
+   "q8NoRoomOr5K10K": "Unchanged for HALF_MARATHON_EFFORT, MARATHON_EFFORT, FIVE_K_EFFORT and TEN_K_EFFORT: OFFER_V1RC_FIELD_TEST if P3 offers one now, else SUGGEST_REPORTING_A_RACE",
+   "slower": "EFFORT_GOVERNS_SLOW_TO_CUE",
+   "shortRepsOrEasy": "INFORMATIVE_ONLY",
+   "thresholdQ8AtCap": "OFFER_V1RC_FIELD_TEST first if P3 offers one now; ATHLETE_CONFIRMED_PACE_REVISION when athleteConfirmedRevision.offeredWhen holds (only after E1); else SUGGEST_REPORTING_A_RACE"
+  },
+  "changesCapacity": false,
+  "changesEstimateOrForecast": false,
+  "heartRateInput": false,
+  "computedAt": "WEEK_BOUNDARY",
+  "voteMinWorkBoutMinutes": {
+   "allDomains": 5,
+   "note": "Unchanged from r1; reps of 3-5 min never vote in any domain (A3 sub-question refused)"
+  },
+  "athleteConfirmedRevision": {
+   "id": "ATHLETE_CONFIRMED_PACE_REVISION",
+   "conditionalOn": "Escalation E1 recorded by Chief/Founder; if it is not, this block is inert and r1 F9 applies unchanged",
+   "domains": [
+    "THRESHOLD_CONTROLLED"
+   ],
+   "refusedDomains": {
+    "FIVE_K_EFFORT": "race-pace domain; rep pace above critical speed is not a capacity readout",
+    "TEN_K_EFFORT": "as FIVE_K_EFFORT",
+    "HALF_MARATHON_EFFORT": "race-pace domain used for race-pace touches and next to race-day pacing",
+    "MARATHON_EFFORT": "race-pace domain; the marathon is where a fast estimate costs most"
+   },
+   "offeredWhen": [
+    "Insights state IMPROVING for the domain (r1 rules), computed at the week boundary, every execution classified against the effective band in force in its own week",
+    "V1RC Q8 factor for the domain in force at its +0.045 cap; band AVAILABLE with basis DERIVED_FROM_CAPACITY (never an observed P2 band)",
+    "every voting execution: comparable (r1), completed, RPE inside the cue and response compatible (V1RC onTarget), measurement TRACK, or GPS with quality GOOD (not merely not poor), every work bout >= 5 min and total work >= 15 min (V1RC Q8 rule)",
+    "every voting execution dated on or after the effective date of the previous revision step in the domain (no execution supports two steps)",
+    "no harder-than-cue execution of the domain among the window's executions, and no adverse response on any run in the 7 days before the offer",
+    "plan mode EASY; no hold; no declared break >= 7 days in the window; warning-sign screen not REQUIRED; experience not NONE",
+    "not in TAPER, RACE_WEEK or POST_EVENT, and not within 14 days before the race date",
+    "at least 28 days since the effective date of the previous step, or since a revision ended"
+   ],
+   "offerOrder": "When P3 offers a field test now, the test is offered first and the revision is the alternative, with the statement that a test or race updates every pace and estimate, the revision only this band",
+   "step": {
+    "rule": "min(median over all voting executions of (effective fast edge pace / execution pace - 1), 0.02, 0.03 - revision in force)",
+    "maxPerStep": 0.02
+   },
+   "totalMax": 0.03,
+   "application": "Speed terms, as V1RC Q8: effective fast edge = paceEdge((1 / V1RC fastSecondsPerKm) x (1 + R), 5); effective slow edge = max(paceEdge((1 / V1RC slowSecondsPerKm) x (1 + R), 5), effective fast edge + 10); paceEdge = round to 0.1 s/km then up to the next multiple of 5 s/km (V1RC); R = revision in force; the V1RC band in force already includes its Q8 factor",
+   "confirmation": "Athlete-confirmed only; never applied without an explicit yes; declining has no consequence and the same evidence is not offered again",
+   "effectiveFrom": "the next week boundary after confirmation",
+   "endsAtOnce": [
+    "a new V1RC reference",
+    "any V1RC withdrawal (hold, declared break >= 7 days, WALK_JOG/RESTART/RETURN mode, warning-sign screen REQUIRED)",
+    "one comparable execution of the domain harder than the cue",
+    "two consecutive comparable executions of the domain at an in-cue effort more than 1.5% slower than the effective slow edge",
+    "Insights state SLOWER_THAN_BAND, or a V1RC Q8 down step, in the domain",
+    "an adverse response on any run",
+    "the athlete revoking it",
+    "TAPER or RACE_WEEK starts"
+   ],
+   "endsAtOnceMeans": "for sessions not yet started; the band reverts to the V1RC band in force",
+   "lapses": "At the first week boundary 56 days or more after its latest step, unless the domain state then is STABLE or IMPROVING against the effective band",
+   "changesOnly": "the THRESHOLD_CONTROLLED band as shown and as read by the RWS format selector (one band source: effectiveBand); the RWS envelope checks E1-E4 unchanged",
+   "neverChanges": [
+    "capacity",
+    "estimates",
+    "the forecast",
+    "tests and P3 eligibility",
+    "goal comparison",
+    "dose",
+    "progression",
+    "phase",
+    "eligibility",
+    "V1RC Q8 factors",
+    "any other domain",
+    "race-pace touches",
+    "race-day mode"
+   ],
+   "label": "ATHLETE_CONFIRMED_REVISION, with the size in percent of the V1RC band and the date; effort governs",
+   "copyMustNot": "say or imply fitter, faster race times, a new capacity or a test result; invite running faster than the cue",
+   "requiredText": "Your last <n> threshold sessions at the target effort were faster than your band. Set your threshold band <x>% faster from <date>? Effort still governs, and you can undo this at any time. Your race estimates do not change."
+  }
+ },
+ "amends": "SSCTR-RFC-VALUES-r1 (inside SSCTR-RFC-DECISION-r1, sha256 1d032c4036e80bda7fc2a3ce06850149bb7765920a3e415d8f32fc205f256e72)"
+}

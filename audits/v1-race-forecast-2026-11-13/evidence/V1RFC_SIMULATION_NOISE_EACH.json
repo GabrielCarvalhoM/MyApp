@@ -1,0 +1,142 @@
+{
+ "generator": {
+  "seed": 20261115,
+  "perArm": 2000,
+  "noise": "EACH",
+  "fixedBeforeTheFirstRun": true,
+  "measurementSd": 0.019506866416978776,
+  "raceDaySd": 0.019506866416978776,
+  "arms": {
+   "R0": 0,
+   "R025": 0.25,
+   "R05": 0.5,
+   "R1": 1,
+   "ABOVE_CEILING": 1.5,
+   "REGRESSION": -0.5
+  },
+  "adherenceArms": [
+   "HIGH",
+   "MIDDLE",
+   "LOW",
+   "PAUSE"
+  ],
+  "classes": [
+   "NOVICE",
+   "INTERMEDIATE",
+   "EXPERIENCED"
+  ],
+  "forecast": "OBSERVED_FORECAST of week 7, unrounded envelope"
+ },
+ "arms": {
+  "R0": {
+   "response": 0,
+   "insideEnvelope": 0.6765,
+   "truthFasterThanTheFastEdge": 0.1475,
+   "truthSlowerThanTheSlowEdge": 0.176,
+   "mapeCentral": 0.022354295424478657,
+   "mapeB0": 0.02170545371444991,
+   "mapeB2": 0.05004521324210334,
+   "shown": 1,
+   "noGainAssumed": 0.1545
+  },
+  "R025": {
+   "response": 0.25,
+   "insideEnvelope": 0.649,
+   "truthFasterThanTheFastEdge": 0.1795,
+   "truthSlowerThanTheSlowEdge": 0.1715,
+   "mapeCentral": 0.02356682174374066,
+   "mapeB0": 0.023438343541069082,
+   "mapeB2": 0.05228673561978631,
+   "shown": 1,
+   "noGainAssumed": 0.135
+  },
+  "R05": {
+   "response": 0.5,
+   "insideEnvelope": 0.6765,
+   "truthFasterThanTheFastEdge": 0.1975,
+   "truthSlowerThanTheSlowEdge": 0.126,
+   "mapeCentral": 0.023109999010365624,
+   "mapeB0": 0.023198705452533604,
+   "mapeB2": 0.05072872634303857,
+   "shown": 1,
+   "noGainAssumed": 0.0995
+  },
+  "R1": {
+   "response": 1,
+   "insideEnvelope": 0.6285,
+   "truthFasterThanTheFastEdge": 0.2685,
+   "truthSlowerThanTheSlowEdge": 0.103,
+   "mapeCentral": 0.0253086217588511,
+   "mapeB0": 0.02618842652031923,
+   "mapeB2": 0.05058894909842844,
+   "shown": 1,
+   "noGainAssumed": 0.065
+  },
+  "ABOVE_CEILING": {
+   "response": 1.5,
+   "insideEnvelope": 0.5655,
+   "truthFasterThanTheFastEdge": 0.3415,
+   "truthSlowerThanTheSlowEdge": 0.093,
+   "mapeCentral": 0.028756685955619084,
+   "mapeB0": 0.030678031723388927,
+   "mapeB2": 0.05514836224747101,
+   "shown": 1,
+   "noGainAssumed": 0.0655
+  },
+  "REGRESSION": {
+   "response": -0.5,
+   "insideEnvelope": 0.63,
+   "truthFasterThanTheFastEdge": 0.108,
+   "truthSlowerThanTheSlowEdge": 0.262,
+   "mapeCentral": 0.024034900242221272,
+   "mapeB0": 0.022726575847100194,
+   "mapeB2": 0.049788867013484304,
+   "shown": 1,
+   "noGainAssumed": 0.1985
+  }
+ },
+ "note": "Describes the generator only. Not athletes, not predictive validity, never a claim in any text.",
+ "insideEnvelopeAll": 0.6376666666666667,
+ "thresholds": {
+  "insideAllAtLeast80": {
+   "found": 0.6376666666666667,
+   "met": false
+  },
+  "insideEachArmAtLeast60": {
+   "found": {
+    "R0": 0.6765,
+    "R025": 0.649,
+    "R05": 0.6765,
+    "R1": 0.6285,
+    "ABOVE_CEILING": 0.5655,
+    "REGRESSION": 0.63
+   },
+   "met": false
+  },
+  "mapeCentralNotAboveB0WhereResponseAtLeastHalf": {
+   "found": {
+    "R05": [
+     0.023109999010365624,
+     0.023198705452533604
+    ],
+    "R1": [
+     0.0253086217588511,
+     0.02618842652031923
+    ]
+   },
+   "met": true
+  },
+  "mapeCentralWithinOnePointOfB0WithNoResponse": {
+   "found": [
+    0.022354295424478657,
+    0.02170545371444991
+   ],
+   "met": true
+  },
+  "truthFasterThanTheFastEdgeAtMost10WithNoResponse": {
+   "found": 0.1475,
+   "met": false
+  }
+ },
+ "allMet": false
+}
