@@ -75,24 +75,34 @@ test('T8 the window (example i): beyond 112 days nothing is shown yet, and the d
  assert.equal(windowOf(weekStart(1),'2027-04-25',weeksOf(16,14),FV),null,'a 16-week plan is inside the window from its first day');
 });
 
-test('T5 no leak, 500 cases: a report dated or first recorded from the first day of the week on never moves that week\'s forecast or insights',()=>{
- // The athlete after five weeks, the long run of weeks 2 and 4 never reported. Then, inside week 6, anything may be reported: sessions of
- // week 6 itself, and those long runs, late. The forecast and the insights of week 6 are the ones of its Monday.
+test('T5 no leak, 500 cases: nothing reported from the first day of the week on ever changes a number that week shows; a week whose earlier reports changed is withdrawn',()=>{
+ // The athlete after five weeks, the long run of weeks 2 and 4 never reported. Then, inside week 6, anything may arrive: sessions of week 6
+ // itself; those long runs, late (a first report); and, for sessions that already had a report, the athlete's correction or a device's report
+ // of the same run, agreeing or not. The forecast and the insights of week 6 are the ones of its Monday, or they are withdrawn: never others.
  const t0=timeline(racePlan({goalMinutes:48})),own=(t,s)=>{const o=s.sport==='RUN'?asPrescribed(t,s):{};return o?.eventId?o:report(t.p,s,o??{});};
  for(let w=0;w<5;w++)t0.step(w,6,'WEEKLY_REVIEW',{observations:t0.p.weeks[w].sessions.filter(live).filter(s=>!(s.role==='LONG'&&w%2)).map(s=>own(t0,s))});
  const monday=t0.look(5),state=JSON.stringify({p:t0.p,ledger:t0.ledger,ref:t0.ref,ev:t0.ev,fmt:t0.fmt,hist:t0.hist,rev:t0.rev,runs:t0.runs,n:t0.n}),next=rng(5);
  assert.equal(monday.runForecast.status,'SHOWN');assert.equal(monday.runForecast.display,'BOTH_RANGES');
  const view=r=>JSON.stringify([r.runForecast.inputDigest,r.runForecast.status,r.runForecast.observedForecast.forecastSeconds,r.runForecast.planScenario.forecastSeconds,r.runForecast.adherence.mean,Object.values(r.paceInsights.domains).map(d=>[d.state,d.votes,d.id])]),want=view(monday);
- const late=[1,3].map(w=>t0.p.weeks[w].sessions.find(s=>s.role==='LONG')),thisWeek=t0.p.weeks[5].sessions.filter(live);
- let read=0;
+ const late=[1,3].map(w=>t0.p.weeks[w].sessions.find(s=>s.role==='LONG')),thisWeek=t0.p.weeks[5].sessions.filter(live),reported=[0,1,2,3,4].flatMap(w=>t0.p.weeks[w].sessions.filter(s=>s.sport==='RUN'&&live(s)&&!(s.role==='LONG'&&w%2)));
+ const UNKNOWN={performance:'UNKNOWN',recovery:'UNKNOWN',effort:'UNKNOWN',nextDayFunction:'UNKNOWN'};
+ let read=0,withdrawn=0;
  for(let k=0;k<500;k++){
   const t=timeline(racePlan({goalMinutes:48}));Object.assign(t,JSON.parse(state));
   const day=1+Math.floor(next()*6),pool=[...late,...thisWeek.filter(s=>s.date<=t.day(5,day))],picked=pool.filter(()=>next()<0.5);
   const how=s=>next()<0.25?{completed:false}:s.sport==='RUN'?{pace:300+Math.floor(next()*120),rpe:2+Math.floor(next()*7),...(s.role==='QUALITY'?{workPace:250+Math.floor(next()*100)}:{})}:{};
-  const r=t.step(5,day,'WEEKLY_REVIEW',{observations:picked.map(s=>report(t.p,s,how(s)))},'21:00');
-  // An answer the engine or the run formats hold (a symptom route, a question) shows nothing; every other answer shows the Monday's.
+  const observations=picked.map(s=>report(t.p,s,how(s)));
+  // One case in three: an earlier session that already had a report is reported on again.
+  const shape=Math.floor(next()*6),again=reported[Math.floor(next()*reported.length)],row=t.row(again.id);let changed=false;
+  if(shape===0){observations.push({eventId:row.eventId+'-v2',athleteId:t.p.athleteId,sessionId:again.id,occurrenceDate:row.localDate,actual:{...row.actual,minutes:Math.max(5,row.actual.minutes-10-Math.floor(next()*20))},response:row.response,correctionOf:row.eventId,correctedAt:`${t.day(5,day)}T07:00:00-03:00`});changed=true;}
+  if(shape===1){observations.push({eventId:'dev-'+again.id,athleteId:t.p.athleteId,sessionId:again.id,occurrenceDate:again.date,canonicalActivityId:'hk-'+again.id,source:{provider:'HEALTHKIT',activityId:'hk-'+again.id,quality:'WEARABLE_FULL'},actual:{completed:true,minutes:next()<0.5?again.prescription.durationMinutes:12},response:UNKNOWN});changed=true;}
+  const r=t.step(5,day,'WEEKLY_REVIEW',{observations},'21:00');
+  // An answer the engine or the run formats hold (a symptom route, a question) shows nothing; every other answer shows the Monday's, or,
+  // when an earlier session was reported on again, a withdrawal that says so.
+  if(changed&&r.runFormat.status==='ACTIVE'&&!['HOLD','WARNING_SIGN_SCREEN_REQUIRED'].includes(r.runForecast.reason)){
+   assert.deepEqual([r.runForecast.status,r.runForecast.reason,r.runForecast.observedForecast,r.runForecast.planScenario,r.paceInsights.status],['UNAVAILABLE','REPORTS_CHANGED_SINCE_THE_WEEK_STARTED',undefined,undefined,'UNAVAILABLE'],'case '+k);withdrawn++;continue;}
   if(r.runForecast.status!=='SHOWN'){assert.equal(r.runForecast.status,'UNAVAILABLE','case '+k);continue;}
   read++;assert.equal(view(r),want,'case '+k+': '+picked.map(s=>s.id).join());
  }
- assert.ok(read>400,'cases read: '+read);
+ assert.ok(read>250,'cases read: '+read);assert.ok(withdrawn>100,'cases withdrawn: '+withdrawn);
 });

@@ -129,7 +129,8 @@ export function paceRevisionOf(x,V,RC){
  const steps=[],ends=[];let total=0,since=null,pending=null,lastChange=null,ended=null;
  const fractionAt=date=>{let f=0;for(const s of steps)if(s.effectiveFrom<=date&&!(s.endedOn&&date>s.endedOn))f+=s.fraction;return f;};
  const v1rcBandAt=e=>{const w=byIndex.get(e.week)??weekOf(e.date);return w?.band?.derived===true?w.band:null;};
- const bandAt=e=>{const b=v1rcBandAt(e);if(!b)return null;const f=fractionAt(e.date);return f>0?effectiveBandOf(b,f,RC):b;};
+ // An execution that carries the band its session was delivered with is read against it (it is already the effective band of its week).
+ const bandAt=e=>{if(isObj(e.band))return e.band;const b=v1rcBandAt(e);if(!b)return null;const f=fractionAt(e.date);return f>0?effectiveBandOf(b,f,RC):b;};
  const end=(date,reason)=>{if(!(total>0)&&!pending)return;for(const s of steps)if(!s.endedOn)s.endedOn=date;ended={date,reason};ends.push(ended);total=0;pending=null;lastChange=date;slower=0;};
  const declined=new Set(),harder=e=>num(e.rpe)&&e.rpe>cue[1]||e.effortHarder===true;let offer=null,answered=null,ignored=[],evidenceFrom=null,slower=0;
  for(const w of weeks){

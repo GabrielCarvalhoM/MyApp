@@ -60,7 +60,7 @@ export function timeline(intake,{opts=DEV,prefix='rf',entry=P}={}){
  if(!t.p)return t;
  t.day=(w,d)=>addDays(t.p.startDate,w*7+d);
  t.review=(w,d,kind,extra={},time='20:00')=>{const day=t.day(w,d);return {version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${day}T${time}:00-03:00`,weekIndex:extra.weekIndex??w,event:{id:extra.eventId??`${prefix}-${++t.n}`,kind},eligibility:extra.eligibility??ELIG(day),observations:extra.observations??[],
-  ...(extra.interruption?{interruption:extra.interruption}:{}),...(extra.targetSessionId?{targetSessionId:extra.targetSessionId}:{}),...(extra.signals?{signals:extra.signals}:{}),...(extra.runExpression?{runExpression:extra.runExpression}:{}),
+  ...(extra.interruption?{interruption:extra.interruption}:{}),...(extra.readiness?{readiness:extra.readiness}:{}),...(extra.targetSessionId?{targetSessionId:extra.targetSessionId}:{}),...(extra.signals?{signals:extra.signals}:{}),...(extra.runExpression?{runExpression:extra.runExpression}:{}),
   ...(t.ledger.length?{actualLedger:t.ledger}:{}),...(t.ref?{referenceState:t.ref}:{}),...(extra.runEvidence?{runEvidence:extra.runEvidence}:{}),runEvidenceRecord:t.ev,runFormatRecord:t.fmt,runHistoryRecord:t.hist,
   ...(mine?{paceRevisionRecord:t.rev,...(extra.paceRevisionResponse?{paceRevisionResponse:extra.paceRevisionResponse}:{})}:{})};};
  t.take=r=>{t.ledger=r.actualLedger??t.ledger;t.ref=r.referenceState??t.ref;if(r.proposal)t.p=r.proposal;t.ev=r.runEvidenceRecord??t.ev;t.fmt=r.runFormatRecord??t.fmt;t.hist=r.runHistoryRecord??t.hist;t.rev=r.paceRevisionRecord??t.rev;t.cal=r.runCalibration;

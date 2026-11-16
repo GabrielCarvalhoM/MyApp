@@ -22,10 +22,22 @@
 // - Everything is worked out again from the record at each answer; nothing shown is stored. The forecast of a week reads what was dated and on
 //   record before the week started, as the calibration does, so it does not move inside the week. What race week shows is the forecast of the
 //   week before it, read the same way, and only while nothing that week read has been reported on since (it is then not shown, never changed).
+// - What a week shows never changes inside the week (corrective cycle of 2026-11-16, QRE-RFC-A-01 to A-03, SSCTR-RFC-A-01 and A-02):
+//   * the frozen engine rewrites a row when a second source or a correction arrives, so the record a week read cannot be read again as it
+//     was. When a report arrives, from the week's first day on, for an earlier session that already had one, or a break is declared, the week
+//     shows a withdrawal with its reason until the next week boundary: never another number;
+//   * a row is read only for the session of the plan in force it was run in: dated inside that session's own week and first recorded once
+//     the plan existed (after a restart the ids of the new plan's sessions are the old plan's ids);
+//   * the band an execution is read against is the band its session was delivered with, as the record of formats holds it; the calibration
+//     of a past week is never asked again for it (a later correction moves it). The one calibration of another week still asked is the
+//     frozen week's, in race week, under its own guard;
+//   * a declared break of 14 days or more, in progress or still to come, withdraws the forecast and the insights at once; a week a
+//     clinical hold stood in earns nothing.
 // - Synthetic data only. Not a prediction model, not production, no authorization for real athletes.
 import * as F from './v1-run-format-index.mjs';
 import {runCalibrationAuthority,allowsRun,powerLawTime} from './v1-run-calibration.mjs';
-import {runFormatAuthority,allowsFormat,RUN_REPORT_RECEIVED} from './v1-run-format.mjs';
+import {runFormatAuthority,allowsFormat,flatSteps,RUN_REPORT_RECEIVED,RUN_FORMAT_EMITTED} from './v1-run-format.mjs';
+import {readableF08,isF08Fact,standingHolds,READINESS_DECLARED} from './v1-f08.mjs';
 import {utcTimestamp,localDate} from './r6-provenance.mjs';
 import {clone,freeze,hash} from './value.mjs';
 import {runForecastAuthority,allowsForecast,forecastOf,raceWeekOf,weekAdherence,unknownSessionCredit,windowOf,rangeTextOf,basisTextOf,experienceOf,clock,isoDay,onDate,dayGap,FORECAST_EXTENSION_ID,FORECAST_MODEL_ID,RUN_FORECAST_VERSION} from './v1-race-forecast.mjs';
@@ -134,7 +146,36 @@ function readingOf(base,c,A){
  if(!at||!Array.isArray(program.weeks)||!program.weeks.length)return null;
  const asOfDay=dayOnly?c.asOf:localDate(at,tz),w=Math.max(0,Math.min(Number.isInteger(c.weekIndex)?c.weekIndex:0,program.weeks.length-1)),startOf=k=>program.weeks[k].startDate??onDate(program.startDate,7*k);
  const modeOf=k=>program.stateTrace?.[Math.max(0,Math.min(k,(program.stateTrace?.length??1)-1))]?.run?.mode??null,sessions=new Map(program.weeks.flatMap(x=>x.sessions.map(s=>[s.id,s])));
- const rows=list(c.ledger).filter(o=>liveRun(o,program.athleteId)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)),bySession=new Map(rows.map(o=>[o.sessionId,o]));
+ // A row is an execution of a session of this plan only when it is dated inside that session's own week and was first recorded once the plan
+ // existed: after a restart the new plan's sessions carry the ids of the old one's, and a row of the old plan is no execution of the new.
+ const created=typeof program.canonical?.asOf==='string'?(isoDay(program.canonical.asOf)?program.canonical.asOf:utcTimestamp(program.canonical.asOf)?localDate(utcTimestamp(program.canonical.asOf),tz):null):null;
+ const own=o=>{const s=sessions.get(o.sessionId);return !!s&&Number.isInteger(s.weekIndex)&&s.weekIndex>=0&&s.weekIndex<program.weeks.length&&o.localDate>=startOf(s.weekIndex)&&o.localDate<=onDate(startOf(s.weekIndex),6)&&!!created&&recordedDay(o,tz)>=created;};
+ const rows=list(c.ledger).filter(o=>liveRun(o,program.athleteId)&&own(o)).sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)),bySession=new Map(rows.map(o=>[o.sessionId,o]));
+ // The weeks a clinical hold stood in (the engine's own facts): from the day a hold was recorded to the day of the next declared readiness.
+ const atMs=Date.parse(at),f08=readableF08(list(c.ledger).filter(isF08Fact),{athleteId:program.athleteId,at:atMs}),dayOf=t=>localDate(new Date(t).toISOString(),tz),ready=f08.filter(o=>o.fact===READINESS_DECLARED).map(o=>Date.parse(o.declaredAt)).sort((a,b)=>a-b);
+ const holds=f08.filter(o=>standingHolds([o]).holds.length===1).map(o=>{const t=Date.parse(o.declaredAt),end=ready.find(x=>x>t);return {from:dayOf(t),to:end===undefined?null:dayOf(end)};});
+ const underHold=k=>holds.some(h=>h.from<=onDate(startOf(k),6)&&(h.to===null||h.to>=startOf(k)));
+ const breaks=breaksOf(c.ledger,program,tz);
+ // What a week read that has been reported on since its first day: a run report received from that day on for an earlier session of the plan
+ // that already had one (a correction, a second source, a contradiction), or a break declared since. The frozen engine rewrites the row, so
+ // the week cannot be read again as it was: it is withdrawn, never shown changed.
+ const changedSince=cutoff=>{
+  const seen=new Map();
+  for(const f of list(c.formats))if(isObj(f)&&f.fact===RUN_REPORT_RECEIVED&&f.athleteId===program.athleteId&&typeof f.sessionId==='string'&&f.report?.standing===true&&utcTimestamp(f.recordedAt)){
+   const s=sessions.get(f.sessionId);if(!s||!(s.date<cutoff))continue;const x=seen.get(f.sessionId)??{before:false,since:false};if(localDate(f.recordedAt,tz)<cutoff)x.before=true;else x.since=true;seen.set(f.sessionId,x);}
+  return [...seen.values()].some(x=>x.before&&x.since)?'REPORTS':breaks.some(b=>b.declaredOn&&b.declaredOn>=cutoff)?'BREAK':null;};
+ // The band a session was delivered with, as the record of formats holds it: the pace on the work of the latest format of the session that
+ // was on record by the day it was run (a session is delivered up to two weeks ahead, and again only when its format changes). Never worked
+ // out again from the calibration of a past week.
+ const delivered=new Map();
+ for(const f of list(c.formats).filter(f=>isObj(f)&&f.fact===RUN_FORMAT_EMITTED&&f.athleteId===program.athleteId&&typeof f.sessionId==='string'&&isObj(f.format)&&Array.isArray(f.format.blocks)&&f.inputHash===hash(f.format)&&utcTimestamp(f.recordedAt)).sort((a,b)=>Date.parse(a.recordedAt)-Date.parse(b.recordedAt)||(a.eventId<b.eventId?-1:1))){
+  const s=sessions.get(f.sessionId),day=localDate(f.recordedAt,tz);if(!s||!created||day<created)continue;
+  let pace=null;try{pace=flatSteps(f.format.blocks).find(x=>x.kind==='WORK'&&isObj(x.intensity?.pace))?.intensity.pace??null;}catch{pace=null;}
+  // A format with no pace on its work is delivered by effort alone: it is kept as that (the band of an earlier delivery no longer stands).
+  const band=pace&&num(pace.fastSecondsPerKm,1)&&num(pace.slowSecondsPerKm,pace.fastSecondsPerKm)?{fastSecondsPerKm:pace.fastSecondsPerKm,slowSecondsPerKm:pace.slowSecondsPerKm,domain:pace.domain??null}:null;
+  const all=delivered.get(s.id);if(all)all.push({day,band});else delivered.set(s.id,[{day,band}]);
+ }
+ const deliveredBand=(sessionId,domain,onDay)=>{const b=(delivered.get(sessionId)??[]).filter(x=>x.day<=onDay).at(-1)?.band??null;return b&&b.domain===domain?{fastSecondsPerKm:b.fastSecondsPerKm,slowSecondsPerKm:b.slowSecondsPerKm}:null;};
  const executionOf=id=>base.runSessions?.[id]?.execution??null,withheld=new Map(list(base.runFormat?.paceEvidenceWithheld).filter(isObj).map(x=>[x.eventId,x.reason]));
  // The weeks of the plan as the forecast reads them; the adherence of a week is worked out for a cutoff (what was dated and on record before it).
  const plannedRuns=(week,cutoff)=>week.sessions.filter(s=>{
@@ -144,15 +185,15 @@ function readingOf(base,c,A){
   return s.status==='SKIPPED'&&s.movedTo||s.optional===true?inForce:true;});
  const weeksAt=(cutoff,completed)=>program.weeks.map(week=>{
   const runs=plannedRuns(week,cutoff),done=week.index<completed,credit=done?weekAdherence(runs.map(s=>{const row=bySession.get(s.id),inForce=!!row&&row.localDate<cutoff&&recordedDay(row,tz)<cutoff;return creditInput(s,inForce?row:null,inForce?executionOf(s.id):null);})):null;
-  return {index:week.index,startDate:startOf(week.index),phase:week.phase,zeroCredit:RC.paceRules.noBandModes.includes(modeOf(week.index)),planned:runs.length>0,a:credit?credit.a:null,credits:credit?credit.credits:null};});
+  return {index:week.index,startDate:startOf(week.index),phase:week.phase,zeroCredit:RC.paceRules.noBandModes.includes(modeOf(week.index))||underHold(week.index),planned:runs.length>0,a:credit?credit.a:null,credits:credit?credit.credits:null};});
  const ev=program.goal?.run?.event??null,event=isObj(ev)&&typeof ev.kind==='string'&&isoDay(ev.date)?{kind:ev.kind,date:ev.date}:null;
  const byPhase=program.weeks.find(x=>x.phase==='RACE_WEEK')?.index??null,byDate=event?program.weeks.find(x=>event.date>=startOf(x.index)&&event.date<=onDate(startOf(x.index),6))?.index??null:null;
  // Experience: the class of the plan's creation, and only when the athlete stated it or it was derived from stated months of training: an
  // intake that says nothing is stored as NOVICE, which is the highest ceiling, and is read here as unknown (Athlete Data Foundation, section 6).
  const athlete=program.canonical?.athlete??{},known=athlete.experienceDeclared?.run===true||isObj(athlete.experienceBasis?.run),experience=known?(program.capability?.run?.experience??athlete.runExperience??null):null;
  const el=isObj(c.eligibility)?{...c.eligibility,...(isObj(c.eligibility.flags)?c.eligibility.flags:{})}:null;
- return {V,FV,PV:V.paceInsights,RC,program,tz,at,asOfDay,w,startOf,modeOf,sessions,rows,bySession,executionOf,withheld,weeksAt,event,raceWeekIndex:byPhase??byDate,raceWeekByDate:byDate,experience,experienceKnown:known,
-  breaks:breaksOf(c.ledger,program,tz),completion:program.weeks.some(x=>x.sessions.some(s=>s.role==='RACE'&&s.prescription?.completion===true)),
+ return {V,FV,PV:V.paceInsights,RC,program,tz,at,asOfDay,w,startOf,modeOf,sessions,rows,bySession,executionOf,withheld,weeksAt,changedSince,deliveredBand,event,raceWeekIndex:byPhase??byDate,raceWeekByDate:byDate,experience,experienceKnown:known,
+  breaks,completion:program.weeks.some(x=>x.sessions.some(s=>s.role==='RACE'&&s.prescription?.completion===true)),
   prescribing:typeof c.engineStatus==='string'&&!['ASK','HOLD','CLINICAL_HUMAN_REQUIRED','UNSUPPORTED','INVALID_INPUT'].includes(c.engineStatus)&&el?.status==='NONCLINICAL_CONFIRMED'&&SIGNS.every(k=>el[k]===false)};
 }
 /** The calibration of another week of the same record, through the run formats' own admitted reader; and the view of a week from it. */
@@ -180,7 +221,7 @@ function referencePeriods(cal,through){
  for(const ch of list(cal?.projection?.comparisons).filter(isObj).sort((a,b)=>a.week-b.week)){
   const id=ch.to?.evidenceId??null;if(id===(current?.id??null))continue;
   if(current)current.toWeek=ch.week-1;
-  current=id?{id,date:ch.to.date,t10Shown:ch.to.tenKEquivalentSeconds,fromWeek:ch.week,toWeek:through,afterGap:periods.length>0&&!current}:null;if(current)periods.push(current);
+  current=id?{id,date:ch.to.date,t10Shown:ch.to.tenKEquivalentSeconds,tier:ch.to.confidence??null,fromWeek:ch.week,toWeek:through,afterGap:periods.length>0&&!current}:null;if(current)periods.push(current);
  }
  return periods;
 }
@@ -195,15 +236,17 @@ function forecastAt(j,cal,r,K,{now,withdrawal=null}){
  const rw=r.raceWeekIndex;if(rw===null||r.raceWeekByDate===null||r.raceWeekByDate!==rw)return out('NOT_APPLICABLE','RACE_DATE_OUTSIDE_THE_PLANS_RACE_WEEK');
  const est=cal?.estimates?.[r.event.kind]??null,current=est?.status==='AVAILABLE'?{lowSeconds:est.lowSeconds,centralSeconds:est.centralSeconds,highSeconds:est.highSeconds,reference:est.reference,referenceKind:est.referenceKind,referenceDate:est.referenceDate,confidence:est.confidence,margin:est.margin}:null;
  const assess=cal?.assessment?.status==='OFFERED',guidance={meanwhile:FV.notYetInWindow.meanwhile,routes:['REPORT_A_RACE_RESULT_AT_THE_EVENT_DISTANCE',...(assess?['V1RC_FIELD_TEST_AS_OFFERED']:[])],never:['A_LONGER_RUN','MORE_TRAINING','A_RACE_ENTRY','A_TEST_NOT_OFFERED']};
- const none=(reason,extra={})=>out('UNAVAILABLE',reason,{current,guidance,...extra});
- // The withdrawals, at once (F8): today's first, then what the plan and the week say.
- if(withdrawal)return none(withdrawal);
- if(r.experienceKnown&&!experienceOf(r.experience,FV))return none('EXPERIENCE_NONE');
- if(RC.paceRules.noBandModes.includes(r.modeOf(j))||!r.modeOf(j))return none('MODE_WALK_JOG_RESTART_RETURN');
- if(r.completion)return none('COMPLETION_RACE');
- if(now&&asOfDay>r.event.date)return none('AFTER_THE_RACE_DATE');
- if(j>0&&!started)return none('WEEK_NOT_STARTED');
+ const none=(reason,extra={})=>out('UNAVAILABLE',reason,{current,guidance,...extra}),withdrawn=reason=>out('UNAVAILABLE',reason,{withdrawn:true});
+ // The withdrawals, at once (F8): today's first, then what the plan and the week say. A withdrawal repeats nothing of the estimate.
+ if(withdrawal)return withdrawn(withdrawal);
+ if(r.experienceKnown&&!experienceOf(r.experience,FV))return withdrawn('EXPERIENCE_NONE');
+ if(RC.paceRules.noBandModes.includes(r.modeOf(j))||!r.modeOf(j))return withdrawn('MODE_WALK_JOG_RESTART_RETURN');
+ if(r.completion)return withdrawn('COMPLETION_RACE');
+ if(now&&asOfDay>r.event.date)return withdrawn('AFTER_THE_RACE_DATE');
+ if(j>0&&!started)return withdrawn('WEEK_NOT_STARTED');
  if(j>=rw)return none('RACE_WEEK');
+ // QRE-RFC-A-01: what this week read has been reported on since its first day: the week is withdrawn until the next boundary, never changed.
+ const changed=now?r.changedSince(started?weekStart:onDate(asOfDay,1)):null;if(changed)return withdrawn(changed==='REPORTS'?'REPORTS_CHANGED_SINCE_THE_WEEK_STARTED':'BREAK_DECLARED_SINCE_THE_WEEK_STARTED');
  // A7: beyond the window the forecast is not yet shown, and says from when.
  const beyond=windowOf(weekStart,r.event.date,program.weeks.map(x=>({startDate:startOf(x.index)})),FV);if(beyond)return out(beyond.status,beyond.reason,{availableFrom:beyond.availableFrom,current,guidance});
  if(!current)return none(est?.reason==='HOLD_NO_PRESCRIPTION'?'HOLD':'CURRENT_ESTIMATE_UNAVAILABLE',{v1rcReason:est?.reason??cal?.reason??null});
@@ -218,16 +261,19 @@ function forecastAt(j,cal,r,K,{now,withdrawal=null}){
   if(!eligibleB&&periods.length>1)pairNotes.push('REFERENCE_IN_FORCE_NOT_ELIGIBLE_FOR_A_PAIR');
   if(eligibleB){
    const earliest=onDate(program.startDate,-FV.response.earliestReferenceDaysBeforePlanStartMax),gapBefore=k=>periods.slice(k+1).some(p=>p.afterGap);
-   // An earlier reference qualifies as the calibration read it in the last week it was in force: calibrated, effort known and maximal, same kind.
+   // An earlier reference is read from the answer's own record of changes, never from the calibration of a past week (a later correction
+   // moves that one). It may be the first end of the pair only when that record shows it came into force at the highest confidence: no
+   // reduction of any kind, so its effort was known and maximal, it was measured on a course or a track, and it was neither aged nor in
+   // conflict nor after a break; and inside the model's population. Any earlier reference of the same kind serves the slowdown rule.
+   const P=RC.model.population,marginOf=t10=>RC.confidence.margin.HIGH+(t10/60>=P.slowRunnerFromTenKEquivalentMinutes?P.slowRunnerExtraMargin:0);
    const eligible=(p,k)=>{
     if(p.id===B.id||!(p.date<B.date)||group(p.id)!==group(B.id)||gapBefore(k))return null;
-    const view=K.viewOf(p.toWeek).capacity??{},t10=t10Of(p.id);
-    if(view.evidenceId!==p.id||view.status!=='CALIBRATED'||list(view.confidenceCauses).some(x=>NOT_FOR_A_PAIR.includes(x))||!num(view.margin,0,1)||!num(t10,1)||Math.round(t10)!==p.t10Shown)return null;
-    return {date:p.date,t10,sigma:view.margin/z,id:p.id};};
+    const t10=t10Of(p.id);if(!num(t10,1)||Math.round(t10)!==p.t10Shown)return null;
+    return {date:p.date,t10,sigma:marginOf(t10)/z,id:p.id,forPair:p.tier==='HIGH'&&t10/60>=P.tenKEquivalentCentralMinutes[0]&&t10/60<=P.tenKEquivalentCentralMinutes[1]};};
    const before=periods.slice(0,-1).map((p,k)=>eligible(p,k));
    previous=before.filter(Boolean).at(-1)??null;
    // No declared break of 7 days or more between the two ends of the pair.
-   pairA=before.find(p=>p&&p.date>=earliest&&!r.breaks.some(b=>b.days>=7&&b.to>p.date&&b.from<B.date))??null;
+   pairA=before.find(p=>p&&p.forPair&&p.date>=earliest&&!r.breaks.some(b=>b.days>=7&&b.to>p.date&&b.from<B.date))??null;
    if(periods.length>1&&!pairA)pairNotes.push('NO_ELIGIBLE_EARLIER_REFERENCE');
   }
  }
@@ -253,9 +299,11 @@ function forecastAt(j,cal,r,K,{now,withdrawal=null}){
   planScenario:same?{...core.planScenario,statement:null,goalRelation:null,shownAs:'THE_OBSERVED_FORECAST_IT_COINCIDES_WITH'}:dress(core.planScenario,false),guidance:core.status==='SHOWN'?null:guidance,marathon:null});
 }
 /** Today's immediate withdrawals (F8), in order: a hold, the warning-sign screen, then nothing else that the week itself does not also say. */
-function withdrawalNow(base,cal){
+function withdrawalNow(base,cal,r=null){
  if(cal?.status==='WITHHELD_HOLD'||['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(base.status))return 'HOLD';
  if(cal?.warningSignScreen?.status==='REQUIRED'||base.runFormat?.warningSignScreen?.status==='REQUIRED')return 'WARNING_SIGN_SCREEN_REQUIRED';
+ // A declared break of 14 days or more that is in progress or still to come: both conditions the ranges are said under are known to be false.
+ if(r&&r.breaks.some(b=>b.days>=r.RC.withdrawal.breakDaysWithdrawMin&&b.to>=r.asOfDay))return 'DECLARED_BREAK_OF_14_DAYS_OR_MORE';
  return null;
 }
 /**
@@ -264,13 +312,10 @@ function withdrawalNow(base,cal){
  * source, a contradiction), or a break declared since. It is then not shown; it is never shown changed.
  */
 function raceWeekAt(base,c,r,K,cal,withdrawal){
- const {FV,program,startOf,tz}=r,rw=r.raceWeekIndex,last=rw-1,marathon=!FV.events[r.event.kind].trainingGain;
+ const {FV,startOf}=r,rw=r.raceWeekIndex,last=rw-1,marathon=!FV.events[r.event.kind].trainingGain;
  const common={asOfDay:r.asOfDay,raceDate:r.event.date,raceWeekStart:startOf(rw),lastWeekStart:last>=0?startOf(last):null,marathon,completion:r.completion,withdrawal};
  if(marathon||r.completion||withdrawal||last<0||r.asOfDay>=r.event.date)return raceWeekOf({...common,last:null,now:{},then:{},changedSince:null},FV);
- const then=forecastAt(last,K.calAt(last),r,K,{now:false}),cutoff=startOf(last),est=cal?.estimates?.[r.event.kind],byId=new Map();
- for(const f of list(c.formats))if(isObj(f)&&f.fact===RUN_REPORT_RECEIVED&&f.athleteId===program.athleteId&&typeof f.sessionId==='string'&&f.report?.standing===true&&utcTimestamp(f.recordedAt)){const s=r.sessions.get(f.sessionId);if(!s||!(s.date<cutoff))continue;
-  const day=localDate(f.recordedAt,tz),x=byId.get(f.sessionId)??{before:false,since:false};if(day<cutoff)x.before=true;else x.since=true;byId.set(f.sessionId,x);}
- const changedSince=[...byId.values()].some(x=>x.before&&x.since)?'REPORTS_CHANGED_SINCE_FROZEN':r.breaks.some(b=>b.declaredOn&&b.declaredOn>=cutoff)?'BREAK_DECLARED_SINCE_FROZEN':null;
+ const then=forecastAt(last,K.calAt(last),r,K,{now:false}),est=cal?.estimates?.[r.event.kind],changed=r.changedSince(startOf(last)),changedSince=changed==='REPORTS'?'REPORTS_CHANGED_SINCE_FROZEN':changed==='BREAK'?'BREAK_DECLARED_SINCE_FROZEN':null;
  return raceWeekOf({...common,last:then,now:{referenceId:est?.reference??null,tier:est?.confidence??null,q8Down:q8DownOf(cal)},then:then.basis??{},changedSince},FV);
 }
 
@@ -292,7 +337,7 @@ function executionsOf(base,r){
   const conditions=list(a.conditions).map(upper),comparable=o.context?.mode==='EASY'&&!RC.recalibration.notComparableMeasurements.includes(upper(a.measurement))&&upper(a.gpsQuality)!=='POOR'&&!conditions.some(x=>RC.recalibration.notComparableConditions.includes(x)||RC.evidence.excludedConditions.includes(x))&&w?.walkBreaks!==true;
   (out[domain]??=[]).push({eventId:o.eventId,sessionId:o.sessionId,date:o.localDate,recordedOn:recordedDay(o,tz),week:Number.isInteger(o.context?.weekIndex)?o.context.weekIndex:null,secondsPerKm:num(raw,fastest,slowest)?raw:null,rpe,admitted,withheld:why,
    completed:mine&&e.completed===true,comparable,compatible:o.response?.performance!=='UNDER'&&o.response?.recovery!=='ADVERSE'&&o.response?.nextDayFunction!=='IMPAIRED',effortHarder:o.response?.effort==='HARDER',longBouts:bouts,
-   totalWorkMinutes:planned&&num(planned.repetitions,1)&&num(planned.workMinutes,0)?planned.repetitions*planned.workMinutes:null,measurement:upper(a.measurement),gpsGood:['GOOD','OK'].includes(upper(a.gpsQuality))});
+   totalWorkMinutes:planned&&num(planned.repetitions,1)&&num(planned.workMinutes,0)?planned.repetitions*planned.workMinutes:null,measurement:upper(a.measurement),gpsGood:['GOOD','OK'].includes(upper(a.gpsQuality)),band:r.deliveredBand(o.sessionId,domain,o.localDate)});
  }
  return out;
 }
@@ -300,19 +345,20 @@ const derivedBand=b=>b?.status==='AVAILABLE'&&b.basis==='DERIVED_FROM_CAPACITY'?
 const factorOf=(capacity,domain)=>{const f=capacity?.trainingFactors?.[domain];return {fraction:num(f?.fraction)?f.fraction:0,withdrawn:f?.withdrawn===true};};
 /** Why the insights are withdrawn today (F8: as the forecast, but for the slowdown and the downward factor, which they still explain). */
 function insightsWithdrawn(base,cal,r){
- const now=withdrawalNow(base,cal);if(now)return now;
+ const now=withdrawalNow(base,cal,r);if(now)return now;
  if(r.experienceKnown&&r.experience==='NONE')return 'EXPERIENCE_NONE';
  if(r.RC.paceRules.noBandModes.includes(r.modeOf(r.w))||!r.modeOf(r.w))return 'MODE_WALK_JOG_RESTART_RETURN';
  if(r.startOf(r.w)>r.asOfDay&&r.w>0)return 'WEEK_NOT_STARTED';
  if(r.event){if(r.completion)return 'COMPLETION_RACE';if(r.asOfDay>r.event.date)return 'AFTER_THE_RACE_DATE';if(r.raceWeekIndex!==null&&r.w>=r.raceWeekIndex)return 'RACE_WEEK';}
- return null;
+ const changed=r.changedSince(r.startOf(r.w)<=r.asOfDay?r.startOf(r.w):onDate(r.asOfDay,1));
+ return changed==='REPORTS'?'REPORTS_CHANGED_SINCE_THE_WEEK_STARTED':changed==='BREAK'?'BREAK_DECLARED_SINCE_THE_WEEK_STARTED':null;
 }
 /**
  * The revision of the threshold band from the record (v1-pace-insights.mjs paceRevisionOf): the snapshots of the weeks it reads, from six weeks
  * before the athlete's first answer on record (or from the window of the week in force when there is none) to the week in force.
  */
 function revisionOf(base,c,r,K,cal,executions,responses){
- const {PV,RC,program,w,startOf}=r,first=responses.length?Math.max(0,Math.floor(dayGap(program.startDate,responses[0].date)/7)):w,from=Math.max(0,Math.min(first,w)-Math.ceil(PV.windowDays/7)),now=withdrawalNow(base,cal);
+ const {PV,RC,program,w,startOf}=r,first=responses.length?Math.max(0,Math.floor(dayGap(program.startDate,responses[0].date)/7)):w,from=Math.max(0,Math.min(first,w)-Math.ceil(PV.windowDays/7)),now=withdrawalNow(base,cal,r);
  K.warm(from,w);
  const weeks=[];for(let j=from;j<=w;j++){const v=K.viewOf(j),f=factorOf(v.capacity,REVISION_DOMAIN);
   weeks.push({index:j,startDate:startOf(j),phase:program.weeks[j].phase,mode:r.modeOf(j),band:derivedBand(v.paceBands?.[REVISION_DOMAIN]),factor:f.fraction,withdrawn:f.withdrawn,referenceId:v.capacity?.evidenceId??null,
@@ -332,7 +378,7 @@ function finish(base,c,A,revision=null){
   const r=readingOf(base,c,A);if(!r)return idle(A,'REVIEW_TIME_REQUIRED');
   const cal=base.runCalibration,K=calibrations(base,c,r),out=idle(A,null),stamp={asOf:r.at,week:r.w};
   if(A.on.FORECAST){
-   const now=withdrawalNow(base,cal),body=forecastAt(r.w,cal,r,K,{now:true,withdrawal:now}),inRaceWeek=!!r.event&&r.raceWeekIndex!==null&&r.raceWeekByDate===r.raceWeekIndex&&r.w>=r.raceWeekIndex&&r.FV.events[r.event.kind];
+   const now=withdrawalNow(base,cal,r),body=forecastAt(r.w,cal,r,K,{now:true,withdrawal:now}),inRaceWeek=!!r.event&&r.raceWeekIndex!==null&&r.raceWeekByDate===r.raceWeekIndex&&r.w>=r.raceWeekIndex&&r.FV.events[r.event.kind];
    const whole={...forecastHead(A),...stamp,...body,raceWeek:inRaceWeek?raceWeekAt(base,c,r,K,cal,now):{status:'NOT_RACE_WEEK'},neverFeeds:clone(r.FV.neverFeeds)};
    out.runForecast={...whole,hash:hash(whole)};
   }
@@ -341,9 +387,9 @@ function finish(base,c,A,revision=null){
    if(why)out.paceInsights={...out.paceInsights,...stamp,status:'UNAVAILABLE',reason:why};
    else{
     const executions=executionsOf(base,r),T=r.RC.recalibration.training,weekStart=r.startOf(r.w),cutoff=weekStart<=r.asOfDay?weekStart:onDate(r.asOfDay,1);
-    K.warm(r.w-Math.ceil(r.PV.windowDays/7),r.w-1);
-    // The band an execution is read against is the one of its own week: the calibration's derived band, or the effective one a revision gave.
-    const bandAt=(domain,e)=>{if(domain===REVISION_DOMAIN&&revision?.state)return revision.state.bandAt(e);const j=Number.isInteger(e.week)?e.week:null;return j===null||j<0||j>r.w?null:derivedBand(K.viewOf(j).paceBands?.[domain]);};
+    // The band an execution is read against is the band its session was delivered with in its own week, as the record of formats holds it
+    // (with a revision in force that week, the effective band the format was sized by). Never a band worked out again for a past week.
+    const bandAt=(domain,e)=>e.band??null;
     const domains=Object.fromEntries(r.PV.domains.map(d=>[d,{executions:executions[d]??[],q8:{applies:T.domains.includes(d),...factorOf(cal.capacity,d)}}]));
     const body={version:PACE_INSIGHTS_VERSION,...head(A),...stamp,status:'ACTIVE',...paceInsightsOf({week:r.w,weekStart,cutoff,domains,bandAt,p3Offered:cal.assessment?.status==='OFFERED',revisionOffered:!!revision?.state?.offer},r.PV,r.RC)};
     out.paceInsights={...body,hash:hash(body)};
@@ -361,7 +407,7 @@ const joined=(base,out,record)=>freeze({...base,...out,paceRevisionRecord:clone(
 
 /** A first plan: the answer of the run formats, and the forecast the intake's own evidence supports before any week is done. */
 export function generateProgram(input,options={}){
- const opts=internal(options),A=authorityOf(opts),base=F.generateProgram(input,opts);
+ const opts=internal(options),A=authorityOf(opts),base=F.generateProgram(isObj(input)?without(input,MINE):input,opts);
  if(!base?.program)return joined(base,idle(A,'NO_PLAN'),[]);
  const c={program:base.program,ledger:[],formats:base.runFormatRecord,evidenceRecord:base.runEvidenceRecord,asOf:base.program.canonical?.asOf,weekIndex:0,engineStatus:base.status,eligibility:input?.athlete?.eligibility??null,hold:false,opts};
  return joined(base,finish(base,c,A),[]);
@@ -391,7 +437,7 @@ export function evaluateProgram(program,review,options={}){
     const body={offerId:said.offerId,planId:c.program.id,response:said.response},row={fact:PACE_REVISION_RESPONSE,eventId:responseKey(body),athleteId:program.athleteId,recordedAt:asOf,response:body,inputHash:hash({athleteId:program.athleteId,recordedAt:asOf,response:body})};
     if(!list(record).some(o=>isObj(o)&&o.eventId===row.eventId)){record=[...list(record).map(o=>clone(o)),row];held=read(record);state=stateOf(held.rows);}
     response={recorded:true,offerId:said.offerId,response:said.response};
-   }else response={recorded:false,offerId:isObj(said)&&typeof said.offerId==='string'?said.offerId.slice(0,ID_MAX):null,response:isObj(said)?said.response??null:null,reason:why};
+   }else response={recorded:false,offerId:isObj(said)&&typeof said.offerId==='string'&&said.offerId.length<=ID_MAX?said.offerId:null,response:isObj(said)&&RESPONSES.includes(said.response)?said.response:null,reason:why};
   }
   revision={state,response,unreadable:held.unreadable};
   // IC-2: when a revision gives any delivered week another threshold band, the run formats are answered again with it: the selector and the
@@ -406,7 +452,7 @@ export function evaluateProgram(program,review,options={}){
 }
 /** A new plan from the record: the restart of the run formats, the carried answers kept (they are of the plan they were given for). */
 export function restartProgram(input,options={}){
- const opts=internal(options),A=authorityOf(opts),carried=isObj(input)&&Array.isArray(input.paceRevisionRecord)?input.paceRevisionRecord:[],base=F.restartProgram(isObj(input)?without(input,MINE):input,opts);
+ const opts=internal(options),A=authorityOf(opts),carried=isObj(input)&&Array.isArray(input.paceRevisionRecord)?input.paceRevisionRecord:[],base=F.restartProgram(isObj(input)?{...without(input,MINE),...(isObj(input.intake)?{intake:without(input.intake,MINE)}:{})}:input,opts);
  if(!base?.program)return joined(base,idle(A,'NO_PLAN'),carried);
  const c={program:base.program,ledger:Array.isArray(base.carriedRecord)?base.carriedRecord:Array.isArray(input.record)?input.record:[],formats:base.runFormatRecord,evidenceRecord:base.runEvidenceRecord,asOf:base.program.canonical?.asOf,weekIndex:0,engineStatus:base.status,eligibility:input.intake?.athlete?.eligibility??null,hold:false,opts};
  return joined(base,finish(base,c,A),carried);
