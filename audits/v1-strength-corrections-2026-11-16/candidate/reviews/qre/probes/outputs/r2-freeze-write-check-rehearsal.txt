@@ -1,0 +1,64 @@
+COACHINGCORE-V1-STRENGTH-FREEZE-1: 42 added files, digest 51dc1de3c0b9b1bd7471303d06a5fde76005b29afd13f827e37674edae4f8e69, binds dfaa032fbb153b1d362a666737a1e8aff9c2fbcc; 1 amended file (43+/11-); COACHINGCORE-V1-FREEZE-1 preserved 196/196; COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1 preserved 30/30; COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 preserved 98/98; COACHINGCORE-V1-RACE-FORECAST-FREEZE-1 preserved 163/163
+write-exit=0
+COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT
+(untracked) CoachingCore/v1/RUNTIME_FREEZE_V1STR_1.json
+check-exit=1
+[
+ {
+  "name": "pristine (freeze record committed)",
+  "commit": false,
+  "expectRefuse": false,
+  "exit": 0,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: 42 added files match; 1 amended file matches its recorded diff (43+/11-); COACHINGCORE-V1-FREEZE-1 preserved 196/196; COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1 preserved 30/30; COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 preserved 98/98; COACHINGCORE-V1-RACE-FORECAST-FREEZE-1 preserved 163/163"
+ },
+ {
+  "name": "one enabling record withdrawn (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | audits/v1-strength-corrections-2026-11-16/candidate/reviews/ssctr/SSCTR_V1STR_RECORDS.json | (boundary) V1X-STRENGTH-HOLD-DOSE"
+ },
+ {
+  "name": "earlier record V1RFC: a note field changed (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | (record) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json is not the pinned bytes | (record) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json | (authority) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json"
+ },
+ {
+  "name": "a later review file added under the candidate folder (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | audits/v1-strength-corrections-2026-11-16/candidate/CLOSURE.md"
+ },
+ {
+  "name": "untracked file in src",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | (untracked) CoachingCore/src/evil.mjs"
+ },
+ {
+  "name": "runtime-read r5 policy changed (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | (outside this extension) CoachingCore/r5/PROGRAM_POLICY_R5.json"
+ },
+ {
+  "name": "amended file one byte (working tree)",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-STRENGTH-FREEZE-1: DRIFT | (amendment) CoachingCore/src/r7b-repertoire.mjs"
+ }
+]
+rehearsal-exit=0

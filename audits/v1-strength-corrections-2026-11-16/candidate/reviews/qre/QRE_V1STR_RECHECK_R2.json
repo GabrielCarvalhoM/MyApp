@@ -1,0 +1,360 @@
+{
+ "reviewId": "QRE-V1STR-RECHECK-R2",
+ "date": "2026-11-16",
+ "round": "the one recheck",
+ "judge": {
+  "role": "Quality & Reliability Engineer",
+  "constitution": "1.3.0",
+  "model": "claude-opus-5-5",
+  "independent": true,
+  "authoredTarget": false,
+  "sameInstanceAsR1": true,
+  "readSsctr": "R1 statement of SSCTR-STR-A-01 only"
+ },
+ "target": {
+  "commit": "3342a1d",
+  "from": "21838cb",
+  "sha256Prefix": {
+   "CoachingCore/src/r7b-repertoire.mjs": "0a8d201366f7f607",
+   "CoachingCore/src/v1-strength.mjs": "81dce34eb7c96778",
+   "CoachingCore/src/v1-strength-index.mjs": "36666ab27894cf21",
+   "CoachingCore/v1/STRENGTH_EXTENSION_V1.json": "15a51f55e847ad01",
+   "CoachingCore/scripts/v1str-freeze.mjs": "5d92f18ab3089fb9"
+  }
+ },
+ "verdict": "NOT_READY",
+ "qualityPosition": {
+  "enablingRecordOver3342a1d": {
+   "V1X-STRENGTH-PLANE": "NO (QRE-STR-B-01)",
+   "V1X-STRENGTH-HOLD-DOSE": "no quality blocker",
+   "V1X-STRENGTH-UPPER-LOADING": "no quality blocker",
+   "V1X-STRENGTH-EXPOSURE": "no quality blocker"
+  },
+  "freezeOver3342a1d": "NO: the verifier freezes only with all four boundaries on, and PLANE should not be enabled over these bytes"
+ },
+ "r1Status": {
+  "QRE-STR-A-01": {
+   "status": "CLOSED",
+   "evidence": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-b2-anchor-variants.mjs rerun unchanged: all three variants return to lat-pulldown + db-overhead-press"
+  },
+  "QRE-STR-A-02": {
+   "status": "CLOSED",
+   "evidence": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-a-carrier-clinical-gaps.mjs A4: TRUNK_SLOT_UNFILLED at the substitution and every later review"
+  },
+  "QRE-STR-A-03": {
+   "status": "CLOSED",
+   "evidence": "PRIOR_SHA256 equal to git show 2dfa216 records; --preserved refuses edited records (scratch-only/r2-freeze-rehearsal.mjs)"
+  },
+  "QRE-STR-A-04": {
+   "status": "OPEN",
+   "severity": "CONDITION (integration)",
+   "evidence": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/qre-e-frozen-entry-points.mjs mixed: front-plank back through v1-index"
+  },
+  "QRE-STR-A-05": {
+   "status": "PARTIAL",
+   "severity": "CONDITION (integration)",
+   "evidence": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-a A3: clinical answers pass, exactly the entry point below; everything else UNSUPPORTED; no continuation path"
+  },
+  "QRE-STR-A-06": {
+   "status": "CLOSED",
+   "evidence": "v1-index plan hash with a JSON strength field = plain = 29f0b2dd on 2dfa216 and 3342a1d"
+  },
+  "QRE-STR-A-07": {
+   "status": "CLOSED",
+   "evidence": "same-exercise dose differences 562 -> 24 rows (band-pulldown, selected by the rule, 8 plans); D-17 declared"
+  },
+  "QRE-STR-A-08": {
+   "status": "CLOSED",
+   "evidence": "14 R1 survivors killed (R01,R18,V05,V19,V25,V27,V30,X03,X04,X09,X15,X16,X19,X20); round 2: 33 of 41 killed; non-equivalent minor survivors X2-09, X2-11"
+  },
+  "QRE-STR-A-09": {
+   "status": "CLOSED",
+   "evidence": "r4/r5 policy, r5 new file, r5 review, untracked src refused by --preserved and --check"
+  },
+  "QRE-STR-A-10": {
+   "status": "CLOSED (documented)"
+  },
+  "QRE-STR-A-11": {
+   "status": "CLOSED"
+  },
+  "QRE-STR-A-12": {
+   "status": "CLOSED",
+   "evidence": "v1str-freeze.test.mjs ran and passed in the joint suite (0 skipped)"
+  },
+  "QRE-STR-A-13": {
+   "status": "CLOSED",
+   "evidence": "no athleteId -> 0; 8.5 reps not counted; logged sets uncapped (descriptive, G03)"
+  }
+ },
+ "findings": [
+  {
+   "id": "QRE-STR-B-01",
+   "severity": "BLOCKING",
+   "boundary": "V1X-STRENGTH-PLANE",
+   "statement": "In a plan in force, the cycle's `established` preference (D-15) puts into the asking MAIN slot a vertical the plan held only as an accessory (heldAs sees only the new week); the MAIN row carries the accessory dose state. Same defect class as SSCTR-STR-A-01, through a path the cycle created; falsifies \"no MAIN row given another row's dose\".",
+   "reproduction": {
+    "probes": [
+     "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-b-cycle-regressions.mjs (B2)",
+     "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-c-role-switch.mjs"
+    ],
+    "scope": "16 of 308 in-force sequences: 8 of 4->2 days, 8 of 5->2 days; INTERMEDIATE, NOVICE with a named exercise, hybrid; none NONE; 0 without the plane rule",
+    "examples": {
+     "INTERMEDIATE HYPERTROPHY BANDS 4->2": "pike-push-up ACCESSORY 2x10/2x12 -> MAIN 3x14, 2x16, 4x16 (goal 8-12); without the rule FULL_B:2 = push-up",
+     "INTERMEDIATE HYPERTROPHY MACHINES 4->2": "lat-pulldown ACCESSORY 2x10 -> MAIN 3x8, 2x12, 4x8; without the rule seated-cable-row",
+     "INTERMEDIATE STRENGTH MACHINES 4->2": "lat-pulldown ACCESSORY 2x7/2x6 -> MAIN 3x6, 2x6, 4x6",
+     "hybrid DB_BANDS 4->2": "db-overhead-press ACCESSORY 1x10 -> MAIN 2x8, 1x10, 3x10"
+    }
+   },
+   "suggestedFix": "In the no-anchor fallback prefer only configurations the plan holds as MAIN (never one held only in another role), or keep the R1 behaviour (prefer nothing without an anchor) and accept the D-2/D-15 cost."
+  },
+  {
+   "id": "QRE-STR-B-02",
+   "severity": "OBSERVATION",
+   "statement": "untracked() does not exclude the verifier's own record: --check 1 right after --write 1 exits 1 (\"(untracked) CoachingCore/v1/RUNTIME_FREEZE_V1STR_1.json\") until the record is committed; after the commit it passes.",
+   "reproduction": {
+    "output": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/outputs/r2-freeze-write-check-rehearsal.txt"
+   }
+  },
+  {
+   "id": "QRE-STR-B-03",
+   "severity": "OBSERVATION",
+   "statement": "A supplied development authority whose values lack holdDose.knownLimitations makes generateProgram throw (uncontained); D-12 path only.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-a-carrier-clinical-gaps.mjs (A6)"
+   }
+  },
+  {
+   "id": "QRE-STR-B-04",
+   "severity": "OBSERVATION",
+   "statement": "A NONE plan in force gains planeAlternation annotations (anchors) on its first rebuild, since practiceStart is not consulted in force; 35/35 sequences annotation-only, no selection/prescription/week change.",
+   "reproduction": {
+    "probe": "audits/v1-strength-corrections-2026-11-16/candidate/reviews/qre/probes/r2-d-none-in-force.mjs"
+   }
+  }
+ ],
+ "measured": {
+  "jointSuite": {
+   "tests": 1600,
+   "pass": 1598,
+   "fail": 2,
+   "failed": [
+    "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here",
+    "I10, V6: every file the two earlier freezes bind is byte-identical here except the one amended file; its base is the recorded bytes and its diff is the reader alone"
+   ],
+   "skipped": 0,
+   "passingAtBaseNotHere": [
+    "I10, V6: …"
+   ],
+   "historicalTestsEdited": 0
+  },
+  "ownTests": {
+   "files": 5,
+   "tests": 64,
+   "pass": 64,
+   "skipped": 0
+  },
+  "practiceStartVsClassNone": {
+   "plans": 255,
+   "mismatches": 0
+  },
+  "inForceSequences": {
+   "total": 308,
+   "ruleCausedRoleSwitchToMain": 16,
+   "newExerciseByRule": 0
+  },
+  "noneInForce": {
+   "sequences": 35,
+   "annotationOnly": 35,
+   "selectionDiffers": 0
+  },
+  "clinicalPassThrough": {
+   "otherRuleKinds": 4,
+   "clinicalReviews": 3,
+   "passedExactlyBelow": 12,
+   "nonClinicalReviews": 6,
+   "stayedUnsupported": 24
+  },
+  "carrier": {
+   "callerFormsStripped": 9,
+   "frozenJsonFieldInert": true,
+   "holdsThroughRebuilds": 0
+  },
+  "offIdentity": {
+   "generate": "576/576",
+   "reviewsRestarts": "70/70",
+   "frozenDigest": "a0c2ab8c6a6ff78e on 2dfa216 and 3342a1d"
+  },
+  "preservationDifferential": {
+   "plans": 648,
+   "rows": 103834,
+   "outsideScope": 0,
+   "rowsChanged": {
+    "DEV": 13088,
+    "HOLD": 5340,
+    "UPPER": 3334,
+    "PLANE": 5195
+   },
+   "sameExerciseDoseRows": {
+    "PLANE": 24,
+    "HOLD": 0,
+    "UPPER": 0
+   },
+   "sessionsOverMinutes": {
+    "withRules": 0,
+    "withoutRules": 0,
+    "of": 41472
+   }
+  },
+  "exposure": {
+   "weeks": 2304,
+   "mismatches": 0,
+   "nothingReadsIt": "18/18"
+  },
+  "freezeVerifier": {
+   "preservedPristine": 0,
+   "refusalCasesRefused": "13/13",
+   "writeRehearsal": "written over a TEST-ONLY record, 42 files, joint suite with all boundaries on: same two failures",
+   "checkBeforeCommit": 1,
+   "checkAfterCommit": 0,
+   "checkTamperCases": "6/6 drift"
+  },
+  "mutation": {
+   "control": {
+    "tests": 63,
+    "pass": 63,
+    "fail": 0
+   },
+   "mutants": 41,
+   "killed": 33,
+   "survived": 8,
+   "timeouts": 0,
+   "byFile": {
+    "r7b-repertoire.mjs": {
+     "total": 14,
+     "killed": 12,
+     "survived": 2
+    },
+    "v1-strength.mjs": {
+     "total": 10,
+     "killed": 8,
+     "survived": 2
+    },
+    "v1-strength-index.mjs": {
+     "total": 17,
+     "killed": 13,
+     "survived": 4
+    }
+   },
+   "survivors": [
+    {
+     "id": "R2-07",
+     "what": "heldAs: only ACCESSORY counts as another role",
+     "note": "Equivalent: template rows carry only MAIN or ACCESSORY roles."
+    },
+    {
+     "id": "V2-08",
+     "what": "V17: novice set not read by slotsInForce",
+     "note": "Selection-equivalent in practice: NONE plans carry anchors only after a rebuild and hold no vertical to prefer."
+    },
+    {
+     "id": "X2-09",
+     "what": "gap declared on a refused review",
+     "note": "Non-equivalent, minor: the trunk-gap disclosure would show on an INVALID_INPUT or UNSUPPORTED answer of a plan under the rules."
+    },
+    {
+     "id": "R2-04",
+     "what": "class consulted in a plan in force",
+     "note": "Selection-equivalent: in force a NONE plan only gains annotations (r2-d, 35/35)."
+    },
+    {
+     "id": "V2-10",
+     "what": "knownLimitations shape unchecked",
+     "note": "Equivalent under the values hash pin."
+    },
+    {
+     "id": "X2-05",
+     "what": "clinical pass-through admits a proposal",
+     "note": "Equivalent while the engine never answers CLINICAL_HUMAN_REQUIRED with a proposal (12 of 12 observed without)."
+    },
+    {
+     "id": "X2-10",
+     "what": "gap declared without HOLD",
+     "note": "Equivalent in practice: without HOLD a plank fills the trunk slot."
+    },
+    {
+     "id": "X2-11",
+     "what": "novice set gaps not declared",
+     "note": "Non-equivalent: a trunk gap only in the novice set (NONE, 3-4 days: CORE exists only there) would go undeclared; untested."
+    }
+   ],
+   "r1SurvivorsNowKilled": [
+    "R2-01 (R01)",
+    "R2-09 (R18)",
+    "V2-04 (V05)",
+    "V2-02 (V19)",
+    "V2-05 (V25)",
+    "V2-06 (V27)",
+    "V2-07 (V30)",
+    "X2-03 (X03)",
+    "X2-04 (X04)",
+    "X2-13 (X09)",
+    "X2-01 (X15)",
+    "X2-16 (X16)",
+    "X2-14 (X19)",
+    "X2-15 (X20)"
+   ],
+   "killedIds": [
+    "R2-01",
+    "R2-06",
+    "R2-11",
+    "V2-02",
+    "V2-07",
+    "X2-02",
+    "X2-07",
+    "X2-12",
+    "X2-17",
+    "R2-02",
+    "R2-12",
+    "V2-03",
+    "X2-03",
+    "X2-08",
+    "X2-13",
+    "R2-03",
+    "R2-08",
+    "R2-13",
+    "V2-04",
+    "V2-09",
+    "X2-04",
+    "X2-14",
+    "R2-09",
+    "R2-14",
+    "V2-05",
+    "X2-15",
+    "R2-05",
+    "R2-10",
+    "V2-01",
+    "V2-06",
+    "X2-01",
+    "X2-06",
+    "X2-16"
+   ]
+  }
+ },
+ "declaredReadings": {
+  "D-13": "Implemented; equals the engine class NONE (255/255); in force not consulted (B-04, annotations only).",
+  "D-14": "True for a new plan; does not hold in force once the keys change (B-01).",
+  "D-15": "Keeps verticals and brings nothing new, but \"already uses\" includes accessory-only exercises (B-01).",
+  "D-16": "Verified.",
+  "D-17": "Direction consistent with the HOLD-only differential; SSCTR time probe not rerun."
+ },
+ "security": {
+  "focalReviewNeededNow": false,
+  "focalReviewNeededAtIntegration": true
+ },
+ "notVerified": [
+  "Sporting acceptability of any dose",
+  "Integration, real data, UI",
+  "Exhaustive in-force sequences (11 change patterns x 7 equipment x 4 athlete types)",
+  "The SSCTR probes cited by the author were not rerun"
+ ]
+}

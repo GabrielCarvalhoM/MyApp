@@ -1,0 +1,146 @@
+[
+ {
+  "name": "pristine tree",
+  "commit": false,
+  "expectRefuse": false,
+  "exit": 0,
+  "refused": false,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files byte-identical | COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b"
+ },
+ {
+  "name": "extra changed frozen file src/r6-program.mjs (working tree)",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/src/r6-program.mjs | NOT PRESERVED: | (COACHINGCORE-V1-FREEZE-1) CoachingCore/src/r6-program.mjs"
+ },
+ {
+  "name": "extra changed frozen file src/r6-program.mjs (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/src/r6-program.mjs | NOT PRESERVED: | (COACHINGCORE-V1-FREEZE-1) CoachingCore/src/r6-program.mjs"
+ },
+ {
+  "name": "one byte in a comment of r7b-repertoire.mjs",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files byte-identical | COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is NOT the authorized bytes; its diff is NOT the authorized one (43+/11-; file 7db97e6d3f7c3c6501e417cd30eb63bd157a59002c4d8aa60e8b1af3413ba3f0; diff d11054d9b9285e8a330d7c6fdc589d14a78874d6b9fa1afbc4dc081b51d832ae) | nothing else changed since 4f0561b"
+ },
+ {
+  "name": "trailing newline added to r7b-repertoire.mjs",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files byte-identical | COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is NOT the authorized bytes; its diff is NOT the authorized one (44+/11-; file ce7943ee4aad139a7c343e16dc8fa88b25e7a21399af0d1d79c421a55ae9a98a; diff ea861b4791412f73109420aa2ff130f5dcf79e481056189e0fbf6b05fdef9813) | nothing else changed since 4f0561b"
+ },
+ {
+  "name": "earlier record V1RFC: a note field changed",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b | NOT PRESERVED: | (record) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json is not the pinned bytes"
+ },
+ {
+  "name": "earlier record V1RFC + the SSCTR run-records file it binds (runtime-read), hash updated in the record",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b | NOT PRESERVED: | (record) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json is not the pinned bytes"
+ },
+ {
+  "name": "the same, committed",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b | NOT PRESERVED: | (record) CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json is not the pinned bytes"
+ },
+ {
+  "name": "a runtime-read SSCTR record file bound by no earlier record changed: audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json"
+ },
+ {
+  "name": "added untracked file CoachingCore/src/evil.mjs",
+  "commit": false,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b | UNTRACKED: | CoachingCore/src/evil.mjs"
+ },
+ {
+  "name": "added committed file CoachingCore/src/evil.mjs",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/src/evil.mjs"
+ },
+ {
+  "name": "added committed file CoachingCore/r5/evil.json",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/r5/evil.json"
+ },
+ {
+  "name": "changed runtime-read policy CoachingCore/r5/PROGRAM_POLICY_R5.json (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/r5/PROGRAM_POLICY_R5.json"
+ },
+ {
+  "name": "changed runtime-read CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 1,
+  "refused": true,
+  "asExpected": true,
+  "out": "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | CHANGED outside this extension: | CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json"
+ },
+ {
+  "name": "added committed test file CoachingCore/test/v1str-evil.test.mjs (matches the own-test pattern)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 0,
+  "refused": false,
+  "asExpected": false,
+  "out": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files byte-identical | COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b"
+ },
+ {
+  "name": "changed values file v1/STRENGTH_EXTENSION_V1.json (committed)",
+  "commit": true,
+  "expectRefuse": true,
+  "exit": 0,
+  "refused": false,
+  "asExpected": false,
+  "out": "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files byte-identical | COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files byte-identical | COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files byte-identical | CoachingCore/src/r6-adaptation.mjs: the bytes COACHINGCORE-V1-RUN-FORMAT-FREEZE-2 authorized | CoachingCore/src/r7b-repertoire.mjs: its base is the recorded bytes; it is the authorized bytes; its diff is the authorized one (43+/11-; file 0a8d201366f7f607674601f36624b0fd3753c02aee210a7f9d2339c4969d7477; diff e4c4a877d2a24d5d21ca28014626c795d781f38b92a2328eb6f0d2ac4c3553be) | nothing else changed since 4f0561b"
+ }
+]
