@@ -8,6 +8,10 @@
 // `--write` runs the suite itself and refuses unless that test, by name, is the only failure and every test of this extension passes.
 // A freeze is written only over independent SSCTR records that enable V1X-RUN-FORECAST and V1X-PACE-INSIGHTS for the pinned values, and only
 // while V1X-PACE-REVISION is off (it waits for an integration to meet IC-2).
+// The pace revision is implemented in the bytes a freeze binds, off, NOT approved, and it does NOT fail closed (PACE_REVISION below names what
+// is open). No enabling record of it is valid over those bytes, so `--write` refuses and `--check` fails when the records file holds any
+// record of V1X-PACE-REVISION, enabling or not (asked by the three judges of the recheck on 0d3015b; this guard was added after that
+// recheck and is not itself re-judged). Closing any of its conditions needs new code, a new review and a successor freeze.
 // This script writes nothing but its own record.
 //   node scripts/v1rfc-freeze.mjs --write <n> --commit <sha> [--note "..."]   runs the suites, then writes v1/RUNTIME_FREEZE_V1RFC_<n>.json
 //   node scripts/v1rfc-freeze.mjs --check <n>                                  recomputes and compares; exit 1 on drift
@@ -58,9 +62,14 @@ function runSuite(files=[]){
 }
 /** The one historical test that fails on this line since phase A, by design (Founder governance decision of 2026-11-14). */
 const HISTORICAL='V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here';
+/** What a freeze says of the pace revision, whose code is inside the bytes it binds. */
+const PACE_REVISION={boundary:'V1X-PACE-REVISION',state:'IMPLEMENTED_OFF_NOT_APPROVED',failsClosed:false,enablingRecord:'NONE_VALID_OVER_THESE_BYTES',
+ statement:'The athlete-confirmed revision of the threshold band is implemented in the files this freeze binds, is off, is not approved and does not fail closed. No enabling record of V1X-PACE-REVISION is valid over these bytes: the runtime would turn it on with any record bound to the values hash, so this verifier fails when one is present. Turning it on needs new code, the open findings closed and judged again, an integration that meets IC-2, and a successor freeze. "Off by default" is not a claim that it is safe.',
+ open:['SEC-RFC-A-01','SEC-RFC-A-02','SEC-RFC-A-03','SEC-RFC-A-10','SSCTR-RFC-A-03','SSCTR-RFC-A-11','SSCTR-RFC-A-09 (the question for the offer)','QRE-RFC-A-04','QRE-RFC-B-03','L-12 (GPS quality written by the device)','hard gate E-1','QRE-RWS-F-01']};
 async function boundaries(){
- const ext=await import('../src/v1-race-forecast.mjs'),auth=ext.runForecastAuthority();
- return {ext,on:Object.fromEntries(Object.keys(ext.FORECAST_BOUNDARIES).map(k=>[ext.FORECAST_BOUNDARIES[k],ext.allowsForecast(auth,k)]))};
+ const ext=await import('../src/v1-race-forecast.mjs'),auth=ext.runForecastAuthority(),file=fs.existsSync(path.join(ROOT,RECORDS))?read(RECORDS):null;
+ return {ext,on:Object.fromEntries(Object.keys(ext.FORECAST_BOUNDARIES).map(k=>[ext.FORECAST_BOUNDARIES[k],ext.allowsForecast(auth,k)])),
+  revisionRecords:(Array.isArray(file?.records)?file.records:[]).filter(r=>r?.boundaryId===ext.FORECAST_BOUNDARIES.REVISION).length};
 }
 
 if(arg('--write')){
@@ -72,7 +81,8 @@ if(arg('--write')){
  if(git('diff','--name-only',full,'HEAD','--',...bound))throw new Error('the bound paths at HEAD differ from the commit named');
  const p=prior();if(!p.ok)throw new Error(p.revision+' is not preserved here: '+p.said);
  const changed=outside(p.commit,full);if(changed.length)throw new Error('files outside this extension changed since '+p.revision+': '+changed.join(', '));
- const {ext,on}=await boundaries();
+ const {ext,on,revisionRecords}=await boundaries();
+ if(revisionRecords)throw new Error('the records file holds a record of V1X-PACE-REVISION: none is valid over these bytes (the revision is not approved and does not fail closed)');
  if(!on['V1X-RUN-FORECAST']||!on['V1X-PACE-INSIGHTS'])throw new Error('no independent SSCTR record enables V1X-RUN-FORECAST and V1X-PACE-INSIGHTS over the pinned values: nothing is frozen while a blocker stands');
  if(on['V1X-PACE-REVISION'])throw new Error('V1X-PACE-REVISION is on: it stays off until an integration meets IC-2, and is no part of this freeze');
  const joint=runSuite(),own=runSuite(testFiles().map(f=>path.relative(CC,path.join(ROOT,f))));
@@ -83,6 +93,7 @@ if(arg('--write')){
   scope:'An additive extension of the V1-scoped CoachingCore on synthetic data: the race forecast (two plausibility envelopes, never probabilities) and the pace insights (observational), read through the admitted record of the native run formats. The athlete-confirmed revision of the threshold band is implemented and off. Not production, backend, operational security or a published app; no authorization for real athletes.',
   commit:full,created:new Date().toISOString(),additiveTo:p,amendment:null,entryPoint:'CoachingCore/src/v1-run-forecast-index.mjs',baseEntryPoint:'CoachingCore/src/v1-run-format-index.mjs',composition:'v1-run-forecast-index -> v1-run-format-index -> v1-run-index -> v1-index',
   suite:{joint:{passed:joint.passed,total:joint.total,failed:joint.failed,note:'Everything on this line, run by this script. Its one failure is the historical freeze test of the run calibration, by name; it is not edited and stays green on its own snapshot.'},own:{passed:own.passed,total:own.total,files:testFiles().length,note:'The tests of this extension (test/v1rfc-*.test.mjs), run by this script.'}},
+  paceRevision:PACE_REVISION,
   extension:{id:ext.FORECAST_EXTENSION_ID,file:'CoachingCore/v1/RACE_FORECAST_EXTENSION_V1.json',sha256:ext.FORECAST_VALUES_FILE_SHA256,pinned:ext.FORECAST_VALUES_SHA256,boundaries:on,
    records:{file:RECORDS,sha256:fs.existsSync(path.join(ROOT,RECORDS))?sha(path.join(ROOT,RECORDS)):null,note:'A boundary is on only with an independent SSCTR record bound to the values hash; without one it is off (fail closed: the added keys are DISABLED and everything else is the run formats\' answer).'}},
   authority:Object.fromEntries(AUTHORITY.map(f=>[f,sha(path.join(ROOT,f))])),
@@ -90,11 +101,11 @@ if(arg('--write')){
  fs.writeFileSync(out,JSON.stringify(record,null,1)+'\n');
  console.log(`${record.revision}: ${record.fileCount} added files, digest ${record.filesDigest}, binds ${full}; no amended file; ${p.revision} preserved by its own verifier`);
 }else if(arg('--check')){
- const r=JSON.parse(fs.readFileSync(recordPath(arg('--check')),'utf8')),now=filesNow(),drift=[...new Set([...Object.keys(r.files),...Object.keys(now)])].filter(f=>r.files[f]!==now[f]),p=prior(),changed=outside(p.commit),{on}=await boundaries();
+ const r=JSON.parse(fs.readFileSync(recordPath(arg('--check')),'utf8')),now=filesNow(),drift=[...new Set([...Object.keys(r.files),...Object.keys(now)])].filter(f=>r.files[f]!==now[f]),p=prior(),changed=outside(p.commit),{on,revisionRecords}=await boundaries();
  const authority=Object.entries(r.authority).filter(([f,h])=>!fs.existsSync(path.join(ROOT,f))||sha(path.join(ROOT,f))!==h).map(([f])=>f),switched=Object.keys(r.extension.boundaries).filter(k=>r.extension.boundaries[k]!==on[k]);
- const ok=!drift.length&&digest(r.files)===r.filesDigest&&p.ok&&p.sha256===r.additiveTo.sha256&&!changed.length&&!authority.length&&!switched.length;
+ const ok=!drift.length&&digest(r.files)===r.filesDigest&&p.ok&&p.sha256===r.additiveTo.sha256&&!changed.length&&!authority.length&&!switched.length&&!revisionRecords;
  console.log(ok?`${r.revision}: ${r.fileCount} added files match; no amended file; ${p.revision} preserved (${p.said})`
-  :`${r.revision}: DRIFT\n`+[...drift,...(p.ok?[]:['('+p.revision+') '+p.said]),...changed.map(f=>'(outside this extension) '+f),...authority.map(f=>'(authority) '+f),...switched.map(k=>'(boundary) '+k)].slice(0,40).join('\n'));process.exit(ok?0:1);
+  :`${r.revision}: DRIFT\n`+[...drift,...(p.ok?[]:['('+p.revision+') '+p.said]),...changed.map(f=>'(outside this extension) '+f),...authority.map(f=>'(authority) '+f),...switched.map(k=>'(boundary) '+k),...(revisionRecords?['(boundary) a record of V1X-PACE-REVISION is present: none is valid over these bytes']:[])].slice(0,40).join('\n'));process.exit(ok?0:1);
 }else if(process.argv.includes('--preserved')){
  const p=prior(),changed=outside(p.commit);
  console.log(`${p.revision}: ${p.ok?'preserved':'NOT preserved'} (${p.said}); ${changed.length?'CHANGED outside this extension:\n'+changed.join('\n'):'nothing outside this extension changed since '+p.commit.slice(0,7)}`);process.exit(p.ok&&!changed.length?0:1);

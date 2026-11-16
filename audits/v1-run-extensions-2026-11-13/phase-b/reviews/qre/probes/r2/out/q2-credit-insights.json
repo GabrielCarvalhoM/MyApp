@@ -1,0 +1,312 @@
+{
+ "credit": [
+  {
+   "id": "S1",
+   "expected": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "candidate": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "oracle": 1,
+   "ok": true
+  },
+  {
+   "id": "S2",
+   "expected": {
+    "c": 0.8,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "candidate": {
+    "c": 0.8,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "oracle": 0.8,
+   "ok": true
+  },
+  {
+   "id": "S3",
+   "expected": {
+    "c": 0.75,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "candidate": {
+    "c": 0.75,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "oracle": 0.75,
+   "ok": true
+  },
+  {
+   "id": "S3-noSteps",
+   "expected": {
+    "c": 0.75,
+    "rule": "DISTANCE_TARGET_MEASURED_DISTANCE"
+   },
+   "candidate": {
+    "c": 0.75,
+    "rule": "DISTANCE_TARGET_MEASURED_DISTANCE"
+   },
+   "oracle": 0.75,
+   "ok": true
+  },
+  {
+   "id": "S3-minutesOnly",
+   "expected": {
+    "c": 0.52083,
+    "rule": "MINUTES"
+   },
+   "candidate": {
+    "c": 0.5208333333333334,
+    "rule": "MINUTES"
+   },
+   "oracle": 0.5208333333333334,
+   "ok": true
+  },
+  {
+   "id": "S3-completedSlow",
+   "expected": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "candidate": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "oracle": 1,
+   "ok": true
+  },
+  {
+   "id": "S3-completedFast",
+   "expected": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "candidate": {
+    "c": 1,
+    "rule": "COMPLETED"
+   },
+   "oracle": 1,
+   "ok": true
+  },
+  {
+   "id": "S4-timeStep",
+   "expected": {
+    "c": 0.75,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "candidate": {
+    "c": 0.75,
+    "rule": "RWS_STEPS_EXTENT"
+   },
+   "oracle": 0.75,
+   "ok": true
+  },
+  {
+   "id": "S5-noWorkSteps",
+   "expected": {
+    "c": 0.28,
+    "rule": "MINUTES"
+   },
+   "candidate": {
+    "c": 0.28,
+    "rule": "MINUTES"
+   },
+   "oracle": 0.28,
+   "ok": true
+  },
+  {
+   "id": "S6-missing",
+   "expected": {
+    "c": 0,
+    "rule": "MISSING_REPORT"
+   },
+   "candidate": {
+    "c": 0,
+    "rule": "MISSING_REPORT"
+   },
+   "oracle": 0,
+   "ok": true
+  }
+ ],
+ "creditOK": true,
+ "week": {
+  "expected": {
+   "sessions": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "plannedMinutes": 186,
+   "creditedMinutes": 152,
+   "a": 0.8172,
+   "f": 0.79301,
+   "r1Reading": {
+    "a": 0.98387,
+    "f": 1
+   },
+   "asProposed": {
+    "a": 0.8172,
+    "f": 0.79301
+   },
+   "note": "The r1 minutes reading credits S3 fully (98 >= 96 min) although 4 of 16 km were not run; r2 reads 0.75. S4 (continuous TIME step stopped at 15 of 20 min) earns 0.75 under r2, 0 as proposed. S2 is the same (0.8) under r2 and as proposed: an unfinished repetition counts 0."
+  },
+  "candidate": {
+   "a": 0.8172043010752689,
+   "f": 0.7930107526881721,
+   "planned": 186,
+   "credited": 152
+  },
+  "ok": true
+ },
+ "unknown": {
+  "ZERO": 0.6,
+  "EXCLUDED": 1
+ },
+ "fBoundaries": [
+  [
+   0.4999999,
+   0,
+   0
+  ],
+  [
+   0.5,
+   0,
+   0
+  ],
+  [
+   0.7,
+   0.4999999999999999,
+   0.4999999999999999
+  ],
+  [
+   0.8999999,
+   0.9999997499999999,
+   0.9999997499999999
+  ],
+  [
+   0.9,
+   1,
+   1
+  ],
+  [
+   1,
+   1,
+   1
+  ]
+ ],
+ "PI1": {
+  "state": "IMPROVING",
+  "median": 0.051298704735381825,
+  "MAD": 0.004942379616271007,
+  "action": "EXPLAIN_ONLY",
+  "ok": true
+ },
+ "PR1": {
+  "w9": {
+   "status": "OFFERED",
+   "step": 0.02,
+   "sessions": 3,
+   "effectiveFrom": "2027-03-08",
+   "expectedStep": 0.02
+  },
+  "w10": {
+   "status": "ACTIVE",
+   "fraction": 0.02,
+   "effectiveFrom": "2027-03-08",
+   "bandW10": {
+    "fastSecondsPerKm": 295,
+    "slowSecondsPerKm": 315
+   }
+  },
+  "w14": {
+   "status": "ACTIVE",
+   "offerStep": 0.01,
+   "expectedStep": 0.01,
+   "sessions": [
+    "r2-0",
+    "r2-1",
+    "r2-2",
+    "r2-3"
+   ]
+  },
+  "w15": {
+   "status": "ACTIVE",
+   "fraction": 0.03,
+   "bandW15": {
+    "fastSecondsPerKm": 295,
+    "slowSecondsPerKm": 315
+   },
+   "expectedBand": {
+    "fastSecondsPerKm": 295,
+    "slowSecondsPerKm": 315
+   }
+  },
+  "w17": {
+   "status": "ENDED",
+   "ended": {
+    "date": "2027-04-21",
+    "reason": "HARDER_THAN_CUE_EXECUTION"
+   },
+   "bandW17": {
+    "fastSecondsPerKm": 300,
+    "slowSecondsPerKm": 320,
+    "derived": true
+   }
+  },
+  "effectiveBandOf": {
+   "at2": {
+    "fastSecondsPerKm": 295,
+    "slowSecondsPerKm": 315
+   },
+   "at3": {
+    "fastSecondsPerKm": 295,
+    "slowSecondsPerKm": 315
+   },
+   "judgeFast2": 295,
+   "judgeSlow2": 315,
+   "judgeFast3": 295,
+   "judgeSlow3": 315
+  },
+  "ok": false
+ },
+ "afterEnd": [
+  {
+   "week": 18,
+   "status": "ENDED",
+   "offer": false
+  },
+  {
+   "week": 19,
+   "status": "ENDED",
+   "offer": false
+  },
+  {
+   "week": 20,
+   "status": "ENDED",
+   "offer": false
+  },
+  {
+   "week": 21,
+   "status": "ENDED",
+   "offer": false
+  }
+ ],
+ "PR23": {
+  "PR2": {
+   "state": "INSUFFICIENT_DATA",
+   "action": "INFORMATIVE_ONLY",
+   "longState": "IMPROVING",
+   "longAction": "SUGGEST_REPORTING_A_RACE",
+   "longP3": {
+    "action": "OFFER_V1RC_FIELD_TEST"
+   }
+  },
+  "PR3": {
+   "action": "SUGGEST_REPORTING_A_RACE"
+  },
+  "ok": true
+ }
+}

@@ -1,0 +1,54 @@
+{
+ "reviewId": "QRE-V1RFC-RECHECK-R2",
+ "role": "Quality & Reliability Engineer (independent judge; same instance as R1; did not author the cycle)",
+ "model": "claude-opus-5-5",
+ "date": "2026-11-16",
+ "candidate": {"commit": "0d3015bc1486667f3428777087a469db5da4dd0f", "judgedDiff": "git diff 400edb7 0d3015b -- CoachingCore", "authorRecord": "audits/v1-run-extensions-2026-11-13/phase-b/PHASE_B_CORRECTIVE_CYCLE.md"},
+ "verdict": "READY_WITH_CONDITIONS",
+ "scope": "Race forecast and pace insights on synthetic data. Not the pace revision (V1X-PACE-REVISION), which stays not approved.",
+ "blocking": [],
+ "r1Findings": {
+  "QRE-RFC-A-01": {"state": "CLOSED", "evidence": "probes/r2/b1-week-stability.mjs: 24 cases; every report-driven shape (R1 q3d, q3b(a), q3(1), q3b(b); agreeing device report; same eventId re-sent; device report with RAIN; 3-day break declared mid-week) withdraws forecast and insights with a reason and no number on Thursday and Sunday; strength correction and a late race result leave the Monday's numbers. Residual B-01 (custody)."},
+  "QRE-RFC-A-02": {"state": "CLOSED for forecast and insights", "evidence": "probes/r2/b2-delivered-band.mjs: 6/6 voting bands equal the band shown in the session's own week (TIME and NATIVE); after a correction past calibrations still move (week index 7 [310,330] f0 -> [305,325] +0.015) but the next week's insight uses the delivered bands; reversed format record identical; session without format rows NO_BAND_IN_ITS_WEEK; a forged format row with a non-conforming id is named unreadable and the insights withdraw (screen). probes/r2/b3-pair.mjs: official/official pair used (R_c 0.5225, as R1); GPS earlier reference no longer pairs (stricter reading, to the SSCTR). Residual B-03 (revision path only)."},
+  "QRE-RFC-A-03": {"state": "PARTIAL", "evidence": "q10c (R1, unchanged): MISSING_REPORT, mean 0; probes/r2/b4-restart.mjs (1) restart with no gap: MISSING_REPORT, no votes; q10: identical to the run formats. Residual B-02."},
+  "QRE-RFC-A-04": {"state": "OPEN (declared; revision off)", "evidence": "q8-revision-entry.mjs reproduces it unchanged"},
+  "QRE-RFC-A-05": {"state": "CLOSED", "evidence": "q3c-break.mjs (R1, unchanged): DECLARED_BREAK_OF_14_DAYS_OR_MORE at the declaring answer and every day of the break, forecast and insights"},
+  "QRE-RFC-A-06": {"state": "inside the week now a withdrawal; V5 reading of a conflicted session in later weeks stays for the SSCTR"},
+  "QRE-RFC-A-07": {"state": "OPEN (NOTE, untreated, as declared)"},
+  "QRE-RFC-A-08": {"state": "PARTIAL", "evidence": "E08 now killed; E03, E15, E16, P11 still survive"},
+  "QRE-RFC-A-09": {"state": "unchanged (NOTE)"},
+  "QRE-RFC-A-10": {"state": "unchanged (NOTE); the committed reviews under phase-b/ are now bound by a freeze"},
+  "QRE-RFC-A-11": {"state": "unchanged (NOTE, Security)"}
+ },
+ "newFindings": [
+  {"id": "QRE-RFC-B-01", "severity": "NOTE", "title": "A client that rewrites a past row of the engine record it sends back (no report) changes the week's inputDigest inside the week without a withdrawal (custody class)", "probe": "probes/r2/b1-week-stability.mjs (case 'client edits a past row')", "closes": "Custody and keyed integrity of the records (Security, integration); not this phase."},
+  {"id": "QRE-RFC-B-02", "severity": "CONDITION", "title": "Restart on the same day, the new plan starting that day: an old-plan run reported that morning, dated inside the new week 0, is credited COMPLETED to the new plan's session of the same id",
+   "probe": "probes/r2/b4-restart.mjs (2)", "command": "node probes/r2/b4-restart.mjs",
+   "observed": "old w0-run-d6@2027-01-10 reported 09:00; restart 12:00 with start 2027-01-10; new week 0 at week 1: w0-run-d6 COMPLETED, a = 0.43 (should be 0). own() compares the day of the first record with the day of canonical.asOf, not instants; the delivered-band reader has the same day granularity.",
+   "closes": "Compare the instant provenance.firstRecordedAt (and the formats' recordedAt) with the plan's creation instant; a same-day restart test. Before integration or a real athlete (or in a freeze successor if the Founder wants it earlier)."},
+  {"id": "QRE-RFC-B-03", "severity": "NOTE", "title": "'Phase B no longer reads a past week's calibration' holds only with the revision off: revisionOf still calls K.warm/K.viewOf for each week's derived band, factor and reference (offer conditions)", "probe": "src/v1-run-forecast-index.mjs lines 362-363", "closes": "Joins the revision's conditions, before any enabling record of V1X-PACE-REVISION."},
+  {"id": "QRE-RFC-B-04", "severity": "NOTE", "title": "Untested new rules: each restart guard alone (N02, N03; only together N13 is killed) and the delivered-band reader (N04 format after the run, N05 domain, N11 unsealed rows, N12 a session with no band voting)", "probe": "probes/r2/tools/mutants.mjs, probes/r2/tools2/mutants.mjs", "closes": "A test per rule."}
+ ],
+ "noRegression": {
+  "examples": "q1: 16 forecast + A4-1/2/3 + i + 9 goal relations, 0 mismatches; q2: AD-1, PI-1, PR-1..3 as R1; q11: 6000 random, 0 mismatches",
+  "composition": "q5: 285 comparisons, 0 differences (default, forecast+insights, revision without revision, caller band hook, off); q10 restart identical",
+  "admission": "q4: 108 journeys, 0 violations I-A/I-B/I-C; legitimate controls vote as in R1",
+  "raceWeek": "q6/q6b: frozen = week before race week (2835-3015); 21 late changes, 0 shown changed",
+  "revisionOn": "q8: only threshold formats from the week after acceptance differ; calibration and engine identical",
+  "suites": {"joint": {"entries": 1535, "passed": 1534, "failed": ["V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here"]}, "extension": "85/85", "v1rfcPreserved": "exit 0"}
+ },
+ "mutation": {"mutants": 18, "killed": 8, "survived": 10, "control": "85/85", "killed_ids": ["N01", "N06", "N07", "N08", "N09", "N10", "N13", "E08"], "survived_ids": ["N02", "N03", "N04", "N05", "N11", "N12", "E03", "E15", "E16", "P11"], "note": "N13 (both restart guards dropped) run separately; E03, E08, E15, E16, P11 are R1 survivors re-run"},
+ "freezeVerifier": "Unchanged; test/v1rfc-cycle.test.mjs matches the own-test pattern and the added-files set; no new rehearsal needed. A-10 stands.",
+ "openConditionsAsStated": {
+  "accurate": "The pace revision is stated not approved, off by default, with nothing claiming it fails closed ('fail closed' appears only for record activation and estimate reconstruction). My A-04 is listed correctly; other judges' ids were not re-read by me.",
+  "mustBeWrittenIntoAFreeze": ["A freeze of the forecast and the insights binds v1-pace-insights.mjs and v1-run-forecast-index.mjs whole, revision path included: closing A-04, B-03 and the other judges' revision conditions needs a freeze successor.", "The runtime turns the revision on with any independent SSCTR record for V1X-PACE-REVISION over the values hash, whatever the code bytes (A-10): the freeze and closure must state that no enabling record of the revision may be written over these bytes, only over a successor that closes its conditions. With that written, the revision conditions can stay open."],
+  "integrationLimits": "QRE-RWS-F-01, hard gate E-1, two voices, custody: stated open, not declared met. The cost of A-01 (any second source after the boundary withdraws the week) is stated accurately and shows on every report shape."
+ },
+ "routeToFounder": ["V1RC calibration of the current week moves inside the week with a correction (frozen; phase B now withdraws)", "session-id collision inside the frozen run formats after a restart"],
+ "routeToSSCTR": ["new pair reading (an earlier GPS reference no longer pairs)", "V5 for a conflicted session in later weeks", "the cycle's readings section 2"],
+ "routeToSecurity": ["B-01", "A-11", "A-10"],
+ "scratch": "C:\\Users\\carva\\AppData\\Local\\Temp\\claude\\858165ffefe5d744\\d51449b4-81e7-4282-8dcc-977a9b54a947\\scratchpad\\judges-b\\qre\\r2\\",
+ "notVerified": ["an A-B-A format flip without settled in the delivered-band reader", "a forged format row with a conforming id", "clinical-hold zero credit beyond reading", "the whole suite under each mutant", "real HealthKit"],
+ "injectedContext": "Global CLAUDE.md, project CLAUDE.md and MEMORY.md received again (hashes in R1); not used as evidence.",
+ "authorizes": "nothing for real athletes, integration or production"
+}

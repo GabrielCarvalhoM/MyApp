@@ -1,0 +1,180 @@
+{
+ "control": {
+  "total": 85,
+  "failed": []
+ },
+ "mutants": [
+  {
+   "id": "N01",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "week never withdrawn on changed reports",
+   "killed": true,
+   "killers": 4,
+   "firstKillers": [
+    "QRE-RFC-A-01 closed: a report that arrives inside the week for an earlier session that already had one withdraws the week; no number changes; the next week reads the record again",
+    "QRE-RFC-A-02 closed: a correction moves the calibration of past weeks when it is read again, so phase B never reads it; an insight reads the band each session was delivered with",
+    "a week's forecast does not move inside the week, and what race week shows is never shown changed"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N02",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "own: first-recorded-after-the-plan check dropped",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "N03",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "own: inside-its-week check dropped",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "N04",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "delivered band: a format recorded after the run is read",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "N05",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "delivered band: domain not checked",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "N06",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "break withdrawal only before the break starts",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "SSCTR-RFC-A-01 (QRE-RFC-A-05) closed: a declared break of 14 days or more, in progress or still to come, withdraws the forecast and the insights at once"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N07",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "pair from any tier",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "the pair of the response is read from the record of changes of the answer itself: an earlier reference at the highest confidence, of the same kind; any earlier one serves the slowdown rule"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N08",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "hold weeks credited",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "SSCTR-RFC-A-02 closed: a week a clinical hold stood in earns nothing and is left out of the mean, whatever was reported in it"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N09",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "insights never withdrawn on changes",
+   "killed": true,
+   "killers": 3,
+   "firstKillers": [
+    "QRE-RFC-A-01 closed: a report that arrives inside the week for an earlier session that already had one withdraws the week; no number changes; the next week reads the record again",
+    "QRE-RFC-A-02 closed: a correction moves the calibration of past weeks when it is read again, so phase B never reads it; an insight reads the band each session was delivered with",
+    "T5 no leak, 500 cases: nothing reported from the first day of the week on ever changes a number that week shows; a week whose earlier reports changed is withdrawn"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N10",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "forecast never withdrawn on changes",
+   "killed": true,
+   "killers": 2,
+   "firstKillers": [
+    "QRE-RFC-A-01 closed: a report that arrives inside the week for an earlier session that already had one withdraws the week; no number changes; the next week reads the record again",
+    "T5 no leak, 500 cases: nothing reported from the first day of the week on ever changes a number that week shows; a week whose earlier reports changed is withdrawn"
+   ],
+   "total": 85
+  },
+  {
+   "id": "N11",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "delivered band: unsealed format rows read",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "N12",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "a session with no delivered band votes",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "E03",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "paceEvidence false admitted",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "E08",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "caller band hook passes",
+   "killed": true,
+   "killers": 1,
+   "firstKillers": [
+    "a caller cannot hand a band, on a week with harder sessions either; and the extension's keys on an intake never reach the layers below"
+   ],
+   "total": 85
+  },
+  {
+   "id": "E15",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "answer earlier than the record kept",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "E16",
+   "file": "src/v1-run-forecast-index.mjs",
+   "what": "stored NOVICE read as known (L-4)",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  },
+  {
+   "id": "P11",
+   "file": "src/v1-pace-insights.mjs",
+   "what": "withheld pace reaches the revision ending rule",
+   "killed": false,
+   "killers": 0,
+   "firstKillers": [],
+   "total": 85
+  }
+ ]
+}
