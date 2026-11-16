@@ -1,0 +1,362 @@
+[
+ {
+  "schema_version": "1.0.0",
+  "review_id": "SI-V1-SSCTR-SQ-1",
+  "review_revision": "SI-V1-SSCTR-r1",
+  "review_date": "2026-11-13",
+  "agent_version": "SSCTR-1.0.0",
+  "constitution_revision": "SSCTR-CONST-1.0.0",
+  "protocol_revision": "SSCTR-EP-1.0.0",
+  "reviewer": {
+   "actor_type": "AI_AGENT",
+   "instance_id": "ssctr-si-v1-2026-11-13: subagent launched by the Chief with the project SSCTR adapter text as its system prompt; model inherited (claude-opus-5-5); dispatch mechanism not independently verified by this instance; not the author of the target.",
+   "human_credentials_claimed": false,
+   "independent_of_target_author": true
+  },
+  "target": {
+   "artifact": "STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_path": "audits/v1-strength-intelligence-2026-11-13/STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_sha256": "50e6a5ed49dab57e13ba2e6fe85a1c58ef89cde1eb0f3c6d2a3e47c8f5d08da9",
+   "sections": ["0 GAP-S2", "B.2 doseUnit", "C.5 N1", "8 SQ-1"],
+   "related_bytes": {
+    "EXERCISE_EXEMPLAR_V1.json": "fdc7a0556e19c7cce42cd983bc97707665f5ce1c1df0f5d89ce27db446ceb035",
+    "probe-strength.mjs": "fd6f2e78a43fbbe02834524e23a6fb412209b5dad4186b1e403249f7c2627649",
+    "REPERTOIRE_CATALOG_B0.json (R7B0-CATALOG-2)": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+    "r7b-repertoire.mjs": "8bdd5d5d59c1440456f0b695df0957cbbdc14a3202164c3754fde74216b6a483"
+   }
+  },
+  "question": "SQ-1 (GAP-S2): front-plank and side-plank are prescribed as sets x reps x RIR ('1x12 reps @RIR3', progressing to 14). (a) make HOLD_SECONDS configurations inadmissible for selection until a time dose is approved, or (b) approve a time-based hold dose now?",
+  "population_context": "Nonclinical eligible adults of the R6-POLICY-5 V1 population; specification only; synthetic witnesses; no real athlete.",
+  "evidence_used": [
+   "probe-strength.mjs check [I] GAP-S2, run 2026-11-13: 'w2 front-plank 1x12 reps @RIR3' ... 'w3 front-plank 1x14 reps @RIR3' (37/37).",
+   "Catalog R7B0-CATALOG-2: front-plank (B0, ANTI_EXTENSION) and side-plank (R6, ANTI_LATERAL_FLEXION, UNILATERAL per side) are the only isometric holds; dead-bug, bird-dog (BODYWEIGHT) and pallof-press (BANDS) remain as TRUNK ACCESSORY configurations; skill ladder dead-bug-practice -> dead-bug -> front-plank.",
+   "R7B0-SSCTR-B0-C03 (front-plank admitted, no configuration-specific dose) and B0-C05 (trunk work never removed from the whole week)."
+  ],
+  "disposition": "APPROVE_WITH_CONDITIONS",
+  "option_dispositions": {
+   "a_exclude_hold_until_time_dose": "APPROVE_WITH_CONDITIONS",
+   "b_time_based_hold_dose_now": "ABSTAIN: a time dose is a new dose number outside R6-POLICY-5 and the project manifest; it needs its own proposal and evidence review (escalation per the task route), not this decision."
+  },
+  "evidence_status": "SUPPORTED_WITH_LIMITS",
+  "basis": {
+   "primary": "TECHNICAL_CONSENSUS",
+   "detail": "An isometric hold has no repetitions and no meaningful repetitions-in-reserve; '12 reps' of a plank is a representation defect, not a dose (technical consensus, no empirical claim needed). Excluding it adds no dose and relies on configurations already approved (B0-C03, B0-C05). No claim that planks are inferior or that the remaining trunk work is equivalent.",
+   "scientific_evidence_role": "none decisive; no new literature consulted because option (b) is not decided here"
+  },
+  "confidence": {
+   "level": "MODERATE",
+   "rationale": "High confidence that the current row is invalid and that exclusion is reversible and dose-free; moderate overall because lateral-flexion (side-plank) coverage is lost and its relevance is unknown."
+  },
+  "decision": {
+   "summary": "Adopt option (a): in V1, configurations with doseUnit HOLD_SECONDS (front-plank, side-plank) are not admissible for selection until an SSCTR-approved time dose exists. Trunk remains covered by dead-bug, bird-dog and pallof-press at the approved repetition doses. Option (b) is not approved.",
+   "conditions": [
+    "SQ1-C1: The extension assigns doseUnit HOLD_SECONDS to exactly front-plank and side-plank (the exemplar currently lists front-plank only; side-plank must be added); every other configuration resolves to REPS. Test: extension file lists both ids and no others.",
+    "SQ1-C2: With the extension active, no HOLD_SECONDS configuration is selected in any slot, rotation alternative, substitution target (substitutesFor, admissibleAlternative, fallback after set-aside), goal-context alternative, PRACTICE row or skill-ladder progression offer (the dead-bug -> front-plank offer is suppressed; dead-bug is the effective top of that chain). A declared familiarity, preference or emphasis does not make it selectable. Test: inverted probe GAP-S2 plus the 120-profile sweep show zero prescribed HOLD rows.",
+    "SQ1-C3: Each TRUNK slot is filled by another admissible TRUNK configuration under the unchanged selection order; with BODYWEIGHT_ONLY, dead-bug or bird-dog is admissible; trunk work is never removed from the week (B0-C05). If a TRUNK slot has no admissible configuration it is declared through missingPatterns (B0-C09), never silently omitted. Test across all nine catalog equipment profiles and NONE/NOVICE/EXPERIENCED.",
+    "SQ1-C4: No duration, seconds value, reps-to-seconds conversion or hold progression appears in the engine, extension, exemplar or V1 copy; the app does not offer a plank with an invented duration. Test: package check for any HOLD dose number.",
+    "SQ1-C5: The loss of the only ANTI_LATERAL_FLEXION configuration is recorded in the extension as a known limitation; no copy claims the remaining trunk work is equivalent or prevents injury.",
+    "SQ1-C6: Without the extension (absent, wrong hash or no record) behaviour is byte-identical to the current runtime (V-EXT-01). With it, only programs that contained a HOLD row change, and the replacement is a TRUNK ACCESSORY row at the goal dose; no MAIN row changes.",
+    "SQ1-C7: An existing program holding a plank row at activation replaces it from the next built week as a recorded reason-based accessory change (bodyweight, nothing to transfer), disclosed; never mid-session, never touching MAIN.",
+    "SQ1-C8: Reversal to option (b) requires a separate SSCTR decision on a concrete time-dose proposal (duration range, per-side handling, stopping criterion, progression, phase reductions) with its own evidence review; HOLD configurations stay inadmissible until then."
+   ]
+  },
+  "proposed_action": "CONDITIONAL_OPTIONS",
+  "limits": [
+   "Decision on a specification, not on implemented code; the SSCTR review of the implemented candidate is separate and still required.",
+   "No claim about the efficacy of planks, of the remaining trunk configurations, or about trunk training and running performance or injury.",
+   "Applies to R7B0-CATALOG-2 only; a catalog revision adding other isometric configurations must classify them before admission.",
+   "Software provisional review; no human, empirical or clinical validation."
+  ],
+  "ae_review": {"applicable": false, "not_applicable_reason": "Programme-construction admissibility rule; no adaptive decision on an adopted plan."},
+  "governance": {
+   "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+   "publication_status": "NOT_PUBLISHED",
+   "human_validation": false,
+   "empirical_product_validation": false,
+   "clinical_clearance": false,
+   "next_owner": "Chief (V1 Strength Intelligence Foundation)",
+   "next_action": "Carry conditions into the extension spec and tests; route the implemented candidate to SSCTR review."
+  },
+  "expiry": {
+   "review_by": "2027-04-30",
+   "triggers": [
+    "Any byte change to STRENGTH_INTELLIGENCE_FOUNDATION.md sections 0, B.2, C.5 or 8, the bound catalog, R6-POLICY-5 or the extension file",
+    "A proposed time-based hold dose",
+    "A relevant new systematic review or meta-analysis",
+    "V1 population, objective or scope change",
+    "Adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+   ]
+  },
+  "human_revalidation": {
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "queue_entry_status": "PROPOSED_FOR_CHIEF_APPEND (this instance was not authorized to edit the human queue)",
+   "proposed_queue_id": "HQ-SI-V1-SSCTR-SQ-1",
+   "human_review": null
+  }
+ },
+ {
+  "schema_version": "1.0.0",
+  "review_id": "SI-V1-SSCTR-SQ-2",
+  "review_revision": "SI-V1-SSCTR-r1",
+  "review_date": "2026-11-13",
+  "agent_version": "SSCTR-1.0.0",
+  "constitution_revision": "SSCTR-CONST-1.0.0",
+  "protocol_revision": "SSCTR-EP-1.0.0",
+  "reviewer": {
+   "actor_type": "AI_AGENT",
+   "instance_id": "ssctr-si-v1-2026-11-13 (as SQ-1)",
+   "human_credentials_claimed": false,
+   "independent_of_target_author": true
+  },
+  "target": {
+   "artifact": "STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_path": "audits/v1-strength-intelligence-2026-11-13/STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_sha256": "50e6a5ed49dab57e13ba2e6fe85a1c58ef89cde1eb0f3c6d2a3e47c8f5d08da9",
+   "sections": ["0 GAP-S6", "C.5 N2", "8 SQ-2"]
+  },
+  "question": "SQ-2 (GAP-S6): for UPPER-region slots only, should 'external loading' rank before the RUNNING_SUPPORT purpose criterion, so that a RUNNING_SUPPORT athlete with equipment gets loaded upper-body MAIN rows instead of push-up and band-row? Selection only, no dose change.",
+  "population_context": "Nonclinical eligible adults with strength goal RUNNING_SUPPORT (or event context) and external-load upper-body equipment; specification only.",
+  "evidence_used": [
+   "probe-strength.mjs check [C] GAP-S6, run 2026-11-13: full gym, RUNNING_SUPPORT -> upper MAIN = band-row, push-up.",
+   "Catalog composition.interferenceNotes: upper-body work carries no lower-body demand class and creates no run-axis cost (approved R6-HYBRID-ARRANGEMENT claim).",
+   "R6-S01 (ACSM 2026 overview, full text, manifest r12): strength enhanced by heavier loads; machines vs free weights do not differ; elastic and home training effective vs control.",
+   "R6-S25, R6-S34 (manifest r12): strength training benefits for runners rest on heavy/combined, mostly lower-body programmes; no evidence that an upper-body RUNNING_SUPPORT tag confers running benefit.",
+   "N-KIKUCHI2017 (PMID 29541130, Europe PMC record read 2026-11-13, summary level): push-up with position adjusted to match 40% 1RM gave similar hypertrophy and strength to bench press over 8 weeks in 18 young men (counterevidence: equivalence when load is matched).",
+   "N-CALATAYUD2015 (PMID 24983847, abstract-level summary read 2026-11-13): 6RM elastic-band push-up and 6RM bench press gave similar strength gains in 30 trained students over 5 weeks (counterevidence: equivalence when effort/load is matched).",
+   "R7B0-SSCTR-B0-C03 condition 6 and B0-C05 condition 6: bodyweight rows that cannot approach the reserve are a lower stimulus; the selection order is an IMPLEMENTATION_CHOICE with no dose or admissibility effect."
+  ],
+  "disposition": "APPROVE_WITH_CONDITIONS",
+  "evidence_status": "SUPPORTED_WITH_LIMITS",
+  "basis": {
+   "primary": "PRODUCT_HEURISTIC with scientific support",
+   "detail": "The purpose tag on upper-body bodyweight/band configurations is a product heuristic with no running-specific evidence, and the upper body has no run-axis cost, so ranking the tag first buys no compatibility. Loaded configurations let the goal repetitions and reserve be reached and progressed by load (R6-S01). Counterevidence shows push-ups match bench press only when load/effort is matched; V1 has no added load for bodyweight exercises (LATER_GATE), so that match is not assured at 6-10 reps with RIR 3 for stronger athletes."
+  },
+  "confidence": {
+   "level": "MODERATE",
+   "rationale": "Mechanistic and modality-level evidence is consistent; no trial compares these choices in hybrid runners; the change is selection-only and reversible."
+  },
+  "decision": {
+   "summary": "Approve N2: in UPPER-region slots where RUNNING_SUPPORT is among the matching purposes, the external-loading criterion ranks immediately before the purpose criterion. Familiarity and continuity stay first; doses, admissibility and every non-UPPER slot are unchanged.",
+   "conditions": [
+    "SQ2-C1: Scope is exactly UPPER-region slots (PUSH, PULL and their goal-context alternatives) where RUNNING_SUPPORT is a matching purpose (goal RUNNING_SUPPORT, or the EVENT context for accessory slots). LOWER, CORE, CALF and trunk/hip/tibialis running-support selection (B0-C05) is unchanged. Test: diff of selected ids limited to UPPER rows.",
+    "SQ2-C2: Only the relative order of two criteria changes: familiar, then established in this program, then external loading, then purpose, then the remaining criteria in their current order. Test: a unit test on selectionCompare for UPPER and non-UPPER rows.",
+    "SQ2-C3: Admissibility is unchanged: skill gate (NONE/NOVICE LOW only; HIGH bench-press, barbell-row, barbell-overhead-press only when familiar or ladder-reached), equipment, roles, set-aside and knownOnly. Test: an unfamiliar RUNNING_SUPPORT athlete with a full gym never gets barbell-row or bench-press.",
+    "SQ2-C4: Dose is unchanged: the RUNNING_SUPPORT goal dose by role (reps, sets, RIR, REPS_THEN_LOAD, rest); a loaded row new to the athlete starts with effort-guided establishment; nothing is converted from push-up or band-row.",
+    "SQ2-C5: Without an admissible external-load upper configuration (BODYWEIGHT_ONLY, BANDS_ONLY, BANDS_AND_BAR, PULL_UP_BAR_ONLY) the selection is byte-identical to the current one.",
+    "SQ2-C6: An existing program changes its MAIN upper rows only at a block boundary with a recorded reason (DELIBERATE_BLOCK_TRANSITION) and the athlete's agency, never mid-block.",
+    "SQ2-C7: No copy states or implies that loaded upper-body work improves running, economy or performance, or prevents injury. The explanation is limited to: upper-body work progresses by load here and does not compete with running.",
+    "SQ2-C8: When N4 (SQ-4) is also active, the combined order is the one fixed in SQ4-C2 and is covered by a joint test (RUNNING_SUPPORT, full gym, INTERMEDIATE, 2 and 4 days)."
+   ]
+  },
+  "proposed_action": "CONDITIONAL_OPTIONS",
+  "limits": [
+   "Decision on a specification; the implemented candidate requires its own SSCTR review.",
+   "No claim that a loaded upper MAIN is superior for running; the claim is limited to dose attainability and progression.",
+   "Kikuchi 2017 and Calatayud 2015 were read at Europe PMC record/summary level, not full text; they are counterevidence/context only.",
+   "Software provisional review; no human, empirical or clinical validation."
+  ],
+  "ae_review": {"applicable": false, "not_applicable_reason": "Programme-construction selection order; no adaptive decision on an adopted plan."},
+  "governance": {
+   "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+   "publication_status": "NOT_PUBLISHED",
+   "human_validation": false,
+   "empirical_product_validation": false,
+   "clinical_clearance": false,
+   "next_owner": "Chief (V1 Strength Intelligence Foundation)",
+   "next_action": "Carry conditions into the extension spec and tests; route the implemented candidate to SSCTR review."
+  },
+  "expiry": {
+   "review_by": "2027-04-30",
+   "triggers": [
+    "Any byte change to the targeted sections, the bound catalog, R6-POLICY-5 or the extension file",
+    "Admission of added load for bodyweight exercises (LATER_GATE) or new upper configurations tagged RUNNING_SUPPORT",
+    "A relevant new systematic review or meta-analysis",
+    "V1 population, objective or scope change",
+    "Adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+   ]
+  },
+  "human_revalidation": {
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "queue_entry_status": "PROPOSED_FOR_CHIEF_APPEND (this instance was not authorized to edit the human queue)",
+   "proposed_queue_id": "HQ-SI-V1-SSCTR-SQ-2",
+   "human_review": null
+  }
+ },
+ {
+  "schema_version": "1.0.0",
+  "review_id": "SI-V1-SSCTR-SQ-3",
+  "review_revision": "SI-V1-SSCTR-r1",
+  "review_date": "2026-11-13",
+  "agent_version": "SSCTR-1.0.0",
+  "constitution_revision": "SSCTR-CONST-1.0.0",
+  "protocol_revision": "SSCTR-EP-1.0.0",
+  "reviewer": {
+   "actor_type": "AI_AGENT",
+   "instance_id": "ssctr-si-v1-2026-11-13 (as SQ-1)",
+   "human_credentials_claimed": false,
+   "independent_of_target_author": true
+  },
+  "target": {
+   "artifact": "STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_path": "audits/v1-strength-intelligence-2026-11-13/STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_sha256": "50e6a5ed49dab57e13ba2e6fe85a1c58ef89cde1eb0f3c6d2a3e47c8f5d08da9",
+   "sections": ["0 GAP-S5", "A.1 q3", "C.5 N3", "8 SQ-3"]
+  },
+  "question": "SQ-3 (GAP-S5): confirm that V1 hypertrophy keeps the approved goal doses with no per-muscle weekly volume target or threshold, and that a descriptive weekly working-set exposure per primary muscle (catalog muscleCounting) is added for analytics only with no dose consumer; state what V1 copy and claims must not say about hypertrophy.",
+  "population_context": "Nonclinical eligible adults with strength goal HYPERTROPHY, including time-limited hybrid athletes; specification only.",
+  "evidence_used": [
+   "probe-strength.mjs check [B] GAP-S5, run 2026-11-13: 2 x 40 min hypertrophy athlete -> QUADRICEPS 3, HAMSTRINGS 5, PECTORALS 6, LATISSIMUS 6, BICEPS 2 primary working sets per week.",
+   "R6-S01 (ACSM 2026 overview, full text, manifest r12): hypertrophy is enhanced by >= 10 sets per muscle group per week (group level, mostly novices); frequency does not matter when volume is equated.",
+   "N-PELLAND (meta-regression, abstract only, cited in B0-C04 claim C04-4): fractional set counting (indirect sets 0.5) explained outcomes better than primary-only counting.",
+   "R7B0-SSCTR-B0-C04 condition 3: muscle counting is descriptive only and may not set, gate or judge weekly volume until G02 adopts a reviewed method."
+  ],
+  "disposition": "APPROVE_WITH_CONDITIONS",
+  "evidence_status": "SUPPORTED_WITH_LIMITS",
+  "basis": {
+   "primary": "SCIENTIFIC_EVIDENCE for the claim limits; PRODUCT decision for deferring the target to G02",
+   "detail": "Group-level evidence links weekly sets per muscle to hypertrophy, and the observed V1 exposure for a time-limited athlete is far below the volumes associated with enhanced hypertrophy. V1 therefore cannot claim volume-optimised hypertrophy. The counting convention itself is an implementation choice that is not validated (fractional counting fits better), so the count must stay descriptive."
+  },
+  "confidence": {
+   "level": "HIGH",
+   "rationale": "The decision adds no prescription and restricts claims in the direction the evidence points; the remaining uncertainty concerns the eventual G02 method, not this restriction."
+  },
+  "decision": {
+   "summary": "Confirm: V1 hypertrophy uses the approved goal doses only (8-12 reps, REPS_THEN_LOAD, RIR guidance), with no per-muscle target, threshold or volume-driven adjustment. N3 weekly exposure is descriptive analytics with no decision consumer. Per-muscle targeting stays under G02. V1 hypertrophy claims are limited as listed.",
+   "conditions": [
+    "SQ3-C1: N3 counts weekly working sets once per primary muscle per catalog muscleCounting; secondary muscles are not counted and never summed or shown as fractional values (that is a G02 method); a unilateral set counts once, not once per side; warm-up, preparation and PRACTICE rows never count. Test: V-EXT-04 with scenario B known values.",
+    "SQ3-C2: Planned and executed exposure are separate, labelled quantities. Executed counts come only from logged executed sets; skipped, unlogged or unanswered sessions are never counted or imputed as executed (planned / chosen / executed / observed distinction).",
+    "SQ3-C3: No consumer: the exposure is never read by strengthCandidate, phaseDose, advanceStrength, fitStrengthSession, selection, rotation, adaptation, readiness, notifications or recommendations (V-INT-01 spy test); its presence or absence changes no program byte.",
+    "SQ3-C4: The display labels the number as working sets where the muscle is a primary mover, states that this is a descriptive count, and shows no target line, range, colour status, score or comparison with any threshold.",
+    "SQ3-C5: V1 copy and claims MUST NOT: say or imply optimal, maximal, evidence-optimised or science-based hypertrophy volume; state or show '10 sets', any sets-per-muscle target or range, or 'enough / not enough / below / above recommended' volume; label muscles as under-trained, neglected or balanced; predict or promise muscle growth, size change or rate; claim per-muscle programming, targeting or specialization; recommend adding sets or sessions from the exposure; claim that concurrent running does not affect hypertrophy or that the plan neutralizes interference; present a time-limited plan as equivalent to a higher-volume hypertrophy programme.",
+    "SQ3-C6: V1 MAY say that the plan follows a hypertrophy-oriented prescription (8-12 repetitions, progression by repetitions then load, guided by reps in reserve) within the days and time chosen, and that weekly work per muscle depends on the days and time available. Wording is owned by Product/UX within these limits.",
+    "SQ3-C7: Any per-muscle target, threshold, volume auto-increase, fractional counting or specialization enters only through a G02 decision with its own SSCTR review."
+   ]
+  },
+  "proposed_action": "CONDITIONAL_OPTIONS",
+  "limits": [
+   "The >= 10 sets figure is a group-level association from a mostly novice evidence base; it is cited only to bound claims and is not adopted as a target.",
+   "N-PELLAND was read at abstract level; it supports keeping the count descriptive, not a method.",
+   "Decision on a specification; the implemented candidate requires its own SSCTR review.",
+   "Software provisional review; no human, empirical or clinical validation."
+  ],
+  "ae_review": {"applicable": false, "not_applicable_reason": "Descriptive analytics and claim boundaries; no adaptive decision."},
+  "governance": {
+   "gate_status": "NOT_CLOSED_BY_THIS_RECORD (G02 per-muscle targeting remains open)",
+   "publication_status": "NOT_PUBLISHED",
+   "human_validation": false,
+   "empirical_product_validation": false,
+   "clinical_clearance": false,
+   "next_owner": "Chief; Product/UX for copy; Data for planned/executed semantics (G03 dependency)",
+   "next_action": "Carry claim limits into the copy brief and the N3 tests; route the implemented candidate to SSCTR review."
+  },
+  "expiry": {
+   "review_by": "2027-04-30",
+   "triggers": [
+    "Any byte change to the targeted sections, the bound catalog muscleCounting or the extension file",
+    "G02 adoption of a counting method or volume target",
+    "A relevant new systematic review or meta-analysis on volume or set counting",
+    "V1 population, objective or scope change",
+    "Adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+   ]
+  },
+  "human_revalidation": {
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "queue_entry_status": "PROPOSED_FOR_CHIEF_APPEND (this instance was not authorized to edit the human queue)",
+   "proposed_queue_id": "HQ-SI-V1-SSCTR-SQ-3",
+   "human_review": null
+  }
+ },
+ {
+  "schema_version": "1.0.0",
+  "review_id": "SI-V1-SSCTR-SQ-4",
+  "review_revision": "SI-V1-SSCTR-r1",
+  "review_date": "2026-11-13",
+  "agent_version": "SSCTR-1.0.0",
+  "constitution_revision": "SSCTR-CONST-1.0.0",
+  "protocol_revision": "SSCTR-EP-1.0.0",
+  "reviewer": {
+   "actor_type": "AI_AGENT",
+   "instance_id": "ssctr-si-v1-2026-11-13 (as SQ-1)",
+   "human_credentials_claimed": false,
+   "independent_of_target_author": true
+  },
+  "target": {
+   "artifact": "STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_path": "audits/v1-strength-intelligence-2026-11-13/STRENGTH_INTELLIGENCE_FOUNDATION.md",
+   "artifact_sha256": "50e6a5ed49dab57e13ba2e6fe85a1c58ef89cde1eb0f3c6d2a3e47c8f5d08da9",
+   "sections": ["0 GAP-S8", "C.1 item 4", "C.5 N4", "E.2 V-EXT-05", "8 SQ-4"],
+   "related_bytes": {"sweep-planes.mjs": "18371a6d496434fa1d5903416dbd4f986996ef72467bd511376c91fa999402ee"}
+  },
+  "question": "SQ-4 (GAP-S8): when a week has 2+ MAIN slots of the same pattern (PUSH or PULL), should the second prefer the vertical plane if admissible, fixed per slot for the block (MAIN never rotates), analogous to the approved calf alternation (B0-C05)? Selection only, no dose.",
+  "population_context": "Nonclinical eligible adults with 2+ strength days whose templates contain two PUSH or PULL MAIN slots; specification only.",
+  "evidence_used": [
+   "sweep-planes.mjs run 2026-11-13: 120 profiles x 12 weeks; vertical pull never selected; vertical push present in 4 profiles only (116 profiles report missing vertical push and/or pull). Dumbbell-only and dumbbell-bench profiles admit no vertical pull configuration at all.",
+   "Catalog: PUSH/PULL MAIN slots of FULL_A, FULL_B, UPPER, UPPER_B admit both planes; vertical configurations db-overhead-press (MODERATE), barbell-overhead-press (HIGH), pike-push-up (MODERATE), lat-pulldown (LOW), band-pulldown (LOW), band-assisted-pull-up (MODERATE), pull-up and chin-up (HIGH) are already admitted (R6 envelope or B0-C03); none carries lower-body demand.",
+   "R6-S01 (manifest r12): insufficient data on varied exercise selection; periodization and variation less important than once thought.",
+   "R6-S26, R6-S27 (manifest r12; used in B0-C06): exercise variation evidence is limited and mixed.",
+   "Europe PMC directed search 2026-11-13 for longitudinal vertical-versus-horizontal pull/press training comparisons: no applicable trial on the first result page (null result logged, not proof of absence).",
+   "R7B0-SSCTR-B0-C05: calf alternation keeps the default with a single exposure and at most half alternated; selection order is an IMPLEMENTATION_CHOICE."
+  ],
+  "disposition": "APPROVE_WITH_CONDITIONS",
+  "evidence_status": "SUPPORTED_WITH_LIMITS",
+  "basis": {
+   "primary": "TECHNICAL_CONSENSUS and PRODUCT_HEURISTIC (explicit Founder request for horizontal and vertical work)",
+   "detail": "Supported with limits: the change selects only already-approved configurations at the unchanged dose, adds no lower-body demand and keeps MAIN stable within the block. Not supported: any claim that alternating planes improves strength, hypertrophy, posture, shoulder health or running; that benefit is PLAUSIBLE_BUT_UNCERTAIN and must not be claimed."
+  },
+  "confidence": {
+   "level": "MODERATE",
+   "rationale": "Low risk and reversible within approved envelopes; no outcome evidence that plane coverage matters, and the ordering interactions need tests."
+  },
+  "decision": {
+   "summary": "Approve N4 with a loading-class guard: in a week with two same-pattern PUSH or PULL MAIN slots that admit both planes, the first keeps the horizontal default and the second prefers an admissible vertical configuration, fixed for the block. The vertical preference never downgrades the slot from external load to bodyweight or band, and never overrides skill gating, reason-based decisions or event-phase rules.",
+   "conditions": [
+    "SQ4-C1: Trigger and pattern: applies only when the week has 2 or more MAIN slots of the same pattern (PUSH or PULL) whose subpatterns admit both planes. Slots are ordered by template order in the week, then slot index; they alternate horizontal, vertical, horizontal; with a single such slot the horizontal default is kept; at most half of the slots (rounded down) prefer vertical.",
+    "SQ4-C2: Order in a vertical-preferring slot: (1) the slot's own established configuration in this block (continuity); (2) the vertical plane, provided its best admissible configuration is not of a lower loading class than the best admissible horizontal one (EXTERNAL ranks above BODYWEIGHT, ASSISTED and BAND); (3) the current criteria (familiar, purpose, or with N2 external loading then purpose, then higher admissible skill, R6 origin, id). A configuration established or familiar in the other same-pattern slot must not defeat the plane preference. Test: a new program for an INTERMEDIATE athlete with a full gym who declared bench-press familiar gets bench-press in slot 1 and db-overhead-press in slot 2.",
+    "SQ4-C3: Loading-class guard: if the only admissible vertical configurations are BODYWEIGHT, ASSISTED or BAND while an EXTERNAL horizontal one is admissible, the slot keeps horizontal (e.g. dumbbells plus bands: db-row, not band-pulldown). When neither plane has an external option, the preference applies (e.g. bodyweight only: pike-push-up when admissible).",
+    "SQ4-C4: Admissibility is unchanged: NONE/NOVICE get LOW only (lat-pulldown, band-pulldown; no vertical push is admissible for them, so their push slots stay horizontal); HIGH vertical configurations (barbell-overhead-press, pull-up, chin-up) only when familiar or ladder-reached; equipment by date; PRACTICE rows unchanged (novice practice stays wall-pushup and prone-row-practice).",
+    "SQ4-C5: The plane and configuration of each slot are fixed for the block. MAIN changes only by reason-based substitution or a block-boundary decision with a recorded reason (V-SEL-03, V-SEL-04). Reason-based directives, set-aside configurations and SKILL_MISMATCH direction always take precedence and may land in the horizontal plane. An existing program adopts N4 only at its next block boundary with a recorded reason and the athlete's agency.",
+    "SQ4-C6: N4 never introduces a configuration new to the program in TAPER, RACE_WEEK or POST_EVENT, and does not override rotation deferral (ESTABLISHMENT, SPECIFIC). Dose, rest, establishment of a new vertical configuration by effort (no load transfer from the horizontal one) and CMP placement (barbell-overhead-press axial MODERATE as a tie-break only) are unchanged.",
+    "SQ4-C7: No new disclosure is required where equipment admits no vertical option (e.g. no vertical pull with dumbbells only), but no copy may claim balanced or complete plane coverage where it was not achieved.",
+    "SQ4-C8: No copy claims that vertical work or plane alternation improves strength, hypertrophy, posture, shoulder health, injury risk or running. Permitted: the week includes horizontal and vertical pushing and pulling when the equipment and skill level allow.",
+    "SQ4-C9: Tests: V-EXT-05; a rerun of the 120-profile sweep with the extension shows vertical pull in every profile that has MACHINES or BANDS with an external-or-equal vertical option, and vertical push in every INTERMEDIATE/EXPERIENCED profile with dumbbells and 2 or more strength days; DB-only pull unchanged; slot identity constant within each block; byte-identity without the extension (V-EXT-01)."
+   ]
+  },
+  "proposed_action": "CONDITIONAL_OPTIONS",
+  "limits": [
+   "No outcome evidence for plane alternation was found; the approval rests on admissibility, unchanged dose and stability, not on benefit.",
+   "Overhead pressing carries no clinical screening by this decision; pain or limitation routes CLINICAL_HUMAN_REQUIRED as before.",
+   "Decision on a specification; the implemented candidate requires its own SSCTR review.",
+   "Software provisional review; no human, empirical or clinical validation."
+  ],
+  "ae_review": {"applicable": false, "not_applicable_reason": "Programme-construction selection order; no adaptive decision on an adopted plan."},
+  "governance": {
+   "gate_status": "NOT_CLOSED_BY_THIS_RECORD",
+   "publication_status": "NOT_PUBLISHED",
+   "human_validation": false,
+   "empirical_product_validation": false,
+   "clinical_clearance": false,
+   "next_owner": "Chief (V1 Strength Intelligence Foundation)",
+   "next_action": "Carry conditions (in particular SQ4-C2/C3 order and guard) into the extension spec, V-EXT-05 and the sweep; route the implemented candidate to SSCTR review."
+  },
+  "expiry": {
+   "review_by": "2027-04-30",
+   "triggers": [
+    "Any byte change to the targeted sections, the bound catalog templates/selection rules or the extension file",
+    "New vertical configurations or templates with a different count of same-pattern MAIN slots",
+    "A relevant new systematic review or meta-analysis on exercise selection or variation",
+    "V1 population, objective or scope change",
+    "Adverse event or runtime inconsistency",
+    "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
+   ]
+  },
+  "human_revalidation": {
+   "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+   "queue_entry_status": "PROPOSED_FOR_CHIEF_APPEND (this instance was not authorized to edit the human queue)",
+   "proposed_queue_id": "HQ-SI-V1-SSCTR-SQ-4",
+   "human_review": null
+  }
+ }
+]

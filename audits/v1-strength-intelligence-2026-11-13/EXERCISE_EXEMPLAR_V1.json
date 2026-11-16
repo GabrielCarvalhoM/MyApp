@@ -1,0 +1,875 @@
+{
+  "exemplarId": "SI-V1-EXEMPLAR",
+  "revision": "r2",
+  "date": "2026-11-13",
+  "status": "PREIMPLEMENTATION_EXEMPLAR — not runtime authority; the bound catalog prevails on every existing field",
+  "binds": {
+    "catalogRevision": "R7B0-CATALOG-2",
+    "catalogPath": "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json",
+    "catalogSha256": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9"
+  },
+  "purpose": "22 existing configurations chosen to test the taxonomy: each entry carries ONLY the proposed new fields and the real decisions its existing catalog metadata drives. Existing values are never copied here (no parallel source of truth); check-package.mjs reads them from the bound catalog. No fatigue, stimulus or interference number is assigned.",
+  "newFieldNamespaces": {
+    "engine": {
+      "fields": [
+        "doseUnit"
+      ],
+      "target": "CoachingCore/v1/STRENGTH_EXTENSION_V1.json (hash-pinned, SSCTR-bound; see STRENGTH_INTELLIGENCE_FOUNDATION.md section F)",
+      "vocabulary": {
+        "doseUnit": [
+          "REPS",
+          "HOLD_SECONDS"
+        ]
+      },
+      "default": "REPS when absent (keeps the current bytes)",
+      "holdConfigurations": [
+        "front-plank",
+        "side-plank"
+      ]
+    },
+    "display": {
+      "fields": [
+        "display.pt-BR",
+        "aliases.pt-BR"
+      ],
+      "target": "app content layer, outside the dose path; copy owner Product/UX writing (DRAFT_FOR_PRODUCT_COPY)",
+      "doseConsumer": false
+    }
+  },
+  "decisionKinds": [
+    "SELECTION",
+    "SUBSTITUTION",
+    "PROGRAMMING",
+    "PROGRESSION",
+    "REPRESENTATION"
+  ],
+  "ambiguousAliases": [
+    {
+      "alias": "stiff",
+      "candidates": [
+        "barbell-rdl",
+        "db-rdl"
+      ],
+      "rule": "A stiff-legged deadlift is not the Romanian deadlift: an alias that names more than one configuration (or none of them exactly) is asked, never resolved to one (no equivalence by name)."
+    },
+    {
+      "alias": "supino",
+      "candidates": [
+        "bench-press",
+        "db-bench-press"
+      ],
+      "rule": "Implement decides convention and comparability (TOTAL vs PER_HAND): asked."
+    },
+    {
+      "alias": "desenvolvimento",
+      "candidates": [
+        "db-overhead-press",
+        "barbell-overhead-press"
+      ],
+      "rule": "Implement decides convention and skill: asked."
+    },
+    {
+      "alias": "barra",
+      "candidates": [
+        "pull-up",
+        "chin-up"
+      ],
+      "rule": "Grip changes the configuration: asked."
+    },
+    {
+      "alias": "panturrilha",
+      "candidates": [
+        "standing-calf-raise",
+        "bent-knee-calf-raise",
+        "db-calf-raise",
+        "single-leg-calf-raise"
+      ],
+      "rule": "Knee angle and loading change the subpattern and convention: asked."
+    }
+  ],
+  "entries": [
+    {
+      "id": "back-squat",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Agachamento livre com barra"
+      },
+      "aliases": {
+        "pt-BR": [
+          "agachamento livre",
+          "agachamento com barra",
+          "back squat"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill"
+          ],
+          "rule": "HIGH skill: admissible only when declared familiar or reached through the squat ladder (r7b-repertoire.mjs:265)",
+          "outcome": "36 months of training without naming it: goblet-squat instead; named as familiar without a load: selected and established by effort",
+          "probe": [
+            "B2",
+            "B3"
+          ]
+        },
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "lower",
+            "axial"
+          ],
+          "rule": "HEAVY lower with at least 3 sets is HEAVY for CMP.I02/I05/I10; axial HIGH is the first replaced by a lower-axial same-pattern alternative next to a key run (CMP.P05)",
+          "outcome": "Kept away from the day before the quality run when chosen days allow; 2 sets count MODERATE"
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv",
+            "loading"
+          ],
+          "rule": "TOTAL convention: smallest increment 2.5 kg; LOAD goal: one step every two approved weeks",
+          "outcome": "100 -> 100 -> 102.5 -> 102.5 -> 102.5 -> 105 kg on executed evidence",
+          "probe": [
+            "E"
+          ]
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "pattern",
+            "sub",
+            "lower",
+            "axial"
+          ],
+          "rule": "Not a close variation of goblet-squat (axial and lower differ by more than one step); a dumbbell-only substitute is a different configuration, established by effort",
+          "outcome": "substitutesFor(back-squat, dumbbells) = goblet-squat, box-squat-bodyweight; neither is a close variation",
+          "probe": [
+            "D",
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goblet-squat",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Agachamento goblet com halter"
+      },
+      "aliases": {
+        "pt-BR": [
+          "goblet squat",
+          "agachamento taça"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill",
+            "eq",
+            "purposes"
+          ],
+          "rule": "LOW skill, one dumbbell: the default squat MAIN for novices and for anyone whose barbell squat is not declared familiar",
+          "outcome": "MAIN SQUAT in scenarios A, B2, F",
+          "probe": [
+            "A",
+            "B2"
+          ]
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv"
+          ],
+          "rule": "SINGLE_IMPLEMENT: the value is the one implement's mass; increment PER_HAND step applied to the one implement",
+          "outcome": "Never compared with a barbell load"
+        }
+      ]
+    },
+    {
+      "id": "leg-press",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Leg press"
+      },
+      "aliases": {
+        "pt-BR": [
+          "leg press 45",
+          "prensa de pernas"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv"
+          ],
+          "rule": "MACHINE_STACK: a step is the next setting of that machine, never R plus kilograms (F03B-MACHINE-STEP-r1); never comparable across machines",
+          "outcome": "Numberless 'next setting' row; a heavier setting is adopted only when confirmed or repeated"
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "axial",
+            "lower"
+          ],
+          "rule": "Same subpattern as back-squat with axial LOW: the lower-axial alternative CMP.P05 can reach for",
+          "outcome": "Different stimulus and convention, disclosed; established by effort"
+        }
+      ]
+    },
+    {
+      "id": "box-squat-bodyweight",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Agachamento até o banco, peso corporal"
+      },
+      "aliases": {
+        "pt-BR": [
+          "box squat",
+          "agachamento no banco"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "loading",
+            "skill"
+          ],
+          "rule": "Bodyweight LOW: squat slot with no equipment; second rung of the squat ladder after sit-to-stand",
+          "outcome": "Novice without equipment; under a LOAD goal its MAIN row carries BODYWEIGHT_LOWER_STIMULUS"
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "loading"
+          ],
+          "rule": "Standing in for a loaded squat is a different stimulus (stimulusChange), never an equivalent",
+          "outcome": "Flagged in substitutesFor",
+          "probe": [
+            "D"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "barbell-rdl",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Levantamento terra romeno com barra"
+      },
+      "aliases": {
+        "pt-BR": [
+          "terra romeno com barra",
+          "RDL com barra"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "lower",
+            "ecc",
+            "axial"
+          ],
+          "rule": "HEAVY + HIGH eccentric + HIGH axial: CMP.I11 (eccentric before a protected run) and CMP.I02 apply; as MAIN it keeps the essential stimulus the day before the long run",
+          "outcome": "Scenario C: kept as MAIN on the day before the long run at 2 sets (counts MODERATE: LOW run cost)",
+          "probe": [
+            "C"
+          ]
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "skill",
+            "lower",
+            "axial",
+            "ecc",
+            "prim"
+          ],
+          "rule": "barbell-rdl -> db-rdl is a directed close variation (skill falls, demands within one step); db-rdl -> barbell-rdl is not (skill rises)",
+          "outcome": "No symmetric equivalence",
+          "probe": [
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "db-rdl",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Levantamento terra romeno com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "terra romeno com halteres",
+          "RDL com halteres"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill",
+            "eq"
+          ],
+          "rule": "MODERATE skill, dumbbells: hinge MAIN for intermediates without a declared barbell hinge",
+          "outcome": "MAIN HINGE in B2 and F",
+          "probe": [
+            "B2"
+          ]
+        },
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "ecc"
+          ],
+          "rule": "HIGH eccentric: a first or re-establishment exposure is never placed by rotation in the session within about a day before the long run (rotationFor)",
+          "outcome": "New eccentric leg work stays away from the long run's eve"
+        }
+      ]
+    },
+    {
+      "id": "glute-bridge",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Ponte de glúteo"
+      },
+      "aliases": {
+        "pt-BR": [
+          "elevação de quadril no solo",
+          "glute bridge"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub",
+            "loading"
+          ],
+          "rule": "HIP_EXTENSION_BRIDGE is an admissible subpattern of the hinge MAIN slot: covers the hinge pattern with no equipment",
+          "outcome": "Hinge coverage for bodyweight-only athletes"
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "loading"
+          ],
+          "rule": "BODYWEIGHT: progresses by repetitions only (up to the range top + 4); no added load in V1 (LATER.STR.WEIGHTED_BODYWEIGHT)",
+          "outcome": "Reps rise; a loaded hip thrust is reached only through the ladder with agency"
+        }
+      ]
+    },
+    {
+      "id": "bench-press",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Supino reto com barra"
+      },
+      "aliases": {
+        "pt-BR": [
+          "supino reto com barra",
+          "bench press"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill"
+          ],
+          "rule": "HIGH skill: familiarity-gated like the back squat",
+          "outcome": "Selected with its known 60 kg load in scenario B",
+          "probe": [
+            "B"
+          ]
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv"
+          ],
+          "rule": "Hypertrophy REPS_THEN_LOAD: +2 reps per week inside 8-12, then +2.5 kg and back to 8",
+          "outcome": "8 -> 10 -> 12 -> 62.5 kg x 8",
+          "probe": [
+            "E"
+          ]
+        },
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "region",
+            "lower"
+          ],
+          "rule": "Upper body, lower demand NONE: no run-axis cost next to any run",
+          "outcome": "Free placement relative to runs"
+        }
+      ]
+    },
+    {
+      "id": "db-bench-press",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Supino reto com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "supino com halteres"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill",
+            "eq",
+            "purposes"
+          ],
+          "rule": "MODERATE skill with dumbbells and a bench: horizontal push MAIN for intermediates; not tagged RUNNING_SUPPORT, so under that goal push-up outranks it (GAP-S6)",
+          "outcome": "MAIN in B2/F; displaced by push-up in C",
+          "probe": [
+            "C"
+          ]
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv"
+          ],
+          "rule": "PER_HAND convention: the value is each dumbbell; step 2 kg per hand",
+          "outcome": "Never summed into a barbell-comparable total"
+        }
+      ]
+    },
+    {
+      "id": "push-up",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Flexão de braço"
+      },
+      "aliases": {
+        "pt-BR": [
+          "flexão",
+          "apoio de frente"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "purposes",
+            "loading"
+          ],
+          "rule": "The only upper push tagged RUNNING_SUPPORT besides incline push-up: the purpose criterion ranks before external loading",
+          "outcome": "MAIN horizontal push for a RUNNING_SUPPORT athlete with a full gym (GAP-S6; SQ-2 proposes loaded first for UPPER slots)",
+          "probe": [
+            "C"
+          ]
+        },
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill"
+          ],
+          "rule": "Ladder wall-pushup -> incline-push-up -> push-up -> pike-push-up; the last link changes subpattern (a variation, not a progression)",
+          "outcome": "Novice path without equipment"
+        }
+      ]
+    },
+    {
+      "id": "db-overhead-press",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Desenvolvimento com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "desenvolvimento com halteres",
+          "press militar com halteres"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub"
+          ],
+          "rule": "VERTICAL_PUSH is admissible in the push MAIN slots, but the slot default subpattern HORIZONTAL_PUSH always wins while a horizontal configuration is admissible",
+          "outcome": "Never selected in 12 weeks for full-gym, machine or dumbbell-and-bench profiles (GAP-S8); N4 makes the second push MAIN slot of the week prefer it, fixed for the block",
+          "probe": [
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "db-row",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Remada curvada com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "remada curvada com halteres",
+          "remada com halteres"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill",
+            "eq"
+          ],
+          "rule": "LOW skill, dumbbells: the horizontal pull MAIN for dumbbell profiles",
+          "outcome": "MAIN PULL in A, B2, D",
+          "probe": [
+            "A",
+            "B2"
+          ]
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "loading"
+          ],
+          "rule": "A band or bodyweight stand-in is a different stimulus",
+          "outcome": "substitutesFor(db-row, no equipment) flags every result",
+          "probe": [
+            "D"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "band-row",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Remada com elástico"
+      },
+      "aliases": {
+        "pt-BR": [
+          "remada com elástico",
+          "remada com faixa"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv",
+            "loading"
+          ],
+          "rule": "BAND_TENSION: an athlete-reported ordinal level, never kilograms; progresses by repetitions, the harder level is the athlete's choice",
+          "outcome": "No kilogram ever stated"
+        },
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "purposes"
+          ],
+          "rule": "Tagged RUNNING_SUPPORT: outranks db-row and seated-cable-row under that goal even with a full gym",
+          "outcome": "MAIN PULL in scenario C (GAP-S6)",
+          "probe": [
+            "C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lat-pulldown",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Puxada alta na polia"
+      },
+      "aliases": {
+        "pt-BR": [
+          "puxada frontal",
+          "pulldown"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub",
+            "skill"
+          ],
+          "rule": "VERTICAL_PULL at LOW skill: the vertical pull for anyone with machines while the pull-up is not reached; today the horizontal default subpattern always wins the pull MAIN slots",
+          "outcome": "Never selected in 12 weeks even with machines (GAP-S8); N4 would place it in the second pull MAIN slot",
+          "probe": [
+            "I"
+          ]
+        },
+        {
+          "kind": "PROGRESSION",
+          "uses": [
+            "conv"
+          ],
+          "rule": "MACHINE_STACK next-setting rule",
+          "outcome": "Numberless step"
+        }
+      ]
+    },
+    {
+      "id": "pull-up",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Barra fixa pronada"
+      },
+      "aliases": {
+        "pt-BR": [
+          "barra fixa pronada",
+          "pull-up"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "skill"
+          ],
+          "rule": "HIGH skill, ladder scapular-pull-up -> band-assisted-pull-up -> pull-up; reached only with agency at a block boundary after ADVANCE/EARNED exposures",
+          "outcome": "Never assumed from training age"
+        },
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "skill"
+          ],
+          "rule": "SKILL_MISMATCH goes one rung down (band-assisted-pull-up), never up",
+          "outcome": "Regression along the chain only"
+        }
+      ]
+    },
+    {
+      "id": "bulgarian-split-squat-db",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Agachamento búlgaro com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "búlgaro",
+          "agachamento búlgaro"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "ecc",
+            "lat",
+            "region"
+          ],
+          "rule": "HIGH eccentric lower: as a non-MAIN row in a session within about a day before the long run under a RUN lead it loses one set, disclosed (CMP.P04)",
+          "outcome": "Content reduction instead of moving the long run"
+        },
+        {
+          "kind": "REPRESENTATION",
+          "uses": [
+            "lat"
+          ],
+          "rule": "UNILATERAL: reps per side; a set counts once per side, sides never summed",
+          "outcome": "Instruction 'repetitions are per side'"
+        }
+      ]
+    },
+    {
+      "id": "db-step-up",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Subida no banco com halteres"
+      },
+      "aliases": {
+        "pt-BR": [
+          "step-up com halteres",
+          "subida no banco"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SUBSTITUTION",
+          "uses": [
+            "sub",
+            "ecc"
+          ],
+          "rule": "STEP and SPLIT_STANCE share a rotation group: an admissible LUNGE alternative with LOW eccentric",
+          "outcome": "The rotation alternative that never raises eccentric demand"
+        }
+      ]
+    },
+    {
+      "id": "standing-calf-raise",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Elevação de panturrilha em pé"
+      },
+      "aliases": {
+        "pt-BR": [
+          "panturrilha em pé",
+          "gêmeos em pé"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "PROGRAMMING",
+          "uses": [
+            "pattern"
+          ],
+          "rule": "CALF rows count at most LIGHT lower demand (r6-balanced.mjs:24): no key-run cost",
+          "outcome": "Calf work can sit next to a run"
+        },
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub"
+          ],
+          "rule": "STRAIGHT_KNEE default; under RUNNING_SUPPORT or an event, calf slots alternate with bent-knee, at most half bent-knee",
+          "outcome": "Gastrocnemius-biased by default"
+        }
+      ]
+    },
+    {
+      "id": "bent-knee-calf-raise",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Elevação de panturrilha com joelho flexionado"
+      },
+      "aliases": {
+        "pt-BR": [
+          "panturrilha com joelho flexionado"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub",
+            "prim"
+          ],
+          "rule": "BENT_KNEE (soleus emphasis) only by the goal-context alternation, never more than half the calf slots",
+          "outcome": "Instruction: 'a variation, not a better exercise'"
+        }
+      ]
+    },
+    {
+      "id": "dead-bug",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Dead bug"
+      },
+      "aliases": {
+        "pt-BR": [
+          "dead bug",
+          "inseto morto"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "sub",
+            "kind"
+          ],
+          "rule": "ANTI_EXTENSION default trunk subpattern; repetition-based stability work",
+          "outcome": "The trunk row in A, B, C, F",
+          "probe": [
+            "A"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "front-plank",
+      "doseUnit": "HOLD_SECONDS",
+      "display": {
+        "pt-BR": "Prancha frontal"
+      },
+      "aliases": {
+        "pt-BR": [
+          "prancha",
+          "plank"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "REPRESENTATION",
+          "uses": [
+            "kind",
+            "sub"
+          ],
+          "rule": "An isometric hold: the current row model prescribes it as '1x12 reps @RIR3' and progresses it to 14 'reps' (GAP-S2)",
+          "outcome": "SI-V1-SSCTR-SQ-1 (a) approved with conditions: not admissible anywhere (slots, rotation, substitution, fallback, ladder offer from dead-bug) while no time dose is approved; dead-bug, bird-dog and pallof-press keep the trunk covered",
+          "probe": [
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "side-plank",
+      "doseUnit": "HOLD_SECONDS",
+      "display": {
+        "pt-BR": "Prancha lateral"
+      },
+      "aliases": {
+        "pt-BR": [
+          "prancha lateral",
+          "side plank"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "REPRESENTATION",
+          "uses": [
+            "kind",
+            "sub",
+            "lat"
+          ],
+          "rule": "An isometric hold, UNILATERAL (per side), ANTI_LATERAL_FLEXION: the current row model has no time dose (GAP-S2)",
+          "outcome": "SI-V1-SSCTR-SQ-1: not admissible for selection while no time dose is approved; the loss of anti-lateral-flexion coverage is disclosed as a known limitation",
+          "probe": [
+            "I"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tibialis-raise",
+      "doseUnit": "REPS",
+      "display": {
+        "pt-BR": "Elevação de tibial na parede"
+      },
+      "aliases": {
+        "pt-BR": [
+          "tibial na parede",
+          "elevação de ponta de pé"
+        ]
+      },
+      "decisions": [
+        {
+          "kind": "SELECTION",
+          "uses": [
+            "purposes",
+            "pattern"
+          ],
+          "rule": "RUNNING_SUPPORT accessory (ANKLE_DORSIFLEXION); catalog note: local capacity only, no injury-prevention or transfer claim",
+          "outcome": "Purpose is context, never a claim (FORBIDDEN_CLAIM guard in r6-prescription.mjs)"
+        }
+      ]
+    }
+  ],
+  "ssctr": {
+    "records": "reviews/SSCTR_SI_V1_DECISION.json",
+    "boundDocumentSha256": "50e6a5ed49dab57e13ba2e6fe85a1c58ef89cde1eb0f3c6d2a3e47c8f5d08da9",
+    "boundCommit": "3ed9dec",
+    "change": "r2 adds side-plank (HOLD_SECONDS) per SI-V1-SSCTR-SQ-1 condition; everything else as reviewed"
+  }
+}
