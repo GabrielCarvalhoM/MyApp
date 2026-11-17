@@ -1,0 +1,115 @@
+{
+ "id": "V1X-RUN-FORMATS-1",
+ "revision": 1,
+ "date": "2026-11-13",
+ "scope": "Native prescription of V1 run sessions by distance or by time (Run Workout Structure): the form in which the frozen engine's planning dose is delivered, and how its execution is read. It sets no dose, gate, phase, progression or load. Nonclinical recreational adults on roads or tracks, as V1X-RUN-CALIBRATION-1. Synthetic data only.",
+ "decisionRecords": [
+  {"file": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R2_DECISION.json", "sha256": "daf3d7a29b90fa3803c5af6cca8bf903fa15a858b98fa9d7372ad62fe9b02213", "valuesVersion": "RWS-R2-1", "inForce": "every block not replaced by RWS-R3-1 or RWS-R3A-1; RWS-N4 and its continuous values are history"},
+  {"file": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R3_DECISION.json", "sha256": "6b96d76979ddd814234cfcafb283c8bd04809b42bb031bafabe4c9ce6dd408e2", "valuesVersion": "RWS-R3-1", "inForce": "every block not replaced by RWS-R3A-1"},
+  {"file": "audits/v1-run-workout-structure-2026-11-13/ssctr/SSCTR_RWS_R3A_AMENDMENT.json", "sha256": "37047d212c8cf98ddbf81b89b601702e60310025e95efc59083206f9f9d4d412", "valuesVersion": "RWS-R3A-1", "inForce": "all"}
+ ],
+ "note": "A machine-readable transcription of the numbers and lists of those three records; the rules that use them are in src/v1-run-format.mjs and src/v1-run-history.mjs, each citing its item. test/v1rws-format.test.mjs compares every value here with the records. The EQUIVALENT conversion (SSCTR-RWS-DECISION-r1, boundary V1X-RUN-DISTANCE) is not part of this file: where the catalog would fall back to it, the session is TIME.",
+ "tied": {
+  "onBandFraction": 0.015,
+  "doseFloor": 0.9,
+  "windowDays": 28,
+  "distanceReferenceDays": 30,
+  "distanceReferenceMaxFraction": 1.1,
+  "longRunStepMinutes": 5,
+  "consecutiveSessions": 2,
+  "paceRoundUpSeconds": 5,
+  "correctionFloorFraction": 0.91,
+  "marathonLongRunCapMinutes": 180,
+  "marathonEstimateCentralMaxSeconds": 21600,
+  "qualityWarmupMinutes": 10,
+  "qualityCooldownMinutes": 5,
+  "calibrationBoutMinutesMin": 5
+ },
+ "distances": {
+  "repetitionMetres": {"from": 200, "below1000UnitMetres": 50, "from1000UnitMetres": 100, "max": 6000},
+  "candidateUnitPreferenceCoarsestFirst": [1000, 400, 200, 100, 50],
+  "recoveryUnitMetres": 50,
+  "continuousKmUnitsCoarsestFirst": [1, 0.5]
+ },
+ "envelope": {
+  "E1": {"workHighMaxFractionOfStepWork": 1.015, "workLowMinFractionOfStepWork": 0.9},
+  "E2": {"repetitionHighMaxFractionOfStepRepetition": 1.015, "repetitionLowMinFraction": 0.9},
+  "E3": {"extraRecoveryIntervalsOfTheStep": 1}
+ },
+ "catalog": {
+  "THRESHOLD": {"domain": "THRESHOLD_CONTROLLED", "familyMinRepetitionMinutes": 5, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true},
+  "FIVE_K_SPECIFIC": {"domain": "FIVE_K_EFFORT", "familyMinRepetitionMinutes": 2, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID"], "equivalentFallback": false},
+  "TEN_K_SPECIFIC": {"domain": "TEN_K_EFFORT", "familyMinRepetitionMinutes": 3, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID"], "equivalentFallback": false},
+  "HALF_MARATHON_SPECIFIC": {"domain": "HALF_MARATHON_EFFORT", "familyMinRepetitionMinutes": 10, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true},
+  "MARATHON_SPECIFIC": {"domain": "MARATHON_EFFORT", "familyMinRepetitionMinutes": 15, "rotationEntries": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS"], "equivalentFallback": true, "extraSuppression": "MARATHON_ESTIMATE_ABOVE_360_MIN"},
+  "RACE_TOUCH": {"domain": "EVENT", "rotationEntries": ["EVEN_REPEATS"], "extraSuppression": "MARATHON_ESTIMATE_ABOVE_360_MIN"},
+  "EASY": {"domain": "EASY", "rotationEntries": ["CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"]},
+  "LONG": {"domain": "LONG", "rotationEntries": ["CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"]},
+  "RECOVERY_EASY": {"domain": "RECOVERY", "rotationEntries": []},
+  "SHAKEOUT": {"domain": "RECOVERY", "rotationEntries": []},
+  "TIME_ONLY_FAMILIES": ["WALK", "WALK_JOG", "RACE", "FAMILIAR_REPEATED_BOUTS", "RECOVERY_EASY", "SHAKEOUT"]
+ },
+ "patterns": {
+  "EVEN_REPEATS": {"repetitionCountOffsets": [0, -1, 1], "minRepetitions": 2},
+  "EVEN_REPEATS_DISTANCE_RECOVERY": {"minRepetitions": 2},
+  "MIXED": {"minRepetitions": 2},
+  "PYRAMID": {"flankStepMetres": {"peakAtLeast1000": [400, 200], "peakBelow1000": [200, 100]}, "shapesInOrder": [[1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1], [2, 1, 0, 1, 2], [2, 1, 0, 0, 1, 2]], "maxRepetitionsAboveStep": 1},
+  "PROGRESSIVE_REPEATS": {"families": ["THRESHOLD", "HALF_MARATHON_SPECIFIC", "MARATHON_SPECIFIC"], "minRepetitions": 3},
+  "PROGRESSIVE_EASY": {"families": ["EASY", "LONG"]}
+ },
+ "recoveryByDistance": {
+  "experience": ["INTERMEDIATE", "EXPERIENCED"],
+  "families": ["THRESHOLD", "FIVE_K_SPECIFIC", "TEN_K_SPECIFIC", "HALF_MARATHON_SPECIFIC", "MARATHON_SPECIFIC"],
+  "phases": ["BUILD", "DEVELOPMENT", "NEXT_BLOCK", "SPECIFIC"]
+ },
+ "eligibility": {
+  "noviceRotationEntries": ["EVEN_REPEATS"],
+  "phase": {
+   "ESTABLISHMENT": [],
+   "BUILD": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+   "DEVELOPMENT": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+   "NEXT_BLOCK": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PYRAMID", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+   "CONSOLIDATION": ["EVEN_REPEATS", "CONTINUOUS_DISTANCE"],
+   "SPECIFIC": ["EVEN_REPEATS", "EVEN_REPEATS_DISTANCE_RECOVERY", "MIXED", "PROGRESSIVE_REPEATS", "CONTINUOUS_DISTANCE", "PROGRESSIVE_EASY"],
+   "TAPER": ["EVEN_REPEATS", "CONTINUOUS_DISTANCE"],
+   "RACE_WEEK": ["EVEN_REPEATS", "CONTINUOUS_DISTANCE"],
+   "POST_EVENT": []
+  },
+  "raceWeek": {"EVEN_REPEATS": ["RACE_TOUCH"], "CONTINUOUS_DISTANCE": ["EASY"]},
+  "continuous": {"experience": ["INTERMEDIATE", "EXPERIENCED"], "mode": "EASY", "families": ["EASY", "LONG"]},
+  "timeOnlyModes": ["WALK_JOG", "RESTART", "RETURN"]
+ },
+ "sizingExclusions": {"measurements": ["TREADMILL"], "conditions": ["HEAT", "HILLY", "TRAIL", "WIND_STRONG"], "gpsQuality": ["POOR"], "stopReasons": ["SYMPTOM"]},
+ "exposure": {"neutralConditions": ["HEAT", "HILLY", "TRAIL", "WIND_STRONG"], "neutralMeasurements": ["TREADMILL"]},
+ "stops": {"reasons": ["SYMPTOM", "FATIGUE", "PACING", "CONDITIONS", "TIME", "CHOICE", "OTHER"], "missingReasonReadAs": "SYMPTOM"},
+ "runFacts": {
+  "declaredFailureReasons": ["SIGNAL_LOSS", "OBSTRUCTED_SKY", "AUTO_PAUSE", "DEVICE_RESTART"],
+  "measuredSources": ["TRACK", "MEASURED_COURSE", "OFFICIAL", "TREADMILL", "GPS"],
+  "declaredSources": ["MANUAL"],
+  "plausiblePaceSecondsPerKm": [120, 900],
+  "segmentsMax": 20,
+  "runDistanceKmMax": 300,
+  "engineeringNote": "plausiblePaceSecondsPerKm is the measurement-fault window of the run calibration (v1-run-calibration.mjs PLAUSIBLE_PACE, QRE-V1RC-07), applied here to every measured distance; segmentsMax and runDistanceKmMax bound what one report may carry. They are engineering bounds on what counts as a measurement, never sporting values.",
+  "quality": ["OK", "UNKNOWN", "POOR"],
+  "bases": ["MEASURED", "CONFIRMED_CORRECTION", "DECLARED"]
+ },
+ "statuses": {"values": ["DISTANCE", "TIME", "PARTIAL", "STOPPED", "UNKNOWN"], "precedence": ["STOPPED", "PARTIAL", "UNKNOWN", "MET"]},
+ "suppression": {
+  "order": ["EXTENSION_NOT_ENABLED", "HOLD_NO_PRESCRIPTION", "CLINICAL_ROUTE", "WARNING_SIGN_SCREEN_REQUIRED", "MODE_WALK_JOG_RESTART_RETURN", "ENGINE_CONVERTED_TO_EASY", "TEST_ALREADY_DONE_THIS_WEEK", "NOT_A_NATIVE_FAMILY", "PHASE_NOT_ELIGIBLE", "FIRST_EXPOSURE", "EXPRESSION_PREFERENCE_TIME", "EXPERIENCE_NOT_ELIGIBLE", "BAND_UNAVAILABLE", "CONTINUOUS_PACE_UNOBSERVED", "LONG_HISTORY_NOT_COMPARABLE", "DISTANCE_HISTORY_UNKNOWN", "CONTINUOUS_FORMAT_PAUSED", "MARATHON_ESTIMATE_ABOVE_360_MIN", "NO_FORMAT_WITHIN_ENVELOPE", "NO_DISTANCE_WITHIN_CONTINUOUS_ENVELOPE", "TEXT_CHECK_FAILED", "STRUCTURE_ERROR"]
+ },
+ "texts": {
+  "effortGoverns": "If effort climbs above the cue, end the hard part early; an easy finish is fine",
+  "repetitionEstimate": "The time shown for each repetition is an estimate, never a target; if it takes clearly longer, keep the effort, do not speed up",
+  "shortRepetition": "A track or a measured segment gives a closer distance; a run measured by GPS still counts",
+  "recoveryByTime": "Easy jog or walk between repetitions",
+  "recoveryByDistance": "Easy jog, as slow as you like; walk if you need to, the recovery then simply lasts longer",
+  "repetitionStop": "You can stop at any time and the session is recorded as you did it; walking is always allowed",
+  "continuous": "Conversational effort all the way; the duration shown is an estimate, never a target",
+  "continuousWalk": "Walk breaks are fine; do not speed up to reach the distance",
+  "continuousStop": "You can stop at any time and the run is recorded as you did it; if it is taking clearly longer than the estimate, stopping or walking is fine",
+  "timeVersion": "The time version of this session is available, and is the recommended choice in heat, on hills, in strong wind, on trail or on a treadmill",
+  "progressiveRepeats": "Start the first repetition at the slow end of the range; each next one equal or a little quicker, the last never quicker than the fast end",
+  "progressiveEasy": "Relaxed first half; in the second half the pace may rise toward the top of the easy range, never quicker, and conversation stays easy",
+  "stridesAfter": "The strides come after the distance, as prescribed"
+ }
+}

@@ -1,0 +1,872 @@
+{
+ "note": "Lab on Node/V8 (node:vm bare context). Not JavaScriptCore and not an iPhone. Proves the bundle and its host contract; device numbers come only from the iOS target.",
+ "machine": {
+  "node": "v24.19.0",
+  "platform": "win32 10.0.26200",
+  "cpu": "AMD Ryzen 7 5700X 8-Core Processor             ",
+  "cores": 16
+ },
+ "bundle": {
+  "file": "coachingcore-p0.js",
+  "bytes": 1425092,
+  "sha256": "cd79afe8a105f978dfeeb4871d61bbc29b22084d31e0547d5eb206907a8504e5"
+ },
+ "equiv": {
+  "jit": {
+   "probeGlobalsPresent": [
+    "console"
+   ],
+   "bundleEvalMs": 43.8079,
+   "j5": {
+    "ok": true,
+    "steps": [
+     {
+      "step": 0,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 1,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 2,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 3,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 4,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     }
+    ]
+   },
+   "p16": {
+    "ok": true,
+    "steps": 33,
+    "failed": []
+   },
+   "restore": [
+    {
+     "at": 4,
+     "envelopeChars": 431472,
+     "restored": true,
+     "ok": true
+    },
+    {
+     "at": 16,
+     "envelopeChars": 754600,
+     "restored": true,
+     "ok": true
+    }
+   ],
+   "host": {
+    "calls": {
+     "readAsset": 164,
+     "existsAsset": 152,
+     "sha256": 48610,
+     "sha256Chars": 230829818
+    },
+    "misses": [],
+    "unsupported": []
+   }
+  },
+  "jitless": {
+   "probeGlobalsPresent": [
+    "console"
+   ],
+   "bundleEvalMs": 45.352500000000006,
+   "j5": {
+    "ok": true,
+    "steps": [
+     {
+      "step": 0,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 1,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 2,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 3,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     },
+     {
+      "step": 4,
+      "answer": true,
+      "envelope": true,
+      "status": true,
+      "sansForecast": true,
+      "forecastCoarse": true
+     }
+    ]
+   },
+   "p16": {
+    "ok": true,
+    "steps": 33,
+    "failed": []
+   },
+   "restore": [
+    {
+     "at": 4,
+     "envelopeChars": 431472,
+     "restored": true,
+     "ok": true
+    },
+    {
+     "at": 16,
+     "envelopeChars": 754600,
+     "restored": true,
+     "ok": true
+    }
+   ],
+   "host": {
+    "calls": {
+     "readAsset": 164,
+     "existsAsset": 152,
+     "sha256": 48610,
+     "sha256Chars": 230829818
+    },
+    "misses": [],
+    "unsupported": []
+   }
+  }
+ },
+ "ulp": {
+  "perturbedCalls": {
+   "j5": {
+    "exp": 36,
+    "log": 0,
+    "pow": 379
+   },
+   "total": {
+    "exp": 364,
+    "log": 0,
+    "pow": 8108
+   }
+  },
+  "j5": [
+   {
+    "step": 0,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 1,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 2,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 3,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 4,
+    "answer": true,
+    "envelope": true,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": []
+   }
+  ],
+  "p16": [
+   {
+    "step": 0,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 1,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 2,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 3,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 4,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 5,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 6,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 7,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 8,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 9,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 10,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 11,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 12,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 13,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 14,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 15,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 16,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 17,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 18,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 19,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 20,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 21,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 22,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 23,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 24,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 25,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 26,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 27,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 28,
+    "answer": false,
+    "envelope": false,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": [
+     "runForecast"
+    ]
+   },
+   {
+    "step": 29,
+    "answer": true,
+    "envelope": true,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": []
+   },
+   {
+    "step": 30,
+    "answer": true,
+    "envelope": true,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": []
+   },
+   {
+    "step": 31,
+    "answer": true,
+    "envelope": true,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": []
+   },
+   {
+    "step": 32,
+    "answer": true,
+    "envelope": true,
+    "status": true,
+    "sansForecast": true,
+    "forecastCoarse": true,
+    "movedKeys": []
+   }
+  ],
+  "j5LeafDiffs": [
+   [
+    {
+     "path": "/runForecast/decomposition/F/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/decomposition/g/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/inputDigest",
+     "oracle": "a8649c9d0d46c677e673ae3570d7062db1715c01e54ca5f6523926516a906994",
+     "perturbed": "cdc650b6aee5a5a425433e08ec21a2593aed2289a9c2dd2388955d0cd3677a66"
+    },
+    {
+     "path": "/runForecast/planScenario/F_future",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/g_applied",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/unrounded/central",
+     "oracle": 2971.6890066669375,
+     "perturbed": 2971.689006666938
+    },
+    {
+     "path": "/runForecast/hash",
+     "oracle": "9a0cd6e2cb42cffce2b5582494e91961a823fa2d77db46e57033477f6d1b50f9",
+     "perturbed": "eec0de09d455e1e50fb4e41b937e4fb7bd45f876ee98c6d1fb3a818299ac158d"
+    }
+   ],
+   [
+    {
+     "path": "/runForecast/decomposition/F/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/decomposition/g/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/inputDigest",
+     "oracle": "a8649c9d0d46c677e673ae3570d7062db1715c01e54ca5f6523926516a906994",
+     "perturbed": "cdc650b6aee5a5a425433e08ec21a2593aed2289a9c2dd2388955d0cd3677a66"
+    },
+    {
+     "path": "/runForecast/planScenario/F_future",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/g_applied",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/unrounded/central",
+     "oracle": 2971.6890066669375,
+     "perturbed": 2971.689006666938
+    },
+    {
+     "path": "/runForecast/hash",
+     "oracle": "a6f7991c6a93a0786be92002a26d0e7853c43674864c401d1e640e1e917ddca9",
+     "perturbed": "eee05d916f400f3a12922bc2784082d764433775184f196cb2a332c5b4b04839"
+    }
+   ],
+   [
+    {
+     "path": "/runForecast/decomposition/U",
+     "oracle": 0.0028548774589212144,
+     "perturbed": 0.0028548774589212175
+    },
+    {
+     "path": "/runForecast/decomposition/F/planScenario",
+     "oracle": 0.016108739305935513,
+     "perturbed": 0.016108739305935517
+    },
+    {
+     "path": "/runForecast/decomposition/g/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/inputDigest",
+     "oracle": "82e153ad670d65644d17ff7d4396f7525a11b2a42b5a80846dd9e2a9a5f38e82",
+     "perturbed": "8ba26b62a42fc49fa5c4045cdecc16d560a9f8df082428acb77174e6525e6a59"
+    },
+    {
+     "path": "/runForecast/planScenario/F_future",
+     "oracle": 0.016108739305935513,
+     "perturbed": 0.016108739305935517
+    },
+    {
+     "path": "/runForecast/planScenario/g_applied",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/unrounded/central",
+     "oracle": 2971.6890066669375,
+     "perturbed": 2971.689006666938
+    },
+    {
+     "path": "/runForecast/hash",
+     "oracle": "2ca34dd3816602514c36b0208b5e44d0f1062d023d5fe3c8c878bae8ceced4cd",
+     "perturbed": "c5e5dc4c5fbda8dfbea51aedc6be3063e9b4eee1ff57e5087377819bb989617f"
+    }
+   ],
+   [
+    {
+     "path": "/runForecast/decomposition/U",
+     "oracle": 0.0054380774076605454,
+     "perturbed": 0.005438077407660549
+    },
+    {
+     "path": "/runForecast/decomposition/F/planScenario",
+     "oracle": 0.013525539357196184,
+     "perturbed": 0.013525539357196187
+    },
+    {
+     "path": "/runForecast/decomposition/F/observedForecast",
+     "oracle": 0.013525539357196184,
+     "perturbed": 0.013525539357196187
+    },
+    {
+     "path": "/runForecast/decomposition/g/planScenario",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/decomposition/g/observedForecast",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/inputDigest",
+     "oracle": "e9bc205d52df07e72294b910ca8c54d18167ed20f71c493a9f8fab764fc77b7a",
+     "perturbed": "832873413485e32d71f1cc06cf971e86009bc47b09a0279b3b8acebb691039a5"
+    },
+    {
+     "path": "/runForecast/observedForecast/F_future",
+     "oracle": 0.013525539357196184,
+     "perturbed": 0.013525539357196187
+    },
+    {
+     "path": "/runForecast/observedForecast/g_applied",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/observedForecast/unrounded/central",
+     "oracle": 2971.6890066669375,
+     "perturbed": 2971.689006666938
+    },
+    {
+     "path": "/runForecast/planScenario/F_future",
+     "oracle": 0.013525539357196184,
+     "perturbed": 0.013525539357196187
+    },
+    {
+     "path": "/runForecast/planScenario/g_applied",
+     "oracle": 0.01896361676485673,
+     "perturbed": 0.018963616764856736
+    },
+    {
+     "path": "/runForecast/planScenario/unrounded/central",
+     "oracle": 2971.6890066669375,
+     "perturbed": 2971.689006666938
+    },
+    {
+     "path": "/runForecast/hash",
+     "oracle": "248aedc2394074198dc532d2a42d559ec7e1fed117df3ff46c1ab6d00741c68b",
+     "perturbed": "5329b4618fa2e5352a87fd975885bf91a560e2f1e8754e9734a308775256444c"
+    }
+   ],
+   []
+  ],
+  "j5LeafDiffCounts": [
+   7,
+   7,
+   8,
+   13,
+   0
+  ]
+ },
+ "perfJitless": {
+  "bundleVmContext": {
+   "loadMs": 71.3,
+   "generateMs": 197.9,
+   "evaluate": {
+    "all": {
+     "n": 32,
+     "median": 421.6,
+     "p95": 604.2,
+     "max": 618.7
+    },
+    "rows0to60": {
+     "n": 19,
+     "median": 339.2,
+     "p95": 453.3,
+     "max": 453.3
+    },
+    "rows60up": {
+     "n": 13,
+     "median": 529.1,
+     "p95": 618.7,
+     "max": 618.7
+    }
+   },
+   "rssMB": 280.2
+  },
+  "bundleMainContext": {
+   "loadMs": 63.4,
+   "generateMs": 142.7,
+   "evaluate": {
+    "all": {
+     "n": 32,
+     "median": 248.3,
+     "p95": 365.9,
+     "max": 415.9
+    },
+    "rows0to60": {
+     "n": 19,
+     "median": 215.9,
+     "p95": 284.5,
+     "max": 284.5
+    },
+    "rows60up": {
+     "n": 13,
+     "median": 321.8,
+     "p95": 415.9,
+     "max": 415.9
+    }
+   },
+   "rssMB": 281.4
+  },
+  "native": {
+   "loadMs": 101.1,
+   "generateMs": 149.5,
+   "evaluate": {
+    "all": {
+     "n": 32,
+     "median": 253.3,
+     "p95": 363.1,
+     "max": 364.1
+    },
+    "rows0to60": {
+     "n": 19,
+     "median": 203.8,
+     "p95": 305.1,
+     "max": 305.1
+    },
+    "rows60up": {
+     "n": 13,
+     "median": 285.6,
+     "p95": 364.1,
+     "max": 364.1
+    }
+   },
+   "rssMB": 292.1
+  }
+ }
+}
