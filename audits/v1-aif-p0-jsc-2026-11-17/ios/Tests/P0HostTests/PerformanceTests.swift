@@ -60,13 +60,20 @@ final class PerformanceTests: XCTestCase {
 
         let mem1 = Memory.footprintMB()
         let ev = Stats(cycles.map { $0.reviewWallMs })!, load = Stats(loads.map { $0.totalMs })!, gen = Stats(firstGenerate)!
+        // QRE-P0-06/07: each budget says exactly what it measures. The cold load budget is judged on the ColdStartTests samples (lab/device-budgets.mjs);
+        // here the loads run in a process that is already warm. The peak budget uses the process lifetime peak (includes boot, the envelope's bridge
+        // round trip, the atomic writes and the test harness itself: it can only fail too easily, never pass too easily). "After GC" is after a
+        // JSGarbageCollect hint, not a guaranteed full collection: it errs high.
+        let peak = max(mem1.lifetimePeak, journeyPeakMB, cycles.map { $0.peakMB }.max() ?? 0)
         let budgets = [
-            Budget(metric: "context + bundle load p95 (PF-0: <= 1.0 s)", budgetMs: 1000, budgetMB: nil, measured: load.p95, pass: load.p95 <= 1000),
-            Budget(metric: "first plan generateProgram p95 (PF-0: <= 2.0 s)", budgetMs: 2000, budgetMB: nil, measured: gen.p95, pass: gen.p95 <= 2000),
+            Budget(metric: "context + bundle load p95, WARM process (PF-0 <= 1.0 s; the cold verdict is on cold-start samples)", budgetMs: 1000, budgetMB: nil, measured: load.p95, pass: load.p95 <= 1000),
+            Budget(metric: "first plan generateProgram p95 on a fresh context (PF-0: <= 2.0 s)", budgetMs: 2000, budgetMB: nil, measured: gen.p95, pass: gen.p95 <= 2000),
             Budget(metric: "full-plan review p95 (PF-0: <= 1.5 s)", budgetMs: 1500, budgetMB: nil, measured: ev.p95, pass: ev.p95 <= 1500),
             Budget(metric: "full-plan review worst case (PF-0: <= 3 s)", budgetMs: 3000, budgetMB: nil, measured: ev.max, pass: ev.max <= 3000),
-            Budget(metric: "stable footprint after GC (PF-0: <= 150 MB)", budgetMs: nil, budgetMB: 150, measured: retainedMB, pass: retainedMB <= 150),
-            Budget(metric: "peak footprint during reviews (PF-0: <= 350 MB)", budgetMs: nil, budgetMB: 350, measured: max(journeyPeakMB, cycles.map { $0.peakMB }.max() ?? 0), pass: max(journeyPeakMB, cycles.map { $0.peakMB }.max() ?? 0) <= 350)
+            Budget(metric: "footprint after a JSGarbageCollect hint (PF-0 stable <= 150 MB; errs high)", budgetMs: nil, budgetMB: 150, measured: retainedMB, pass: retainedMB <= 150),
+            Budget(metric: "process lifetime peak footprint (PF-0 peak <= 350 MB; includes boot, bridge, writes, harness)", budgetMs: nil, budgetMB: 350, measured: peak, pass: peak <= 350),
+            Budget(metric: "atomic envelope write p95 (PF-0: <= 50 ms)", budgetMs: 50, budgetMB: nil, measured: bridge.atomicWriteMs.p95, pass: bridge.atomicWriteMs.p95 <= 50),
+            Budget(metric: "max main-queue stall while a full-plan review runs off main (PF-0 tap response <= 100 ms; hangs >= 250 ms must be zero)", budgetMs: 100, budgetMB: nil, measured: gapOffMain, pass: gapOffMain <= 100)
         ]
 
         struct Report: Codable {
@@ -84,7 +91,7 @@ final class PerformanceTests: XCTestCase {
             fixedFullPlanReview: ["wallMs": ev, "engineMs": Stats(cycles.map { $0.engineMs })!, "cpuMs": Stats(cycles.map { $0.cpuMs })!, "restoreSnapshotMs": Stats(cycles.map { $0.restoreMs })!],
             cycles: cycles, hostCallsAroundOneReview: hostPerReview,
             memoryMB: ["beforeAnyRuntime": mem0.current, "journeyPeakSampled": journeyPeakMB, "cyclesPeakSampled": cycles.map { $0.peakMB }.max() ?? 0,
-                       "afterCyclesBeforeGC": cycles.last?.footprintMB ?? 0, "afterGC": retainedMB, "end": mem1.current, "processLifetimePeak": mem1.lifetimePeak],
+                       "afterCyclesBeforeGC": cycles.last?.footprintMB ?? 0, "afterGCHint": retainedMB, "end": mem1.current, "processLifetimePeak": mem1.lifetimePeak],
             bridge: bridge, mainThread: ["maxGapMsEngineOffMain": gapOffMain, "maxGapMsControlEngineOnMain": gapControl], budgets: budgets)
         emit("performance", report)
         XCTAssertLessThan(gapOffMain, gapControl, "the engine run off the main thread must leave the main queue free")

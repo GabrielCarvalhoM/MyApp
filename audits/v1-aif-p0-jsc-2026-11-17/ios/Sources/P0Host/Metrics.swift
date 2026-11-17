@@ -48,7 +48,14 @@ public struct Stats: Codable {
 /// The measurement environment, recorded with every result.
 public struct DeviceInfo: Codable {
     public let machine: String, system: String, physicalMemoryMB: Double, processorCount: Int
-    public let thermalState: String, lowPowerMode: Bool, configuration: String, isSimulator: Bool, date: String
+    public let thermalState: String, lowPowerMode: Bool, configuration: String, isSimulator: Bool, debuggerAttached: Bool, date: String
+    /// QRE-P0-08: timings taken under a debugger do not represent the app; the result records whether one was attached (P_TRACED).
+    public static func isDebuggerAttached() -> Bool {
+        var info = kinfo_proc(), size = MemoryLayout<kinfo_proc>.stride
+        var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+        guard sysctl(&mib, u_int(mib.count), &info, &size, nil, 0) == 0 else { return false }
+        return (info.kp_proc.p_flag & P_TRACED) != 0
+    }
     @MainActor public static func current() -> DeviceInfo {
         var u = utsname(); uname(&u)
         let machine = withUnsafeBytes(of: &u.machine) { String(decoding: $0.prefix(while: { $0 != 0 }), as: UTF8.self) }
@@ -71,7 +78,7 @@ public struct DeviceInfo: Codable {
         #endif
         return DeviceInfo(machine: machine, system: system, physicalMemoryMB: Double(ProcessInfo.processInfo.physicalMemory) / 1_048_576,
                           processorCount: ProcessInfo.processInfo.activeProcessorCount, thermalState: thermal,
-                          lowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled, configuration: config, isSimulator: sim,
+                          lowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled, configuration: config, isSimulator: sim, debuggerAttached: isDebuggerAttached(),
                           date: ISO8601DateFormatter().string(from: Date()))
     }
 }

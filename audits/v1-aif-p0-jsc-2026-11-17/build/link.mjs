@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
+import vm from 'node:vm';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url)), ROOT = path.resolve(HERE, '..'), REPO = path.resolve(ROOT, '..', '..');
@@ -60,7 +61,7 @@ load(ENTRY);
   visit(mods.get(ENTRY)); }
 
 // Real export names, from Node's own module namespaces.
-for (const m of mods.values()) m.names = Object.keys(await import(pathToFileURL(m.abs).href));
+for (const m of mods.values()) { m.ns = await import(pathToFileURL(m.abs).href); m.names = Object.keys(m.ns); }
 
 const assets = new Map(); // key (repo path) -> abs
 let metaReplacements = 0, statementsReplaced = 0;
@@ -99,14 +100,16 @@ function transform(m) {
     if (!/^[A-Za-z0-9_\-./]+$/.test(key)) fail('asset path needs encoding: ' + key);
     if (fs.existsSync(abs)) assets.set(key, abs);
   }
-  // Every export name: an explicit re-export, a star re-export, or a local binding of the same name (or renamed by an export list).
-  const starNames = new Map();
-  for (const s of stars) for (const n of s.mod.names) if (!starNames.has(n)) starNames.set(n, s.v);
-  const local = n => new RegExp(`(^|\\n)\\s*(export\\s+)?(function\\*?\\s+${n.replace(/\$/g, '\\$')}\\b|const\\s[^\\n]*?\\b${n.replace(/\$/g, '\\$')}\\s*=)`).test(m.src);
+  // Every export name: an explicit re-export, a star re-export, or a local export of the same name (or renamed by an export list).
+  // QRE-P0-01: which one is decided by Node's own namespaces, never by searching the text: a name comes through `export *` from the star
+  // source whose binding is the very same value Node exposes for this module; otherwise it is this module's own export (ESM: a local export
+  // shadows a star name; a non-exported local of the same name never does). The export gate below then checks every binding.
+  const fromStar = n => stars.find(s => Object.prototype.hasOwnProperty.call(s.mod.ns, n) && s.mod.ns[n] === m.ns[n]);
   const defs = [];
   for (const n of m.names) {
     let g = getters.get(n);
-    if (!g && starNames.has(n) && !local(n)) g = `${starNames.get(n)}[${JSON.stringify(n)}]`;
+    const s = g ? null : fromStar(n);
+    if (s) g = `${s.v}[${JSON.stringify(n)}]`;
     if (!g) g = n;
     defs.push(`  ${JSON.stringify(n)}: { enumerable: true, get: () => ${g} }`);
   }
@@ -133,7 +136,35 @@ const __api = __req(${mods.get(ENTRY).id}).api;
 Object.defineProperty(globalThis, 'CoachingCoreP0', { value: __api, enumerable: false, writable: false, configurable: false });
 })();
 `;
-// Namespace keys must come out in ESM order (sorted): checked against Node below by the replay, not assumed.
+// Export gate (QRE-P0-01): the module bodies above, evaluated in a bare context with the module table exposed (only the last two lines of the
+// shipped bundle differ), must give every module the namespace Node gives it: same keys in the same order, every binding readable, same type,
+// functions with the same name and arity, other values with the same JSON (URLs compared by their path inside the repository). Else no build.
+let gateChecked = 0;
+{
+  const TAIL = `const __api = __req(${mods.get(ENTRY).id}).api;`;
+  const gateSrc = bundle.replace(/const __api = [\s\S]*$/, `${TAIL}\nglobalThis.__gateReq = __req;\n})();\n`);
+  const texts = new Map([...assets].map(([k, abs]) => [k, fs.readFileSync(abs, 'utf8')]));
+  const ctx = vm.createContext({ __p0host: { readAsset: k => texts.get(k) ?? null, existsAsset: k => texts.has(k), sha256: t => sha(Buffer.from(t, 'utf8')), now: () => performance.now() } });
+  vm.runInContext(gateSrc, ctx, { filename: 'gate.js' });
+  const view = v => {
+    if (typeof v === 'function') return `function ${v.name}/${v.length}`;
+    if (v instanceof URL) return 'url:' + rel(fileURLToPath(v));
+    if (v && typeof v === 'object' && v.constructor?.name === 'URL' && typeof v.pathname === 'string' && v.href?.startsWith('file:///p0/')) return 'url:' + v.pathname.slice(4);
+    try { return typeof v + ':' + JSON.stringify(v); } catch (e) { return typeof v + ':unserializable'; }
+  };
+  const bad = [];
+  for (const m of mods.values()) {
+    const ns = ctx.__gateReq(m.id), keys = Object.keys(ns);
+    if (keys.join() !== m.names.join()) { bad.push(`${m.file}: keys differ`); continue; }
+    for (const n of m.names) {
+      let b; try { b = view(ns[n]); } catch (e) { bad.push(`${m.file}: ${n} throws ${e.constructor.name}: ${e.message}`); continue; }
+      const a = view(m.ns[n]);
+      if (a !== b) bad.push(`${m.file}: ${n} differs (${a.slice(0, 60)} vs ${b.slice(0, 60)})`);
+      gateChecked++;
+    }
+  }
+  if (bad.length) fail('export gate:\n  ' + bad.join('\n  '));
+}
 fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
 fs.writeFileSync(path.join(OUT, 'coachingcore-p0.js'), bundle);
 const manifest = [...assets].sort(([a], [b]) => (a < b ? -1 : 1)).map(([key, abs]) => {
@@ -144,7 +175,7 @@ const manifest = [...assets].sort(([a], [b]) => (a < b ? -1 : 1)).map(([key, abs
 fs.writeFileSync(path.join(OUT, 'assets-manifest.json'), JSON.stringify(manifest, null, 1) + '\n');
 const build = {
   entry: rel(ENTRY), modules: order.map(m => ({ id: m.id, file: m.file, sha256: m.srcSha256, exports: m.names.length })),
-  transforms: { statementsReplaced, importMetaUrlReplaced: metaReplacements },
+  transforms: { statementsReplaced, importMetaUrlReplaced: metaReplacements }, exportGate: { bindingsChecked: gateChecked, mismatches: 0 },
   bundle: { file: 'coachingcore-p0.js', bytes: Buffer.byteLength(bundle), sha256: sha(bundle) },
   assets: { count: manifest.length, bytes: manifest.reduce((a, x) => a + x.bytes, 0) }
 };

@@ -44,17 +44,42 @@ func replaySteps(_ rt: CoachingCoreRuntime, _ fx: Fixture, from: Int = 0, to: In
         let s = fx.steps[i]
         let sp = CoachingCoreRuntime.signposter, st = sp.beginInterval("step", id: sp.makeSignpostID())
         let w0 = Clock.ms(), c0 = Clock.threadCpuMs()
-        let raw = s.kind == "ONBOARD"
-            ? try rt.call("onboard", [s.intakeJSON!, opts])
-            : try rt.call("review", [s.kind, s.asOf!, s.factsJSON!, s.eventId!, opts])
+        let raw: String
+        do {
+            defer { sp.endInterval("step", st) }
+            raw = s.kind == "ONBOARD"
+                ? try rt.call("onboard", [s.intakeJSON!, opts])
+                : try rt.call("review", [s.kind, s.asOf!, s.factsJSON!, s.eventId!, opts])
+        }
         let wall = Clock.ms() - w0, cpu = Clock.threadCpuMs() - c0
-        sp.endInterval("step", st)
         onRaw?(i, raw)
         let r = try JSONDecoder().decode(Reply.self, from: Data(raw.utf8))
         let v: Verdict = r.answerDigest == nil ? (r.status == fx.expected[i].status ? .IDENTICAL : .DIVERGED) : verdict(r, fx.expected[i])
         out.append((r, StepResult(step: i, kind: s.kind, status: r.status, verdict: v, engineMs: r.engineMs, swiftWallMs: wall, cpuMs: cpu, ledgerRows: r.ledgerRows)))
     }
     return out
+}
+
+/// The host counters of a runtime (engine queue only). QRE-P0-02: a prelude refusal or a missing asset can be caught by the engine and come
+/// back as an ordinary answer, so these counters, not the call, are the loud signal: every equivalence run must end with both lists empty.
+struct HostCalls: Codable {
+    struct C: Codable { let readAsset: Int, existsAsset: Int, sha256: Int, sha256Chars: Int }
+    let calls: C; let misses: [String]; let unsupported: [String]
+}
+func hostCalls(_ rt: CoachingCoreRuntime) throws -> HostCalls {
+    try JSONDecoder().decode(HostCalls.self, from: Data(try rt.call("hostCalls").utf8))
+}
+func assertHostClean(_ h: HostCalls, _ what: String, file: StaticString = #filePath, line: UInt = #line) {
+    XCTAssertTrue(h.misses.isEmpty, "\(what): assets asked for but not bundled: \(h.misses)", file: file, line: line)
+    XCTAssertTrue(h.unsupported.isEmpty, "\(what): host functions asked for but not provided: \(h.unsupported)", file: file, line: line)
+}
+
+/// QRE-P0-05: every step that is not IDENTICAL keeps the device's full reply, for lab/diff-answer.mjs (EXPLAINED_LIBM is a localization,
+/// accepted only after that field-level check and an explicit decision).
+func attachNonIdentical(_ test: XCTestCase, _ journey: String, _ res: [(Reply, StepResult)], _ raws: [Int: String]) {
+    for (_, s) in res where s.verdict != .IDENTICAL {
+        let a = XCTAttachment(string: raws[s.step] ?? ""); a.name = "\(journey)-step\(s.step)-reply.json"; a.lifetime = .keepAlways; test.add(a)
+    }
 }
 
 /// Prints one result line the run log can be grepped for ("P0RESULT <name> <json>") and keeps it as a test attachment.

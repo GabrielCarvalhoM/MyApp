@@ -11707,7 +11707,7 @@ Object.defineProperties(__exports, {
   "V1_UNAVAILABLE": { enumerable: true, get: () => __r8["V1_UNAVAILABLE"] },
   "WHOLE_ROW_WITHHELD": { enumerable: true, get: () => __r8["WHOLE_ROW_WITHHELD"] },
   "WITHHOLDABLE": { enumerable: true, get: () => __r8["WITHHOLDABLE"] },
-  "admitted": { enumerable: true, get: () => admitted },
+  "admitted": { enumerable: true, get: () => __r8["admitted"] },
   "evaluateProgram": { enumerable: true, get: () => evaluateProgram },
   "generateProgram": { enumerable: true, get: () => generateProgram },
   "historicalStateOf": { enumerable: true, get: () => __r8["historicalStateOf"] },

@@ -2,26 +2,36 @@ import Foundation
 import XCTest
 import P0Host
 
-/// JavaScriptCore against the Node oracle, on the same recorded synthetic inputs. A DIVERGED step fails; EXPLAINED_LIBM is reported, never hidden.
+/// JavaScriptCore against the Node oracle, on the same recorded synthetic inputs. A DIVERGED step fails; EXPLAINED_LIBM is reported, never hidden:
+/// its replies are attached and it is accepted only after lab/diff-answer.mjs and an explicit decision (P0_REPORT.md §4.2).
 @MainActor
 final class EquivalenceTests: XCTestCase {
-    private let digest = #"{"digest":true}"#
+    /// Digests plus the full answer: equivalence runs pay the answer's bridge crossing so that any non-identical step leaves field-level evidence.
+    private let opts = #"{"digest":true,"answer":true}"#
+
+    /// Replays [from, to) and returns the step results, the raw replies, and the runtime's host counters at the end.
+    private func replay(_ rt: CoachingCoreRuntime, _ fx: Fixture, from: Int = 0, to: Int? = nil) async throws -> ([(Reply, StepResult)], [Int: String], HostCalls) {
+        let o = opts
+        return try await rt.run { rt -> ([(Reply, StepResult)], [Int: String], HostCalls) in
+            var raws: [Int: String] = [:]
+            let res = try replaySteps(rt, fx, from: from, to: to, opts: o, onRaw: { raws[$0] = $1 })
+            return (res, raws, try hostCalls(rt))
+        }
+    }
+
+    private func check(_ journey: String, _ fx: Fixture, _ res: [(Reply, StepResult)], _ raws: [Int: String], _ h: HostCalls) {
+        attachNonIdentical(self, journey, res, raws)
+        for (r, s) in res { XCTAssertNotEqual(s.verdict, .DIVERGED, "\(journey) step \(s.step) diverged (status \(r.status), expected \(fx.expected[s.step].status))") }
+        assertHostClean(h, journey)
+    }
 
     /// The five reference answers of the ADR (J5): generate, three Sunday reviews, "not 100%" with a warning sign (CLINICAL_HUMAN_REQUIRED).
     func testJ5ReferenceAnswers() async throws {
         let fx = try Fixture.load("j5"), rt = try await CoachingCoreRuntime.make()
         let reset = try await rt.run { try $0.call("reset") }
         XCTAssertTrue(reset.contains(fx.engine), "bundle engine id differs from the fixture: \(reset)")
-        let (res, raws) = try await rt.run { rt -> ([(Reply, StepResult)], [Int: String]) in
-            var raws: [Int: String] = [:]
-            let res = try replaySteps(rt, fx, opts: #"{"digest":true,"answer":true}"#, onRaw: { raws[$0] = $1 })
-            return (res, raws)
-        }
-        for (r, s) in res where s.verdict != .IDENTICAL {
-            // The full answer, for lab/diff against Fixtures/j5-answers.json.
-            let a = XCTAttachment(string: raws[s.step] ?? ""); a.name = "j5-step\(s.step)-reply.json"; a.lifetime = .keepAlways; add(a)
-            XCTAssertNotEqual(s.verdict, .DIVERGED, "J5 step \(s.step) diverged (status \(r.status), expected \(fx.expected[s.step].status))")
-        }
+        let (res, raws, h) = try await replay(rt, fx)
+        check("j5", fx, res, raws, h)
         emit("equivalence-j5", res.map { $0.1 })
     }
 
@@ -29,8 +39,8 @@ final class EquivalenceTests: XCTestCase {
     func testP16Journey() async throws {
         let fx = try Fixture.load("p16"), rt = try await CoachingCoreRuntime.make()
         _ = try await rt.run { try $0.call("reset") }
-        let res = try await rt.run { rt in try replaySteps(rt, fx, opts: self.digest) }
-        for (_, s) in res { XCTAssertNotEqual(s.verdict, .DIVERGED, "P16 step \(s.step) diverged") }
+        let (res, raws, h) = try await replay(rt, fx)
+        check("p16", fx, res, raws, h)
         XCTAssertEqual(res.last?.0.ledgerRows, fx.expected.last?.ledgerRows)
         emit("equivalence-p16", res.map { $0.1 })
     }
@@ -54,8 +64,8 @@ final class EquivalenceTests: XCTestCase {
             let r0 = Clock.ms(), text = try String(contentsOf: file, encoding: .utf8), readMs = Clock.ms() - r0
             let restored = try await b.run { try $0.call("restore", [text]) }
             XCTAssertTrue(restored.contains("\"ok\":true"), restored)
-            let res = try await b.run { rt in try replaySteps(rt, fx, from: k, opts: self.digest) }
-            for (_, s) in res { XCTAssertNotEqual(s.verdict, .DIVERGED, "\(name) restored step \(s.step) diverged") }
+            let (res, raws, h) = try await replay(b, fx, from: k)
+            check("\(name)-restored", fx, res, raws, h)
             out.append(R(journey: name, at: k, envelopeBytes: json.utf8.count, writeMs: writeMs, readMs: readMs, verdicts: res.map { $0.1.verdict }))
             try? FileManager.default.removeItem(at: file)
         }
@@ -65,17 +75,15 @@ final class EquivalenceTests: XCTestCase {
     /// The engine used the host it was given and asked for nothing else (the AIF QRE-AIF-04 condition).
     func testHostContract() async throws {
         let fx = try Fixture.load("j5"), rt = try await CoachingCoreRuntime.make()
-        let calls = try await rt.run { rt -> String in _ = try rt.call("reset"); _ = try replaySteps(rt, fx, opts: "{}"); return try rt.call("hostCalls") }
-        struct H: Codable { struct C: Codable { let readAsset: Int, existsAsset: Int, sha256: Int, sha256Chars: Int }; let calls: C; let misses: [String]; let unsupported: [String] }
-        let h = try JSONDecoder().decode(H.self, from: Data(calls.utf8))
-        XCTAssertTrue(h.misses.isEmpty, "assets asked for but not bundled: \(h.misses)")
-        XCTAssertTrue(h.unsupported.isEmpty, "host functions asked for but not provided: \(h.unsupported)")
+        let h = try await rt.run { rt -> HostCalls in _ = try rt.call("reset"); _ = try replaySteps(rt, fx, opts: "{}"); return try hostCalls(rt) }
+        assertHostClean(h, "j5")
         XCTAssertGreaterThan(h.calls.readAsset, 0); XCTAssertGreaterThan(h.calls.sha256, 0)
         XCTAssertEqual(h.calls.sha256, rt.host.sha256Calls, "every engine hash went through the native host function")
         emit("host-contract", h)
     }
 
-    /// A changed asset never reaches the engine: the host refuses it against the manifest digest.
+    /// A changed asset never reaches the engine: the host refuses it against the manifest digest. (This exercises the second check, on the
+    /// text handed to the engine; the first, on the file bytes, is the same comparison on the bytes read.)
     func testTamperedAssetRefused() async throws {
         do {
             _ = try await CoachingCoreRuntime.make(tamper: { key, text in key.hasSuffix("PROGRAM_POLICY_R6.json") ? text.replacingOccurrences(of: "\"", with: "'", options: [], range: text.range(of: "\"")) : text })
