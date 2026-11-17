@@ -8,7 +8,7 @@
 - `audits/v1-run-extensions-2026-11-13/phase-b/PHASE_B_CLOSURE.md` §5: o que a resposta traz e o que o app nunca faz.
 - `audits/v1-run-extensions-2026-11-13/e01-patch/IOS_RUN_REPORT_INTEGRATION_CONTRACT.md`: duas vozes por execução.
 
-**Executado por:** `harness/lib.mjs` (envelope e projeções) e `harness/journey.mjs` (29 verificações).
+**Executado por:** `harness/lib.mjs` (envelope e projeções) e `harness/journey.mjs` (30 verificações).
 
 ## 1. Camadas e quem é dono de quê
 
@@ -42,7 +42,7 @@ Legenda: **S** suportado como está · **T** suportado com transformação obrig
 | Correções de registro | `correctionOf` + `correctedAt` (motor); `supersedes` (evidência V1RC); `declared` (RWS) | S | Cada correção é do seu autor e repete tudo o que ele diz. O original fica, marcado como `superseded` (passo 12) |
 | Retorno após pausa | `RETURN_AFTER_PAUSE{interruption{startDate, endDate\|days, reasonCategory}}`; reinício com `athlete.pause{reasonCategory, weeks}` | S | Sem `reasonCategory`, o reinício pergunta (observado). **Gate RESTART aberto** (§6) |
 | Resultado de prova declarado | `runEvidence` (V1RC) | S no motor, **L na custódia** | A custódia V1CIB não aceita `runEvidence` (passo 15) |
-| "Não estou 100%", sinais, prontidão | `NOT_FEELING_100{wellbeing}`, `WELLBEING_CHECK`, `READINESS_DECLARATION{readiness}` | S | Um sinal de alerta dá `CLINICAL_HUMAN_REQUIRED`; só a declaração de prontidão libera (passo 13) |
+| "Não estou 100%", sinais, prontidão | `NOT_FEELING_100{wellbeing}`, `WELLBEING_CHECK`, `READINESS_DECLARATION{readiness}` | S | Um sinal de alerta dá `CLINICAL_HUMAN_REQUIRED`; só a declaração de prontidão libera (passo 13). **Exceção: depois da expiração dos registros de habilitação, o sinal dá `UNSUPPORTED`** (QRE-AIF-01, L-APP-08) |
 
 ## 3. O envelope do registro (VF-APP-RECORD-ENVELOPE-0)
 
@@ -73,9 +73,9 @@ A resposta inteira tem 0,2 a 1,2 MB, e o programa sozinho 234 KB. A UI nunca a r
 |---|---|---|
 | `TODAY` | `state` (os estados do cliente V1CIB), `sports.RUN\|STRENGTH.state`, `hold`, `question`, sessões de hoje como linhas (`id, date, sport, role, turn, status, executable, projected, minutes, expression \| exercises`), totais da semana | 0,46 KB |
 | `WEEK` | uma linha por sessão da semana | 1,1 KB |
-| `SESSION` (corrida) | `expression` (`NATIVE` ou `TIME`), `formatHash`, `blocks`, `estimate`, `dose`, `unavailable`, `provisional`, `instructions` da camada de formatos; sem ela, a prescrição de tempo do motor como está | 1,2 KB |
-| `SESSION` (força) | por exercício: `id, role, pattern, laterality, sets, reps, rir, restSeconds, load{mode, value?, unit, convention}, equipment, instructions` | 1,0 KB |
-| `INSIGHTS` | `forecast{status, reason, shown, observed, plan, basis, raceWeek, availableFrom}`; `paceInsights{status, domains[d]{state, id, action}}`; `paceRevision` (sempre `INERT`); `strengthExposure{status, reason, descriptiveOnly, planned, executed}` | 1,9 KB |
+| `SESSION` (corrida) | `expression` (`NATIVE` ou `TIME`), `formatHash`, `blocks`, `estimate`, `dose`, `unavailable`, `provisional`, `instructions` da camada de formatos, só para as sessões que ela entregou (a janela das próximas semanas). Fora dela, a prescrição de tempo do motor como está, marcada `TIME` | 1,45 KB |
+| `SESSION` (força) | por exercício: `id, role, pattern, laterality, sets, reps, rir, restSeconds, load{mode, value?, unit, convention}, equipment, instructions` | 3,3 KB |
+| `INSIGHTS` | `forecast{status, reason, shown, observed, plan, basis, raceWeek, availableFrom}`; `paceInsights{status, domains[d]{state, id, action}}`; `paceRevision` (sempre `INERT`); `strengthExposure{status, reason, descriptiveOnly, planned, executed}` | 2,4 KB |
 | `DECISION`, `HISTORY`, `STATUS` | `decision`, `historyView` e `status` do V1CIB | — |
 
 **Semântica de ausência (vale para todas):**
@@ -92,7 +92,7 @@ A resposta inteira tem 0,2 a 1,2 MB, e o programa sozinho 234 KB. A UI nunca a r
 - **Motor:** `V1_STRENGTH_ENGINE` = `COACHINGCORE-V1-1+V1X-RUN-CALIBRATION-1+V1X-RUN-FORMATS-1+V1X-RACE-FORECAST-1+V1X-STRENGTH-1`. Os sha256 dos valores vêm em cada bloco (`strengthExtension.sha256`, `runForecast.valuesSha256`, …).
 - **Plano de outra versão:**
   - um plano construído sem as regras de força é revisado sem elas e diz isso (`PLAN_BUILT_WITHOUT_THE_RULES`, passo 14);
-  - um plano construído sob outras regras → `UNSUPPORTED`, exceto uma resposta clínica, que sempre passa.
+  - um plano construído sob outras regras → `UNSUPPORTED`, exceto uma resposta clínica, que passa enquanto os registros de habilitação valem (depois da expiração, não passa: QRE-AIF-01).
   - A migração de planos anteriores às regras de força é condição aberta dos registros.
 - **Envelope de outra versão:** recusado na restauração. A migração é um passo explícito, com teste próprio; nunca uma leitura tolerante.
 - **Esquemas:** `VF-APP-RECORD-ENVELOPE-0` e `VF-APP-VIEW-0`. Campo novo = versão nova; campo removido = migração.
@@ -106,6 +106,7 @@ A resposta inteira tem 0,2 a 1,2 MB, e o programa sozinho 234 KB. A UI nunca a r
 | L-APP-03 | O turno só aceita AM/PM, um por esporte: sem noite, sem várias escolhas, sem turno por dia | Product + SSCTR | Decidir se AM/PM basta. Se não basta, é mudança de motor |
 | L-APP-04 | Sem minutos por dia | Product + SSCTR | Como L-APP-03 |
 | L-APP-05 | Não há revisão "só leitura": atualizar a previsão do primeiro dia da semana exige uma revisão (`WEEKLY_REVIEW` sem relatos), que é um evento do registro | Engineering + SSCTR | Decidir se o app chama essa revisão no primeiro acesso da semana (é o que os testes do motor fazem) ou se o motor precisa de uma leitura sem evento |
-| L-APP-06 | Gate **RESTART**, observado: depois de um reinício, o plano novo reusa os ids de sessão do anterior (`w0-run-d1`, …). O primeiro relato do plano novo não ganha linha própria, e a linha do plano anterior com o mesmo id fica `conflicted` | Founder (é mudança no motor congelado) | Identidade de sessão por plano, num freeze sucessor. Até lá, nenhum reinício com atleta real |
+| L-APP-06 | Gate **RESTART**, observado: depois de um reinício, o plano novo reusa os ids de sessão do anterior (`w0-run-d1`, …), e a identidade de um relato é `session:<id>`, sem plano. Pelo cliente headless, o relato do plano novo não ganha linha própria e a linha do plano anterior fica `conflicted` (na jornada longa: 0 linhas próprias no segundo plano, 31 linhas do primeiro em conflito). **Pela custódia V1CIB** recomendada no ADR, o primeiro relato depois do reinício é **recusado inteiro** (`ENGINE_CONTRACT_VIOLATION`, QRE-AIF-02) | Founder + SSCTR (é mudança no motor congelado) | Identidade de sessão por plano, num freeze sucessor. Até lá, nenhum reinício com atleta real, e o app não oferece reinício |
+| L-APP-09 | O cliente headless adota toda proposta; a custódia retém, oferece ou espera a confirmação do atleta. Nenhum caso assim ocorreu na evidência (QRE-AIF-09). `paceRevisionRecord` não é carregado (a revisão de ritmo está desligada) | Engineering | Na integração, a adoção é a da custódia, nunca a do cliente de referência |
 | L-APP-07 | Gate **E-1** e QRE-RWS-F-01 (duas vozes e fontes conflitantes): continuam como no contrato iOS §6; esta missão não os reproduziu de novo | Founder + SSCTR + QRE | Teste de resultado do adaptador, exigido pelo contrato iOS |
-| L-APP-08 | Expiração dos registros de habilitação (R7-B0 `review_by: 2027-04-30`): depois dela o motor falha fechado | Founder + SSCTR | Calendário de renovação antes da data; um estado do app para "o treinador está indisponível nesta versão" |
+| L-APP-08 | Expiração dos registros de habilitação (R7-B0 `review_by: 2027-04-30`, dia UTC): depois dela o motor falha fechado em tudo, **inclusive num sinal de alerta, que dá `UNSUPPORTED` em vez de `CLINICAL_HUMAN_REQUIRED`** (QRE-AIF-01); nenhum plano novo é feito | **Founder + SSCTR (pergunta de motor, com efeito de segurança)** | Decidir se a rota clínica deve preceder a checagem de autoridade. Até lá: calendário de renovação antes da data e um estado do app para "o treinador está indisponível nesta versão", que nunca é descanso |

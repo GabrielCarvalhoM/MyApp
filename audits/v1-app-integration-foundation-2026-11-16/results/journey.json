@@ -26,12 +26,24 @@
   },
   {
    "gate": "AUTHORITY_EXPIRY",
-   "observed": "after the enabling records expire every review is UNSUPPORTED until records renewed by an independent review ship",
+   "observed": "after the enabling records expire (UTC day after 2027-04-30) a warning sign is UNSUPPORTED instead of CLINICAL_HUMAN_REQUIRED, and no new plan is made",
    "reproduced": true,
    "detail": {
-    "asOf": "2027-05-03",
-    "status": "UNSUPPORTED",
+    "signBefore": "CLINICAL_HUMAN_REQUIRED",
+    "signAfter": "UNSUPPORTED",
+    "generateAfter": "UNSUPPORTED",
     "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+   }
+  },
+  {
+   "gate": "RESTART_THROUGH_CUSTODY",
+   "observed": "through the V1CIB custody with the composed engine, the first report after a restart is refused whole (ENGINE_CONTRACT_VIOLATION)",
+   "reproduced": true,
+   "detail": {
+    "week0": "KEEP",
+    "restart": "PROPOSED",
+    "afterRestart": "ENGINE_CONTRACT_VIOLATION",
+    "message": "The decision did not keep the stored record (a stored row changed); nothing was kept"
    }
   }
  ],
@@ -84,9 +96,9 @@
   },
   "persistence": {
    "envelopeBytes": 367071,
-   "persistMs": 4.9628999999999905,
-   "childRestoreMs": 5.233999999999995,
-   "childFirstViewMs": 1.4321000000000055,
+   "persistMs": 5.082499999999982,
+   "childRestoreMs": 5.042599999999993,
+   "childFirstViewMs": 1.4129000000000076,
    "schema": "VF-APP-RECORD-ENVELOPE-0"
   },
   "correction": {
@@ -142,13 +154,13 @@
  "measures": [
   {
    "op": "generate",
-   "ms": 71.401,
+   "ms": 70.3226,
    "answerBytes": 346369,
    "programBytes": 234319
   },
   {
    "op": "evaluate",
-   "ms": 48.838899999999995,
+   "ms": 48.5094,
    "kind": "WEEKLY_REVIEW",
    "status": "KEEP",
    "ledgerRows": 0,
@@ -157,7 +169,7 @@
   },
   {
    "op": "evaluate",
-   "ms": 103.98040000000003,
+   "ms": 102.5144,
    "kind": "WEEKLY_REVIEW",
    "status": "KEEP",
    "ledgerRows": 1,
@@ -166,7 +178,7 @@
   },
   {
    "op": "evaluate",
-   "ms": 107.24310000000003,
+   "ms": 106.34810000000004,
    "kind": "WEEKLY_REVIEW",
    "status": "KEEP",
    "ledgerRows": 6,
@@ -175,7 +187,7 @@
   },
   {
    "op": "evaluate",
-   "ms": 65.46360000000004,
+   "ms": 64.11530000000005,
    "kind": "WEEKLY_REVIEW",
    "status": "KEEP",
    "ledgerRows": 12,
@@ -184,7 +196,7 @@
   },
   {
    "op": "evaluate",
-   "ms": 68.87559999999996,
+   "ms": 63.34780000000001,
    "kind": "WEEKLY_REVIEW",
    "status": "KEEP",
    "ledgerRows": 12,
@@ -193,12 +205,12 @@
   },
   {
    "op": "restart",
-   "ms": 39.48339999999996,
+   "ms": 39.31810000000007,
    "answerBytes": 360498
   },
   {
    "op": "evaluate",
-   "ms": 47.98720000000003,
+   "ms": 49.94209999999998,
    "kind": "NOT_FEELING_100",
    "status": "CLINICAL_HUMAN_REQUIRED",
    "ledgerRows": 13,
@@ -207,7 +219,7 @@
   },
   {
    "op": "evaluate",
-   "ms": 91.51440000000002,
+   "ms": 88.15000000000009,
    "kind": "READINESS_DECLARATION",
    "status": "MODIFY",
    "ledgerRows": 14,
@@ -312,9 +324,34 @@
   },
   {
    "step": "4",
-   "what": "the week lists every session of week 0",
+   "what": "the week view keeps the engine flags: nothing dated before today is executable, the run of today is",
    "ok": true,
-   "observed": 6
+   "observed": [
+    [
+     "w0-run-d1",
+     true
+    ],
+    [
+     "w0-str-d2",
+     true
+    ],
+    [
+     "w0-run-d3",
+     true
+    ],
+    [
+     "w0-run-d5",
+     true
+    ],
+    [
+     "w0-str-d5",
+     true
+    ],
+    [
+     "w0-run-d6",
+     true
+    ]
+   ]
   },
   {
    "step": "5",
@@ -449,16 +486,16 @@
    "ok": true,
    "observed": {
     "ok": true,
-    "restoreMs": 5.233999999999995,
-    "firstViewMs": 1.4321000000000055,
+    "restoreMs": 5.042599999999993,
+    "firstViewMs": 1.4129000000000076,
     "firstViewState": "VALID_PLAN",
     "answer": "cbd8997da9cd5679cd77fac5e20ee1e5d43ebda2df0542e6cef65841597961dc",
-    "envelope": "84118b49714f4ce4ce33795bbb76e009bc937addf33eae8472e6378aa64e362c"
+    "envelope": "10ec53c92fa4501c7a5e5fbf951339f712f6ffd2f9065b0d657f46d587f02b57"
    }
   },
   {
    "step": "11",
-   "what": "the restored process gives the same next answer and the same envelope as the in-memory continuation",
+   "what": "the restored process gives the same next answer and the same envelope (decision log included) as the in-memory continuation",
    "ok": true,
    "observed": {
     "child": "cbd8997da9cd5679cd77fac5e20ee1e5d43ebda2df0542e6cef65841597961dc",
@@ -486,7 +523,7 @@
   },
   {
    "step": "12",
-   "what": "the same report sent again (same event id) does not add a second live row for the session",
+   "what": "the same report sent again (same event id) does not add a second live row and does not conflict",
    "ok": true,
    "observed": {
     "status": "KEEP",
@@ -497,7 +534,7 @@
   },
   {
    "step": "12",
-   "what": "a late correction keeps the original on record, annotated as superseded, and one live row remains",
+   "what": "a late correction keeps the original on record, annotated as superseded, and one live, unconflicted row remains",
    "ok": true,
    "observed": {
     "status": "KEEP",
@@ -586,7 +623,7 @@
   },
   {
    "step": "15",
-   "what": "custody keeps none of the run extension records (G7: they are recomputed from nothing at each review)",
+   "what": "custody keeps none of the run extension records in its document (G7)",
    "ok": true,
    "observed": {
     "documentKeys": [

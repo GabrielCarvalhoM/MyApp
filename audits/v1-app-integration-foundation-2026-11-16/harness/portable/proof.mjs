@@ -21,9 +21,10 @@ const preload=pathToFileURL(path.join(HERE,'preload.mjs')).href;
 const run=flags=>JSON.parse(execFileSync(process.execPath,[...flags,SELF,'--child'],{encoding:'utf8',maxBuffer:32*2**20}).trim().split('\n').at(-1));
 const node=run([]),host=run(['--import',preload]),hostJitless=run(['--jitless','--import',preload]);
 const same=(a,b)=>a.envelope===b.envelope&&a.digests.length===b.digests.length&&a.digests.every((d,i)=>d===b.digests[i]);
-const out={what:'engine bound to the minimal host vs Node fs/crypto; same synthetic journey (generate, three weekly reviews, a warning sign)',
+const out={shimsCalled:!!host.host&&host.host.calls.readFileSync>0&&host.host.calls.sha256>0,what:'engine bound to the minimal host vs Node fs/crypto; same synthetic journey (generate, three weekly reviews, a warning sign)',
  identical:{host:same(node,host),hostJitless:same(node,hostJitless)},answers:node.digests.length,host:host.host,hostJitlessCalls:hostJitless.host?.calls,
  hostInterface:['readFileSync(url) -> bytes {toString("utf8")} | readFileSync(url,"utf8") -> string (bundled assets only)','existsSync(url) -> boolean','createHash("sha256").update(text|bytes).digest("hex")']};
 fs.mkdirSync(OUT,{recursive:true});fs.writeFileSync(path.join(OUT,'portable.json'),JSON.stringify(out,null,1)+'\n');
 console.log(`portable host: identical=${out.identical.host}, interpreter-only identical=${out.identical.hostJitless}; assets ${host.host.bundledAssets} (${host.host.bundledBytes} B); calls ${JSON.stringify(host.host.calls)}; misses ${host.host.misses.length}; unsupported ${host.host.unsupported.length}`);
-process.exit(out.identical.host&&out.identical.hostJitless&&!host.host.misses.length&&!host.host.unsupported.length?0:1);
+// QRE-AIF-04: identical answers prove nothing unless the shims were the ones called.
+process.exit(out.identical.host&&out.identical.hostJitless&&out.shimsCalled&&hostJitless.host?.calls.sha256>0&&!host.host.misses.length&&!host.host.unsupported.length?0:1);

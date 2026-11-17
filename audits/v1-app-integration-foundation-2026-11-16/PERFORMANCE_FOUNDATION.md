@@ -79,18 +79,23 @@ Fonte: `results/perf.json`. Modo `--jitless`, a aproximação de um JavaScriptCo
 
 | Medida | Mediana | p95 | Máximo |
 |---|---|---|---|
-| Carga do motor (import) | 79 ms (75) | 80 | 80 |
+| Carga do motor (import) | 79 ms (75) | 82 | 82 |
 | Primeira geração de plano | 85 ms (77) | 86 | 86 |
 | Primeira revisão (processo frio) | 138 ms (113) | 140 | 140 |
 | Revisão, 0 a 60 linhas | 135 ms (101) | 190 | 249 |
 | Revisão, 60 a 150 linhas | 292 ms (209) | 303 | 304 |
 | Revisão fixa repetida, plano inteiro carregado | 211 ms (149) | 214 | 214 |
 | Projeções (Hoje + Semana + Insights) | 0,1–0,9 ms | — | — |
-| Stringify e parse do envelope de 1,1 MB | 4 ms cada | — | 6 |
+| Stringify e parse do envelope de 1,1 MB | 4 ms cada | — | — |
 
 **Memória:** heap retido depois de GC, com o plano inteiro, de 21 a 26 MB. Pico de heap observado durante revisões: cerca de 150 MB. RSS de pico do processo Node: 250 a 275 MB (inclui o próprio Node).
 
-**Tamanhos:** entrada de uma revisão, 0,55 MB mediana e 0,80 MB máximo. Resposta, 0,74 MB mediana e 1,24 MB máximo. Envelope, 1,17 MB ao fim de um plano de 16 semanas (95 linhas).
+**Tamanhos:** entrada de uma revisão, 0,55 MB mediana e 0,80 MB máximo. Resposta, 0,74 MB mediana e 1,24 MB máximo. Envelope, 1,10 MB ao fim de um plano de 16 semanas (95 linhas) e 1,17 MB ao fim da jornada longa.
+
+**Limites destas estatísticas (QRE-AIF-06):**
+- Com n = 5 ou 15, o p95 é o máximo.
+- `restartMs` (n = 2) inclui o reinício recusado, que é tempo de falha fechada.
+- A faixa de 60 a 150 linhas inclui revisões do segundo plano cujos relatos ficaram em conflito (gate RESTART).
 
 **Crescimento:** o custo de revisão sobe com o registro, de cerca de 100 a cerca de 210 ms com JIT, entre 0 e 95 linhas, dentro de um plano. **Não foi possível medir o crescimento entre vários planos:**
 - o gate RESTART impede o registro de crescer depois de um reinício;
@@ -99,7 +104,7 @@ Fonte: `results/perf.json`. Modo `--jitless`, a aproximação de um JavaScriptCo
 As 19 revisões `UNSUPPORTED` da jornada foram tiradas das latências e estão contadas em `history.excludedFromLatency`.
 
 **Operações com potencial de travar uma interface** (por isso nunca na main thread):
-- toda revisão, porque cada uma relê e interpreta as políticas R5/R6 e calcula cerca de 800 SHA-256 sobre cerca de 3,4 MB;
+- toda revisão, porque cada uma relê e interpreta as políticas R5/R6 e calcula centenas de SHA-256 sobre milhões de caracteres (em média, cerca de 714 chamadas e 2,7 milhões de caracteres por chamada do motor, na prova portátil);
 - a geração;
 - o reinício;
 - o parse do envelope.

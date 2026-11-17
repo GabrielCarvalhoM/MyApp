@@ -36,7 +36,7 @@ steps.plan={weeks:E().program.weeks.length,startDate:E().program.startDate,engin
 const w0=liveSessions(E(),0),firstRun=w0.find(s=>s.sport==='RUN'),firstStr=w0.find(s=>s.sport==='STRENGTH');
 const nowRunDay=ms(at(firstRun.date,'07:00')),today=todayView(E(),{nowMs:nowRunDay}),week=weekView(E(),{nowMs:nowRunDay});
 check('4','today shows the run of that day, executable',today.state==='VALID_PLAN'&&today.sessions.some(s=>s.id===firstRun.id&&s.executable),today.sessions);
-check('4','the week lists every session of week 0',week.sessions.length===E().program.weeks[0].sessions.length,week.sessions.length);
+check('4','the week view keeps the engine flags: nothing dated before today is executable, the run of today is',week.sessions.filter(s=>s.date<today.today).every(s=>!s.executable)&&week.sessions.some(s=>s.id===firstRun.id&&s.executable),week.sessions.map(s=>[s.id,s.executable]));
 const runD=sessionDetail(E(),{nowMs:nowRunDay,sessionId:firstRun.id}),strD=sessionDetail(E(),{nowMs:nowRunDay,sessionId:firstStr.id});
 check('5','a run detail comes from the format layer (blocks) or the time prescription',runD.status==='AVAILABLE'&&!!runD.run,runD.run?.expression);
 check('5','a strength detail lists exercises with sets and load',strD.status==='AVAILABLE'&&strD.strength.exercises.length>0&&strD.strength.exercises.every(e=>Number.isFinite(e.sets)&&e.load),strD.strength?.exercises?.slice(0,2));
@@ -63,7 +63,7 @@ fs.mkdirSync(WORK,{recursive:true});const file=path.join(WORK,'athlete-a.envelop
 const copy=createClient({envelope:E(),onMeasure}),w1=weekFacts(copy.envelope,1),rMem=copy.review('WEEKLY_REVIEW',w1.asOf,w1.facts,{eventId:'week-1'});
 const child=JSON.parse(execFileSync(process.execPath,[path.join(HERE,'restore-child.mjs'),file,'1',at(addDays(E().program.startDate,8),'07:00')],{encoding:'utf8'}).trim());
 check('11','a fresh process restores the envelope and shows the first screen without an engine call',child.ok&&child.firstViewState==='VALID_PLAN',child);
-check('11','the restored process gives the same next answer and the same envelope as the in-memory continuation',child.answer===digestOf(rMem)&&child.envelope===digestOf({...copy.envelope,decisions:copy.envelope.decisions.length}),{child:child.answer,memory:digestOf(rMem)});
+check('11','the restored process gives the same next answer and the same envelope (decision log included) as the in-memory continuation',child.answer===digestOf(rMem)&&child.envelope===digestOf(copy.envelope),{child:child.answer,memory:digestOf(rMem)});
 {const raw=fs.readFileSync(file,'utf8'),bad=path.join(WORK,'athlete-a.corrupt.json');fs.writeFileSync(bad,raw.replace('"actualLedger":[{','"actualLedger":[{"x":1,'));const o=restore(bad);
  check('11','a corrupted envelope is refused, never planned on',!o.ok&&o.error==='DIGEST_MISMATCH',o);}
 {const other=path.join(WORK,'athlete-a.other-engine.json');persist({...E(),engine:P.V1_RUN_FORECAST_ENGINE},other);const o=restore(other);
@@ -74,12 +74,12 @@ steps.persistence={envelopeBytes:saved.bytes,persistMs:saved.ms,childRestoreMs:c
 {const rowsBefore=copy.envelope.actualLedger.length,again=reportOf(E(),firstRun);
  const dd=addDays(E().program.startDate,15),d=copy.review('WEEKLY_REVIEW',at(dd),{eligibility:ELIG(dd),observations:[again]},{eventId:'dup-1'});
  const same=copy.envelope.actualLedger.filter(o=>o.sessionId===firstRun.id&&!o.fact&&!o.superseded);
- check('12','the same report sent again (same event id) does not add a second live row for the session',same.length===1,{status:d.status,liveRows:same.length,rowsBefore,rowsAfter:copy.envelope.actualLedger.length});
+ check('12','the same report sent again (same event id) does not add a second live row and does not conflict',same.length===1&&same[0].conflicted!==true,{status:d.status,liveRows:same.length,rowsBefore,rowsAfter:copy.envelope.actualLedger.length});
  const target=copy.envelope.actualLedger.find(o=>o.sessionId===firstStr.id&&!o.fact&&!o.superseded),day=addDays(E().program.startDate,16);
  const corr={...reportOf(E(),firstStr),eventId:'aif-correction-1',correctionOf:target.eventId,correctedAt:at(day,'09:00'),actual:{...target.actual,minutes:Math.max(10,(target.actual.minutes??40)-10)}};
  const k=copy.review('WEEKLY_REVIEW',at(day),{eligibility:ELIG(day),observations:[corr]},{eventId:'corr-1'});
  const old=copy.envelope.actualLedger.find(o=>o.eventId===target.eventId),now=copy.envelope.actualLedger.filter(o=>o.sessionId===firstStr.id&&!o.fact&&!o.superseded);
- check('12','a late correction keeps the original on record, annotated as superseded, and one live row remains',old?.superseded===true&&now.length===1&&now[0].eventId!==target.eventId,{status:k.status,superseded:old?.superseded,live:now.map(o=>o.eventId)});
+ check('12','a late correction keeps the original on record, annotated as superseded, and one live, unconflicted row remains',old?.superseded===true&&now.length===1&&now[0].eventId!==target.eventId&&now[0].conflicted!==true,{status:k.status,superseded:old?.superseded,live:now.map(o=>o.eventId)});
  steps.correction={duplicateStatus:d.status,correctionStatus:k.status,supersededBy:old?.supersededBy??null};}
 
 // 13b. A new plan from updated facts, the record carried (restart), built under the strength rules in force.
@@ -98,14 +98,29 @@ steps.persistence={envelopeBytes:saved.bytes,persistMs:saved.ms,childRestoreMs:c
 {const day=addDays(E().program.startDate,22),h=copy.review('NOT_FEELING_100',at(day,'08:00'),notFeeling100WithSign(day),{eventId:'not-100'});
  const v=todayView(copy.envelope,{nowMs:ms(at(day,'09:00'))}),i=insightsView(copy.envelope);
  check('13','a warning sign is CLINICAL_HUMAN_REQUIRED and the plan view is BLOCKED with no prescription',h.status==='CLINICAL_HUMAN_REQUIRED'&&v.state==='BLOCKED'&&weekView(copy.envelope,{nowMs:ms(at(day,'09:00'))}).sessions.every(s=>!s.executable),{status:h.status,state:v.state});
- check('13','the forecast is unavailable with a reason and the exposure is not applicable while held',i.forecast?.status!=='SHOWN'&&!!(i.forecast?.reason??i.forecast?.status)&&i.strengthExposure?.status!=='ACTIVE',{forecast:i.forecast,exposure:i.strengthExposure});
+ check('13','the forecast is unavailable with a reason and the exposure is not applicable while held',i.forecast?.status==='UNAVAILABLE'&&i.forecast?.reason==='HOLD'&&i.strengthExposure?.status==='NOT_APPLICABLE'&&i.strengthExposure?.reason==='NO_PRESCRIPTION',{forecast:i.forecast,exposure:i.strengthExposure});
  const day2=addDays(day,3),rd=copy.review('READINESS_DECLARATION',at(day2,'08:00'),readiness(day2),{eventId:'ready-1'}),v2=todayView(copy.envelope,{nowMs:ms(at(day2,'09:00'))});
  check('13','the readiness declaration releases the hold (the plan view is no longer BLOCKED)',v2.state!=='BLOCKED',{status:rd.status,action:rd.action,state:v2.state});
  steps.hold={held:{status:h.status,forecast:i.forecast?.status,forecastReason:i.forecast?.reason,exposure:i.strengthExposure?.status,exposureReason:i.strengthExposure?.reason},released:{status:rd.status,action:rd.action,state:v2.state}};}
 
-// Authority expiry, observed (not a check): a review dated after the R7B0 records' review_by (2027-04-30) is refused, fail closed.
-{const x=createClient({envelope:c.envelope}),day='2027-05-03',r=x.review('WEEKLY_REVIEW',at(day,'08:00'),{eligibility:ELIG(day),observations:[]},{eventId:'probe-expiry'});
- gates.push({gate:'AUTHORITY_EXPIRY',observed:'after the enabling records expire every review is UNSUPPORTED until records renewed by an independent review ship',reproduced:r.status==='UNSUPPORTED',detail:{asOf:day,status:r.status,reason:r.reason}});}
+// Authority expiry, observed (not a check; QRE-AIF-01/-03): a plan whose weeks cover the R7B0 records' review_by (2027-04-30); the same warning
+// sign before and after that date. Before: the clinical route. After: UNSUPPORTED (the clinical route lost) and no new plan either.
+{const i=athleteA({weeks:8,id:'aif-expiry'});i.asOf='2027-04-17';i.startDate='2027-04-19';i.athlete.eligibility=ELIG('2027-04-17');i.athlete.goals.run.event.date=addDays('2027-04-19',8*7-1);
+ const x=createClient();x.onboard(i);const sign=day=>createClient({envelope:x.envelope}).review('NOT_FEELING_100',at(day,'08:00'),notFeeling100WithSign(day),{eventId:'probe-sign-'+day});
+ const before=sign('2027-04-28'),after=sign('2027-05-04'),later=S.generateProgram({...i,asOf:'2027-05-04',startDate:'2027-05-10',athlete:{...i.athlete,eligibility:ELIG('2027-05-04')}});
+ gates.push({gate:'AUTHORITY_EXPIRY',observed:'after the enabling records expire (UTC day after 2027-04-30) a warning sign is UNSUPPORTED instead of CLINICAL_HUMAN_REQUIRED, and no new plan is made',
+  reproduced:before.status==='CLINICAL_HUMAN_REQUIRED'&&after.status==='UNSUPPORTED'&&later.status==='UNSUPPORTED',detail:{signBefore:before.status,signAfter:after.status,generateAfter:later.status,reason:after.reason}});}
+
+// Open Restart gate through the V1CIB custody (QRE-AIF-02): the first report of the new plan is refused whole.
+{let clock=ms('2026-11-14T12:00:00-03:00');const store=memoryStore(),cu=createCustody({store,key:'aif-synthetic-key-r',now:()=>clock,engine:S}),actor={athleteId:'aif-custody-r'};
+ const plain=(program,s)=>{const {eventId:_e,athleteId:_a,...o}=reportOf({program,presentation:{runSessions:{}},actualLedger:[]},s);return o;};
+ cu.enroll({actor,intake:athleteA({id:'aif-custody-r'}),consents:{COACHING:true,HEALTH_SIGNALS:true,LEARNING:true}});const p0=store.load(actor.athleteId).program;
+ clock=ms(at(addDays(p0.startDate,6)));const w=cu.submit({actor,clientRequestId:'w0',expectedVersion:1,review:{kind:'WEEKLY_REVIEW',eligibility:ELIG(addDays(p0.startDate,6)),observations:liveSessions({program:p0},0).map(s=>plain(p0,s))}});
+ const day=addDays(p0.startDate,18),upd={...athleteA({weeks:8,id:'aif-custody-r'}),asOf:day,startDate:addDays(p0.startDate,21)};upd.athlete.eligibility=ELIG(day);upd.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ clock=ms(at(day,'10:00'));const rs=cu.restart({actor,intake:upd,expectedVersion:store.load(actor.athleteId).version});const d1=store.load(actor.athleteId),s0=liveSessions({program:d1.program},0)[0];
+ clock=ms(at(s0.date));const r=cu.submit({actor,clientRequestId:'after-restart',expectedVersion:d1.version,review:{kind:'WEEKLY_REVIEW',eligibility:ELIG(s0.date),observations:[plain(d1.program,s0)]}});
+ gates.push({gate:'RESTART_THROUGH_CUSTODY',observed:'through the V1CIB custody with the composed engine, the first report after a restart is refused whole (ENGINE_CONTRACT_VIOLATION)',
+  reproduced:w.ok===true&&rs.ok===true&&r.ok===false&&r.error?.code==='ENGINE_CONTRACT_VIOLATION',detail:{week0:w.ok?w.status:w.error?.code,restart:rs.status??rs.error?.code,afterRestart:r.ok?r.status:r.error?.code,message:r.error?.message??null}});}
 
 // 14. Version continuity: a plan built without the strength rules is reviewed without them (never adopts them on the way).
 {const lower=P.generateProgram(athleteA({id:'aif-athlete-lower'})),c2=createClient();c2.envelope.program=lower.program;c2.envelope.athleteId=lower.program.athleteId;
@@ -119,7 +134,7 @@ steps.persistence={envelopeBytes:saved.bytes,persistMs:saved.ms,childRestoreMs:c
  const e=cu.enroll({actor,intake:athleteA({id:'aif-custody-a'}),consents:{COACHING:true,HEALTH_SIGNALS:true,LEARNING:true}}),doc=store.load(actor.athleteId);
  const keys=Object.keys(doc??{}),kept=['runEvidenceRecord','runFormatRecord','runHistoryRecord'].filter(k=>keys.includes(k));
  check('15','custody enrolls with the composed engine injected',e.ok&&e.enrolled,e);
- check('15','custody keeps none of the run extension records (G7: they are recomputed from nothing at each review)',kept.length===0,{documentKeys:keys});
+ check('15','custody keeps none of the run extension records in its document (G7)',kept.length===0,{documentKeys:keys});
  check('15','custody does not accept a declared race result (runEvidence is not a client review field)',!CLIENT_REVIEW_FIELDS.includes('runEvidence'),CLIENT_REVIEW_FIELDS);
  steps.custody={enrolled:e.enrolled,documentKeys:keys,extensionRecordsKept:kept,acceptsRunEvidence:CLIENT_REVIEW_FIELDS.includes('runEvidence')};}
 

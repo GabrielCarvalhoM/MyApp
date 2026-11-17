@@ -3,7 +3,7 @@
 **Status:** RECOMENDADO pelo Chief, com evidência de laboratório. **Não é decisão final.** Depende de uma prova no aparelho (P0, §6) e de duas decisões do Founder (§7).
 **Data:** 2026-11-16. **Missão:** Application Integration Foundation (pedido do Founder de 2026-11-16).
 **Linha avaliada:** `claude/v1-strength-corrections` em `c39d18a`, que contém `claude/v1-run-extensions` em `2dfa216` (merge-base conferido). Ponto de entrada: `CoachingCore/src/v1-strength-index.mjs`, sem opções.
-**Evidência:** `results/surface.json`, `results/portable.json`, `results/perf.json`, `results/journey.json` (todos reproduzíveis, ver o relatório de prontidão §8).
+**Evidência:** `results/surface.json`, `results/portable.json`, `results/perf.json`, `results/journey.json` (todos reproduzíveis, ver `INTEGRATION_READINESS_REPORT.md` §8). Revisão independente: `reviews/qre/QRE_AIF_R1.md`, `READY_WITH_CONDITIONS`.
 
 ## 1. Decisão recomendada
 
@@ -23,8 +23,8 @@
 | O que o motor lê | 20 arquivos JSON nomeados por URL no código: valores, catálogo e os registros SSCTR de habilitação, 833 KB. Doze são lidos ao carregar; as políticas R5/R6 e a revisão SSCTR delas são relidas **a cada chamada** | `surface.json`, `portable.json` |
 | Dependência escondida de Buffer | Sim: o motor chama `bytes.toString('utf8')` sobre o que lê. O host precisa devolver um objeto de bytes com esse método | `portable/host-fs.mjs` |
 | Roda fora do Node? | **Sim, em laboratório.** Com `fs` e `crypto` trocados, só para os módulos do motor, por um host mínimo (assets empacotados, bytes do host, SHA-256 hex), as 5 respostas e o envelope final saem **byte-idênticos** ao Node, inclusive em modo só interpretador. Zero assets ausentes, zero chamadas não fornecidas | `portable.json` |
-| Custo de hash | Uma revisão faz cerca de 800 SHA-256 sobre cerca de 3,4 MB; a jornada de prova, 3.187 chamadas sobre 12,4 milhões de caracteres. **O SHA-256 tem de ser nativo** (CryptoKit, por uma função do host), nunca SHA-256 em JS interpretado | `surface.json`, `portable.json` |
-| Penalidade sem JIT (o JavaScriptCore embutido num app iOS roda sem JIT) | V8 só interpretador (`--jitless`), como aproximação: revisão mediana de 200 ms (p95 301 ms) contra 145 ms (p95 217 ms) com JIT. Cerca de 1,4×, porque o custo está em builtins nativos (JSON, hash) | `perf.json` |
+| Custo de hash | Uma revisão faz centenas de SHA-256 sobre milhões de caracteres: em média, cerca de 714 chamadas sobre cerca de 2,7 milhões de caracteres por chamada do motor na jornada de prova (3.187 chamadas sobre 12,4 milhões de caracteres em 5 chamadas). Uma medição exploratória de uma revisão isolada deu cerca de 800 sobre cerca de 3,4 MB. **O SHA-256 tem de ser nativo** (CryptoKit, por uma função do host), nunca SHA-256 em JS interpretado | `surface.json`, `portable.json` |
+| Penalidade sem JIT (o JavaScriptCore embutido num app iOS roda sem JIT) | V8 só interpretador (`--jitless`), como aproximação: revisão mediana de 200 ms (p95 301 ms) contra 145 ms (p95 217 ms) com JIT, cerca de 1,4×. **Hipótese, não medida:** o custo estaria em builtins nativos (JSON, hash). Nenhum profile foi feito, e o custo de cerca de 700 chamadas de hash por revisão atravessando uma ponte de host não foi medido (QRE-AIF-08). P0 mede os dois | `perf.json` |
 | Memória | Heap retido depois de GC, com o registro de um plano inteiro de 16 semanas: 21 a 26 MB. Pico transitório observado durante revisões: cerca de 150 MB | `perf.json` |
 | Fronteira existente | A custódia V1CIB (`src/boundary/`) existe, testada, e aceita o motor injetado. Mas **não guarda** os registros das extensões de corrida e **não aceita** resultado de prova declarado (`runEvidence`) | `journey.json` passo 15 |
 
@@ -119,6 +119,11 @@ Num aparelho de entrada da matriz (ver `PERFORMANCE_FOUNDATION.md`), com um alvo
 ## 8. Consequências
 
 - Uma versão do app carrega exatamente um freeze. Atualizar regra, valor ou registro de habilitação é publicar uma versão do app. **Sem download de código ou de regra.**
-- **Os registros de habilitação expiram e o motor falha fechado.** Os registros R7-B0 têm `review_by: 2027-04-30`; depois dessa data, toda revisão responde `UNSUPPORTED` (observado, `journey.json`, gate AUTHORITY_EXPIRY). Registros renovados por revisão independente têm de chegar numa versão do app **antes** da data. O app precisa de um estado explícito para isso, nunca mostrado como descanso.
+- **Os registros de habilitação expiram e o motor falha fechado, inclusive para a rota clínica (QRE-AIF-01).** Os registros R7-B0 têm `review_by: 2027-04-30`, lido como dia UTC (21:00 local em -03:00). Depois dessa data:
+  - toda revisão responde `UNSUPPORTED`;
+  - nenhum plano novo nem reinício é feito;
+  - **um sinal de alerta deixa de dar `CLINICAL_HUMAN_REQUIRED` e também dá `UNSUPPORTED`.** Observado num mesmo plano: o sinal em 2027-04-28 dá a rota clínica; em 2027-05-04, `UNSUPPORTED` (`journey.json`, gate AUTHORITY_EXPIRY).
+  - É comportamento do motor congelado e afeta segurança: **pergunta ao Founder e ao SSCTR**, não ajuste de integração. Até haver resposta, registros renovados por revisão independente têm de chegar numa versão do app **antes** da data, e o app precisa de um estado explícito para isso, nunca mostrado como descanso.
+- **O reinício pela custódia V1CIB é recusado (QRE-AIF-02).** Com o motor composto injetado, o primeiro relato depois de um reinício é recusado inteiro (`ENGINE_CONTRACT_VIOLATION`, "a stored row changed"). Pelo cliente headless, o relato é aceito mas não ganha linha própria, e a linha do plano anterior fica `conflicted`. As duas formas vêm da identidade de sessão sem escopo de plano (`session:<id>`, `r6-provenance.mjs`). Ver L-APP-06.
 - A camada de domínio JS passa a fazer parte do produto. O cliente desta missão é a referência, não a versão de produção.
 - **Ganhos possíveis no motor** (cada um seria um freeze sucessor, decisão do Founder, **fora desta missão**): ler as políticas R5/R6 uma vez por carga, reduzir o hash repetido de estruturas iguais e reduzir o tamanho das respostas.
