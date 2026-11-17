@@ -76,7 +76,7 @@ func assertHostClean(_ h: HostCalls, _ what: String, file: StaticString = #fileP
 
 /// QRE-P0-05: every step that is not IDENTICAL keeps the device's full reply, for lab/diff-answer.mjs (EXPLAINED_LIBM is a localization,
 /// accepted only after that field-level check and an explicit decision).
-func attachNonIdentical(_ test: XCTestCase, _ journey: String, _ res: [(Reply, StepResult)], _ raws: [Int: String]) {
+@MainActor func attachNonIdentical(_ test: XCTestCase, _ journey: String, _ res: [(Reply, StepResult)], _ raws: [Int: String]) {
     for (_, s) in res where s.verdict != .IDENTICAL {
         let a = XCTAttachment(string: raws[s.step] ?? ""); a.name = "\(journey)-step\(s.step)-reply.json"; a.lifetime = .keepAlways; test.add(a)
     }

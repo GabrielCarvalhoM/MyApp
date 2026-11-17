@@ -29,7 +29,10 @@ O pacote está em `audits/v1-aif-p0-jsc-2026-11-17/ios`. Ele traz uma biblioteca
    - aparelho com bateria acima de 50 %, fora do Modo de Pouco Consumo e sem apps em primeiro plano;
    - **modo avião ligado**, o que prova o funcionamento offline;
    - esperar o aparelho esfriar entre execuções;
-   - sem depurador: o `xcodebuild test` da linha de comando não anexa o LLDB ao processo de teste. Cada `P0RESULT` registra `debuggerAttached`, e uma medição com depurador não vale.
+   - sem depurador. Cada `P0RESULT` registra `debuggerAttached` (true, false ou null, quando a leitura falha).
+     - Só `false` vale. Uma medição com `true` ou `null` não vale, e o `device-budgets.mjs` a recusa.
+     - Ainda não foi verificado se o `xcodebuild test` anexa depurador.
+     - Se aparecer `true`: desligar "Debug executable" na ação Test do esquema (ou no plano B) e repetir.
 4. Rodar por linha de comando, que é o jeito reproduzível:
 
 ```

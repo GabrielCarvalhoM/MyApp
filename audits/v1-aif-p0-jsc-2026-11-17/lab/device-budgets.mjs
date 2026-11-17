@@ -14,8 +14,8 @@ else {
   rows.push({ metric: `COLD context + bundle load p95, n=${cold.length} (PF-0 <= 1.0 s)`, measured: load, budget: 1000, pass: load <= 1000 });
   rows.push({ metric: `COLD first plan p95, n=${cold.length} (PF-0 <= 2.0 s)`, measured: gen, budget: 2000, pass: gen <= 2000 });
 }
-const devices = new Set([p, ...cold].map(x => `${x.device.machine} ${x.device.system} ${x.device.configuration}${x.device.isSimulator ? ' SIMULATOR' : ''}${x.device.debuggerAttached ? ' DEBUGGER' : ''}${x.device.lowPowerMode ? ' LOW-POWER' : ''}`));
-const valid = devices.size === 1 && ![...devices][0].match(/SIMULATOR|DEBUGGER|LOW-POWER|Debug/);
+const devices = new Set([p, ...cold].map(x => `${x.device.machine} ${x.device.system} ${x.device.configuration}${x.device.isSimulator ? ' SIMULATOR' : ''}${x.device.debuggerAttached === false ? '' : x.device.debuggerAttached === true ? ' DEBUGGER' : ' DEBUGGER-UNKNOWN'}${x.device.lowPowerMode ? ' LOW-POWER' : ''}`));
+const valid = devices.size === 1 && ![...devices][0].match(/SIMULATOR|DEBUGGER|LOW-POWER|Debug/); // DEBUGGER also matches DEBUGGER-UNKNOWN
 for (const r of rows) console.log(`${r.pass ? 'PASS' : 'FAIL'}  ${String(Math.round(r.measured * 10) / 10).padStart(8)} / ${r.budget}  ${r.metric}`);
 console.log(`environment: ${[...devices].join(' | ')}${valid ? '' : '  -> NOT A VALID MEASUREMENT (one device, Release, no simulator, no debugger, no Low Power Mode required)'}`);
 process.exit(valid && rows.every(r => r.pass) ? 0 : 1);

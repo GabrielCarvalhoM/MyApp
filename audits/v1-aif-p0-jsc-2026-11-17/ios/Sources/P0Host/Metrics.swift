@@ -48,12 +48,13 @@ public struct Stats: Codable {
 /// The measurement environment, recorded with every result.
 public struct DeviceInfo: Codable {
     public let machine: String, system: String, physicalMemoryMB: Double, processorCount: Int
-    public let thermalState: String, lowPowerMode: Bool, configuration: String, isSimulator: Bool, debuggerAttached: Bool, date: String
+    public let thermalState: String, lowPowerMode: Bool, configuration: String, isSimulator: Bool, debuggerAttached: Bool?, date: String
     /// QRE-P0-08: timings taken under a debugger do not represent the app; the result records whether one was attached (P_TRACED).
-    public static func isDebuggerAttached() -> Bool {
+    /// nil when the read fails (QRE-P0-R2-01): unknown is never reported as "no debugger".
+    public static func isDebuggerAttached() -> Bool? {
         var info = kinfo_proc(), size = MemoryLayout<kinfo_proc>.stride
         var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
-        guard sysctl(&mib, u_int(mib.count), &info, &size, nil, 0) == 0 else { return false }
+        guard sysctl(&mib, u_int(mib.count), &info, &size, nil, 0) == 0 else { return nil }
         return (info.kp_proc.p_flag & P_TRACED) != 0
     }
     @MainActor public static func current() -> DeviceInfo {

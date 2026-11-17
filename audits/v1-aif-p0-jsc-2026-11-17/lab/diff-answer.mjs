@@ -15,6 +15,8 @@ else {
   const L = await import('../../v1-app-integration-foundation-2026-11-16/harness/lib.mjs');
   const fx = JSON.parse(fs.readFileSync(path.join(FIX, `${journey}.json`), 'utf8')), c = L.createClient();
   for (let i = 0; i <= step; i++) { const s = fx.steps[i]; oracle = s.kind === 'ONBOARD' ? c.onboard(JSON.parse(s.intakeJSON)) : c.review(s.kind, s.asOf, JSON.parse(s.factsJSON), { eventId: s.eventId }); }
+  // QRE-P0-R2-03: the regenerated answer must be the oracle's own, by the fixture digest, before it is used as the reference.
+  if (L.digestOf(oracle) !== fx.expected[step].answer) { console.error(`regenerated ${journey} step ${step} does not match the fixture digest: the source changed`); process.exit(2); }
 }
 const device = JSON.parse(fs.readFileSync(file, 'utf8')).answer;
 const out = [];

@@ -154,7 +154,7 @@ O que a tabela mostra:
   - nesta execução, a mediana ficou igual e o histórico longo ficou dentro de 1 %;
   - na execução anterior, o histórico longo saiu cerca de 13 % acima;
   - não há sobrecusto grande do linker nem do prelude, mas a diferença fina não foi resolvida com essas amostras.
-- **A lentidão de cerca de 1,7× no `vm` é artefato do V8:** a busca de globais pelo interceptor do contexto. O `canonical()` dobra de custo lá.
+- **A lentidão de cerca de 1,8× no `vm` é artefato do V8:** a busca de globais pelo interceptor do contexto. O `canonical()` dobra de custo lá.
   - O perfil (`node --jitless --cpu-prof lab/replay-vm.mjs --child perf-bundle`, e o mesmo com `perf-native`) não foi commitado. É reproduzível com esses dois comandos.
 - **Perfil do motor.**
   - `canonical()`, de `value.mjs`, tem cerca de 50 % da CPU.
@@ -267,4 +267,19 @@ O único ciclo de correção aplicou:
 - **10:** texto e números do §5.1;
 - **11:** registrado no §8.
 
-A rechecagem estreita do delta está em `reviews/qre/QRE_P0_R2.md`.
+**QRE R2, rechecagem estreita do delta `b04e79c..5de68a7`** (`reviews/qre/QRE_P0_R2.md`, recebida sem edição): **READY_FOR_DEVICE_RUN_WITH_CONDITIONS**.
+- A QRE-P0-01 está fechada. O gate falha fechado: a QRE rodou um linker mutante, e o gate recusou os três bindings quebrados.
+- O bundle `ad4d3fde…` foi reproduzido, as fixtures ficaram iguais e os resultados do laboratório se repetiram.
+- As condições que acompanham a execução no aparelho são as lacunas registradas: 03, 04 (manter o piso `.iOS(.v16)`) e 11. Também ficam as correções pequenas que a primeira compilação pedir.
+
+As três observações menores do R2 foram aplicadas no fechamento, **sem nova revisão**, porque o ciclo de revisão já foi usado:
+- **R2-01:** `debuggerAttached` passa a ser `null` quando a leitura falha, e a medição é recusada;
+- **R2-02:** `attachNonIdentical` passa a rodar no `@MainActor`;
+- **R2-03:** o `diff-answer` confere a resposta P16 regenerada contra o digest da fixture antes de compará-la.
+
+Também foi corrigido o 1,8× do §5.1.
+
+**Estado de fechamento da P0:**
+- P0 física: **PENDENTE**;
+- JavaScriptCore: **INCONCLUSIVO**, sem nenhum impedimento técnico demonstrado;
+- alvo: pronto para a execução no aparelho, com condições.
