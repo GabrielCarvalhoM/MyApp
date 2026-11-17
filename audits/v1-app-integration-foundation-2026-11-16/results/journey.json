@@ -1,0 +1,632 @@
+{
+ "mission": "APPLICATION_INTEGRATION_FOUNDATION",
+ "harness": "headless journey",
+ "entry": "CoachingCore/src/v1-strength-index.mjs (no options)",
+ "engine": "COACHINGCORE-V1-1+V1X-RUN-CALIBRATION-1+V1X-RUN-FORMATS-1+V1X-RACE-FORECAST-1+V1X-STRENGTH-1",
+ "node": "v24.19.0",
+ "flags": [],
+ "checks": {
+  "total": 30,
+  "passed": 30,
+  "failed": 0
+ },
+ "openGatesObserved": [
+  {
+   "gate": "RESTART",
+   "observed": "after a restart the first report of the new plan has no row of its own; the previous plan row with the same session id is marked conflicted",
+   "reproduced": true,
+   "detail": {
+    "status": "MODIFY",
+    "sessionId": "w0-run-d1",
+    "newPlanStart": "2026-12-07",
+    "ownRows": 0,
+    "priorRowDate": "2026-11-17",
+    "priorRowConflicted": true
+   }
+  },
+  {
+   "gate": "AUTHORITY_EXPIRY",
+   "observed": "after the enabling records expire every review is UNSUPPORTED until records renewed by an independent review ship",
+   "reproduced": true,
+   "detail": {
+    "asOf": "2027-05-03",
+    "status": "UNSUPPORTED",
+    "reason": "The program was not planned under the bound repertoire catalog, or that catalog and its SSCTR records are unavailable"
+   }
+  }
+ ],
+ "steps": {
+  "incompleteOnboarding": {
+   "status": "INVALID_INPUT",
+   "missingInputs": [
+    "schedule.runDays",
+    "schedule.strengthDays"
+   ],
+   "errors": [
+    "schedule.longRunDay.mustBeChosenRunDay"
+   ]
+  },
+  "plan": {
+   "weeks": 12,
+   "startDate": "2026-11-16",
+   "engine": "COACHINGCORE-V1-1+V1X-RUN-CALIBRATION-1+V1X-RUN-FORMATS-1+V1X-RACE-FORECAST-1+V1X-STRENGTH-1",
+   "sizes": {
+    "answer": 346369,
+    "program": 234319
+   }
+  },
+  "views": {
+   "sizes": {
+    "today": 462,
+    "week": 1135,
+    "runDetail": 1450,
+    "strengthDetail": 3300,
+    "fullAnswer": 346369
+   }
+  },
+  "modification": {
+   "status": "KEEP",
+   "action": "INSTANTIATE_LOGGED_LOADS",
+   "reason": "The progression rule is unchanged; first logged loads wait for confirmation before they become numbers (goblet-squat, db-bench-press, db-row, db-calf-raise, db-rdl, lat-pulldown, db-overhead-press, db-split-squat)",
+   "planChanged": true,
+   "proposal": true
+  },
+  "insights": {
+   "forecast": "SHOWN",
+   "shown": [
+    "PLAN_SCENARIO"
+   ],
+   "paceInsights": "ACTIVE",
+   "exposure": "ACTIVE",
+   "sizes": {
+    "insightsView": 2431
+   }
+  },
+  "persistence": {
+   "envelopeBytes": 367071,
+   "persistMs": 4.9628999999999905,
+   "childRestoreMs": 5.233999999999995,
+   "childFirstViewMs": 1.4321000000000055,
+   "schema": "VF-APP-RECORD-ENVELOPE-0"
+  },
+  "correction": {
+   "duplicateStatus": "KEEP",
+   "correctionStatus": "KEEP",
+   "supersededBy": "aif-correction-1"
+  },
+  "restart": {
+   "status": "PROPOSED",
+   "strength": "ACTIVE",
+   "forecast": "SHOWN"
+  },
+  "hold": {
+   "held": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "forecast": "UNAVAILABLE",
+    "forecastReason": "HOLD",
+    "exposure": "NOT_APPLICABLE",
+    "exposureReason": "NO_PRESCRIPTION"
+   },
+   "released": {
+    "status": "MODIFY",
+    "action": "READINESS_RESTART",
+    "state": "RETURNING"
+   }
+  },
+  "versionContinuity": {
+   "status": "KEEP",
+   "strength": "PLAN_BUILT_WITHOUT_THE_RULES"
+  },
+  "custody": {
+   "enrolled": true,
+   "documentKeys": [
+    "schema",
+    "athleteId",
+    "version",
+    "createdAt",
+    "program",
+    "pending",
+    "reference",
+    "model",
+    "consents",
+    "rows",
+    "chain",
+    "decisions",
+    "requests",
+    "docMac"
+   ],
+   "extensionRecordsKept": [],
+   "acceptsRunEvidence": false
+  }
+ },
+ "measures": [
+  {
+   "op": "generate",
+   "ms": 71.401,
+   "answerBytes": 346369,
+   "programBytes": 234319
+  },
+  {
+   "op": "evaluate",
+   "ms": 48.838899999999995,
+   "kind": "WEEKLY_REVIEW",
+   "status": "KEEP",
+   "ledgerRows": 0,
+   "inputBytes": 21511,
+   "answerBytes": 113441
+  },
+  {
+   "op": "evaluate",
+   "ms": 103.98040000000003,
+   "kind": "WEEKLY_REVIEW",
+   "status": "KEEP",
+   "ledgerRows": 1,
+   "inputBytes": 30031,
+   "answerBytes": 426727
+  },
+  {
+   "op": "evaluate",
+   "ms": 107.24310000000003,
+   "kind": "WEEKLY_REVIEW",
+   "status": "KEEP",
+   "ledgerRows": 6,
+   "inputBytes": 62578,
+   "answerBytes": 436445
+  },
+  {
+   "op": "evaluate",
+   "ms": 65.46360000000004,
+   "kind": "WEEKLY_REVIEW",
+   "status": "KEEP",
+   "ledgerRows": 12,
+   "inputBytes": 102955,
+   "answerBytes": 215524
+  },
+  {
+   "op": "evaluate",
+   "ms": 68.87559999999996,
+   "kind": "WEEKLY_REVIEW",
+   "status": "KEEP",
+   "ledgerRows": 12,
+   "inputBytes": 118546,
+   "answerBytes": 219770
+  },
+  {
+   "op": "restart",
+   "ms": 39.48339999999996,
+   "answerBytes": 360498
+  },
+  {
+   "op": "evaluate",
+   "ms": 47.98720000000003,
+   "kind": "NOT_FEELING_100",
+   "status": "CLINICAL_HUMAN_REQUIRED",
+   "ledgerRows": 13,
+   "inputBytes": 141923,
+   "answerBytes": 204237
+  },
+  {
+   "op": "evaluate",
+   "ms": 91.51440000000002,
+   "kind": "READINESS_DECLARATION",
+   "status": "MODIFY",
+   "ledgerRows": 14,
+   "inputBytes": 160581,
+   "answerBytes": 378204
+  }
+ ],
+ "detail": [
+  {
+   "step": "1",
+   "what": "the athlete is synthetic and marked SHADOW_REFERENCE",
+   "ok": true,
+   "observed": {
+    "synthetic": true,
+    "purpose": "SHADOW_REFERENCE"
+   }
+  },
+  {
+   "step": "2",
+   "what": "an intake without training days is not planned: the engine names what is missing",
+   "ok": true,
+   "observed": {
+    "status": "INVALID_INPUT",
+    "missingInputs": [
+     "schedule.runDays",
+     "schedule.strengthDays"
+    ],
+    "errors": [
+     "schedule.longRunDay.mustBeChosenRunDay"
+    ]
+   }
+  },
+  {
+   "step": "3",
+   "what": "the first plan is PROPOSED",
+   "ok": true,
+   "observed": "PROPOSED"
+  },
+  {
+   "step": "2",
+   "what": "the plan carries the engine-normalized intake (canonical)",
+   "ok": true,
+   "observed": [
+    "version",
+    "asOf",
+    "startDate",
+    "weeks",
+    "learningConsent",
+    "timezoneOffsetMinutes",
+    "athlete",
+    "goals",
+    "schedule",
+    "officialPlanState",
+    "completedWork",
+    "uncertainty"
+   ]
+  },
+  {
+   "step": "3",
+   "what": "every approved boundary reads ON with no options; pace revision INERT",
+   "ok": true,
+   "observed": {
+    "runFormat": "ACTIVE",
+    "runForecast": "SHOWN",
+    "paceInsights": "ACTIVE",
+    "paceRevision": "INERT",
+    "strength": "ACTIVE",
+    "exposure": "ACTIVE"
+   }
+  },
+  {
+   "step": "3",
+   "what": "the plan is hybrid: run and strength sessions in week 0",
+   "ok": true,
+   "observed": [
+    "RUN:EASY",
+    "STRENGTH:STRENGTH_FULL_A",
+    "RUN:EASY",
+    "RUN:EASY",
+    "STRENGTH:STRENGTH_FULL_B",
+    "RUN:LONG"
+   ]
+  },
+  {
+   "step": "4",
+   "what": "today shows the run of that day, executable",
+   "ok": true,
+   "observed": [
+    {
+     "id": "w0-run-d1",
+     "date": "2026-11-17",
+     "sport": "RUN",
+     "role": "EASY",
+     "turn": "AM",
+     "status": "PLANNED",
+     "executable": true,
+     "projected": false,
+     "minutes": 40,
+     "expression": "TIME"
+    }
+   ]
+  },
+  {
+   "step": "4",
+   "what": "the week lists every session of week 0",
+   "ok": true,
+   "observed": 6
+  },
+  {
+   "step": "5",
+   "what": "a run detail comes from the format layer (blocks) or the time prescription",
+   "ok": true,
+   "observed": "TIME"
+  },
+  {
+   "step": "5",
+   "what": "a strength detail lists exercises with sets and load",
+   "ok": true,
+   "observed": [
+    {
+     "id": "goblet-squat",
+     "role": "MAIN",
+     "pattern": "SQUAT",
+     "laterality": "BILATERAL",
+     "sets": 2,
+     "reps": 8,
+     "rir": 3,
+     "restSeconds": 120,
+     "load": {
+      "mode": "ESTABLISH",
+      "unit": "KG",
+      "convention": "SINGLE_IMPLEMENT"
+     },
+     "equipment": [
+      "DUMBBELLS"
+     ],
+     "instructions": [
+      "Practise the movement with no or minimal load first",
+      "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+      "Do not reuse a load from another exercise or implement; record the load and its convention",
+      "One dumbbell or kettlebell: the load is the mass of that one implement"
+     ]
+    },
+    {
+     "id": "db-bench-press",
+     "role": "MAIN",
+     "pattern": "PUSH",
+     "laterality": "BILATERAL",
+     "sets": 2,
+     "reps": 8,
+     "rir": 3,
+     "restSeconds": 120,
+     "load": {
+      "mode": "ESTABLISH",
+      "unit": "KG",
+      "convention": "PER_HAND"
+     },
+     "equipment": [
+      "DUMBBELLS",
+      "BENCH"
+     ],
+     "instructions": [
+      "Practise the movement with no or minimal load first",
+      "Ramp up: start with the lightest available load and add the smallest increment between preparatory sets while at least 3 repetitions stay in reserve at 8 repetitions with steady technique; the working load is the heaviest such load",
+      "Do not reuse a load from another exercise or implement; record the load and its convention"
+     ]
+    }
+   ]
+  },
+  {
+   "step": "7",
+   "what": "the run report is on record after its review",
+   "ok": true,
+   "observed": {
+    "status": "KEEP",
+    "rows": 1
+   }
+  },
+  {
+   "step": "8",
+   "what": "the weekly review decides (a status and a reason) and every week-0 session is on record",
+   "ok": true,
+   "observed": {
+    "status": "KEEP",
+    "action": "INSTANTIATE_LOGGED_LOADS"
+   }
+  },
+  {
+   "step": "10",
+   "what": "forecast, pace insights and exposure each carry a status",
+   "ok": true,
+   "observed": {
+    "forecast": "SHOWN",
+    "shown": [
+     "PLAN_SCENARIO"
+    ],
+    "insights": "ACTIVE",
+    "exposure": "ACTIVE"
+   }
+  },
+  {
+   "step": "10",
+   "what": "a forecast band is shown only through `shown` (never a lone central time)",
+   "ok": true,
+   "observed": [
+    "PLAN_SCENARIO"
+   ]
+  },
+  {
+   "step": "10",
+   "what": "pace revision stays INERT",
+   "ok": true,
+   "observed": "INERT"
+  },
+  {
+   "step": "10",
+   "what": "the strength exposure is descriptive only, planned and executed by primary muscle",
+   "ok": true,
+   "observed": {
+    "descriptiveOnly": true,
+    "executed": {
+     "QUADRICEPS": 3,
+     "GLUTEUS_MAXIMUS": 5,
+     "HAMSTRINGS": 2,
+     "GASTROCNEMIUS": 1,
+     "PECTORALS": 2,
+     "ANTERIOR_DELTOID": 4,
+     "LATERAL_DELTOID": 2,
+     "TRICEPS": 4,
+     "LATISSIMUS": 4,
+     "UPPER_BACK": 2,
+     "ABDOMINALS": 2
+    }
+   }
+  },
+  {
+   "step": "11",
+   "what": "a fresh process restores the envelope and shows the first screen without an engine call",
+   "ok": true,
+   "observed": {
+    "ok": true,
+    "restoreMs": 5.233999999999995,
+    "firstViewMs": 1.4321000000000055,
+    "firstViewState": "VALID_PLAN",
+    "answer": "cbd8997da9cd5679cd77fac5e20ee1e5d43ebda2df0542e6cef65841597961dc",
+    "envelope": "84118b49714f4ce4ce33795bbb76e009bc937addf33eae8472e6378aa64e362c"
+   }
+  },
+  {
+   "step": "11",
+   "what": "the restored process gives the same next answer and the same envelope as the in-memory continuation",
+   "ok": true,
+   "observed": {
+    "child": "cbd8997da9cd5679cd77fac5e20ee1e5d43ebda2df0542e6cef65841597961dc",
+    "memory": "cbd8997da9cd5679cd77fac5e20ee1e5d43ebda2df0542e6cef65841597961dc"
+   }
+  },
+  {
+   "step": "11",
+   "what": "a corrupted envelope is refused, never planned on",
+   "ok": true,
+   "observed": {
+    "ok": false,
+    "error": "DIGEST_MISMATCH"
+   }
+  },
+  {
+   "step": "11",
+   "what": "an envelope of another engine version is refused (migration is explicit)",
+   "ok": true,
+   "observed": {
+    "ok": false,
+    "error": "ENVELOPE_OF_ANOTHER_VERSION",
+    "engine": "COACHINGCORE-V1-1+V1X-RUN-CALIBRATION-1+V1X-RUN-FORMATS-1+V1X-RACE-FORECAST-1"
+   }
+  },
+  {
+   "step": "12",
+   "what": "the same report sent again (same event id) does not add a second live row for the session",
+   "ok": true,
+   "observed": {
+    "status": "KEEP",
+    "liveRows": 1,
+    "rowsBefore": 12,
+    "rowsAfter": 12
+   }
+  },
+  {
+   "step": "12",
+   "what": "a late correction keeps the original on record, annotated as superseded, and one live row remains",
+   "ok": true,
+   "observed": {
+    "status": "KEEP",
+    "superseded": true,
+    "live": [
+     "aif-correction-1"
+    ]
+   }
+  },
+  {
+   "step": "13b",
+   "what": "a restart makes a new plan with the record carried, under the strength rules in force",
+   "ok": true,
+   "observed": {
+    "status": "PROPOSED",
+    "strength": "ACTIVE",
+    "rows": 13
+   }
+  },
+  {
+   "step": "13",
+   "what": "a warning sign is CLINICAL_HUMAN_REQUIRED and the plan view is BLOCKED with no prescription",
+   "ok": true,
+   "observed": {
+    "status": "CLINICAL_HUMAN_REQUIRED",
+    "state": "BLOCKED"
+   }
+  },
+  {
+   "step": "13",
+   "what": "the forecast is unavailable with a reason and the exposure is not applicable while held",
+   "ok": true,
+   "observed": {
+    "forecast": {
+     "status": "UNAVAILABLE",
+     "reason": "HOLD",
+     "shown": [],
+     "observed": null,
+     "plan": null,
+     "basis": null,
+     "raceWeek": {
+      "status": "NOT_RACE_WEEK"
+     },
+     "availableFrom": null
+    },
+    "exposure": {
+     "status": "NOT_APPLICABLE",
+     "reason": "NO_PRESCRIPTION",
+     "descriptiveOnly": null,
+     "weekIndex": null,
+     "unit": null,
+     "label": null,
+     "planned": null,
+     "executed": null
+    }
+   }
+  },
+  {
+   "step": "13",
+   "what": "the readiness declaration releases the hold (the plan view is no longer BLOCKED)",
+   "ok": true,
+   "observed": {
+    "status": "MODIFY",
+    "action": "READINESS_RESTART",
+    "state": "RETURNING"
+   }
+  },
+  {
+   "step": "14",
+   "what": "a plan of the lower entry point is reviewed without the strength rules and says so",
+   "ok": true,
+   "observed": "PLAN_BUILT_WITHOUT_THE_RULES"
+  },
+  {
+   "step": "15",
+   "what": "custody enrolls with the composed engine injected",
+   "ok": true,
+   "observed": {
+    "ok": true,
+    "status": "PROPOSED",
+    "enrolled": true,
+    "version": 1,
+    "programHash": "8ffaaba0702ec4e62c40350bef4f37bdf27e33950b1d33db9975b51296020150",
+    "clientRequestId": null
+   }
+  },
+  {
+   "step": "15",
+   "what": "custody keeps none of the run extension records (G7: they are recomputed from nothing at each review)",
+   "ok": true,
+   "observed": {
+    "documentKeys": [
+     "schema",
+     "athleteId",
+     "version",
+     "createdAt",
+     "program",
+     "pending",
+     "reference",
+     "model",
+     "consents",
+     "rows",
+     "chain",
+     "decisions",
+     "requests",
+     "docMac"
+    ]
+   }
+  },
+  {
+   "step": "15",
+   "what": "custody does not accept a declared race result (runEvidence is not a client review field)",
+   "ok": true,
+   "observed": [
+    "kind",
+    "observations",
+    "eligibility",
+    "interruption",
+    "changes",
+    "choices",
+    "wellbeing",
+    "wellbeingCheck",
+    "readiness",
+    "loadConfirmations",
+    "substitution",
+    "targetSessionId",
+    "signals",
+    "currentDemonstration"
+   ]
+  }
+ ]
+}

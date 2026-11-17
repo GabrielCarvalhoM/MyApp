@@ -1,0 +1,774 @@
+{
+ "note": "Laboratory measurements on Node.js. Not iPhone measurements. --jitless is a proxy for an interpreter-only engine, not JavaScriptCore itself.",
+ "machine": {
+  "node": "v24.19.0",
+  "platform": "win32 10.0.26200",
+  "cpu": "AMD Ryzen 7 5700X 8-Core Processor             ",
+  "cores": 16,
+  "memGB": 32
+ },
+ "modes": {
+  "default": {
+   "coldStart": {
+    "bootToScriptMs": {
+     "n": 5,
+     "median": 32.8,
+     "p95": 33.2,
+     "max": 33.2
+    },
+    "importMs": {
+     "n": 5,
+     "median": 75.3,
+     "p95": 75.4,
+     "max": 75.4
+    },
+    "firstGenerateMs": {
+     "n": 5,
+     "median": 76.8,
+     "p95": 78,
+     "max": 78
+    },
+    "firstEvaluateMs": {
+     "n": 5,
+     "median": 112.6,
+     "p95": 114.5,
+     "max": 114.5
+    },
+    "rssMB": {
+     "n": 5,
+     "median": 75.7,
+     "p95": 76.1,
+     "max": 76.1
+    }
+   },
+   "generateMs": {
+    "n": 1,
+    "median": 86,
+    "p95": 86,
+    "max": 86
+   },
+   "restartMs": {
+    "n": 2,
+    "median": 12.4,
+    "p95": 86.8,
+    "max": 86.8
+   },
+   "evaluateMs": {
+    "all": {
+     "n": 45,
+     "median": 144.7,
+     "p95": 216.7,
+     "max": 218.7
+    },
+    "rows0to60": {
+     "n": 20,
+     "median": 100.6,
+     "p95": 138.7,
+     "max": 180.7
+    },
+    "rows60to150": {
+     "n": 25,
+     "median": 208.5,
+     "p95": 217.3,
+     "max": 218.7
+    },
+    "rows150up": {
+     "n": 0,
+     "median": null,
+     "p95": null,
+     "max": null
+    }
+   },
+   "warmReviewAtFullPlanMs": {
+    "n": 15,
+    "median": 148.7,
+    "p95": 155.4,
+    "max": 155.4
+   },
+   "bytes": {
+    "inputMedian": 551726,
+    "inputMax": 799409,
+    "answerMedian": 736406,
+    "answerMax": 1237396
+   },
+   "serialization": [
+    {
+     "rows": 24,
+     "envelopeBytes": 567587,
+     "stringifyMs": 2.3,
+     "parseMs": 2.2
+    },
+    {
+     "rows": 48,
+     "envelopeBytes": 782636,
+     "stringifyMs": 2.7,
+     "parseMs": 2.6
+    },
+    {
+     "rows": 72,
+     "envelopeBytes": 988626,
+     "stringifyMs": 3,
+     "parseMs": 3.3
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1098117,
+     "stringifyMs": 3.8,
+     "parseMs": 4
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1163157,
+     "stringifyMs": 3.7,
+     "parseMs": 3.8
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1161115,
+     "stringifyMs": 3.7,
+     "parseMs": 3.7
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1163819,
+     "stringifyMs": 3.8,
+     "parseMs": 3.6
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1166511,
+     "stringifyMs": 3.9,
+     "parseMs": 3.6
+    }
+   ],
+   "projectionsMs": [
+    {
+     "rows": 24,
+     "ms": 0.9
+    },
+    {
+     "rows": 48,
+     "ms": 0.1
+    },
+    {
+     "rows": 72,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.1
+    },
+    {
+     "rows": 95,
+     "ms": 0.1
+    },
+    {
+     "rows": 95,
+     "ms": 0.1
+    }
+   ],
+   "memory": {
+    "peakRssMB": 275.3,
+    "heapMBMaxObserved": 151.1,
+    "heapAfterReviewMB": 84.3,
+    "heapRetainedAfterGcMB": 25.6
+   },
+   "history": {
+    "reviews": 64,
+    "excludedFromLatency": {
+     "status": "UNSUPPORTED",
+     "count": 19,
+     "why": "authority expiry (R7B0 records review_by 2027-04-30): fail-closed answers are not decision latency"
+    },
+    "plans": [
+     "2026-11-16",
+     "2027-03-15"
+    ],
+    "restartRefused": {
+     "afterPlan": 1,
+     "status": "UNSUPPORTED",
+     "reason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated"
+    },
+    "finalRows": 95,
+    "finalEnvelopeBytes": 1166511,
+    "statuses": {
+     "PROPOSED": 2,
+     "KEEP": 32,
+     "MODIFY": 13,
+     "UNSUPPORTED": 19
+    }
+   },
+   "series": [
+    [
+     0,
+     57.3
+    ],
+    [
+     1,
+     130.8
+    ],
+    [
+     6,
+     58.8
+    ],
+    [
+     7,
+     127.8
+    ],
+    [
+     12,
+     65.2
+    ],
+    [
+     13,
+     90.2
+    ],
+    [
+     18,
+     76.9
+    ],
+    [
+     19,
+     96.5
+    ],
+    [
+     24,
+     83
+    ],
+    [
+     25,
+     99.9
+    ],
+    [
+     30,
+     91
+    ],
+    [
+     31,
+     110.8
+    ],
+    [
+     36,
+     100.6
+    ],
+    [
+     37,
+     114.1
+    ],
+    [
+     42,
+     123.5
+    ],
+    [
+     43,
+     121.1
+    ],
+    [
+     48,
+     135.5
+    ],
+    [
+     49,
+     131.9
+    ],
+    [
+     54,
+     138.7
+    ],
+    [
+     55,
+     180.7
+    ],
+    [
+     60,
+     125.3
+    ],
+    [
+     61,
+     183.2
+    ],
+    [
+     66,
+     131.4
+    ],
+    [
+     67,
+     142.2
+    ],
+    [
+     72,
+     144.7
+    ],
+    [
+     73,
+     158.3
+    ],
+    [
+     78,
+     145.1
+    ],
+    [
+     79,
+     153.6
+    ],
+    [
+     84,
+     145.4
+    ],
+    [
+     85,
+     152.5
+    ],
+    [
+     90,
+     161.1
+    ],
+    [
+     91,
+     150.7
+    ],
+    [
+     95,
+     216.7
+    ],
+    [
+     95,
+     218.7
+    ],
+    [
+     95,
+     215.6
+    ],
+    [
+     95,
+     214.6
+    ],
+    [
+     95,
+     213.8
+    ],
+    [
+     95,
+     214
+    ],
+    [
+     95,
+     214.5
+    ],
+    [
+     95,
+     211.9
+    ],
+    [
+     95,
+     215
+    ],
+    [
+     95,
+     217.3
+    ],
+    [
+     95,
+     209.9
+    ],
+    [
+     95,
+     209.5
+    ],
+    [
+     95,
+     208.5
+    ]
+   ]
+  },
+  "jitless": {
+   "coldStart": {
+    "bootToScriptMs": {
+     "n": 5,
+     "median": 32.5,
+     "p95": 32.7,
+     "max": 32.7
+    },
+    "importMs": {
+     "n": 5,
+     "median": 79.4,
+     "p95": 81.6,
+     "max": 81.6
+    },
+    "firstGenerateMs": {
+     "n": 5,
+     "median": 84.9,
+     "p95": 85.4,
+     "max": 85.4
+    },
+    "firstEvaluateMs": {
+     "n": 5,
+     "median": 138,
+     "p95": 140.3,
+     "max": 140.3
+    },
+    "rssMB": {
+     "n": 5,
+     "median": 66.9,
+     "p95": 66.9,
+     "max": 66.9
+    }
+   },
+   "generateMs": {
+    "n": 1,
+    "median": 95.3,
+    "p95": 95.3,
+    "max": 95.3
+   },
+   "restartMs": {
+    "n": 2,
+    "median": 13.4,
+    "p95": 121.9,
+    "max": 121.9
+   },
+   "evaluateMs": {
+    "all": {
+     "n": 45,
+     "median": 200.4,
+     "p95": 300.6,
+     "max": 304.1
+    },
+    "rows0to60": {
+     "n": 20,
+     "median": 134.9,
+     "p95": 190.1,
+     "max": 248.7
+    },
+    "rows60to150": {
+     "n": 25,
+     "median": 292.2,
+     "p95": 302.7,
+     "max": 304.1
+    },
+    "rows150up": {
+     "n": 0,
+     "median": null,
+     "p95": null,
+     "max": null
+    }
+   },
+   "warmReviewAtFullPlanMs": {
+    "n": 15,
+    "median": 210.9,
+    "p95": 213.5,
+    "max": 213.5
+   },
+   "bytes": {
+    "inputMedian": 551726,
+    "inputMax": 799409,
+    "answerMedian": 736406,
+    "answerMax": 1237396
+   },
+   "serialization": [
+    {
+     "rows": 24,
+     "envelopeBytes": 567587,
+     "stringifyMs": 2.2,
+     "parseMs": 2.2
+    },
+    {
+     "rows": 48,
+     "envelopeBytes": 782636,
+     "stringifyMs": 2.7,
+     "parseMs": 2.6
+    },
+    {
+     "rows": 72,
+     "envelopeBytes": 988626,
+     "stringifyMs": 3.1,
+     "parseMs": 3.3
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1098117,
+     "stringifyMs": 4,
+     "parseMs": 4
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1163157,
+     "stringifyMs": 4.1,
+     "parseMs": 3.9
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1161115,
+     "stringifyMs": 4.1,
+     "parseMs": 3.8
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1163819,
+     "stringifyMs": 3.9,
+     "parseMs": 4
+    },
+    {
+     "rows": 95,
+     "envelopeBytes": 1166511,
+     "stringifyMs": 3.9,
+     "parseMs": 3.7
+    }
+   ],
+   "projectionsMs": [
+    {
+     "rows": 24,
+     "ms": 0.9
+    },
+    {
+     "rows": 48,
+     "ms": 0.2
+    },
+    {
+     "rows": 72,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.2
+    },
+    {
+     "rows": 95,
+     "ms": 0.1
+    },
+    {
+     "rows": 95,
+     "ms": 0.1
+    }
+   ],
+   "memory": {
+    "peakRssMB": 248.5,
+    "heapMBMaxObserved": 138.7,
+    "heapAfterReviewMB": 158.8,
+    "heapRetainedAfterGcMB": 21.1
+   },
+   "history": {
+    "reviews": 64,
+    "excludedFromLatency": {
+     "status": "UNSUPPORTED",
+     "count": 19,
+     "why": "authority expiry (R7B0 records review_by 2027-04-30): fail-closed answers are not decision latency"
+    },
+    "plans": [
+     "2026-11-16",
+     "2027-03-15"
+    ],
+    "restartRefused": {
+     "afterPlan": 1,
+     "status": "UNSUPPORTED",
+     "reason": "The bound repertoire (R7B0-CATALOG-2 with its SSCTR records) is unavailable or does not match; no program is generated"
+    },
+    "finalRows": 95,
+    "finalEnvelopeBytes": 1166511,
+    "statuses": {
+     "PROPOSED": 2,
+     "KEEP": 32,
+     "MODIFY": 13,
+     "UNSUPPORTED": 19
+    }
+   },
+   "series": [
+    [
+     0,
+     67.5
+    ],
+    [
+     1,
+     162.3
+    ],
+    [
+     6,
+     73.2
+    ],
+    [
+     7,
+     164.8
+    ],
+    [
+     12,
+     82.7
+    ],
+    [
+     13,
+     113.8
+    ],
+    [
+     18,
+     98.9
+    ],
+    [
+     19,
+     127.4
+    ],
+    [
+     24,
+     108.2
+    ],
+    [
+     25,
+     133.2
+    ],
+    [
+     30,
+     121.6
+    ],
+    [
+     31,
+     148.7
+    ],
+    [
+     36,
+     134.9
+    ],
+    [
+     37,
+     157.8
+    ],
+    [
+     42,
+     175.4
+    ],
+    [
+     43,
+     171.8
+    ],
+    [
+     48,
+     186.2
+    ],
+    [
+     49,
+     185.7
+    ],
+    [
+     54,
+     190.1
+    ],
+    [
+     55,
+     248.7
+    ],
+    [
+     60,
+     176.9
+    ],
+    [
+     61,
+     255.5
+    ],
+    [
+     66,
+     188.1
+    ],
+    [
+     67,
+     200.4
+    ],
+    [
+     72,
+     196
+    ],
+    [
+     73,
+     208.3
+    ],
+    [
+     78,
+     204
+    ],
+    [
+     79,
+     215.8
+    ],
+    [
+     84,
+     208.5
+    ],
+    [
+     85,
+     218.6
+    ],
+    [
+     90,
+     233.2
+    ],
+    [
+     91,
+     214.7
+    ],
+    [
+     95,
+     300.4
+    ],
+    [
+     95,
+     300.1
+    ],
+    [
+     95,
+     296.7
+    ],
+    [
+     95,
+     302.7
+    ],
+    [
+     95,
+     297.3
+    ],
+    [
+     95,
+     295.1
+    ],
+    [
+     95,
+     298.5
+    ],
+    [
+     95,
+     297.7
+    ],
+    [
+     95,
+     304.1
+    ],
+    [
+     95,
+     300.6
+    ],
+    [
+     95,
+     296
+    ],
+    [
+     95,
+     296
+    ],
+    [
+     95,
+     292.2
+    ]
+   ]
+  }
+ }
+}
