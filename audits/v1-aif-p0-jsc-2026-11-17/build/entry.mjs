@@ -4,6 +4,10 @@
 // It adds no training rule: every decision is the engine's answer as the client keeps it.
 import * as L from '../../v1-app-integration-foundation-2026-11-16/harness/lib.mjs';
 import { comparisonDigests } from './compare.mjs';
+// Core Safety & Lifecycle (2026-11-18): the successor's composed entry point is carried in the bundle for its focal revalidation
+// (audits/v1-core-safety-lifecycle-2026-11-18/mac); the facade below and its J5/P16 journeys are unchanged.
+import * as CORE from '../../../CoachingCore/src/v1-safety-index.mjs';
+export const coreEngine = CORE.V1_CORE_ENGINE;
 
 let client = null, snapshot = null;
 const now = () => performance.now();

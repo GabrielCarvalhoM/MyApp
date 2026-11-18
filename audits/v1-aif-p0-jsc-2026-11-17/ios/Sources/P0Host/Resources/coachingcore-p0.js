@@ -1858,6 +1858,14 @@ function mergeActual(a,b,ra,rb){
 }
 const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k]&&b?.[k]&&a[k]!=='UNKNOWN'&&b[k]!=='UNKNOWN'&&a[k]!==b[k]);
 /**
+ * V1 Core Safety & Lifecycle (E-1, SSCTR L5): what one report of a merged execution said (its own facts and response, and its declared source),
+ * kept on the merged row (`provenance.parts`, by event id) from the first merge on. A correction is from its author and replaces only that author's
+ * report: the row it makes is the corrected report merged again with every other report still in force, by the merge rules below, so a device
+ * re-synchronization never erases what the athlete said, and an athlete's edit never erases what the device measured. A row merged without parts
+ * (recorded before this change) is corrected as before.
+ */
+const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null});
+/**
  * R7-C QE-R7C-10: when the completed-work record first held a report of one execution (`provenance.firstRecordedAt`): the clock of the decision
  * whose input first carried it. Rows that are one execution (an agreeing duplicate, a correction and what it corrects) take the earliest; a row
  * recorded before R7C-FREEZE-4 carries none, and was held earlier than any clock known, so then none is known. Evidence visibility only: no dose,
@@ -1923,6 +1931,7 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity.
   if(o.conflicted===true)quarantined.add(identity);
+  let inherited=null;
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
@@ -1930,6 +1939,10 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
+   // E-1: the other reports of the merged row in force stay in force (only when the row names the corrected report among its parts and no
+   // conflict stands on the identity; otherwise the correction replaces the row, as before).
+   if(old.superseded!==true&&accepted.includes(old)&&!quarantined.has(identity)&&old.provenance?.parts&&Object.hasOwn(old.provenance.parts,o.correctionOf))
+    inherited=Object.entries(old.provenance.parts).filter(([id])=>id!==o.correctionOf).map(([id,p])=>({id,p,inputHash:old.provenance.inputHashes?.[id]??null}));
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
@@ -1952,14 +1965,30 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
     conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
    }
    // Complementary duplicate: one execution from two reports (R7-A mergeActual); subjective response from whoever reported it.
+   const parts=previous.provenance.parts??{[previous.eventId]:partOf(previous)};
    previous.actual=mergeActual(previous,o,SOURCE_RANK[previous.provenance.sourceQuality]??0,SOURCE_RANK[o.provenance.sourceQuality]??0);
    previous.provenance.inputHashes={...(previous.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
    for(const k of Object.keys(RESPONSE))if(previous.response[k]==='UNKNOWN'&&o.response[k]!=='UNKNOWN')previous.response[k]=o.response[k];
    previous.provenance.mergedSourceIds=[...new Set([...(previous.provenance.mergedSourceIds??[previous.eventId]),o.eventId])];
+   previous.provenance.parts={...parts,[o.eventId]:partOf(o)};
    setFirstRecorded(previous,firstRecorded(previous,o));
    duplicates.push({eventId:o.eventId,mergedInto:previous.eventId,reason:'SAME_EXECUTION_DIFFERENT_SOURCE'});byEvent.set(o.eventId,previous);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,previous);continue;
   }
   const row={...o,identity,inputHash:hash({...source,athleteId})};
+  if(inherited?.length){
+   const own=partOf(row);
+   for(const {id,p,inputHash} of inherited){
+    const other={actual:p.actual,response:p.response};
+    // A correction that disagrees with a report still in force is a conflict on the execution: quarantined, never merged by arrival order.
+    if(!physicalAgrees(row,other,loadIncrements)||responseConflicts(row.response,p.response)){flagConflict(row,'CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE');quarantined.add(identity);conflicts.push({identity,eventIds:[o.eventId,id],reason:'CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'});continue;}
+    row.actual=mergeActual(row,other,SOURCE_RANK[row.provenance.sourceQuality]??0,SOURCE_RANK[p.sourceQuality]??0);
+    for(const k of Object.keys(RESPONSE))if(row.response[k]==='UNKNOWN'&&p.response?.[k]&&p.response[k]!=='UNKNOWN')row.response[k]=p.response[k];
+    if(inputHash)row.provenance.inputHashes={...row.provenance.inputHashes,[id]:inputHash};
+    row.provenance.mergedSourceIds=[...new Set([...(row.provenance.mergedSourceIds??[row.eventId]),id])];
+   }
+   row.provenance.parts={[o.eventId]:own,...Object.fromEntries(inherited.map(x=>[x.id,x.p]))};
+   for(const {id} of inherited)byEvent.set(id,row);
+  }
   accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  }
  accepted.sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)||byCodePoint(a.eventId,b.eventId));
@@ -2138,6 +2167,7 @@ Object.defineProperties(__exports, {
   "NO_NEW_EXERCISE_PHASES": { enumerable: true, get: () => NO_NEW_EXERCISE_PHASES },
   "PRACTICE_ID": { enumerable: true, get: () => PRACTICE_ID },
   "PROGRAM_VERSION": { enumerable: true, get: () => PROGRAM_VERSION },
+  "SESSION_NAMESPACE": { enumerable: true, get: () => SESSION_NAMESPACE },
   "WEEK_START": { enumerable: true, get: () => WEEK_START },
   "adoptionBasis": { enumerable: true, get: () => adoptionBasis },
   "advanceRun": { enumerable: true, get: () => advanceRun },
@@ -2223,8 +2253,16 @@ Object.defineProperties(__exports, {
 
 
 
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 const PROGRAM_VERSION='R6-PROGRAM-1';
+/**
+ * V1 Core Safety & Lifecycle (QRE-AIF-02, L-APP-06): the session namespace of a plan made from the record. A restart passes it (r6-index.mjs);
+ * the plan keeps it (`program.sessionNamespace`) and every week built for it, then or by a later review, prefixes its session ids with it, so no
+ * session of a restarted plan has the id of a session of an earlier plan. A plan that is not a restart has none, and its ids are as before.
+ */
+const SESSION_NAMESPACE=Symbol('V1 core lifecycle: the session namespace of a plan made from the record');
 function programHash(p){const c=clone(p);delete c.hash;return hash(c);}
 const validProgram=p=>p?.version===PROGRAM_VERSION&&p.hash===programHash(p);
 const permutations=list=>list.length<=1?[list]:list.flatMap((x,i)=>permutations([...list.slice(0,i),...list.slice(i+1)]).map(rest=>[x,...rest]));
@@ -3173,7 +3211,7 @@ function eventWeekStandIn(sk,template,r,entry,ss,{date,taken}){
  const familiar=new Set((a.knownExercises??[]).filter(k=>k.familiar!==false).map(k=>k.id)),reached=new Set([...(a.ladderReached??[]),...(a.strengthSelections??[]).filter(s=>s.reason==='SKILL_PROGRESSION'&&s.to).map(s=>s.to)]),maxSkill=['NONE','NOVICE'].includes(a.strengthExperience)?0:1;
  const available=new Set([...(sk.equipmentForDate?.(date)??a.equipment??[]),'BODYWEIGHT']),subpatterns=r.role==='MAIN'?TEMPLATE_DEFS[template.type]?.slots?.[r.slot]?.subpatterns??null:null,current=configurationOf(entry.id);
  const ok=e=>performedInProgram(sk,ss,e.id)&&!setAside.has(e.id)&&!taken.has(e.id)&&(!subpatterns||subpatterns.includes(e.subpattern))&&admissibleAlternative(X,e,{role:r.role,available,skillOk:x=>familiar.has(x.id)||reached.has(x.id)||skillRank(x.skill)<=maxSkill,auth:sk.repertoire??DEFAULT_REPERTOIRE})&&(reason!=='SKILL_MISMATCH'||followsSkillMismatch(X,e,current));
- return CONFIGURATIONS.filter(ok).sort((p,q)=>ss.exercises[q.id].lastPerformed.localeCompare(ss.exercises[p.id].lastPerformed)||(p.id<q.id?-1:p.id>q.id?1:0))[0]??null;
+ return CONFIGURATIONS.filter(ok).sort((p,q)=>byCode(ss.exercises[q.id].lastPerformed,ss.exercises[p.id].lastPerformed)||(p.id<q.id?-1:p.id>q.id?1:0))[0]??null;
 }
 function strengthRowsFor(sk,template,w,ss,{firstOfWeek,phase=null,date=null,entryWeek=false,guard=true}){
  const {op,goal}=sk,S=op.strength,rows=[],used=[],standIns=[],entries=slotEntries(sk,template,w,ss),dayPhase=phase??sk.plan.phases[w];
@@ -3348,7 +3386,7 @@ function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipmentOver
  // long return's entry is still ahead (returnEntry, SSCTR-P4-F01): every exposure is at the entry dose, whatever exercises it uses.
  const entryWeek=ss.entryWeek===true||ss.returnEntry===true||[...inUse].some(id=>ss.exercises[id]?.returnStep===0);
  for(const r of roles.sort((a,b)=>a.day-b.day||a.backToBackOrder-b.backToBackOrder)){
-  const common={id:`w${w}-${r.sport==='RUN'?'run':'str'}-d${r.day}`,weekIndex:w,day:r.day,date:onDate(c.startDate,w*7+r.day),turn:r.turn??null,sport:r.sport,backToBackOrder:r.backToBackOrder,blockId};
+  const common={id:`${sk.sessionNamespace?sk.sessionNamespace+'.':''}w${w}-${r.sport==='RUN'?'run':'str'}-d${r.day}`,weekIndex:w,day:r.day,date:onDate(c.startDate,w*7+r.day),turn:r.turn??null,sport:r.sport,backToBackOrder:r.backToBackOrder,blockId};
   if(r.sport==='RUN'){
    const x=runOut[r.id];if(!x)continue;
    sessions.push({...common,role:x.role,key:!!x.key,essential:!!x.essential,optional:!!x.optional,prescription:x.prescription,progression:x.progression??null,explanation:x.explanation??(x.converted?x.prescription.instructions[0]:null),converted:x.converted??null,...(x.introduction?{introduction:true,alternative:clone(x.alternative)}:{}),...(x.replaces?{replaces:x.replaces}:{}),status:'PLANNED',plannedPrescriptionHash:x.prescription?hash(x.prescription):null,...(arr?.orderFlexible&&s.sharedDays.includes(r.day)?{orderFlexible:true}:{})});
@@ -3395,7 +3433,7 @@ function buildWeek(sk,w,rs,ss,priorWeeks,{arrangementOverride=null,equipmentOver
   const onChosen=s.runDays.includes(plan.raceDay),completion=raceDayCompletion(sk,rs),ladder=op.establishment.walkJogLadder,step=rs.mode==='WALK_JOG'?ladder[Math.max(0,Math.min(rs.walkStep,ladder.length-1))]:null;
   const span=x=>x>=60?(Math.round(x/6)/10)+' min':x+' s',walkBreaks=step?(step.walkSeconds?span(step.jogSeconds)+' jog, '+span(step.walkSeconds)+' walk':'continuous easy jogging, walking whenever needed'):null;
   const race=racePrescription(goal.run.event,{cues:op.run.effortCues,raceDay:op.event.raceDay,completion,stridesWarmup:(rs.achieved?.strides??0)>0,stridesOptional:stridesOptional(sk,rs),walkBreaks});
-  sessions.push({id:`w${w}-race`,weekIndex:w,day:plan.raceDay,date:onDate(c.startDate,w*7+plan.raceDay),turn:null,sport:'RUN',role:'RACE',key:true,essential:true,optional:false,prescription:race,status:'PLANNED',plannedPrescriptionHash:hash(race),explanation:onChosen?'Race day':'Race day is the athlete’s own event date, outside the usual run days',blockId});
+  sessions.push({id:`${sk.sessionNamespace?sk.sessionNamespace+'.':''}w${w}-race`,weekIndex:w,day:plan.raceDay,date:onDate(c.startDate,w*7+plan.raceDay),turn:null,sport:'RUN',role:'RACE',key:true,essential:true,optional:false,prescription:race,status:'PLANNED',plannedPrescriptionHash:hash(race),explanation:onChosen?'Race day':'Race day is the athlete’s own event date, outside the usual run days',blockId});
   sessions.sort((a,b)=>a.day-b.day||(a.backToBackOrder??0)-(b.backToBackOrder??0));
  }
  const week={index:w,startDate:onDate(c.startDate,w*7),blockId,phase,status:'CONDITIONAL',conditional:true,contextualPriority:goal.priorityByPhase[phase==='CONSOLIDATION'?context:phase]??null,arrangementId:arr?.id??null,sessions,...weekSummary(sessions),progressionGate:w===0?{requires:'NONE_FIRST_WEEK',note:'The first week does not exceed current practice'}:{requires:'PREVIOUS_COMPARABLE_SESSIONS_EXECUTED_WITHOUT_ADVERSE_RESPONSE',fallback:'REPEAT_PREVIOUS_DOSE',regression:'REPEATED_ADVERSE_REGRESSES_ONE_STEP'},intent:BLOCK_INTENT[phase]};
@@ -3561,7 +3599,7 @@ const highSkillAdmissible=(sk,id)=>(sk.c.athlete.knownExercises??[]).some(k=>k.i
 const qualityGateOpen=(sk,context)=>(['EASY_CURRENT','QUALITY_FAMILIAR'].includes(sk.cap.run.class)||!!sk.c.athlete.runGraduation&&allowsCandidate(sk.repertoire??DEFAULT_REPERTOIRE,'B0-C01'))&&['RACE','PERFORMANCE'].includes(sk.goal.run.kind)&&['BUILD','SPECIFIC','NEXT_BLOCK','DEVELOPMENT'].includes(context)&&sk.c.schedule.runDays.length>=3&&allows(sk.authority,'R6-RUN-QUALITY');
 /** Rebuilds the deterministic skeleton (context) of a stored program for projection; authority is re-resolved, never stored. */
 function skeletonOf(program,authority){
- const op=authority.policy.operational,sk={c:program.canonical,cap:program.capability,goal:program.goal,plan:program.phases,blocks:program.blocks,op,authority,repertoire:repertoireOf(authority),templates:program.templates,noviceTemplates:program.noviceTemplates??null,arrangement:program.arrangementSessions};
+ const op=authority.policy.operational,sk={c:program.canonical,cap:program.capability,goal:program.goal,plan:program.phases,blocks:program.blocks,op,authority,repertoire:repertoireOf(authority),templates:program.templates,noviceTemplates:program.noviceTemplates??null,arrangement:program.arrangementSessions,...(program.sessionNamespace?{sessionNamespace:program.sessionNamespace}:{})};
  const knownOnly=!allows(authority,'R6-LOAD-ESTABLISHMENT');
  sk.templatesFor=(equipment,{capped=false}={})=>strengthTemplates({...sk.c,athlete:{...sk.c.athlete,equipment}},sk.goal,{equipment,knownOnly,auth:sk.repertoire,capped}).map((t,i)=>({...t,index:i,...(capped?{densityCapped:true}:{})}));
  // The latest window that covers a date is the athlete's latest statement about it (R7-A.1 C2, C5).
@@ -3646,7 +3684,9 @@ function generateProgram(input,options={}){
  const templates=cap.strength.programmed?strengthTemplates(c,goal,{knownOnly,auth:rep}):[];
  const sk={c,cap,goal,plan,blocks,op,authority,repertoire:rep,templates,arrangement:{}};
  const noviceTemplates=noviceDensityApplies(sk)?strengthTemplates(c,goal,{knownOnly,auth:rep,capped:true}).map(t=>({...t,densityCapped:true})):null;
- const program0={canonical:c,capability:cap,goal,phases:plan,blocks,templates,noviceTemplates,arrangementSessions:{}};
+ // V1 Core Safety & Lifecycle (QRE-AIF-02): a plan made from the record carries its session namespace (set by the restart, never by the caller).
+ const ns=typeof options?.[SESSION_NAMESPACE]==='string'&&/^r[0-9a-f]{10}$/.test(options[SESSION_NAMESPACE])?options[SESSION_NAMESPACE]:null;
+ const program0={canonical:c,capability:cap,goal,phases:plan,blocks,templates,noviceTemplates,arrangementSessions:{},...(ns?{sessionNamespace:ns}:{})};
  Object.assign(sk,skeletonOf(program0,authority),{templates,noviceTemplates,arrangement:{}});
  if(templates.some(t=>t.rows.length<2))negotiation.push({id:'EQUIPMENT_LIMITS_STRENGTH_SESSION',blocking:false,detail:'Available equipment supports fewer than two patterns in a session; bodyweight practice fills the gap',options:['Add equipment','Accept bodyweight practice']});
  const missingPatterns=[...new Set([...templates,...(noviceTemplates??[])].flatMap(t=>t.missingPatterns))];
@@ -3703,7 +3743,7 @@ function generateProgram(input,options={}){
  if(goal.run.event?.kind==='MARATHON'&&options?.[MARATHON_PROJECTION]===undefined&&peak.long<(authority.eventExtension?.values?.marathon?.eligibility?.projectedPeakLongRunMinutesAtLeast??0))return generateProgram(input,{...options,[MARATHON_PROJECTION]:peak.long});
  {const note=goal.run.event?.kind==='MARATHON'?marathonProjectionItem(sk,states[plan.raceWeek]?.run,weeks):null;if(note)negotiation.push(note);}
  if(goal.run.event&&peak.long<target)gaps.push({id:'LONG_RUN_PEAK_BELOW_TARGET',detail:`Planned long run peaks at ${peak.long} of ${target} minutes before the taper`,owner:'COACHING',materialToGoal:completionLongRunBelow(sk,goal.run.event.kind)!==null&&peak.long<completionLongRunBelow(sk,goal.run.event.kind)});
- const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,...(noviceTemplates?{noviceTemplates}:{}),repertoire:repertoireBinding(rep),...(goal.run.event&&EVENT_BOUNDARIES[goal.run.event.kind]?{eventExtension:extensionBinding(authority.eventExtension)}:{}),archetype:allowsCandidate(rep,'B0-C12')?archetypeOf(goal):null,classification:{run:cap.run.classification??null,strength:cap.strength.class,thresholds:RUN_CLASS_THRESHOLDS},coldStart:{run:{class:cap.run.class,basis:cap.run.basis,weeklyMinutes:cap.run.weeklyMinutes,longestMinutes:cap.run.longestMinutes,entry:cap.run.class==='WALK_JOG'?'walk/jog ladder':cap.run.class==='RESTART'?'restart entry':cap.run.class==='EASY_UNKNOWN'?'reviewed easy entry':'current easy running'},strength:{class:cap.strength.class,known:cap.strength.known.map(k=>k.id),entry:cap.strength.class==='KNOWN_LOAD'?'known doses, others established by effort':cap.strength.class==='NONE'?'movement practice, then effort-guided establishment':'effort-guided establishment'},unknowns:clone(intake.uncertainty).map(u=>({field:u.field,category:u.category})),learning:'Longitudinal learning is R7-C; the first sessions only establish and confirm'},feasibility:feasibilityOf(sk,weeks,negotiation),progression:progressionOf(weeks,blocks),negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
+ const program={version:PROGRAM_VERSION,id:'program-'+c.hash.slice(0,16),...(ns?{sessionNamespace:ns}:{}),athleteId:c.athlete.id,revision:0,proposalOnly:true,official:false,sourceInputHash:base.inputHash,intakeHash:c.hash,policyHash:authority.policyHash,startDate:c.startDate,weeksCount:c.weeks,timezoneOffsetMinutes:c.timezoneOffsetMinutes,learningConsent:c.learningConsent,canonical:c,goal,capability:cap,schedule:clone(s),phases:plan,blocks,weeks,stateTrace:states,arrangement:Object.fromEntries(Object.entries(sk.arrangement).map(([k,v])=>[k,{id:v.id,quality:v.quality,perm:v.perm,runFirstOnShared:v.runFirstOnShared}])),arrangementSessions:clone(sk.arrangement),templates,...(noviceTemplates?{noviceTemplates}:{}),repertoire:repertoireBinding(rep),...(goal.run.event&&EVENT_BOUNDARIES[goal.run.event.kind]?{eventExtension:extensionBinding(authority.eventExtension)}:{}),archetype:allowsCandidate(rep,'B0-C12')?archetypeOf(goal):null,classification:{run:cap.run.classification??null,strength:cap.strength.class,thresholds:RUN_CLASS_THRESHOLDS},coldStart:{run:{class:cap.run.class,basis:cap.run.basis,weeklyMinutes:cap.run.weeklyMinutes,longestMinutes:cap.run.longestMinutes,entry:cap.run.class==='WALK_JOG'?'walk/jog ladder':cap.run.class==='RESTART'?'restart entry':cap.run.class==='EASY_UNKNOWN'?'reviewed easy entry':'current easy running'},strength:{class:cap.strength.class,known:cap.strength.known.map(k=>k.id),entry:cap.strength.class==='KNOWN_LOAD'?'known doses, others established by effort':cap.strength.class==='NONE'?'movement practice, then effort-guided establishment':'effort-guided establishment'},unknowns:clone(intake.uncertainty).map(u=>({field:u.field,category:u.category})),learning:'Longitudinal learning is R7-C; the first sessions only establish and confirm'},feasibility:feasibilityOf(sk,weeks,negotiation),progression:progressionOf(weeks,blocks),negotiation,uncertainty:clone(intake.uncertainty),gaps,decisions:[],completedWork:clone(c.completedWork),officialPlanState:clone(c.officialPlanState),profileContextUsedForDose:false,assumptions:['Future weeks are conditional proposals, not predictions; each step needs the previous comparable exposure executed without an adverse signal','Effort cues, not paces, define running intensity; any time goal is context only','Loads come from known current loads or effort-guided establishment; nothing is derived from sex, body size or another exercise','Phase lengths are operational choices inside reviewed envelopes, not validated optimal periodization'],authorityRefs:authority.records.map(r=>({boundaryId:r.boundaryId,disposition:r.disposition}))};
  program.hash=programHash(program);
  return freeze({...base,status:'PROPOSED',reason:'Complete conditional program generated from onboarding-like facts',program,negotiation,requestedScopeSatisfied:gaps.every(g=>!g.materialToGoal),trace:{capability:cap,goalModel:goal,phases:plan,arrangement:arrangementTrace,unknowns:intake.uncertainty},nextObservation:'Record each session: completed or not, actual minutes or sets/reps/load, effort if known and next-day function. Next week’s steps advance only on that evidence.'});
 }
@@ -5022,8 +5062,13 @@ const READ_STATUSES=new Set(['DISTANCE','PARTIAL','STOPPED','UNKNOWN']);
 const completionRead=(reads,o,s)=>{if(typeof reads!=='function'||s.sport!=='RUN')return null;let r;try{r=reads(o,s);}catch{return 'UNKNOWN';}return READ_STATUSES.has(r)?r:null;};
 function bindObservations(program,accepted,hybrid,policy,reads=null){
  const sessions=new Map(program.weeks.flatMap(w=>w.sessions.map(s=>[s.id,{s,w}]))),bound=[],unbound=[];
+ // V1 Core Safety & Lifecycle (QRE-AIF-02, L-APP-06): in a plan made from the record, a row bound under an earlier plan (bound to a session id
+ // outside this plan's namespace) is that plan's history. It is carried exactly as recorded and never re-bound to a session of this plan. A plan
+ // without a namespace binds as before.
+ const ns=typeof program.sessionNamespace==='string'?program.sessionNamespace+'.':null;
  for(const o of accepted){
   const x=sessions.get(o.sessionId);
+  if(ns&&!x&&typeof o.sessionId==='string'&&!o.sessionId.startsWith(ns)&&o.context?.sessionId===o.sessionId){unbound.push(o);continue;}
   if(!x||!x.s.prescription){unbound.push({...o,context:{sessionType:x?'REST_BY_DESIGN':'UNPLANNED'},comparable:false});continue;}
   // A race's duration is the event window (operational.event.raceDay), not a target: a finished race is complete however fast (R7-A).
  const {s,w}=x,p=s.prescription,minutesOk=s.sport==='STRENGTH'||s.role==='RACE'||!Number.isFinite(o.actual.minutes)||o.actual.minutes>=0.9*p.durationMinutes;
@@ -5514,7 +5559,9 @@ function evaluateProgram(program,input,options={}){
   const raceNote=decision.proposal?raceScope(program,decision.proposal,ctx.ahead):null;
   const status=decision.status??(decision.proposal&&!decision.instantiationOnly?'MODIFY':decision.action==='ASK'?'ASK':'KEEP');
   return finish(status,decision.action,decision.reason,{...out,...(decision.readinessRestart?{readinessRestart:clone(decision.readinessRestart)}:{}),proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[]),...(raceNote?.disclosure?[raceNote.disclosure]:[])],offers:[...(decision.offers??[]),...(raceNote?.offer?[raceNote.offer]:[])],...(decision.guidance?{guidance:clone(decision.guidance)}:{}),...(decision.warningSigns?{warningSigns:clone(decision.warningSigns)}:{}),...(decision.unavailable?{unavailable:clone(decision.unavailable)}:{}),learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(input),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
- }catch(e){return finish('HOLD','HOLD','Malformed review facts: '+e.message,{...(out??{}),errors:['malformed:'+(e?.constructor?.name??'Error')]});}
+ // V1 Core Safety & Lifecycle (QRE-P0-03): the answer names the error class, which is the same on every engine for the same fault, never the
+ // engine's own message text (V8 and JavaScriptCore word it differently, and the reason is kept in the record of decisions).
+ }catch(e){const cls=e?.constructor?.name??'Error';return finish('HOLD','HOLD','Malformed review facts ('+cls+'): nothing is decided on them',{...(out??{}),errors:['malformed:'+cls]});}
 }
 const dayOf=v=>typeof v==='string'&&isoDay(v.slice(0,10))?v.slice(0,10):null;
 /** NB-2 (SSCTR-FF-Q2 (c), C-FF2-4): the race still ahead entering the athlete's own-event scope with this proposal (its three paths offered once, the
@@ -7871,6 +7918,8 @@ Object.defineProperties(__exports, {
   "validateProgramInput": { enumerable: true, get: () => validateProgramInput }
 });
 
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 const INPUT_VERSION='R5-INPUT-1';
 const families={RUN:['EASY','LONG','CRUISE','FASTER','HILLS','STRIDES','EVENT_SPECIFIC','WALK_JOG'],STRENGTH:['FULL_BODY','LOWER','UPPER','PRACTICE']};
@@ -7883,7 +7932,7 @@ const dateValid=s=>{
 const daysBetween=(a,b)=>(Date.parse(b)-Date.parse(a))/86400000;
 const onDate=(start,days)=>new Date(Date.parse(start)+days*86400000).toISOString().slice(0,10);
 const prescriptionKey=p=>hash(p);
-const anchorConfigurationHash=anchors=>hash(anchors.map(a=>({id:a.id,prescription:a.prescription})).sort((a,b)=>a.id.localeCompare(b.id)));
+const anchorConfigurationHash=anchors=>hash(anchors.map(a=>({id:a.id,prescription:a.prescription})).sort((a,b)=>byCode(a.id,b.id)));
 function validateAvailability(availability){
  const errors=[],days=new Set(),ids=new Set();
  if(!Array.isArray(availability)||!availability.length)return ['availability.array'];
@@ -8026,6 +8075,8 @@ Object.defineProperties(__exports, {
 });
 
 
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 /** No universal spacing/fatigue threshold: candidate configurations need current combined tolerance. */
 function scheduleCandidates(anchors,availability,options,asOf,{allowOmissions=false,forbiddenPairs=[]}={}){
@@ -8049,7 +8100,7 @@ function scheduleCandidates(anchors,availability,options,asOf,{allowOmissions=fa
    const first=sessions.find(s=>s.anchorId===pair.before),second=sessions.find(s=>s.anchorId===pair.after);
    if(first&&second&&first.day===second.day&&first.startMinute<second.startMinute)reasons.push('Supplied incompatible arrangement: '+pair.before+' before '+pair.after);
   }
-  sessions.sort((a,b)=>a.day-b.day||a.startMinute-b.startMinute||a.anchorId.localeCompare(b.anchorId));
+  sessions.sort((a,b)=>a.day-b.day||a.startMinute-b.startMinute||byCode(a.anchorId,b.anchorId));
   return {id:option.id,admissible:reasons.length===0,reasons,sessions,omitted:omitted.map(a=>a.id),preservesRun:omitted.filter(a=>a.essential&&a.prescription.modality==='RUN').length===0,preservesStrength:omitted.filter(a=>a.essential&&a.prescription.modality==='STRENGTH').length===0,signature:hash(sessions.map(s=>[s.anchorId,s.day,s.startMinute,s.prescription]))};
  });
 }
@@ -8081,6 +8132,8 @@ Object.defineProperties(__exports, {
   "validateLearningModel": { enumerable: true, get: () => validateLearningModel }
 });
 
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 const VERSION='R5-LEARNING-1',DAY=86_400_000,HASH=/^[a-f0-9]{64}$/;
 /** Conservative evidence bookkeeping, NOT physiological laws or dose authority. */
@@ -8177,8 +8230,8 @@ function updateLearningModel(model,observations,{asOf,purposeAllowed=model?.purp
    if(!exclusions.has(hash(entry))){excluded.push(entry);exclusions.add(hash(entry));}
   }else {accepted.push(o);ids.set(o.eventId,inputHash);sources.add(o.sourceHash);}
  }
- accepted.sort((a,b)=>time(a.observedAt)-time(b.observedAt)||a.eventId.localeCompare(b.eventId));
- excluded.sort((a,b)=>a.inputHash.localeCompare(b.inputHash)||a.reason.localeCompare(b.reason));
+ accepted.sort((a,b)=>time(a.observedAt)-time(b.observedAt)||byCode(a.eventId,b.eventId));
+ excluded.sort((a,b)=>byCode(a.inputHash,b.inputHash)||byCode(a.reason,b.reason));
  if(nextAsOf===model.asOf&&purposeAllowed===model.purposeAllowed&&canonical(accepted)===canonical(model.observations)&&canonical(excluded)===canonical(model.excluded))return model;
  const {hash:previousHash,...body}=clone(model);
  return finish({...body,asOf:nextAsOf,purposeAllowed,revision:model.revision+1,observations:accepted,excluded});
@@ -8208,7 +8261,7 @@ function evidenceFor(model,context,{asOf}={}) {
  // A repeated report for one completed session is one independent observation.
  const sessions=new Map();
  for(const o of matches){const prior=sessions.get(o.sessionId);if(!prior||time(o.observedAt)>time(prior.observedAt))sessions.set(o.sessionId,o);}
- const rows=[...sessions.values()].sort((a,b)=>time(a.observedAt)-time(b.observedAt)||a.eventId.localeCompare(b.eventId));
+ const rows=[...sessions.values()].sort((a,b)=>time(a.observedAt)-time(b.observedAt)||byCode(a.eventId,b.eventId));
  const good=rows.filter(o=>classify(o)==='COMPATIBLE'),bad=rows.filter(o=>classify(o)==='ADVERSE');
  const informative=[...good,...bad],span=informative.length?Math.max(...informative.map(o=>time(o.observedAt)))-Math.min(...informative.map(o=>time(o.observedAt))):0;
  const mixed=good.length>0&&bad.length>0;
@@ -8779,42 +8832,44 @@ function evaluateLegacyProgram(program,review,options={}){
 // CoachingCore/src/r6-index.mjs
 __def(7, function (__exports) {
 'use strict';
-const {generateProgram: generateColdProgram, validProgram: validColdProgram, programHash} = __req(8);
+const {generateProgram: generateColdProgram, validProgram: validColdProgram, programHash, SESSION_NAMESPACE} = __req(8);
 const {evaluateProgram: evaluateColdProgram} = __req(21);
 const {generateLegacyProgram, evaluateLegacyProgram, validLegacyProgram, LEGACY_PROGRAM_VERSION} = __req(25);
 const {hash, clone, freeze} = __req(9);
 const {restartIntake} = __req(24);
 const {RESTART_FACTS} = __req(11);
 const {screenInterruptionReason} = __req(14);
-const __r7 = __req(11);
-const __r8 = __req(8);
-const __r9 = __req(21);
-const __r10 = __req(23);
-const __r11 = __req(20);
-const __r12 = __req(19);
-const __r13 = __req(30);
+const {utcTimestamp} = __req(20);
+const __r8 = __req(11);
+const __r9 = __req(8);
+const __r10 = __req(21);
+const __r11 = __req(23);
+const __r12 = __req(20);
+const __r13 = __req(19);
+const __r14 = __req(30);
 Object.defineProperties(__exports, {
   "LEGACY_PROGRAM_VERSION": { enumerable: true, get: () => LEGACY_PROGRAM_VERSION },
-  "PROGRAM_VERSION": { enumerable: true, get: () => __r8["PROGRAM_VERSION"] },
-  "REVIEW_KINDS": { enumerable: true, get: () => __r9["REVIEW_KINDS"] },
-  "REVIEW_VERSION": { enumerable: true, get: () => __r9["REVIEW_VERSION"] },
-  "canonicalizeIntake": { enumerable: true, get: () => __r7["canonicalizeIntake"] },
-  "chooseBalanced": { enumerable: true, get: () => __r12["chooseBalanced"] },
-  "createLearningModel": { enumerable: true, get: () => __r10["createLearningModel"] },
+  "PROGRAM_VERSION": { enumerable: true, get: () => __r9["PROGRAM_VERSION"] },
+  "REVIEW_KINDS": { enumerable: true, get: () => __r10["REVIEW_KINDS"] },
+  "REVIEW_VERSION": { enumerable: true, get: () => __r10["REVIEW_VERSION"] },
+  "canonicalizeIntake": { enumerable: true, get: () => __r8["canonicalizeIntake"] },
+  "chooseBalanced": { enumerable: true, get: () => __r13["chooseBalanced"] },
+  "createLearningModel": { enumerable: true, get: () => __r11["createLearningModel"] },
   "evaluateProgram": { enumerable: true, get: () => evaluateProgram },
-  "evidenceFor": { enumerable: true, get: () => __r10["evidenceFor"] },
+  "evidenceFor": { enumerable: true, get: () => __r11["evidenceFor"] },
   "generateProgram": { enumerable: true, get: () => generateProgram },
-  "interferenceCosts": { enumerable: true, get: () => __r12["interferenceCosts"] },
-  "normalizeObservations": { enumerable: true, get: () => __r11["normalizeObservations"] },
-  "preferredArrangement": { enumerable: true, get: () => __r10["preferredArrangement"] },
-  "programHash": { enumerable: true, get: () => __r8["programHash"] },
+  "interferenceCosts": { enumerable: true, get: () => __r13["interferenceCosts"] },
+  "normalizeObservations": { enumerable: true, get: () => __r12["normalizeObservations"] },
+  "preferredArrangement": { enumerable: true, get: () => __r11["preferredArrangement"] },
+  "programHash": { enumerable: true, get: () => __r9["programHash"] },
   "restartProgram": { enumerable: true, get: () => restartProgram },
   "sessionContext": { enumerable: true, get: () => sessionContext },
-  "stimulusOf": { enumerable: true, get: () => __r13["stimulusOf"] },
-  "updateLearningModel": { enumerable: true, get: () => __r10["updateLearningModel"] },
+  "stimulusOf": { enumerable: true, get: () => __r14["stimulusOf"] },
+  "updateLearningModel": { enumerable: true, get: () => __r11["updateLearningModel"] },
   "validProgram": { enumerable: true, get: () => validProgram },
-  "validateLearningModel": { enumerable: true, get: () => __r10["validateLearningModel"] }
+  "validateLearningModel": { enumerable: true, get: () => __r11["validateLearningModel"] }
 });
+
 
 
 
@@ -8854,7 +8909,12 @@ function restartProgram({intake,record=[],referenceState=null,asOf=null,athleteI
  try{
   const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,athleteId,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
   if(r.status!=='READY')return stopped(r.status,r.reason,r.missingInputs??[],r.unreadable?{unreadable:clone(r.unreadable)}:{});
-  const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts});
+  // V1 Core Safety & Lifecycle (QRE-AIF-02): the new plan's session namespace, from the updated facts and the restart's decision instant (UTC):
+  // two restarts of one athlete never share a session id, and the same restart (the same facts at the same instant) gives the same plan,
+  // whatever form the carried record holds its facts in.
+  const at=typeof (asOf??intake?.asOf)==='string'?(utcTimestamp(asOf??intake.asOf)??String(asOf??intake.asOf)):null;
+  const ns='r'+hash({intake:r.intake,at}).slice(0,10);
+  const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts,[SESSION_NAMESPACE]:ns});
   return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
  }catch(e){return stopped('HOLD','The restart facts could not be read: no new plan is made from them; send the updated facts and the record as kept',[],{errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }
@@ -12794,13 +12854,125 @@ const comparisonDigests = (answer, envelope) => ({
 
 });
 
+// CoachingCore/src/v1-safety-index.mjs
+__def(40, function (__exports) {
+'use strict';
+const S = __req(2);
+const {repertoireAuthority} = __req(13);
+const {freeze} = __req(9);
+const __r3 = __req(2);
+Object.defineProperties(__exports, {
+  "BAND_OF": { enumerable: true, get: () => __r3["BAND_OF"] },
+  "FORECAST_BOUNDARIES": { enumerable: true, get: () => __r3["FORECAST_BOUNDARIES"] },
+  "FORECAST_EXTENSION_ID": { enumerable: true, get: () => __r3["FORECAST_EXTENSION_ID"] },
+  "FORMAT_BOUNDARIES": { enumerable: true, get: () => __r3["FORMAT_BOUNDARIES"] },
+  "FORMAT_EXTENSION_ID": { enumerable: true, get: () => __r3["FORMAT_EXTENSION_ID"] },
+  "HORIZON_WEEKS": { enumerable: true, get: () => __r3["HORIZON_WEEKS"] },
+  "PACE_REVISION_RESPONSE": { enumerable: true, get: () => __r3["PACE_REVISION_RESPONSE"] },
+  "PACE_REVISION_VERSION": { enumerable: true, get: () => __r3["PACE_REVISION_VERSION"] },
+  "PACE_WITHHELD": { enumerable: true, get: () => __r3["PACE_WITHHELD"] },
+  "RUN_BOUNDARIES": { enumerable: true, get: () => __r3["RUN_BOUNDARIES"] },
+  "RUN_EVIDENCE_DECLARED": { enumerable: true, get: () => __r3["RUN_EVIDENCE_DECLARED"] },
+  "RUN_EXTENSION_ID": { enumerable: true, get: () => __r3["RUN_EXTENSION_ID"] },
+  "RUN_FORMAT_EMITTED": { enumerable: true, get: () => __r3["RUN_FORMAT_EMITTED"] },
+  "RUN_HISTORY_FACT": { enumerable: true, get: () => __r3["RUN_HISTORY_FACT"] },
+  "RUN_REPORT_RECEIVED": { enumerable: true, get: () => __r3["RUN_REPORT_RECEIVED"] },
+  "SAFETY_LIFECYCLE_ID": { enumerable: true, get: () => SAFETY_LIFECYCLE_ID },
+  "STRENGTH_BOUNDARIES": { enumerable: true, get: () => __r3["STRENGTH_BOUNDARIES"] },
+  "STRENGTH_EXTENSION_ID": { enumerable: true, get: () => __r3["STRENGTH_EXTENSION_ID"] },
+  "V1_CORE_ENGINE": { enumerable: true, get: () => V1_CORE_ENGINE },
+  "V1_ENGINE": { enumerable: true, get: () => __r3["V1_ENGINE"] },
+  "V1_RUN_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_ENGINE"] },
+  "V1_RUN_FORECAST_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_FORECAST_ENGINE"] },
+  "V1_RUN_FORMAT_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_FORMAT_ENGINE"] },
+  "V1_SCOPE": { enumerable: true, get: () => __r3["V1_SCOPE"] },
+  "V1_STRENGTH_ENGINE": { enumerable: true, get: () => __r3["V1_STRENGTH_ENGINE"] },
+  "V1_UNAVAILABLE": { enumerable: true, get: () => __r3["V1_UNAVAILABLE"] },
+  "WHOLE_ROW_WITHHELD": { enumerable: true, get: () => __r3["WHOLE_ROW_WITHHELD"] },
+  "WITHHOLDABLE": { enumerable: true, get: () => __r3["WITHHOLDABLE"] },
+  "admitted": { enumerable: true, get: () => __r3["admitted"] },
+  "authorityExpiry": { enumerable: true, get: () => authorityExpiry },
+  "evaluateProgram": { enumerable: true, get: () => evaluateProgram },
+  "generateProgram": { enumerable: true, get: () => generateProgram },
+  "historicalStateOf": { enumerable: true, get: () => __r3["historicalStateOf"] },
+  "readEvidence": { enumerable: true, get: () => __r3["readEvidence"] },
+  "restartProgram": { enumerable: true, get: () => restartProgram },
+  "runCalibrationAuthority": { enumerable: true, get: () => __r3["runCalibrationAuthority"] },
+  "runCalibrationOf": { enumerable: true, get: () => __r3["runCalibrationOf"] },
+  "runForecastAuthority": { enumerable: true, get: () => __r3["runForecastAuthority"] },
+  "runFormatAuthority": { enumerable: true, get: () => __r3["runFormatAuthority"] },
+  "strengthAuthority": { enumerable: true, get: () => __r3["strengthAuthority"] },
+  "validProgram": { enumerable: true, get: () => __r3["validProgram"] },
+  "weeklyStrengthExposure": { enumerable: true, get: () => __r3["weeklyStrengthExposure"] }
+});
+// CoachingCore V1 Core Safety & Lifecycle (Founder mission of 2026-11-18, QRE-AIF-01): the composed entry point an integration uses.
+// - Underneath is v1-strength-index.mjs, unchanged in this module, and under it the engine. Nothing here plans, prescribes, proposes or screens:
+//   every answer is an answer the engine gave.
+// - The enabling records of the bound repertoire (R7B0 SSCTR records) carry a review-by date. After that UTC day the repertoire is not valid,
+//   and the engine refuses every review and every new plan (UNSUPPORTED, fail closed). Before this module, that refusal also came before the
+//   clinical screen: a warning sign reported after the date was answered UNSUPPORTED instead of CLINICAL_HUMAN_REQUIRED (QRE-AIF-01).
+// - The precedence this module restores, for a review: input and integrity validation, then the clinical route, then the authority, then any
+//   prescription. When the only reason the repertoire is not valid is that its records' dates have passed (the same records, bound to the same
+//   catalog bytes, enable it once the dates are set aside), the same review is read again with the dates set aside, and exactly one kind of
+//   answer is taken from that reading: CLINICAL_HUMAN_REQUIRED with no proposal, which prescribes and proposes nothing (the answer the engine
+//   gives that warning sign, that pain or that standing hold before the date). Any other answer of that reading is discarded and the refusal
+//   stands. It is the precedence v1-strength-index.mjs already gives a plan built under other strength rules (SI-V1-SSCTR-SQ-*).
+// - A repertoire that is not valid for any other reason (catalog or records missing, altered, vetoed, bound to other bytes) is not expiry: the
+//   refusal stands whatever the review says, as before. So do a caller's own repertoire and every new plan (generate, restart): an expired
+//   authority makes no plan, and their clinical intake screen already answers before the authority is read.
+// - Each answer given while the records are expired carries `authorityExpiry` (status EXPIRED, the review-by dates passed, whether the clinical
+//   route answered). No other answer changes, by a byte.
+
+
+
+
+const SAFETY_LIFECYCLE_ID='V1X-SAFETY-LIFECYCLE-1';
+const V1_CORE_ENGINE=S.V1_STRENGTH_ENGINE+'+'+SAFETY_LIFECYCLE_ID;
+
+const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
+/** The UTC calendar day of a decision instant, as the repertoire reads it (r7b-repertoire.mjs utcDayOf). */
+const utcDayOf=v=>{if(typeof v!=='string')return null;const t=Date.parse(v);return /T/.test(v)&&Number.isFinite(t)?new Date(t).toISOString().slice(0,10):v.slice(0,10);};
+/**
+ * Whether the repertoire at this decision instant is refused only because its enabling records' review-by dates have passed: null when it is
+ * valid, when the caller supplies its own repertoire, or when it is not valid for another reason (then nothing here applies). Otherwise the
+ * expiry, with the repertoire read with the dates set aside.
+ */
+function authorityExpiry(options,asOf){
+ const opts=isObj(options)?options:{},day=utcDayOf(asOf);
+ if(opts.repertoire||!day)return null;
+ const dated=repertoireAuthority({...opts,asOf:day});if(dated.valid)return null;
+ const undated=repertoireAuthority({...opts,asOf:null});if(!undated.valid)return null;
+ const passed=undated.records.filter(r=>typeof r.reviewBy==='string'&&day>r.reviewBy).map(r=>({id:r.id,reviewBy:r.reviewBy}));
+ return passed.length?{day,passed,undated}:null;
+}
+const marker=(e,clinicalRouteAnswered)=>({status:'EXPIRED',asOfDay:e.day,reviewBy:[...new Set(e.passed.map(r=>r.reviewBy))].sort(),records:e.passed.map(r=>r.id),clinicalRouteAnswered});
+
+/** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. */
+const generateProgram=(input,options={})=>S.generateProgram(input,options);
+/** A new plan from the record: as below (a clinical hold on record is answered before any plan is made). */
+const restartProgram=(input,options={})=>S.restartProgram(input,options);
+/** A review: as below, except that after the records' review-by dates the clinical route still answers before the refusal (QRE-AIF-01). */
+function evaluateProgram(program,review,options={}){
+ const base=S.evaluateProgram(program,review,options);
+ if(base?.status!=='UNSUPPORTED')return base;
+ let e=null;try{e=authorityExpiry(options,isObj(review)?review.asOf:null);}catch{e=null;}
+ if(!e)return base;
+ let reread=null;try{reread=S.evaluateProgram(program,review,{...(isObj(options)?options:{}),repertoire:e.undated});}catch{reread=null;}
+ if(reread?.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal)return freeze({...reread,authorityExpiry:marker(e,true)});
+ return freeze({...base,authorityExpiry:marker(e,false)});
+}
+
+});
+
 // audits/v1-aif-p0-jsc-2026-11-17/build/entry.mjs
 __def(0, function (__exports) {
 'use strict';
 const L = __req(1);
 const {comparisonDigests} = __req(39);
+const CORE = __req(40);
 Object.defineProperties(__exports, {
-  "api": { enumerable: true, get: () => api }
+  "api": { enumerable: true, get: () => api },
+  "coreEngine": { enumerable: true, get: () => coreEngine }
 });
 // P0 bridge facade: the only surface the host calls. It wraps the AIF reference client (harness/lib.mjs) and returns small JSON strings
 // (status, hashes, timings, APP-VIEW-0 projections), never the envelope or an answer, except on the two explicit paths that need them:
@@ -12808,6 +12980,10 @@ Object.defineProperties(__exports, {
 // It adds no training rule: every decision is the engine's answer as the client keeps it.
 
 
+// Core Safety & Lifecycle (2026-11-18): the successor's composed entry point is carried in the bundle for its focal revalidation
+// (audits/v1-core-safety-lifecycle-2026-11-18/mac); the facade below and its J5/P16 journeys are unchanged.
+
+const coreEngine = CORE.V1_CORE_ENGINE;
 
 let client = null, snapshot = null;
 const now = () => performance.now();

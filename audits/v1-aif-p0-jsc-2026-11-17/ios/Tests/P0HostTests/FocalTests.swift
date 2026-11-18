@@ -68,7 +68,9 @@ final class FocalTests: XCTestCase {
         XCTAssertTrue(out.reachedEqual, "a call site was reached in one engine and not in the other")
         // QRE-P0-DEVICE-R1 C-2: the expected set, so the check cannot pass with nothing exercised. schedule.localeCompare is the r5-schedule
         // tie-break after day and startMinute, which valid inputs never reach (one session per window); r6-program.mjs:960 is not driven here.
-        XCTAssertEqual(out.reached, ["generate.localeCompare": true, "generate.toSorted": true, "schedule.localeCompare": false, "schedule.toSorted": true, "learning.localeCompare": true])
+        // Core Safety & Lifecycle (2026-11-18, C-3 closed): the engine no longer calls localeCompare anywhere in the V1 graph (code-unit order), so
+        // no phase reaches it; toSorted is still reached where it was.
+        XCTAssertEqual(out.reached, ["generate.localeCompare": false, "generate.toSorted": true, "schedule.localeCompare": false, "schedule.toSorted": true, "learning.localeCompare": false])
         XCTAssertTrue(out.pairsDifferAcrossLocales.values.allSatisfy { $0 == 0 }, "a comparison the engine made here depends on the locale")
         XCTAssertTrue(out.nodePairsRejudgedEqual.values.allSatisfy { $0 }, "Node's comparisons are judged differently here")
     }
@@ -212,5 +214,50 @@ final class FocalTests: XCTestCase {
         emit("stress", out)
         XCTAssertFalse(verdicts.contains(.DIVERGED), "a restart before a step changed the engine's answer")
         XCTAssertTrue(out.isolationRestored && out.isolationReviewChangedEnvelope)
+    }
+
+    /// Core Safety & Lifecycle (2026-11-18; audits/v1-core-safety-lifecycle-2026-11-18/mac): the successor's focal revalidation. The same driver
+    /// text as the Node oracle (mac/core-oracle.mjs -> Fixtures/core.json) replays the restart, expiry, E-1 and forecast journeys through
+    /// v1-safety-index.mjs. Every step's status, proposal, namespace, stable answer (RFC-NUMERIC-1: runForecast's non-integer internals and its two
+    /// digests set aside) and persisted record must equal Node's; a step whose whole answer differs while all of those are equal is EXPLAINED_LIBM
+    /// (reported, accepted by RFC-NUMERIC-1). Run once per device language (en, pt-BR, da, nb, cs): the anchor hash and the zero localeCompare
+    /// calls must hold in each.
+    func testCoreSafetyLifecycle() async throws {
+        struct Core: Decodable {
+            struct Modules: Decodable { let core: Int, contract: Int, value: Int }
+            struct Step: Codable, Equatable { let op: String; let status: String?; let proposal: Bool?; let namespace: String?; let answer: String?; let stable: String?; let persisted: String?; let error: String? }
+            struct Journey: Codable, Equatable { let name: String; let steps: [Step] }
+            struct Out: Codable { let journeys: [Journey]; let anchors: [String: String]; let localeCompareCalls: Int; let digest: String }
+            let driver: String, modules: Modules, inputJSON: String, expected: Out
+        }
+        guard let url = Bundle.module.url(forResource: "core", withExtension: "json", subdirectory: "Fixtures") else { throw CoachingCoreRuntime.P0Error.resource("core") }
+        let fx = try JSONDecoder().decode(Core.self, from: Data(contentsOf: url))
+        let rt = try await CoachingCoreRuntime.make(label: "fit.vilumo.p0.core", exposeModules: true)
+        let raw = try await rt.run { rt -> String in
+            _ = try rt.evaluate(fx.driver)
+            _ = try rt.evaluate("globalThis.__coreRun = i => __corefocal({ core: __p0req(\(fx.modules.core)), contract: __p0req(\(fx.modules.contract)), value: __p0req(\(fx.modules.value)) }, i);")
+            return try rt.callGlobal("__coreRun", [fx.inputJSON])
+        }
+        let r = try JSONDecoder().decode(Core.Out.self, from: Data(raw.utf8)), e = fx.expected
+        let h = try await rt.run { try hostCalls($0) }
+        assertHostClean(h, "core")
+        var diverged: [String] = [], explained: [String] = []
+        for (j, x) in zip(r.journeys, e.journeys) {
+            for (k, (s, t)) in zip(j.steps, x.steps).enumerated() {
+                if s.op != t.op || s.status != t.status || s.proposal != t.proposal || s.namespace != t.namespace || s.stable != t.stable || s.persisted != t.persisted || s.error != t.error { diverged.append("\(j.name)#\(k)") }
+                else if s.answer != t.answer { explained.append("\(j.name)#\(k)") }
+            }
+        }
+        struct Report: Codable { let digestEqual: Bool; let diverged: [String]; let explainedLibm: [String]; let localeCompareCalls: Int; let anchorsEqual: Bool; let journeys: Int; let steps: Int }
+        let rep = Report(digestEqual: r.digest == e.digest, diverged: diverged, explainedLibm: explained, localeCompareCalls: r.localeCompareCalls,
+                         anchorsEqual: Set(r.anchors.values).count == 1 && r.anchors == e.anchors, journeys: r.journeys.count, steps: r.journeys.map { $0.steps.count }.reduce(0, +))
+        if !diverged.isEmpty || !explained.isEmpty || !rep.digestEqual { let a = XCTAttachment(string: raw); a.name = "core-reply.json"; a.lifetime = .keepAlways; add(a) }
+        emit("core-focal", rep)
+        XCTAssertEqual(r.journeys.map { $0.name }, e.journeys.map { $0.name })
+        XCTAssertEqual(r.journeys.map { $0.steps.count }, e.journeys.map { $0.steps.count })
+        XCTAssertTrue(diverged.isEmpty, "DIVERGED steps: \(diverged)")
+        XCTAssertTrue(rep.digestEqual, "the cross-runtime digest differs from Node")
+        XCTAssertEqual(r.localeCompareCalls, 0)
+        XCTAssertTrue(rep.anchorsEqual, "the anchor hash depends on the locale")
     }
 }

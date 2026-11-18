@@ -1,0 +1,627 @@
+{
+ "driver": "// Core Safety & Lifecycle: focal driver for the Mac/iPhone revalidation (the P0 focal pattern, lab/focal-driver.js). The SAME text runs in Node\n// over the native ESM namespaces (core-oracle.mjs) and in the device JSContext over the bundle's own module registry (CoreFocalTests.swift).\n// It replays frozen synthetic inputs (precomputed by the Node oracle) through the composed entry point v1-safety-index.mjs, carrying the record\n// as the AIF client does, and returns digests made by the engine's own hash. It adds no training rule.\n// M = { core: v1-safety-index, contract: r5-contract, value: value }   input = { journeys: [{name, steps:[op]}], anchors }\n// op: {op:'onboard', intake} | {op:'review'|'probe', kind, asOf, facts, eventId} | {op:'restart', intake, asOf} | {op:'roundtrip'}\nglobalThis.__corefocal = function (M, inputJSON) {\n  const input = JSON.parse(inputJSON), H = v => M.value.hash(v), copy = v => JSON.parse(JSON.stringify(v));\n  const errorOf = e => ({ error: e && e.constructor ? e.constructor.name : typeof e }); // never the message (QRE-P0-03)\n  /** RFC-NUMERIC-1: the answer without what may differ across runtimes (runForecast's non-integer numbers and its two digests). */\n  const stable = v => { const walk = (o, inF) => Array.isArray(o) ? o.map(x => walk(x, inF)) : o && typeof o === 'object' ? Object.fromEntries(Object.keys(o).filter(k => !(inF && (k === 'hash' || k === 'inputDigest'))).map(k => [k, walk(o[k], inF)])) : (inF && typeof o === 'number' && !Number.isInteger(o)) ? 'NUM' : o;\n    return Object.fromEntries(Object.keys(v).map(k => [k, walk(v[k], k === 'runForecast')])); };\n  const CARRIED = ['runEvidenceRecord', 'runFormatRecord', 'runHistoryRecord'], PERSISTED = ['program', 'actualLedger', 'referenceState', 'athleteModel', ...CARRIED];\n  function run(j) {\n    let env = { program: null, actualLedger: [], referenceState: null, athleteModel: null, runEvidenceRecord: [], runFormatRecord: [], runHistoryRecord: [] };\n    const keep = r => { if (r.program && !env.program) env.program = r.program; if (r.proposal) env.program = r.proposal;\n      if (Array.isArray(r.actualLedger)) env.actualLedger = r.actualLedger; else if (Array.isArray(r.carriedRecord)) env.actualLedger = r.carriedRecord;\n      if (r.referenceState !== undefined && r.referenceState !== null) env.referenceState = r.referenceState; if (r.updatedModel) env.athleteModel = r.updatedModel;\n      for (const k of CARRIED) if (Array.isArray(r[k])) env[k] = r[k]; return r; };\n    const input = (kind, asOf, facts, eventId) => { const weekIndex = Math.floor((Date.parse(asOf.slice(0, 10) + 'T00:00:00Z') - Date.parse(env.program.startDate + 'T00:00:00Z')) / (7 * 864e5));\n      return { version: 'R6-REVIEW-1', synthetic: true, purpose: 'SHADOW_REFERENCE', asOf, weekIndex, event: { id: eventId, kind }, ...facts,\n        ...(env.actualLedger.length ? { actualLedger: env.actualLedger } : {}), ...(env.referenceState ? { referenceState: env.referenceState } : {}), ...(env.athleteModel ? { athleteModel: env.athleteModel } : {}),\n        runEvidenceRecord: env.runEvidenceRecord, runFormatRecord: env.runFormatRecord, runHistoryRecord: env.runHistoryRecord }; };\n    return j.steps.map(s => {\n      try {\n        let r;\n        if (s.op === 'onboard') { r = M.core.generateProgram(copy(s.intake)); if (r.status === 'PROPOSED') keep(r); }\n        else if (s.op === 'review') r = keep(M.core.evaluateProgram(env.program, input(s.kind, s.asOf, copy(s.facts), s.eventId)));\n        else if (s.op === 'probe') r = M.core.evaluateProgram(env.program, input(s.kind, s.asOf, copy(s.facts), s.eventId));\n        else if (s.op === 'restart') { r = M.core.restartProgram({ intake: copy(s.intake), record: env.actualLedger, referenceState: env.referenceState, asOf: s.asOf, athleteId: env.program ? env.program.athleteId : null, runEvidenceRecord: env.runEvidenceRecord, runFormatRecord: env.runFormatRecord, runHistoryRecord: env.runHistoryRecord });\n          if (r.status === 'PROPOSED') { env.program = r.program; env.referenceState = null; keep(r); } }\n        else if (s.op === 'roundtrip') { env = JSON.parse(JSON.stringify(env)); return { op: 'roundtrip', persisted: H(PERSISTED.map(k => env[k])) }; }\n        const fc = r.runForecast;\n        return { op: s.op, status: r.status ?? null, proposal: !!r.proposal, expiry: r.authorityExpiry ?? null, namespace: env.program ? (env.program.sessionNamespace ?? null) : null,\n          answer: H(r), stable: H(stable(r)), persisted: H(PERSISTED.map(k => env[k])), forecast: fc ? { status: fc.status ?? null, reason: fc.reason ?? null } : null };\n      } catch (e) { return { op: s.op, ...errorOf(e) }; }\n    });\n  }\n  const out = { journeys: input.journeys.map(j => ({ name: j.name, steps: run(j) })) };\n  // C-3: the anchor hash under the device's default collator and each listed one (the engine must not call localeCompare at all).\n  const LC = String.prototype.localeCompare; let calls = 0; out.anchors = {};\n  try { for (const l of ['default', ...input.locales]) { String.prototype.localeCompare = function (b) { calls++; return l === 'default' ? LC.call(this, b) : LC.call(this, b, l); }; out.anchors[l] = H(M.contract.anchorConfigurationHash(copy(input.anchors))); } }\n  finally { String.prototype.localeCompare = LC; }\n  out.localeCompareCalls = calls;\n  out.defaultLocale = (typeof Intl !== 'undefined' && Intl.Collator) ? new Intl.Collator().resolvedOptions().locale : null;\n  // The cross-runtime digest leaves out `answer` (the whole answer, runForecast internals included, RFC-NUMERIC-1): it is compared per step apart.\n  out.digest = H({ journeys: out.journeys.map(j => j.steps.map(({ answer, ...s }) => s)), anchors: out.anchors, localeCompareCalls: out.localeCompareCalls });\n  return JSON.stringify(out);\n};\n",
+ "modules": {
+  "core": 40,
+  "contract": 26,
+  "value": 9
+ },
+ "inputJSON": "{\"journeys\":[{\"name\":\"restart\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-r\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-22T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-w0-run-d1\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-17\"},{\"eventId\":\"aif-w0-str-d2\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-str-d2\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-18\"},{\"eventId\":\"aif-w0-run-d3\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-run-d3\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-19\"},{\"eventId\":\"aif-w0-run-d5\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-w0-str-d5\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-str-d5\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-w0-run-d6\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"w0-run-d6\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-22\"}]},\"eventId\":\"a-w0\"},{\"op\":\"restart\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-12-04\",\"startDate\":\"2026-12-07\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-r\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-04\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}],\"pause\":{\"reasonCategory\":\"SCHEDULE\",\"nonclinical\":true,\"weeks\":0}},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"asOf\":\"2026-12-04T10:00:00-03:00\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-07T07:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-07\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}},\"eventId\":\"b-plain\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-08T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-08\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-b-rcdbfce6f01.w0-run-d1\",\"athleteId\":\"core-mac-r\",\"sessionId\":\"rcdbfce6f01.w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":15,\"distanceKm\":2.65,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-08\"}]},\"eventId\":\"b-first\"},{\"op\":\"roundtrip\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-09T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-09\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}},\"eventId\":\"b-next\"},{\"op\":\"restart\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-12-09\",\"startDate\":\"2026-12-12\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-r\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-09\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}],\"pause\":{\"reasonCategory\":\"SCHEDULE\",\"nonclinical\":true,\"weeks\":0}},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"asOf\":\"2026-12-09T21:30:00-03:00\"}]},{\"name\":\"expiry\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2027-04-17\",\"startDate\":\"2027-04-19\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-x\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-04-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-06-13\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"probe\",\"kind\":\"NOT_FEELING_100\",\"asOf\":\"2027-04-29T08:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-04-29\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4}},\"eventId\":\"sign-2027-04-29\"},{\"op\":\"probe\",\"kind\":\"NOT_FEELING_100\",\"asOf\":\"2027-04-30T08:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-04-30\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4}},\"eventId\":\"sign-2027-04-30\"},{\"op\":\"probe\",\"kind\":\"NOT_FEELING_100\",\"asOf\":\"2027-05-01T08:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-05-01\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4}},\"eventId\":\"sign-2027-05-01\"},{\"op\":\"probe\",\"kind\":\"NOT_FEELING_100\",\"asOf\":\"2027-04-30T22:30:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-04-30\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4}},\"eventId\":\"sign-late\"},{\"op\":\"probe\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2027-05-02T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-05-02\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}},\"eventId\":\"weekly-after\"},{\"op\":\"review\",\"kind\":\"NOT_FEELING_100\",\"asOf\":\"2027-04-28T08:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-04-28\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4}},\"eventId\":\"hold\"},{\"op\":\"probe\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2027-05-02T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-05-02\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}},\"eventId\":\"standing\"},{\"op\":\"probe\",\"kind\":\"READINESS_DECLARATION\",\"asOf\":\"2027-05-03T08:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2027-05-03\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"readiness\":{\"declaredRecovered\":true,\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":false,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"sports\":{\"RUN\":{\"ready\":true},\"STRENGTH\":{\"ready\":true,\"restrictions\":[]}}}},\"eventId\":\"ready\"}]},{\"name\":\"e1-ADVERSE\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-e1-ADVERSE\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-17T21:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"athleteId\":\"core-mac-e1-ADVERSE\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\"},\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"dev-1\",\"source\":{\"provider\":\"HEALTHKIT\",\"activityId\":\"HK-1\",\"quality\":\"WEARABLE_FULL\"},\"canonicalActivityId\":\"HK-1\",\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"UNKNOWN\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"ath-1\",\"actual\":{\"completed\":true,\"rpe\":8},\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"ADVERSE\",\"effort\":\"HARDER\",\"nextDayFunction\":\"UNKNOWN\"}}]},\"eventId\":\"both\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-18T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"athleteId\":\"core-mac-e1-ADVERSE\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":41,\"distanceKm\":7.06,\"measurement\":\"GPS\"},\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"dev-1b\",\"source\":{\"provider\":\"HEALTHKIT\",\"activityId\":\"HK-1\",\"quality\":\"WEARABLE_FULL\"},\"canonicalActivityId\":\"HK-1\",\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"UNKNOWN\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"},\"correctionOf\":\"dev-1\",\"correctedAt\":\"2026-11-18T07:00:00-03:00\"}]},\"eventId\":\"resync\"}]},{\"name\":\"e1-HEAT\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-e1-HEAT\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-17T21:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"athleteId\":\"core-mac-e1-HEAT\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\"},\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"dev-1\",\"source\":{\"provider\":\"HEALTHKIT\",\"activityId\":\"HK-1\",\"quality\":\"WEARABLE_FULL\"},\"canonicalActivityId\":\"HK-1\",\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"UNKNOWN\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"ath-1\",\"actual\":{\"completed\":true,\"rpe\":8,\"conditions\":[\"HEAT\"]},\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"COMPATIBLE\",\"effort\":\"HARDER\",\"nextDayFunction\":\"UNKNOWN\"}}]},\"eventId\":\"both\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-18T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"athleteId\":\"core-mac-e1-HEAT\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":41,\"distanceKm\":7.06,\"measurement\":\"GPS\"},\"occurrenceDate\":\"2026-11-17\",\"eventId\":\"dev-1b\",\"source\":{\"provider\":\"HEALTHKIT\",\"activityId\":\"HK-1\",\"quality\":\"WEARABLE_FULL\"},\"canonicalActivityId\":\"HK-1\",\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"UNKNOWN\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"},\"correctionOf\":\"dev-1\",\"correctedAt\":\"2026-11-18T07:00:00-03:00\"}]},\"eventId\":\"resync\"}]},{\"name\":\"forecast-one\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":12,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-forecast-one\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-02-07\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-22T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-0-w0-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-17\"},{\"eventId\":\"aif-0-w0-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-str-d2\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-18\"},{\"eventId\":\"aif-0-w0-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-run-d3\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-19\"},{\"eventId\":\"aif-0-w0-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-0-w0-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-str-d5\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-0-w0-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w0-run-d6\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-22\"}]},\"eventId\":\"w0\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-29T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-29\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-1-w1-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-run-d1\",\"occurrenceDate\":\"2026-11-24\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"5708696ef08f79a0788baf3c553eed9f67a6e578430506b7d947f2ca64b095ca\"}},{\"eventId\":\"aif-1-w1-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-str-d2\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-25\"},{\"eventId\":\"aif-1-w1-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-run-d3\",\"occurrenceDate\":\"2026-11-26\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"240f7293e6d5479f26bda21fe4f9b7cf23d8db309896ad673d8793625dcfffeb\"}},{\"eventId\":\"aif-1-w1-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-run-d5\",\"occurrenceDate\":\"2026-11-28\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"c1c4289d6b33590bce874501b731816b0a2c2d9f9060efb9a9b3c2d34721e01a\"}},{\"eventId\":\"aif-1-w1-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-str-d5\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-28\"},{\"eventId\":\"aif-1-w1-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w1-run-d6\",\"occurrenceDate\":\"2026-11-29\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":76,\"distanceKm\":12,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"54c40271d513928c71e4b8606fcb2ba34165a53594984a0289326e0f8660b3f3\"}}]},\"eventId\":\"w1\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-06T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-06\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-2-w2-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-01\"},{\"eventId\":\"aif-2-w2-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-str-d2\",\"actual\":{\"completed\":true,\"minutes\":28,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":12,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-02\"},{\"eventId\":\"aif-2-w2-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-run-d3\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-03\"},{\"eventId\":\"aif-2-w2-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-05\"},{\"eventId\":\"aif-2-w2-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-str-d5\",\"actual\":{\"completed\":true,\"minutes\":28,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":12,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-05\"},{\"eventId\":\"aif-2-w2-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w2-run-d6\",\"occurrenceDate\":\"2026-12-06\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":73,\"distanceKm\":11.5,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"695e795a78eebf3c34260e2e3ef2947ec012bd5d8aba9d4be0518d581b7ae687\"}}]},\"eventId\":\"w2\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-13T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-3-w3-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-run-d1\",\"actual\":{\"completed\":true,\"minutes\":34,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-08\"},{\"eventId\":\"aif-3-w3-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-str-d2\",\"actual\":{\"completed\":true,\"minutes\":26,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-09\"},{\"eventId\":\"aif-3-w3-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-run-d3\",\"occurrenceDate\":\"2026-12-10\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":42,\"distanceKm\":5.5,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"8f5acc1d3aa772917066426affcb196d00c7054926d3974834217533929900e9\"}},{\"eventId\":\"aif-3-w3-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-run-d5\",\"occurrenceDate\":\"2026-12-12\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"fba2b1fd45e847dab007e4b0f3e025f8c598efb826e9bc2a7bb3f313a4cbdf14\"}},{\"eventId\":\"aif-3-w3-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-str-d5\",\"actual\":{\"completed\":true,\"minutes\":26,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-12\"},{\"eventId\":\"aif-3-w3-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w3-run-d6\",\"occurrenceDate\":\"2026-12-13\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":76,\"distanceKm\":12,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"e50efab3833f29530aa084f97f548e73988dcfd0ac757a1d115c0bd18e0ca6cf\"}}]},\"eventId\":\"w3\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-20T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-20\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-4-w4-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-run-d1\",\"occurrenceDate\":\"2026-12-15\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":34,\"rpe\":4,\"formatHash\":\"df4d7664d74c1a2641361c21d533254a74cb7a2af9573b82c40962c97564f5f0\",\"steps\":[{\"block\":1,\"rep\":0,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":1,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":2,\"kind\":\"WORK\",\"targetMet\":true}]}},{\"eventId\":\"aif-4-w4-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-str-d2\",\"actual\":{\"completed\":true,\"minutes\":20,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-16\"},{\"eventId\":\"aif-4-w4-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-run-d3\",\"actual\":{\"completed\":true,\"minutes\":45,\"distanceKm\":7.94,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-17\"},{\"eventId\":\"aif-4-w4-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-19\"},{\"eventId\":\"aif-4-w4-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-str-d5\",\"actual\":{\"completed\":true,\"minutes\":20,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-19\"},{\"eventId\":\"aif-4-w4-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w4-run-d6\",\"actual\":{\"completed\":true,\"minutes\":70,\"distanceKm\":11.51,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-20\"}]},\"eventId\":\"w4\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-27T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-27\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-5-w5-run-d1\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-run-d1\",\"occurrenceDate\":\"2026-12-22\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":41,\"rpe\":4,\"formatHash\":\"93821fb7a3f06581877d946070094bcc7701d2a49d11af778317f1dbe0992933\",\"steps\":[{\"block\":1,\"rep\":0,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":1,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":2,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":3,\"kind\":\"WORK\",\"targetMet\":true}]}},{\"eventId\":\"aif-5-w5-str-d2\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-str-d2\",\"actual\":{\"completed\":true,\"minutes\":39,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3},{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-23\"},{\"eventId\":\"aif-5-w5-run-d3\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-run-d3\",\"actual\":{\"completed\":true,\"minutes\":45,\"distanceKm\":7.94,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-24\"},{\"eventId\":\"aif-5-w5-run-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-26\"},{\"eventId\":\"aif-5-w5-str-d5\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-str-d5\",\"actual\":{\"completed\":true,\"minutes\":39,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3},{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-26\"},{\"eventId\":\"aif-5-w5-run-d6\",\"athleteId\":\"core-mac-forecast-one\",\"sessionId\":\"w5-run-d6\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-27\"}]},\"eventId\":\"w5\"}]},{\"name\":\"forecast-two\",\"steps\":[{\"op\":\"onboard\",\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":12,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"core-mac-forecast-two\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-02-07\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"5K\",\"seconds\":1440,\"date\":\"2026-10-04\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true},{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}}},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-22T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-0-w0-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-17\"},{\"eventId\":\"aif-0-w0-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-str-d2\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-18\"},{\"eventId\":\"aif-0-w0-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-run-d3\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-19\"},{\"eventId\":\"aif-0-w0-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-0-w0-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-str-d5\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-21\"},{\"eventId\":\"aif-0-w0-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w0-run-d6\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-22\"}]},\"eventId\":\"w0\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-11-29T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-29\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-1-w1-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-run-d1\",\"occurrenceDate\":\"2026-11-24\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"5708696ef08f79a0788baf3c553eed9f67a6e578430506b7d947f2ca64b095ca\"}},{\"eventId\":\"aif-1-w1-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-str-d2\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-25\"},{\"eventId\":\"aif-1-w1-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-run-d3\",\"occurrenceDate\":\"2026-11-26\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"240f7293e6d5479f26bda21fe4f9b7cf23d8db309896ad673d8793625dcfffeb\"}},{\"eventId\":\"aif-1-w1-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-run-d5\",\"occurrenceDate\":\"2026-11-28\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"c1c4289d6b33590bce874501b731816b0a2c2d9f9060efb9a9b3c2d34721e01a\"}},{\"eventId\":\"aif-1-w1-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-str-d5\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-11-28\"},{\"eventId\":\"aif-1-w1-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w1-run-d6\",\"occurrenceDate\":\"2026-11-29\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":76,\"distanceKm\":12,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"54c40271d513928c71e4b8606fcb2ba34165a53594984a0289326e0f8660b3f3\"}}]},\"eventId\":\"w1\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-06T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-06\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-2-w2-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-run-d1\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-01\"},{\"eventId\":\"aif-2-w2-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-str-d2\",\"actual\":{\"completed\":true,\"minutes\":28,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":12,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-02\"},{\"eventId\":\"aif-2-w2-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-run-d3\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-03\"},{\"eventId\":\"aif-2-w2-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-05\"},{\"eventId\":\"aif-2-w2-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-str-d5\",\"actual\":{\"completed\":true,\"minutes\":28,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":12,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-05\"},{\"eventId\":\"aif-2-w2-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w2-run-d6\",\"occurrenceDate\":\"2026-12-06\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":73,\"distanceKm\":11.5,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"695e795a78eebf3c34260e2e3ef2947ec012bd5d8aba9d4be0518d581b7ae687\"}}]},\"eventId\":\"w2\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-13T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-3-w3-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-run-d1\",\"actual\":{\"completed\":true,\"minutes\":34,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-08\"},{\"eventId\":\"aif-3-w3-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-str-d2\",\"actual\":{\"completed\":true,\"minutes\":26,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-09\"},{\"eventId\":\"aif-3-w3-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-run-d3\",\"occurrenceDate\":\"2026-12-10\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":42,\"distanceKm\":5.5,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"8f5acc1d3aa772917066426affcb196d00c7054926d3974834217533929900e9\"}},{\"eventId\":\"aif-3-w3-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-run-d5\",\"occurrenceDate\":\"2026-12-12\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":38,\"distanceKm\":6,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"fba2b1fd45e847dab007e4b0f3e025f8c598efb826e9bc2a7bb3f313a4cbdf14\"}},{\"eventId\":\"aif-3-w3-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-str-d5\",\"actual\":{\"completed\":true,\"minutes\":26,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-12\"},{\"eventId\":\"aif-3-w3-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w3-run-d6\",\"occurrenceDate\":\"2026-12-13\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":76,\"distanceKm\":12,\"measurement\":\"GPS\",\"rpe\":4,\"formatHash\":\"e50efab3833f29530aa084f97f548e73988dcfd0ac757a1d115c0bd18e0ca6cf\"}}]},\"eventId\":\"w3\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-20T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-20\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-4-w4-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-run-d1\",\"occurrenceDate\":\"2026-12-15\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":34,\"rpe\":4,\"formatHash\":\"df4d7664d74c1a2641361c21d533254a74cb7a2af9573b82c40962c97564f5f0\",\"steps\":[{\"block\":1,\"rep\":0,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":1,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":2,\"kind\":\"WORK\",\"targetMet\":true}]}},{\"eventId\":\"aif-4-w4-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-str-d2\",\"actual\":{\"completed\":true,\"minutes\":20,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-16\"},{\"eventId\":\"aif-4-w4-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-run-d3\",\"actual\":{\"completed\":true,\"minutes\":45,\"distanceKm\":7.94,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-17\"},{\"eventId\":\"aif-4-w4-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-19\"},{\"eventId\":\"aif-4-w4-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-str-d5\",\"actual\":{\"completed\":true,\"minutes\":20,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-19\"},{\"eventId\":\"aif-4-w4-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w4-run-d6\",\"actual\":{\"completed\":true,\"minutes\":70,\"distanceKm\":11.51,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-20\"}]},\"eventId\":\"w4\"},{\"op\":\"review\",\"kind\":\"WEEKLY_REVIEW\",\"asOf\":\"2026-12-27T20:00:00-03:00\",\"facts\":{\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-27\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"eventId\":\"aif-5-w5-run-d1\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-run-d1\",\"occurrenceDate\":\"2026-12-22\",\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"actual\":{\"completed\":true,\"minutes\":41,\"rpe\":4,\"formatHash\":\"93821fb7a3f06581877d946070094bcc7701d2a49d11af778317f1dbe0992933\",\"steps\":[{\"block\":1,\"rep\":0,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":1,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":2,\"kind\":\"WORK\",\"targetMet\":true},{\"block\":1,\"rep\":3,\"kind\":\"WORK\",\"targetMet\":true}]}},{\"eventId\":\"aif-5-w5-str-d2\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-str-d2\",\"actual\":{\"completed\":true,\"minutes\":39,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":6,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3},{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-23\"},{\"eventId\":\"aif-5-w5-run-d3\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-run-d3\",\"actual\":{\"completed\":true,\"minutes\":45,\"distanceKm\":7.94,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-24\"},{\"eventId\":\"aif-5-w5-run-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-run-d5\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-26\"},{\"eventId\":\"aif-5-w5-str-d5\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-str-d5\",\"actual\":{\"completed\":true,\"minutes\":39,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":10,\"load\":{\"value\":22,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3},{\"reps\":14,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-26\"},{\"eventId\":\"aif-5-w5-run-d6\",\"athleteId\":\"core-mac-forecast-two\",\"sessionId\":\"w5-run-d6\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"measurement\":\"GPS\",\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"occurrenceDate\":\"2026-12-27\"}]},\"eventId\":\"w5\"}]}],\"anchors\":[{\"id\":\"b\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"aa\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"h\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"ch\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"Z\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"_x\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"a-1\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}},{\"id\":\"a_1\",\"prescription\":{\"modality\":\"RUN\",\"family\":\"EASY\",\"durationMinutes\":30}}],\"locales\":[\"pt-BR\",\"en-US\",\"da-DK\",\"nb-NO\",\"cs-CZ\"]}",
+ "expected": {
+  "journeys": [
+   {
+    "name": "restart",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "f56ac802a8cffa25c18c430b709a7f55a736a28a29d32325b842600709b26574",
+      "stable": "7dc460661c2f0a65de39dbfc03060fe9c7b64f31d2328cbe8d0cb6f5d053e6b4",
+      "persisted": "88e8d9e82d6ff7431245be61479c39f6f51274847f72888eb2879fdd035e10ea",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": true,
+      "expiry": null,
+      "namespace": null,
+      "answer": "6fc3c8698b00ad391eabbc7b153be34cb0fdedb897d8d19cae124954870b095b",
+      "stable": "484a6490b4c393d0ab06592bb17ce4bda8fb9338643615b7839fa33e37e8b050",
+      "persisted": "02acd1a6643e9d871642f7bb36112ac866feaf26d0b114ab2e2f412091647f05",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "restart",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": "rcdbfce6f01",
+      "answer": "59b4f67db73ee58a4e89daa9b220fad8a9f524921f73ff823bb4260a547ba796",
+      "stable": "59021e006b60b4ec97932c79b268c672e8ce42b306077df5e75c4d03b05c7d24",
+      "persisted": "ee672cf806e1f711a9f904f5c162f56213e6c0b3fe435c09056b69fe5dea305c",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "MODE_WALK_JOG_RESTART_RETURN"
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": "rcdbfce6f01",
+      "answer": "ea92bacd4ff24aa24fba7be6fecac26c649ab61e5894a38353571c413310dfb2",
+      "stable": "7b531b5dab8355ec9f95c62acfdd7d39a78e391783a1a177fedd328017653c44",
+      "persisted": "87f95588b6cd61431aecaefe87aed0159b26a6dc5ad5918c9e4d162c8e6fa08b",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "MODE_WALK_JOG_RESTART_RETURN"
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": "rcdbfce6f01",
+      "answer": "bc9e2b0928b79a3683b6a0e591f815b5d712da6ae0a24ab0bb465afab74fc247",
+      "stable": "dd8b04a3aa27ae10e7e063691ee6fc7834bc89a9582eec10eb07e57d8b18186d",
+      "persisted": "aa91f55660d7f55f58c679c6579d6a6df99a0635acfc3e4f7653dd12e59c1119",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "MODE_WALK_JOG_RESTART_RETURN"
+      }
+     },
+     {
+      "op": "roundtrip",
+      "persisted": "aa91f55660d7f55f58c679c6579d6a6df99a0635acfc3e4f7653dd12e59c1119"
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": "rcdbfce6f01",
+      "answer": "8dc9eab79087f8a322b378bee15f434e6470a724bc8a9e3e89d75681a6d3489f",
+      "stable": "fae399629fdb23288afb8352fec974789d41ca018f9e9797e27682254430964b",
+      "persisted": "64a830c5c458db1c199c8ae87ebbeacd86087ab4a82d96f174bfd7422cae7937",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "MODE_WALK_JOG_RESTART_RETURN"
+      }
+     },
+     {
+      "op": "restart",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": "ra2d9517560",
+      "answer": "690e2450900f62c2c464f8bb192e80f04fa96ca480ec8fb4742a93edf272f0c3",
+      "stable": "c1de45f0dc8c2ca67f0584ab4b80d51a9bbf84390c4fe5b5442c3341dabd3c10",
+      "persisted": "6abadd75d1aefe3734b1cd5fdde5a7a94d6b1654d6315f205f2e4ea3159e698c",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "MODE_WALK_JOG_RESTART_RETURN"
+      }
+     }
+    ]
+   },
+   {
+    "name": "expiry",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "06ce380957186c27abeaf9a82687d9e36c830ddd1cce68f43f747bab9ebdaf88",
+      "stable": "a45b2b6ac7be4a341c7d50e0cbe5e630b7f8ceaecbc7736c21913ad677680200",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "CURRENT_ESTIMATE_UNAVAILABLE"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "3bfc4f1064fc7509bbfeaf92fdf816b44f00c0eb99b278e1b0995775a98cdeb0",
+      "stable": "1d726aa4a08711135f45ca1a92e86925637811aba7bb56867309bb729aa94ee4",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "0da35356bc3816edba51f85b430339b4e2834cf8d140cb28353d7f4dc8d6b24d",
+      "stable": "1c09f56ecb777b0923542151106b3309abd866ddf24e344ea76ebce76c811d1c",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": {
+       "status": "EXPIRED",
+       "asOfDay": "2027-05-01",
+       "reviewBy": [
+        "2027-04-30"
+       ],
+       "records": [
+        "B0-C01",
+        "B0-C02",
+        "B0-C03",
+        "B0-C04",
+        "B0-C05",
+        "B0-C06",
+        "B0-C07",
+        "B0-C08",
+        "B0-C09",
+        "B0-C10",
+        "B0-C11",
+        "B0-C12",
+        "B0-FIDELITY"
+       ],
+       "clinicalRouteAnswered": true
+      },
+      "namespace": null,
+      "answer": "2a9dbb3f9894fe1a44b2f6e5edb6b73db9379d60744d387d99b89b10d6c5e0e8",
+      "stable": "a5460bbf268fe2dcb3db856151f03e49918b9b428d990b8dc9f918ba7ecbf208",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": {
+       "status": "EXPIRED",
+       "asOfDay": "2027-05-01",
+       "reviewBy": [
+        "2027-04-30"
+       ],
+       "records": [
+        "B0-C01",
+        "B0-C02",
+        "B0-C03",
+        "B0-C04",
+        "B0-C05",
+        "B0-C06",
+        "B0-C07",
+        "B0-C08",
+        "B0-C09",
+        "B0-C10",
+        "B0-C11",
+        "B0-C12",
+        "B0-FIDELITY"
+       ],
+       "clinicalRouteAnswered": true
+      },
+      "namespace": null,
+      "answer": "1fd6364746f875e60e98180016c779bc7b3c15fbb324bdbf1cb0bde94e05fc85",
+      "stable": "b301bcf2d9e3d8273f78f7652f1fffd62c04cd6136febe10d4652fd48fdb12a7",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "UNSUPPORTED",
+      "proposal": false,
+      "expiry": {
+       "status": "EXPIRED",
+       "asOfDay": "2027-05-02",
+       "reviewBy": [
+        "2027-04-30"
+       ],
+       "records": [
+        "B0-C01",
+        "B0-C02",
+        "B0-C03",
+        "B0-C04",
+        "B0-C05",
+        "B0-C06",
+        "B0-C07",
+        "B0-C08",
+        "B0-C09",
+        "B0-C10",
+        "B0-C11",
+        "B0-C12",
+        "B0-FIDELITY"
+       ],
+       "clinicalRouteAnswered": false
+      },
+      "namespace": null,
+      "answer": "639f26b08a23c8338afe1342e47465667b19e6d0fbb21605f4d22ccd7d75c992",
+      "stable": "639f26b08a23c8338afe1342e47465667b19e6d0fbb21605f4d22ccd7d75c992",
+      "persisted": "f1d8ade6b790feab1aff2dbf7ddbeff346273bf49b92fee2d01a195f97f39124",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "RUN_FORMATS_NO_DECISION"
+      }
+     },
+     {
+      "op": "review",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "dd169823776b72b92f29a27f49d23cf4181afdbc8756b4d864b0452e27a0ca0b",
+      "stable": "2c2937728bed3d658e9f447ecdeda21de2a2249edf5a413cd4d03c215f63476d",
+      "persisted": "a0cdf9f8a1fe5204d7bb1d732c896515cf5110c7263654926014ba12d06f089d",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "14b76993c02d11f18b3234b6948ae01adaddb2a48deaf1850b2606d385ffd1da",
+      "stable": "3db02bb32bba65c08de1f4eca7cdbc6783e82a4467de1a208f5b66aef309e56d",
+      "persisted": "a0cdf9f8a1fe5204d7bb1d732c896515cf5110c7263654926014ba12d06f089d",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     },
+     {
+      "op": "probe",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "d21ec20ad0da2b9c1244ff51c2836faba3df0eab5f788add0cec99eb2e4d3e94",
+      "stable": "c4236a2365441e4e1309175253c372267b8cfcce454b482ebd806d01e4c6921b",
+      "persisted": "a0cdf9f8a1fe5204d7bb1d732c896515cf5110c7263654926014ba12d06f089d",
+      "forecast": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD"
+      }
+     }
+    ]
+   },
+   {
+    "name": "e1-ADVERSE",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "a8835124ddf0a2c955eb7b0b233a8c218efda0e670f95339da892b3fa49a0c5c",
+      "stable": "a8adc7bd3bdbd54dc6e38270ee44b4868d7af223e2e31a11b98e5faa578b5427",
+      "persisted": "8f762c9602f50f5b04a27547cd18558c31ea26640a8ba18924ee612ca363e95c",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "a1f6e1db6b7d520830faba715e1d12c0083aaed0745718e860a5fb5e92ba0f60",
+      "stable": "0aecfe5fe2180a02a34a0cea791ce5944f5f61b7bfc01a297b32338fb3af1dff",
+      "persisted": "3b7e1a5c5fd9976eb0cc1f8d9a74c8c21f90a01ade00369ee0207f495d78a0bc",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "28b8eca169c6d07c61d91298b01f036252a41537a62de58c3040d1e55175ff70",
+      "stable": "b3231246cfea86af97acf54984bb61395a369f6acb338bd31884c6f7f04f26f8",
+      "persisted": "1da08ccc2b8ae9ded7c9e052a71c054101ed097b17fc9944fc084d53c3923295",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     }
+    ]
+   },
+   {
+    "name": "e1-HEAT",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "985cbee55394e40915f77b8690d50426795ec09ec9b7dedcdeed12c10cc11336",
+      "stable": "b1e7dde99f29ccb177a3c777a89d9f0d4acf96917968bd800ce3ddd1c3bbe4d3",
+      "persisted": "022cf1603a16b7c4966728b3f7130834f3fe430181b9f4d5dc7dcd15b3f370fc",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "19bea84cf2d55b3ce39fa3136cc6e562b234625c977790ba4acd110947c28510",
+      "stable": "56f934c9f3a641e72c7a6ebbdbd2761c918674993cb3ed76646804dc6a5ad334",
+      "persisted": "c6364f0e814ce5f3bf6ae6e8a677151ecafcb5b114b3fd7437077c34d9d6cf75",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "5791f3ace82452d1ee6b083213cdce1bc7df35c3d14b9d8872ac077d66dff3f4",
+      "stable": "49ee0d3145a7bb97b4cde144cb433145e73275904c008e7fc3fedd7fce71befe",
+      "persisted": "25414df951f5a54cf47f6c08ea41972f504c130a115116e203f9a65fac480ffc",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     }
+    ]
+   },
+   {
+    "name": "forecast-one",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "a19b638fdb82d2b67972d37700e391a740c56564dd1cf6b675cbc53b42018752",
+      "stable": "4c1e27e71ff05d28b9d91454378006425c6bf9d272734afe624217f3c7bc59df",
+      "persisted": "b632095bc1fc03a18da1bee874801725bd2f385d8edf61863bbbbaba005be39e",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": true,
+      "expiry": null,
+      "namespace": null,
+      "answer": "2ef1d05dace8ef454dad6664cd702f00bbe3218ef1d1a4d2bcfcc4fbb3c87a92",
+      "stable": "97bc87a51eb579f93a45b80e84a1e29f996eb897157563678d6b01076b5a96bb",
+      "persisted": "7c3d131575e636f70ab8069b378b5935f3ea6d9933ad270a659f344084eebca9",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": true,
+      "expiry": null,
+      "namespace": null,
+      "answer": "ce35e8819b30ac4f4af5fdbdb57dead795a1f6f9a664f0a2a5a33e2e8691b236",
+      "stable": "f3204f33987b48d6255cf88c4d5581dba5ebdf90dc09f87adca4863f9d271356",
+      "persisted": "b171f1573716fb13f5e148d83032dc77615c3334b92d7dc35766c0dfdc854ef0",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "c19f460c6a65907b57458b6186355b8ae179f914d4eae1afc18c8f792f08f85c",
+      "stable": "748f37e2a3ed290de5226a03dd4cac58c2bea6b8fd9377fc37d1fcbbbc2fb8be",
+      "persisted": "d4cca7c9f29354ce61dd2508426deb50ba6d44f258930eeb7b20aa9fc44fc6bb",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "9f8355434c7ba713ed1d2e7f74525d7fbe8ba0134f1154f6363718f634506c44",
+      "stable": "dca1765aab262e6b364eebd39897635816fce60791420b4c2ac46780e8c8cb6a",
+      "persisted": "987146c62e25f9c76738e5cdc7f60ba20048c473bcc85c449823b0e93994961d",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "421eb6b9dc304b451d113ca7b03801de4631322c9fe36e7cfb77d3f2bce10b43",
+      "stable": "99930e1282c4d79cc6375f4102b2aa0b3c014fafe7341edfe422c2145ccfdbf2",
+      "persisted": "21df19844eb8d13c8693ab71add0d76a007e9f7614e66f66c1a753f1cce1c02e",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "ac30a0ead4f60ca383c090f8aa493d33f33fa989284e0fef0b5b62101bc73ec7",
+      "stable": "44e3c7bd241c2ad0e0a53f102a0c47cdeca93ea45c8c3c3e142046d12bd9cf1c",
+      "persisted": "8abeaca74775d74045cf671d8b83ad0d23611883decece6a304741823ffe91fd",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     }
+    ]
+   },
+   {
+    "name": "forecast-two",
+    "steps": [
+     {
+      "op": "onboard",
+      "status": "PROPOSED",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "d422fd862d31146ebae416e78d03a03989b2ed0eb56710bb3bf0321d05034b1d",
+      "stable": "c9e44315a6093cfb00d9ec055308a6bdd417346e5651d6a675e26617c391478a",
+      "persisted": "05a88061fb2a7e708f25df1e243a436058afbea0d90850160d8fc887d154c0be",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": true,
+      "expiry": null,
+      "namespace": null,
+      "answer": "dfc7223cfe4a896d8f2fac67f098872809dfee8758c0d8ac490deae69defe3db",
+      "stable": "fc5b2d01a606d89f9958e94c9a1c7466706668c5337b41be9bff9c5182220975",
+      "persisted": "0781ac3e139f608a396cf8340bf4433cd4d0e754021b76ebd03b4518f50b7dbe",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": true,
+      "expiry": null,
+      "namespace": null,
+      "answer": "03d552a70a0e22947af45d2afb825fbbe4a29358e7c21fb4a8e5c23e16e23db4",
+      "stable": "3bf930248e511a00db7d8bf57973d1f4578c08effe9af6fb921b262fefe4f4da",
+      "persisted": "d4e3577b1f8a530a76fa24b32fa678be3721a23b18243666980e7cc48032123d",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "00e3f4db712731491ed3463ddd04f4f2a550b39b043388df4b50cc529bbfc85a",
+      "stable": "57d62521c138db9a01cbfe38f691cc6dbe4c109d1c05420e857297ae2ea5d4ef",
+      "persisted": "c66edff95c461e1e6415b80917d8a6cf64086e49cd1f306fe8279dc0d7953542",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "08d872136607c3c370223727ebeb54fcec58be9d7a94101d0e6ef33a1ce4db2c",
+      "stable": "4274c469aba7c6e8456cb116a77312a771e4fc5ac87b8398bd19e0c0bf7b5895",
+      "persisted": "4a2305b214ab0a7b5ca8df519966213b2be8a671652eb14a2317324b39c5bc4e",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "c9dcd35e7af77d830c0ba8004c93bc8bd5f400aad76e214b71134a8c573c8a6d",
+      "stable": "ce80c962afc6ee4124d264187974eb2ea735708fc4aed3c9aa928d6c57e8c286",
+      "persisted": "efaae0679bc1aef944bc567bce6be4242de0ae35daf96ce80823b9b1ac1285f5",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     },
+     {
+      "op": "review",
+      "status": "KEEP",
+      "proposal": false,
+      "expiry": null,
+      "namespace": null,
+      "answer": "fa1eac75609a123e3310ebf2a7213082342565c43e6feb4888d211f420f2e2f5",
+      "stable": "9699eb03e6706b4a78e6236b13b28d5a2fe18e74e5a0cbc6cb641f9b404f5b26",
+      "persisted": "b155ad9a40debe429d7918425cb62ae7cb1d22493cf7cfbb8a311cf12ea8e90e",
+      "forecast": {
+       "status": "SHOWN",
+       "reason": null
+      }
+     }
+    ]
+   }
+  ],
+  "anchors": {
+   "default": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2",
+   "pt-BR": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2",
+   "en-US": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2",
+   "da-DK": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2",
+   "nb-NO": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2",
+   "cs-CZ": "ea2c21f490e2444e244de9481239f811a2466faa3edb536559e4aa3a90b277b2"
+  },
+  "localeCompareCalls": 0,
+  "digest": "f5d5f3ebfe03117521f11c51387c5aa3c7dbffe2e73027d5d44caeba73c409fe"
+ }
+}
