@@ -118,3 +118,49 @@ Este pacote passa a validar o freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-1**, s
 **O Swift não foi compilado.**
 
 **Limite declarado:** este pacote não muda a condição aberta **CORE-C2-F01**, o dimensionamento no reinício a partir de linhas substituídas. O Mac valida a equivalência entre runtimes, não a dose.
+
+## 8. CORE-C2-F01 (2026-11-18): reinício a partir de registro com correções
+
+Este pacote passa a validar também a correção **CORE-C2-F01**, na branch **`claude/v1-core-c2-f01`** (de `d92aa88`; candidato `576e40c`). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor é uma só: `CoachingCore/src/v1-f08.mjs`, `restartIntake`. Linhas substituídas por uma correção não contam mais como execuções no limite C-Q08-1, nem na pausa; um evento repetido no registro conta uma vez.
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA em `build-manifest.json`: `7953fec0…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Duas jornadas novas, `restart-f01` e `restart-f01-control`. As oito anteriores ficam idênticas (entradas e esperados), assim como as âncoras, o driver e os ids de módulo |
+| `Fixtures/j5.json`, `p16.json` | **Inalterados** |
+| `FocalTests.swift` | **Sem mudança.** O teste lê as jornadas do `core.json` |
+
+**Reprodutor e oráculo Node:** `node audits/v1-core-safety-lifecycle-2026-11-18/mac/core-oracle.mjs`. Ele monta as duas jornadas:
+- **`restart-f01`:** o atleta da AIF relata as semanas 0 a 2, e cada corrida é corrigida na mesma noite (12 linhas substituídas no registro). Depois vem uma ida e volta por JSON e um reinício no dia 24.
+- **`restart-f01-control`:** as mesmas semanas, sem correção, com o mesmo reinício.
+
+O oráculo **falha** se o reinício corrigido não prescrever as doses do controle. A saída esperada é:
+```
+CORE-C2-F01 restart doses (corrected = control): [[25,25,25,60],[25,25,25,60]]; superseded rows in the corrected record: 12
+restart-f01: PROPOSED KEEP KEEP KEEP KEEP KEEP KEEP roundtrip PROPOSED
+restart-f01-control: PROPOSED KEEP KEEP KEEP roundtrip PROPOSED
+```
+No código congelado (`d92aa88`), a mesma jornada corrigida dava 40/40/40 e longa 80, porque o registro mostrava 292 min/semana em vez de 146.
+
+**Fixture e resultado esperado:** `Fixtures/core.json`, jornadas `restart-f01` e `restart-f01-control`. Elas trazem as entradas exatas de cada passo e os digests esperados de `answer`, `stable` e `persisted`.
+
+**Critério de equivalência no JavaScriptCore:** o do §4. Em cada passo das duas jornadas, `status`, `namespace`, `stable` e `persisted` devem ser iguais ao Node. O passo de reinício de `restart-f01` (o último) carrega o plano no `stable`. Se ele for igual ao do Node, o aparelho prescreve as doses do controle. Um `DIVERGED` reprova. Não há `EXPLAINED_LIBM` esperado nessas jornadas, porque nelas não há `runForecast` com números não inteiros. Se aparecer um, ele é registrado e julgado pela regra RFC-NUMERIC-1.
+
+**Lista obrigatória no aparelho:** a mesma do §3. As novas jornadas rodam dentro de `testCoreSafetyLifecycle`, nos cinco idiomas.
+
+**Desempenho:** o benchmark Node `d92aa88` × `576e40c` (`audits/v1-core-c2-f01-2026-11-18/bench/`) dá:
+- revisão: mediana ×1,009, p95 ×1,003;
+- reinício a partir de registro corrigido: mediana 29,9 → 31,3 ms, p95 ×1,003;
+- registro: ×1,000.
+
+Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs` deixa J5/P16 byte-idênticos;
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` dá as doses do controle e 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`.
+
+O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.

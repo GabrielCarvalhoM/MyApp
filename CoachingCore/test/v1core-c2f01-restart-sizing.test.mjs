@@ -215,3 +215,57 @@ test('CORE-C2-F01 unit: the stated exposure is only ever lowered to the record, 
  assert.deepEqual(read(rec,intake({runMinutesPerWeek:60,runDaysPerWeek:1})).recent,{runMinutesPerWeek:60,runDaysPerWeek:1});
  assert.deepEqual(read(rec,intake({})).recent,{});
 });
+
+// ---------- QRE_F01_R1 conditions (the one focal cycle; no runtime change) ----------
+import {normalizeObservations} from '../src/r6-provenance.mjs';
+import {readReadiness,readinessFact,READINESS_SIGNS} from '../src/v1-f08.mjs';
+
+test('QRE-F01-01 (open, SSCTR C-F01-1): a record with execution reports but none in force leaves the stated exposure unbounded, as its in-force record',()=>{
+ const stated=intake(),said=stated.athlete.recent;
+ // A: the only run, corrected to "not done". d92aa88 bounded the stated 600/7 to 13/1 from the replaced row alone; now as the record in force
+ // (the same session reported "not done" directly), which C-Q08-1's existing gate (`rows.some(executed)`) leaves unbounded.
+ const only=run(3,50),undone=corr(only,0,{actual:{completed:false,minutes:0}}),a=[replaced(only,undone),undone];
+ assert.deepEqual(read(a).recent,said);assert.equal(read(a).bounded.length,0);
+ assert.deepEqual(read(a),read([{...only,actual:{completed:false,minutes:0}}]),'A reads as the session reported "not done" directly');
+ // P4 (through the normalizer): app and watch merged; the athlete's correction contradicts the watch, so the correction is conflicted and the merged
+ // row is replaced. No row in force is an execution: unbounded, no pause read, no last executed day (d92aa88: 13/1, pause 3 days).
+ const d=shift(DAY,-3),b={athleteId:ATH,sessionId:'sx',occurrenceDate:d,context:{sport:'RUN',sessionType:'RUN_EASY'},response:UNKNOWN};
+ const A={...b,eventId:'A',reportedAt:d+'T12:00:00Z',actual:{completed:true,minutes:50},source:{provider:'MANUAL'}},W={...b,eventId:'W',reportedAt:d+'T12:05:00Z',actual:{completed:true,minutes:50},source:{provider:'HEALTHKIT',activityId:'hk-x',quality:'WEARABLE_FULL'},canonicalActivityId:'hk-x'};
+ const n1=normalizeObservations([A,W],{athleteId:ATH,asOf:d+'T13:00:00Z',maximumAgeDays:36500}),l1=[...n1.accepted,...n1.supersededRows];
+ const n2=normalizeObservations([{...A,eventId:'A2',correctionOf:'A',correctedAt:d+'T14:00:00Z',reportedAt:d+'T14:00:00Z',actual:{completed:true,minutes:20}}],{athleteId:ATH,asOf:d+'T15:00:00Z',prior:l1,maximumAgeDays:36500}),p4=[...n2.accepted,...n2.supersededRows];
+ assert.ok(p4.some(o=>o.superseded===true)&&p4.filter(o=>o.superseded!==true).every(o=>o.conflicted===true),'P4: the merged row is replaced, every row in force is conflicted');
+ const r=read(p4);
+ assert.deepEqual([r.recent,r.bounded,r.pause,r.lastExecuted],[said,[],null,null]);
+ assert.deepEqual(r,read(inForce(p4)),'P4 reads as its record in force');
+});
+
+test('QRE-F01-04: trainedAfter reads only executions in force (a run after the readiness declaration, corrected to "not done", is not training after it)',()=>{
+ const programmed=['RUN'],value=readReadiness({declaredRecovered:true,sports:{RUN:{ready:true}},warningSigns:Object.fromEntries(READINESS_SIGNS.map(k=>[k,false]))},{programmed});
+ assert.ok(value.value,JSON.stringify(value));
+ const at=shift(DAY,-12)+'T08:00:00.000Z',ready=readinessFact({athleteId:ATH},{event:{id:'ready-1'},readiness:{}},at,value.value,null);
+ const before=run(20,50),after=run(5,50),undone=corr(after,0,{actual:{completed:false,minutes:0}});
+ const rec=[before,ready,replaced(after,undone),undone],r=read(rec);
+ assert.equal(r.status,'READY',JSON.stringify(r));
+ assert.equal(r.pause?.readinessDeclared,true,'no execution in force after the declaration: the declaration still stands in for the stop');
+ assert.deepEqual(r,read(inForce(rec)));
+ // The same run executed after the declaration (in force) is training after it: the declaration no longer stands in.
+ assert.equal(read([before,ready,after]).pause?.readinessDeclared,undefined);
+});
+
+test('SSCTR_F01_R1_ADDENDUM: after a readiness declaration, (a) a run corrected to "not done" and (b) a disputed amount (open C-F01-1 (ii), the SB-1 question not asked)',()=>{
+ const value=readReadiness({declaredRecovered:true,sports:{RUN:{ready:true}},warningSigns:Object.fromEntries(READINESS_SIGNS.map(k=>[k,false]))},{programmed:['RUN']}).value;
+ const ready=readinessFact({athleteId:ATH},{event:{id:'ready-2'},readiness:{}},shift(DAY,-10)+'T08:00:00.000Z',value,null),before=run(20,50);
+ // (a) the correct reading: no training after the declaration, so the declaration answers the stop.
+ const after=run(6,50),undone=corr(after,0,{actual:{completed:false,minutes:0}});
+ assert.equal(read([before,ready,replaced(after,undone),undone]).pause?.readinessDeclared,true);
+ // (b) today's behaviour, NOT a decided reading (SSCTR C-F01-1 r2 (ii): a session every report says was done, only its amount disputed, should
+ // count as executed for the pause and trainedAfter). The disputed session reads as no session: the declaration stands in and the new stop's
+ // reason is not asked. d92aa88 read a new stop here (and does the same as this on a direct app-vs-watch conflict: pre-existing).
+ const d=shift(DAY,-6),b={athleteId:ATH,sessionId:'sy',occurrenceDate:d,context:{sport:'RUN',sessionType:'RUN_EASY'},response:UNKNOWN};
+ const A={...b,eventId:'B',reportedAt:d+'T12:00:00Z',actual:{completed:true,minutes:50},source:{provider:'MANUAL'}},W={...b,eventId:'BW',reportedAt:d+'T12:05:00Z',actual:{completed:true,minutes:50},source:{provider:'HEALTHKIT',activityId:'hk-y',quality:'WEARABLE_FULL'},canonicalActivityId:'hk-y'};
+ const n1=normalizeObservations([A,W],{athleteId:ATH,asOf:d+'T13:00:00Z',maximumAgeDays:36500}),l1=[...n1.accepted,...n1.supersededRows];
+ const n2=normalizeObservations([{...A,eventId:'B2',correctionOf:'B',correctedAt:d+'T14:00:00Z',reportedAt:d+'T14:00:00Z',actual:{completed:true,minutes:20}}],{athleteId:ATH,asOf:d+'T15:00:00Z',prior:l1,maximumAgeDays:36500});
+ const rec=[before,ready,...n2.accepted,...n2.supersededRows],r=read(rec);
+ assert.ok(rec.filter(o=>!o.fact&&o.superseded!==true&&o.sessionId==='sy').every(o=>o.conflicted===true));
+ assert.deepEqual([r.status,r.pause?.readinessDeclared,r.lastBySport?.RUN],['READY',true,before.localDate],'open C-F01-1 (ii): SB-1 question not asked');
+});

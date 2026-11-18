@@ -1,0 +1,63 @@
+{
+  "record": "SSCTR_F01_R1_ADDENDUM",
+  "amends": "SSCTR_F01_R1 (kept as history): item 4 wording; C-F01-1 replaced by C-F01-1 r2",
+  "answers": "QRE_F01_R1 QRE-F01-01 (committed be2ea69), routed by the coordinator per QRE condition C1",
+  "date": "2026-11-18",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "model": "claude-opus-5-5", "instance": "same instance as SSCTR_F01_R1", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "clinicalJudgment": false, "delegated": false},
+  "literature": {"needed": false, "reason": "fidelity of the code to the decided C-Q08-1 and SB-1; no new sporting rule"},
+  "target": {"candidate": "576e40cef948c51a65625ad5fa69679c403fd276", "base": "d92aa8893911e2ee6e32963585d5b5f19a802be7",
+    "sha256": {
+      "audits/v1-core-c2-f01-2026-11-18/reviews/qre/QRE_F01_R1.md@be2ea69": "6dfcf0d991970af8f417358f724d3deae4f5f0708bfa4b6046fb446442886507",
+      "scratch/ssctr-f01-r1-7c3a/probe-shape-b.mjs": "52aa892cf4269a225bd629e1237ecbe9588d63c2ca28cf5740425716cf19dab4",
+      "scratch/ssctr-f01-r1-7c3a/probe-trained-after.mjs": "b87b6e62a988e5115eb67d88ff5c8721c334e243eb4cca7c847b61b59851c39b",
+      "scratch/ssctr-f01-r1-7c3a/probe-direct-conflict.mjs": "491b8e1f0a4d8ddeef3497ca1387d8804986bbbf2f8ae1b2d389a213b1c24692"
+    }},
+  "verdict": "ACCEPT_WITH_CONDITIONS",
+  "verdictChanged": false,
+  "runtimeChangeNow": false,
+  "focalCycleSpentBySSCTR": false,
+  "probeResults": {
+    "shapeB_onlyDisputed_3d": {"base": "13/1, pause 3 d", "candidate": "600/7 unbounded, pause null, last null"},
+    "shapeB_onlyDisputed_20d": {"base": "13/1, pause 2 weeks", "candidate": "600/7, pause null"},
+    "shapeB_plusExecution": {"3d+13d": {"base": "25/1, pause 3 d", "candidate": "13/1, pause 13 d"}, "20d+30d": {"base": "13/1, pause 20 d", "candidate": "0/0, pause 30 d"}},
+    "directConflict_preExisting": {"alone": "600/7 unbounded, pause null on both trees", "afterReadiness": "pause 2 weeks readinessDeclared:true on both trees"},
+    "trainedAfter_readinessDay-10_run-20_session-6": {
+      "undisputed": "both: pause 6 d, no readinessDeclared",
+      "a_notDone": {"base": "pause 6 d, no readinessDeclared", "candidate": "pause 20 d, readinessDeclared:true (correct: no training after the declaration)"},
+      "b_disputedAmount": {"base": "pause 6 d, no readinessDeclared -> intake screen ASK/MISSING_REASON (SB-1 question)", "candidate": "pause 20 d, readinessDeclared:true -> intake screen READINESS_DECLARED, new stop's reason not asked"}
+    },
+    "screenCheck": "screenInterruptionReason({}) = ASK / MISSING_REASON (r6-clinical.mjs); r6-intake.mjs:217 uses READINESS_DECLARED when facts.pause.readinessDeclared and no reason stated"
+  },
+  "ruling": {
+    "question": "Does C-Q08-1 apply when the record holds execution reports but none in force?",
+    "answer": "YES in substance: reports of sessions (not done, replaced or disputed) in the window mean the record covers it; 'unknown stays unknown' is about the intake's unstated exposure. The gate rows.some(executed) is a pre-existing fidelity gap, not the decided reading.",
+    "shapeB": "A session whose reports all say completed, with only the amount disputed, is an execution of disputed amount, not no execution. Zero minutes for the bound is acceptable; reading it as no session for the pause, last executed day and trainedAfter is not, and after a readiness declaration it skips the SB-1 reason question (pre-existing for direct conflicts, identical on d92aa88).",
+    "acceptableForThisFreeze": true,
+    "why": ["pre-existing on d92aa88 for records reported not done or directly conflicted; the fix only applies the as-if oracle", "bound worst case = self-report cold start envelope", "narrow class: no execution in force anywhere (or after the declaration for trainedAfter)", "synthetic and shadow standing, V1 authority NO", "the right change is a design decision (bound vs ASK; disputed-amount counting; effect on direct conflicts) larger than 'fix only CORE-C2-F01'"]
+  },
+  "item4Amendment": "Early HOLD / CLINICAL_HUMAN_REQUIRED returns unchanged in code. Not fully unchanged: in shape (b) after a readiness declaration the SB-1 reason question asked on d92aa88 is no longer asked; cause is the pre-existing conflict reading, reached through a correction. Not a clinical judgment; routed in C-F01-1 r2 (ii) and to Security for SB-1.",
+  "conditions": [
+    {"id": "C-F01-1r2", "replaces": "C-F01-1", "binding": "not for FREEZE-2 or synthetic use; BINDING before any real-athlete use of restartProgram; listed as an open blocker for real-athlete exposure in the integration readiness report", "owner": "next Core mission + SSCTR review; Chief also routes (ii) to Security (SB-1)",
+     "scope": [
+       "(i) C-Q08-1 applies whenever the record holds this athlete's execution reports in the window (in force, replaced, not done or conflicted): bound to the window, or ASK confirming the stated exposure against the record",
+       "(ii) a session all of whose reports say completed, with only the amount disputed (conflicted), is an execution for the pause, the last executed day and trainedAfter; its minutes for the bound counted conservatively (zero or the lowest reported, to decide)",
+       "(iii) a session reported not done in force is not an execution (R1 stands)",
+       "(iv) re-pin the open-labelled tests to the decided reading"
+     ]},
+    {"id": "C-F01-2", "change": "QRE-F01-02, QRE-F01-03 and R-F01-2 accepted as residuals under it (record custody and integrity)"},
+    {"id": "C-F01-3", "change": "unchanged"},
+    {"id": "C-F01-4", "change": "unchanged"}
+  ],
+  "workerPlan": {
+    "endorsed": ["correct CANDIDATE section 2 and section 7 ('never raised', 'confined to double credit' inaccurate for this class)", "pin recent for shapes (a) and (b), labelled open C-F01-1, as current behaviour not a decided reading", "freeze verifier hardening at QRE's discretion", "QRE-F01-02/-03 and R-F01-2 declared residuals under C-F01-2"],
+    "addition": "the trainedAfter test covers (a) after readiness -> readinessDeclared:true (decided-correct) and (b) after readiness -> current readinessDeclared:true labelled 'open C-F01-1 (ii), SB-1 question not asked'"
+  },
+  "freeze2": "From the SSCTR side the --write may proceed once the CANDIDATE correction and these tests are recorded and the freeze record names C-F01-1 r2 open.",
+  "proposedHumanRevalidation": [
+    {"queue_id": "HQ-CORE-F01-SSCTR-A", "status": "PROPOSED_ONLY_NOT_APPENDED", "change": "unchanged"},
+    {"queue_id": "HQ-CORE-F01-SSCTR-B", "status": "PROPOSED_CONDITIONAL", "change": "scope widened to C-F01-1 r2 (i)-(iii)"}
+  ],
+  "gateStatus": "none closed by this record",
+  "publicationStatus": "none",
+  "reReviewTriggers": ["as SSCTR_F01_R1", "the C-F01-1 r2 decision"]
+}

@@ -26,6 +26,19 @@ Every other V1 reader already excludes these rows (`superseded!==true`): `v1-run
 - C-Q08-2/3, every HOLD and CLINICAL_HUMAN_REQUIRED path, the record returned (`carried.record`, the replaced rows included, byte-for-byte), and `priorCapacity.observations`, which is context only.
 - No dose table, progression, periodization, calibration, AM/PM, Race Forecast, Pace Insights or Strength Intelligence. The JavaScriptCore architecture is unchanged, and Pace Revision stays off.
 
+**Correction after QRE_F01_R1 (QRE-F01-01; SSCTR C-F01-1).** The sentence "never raised" above is true of the rule, not of every record against `d92aa88`. The rule's existing gate applies C-Q08-1 only when the record holds an execution (`rows.some(executed)`, unchanged). So on a record that holds execution reports but **none in force**, the stated exposure now passes unbounded, where `d92aa88` bounded it from the replaced row alone. Two shapes reach this:
+- **(A)** every execution was corrected to "not done";
+- **(P4)** the athlete's correction contradicts the watch, so the correction is conflicted and the merged row is replaced.
+
+For a stated 600 min/week and 7 days:
+
+| Shape | `d92aa88` | `576e40c` |
+|---|---|---|
+| A | bounded to 13 / 1 | 600 / 7 |
+| P4 | 13 / 1, pause 3 days | 600 / 7, no pause or last executed day read |
+
+Each now equals its in-force record. In A that is the session reported "not done" directly, which was unbounded on `d92aa88` too. The worst case is the self-reported cold start every new athlete gets. So the dose change is the removal of the double credit **plus** the loss of a bound that only the replaced row supplied, on these records. Both shapes are pinned by the test `QRE-F01-01 (open, SSCTR C-F01-1)`. Whether C-Q08-1 should apply to such a record is the open SSCTR condition C-F01-1, owned by the next Core mission.
+
 ## 3. Values before and after
 
 | Scenario | Before (`d92aa88`) | After (`576e40c`) | In-force control | Evidence |
@@ -64,6 +77,7 @@ The oracle of every case is the same restart over a record holding only the exec
   - The 24th is `v1core-freeze.test.mjs:11`, closure-2's own FREEZE-1 preservation step. Its base is `16577b6`, and it now names `src/v1-f08.mjs` as amended and undeclared. That is by design, the same way `v1rc-calibration:325`, `v1rws-engine:157` and `v1str-freeze:15` failed when closure-2 amended their files.
   - Its successor is `v1core-c2f01-freeze.test.mjs`, which passes. The six earlier records are the `d92aa88` bytes, FREEZE-1 is 47/47, V1-FREEZE-1 is 197/198 plus `v1-f08.mjs` declared, every other record is whole, nothing else changed since `d92aa88`, and there is no untracked file.
   - Mapped in `F01_SUCCESSOR_LEDGER.json`.
+- **Full suite on the committed `576e40c`** (with the freeze test): **1709 / 1685 / 24**, the same 24 failure locations as above.
 - **Restart, provenance/E-1, persistence and clinical tests:** inside the suite, with no new failure. The closure-2 successors (B-01-R, R2-01, SEC-CORE-14, C-C1/C-C2) all pass.
 - **J5/P16:** after relinking the bundle, `lab/oracle.mjs` leaves `j5.json` and `p16.json` byte-identical.
 - **`core.json`:**
@@ -89,3 +103,5 @@ The change narrows what one pure reader counts. It adds no input, field, trust r
 - **QRE:** is the fix minimal and correct? Is the coverage of cases 1–12 sufficient? Is the regression and preservation evidence sound?
 
 Out of scope: the dose rule itself, and SEC-CORE-03.
+
+*(§7 as sent to the judges. The question "confined to removing double credit" was answered: no, not on the records of the correction in §2. See there.)*

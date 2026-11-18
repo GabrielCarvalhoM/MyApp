@@ -5,8 +5,10 @@
 //   (i)   the six earlier freeze records are the bytes the base commit (d92aa88, closure-2's last) holds;
 //   (ii)  every file COACHINGCORE-V1-CORE-SAFETY-FREEZE-1 binds is the hash that record states (47/47: the fix touches none of them);
 //   (iii) every tracked file of CoachingCore is the base bytes, except the one file this line amends and the files it adds, each declared;
-//   (iv)  no untracked file sits in CoachingCore's source, values, tests or scripts;
-//   (v)   (--write / --check) the amended and added files, each by hash, and the reviews the freeze rests on.
+//   (iv)  no untracked file sits anywhere in CoachingCore (QRE-F01-05: not only source, values, tests and scripts);
+//   (v)   (--write / --check) the amended and added files, each by hash; the reviews the freeze rests on, the candidate record, the evidence
+//         and the successor ledger (QRE-F01-05 (b)). --write refuses unless every required review is committed (QRE-F01-05 (a)); --check
+//         also re-reads the record's own fields: the base, the earlier records' hashes, the amended file's hashes, the commit (an ancestor of HEAD).
 //   node scripts/v1core-freeze-2.mjs --preserved                              (i) to (iv) on the tree here
 //   node scripts/v1core-freeze-2.mjs --write --commit <sha> [--note "..."]    writes v1/RUNTIME_FREEZE_V1CORE_2.json (only this file)
 //   node scripts/v1core-freeze-2.mjs --check                                  recomputes and compares; exit 1 on drift
@@ -29,7 +31,9 @@ const AMENDED=['CoachingCore/src/v1-f08.mjs'];
 /** The files this line adds (the record itself excluded). */
 const ADDED=['CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs','CoachingCore/test/v1core-c2f01-freeze.test.mjs','CoachingCore/scripts/v1core-freeze-2.mjs'];
 /** The reviews this freeze rests on, bound by hash (read, never edited). */
-const REVIEWS_DIR=['audits/v1-core-c2-f01-2026-11-18/reviews'];
+const AUDIT='audits/v1-core-c2-f01-2026-11-18',REVIEWS_DIR=[AUDIT+'/reviews',AUDIT+'/evidence'],RECORDS=[AUDIT+'/CANDIDATE.md',AUDIT+'/CYCLE1.md',AUDIT+'/F01_SUCCESSOR_LEDGER.json'];
+/** The reviews a write requires, committed (QRE-F01-05 (a)). */
+const REQUIRED=[AUDIT+'/reviews/qre/QRE_F01_R1.md',AUDIT+'/reviews/ssctr/SSCTR_F01_R1.md',AUDIT+'/reviews/ssctr/SSCTR_F01_R1.json'];
 
 function preserved(){
  const out=[],bad=[];
@@ -47,12 +51,12 @@ function preserved(){
  (undeclared.length?bad:out).push(undeclared.length?'CHANGED and not declared: '+undeclared.join(', '):`nothing else changed since ${BASE} (${changed.length} files: ${AMENDED.filter(f=>changed.includes(f)).length} amended, the rest added by this line)`);
  for(const f of AMENDED)if(!blobSha(BASE,f))bad.push(f+': NOT a file of the base');
  // (iv) no untracked file in source, values, tests or scripts.
- const untracked=git('ls-files','--others','--exclude-standard','--','CoachingCore/src','CoachingCore/v1','CoachingCore/test','CoachingCore/scripts').split('\n').filter(Boolean);
- (untracked.length?bad:out).push(untracked.length?'UNTRACKED: '+untracked.join(', '):'no untracked file in src, v1, test or scripts');
+ const untracked=git('ls-files','--others','--exclude-standard','--','CoachingCore',AUDIT).split('\n').filter(Boolean);
+ (untracked.length?bad:out).push(untracked.length?'UNTRACKED: '+untracked.join(', '):'no untracked file in CoachingCore or '+AUDIT);
  return {out,bad};
 }
 function filesOf(){
- const list=[...AMENDED,...ADDED,CORE1,...REVIEWS_DIR.flatMap(d=>git('ls-files','--',d).split('\n').filter(Boolean))].sort();
+ const list=[...AMENDED,...ADDED,CORE1,...RECORDS,...REVIEWS_DIR.flatMap(d=>git('ls-files','--',d).split('\n').filter(Boolean))].sort();
  return Object.fromEntries(list.map(f=>[f,sha(f)]));
 }
 const mode=process.argv[2],file=path.join(ROOT,RECORD);
@@ -63,6 +67,7 @@ else if(mode==='--write'||mode==='--check'){
  if(mode==='--write'){
   const commit=arg('--commit');if(!/^[0-9a-f]{7,40}$/.test(commit??'')){console.error('--commit <sha>');process.exit(2);}
   if(git('rev-parse',commit)!==git('rev-parse','HEAD')){console.error('the commit bound must be HEAD');process.exit(2);}
+  const absent=REQUIRED.filter(f=>!(f in files)||!git('ls-files','--',f));if(absent.length){console.error('required reviews not committed: '+absent.join(', '));process.exit(2);}
   if(git('status','--porcelain','--',...Object.keys(files)).length){console.error('the bound files must be committed');process.exit(2);}
   const rec={revision:'COACHINGCORE-V1-CORE-SAFETY-FREEZE-2',mission:'CORE-C2-F01 restart sizing fix (Founder, 2026-11-18)',scope:'synthetic candidate; no real athlete; cross-runtime readiness pending the physical Mac/iPhone revalidation',
    commit:git('rev-parse',commit),base:git('rev-parse',BASE),additiveTo:PRIOR.map(f=>({record:f,sha256:sha(f)})),entryPoint:'CoachingCore/src/v1-safety-index.mjs (V1_CORE_ENGINE)',
@@ -72,6 +77,11 @@ else if(mode==='--write'||mode==='--check'){
   if(!fs.existsSync(file)){console.error('no record');process.exit(1);}
   const rec=JSON.parse(fs.readFileSync(file,'utf8')),drift=Object.entries(rec.files).filter(([f,h])=>!fs.existsSync(path.join(ROOT,f))||sha(f)!==h).map(([f])=>f),extra=Object.keys(files).filter(f=>!(f in rec.files));
   if(drift.length||extra.length||rec.filesDigest!==digest(rec.files)){console.error('DRIFT: '+[...drift,...extra.map(f=>'new '+f)].join(', '));process.exit(1);}
+  const ancestor=(()=>{try{execFileSync('git',['merge-base','--is-ancestor',rec.commit,'HEAD'],{cwd:ROOT});return true;}catch{return false;}})();
+  const meta=[rec.revision==='COACHINGCORE-V1-CORE-SAFETY-FREEZE-2'||'revision',rec.base===git('rev-parse',BASE)||'base',ancestor||'commit not an ancestor of HEAD',
+   JSON.stringify(rec.additiveTo)===JSON.stringify(PRIOR.map(f=>({record:f,sha256:sha(f)})))||'additiveTo',JSON.stringify(rec.amended)===JSON.stringify(AMENDED.map(f=>({file:f,base:blobSha(BASE,f),now:sha(f)})))||'amended',
+   REQUIRED.every(f=>f in rec.files)||'required reviews'].filter(x=>x!==true);
+  if(meta.length){console.error('RECORD FIELDS: '+meta.join(', '));process.exit(1);}
   console.log(`${rec.revision}: ${rec.fileCount}/${rec.fileCount} files byte-identical; earlier freezes preserved`);
  }
 }else{console.error('usage: --preserved | --write --commit <sha> | --check');process.exit(2);}
