@@ -34,3 +34,11 @@ Nothing here was hidden by editing a test: no historical test or freeze file was
 | record size after the journey | 55 KB | 89 KB | **1.61** |
 
 Review latency is unchanged within noise. The record grows because E-1 keeps each voice's own report inside a merged row (`provenance.parts`). Justification: without it, a correction cannot know what the other voice said; that is the E-1 defect. Impact on the device: the envelope's atomic write was p95 3.1–3.6 ms for 1.1 MB, against a 50 ms budget (14× headroom); SHA-256 over the record is linear in its size. Possible reductions, not done here: drop the part identical to a row that was never merged; store a part's fields only when they differ from the merged row's.
+
+## After the correction cycle (`430c493`)
+
+The full suite gives **1661 tests, 1638 pass, 23 fail**. The 57 `v1core-*` tests all pass, and J5/P16 are byte-identical (P0 `lab/oracle.mjs`).
+
+The 23 failures:
+- the 22 of `0b8e45a`, each with the attribution above, none new in kind;
+- **one new failure**, from the B-01 fix: `SSCTR-RWS-B-01: the signal survives time…` (`v1rws-fix-forward.test.mjs:316`). It pins that a carried row of a session the plan does not name, with no report fact beside it (a record older than report facts), raises **no** screen. With the B-01 fix, a symptom stop on such a row now **asks** for the existing screen. The direction is more conservative (a screen asked, never one removed), and it is what SSCTR-CORE-B-01 requires ("whatever plan the session belongs to"). It goes to the SSCTR recheck. It is not declared by design here.
