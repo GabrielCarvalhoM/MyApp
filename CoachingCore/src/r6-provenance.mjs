@@ -55,6 +55,10 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
  * (recorded before this change) is corrected as before.
  */
 const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null});
+/** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
+const validPart=p=>!!p&&typeof p==='object'&&!!p.actual&&typeof p.actual==='object'&&!Array.isArray(p.actual)&&typeof p.actual.completed==='boolean'
+ &&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>p.actual[k]!==undefined&&p.actual[k]!==null&&(!Number.isFinite(p.actual[k])||p.actual[k]<0))
+ &&!!p.response&&typeof p.response==='object'&&Object.entries(RESPONSE).every(([k,v])=>v.includes(p.response[k]??'UNKNOWN'));
 /**
  * R7-C QE-R7C-10: when the completed-work record first held a report of one execution (`provenance.firstRecordedAt`): the clock of the decision
  * whose input first carried it. Rows that are one execution (an agreeing duplicate, a correction and what it corrects) take the earliest; a row
@@ -70,7 +74,7 @@ const setFirstRecorded=(row,t)=>{if(t)row.provenance.firstRecordedAt=t;else dele
  * `recordArrival` (a decision's own completed-work record, R7-C QE-R7C-10): each observation the decision brings is stamped with the decision
  * clock (`provenance.firstRecordedAt`), never with a value the input supplies; a carried row keeps its own. Without it no new row carries one.
  */
-export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={},recordArrival=false}={}){
+export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={},recordArrival=false,incoming=false}={}){
  const now=utcTimestamp(asOf);if(!now)throw new TypeError('Explicit decision time with timezone required');
  // supersededRows keeps every fact a correction replaced, so the carried record stays append-only and a later normalization of it still
  // finds the corrected original (R7-A). They are history: never accepted, counted or bound again.
@@ -95,7 +99,11 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   if(!o||!o.eventId){reject('EVENT_ID_REQUIRED');continue;}
   if(o.athleteId&&o.athleteId!==athleteId){reject('ATHLETE_MISMATCH');continue;}
   // A fact a correction replaced in an earlier review is history: kept in the record and findable by a later correction chain (R7-A).
-  if(!carried){delete o.superseded;delete o.supersededBy;delete o.supersededAt;}
+  if(!carried){delete o.superseded;delete o.supersededBy;delete o.supersededAt;
+   // V1 Core Safety & Lifecycle (SEC-CORE-01/-02, QRE-CORE-03): what the engine writes on a row is never taken from a new report: its binding
+   // context, and the provenance of a merge (the parts, the merged ids and the input hashes of other reports) are made here, from what it says.
+   // Only for the reports a review receives from its client (`incoming`): the learning model and other readers pass rows the engine already bound.
+   if(incoming){delete o.context;if(isObject(o.provenance)){const {parts:_p,mergedSourceIds:_m,inputHashes:_h,...own}=o.provenance;o.provenance=own;}}}
   if(carried&&o.superseded===true){const row={...o,identity:o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??(o.provenance?.provider??'MANUAL')+'@'+o.observedAt),inputHash:hash({...source,athleteId})};for(const id of [o.eventId,...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);supersededRows.push(row);continue;}
   o.athleteId=athleteId;
   // R7-D DX-01: a row the record carries keeps the time precision it was accepted with. A day-precision report was stored with the latest causal
@@ -129,10 +137,13 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
-   // E-1: the other reports of the merged row in force stay in force (only when the row names the corrected report among its parts and no
-   // conflict stands on the identity; otherwise the correction replaces the row, as before).
-   if(old.superseded!==true&&accepted.includes(old)&&!quarantined.has(identity)&&old.provenance?.parts&&Object.hasOwn(old.provenance.parts,o.correctionOf))
-    inherited=Object.entries(old.provenance.parts).filter(([id])=>id!==o.correctionOf).map(([id,p])=>({id,p,inputHash:old.provenance.inputHashes?.[id]??null}));
+   // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
+   // its parts, whichever row of the record first claimed the id (QRE-CORE-01: a superseded merged row carried before it) and also while a
+   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed;
+   // otherwise the correction replaces the row, as before (QRE-CORE-04, SEC-CORE-04). Never throws.
+   const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
+   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id])=>id!==o.correctionOf);if(others.every(([,p])=>validPart(p)))inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
@@ -179,6 +190,9 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    row.provenance.parts={[o.eventId]:own,...Object.fromEntries(inherited.map(x=>[x.id,x.p]))};
    for(const {id} of inherited)byEvent.set(id,row);
   }
+  // E-1 (QRE-CORE-01): a live row answers for the reports it holds as parts (the ones its own provenance merged), before any superseded row the
+  // record carried earlier: a later correction of one of them finds the row in force.
+  {const made=new Set([...Object.keys(row.provenance?.inputHashes??{}),...(row.provenance?.mergedSourceIds??[])]);for(const id of Object.keys(isObject(row.provenance?.parts)?row.provenance.parts:{}))if(made.has(id))byEvent.set(id,row);}
   accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  }
  accepted.sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)||byCodePoint(a.eventId,b.eventId));

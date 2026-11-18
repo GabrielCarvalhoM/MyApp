@@ -132,7 +132,9 @@ function readingOf(c,V){
   const facts=readReportFacts(formats,athleteId,V,ledger),adm=admitted(ledger,{athleteId,facts},V);
   const el=isObj(eligibility)?{...eligibility,...(isObj(eligibility.flags)?eligibility.flags:{})}:null,screened=el?.status==='NONCLINICAL_CONFIRMED'&&SIGNS.every(k=>el[k]===false)&&typeof el.assessedAt==='string'?el.assessedAt:null;
   const answeredAfter=instant=>!!screened&&!!at&&(isoDay(screened)?screened>localDate(new Date(instant).toISOString(),tz)&&screened<=asOfDay:Number.isFinite(Date.parse(screened))&&Date.parse(screened)>instant&&Date.parse(screened)<=Date.parse(at));
-  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&o.context?.sport==='RUN').map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
+  // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): a stop is read on every row the engine does not know to be another sport's, whatever plan its
+  // session belongs to (a late report of an earlier plan's session is recorded with no sport): the existing screen, no new criterion.
+  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&(o.context?.sport==='RUN'||!o.context?.sport)).map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
   const symptomStops=[...facts.stops,...rowStops].filter(x=>x.reason==='SYMPTOM'&&Number.isFinite(x.at)&&!answeredAfter(x.at));
   return {ok:true,tz,dayOnly,at,asOfDay,facts,adm,el,symptomStops,symptomSessions:[...new Set([...symptomStops.map(x=>x.sessionId),...list(c.requested)])].sort(),unreadable:facts.unreadable};
  }catch{return {ok:false,at:null,adm:{ledger:[],withheld:[]},symptomStops:[],symptomSessions:[...list(c?.requested)].sort(),unreadable:[]};}
@@ -354,7 +356,10 @@ export function evaluateProgram(program,review,options={}){
  // not recorded, and the review is asked again: only a stop it declares is a fact (its distance is of no row).
  const received=list(input.observations).filter(o=>isObj(o)&&planned.get(o.sessionId)?.sport==='RUN'&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)).map(o=>{const f=reportFactOf(o,V,{fromDevice:fromDevice(o)});return f&&unknownNew.includes(o)?(f.stop?stopOnly(f):null):f;}).filter(Boolean);
  // A symptom stop a report of this request declares is named in every answer, from the request alone when nothing of it is recorded.
- const requested=[...new Set(received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId))].sort();
+ // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): so is a symptom stop a report declares for a session the plan in force does not hold (an earlier
+ // plan's, after a restart): its stop is read, nothing else of it.
+ const elsewhere=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM').map(o=>o.sessionId);
+ const requested=[...new Set([...received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId),...elsewhere])].sort();
  const engineOpts={...opts,[READS_COMPLETION]:readerOf(fr,V)},carriedEvidence=Array.isArray(review.runEvidenceRecord)?clone(review.runEvidenceRecord):[];
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);

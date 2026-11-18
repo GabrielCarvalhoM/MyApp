@@ -566,7 +566,7 @@ export function evaluateProgram(program,input,options={}){
   let recorded=null;
   if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
    try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
-    const n=normalizeObservations(review.observations,{athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+    const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
     const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
     recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
   }
@@ -602,7 +602,7 @@ export function evaluateProgram(program,input,options={}){
   // R7-D Phase 3.1: the declared breaks the record holds are facts of their own kind, never execution reports; they travel with it unchanged.
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
   // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
-  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+  const n=normalizeObservations(review.observations??[],{incoming:true,athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);

@@ -32,7 +32,7 @@ test('QRE-AIF-02: the first report of the new plan gets its own row; the rows of
  assert.equal(own.length,1,'the report has a row of its own');
  assert.equal(own[0].sessionId,s0.id);assert.equal(own[0].conflicted,undefined);assert.equal(own[0].context.sessionId,s0.id);
  assert.deepEqual(rowsOfPlanA(c.env).map(strip),before,'plan A rows unchanged, none conflicted');
- assert.ok(['KEEP','MODIFY','PROGRESS','HOLD_LOAD','CONTINUE'].includes(r.status)||typeof r.status==='string');
+ assert.equal(r.status,'KEEP','the first report of plan B is decided (QRE-CORE-07: pinned, not any string)');
 });
 
 test('QRE-AIF-02: plan A executions are never credited to plan B (week evidence of plan B counts only its own reports)', ()=>{

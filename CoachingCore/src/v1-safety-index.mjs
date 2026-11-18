@@ -32,7 +32,7 @@ const utcDayOf=v=>{if(typeof v!=='string')return null;const t=Date.parse(v);retu
  */
 export function authorityExpiry(options,asOf){
  const opts=isObj(options)?options:{},day=utcDayOf(asOf);
- if(opts.repertoire||!day)return null;
+ if(opts.repertoire||opts.authority||!day)return null;
  const dated=repertoireAuthority({...opts,asOf:day});if(dated.valid)return null;
  const undated=repertoireAuthority({...opts,asOf:null});if(!undated.valid)return null;
  const passed=undated.records.filter(r=>typeof r.reviewBy==='string'&&day>r.reviewBy).map(r=>({id:r.id,reviewBy:r.reviewBy}));
@@ -51,6 +51,12 @@ export function evaluateProgram(program,review,options={}){
  let e=null;try{e=authorityExpiry(options,isObj(review)?review.asOf:null);}catch{e=null;}
  if(!e)return base;
  let reread=null;try{reread=S.evaluateProgram(program,review,{...(isObj(options)?options:{}),repertoire:e.undated});}catch{reread=null;}
- if(reread?.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal)return freeze({...reread,authorityExpiry:marker(e,true)});
+ // Not an expiry when the dates set aside still leave the plan refused (another catalog, policy or rules): the refusal stands, unmarked (SEC-CORE-05).
+ if(!reread||reread.status==='UNSUPPORTED')return base;
+ // The clinical answer, with every reading the refusal gives in place of those computed with the dates set aside (forecast, insights,
+ // calibration, formats, exposure, learning): after the date nothing but the clinical route and the recorded facts comes from that reading (QRE-CORE-06).
+ if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}return freeze({...out,authorityExpiry:marker(e,true)});}
  return freeze({...base,authorityExpiry:marker(e,false)});
 }
+/** The readings of an answer that are not the clinical route or the record: after the date they are the refusal's. */
+const READINGS=['runSessions','runFormat','runCalibration','runForecast','paceInsights','paceRevision','strengthExposure','updatedModel','qualityAssessment','weekEvidence'];

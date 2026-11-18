@@ -140,7 +140,7 @@ export function generateLegacyProgram(input,options={}){
  const base={runtimeVersion:'R6-LEGACY-1',mode:'SHADOW',inputHash:hash(source),program:null,applied:false,officialPlanState:clone(source.officialPlanState??null),appliedState:clone(source.officialPlanState??null),completedWork:clone(source.completedWork??[]),missingInputs:[],errors:[],horizonsConsidered:HORIZONS};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  const stripped={...source,athlete:source.athlete?{...source.athlete,anchors:Array.isArray(source.athlete.anchors)?source.athlete.anchors.map(a=>{if(!a||typeof a!=='object')return a;const {alternatives,...rest}=a;return rest;}):source.athlete.anchors}:source.athlete};
- let v;try{v=validateProgramInput(stripped);}catch(e){if(!(e instanceof TypeError))throw e;v={clinical:false,errors:['Malformed nested input: '+e.message],missing:[]};}
+ let v;try{v=validateProgramInput(stripped);}catch(e){if(!(e instanceof TypeError))throw e;v={clinical:false,errors:['Malformed nested input (TypeError)'],missing:[]};}
  // A clinical flag that means yes in any form routes to a human, as in the R6 intake (SSCTR R6); the frozen R5 validator reads only true.
  const el0=source.athlete&&typeof source.athlete==='object'?source.athlete.eligibility:null;
  if(el0&&typeof el0==='object'&&['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'].some(k=>isYes(el0[k])))v={...v,clinical:true};
@@ -329,7 +329,7 @@ export function evaluateLegacyProgram(program,review,options={}){
  if(!validLegacyProgram(program))return freeze({...base,status:'HOLD',action:'HOLD',reason:'Program integrity/version is invalid'});
  const r6=r6Authority(options),r5=programAuthority(options.r5??{});
  let prepared,guard;
- try{guard=previousValidity(program,review??{});prepared=legacyPrepare(program,clone(review??{}),{learningBlocked:!!guard,priorClinical:guard?.status==='CLINICAL_HUMAN_REQUIRED'});}catch(e){if(!(e instanceof TypeError))throw e;return freeze(referenceResult(program,review,{...base,status:'HOLD',action:'HOLD',reason:'Malformed review context: '+e.message,actualLedger:clone(Array.isArray(review?.actualLedger)?review.actualLedger:[])}));}
+ try{guard=previousValidity(program,review??{});prepared=legacyPrepare(program,clone(review??{}),{learningBlocked:!!guard,priorClinical:guard?.status==='CLINICAL_HUMAN_REQUIRED'});}catch(e){if(!(e instanceof TypeError))throw e;return freeze(referenceResult(program,review,{...base,status:'HOLD',action:'HOLD',reason:'Malformed review context (TypeError)',actualLedger:clone(Array.isArray(review?.actualLedger)?review.actualLedger:[])}));}
  const output={...base,updatedModel:prepared.model,actualLedger:prepared.actualLedger,excludedObservations:prepared.excluded,provenance:prepared.provenance??null,inputHash:hash({programHash:program.hash,review})};
  const reject=(status,reason,extra={})=>freeze(referenceResult(program,review,{...output,status,action:status,reason,...extra}));
  if(prepared.clinical)return reject('CLINICAL_HUMAN_REQUIRED','Clinical concern routes to qualified human assessment; no dependent prescription');
