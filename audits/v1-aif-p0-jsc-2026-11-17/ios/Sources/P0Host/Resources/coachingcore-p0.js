@@ -1865,6 +1865,10 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
  * (recorded before this change) is corrected as before.
  */
 const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null});
+/** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
+const validPart=p=>!!p&&typeof p==='object'&&!!p.actual&&typeof p.actual==='object'&&!Array.isArray(p.actual)&&typeof p.actual.completed==='boolean'
+ &&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>p.actual[k]!==undefined&&p.actual[k]!==null&&(!Number.isFinite(p.actual[k])||p.actual[k]<0))
+ &&!!p.response&&typeof p.response==='object'&&Object.entries(RESPONSE).every(([k,v])=>v.includes(p.response[k]??'UNKNOWN'));
 /**
  * R7-C QE-R7C-10: when the completed-work record first held a report of one execution (`provenance.firstRecordedAt`): the clock of the decision
  * whose input first carried it. Rows that are one execution (an agreeing duplicate, a correction and what it corrects) take the earliest; a row
@@ -1880,7 +1884,7 @@ const setFirstRecorded=(row,t)=>{if(t)row.provenance.firstRecordedAt=t;else dele
  * `recordArrival` (a decision's own completed-work record, R7-C QE-R7C-10): each observation the decision brings is stamped with the decision
  * clock (`provenance.firstRecordedAt`), never with a value the input supplies; a carried row keeps its own. Without it no new row carries one.
  */
-function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={},recordArrival=false}={}){
+function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,futureSkewSeconds=300,prior=[],timezoneOffsetMinutes=0,loadIncrements={},recordArrival=false,incoming=false}={}){
  const now=utcTimestamp(asOf);if(!now)throw new TypeError('Explicit decision time with timezone required');
  // supersededRows keeps every fact a correction replaced, so the carried record stays append-only and a later normalization of it still
  // finds the corrected original (R7-A). They are history: never accepted, counted or bound again.
@@ -1905,7 +1909,11 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
   if(!o||!o.eventId){reject('EVENT_ID_REQUIRED');continue;}
   if(o.athleteId&&o.athleteId!==athleteId){reject('ATHLETE_MISMATCH');continue;}
   // A fact a correction replaced in an earlier review is history: kept in the record and findable by a later correction chain (R7-A).
-  if(!carried){delete o.superseded;delete o.supersededBy;delete o.supersededAt;}
+  if(!carried){delete o.superseded;delete o.supersededBy;delete o.supersededAt;
+   // V1 Core Safety & Lifecycle (SEC-CORE-01/-02, QRE-CORE-03): what the engine writes on a row is never taken from a new report: its binding
+   // context, and the provenance of a merge (the parts, the merged ids and the input hashes of other reports) are made here, from what it says.
+   // Only for the reports a review receives from its client (`incoming`): the learning model and other readers pass rows the engine already bound.
+   if(incoming){delete o.context;if(isObject(o.provenance)){const {parts:_p,mergedSourceIds:_m,inputHashes:_h,...own}=o.provenance;o.provenance=own;}}}
   if(carried&&o.superseded===true){const row={...o,identity:o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??(o.provenance?.provider??'MANUAL')+'@'+o.observedAt),inputHash:hash({...source,athleteId})};for(const id of [o.eventId,...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);supersededRows.push(row);continue;}
   o.athleteId=athleteId;
   // R7-D DX-01: a row the record carries keeps the time precision it was accepted with. A day-precision report was stored with the latest causal
@@ -1939,10 +1947,13 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
-   // E-1: the other reports of the merged row in force stay in force (only when the row names the corrected report among its parts and no
-   // conflict stands on the identity; otherwise the correction replaces the row, as before).
-   if(old.superseded!==true&&accepted.includes(old)&&!quarantined.has(identity)&&old.provenance?.parts&&Object.hasOwn(old.provenance.parts,o.correctionOf))
-    inherited=Object.entries(old.provenance.parts).filter(([id])=>id!==o.correctionOf).map(([id,p])=>({id,p,inputHash:old.provenance.inputHashes?.[id]??null}));
+   // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
+   // its parts, whichever row of the record first claimed the id (QRE-CORE-01: a superseded merged row carried before it) and also while a
+   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed;
+   // otherwise the correction replaces the row, as before (QRE-CORE-04, SEC-CORE-04). Never throws.
+   const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
+   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id])=>id!==o.correctionOf);if(others.every(([,p])=>validPart(p)))inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
@@ -1989,6 +2000,9 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    row.provenance.parts={[o.eventId]:own,...Object.fromEntries(inherited.map(x=>[x.id,x.p]))};
    for(const {id} of inherited)byEvent.set(id,row);
   }
+  // E-1 (QRE-CORE-01): a live row answers for the reports it holds as parts (the ones its own provenance merged), before any superseded row the
+  // record carried earlier: a later correction of one of them finds the row in force.
+  {const made=new Set([...Object.keys(row.provenance?.inputHashes??{}),...(row.provenance?.mergedSourceIds??[])]);for(const id of Object.keys(isObject(row.provenance?.parts)?row.provenance.parts:{}))if(made.has(id))byEvent.set(id,row);}
   accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  }
  accepted.sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)||byCodePoint(a.eventId,b.eventId));
@@ -5428,7 +5442,7 @@ function evaluateProgram(program,input,options={}){
   let recorded=null;
   if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
    try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
-    const n=normalizeObservations(review.observations,{athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+    const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
     const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
     recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
   }
@@ -5464,7 +5478,7 @@ function evaluateProgram(program,input,options={}){
   // R7-D Phase 3.1: the declared breaks the record holds are facts of their own kind, never execution reports; they travel with it unchanged.
   const priorLedger=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
   // R7-C QE-R7C-10: the record notes when it first held each report (recordArrival), so a later decision knows which reports a review had.
-  const n=normalizeObservations(review.observations??[],{athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+  const n=normalizeObservations(review.observations??[],{incoming:true,athleteId:program.athleteId,asOf,prior:priorLedger,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]),ledger=[...bound,...unbound];
   // Conflicted facts stay in the record but never count for gating counts, capacity or learning until corrected (QRE-R6-14).
   const usable=ledger.filter(o=>!o.conflicted),usableBound=bound.filter(o=>!o.conflicted);
@@ -8614,7 +8628,7 @@ function generateLegacyProgram(input,options={}){
  const base={runtimeVersion:'R6-LEGACY-1',mode:'SHADOW',inputHash:hash(source),program:null,applied:false,officialPlanState:clone(source.officialPlanState??null),appliedState:clone(source.officialPlanState??null),completedWork:clone(source.completedWork??[]),missingInputs:[],errors:[],horizonsConsidered:HORIZONS};
  const reject=(status,reason,extra={})=>freeze({...base,status,reason,...extra});
  const stripped={...source,athlete:source.athlete?{...source.athlete,anchors:Array.isArray(source.athlete.anchors)?source.athlete.anchors.map(a=>{if(!a||typeof a!=='object')return a;const {alternatives,...rest}=a;return rest;}):source.athlete.anchors}:source.athlete};
- let v;try{v=validateProgramInput(stripped);}catch(e){if(!(e instanceof TypeError))throw e;v={clinical:false,errors:['Malformed nested input: '+e.message],missing:[]};}
+ let v;try{v=validateProgramInput(stripped);}catch(e){if(!(e instanceof TypeError))throw e;v={clinical:false,errors:['Malformed nested input (TypeError)'],missing:[]};}
  // A clinical flag that means yes in any form routes to a human, as in the R6 intake (SSCTR R6); the frozen R5 validator reads only true.
  const el0=source.athlete&&typeof source.athlete==='object'?source.athlete.eligibility:null;
  if(el0&&typeof el0==='object'&&['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'].some(k=>isYes(el0[k])))v={...v,clinical:true};
@@ -8803,7 +8817,7 @@ function evaluateLegacyProgram(program,review,options={}){
  if(!validLegacyProgram(program))return freeze({...base,status:'HOLD',action:'HOLD',reason:'Program integrity/version is invalid'});
  const r6=r6Authority(options),r5=programAuthority(options.r5??{});
  let prepared,guard;
- try{guard=previousValidity(program,review??{});prepared=legacyPrepare(program,clone(review??{}),{learningBlocked:!!guard,priorClinical:guard?.status==='CLINICAL_HUMAN_REQUIRED'});}catch(e){if(!(e instanceof TypeError))throw e;return freeze(referenceResult(program,review,{...base,status:'HOLD',action:'HOLD',reason:'Malformed review context: '+e.message,actualLedger:clone(Array.isArray(review?.actualLedger)?review.actualLedger:[])}));}
+ try{guard=previousValidity(program,review??{});prepared=legacyPrepare(program,clone(review??{}),{learningBlocked:!!guard,priorClinical:guard?.status==='CLINICAL_HUMAN_REQUIRED'});}catch(e){if(!(e instanceof TypeError))throw e;return freeze(referenceResult(program,review,{...base,status:'HOLD',action:'HOLD',reason:'Malformed review context (TypeError)',actualLedger:clone(Array.isArray(review?.actualLedger)?review.actualLedger:[])}));}
  const output={...base,updatedModel:prepared.model,actualLedger:prepared.actualLedger,excludedObservations:prepared.excluded,provenance:prepared.provenance??null,inputHash:hash({programHash:program.hash,review})};
  const reject=(status,reason,extra={})=>freeze(referenceResult(program,review,{...output,status,action:status,reason,...extra}));
  if(prepared.clinical)return reject('CLINICAL_HUMAN_REQUIRED','Clinical concern routes to qualified human assessment; no dependent prescription');
@@ -8909,11 +8923,11 @@ function restartProgram({intake,record=[],referenceState=null,asOf=null,athleteI
  try{
   const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,athleteId,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
   if(r.status!=='READY')return stopped(r.status,r.reason,r.missingInputs??[],r.unreadable?{unreadable:clone(r.unreadable)}:{});
-  // V1 Core Safety & Lifecycle (QRE-AIF-02): the new plan's session namespace, from the updated facts and the restart's decision instant (UTC):
-  // two restarts of one athlete never share a session id, and the same restart (the same facts at the same instant) gives the same plan,
-  // whatever form the carried record holds its facts in.
+  // V1 Core Safety & Lifecycle (QRE-AIF-02): the new plan's session namespace, from the athlete's updated facts as sent and the restart's decision
+  // instant (UTC): two restarts of one athlete never share a session id, and the same restart (the same facts at the same instant) gives the same
+  // plan, whatever form the carried record holds its facts in (nothing read from the record enters it).
   const at=typeof (asOf??intake?.asOf)==='string'?(utcTimestamp(asOf??intake.asOf)??String(asOf??intake.asOf)):null;
-  const ns='r'+hash({intake:r.intake,at}).slice(0,10);
+  const ns='r'+hash({intake:intake??null,at}).slice(0,10);
   const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts,[SESSION_NAMESPACE]:ns});
   return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
  }catch(e){return stopped('HOLD','The restart facts could not be read: no new plan is made from them; send the updated facts and the record as kept',[],{errors:['malformed:'+(e?.constructor?.name??'Error')]});}
@@ -10935,7 +10949,9 @@ function readingOf(c,V){
   const facts=readReportFacts(formats,athleteId,V,ledger),adm=admitted(ledger,{athleteId,facts},V);
   const el=isObj(eligibility)?{...eligibility,...(isObj(eligibility.flags)?eligibility.flags:{})}:null,screened=el?.status==='NONCLINICAL_CONFIRMED'&&SIGNS.every(k=>el[k]===false)&&typeof el.assessedAt==='string'?el.assessedAt:null;
   const answeredAfter=instant=>!!screened&&!!at&&(isoDay(screened)?screened>localDate(new Date(instant).toISOString(),tz)&&screened<=asOfDay:Number.isFinite(Date.parse(screened))&&Date.parse(screened)>instant&&Date.parse(screened)<=Date.parse(at));
-  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&o.context?.sport==='RUN').map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
+  // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): a stop is read on every row the engine does not know to be another sport's, whatever plan its
+  // session belongs to (a late report of an earlier plan's session is recorded with no sport): the existing screen, no new criterion.
+  const rowStops=list(ledger).filter(o=>isObj(o)&&!o.fact&&o.athleteId===athleteId&&isObj(o.actual)&&typeof o.sessionId==='string'&&(o.context?.sport==='RUN'||!o.context?.sport)).map(o=>({sessionId:o.sessionId,reason:stopOf(o.actual,V)?.reason??null,at:recordedInstant(o)}));
   const symptomStops=[...facts.stops,...rowStops].filter(x=>x.reason==='SYMPTOM'&&Number.isFinite(x.at)&&!answeredAfter(x.at));
   return {ok:true,tz,dayOnly,at,asOfDay,facts,adm,el,symptomStops,symptomSessions:[...new Set([...symptomStops.map(x=>x.sessionId),...list(c.requested)])].sort(),unreadable:facts.unreadable};
  }catch{return {ok:false,at:null,adm:{ledger:[],withheld:[]},symptomStops:[],symptomSessions:[...list(c?.requested)].sort(),unreadable:[]};}
@@ -11157,7 +11173,10 @@ function evaluateProgram(program,review,options={}){
  // not recorded, and the review is asked again: only a stop it declares is a fact (its distance is of no row).
  const received=list(input.observations).filter(o=>isObj(o)&&planned.get(o.sessionId)?.sport==='RUN'&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)).map(o=>{const f=reportFactOf(o,V,{fromDevice:fromDevice(o)});return f&&unknownNew.includes(o)?(f.stop?stopOnly(f):null):f;}).filter(Boolean);
  // A symptom stop a report of this request declares is named in every answer, from the request alone when nothing of it is recorded.
- const requested=[...new Set(received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId))].sort();
+ // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): so is a symptom stop a report declares for a session the plan in force does not hold (an earlier
+ // plan's, after a restart): its stop is read, nothing else of it.
+ const elsewhere=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM').map(o=>o.sessionId);
+ const requested=[...new Set([...received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId),...elsewhere])].sort();
  const engineOpts={...opts,[READS_COMPLETION]:readerOf(fr,V)},carriedEvidence=Array.isArray(review.runEvidenceRecord)?clone(review.runEvidenceRecord):[];
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);
@@ -12939,7 +12958,7 @@ const utcDayOf=v=>{if(typeof v!=='string')return null;const t=Date.parse(v);retu
  */
 function authorityExpiry(options,asOf){
  const opts=isObj(options)?options:{},day=utcDayOf(asOf);
- if(opts.repertoire||!day)return null;
+ if(opts.repertoire||opts.authority||!day)return null;
  const dated=repertoireAuthority({...opts,asOf:day});if(dated.valid)return null;
  const undated=repertoireAuthority({...opts,asOf:null});if(!undated.valid)return null;
  const passed=undated.records.filter(r=>typeof r.reviewBy==='string'&&day>r.reviewBy).map(r=>({id:r.id,reviewBy:r.reviewBy}));
@@ -12958,9 +12977,15 @@ function evaluateProgram(program,review,options={}){
  let e=null;try{e=authorityExpiry(options,isObj(review)?review.asOf:null);}catch{e=null;}
  if(!e)return base;
  let reread=null;try{reread=S.evaluateProgram(program,review,{...(isObj(options)?options:{}),repertoire:e.undated});}catch{reread=null;}
- if(reread?.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal)return freeze({...reread,authorityExpiry:marker(e,true)});
+ // Not an expiry when the dates set aside still leave the plan refused (another catalog, policy or rules): the refusal stands, unmarked (SEC-CORE-05).
+ if(!reread||reread.status==='UNSUPPORTED')return base;
+ // The clinical answer, with every reading the refusal gives in place of those computed with the dates set aside (forecast, insights,
+ // calibration, formats, exposure, learning): after the date nothing but the clinical route and the recorded facts comes from that reading (QRE-CORE-06).
+ if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}return freeze({...out,authorityExpiry:marker(e,true)});}
  return freeze({...base,authorityExpiry:marker(e,false)});
 }
+/** The readings of an answer that are not the clinical route or the record: after the date they are the refusal's. */
+const READINGS=['runSessions','runFormat','runCalibration','runForecast','paceInsights','paceRevision','strengthExposure','updatedModel','qualityAssessment','weekEvidence'];
 
 });
 

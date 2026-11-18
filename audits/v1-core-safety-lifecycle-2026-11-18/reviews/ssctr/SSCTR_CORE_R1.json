@@ -1,0 +1,78 @@
+{
+  "record": "SSCTR_CORE_R1",
+  "date": "2026-11-18",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "skill": "sports-science-review 1.0.0", "model": "claude-opus-5-5", "instance": "fresh subagent instance, Core Safety & Lifecycle R1", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "empiricalValidation": false, "clinicalJudgment": false},
+  "target": {
+    "commit": "0b8e45a67d4595b34f46ec05e576ff6ea37f0064",
+    "base": "16577b6",
+    "laterCommitChecked": "f3a88718667fb6fc9f6f23eb5d32b27a4b2673db",
+    "laterCommitChangesDisposition": false,
+    "sha256": {
+      "CoachingCore/src/v1-safety-index.mjs": "1b4ad360e925c532f84fee6876cb47300e5eeeb686a3354af47f2beae7979928",
+      "CoachingCore/src/r6-provenance.mjs": "abab1e6c5081da9370fa0eb91d9eed9d7c448566e827e7301479d9af13bab292",
+      "CoachingCore/src/r6-adaptation.mjs": "5f0f95d825505da8cf7743292bf4dc208e12e9f067e6a5f3e57edfa2492aca81",
+      "CoachingCore/src/r6-index.mjs@0b8e45a": "d349da491cafbee82cc02b7190b7b537ba6d11e10ace9cf54d5a1111d6299228",
+      "CoachingCore/src/r6-index.mjs@f3a8871": "a49388b30ea8bdaad2ee1557efd2970a759a3674ee4f4bc67cb3c88e4d363550",
+      "CoachingCore/src/r6-program.mjs": "d8610065e4c58b959440893ea5299afc14e0ac4d8c16803b252f282a27be786f",
+      "CoachingCore/src/boundary/report-voices.mjs": "9e0008755420970304c77915282df3666478e0a1997ed46a210b7b14a2239405",
+      "audits/v1-core-safety-lifecycle-2026-11-18/CANDIDATE.md": "ec0c3782363fa1b02b7883347c54b068667d6c8d613cdc07fb7811b7e04ee086",
+      "audits/v1-core-safety-lifecycle-2026-11-18/REGRESSION.md": "0641b1adabac5ea0d21e8e7508d148f352b9cd9d3faf16d4b851f2688db06e45"
+    }
+  },
+  "literatureAccess": "web search available; PubMed/PMC full text not accessible (interstitial); no disposition rests on literature",
+  "verdict": "NOT_READY",
+  "blocking": ["SSCTR-CORE-B-01"],
+  "items": [
+    {
+      "id": "a", "subject": "post-expiry precedence in src/v1-safety-index.mjs (QRE-AIF-01, L-APP-08)",
+      "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "WELL_SUPPORTED", "evidenceBasis": "execution: 15 warning signs, wellbeing check, eligibility pain/injury, substitution pain, clinical return reason identical before/after the date; readiness after expiry keeps the hold; integrity failures UNSUPPORTED",
+      "addsClinicalScope": false,
+      "conditions": [
+        {"id": "A-C1", "when": "before integration", "owner": "integration/QRE", "text": "the integration calls only v1-safety-index.mjs with no options; the AIF harness lib.mjs and the expiry section of repro-p0.mjs still bind v1-strength-index.mjs"},
+        {"id": "A-C2", "when": "app", "owner": "Product/UX", "text": "an UNSUPPORTED answer after expiry that carries runFormat.warningSignScreen REQUIRED surfaces the screen and the app keeps the report; never shown as rest"},
+        {"id": "A-C3", "when": "before integration", "owner": "Product/UX + Security + G04 human owner", "text": "an engine-independent path to the existing G04 warning-sign guidance when a review with a warning sign is refused for integrity; wording CLINICAL_HUMAN_REQUIRED"},
+        {"id": "A-C4", "when": "before freeze", "owner": "QRE", "text": "pin the readiness-after-expiry answer: CLINICAL_HUMAN_REQUIRED with referenceState.pending CLINICAL_HUMAN_REQUIRED"},
+        {"id": "A-C5", "when": "standing", "owner": "Chief/Founder", "text": "renewal of the R7B0 records before 2027-04-30 stays the primary control; this precedence is a fallback, not an extension of authority"}
+      ]
+    },
+    {
+      "id": "b", "subject": "restart identity (QRE-AIF-02, L-APP-06)",
+      "disposition": "REVISE", "evidenceStatus": "WELL_SUPPORTED (crediting); regression shown by execution",
+      "accepted": ["plan B not credited with plan A executions", "plan B doses identical to base (ids stripped), at 0b8e45a and f3a8871", "earlier-plan rows kept with their own context", "late earlier-plan report credited to nothing"],
+      "findings": [
+        {"id": "SSCTR-CORE-B-01", "blocking": true, "text": "a symptom stop reported late for an earlier plan's session after a restart no longer asks the warning-sign screen (base REQUIRED via wrong binding; candidate and f3a8871 NOT_RAISED_BY_THIS_EXTENSION, this review and the next). Cause: report facts/requested read only sessions planned in the plan in force; rowStops require context.sport RUN, absent on the UNPLANNED late row.", "required": "a symptom stop in any received or recorded run report of the athlete, whatever plan its session belongs to, asks the existing screen until a later answered screen; result tests: late report, late correction, with/without eligibility, persist/restore, third plan; no new screening criterion"},
+        {"id": "SSCTR-CORE-O-1", "blocking": false, "text": "pre-existing on both trees, cause unverified: an unplanned run (no session id) with stop SYMPTOM gave ASK and no warningSignScreen; routed to the Chief"}
+      ]
+    },
+    {
+      "id": "c", "subject": "E-1 as-if re-merge, conflict path, RWS consequence (L5, L1)",
+      "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceBasis": "execution: ADVERSE/FATIGUE/HEAT/WALK/SYMPTOM x two orders, decision after re-sync equals as-if and no-correction controls; screen kept after agreeing and conflicting re-sync; heat/walk lineage as-if variant passes in three orders; RWS readings return to the merged row's (L1)",
+      "l5": {"twoReportForm": "met at the Core", "singleReportForm": "met only if the ingest voice guard is enforced (C-C3)", "realHealthKitResync": "unmeasured (C-C5)"},
+      "conditions": [
+        {"id": "C-C1", "when": "before freeze", "owner": "author/QRE", "text": "declare the 16 RWS failures by design and restate each as the as-if invariant (reading after re-sync equals merged-before-re-sync or direct merge); no assertion dropped without restatement"},
+        {"id": "C-C2", "when": "before freeze", "owner": "author/QRE", "text": "parts-less merged rows keep E-01 REPORT_NOT_CARRIED withholding, tested; no stored real-athlete record predates the line"},
+        {"id": "C-C3", "when": "before integration", "owner": "integration/Security", "text": "checkReportVoice enforced on the ingest path with adapter outcome tests K1, K4, K5, MANUAL+activity id; athlete surface field stays open (Product/Data)"},
+        {"id": "C-C4", "when": "integration", "owner": "Product/UX; integration", "text": "a conflicted execution is surfaced for resolution; its frequency counted with the L1-f fraction (SSCTR-RWS-F-03); re-review if material"},
+        {"id": "C-C5", "when": "before real athletes", "owner": "integration", "text": "hard gate E-1 for real athletes closes only with the adapter's own result tests on real re-sync behavior"}
+      ],
+      "recordCorrection": "CANDIDATE.md §3.4 'read for pace evidence again' should read 'read as if no correction had happened', which can still withhold"
+    },
+    {
+      "id": "d", "subject": "RFC-NUMERIC-1, policy A",
+      "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "WELL_SUPPORTED",
+      "conditions": [
+        {"id": "D-C1", "when": "standing", "owner": "Chief", "text": "forecast stays descriptive; re-review if any prescriptive reader consumes it or Pace Revision is enabled"},
+        {"id": "D-C2", "when": "device run", "owner": "Mac package", "text": "confirm the two-race ** branch on JavaScriptCore"}
+      ]
+    },
+    {
+      "id": "e", "subject": "changes beyond CANDIDATE.md",
+      "disposition": "FINDING",
+      "text": "undeclared: RWS readings of re-synchronized rows (16 tests; judged in c) and SSCTR-CORE-B-01. No change found to prescription rules, dose, progression gates, interference, recovery criteria or holds; locale change is tie-break order only (author oracles relied on)."
+    }
+  ],
+  "proposedHumanRevalidation": [{"id": "HQ-CORE-SSCTR-C", "item": "c", "appended": false}],
+  "gateStatus": "no gate closed", "publicationStatus": "not published",
+  "reReviewTriggers": ["B-01 fix (one narrow recheck)", "adapter result tests (C-C3, C-C5)", "R7B0 records renewed or changed", "change to the clinical route or screen reader", "prescriptive consumer of the forecast", "material conflict or L1-f fraction"]
+}
