@@ -1,0 +1,77 @@
+{
+ "revision": "COACHINGCORE-V1-CORE-SAFETY-FREEZE-2",
+ "mission": "CORE-C2-F01 restart sizing fix (Founder, 2026-11-18)",
+ "scope": "synthetic candidate; no real athlete; cross-runtime readiness pending the physical Mac/iPhone revalidation",
+ "commit": "00e922a7b9e1cbcbd5abf542e2ebdac98f9a5a35",
+ "base": "d92aa8893911e2ee6e32963585d5b5f19a802be7",
+ "additiveTo": [
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1_1.json",
+   "sha256": "14287ec1021a98e5145b6ccfc7aadd8d28e90ba91c29c206b5a73da0e0f329a3"
+  },
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1RC_1.json",
+   "sha256": "b5825891caed67c870a9b7a015d20a64a0eee4bca021447a4ec8f6dd6e5a650d"
+  },
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1RWS_2.json",
+   "sha256": "a4d8b8900c18c34166230f41d1b0e478d7d7dca2422ec61169ad10b9d0f641ad"
+  },
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json",
+   "sha256": "1ea971dc516014fd730975b0eddabf0cfa18173c826eac80b8dc39a69caeca3e"
+  },
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1STR_1.json",
+   "sha256": "f85f24710769e5b06889540183df2399723a087e4b5dd9d064223036d3deb531"
+  },
+  {
+   "record": "CoachingCore/v1/RUNTIME_FREEZE_V1CORE_1.json",
+   "sha256": "d376a16a4ea8bd7f71623fc37b3da2401a4cbd11e525dd1ef98863817407f59c"
+  }
+ ],
+ "entryPoint": "CoachingCore/src/v1-safety-index.mjs (V1_CORE_ENGINE)",
+ "amended": [
+  {
+   "file": "CoachingCore/src/v1-f08.mjs",
+   "base": "6fdcae951d6b8efd7159e9c21311fc0663822c436161b0566e679d49f5b483bb",
+   "now": "a06c580c2d4f9c64287af3105c4cb471913b66cbd38605c0b7d24cc5bdd4d68b"
+  }
+ ],
+ "preserved": [
+  "CoachingCore/v1/RUNTIME_FREEZE_V1_1.json: the base bytes",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1RC_1.json: the base bytes",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1RWS_2.json: the base bytes",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1RFC_1.json: the base bytes",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1STR_1.json: the base bytes",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1CORE_1.json: the base bytes",
+  "COACHINGCORE-V1-CORE-SAFETY-FREEZE-1: 47/47 bound files byte-identical",
+  "COACHINGCORE-V1-FREEZE-1: 197/198 files the base bytes, 1 amended by this line",
+  "COACHINGCORE-V1-RUN-CALIBRATION-FREEZE-1: 30/30 files the base bytes, 0 amended by this line",
+  "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2: 98/98 files the base bytes, 0 amended by this line",
+  "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1: 163/163 files the base bytes, 0 amended by this line",
+  "COACHINGCORE-V1-STRENGTH-FREEZE-1: 121/121 files the base bytes, 0 amended by this line",
+  "nothing else changed since d92aa88 (4 files: 1 amended, the rest added by this line)",
+  "no untracked file in CoachingCore or audits/v1-core-c2-f01-2026-11-18"
+ ],
+ "note": "Candidate 576e40c (runtime: src/v1-f08.mjs only; cycle 1 00e922a changed tests, verifier and records, no runtime). Reviews: QRE_F01_R1 READY_WITH_CONDITIONS (C1-C4 met in cycle 1, C5 iOS revalidation carried); SSCTR_F01_R1 ACCEPT_WITH_CONDITIONS + ADDENDUM (CORE-C2-F01 / C2-C1 closed for synthetic use and the integration gate). OPEN: SSCTR C-F01-1 r2 (a record with execution reports but none in force: C-Q08-1 not applied; a disputed amount read as no session for the pause, trainedAfter and the SB-1 question) BINDS BEFORE ANY REAL-ATHLETE USE OF restartProgram and is an open blocker in the integration readiness report; C-F01-2 (the restart receives the record exactly as the engine returned it; QRE/Security decide HOLD of self-contradicting records), with residuals QRE-F01-02, QRE-F01-03, R-F01-2; C-F01-3 (SEC-CORE-03 with C2-C2). Carried from FREEZE-1: SSCTR C2-C2, C2-C3, C-C3, C-C4, C-C5, A-C1/2/3/5, D-C1/D-C2; QRE C-INT; Security SEC-CORE-03/06/07/10/16; Founder D1, SEC-CORE-08, G07/SEC-CORE-09, D2. Synthetic only; IOS_REVALIDATION_PENDING.",
+ "files": {
+  "CoachingCore/scripts/v1core-freeze-2.mjs": "ed37f59649acfb2835e38a23ace95e534db5ad5454303fde4326fbd230bbe187",
+  "CoachingCore/src/v1-f08.mjs": "a06c580c2d4f9c64287af3105c4cb471913b66cbd38605c0b7d24cc5bdd4d68b",
+  "CoachingCore/test/v1core-c2f01-freeze.test.mjs": "bb339903a9617c48f2c00d8657ee48d7acb409ab90ef77c538a8124b0e494353",
+  "CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs": "7e427431ae9855541b52b30caeccd8cc0b2afbdffdb2ed4568bc2c2c06133b83",
+  "CoachingCore/v1/RUNTIME_FREEZE_V1CORE_1.json": "d376a16a4ea8bd7f71623fc37b3da2401a4cbd11e525dd1ef98863817407f59c",
+  "audits/v1-core-c2-f01-2026-11-18/CANDIDATE.md": "4a6f9c0531637556a75965ca992f4dfee2d6d54804af4b54c900a8ffd33d1ed7",
+  "audits/v1-core-c2-f01-2026-11-18/CYCLE1.md": "614b917e8590154af313a761ed3d8223f08bd203e00984125344e9fd087ebf61",
+  "audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json": "a3dfb93128e28ad03a7397000b6861986ed26a4828f2f1e2cb86cdb152cd2006",
+  "audits/v1-core-c2-f01-2026-11-18/evidence/green-first-run.txt": "7a7eb4361da04e8c46d4a5ef522f8b41e01d50729d19036d20eab601aec221b7",
+  "audits/v1-core-c2-f01-2026-11-18/evidence/red-on-d92aa88.txt": "c08838dd1b993c8bd9e0a79997f302102b012373438c59cf1a2eb8be0bbf2bfe",
+  "audits/v1-core-c2-f01-2026-11-18/reviews/qre/QRE_F01_R1.md": "6dfcf0d991970af8f417358f724d3deae4f5f0708bfa4b6046fb446442886507",
+  "audits/v1-core-c2-f01-2026-11-18/reviews/ssctr/SSCTR_F01_R1.json": "f9810e9b4c7d53e200132cfcd28077b9a38923e234dc4ee7a972227681967ba3",
+  "audits/v1-core-c2-f01-2026-11-18/reviews/ssctr/SSCTR_F01_R1.md": "381ba6db5331697756df2515eeec3531a5e9efe70212faf369269bf61f2bce04",
+  "audits/v1-core-c2-f01-2026-11-18/reviews/ssctr/SSCTR_F01_R1_ADDENDUM.json": "5ecbdb1072e4a7eaf379604e0e54cf8fcb0ee965b84888ea28dce15106c45e24",
+  "audits/v1-core-c2-f01-2026-11-18/reviews/ssctr/SSCTR_F01_R1_ADDENDUM.md": "bdc99dcd13365cc7cd803402ec8c8db9e30d0298ac49fea39cc101a957689299"
+ },
+ "fileCount": 15,
+ "filesDigest": "8f32feae7e251bdcdbe334064b3e828f83a48dbf7087c404fd09df26d8217fa4"
+}
