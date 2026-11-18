@@ -1,0 +1,82 @@
+{
+  "record": "SSCTR_C2_R1",
+  "closes": ["SSCTR_CORE_R2: SSCTR-CORE-B-01-R, C-C1, C-C2 (kept as history)"],
+  "date": "2026-11-18",
+  "kind": "closure-2 narrow review of a candidate authored by others",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "model": "claude-opus-5-5", "instance": "fresh instance in the closure-2 session; author of none of the code, tests or successor specs; R1/R2 known only through their records", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "clinicalJudgment": false, "delegated": false},
+  "literature": {"needed": false, "reason": "no item decides a sporting rule, dose, threshold or progression", "access": "WebSearch/WebFetch available as deferred tools, not used"},
+  "target": {
+    "commit": "219fb1ceb7966c029bb71192ab31423a4bb760f1",
+    "recordsCommit": "8f54df67d7b860e3740ce7db5d3e88d0b9610441",
+    "srcAndTestIdenticalBetweenThem": true,
+    "sha256": {
+      "CoachingCore/src/v1-run-format-index.mjs": "60ad593097e82d37dd766c509840f11fa2469e7f69103ac6acf69e6d61a5dbd4",
+      "CoachingCore/src/v1-safety-index.mjs": "86cd18805a44cd8aa0c73e1f9b5d820b58bf2493fe4340afed49a5c8b4095298",
+      "CoachingCore/src/r6-provenance.mjs": "d701d1208b10fed1836891bf82f432442ab5620228376410b65290b1a58af00d",
+      "CoachingCore/test/v1core-closure2.test.mjs": "4cb1e615bf587633d33f9df8a03d5f6c92192caf238b86506861c59ff58392fa",
+      "CoachingCore/test/v1core-successor-fix-forward.test.mjs": "a3ab3295c46a8ca914d7f94c93af768fb38681b9656cdbc3296196d3d7f399f9",
+      "CoachingCore/test/v1core-successor-lineage.test.mjs": "ccbc4269f8fc6597850846b691d87a6924599dd6c4ca3a471ec805f342aeea3c",
+      "CoachingCore/test/v1core-successor-final-fix.test.mjs": "153c456e15e6cabafc29067dd520ebe727878519424dc96f19f43dfbbb934610",
+      "CoachingCore/test/v1core-successor-fix-forward-b01.test.mjs": "8719b9c5a5b1304ef2f90e5e1720a0894ae37552269f1e34b79206c9c8470118",
+      "CoachingCore/test/v1core-successor-rfc-evidence.test.mjs": "9ecd9a4d434e1c9980fae73325050fb399b0dac6b7dbd5bb6f754791fef9c83c",
+      "CoachingCore/test/v1core-successor-rws-e01.test.mjs": "91ec91a00a0d7b6423464191c95f111342baba90561c252c2ff8ba3b81ac32f1",
+      "CoachingCore/test/v1core-successor-rfc-cycle.test.mjs": "4dbbf46ba567d4f18ada60831d4a11949ba684b3438a513b7cbd6b08a4645a2d",
+      "audits/v1-core-safety-closure-2-2026-11-18/successors/make-successors.mjs": "814b882c4e693b684e8bea42da53232482279d3fb7bd3a7d3dac74f72be2437a",
+      "audits/v1-core-safety-closure-2-2026-11-18/successors/successors.json": "bf2360cb52ac48fb7cda13e568c713e863439d0fbc0e00e5f0d360d3b8a2d46f",
+      "audits/v1-core-safety-closure-2-2026-11-18/successors/successors-lineage.json": "608d2dcd6ed0d5cd233ff97e23a44900a9b6058299142306f632a3a90c1263a0",
+      "audits/v1-core-safety-closure-2-2026-11-18/successors/successors-other.json": "dbcefa3e230d554f94c340cf970d4729a26ecb06a341287d4fe942a5fe5451a3",
+      "audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json": "539d4af79bc708592bb1221eb3542ef5eb591eee476709d6ca042b140567c774",
+      "audits/v1-core-safety-closure-2-2026-11-18/probes/restart-superseded-sizing-p14.mjs": "06750df690325282a49bb943d698e895e5ea7e026248180cb5d5b53c11f0b05b",
+      "audits/v1-core-safety-closure-2-2026-11-18/CANDIDATE.md@8f54df6": "0d02f701e8cbc2e76d623193c0f10d45ebd12c845eb81e200c7266a69812bedf"
+    }
+  },
+  "commands": [
+    "node --test test/v1core-closure2.test.mjs test/v1core-successor-*.test.mjs test/v1core-freeze.test.mjs -> 29/29 pass (Node v24.19.0)",
+    "node ../audits/v1-core-safety-closure-2-2026-11-18/successors/make-successors.mjs --check -> checked 7 files, 19 successor tests, exit 0",
+    "scratch ssctr-c2-r1-red-4c60915-71d2 (219fb1c tests + 4c60915 src + 219fb1c audits): node --test test/v1core-closure2.test.mjs -> B-01-R x2, R2-01 x2, SEC-CORE-14 fail; refused-instant guard, R2-01 invalid/no-sign guard, C-C2 pass",
+    "scratch ssctr-c2-r1-probes-b4e1: p-lineage (D-01, rows 02-20, dose of the week after), p-b01r (refused classes), p-standing (section 5), p-f01 (CORE-C2-F01 with superseded rows removed as control)"
+  ],
+  "verdict": "READY_WITH_CONDITIONS",
+  "blocking": [],
+  "correctionCycleNeeded": false,
+  "items": [
+    {"id": "SSCTR-CORE-B-01-R", "disposition": "CLOSED", "evidenceStatus": "WELL_SUPPORTED (by execution)",
+     "evidence": "steps 1-10, parity and limits pass on 219fb1c and fail on 4c60915; stop dated at report (screen dated after the session but before the report still asks); a screen after the stop clears it",
+     "choices": {
+       "a_refusedInstant": {"disposition": "ACCEPTED", "evidence": "UNSUPPORTED (unreadable instant), HOLD (invalid week), HOLD (review earlier than the plan): screen REQUIRED naming the session, 0 sessions, 0 executable, 0 stop facts; parity with planned sessions (SEC-RWS-A-05)", "condition": "C2-C3"},
+       "b_idOver128": {"disposition": "ACCEPTED", "evidence": "restart namespace is a fixed r+10 hex prefixed to freshly generated base ids, not nested across restarts: no plan session id can exceed the 128-character report-id bound; the id is still named in the answer"}
+     },
+     "recommendation": "pin the refused-instant screen assertion without the if(screenOf(r)) condition (non-blocking)"},
+    {"id": "C-C1", "disposition": "CLOSED", "evidenceStatus": "WELL_SUPPORTED (as-if equalities executed)",
+     "rulings": {
+       "D-01 no duration": "ACCEPTED: after the re-sync equals the direct merge (word null, easy [345,575], extent 6.6); the device now times its own distance and nothing marks it partial; next week's sessions and plan byte-identical to the merged control (no dose follows)",
+       "lineage 04/12/20 (SEC-CORE-03)": "ACCEPTED as conservative: withheld (REPORT_NOT_CARRIED word or wholeRow), no pace evidence, extent 6.6; row 12 history 11 -> 6.6 lowered; condition C2-C2",
+       "V11 declared limit": "ACCEPTED: lossy records read SEVERAL_RECORDINGS as the whole one; the rewritten record shows no report reason but the row still withholds",
+       "final-fix:116 / fix-forward:82 PARTIAL": "ACCEPTED: the three orders of the same statements now read the same as the historically pinned 'no correction' and 'import last' cases (DISTANCE_DISPUTED, extent 6.6, L4); credits less, prescribes nothing more",
+       "HARD GATE": "ACCEPTED: closed at the Core (ADVERSE, HARDER, adverseSessions 1, as the merged control); real HealthKit open (C-C5)",
+       "other files": "ACCEPTED: rws-e01 no threshold step, history 8 km kept, lost-lineage more conservative; rfc-evidence votes as merged, ADVERSE kept (RESPONSE_NOT_COMPATIBLE); rfc-cycle namespaced ids, no old execution"
+     }},
+    {"id": "C-C2", "disposition": "CLOSED", "evidence": "RWS-level test: rows without parts and with a malformed athlete part give execution.paceWithheld REPORT_NOT_CARRIED; the control keeps ADVERSE and HEAT; guard passes on both trees"},
+    {"id": "successor of v1rws-fix-forward:285", "disposition": "ACCEPTED", "evidence": "diff = title prefix, the comment lines, element 4 NOT_RAISED_BY_THIS_EXTENSION -> REQUIRED; other-athlete element unchanged (as SSCTR_CORE_R2 section 2)"},
+    {"id": "CANDIDATE section 5 standing hold after the date", "disposition": "ACCEPTABLE_AS_IS", "evidence": "04-29..05-10: CLINICAL_HUMAN_REQUIRED, no proposal, 0 executable, forecast/insights UNAVAILABLE, calibration WITHHELD_HOLD, no updatedModel, pending clinical route kept; same as before the date; formats recorded only for listed non-executable sessions",
+     "noteForQRE": "no authorityExpiry marker on this path (consumer visibility; not sporting)"},
+    {"id": "CORE-C2-F01", "disposition": "CARRIED_NOT_BLOCKING_THIS_FREEZE", "evidenceStatus": "WELL_SUPPORTED (reproduced)",
+     "evidence": "restart from a record with 4 superseded rows: easy runs 60/60/60 (long 100), weeks 0-2; same record with superseded rows removed, direct merge and merged control: 50/50/50/100; +20% per easy run, less conservative; pre-existing on 4c60915 and 7e03f84; no test pins 60",
+     "condition": "C2-C1",
+     "closeBy": "result test: for each probe case (lists, plain, with and without the watch) restartProgram from the stored record sizes every session of the new plan exactly as from the same record without its superseded rows (equivalently the direct merge); the fix then reviewed by SSCTR",
+     "owner": "next mission (R6 restart / Core)"}
+  ],
+  "conditions": [
+    {"id": "C2-C1", "text": "CORE-C2-F01 named open in the freeze record and readiness report; no real-athlete or integration use of restartProgram from a record holding superseded rows until closed; closed by the result test in items[CORE-C2-F01].closeBy", "binding": true},
+    {"id": "C2-C2", "text": "lineage rows 04/12/20 re-read as-if once SEC-CORE-03 closes", "binding": true},
+    {"id": "C2-C3", "text": "integration: a report sent in a review the engine refuses is not consumed (record unchanged); the client re-sends it, for planned and earlier-plan sessions alike", "binding": true},
+    {"id": "carried", "text": "C-C3, C-C4, C-C5 (real HealthKit); A-C1, A-C2, A-C3, A-C5 unchanged"}
+  ],
+  "proposedHumanRevalidation": [
+    {"id": "HQ-CORE-C2-SSCTR-A", "subject": "B-01-R stop persistence across a restart and an ASK review; D-01 no-duration admission as easy evidence", "status": "PROPOSED_ONLY (queue untouched)"},
+    {"id": "HQ-CORE-SSCTR-C", "status": "still PROPOSED_ONLY from R1"}
+  ],
+  "gateStatus": "none",
+  "publicationStatus": "none",
+  "reReviewTriggers": ["any change to the three source files or the successor specs", "a CORE-C2-F01 fix", "SEC-CORE-03 closure", "the real HealthKit adapter (C-C5)"]
+}

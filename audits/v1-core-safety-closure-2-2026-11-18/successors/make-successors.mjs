@@ -40,6 +40,8 @@ for(const [target,entry] of Object.entries(spec.files)){
  if(check){if(!fs.existsSync(outPath)||fs.readFileSync(outPath,'utf8')!==out){console.error('stale: '+target);failed=true;}}
  else fs.writeFileSync(outPath,out);
 }
-if(!check&&!only)fs.writeFileSync(path.join(here,'SUCCESSOR_LEDGER.json'),JSON.stringify({generatedBy:'make-successors.mjs',entries:ledger},null,1)+'\n');
+// The preservation tests have no generated successor: their successor is the line's own verifier (preservation.json, QRE-C2-01).
+const pres=fs.existsSync(path.join(here,'preservation.json'))?JSON.parse(fs.readFileSync(path.join(here,'preservation.json'),'utf8')).entries:[];
+if(!check&&!only)fs.writeFileSync(path.join(here,'SUCCESSOR_LEDGER.json'),JSON.stringify({generatedBy:'make-successors.mjs',entries:ledger,preservation:pres},null,1)+'\n');
 if(failed){console.error('FAILED');process.exit(1);}
 console.log(`${check?'checked':'wrote'} ${Object.keys(spec.files).length} files, ${ledger.length} successor tests`);
