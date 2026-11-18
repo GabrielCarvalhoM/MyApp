@@ -1,0 +1,12 @@
+PASS        42 / 1000  context + bundle load p95, WARM process (PF-0 <= 1.0 s; the cold verdict is on cold-start samples)
+PASS     115.3 / 2000  first plan generateProgram p95 on a fresh context (PF-0: <= 2.0 s)
+PASS     291.4 / 1500  full-plan review p95 (PF-0: <= 1.5 s)
+PASS       303 / 3000  full-plan review worst case (PF-0: <= 3 s)
+PASS      14.6 / 150  footprint after a JSGarbageCollect hint (PF-0 stable <= 150 MB; errs high)
+PASS      33.7 / 350  process lifetime peak footprint (PF-0 peak <= 350 MB; includes boot, bridge, writes, harness)
+PASS       3.6 / 50  atomic envelope write p95 (PF-0: <= 50 ms)
+PASS         9 / 100  max main-queue stall while a full-plan review runs off main (PF-0 tap response <= 100 ms; hangs >= 250 ms must be zero)
+PASS      43.3 / 1000  COLD context + bundle load p95, n=10 (PF-0 <= 1.0 s)
+PASS     113.8 / 2000  COLD first plan p95, n=10 (PF-0 <= 2.0 s)
+environment: iPhone18,2 iOS 27.2 Release
+exit 0

@@ -39,9 +39,12 @@ public final class CoachingCoreRuntime {
 
     /// Creates a runtime on its own serial queue: reads and verifies the assets, creates the VM and context, installs the host, evaluates the bundle.
     /// `tamper` (tests only) rewrites one asset's text after reading, to prove a changed asset is refused before the engine sees it.
-    public static func make(label: String = "fit.vilumo.coachingcore", tamper: ((String, String) -> String)? = nil) async throws -> CoachingCoreRuntime {
+    /// `exposeModules` (tests only) also publishes the bundle's module registry as `globalThis.__p0req`, the same one-line tail change the
+    /// linker's own export gate makes (build/link.mjs), so the focal coverage can call engine functions the facade does not expose. Module
+    /// code is unchanged; the app never sets it.
+    public static func make(label: String = "fit.vilumo.coachingcore", tamper: ((String, String) -> String)? = nil, exposeModules: Bool = false) async throws -> CoachingCoreRuntime {
         let rt = CoachingCoreRuntime(queue: DispatchQueue(label: label, qos: .userInitiated))
-        return try await rt.run { rt in try rt.boot(tamper: tamper); return rt }
+        return try await rt.run { rt in try rt.boot(tamper: tamper, exposeModules: exposeModules); return rt }
     }
 
     /// Runs `body` on the engine queue (never the main thread) and resumes the caller with its result.
@@ -53,11 +56,11 @@ public final class CoachingCoreRuntime {
 
     // MARK: boot
 
-    private func boot(tamper: ((String, String) -> String)?) throws {
+    private func boot(tamper: ((String, String) -> String)?, exposeModules: Bool) throws {
         dispatchPrecondition(condition: .onQueue(queue))
         let sp = Self.signposter, st = sp.beginInterval("boot", id: sp.makeSignpostID())
         defer { sp.endInterval("boot", st) }
-        guard let res = Bundle.module.url(forResource: "Resources", withExtension: nil) else { throw P0Error.resource("Resources folder") }
+        guard let res = Bundle.module.resourceURL else { throw P0Error.resource("resource bundle") }
         let t0 = Clock.ms()
         struct Asset: Decodable { let key: String; let file: String; let bytes: Int; let sha256: String }
         let manifest = try JSONDecoder().decode([Asset].self, from: Data(contentsOf: res.appendingPathComponent("assets-manifest.json")))
@@ -86,7 +89,12 @@ public final class CoachingCoreRuntime {
         installHost()
         let t3 = Clock.ms()
         let bundleURL = res.appendingPathComponent("coachingcore-p0.js")
-        let source = try String(contentsOf: bundleURL, encoding: .utf8)
+        var source = try String(contentsOf: bundleURL, encoding: .utf8)
+        if exposeModules {
+            let tail = "\nconst __api = __req("
+            guard source.components(separatedBy: tail).count == 2 else { throw P0Error.resource("bundle tail for exposeModules") }
+            source = source.replacingOccurrences(of: tail, with: "\nglobalThis.__p0req = __req;" + tail)
+        }
         context.evaluateScript(source, withSourceURL: bundleURL)
         try check()
         guard let api = context.objectForKeyedSubscript("CoachingCoreP0"), !api.isUndefined else { throw P0Error.js("CoachingCoreP0 not defined") }
@@ -137,6 +145,15 @@ public final class CoachingCoreRuntime {
         let v = context.evaluateScript(script)
         try check()
         return v
+    }
+
+    /// Calls a global function defined by `evaluate` (tests only: the focal coverage driver) and returns its string result.
+    public func callGlobal(_ name: String, _ args: [Any]) throws -> String {
+        dispatchPrecondition(condition: .onQueue(queue))
+        let r = context.objectForKeyedSubscript(name)?.call(withArguments: args)
+        try check()
+        guard let r, r.isString, let s = r.toString() else { throw P0Error.js("\(name) returned no string") }
+        return s
     }
 
     /// A full JavaScriptCore collection (public C API), so a footprint read after it approximates retained memory.

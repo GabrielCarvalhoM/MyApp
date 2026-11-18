@@ -1,0 +1,49 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<DEVICE_UDID> "-only-testing:P0DeviceTests/FocalTests" -testLanguage en -testRegion US DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratchpad>/focal-en.xcresult
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-p0-ios/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratchpad>/focal-en.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-18 11:32:03.417.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-18 11:32:03.418.
+Test Suite 'FocalTests' started at 2026-11-18 11:32:03.418.
+Test Case '-[P0DeviceTests.FocalTests testBridgeAggregatePerReview]' started.
+P0RESULT bridge-aggregate {"callsPerReview":1934,"crossingAndConversionMs":6.7786605055444795,"jsObservedMs":{"max":16.33478349664798,"median":14.10637750554448,"min":11.677078489527013,"n":10,"p95":16.33478349664798},"jsObservedShareOfWall":0.05224768095748868,"note":"jsObserved is net of the wrapper's own two now() crossings per call; wall from the unwrapped repetitions","swiftInsideMs":{"max":7.386499,"median":7.267493,"min":6.912012,"n":10,"p95":7.386499},"swiftInsideShareOfWall":0.026917587841069637,"utf8BytesPerReview":4703188,"wallMs":{"max":277.95912500005215,"median":269.9904999998398,"min":263.84566699992865,"n":10,"p95":277.95912500005215}}
+Test Case '-[P0DeviceTests.FocalTests testBridgeAggregatePerReview]' passed (12.771 seconds).
+Test Case '-[P0DeviceTests.FocalTests testExecutionTierProbe]' started.
+P0RESULT tier-probe {"check":12810,"ms":[409.2715839999728,406.41037499997765,407.74245799984783]}
+Test Case '-[P0DeviceTests.FocalTests testExecutionTierProbe]' passed (1.261 seconds).
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' started.
+P0RESULT libm {"byFunction":{"exp":17,"pow":14},"calls":31,"differ":[{"args":[-0.6],"f":"exp","jsc":0.5488116360940264,"steps":[13,14],"ulp":-1,"v8":0.5488116360940265},{"args":[-1.1],"f":"exp","jsc":0.33287108369807955,"steps":[23,24],"ulp":1,"v8":0.3328710836980795},{"args":[-1.2],"f":"exp","jsc":0.30119421191220214,"steps":[25,26],"ulp":1,"v8":0.3011942119122021}]}
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' passed (0.039 seconds).
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' started.
+P0RESULT focal-locale {"counts":{"generate":{"localeCompare":477,"toSorted":322},"learning":{"localeCompare":525,"toSorted":742},"schedule":{"localeCompare":477,"toSorted":742}},"defaultLocale":"en-US","digestEqual":true,"generateDiffer":[],"nodeCounts":{"generate":{"localeCompare":567,"toSorted":322},"learning":{"localeCompare":615,"toSorted":742},"schedule":{"localeCompare":567,"toSorted":742}},"nodePairs":62,"nodePairsRejudgedEqual":{"codeUnits":true,"default":true,"en-US":true,"pt-BR":true},"pairsCompared":62,"pairsDifferAcrossLocales":{"codeUnits":0,"en-US":0,"pt-BR":0},"reached":{"generate.localeCompare":true,"generate.toSorted":true,"learning.localeCompare":true,"schedule.localeCompare":false,"schedule.toSorted":true},"reachedEqual":true,"scheduleDiffer":[]}
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' passed (0.356 seconds).
+Test Case '-[P0DeviceTests.FocalTests testStress]' started.
+P0RESULT stress {"afterLongGCMB":13.767425537109375,"chainBootMs":{"max":39.42312500020489,"median":35.045583999715745,"min":33.42399999964982,"n":33,"p95":37.01849999977276},"chainFootprintMB":[14.4,14.4,13.9,13.9,13.9,13.9,13.9,13.9,13.9,13.9,13.8,13.9,13.9,13.9,13.8,13.8,13.9,13.9,13.8,13.8,13.9,13.9,13.9,13.8,13.9,13.8,13.9,16,18.1,18.1,20.2,16.1,18],"chainNonIdenticalSteps":[13,14,25,26],"chainReadMs":{"max":0.5365419997833669,"median":0.3536660000681877,"min":0.19383300002664328,"n":32,"p95":0.49941599974408746},"chainRestoreMs":{"max":16.026499999687076,"median":10.706124999560416,"min":5.250624999869615,"n":32,"p95":15.476249999832362},"chainVerdicts":{"EXPLAINED_LIBM":4,"IDENTICAL":29},"chainWriteMs":{"max":5.0677499999292195,"median":2.599457999691367,"min":1.7217080001719296,"n":33,"p95":4.94012500019744},"churnFootprintMB":[18.4,18.4,18.3,18.4,18.2,18.1,18.1,18.1,18.1,18.1,18.1,18.1,18.1,18.1,17.9,17.9,17.9,17.9,17.9,15.2,15.2,14.7,14.8,14.7,14.7,14.7,14.4,14.4,14.4,14.4],"concurrentReviewMs":303.01270799990743,"elapsedS":88.54905591666693,"isolationRestored":true,"isolationReviewChangedEnvelope":true,"lifetimePeakMB":35.00177764892578,"longFootprintMB":[13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8],"longReviewMs":{"all":{"max":315.5285839997232,"median":291.8877080003731,"min":275.88808299973607,"n":200,"p95":308.7602500002831},"reviews0-49":{"max":302.2949999999255,"median":285.27737500006333,"min":275.88808299973607,"n":50,"p95":298.33412500005215},"reviews100-149":{"max":313.17654199991375,"median":293.6280829999596,"min":287.7905839998275,"n":50,"p95":310.1606669998728},"reviews150-199":{"max":315.5285839997232,"median":303.1707080001943,"min":295.4250839999877,"n":50,"p95":310.3602920002304},"reviews50-99":{"max":304.78333300026134,"median":288.0656250002794,"min":279.77100000018254,"n":50,"p95":299.73770899977535}},"thermalEnd":"serious","thermalStart":"fair","viewIdleMs":0.5145419999025762,"viewWhileReviewMs":281.7858750000596}
+Test Case '-[P0DeviceTests.FocalTests testStress]' passed (88.553 seconds).
+Test Suite 'FocalTests' passed at 2026-11-18 11:33:46.399.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 102.980 (102.981) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-18 11:33:46.399.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 102.980 (102.981) seconds
+Test Suite 'Selected tests' passed at 2026-11-18 11:33:46.399.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 102.980 (102.982) seconds
+2026-11-18 11:33:46.754 xcodebuild[7944:103471] [MT] IDETestOperationsObserverDebug: 105.321 elapsed -- Testing started completed.
+2026-11-18 11:33:46.754 xcodebuild[7944:103471] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-18 11:33:46.754 xcodebuild[7944:103471] [MT] IDETestOperationsObserverDebug: 105.321 sec, +105.321 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratchpad>/focal-en.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

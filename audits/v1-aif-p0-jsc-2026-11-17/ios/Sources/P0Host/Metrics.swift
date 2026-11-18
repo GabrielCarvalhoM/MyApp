@@ -49,6 +49,8 @@ public struct Stats: Codable {
 public struct DeviceInfo: Codable {
     public let machine: String, system: String, physicalMemoryMB: Double, processorCount: Int
     public let thermalState: String, lowPowerMode: Bool, configuration: String, isSimulator: Bool, debuggerAttached: Bool?, date: String
+    /// Battery level (0...1) and state when readable ("charging", "full", "unplugged", "unknown"); nil off iOS. Recorded on the device run of 2026-11-18.
+    public let batteryLevel: Double?, batteryState: String?
     /// QRE-P0-08: timings taken under a debugger do not represent the app; the result records whether one was attached (P_TRACED).
     /// nil when the read fails (QRE-P0-R2-01): unknown is never reported as "no debugger".
     public static func isDebuggerAttached() -> Bool? {
@@ -62,8 +64,13 @@ public struct DeviceInfo: Codable {
         let machine = withUnsafeBytes(of: &u.machine) { String(decoding: $0.prefix(while: { $0 != 0 }), as: UTF8.self) }
         #if canImport(UIKit)
         let system = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        let level = UIDevice.current.batteryLevel, bs = UIDevice.current.batteryState
+        let batteryLevel: Double? = level < 0 ? nil : Double(level)
+        let batteryState: String? = { switch bs { case .charging: return "charging"; case .full: return "full"; case .unplugged: return "unplugged"; default: return "unknown" } }()
         #else
         let system = ProcessInfo.processInfo.operatingSystemVersionString
+        let batteryLevel: Double? = nil, batteryState: String? = nil
         #endif
         let thermal: String
         switch ProcessInfo.processInfo.thermalState { case .nominal: thermal = "nominal"; case .fair: thermal = "fair"; case .serious: thermal = "serious"; case .critical: thermal = "critical"; @unknown default: thermal = "unknown" }
@@ -80,6 +87,6 @@ public struct DeviceInfo: Codable {
         return DeviceInfo(machine: machine, system: system, physicalMemoryMB: Double(ProcessInfo.processInfo.physicalMemory) / 1_048_576,
                           processorCount: ProcessInfo.processInfo.activeProcessorCount, thermalState: thermal,
                           lowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled, configuration: config, isSimulator: sim, debuggerAttached: isDebuggerAttached(),
-                          date: ISO8601DateFormatter().string(from: Date()))
+                          date: ISO8601DateFormatter().string(from: Date()), batteryLevel: batteryLevel, batteryState: batteryState)
     }
 }

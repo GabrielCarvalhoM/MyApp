@@ -1,0 +1,52 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<DEVICE_UDID> "-only-testing:P0DeviceTests/FocalTests" DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratchpad>/focal2-en.xcresult -testLanguage en -testRegion US
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-p0-ios/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratchpad>/focal2-en.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-18 12:00:32.649.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-18 12:00:32.649.
+Test Suite 'FocalTests' started at 2026-11-18 12:00:32.649.
+Test Case '-[P0DeviceTests.FocalTests testBridgeAggregatePerReview]' started.
+P0RESULT bridge-aggregate {"callsPerReview":1934,"crossingAndConversionMs":9.851918949804169,"jsObservedMs":{"max":20.835169936855834,"median":18.58806294980417,"min":15.474656943557365,"n":10,"p95":20.835169936855834},"jsObservedShareOfWall":0.06098891901176008,"note":"each timed interval holds about one now() crossing; jsObserved is net of half of nowPairMs per call (approximate); wall from the unwrapped repetitions","nowPairMs":0.0005784375000279396,"swiftInsideMs":{"max":8.83627,"median":8.408603,"min":8.329669,"n":10,"p95":8.83627},"swiftInsideShareOfWall":0.02758929796794376,"utf8BytesPerReview":4703188,"wallMs":{"max":334.8978749997914,"median":304.7777080000378,"min":300.5578749999404,"n":10,"p95":334.8978749997914}}
+Test Case '-[P0DeviceTests.FocalTests testBridgeAggregatePerReview]' passed (14.313 seconds).
+Test Case '-[P0DeviceTests.FocalTests testDeviceState]' started.
+P0RESULT device-state {"batteryLevel":0.800000011920929,"batteryState":"charging","configuration":"Release","date":"2026-11-18T15:00:46Z","debuggerAttached":false,"isSimulator":false,"lowPowerMode":false,"machine":"iPhone18,2","physicalMemoryMB":11695.296875,"processorCount":6,"system":"iOS 27.2","thermalState":"fair"}
+Test Case '-[P0DeviceTests.FocalTests testDeviceState]' passed (0.002 seconds).
+Test Case '-[P0DeviceTests.FocalTests testExecutionTierProbe]' started.
+P0RESULT tier-probe {"check":12810,"ms":[465.08583400025964,464.2680410002358,464.593084000051]}
+Test Case '-[P0DeviceTests.FocalTests testExecutionTierProbe]' passed (1.439 seconds).
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' started.
+P0RESULT libm {"byFunction":{"exp":17,"pow":14},"calls":31,"differ":[{"args":[-0.6],"f":"exp","jsc":0.5488116360940264,"steps":[13,14],"ulp":-1,"v8":0.5488116360940265},{"args":[-1.1],"f":"exp","jsc":0.33287108369807955,"steps":[23,24],"ulp":1,"v8":0.3328710836980795},{"args":[-1.2],"f":"exp","jsc":0.30119421191220214,"steps":[25,26],"ulp":1,"v8":0.3011942119122021}]}
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' passed (0.048 seconds).
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' started.
+P0RESULT focal-locale {"counts":{"generate":{"localeCompare":477,"toSorted":322},"learning":{"localeCompare":525,"toSorted":742},"schedule":{"localeCompare":477,"toSorted":742}},"defaultLocale":"en-US","digestEqual":true,"generateDiffer":[],"nodeCounts":{"generate":{"localeCompare":567,"toSorted":322},"learning":{"localeCompare":615,"toSorted":742},"schedule":{"localeCompare":567,"toSorted":742}},"nodePairs":62,"nodePairsRejudgedEqual":{"codeUnits":true,"default":true,"en-US":true,"pt-BR":true},"pairsCompared":62,"pairsDifferAcrossLocales":{"codeUnits":0,"en-US":0,"pt-BR":0},"reached":{"generate.localeCompare":true,"generate.toSorted":true,"learning.localeCompare":true,"schedule.localeCompare":false,"schedule.toSorted":true},"reachedEqual":true,"scheduleDiffer":[]}
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' passed (0.397 seconds).
+Test Case '-[P0DeviceTests.FocalTests testStress]' started.
+P0RESULT stress {"afterLongGCMB":13.501754760742188,"chainBootMs":{"max":45.892374999821186,"median":43.58987499959767,"min":40.035666999872774,"n":33,"p95":44.55112500023097},"chainFootprintMB":[13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.5,13.5,13.6,13.6,13.6,13.6,13.5,13.5,13.5,13.5,13.5,15.6,17.7,15.7,17.8,17.6,17.7],"chainNonIdenticalSteps":[13,14,25,26],"chainReadMs":{"max":0.6914579998701811,"median":0.4544170000590384,"min":0.23008299991488457,"n":32,"p95":0.6465419996529818},"chainRestoreMs":{"max":18.281833000015467,"median":13.473249999806285,"min":6.109958000015467,"n":32,"p95":18.25429099984467},"chainVerdicts":{"EXPLAINED_LIBM":4,"IDENTICAL":29},"chainWriteMs":{"max":4.38516699988395,"median":3.2264580000191927,"min":2.0044579999521375,"n":33,"p95":4.380667000077665},"churnFootprintMB":[17.8,17.9,17.8,17.7,17.7,17.7,17.7,17.1,17.1,17.1,17.2,17.1,17.1,17.1,17.1,17.1,17,17,17,17,17,17,17,14.3,14.3,14.3,14.3,14.3,14.3,13.6],"concurrentReviewMs":349.3434579996392,"elapsedS":106.41601887500019,"isolationRestored":true,"isolationReviewChangedEnvelope":true,"lifetimePeakMB":35.06425476074219,"longFootprintMB":[13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.5],"longReviewMs":{"all":{"max":380.6698749996722,"median":347.5314589999616,"min":340.04562500026077,"n":200,"p95":363.391040999908},"reviews0-49":{"max":369.94499999983236,"median":349.50333399977535,"min":340.04562500026077,"n":50,"p95":366.6528749996796},"reviews100-149":{"max":367.2208750001155,"median":345.5120830000378,"min":340.76974999997765,"n":50,"p95":361.51829099981114},"reviews150-199":{"max":365.1219999999739,"median":347.18487499980256,"min":342.791208000388,"n":50,"p95":363.391040999908},"reviews50-99":{"max":380.6698749996722,"median":353.38195799989626,"min":343.0737080001272,"n":50,"p95":366.52966600004584}},"thermalEnd":"serious","thermalStart":"fair","viewIdleMs":0.539292000234127,"viewWhileReviewMs":329.09825000027195}
+Test Case '-[P0DeviceTests.FocalTests testStress]' passed (106.420 seconds).
+Test Suite 'FocalTests' passed at 2026-11-18 12:02:35.269.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 122.618 (122.620) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-18 12:02:35.269.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 122.618 (122.620) seconds
+Test Suite 'Selected tests' passed at 2026-11-18 12:02:35.269.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 122.618 (122.621) seconds
+2026-11-18 12:02:35.619 xcodebuild[10242:134433] [MT] IDETestOperationsObserverDebug: 124.875 elapsed -- Testing started completed.
+2026-11-18 12:02:35.619 xcodebuild[10242:134433] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-18 12:02:35.619 xcodebuild[10242:134433] [MT] IDETestOperationsObserverDebug: 124.875 sec, +124.875 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratchpad>/focal2-en.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

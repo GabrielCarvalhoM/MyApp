@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<trace-query-result>
+<node xpath='//trace-toc[1]/run[1]/data[1]/table[16]'>
+<schema name="potential-hangs">
+<col>
+<mnemonic>start</mnemonic>
+<name>Start</name>
+<engineering-type>start-time</engineering-type>
+</col>
+<col>
+<mnemonic>duration</mnemonic>
+<name>Duration</name>
+<engineering-type>duration</engineering-type>
+</col>
+<col>
+<mnemonic>hang-type</mnemonic>
+<name>Hang Type</name>
+<engineering-type>hang-type</engineering-type>
+</col>
+<col>
+<mnemonic>thread</mnemonic>
+<name>Thread</name>
+<engineering-type>thread</engineering-type>
+</col>
+<col>
+<mnemonic>process</mnemonic>
+<name>Process</name>
+<engineering-type>process</engineering-type>
+</col>
+</schema>
+<row>
+<start-time id="1" fmt="00:36.333.553">36333553208</start-time>
+<duration id="2" fmt="293.67 ms">293665875</duration>
+<hang-type id="3" fmt="Microhang">Microhang</hang-type>
+<thread id="4" fmt="Main Thread (0xb530) (P0DeviceHost, pid: 848)">
+<tid id="5" fmt="0xb530">46384</tid>
+<process id="6" fmt="P0DeviceHost (848)">
+<pid id="7" fmt="848">848</pid>
+<device-session id="8" fmt="TODO">TODO</device-session>
+</process>
+</thread>
+<process ref="6"/>
+</row>
+<row>
+<start-time id="9" fmt="00:36.693.068">36693068416</start-time>
+<duration id="10" fmt="54.37 s">54371292679</duration>
+<hang-type id="11" fmt="Severe Hang">Severe Hang</hang-type>
+<thread ref="4"/>
+<process ref="6"/>
+</row>
+</node>
+</trace-query-result>

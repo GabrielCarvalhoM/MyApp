@@ -1,0 +1,13 @@
+Main Thread                                      samples 477 withJSC 305 span 9.53-36.70s jsc 9.92-36.68s
+P0DeviceHost                                     samples 26230 withJSC 25969 span 9.69-36.69s jsc 9.77-36.28s
+Heap Helper Thread                               samples 9266 withJSC 9155 span 9.80-36.61s jsc 9.80-36.61s
+JavaScriptCore libpas scavenger                  samples 72 withJSC 0 span 9.93-36.59s 
+JSC Heap Collector Thread                        samples 7 withJSC 7 span 15.64-26.14s jsc 15.64-26.14s
+main-thread JSC samples: inside control window 294 outside 11
+3 JSC::UnlinkedCodeBlock::~UnlinkedCodeBlock() < JSC::HeapCellType::finishSweep(JSC::MarkedBlock::Handle&amp;, JSC::FreeList*) const || specialized PerformanceTests.testP0Measurements()
+2 JSC::Structure::destroy(JSC::JSCell*) < JSC::HeapCellType::finishSweep(JSC::MarkedBlock::Handle&amp;, JSC::FreeList*) const || specialized PerformanceTests.testP0Measurements()
+2 JSC::IsoInlinedHeapCellType&lt;JSC::JSString&gt;::finishSweep(JSC::MarkedBlock::Handle&amp;, JSC::FreeList*) const < JSC::MarkedSpace::lastC || specialized PerformanceTests.testP0Measurements()
+2 JSC::SymbolTable::destroy(JSC::JSCell*) < JSC::HeapCellType::finishSweep(JSC::MarkedBlock::Handle&amp;, JSC::FreeList*) const || specialized PerformanceTests.testP0Measurements()
+1 JSC::BuiltinNames::~BuiltinNames() < JSC::CommonIdentifiers::~CommonIdentifiers() || specialized PerformanceTests.testP0Measurements()
+1 JSC::WeakSet::sweep() < JSC::MarkedSpace::lastChanceToFinalize() || specialized PerformanceTests.testP0Measurements()
+outside times (s): 9.92 10.05 10.16 10.28 10.40 10.52 10.65 10.77 10.89 11.02 36.68
