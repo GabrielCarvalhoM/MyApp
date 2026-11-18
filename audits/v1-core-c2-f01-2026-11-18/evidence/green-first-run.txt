@@ -1,0 +1,41 @@
+✔ CORE-C2-F01 e2e: a restart from a record with corrections sizes the new plan as the record in force (the direct merge control) (3639.0116ms)
+✔ CORE-C2-F01 e2e: the values before and after, pinned (easy runs 50 min, long run 100, as the control) (553.8848ms)
+✔ CORE-C2-F01 e2e: several corrections of the same execution count it once (1660.8359ms)
+✔ CORE-C2-F01 e2e: a correction of the watch import (device correction) counts the execution once (824.7035ms)
+✔ CORE-C2-F01 e2e: a correction that arrives in the next week, after the client stored and restored the record (618.9357ms)
+✔ CORE-C2-F01 e2e: the record order (late or shuffled rows) and a second JSON round trip change nothing (610.0962ms)
+✖ CORE-C2-F01 e2e: a restart A, then B, then C: each reads only the executions in force, never a replaced row of an earlier plan (572.3652ms)
+✔ CORE-C2-F01 unit 1: a record without corrections is read as before (0.5146ms)
+✔ CORE-C2-F01 unit 2-3: an execution corrected once, or several times, counts once, at its value in force (1.0261ms)
+✔ CORE-C2-F01 unit 4-5: a device correction and an athlete-declared correction (0.6758ms)
+✔ CORE-C2-F01 unit 6: two complementary reports of one execution, merged into one row in force (with its parts), count once (0.6831ms)
+✔ CORE-C2-F01 unit 7: a correction after the record was stored and restored (JSON round trip) (0.544ms)
+✔ CORE-C2-F01 unit 8: replaced and current rows mixed, in any order; distinct executions are all counted (1.1702ms)
+✔ CORE-C2-F01 unit 9: plans A, B then C: executions of each plan count, replaced rows of none (0.5247ms)
+✔ CORE-C2-F01 unit 10: a duplicated row (the same event twice in the record) and a late row count once (0.4788ms)
+✔ CORE-C2-F01 unit 11: rows without the newer metadata (no parts, no provenance, no superseded field) still count (0.4851ms)
+✔ CORE-C2-F01 unit 12: a clinical or adverse record still answers first, whatever the corrections (0.5734ms)
+✔ CORE-C2-F01 unit: the stated exposure is only ever lowered to the record, never raised, and unknown stays unknown (0.3648ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8637.2936
+
+✖ failing tests:
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:105:1
+✖ CORE-C2-F01 e2e: a restart A, then B, then C: each reads only the executions in force, never a replaced row of an earlier plan (572.3652ms)
+  TypeError: Cannot read properties of null (reading 'weeks')
+      at runsOf (file:///<home>/Desktop/myApp/MyApp/.claude/worktrees/v1-core-c2-f01/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:51:41)
+      at decided (file:///<home>/Desktop/myApp/MyApp/.claude/worktrees/v1-core-c2-f01/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:60:41)
+      at TestContext.<anonymous> (file:///<home>/Desktop/myApp/MyApp/.claude/worktrees/v1-core-c2-f01/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:111:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

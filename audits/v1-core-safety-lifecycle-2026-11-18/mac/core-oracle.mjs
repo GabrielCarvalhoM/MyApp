@@ -73,6 +73,18 @@ for(const [name,anchors] of [['forecast-one',[result('10K',3000,'2026-11-01')]],
  r.review('NOT_FEELING_100',at('2027-05-02','08:00'),{...notFeeling100WithSign('2027-05-02'),observations:[{...reportOf(r.c.env,s),eventId:'exp-stop',actual:{completed:false,minutes:12,stop:{reason:'SYMPTOM'}}}]},'sign-stop');
  r.roundtrip();r.probe('WEEKLY_REVIEW',at('2027-05-03','08:00'),{eligibility:ELIG('2027-05-01')},'next');
  journeys.push({name:'expiry-record',steps:r.steps});}
+// 7. CORE-C2-F01 (restart sizing fix): weeks 0 to 2 reported, each run corrected the same evening (the record keeps the replaced rows), a round
+//    trip, then a restart. The control journey reports the same weeks with no correction. In Node the two restarts prescribe the same run doses
+//    (checked below); on the device each step must equal Node's, so the device prescribes the control's doses too.
+const F01={};
+for(const corrected of [true,false]){const id='core-mac-f01',r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program;
+ for(const w of [0,1,2]){const d=addDays(p.startDate,w*7+6);r.review('WEEKLY_REVIEW',at(d),{eligibility:ELIG(d),observations:liveSessions(r.c.env,w).map(s=>reportOf(r.c.env,s,{tag:'-'+w}))},'w'+w);
+  if(corrected){const runs=r.c.env.actualLedger.filter(o=>!o.fact&&!o.superseded&&o.context?.sport==='RUN'&&o.localDate>=addDays(p.startDate,w*7));
+   r.review('WEEKLY_REVIEW',at(d,'22:00'),{eligibility:ELIG(d),observations:runs.map(o=>({eventId:o.eventId+'-fix',athleteId:o.athleteId,sessionId:o.sessionId,occurrenceDate:o.localDate,actual:{...o.actual},response:o.response,correctionOf:o.eventId,correctedAt:at(d,'21:00')}))},'fix'+w);}}
+ r.roundtrip();const day=addDays(p.startDate,24),u={...athleteA({weeks:8,id}),asOf:day,startDate:addDays(day,3)};u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ const g=r.restart(u,at(day,'10:00'));F01[corrected?'corrected':'control']={status:g.status,superseded:r.c.env.actualLedger.filter(o=>o.superseded===true).length,bounded:g.restart?.boundedByRecord??null,runs:(g.program??g.proposal)?.weeks.map(x=>x.sessions.filter(s=>s.sport==='RUN').map(s=>s.prescription?.durationMinutes??null))??null};
+ journeys.push({name:corrected?'restart-f01':'restart-f01-control',steps:r.steps});}
+if(JSON.stringify([F01.corrected.status,F01.corrected.bounded,F01.corrected.runs])!==JSON.stringify([F01.control.status,F01.control.bounded,F01.control.runs])||!F01.corrected.superseded)throw new Error('CORE-C2-F01: the restart from the corrected record does not prescribe the control\'s doses: '+JSON.stringify(F01));
 const input={journeys,anchors:['b','aa','h','ch','Z','_x','a-1','a_1'].map(id=>({id,prescription:{modality:'RUN',family:'EASY',durationMinutes:30}})),locales:['pt-BR','en-US','da-DK','nb-NO','cs-CZ']};
 vm.runInThisContext(fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'));
 const expected=JSON.parse(globalThis.__corefocal({core,contract,value},JSON.stringify(input)));
@@ -83,4 +95,5 @@ if(Object.values(modules).some(x=>x===null))throw new Error('the bundle does not
 const {defaultLocale:_d,...stableExpected}=expected;
 fs.writeFileSync(OUT,JSON.stringify({driver:fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'),modules,inputJSON:JSON.stringify(input),expected:stableExpected},null,1)+'\n');
 const summary=expected.journeys.map(j=>j.name+': '+j.steps.map(s=>s.status??s.op).join(' ')).join('\n');
+console.log('CORE-C2-F01 restart doses (corrected = control): '+JSON.stringify(F01.corrected.runs.slice(0,2))+'; superseded rows in the corrected record: '+F01.corrected.superseded);
 console.log(summary+'\nanchors equal across locales: '+(new Set(Object.values(expected.anchors)).size===1)+'; localeCompare calls: '+expected.localeCompareCalls+'\ndigest '+expected.digest);

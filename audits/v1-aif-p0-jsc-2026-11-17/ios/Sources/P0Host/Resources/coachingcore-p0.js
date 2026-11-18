@@ -4780,7 +4780,10 @@ function unreadableF08(rows,{athleteId}){
 const CLINICAL_CATEGORIES_F08=['ILLNESS','INJURY','PAIN','MEDICAL','SURGERY','PREGNANCY','POSTPARTUM','CLINICAL'];
 const sportOf=o=>{const t=String(o?.context?.sessionType??o?.context?.sport??'');return t.startsWith('RUN')?'RUN':t.startsWith('STRENGTH')?'STRENGTH':null;};
 const dayOfRow=o=>o.localDate??String(o.occurrenceDate??o.observedAt??'').slice(0,10);
-const executed=o=>o&&!o.fact&&!o.conflicted&&(o.actual?.completed===true||Number(o.actual?.minutes)>0);
+// CORE-C2-F01: a row a correction replaced (`superseded`) is history the record keeps, not an execution of its own: only the rows in force show
+// training done, as every other V1 reader reads them, and an event the record holds twice is one execution (`once`).
+const executed=o=>o&&!o.fact&&!o.conflicted&&o.superseded!==true&&(o.actual?.completed===true||Number(o.actual?.minutes)>0);
+const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
  * the carried record (`record`, the last program's actualLedger), with the last decision's `referenceState`. It never erases the record (RC-14):
@@ -4823,7 +4826,7 @@ function restartIntake({intake,record=[],referenceState=null,asOf,screen,athlete
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},readinessDeclared:true};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
- const from=isoDay(day)?addDays(day,-28):null,runRows=rows.filter(o=>executed(o)&&sportOf(o)==='RUN'&&from&&dayOfRow(o)>from&&dayOfRow(o)<=day);
+ const from=isoDay(day)?addDays(day,-28):null,runRows=once(rows).filter(o=>executed(o)&&sportOf(o)==='RUN'&&from&&dayOfRow(o)>from&&dayOfRow(o)<=day);
  const shown={minutes:Math.round(runRows.reduce((n,o)=>n+(Number(o.actual?.minutes)||Number(o.context?.runMinutes)||0),0)/4),days:Math.min(7,Math.ceil(new Set(runRows.map(dayOfRow)).size/4))},bounded=[];
  if(rows.some(executed)&&isObj(a.recent)){
   if(Number.isFinite(a.recent.runMinutesPerWeek)&&a.recent.runMinutesPerWeek>shown.minutes){a.recent={...a.recent,runMinutesPerWeek:shown.minutes};bounded.push('recent.runMinutesPerWeek');}

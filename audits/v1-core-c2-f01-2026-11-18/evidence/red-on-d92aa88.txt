@@ -1,0 +1,1109 @@
+✖ CORE-C2-F01 e2e: a restart from a record with corrections sizes the new plan as the record in force (the direct merge control) (1126.0677ms)
+✖ CORE-C2-F01 e2e: the values before and after, pinned (easy runs 50 min, long run 100, as the control) (576.9593ms)
+✖ CORE-C2-F01 e2e: several corrections of the same execution count it once (987.0832ms)
+✖ CORE-C2-F01 e2e: a correction of the watch import (device correction) counts the execution once (771.4026ms)
+✖ CORE-C2-F01 e2e: a correction that arrives in the next week, after the client stored and restored the record (591.0786ms)
+✔ CORE-C2-F01 e2e: the record order (late or shuffled rows) and a second JSON round trip change nothing (585.3402ms)
+✖ CORE-C2-F01 e2e: a restart A, then B, then C: each reads only the executions in force, never a replaced row of an earlier plan (554.6982ms)
+✔ CORE-C2-F01 unit 1: a record without corrections is read as before (0.6043ms)
+✖ CORE-C2-F01 unit 2-3: an execution corrected once, or several times, counts once, at its value in force (0.6823ms)
+✖ CORE-C2-F01 unit 4-5: a device correction and an athlete-declared correction (0.6761ms)
+✖ CORE-C2-F01 unit 6: two complementary reports of one execution, merged into one row in force (with its parts), count once (0.7136ms)
+✖ CORE-C2-F01 unit 7: a correction after the record was stored and restored (JSON round trip) (0.6074ms)
+✖ CORE-C2-F01 unit 8: replaced and current rows mixed, in any order; distinct executions are all counted (0.6006ms)
+✖ CORE-C2-F01 unit 9: plans A, B then C: executions of each plan count, replaced rows of none (0.4157ms)
+✖ CORE-C2-F01 unit 10: a duplicated row (the same event twice in the record) and a late row count once (0.4524ms)
+✔ CORE-C2-F01 unit 11: rows without the newer metadata (no parts, no provenance, no superseded field) still count (0.4852ms)
+✖ CORE-C2-F01 unit 12: a clinical or adverse record still answers first, whatever the corrections (0.5848ms)
+✔ CORE-C2-F01 unit: the stated exposure is only ever lowered to the record, never raised, and unknown stays unknown (0.3503ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 4
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5343.0937
+
+✖ failing tests:
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:64:1
+✖ CORE-C2-F01 e2e: a restart from a record with corrections sizes the new plan as the record in force (the direct merge control) (1126.0677ms)
+  AssertionError [ERR_ASSERTION]: athlete correction + watch (lists)
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek'
+      ],
+      prior: {
+  ...
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          41,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          48,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          53,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          49,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       60,
+          49,
+  +       65,
+  -       55,
+          100
+        ]
+      ],
+      status: 'PROPOSED'
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:70:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    expected: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:76:1
+✖ CORE-C2-F01 e2e: the values before and after, pinned (easy runs 50 min, long run 100, as the control) (576.9593ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   60,
+  +   60,
+  +   60,
+  -   50,
+  -   50,
+  -   50,
+      100
+    ]
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:78:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 60, 60, 60, 100 ],
+    expected: [ 50, 50, 50, 100 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:83:1
+✖ CORE-C2-F01 e2e: several corrections of the same execution count it once (987.0832ms)
+  AssertionError [ERR_ASSERTION]: times 2
+  + actual - expected
+  ... Skipped lines
+  
+    {
+  +   bounded: [],
+  -   bounded: [
+  -     'recent.runMinutesPerWeek'
+  -   ],
+      prior: {
+        lastExecutedBySport: {
+          RUN: '2027-01-03',
+          STRENGTH: '2026-12-30'
+        },
+  ...
+        [
+  +       65,
+  +       65,
+  +       65,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  +       65,
+  +       65,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  +       65,
+  +       65,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          34,
+  +       65,
+  -       50,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          34,
+  +       65,
+  -       50,
+          90
+        ],
+        [
+  +       70,
+  -       55,
+          41,
+  +       65,
+  -       50,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          48,
+  +       70,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          43,
+  +       70,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          43,
+  +       70,
+  -       55,
+          90
+        ],
+        [
+  +       70,
+  -       55,
+          53,
+  +       70,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       55,
+          49,
+  +       70,
+  -       55,
+          100
+        ],
+        [
+  +       75,
+  -       60,
+          49,
+  +       70,
+  -       55,
+          100
+        ]
+      ],
+      status: 'PROPOSED'
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:84:125)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    expected: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:87:1
+✖ CORE-C2-F01 e2e: a correction of the watch import (device correction) counts the execution once (771.4026ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek'
+      ],
+      prior: {
+  ...
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          41,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          48,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          53,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          49,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       60,
+          49,
+  +       65,
+  -       55,
+          100
+        ]
+      ],
+      status: 'PROPOSED'
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:90:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    expected: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:93:1
+✖ CORE-C2-F01 e2e: a correction that arrives in the next week, after the client stored and restored the record (591.0786ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek'
+      ],
+      prior: {
+  ...
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          41,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          48,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          53,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          49,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       60,
+          49,
+  +       65,
+  -       55,
+          100
+        ]
+      ],
+      status: 'PROPOSED'
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:96:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    expected: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:105:1
+✖ CORE-C2-F01 e2e: a restart A, then B, then C: each reads only the executions in force, never a replaced row of an earlier plan (554.6982ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek'
+      ],
+      prior: {
+  ...
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       60,
+  +       60,
+  +       60,
+  -       50,
+  -       50,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          34,
+  +       60,
+  -       50,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          41,
+  +       60,
+  -       50,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          48,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          43,
+  +       65,
+  -       55,
+          90
+        ],
+        [
+  +       65,
+  -       55,
+          53,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       65,
+  -       55,
+          49,
+  +       65,
+  -       55,
+          100
+        ],
+        [
+  +       70,
+  -       60,
+          49,
+  +       65,
+  -       55,
+          100
+        ]
+      ],
+      status: 'PROPOSED'
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:108:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    expected: {
+      status: 'PROPOSED',
+      runs: [
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array],
+        [Array], [Array]
+      ],
+      bounded: [ 'recent.runMinutesPerWeek' ],
+      prior: { lastExecutedDay: '2027-01-03', lastExecutedBySport: [Object], observations: null }
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:135:1
+✖ CORE-C2-F01 unit 2-3: an execution corrected once, or several times, counts once, at its value in force (0.6823ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 115
+  -     runMinutesPerWeek: 103
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:138:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 115, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 103, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:145:1
+✖ CORE-C2-F01 unit 4-5: a device correction and an athlete-declared correction (0.6761ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 123
+  -     runMinutesPerWeek: 98
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:149:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 123, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 98, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:156:1
+✖ CORE-C2-F01 unit 6: two complementary reports of one execution, merged into one row in force (with its parts), count once (0.7136ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 113
+  -     runMinutesPerWeek: 100
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:162:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 113, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 100, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-09', lastBySport: { RUN: '2026-11-09', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:166:1
+✖ CORE-C2-F01 unit 7: a correction after the record was stored and restored (JSON round trip) (0.6074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 113
+  -     runMinutesPerWeek: 100
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:168:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 113, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 100, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:171:1
+✖ CORE-C2-F01 unit 8: replaced and current rows mixed, in any order; distinct executions are all counted (0.6006ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 150
+  -     runMinutesPerWeek: 100
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:173:110)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 150, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 100, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:178:1
+✖ CORE-C2-F01 unit 9: plans A, B then C: executions of each plan count, replaced rows of none (0.4157ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 88
+  -     runMinutesPerWeek: 63
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:183:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 88, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-07', lastBySport: { RUN: '2026-11-07', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 63, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-07', lastBySport: { RUN: '2026-11-07', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:187:1
+✖ CORE-C2-F01 unit 10: a duplicated row (the same event twice in the record) and a late row count once (0.4524ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      bounded: [
+        'recent.runMinutesPerWeek',
+        'recent.runDaysPerWeek'
+      ],
+  ...
+        runDaysPerWeek: 2,
+  +     runMinutesPerWeek: 125
+  -     runMinutesPerWeek: 100
+      },
+      restart: {
+        asOf: '2026-11-10',
+        fromRecord: true,
+        readBreakIds: [],
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:189:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 'READY', recent: { runMinutesPerWeek: 125, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    expected: { status: 'READY', recent: { runMinutesPerWeek: 100, runDaysPerWeek: 2 }, pause: { weeks: 0, bySportDays: [Object] }, restart: { readinessEventId: null, strengthRestrictions: [], fromRecord: true, asOf: '2026-11-10', readBreakIds: [] }, bounded: [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], lastExecuted: '2026-11-08', lastBySport: { RUN: '2026-11-08', STRENGTH: null } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-c2f01-restart-sizing.test.mjs:201:1
+✖ CORE-C2-F01 unit 12: a clinical or adverse record still answers first, whatever the corrections (0.5848ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      runDaysPerWeek: 2,
+  +   runMinutesPerWeek: 113
+  -   runMinutesPerWeek: 100
+    }
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/base-d92aa88/CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs:210:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { runMinutesPerWeek: 113, runDaysPerWeek: 2 },
+    expected: { runMinutesPerWeek: 100, runDaysPerWeek: 2 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
