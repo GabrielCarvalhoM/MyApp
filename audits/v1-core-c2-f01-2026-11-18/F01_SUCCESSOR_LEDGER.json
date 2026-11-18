@@ -1,0 +1,12 @@
+{
+ "line": "CORE-C2-F01 (claude/v1-core-c2-f01, from d92aa88)",
+ "note": "The one test that fails on this line and passed on closure-2. The 23 historical failures and their successors are unchanged (audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json). Closure-2's preservation entries named v1core-freeze.test.mjs as the successor of v1rc-calibration:325, v1rws-engine:157 and v1str-freeze:15; on this line that chain continues through v1core-c2f01-freeze.test.mjs.",
+ "entries": [
+  {
+   "historical": "v1core-freeze.test.mjs:11",
+   "title": "the five earlier freezes are preserved on this line; the files it amends are declared and nothing else changed since the base",
+   "successor": "v1core-c2f01-freeze.test.mjs",
+   "why": "scripts/v1core-freeze.mjs (bound by FREEZE-1, not edited) measures against 16577b6 and names src/v1-f08.mjs as amended and undeclared, by design; scripts/v1core-freeze-2.mjs --preserved: the six earlier records are the d92aa88 bytes, FREEZE-1's 47 bound files are the hashes it states, V1-FREEZE-1 197/198 + src/v1-f08.mjs declared, nothing else changed since d92aa88"
+  }
+ ]
+}
