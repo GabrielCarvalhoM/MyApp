@@ -1949,10 +1949,11 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
    // its parts, whichever row of the record first claimed the id (QRE-CORE-01: a superseded merged row carried before it) and also while a
-   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed;
-   // otherwise the correction replaces the row, as before (QRE-CORE-04, SEC-CORE-04). Never throws.
+   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed
+   // (QRE-CORE-04, SEC-CORE-04). Closure-2 (SEC-CORE-14): a malformed part is not read and not carried, and the well-formed ones still are, so a
+   // damaged part never discards another voice's valid report; with no well-formed part the correction replaces the row, as before. Never throws.
    const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
-   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id])=>id!==o.correctionOf);if(others.every(([,p])=>validPart(p)))inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id,p])=>id!==o.correctionOf&&validPart(p));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
    if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
@@ -11175,13 +11176,19 @@ function evaluateProgram(program,review,options={}){
  // A symptom stop a report of this request declares is named in every answer, from the request alone when nothing of it is recorded.
  // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): so is a symptom stop a report declares for a session the plan in force does not hold (an earlier
  // plan's, after a restart): its stop is read, nothing else of it.
- const elsewhere=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM').map(o=>o.sessionId);
+ // Closure-2 (SSCTR-CORE-B-01-R): that stop is also kept as a stop fact of this record (the stop only: no report in force, no distance, no
+ // credit), under the rule a planned session's stop follows (`read` and `kept` below): whenever the engine accepts the review's instant, an
+ // ASK as well, so the next review asks for the screen until a screen answered after it. Under an instant the engine refuses, nothing is kept
+ // for any session, as before. Only an id a plan could have made is recorded (no longer than a report id may be): a longer one is named in
+ // the answer alone, so a request cannot grow the record with ids no plan holds.
+ const elsewhereReports=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM');
+ const elsewhere=elsewhereReports.map(o=>o.sessionId),elsewhereStops=elsewhereReports.filter(o=>o.sessionId.length<=128).map(o=>reportFactOf(o,V,{fromDevice:fromDevice(o)})).filter(f=>f?.stop?.reason==='SYMPTOM').map(stopOnly);
  const requested=[...new Set([...received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId),...elsewhere])].sort();
  const engineOpts={...opts,[READS_COMPLETION]:readerOf(fr,V)},carriedEvidence=Array.isArray(review.runEvidenceRecord)?clone(review.runEvidenceRecord):[];
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);
  // under an instant the engine refused it is read and not kept.
- const read=asOf?appendReportFacts(formats,received,{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
+ const read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
  // What an answer is about, with the arguments v1-run-index.mjs gave the calibration of the same result.
  const contextOf=(b,record)=>({program:validProgram(b.proposal)?b.proposal:program,ledger:Array.isArray(b.actualLedger)?b.actualLedger:Array.isArray(input.actualLedger)?input.actualLedger:[],formats:record,historyRecord:history,asOf,weekIndex:review.weekIndex,
   preference:preferenceOf(review.runExpression),engineStatus:b.status,eligibility:review.eligibility??null,hold:['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(b.status),requested,opts,ext,on});
@@ -11197,7 +11204,7 @@ function evaluateProgram(program,review,options={}){
    // A report that cannot be read is no execution, but a stop it declares was said: on a review the engine accepted, the stop is kept as a
    // fact of this record, though the report itself is not recorded. Nothing is kept when the records sent do not hold together (the HOLD
    // above), or under an instant the engine did not accept. In every case the screen is named at once, in the answer (SEC-RWS-A-05).
-   const kept=lost.length||refused(base)?formats:appendReportFacts(formats,received.filter(f=>f.stop).map(stopOnly),{athleteId:program.athleteId,recordedAt:asOf},V).record;
+   const kept=lost.length||refused(base)?formats:appendReportFacts(formats,[...received.filter(f=>f.stop).map(stopOnly),...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record;
    return held({...shell,runEvidenceRecord:carriedEvidence},'NOT_APPLICABLE','NO_DECISION',kept);
   }
   notes={notRecorded:unknownNew.map(o=>({sessionId:o.sessionId??null,eventId:o.eventId??null,reason:'UNKNOWN_RUN_FORMAT'}))};
@@ -12878,51 +12885,52 @@ __def(40, function (__exports) {
 'use strict';
 const S = __req(2);
 const {repertoireAuthority} = __req(13);
+const {RUN_FORMAT_EMITTED} = __req(33);
 const {freeze} = __req(9);
-const __r3 = __req(2);
+const __r4 = __req(2);
 Object.defineProperties(__exports, {
-  "BAND_OF": { enumerable: true, get: () => __r3["BAND_OF"] },
-  "FORECAST_BOUNDARIES": { enumerable: true, get: () => __r3["FORECAST_BOUNDARIES"] },
-  "FORECAST_EXTENSION_ID": { enumerable: true, get: () => __r3["FORECAST_EXTENSION_ID"] },
-  "FORMAT_BOUNDARIES": { enumerable: true, get: () => __r3["FORMAT_BOUNDARIES"] },
-  "FORMAT_EXTENSION_ID": { enumerable: true, get: () => __r3["FORMAT_EXTENSION_ID"] },
-  "HORIZON_WEEKS": { enumerable: true, get: () => __r3["HORIZON_WEEKS"] },
-  "PACE_REVISION_RESPONSE": { enumerable: true, get: () => __r3["PACE_REVISION_RESPONSE"] },
-  "PACE_REVISION_VERSION": { enumerable: true, get: () => __r3["PACE_REVISION_VERSION"] },
-  "PACE_WITHHELD": { enumerable: true, get: () => __r3["PACE_WITHHELD"] },
-  "RUN_BOUNDARIES": { enumerable: true, get: () => __r3["RUN_BOUNDARIES"] },
-  "RUN_EVIDENCE_DECLARED": { enumerable: true, get: () => __r3["RUN_EVIDENCE_DECLARED"] },
-  "RUN_EXTENSION_ID": { enumerable: true, get: () => __r3["RUN_EXTENSION_ID"] },
-  "RUN_FORMAT_EMITTED": { enumerable: true, get: () => __r3["RUN_FORMAT_EMITTED"] },
-  "RUN_HISTORY_FACT": { enumerable: true, get: () => __r3["RUN_HISTORY_FACT"] },
-  "RUN_REPORT_RECEIVED": { enumerable: true, get: () => __r3["RUN_REPORT_RECEIVED"] },
+  "BAND_OF": { enumerable: true, get: () => __r4["BAND_OF"] },
+  "FORECAST_BOUNDARIES": { enumerable: true, get: () => __r4["FORECAST_BOUNDARIES"] },
+  "FORECAST_EXTENSION_ID": { enumerable: true, get: () => __r4["FORECAST_EXTENSION_ID"] },
+  "FORMAT_BOUNDARIES": { enumerable: true, get: () => __r4["FORMAT_BOUNDARIES"] },
+  "FORMAT_EXTENSION_ID": { enumerable: true, get: () => __r4["FORMAT_EXTENSION_ID"] },
+  "HORIZON_WEEKS": { enumerable: true, get: () => __r4["HORIZON_WEEKS"] },
+  "PACE_REVISION_RESPONSE": { enumerable: true, get: () => __r4["PACE_REVISION_RESPONSE"] },
+  "PACE_REVISION_VERSION": { enumerable: true, get: () => __r4["PACE_REVISION_VERSION"] },
+  "PACE_WITHHELD": { enumerable: true, get: () => __r4["PACE_WITHHELD"] },
+  "RUN_BOUNDARIES": { enumerable: true, get: () => __r4["RUN_BOUNDARIES"] },
+  "RUN_EVIDENCE_DECLARED": { enumerable: true, get: () => __r4["RUN_EVIDENCE_DECLARED"] },
+  "RUN_EXTENSION_ID": { enumerable: true, get: () => __r4["RUN_EXTENSION_ID"] },
+  "RUN_FORMAT_EMITTED": { enumerable: true, get: () => __r4["RUN_FORMAT_EMITTED"] },
+  "RUN_HISTORY_FACT": { enumerable: true, get: () => __r4["RUN_HISTORY_FACT"] },
+  "RUN_REPORT_RECEIVED": { enumerable: true, get: () => __r4["RUN_REPORT_RECEIVED"] },
   "SAFETY_LIFECYCLE_ID": { enumerable: true, get: () => SAFETY_LIFECYCLE_ID },
-  "STRENGTH_BOUNDARIES": { enumerable: true, get: () => __r3["STRENGTH_BOUNDARIES"] },
-  "STRENGTH_EXTENSION_ID": { enumerable: true, get: () => __r3["STRENGTH_EXTENSION_ID"] },
+  "STRENGTH_BOUNDARIES": { enumerable: true, get: () => __r4["STRENGTH_BOUNDARIES"] },
+  "STRENGTH_EXTENSION_ID": { enumerable: true, get: () => __r4["STRENGTH_EXTENSION_ID"] },
   "V1_CORE_ENGINE": { enumerable: true, get: () => V1_CORE_ENGINE },
-  "V1_ENGINE": { enumerable: true, get: () => __r3["V1_ENGINE"] },
-  "V1_RUN_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_ENGINE"] },
-  "V1_RUN_FORECAST_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_FORECAST_ENGINE"] },
-  "V1_RUN_FORMAT_ENGINE": { enumerable: true, get: () => __r3["V1_RUN_FORMAT_ENGINE"] },
-  "V1_SCOPE": { enumerable: true, get: () => __r3["V1_SCOPE"] },
-  "V1_STRENGTH_ENGINE": { enumerable: true, get: () => __r3["V1_STRENGTH_ENGINE"] },
-  "V1_UNAVAILABLE": { enumerable: true, get: () => __r3["V1_UNAVAILABLE"] },
-  "WHOLE_ROW_WITHHELD": { enumerable: true, get: () => __r3["WHOLE_ROW_WITHHELD"] },
-  "WITHHOLDABLE": { enumerable: true, get: () => __r3["WITHHOLDABLE"] },
-  "admitted": { enumerable: true, get: () => __r3["admitted"] },
+  "V1_ENGINE": { enumerable: true, get: () => __r4["V1_ENGINE"] },
+  "V1_RUN_ENGINE": { enumerable: true, get: () => __r4["V1_RUN_ENGINE"] },
+  "V1_RUN_FORECAST_ENGINE": { enumerable: true, get: () => __r4["V1_RUN_FORECAST_ENGINE"] },
+  "V1_RUN_FORMAT_ENGINE": { enumerable: true, get: () => __r4["V1_RUN_FORMAT_ENGINE"] },
+  "V1_SCOPE": { enumerable: true, get: () => __r4["V1_SCOPE"] },
+  "V1_STRENGTH_ENGINE": { enumerable: true, get: () => __r4["V1_STRENGTH_ENGINE"] },
+  "V1_UNAVAILABLE": { enumerable: true, get: () => __r4["V1_UNAVAILABLE"] },
+  "WHOLE_ROW_WITHHELD": { enumerable: true, get: () => __r4["WHOLE_ROW_WITHHELD"] },
+  "WITHHOLDABLE": { enumerable: true, get: () => __r4["WITHHOLDABLE"] },
+  "admitted": { enumerable: true, get: () => __r4["admitted"] },
   "authorityExpiry": { enumerable: true, get: () => authorityExpiry },
   "evaluateProgram": { enumerable: true, get: () => evaluateProgram },
   "generateProgram": { enumerable: true, get: () => generateProgram },
-  "historicalStateOf": { enumerable: true, get: () => __r3["historicalStateOf"] },
-  "readEvidence": { enumerable: true, get: () => __r3["readEvidence"] },
+  "historicalStateOf": { enumerable: true, get: () => __r4["historicalStateOf"] },
+  "readEvidence": { enumerable: true, get: () => __r4["readEvidence"] },
   "restartProgram": { enumerable: true, get: () => restartProgram },
-  "runCalibrationAuthority": { enumerable: true, get: () => __r3["runCalibrationAuthority"] },
-  "runCalibrationOf": { enumerable: true, get: () => __r3["runCalibrationOf"] },
-  "runForecastAuthority": { enumerable: true, get: () => __r3["runForecastAuthority"] },
-  "runFormatAuthority": { enumerable: true, get: () => __r3["runFormatAuthority"] },
-  "strengthAuthority": { enumerable: true, get: () => __r3["strengthAuthority"] },
-  "validProgram": { enumerable: true, get: () => __r3["validProgram"] },
-  "weeklyStrengthExposure": { enumerable: true, get: () => __r3["weeklyStrengthExposure"] }
+  "runCalibrationAuthority": { enumerable: true, get: () => __r4["runCalibrationAuthority"] },
+  "runCalibrationOf": { enumerable: true, get: () => __r4["runCalibrationOf"] },
+  "runForecastAuthority": { enumerable: true, get: () => __r4["runForecastAuthority"] },
+  "runFormatAuthority": { enumerable: true, get: () => __r4["runFormatAuthority"] },
+  "strengthAuthority": { enumerable: true, get: () => __r4["strengthAuthority"] },
+  "validProgram": { enumerable: true, get: () => __r4["validProgram"] },
+  "weeklyStrengthExposure": { enumerable: true, get: () => __r4["weeklyStrengthExposure"] }
 });
 // CoachingCore V1 Core Safety & Lifecycle (Founder mission of 2026-11-18, QRE-AIF-01): the composed entry point an integration uses.
 // - Underneath is v1-strength-index.mjs, unchanged in this module, and under it the engine. Nothing here plans, prescribes, proposes or screens:
@@ -12941,6 +12949,7 @@ Object.defineProperties(__exports, {
 //   authority makes no plan, and their clinical intake screen already answers before the authority is read.
 // - Each answer given while the records are expired carries `authorityExpiry` (status EXPIRED, the review-by dates passed, whether the clinical
 //   route answered). No other answer changes, by a byte.
+
 
 
 
@@ -12981,9 +12990,18 @@ function evaluateProgram(program,review,options={}){
  if(!reread||reread.status==='UNSUPPORTED')return base;
  // The clinical answer, with every reading the refusal gives in place of those computed with the dates set aside (forecast, insights,
  // calibration, formats, exposure, learning): after the date nothing but the clinical route and the recorded facts comes from that reading (QRE-CORE-06).
- if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}return freeze({...out,authorityExpiry:marker(e,true)});}
+ if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){
+  const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}
+  // Closure-2 (QRE-CORE-R2-01): the record of formats says only what was delivered. The answer delivers the refusal's run sessions, so no
+  // format the reading would have emitted is recorded; what the review's reports stated (a symptom stop among it) is recorded as the clinical
+  // route records it, and every row the record already held is kept as it was.
+  if(Array.isArray(reread.runFormatRecord))out.runFormatRecord=deliveredOnly(reread.runFormatRecord,Array.isArray(base.runFormatRecord)?base.runFormatRecord:isObj(review)&&Array.isArray(review.runFormatRecord)?review.runFormatRecord:[]);
+  return freeze({...out,authorityExpiry:marker(e,true)});
+ }
  return freeze({...base,authorityExpiry:marker(e,false)});
 }
+/** A record of formats without the format rows `held` did not already hold (the formats a reading emitted and no answer delivered). */
+const deliveredOnly=(record,held)=>{const was=new Set(held.filter(r=>isObj(r)&&r.fact===RUN_FORMAT_EMITTED).map(r=>r.eventId));return record.filter(r=>!(isObj(r)&&r.fact===RUN_FORMAT_EMITTED&&!was.has(r.eventId)));};
 /** The readings of an answer that are not the clinical route or the record: after the date they are the refusal's. */
 const READINGS=['runSessions','runFormat','runCalibration','runForecast','paceInsights','paceRevision','strengthExposure','updatedModel','qualityAssessment','weekEvidence'];
 

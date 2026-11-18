@@ -67,3 +67,54 @@ Qualquer `DIVERGED` reprova e volta ao Engineering, com a resposta anexada (`cor
 ## 6. Entrega
 
 Os logs vão para `audits/v1-core-safety-lifecycle-2026-11-18/results/device/`, sem Team ID, UDID, Apple ID nem caminhos pessoais. Junto vai um relatório curto: `IOS_REVALIDATION_REPORT.md`, com a decisão `IOS_REVALIDATED` ou `IOS_REVALIDATION_FAILED`, por critério.
+
+## 7. Closure-2 (2026-11-18): o que vale agora
+
+Este pacote passa a validar o freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-1**, sobre o candidato `219fb1c`, com os registros em `cfb32cb`. Ele substitui o candidato `430c493` dos §§1–6, que fica histórico. A branch é **`claude/v1-core-safety-closure-2`**: no §2, troque o `git checkout` por ela, depois que o Founder autorizar o push.
+
+| Arquivo | Mudança na closure-2 |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado sobre o freeze (41 módulos). O SHA está em `build-manifest.json`: `a34165db…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda; os resultados do motor são idênticos |
+| `Fixtures/core.json` | Regravado com duas jornadas novas (abaixo); as seis anteriores estão incluídas |
+| `Fixtures/j5.json`, `p16.json` | **Inalterados** (o `lab/oracle.mjs` deixa o diff vazio) |
+| `FocalTests.swift` | **Sem mudança.** O `testCoreSafetyLifecycle` lê as jornadas do `core.json` e confere os nomes e o número de passos |
+
+**Jornadas novas em `core.json`** (o critério é o do §4: `status`, `stable` e `persisted` iguais ao Node em todos os passos):
+- **`alert-b01r` (SSCTR-CORE-B-01-R):**
+  - plano A, depois reinício, depois o relato tardio de uma parada por sintoma numa revisão sem elegibilidade (ASK);
+  - ida e volta por JSON, revisão seguinte e correção tardia, ambas em ASK;
+  - duplicata e terceiro plano;
+  - triagem respondida depois da parada.
+
+  Esperado em Node: `PROPOSED KEEP PROPOSED ASK roundtrip KEEP ASK ASK PROPOSED KEEP KEEP`.
+- **`expiry-record` (QRE-CORE-R2-01):**
+  - plano que atravessa a data de revisão;
+  - sinal com parada por sintoma depois da data (`CLINICAL_HUMAN_REQUIRED`), mantido;
+  - ida e volta e a revisão seguinte.
+
+  O registro persistido não pode conter formatos não entregues.
+
+**Cobertura pedida pela missão, onde está:**
+
+| Cobertura | Onde |
+|---|---|
+| Persistência de alertas entre revisões | `alert-b01r` |
+| Reinício e identidade de sessões | `restart`, `alert-b01r` |
+| E-1 | `e1-ADVERSE`, `e1-HEAT` |
+| Expiração de autoridade | `expiry`, `expiry-record` |
+| Determinismo e locale | âncoras nos cinco idiomas e `localeCompareCalls` = 0 |
+| Race Forecast com uma e com duas provas | `forecast-one`, `forecast-two` |
+
+**Desempenho:** o benchmark Node `4c60915` × closure-2 dá mediana ×1,007, p95 ×1,011 e registro ×1,000 (`audits/v1-core-safety-closure-2-2026-11-18/bench/`). Pelo §5, o `PerformanceTests` físico **não** é repetido, a menos que o Founder peça.
+
+**Conferido no Windows** (só Node e o `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs` deixa J5/P16 byte-idênticos;
+- `focal-oracle.mjs` está determinístico (só o SHA muda);
+- `core-oracle.mjs` dá âncoras iguais e 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`.
+
+**O Swift não foi compilado.**
+
+**Limite declarado:** este pacote não muda a condição aberta **CORE-C2-F01**, o dimensionamento no reinício a partir de linhas substituídas. O Mac valida a equivalência entre runtimes, não a dose.

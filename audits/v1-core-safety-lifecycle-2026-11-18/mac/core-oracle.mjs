@@ -52,6 +52,27 @@ for(const [name,anchors] of [['forecast-one',[result('10K',3000,'2026-11-01')]],
  const r=recorder(),i=athleteA({weeks:12,id:'core-mac-'+name});i.athlete.performanceAnchors=anchors;r.onboard(i);
  for(let w=0;w<6;w++){const day=addDays(r.c.env.program.startDate,w*7+6);r.review('WEEKLY_REVIEW',at(day),{eligibility:ELIG(day),observations:liveSessions(r.c.env,w).map(s=>reportOf(r.c.env,s,{tag:'-'+w}))},'w'+w);}
  journeys.push({name,steps:r.steps});}
+// 5. Closure-2, SSCTR-CORE-B-01-R: plan A's symptom stop reported late after a restart, in a review with no eligibility (ASK); a round trip;
+//    the next review; a late correction; a duplicate; a third plan; the screen answered after the stop.
+{const id='core-mac-b01r',r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program,d0=addDays(p.startDate,6);
+ r.review('WEEKLY_REVIEW',at(d0),{eligibility:ELIG(d0),observations:liveSessions(r.c.env,0).map(s=>reportOf(r.c.env,s))},'a-w0');const a1=liveSessions(r.c.env,1).find(s=>s.sport==='RUN');
+ const restart=(after,tag)=>{const day=addDays(r.c.env.program.startDate,after),u={...athleteA({weeks:8,id}),asOf:day,startDate:addDays(day,3)};u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};r.restart(u,at(day,'10:00'));};
+ restart(18);const base=reportOf({program:r.c.env.program,presentation:{runSessions:{}},actualLedger:[]},liveSessions(r.c.env,0).find(s=>s.sport==='RUN'));
+ const stopped={...base,eventId:'late-stop',sessionId:a1.id,occurrenceDate:a1.date,actual:{completed:false,minutes:20,stop:{reason:'SYMPTOM'}}},d=addDays(r.c.env.program.startDate,1),d2=addDays(d,1);
+ r.review('WEEKLY_REVIEW',at(d,'07:00'),{observations:[stopped]},'ask');r.roundtrip();
+ r.review('WEEKLY_REVIEW',at(d2,'07:00'),{eligibility:ELIG(addDays(d2,-3))},'next');
+ r.review('WEEKLY_REVIEW',at(d2,'09:00'),{observations:[{...stopped,eventId:'late-stop-2',correctionOf:'late-stop',correctedAt:at(d2,'06:00'),actual:{...stopped.actual,minutes:21}}]},'corr');
+ r.review('WEEKLY_REVIEW',at(d2,'11:00'),{observations:[stopped]},'dup');
+ restart(4);const d3=r.c.env.program.startDate;r.probe('WEEKLY_REVIEW',at(d3,'07:00'),{eligibility:ELIG(addDays(d3,-9))},'third');
+ const d4=addDays(d3,1);r.review('WEEKLY_REVIEW',at(d4,'07:00'),{eligibility:ELIG(d4)},'screened');
+ journeys.push({name:'alert-b01r',steps:r.steps});}
+// 6. Closure-2, QRE-CORE-R2-01: across the review-by date, a sign with a symptom stop after the date (kept), a round trip, the next review.
+{const r=recorder(),i=athleteA({weeks:8,id:'core-mac-x2'});i.asOf='2027-04-17';i.startDate='2027-04-19';i.athlete.eligibility=ELIG('2027-04-17');i.athlete.goals.run.event.date=addDays('2027-04-19',8*7-1);r.onboard(i);
+ const day0='2027-04-25';r.review('WEEKLY_REVIEW',at(day0,'20:00'),{eligibility:ELIG(day0),observations:liveSessions(r.c.env,0).filter(s=>s.date<=day0).map(s=>reportOf(r.c.env,s))},'w0');
+ const s=liveSessions(r.c.env,1).find(x=>x.sport==='RUN'&&x.date<='2027-05-02');
+ r.review('NOT_FEELING_100',at('2027-05-02','08:00'),{...notFeeling100WithSign('2027-05-02'),observations:[{...reportOf(r.c.env,s),eventId:'exp-stop',actual:{completed:false,minutes:12,stop:{reason:'SYMPTOM'}}}]},'sign-stop');
+ r.roundtrip();r.probe('WEEKLY_REVIEW',at('2027-05-03','08:00'),{eligibility:ELIG('2027-05-01')},'next');
+ journeys.push({name:'expiry-record',steps:r.steps});}
 const input={journeys,anchors:['b','aa','h','ch','Z','_x','a-1','a_1'].map(id=>({id,prescription:{modality:'RUN',family:'EASY',durationMinutes:30}})),locales:['pt-BR','en-US','da-DK','nb-NO','cs-CZ']};
 vm.runInThisContext(fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'));
 const expected=JSON.parse(globalThis.__corefocal({core,contract,value},JSON.stringify(input)));
