@@ -1,0 +1,142 @@
+{
+  "record": "SSCTR_F01_R1",
+  "closes": ["SSCTR_C2_R1 condition C2-C1 / CORE-C2-F01 (kept as history), for synthetic use and for the integration gate, under conditions C-F01-1..4"],
+  "date": "2026-11-18",
+  "kind": "focal review of a candidate authored by others (CORE-C2-F01 fix)",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "model": "claude-opus-5-5", "instance": "fresh instance launched by this mission's Chief; author of none of the fix, tests or records; closure-2 known only through SSCTR_C2_R1 and QRE_C2_R1", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "clinicalJudgment": false, "delegated": false},
+  "literature": {"needed": false, "reason": "no item decides a sporting rule, dose, threshold or progression; the question is which record rows count as one execution under the decided C-Q08-1 (SSCTR-V1CP-DECISION-r1#Q08)", "access": "WebSearch/WebFetch available as deferred tools, not loaded or used"},
+  "target": {
+    "candidate": "576e40cef948c51a65625ad5fa69679c403fd276",
+    "base": "d92aa8893911e2ee6e32963585d5b5f19a802be7",
+    "recordsCommit": "f46ee7c91cc5ba0c4de8b1da0d917034a391857a",
+    "recordsCommitChangesCoachingCore": false,
+    "runtimeDiff": "CoachingCore/src/v1-f08.mjs only: executed() adds superseded!==true; new once(); C-Q08-1 runRows read once(rows). The relinked iOS bundle carries the same lines only.",
+    "workingTreeNote": "at review time the worktree held uncommitted edits by another author: +1 line in CANDIDATE.md section 5 (suite count on 576e40c) and the Mac README; judged bytes are the committed ones",
+    "sha256": {
+      "CoachingCore/src/v1-f08.mjs@576e40c": "a06c580c2d4f9c64287af3105c4cb471913b66cbd38605c0b7d24cc5bdd4d68b",
+      "CoachingCore/src/v1-f08.mjs@d92aa88": "6fdcae951d6b8efd7159e9c21311fc0663822c436161b0566e679d49f5b483bb",
+      "CoachingCore/test/v1core-c2f01-restart-sizing.test.mjs": "e1a3512c378e5c7de093c8b26822cff4e04a5c7fc7675507438adac41d89e0b8",
+      "CoachingCore/test/v1core-c2f01-freeze.test.mjs": "bb339903a9617c48f2c00d8657ee48d7acb409ab90ef77c538a8124b0e494353",
+      "audits/v1-aif-p0-jsc-2026-11-17/ios/Sources/P0Host/Resources/coachingcore-p0.js": "7953fec07741351172aa1863d12c2e6a1324810f11bcaec222a6de2fca24e114",
+      "audits/v1-core-c2-f01-2026-11-18/CANDIDATE.md@f46ee7c": "b2b0190be4ea466325ccd948fb146e46af80f92c5e0592022a1433198e1844fb",
+      "audits/v1-core-c2-f01-2026-11-18/CANDIDATE.md@workingCopy": "bc8a92a9870e80d689681ce95ef06dbac737a432b58f8a988219aaecd083296c",
+      "audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json": "a3dfb93128e28ad03a7397000b6861986ed26a4828f2f1e2cb86cdb152cd2006",
+      "scratch/ssctr-f01-r1-7c3a/probe-unit.mjs": "37b16cc82b8f90869097a60e96d1e44bb21930d96c914acd6eaf8edf696ea756",
+      "scratch/ssctr-f01-r1-7c3a/probe-e2e.mjs": "8c80f738a33c037ce39fa592fc1e6c93485372443ef498f6facb2c0e6ba46d49"
+    },
+    "scratchRoot": "C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/a1e30549-2d0a-4d67-ba6e-d90e2d830854/scratchpad/ssctr-f01-r1-7c3a"
+  },
+  "commands": [
+    "node --test test/v1core-c2f01-restart-sizing.test.mjs (worktree): 18/18 pass",
+    "evidence/red-on-d92aa88.txt read: tests 18, pass 4, fail 14 (matches CANDIDATE section 4)",
+    "node probe-unit.mjs (scratch): restartIntake base vs candidate, P1-P8",
+    "node probe-e2e.mjs <worktree> and <base-d92aa88> (scratch): restartProgram, quality runs of weeks 3-6 corrected to not done / half / +20 min, each with a direct-report control",
+    "no npm run verify, no verify-r*; no runtime, test or queue file edited; only these two records written"
+  ],
+  "probeResults": {
+    "unit": {
+      "P1_onlyExecutionCorrectedToNotDone": {"base": "bounded 13 min/1 day, pause 3 d", "candidate": "unbounded 600/7, pause null", "directNotDoneControl_bothTrees": "unbounded 600/7, pause null"},
+      "P2_lastOfFourCorrectedToNotDone": {"base": "50 min/1 day, pause 3 d", "candidate": "38 min/1 day, pause 10 d (1 week)"},
+      "P3_onlyInWindowRunNotDone_oldExecution40d": {"base": "13/1, pause 3 d", "candidate": "0/0, pause 40 d (5 weeks)"},
+      "P4a_correction50to90": {"base": 73, "candidate": 60, "control": 60},
+      "P4b_correction50to20": {"base": 55, "candidate": 43, "control": 43},
+      "P5_sameEventIdDifferentMinutes": {"base": 70, "candidate": "50 or 58 by listing order"},
+      "P6_staleUnflaggedCopyOfReplacedOriginal": {"base": 75, "candidate": 63, "inForceControl": 50},
+      "P7_crossSportEventIdCollision": {"base": 50, "candidate": 38, "distinctIdControl": 50},
+      "P8_trainedAfter": "not exercised: hand-built readiness fact not a valid F08 fact, HOLD on both trees; judged by code reading"
+    },
+    "e2e_week0Runs": {
+      "noCorrection": {"base": [50,50,50,100], "candidate": [50,50,50,100]},
+      "notDone": {"base": [45,45,45,100], "candidate": [40,40,40,95], "directControl": [40,40,40,95]},
+      "half": {"base": [50,50,50,100], "candidate": [40,40,40,95], "directControl": [40,40,40,95]},
+      "plus20": {"base": [65,65,65,100], "candidate": [55,55,55,100], "directControl": [55,55,55,100]}
+    }
+  },
+  "verdict": "ACCEPT_WITH_CONDITIONS",
+  "blocking": false,
+  "correctionCycleNeeded": false,
+  "items": [
+    {
+      "id": "SSCTR-F01-R1-1",
+      "question": "Is 'only the rows in force, each event once' the reading of 'what the record shows executed' for C-Q08-1, the record pause and trainedAfter?",
+      "disposition": "ACCEPTED",
+      "evidenceStatus": "definitional reading of decided rule C-Q08-1; consistent with r6-provenance supersededRows ('never accepted, counted or bound again') and with every other V1 reader; no scientific claim added",
+      "rationale": [
+        "A replaced row is the record's history of a report, not a second session; counting it credits training the record shows happened at most once.",
+        "Correction to not done: no execution remains; the pause lengthens (P2 3->10 d; P3 3->40 d) and the bound lowers; the e2e equals the direct not-done control. A longer record pause can only make C-Q08-2 start lower or ask a reason, never prescribe more.",
+        "Corrections up or down: only the value in force counts (P4a 60, P4b 43, e2e 55 / 40, each equal to its direct control). An upward correction in force legitimately raises the bound above the uncorrected record; its authorship is SEC-CORE-03 (C-F01-3).",
+        "trainedAfter: a post-declaration session corrected to not done no longer counts as training after the declaration, so the declaration stands for the stop; judged by code."
+      ]
+    },
+    {
+      "id": "SSCTR-F01-R1-2",
+      "question": "Is the dose change confined to removing double credit, never reducing where distinct valid executions exist and never raising?",
+      "disposition": "ACCEPTED_WITH_FINDING",
+      "rationale": [
+        "On every engine-produced record tested, candidate = in-force control and candidate <= base: p14 60->50 (all four shapes); AIF 40/40/40+80 -> 25/25/25+60 (= control); x2/x3, device, late, reordered, A->B->C; my e2e for not done, half, +20.",
+        "No reduction where distinct executions exist: unit 8 (eight distinct, three orders), unit 10, unit 11; once() never lets a non-execution occupy an eventId."
+      ],
+      "findings": [
+        {
+          "id": "SSCTR-F01-R1-F01",
+          "severity": "non-blocking; pre-existing, now reachable through a correction",
+          "statement": "C-Q08-1 bounds only when rows.some(executed); the record pause is read only from an executed session. When a correction removes the record's last execution in force, the stated exposure stands unbounded and no pause is read (P1: 600/7 vs base 13/1 via the phantom row).",
+          "notCreatedByFix": "identical on both trees for the same record reported not done directly (P1-control); worst case = the intake self-report, the accepted cold-start envelope (HQ-R6-COLD-START)",
+          "whyAFinding": "C-Q08-1 reads 'in the period it covers': a record holding this athlete's reported sessions in the window, all not done, shows zero, not unknown; asymmetric with P3 (one 40-day-old execution -> bound 0/0, 5-week pause)",
+          "owner": "next Core mission; reading to choose (bound to the window, or ASK confirmation against 'the record shows no training') needs its own SSCTR review",
+          "condition": "C-F01-1"
+        }
+      ],
+      "residuals": [
+        {
+          "id": "R-F01-2",
+          "class": "record custody / integrity (QRE, Security), not a sporting rule",
+          "statement": "restartIntake reads the record as given. Self-contradicting records the engine does not produce: P5 same eventId with different minutes (first listed wins: 50 or 58; base 70); P6 a stale unflagged copy of a replaced original beside its correction (63 vs control 50; base 75; still F01-class double credit); P7 strength and run sharing an eventId (run dropped: 38 vs 50). Each <= base. once() covers identical copies only, not a union of pre- and post-correction snapshots.",
+          "condition": "C-F01-2"
+        }
+      ]
+    },
+    {
+      "id": "SSCTR-F01-R1-3",
+      "question": "Does it close C2-C1 / CORE-C2-F01 for synthetic use and for the integration gate?",
+      "disposition": "CLOSED_WITH_CONDITIONS",
+      "rationale": [
+        "C2-C1 closing test met: restartProgram from the stored record sizes every session as from the same record without its superseded rows (test e2e 1, all four probe shapes); RED 14/18 on base, GREEN 18/18 on candidate.",
+        "C2-C1 (i) discharged; (ii) the integration ban on restartProgram from records holding superseded rows is lifted, subject to C-F01-2; (iii) discharged.",
+        "C2-C2 and C2-C3 untouched and open; SEC-CORE-03 open (C-F01-3); QRE judgment separate (C-F01-4)."
+      ]
+    },
+    {
+      "id": "SSCTR-F01-R1-4",
+      "question": "Is clinical-screen authority unchanged?",
+      "disposition": "UNCHANGED",
+      "rationale": [
+        "Every early return of restartIntake (HOLD for unreadable/foreign/later rows; clinical continuation; clinical break after the latest readiness; standing hold) is evaluated before the first use of executed() or once(); the later-dated count still includes superseded rows.",
+        "Unit 12 passes: CLINICAL_HUMAN_REQUIRED first with or without replaced rows; an adverse response on a replaced row stays in the returned record (clone of the record as given); restartIntake never read responses for sizing.",
+        "No CLINICAL_HUMAN_REQUIRED, HOLD, C-Q08-2/3, readiness, restriction or not-ready-sport path changed; the diff is the five lines named in target.runtimeDiff."
+      ]
+    }
+  ],
+  "conditions": [
+    {"id": "C-F01-1", "binding": "non-blocking; named open in readiness and integration reports", "owner": "next Core mission + SSCTR review", "text": "SSCTR-F01-R1-F01: decide a C-Q08-1-consistent reading for a record holding this athlete's reported sessions in the 28-day window but no execution in force (bound to the window, or ASK confirmation); until then the worst case stays the accepted self-report cold start."},
+    {"id": "C-F01-2", "binding": "binding for integration (custody); not a sporting blocker for synthetic use", "owner": "QRE + Security", "text": "R-F01-2: the restart receives the record exactly as the engine last returned it, never a union of stored snapshots; QRE/Security decide whether restartIntake should HOLD a self-contradicting record (an eventId both superseded and live, or reused with different facts), as it already HOLDs unreadable rows."},
+    {"id": "C-F01-3", "binding": "event-based", "owner": "whoever closes SEC-CORE-03", "text": "When SEC-CORE-03 (author of a correction) closes, re-read restart sizing together with C2-C2: corrections by another voice that raise minutes or remove an execution."},
+    {"id": "C-F01-4", "binding": "required", "owner": "QRE", "text": "QRE gate on 576e40c for minimality, coverage of cases 1-12, the FREEZE-1 successor and v1core-freeze.test.mjs:11 successor, and Mac evidence; this record does not substitute for it."},
+    {"id": "carried", "text": "C2-C2, C2-C3, C-C3, C-C4, C-C5 (real HealthKit), A-C1, A-C2, A-C3, A-C5 carried unchanged."},
+    {"id": "recommendation", "binding": "non-binding", "text": "When C-F01-1 is decided, revise unit 4-5 'lone' to pin the decided reading rather than only equality with the control; its current implicit 600/7 is an as-if check, not an SSCTR approval of the unbounded reading."}
+  ],
+  "proposedHumanRevalidation": [
+    {"queue_id": "HQ-CORE-F01-SSCTR-A", "status": "PROPOSED_ONLY_NOT_APPENDED", "decision_id": "SSCTR_F01_R1#SSCTR-F01-R1-1/2", "scope": "Restart reads only executions in force, each event once, for C-Q08-1, the record pause and trainedAfter; a correction to not done leaves no execution", "prescriptiveImpact": true, "linked": ["HQ-V1CP-SSCTR-Q08", "HQ-CORE-C2-SSCTR-A"]},
+    {"queue_id": "HQ-CORE-F01-SSCTR-B", "status": "PROPOSED_CONDITIONAL", "decision_id": "future decision on C-F01-1", "scope": "Reading of a restart record with reported sessions but no execution in force", "prescriptiveImpact": true, "linked": ["HQ-CORE-F01-SSCTR-A"]}
+  ],
+  "gateStatus": "none closed by this record",
+  "publicationStatus": "none",
+  "v1Authority": "NO (synthetic and shadow standing only)",
+  "reReviewTriggers": [
+    "any change to restartIntake, executed() or once()",
+    "the C-F01-1 decision",
+    "the C-F01-2 custody decision",
+    "closure of SEC-CORE-03",
+    "a real-athlete or integration finding on restart sizing"
+  ]
+}
