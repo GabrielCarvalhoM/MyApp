@@ -2,7 +2,7 @@
 
 **Mission:** Founder, 2026-11-18 (closure-2, a new mission; not a second cycle of the closure). Chief: Opus 5.5, effort high, Windows.
 **Line:** branch `claude/v1-core-safety-closure-2` (worktree `.claude/worktrees/v1-core-safety-closure-2`), from `claude/v1-core-safety-lifecycle` @ `4c60915`. Nothing pushed or merged.
-**Candidate commit:** the commit that adds this file (named in the review dispatch).
+**Candidate commit:** `219fb1c` (sources and tests). The records after it change no source or test.
 **Scope:** only the items the closure left open: SSCTR-CORE-B-01-R, QRE-CORE-R2-01, QRE-CORE-R2-02 / SSCTR C-C1 and C-C2, SEC-CORE-14. Nothing else in the engine changed. There are no changes to dose, progression, periodization or any sporting parameter. AM/PM, HealthKit, SwiftUI and backend are untouched, and Pace Revision stays off.
 
 ## 1. Source changes (3 files, +27/−7)
@@ -106,7 +106,7 @@ This mission forbids dose changes, and the defect predates the line, so it is no
 
 ## 6. Evidence
 
-- **Full suite:** ‹filled in›.
+- **Full suite on `219fb1c`** (`cd CoachingCore && node --test`, Node 24, worktree, 326 s): **1690 tests, 1667 pass, 23 fail**. The 23 are exactly the historical tests of §3, the same list as on `4c60915` (1661/1638/23), so no new failure. Every one of the 29 tests this mission adds passes, `v1core-freeze` included.
 - **J5/P16:** P0's `lab/oracle.mjs` on this tree leaves the git diff empty (byte-identical).
 - **Node benchmark, `4c60915` vs this tree** (`bench/bench.mjs`, 5×8 reviews, interleaved): median ×1.007, p95 ×1.011, record bytes ×1.000.
 - **Preservation:** `node scripts/v1core-freeze.mjs --preserved` (see §3).
