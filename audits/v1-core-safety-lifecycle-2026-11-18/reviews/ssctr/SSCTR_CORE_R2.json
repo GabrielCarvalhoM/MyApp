@@ -1,0 +1,43 @@
+{
+  "record": "SSCTR_CORE_R2",
+  "supersedes": "SSCTR_CORE_R1 (kept)",
+  "date": "2026-11-18",
+  "kind": "narrow recheck, the one correction cycle",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "model": "claude-opus-5-5", "instance": "same instance as R1 (recheck of its own findings; not independent of R1)", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "clinicalJudgment": false},
+  "target": {
+    "commit": "430c493770cb1149555862078c12fbb07569a336",
+    "recordsCommit": "6f747f2bedbb3f29b4a4c1782f3d790103926261",
+    "srcAndTestIdenticalBetweenThem": true,
+    "sha256": {
+      "CoachingCore/src/v1-safety-index.mjs": "1f813cb000e9451d5cff45ea79ad6b81311be90de6a991a52b657fd740ca1c7f",
+      "CoachingCore/src/r6-provenance.mjs": "3ef1dadfafb7d066693fcdb2e7b7ba4f9d1708ef1e047de4831267182ed0180b",
+      "CoachingCore/src/v1-run-format-index.mjs": "b7ab31191ad6888821fd57b3ce10b486ce5b4b425120af54fb1a4a4ef2cfa5bc",
+      "CoachingCore/src/r6-adaptation.mjs": "c82c5e113f2cdf5a97954a6ce3eb68588a6c438542af6f6c6b28a851a26857ee",
+      "CoachingCore/src/r6-index.mjs": "a49388b30ea8bdaad2ee1557efd2970a759a3674ee4f4bc67cb3c88e4d363550",
+      "CoachingCore/test/v1core-cycle1.test.mjs": "ecad97943478680b065fd5378909a20a57606a3cd837cc4afb9a0dc9d9fd8c87",
+      "audits/v1-core-safety-lifecycle-2026-11-18/CYCLE1.md": "219f8cfbb8ee5221a71b0b3358a322e983459d38b803cabd47698ddc6a492436",
+      "audits/v1-core-safety-lifecycle-2026-11-18/REGRESSION.md": "34b696ad47cdd9d7a16cb8af87f3b6d7db99ab379bf6aaf2f98821b5cacaae7f"
+    }
+  },
+  "verdict": "NOT_READY",
+  "blocking": ["SSCTR-CORE-B-01-R"],
+  "items": [
+    {"id": "a", "subject": "post-expiry precedence", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "WELL_SUPPORTED",
+     "r2": {"A-C4": "CLOSED (status pinned; referenceState.pending CLINICAL_HUMAN_REQUIRED observed, pinning recommended)", "QRE-CORE-06": "no change to (a): clinical route, wording, recorded facts and referenceState unchanged; screen REQUIRED kept from the refusal's runFormat; no updatedModel after the date (conservative)"},
+     "carriedConditions": ["A-C1", "A-C2", "A-C3", "A-C5"]},
+    {"id": "b", "subject": "restart identity / SSCTR-CORE-B-01", "disposition": "REVISE", "evidenceStatus": "WELL_SUPPORTED (closed paths); residual shown by execution",
+     "closedPaths": ["late report with eligibility", "next review", "late correction", "after restore", "third plan"],
+     "findings": [{"id": "SSCTR-CORE-B-01-R", "blocking": true,
+       "text": "a symptom stop for a session the plan in force does not hold, sent in a review the engine does not accept (e.g. no eligibility, ASK), is named in that answer only and leaves no stop fact; the next review is NOT_RAISED_BY_THIS_EXTENSION, while the same stop on a planned session keeps a fact and stays REQUIRED (base 16577b6 also gave REQUIRED). Cause: 'elsewhere' feeds only 'requested', not the record of report facts. The cycle test's no-eligibility case is conditional and does not check the next review.",
+       "required": "such a stop leaves a stop fact like a planned session's, whether or not the review is accepted; result test: the next review asks the screen until a screen dated after the stop answers it; no new criterion"}]},
+    {"id": "historical-test", "subject": "SSCTR-RWS-B-01: the signal survives time… (v1rws-fix-forward.test.mjs:316)", "disposition": "APPROVE",
+     "text": "accept the changed expectation: withRow(elsewhere).status NOT_RAISED_BY_THIS_EXTENSION -> REQUIRED (only element 4; other-athlete row still NOT_RAISED). With only that expectation changed, the whole test passes on 430c493 (scratch copy). The comment line must be restated with it."},
+    {"id": "c", "subject": "E-1 as-if re-merge and RWS consequence", "disposition": "APPROVE_WITH_CONDITIONS", "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+     "r2": {"C-C1": "as-if acceptance CONFIRMED after QRE-CORE-01 (10/10 combinations equal as-if and no-correction; screen kept; heat/walk as-if passes; conflict resolution inherits the other voice, never by arrival order). Condition stays open: executable or per-scenario restatement of the 16 tests (FINAL_READINESS_REPORT.md not yet present)",
+            "C-C2": "remains a condition before freeze, non-blocking: behavior verified by probe (legacy no-parts and malformed-part rows withheld REPORT_NOT_CARRIED after a device correction) but no RWS-level test pins it"},
+     "carriedConditions": ["C-C3", "C-C4", "C-C5"]},
+    {"id": "d", "subject": "RFC-NUMERIC-1", "disposition": "APPROVE_WITH_CONDITIONS", "r2": "not rechecked; unchanged from R1", "carriedConditions": ["D-C1", "D-C2"]}
+  ],
+  "proposedHumanRevalidation": [{"id": "HQ-CORE-SSCTR-C", "item": "c", "appended": false}],
+  "gateStatus": "no gate closed", "publicationStatus": "not published"
+}
