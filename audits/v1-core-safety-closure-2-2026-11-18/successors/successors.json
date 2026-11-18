@@ -1,0 +1,19 @@
+{
+ "files": {
+  "v1core-successor-fix-forward.test.mjs": {
+   "historical": "v1rws-fix-forward.test.mjs",
+   "tests": [
+    {
+     "title": "SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; only the screen answered after the stop clears it",
+     "why": "SSCTR_CORE_R2 §2 ACCEPTED: element 4 (withRow(elsewhere).status) NOT_RAISED_BY_THIS_EXTENSION -> REQUIRED (SSCTR-CORE-B-01); its comment restated with it",
+     "substitutions": [
+      [" A row of a session the plan does not name is bound to none: its stop\n // is read from the report fact, which names no plan (a record carried into a new plan keeps its facts).",
+       " A row of a session the plan does not name is bound to none: its stop\n // is read on the row too (SSCTR-CORE-B-01, accepted in SSCTR_CORE_R2 §2: an earlier plan's session after a restart) and from the report fact,\n // which names no plan (a record carried into a new plan keeps its facts). Another athlete's row still asks nothing."],
+      ["'NOT_RAISED_BY_THIS_EXTENSION','NOT_RAISED_BY_THIS_EXTENSION',['a-session-of-another-plan']]",
+       "'NOT_RAISED_BY_THIS_EXTENSION','REQUIRED',['a-session-of-another-plan']]"]
+     ]
+    }
+   ]
+  }
+ }
+}

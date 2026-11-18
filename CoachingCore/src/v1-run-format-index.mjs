@@ -358,13 +358,19 @@ export function evaluateProgram(program,review,options={}){
  // A symptom stop a report of this request declares is named in every answer, from the request alone when nothing of it is recorded.
  // V1 Core Safety & Lifecycle (SSCTR-CORE-B-01): so is a symptom stop a report declares for a session the plan in force does not hold (an earlier
  // plan's, after a restart): its stop is read, nothing else of it.
- const elsewhere=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM').map(o=>o.sessionId);
+ // Closure-2 (SSCTR-CORE-B-01-R): that stop is also kept as a stop fact of this record (the stop only: no report in force, no distance, no
+ // credit), under the rule a planned session's stop follows (`read` and `kept` below): whenever the engine accepts the review's instant, an
+ // ASK as well, so the next review asks for the screen until a screen answered after it. Under an instant the engine refuses, nothing is kept
+ // for any session, as before. Only an id a plan could have made is recorded (no longer than a report id may be): a longer one is named in
+ // the answer alone, so a request cannot grow the record with ids no plan holds.
+ const elsewhereReports=list(input.observations).filter(o=>isObj(o)&&typeof o.sessionId==='string'&&!planned.has(o.sessionId)&&(o.athleteId===undefined||o.athleteId===null||o.athleteId===program.athleteId)&&isObj(o.actual)&&stopOf(o.actual,V)?.reason==='SYMPTOM');
+ const elsewhere=elsewhereReports.map(o=>o.sessionId),elsewhereStops=elsewhereReports.filter(o=>o.sessionId.length<=128).map(o=>reportFactOf(o,V,{fromDevice:fromDevice(o)})).filter(f=>f?.stop?.reason==='SYMPTOM').map(stopOnly);
  const requested=[...new Set([...received.filter(f=>f.stop?.reason==='SYMPTOM').map(f=>f.sessionId),...elsewhere])].sort();
  const engineOpts={...opts,[READS_COMPLETION]:readerOf(fr,V)},carriedEvidence=Array.isArray(review.runEvidenceRecord)?clone(review.runEvidenceRecord):[];
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);
  // under an instant the engine refused it is read and not kept.
- const read=asOf?appendReportFacts(formats,received,{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
+ const read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
  // What an answer is about, with the arguments v1-run-index.mjs gave the calibration of the same result.
  const contextOf=(b,record)=>({program:validProgram(b.proposal)?b.proposal:program,ledger:Array.isArray(b.actualLedger)?b.actualLedger:Array.isArray(input.actualLedger)?input.actualLedger:[],formats:record,historyRecord:history,asOf,weekIndex:review.weekIndex,
   preference:preferenceOf(review.runExpression),engineStatus:b.status,eligibility:review.eligibility??null,hold:['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(b.status),requested,opts,ext,on});
@@ -380,7 +386,7 @@ export function evaluateProgram(program,review,options={}){
    // A report that cannot be read is no execution, but a stop it declares was said: on a review the engine accepted, the stop is kept as a
    // fact of this record, though the report itself is not recorded. Nothing is kept when the records sent do not hold together (the HOLD
    // above), or under an instant the engine did not accept. In every case the screen is named at once, in the answer (SEC-RWS-A-05).
-   const kept=lost.length||refused(base)?formats:appendReportFacts(formats,received.filter(f=>f.stop).map(stopOnly),{athleteId:program.athleteId,recordedAt:asOf},V).record;
+   const kept=lost.length||refused(base)?formats:appendReportFacts(formats,[...received.filter(f=>f.stop).map(stopOnly),...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record;
    return held({...shell,runEvidenceRecord:carriedEvidence},'NOT_APPLICABLE','NO_DECISION',kept);
   }
   notes={notRecorded:unknownNew.map(o=>({sessionId:o.sessionId??null,eventId:o.eventId??null,reason:'UNKNOWN_RUN_FORMAT'}))};

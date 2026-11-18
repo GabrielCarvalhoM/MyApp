@@ -1,0 +1,283 @@
+{
+ "files": {
+  "v1core-successor-rfc-evidence.test.mjs": {
+   "historical": "v1rfc-evidence.test.mjs",
+   "prelude": [
+    "// closure-2 as-if (SSCTR C-C1): what a scenario of `harder` reads, event ids aside (the row in force after a correction carries the correction's",
+    "// id, the control the first report's): the row's facts and answers, the execution, the run formats' withholding, the insight, the credits, the",
+    "// forecast and the calibration (its hash covers the ids, so its content is compared instead; so is the insight's `id`, a digest of the voting",
+    "// sessions' event ids, v1-pace-insights.mjs).",
+    "const sansIds=v=>JSON.parse(JSON.stringify(v,(k,y)=>k==='eventId'?undefined:y));",
+    "const asIfReading=m=>sansIds({rows:m.seen.map(id=>({actual:m.t.row(id).actual,response:m.t.row(id).response})),executions:m.seen.map(id=>m.r.runSessions[id].execution),withheld:m.r.runFormat.paceEvidenceWithheld.filter(x=>m.seen.includes(x.sessionId)),insight:{...insight(m.r),id:null},credits:creditsOf(m.r,m.seen),forecast:m.r.runForecast,calibration:{...m.r.runCalibration,hash:null}});"
+   ],
+   "tests": [
+    {
+     "title": "adherence is not pace evidence: a completed session the run formats withhold is credited whole and votes in nothing (E-01)",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: E-1 fixed, the athlete's correction is re-merged with the watch's report still in force and the device's re-sync with the athlete's; every reading is restated as the direct merge's (the athlete's first report stating the same, no correction) or the merged row's before the re-sync, checked by an appended as-if equality",
+     "substitutions": [
+      ["for(const [how,more,word] of [['plainly',{},'REPORT_NOT_CARRIED'],['listing a recording',{segments:[{distanceKm:4,measurement:'GPS'}]},'REPORT_NOT_CARRIED'],['declaring with a failure reason',{declared:{distanceKm:9,reason:'SIGNAL_LOSS'}},'REPORT_NOT_CARRIED']]){",
+       "// closure-2 as-if: the athlete's correction is re-merged with the watch's report still in force, so each word is the direct merge's (the\n // athlete's first report stating the same, no correction; checked at the end): none for a plain restatement (the flagged row is not\n // comparable), the further recording, the corrected measurement.\n for(const [how,more,word] of [['plainly',{},null],['listing a recording',{segments:[{distanceKm:4,measurement:'GPS'}]},'SEVERAL_RECORDINGS'],['declaring with a failure reason',{declared:{distanceKm:9,reason:'SIGNAL_LOSS'}},'CORRECTED_MEASUREMENT']]){"],
+      ["the row in force is the athlete's correction alone, by time, with a work pace and no distance;\n   // the watch's report still stands and is not on it. The reading says so in `paceWithheld`; `paceEvidence` says nothing (null).",
+       "(closure-2 as-if) the row in force is the athlete's correction re-merged with the watch's report,\n   // which still stands: by time, with a work pace and the watch's flagged distance, as the direct merge. `paceEvidence` says nothing (null)."],
+      ["[`app-${id}-v2`,false,{paceSecondsPerKm:PACE},'TIME',true,null,word],how);",
+       "[`app-${id}-v2`,true,{paceSecondsPerKm:PACE},'TIME',true,null,word],how); // closure-2 as-if: the watch's distance is on the row, as on the direct merge"],
+      [".map(x=>x.reason),Array(4).fill(word),how);",
+       ".map(x=>x.reason),word===null?[]:Array(4).fill(word),how); // closure-2 as-if: a plain restatement withholds nothing, as the merged control"],
+      ["Array(4).fill(['PACE_EVIDENCE_WITHHELD',word]),'INFORMATIVE_ONLY'],how);",
+       "word===null?Array(4).fill(['NOT_COMPARABLE',undefined]):Array(4).fill(['PACE_EVIDENCE_WITHHELD',word]),'INFORMATIVE_ONLY'],how); // closure-2 as-if: plainly, excluded as the merged control is (not comparable)"],
+      ["// The same when the device corrects its own part of a merged row (the shape of QRE-RWS-D-01): the row no longer says what the athlete said.",
+       "// The same when the device corrects its own part of a merged row (the shape of QRE-RWS-D-01). closure-2 as-if: the device's re-sync is\n // re-merged with the athlete's report still in force; the row says what the athlete said and reads as the merged row before the re-sync\n // (checked below): with the watch's good distance it is comparable and votes, as that control does. Each session is adherence all the same."],
+      ["[0,Array(4).fill(['PACE_EVIDENCE_WITHHELD','REPORT_NOT_CARRIED'])]);",
+       "[4,[]]); // closure-2 as-if: the merged control's votes and exclusions (REPORT_NOT_CARRIED was the retirement of the merged row)"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): every correction above reads as the direct merge of the corrected report with the watch's report still in force",
+      " // (the athlete's first report stating the same beside, no correction), and the device's re-sync as the merged row before it: the row's facts",
+      " // and answers, the execution, the withholding word, the insight, the credits, the forecast and the calibration, event ids aside.",
+      " for(const [how,more] of [['plainly',{}],['listing a recording',{segments:[{distanceKm:4,measurement:'GPS'}]}],['declaring with a failure reason',{declared:{distanceKm:9,reason:'SIGNAL_LOSS'}}]])assert.deepEqual(asIfReading(of(how,{watch:POOR,more})),asIfReading(of('as-if '+how,{watch:POOR,first:more})),how);",
+      " assert.deepEqual(asIfReading(resync),asIfReading(of('as-if resync',{watch:GOOD})),'the re-sync');"
+     ]
+    },
+    {
+     "title": "LIMIT, open (hard gate E-1 of a real integration)",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: this test pinned the defect E-1 itself; restated as closed: the athlete's adverse answer stays on the row and nothing is withheld, as on the merged row before the re-sync (appended as-if equality); no session votes, now on the athlete's answer",
+     "substitutions": [
+      ["LIMIT, open (hard gate E-1 of a real integration): a device re-sync sent as a correction erases the athlete\\'s answers from the engine\\'s row",
+       "LIMIT CLOSED (hard gate E-1 of a real integration, closure-2): a device re-sync sent as a correction keeps the athlete\\'s answers on the engine\\'s row, as the merged row before it"],
+      ["// The athlete reports an adverse recovery; the device then corrects its own report of the same run. The frozen engine retires the merged row",
+       "// The athlete reports an adverse recovery; the device then corrects its own report of the same run. closure-2: the engine no longer retires\n // the merged row (E-1 fixed: the correction is re-merged with the reports still in force). Historically: the frozen engine retired the merged row"],
+      ["[`dev-${id}-v2`,'UNKNOWN','REPORT_NOT_CARRIED']);}",
+       "[`dev-${id}-v2`,'ADVERSE',null]);} // closure-2 as-if: the athlete's answer stays on the row and nothing is withheld, as on the merged row before the re-sync"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): the row after the re-sync reads as the merged row before it, the athlete's adverse answer included: the",
+      " // execution, the insight (which leaves the four sessions out on the athlete's answer), the credits, the forecast and the calibration.",
+      " assert.deepEqual(asIfReading(m),asIfReading(of('adverse merged',{watch:GOOD,response:{recovery:'ADVERSE'}})));",
+      " assert.deepEqual(insight(m.r).excluded.map(x=>x.reason),Array(4).fill('RESPONSE_NOT_COMPATIBLE'));"
+     ]
+    }
+   ]
+  },
+  "v1core-successor-rws-e01.test.mjs": {
+   "historical": "v1rws-e01.test.mjs",
+   "prelude": [
+    "// closure-2 as-if (SSCTR C-C1). The direct merge of the athlete's corrected report with the other reports in force: the athlete's first report",
+    "// states what the correction adds and no correction is sent (the same options otherwise).",
+    "const DIRECT={},sansIds=v=>JSON.parse(JSON.stringify(v,(k,y)=>k==='eventId'?undefined:y));",
+    "const directMerge=(how,o={})=>DIRECT[how+JSON.stringify(o)]??=quality(null,{...o,first:{...(o.first??{}),...EXTRA[how]}});",
+    "/** What the readers of a scenario read, event ids aside: each row in force (its facts, its reports' reading, the pace it withholds), the run formats' withholding, the executions, the calibration of the entry point and the frozen one over the bare record (their hashes cover the ids: their content is compared), the plan and the status. */",
+    "const asIfReading=m=>{const f=factsOf(m);return sansIds({rows:m.seen.map(id=>{const row=liveRow(m,id),r=reportsReading(row,f,V);return [row.actual,r,distanceFacts(row.actual,V,{reports:r}).paceWithheld];}),withheld:withheldOf(m.r,m.seen),executions:m.seen.map(id=>m.r.runSessions[id].execution),calibration:{...m.r.runCalibration,hash:null},bare:{...frozenOver(m,m.r.actualLedger),hash:null},plan:planOf(m),status:m.r.status});};",
+    "/** A native session's laps (the test on the other readers): its execution, and the execution its laps read as by the whole reading and by the one word alone. */",
+    "const lapsReading=(m,id)=>{const f=factsOf(m),e=m.r.runSessions[id].execution,row=liveRow(m,id),format=m.t.fmt.find(r=>r.fact==='RUN_FORMAT_EMITTED'&&r.sessionId===id&&r.format?.formatHash===row.actual.formatHash)?.format??null;if(!format)return sansIds([e,null]);const boutMinutes=m.t.p.weeks.flatMap(w=>w.sessions).find(s=>s.id===id).prescription.work.workMinutes,by=reports=>executionOf(row,format,V,{boutMinutes,reports});return sansIds([e,by(reportsReading(row,f,V)),by(reportsVerdict(row,f,V))]);};",
+    "/** The latest easy run of week 3 (the test on the other readers) as the direct merge: the athlete's report declares 8 km from the start, with the listed reason or not, beside the watch's flagged import; no correction; the same instants. */",
+    "const easyDirect=how=>{",
+    " const t=base(),s=t.runsOf(3,q=>q.role==='EASY').at(-1),run=t.runs[s.id],min=Math.round(run.estimate.durationMinutes.low),rest=t.p.weeks[3].sessions.filter(live).filter(q=>q.id!==s.id).map(q=>plain(t,q));",
+    " const app=(actual,eventId='app-x')=>{const r={...nativeReport(t,s,{minutes:min,rpe:3,actual}),eventId};r.actual.formatHash=run.timeFormatHash;return r;};",
+    " t.step(3,6,'WEEKLY_REVIEW',{observations:[...rest,app({declared:{distanceKm:8,...(how==='declares'?{reason:'SIGNAL_LOSS'}:{})}}),{...device(t,s,{minutes:min,distanceKm:8,measurement:'GPS',gpsQuality:'POOR'},'dev-x','hk-1')}]},'18:00');",
+    " const r=t.step(3,6,'WEEKLY_REVIEW',{observations:[]},'20:00');",
+    " const f=readReportFacts(r.runFormatRecord,t.p.athleteId,V,r.actualLedger),runs=reportsOf=>runHistory({ledger:r.actualLedger,record:r.runHistoryRecord,athleteId:t.p.athleteId,tz:-180,reportsOf},V).runs,at={cutoff:t.day(4,0),weekStart:t.day(4,0),family:'EASY'};",
+    " const next=t.runsOf(4,q=>q.role==='EASY').map(q=>{const x=r.runSessions[q.id];return [x.expression,x.pattern,x.dose?.sizing?.sources??null,x.unavailable?.native??null];});",
+    " return {s,r,row:t.row(s.id),next,latest:latestClassRun(runs(o=>reportsReading(o,f,V)),at,V),byTheWord:latestClassRun(runs(o=>reportsVerdict(o,f,V)),at,V),e:r.runSessions[s.id].execution};",
+    "};",
+    "/** The queued review of the test on stored records, on the direct merge (the week-6 report states the further recording from the start, so the queued review brings nothing): the row of week 6, the run formats' words and the calibration of that answer, then of the week after, and the frozen calibration over the bare record of the week after. */",
+    "const queuedDirect=()=>{const u=quality(null,{first:EXTRA.lists,until:6}),v=u.t,last=u.seen.at(-1),other=v.runsOf(7)[0];",
+    " v.take(F.evaluateProgram(v.p,v.review(6,6,'WEEKLY_REVIEW',{observations:[{...report(v.p,other,{}),eventId:'unk',actual:{completed:false,minutes:20,formatHash:'f'.repeat(64),stop:{reason:'FATIGUE'}}}]},'22:00'),DEV));",
+    " const review=v.review(6,6,'WEEKLY_REVIEW',{observations:[]},'20:00'),queued=v.take(F.evaluateProgram(v.p,review,DEV)),row6=v.row(last);",
+    " const end=v.week(7,weekWith(v,7,null,null)),bare=frozenCalibration({program:v.p,ledger:end.actualLedger,evidenceRecord:end.runEvidenceRecord,asOf:utcTimestamp(`${v.day(7,6)}T20:00:00-03:00`),weekIndex:7,hold:false,engineStatus:end.status,eligibility:ELIG(v.day(7,6))},DEV);",
+    " return sansIds([row6.actual,withheldOf(queued,u.seen),{...queued.runCalibration,hash:null},withheldOf(end,u.seen),{...end.runCalibration,hash:null},{...bare,hash:null}]);",
+    "};"
+   ],
+   "tests": [
+    {
+     "title": "QRE-RWS-E-01 reproduced and closed",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: E-1 fixed, the athlete's correction is re-merged with the watch's report still in force; the row, its reading, the word, the bare frozen calibration and the executions are restated as the direct merge's (appended per-case as-if equality with directMerge)",
+     "substitutions": [
+      ["// corrected with nothing more, the row is the correction alone and is withheld.",
+       "// corrected with nothing more, the row is the correction alone and is withheld. closure-2 as-if: the correction is re-merged with the\n // watch's report still in force, so corrected with nothing more the row reads as the merged control: nothing withheld (the flagged row is not\n // comparable)."],
+      ["[Array(4).fill(NOT_CARRIED),merged.r.runCalibration.hash]);",
+       "[[],merged.r.runCalibration.hash]); // closure-2 as-if: the merged control's withholding (none)\n assert.deepEqual(asIfReading(plainly),asIfReading(directMerge('plain')),'plain: closure-2 as-if, the direct merge');"],
+      ["// The record, as the judge found it: the frozen engine retired the merged row whole; the row in force is the athlete's correction alone,\n   // with a work pace, no distance and no flag. The watch's report still stands and is none of the reports the row was made of.",
+       "// The record, as the judge found it: the frozen engine retired the merged row whole. closure-2 as-if: it no longer does; the row in force\n   // is the athlete's correction re-merged with the watch's report, which still stands: a work pace, the watch's distance and flag, both reports."],
+      ["[`app-${id}-v2`,false,null,{paceSecondsPerKm:PACE},[`app-${id}-v2`],[`app-${id}-v2`,`dev-${id}`]],how);",
+       "[`app-${id}-v2`,true,'POOR',{paceSecondsPerKm:PACE},[`app-${id}-v2`,`dev-${id}`],[`app-${id}-v2`,`dev-${id}`]],how); // closure-2 as-if: the direct merge's row (distance, flag, both reports on it)"],
+      ["the reason of the row whole is given apart, and it is the one that withholds.",
+       "the reason of the row whole is given apart (closure-2: none here, the row carries every report in force; the word withholds the distance)."],
+      ["[word,NOT_CARRIED,NOT_CARRIED,null],how+': the word alone is what hid it');",
+       "[word,null,word,word],how+': closure-2 as-if: no reason of the row whole; the word withholds the distance the row now carries, as on the direct merge');"],
+      ["// The defect, still there for a reader of the bare record: the frozen calibration reads the work pace of the two last sessions as comparable\n  // and takes a training step up, 10 s/km faster at threshold (the finding).",
+       "// The defect, historically still there for a reader of the bare record (a training step up, 10 s/km faster at threshold). closure-2 as-if:\n  // the bare record now holds the watch's flag on the row, so the frozen calibration over it is the merged control's: no step."],
+      ["bare.capacity.trainingFactors[THRESHOLD].fraction,bare.capacity.trainingFactors[THRESHOLD].sessions.map(s=>[s.eventId,s.secondsPerKm,s.rpe])],[['AVAILABLE',290,325],0.03,[5,6].map(w=>[`app-w${w}-run-d1-v2`,PACE,7])],how+': the bare record moves the frozen calibration');",
+       "bare.capacity.trainingFactors[THRESHOLD]?.fraction??null,bare.capacity.trainingFactors[THRESHOLD]?.sessions.map(s=>[s.eventId,s.secondsPerKm,s.rpe])??[]],[['AVAILABLE',300,335],null,[]],how+': closure-2 as-if: the bare record no longer moves the frozen calibration');\n  assert.deepEqual([edges(bare),bare.capacity.trainingFactors],[edges(frozenOver(merged,merged.r.actualLedger)),{}],how+': closure-2 as-if: the merged control over its own bare record');"],
+      ["by the reason of the row whole,",
+       "by the reason of the row whole (closure-2 as-if: by the word of the distance the row carries, as the direct merge),"],
+      ["[Array(4).fill(NOT_CARRIED),merged.r.runCalibration.hash,edges(merged.r.runCalibration),{}],how);",
+       "[Array(4).fill(word),merged.r.runCalibration.hash,edges(merged.r.runCalibration),{}],how); // closure-2 as-if: the direct merge's word"],
+      ["without its distance (there is none); the record the caller keeps is not rewritten.",
+       "without its distance (there is none); the record the caller keeps is not rewritten. closure-2 as-if: the\n  // kept row now carries the watch's distance and flag itself, as the direct merge's row."],
+      ["[frozenOver(m,adm.ledger).hash,'POOR',{paceSecondsPerKm:PACE},null,false],how);",
+       "[frozenOver(m,adm.ledger).hash,'POOR',{paceSecondsPerKm:PACE},'POOR',false],how); // closure-2 as-if: the kept row holds the flag"],
+      ["Array(4).fill([true,'TIME',NOT_CARRIED])",
+       "Array(4).fill([true,'TIME',word]) /* closure-2 as-if: the direct merge's word */"],
+      ["planOf(merged),merged.r.status],how);",
+       "planOf(merged),merged.r.status],how);\n  assert.deepEqual(asIfReading(m),asIfReading(directMerge(how)),how+': closure-2 as-if, the direct merge');"]
+     ]
+    },
+    {
+     "title": "E-01 in every order of arrival",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: in every order and with a late correction, the correction is re-merged with the watch's report: the word and the bare frozen calibration are the direct merge's (appended as-if equality per order and for the late correction); the refused-correction, whole-row and one-speaker cases are unchanged",
+     "substitutions": [
+      ["[Array(4).fill(NOT_CARRIED),edges(merged.r.runCalibration),{},['AVAILABLE',290,325]],order);",
+       "[Array(4).fill(SEVERAL),edges(merged.r.runCalibration),{},['AVAILABLE',300,335]],order); // closure-2 as-if: the direct merge's word; the bare record no longer moves\n  assert.deepEqual(asIfReading(m),asIfReading(directMerge('lists',{order})),order+': closure-2 as-if, the direct merge');"],
+      ["[Array(4).fill(NOT_CARRIED),edges(on.r.runCalibration),on.r.runCalibration.hash,['AVAILABLE',290,325],0.03]);",
+       "[Array(4).fill(CORRECTED),edges(on.r.runCalibration),on.r.runCalibration.hash,['AVAILABLE',300,335],undefined]); // closure-2 as-if: the direct merge's word; the bare record takes no step\n assert.deepEqual(asIfReading(late),asIfReading(directMerge('declares',{until:8})),'late: closure-2 as-if, the direct merge');"]
+     ]
+    },
+    {
+     "title": "E-01 on the other readers of the row",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: the laps and the easy run's sizing source read as the direct merge (the correction re-merged with the watch's flagged report): the word is the distance's, the word alone withholds too, the history reference stays the declaration (8 km); appended as-if equalities with directMerge, lapsReading and easyDirect",
+     "substitutions": [
+      ["assert.deepEqual([e.status,e.basis,e.completed,e.paceEvidence,e.paceWithheld],['DISTANCE','LAP',true,false,NOT_CARRIED],id);",
+       "assert.deepEqual([e.status,e.basis,e.completed,e.paceEvidence,e.paceWithheld],['DISTANCE','LAP',true,false,CORRECTED],id); // closure-2 as-if: the direct merge's word"],
+      ["// By the one word alone the same laps read as pace evidence: what the reading hid.",
+       "// By the one word alone the same laps read as pace evidence: what the reading hid. closure-2 as-if: the row now carries the watch's\n  // distance, so the word withholds it too, as on the direct merge."],
+      ["[false,true,null],id+': by the whole reading, and by the word alone');",
+       "[false,false,CORRECTED],id+': by the whole reading, and by the word alone (closure-2 as-if: both withhold)');"],
+      ["[delivered(merged),Array(4).fill(NOT_CARRIED),merged.r.runCalibration.hash,planOf(merged)]);",
+       "[delivered(merged),Array(4).fill(CORRECTED),merged.r.runCalibration.hash,planOf(merged)]); // closure-2 as-if: the direct merge's word\n {const d=directMerge('declares',{laps:true});assert.deepEqual([asIfReading(m),natives.map(id=>lapsReading(m,id))],[asIfReading(d),natives.map(id=>lapsReading(d,id))],'laps: closure-2 as-if, the direct merge');}"],
+      ["// on the row: the run (59 minutes over the declared 8 km) was the latest run of its class, and sized the easy runs of the week after.",
+       "// on the row: the run (59 minutes over the declared 8 km) was the latest run of its class, and sized the easy runs of the week after.\n // closure-2 as-if: the correction is now re-merged with the watch's report, so the row carries its flagged 8 km; it reads as the direct merge."],
+      ["[[NOT_CARRIED],[NOT_CARRIED],'app-x-v2',false]);",
+       "[[],[CORRECTED],'app-x-v2',true]); // closure-2 as-if: the direct merge's words (none without the listed reason), the watch's distance on the row"],
+      ["By the one word alone the withheld run was the source, at 442.5 s/km.",
+       "By the one word alone the withheld run was the source, at 442.5 s/km (closure-2 as-if: no longer; the direct merge's source)."],
+      ["[plainly.latest,plainly.next,'ledger:app-x-v2',442.5]);",
+       "[plainly.latest,plainly.next,plainly.latest.runId,plainly.latest.secondsPerKm]); // closure-2 as-if: by the word alone too the run is no source (its row is flagged)"],
+      ["[true,'TIME',8,NOT_CARRIED]);",
+       "[true,'TIME',8,CORRECTED]); // closure-2 as-if: the direct merge's word; the history reference is still the declaration (8 km), not raised"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): the easy run, corrected with a declaration with or without its listed reason, reads as the direct merge: its",
+      " // row, the run formats' word, the sizing source by the reading and by the word alone, the sessions of the week after, and the execution.",
+      " const easyAsIf=x=>sansIds([x.row.actual,withheldOf(x.r,[x.s.id]),x.latest,x.byTheWord,x.next,x.e]);",
+      " assert.deepEqual([easyAsIf(plainly),easyAsIf(declared)],[easyAsIf(easyDirect('plain')),easyAsIf(easyDirect('declares'))]);"
+     ]
+    },
+    {
+     "title": "E-01 from stored records",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: stored, exported, restarted, refused, queued and boundary-off readings are restated as the direct merge's (appended as-if equalities); a record that lost lineage evidence is NOT as-if but at least as conservative (labelled); the restart is checked on namespaced ids",
+     "substitutions": [
+      ["assert.equal(reportsReading(twin,again,V).wholeRow,NOT_CARRIED);}",
+       "assert.equal(reportsReading(twin,again,V).wholeRow,null);assert.equal(reportsReading(twin,again,V).withheld,SEVERAL);} // closure-2 as-if: the direct merge's reading (no reason of the row whole; the further recording's word)"],
+      ["[NOT_CARRIED,NOT_CARRIED,NOT_CARRIED]);",
+       "[NOT_CARRIED,null,NOT_CARRIED]);\n // closure-2 NOT as-if (at least as conservative): on the direct merge none of these losses gives a reason of the row whole; here losing the\n // correction's fact or the replaced row still withholds the row whole, more than the direct merge does. Without the watch's fact the row\n // carries every report left in force (no reason of the row whole) and the word of the distance still withholds, as on the record whole.\n assert.deepEqual([reportsReading(row,readReportFacts(drop(`dev-${ids[0]}`),athleteId,V,m.r.actualLedger),V).withheld,reportsReading(row,facts,V).withheld],[SEVERAL,SEVERAL]);"],
+      ["['PROPOSED','PROPOSED',Array(4).fill(NOT_CARRIED),[],edges(c.runCalibration),c.runCalibration.hash]);",
+       "['PROPOSED','PROPOSED',Array(4).fill(SEVERAL),[],edges(c.runCalibration),c.runCalibration.hash]); // closure-2 as-if: the direct merge's word\n // closure-2: after the restart the new plan's session ids are namespaced (QRE-AIF-02 fixed): no session of the new plan bears an id of the old\n // plan, so the four rows withheld name the previous plan's sessions only. And what this test reads of the restart (the words and the\n // calibration) is the restart of the direct merge's. (Not compared: the new plan's session sizes. Any stored correction, with or without\n // a second source, sizes them from the replaced rows too, 60 minutes where the direct merge gives 50; pre-existing at 4c60915, reported\n // to the Chief, not pinned here.)\n assert.ok(Object.keys(g.runSessions).length>0&&Object.keys(g.runSessions).every(id=>/^r[0-9a-f]+\\./.test(id)&&!ids.includes(id)),Object.keys(g.runSessions).join());\n {const d=restart(directMerge('lists').t);assert.deepEqual(sansIds([withheldOf(g,ids),{...g.runCalibration,hash:null}]),sansIds([withheldOf(d,ids),{...d.runCalibration,hash:null}]),'restart: closure-2 as-if, the direct merge');}"],
+      ["['NOT_APPLICABLE','NO_DECISION',{},Array(4).fill(NOT_CARRIED)]);",
+       "['NOT_APPLICABLE','NO_DECISION',{},Array(4).fill(SEVERAL)]); // closure-2 as-if: the direct merge's word\n {const d=directMerge('lists').t;assert.deepEqual(withheldOf(F.evaluateProgram(d.p,{...d.review(8,0,'WEEKLY_REVIEW',{observations:[]}),asOf:'never'},DEV),ids),withheldOf(refused,ids),'refused: closure-2 as-if, the direct merge');}"],
+      ["[true,'NOT_APPLICABLE','REVIEW_BEFORE_THE_RECORD',{},`app-${last}-v2`,false]);",
+       "[true,'NOT_APPLICABLE','REVIEW_BEFORE_THE_RECORD',{},`app-${last}-v2`,true]); // closure-2 as-if: the queued correction is re-merged with the watch's report: its distance is on the row"],
+      ["[Array(4).fill(NOT_CARRIED),over(handed.ledger).hash]);",
+       "[Array(4).fill(SEVERAL),over(handed.ledger).hash]); // closure-2 as-if: the direct merge's word"],
+      ["// The week after: the bare record takes the step (the finding); the entry point's calibration is the control's.",
+       "// The week after: the bare record takes the step (the finding); the entry point's calibration is the control's. closure-2 as-if: the bare\n  // record now holds the watch's flag on the row and takes no step, as the direct merge's."],
+      ["[Array(4).fill(NOT_CARRIED),['AVAILABLE',300,335],['AVAILABLE',290,325]]);",
+       "[Array(4).fill(SEVERAL),['AVAILABLE',300,335],['AVAILABLE',300,335]]); // closure-2 as-if: the direct merge's word; the bare record takes no step\n  assert.deepEqual(sansIds([row6.actual,withheldOf(queued,u.seen),{...queued.runCalibration,hash:null},withheldOf(end,u.seen),{...end.runCalibration,hash:null},{...bare,hash:null}]),queuedDirect(),'queued: closure-2 as-if, the direct merge');"],
+      ["['DISABLED',hash(t.fmt),null,['AVAILABLE',290,325]]);",
+       "['DISABLED',hash(t.fmt),null,['AVAILABLE',300,335]]); // closure-2 as-if: the bare record holds the watch's flag on the row, as the direct merge's\n {const d=directMerge('lists').t;assert.deepEqual(edges(off.runCalibration),edges(F.evaluateProgram(d.p,{...d.review(8,6,'WEEKLY_REVIEW',{observations:[]})},FORMATS_OFF).runCalibration),'off: closure-2 as-if, the direct merge');}"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): the scenario as a whole reads as the direct merge.",
+      " assert.deepEqual(asIfReading(m),asIfReading(directMerge('lists')),'closure-2 as-if, the direct merge');"
+     ]
+    }
+   ]
+  },
+  "v1core-successor-final-fix.test.mjs": {
+   "historical": "v1rws-final-fix.test.mjs",
+   "prelude": [
+    "// closure-2 as-if (SSCTR C-C1): what the readers of the run read, event ids aside: the row in force, the engine's execution, the run formats'",
+    "// word the week after, the calibration of that week (its hash covers the ids: its content is compared) and the sizing of the sessions ahead.",
+    "const sansIds=v=>JSON.parse(JSON.stringify(v,(k,y)=>k==='eventId'?undefined:y));",
+    "const asIfReading=x=>sansIds({row:x.row.actual,partial:x.row.partial??null,conflicted:x.row.conflicted??null,execution:x.exec,withheld:withheld(x.after),calibration:{...x.after.runCalibration,hash:null},sizing:ahead(x.after).map(s=>s.dose?.sizing??null)});"
+   ],
+   "tests": [
+    {
+     "title": "QRE-RWS-C-01: a duplicate, a late correction, a later re-reading",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: the app's correction of the merged row to one whole measurement is re-merged with the import still in force: it reads as the direct merge (the 'no correction' case of the same test): DISTANCE_DISPUTED, a partial run by the smaller figure in force (L4), the control's edges; appended as-if equalities for the three correction scenarios",
+     "substitutions": [
+      ["// The import's report is still in force (only the import replaces it) and the row in force, the app's correction alone, does not carry it.",
+       "// The import's report is still in force (only the import replaces it). closure-2 as-if: the app's correction is now re-merged with it, so\n // the row in force carries both and reads as the direct merge (the app's whole measurement and the import, no correction): a disputed distance."],
+      ["[[[whole.easy.id,'SEVERAL_RECORDINGS']],[[whole.easy.id,'REPORT_NOT_CARRIED']],false,'REPORT_NOT_CARRIED','corr-easy']);",
+       "[[[whole.easy.id,'SEVERAL_RECORDINGS']],[[whole.easy.id,'DISTANCE_DISPUTED']],false,'DISTANCE_DISPUTED','corr-easy']); // closure-2 as-if: the direct merge's word"],
+      ["['DISTANCE','MEASURED',true,11,false,edges(one.after.runCalibration)],'complete by its distance as before, and every band has the edges of the control');",
+       "['PARTIAL',null,false,6.6,true,edges(one.after.runCalibration)],'closure-2 as-if: as the direct merge (no correction), the smaller figure in force (L4) reads a partial run; every band has the edges of the control');"],
+      ["[['the app corrects itself last',whole,'REPORT_NOT_CARRIED'],",
+       "[['the app corrects itself last',whole,'DISTANCE_DISPUTED'] /* closure-2 as-if */,"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): each correction reads as the direct merge of the corrected report with the import still in force (the",
+      " // corrected report sent in its place, no correction): the row, the execution, the run formats' word, the calibration and the sessions ahead.",
+      " assert.deepEqual(asIfReading(whole),asIfReading(neverCorrected),'the app corrects itself last');",
+      " assert.deepEqual(asIfReading(importLast),asIfReading(neverCorrected),'the import arrives last');",
+      " assert.deepEqual(asIfReading(late),asIfReading(easyWeek(x=>{const a=app(x,'NATIVE',{}),d=firstFile(x,{segments:[]});x.review([d,{...a,actual:{...a.actual,distanceKm:x.first,measurement:'GPS',gpsQuality:'OK',segments:list(x)}}],'18:00');x.review([],'21:00');})),'the late correction');"
+     ]
+    }
+   ]
+  },
+  "v1core-successor-fix-forward-b01.test.mjs": {
+   "historical": "v1rws-fix-forward.test.mjs",
+   "prelude": [
+    "// closure-2 as-if (SSCTR C-C1): what the readers of the run read, event ids aside: the row in force, the engine's execution, the run formats'",
+    "// word the week after, the calibration of that week and the frozen one over the bare record (their hashes cover the ids: their content is",
+    "// compared) and the sizing of the sessions ahead.",
+    "const sansIds=v=>JSON.parse(JSON.stringify(v,(k,y)=>k==='eventId'?undefined:y));",
+    "const asIfReading=x=>sansIds({row:x.row.actual,partial:x.row.partial??null,conflicted:x.row.conflicted??null,execution:x.exec,withheld:withheld(x.after),calibration:{...x.after.runCalibration,hash:null},frozen:{...x.frozen,hash:null},sizing:ahead(x.after).map(s=>s.dose?.sizing??null)});"
+   ],
+   "tests": [
+    {
+     "title": "QRE-RWS-B-01: a duplicate, a late correction and a later re-reading",
+     "why": "SSCTR C-C1 / QRE-CORE-R2-02: the app's correction of the merged row to one whole measurement is re-merged with the import still in force: it reads as the direct merge (the 'no correction' case of the same test): DISTANCE_DISPUTED, a partial run by the smaller figure in force (L4), the control's edges; appended as-if equalities",
+     "substitutions": [
+      ["// report is still in force (only the import replaces it), and the row in force, the app's correction alone, does not carry it: withheld.\n // Unchanged: the merged reading before it, the row in force, the engine's completion and credit of the run, and the edges of every band.",
+       "// report is still in force (only the import replaces it). closure-2 as-if: the app's correction is now re-merged with it, so the row in\n // force carries both and reads as the direct merge (the app's whole measurement and the import, no correction): a disputed distance, a\n // partial run by the smaller figure in force (L4). Unchanged: the merged reading before it, the row in force, and the edges of every band."],
+      ["[[[whole.easy.id,'SEVERAL_RECORDINGS']],[[whole.easy.id,'REPORT_NOT_CARRIED']],false,'REPORT_NOT_CARRIED','corr-easy']);",
+       "[[[whole.easy.id,'SEVERAL_RECORDINGS']],[[whole.easy.id,'DISTANCE_DISPUTED']],false,'DISTANCE_DISPUTED','corr-easy']); // closure-2 as-if: the direct merge's word"],
+      ["['DISTANCE','MEASURED',true,11,false],'the run is still complete by its distance: the engine reads the row');",
+       "['PARTIAL',null,false,6.6,true],'closure-2 as-if: as the direct merge (no correction), the smaller figure in force (L4) reads a partial run');"],
+      ["[['the app corrects itself last',whole,'REPORT_NOT_CARRIED'],",
+       "[['the app corrects itself last',whole,'DISTANCE_DISPUTED'] /* closure-2 as-if */,"]
+     ],
+     "append": [
+      " // closure-2 as-if (SSCTR C-C1): each correction reads as the direct merge of the corrected report with the reports still in force (the",
+      " // corrected report sent in its place, no correction): the row, the execution, the run formats' word, both calibrations and the sessions ahead.",
+      " assert.deepEqual(asIfReading(whole),asIfReading(neverCorrected),'the app corrects itself last');",
+      " assert.deepEqual(asIfReading(importLast),asIfReading(neverCorrected),'the import arrives last');",
+      " assert.deepEqual(asIfReading(late),asIfReading(easyWeek(x=>{x.review([app(x,'NATIVE',{distanceKm:x.first,measurement:'GPS',gpsQuality:'OK',segments:segments(x)})],'18:00');x.review([],'21:00');})),'the late correction');"
+     ]
+    }
+   ]
+  },
+  "v1core-successor-rfc-cycle.test.mjs": {
+   "historical": "v1rfc-cycle.test.mjs",
+   "tests": [
+    {
+     "title": "QRE-RFC-A-03 closed",
+     "why": "QRE-CORE-R2-02 (not E-1): the test pinned that session ids collide across a restart (QRE-AIF-02, fixed by the restart namespace); its invariant (a previous plan's row is never the new plan's execution) is restated on the namespaced ids, with an appended as-if control where the old plan's rows are not sent at all",
+     "substitutions": [
+      ["assert.ok(ids.length>0&&ids.every(id=>old.has(id)),'the ids of the new plan\\'s sessions are ids of the old plan\\'s');",
+       "// closure-2: the restart namespace (QRE-AIF-02 fixed) puts the new plan's sessions under ids of their own: each is an old plan's id under the\n // restart's prefix, and none is an id of the old plan, so no row of the previous plan can bind to it.\n assert.ok(ids.length>0&&ids.every(id=>!old.has(id)&&/^r[0-9a-f]+\\./.test(id)&&old.has(id.replace(/^r[0-9a-f]+\\./,''))),'the ids of the new plan\\'s sessions are namespaced, none an id of the old plan\\'s: '+ids.join());"],
+      ["// The run formats still bind the old execution to the new session (their own condition, recorded for the Founder); phase B does not read it.\n assert.ok(ids.some(id=>r.runSessions?.[id]?.execution),'the layer below hands an old execution under the new id');",
+       "// closure-2: the run formats no longer bind an old execution to a session of the new plan (no id collides); no session carries one.\n assert.ok(!ids.some(id=>r.runSessions?.[id]?.execution)&&Object.entries(r.runSessions).every(([id,x])=>!x.execution&&!old.has(id)),'the layer below hands no old execution under a new id');"]
+     ],
+     "append": [
+      " // closure-2 as-if: the reading where nothing of the previous plan can bind, its rows not sent at all: the same credits, the same sessions and",
+      " // the same insight exclusions. (The renamed control above is skipped by its own guard: the renamed rows cite formats the record does not hold",
+      " // for them, so the run formats decide nothing on that review.)",
+      " const none=P.evaluateProgram(p,{...review,actualLedger:ledger.filter(o=>o.fact||!old.has(o.sessionId))},DEV);",
+      " assert.deepEqual([f.adherence,r.runSessions,Object.values(r.paceInsights.domains??{}).map(d=>[d.sessions,d.excluded])],[none.runForecast.adherence,none.runSessions,Object.values(none.paceInsights.domains??{}).map(d=>[d.sessions,d.excluded])]);"
+     ]
+    }
+   ]
+  }
+ }
+}

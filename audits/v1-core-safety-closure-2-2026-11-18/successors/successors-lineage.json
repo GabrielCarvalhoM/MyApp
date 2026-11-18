@@ -1,0 +1,129 @@
+{
+ "files": {
+  "v1core-successor-lineage.test.mjs": {
+   "historical": "v1rws-lineage.test.mjs",
+   "prelude": [
+    "// closure-2 (SSCTR C-C1): with E-1 a correction re-merges with every report in force, so these rows now read as the row named beside",
+    "// them (the merged row before the re-sync, or the direct merge of the same statements). The matrix keeps every other row as written.",
+    "const mkey=(prefix,suffix='')=>{const k=Object.keys(MATRIX).filter(x=>x.startsWith(prefix)&&x.endsWith(suffix));if(k.length!==1)throw new Error('matrix key '+prefix+' '+suffix+': '+k.length);return k[0];};",
+    "const ORD=[' | one review',' | the app, then the import',' | the import, then the app'];",
+    "const AS_IF=Object.fromEntries([...ORD.map(o=>[mkey('03 ',o),mkey('02 ',o)]),[mkey('05 '),mkey('02 ',ORD[1])],[mkey('06 '),mkey('02 ',ORD[0])],[mkey('07 '),mkey('02 ',ORD[1])],",
+    " [mkey('08 '),mkey('10 ')],[mkey('11 '),mkey('15 ',ORD[1])]]);",
+    "// Not as-if (open condition SEC-CORE-03, a correction is not bound to its author): a device correction naming the athlete's report (12), and a",
+    "// re-sync under another activity id, which is another speaker (20). The row is not made of every report in force: it stays withheld",
+    "// (wholeRow REPORT_NOT_CARRIED), its first word is the reason of its distance, and its history reference is the first file's (not raised).",
+    "const NOT_AS_IF={[mkey('12 ')]:{word:'DISTANCE_DISPUTED',history:'first'},[mkey('20 ')]:{word:'SEVERAL_RECORDINGS',history:'first'}};",
+    "const SUCCESSOR_MATRIX=Object.fromEntries(Object.entries(MATRIX).map(([k,v])=>AS_IF[k]?[k,[v[0],MATRIX[AS_IF[k]][1],v[2],MATRIX[AS_IF[k]][3]]]:NOT_AS_IF[k]?[k,[v[0],NOT_AS_IF[k].word,v[2],NOT_AS_IF[k].history]]:[k,v]));",
+    "const readingOfRow=m=>[m.word,m.reading?.wholeRow??null,m.bands,m.exec?.extentKm??null,m.exec?.paceWithheld??null,m.exec?.paceEvidence===true];",
+    "// The D-01 rows read through the as-if control (AS_IF) or, for row 04 (a device correction naming the athlete's report: SEC-CORE-03), as before.",
+    "const asIfWord=name=>AS_IF[name]?MATRIX[AS_IF[name]][1]:NOT_CARRIED;",
+    "const asIfExtent=(name,family='EASY')=>AS_IF[name]?run(family,MATRIX[AS_IF[name]][0]).exec.extentKm:6.6;",
+    "const asIfRow=(name,m)=>{if(!AS_IF[name])return [6.6,63,3,null,['dev-x','dev-x-v2'],false];const c=run('EASY',MATRIX[AS_IF[name]][0]);return [c.row.actual.distanceKm,c.row.actual.minutes,c.row.actual.rpe,c.row.actual.segments??null,c.row.provenance.mergedSourceIds.map(id=>id==='dev-x'?m.row.eventId:id).sort(),c.row.partial];};"
+   ],
+   "tests": [
+    {
+     "title": "lineage matrix, ${family}: the word that withholds each run",
+     "why": "C-C1: rows 03 (x3), 05, 06, 07 read as row 02; 08 as row 10; 11 as row 15 (as-if, executable); 12 and 20 not as-if (SEC-CORE-03), still withheld by wholeRow",
+     "substitutions": [
+      [
+       "for(const [name,[send,word,inForce,history]] of Object.entries(MATRIX)){",
+       "for(const [name,[send,word,inForce,history]] of Object.entries(SUCCESSOR_MATRIX)){ // closure-2: the as-if rows (prelude)"
+      ]
+     ],
+     "append": [
+      " // closure-2 as-if (C-C1): each re-merged row's reading (word, wholeRow, every band edge, history reference, what is withheld) equals its control's.",
+      " for(const [name,control] of Object.entries(AS_IF))assert.deepEqual(readingOfRow(run(family,MATRIX[name][0])),readingOfRow(run(family,MATRIX[control][0])),`${family}; ${name}: as-if ${control}`);",
+      " for(const name of Object.keys(NOT_AS_IF)){const m=run(family,MATRIX[name][0]);assert.deepEqual([m.reading?.wholeRow,m.exec?.paceEvidence===true],['REPORT_NOT_CARRIED',false],`${family}; ${name}: not as-if, still withheld`);}"
+     ]
+    },
+    {
+     "title": "QRE-RWS-D-01 reproduced and closed",
+     "why": "C-C1: rows 03, 05, 06, 07 now hold the merged row (as-if row 02); row 04 (SEC-CORE-03) as before with its new merge provenance; the disputed and no-duration forms read as the direct merge",
+     "substitutions": [
+      [
+       "m.row.provenance.mergedSourceIds??null,m.row.partial],[6.6,63,3,null,null,false],name);",
+       "[...(m.row.provenance.mergedSourceIds??[])].sort(),m.row.partial],asIfRow(name,m),name); // closure-2 as-if: the row in force is the merged row before the re-sync, the re-sync in place of the import's first report"
+      ],
+      [
+       "[m.word,m.easy,m.bands],[NOT_CARRIED,",
+       "[m.word,m.easy,m.bands],[asIfWord(name),"
+      ],
+      [
+       "[true,NOT_CARRIED,6.6,false],name);",
+       "[true,asIfWord(name),asIfExtent(name),false],name); // closure-2 as-if: the merged row's word and history reference"
+      ],
+      [
+       "assert.deepEqual([merged.word,merged.easy,after.word,after.easy,edges(after.frozen).EASY],[word,['AVAILABLE',345,420],NOT_CARRIED,['AVAILABLE',345,420],['AVAILABLE',345,575]],what);",
+       "const direct=run('EASY',x=>x.review([a(x),x.dev({},'dev-x-v2')])); // closure-2 as-if: the re-sync and the app's report merged directly\n  assert.deepEqual([merged.word,merged.easy,after.word,after.easy,edges(after.frozen).EASY],[word,['AVAILABLE',345,420],direct.word,direct.easy,['AVAILABLE',345,575]],what);\n  assert.deepEqual(readingOfRow(after),readingOfRow(direct),what+': as-if the direct merge');"
+      ]
+     ]
+    },
+    {
+     "title": "a late re-sync, in the middle of the following week",
+     "why": "C-C1: the late re-sync re-merges; the run stays withheld from that review on, for the merged row's own word (as-if the merged row before it)",
+     "substitutions": [
+      ["['dev-x-v2',0,[NOT_CARRIED],['AVAILABLE',345,420]]", "['dev-x-v2',0,withheldOf(merged,x.s.id),['AVAILABLE',345,420]] /* closure-2 as-if: the merged row's word */"],
+      ["[[NOT_CARRIED],['AVAILABLE',345,420]]);", "[withheldOf(merged,x.s.id),['AVAILABLE',345,420]]); // closure-2 as-if: withheld as the merged row was"]
+     ]
+    },
+    {
+     "title": "what the athlete said that is no distance fact",
+     "why": "C-C1 / SSCTR R1 §4 heat and walk breaks: after the re-sync the row keeps what the athlete said and reads exactly as the merged row (HEAT / walk breaks [345,420]; the athlete who said nothing [345,575], legitimate easy evidence L1 used to withhold as a cost)",
+     "substitutions": [
+      ["   // After the re-sync the row is the import alone: what the athlete said is on no row. The frozen calibration over the bare record now reads\n   // the slow run as an easy observation, whatever the athlete said; the entry point withholds it, enumerating nothing.",
+       "   // closure-2 as-if (E-1): after the re-sync the row keeps what the athlete said, and every reader reads it as the merged row: the frozen\n   // calibration over the bare record as well (HEAT and walk breaks keep the run out of the easy band; the athlete who said nothing is easy evidence)."],
+      ["['dev-x-v2',null,null,['AVAILABLE',345,575]],name);", "['dev-x-v2',said.conditions??null,said.walkBreaks??null,edges(merged.frozen).EASY],name);"],
+      ["[NOT_CARRIED,NOT_CARRIED,['AVAILABLE',345,420],['app-x','dev-x-v2']],name);", "[merged.word,merged.want.word,mergedEasy,['app-x','dev-x-v2']],name);\n   assert.deepEqual(readingOfRow(after),readingOfRow(merged),name+': as-if the merged row');"]
+     ]
+    },
+    {
+     "title": "a race is read only from a row that carries every report in force",
+     "why": "C-C1 race evidence: after the re-sync the row is the merged row (the app's list kept), so it is no race result, as merged; the judge's hand-built rows are unchanged",
+     "substitutions": [
+      ["  // After the import re-syncs: the row is the re-sync alone. The bare record gives the frozen calibration a 6 km race in 3000 s (the finding,\n  // by the engine's own rows of a whole journey); the entry point reads no race result.",
+       "  // closure-2 as-if (E-1): after the import re-syncs, the row is the merged row with the re-sync in place of the import's report: no race\n  // result, by the entry point and by the frozen calibration over the bare record, exactly as merged."],
+      ["assert.deepEqual([after.row.eventId,after.row.actual.distanceKm,after.bare,after.entry,after.withheld],['dev-race-v2',6,[['plan-race:dev-race-v2',6,3000]],[],[NOT_CARRIED]],name);",
+       "assert.deepEqual([after.row.eventId,after.row.actual.distanceKm,after.row.actual.segments??null,after.bare.map(e=>e.slice(1)),after.entry,after.withheld],['dev-race-v2',merged.row.actual.distanceKm,merged.row.actual.segments??null,merged.bare.map(e=>e.slice(1)),merged.entry,merged.withheld],name);"]
+     ]
+    },
+    {
+     "title": "L4-e: the history reference and the next long run",
+     "why": "C-C1 history reference and sizing source: row 03 now reads as the merged row 02 (the whole run, and the next long run sized as from it); the other five rows unchanged",
+     "substitutions": [
+      ["assert.deepEqual(names.map(k=>got[k.slice(0,2)].exec.extentKm),Array(6).fill(first),family);",
+       "assert.deepEqual(names.map(k=>got[k.slice(0,2)].exec.extentKm),names.map(k=>AS_IF[k]?run(family,MATRIX[AS_IF[k]][0]).exec.extentKm:first),family); // closure-2 as-if: row 03 is the merged row 02"],
+      ["Array(6).fill(got['10'].longAhead.expression==='NATIVE'?['NATIVE',got['10'].longAhead.km,null]:['TIME',null,got['10'].longAhead.why])]);",
+       "names.map(k=>{const c=AS_IF[k]?run(family,MATRIX[AS_IF[k]][0]).longAhead:got['10'].longAhead;return c.expression==='NATIVE'?['NATIVE',c.km,null]:['TIME',null,c.why];})]); // closure-2 as-if: row 03 sizes the next long run as the merged row 02"]
+     ]
+    },
+    {
+     "title": "the reading is the same from stored records",
+     "why": "C-C1: row 03 is the merged row after a restart and from stored records (as-if row 02); V11 holds (a record that lost lineage evidence withholds no less than the whole record); the declared limit (a record rewritten to drop the app's fact, D1) now reads no report reason, while the row itself still withholds",
+     "substitutions": [
+      ["['PROPOSED','PROPOSED',[NOT_CARRIED],[],edges(c.runCalibration)]", "['PROPOSED','PROPOSED',[asIfWord(mkey('03 ',ORD[1]))],[],edges(c.runCalibration)] /* closure-2 as-if: the merged row's word, kept after a restart */"],
+      ["[NOT_CARRIED,NOT_CARRIED,NOT_CARRIED,NOT_CARRIED]);", "Array(4).fill(asIfWord(mkey('03 ',ORD[1])))); // closure-2 as-if: each lossy record reads as the whole one (the merged row's word): no less"],
+      ["assert.equal(reportsVerdict(row,facts(t.fmt.filter(r=>!(isReport(r)&&r.report.reportId==='app-x'))),V),NOT_CARRIED,'the engine\\'s record still names the report');",
+       "{const lost=facts(t.fmt.filter(r=>!(isReport(r)&&r.report.reportId==='app-x')));\n  // closure-2: the row now carries the app's report (E-1), so a record rewritten to drop that report's fact shows no report reason (the declared\n  // limit, custody D1); the row itself still carries the app's list of recordings and is still withheld for it.\n  assert.equal(reportsVerdict(row,lost,V),null,'closure-2: the declared limit, no report reason');\n  assert.equal(distanceFacts(row.actual,V,{reports:reportsReading(row,lost,V)}).paceWithheld,'SEVERAL_RECORDINGS','closure-2: the row itself still withholds');}"]
+     ]
+    },
+    {
+     "title": "an answer that delivers no session reads the lineage as every other",
+     "why": "C-C1: the queued review's re-sync re-merges: the answer, the admitted record and the week after withhold the run for the merged row's own word (as-if row 02)",
+     "substitutions": [
+      ["[[NOT_CARRIED],[NOT_CARRIED],frozenCalibration(args(handed.ledger),DEV).hash]);", "[[asIfWord(mkey('03 ',ORD[0]))],[asIfWord(mkey('03 ',ORD[0]))],frozenCalibration(args(handed.ledger),DEV).hash]); // closure-2 as-if: the merged row's word"],
+      ["[[NOT_CARRIED],['AVAILABLE',345,420],['AVAILABLE',345,575]]);", "[[asIfWord(mkey('03 ',ORD[0]))],['AVAILABLE',345,420],['AVAILABLE',345,575]]); // closure-2 as-if: withheld as the merged row"]
+     ]
+    },
+    {
+     "title": "HARD GATE OF A REAL INTEGRATION, NOT MET HERE",
+     "why": "C-C1 / SSCTR R1 §4 L5 at the Core: the defect this test pinned is closed; restated as-if: after the re-sync the engine's row keeps the athlete's answers and the run reads as the merged control. The hard gate for real athletes stays open on the HealthKit adapter's own result tests (C-C5)",
+     "substitutions": [
+      ["HARD GATE OF A REAL INTEGRATION, NOT MET HERE (engine finding E-1, SSCTR item L5): a device re-sync still erases the athlete\\'s answers from the frozen engine\\'s row", "HARD GATE OF A REAL INTEGRATION, restated (engine finding E-1, SSCTR item L5): at the Core a device re-sync keeps the athlete\\'s answers, as the merged row; real HealthKit stays open (C-C5)"],
+      ["assert.deepEqual(after.engine,['dev-x-v2','UNKNOWN','UNKNOWN',0],'E-1 stands: the engine\\'s row lost the athlete\\'s answers');", "assert.deepEqual(after.engine,['dev-x-v2',...merged.engine.slice(1)],'closure-2 as-if: E-1 closed at the Core, the row keeps the athlete\\'s answers and the adverse session counts');"],
+      ["[['app-x','dev-x-v2'],NOT_CARRIED,[NOT_CARRIED],'ACTIVE']);", "[['app-x','dev-x-v2'],reportsVerdict(merged.row,readReportFacts(merged.t.fmt,merged.t.p.athleteId,V,merged.t.ledger),V),withheldOf(merged.r,merged.s.id),'ACTIVE']); // closure-2 as-if: read as the merged row"]
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -17,6 +17,7 @@
 //   route answered). No other answer changes, by a byte.
 import * as S from './v1-strength-index.mjs';
 import {repertoireAuthority} from './r7b-repertoire.mjs';
+import {RUN_FORMAT_EMITTED} from './v1-run-format.mjs';
 import {freeze} from './value.mjs';
 export * from './v1-strength-index.mjs';
 export const SAFETY_LIFECYCLE_ID='V1X-SAFETY-LIFECYCLE-1';
@@ -55,8 +56,17 @@ export function evaluateProgram(program,review,options={}){
  if(!reread||reread.status==='UNSUPPORTED')return base;
  // The clinical answer, with every reading the refusal gives in place of those computed with the dates set aside (forecast, insights,
  // calibration, formats, exposure, learning): after the date nothing but the clinical route and the recorded facts comes from that reading (QRE-CORE-06).
- if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}return freeze({...out,authorityExpiry:marker(e,true)});}
+ if(reread.status==='CLINICAL_HUMAN_REQUIRED'&&!reread.proposal){
+  const out={...reread};for(const k of READINGS){if(k in base)out[k]=base[k];else delete out[k];}
+  // Closure-2 (QRE-CORE-R2-01): the record of formats says only what was delivered. The answer delivers the refusal's run sessions, so no
+  // format the reading would have emitted is recorded; what the review's reports stated (a symptom stop among it) is recorded as the clinical
+  // route records it, and every row the record already held is kept as it was.
+  if(Array.isArray(reread.runFormatRecord))out.runFormatRecord=deliveredOnly(reread.runFormatRecord,Array.isArray(base.runFormatRecord)?base.runFormatRecord:isObj(review)&&Array.isArray(review.runFormatRecord)?review.runFormatRecord:[]);
+  return freeze({...out,authorityExpiry:marker(e,true)});
+ }
  return freeze({...base,authorityExpiry:marker(e,false)});
 }
+/** A record of formats without the format rows `held` did not already hold (the formats a reading emitted and no answer delivered). */
+const deliveredOnly=(record,held)=>{const was=new Set(held.filter(r=>isObj(r)&&r.fact===RUN_FORMAT_EMITTED).map(r=>r.eventId));return record.filter(r=>!(isObj(r)&&r.fact===RUN_FORMAT_EMITTED&&!was.has(r.eventId)));};
 /** The readings of an answer that are not the clinical route or the record: after the date they are the refusal's. */
 const READINGS=['runSessions','runFormat','runCalibration','runForecast','paceInsights','paceRevision','strengthExposure','updatedModel','qualityAssessment','weekEvidence'];

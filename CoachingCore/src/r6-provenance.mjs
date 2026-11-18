@@ -139,10 +139,11 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
    // its parts, whichever row of the record first claimed the id (QRE-CORE-01: a superseded merged row carried before it) and also while a
-   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed;
-   // otherwise the correction replaces the row, as before (QRE-CORE-04, SEC-CORE-04). Never throws.
+   // conflict stands on it (the correction that resolves the conflict keeps the other voices). Each part is read only if it is well formed
+   // (QRE-CORE-04, SEC-CORE-04). Closure-2 (SEC-CORE-14): a malformed part is not read and not carried, and the well-formed ones still are, so a
+   // damaged part never discards another voice's valid report; with no well-formed part the correction replaces the row, as before. Never throws.
    const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
-   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id])=>id!==o.correctionOf);if(others.every(([,p])=>validPart(p)))inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id,p])=>id!==o.correctionOf&&validPart(p));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
    if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
