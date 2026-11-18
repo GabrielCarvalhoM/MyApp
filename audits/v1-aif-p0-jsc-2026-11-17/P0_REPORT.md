@@ -5,6 +5,8 @@
 
 ## 0. Resultado em uma linha
 
+> **2026-11-18:** a execução real no Mac e no iPhone 17 Pro Max está em `P0_DEVICE_REPORT.md`, com a decisão **PASS_WITH_CONDITIONS**. Os estados "PENDENTE" e "INCONCLUSIVO" abaixo são o registro de 2026-11-17 e foram substituídos por ela.
+
 **A prova física (P0 no aparelho) está PENDENTE, e a decisão sobre o JavaScriptCore está INCONCLUSIVA.**
 
 - O que impede é o ambiente, não uma falha técnica: esta sessão roda em Windows, sem Mac, sem Xcode, sem Swift e sem iPhone.
