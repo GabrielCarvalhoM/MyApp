@@ -48,6 +48,14 @@ function mergeActual(a,b,ra,rb){
 }
 const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k]&&b?.[k]&&a[k]!=='UNKNOWN'&&b[k]!=='UNKNOWN'&&a[k]!==b[k]);
 /**
+ * V1 Core Safety & Lifecycle (E-1, SSCTR L5): what one report of a merged execution said (its own facts and response, and its declared source),
+ * kept on the merged row (`provenance.parts`, by event id) from the first merge on. A correction is from its author and replaces only that author's
+ * report: the row it makes is the corrected report merged again with every other report still in force, by the merge rules below, so a device
+ * re-synchronization never erases what the athlete said, and an athlete's edit never erases what the device measured. A row merged without parts
+ * (recorded before this change) is corrected as before.
+ */
+const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null});
+/**
  * R7-C QE-R7C-10: when the completed-work record first held a report of one execution (`provenance.firstRecordedAt`): the clock of the decision
  * whose input first carried it. Rows that are one execution (an agreeing duplicate, a correction and what it corrects) take the earliest; a row
  * recorded before R7C-FREEZE-4 carries none, and was held earlier than any clock known, so then none is known. Evidence visibility only: no dose,
@@ -113,6 +121,7 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity.
   if(o.conflicted===true)quarantined.add(identity);
+  let inherited=null;
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
@@ -120,6 +129,10 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
+   // E-1: the other reports of the merged row in force stay in force (only when the row names the corrected report among its parts and no
+   // conflict stands on the identity; otherwise the correction replaces the row, as before).
+   if(old.superseded!==true&&accepted.includes(old)&&!quarantined.has(identity)&&old.provenance?.parts&&Object.hasOwn(old.provenance.parts,o.correctionOf))
+    inherited=Object.entries(old.provenance.parts).filter(([id])=>id!==o.correctionOf).map(([id,p])=>({id,p,inputHash:old.provenance.inputHashes?.[id]??null}));
    if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
@@ -142,14 +155,30 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
     conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
    }
    // Complementary duplicate: one execution from two reports (R7-A mergeActual); subjective response from whoever reported it.
+   const parts=previous.provenance.parts??{[previous.eventId]:partOf(previous)};
    previous.actual=mergeActual(previous,o,SOURCE_RANK[previous.provenance.sourceQuality]??0,SOURCE_RANK[o.provenance.sourceQuality]??0);
    previous.provenance.inputHashes={...(previous.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
    for(const k of Object.keys(RESPONSE))if(previous.response[k]==='UNKNOWN'&&o.response[k]!=='UNKNOWN')previous.response[k]=o.response[k];
    previous.provenance.mergedSourceIds=[...new Set([...(previous.provenance.mergedSourceIds??[previous.eventId]),o.eventId])];
+   previous.provenance.parts={...parts,[o.eventId]:partOf(o)};
    setFirstRecorded(previous,firstRecorded(previous,o));
    duplicates.push({eventId:o.eventId,mergedInto:previous.eventId,reason:'SAME_EXECUTION_DIFFERENT_SOURCE'});byEvent.set(o.eventId,previous);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,previous);continue;
   }
   const row={...o,identity,inputHash:hash({...source,athleteId})};
+  if(inherited?.length){
+   const own=partOf(row);
+   for(const {id,p,inputHash} of inherited){
+    const other={actual:p.actual,response:p.response};
+    // A correction that disagrees with a report still in force is a conflict on the execution: quarantined, never merged by arrival order.
+    if(!physicalAgrees(row,other,loadIncrements)||responseConflicts(row.response,p.response)){flagConflict(row,'CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE');quarantined.add(identity);conflicts.push({identity,eventIds:[o.eventId,id],reason:'CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'});continue;}
+    row.actual=mergeActual(row,other,SOURCE_RANK[row.provenance.sourceQuality]??0,SOURCE_RANK[p.sourceQuality]??0);
+    for(const k of Object.keys(RESPONSE))if(row.response[k]==='UNKNOWN'&&p.response?.[k]&&p.response[k]!=='UNKNOWN')row.response[k]=p.response[k];
+    if(inputHash)row.provenance.inputHashes={...row.provenance.inputHashes,[id]:inputHash};
+    row.provenance.mergedSourceIds=[...new Set([...(row.provenance.mergedSourceIds??[row.eventId]),id])];
+   }
+   row.provenance.parts={[o.eventId]:own,...Object.fromEntries(inherited.map(x=>[x.id,x.p]))};
+   for(const {id} of inherited)byEvent.set(id,row);
+  }
   accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  }
  accepted.sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)||byCodePoint(a.eventId,b.eventId));

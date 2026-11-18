@@ -1,5 +1,7 @@
 import {clone,hash} from './value.mjs';
 import {dateValid,daysBetween,validateAvailability} from './r5-contract.mjs';
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 /** No universal spacing/fatigue threshold: candidate configurations need current combined tolerance. */
 export function scheduleCandidates(anchors,availability,options,asOf,{allowOmissions=false,forbiddenPairs=[]}={}){
@@ -23,7 +25,7 @@ export function scheduleCandidates(anchors,availability,options,asOf,{allowOmiss
    const first=sessions.find(s=>s.anchorId===pair.before),second=sessions.find(s=>s.anchorId===pair.after);
    if(first&&second&&first.day===second.day&&first.startMinute<second.startMinute)reasons.push('Supplied incompatible arrangement: '+pair.before+' before '+pair.after);
   }
-  sessions.sort((a,b)=>a.day-b.day||a.startMinute-b.startMinute||a.anchorId.localeCompare(b.anchorId));
+  sessions.sort((a,b)=>a.day-b.day||a.startMinute-b.startMinute||byCode(a.anchorId,b.anchorId));
   return {id:option.id,admissible:reasons.length===0,reasons,sessions,omitted:omitted.map(a=>a.id),preservesRun:omitted.filter(a=>a.essential&&a.prescription.modality==='RUN').length===0,preservesStrength:omitted.filter(a=>a.essential&&a.prescription.modality==='STRENGTH').length===0,signature:hash(sessions.map(s=>[s.anchorId,s.day,s.startMinute,s.prescription]))};
  });
 }

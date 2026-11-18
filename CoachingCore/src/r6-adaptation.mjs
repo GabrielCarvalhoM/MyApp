@@ -200,8 +200,13 @@ const READ_STATUSES=new Set(['DISTANCE','PARTIAL','STOPPED','UNKNOWN']);
 const completionRead=(reads,o,s)=>{if(typeof reads!=='function'||s.sport!=='RUN')return null;let r;try{r=reads(o,s);}catch{return 'UNKNOWN';}return READ_STATUSES.has(r)?r:null;};
 function bindObservations(program,accepted,hybrid,policy,reads=null){
  const sessions=new Map(program.weeks.flatMap(w=>w.sessions.map(s=>[s.id,{s,w}]))),bound=[],unbound=[];
+ // V1 Core Safety & Lifecycle (QRE-AIF-02, L-APP-06): in a plan made from the record, a row bound under an earlier plan (bound to a session id
+ // outside this plan's namespace) is that plan's history. It is carried exactly as recorded and never re-bound to a session of this plan. A plan
+ // without a namespace binds as before.
+ const ns=typeof program.sessionNamespace==='string'?program.sessionNamespace+'.':null;
  for(const o of accepted){
   const x=sessions.get(o.sessionId);
+  if(ns&&!x&&typeof o.sessionId==='string'&&!o.sessionId.startsWith(ns)&&o.context?.sessionId===o.sessionId){unbound.push(o);continue;}
   if(!x||!x.s.prescription){unbound.push({...o,context:{sessionType:x?'REST_BY_DESIGN':'UNPLANNED'},comparable:false});continue;}
   // A race's duration is the event window (operational.event.raceDay), not a target: a finished race is complete however fast (R7-A).
  const {s,w}=x,p=s.prescription,minutesOk=s.sport==='STRENGTH'||s.role==='RACE'||!Number.isFinite(o.actual.minutes)||o.actual.minutes>=0.9*p.durationMinutes;
@@ -692,7 +697,9 @@ export function evaluateProgram(program,input,options={}){
   const raceNote=decision.proposal?raceScope(program,decision.proposal,ctx.ahead):null;
   const status=decision.status??(decision.proposal&&!decision.instantiationOnly?'MODIFY':decision.action==='ASK'?'ASK':'KEEP');
   return finish(status,decision.action,decision.reason,{...out,...(decision.readinessRestart?{readinessRestart:clone(decision.readinessRestart)}:{}),proposal:decision.proposal??null,disclosures:[...(decision.disclosures??[]),...(eventNote?[eventNote]:[]),...(raceNote?.disclosure?[raceNote.disclosure]:[])],offers:[...(decision.offers??[]),...(raceNote?.offer?[raceNote.offer]:[])],...(decision.guidance?{guidance:clone(decision.guidance)}:{}),...(decision.warningSigns?{warningSigns:clone(decision.warningSigns)}:{}),...(decision.unavailable?{unavailable:clone(decision.unavailable)}:{}),learnedPatterns:decision.learnedPatterns??null,substitutions:decision.substitutions??null,instantiationOnly:!!decision.instantiationOnly,gates:decision.gates??null,counterfactuals:decision.counterfactuals??[],horizons:decision.horizons??null,missingInputs:decision.missingInputs??[],question:decision.question??null,trace:{sourceProgramHash:program.hash,reviewHash:hash(input),policyHash:authority.policyHash,modelBeforeHash:review.athleteModel?.hash??null,modelAfterHash:model.hash,ledgerSize:ledger.length,authoritySplit:'Reusable boundaries constrain; coaching compares concrete feasible options',noCausalClaim:true},nextObservation:decision.nextObservation??'Record actual execution, effort if known and next-day function; the next step advances only on that evidence'});
- }catch(e){return finish('HOLD','HOLD','Malformed review facts: '+e.message,{...(out??{}),errors:['malformed:'+(e?.constructor?.name??'Error')]});}
+ // V1 Core Safety & Lifecycle (QRE-P0-03): the answer names the error class, which is the same on every engine for the same fault, never the
+ // engine's own message text (V8 and JavaScriptCore word it differently, and the reason is kept in the record of decisions).
+ }catch(e){const cls=e?.constructor?.name??'Error';return finish('HOLD','HOLD','Malformed review facts ('+cls+'): nothing is decided on them',{...(out??{}),errors:['malformed:'+cls]});}
 }
 const dayOf=v=>typeof v==='string'&&isoDay(v.slice(0,10))?v.slice(0,10):null;
 /** NB-2 (SSCTR-FF-Q2 (c), C-FF2-4): the race still ahead entering the athlete's own-event scope with this proposal (its three paths offered once, the

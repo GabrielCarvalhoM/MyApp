@@ -1,10 +1,11 @@
-import {generateProgram as generateColdProgram,validProgram as validColdProgram,programHash} from './r6-program.mjs';
+import {generateProgram as generateColdProgram,validProgram as validColdProgram,programHash,SESSION_NAMESPACE} from './r6-program.mjs';
 import {evaluateProgram as evaluateColdProgram} from './r6-adaptation.mjs';
 import {generateLegacyProgram,evaluateLegacyProgram,validLegacyProgram,LEGACY_PROGRAM_VERSION} from './r6-legacy.mjs';
 import {hash,clone,freeze} from './value.mjs';
 import {restartIntake} from './v1-f08.mjs';
 import {RESTART_FACTS} from './r6-intake.mjs';
 import {screenInterruptionReason} from './r6-clinical.mjs';
+import {utcTimestamp} from './r6-provenance.mjs';
 export {canonicalizeIntake} from './r6-intake.mjs';
 export {programHash,PROGRAM_VERSION} from './r6-program.mjs';
 export {REVIEW_VERSION,REVIEW_KINDS} from './r6-adaptation.mjs';
@@ -37,7 +38,12 @@ export function restartProgram({intake,record=[],referenceState=null,asOf=null,a
  try{
   const r=restartIntake({intake,record,referenceState,asOf:asOf??intake?.asOf,athleteId,screen:i=>screenInterruptionReason({reason:i?.reason,reasonCategory:i?.reasonCategory,nonclinical:i?.nonclinical??null,clinicalReason:i?.clinicalReason??null})});
   if(r.status!=='READY')return stopped(r.status,r.reason,r.missingInputs??[],r.unreadable?{unreadable:clone(r.unreadable)}:{});
-  const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts});
+  // V1 Core Safety & Lifecycle (QRE-AIF-02): the new plan's session namespace, from the updated facts and the restart's decision instant (UTC):
+  // two restarts of one athlete never share a session id, and the same restart (the same facts at the same instant) gives the same plan,
+  // whatever form the carried record holds its facts in.
+  const at=typeof (asOf??intake?.asOf)==='string'?(utcTimestamp(asOf??intake.asOf)??String(asOf??intake.asOf)):null;
+  const ns='r'+hash({intake:r.intake,at}).slice(0,10);
+  const g=generateProgram(r.intake,{...options,[RESTART_FACTS]:r.facts,[SESSION_NAMESPACE]:ns});
   return freeze({...g,restart:{carriedRecord:r.carried.record,priorCapacity:r.carried.priorCapacity,boundedByRecord:r.carried.boundedByRecord??[],note:r.carried.note}});
  }catch(e){return stopped('HOLD','The restart facts could not be read: no new plan is made from them; send the updated facts and the record as kept',[],{errors:['malformed:'+(e?.constructor?.name??'Error')]});}
 }

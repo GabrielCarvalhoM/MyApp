@@ -1,4 +1,6 @@
 import {clone,hash} from './value.mjs';
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 export const INPUT_VERSION='R5-INPUT-1';
 export const families={RUN:['EASY','LONG','CRUISE','FASTER','HILLS','STRIDES','EVENT_SPECIFIC','WALK_JOG'],STRENGTH:['FULL_BODY','LOWER','UPPER','PRACTICE']};
@@ -11,7 +13,7 @@ export const dateValid=s=>{
 export const daysBetween=(a,b)=>(Date.parse(b)-Date.parse(a))/86400000;
 export const onDate=(start,days)=>new Date(Date.parse(start)+days*86400000).toISOString().slice(0,10);
 export const prescriptionKey=p=>hash(p);
-export const anchorConfigurationHash=anchors=>hash(anchors.map(a=>({id:a.id,prescription:a.prescription})).sort((a,b)=>a.id.localeCompare(b.id)));
+export const anchorConfigurationHash=anchors=>hash(anchors.map(a=>({id:a.id,prescription:a.prescription})).sort((a,b)=>byCode(a.id,b.id)));
 export function validateAvailability(availability){
  const errors=[],days=new Set(),ids=new Set();
  if(!Array.isArray(availability)||!availability.length)return ['availability.array'];

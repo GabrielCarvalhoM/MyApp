@@ -1,4 +1,6 @@
 import {clone,freeze,hash,canonical} from './value.mjs';
+/* V1 Core Safety & Lifecycle (P0 C-3): code-unit order, the same on every host and in every locale (never localeCompare). */
+const byCode=(a,b)=>a<b?-1:a>b?1:0;
 
 const VERSION='R5-LEARNING-1',DAY=86_400_000,HASH=/^[a-f0-9]{64}$/;
 /** Conservative evidence bookkeeping, NOT physiological laws or dose authority. */
@@ -95,8 +97,8 @@ export function updateLearningModel(model,observations,{asOf,purposeAllowed=mode
    if(!exclusions.has(hash(entry))){excluded.push(entry);exclusions.add(hash(entry));}
   }else {accepted.push(o);ids.set(o.eventId,inputHash);sources.add(o.sourceHash);}
  }
- accepted.sort((a,b)=>time(a.observedAt)-time(b.observedAt)||a.eventId.localeCompare(b.eventId));
- excluded.sort((a,b)=>a.inputHash.localeCompare(b.inputHash)||a.reason.localeCompare(b.reason));
+ accepted.sort((a,b)=>time(a.observedAt)-time(b.observedAt)||byCode(a.eventId,b.eventId));
+ excluded.sort((a,b)=>byCode(a.inputHash,b.inputHash)||byCode(a.reason,b.reason));
  if(nextAsOf===model.asOf&&purposeAllowed===model.purposeAllowed&&canonical(accepted)===canonical(model.observations)&&canonical(excluded)===canonical(model.excluded))return model;
  const {hash:previousHash,...body}=clone(model);
  return finish({...body,asOf:nextAsOf,purposeAllowed,revision:model.revision+1,observations:accepted,excluded});
@@ -126,7 +128,7 @@ export function evidenceFor(model,context,{asOf}={}) {
  // A repeated report for one completed session is one independent observation.
  const sessions=new Map();
  for(const o of matches){const prior=sessions.get(o.sessionId);if(!prior||time(o.observedAt)>time(prior.observedAt))sessions.set(o.sessionId,o);}
- const rows=[...sessions.values()].sort((a,b)=>time(a.observedAt)-time(b.observedAt)||a.eventId.localeCompare(b.eventId));
+ const rows=[...sessions.values()].sort((a,b)=>time(a.observedAt)-time(b.observedAt)||byCode(a.eventId,b.eventId));
  const good=rows.filter(o=>classify(o)==='COMPATIBLE'),bad=rows.filter(o=>classify(o)==='ADVERSE');
  const informative=[...good,...bad],span=informative.length?Math.max(...informative.map(o=>time(o.observedAt)))-Math.min(...informative.map(o=>time(o.observedAt))):0;
  const mixed=good.length>0&&bad.length>0;
