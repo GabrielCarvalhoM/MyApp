@@ -121,7 +121,7 @@ Este pacote passa a validar o freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-1**, s
 
 ## 8. CORE-C2-F01 (2026-11-18): reinício a partir de registro com correções
 
-Este pacote passa a validar também a correção **CORE-C2-F01**, na branch **`claude/v1-core-c2-f01`** (de `d92aa88`; candidato `576e40c`). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor é uma só: `CoachingCore/src/v1-f08.mjs`, `restartIntake`. Linhas substituídas por uma correção não contam mais como execuções no limite C-Q08-1, nem na pausa; um evento repetido no registro conta uma vez.
+Este pacote passa a validar também a correção **CORE-C2-F01**, na branch **`claude/v1-core-c2-f01`** (de `d92aa88`; candidato `576e40c`; freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-2**, registros em `00e922a`). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor é uma só: `CoachingCore/src/v1-f08.mjs`, `restartIntake`. Linhas substituídas por uma correção não contam mais como execuções no limite C-Q08-1, nem na pausa; um evento repetido no registro conta uma vez.
 
 | Arquivo | Mudança |
 |---|---|
