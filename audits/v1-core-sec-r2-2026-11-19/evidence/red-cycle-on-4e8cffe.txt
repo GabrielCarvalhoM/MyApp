@@ -1,0 +1,86 @@
+✔ 1-4: a valid correction replaces its original: done, not done, duration, effort and recovery; the original stays as history (8.7277ms)
+✔ 5 (SEC-R2-03 A): a correction reusing another session's event id is refused and leaves the original in force, as it was (4.3934ms)
+✔ 6 (SEC-R2-03 B): a correction carrying another session's watch activity is refused and leaves the original in force (9.1932ms)
+✔ 7-8: a correction of an event the record does not hold, or of another athlete, is refused and changes nothing (3.4214ms)
+✔ 13: a partly malformed correction is refused and changes nothing; one reusing its own original's id with other facts is the event-id conflict, the original kept (6.1513ms)
+✔ 9: a correction that names an already replaced report and resolves a conflict is in force, never merged into the row it retires (3.3317ms)
+✔ 10: a chain of corrections replaces in order and stays auditable; a refused correction of its head leaves the head in force (4.4574ms)
+✔ 11: an admitted correction sent again is a replay: nothing more is replaced, no credit is added (6.9094ms)
+✔ 12: a late correction (two reviews later) still replaces; a late refused one still changes nothing (4.2939ms)
+✔ 14: a refused correction after the record is stored and restored, then the record normalized again and again: stable, nothing accumulates (6.4375ms)
+✔ 11: a second correction of an already corrected part, reusing the merged row's event id, is the event-id conflict: never a second row in force (9.2689ms)
+✔ 16: a merged row (athlete and watch): a refused correction of the athlete's part leaves the merged row with both parts in force (3.0656ms)
+✔ 17: corrections from two origins that disagree stay a conflict with both voices; a refused third report removes neither (5.4288ms)
+✔ 18 (SEC-R2-04 through the normalizer): two manual rows with no session, the later one after a readiness declaration; its refused correction reusing the earlier id: the new stop is asked (17.7311ms)
+✔ 18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked (2.5598ms)
+✔ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (16.2988ms)
+✔ SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked (12.327ms)
+✔ 15 and consumers: a refused correction of a run or a strength session, through the engine: the weekly review, strength exposure, run history and restart read what the same plain report gives (3709.4077ms)
+✔ 15: a refused correction of a session of the plan a restart replaced, in the new plan's review: the old session stays in force (441.3344ms)
+✔ generated records (seeded): no pass writes an orphan, no row in force is lost under arrival order, and the result is deterministic (2101.0133ms)
+✖ SEC-SR2-01: a correction read as a replay of another session's row (its id and its facts) never gives that row its chain's older first-recorded clock (6.6625ms)
+✖ SEC-SR2-01 through the engine (the QRE-V1CP-04 shape): a late adverse session after a wellbeing check is still asked about when a refused "correction" of an older row reuses its id (749.8415ms)
+✔ C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c) or manual (q10), after a readiness declaration: the new stop is asked by restartIntake and restartProgram, also after a round trip (37.3734ms)
+✔ C1 controls: a replaced row whose replacement shares its session, its watch activity or its manual instant is history (the declaration answers) (9.1985ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 22
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7711.1851
+
+✖ failing tests:
+
+test at test\v1core-secr2-correction-integrity.test.mjs:274:1
+✖ SEC-SR2-01: a correction read as a replay of another session's row (its id and its facts) never gives that row its chain's older first-recorded clock (6.6625ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-3 and 4e8cffe: 2026-11-01, the clock of X's chain
+  + actual - expected
+  
+    [
+  +   '2026-11-01T20:00:00.000Z'
+  -   '2026-11-06T20:00:00.000Z'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d9ef9ce4-1d97-47de-bf54-0b1d98cf2cf8/scratchpad/cycle1-1795099344-1801/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:280:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ '2026-11-01T20:00:00.000Z' ],
+    expected: [ '2026-11-06T20:00:00.000Z' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:287:1
+✖ SEC-SR2-01 through the engine (the QRE-V1CP-04 shape): a late adverse session after a wellbeing check is still asked about when a refused "correction" of an older row reuses its id (749.8415ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-3 and 4e8cffe: KEEP, the adverse session read as recorded before the check
+  + actual - expected
+  
+    [
+  +   'KEEP',
+  +   'next-week steps are gated when this week’s remaining sessions are complete'
+  -   'ASK',
+  -   'A session was reported as not going well: tell us how you are: each warning sign (yes or no), how your sessions felt (each exercise-response item)'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/d9ef9ce4-1d97-47de-bf54-0b1d98cf2cf8/scratchpad/cycle1-1795099344-1801/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:305:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'KEEP', 'next-week steps are gated when this week’s remaining sessions are complete' ],
+    expected: [ 'ASK', 'A session was reported as not going well: tell us how you are: each warning sign (yes or no), how your sessions felt (each exercise-response item)' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

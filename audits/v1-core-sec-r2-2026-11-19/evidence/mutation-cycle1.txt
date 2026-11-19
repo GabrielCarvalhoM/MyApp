@@ -1,0 +1,14 @@
+# mutate.mjs on a scratch extract of 36ea26a (git archive f6a934f + the cycle 1 files, byte-identical to 36ea26a: r6-provenance d2439377, v1-f08 f1065bf1, test ffbbf43d)
+M1 never admit: KILLED (fail 8) by: 1-4: a valid correction replaces its original: done, not don | 9: a correction that names an already replaced report and re | 10: a chain of corrections replaces in order and stays audit
+M2 no quarantine clause in previous: KILLED (fail 2) by: 9: a correction that names an already replaced report and re | generated records (seeded): no pass writes an orphan, no row | failing tests:
+M3 quarantine gate also on corrections: KILLED (fail 1) by: 9: a correction that names an already replaced report and re | failing tests:
+M4 stale alias treated as in force: KILLED (fail 1) by: 11: a second correction of an already corrected part, reusin | failing tests:
+M4b event-id check after admission view: KILLED (fail 2) by: 13: a partly malformed correction is refused and changes not | generated records (seeded): no pass writes an orphan, no row | failing tests:
+M5 previous ignores dropsIdentity: KILLED (fail 9) by: 1-4: a valid correction replaces its original: done, not don | 9: a correction that names an already replaced report and re | 10: a chain of corrections replaces in order and stays audit
+M6 f08 null===null back: KILLED (fail 1) by: SEC-R2-04 (records kept before this fix): a replaced row who | failing tests:
+M7 f08 no session guard: KILLED (fail 1) by: SEC-R2-04 (records kept before this fix): a replaced row who | failing tests:
+M8 f08 provider ignored: KILLED (fail 1) by: SEC-R2-04 (records kept before this fix): a replaced row who | failing tests:
+M9 chain clock before admission (SEC-SR2-01): KILLED (fail 2) by: SEC-SR2-01: a correction read as a replay of another session | SEC-SR2-01 through the engine (the QRE-V1CP-04 shape): a lat | failing tests:
+M10 (QRE Q11) any row with the id replaces a session row: KILLED (fail 1) by: C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c | failing tests:
+M11 (QRE Q9) any row with the id replaces an activity row: KILLED (fail 1) by: C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c | failing tests:
+M12 (QRE Q10) manual match ignores the replacement activity: KILLED (fail 1) by: C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c | failing tests:
