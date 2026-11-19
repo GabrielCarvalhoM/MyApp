@@ -30,7 +30,7 @@ const PRIOR=['CoachingCore/v1/RUNTIME_FREEZE_V1_1.json','CoachingCore/v1/RUNTIME
 const AMENDED=['CoachingCore/src/v1-f08.mjs'];
 /** The files this line adds (the record itself excluded). */
 const ADDED=['CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs','CoachingCore/test/v1core-cf011r2-freeze.test.mjs','CoachingCore/scripts/v1core-freeze-3.mjs'];
-const AUDIT='audits/v1-core-cf011-r2-2026-11-18',DIRS=[AUDIT+'/reviews',AUDIT+'/evidence',AUDIT+'/bench'],RECORDS=[AUDIT+'/CANDIDATE.md',AUDIT+'/DECISION.md',AUDIT+'/SUCCESSOR_LEDGER.json'];
+const AUDIT='audits/v1-core-cf011-r2-2026-11-18',DIRS=[AUDIT+'/reviews',AUDIT+'/evidence',AUDIT+'/bench'],RECORDS=[AUDIT+'/CANDIDATE.md',AUDIT+'/DECISION.md',AUDIT+'/CYCLE1.md',AUDIT+'/SUCCESSOR_LEDGER.json'];
 const REQUIRED=[AUDIT+'/reviews/ssctr',AUDIT+'/reviews/security',AUDIT+'/reviews/qre'];
 
 function preserved(){

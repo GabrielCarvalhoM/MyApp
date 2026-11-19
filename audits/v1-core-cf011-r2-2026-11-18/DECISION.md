@@ -79,4 +79,24 @@ Every dose change is in the conservative direction, except one: the shorter paus
   - an orphaned `superseded` mark hides a session (D9);
   - QRE-F01-02 and R-F01-2.
 - **SEC-CORE-03.** The author of a correction is not checked (C-F01-3).
+
+## 6. Cycle 1 addenda (after SSCTR_R2_R1, SEC_R2_R1, QRE_R2_R1)
+
+- **SEC-R2-01: the engine can write an orphaned replaced mark.** The normalizer marks the original replaced and then refuses the correction when it reuses another event's id or binds another session's watch activity. The session then vanishes, and the declaration used to stand in for the stop after it. Two rules close this, in `trainedAfter` only:
+  - a row marked `superseded` keeps its voice unless the record holds the row that replaced it (`eventId === supersededBy`, of the same session, else the same activity);
+  - the dose, the bound and the pause still read no execution there.
+
+  This replaces the §3 sentence "an orphaned `superseded` mark still hides a session": it no longer does, for SB-1. D9 is inverted.
+- **SEC-R2-02.** `occurred` admits an occurrence only if every voice is well formed: a boolean completion and readable measures, the SEC-CORE-14 rule. The readiness question still hears any voice, because a malformed voice can only add a question there.
+- **SEC-R2-03 (routed; independent issue, not fixed here).**
+  - *Root cause:* `normalizeObservations` retires the original before the correction is accepted.
+  - *Reproduction:* SEC_R2_R1 probe, and test `SEC-R2-01`.
+  - *Severity:* every dose reader that drops superseded rows also loses that session. Its minutes vanish from the record in force, which errs low on dose, and the run never reaches calibration.
+  - *Owner:* the next Core mission, with QRE then SSCTR. The fix lives in `r6-provenance.mjs`, a file the earlier freezes bind, and it changes what every V1 reader reads.
+- **C-R2-1 (SSCTR): the return-floor lift.** When a disputed session is the last one, the pause it sets is shorter. That can lift the start out of the return floor: in SSCTR's probe, RESTART at 45 min became EASY_CURRENT at 80, the same as the in-force control. This is correct under (ii), because the session took place. It is the one dose change in the less conservative direction, and it is now named here next to §4.
+- **QRE-R2-03 / C-R2-2: the window residual, both variants.** A record older than 28 days does not open the bound when it holds only:
+  - a "not done" report, or
+  - a disputed session.
+
+  An execution at the same age still bounds to 0/0, so the two cases are asymmetric. In SSCTR's example, a "not done" 40 days ago gives EASY_CURRENT at 295, while an execution 40 days ago gives RESTART at 45. A disputed session there also sets a 5-week pause, so `restartProgram` gives RESTART. Owner: the next Core mission with Data, then SSCTR, who will define per sport "the period the record covers" for both gates. This is not binding before real-athlete use (SSCTR).
 - **Calibration, forecast and pace are untouched.** `factsFromLedger` reads no conflicted row (test B3). Pace Revision stays off.

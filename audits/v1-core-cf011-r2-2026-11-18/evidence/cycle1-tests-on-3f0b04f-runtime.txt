@@ -1,0 +1,119 @@
+✔ A1: a new athlete with no record: unknown stays unknown, the stated exposure stands (the self-reported cold start) (3.8277ms)
+✔ A2: a valid history bounds as before (unchanged) (1.0249ms)
+✔ A3-A4: one execution corrected to "not done" among others; every execution corrected to "not done" (shape A): bounded to the window, 0/0 (1.1083ms)
+✔ A5: reports in conflict (P4, through the normalizer): bounded to 0/0, the disputed amount never counted (4.5619ms)
+✔ A6-A7: replaced rows and duplicates: each execution once, at its value in force (CORE-C2-F01 unchanged) (1.3626ms)
+✔ A8: late rows and a late correction (after a restart, stored and restored): read as the record in force (0.6043ms)
+✔ A9: reports older than 28 days: an execution there bounds to 0/0 (unchanged); a "not done" alone there does not open the window (0.3915ms)
+✔ A10-A11: the stated exposure is only ever lowered to the record, never raised (0.428ms)
+✔ A12: the information to resolve a conflict is missing (a direct conflict keeps one voice): bounded, and no occurrence read (0.6704ms)
+✔ A e2e: through restartProgram, shapes A and P4 start from the record (RESTART, the class of 0 weekly minutes), not from the stated 300 (126.4595ms)
+✔ B1-B2: a session every voice says took place, only its amount disputed, is an execution for the pause and the last executed day (1.5618ms)
+✔ B3: the disputed amount does not reach calibration or history: the row stays in conflict, and no run fact is made of it (1.8248ms)
+✔ B4-B5: occurrence itself disputed (a voice says not done), or one voice only on the record (direct conflict): not an execution (1.109ms)
+✔ B6: only the response disputed (same minutes, recovery reported adverse against a compatible one): the session took place (0.7679ms)
+✔ B7: what a row must show to be read as a disputed execution (a forged or partial flag reads as no execution, and never raises the bound) (0.3454ms)
+✔ B persistence: a later review re-normalizes the record (carried rows): the disputed session keeps its reading (1.2222ms)
+✔ C1-C4: done -> not done; done -> other minutes; several corrections; not done -> done (0.5742ms)
+✔ C5: a duplicate of the replaced execution (marked) is no execution; an unmarked stale copy is the custody residual C-F01-2 (0.2529ms)
+✔ C6: a correction to "not done" that arrives after a restart: the next restart reads it (0.2584ms)
+✔ C7-C8: a device correction and a manual correction to "not done", through the normalizer (1.1002ms)
+✔ C9: a correction outside its chain (another session) is refused by the normalizer: the execution stays in force (0.4982ms)
+✔ C10: a partially malformed row is no execution and does not open the bound (0.2656ms)
+✔ C11: a record across plans A, B, C: an execution of plan A corrected to "not done" is none, those of B and C count (0.2481ms)
+✔ D1: readiness, then a session of disputed amount after it: training after the declaration, so the new stop is screened (SB-1 asked) (1.3285ms)
+✔ D2: readiness, then a run corrected to "not done": the declaration still answers the stop (QRE-F01-04 kept) (0.2933ms)
+✔ D3-D4: readiness, then a disputed record where one voice says the athlete trained (direct conflict; watch against "not done"): asked (1.5838ms)
+✔ D5: a disputed session before the declaration: the declaration answers the stop (0.7562ms)
+✔ D6: through the intake: the reason of the new stop is asked when none is stated; a stated reason is screened as stated (65.9172ms)
+✔ D7: restarts A -> B -> C keep the safety facts: the record returned carries the declaration and the disputed session (1.2296ms)
+✔ D8: a clinical break after the declaration still answers first, whatever the disputed rows (0.7126ms)
+✖ D9 (inverted in cycle 1, SEC-R2-01): a row marked replaced with nothing behind it keeps its voice for the readiness question, and only there (1.2661ms)
+✖ SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked (1.3167ms)
+✔ SEC-R2-01 controls: a replaced row whose replacement the record holds is history (D2 kept, through the normalizer); a merged row corrected to "not done" against the watch is asked (1.3708ms)
+✖ SEC-R2-02: an occurrence is admitted only from well-formed voices (a malformed part reads as no occurrence) (0.293ms)
+✔ QRE-R2-01: P4, then a further correction to "not done" (the disputed row now replaced): no occurrence, no pause read from it (1.7663ms)
+✔ QRE-R2-04: "took place" is either a completion or minutes logged; the declaration boundary is strict (0.6147ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 33
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 467.0643
+
+✖ failing tests:
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:268:1
+✖ D9 (inverted in cycle 1, SEC-R2-01): a row marked replaced with nothing behind it keeps its voice for the readiness question, and only there (1.2661ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   true,
+  -   undefined,
+      20,
+      '2026-10-21'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/cand-3f0b04f-85/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:271:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ true, 20, '2026-10-21' ],
+    expected: [ undefined, 20, '2026-10-21' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:287:1
+✖ SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked (1.3167ms)
+  AssertionError [ERR_ASSERTION]: a (3f0b04f: true, the session after the declaration vanished)
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/cand-3f0b04f-85/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:291:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:310:1
+✖ SEC-R2-02: an occurrence is admitted only from well-formed voices (a malformed part reads as no occurrence) (0.293ms)
+  AssertionError [ERR_ASSERTION]: {"actual":{"minutes":50}}
+  + actual - expected
+  
+  + '2026-11-07'
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/cand-3f0b04f-85/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:313:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '2026-11-07',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

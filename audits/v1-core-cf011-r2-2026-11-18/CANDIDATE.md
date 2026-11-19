@@ -60,6 +60,7 @@
   - 24 are exactly CORE-C2-F01's failures: closure-2's 23 ledgered tests, with `v1rws-lineage:146` counted twice, plus `v1core-freeze:11`. Their locations were compared one by one.
   - The other three are the re-pinned tests of §3.
   - No other test changes status. The base was 1712 / 1688 / 24; the 31 new tests and the freeze test add 32.
+  - *Correction (QRE-R2-02, cycle 1):* `evidence/suite-3f0b04f.txt` was run before the freeze test was added, so it shows 1743 tests. With the freeze test the count is 1712 + 32 = **1744**, which QRE reproduced on a clean clone (1744 / 1717 / 27). The fresh evidence is in `CYCLE1.md`.
 - **Bench** (`bench/`, `4b6e1ea` vs this tree, 5 interleaved rounds):
   - review median ×1.004, p95 ×0.980;
   - restart from a corrected record ×0.994 (p95 ×0.991);
