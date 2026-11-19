@@ -29,7 +29,7 @@ A tie (two reports with no report time, both at the end of the run's day) was br
 - A correction made before the report it names was available is refused (`INVALID_CORRECTION_CHAIN`), whichever review brought that report. In one review FREEZE-4 already refused it, because it was read before the report. Without the rule it would be admitted when the original was carried and then lost again on a re-read.
   - **Corrected in cycle 1 (QRE C1/C5, SEC-NCC-01).** On `ef490bb` the rule read the clock of the row holding the named report. For a merged part that is the lead report's clock, so valid corrections were refused depending on the split (P1-S1, P1-S2/P2, P7, e5d), and one made before its part was reported was admitted when split (E5c). The split-independence claim made here for `ef490bb` is withdrawn.
   - On `963547b` the rule reads the named report's own clock: the row's when the row is that report, else the clock its part now keeps (`availableAt`). A part written before this line keeps none and is never refused by the rule (FREEZE-4 behaviour).
-  - Those corrections now read as in one review (`CYCLE1.md`). What stays order-dependent is only what E-1 already makes so: which correction's event id holds the row.
+  - Those corrections now read as in one review (`CYCLE1.md`). What stays order-dependent is what E-1 already makes so on FREEZE-4: which correction leads the row, its event id, and with it the row-level `provenance.sourceQuality`, `provider` and `canonicalActivityId`. Run history and run format read the row-level `sourceQuality` to decide whether a run counts as wearable (`v1-run-history.mjs:167`, `v1-run-format.mjs:694`) (QRE_NCC_R2 N1; routed to SSCTR/Core with E-1).
 
 **Invariant.** No carried row in force leaves the record because a report arrived later. A real conflict still changes admissibility: the carried row stays, flagged and out of dose and calibration, and the new report is refused.
 
@@ -141,7 +141,7 @@ Plan A, week 0 reported in full on its Sunday, run d1 reported by the athlete an
 - **Lineage scenario 21** (stated per SSCTR C-NCC-2): on EASY, the session's weekly status goes CONFLICTED → COMPLETED. The history reference becomes the re-synced device measurement, a distance the athlete's refused symptom-stop report disputes, as LONG already reads. The easy band, the calibration and the next long run are unchanged, and the run stays withheld from pace readers. The mechanism is SSCTR-NCC-01 (C-NCC-1), routed.
 - **Cycle 1** (`963547b`): the five journeys above are byte-identical to `ef490bb` (`evidence/dose-963547b.json`). The cycle changes only the corrections `ef490bb` wrongly refused, and there it restores FREEZE-4's outcome:
   - P7: the device re-sync of d1 is in force, 43 min as on FREEZE-4;
-  - engine-e5d: the athlete's symptom-stop correction is in force, conflicted, and no 40-min run-history fact comes from the watch.
+  - engine-e5d: the athlete's symptom-stop correction is in force, conflicted, and no 40-min run-history fact comes from the watch. SSCTR_NCC_R2 found that `ef490bb` had dropped that stop and counted the watch's 40 min as executed running: the bound went 40 → 50 and a run-history fact was added. The cycle restores FREEZE-4's bound of 40 (25+15). P7 is at the FREEZE-4 bound of 51 (15+15+20).
 
 ## D. Tests
 
@@ -215,9 +215,11 @@ A second bench run (5 rounds) gave the same picture: review ×0.975, corrected r
   - Owner: the conflict-policy mission (Core with QRE and Security, then Product/UX and SSCTR).
 - **SEC-NCC-02.** A report refused against a carried "not done" never reaches the record, so f08's readiness question does not hear its symptom stop; the run-format screen still asks. Binds before a real-athlete restart. Owner: Core + QRE within O-1.
 - **SEC-NCC-03.** See §A, F2 limitation.
-- **C-NCC-3 (integration).** The run-format record must be stored and sent with every review and restart, since it is how the symptom screen sees a refused athlete stop. `reportedAt` and `correctedAt` must come from one clock.
+- **C-NCC-3 (integration).** The run-format record must be stored and sent with every review and restart, since it is how the symptom screen sees a refused athlete stop. `reportedAt` and `correctedAt` must come from one clock. Binds before real-athlete use. Owner: integration (Core with QRE and Security) (SSCTR C-NCC-R2-1).
 - **OOS-1 / O-QRE-NCC-A.** Incoming reports keep a client-supplied `conflicted` flag and `provenance.conflict`. Owner: Core with SEC-CORE-03 / O-1.
 - **O-NCC-S1 (SSCTR observation, F08 owners).** A zero-minute symptom stop after a readiness declaration no longer re-asks the readiness question. FREEZE-4 asked only because it had lost the stop.
+- **O-R2-1 (Security R2; Low).** When the watch report and the athlete's conflicting late correction arrive in one review, the watch report is refused, so its activity binds nothing. Split across reviews, E-1 keeps it as a part of the correction and binds it. A later report of another session carrying that activity is therefore admitted after the one-review shape and refused after the split one. This is FREEZE-4 behaviour in one review. Owner: Core + QRE within O-1, before real-athlete HealthKit use.
+- **N2 (QRE R2; harness, for later lines).** CONFLICT_WITH_RECORD reads the flag and quarantine that the refusal itself creates, so a wrongful conflict refusal is caught only through the class fallback. The generator makes no late non-correction report of the same execution; that shape is pinned by the NCC tests. QRE's independent oracles found 0 suspect refusals on the candidate. For later lines: explain conflict refusals from the facts of the pair, and generate late reports of the same execution.
 - **Test gap (QRE).** Binding a merged report's activity within one review was not pinned by its own test.
 
 ## G. Freezes
