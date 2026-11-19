@@ -260,3 +260,64 @@ Nada disso é material, então o `PerformanceTests` físico **não** é repetido
 - uma segunda execução não muda nada.
 
 O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.
+
+## 11. Normalization Consistency F1 + F2 + F3 (2026-11-19): eventos atrasados, identidade de atividades, quarentena
+
+Este pacote passa a validar também o fechamento de **F1, F2 e F3**, na branch **`claude/v1-core-normalization-consistency`** (de `e704180`; runtime `963547b`; freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-5**). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor está num arquivo só, **`src/r6-provenance.mjs`**:
+- **F1:** o registro carregado é reconstruído (histórico, depois registros em vigor) antes de ler os relatos da revisão. Um relato atrasado com relógio anterior não expulsa mais um registro já admitido. Uma correção feita antes de o relato que ela nomeia existir é recusada, lida pelo relógio do próprio relato nomeado.
+- **F2:** uma parte mesclada guarda a atividade do relógio e o próprio relógio de disponibilidade. A atividade continua vinculada à execução em toda revisão seguinte.
+- **F3:** reler uma correção em conflito não resolve mais o conflito; só uma correção válida resolve.
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA do `coachingcore-p0.js`: `ce5b01bd…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Três jornadas novas: `ncc-late-report`, `ncc-merged-activity` e `ncc-quarantine`. As dezesseis anteriores têm entradas idênticas. Doze têm esperados idênticos. Em quatro (`e1-ADVERSE`, `e1-HEAT`, `restart-f01`, `restart-r2-disputed`) só os digests `answer`/`stable`/`persisted` mudam; `status`, `proposal`, `namespace`, `expiry` e `forecast` são iguais |
+| `Fixtures/p16.json` | Só digests mudam, a partir do passo 18 |
+| `Fixtures/j5.json` | **Inalterado** |
+| `FocalTests.swift` | **Sem mudança** |
+
+**Por que os digests mudam (e só isso):**
+- As partes mescladas ganharam dois campos (`activityId`, `availableAt`).
+- A lista `excluded` do modelo de aprendizado sai na ordem do registro, com o mesmo conteúdo.
+- Prova em Node:
+  - `audits/v1-core-ncc-2026-11-19/evidence/core-journeys-delta.mjs` reexecuta as dezesseis jornadas no motor da FREEZE-4 e no candidato. Retirados os dois campos das partes, comparadas como conjuntos as listas do modelo e descartados os digests, dá 0 diferenças.
+  - `p16-model-order.mjs` mostra, para a P16, só a ordem de `updatedModel.excluded` (igual como conjunto) e os hashes calculados sobre ela.
+
+**Jornadas novas (oráculo Node `core-oracle.mjs`, seção 10)**, cada uma com ida e volta por JSON, revisão seguinte e reinício:
+- **`ncc-late-report`** (F1 e o ciclo C1):
+  - a corrida d1 é relatada pelo atleta e pelo relógio (mesclada);
+  - o atleta corrige a sua parte e chega uma ressincronização do relógio feita antes dessa correção: fica em vigor, 43 min;
+  - uma correção de d3 (parada por SINTOMA);
+  - um relato do relógio de d3 feito antes e entregue depois: recusado, e a correção fica em vigor, em conflito.
+- **`ncc-merged-activity`** (F2): uma correção de d3 com a atividade mesclada de d1, depois um relato de outra sessão com a mesma atividade. As duas são recusadas, e a atividade fica só em d1.
+- **`ncc-quarantine`** (F3):
+  - o atleta contesta a sua parte de d1 contra a voz do relógio: CONFLICTED;
+  - ida e volta e nova leitura sem nada novo: ainda CONFLICTED;
+  - uma correção válida resolve: COMPLETED.
+
+O oráculo **falha** se algum desses resultados mudar. Saída esperada (quarta linha):
+```
+NCC F1/F2/F3: late report ["DUPLICATE_CONFLICT_QUARANTINED"], the correction d3-fix! in force; late re-sync in force (d1 [43]); merged activity reused ["ACTIVITY_BOUND_TO_TWO_SESSIONS","ACTIVITY_BOUND_TO_TWO_SESSIONS"], held by w0-run-d1; dispute CONFLICTED, again CONFLICTED, settled COMPLETED; restarts PROPOSED PROPOSED PROPOSED
+```
+
+**Fica só no Node:** o diferencial gerado (doze configurações), as mutações e os formatos sem cliente de aparelho. Estão em `audits/v1-core-ncc-2026-11-19/evidence/` e em `CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs`.
+
+**Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das dezenove jornadas e de J5/P16. Um `DIVERGED` reprova.
+
+**Desempenho:** bench Node `e704180` × candidato:
+- revisão ×0,98;
+- reinício de registro corrigido ×0,99;
+- registro ×1,00;
+- normalizador ×1,03 a ×1,09 em lote pequeno (submilissegundo) e ×0,88 na ressincronização;
+- heap retido igual.
+
+Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs`: J5 byte-idêntico, P16 só digests (explicados acima);
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
+- uma segunda execução não muda nada.

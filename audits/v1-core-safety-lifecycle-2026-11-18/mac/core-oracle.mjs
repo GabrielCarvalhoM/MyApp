@@ -143,6 +143,45 @@ for(const k of ['a','b']){SR2[k]=sr2(k,false);SR2[k+'Plain']=sr2(k,true);}
  journeys.push({name:'sec-r2-readiness',steps:r.steps});}
 for(const k of ['a','b'])if(SR2[k].replaced.length||!SR2[k].d3||JSON.stringify(SR2[k])!==JSON.stringify(SR2[k+'Plain']))throw new Error('SEC-R2-03 ('+k+'): a refused correction changed the record or differs from the plain report: '+JSON.stringify(SR2));
 if(!SR2.c.inForce||SR2.c.replaced||SR2.c.ask!=='ASK'||!SR2.c.missing?.some(k=>k.startsWith('athlete.pause.'))||SR2.c.ok!=='PROPOSED')throw new Error('SEC-R2-03/SB-1: the run after the declaration is not kept or the new stop is not asked: '+JSON.stringify(SR2.c));
+// 10. Normalization Consistency (F1, F2, F3; Founder mission of 2026-11-19): week 0 with run d1 reported by the athlete and the watch (merged).
+//   ncc-late-report (F1, cycle C1): a correction of run d3 (a symptom stop), then a watch report of d3 made before it and delivered after it: the
+//     correction stays in force, conflicted, the late report is refused; the athlete corrects their d1 part, then a re-sync of the d1 watch report
+//     made before that correction is delivered after it: in force, its measurement leads; a round trip; a review with nothing new; a restart.
+//   ncc-merged-activity (F2): a correction of d3 carrying d1's merged watch activity, then a plain report of another session carrying it: both
+//     refused, d1 flagged; a round trip; a review with nothing new; a restart.
+//   ncc-quarantine (F3): the athlete disputes their d1 part against the watch voice: CONFLICTED; a round trip; a review with nothing new: still
+//     CONFLICTED; a valid correction agreeing with the watch resolves it; a restart.
+const NCC={};
+const nccWeek=(id,act)=>{const r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program,d=addDays(p.startDate,6),obs=liveSessions(r.c.env,0).map(s=>reportOf(r.c.env,s)),d1=obs.find(o=>o.sessionId==='w0-run-d1');
+ obs.push({...d1,eventId:'dev-d1',actual:{...d1.actual},response:U3,source:{provider:'HEALTHKIT',activityId:act,quality:'WEARABLE_FULL'},canonicalActivityId:act});
+ r.review('WEEKLY_REVIEW',at(d),{eligibility:ELIG(d),observations:obs},'w0');return {r,p,d,row:id=>r.c.env.actualLedger.find(o=>o.eventId===id&&!o.superseded),live:sid=>r.c.env.actualLedger.filter(o=>o.sessionId===sid&&!o.superseded&&!o.fact)};};
+const nccRestart=(w,id)=>{const day=addDays(w.p.startDate,10),u={...athleteA({weeks:8,id}),asOf:day,startDate:addDays(day,3)};u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};return w.r.restart(u,at(day,'10:00'));};
+{const id='core-mac-ncc1',w=nccWeek(id,'HK-N1'),{r,d}=w,x=w.row('aif-w0-run-d3'),dn=addDays(d,1);
+ const d1=w.live('w0-run-d1')[0],part=Object.keys(d1.provenance.parts).find(k=>k!=='dev-d1'),dev=d1.provenance.parts['dev-d1'];
+ r.review('WEEKLY_REVIEW',at(d,'21:00'),{eligibility:ELIG(d),observations:[{sessionId:'w0-run-d1',occurrenceDate:d1.localDate,eventId:'d1-fix',correctionOf:part,correctedAt:at(d,'20:30'),reportedAt:at(d,'20:30'),actual:{...d1.actual},response:{...U3,effort:'ON_TARGET'}}]},'d1-fix');
+ const rs=r.review('WEEKLY_REVIEW',at(d,'23:00'),{eligibility:ELIG(d),observations:[{sessionId:'w0-run-d1',occurrenceDate:d1.localDate,eventId:'dev-d1-v2',correctionOf:'dev-d1',correctedAt:at(d,'20:00'),reportedAt:at(d,'20:00'),actual:{...dev.actual,minutes:dev.actual.minutes+3},response:U3,source:{provider:'HEALTHKIT',activityId:'HK-N1',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-N1'}]},'resync');
+ r.review('WEEKLY_REVIEW',at(dn,'08:00'),{eligibility:ELIG(dn),observations:[{sessionId:x.sessionId,occurrenceDate:x.localDate,eventId:'d3-fix',correctionOf:x.eventId,correctedAt:at(dn,'07:00'),reportedAt:at(dn,'07:00'),actual:{completed:false,minutes:20,stop:{reason:'SYMPTOM'}},response:{...U3,recovery:'ADVERSE'}}]},'d3-fix');
+ const late=r.review('WEEKLY_REVIEW',at(dn,'20:00'),{eligibility:ELIG(dn),observations:[{sessionId:x.sessionId,occurrenceDate:x.localDate,eventId:'d3-watch',reportedAt:at(d,'21:00'),actual:{...x.actual,minutes:x.actual.minutes+15},response:U3,source:{provider:'HEALTHKIT',activityId:'HK-N3',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-N3'}]},'late');
+ r.roundtrip();w.r.c.env.actualLedger=JSON.parse(JSON.stringify(w.r.c.env.actualLedger));const d2=addDays(dn,1);r.review('WEEKLY_REVIEW',at(d2,'07:00'),{eligibility:ELIG(d2)},'next');const g=nccRestart(w,id);
+ NCC.late={resync:rs.provenance?.excluded?.length??null,d1:w.live('w0-run-d1').map(o=>o.actual.minutes),d3:w.live('w0-run-d3').map(o=>o.eventId+(o.conflicted?'!':'')),refused:late.provenance?.excluded?.map(e=>e.reason),restart:g.status};
+ journeys.push({name:'ncc-late-report',steps:r.steps});}
+{const id='core-mac-ncc2',w=nccWeek(id,'HK-N2'),{r,d}=w,x=w.row('aif-w0-run-d3'),d8=addDays(d,2),z=w.row('aif-w0-run-d5');
+ const a=r.review('WEEKLY_REVIEW',at(d8,'20:00'),{eligibility:ELIG(d8),observations:[{sessionId:x.sessionId,occurrenceDate:x.localDate,eventId:'d3-borrow',correctionOf:x.eventId,correctedAt:at(d8,'07:00'),reportedAt:at(d8,'07:00'),actual:{...x.actual,minutes:x.actual.minutes-5},response:x.response,source:{provider:'HEALTHKIT',activityId:'HK-N2',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-N2'}]},'borrow');
+ r.roundtrip();w.r.c.env.actualLedger=JSON.parse(JSON.stringify(w.r.c.env.actualLedger));
+ const b=r.review('WEEKLY_REVIEW',at(d8,'22:00'),{eligibility:ELIG(d8),observations:[{sessionId:z.sessionId,occurrenceDate:z.localDate,eventId:'d5-hk',reportedAt:at(d8,'21:00'),actual:{...z.actual},response:U3,source:{provider:'HEALTHKIT',activityId:'HK-N2',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-N2'}]},'reuse');
+ const d9=addDays(d8,1);r.review('WEEKLY_REVIEW',at(d9,'07:00'),{eligibility:ELIG(d9)},'next');const g=nccRestart(w,id);
+ const holders=w.r.c.env.actualLedger.filter(o=>!o.superseded&&!o.fact&&(o.canonicalActivityId==='HK-N2'||Object.values(o.provenance?.parts??{}).some(p=>p?.activityId==='HK-N2'))).map(o=>o.sessionId);
+ NCC.merged={refused:[...(a.provenance?.excluded??[]),...(b.provenance?.excluded??[])].map(e=>e.reason),holders,d1:w.live('w0-run-d1').map(o=>o.conflicted===true),restart:g.status};
+ journeys.push({name:'ncc-merged-activity',steps:r.steps});}
+{const id='core-mac-ncc3',w=nccWeek(id,'HK-N4'),{r,d}=w,d1=w.live('w0-run-d1')[0],part=Object.keys(d1.provenance.parts).find(k=>k!=='dev-d1'),st=p=>p.weekEvidence?.rows?.find(x=>x.sessionId==='w0-run-d1')?.status;
+ const a=r.review('WEEKLY_REVIEW',at(d,'21:00'),{eligibility:ELIG(d),observations:[{sessionId:'w0-run-d1',occurrenceDate:d1.localDate,eventId:'d1-dispute',correctionOf:part,correctedAt:at(d,'20:30'),reportedAt:at(d,'20:30'),actual:{...d1.actual,minutes:Math.round(d1.actual.minutes/2)},response:{...U3,recovery:'ADVERSE'}}]},'dispute');
+ r.roundtrip();w.r.c.env.actualLedger=JSON.parse(JSON.stringify(w.r.c.env.actualLedger));const b=r.probe('WEEKLY_REVIEW',at(d,'22:00'),{eligibility:ELIG(d)},'again');
+ const c=r.review('WEEKLY_REVIEW',at(d,'23:30'),{eligibility:ELIG(d),observations:[{sessionId:'w0-run-d1',occurrenceDate:d1.localDate,eventId:'d1-settle',correctionOf:'d1-dispute',correctedAt:at(d,'23:00'),reportedAt:at(d,'23:00'),actual:{...d1.actual},response:U3}]},'settle');
+ const g=nccRestart(w,id);NCC.quarantine={dispute:st(a),again:st(b),settled:st(c),d1:w.live('w0-run-d1').map(o=>o.conflicted===true),restart:g.status};
+ journeys.push({name:'ncc-quarantine',steps:r.steps});}
+if(NCC.late.resync!==0||NCC.late.d3.join()!=='d3-fix!'||JSON.stringify(NCC.late.refused)!=='["DUPLICATE_CONFLICT_QUARANTINED"]'||NCC.late.restart!=='PROPOSED')throw new Error('NCC F1/C1: '+JSON.stringify(NCC.late));
+if(JSON.stringify(NCC.merged.refused)!=='["ACTIVITY_BOUND_TO_TWO_SESSIONS","ACTIVITY_BOUND_TO_TWO_SESSIONS"]'||NCC.merged.holders.join()!=='w0-run-d1'||NCC.merged.restart!=='PROPOSED')throw new Error('NCC F2: '+JSON.stringify(NCC.merged));
+if(NCC.quarantine.dispute!=='CONFLICTED'||NCC.quarantine.again!=='CONFLICTED'||NCC.quarantine.settled==='CONFLICTED'||NCC.quarantine.d1.join()!=='false'||NCC.quarantine.restart!=='PROPOSED')throw new Error('NCC F3: '+JSON.stringify(NCC.quarantine));
 const input={journeys,anchors:['b','aa','h','ch','Z','_x','a-1','a_1'].map(id=>({id,prescription:{modality:'RUN',family:'EASY',durationMinutes:30}})),locales:['pt-BR','en-US','da-DK','nb-NO','cs-CZ']};
 vm.runInThisContext(fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'));
 const expected=JSON.parse(globalThis.__corefocal({core,contract,value},JSON.stringify(input)));
@@ -156,4 +195,5 @@ const summary=expected.journeys.map(j=>j.name+': '+j.steps.map(s=>s.status??s.op
 console.log('CORE-C2-F01 restart doses (corrected = control): '+JSON.stringify(F01.corrected.runs.slice(0,2))+'; superseded rows in the corrected record: '+F01.corrected.superseded);
 console.log('C-F01-1 r2: not done '+R2.notDone.cls+' '+JSON.stringify(R2.notDone.runs.slice(0,2))+' (control '+R2.control.cls+' '+JSON.stringify(R2.control.runs.slice(0,2))+'); disputed after readiness: '+R2.disputed.ask+' '+JSON.stringify(R2.disputed.missing)+' then '+R2.disputed.ok);
 console.log('SEC-R2-03/-04: refused event id '+JSON.stringify(SR2.a.runs?.slice(0,1))+' = plain; refused activity '+JSON.stringify(SR2.b.runs?.slice(0,1))+' = plain; nothing replaced; readiness then refused correction: '+SR2.c.ask+' '+JSON.stringify(SR2.c.missing)+' then '+SR2.c.ok);
+console.log('NCC F1/F2/F3: late report '+JSON.stringify(NCC.late.refused)+', the correction '+NCC.late.d3.join()+' in force; late re-sync in force (d1 '+JSON.stringify(NCC.late.d1)+'); merged activity reused '+JSON.stringify(NCC.merged.refused)+', held by '+NCC.merged.holders.join()+'; dispute '+NCC.quarantine.dispute+', again '+NCC.quarantine.again+', settled '+NCC.quarantine.settled+'; restarts '+[NCC.late.restart,NCC.merged.restart,NCC.quarantine.restart].join(' '));
 console.log(summary+'\nanchors equal across locales: '+(new Set(Object.values(expected.anchors)).size===1)+'; localeCompare calls: '+expected.localeCompareCalls+'\ndigest '+expected.digest);
