@@ -141,7 +141,7 @@ Engine journeys (`bench/bench-f40fbe1-vs-candidate.json`):
 Dispute-heavy generated records, 3000 cases per configuration (the `size` field, re-emitted in all twelve `o1-diff/*.json` per QRE-O1-03(c)):
 - record bytes ×1.028 to ×1.042;
 - the largest row grows by at most +295 bytes in any configuration;
-- normalizer time ×0.98–0.99.
+- normalizer time ×0.99–1.00 (QRE_O1_R2).
 
 Unbounded voice spam (SEC-O1-03) is routed: 2000 voices make a 2.6 MB row.
 

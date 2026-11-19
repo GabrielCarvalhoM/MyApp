@@ -1869,6 +1869,8 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
 // own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
 // holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
 const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
+/** O-1: who gave a part or a report, as far as the record shows: one device activity, else the athlete (an own source), else nobody known. */
+const speakerOf=p=>typeof p?.activityId==='string'&&p.activityId?'DEVICE:'+p.activityId:['MANUAL','SELF_REPORT'].includes(p?.sourceQuality)?'ATHLETE':null;
 /** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
 const validPart=p=>!!p&&typeof p==='object'&&!!p.actual&&typeof p.actual==='object'&&!Array.isArray(p.actual)&&typeof p.actual.completed==='boolean'
  &&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>p.actual[k]!==undefined&&p.actual[k]!==null&&(!Number.isFinite(p.actual[k])||p.actual[k]<0))
@@ -1913,6 +1915,17 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
  // A fact that conflicts with another stays in the record, flagged, and is quarantined for gating and learning (QRE-R6-14).
  const flagConflict=(row,reason)=>{row.conflicted=true;row.provenance={...row.provenance,conflict:reason};};
  const byActivity=new Map();
+ // O-1 (SSCTR-NCC-01, SEC-NCC-02): a report that passed every check and is refused only because it disputes the row in force for its execution
+ // (a head-on conflict), or because that execution is already in dispute, is kept as a voice of that flagged row (a part, with its input hash):
+ // never merged into the row's amount, never in dose. So a later correction resolves the dispute only when it agrees with every voice kept,
+ // the refused one included (E-1, as for a correction in conflict), and f08's readiness question hears what that voice said. A report refused
+ // for integrity (another athlete, a time or measure, an event id reused, a device activity of another execution, a correction chain) is not.
+ const keepVoice=(row,o,source,activityId)=>{
+  if(!isObject(row.provenance.parts))row.provenance.parts={[row.eventId]:partOf(row)};
+  if(Object.hasOwn(row.provenance.parts,o.eventId))return;
+  row.provenance.parts[o.eventId]=partOf(o);row.provenance.inputHashes={...(row.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
+  byEvent.set(o.eventId,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
+ };
  for(const {o:source,prior:carried} of rows){
   const o=clone(source),reject=reason=>excluded.push({eventId:o?.eventId??null,sessionId:o?.sessionId??null,reason,inputHash:hash(source)});
   if(!o||!o.eventId){reject('EVENT_ID_REQUIRED');continue;}
@@ -1966,7 +1979,14 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    // (QRE-CORE-04, SEC-CORE-04). Closure-2 (SEC-CORE-14): a malformed part is not read and not carried, and the well-formed ones still are, so a
    // damaged part never discards another voice's valid report; with no well-formed part the correction replaces the row, as before. Never throws.
    const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
-   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id,p])=>id!==o.correctionOf&&validPart(p));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   // O-1: while a dispute stands on the identity, a correction from a known speaker (the athlete, or one device activity) is that speaker's word
+   // for every voice that speaker gave it, and only for those: whichever row id it names, another speaker's voice is carried and still has to
+   // agree. So the refused speaker can settle the dispute, and who spoke first or which id the client named never does.
+   const mine=heldBefore?speakerOf(o.provenance):null;
+   // The flagged row in force answers for the dispute also when the report the correction names is no longer one of its voices (an earlier
+   // correction replaced it), whoever the correction's speaker (cycle 1, SEC-O1-01a: an unknown speaker too): no voice is retired unheard.
+   const voicesOf=holder??(heldBefore?accepted.find(x=>x.identity===identity&&x.conflicted===true&&isObject(x.provenance?.parts))??null:null);
+   if(voicesOf){const others=Object.entries(voicesOf.provenance.parts).filter(([id,p])=>validPart(p)&&(mine?speakerOf(p)!==mine:id!==o.correctionOf));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:voicesOf.provenance.inputHashes?.[id]??null}));}
    // SEC-R2-03: what a correction replaces is retired only once the correction is admitted (accepted, or merged into the row in force). A
    // correction the checks below refuse (an event id or a watch activity of another session, a conflict) leaves every row it named in force, as
    // it was. The event-id check reads the record before the admission (an id the record holds is never freed for this report); the identity
@@ -1992,17 +2012,18 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    flagConflict(sameEvent,'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');quarantined.add(identity);
    conflicts.push({identity,eventIds:[sameEvent.eventId],reason:'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'});reject('EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');continue;
   }
-  if(!admit&&quarantined.has(identity)&&o.conflicted!==true){reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   // One wearable activity is one execution: bound to a second session it is a conflict on both (QRE-R6-13).
   // F2: an activity stays bound to the execution that first held it, also once a correction retired that row: the conflict is then flagged on the
   // row now in force for that execution, never on the history row.
   const activityId=o.source?.activityId??o.canonicalActivityId??null,bound=activityId?byActivity.get(activityId):null,boundTo=bound&&!accepted.includes(bound)?accepted.find(x=>x.identity===bound.identity)??bound:bound;
+  // O-1: on an execution already in dispute, the report is kept as a voice of the flagged row in force, unless its device activity is another's.
+  if(!admit&&quarantined.has(identity)&&o.conflicted!==true){const disputed=accepted.find(x=>x.identity===identity&&x.conflicted===true);if(disputed&&(!boundTo||boundTo.identity===identity))keepVoice(disputed,o,source,activityId);reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   if(boundTo&&boundTo.identity!==identity){flagConflict(boundTo,'ACTIVITY_BOUND_TO_TWO_SESSIONS');quarantined.add(boundTo.identity);quarantined.add(identity);conflicts.push({identity,eventIds:[boundTo.eventId,o.eventId],activityId,reason:'ACTIVITY_BOUND_TO_TWO_SESSIONS'});reject('ACTIVITY_BOUND_TO_TWO_SESSIONS');continue;}
   // A correction that resolves a conflict retires every report on its identity: none of them is a row in force to merge it into (SEC-R2-03:
   // merged into a retired row, the correction and the session would both leave the record in force).
   const previous=dropsIdentity||admit&&heldBefore?undefined:byIdentity.get(identity);
   if(previous&&(!physicalAgrees(previous,o,loadIncrements)||responseConflicts(previous.response,o.response))){
-   flagConflict(previous,'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS');quarantined.add(identity);
+   flagConflict(previous,'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS');quarantined.add(identity);keepVoice(previous,o,source,activityId);
    conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
   }
   // Admitted: the correction now replaces what it names.

@@ -321,3 +321,62 @@ Nada disso é material, então o `PerformanceTests` físico **não** é repetido
 - `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
 - `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
 - uma segunda execução não muda nada.
+
+## 12. O-1 Conflict Evidence (2026-11-19): relatos recusados por conflito, SB-1
+
+Este pacote passa a validar também **SSCTR-NCC-01** e **SEC-NCC-02**, na branch **`claude/v1-core-conflict-policy`** (de `f40fbe1`). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor está num arquivo só, **`src/r6-provenance.mjs`** (sha256 `b206416f…`):
+- **Voz mantida:** um relato válido recusado só por conflito com o registro em vigor da mesma execução fica guardado como voz (parte) do registro marcado em conflito. Nunca entra no volume nem na dose.
+- **Resolução:** uma correção só resolve a disputa quando concorda com todas as vozes mantidas. Enquanto a disputa existe, uma correção substitui só as vozes do próprio autor (o relógio ou o atleta), qualquer que seja o id nomeado.
+- **SB-1:** a pergunta de prontidão ouve a voz mantida. Uma parada relatada depois da declaração de prontidão volta a perguntar (ASK).
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA do `coachingcore-p0.js`: `679fcf48…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Duas jornadas novas: `o1-stop-resync` e `o1-readiness`. As dezenove anteriores têm entradas idênticas. Dezoito têm esperados idênticos. Em `ncc-late-report` só os digests `answer`/`stable`/`persisted` mudam, a partir do passo 5; `status` e `op` são iguais |
+| `Fixtures/j5.json`, `Fixtures/p16.json` | **Inalterados** |
+| `FocalTests.swift` | **Sem mudança** |
+
+**Por que `ncc-late-report` muda (e só isso):**
+- O relato atrasado do relógio de d3 continua recusado.
+- Agora fica guardado como voz do registro em conflito, com o hash de entrada.
+- Prova em Node: `audits/v1-core-o1-2026-11-19/evidence/o1-journeys-delta.mjs` reexecuta as dezenove jornadas no motor da FREEZE-5 e no candidato. Retiradas as vozes mantidas e descartados os digests, dá 0 diferenças.
+
+**Jornadas novas (oráculo Node `core-oracle.mjs`, seção 11)**, cada uma com ida e volta por JSON:
+- **`o1-stop-resync`** (SSCTR-NCC-01, cenário 21):
+  - o relógio relata d3 concluída;
+  - o atleta relata parada por SINTOMA: recusado e mantido como voz;
+  - o relógio ressincroniza o próprio relato: **CONFLICTED** (a FREEZE-5 dava COMPLETED);
+  - nova leitura sem nada novo: ainda CONFLICTED;
+  - o relógio ressincroniza com a parada (concordam): PARTIAL, sem conflito;
+  - reinício PROPOSED.
+- **`o1-readiness`** (SEC-NCC-02):
+  - uma retenção, a declaração de prontidão, uma corrida depois dela relatada "não feita";
+  - a parada por SINTOMA atrasada dessa corrida: recusada e mantida;
+  - ida e volta;
+  - reinício sem motivo: **ASK** (`athlete.pause.reasonCategory`; a FREEZE-5 dava PROPOSED sem perguntar); com motivo: PROPOSED.
+
+O oráculo **falha** se algum desses resultados mudar. Saída esperada (linha O-1):
+```
+O-1: stop refused ["DUPLICATE_CONFLICT_QUARANTINED"] and kept (app-stop,dev-d3-v3); after the re-sync CONFLICTED, again CONFLICTED, agreed PARTIAL; late stop after readiness ["DUPLICATE_CONFLICT_QUARANTINED"]: restart ASK ["athlete.pause.reasonCategory"] then PROPOSED
+```
+
+**Fica só no Node:** o diferencial gerado (doze configurações), as mutações (9/9) e os casos de integridade. Estão em `audits/v1-core-o1-2026-11-19/evidence/` e em `CoachingCore/test/v1core-o1-conflict-evidence.test.mjs`.
+
+**Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das vinte e uma jornadas e de J5/P16. Um `DIVERGED` reprova.
+
+**Desempenho:** bench Node `f40fbe1` × candidato:
+- revisão ×0,98;
+- reinício de registro corrigido ×1,01;
+- registro ×1,00 nas jornadas sem disputa;
+- ×1,03 a ×1,04 em registros com muitas disputas (gerados).
+
+Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs`: J5 e P16 byte-idênticos;
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
+- uma segunda execução não muda nada.

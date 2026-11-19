@@ -182,6 +182,37 @@ const nccRestart=(w,id)=>{const day=addDays(w.p.startDate,10),u={...athleteA({we
 if(NCC.late.resync!==0||NCC.late.d3.join()!=='d3-fix!'||JSON.stringify(NCC.late.refused)!=='["DUPLICATE_CONFLICT_QUARANTINED"]'||NCC.late.restart!=='PROPOSED')throw new Error('NCC F1/C1: '+JSON.stringify(NCC.late));
 if(JSON.stringify(NCC.merged.refused)!=='["ACTIVITY_BOUND_TO_TWO_SESSIONS","ACTIVITY_BOUND_TO_TWO_SESSIONS"]'||NCC.merged.holders.join()!=='w0-run-d1'||NCC.merged.restart!=='PROPOSED')throw new Error('NCC F2: '+JSON.stringify(NCC.merged));
 if(NCC.quarantine.dispute!=='CONFLICTED'||NCC.quarantine.again!=='CONFLICTED'||NCC.quarantine.settled==='CONFLICTED'||NCC.quarantine.d1.join()!=='false'||NCC.quarantine.restart!=='PROPOSED')throw new Error('NCC F3: '+JSON.stringify(NCC.quarantine));
+// 11. O-1 Conflict Evidence (SSCTR-NCC-01, SEC-NCC-02; Founder mission of 2026-11-19). Week 0 reported, then run d3 in two voices that conflict.
+//   o1-stop-resync (SSCTR-NCC-01, scenario 21): the watch reports d3 done; the athlete's symptom stop for d3 is refused head-on and kept as a
+//     voice; the watch re-syncs its own report: still CONFLICTED (FREEZE-5: COMPLETED); a round trip; a review with nothing new: CONFLICTED;
+//     the watch re-syncs to the stop the athlete reported (they agree): settled; a restart.
+//   o1-readiness (SEC-NCC-02): a hold, the readiness declaration, a run after it reported "not done", then the athlete's late symptom stop of
+//     that run (refused head-on, kept); a round trip; a restart with no stated reason: ASK (the SB-1 question; FREEZE-5: PROPOSED); then with one.
+const O1={};
+{const id='core-mac-o1a',r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program,d=addDays(p.startDate,6);
+ const obs=liveSessions(r.c.env,0).map(s=>reportOf(r.c.env,s)),i=obs.findIndex(o=>o.sessionId==='w0-run-d3'),x=obs[i],m={...x.actual};delete m.rpe;
+ obs[i]={...x,eventId:'dev-d3',actual:m,response:U3,source:{provider:'HEALTHKIT',activityId:'HK-O1',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-O1'};
+ r.review('WEEKLY_REVIEW',at(d),{eligibility:ELIG(d),observations:obs},'w0');
+ const dev=obs[i],st=g=>g.weekEvidence?.rows?.find(z=>z.sessionId==='w0-run-d3')?.status;
+ const a=r.review('WEEKLY_REVIEW',at(d,'21:00'),{eligibility:ELIG(d),observations:[{sessionId:dev.sessionId,occurrenceDate:dev.occurrenceDate,eventId:'app-stop',reportedAt:at(d,'20:30'),actual:{completed:false,minutes:20,stop:{reason:'SYMPTOM'}},response:{...U3,recovery:'ADVERSE'}}]},'stop');
+ const b=r.review('WEEKLY_REVIEW',at(d,'23:00'),{eligibility:ELIG(d),observations:[{...dev,eventId:'dev-d3-v2',correctionOf:'dev-d3',correctedAt:at(d,'22:30'),reportedAt:at(d,'22:30')}]},'resync');
+ r.roundtrip();r.c.env.actualLedger=JSON.parse(JSON.stringify(r.c.env.actualLedger));const c=r.probe('WEEKLY_REVIEW',at(d,'23:20'),{eligibility:ELIG(d)},'again');
+ const e=r.review('WEEKLY_REVIEW',at(d,'23:50'),{eligibility:ELIG(d),observations:[{...dev,eventId:'dev-d3-v3',correctionOf:'dev-d3-v2',correctedAt:at(d,'23:40'),reportedAt:at(d,'23:40'),actual:{completed:false,minutes:20}}]},'agree');
+ const day=addDays(p.startDate,10),u={...athleteA({weeks:8,id}),asOf:day,startDate:addDays(day,3)};u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ const g=r.restart(u,at(day,'10:00')),row=r.c.env.actualLedger.find(o=>o.sessionId==='w0-run-d3'&&!o.superseded&&!o.fact);
+ O1.stop={refused:a.provenance?.excluded?.map(z=>z.reason),stop:st(a),resync:st(b),again:st(c),settled:st(e),voices:Object.keys(row?.provenance?.parts??{}).sort(),conflicted:row?.conflicted===true,restart:g.status};
+ journeys.push({name:'o1-stop-resync',steps:r.steps});}
+{const id='core-mac-o1b',r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program,d0=addDays(p.startDate,6);
+ r.review('WEEKLY_REVIEW',at(d0),{eligibility:ELIG(d0),observations:liveSessions(r.c.env,0).map(s=>reportOf(r.c.env,s))},'w0');
+ const h=addDays(p.startDate,8),rd=addDays(h,4);r.review('NOT_FEELING_100',at(h,'08:00'),notFeeling100WithSign(h),'hold');r.review('READINESS_DECLARATION',at(rd,'08:00'),readiness(rd),'ready');
+ const s=liveSessions(r.c.env,2).find(x=>x.sport==='RUN'&&x.date>rd),b=reportOf(r.c.env,s,{tag:'-o1'});
+ r.review('WEEKLY_REVIEW',at(s.date,'21:00'),{eligibility:ELIG(s.date),observations:[{...b,eventId:'nd-o1',actual:{completed:false,minutes:0},response:U3}]},'notdone');
+ const late=r.review('WEEKLY_REVIEW',at(s.date,'23:00'),{eligibility:ELIG(s.date),observations:[{...b,eventId:'stop-o1',reportedAt:at(s.date,'22:30'),actual:{completed:false,minutes:12,stop:{reason:'SYMPTOM'}},response:{...U3,recovery:'ADVERSE'}}]},'late-stop');
+ r.roundtrip();const day=addDays(s.date,3),ask=r.restart(upd2(id,day,null),at(day,'10:00')),ok=r.restart(upd2(id,day,{reasonCategory:'SCHEDULE',nonclinical:true,weeks:0}),at(day,'10:00'));
+ O1.ready={refused:late.provenance?.excluded?.map(z=>z.reason),ask:ask.status,missing:ask.missingInputs,ok:ok.status};
+ journeys.push({name:'o1-readiness',steps:r.steps});}
+if(JSON.stringify(O1.stop.refused)!=='["DUPLICATE_CONFLICT_QUARANTINED"]'||O1.stop.resync!=='CONFLICTED'||O1.stop.again!=='CONFLICTED'||O1.stop.settled!=='PARTIAL'||O1.stop.conflicted||O1.stop.voices.join()!=='app-stop,dev-d3-v3'||O1.stop.restart!=='PROPOSED')throw new Error('O-1 SSCTR-NCC-01: '+JSON.stringify(O1.stop));
+if(JSON.stringify(O1.ready.refused)!=='["DUPLICATE_CONFLICT_QUARANTINED"]'||O1.ready.ask!=='ASK'||!O1.ready.missing?.some(k=>k.startsWith('athlete.pause.'))||O1.ready.ok!=='PROPOSED')throw new Error('O-1 SEC-NCC-02: '+JSON.stringify(O1.ready));
 const input={journeys,anchors:['b','aa','h','ch','Z','_x','a-1','a_1'].map(id=>({id,prescription:{modality:'RUN',family:'EASY',durationMinutes:30}})),locales:['pt-BR','en-US','da-DK','nb-NO','cs-CZ']};
 vm.runInThisContext(fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'));
 const expected=JSON.parse(globalThis.__corefocal({core,contract,value},JSON.stringify(input)));
@@ -196,4 +227,5 @@ console.log('CORE-C2-F01 restart doses (corrected = control): '+JSON.stringify(F
 console.log('C-F01-1 r2: not done '+R2.notDone.cls+' '+JSON.stringify(R2.notDone.runs.slice(0,2))+' (control '+R2.control.cls+' '+JSON.stringify(R2.control.runs.slice(0,2))+'); disputed after readiness: '+R2.disputed.ask+' '+JSON.stringify(R2.disputed.missing)+' then '+R2.disputed.ok);
 console.log('SEC-R2-03/-04: refused event id '+JSON.stringify(SR2.a.runs?.slice(0,1))+' = plain; refused activity '+JSON.stringify(SR2.b.runs?.slice(0,1))+' = plain; nothing replaced; readiness then refused correction: '+SR2.c.ask+' '+JSON.stringify(SR2.c.missing)+' then '+SR2.c.ok);
 console.log('NCC F1/F2/F3: late report '+JSON.stringify(NCC.late.refused)+', the correction '+NCC.late.d3.join()+' in force; late re-sync in force (d1 '+JSON.stringify(NCC.late.d1)+'); merged activity reused '+JSON.stringify(NCC.merged.refused)+', held by '+NCC.merged.holders.join()+'; dispute '+NCC.quarantine.dispute+', again '+NCC.quarantine.again+', settled '+NCC.quarantine.settled+'; restarts '+[NCC.late.restart,NCC.merged.restart,NCC.quarantine.restart].join(' '));
+console.log('O-1: stop refused '+JSON.stringify(O1.stop.refused)+' and kept ('+O1.stop.voices.join()+'); after the re-sync '+O1.stop.resync+', again '+O1.stop.again+', agreed '+O1.stop.settled+'; late stop after readiness '+JSON.stringify(O1.ready.refused)+': restart '+O1.ready.ask+' '+JSON.stringify(O1.ready.missing)+' then '+O1.ready.ok);
 console.log(summary+'\nanchors equal across locales: '+(new Set(Object.values(expected.anchors)).size===1)+'; localeCompare calls: '+expected.localeCompareCalls+'\ndigest '+expected.digest);
