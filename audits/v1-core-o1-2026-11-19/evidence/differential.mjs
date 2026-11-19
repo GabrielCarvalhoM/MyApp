@@ -207,7 +207,9 @@ function classifyO1(a,b,prior,batch,fate=[]){
  const rep_=id=>batch.filter(c=>c.eventId===id);
  // The chain now reaches the kept voice: found (CHAIN_NOW_FOUND), then possibly its own event id meets a record report (a replay, or the reuse
  // rule QRE-R6-14, which flags the row holding the id: O-NCC-1); every row newly flagged is flagged for that reuse or is the kept voice's own.
- const chainKept=x=>rep_(x.eventId).some(c=>kept.has(c.correctionOf))&&(x.why==='CHAIN_NOW_FOUND'||x.why==='REPLAY_OF_RECORD'||x.reason==='INVALID_CORRECTION_CHAIN>EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');
+ // the chain now reaches a kept voice, then meets the existing rules: found (and then resolving, or in a state that differs), a replay, an event
+ // id reused (QRE-R6-14), a device activity of another execution (QRE-R6-13), or a conflict with the row in force
+ const chainKept=x=>rep_(x.eventId).some(c=>kept.has(c.correctionOf))&&(['CHAIN_NOW_FOUND','REPLAY_OF_RECORD','QUARANTINE_RESOLVED','CONFLICT_STATE_DIFFERS'].includes(x.why)||/^INVALID_CORRECTION_CHAIN>(EVENT_ID_REUSED_WITH_DIFFERENT_FACTS|ACTIVITY_BOUND_TO_TWO_SESSIONS|DUPLICATE_CONFLICT_QUARANTINED)$/.test(x.reason));
  const spk0=c=>speakerOf({activityId:c.source?.activityId??c.canonicalActivityId??null,sourceQuality:c.source?.quality??(c.source?.activityId?'WEARABLE_FULL':'MANUAL')});
  const EXPLAIN={CHAIN_TO_KEPT_VOICE:chainKept,
   ACTIVITY_OF_KEPT_VOICE:x=>(x.change==='newRefusal'&&x.reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'||x.change==='reasonChanged'&&x.reason.endsWith('>ACTIVITY_BOUND_TO_TWO_SESSIONS'))&&rep_(x.eventId).some(c=>{const act=c.source?.activityId??c.canonicalActivityId;return b.accepted.some(o=>identity(o)!==identity(c)&&Object.entries(o.provenance?.parts??{}).some(([id,p])=>p?.activityId===act&&kept.has(id)));}),
@@ -216,10 +218,12 @@ function classifyO1(a,b,prior,batch,fate=[]){
   FORK_AFTER_SPEAKER_RULE:x=>x.change==='newRefusal'&&x.reason==='DUPLICATE_CONFLICT_QUARANTINED'&&rep_(x.eventId).some(c=>c.correctionOf&&b.accepted.some(y=>identity(y)===identity(c)&&batch.some(d=>d.eventId===y.eventId&&d!==c&&d.correctionOf&&spk0(d)===spk0(c)))),
   REPLAY_OF_KEPT_VOICE:x=>x.why==='REPLAY_OF_KEPT_VOICE',
   CHAIN_CASCADE:x=>/CHAIN_CASCADE$/.test(x.why)};
- if(fate.length){const hit=fate.map(x=>Object.keys(EXPLAIN).find(k=>EXPLAIN[k](x)));
+ if(fate.length){const hit0=fate.map(x=>Object.keys(EXPLAIN).find(k=>EXPLAIN[k](x)));
+  // a downstream fate of the same review: an admission the fate accounting explains by the state it met (that state moved by an O-1 fate above)
+  const hit=hit0.map((h,j)=>h??(hit0.some(Boolean)&&fate[j].change==='newAdmission'&&['CONFLICT_STATE_DIFFERS','QUARANTINE_RESOLVED'].includes(fate[j].why)?'CHAIN_CASCADE':undefined));
   if(hit.every(Boolean)){const fa=new Set(a.accepted.filter(o=>o.conflicted).map(o=>o.eventId)),idsK=new Set(fate.flatMap(x=>rep_(x.eventId).map(c=>identity(c))));
    // every row the candidate flags and FREEZE-5 does not is flagged for an event-id reuse (QRE-R6-14, O-NCC-1) or is on an identity these reports name
-   if(b.accepted.filter(o=>o.conflicted&&!fa.has(o.eventId)).every(o=>o.provenance?.conflict==='EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'||idsK.has(identity(o))||[...idsK].some(i=>b.accepted.some(y=>identity(y)===i&&actsOf(y).some(a_=>actsOf(o).includes(a_))))))
+   if(b.accepted.filter(o=>o.conflicted&&!fa.has(o.eventId)).every(o=>['EVENT_ID_REUSED_WITH_DIFFERENT_FACTS','ACTIVITY_BOUND_TO_TWO_SESSIONS'].includes(o.provenance?.conflict)||idsK.has(identity(o))||[...idsK].some(i=>b.accepted.some(y=>identity(y)===i&&actsOf(y).some(a_=>actsOf(o).includes(a_))))))
     return [...new Set(hit.filter(k=>k!=='CHAIN_CASCADE'))].sort().join('+')||'CHAIN_CASCADE';}}
  // A kept voice's device activity is bound to its execution (as a carried part already was, F2): another session's report carrying it is refused.
  // A fork: a correction naming a report that a correction of the same speaker in this review already replaced (the speaker rule settled the
@@ -228,9 +232,13 @@ function classifyO1(a,b,prior,batch,fate=[]){
  if(b.duplicates.some(d=>d.reason==='EXACT_REPLAY'&&kept.has(d.eventId)&&!a.duplicates.some(e=>e.eventId===d.eventId&&e.reason==='EXACT_REPLAY')&&a.accepted.some(o=>o.eventId===d.eventId)))return 'REPLAY_OF_KEPT_VOICE';
  const live=(n,i)=>n.accepted.find(o=>identity(o)===i)??null,ids=new Set([...a.accepted,...b.accepted].map(identity));
  for(const i of ids){const x=live(a,i),y=live(b,i);if(!x||!y)continue;
-  const fix=batch.find(c=>c.correctionOf&&identity(c)===i&&(c.eventId===x.eventId||(x.provenance?.mergedSourceIds??[]).includes(c.eventId)));
-  if(!x.conflicted&&y.conflicted&&fix){const me=speakerOf({activityId:fix.source?.activityId??fix.canonicalActivityId??null,sourceQuality:fix.source?.quality??(fix.source?.activityId?'WEARABLE_FULL':'MANUAL')});
-   if(Object.entries(y.provenance?.parts??{}).some(([id,p])=>id!==fix.eventId&&speakerOf(p)!==me))return 'DISPUTE_STAYS';}
+  for(const fix of batch.filter(c=>c.correctionOf&&identity(c)===i&&(c.eventId===x.eventId||(x.provenance?.mergedSourceIds??[]).includes(c.eventId))))
+   if(!x.conflicted&&y.conflicted){const me=speakerOf({activityId:fix.source?.activityId??fix.canonicalActivityId??null,sourceQuality:fix.source?.quality??(fix.source?.activityId?'WEARABLE_FULL':'MANUAL')});
+    if(Object.entries(y.provenance?.parts??{}).some(([id,p])=>id!==fix.eventId&&speakerOf(p)!==me))return 'DISPUTE_STAYS';}
+  // O-O1-A: outside a dispute (E-1 unchanged), a correction naming another speaker's report carries its own speaker's earlier correction, which it
+  // contradicts: flagged (no credit) where FREEZE-5, having reached that review through another path, settled it
+  if(!x.conflicted&&y.conflicted&&batch.some(c=>c.eventId===y.eventId&&c.correctionOf)){const c=batch.find(c=>c.eventId===y.eventId),me=speakerOf({activityId:c.source?.activityId??c.canonicalActivityId??null,sourceQuality:c.source?.quality??(c.source?.activityId?'WEARABLE_FULL':'MANUAL')});
+   const others=Object.entries(y.provenance?.parts??{}).filter(([id])=>id!==y.eventId);if(me&&others.length&&others.every(([,p])=>speakerOf(p)===me))return 'OWN_SPEAKER_E1';}
   const ma=new Set(x.provenance?.mergedSourceIds??[]);if((y.provenance?.mergedSourceIds??[]).some(id=>!ma.has(id)&&id!==y.eventId))return 'VOICE_AGREES';
   // P4: the voices FREEZE-5 carried and the candidate did not are all of the correction's own speaker (whatever the flags then read).
   for(const c of batch.filter(c=>c.correctionOf&&identity(c)===i&&y.eventId===c.eventId)){const me=speakerOf({activityId:c.source?.activityId??c.canonicalActivityId??null,sourceQuality:c.source?.quality??(c.source?.activityId?'WEARABLE_FULL':'MANUAL')}),have=new Set(partsOf(y)),had=new Set(partsOf(x));
@@ -273,7 +281,7 @@ function o1Invariants(b,prior,batch){
  for(const o of b.accepted)if(!o.conflicted){const m=new Set([o.eventId,...(o.provenance?.mergedSourceIds??[])]);if(partsOf(o).some(id=>!m.has(id)))unmergedVoiceOnCleanRow++;}
  return {voiceLost,integrityVoiceKept,unmergedVoiceOnCleanRow};
 }
-const stats={seed:SEED,o1:!!process.env.O1,o1Invariants:{voiceLost:0,integrityVoiceKept:0,unmergedVoiceOnCleanRow:0},credit:{gainedByClass:{},lostByClass:{}},mono:!!process.env.MONO,ext:!!process.env.EXT,fates:{},cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
+const stats={seed:SEED,o1:!!process.env.O1,o1Invariants:{voiceLost:0,integrityVoiceKept:0,unmergedVoiceOnCleanRow:0},credit:{gainedByClass:{},lostByClass:{}},size:{base:{recordBytes:0,maxRowBytes:0,ms:0},candidate:{recordBytes:0,maxRowBytes:0,ms:0}},mono:!!process.env.MONO,ext:!!process.env.EXT,fates:{},cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
 const samples=[],lostCases=[];
 // One FREEZE-4 loss: the refusal it met when re-read, the incoming reports that sorted before it (FREEZE-4 read them first), and the candidate.
 const HOW={DUPLICATE_CONFLICT_QUARANTINED:'a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict',
@@ -300,7 +308,9 @@ for(let c=0;c<N;c++){
  for(const [p,batch] of passes.entries()){
   if(!batch.length)continue;stats.passes++;
   const o={athleteId:ATH,asOf:DAY+'T0'+(p+1)+':00:00Z',maximumAgeDays:36500,incoming:true};
-  const a=OLD(json(batch),{...o,prior:json(prior)}),b=NEW(json(batch),{...o,prior:json(prior)}),b2=NEW(json(batch),{...o,prior:json(prior)});
+  const t0=performance.now(),a=OLD(json(batch),{...o,prior:json(prior)}),t1=performance.now(),b=NEW(json(batch),{...o,prior:json(prior)}),t2=performance.now(),b2=NEW(json(batch),{...o,prior:json(prior)});
+  // record size (what a store keeps: rows in force and history) and normalizer time, same prior to both
+  for(const [k,n,ms] of [['base',a,t1-t0],['candidate',b,t2-t1]]){const r=rec(n);stats.size[k].recordBytes+=Buffer.byteLength(JSON.stringify(r));stats.size[k].ms+=ms;for(const x of r)stats.size[k].maxRowBytes=Math.max(stats.size[k].maxRowBytes,Buffer.byteLength(JSON.stringify(x)));}
   if(canon(b)!==canon(b2))stats.candidate.nondeterministic++;
   const lb=lostOf(b,prior),la=lostOf(a,prior);
   stats.candidate.lostInForce+=lb.length;stats.freeze4.lostInForce+=la.length;if(la.length)stats.freeze4.lostPasses++;

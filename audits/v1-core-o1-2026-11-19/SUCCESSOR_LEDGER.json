@@ -1,0 +1,57 @@
+{
+ "line": "O-1 Conflict Evidence & Safety Policy Closure, SSCTR-NCC-01 + SEC-NCC-02 (claude/v1-core-conflict-policy, from f40fbe1 = COACHINGCORE-V1-CORE-SAFETY-FREEZE-5)",
+ "note": "The tests that fail on this line and passed on f40fbe1. None is edited: each file is bound by an earlier freeze. FREEZE-5's 31 failures are unchanged, at the same locations. Successors are in test/v1core-o1-successors.test.mjs. Each runs the frozen test from a temporary copy with only the listed substitutions, each matched exactly once.",
+ "entries": [
+  {
+   "historical": "v1core-ncc-normalization-consistency.test.mjs:101",
+   "title": "F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move",
+   "contract": "O-1 P1/P5: a report refused for a head-on conflict is kept as a voice of the flagged row, with its input hash",
+   "before": "the re-sent late report W was refused again (IDENTITY_QUARANTINED_BY_CONFLICT)",
+   "after": "W is a voice the record holds, so its re-send is EXACT_REPLAY. Nothing is admitted and what is in force does not move (the test's other assertions are unchanged)",
+   "sporting": "none (the row stays flagged, out of dose)",
+   "safety": "the refused report's content is kept for SB-1 (P6)",
+   "successor": "v1core-o1-successors.test.mjs: 'successor of v1core-ncc-normalization-consistency.test.mjs:101 (F1)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-ncc-normalization-consistency.test.mjs:162-163",
+   "title": "F3: a later agreeing plain report of the disputed session is refused by the quarantine, never merged into the conflicted row",
+   "contract": "O-1 P1: a report refused because its execution is already in dispute is kept as a voice of the flagged row in force",
+   "before": "the row in force read exactly as before the report",
+   "after": "the report is still refused (same reason) and never merged. The amounts, flags and other voices are as before, and P is an added voice of the flagged row",
+   "sporting": "none",
+   "safety": "the voice is heard by SB-1",
+   "successor": "v1core-o1-successors.test.mjs: 'successor of ...:162-163 (F3)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-successor-lineage.test.mjs:205 (SUCCESSOR closure-2 · lineage matrix, LONG; and v1core-ncc-normalization-consistency.test.mjs 'successor of v1core-successor-lineage.test.mjs:205', which runs the same matrix in both families)",
+   "title": "SUCCESSOR closure-2 · lineage matrix: the word that withholds each run, the reports in force and the history reference",
+   "contract": "O-1 P1/P4 (SSCTR_O1_R1 decision C)",
+   "before": "row '19 conflict: the app first (other minutes, lists), the import refused, then the app corrects itself to the whole' read REPORT_NOT_CARRIED, COMPLETED, with the import's refused report lost",
+   "after": "the import's refused report is a kept voice. The app's correction to the whole agrees with it and merges it, so row 19 reads exactly as row 10 (the same statements with no correction), as row 08 already did: DISTANCE_DISPUTED, partial at the first file, history 'first'. The successor adds [19 -> 10] to the matrix's own AS_IF map, so the as-if reading (word, wholeRow, every band edge, history reference, what is withheld) is also asserted. Rows 18 and 21 stay CONFLICTED, which this matrix does not assert; v1core-o1-conflict-evidence.test.mjs does",
+   "sporting": "row 19, both families: completion credit COMPLETED -> PARTIAL (as rows 08/10). LONG w+2 QUALITY:34 -> EASY:65, EASY w+3 EASY 70 -> 65. Run-history fact kept (first file). Rows 18 and 21: CONFLICTED kept, run-history fact 1 -> 0, the same one-step hold. Row 18 LONG long-run sizing source S2 365 -> 360 s/km, with minutes and km unchanged (SSCTR O-O1-1). Every move lowers dose (evidence/lineage-diff.txt)",
+   "safety": "scenario 21's symptom stop now keeps the session in dispute until the athlete agrees; the warning-sign screen is unchanged (REQUIRED)",
+   "successor": "v1core-o1-successors.test.mjs: 'successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19)', which runs the frozen SUCCESSOR closure-2 matrix (both families) with NCC's scenario-21 substitution and the [19 -> 10] as-if entry",
+   "result": "GREEN on the candidate (pass 2)"
+  },
+  {
+   "historical": "v1core-successor-fix-forward.test.mjs:105 (test at :92)",
+   "title": "SUCCESSOR closure-2 · SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; only the screen answered after the stop clears it",
+   "contract": "O-1 P4: while a dispute stands, a correction replaces only its own speaker's voices, whichever row id it names (SSCTR_O1_R1 §4: CONFLICTED in every order is right)",
+   "before": "the athlete's correction (100 min, completed) after a device import of 30 min / 5 km and the athlete's symptom stop resolved the dispute (conflicted false). In 3 of 6 order and named-id cases FREEZE-5 credited a 100-min run-history fact the device contradicts",
+   "after": "the device's voice is carried and disagrees, so the session stays CONFLICTED in every order (conflicted true). The stop is not unsaid, and the warning-sign screen behaves as before (REQUIRED, then cleared only by the answer after the stop)",
+   "sporting": "no completion credit for a disputed 100-min claim, and no run-history fact from it",
+   "safety": "unchanged screen",
+   "successor": "v1core-o1-successors.test.mjs: 'successor of v1core-successor-fix-forward.test.mjs:105 (SSCTR-RWS-B-01)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-ncc-freeze.test.mjs (F1/F2/F3: the nine earlier freezes are preserved; only src/r6-provenance.mjs amended since e704180)",
+   "contract": "freeze preservation (additive successor)",
+   "why": "scripts/v1core-freeze-5.mjs is bound by FREEZE-5 and not edited. Measured against FREEZE-5's own bytes, it names this line's src/r6-provenance.mjs as drift, by design",
+   "successor": "the FREEZE-6 verifier test, written only if the judges approve",
+   "result": "pending the freeze"
+  }
+ ]
+}
