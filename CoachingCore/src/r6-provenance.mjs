@@ -173,7 +173,10 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    // for every voice that speaker gave it, and only for those: whichever row id it names, another speaker's voice is carried and still has to
    // agree. So the refused speaker can settle the dispute, and who spoke first or which id the client named never does.
    const mine=heldBefore?speakerOf(o.provenance):null;
-   if(holder){const others=Object.entries(holder.provenance.parts).filter(([id,p])=>validPart(p)&&(mine?speakerOf(p)!==mine:id!==o.correctionOf));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
+   // The flagged row in force answers for the dispute also when the report the correction names is no longer one of its voices (a same speaker's
+   // earlier correction replaced it): its other speakers' voices are never retired unheard.
+   const voicesOf=holder??(mine?accepted.find(x=>x.identity===identity&&x.conflicted===true&&isObject(x.provenance?.parts))??null:null);
+   if(voicesOf){const others=Object.entries(voicesOf.provenance.parts).filter(([id,p])=>validPart(p)&&(mine?speakerOf(p)!==mine:id!==o.correctionOf));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:voicesOf.provenance.inputHashes?.[id]??null}));}
    // SEC-R2-03: what a correction replaces is retired only once the correction is admitted (accepted, or merged into the row in force). A
    // correction the checks below refuse (an event id or a watch activity of another session, a conflict) leaves every row it named in force, as
    // it was. The event-id check reads the record before the admission (an id the record holds is never freed for this report); the identity

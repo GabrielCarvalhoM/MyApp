@@ -178,3 +178,12 @@ test('SSCTR-NCC-01: while the dispute stands, a correction is its speaker\'s wor
  const n3=N([fix(ATHLETE_STOP(),{eventId:'A4',actual:{completed:true,minutes:40},response:U},dx+'T16:00:00Z')],T3,odd);
  assert.equal(held(n3).live[0].conflicted,true,'the unknown speaker\'s voice still disagrees');
 });
+test('P4: while a dispute stands, a correction naming a report the row in force no longer holds as a voice still carries every other speaker\'s voice of that row',()=>{
+ // The athlete (A, 40 min) and the device (X, 20 min) dispute; the athlete corrects their own report twice, both times naming A: the first
+ // correction (A2, 40) stays in dispute with the device; the second (A3, 40) names A, which A2 replaced and the row in force (A2) no longer holds.
+ const A=rep('A','sx',dx,{reportedAt:dx+'T11:00:00Z'}),X=DEVICE('X',{reportedAt:dx+'T11:30:00Z',actual:{completed:true,minutes:20}});
+ const l=rec(N([A,X],T1)),a2=rec(N([fix(A,{eventId:'A2'},dx+'T14:30:00Z')],T2,l));
+ assert.deepEqual(held(N([],T2,a2)).live.map(o=>[o.eventId,o.conflicted,o.voices]),[['A2',true,['A2','X']]]);
+ const n=N([fix(A,{eventId:'A3'},dx+'T16:00:00Z')],T3,a2);
+ assert.deepEqual(held(n).live.map(o=>[o.eventId,o.conflicted,o.voices]),[['A3',true,['A3','X']]],'the device\'s 20 minutes still disagree: never retired unheard');
+});
