@@ -1,0 +1,186 @@
+✔ F1 (SSCTR f1): a late watch sync of the session, reported before the carried correction, never removes it: the stop stays in force, flagged, as with a monotone clock (6.2325ms)
+✔ F1 (Security sb1): a late report reusing a carried row's event id for another session, dated earlier, never evicts the carried row; also a same-session "not done" (3.1418ms)
+✔ F1: a late agreeing report merges into the carried row, which stays the row in force; manual before or after the device gives one execution (1.3034ms)
+✔ F1: a HealthKit activity delivered days later for another session, and a strength session the same day: both admitted, nothing carried moves (1.3745ms)
+✔ F1: a correction made before the report it names was available is refused, the same in one review or two; the record is unchanged (0.7635ms)
+✔ F1: a correction made at the very instant of the report it names, with an event id that sorts first, stays in force on every re-read (history is rebuilt first) (0.847ms)
+✔ F1: a chain of corrections carried, then late replays (identical, and with other facts) dated earlier: the head stays in force, nothing is double counted (1.0148ms)
+✔ F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move (1.7181ms)
+✔ F2: an athlete's row that merged the watch report keeps the watch activity bound in later reviews: another session carrying it is the conflict, as when the watch report is the row (3.2069ms)
+✔ F2: the same activity re-synchronized for its own session merges or replays, never refused; two distinct activities with the same facts are two executions (1.2401ms)
+✔ F2: missing or empty activity ids are never the same activity (0.6983ms)
+✔ F2: a correction of the athlete's part keeps the watch part and its binding; a device correction of the watch part keeps it too; restored from JSON as well (2.1537ms)
+✔ F2: in one review, a report bound to an execution a correction just retired flags the row in force, never the history row (0.6248ms)
+✔ F3: a correction in conflict, re-read with nothing new, restored and re-read again, keeps its identity's quarantine; so does a plain conflict (3.0668ms)
+✔ F3: a later agreeing plain report of the disputed session is refused by the quarantine, never merged into the conflicted row (1.9096ms)
+✔ F3: a valid correction resolves the conflict in a later review, as in the review that flagged it; one still in conflict keeps it; a refused one changes nothing (2.3064ms)
+✔ F3 (records not written by this line): a row in force flagged conflicted always quarantines its identity, also where a correction in conflict resolves another row (0.6266ms)
+✔ engine F1: a late watch report of run d3, dated before its carried correction, never removes the correction from the record, the review or run history (280.0629ms)
+✔ engine F2: one watch activity never backs two sessions in run history (dose journey B): a later correction of run d3 carrying d1's merged activity is refused (145.921ms)
+✔ engine F3: a run whose athlete correction disputes the watch reads CONFLICTED, and still does on a later review with nothing new (234.698ms)
+✖ C1 / P1-S1: a late device re-sync of a merged watch part, made after that report but before a later athlete correction, is admitted as in one review (2.4668ms)
+✖ C1 / P1-S2, P2: an athlete report delivered late merges into a carried watch row; its correction with an adverse answer is admitted and the answer stays in force (1.3631ms)
+✖ SEC-NCC-01 (e5d, E5a, E5c): the athlete's late report and its symptom-stop correction against a carried watch row read as in one review; a correction of a part made before that part was reported is refused however the reports are split (2.5234ms)
+✖ C1 / P7 through the engine: a re-sync of the watch part of run d1, made before the athlete's later correction of their part and delivered after it, is in force (187.1267ms)
+✖ SEC-NCC-01 through the engine (engine-e5d): run d3 known only from the watch; the athlete's report and its symptom-stop correction arrive the next morning: in force, conflicted, no run-history fact from the watch (218.2334ms)
+✔ successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY): the frozen matrix, its one EASY expectation now the LONG one, passes whole in both families (18916.6311ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 21
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20172.4501
+
+✖ failing tests:
+
+test at test\v1core-ncc-normalization-consistency.test.mjs:229:1
+✖ C1 / P1-S1: a late device re-sync of a merged watch part, made after that report but before a later athlete correction, is admitted as in one review (2.4668ms)
+  AssertionError [ERR_ASSERTION]: ef490bb: W2 INVALID_CORRECTION_CHAIN (compared with A2's 13:00)
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'W2',
+  +     inputHash: 'e7c7dbd92c300143525794902a7e93f4406ad670688bee772186eacbd709dd36',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 's1'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-ncc/CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs:232:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'W2', sessionId: 's1', reason: 'INVALID_CORRECTION_CHAIN', inputHash: 'e7c7dbd92c300143525794902a7e93f4406ad670688bee772186eacbd709dd36' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-ncc-normalization-consistency.test.mjs:237:1
+✖ C1 / P1-S2, P2: an athlete report delivered late merges into a carried watch row; its correction with an adverse answer is admitted and the answer stays in force (1.3631ms)
+  AssertionError [ERR_ASSERTION]: same review: ef490bb refused Y2 (compared with X's 14:00)
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'Y2',
+  +     inputHash: 'b3936f01a97d659906383b2133cdb1b1664761c412e4a292bd63adbf14aa4556',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 's1'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-ncc/CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs:241:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'Y2', sessionId: 's1', reason: 'INVALID_CORRECTION_CHAIN', inputHash: 'b3936f01a97d659906383b2133cdb1b1664761c412e4a292bd63adbf14aa4556' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-ncc-normalization-consistency.test.mjs:247:1
+✖ SEC-NCC-01 (e5d, E5a, E5c): the athlete's late report and its symptom-stop correction against a carried watch row read as in one review; a correction of a part made before that part was reported is refused however the reports are split (2.5234ms)
+  AssertionError [ERR_ASSERTION]: d1: W carried, A and C together: ef490bb refused C
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'C',
+  +     inputHash: 'a1d950069484cbd7e7a4e3d8e366834c6fe1cf49d62ab35c73c3a0168d5b5122',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 'sm'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-ncc/CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs:251:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'C', sessionId: 'sm', reason: 'INVALID_CORRECTION_CHAIN', inputHash: 'a1d950069484cbd7e7a4e3d8e366834c6fe1cf49d62ab35c73c3a0168d5b5122' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-ncc-normalization-consistency.test.mjs:265:1
+✖ C1 / P7 through the engine: a re-sync of the watch part of run d1, made before the athlete's later correction of their part and delivered after it, is in force (187.1267ms)
+  AssertionError [ERR_ASSERTION]: ef490bb: dev-d1-v2 INVALID_CORRECTION_CHAIN
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'dev-d1-v2',
+  +     inputHash: '62153bcc29010ce382383832878cca61381773447bf0c2c0f5ea2ea1fbdf18e6',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 'w0-run-d1'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-ncc/CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs:269:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'dev-d1-v2', sessionId: 'w0-run-d1', reason: 'INVALID_CORRECTION_CHAIN', inputHash: '62153bcc29010ce382383832878cca61381773447bf0c2c0f5ea2ea1fbdf18e6' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-ncc-normalization-consistency.test.mjs:274:1
+✖ SEC-NCC-01 through the engine (engine-e5d): run d3 known only from the watch; the athlete's report and its symptom-stop correction arrive the next morning: in force, conflicted, no run-history fact from the watch (218.2334ms)
+  AssertionError [ERR_ASSERTION]: ef490bb: d3-fix refused, the watch's 40 min in force unflagged
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'd3-fix',
+  +     inputHash: 'f4ee2b4015de876f057c0dfe0e9d569b109b5835e75fdffaad0195a3220f8f45',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 'w0-run-d3'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-ncc/CoachingCore/test/v1core-ncc-normalization-consistency.test.mjs:283:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'd3-fix', sessionId: 'w0-run-d3', reason: 'INVALID_CORRECTION_CHAIN', inputHash: 'f4ee2b4015de876f057c0dfe0e9d569b109b5835e75fdffaad0195a3220f8f45' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

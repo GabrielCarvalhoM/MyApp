@@ -55,8 +55,10 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
  * (recorded before this change) is corrected as before.
  */
 // F2 (Normalization Consistency): a part keeps the device activity its report carried, so a merged watch activity stays bound to its execution in
-// every later review (a row merged before this change kept none, and binds only its own).
-const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{})});
+// every later review (a row merged before this change kept none, and binds only its own). Cycle 1 (QRE C1, SEC-NCC-01): a part also keeps when its
+// own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
+// holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
+const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
 /** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
 const validPart=p=>!!p&&typeof p==='object'&&!!p.actual&&typeof p.actual==='object'&&!Array.isArray(p.actual)&&typeof p.actual.completed==='boolean'
  &&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>p.actual[k]!==undefined&&p.actual[k]!==null&&(!Number.isFinite(p.actual[k])||p.actual[k]<0))
@@ -142,8 +144,10 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    // F1: a correction made before the report it corrects was available is no correction of it (as when both come in one review, where it is read
-   // first and finds nothing to correct): refused, whichever review brought that report.
-   if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||Date.parse(corrected)<availability(old)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
+   // first and finds nothing to correct): refused, whichever review brought that report. Cycle 1 (QRE C1, SEC-NCC-01): the clock is the named
+   // report's own: the row's when the row is that report, else the part's; a part kept without one (before this line) is never refused by it.
+   const namedAt=old?(old.eventId===o.correctionOf?availability(old):(t=>t?Date.parse(t):-Infinity)(utcTimestamp(isObject(old.provenance?.parts)&&isObject(old.provenance.parts[o.correctionOf])?old.provenance.parts[o.correctionOf].availableAt:null))):null;
+   if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||Date.parse(corrected)<namedAt||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among

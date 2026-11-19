@@ -1,10 +1,23 @@
 // Normalization Consistency (F1/F2/F3) differential: FREEZE-4 normalizer vs this line, on generated multi-pass records (the same prior to both,
 // the candidate's own output carried pass to pass). Successor of audits/v1-core-sec-r2-2026-11-19/evidence/differential.mjs (same generator and
 // seed). Usage: node differential.mjs <FREEZE-4 CoachingCore> <candidate CoachingCore> [cases=3000] [seed=20261119]
-// MONO=1: monotone arrival clock and no replays. SHOW=n KIND=<class> prints samples. CASES=<file> writes every row in force FREEZE-4 lost, one
+// MONO=1: monotone arrival clock and no replays. EXT=1 (cycle 1, QRE C2): the generator also adds, per watch report, an athlete's correction of
+// the session's own report and a late device re-sync of the watch report, delivered after that correction but made before it (non-monotone), so
+// corrections of merged parts whose holder became available after the part are exercised. SHOW=n KIND=<class> prints samples. CASES=<file> writes every row in force FREEZE-4 lost, one
 // by one: how FREEZE-4 lost it, the incoming reports read before it, and where the candidate keeps it. Read-only; synthetic athletes only.
 //
-// Every pass whose two outputs differ is classified (first matching class):
+// Cycle 1 (QRE C2): the fate of every incoming report is accounted first. A report refused by the candidate but not by FREEZE-4 (by event id and
+// reason), or the reverse, must be explained from the inputs and the candidate's own record, else the pass is UNEXPLAINED, whatever class it
+// would otherwise get (so no class that looks only at carried rows can absorb an unexplained refusal). Refusals: CHAIN_BEFORE_REPORT (the
+// correction is dated before the named report's own report time, read from the generated input), CHAIN_CASCADE (the named report is in no row
+// of the candidate's record), BOUND_IN_FORCE / BOUND_HISTORY (another execution's row in force, or its history row, holds the activity), CONFLICT_
+// WITH_RECORD (a row in force on the identity is flagged conflicted, or the identity is quarantined), ID_HELD (another report of the record, or of
+// this review, holds the event id). Admissions: CHAIN_NOW_FOUND (valid by the named report's own clock), CONFLICT_STATE_DIFFERS (the rows in
+// force on the identity or activity it met differ between the two), QUARANTINE_RESOLVED (F3), REPLAY_OF_RECORD (an exact replay of a report the
+// record holds, read as such because the record is rebuilt first). A report refused by both for another reason must have the candidate's reason
+// explained (REFUSED_BOTH:<why>). A refusal is also CONFLICT_THEN_RESOLVED when the
+// row it conflicted with was flagged and a valid correction of the same review then resolved that conflict.
+// Every pass whose two outputs differ is then classified (first matching class):
 //   F1_LOSS        FREEZE-4 drops a carried row in force (re-refused); the candidate keeps it (in force, merged, or replaced by its own chain)
 //   F1_ORDER       the same reports in force on the same identities, read in record order: a carried row stays the holder, a late report merges
 //                  into it (FREEZE-4 made the late report the holder), or a late conflicting report is refused against the carried row
@@ -17,7 +30,7 @@
 //                  refused the correction or merged it into the conflicted row); as in the review that flagged the conflict. The resolving
 //                  correction may itself be corrected later in the same review
 //   F3_QUARANTINE  the only difference is the quarantine of a carried conflicted row's identity (FREEZE-4 dropped it on re-read)
-//   PART_ACTIVITY  the only difference is the activity id now kept on merged parts (record bytes; F2 storage)
+//   PART_FIELDS    the only difference is what merged parts now keep: the activity id (F2) and the report's own clock (cycle 1); record bytes
 //   ORDER_ONLY     the same content in a different list order (excluded, duplicates, conflicts, superseded, quarantine)
 //   UNEXPLAINED    anything else (must be 0)
 // Candidate invariants (must all be 0): rows in force lost; orphans; two rows in force on one identity; one activity in force on two identities;
@@ -36,7 +49,8 @@ let s=SEED;const rnd=()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=
 const pick=a=>a[Math.floor(rnd()*a.length)];
 const ATH='ath-d',DAY='2026-11-10',U={performance:'UNKNOWN',recovery:'UNKNOWN',effort:'UNKNOWN',nextDayFunction:'UNKNOWN'};
 const shift=(d,n)=>new Date(Date.parse(d+'T00:00:00Z')+n*864e5).toISOString().slice(0,10);
-const identity=o=>o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??(o.provenance?.provider??'MANUAL')+'@'+o.observedAt);
+const isoOf=v=>{const t=Date.parse(v);return Number.isFinite(t)?new Date(t).toISOString():v;};
+const identity=o=>o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??(o.provenance?.provider??o.source?.provider??'MANUAL')+'@'+isoOf(o.observedAt));
 const canon=x=>JSON.stringify(x),json=x=>JSON.parse(JSON.stringify(x));
 const ACTUALS=[{completed:true,minutes:40},{completed:true,minutes:41},{completed:true,minutes:20},{completed:false,minutes:0},{completed:true,minutes:45}];
 // The generator of the SEC-R2 differential, unchanged (same seed gives the same records).
@@ -63,30 +77,71 @@ function gen(){
   else if(r<0.22)c.correctionOf=pick(ids.filter(x=>x!==target.eventId).concat(['nope']));
   ev.push(c);
  }
+ if(process.env.EXT){const plus=(iso,min)=>new Date(Date.parse(iso)+min*60000).toISOString(),ws=ev.filter(e=>/^W\d+$/.test(e.eventId));
+  for(const w of ws){if(rnd()>=0.6)continue;const i=w.eventId.slice(1),m=ev.find(e=>e.eventId==='M'+i);
+   const tm=process.env.MONO?at(''):plus(w.reportedAt,60+Math.floor(rnd()*60)),tw=process.env.MONO?at(''):plus(w.reportedAt,5+Math.floor(rnd()*50));
+   if(m&&rnd()<0.8)ev.push({...m,eventId:'A'+i+'-'+(n++),correctionOf:m.eventId,correctedAt:tm,reportedAt:tm,actual:{...pick(ACTUALS)}});
+   ev.push({...w,eventId:'R'+i+'-'+(n++),correctionOf:w.eventId,correctedAt:tw,reportedAt:tw,actual:{completed:true,minutes:(w.actual.minutes||40)+Math.floor(rnd()*4)}});}}
  for(let j=0;j<2;j++)if(rnd()<(process.env.MONO?0:0.3))ev.push(JSON.parse(JSON.stringify(pick(ev))));
  const passes=[[],[],[]];
  ev.forEach((e,i)=>passes[Math.min(2,Math.floor(i/Math.max(1,Math.ceil(ev.length/3))))].push(e));
- return passes;
+ const raw=new Map();for(const e of ev)if(!raw.has(e.eventId))raw.set(e.eventId,e);
+ return {passes,raw};
 }
 const rec=n=>[...n.accepted,...n.supersededRows];
 const holds=(rows,R)=>rows.some(x=>x!==R&&(x.eventId===R.supersededBy||(x.provenance?.mergedSourceIds??[]).includes(R.supersededBy))&&identity(x)===identity(R));
 const orphansOf=n=>{const rows=rec(n);return n.supersededRows.filter(R=>n.superseded.some(e=>e.eventId===R.eventId&&e.supersededBy===R.supersededBy)&&!holds(rows,R));};
-const lostOf=(n,prior)=>{const out=rec(n);return prior.filter(x=>x.superseded!==true).filter(R=>{const live=n.accepted.some(x=>x.eventId===R.eventId||(x.provenance?.mergedSourceIds??[]).includes(R.eventId));const kept=out.find(x=>x.eventId===R.eventId&&x.superseded===true);return !live&&!(kept&&holds(out,kept));});};
+const lostOf=(n,prior)=>{const out=rec(n);return prior.filter(x=>x.superseded!==true).filter(R=>{const live=n.accepted.some(x=>(x.eventId===R.eventId||(x.provenance?.mergedSourceIds??[]).includes(R.eventId))&&identity(x)===identity(R));const kept=out.find(x=>x.eventId===R.eventId&&x.superseded===true&&identity(x)===identity(R));return !live&&!(kept&&holds(out,kept));});};
 const doubleId=n=>{const ids=n.accepted.map(identity);return ids.length!==new Set(ids).size;};
 const actsOf=o=>[o.source?.activityId??o.canonicalActivityId??null,...Object.values(o.provenance?.parts??{}).map(p=>p?.activityId??null)].filter(Boolean);
 const doubleAct=n=>{const m=new Map();for(const o of n.accepted)for(const a of actsOf(o)){if(!m.has(a))m.set(a,new Set());m.get(a).add(identity(o));}return [...m.values()].some(v=>v.size>1);};
-const stripPartActs=n=>{const c=json(n);for(const o of [...c.accepted,...c.observations,...c.supersededRows])for(const p of Object.values(o.provenance?.parts??{}))if(p&&typeof p==='object')delete p.activityId;return c;};
+const stripPartActs=n=>{const c=json(n);for(const o of [...c.accepted,...c.observations,...c.supersededRows])for(const p of Object.values(o.provenance?.parts??{}))if(p&&typeof p==='object'){delete p.activityId;delete p.availableAt;}return c;};
+const idsOfRow=o=>[o.eventId,...(o.provenance?.mergedSourceIds??[]),...Object.keys(o.provenance?.parts??{}),...Object.keys(o.provenance?.inputHashes??{})];
+/** Fate accounting (cycle 1, QRE C2): every incoming report refused by one side and not the other, or refused by both for different reasons. */
+function fates(a,b,prior,batch,raw){
+ const out=[],recIds=new Set([...b.accepted,...b.supersededRows].flatMap(idsOfRow)),avail=o=>Date.parse(o.correctedAt??o.reportedAt??o.observedAt);
+ const actHolders=(rows,act)=>rows.filter(o=>actsOf(o).includes(act));
+ const whyRefused=(id,reason)=>{for(const o of batch.filter(x=>x.eventId===id)){
+   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf);if(named&&avail(o)<avail(named))return 'CHAIN_BEFORE_REPORT';if(!recIds.has(o.correctionOf))return 'CHAIN_CASCADE';}
+   else if(reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'){const act=o.source?.activityId??o.canonicalActivityId;if(actHolders(b.accepted,act).some(x=>identity(x)!==identity(o)))return 'BOUND_IN_FORCE';if(actHolders(b.supersededRows,act).some(x=>identity(x)!==identity(o)))return 'BOUND_HISTORY';}
+   else if(reason==='DUPLICATE_CONFLICT_QUARANTINED'||reason==='IDENTITY_QUARANTINED_BY_CONFLICT'){const ident=identity(o);
+    if(b.accepted.some(x=>identity(x)===ident&&x.conflicted)||b.quarantinedIdentities.includes(ident))return 'CONFLICT_WITH_RECORD';
+    // the row it conflicted with was flagged, then a valid correction of this review resolved that conflict (the established rule)
+    if(b.supersededRows.some(x=>identity(x)===ident&&x.conflicted===true&&batch.some(c=>c.eventId===x.supersededBy&&c.correctionOf)))return 'CONFLICT_THEN_RESOLVED';}
+   else if(reason==='EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'){if(recIds.has(id)||prior.some(p=>idsOfRow(p).includes(id))||batch.filter(x=>x.eventId===id).length>1)return 'ID_HELD';}}
+  return null;};
+ const whyAdmitted=(id,reason)=>{for(const o of batch.filter(x=>x.eventId===id)){
+   if(b.duplicates.some(d=>d.eventId===id&&d.reason==='EXACT_REPLAY')&&prior.some(p=>idsOfRow(p).includes(id)))return 'REPLAY_OF_RECORD';
+   if(o.correctionOf&&prior.some(p=>p.superseded!==true&&p.conflicted===true&&identity(p)===identity(o)))return 'QUARANTINE_RESOLVED';
+   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf);if(!named||avail(o)>=avail(named))return 'CHAIN_NOW_FOUND';}
+   else if(['DUPLICATE_CONFLICT_QUARANTINED','ACTIVITY_BOUND_TO_TWO_SESSIONS','EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'].includes(reason)){
+    const ident=identity(o),act=o.source?.activityId??o.canonicalActivityId,on=n=>canon(n.accepted.filter(x=>identity(x)===ident||act&&actsOf(x).includes(act)).map(x=>idsOfRow(x).sort()).sort());
+    if(on(a)!==on(b)||lostOf(a,prior).length)return 'CONFLICT_STATE_DIFFERS';}
+   else if(reason==='IDENTITY_QUARANTINED_BY_CONFLICT'){if(prior.some(p=>p.superseded!==true&&p.conflicted&&identity(p)===identity(o))||!b.quarantinedIdentities.includes(identity(o)))return 'QUARANTINE_RESOLVED';}}
+  return null;};
+ for(const id of new Set(batch.map(o=>o.eventId))){
+  const ra=a.excluded.filter(e=>e.eventId===id).map(e=>e.reason),rb=b.excluded.filter(e=>e.eventId===id).map(e=>e.reason),left=[...ra];
+  const onlyB=rb.filter(x=>{const i=left.indexOf(x);if(i>=0){left.splice(i,1);return false;}return true;}),onlyA=left;
+  // refused by both, for another reason: the candidate's reason must be explained
+  const pairs=Math.min(onlyA.length,onlyB.length);
+  for(let k=0;k<pairs;k++){const w=whyRefused(id,onlyB[k]);out.push({eventId:id,change:'reasonChanged',reason:onlyA[k]+'>'+onlyB[k],why:w?'REFUSED_BOTH:'+w:'UNEXPLAINED_REFUSAL'});}
+  for(const x of onlyB.slice(pairs)){const w=whyRefused(id,x);out.push({eventId:id,change:'newRefusal',reason:x,why:w??'UNEXPLAINED_REFUSAL'});}
+  for(const x of onlyA.slice(pairs)){const w=whyAdmitted(id,x);out.push({eventId:id,change:'newAdmission',reason:x,why:w??'UNEXPLAINED_ADMISSION'});}
+ }
+ return out;
+}
 const sorted=n=>{const c=json(n);for(const k of ['excluded','duplicates','conflicts','superseded','quarantinedIdentities'])c[k]=[...c[k]].map(canon).sort();return c;};
 const inForce=n=>n.accepted.map(o=>identity(o)+'='+[...new Set(o.provenance?.mergedSourceIds??[o.eventId])].sort().join('+')+(o.conflicted?'!':'')).sort();
 const inForceSets=n=>n.accepted.map(o=>identity(o)+'='+[...new Set([o.eventId,...(o.provenance?.mergedSourceIds??[])])].sort().join('+')).sort();
-function classify(a,b,prior,batch){
+function classify(a,b,prior,batch,fate=[]){
+ if(fate.some(x=>x.why.startsWith('UNEXPLAINED')))return 'UNEXPLAINED';
  if(lostOf(a,prior).length&&!lostOf(b,prior).length)return 'F1_LOSS';
  {const carriedConflict=prior.filter(p=>p.superseded!==true&&p.conflicted===true);
   const resolvedBy=n=>new Set(n.superseded.filter(e=>carriedConflict.some(p=>p.eventId===e.eventId)&&batch.some(o=>o.eventId===e.supersededBy&&o.correctionOf)).map(e=>e.eventId+'~'+e.supersededBy));
   {const ra=resolvedBy(a);if([...resolvedBy(b)].some(k=>!ra.has(k)))return 'F3_RESOLUTION';}
   if(carriedConflict.some(p=>b.supersededRows.some(x=>x.eventId===p.eventId&&x.superseded===true&&batch.some(o=>o.eventId===x.supersededBy&&o.correctionOf)&&b.accepted.some(y=>y.eventId===x.supersededBy&&identity(y)===identity(p)))))return 'F3_RESOLUTION';}
  const a1=stripPartActs(a),b1=stripPartActs(b);
- if(canon(a1)===canon(b1))return 'PART_ACTIVITY';
+ if(canon(a1)===canon(b1))return 'PART_FIELDS';
  if(canon(sorted(a1))===canon(sorted(b1)))return 'ORDER_ONLY';
  // F3: only the quarantine differs, and what the candidate adds are identities of carried rows in force flagged conflicted
  {const qa=new Set(a1.quarantinedIdentities),extra=b1.quarantinedIdentities.filter(q=>!qa.has(q)),x=sorted(a1),y=sorted(b1);x.quarantinedIdentities=y.quarantinedIdentities=[];
@@ -112,7 +167,7 @@ function classify(a,b,prior,batch){
  if(b.excluded.some(e=>e.reason==='EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'&&histIds.has(e.eventId)&&!a.excluded.some(f=>f.eventId===e.eventId&&f.reason===e.reason))&&carriedKept)return 'F1_ORDER';
  return 'UNEXPLAINED';
 }
-const stats={seed:SEED,mono:!!process.env.MONO,cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
+const stats={seed:SEED,mono:!!process.env.MONO,ext:!!process.env.EXT,fates:{},cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
 const samples=[],lostCases=[];
 // One FREEZE-4 loss: the refusal it met when re-read, the incoming reports that sorted before it (FREEZE-4 read them first), and the candidate.
 const HOW={DUPLICATE_CONFLICT_QUARANTINED:'a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict',
@@ -135,7 +190,7 @@ const qClass=(n,m)=>{const a=new Set(n.quarantinedIdentities),b=new Set(m.quaran
  for(const q of b)if(!a.has(q))out.push(n.accepted.some(o=>identity(o)===q&&o.conflicted===true&&o.provenance?.conflict==='EVENT_ID_REUSED_WITH_DIFFERENT_FACTS')?'FLAGGED_LATER':'other');
  return out;};
 for(let c=0;c<N;c++){
- stats.cases++;const passes=gen();let prior=[];
+ stats.cases++;const {passes,raw}=gen();let prior=[];
  for(const [p,batch] of passes.entries()){
   if(!batch.length)continue;stats.passes++;
   const o={athleteId:ATH,asOf:DAY+'T0'+(p+1)+':00:00Z',maximumAgeDays:36500,incoming:true};
@@ -152,14 +207,15 @@ for(let c=0;c<N;c++){
   if(!stableOf(a,ra))stats.freeze4.rereadUnstable++;for(const k of new Set(qClass(a,ra)))stats.freeze4.rereadQuarantine[k]++;
   if(lb.length)samples.push({kind:'candidateLost',batch,prior,old:a,new:b});
   for(const R of la)lostCases.push(lostCase(c,p,R,batch,prior,a,b));
-  if(canon(a)===canon(b))stats.identical++;else{const k=classify(a,b,prior,batch);stats.classes[k]=(stats.classes[k]??0)+1;if(k==='UNEXPLAINED'||process.env.KIND===k)samples.push({kind:k,batch,prior,old:a,new:b});}
+  const fate=fates(a,b,prior,batch,raw);for(const x of fate){const k=x.change+':'+x.reason+':'+x.why;stats.fates[k]=(stats.fates[k]??0)+1;}
+  if(canon(a)===canon(b))stats.identical++;else{const k=classify(a,b,prior,batch,fate);stats.classes[k]=(stats.classes[k]??0)+1;if(k==='UNEXPLAINED'||process.env.KIND===k)samples.push({kind:k,batch,prior,old:a,new:b,fate});}
   prior=rec(b);
  }
 }
 console.log(JSON.stringify(stats,null,1));
 const sm=o=>o.eventId+(o.correctionOf?'<'+o.correctionOf:'')+'['+(o.sessionId??'-')+'/'+(o.canonicalActivityId??'-')+'/'+o.actual?.minutes+(o.actual?.completed===false?'x':'')+(o.athleteId!==ATH?'/OTHER':'')+'@'+String(o.correctedAt??o.reportedAt).slice(5,16)+']'+(o.superseded?'~'+o.supersededBy:'')+(o.conflicted?'!':'')+(o.provenance?.mergedSourceIds?.length>1?'{'+o.provenance.mergedSourceIds.join(',')+'}':'');
 const so=n=>n&&({acc:n.accepted.map(sm),sup:n.superseded.map(e=>e.eventId+'~'+e.supersededBy),exc:n.excluded.map(e=>e.eventId+':'+e.reason),dup:n.duplicates.map(d=>d.eventId+'>'+d.mergedInto+':'+d.reason[0]),q:n.quarantinedIdentities});
-const want=process.env.KIND;for(const x of samples.filter(x=>!want||x.kind===want).slice(0,Number(process.env.SHOW??3)))console.log(JSON.stringify({kind:x.kind,prior:(x.prior??[]).map(sm),batch:x.batch.map(sm),old:so(x.old),new:so(x.new),...(x.reread?{reread:so(x.reread)}:{})}));
+const want=process.env.KIND;for(const x of samples.filter(x=>!want||x.kind===want).slice(0,Number(process.env.SHOW??3)))console.log(JSON.stringify({kind:x.kind,fate:x.fate,prior:(x.prior??[]).map(sm),batch:x.batch.map(sm),old:so(x.old),new:so(x.new),...(x.reread?{reread:so(x.reread)}:{})}));
 if(process.env.OUT)fs.writeFileSync(process.env.OUT,JSON.stringify(stats,null,1)+'\n');
 if(process.env.CASES){const by=k=>Object.entries(lostCases.reduce((m,x)=>(m[x[k]]=(m[x[k]]??0)+1,m),{}));
  fs.writeFileSync(process.env.CASES,JSON.stringify({seed:SEED,mono:!!process.env.MONO,lost:lostCases.length,sameOnFreeze3:lostCases.filter(x=>x.sameOnFreeze3===true).length,

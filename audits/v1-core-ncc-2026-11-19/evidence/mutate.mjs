@@ -1,6 +1,6 @@
 // Normalization Consistency: RED on the FREEZE-4 normalizer and the mutants of this line's changes, each run against the focal test file.
 // Usage: node mutate.mjs <CoachingCore root> [test file, default test/v1core-ncc-normalization-consistency.test.mjs]
-// Run it on a byte-identical extract or a worktree nobody else is reading: it swaps src/r6-provenance.mjs per variant and restores the candidate
+// Cycle 1 adds the C1 mutants (QRE_NCC_R1, SEC-NCC-01). Run it on a byte-identical extract or a worktree nobody else is reading: it swaps src/r6-provenance.mjs per variant and restores the candidate
 // bytes at the end (checked by hash). The FREEZE-4 bytes are read with `git show e704180:CoachingCore/src/r6-provenance.mjs` when the root is in
 // a repository, else from FREEZE4_SRC. Prints one line per variant: killed (some test fails) or SURVIVED, with the failing test names.
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import {spawnSync,execFileSync} from 'node:child_process';
@@ -12,8 +12,11 @@ const V={
  'FREEZE-4 (RED)':()=>freeze4,
  'F1: no record-first order':s=>sub(s,'rows.sort((a,b)=>group(a)-group(b)||','rows.sort((a,b)=>'),
  'F1: carried first, history not first':s=>sub(s,'const group=r=>r.prior?(r.o.superseded===true?0:1):2;','const group=r=>r.prior?0:1;'),
- 'F1: no correction-before-report rule':s=>sub(s,'||Date.parse(corrected)<availability(old)',''),
- 'F2: parts keep no activity':s=>sub(s,',...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{})})','})'),
+ 'F1: no correction-before-report rule':s=>sub(s,'||Date.parse(corrected)<namedAt',''),
+ 'C1: the rule reads the clock of the row holding the report (ef490bb)':s=>sub(s,'||Date.parse(corrected)<namedAt','||Date.parse(corrected)<availability(old)'),
+ 'C1: parts keep no clock (the rule never refuses for a part)':s=>sub(s,',...(at?{availableAt:at}:{})',''),
+ 'C1: QM12, the rule only where the row is the named report':s=>sub(s,'(t=>t?Date.parse(t):-Infinity)(utcTimestamp(','(t=>-Infinity)(utcTimestamp('),
+ 'F2: parts keep no activity':s=>sub(s,',...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{})',''),
  'F2: parts\' activities not indexed':s=>sub(s,'for(const id of [activityId,...Object.values(isObject(row.provenance?.parts)?row.provenance.parts:{}).map(p=>isObject(p)?p.activityId:null)])','for(const id of [activityId])'),
  'F2: conflict flagged on the history row':s=>sub(s,'boundTo=bound&&!accepted.includes(bound)?accepted.find(x=>x.identity===bound.identity)??bound:bound','boundTo=bound'),
  'F3: own flag read as a conflict to resolve':s=>sub(sub(sub(sub(sub(s,'!!holder&&holder!==old&&!heldBefore||live','!!holder&&holder!==old&&!quarantined.has(identity)||live'),'(heldBefore?accepted','(quarantined.has(identity)?accepted'),'if(holder&&holder!==old&&!heldBefore)','if(holder&&holder!==old&&!quarantined.has(identity))'),'if(heldBefore){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);if(o.conflicted===true)quarantined.add(identity);}','if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}'),'dropsIdentity||admit&&heldBefore?','dropsIdentity||admit&&quarantined.has(identity)?'),

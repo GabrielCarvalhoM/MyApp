@@ -219,6 +219,72 @@ test('engine F3: a run whose athlete correction disputes the watch reads CONFLIC
  assert.equal(again.weekEvidence.conflicted,r.weekEvidence.conflicted);
 });
 
+// ---------- cycle 1 (QRE_NCC_R1 C1/C2, SEC_NCC_R1 SEC-NCC-01): a correction is read against the named report's own clock ----------
+const early=(id,sid,hhmm,extra={})=>rep(id,sid,dx,{observedAt:dx+'T07:00:00Z',reportedAt:dx+'T'+hhmm+':00Z',...extra});
+const at_=hhmm=>dx+'T'+hhmm+':00Z';
+// The facts in force on the session: under E-1 the row takes the event id of the last correction admitted, so which correction holds the row follows
+// the order they are read; the parts, measures, answers and conflict are what must agree.
+const facts=n=>n.accepted.filter(o=>o.sessionId==='s1'||o.sessionId==='sm').map(o=>({parts:Object.keys(o.provenance?.parts??{}).sort(),actual:o.actual,response:o.response,conflicted:o.conflicted??false}));
+const liveView=n=>n.accepted.filter(o=>o.sessionId==='s1'||o.sessionId==='sm').map(o=>({eventId:o.eventId,parts:Object.keys(o.provenance?.parts??{}).sort(),actual:o.actual,response:o.response,conflicted:o.conflicted??false}));
+test('C1 / P1-S1: a late device re-sync of a merged watch part, made after that report but before a later athlete correction, is admitted as in one review',()=>{
+ const W=early('W','s1','08:00',WATCH('hk1')),A=early('A','s1','09:00'),A2=fix(A,{eventId:'A2',actual:{completed:true,minutes:38}},at_('13:00')),W2=fix(W,{eventId:'W2',actual:{completed:true,minutes:42}},at_('12:00'));
+ const r1=rec(N([W,A],at_('10:00'))),r2=rec(N([A2],at_('13:30'),r1)),split=N([W2],at_('15:00'),r2),one=N([W,A,A2,W2],at_('15:00'));
+ assert.deepEqual(split.excluded,[],'ef490bb: W2 INVALID_CORRECTION_CHAIN (compared with A2\'s 13:00)');
+ assert.deepEqual(facts(split),facts(one),'the one-review outcome (the row is the last correction read: W2 here, A2 in one review)');
+ assert.equal(split.accepted.find(o=>o.sessionId==='s1').actual.minutes,42,'the corrected watch measurement leads');
+ for(const r of [rec(split),json(rec(split))])assert.deepEqual(liveView(reread(r)),liveView(split),'re-read and round trip');
+});
+test('C1 / P1-S2, P2: an athlete report delivered late merges into a carried watch row; its correction with an adverse answer is admitted and the answer stays in force',()=>{
+ const X=early('X','s1','14:00',WATCH('hk2')),Y=early('Y','s1','09:00'),Y2=fix(Y,{eventId:'Y2',response:{...U,recovery:'ADVERSE',effort:'HARDER'}},at_('10:00'));
+ const l1=rec(N([X],at_('14:30')));
+ for(const [label,n] of [['same review',N([Y,Y2],at_('16:00'),l1)],['third review',N([Y2],at_('17:00'),rec(N([Y],at_('16:00'),l1)))]]){
+  assert.deepEqual(n.excluded,[],label+': ef490bb refused Y2 (compared with X\'s 14:00)');
+  const row=n.accepted.find(o=>o.sessionId==='s1');assert.deepEqual([row.response.recovery,row.response.effort],['ADVERSE','HARDER'],label+': the adverse answer is in force');
+  assert.deepEqual(liveView(n),liveView(N([X,Y,Y2],at_('17:00'))),label+': the one-review outcome');
+  assert.deepEqual(liveView(reread(json(rec(n)))),liveView(n),label+': re-read after a round trip');
+ }
+});
+test('SEC-NCC-01 (e5d, E5a, E5c): the athlete\'s late report and its symptom-stop correction against a carried watch row read as in one review; a correction of a part made before that part was reported is refused however the reports are split',()=>{
+ const W=early('W','sm','12:00',WATCH('hk-m')),A=early('A','sm','11:00'),C=fix(A,{eventId:'C',actual:{completed:false,minutes:15,stop:{reason:'SYMPTOM'}},response:ADV},at_('11:30'));
+ const l1=rec(N([W],at_('12:30'))),d1=N([A,C],at_('14:00'),l1),d2=N([W,A,C],at_('14:00'));
+ for(const [label,n] of [['d1: W carried, A and C together',d1],['E5a: A and C in separate reviews',N([C],at_('15:00'),rec(N([A],at_('14:00'),l1)))]]){
+  assert.deepEqual(n.excluded,[],label+': ef490bb refused C');
+  assert.deepEqual(n.accepted.filter(o=>o.sessionId==='sm').map(o=>[o.eventId,o.conflicted??false,o.actual.stop?.reason??null]),[['C',true,'SYMPTOM']],label);
+  assert.ok(n.quarantinedIdentities.includes('session:sm'),label);
+ }
+ const inForce_=n=>n.accepted.filter(o=>o.sessionId==='sm').map(o=>({eventId:o.eventId,actual:o.actual,response:o.response,conflicted:o.conflicted??false}));
+ assert.deepEqual([inForce_(d1),d1.quarantinedIdentities],[inForce_(d2),d2.quarantinedIdentities],'d1 = d2: C in force, conflicted, its stop, the session quarantined (split, E-1 keeps the watch voice as a part of C; in one review the watch report is refused)');
+ // E5c: M (10:00) holds W2 (watch, reported 12:00); a correction of W2 made at 11:00, before W2 was reported, is no correction of it.
+ const M=early('M','sm','10:00'),W2=early('W2','sm','12:00',{...WATCH('hk-2'),actual:{completed:true,minutes:41}}),Cw=fix(W2,{eventId:'Cw',actual:{completed:true,minutes:30}},at_('11:00'));
+ for(const [label,n] of [['split',N([Cw],at_('13:00'),rec(N([M,W2],at_('12:30'))))],['one review',N([M,W2,Cw],at_('13:00'))]])
+  assert.deepEqual(n.excluded.map(e=>e.eventId+':'+e.reason),['Cw:INVALID_CORRECTION_CHAIN'],label+' (ef490bb admitted it when split: compared with M\'s 10:00)');
+ // A part written before this line keeps no clock: no refusal by this rule (FREEZE-4 behaviour).
+ const old=rec(N([M,W2],at_('12:30'))).map(o=>{const c=json(o);for(const p of Object.values(c.provenance?.parts??{}))delete p.availableAt;return c;});
+ assert.deepEqual(N([Cw],at_('13:00'),old).excluded,[],'a part without a clock: never refused by the rule');
+});
+test('C1 / P7 through the engine: a re-sync of the watch part of run d1, made before the athlete\'s later correction of their part and delivered after it, is in force',()=>{
+ const {c,day}=weekZero(),x=c.env.actualLedger.find(o=>o.sessionId==='w0-run-d1'&&!o.superseded),part=Object.keys(x.provenance.parts).find(id=>id!=='dev-d1'),dev=x.provenance.parts['dev-d1'];
+ c.review('WEEKLY_REVIEW',at(day,'21:00'),{eligibility:ELIG(day),observations:[{sessionId:'w0-run-d1',occurrenceDate:x.localDate,eventId:'d1-fix',correctionOf:part,correctedAt:at(day,'20:30'),reportedAt:at(day,'20:30'),actual:{...x.actual},response:{...U,effort:'ON_TARGET'}}]},'fix');
+ const r=c.review('WEEKLY_REVIEW',at(day,'23:00'),{eligibility:ELIG(day),observations:[{sessionId:'w0-run-d1',occurrenceDate:x.localDate,eventId:'dev-d1-v2',correctionOf:'dev-d1',correctedAt:at(day,'20:00'),reportedAt:at(day,'20:00'),actual:{...dev.actual,minutes:dev.actual.minutes+3},response:U,source:{provider:'HEALTHKIT',activityId:'HK-D1',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-D1'}]},'resync');
+ assert.deepEqual(r.provenance.excluded,[],'ef490bb: dev-d1-v2 INVALID_CORRECTION_CHAIN');
+ const row=c.env.actualLedger.filter(o=>o.sessionId==='w0-run-d1'&&!o.superseded&&!o.fact);
+ assert.equal(row.length,1);assert.equal(row[0].actual.minutes,dev.actual.minutes+3,'the corrected device measurement leads (FREEZE-4: 43)');
+ assert.ok(Object.keys(row[0].provenance.parts).includes('dev-d1-v2'));
+});
+test('SEC-NCC-01 through the engine (engine-e5d): run d3 known only from the watch; the athlete\'s report and its symptom-stop correction arrive the next morning: in force, conflicted, no run-history fact from the watch',()=>{
+ const c=client(S);c.onboard(athleteA({weeks:8,id:'ncc-e5d'}));const ss=liveSessions(c.env,0),day=addDays(c.env.program.startDate,6);
+ const obs=ss.map(s=>reportOf(c.env,s)),d3=obs.find(o=>o.sessionId==='w0-run-d3');
+ const base=obs.filter(o=>o!==d3),watch={...d3,eventId:'d3-watch',reportedAt:at(day,'19:00'),response:U,source:{provider:'HEALTHKIT',activityId:'HK-D3',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-D3'};
+ c.review('WEEKLY_REVIEW',at(day),{eligibility:ELIG(day),observations:[...base,watch]},'w0');
+ const runs=()=>factsFromLedger(c.env.actualLedger,{athleteId:c.env.program.athleteId},VALUES).length,dn=addDays(day,1);
+ const control=client(S);control.onboard(athleteA({weeks:8,id:'ncc-e5d'}));control.review('WEEKLY_REVIEW',at(day),{eligibility:ELIG(day),observations:base},'w0');
+ const athlete={...d3,eventId:'d3-app',reportedAt:at(day,'18:00')};
+ const r=c.review('WEEKLY_REVIEW',at(dn,'08:00'),{eligibility:ELIG(dn),observations:[athlete,{...athlete,eventId:'d3-fix',correctionOf:'d3-app',correctedAt:at(day,'18:30'),reportedAt:at(day,'18:30'),actual:{completed:false,minutes:12,stop:{reason:'SYMPTOM'}},response:ADV}]},'late');
+ assert.deepEqual(r.provenance.excluded,[],'ef490bb: d3-fix refused, the watch\'s 40 min in force unflagged');
+ assert.deepEqual(c.env.actualLedger.filter(o=>o.sessionId==='w0-run-d3'&&!o.superseded&&!o.fact).map(o=>[o.eventId,o.conflicted??false]),[['d3-fix',true]]);
+ assert.equal(runs(),factsFromLedger(control.env.actualLedger,{athleteId:control.env.program.athleteId},VALUES).length,'no run-history fact for a run the athlete says they stopped');
+});
+
 // ---------- successor of a frozen assertion (SUCCESSOR_LEDGER.json) ----------
 import {spawnSync} from 'node:child_process';
 import os from 'node:os';import path from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
