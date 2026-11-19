@@ -54,7 +54,9 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
  * re-synchronization never erases what the athlete said, and an athlete's edit never erases what the device measured. A row merged without parts
  * (recorded before this change) is corrected as before.
  */
-const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null});
+// F2 (Normalization Consistency): a part keeps the device activity its report carried, so a merged watch activity stays bound to its execution in
+// every later review (a row merged before this change kept none, and binds only its own).
+const partOf=o=>({actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{})});
 /** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
 const validPart=p=>!!p&&typeof p==='object'&&!!p.actual&&typeof p.actual==='object'&&!Array.isArray(p.actual)&&typeof p.actual.completed==='boolean'
  &&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>p.actual[k]!==undefined&&p.actual[k]!==null&&(!Number.isFinite(p.actual[k])||p.actual[k]<0))
@@ -90,7 +92,12 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
  for(const o of [...list(prior),...list(observations)])if(!isObject(o))excluded.push({eventId:null,sessionId:null,reason:'INVALID_OBSERVATION',inputHash:hash(o??null)});
  const rows=[...clone(list(prior)).filter(isObject).map(o=>({o,prior:true})),...clone(list(observations)).filter(isObject).map(o=>({o,prior:false}))];
  const availability=o=>Date.parse(utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??effective(o)?.at??now);
- rows.sort((a,b)=>availability(a.o)-availability(b.o)||byCodePoint(a.o.eventId,b.o.eventId));
+ // F1 (Normalization Consistency): the record a review carries is rebuilt before any report it brings is read: first its history (the reports a
+ // correction replaced, so every carried correction finds the report it names), then its rows in force, then the incoming reports; each group by
+ // availability. A report that arrives late with an earlier clock is read against the record as admitted, never before it: a carried row is never
+ // refused again because of it, and a real conflict between them is flagged on the carried row and refuses the new report, as with a monotone clock.
+ const group=r=>r.prior?(r.o.superseded===true?0:1):2;
+ rows.sort((a,b)=>group(a)-group(b)||availability(a.o)-availability(b.o)||byCodePoint(a.o.eventId,b.o.eventId));
  // A fact that conflicts with another stays in the record, flagged, and is quarantined for gating and learning (QRE-R6-14).
  const flagConflict=(row,reason)=>{row.conflicted=true;row.provenance={...row.provenance,conflict:reason};};
  const byActivity=new Map();
@@ -127,12 +134,16 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   // R7-C QE-R7C-10: a carried row keeps its first-recorded clock; a new one takes this decision's when it records arrivals, else none.
   if(!carried)setFirstRecorded(o,recordArrival?now:null);
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
-  // A conflict carried in from an earlier review stays quarantined for its identity.
+  // A conflict carried in from an earlier review stays quarantined for its identity. F3: whether a correction resolves a conflict is read from the
+  // quarantine its identity held before it (`heldBefore`), never from its own carried flag: re-reading a correction in conflict never resolves it.
+  const heldBefore=quarantined.has(identity);
   if(o.conflicted===true)quarantined.add(identity);
   let inherited=null,admit=null,dropsIdentity=false;
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
-   if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
+   // F1: a correction made before the report it corrects was available is no correction of it (as when both come in one review, where it is read
+   // first and finds nothing to correct): refused, whichever review brought that report.
+   if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||Date.parse(corrected)<availability(old)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
@@ -149,15 +160,15 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    // merged part's id still names that row) is replaced already: as for a carried replaced row, the correction meets the row in force on its
    // identity (merged or in conflict), never a second row in force on one execution.
    const live=old.superseded!==true&&accepted.includes(old);
-   dropsIdentity=!!holder&&holder!==old&&!quarantined.has(identity)||live;
+   dropsIdentity=!!holder&&holder!==old&&!heldBefore||live;
    admit=()=>{
     // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's. Only once
     // admitted (SEC-SR2-01): a refused report, or one read as a replay of another row, carries its own clock only, as with no correctionOf.
-    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
-    if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
+    setFirstRecorded(o,firstRecorded(o,old,...(heldBefore?accepted.filter(x=>x.identity===identity):[])));
+    if(holder&&holder!==old&&!heldBefore){retire(holder);byIdentity.delete(identity);}
     if(live){retire(old);byIdentity.delete(identity);}
     // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
-    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
+    if(heldBefore){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);if(o.conflicted===true)quarantined.add(identity);}
    };
   }
   const sameEvent=byEvent.get(o.eventId);
@@ -169,11 +180,13 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   }
   if(!admit&&quarantined.has(identity)&&o.conflicted!==true){reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   // One wearable activity is one execution: bound to a second session it is a conflict on both (QRE-R6-13).
-  const activityId=o.source?.activityId??o.canonicalActivityId??null,boundTo=activityId?byActivity.get(activityId):null;
+  // F2: an activity stays bound to the execution that first held it, also once a correction retired that row: the conflict is then flagged on the
+  // row now in force for that execution, never on the history row.
+  const activityId=o.source?.activityId??o.canonicalActivityId??null,bound=activityId?byActivity.get(activityId):null,boundTo=bound&&!accepted.includes(bound)?accepted.find(x=>x.identity===bound.identity)??bound:bound;
   if(boundTo&&boundTo.identity!==identity){flagConflict(boundTo,'ACTIVITY_BOUND_TO_TWO_SESSIONS');quarantined.add(boundTo.identity);quarantined.add(identity);conflicts.push({identity,eventIds:[boundTo.eventId,o.eventId],activityId,reason:'ACTIVITY_BOUND_TO_TWO_SESSIONS'});reject('ACTIVITY_BOUND_TO_TWO_SESSIONS');continue;}
   // A correction that resolves a conflict retires every report on its identity: none of them is a row in force to merge it into (SEC-R2-03:
   // merged into a retired row, the correction and the session would both leave the record in force).
-  const previous=dropsIdentity||admit&&quarantined.has(identity)?undefined:byIdentity.get(identity);
+  const previous=dropsIdentity||admit&&heldBefore?undefined:byIdentity.get(identity);
   if(previous&&(!physicalAgrees(previous,o,loadIncrements)||responseConflicts(previous.response,o.response))){
    flagConflict(previous,'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS');quarantined.add(identity);
    conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
@@ -209,7 +222,9 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   // E-1 (QRE-CORE-01): a live row answers for the reports it holds as parts (the ones its own provenance merged), before any superseded row the
   // record carried earlier: a later correction of one of them finds the row in force.
   {const made=new Set([...Object.keys(row.provenance?.inputHashes??{}),...(row.provenance?.mergedSourceIds??[])]);for(const id of Object.keys(isObject(row.provenance?.parts)?row.provenance.parts:{}))if(made.has(id))byEvent.set(id,row);}
-  accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
+  accepted.push(row);byEvent.set(o.eventId,row);byIdentity.set(identity,row);for(const id of [...Object.keys(o.provenance?.inputHashes??{}),...(o.provenance?.mergedSourceIds??[])])if(!byEvent.has(id))byEvent.set(id,row);
+  // F2: the row binds its own activity and every activity its parts carried (a watch report merged into an athlete's row, a part a correction kept).
+  for(const id of [activityId,...Object.values(isObject(row.provenance?.parts)?row.provenance.parts:{}).map(p=>isObject(p)?p.activityId:null)])if(id&&!byActivity.has(id))byActivity.set(id,row);
  }
  accepted.sort((a,b)=>Date.parse(a.observedAt)-Date.parse(b.observedAt)||byCodePoint(a.eventId,b.eventId));
  return {observations:accepted.map(({identity,inputHash,...o})=>o),accepted:accepted.map(({identity,inputHash,...o})=>o),excluded,superseded,supersededRows:supersededRows.map(({identity,inputHash,...o})=>o),duplicates,conflicts,quarantinedIdentities:[...quarantined],asOf:now,causalCutoff:now};
