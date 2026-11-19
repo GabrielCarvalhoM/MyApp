@@ -272,7 +272,11 @@ const claimsDone=o=>!!o&&!o.fact&&o.superseded!==true&&voices(o).some(did);
 // session or activity). The normalizer can mark an original replaced and then refuse the correction (an event id reused, an activity bound to
 // another session): the session would vanish. For the readiness question only, such a row keeps its voice; no dose reader reads it.
 const activityOf=o=>o?.canonicalActivityId??o?.source?.activityId??o?.provenance?.activityId??null;
-const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&(o.sessionId?r.sessionId===o.sessionId:activityOf(r)===activityOf(o)));
+// SEC-R2-04: only a positive identity matches (the same session, else the same activity, else the normalizer's own identity of a manual report:
+// its provider at its instant); two missing ids are never the same session. A record kept before SEC-R2-03 can still carry such an orphan.
+const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?(o.provenance?.provider??'MANUAL')+'@'+o.observedAt:null;
+const sameExecution=(r,o)=>o.sessionId?r.sessionId===o.sessionId:activityOf(o)!==null?activityOf(r)===activityOf(o):manualAt(o)!==null&&!r.sessionId&&activityOf(r)===null&&manualAt(r)===manualAt(o);
+const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&sameExecution(r,o));
 const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!replacedBy(o,rows)&&voices(o).some(did);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
