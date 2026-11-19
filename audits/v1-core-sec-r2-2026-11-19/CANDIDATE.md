@@ -26,7 +26,7 @@
 - The retirements become `admit()`, run only once every refusal check has passed: before the merge into the row in force, or before the accept.
 - The identity checks read the record as the admission leaves it (`dropsIdentity`; for a conflict-resolving correction, no row to merge into). The event-id check reads it before the admission.
 - `live`: only a row in force is retired. A report an earlier correction already replaced is handled as a carried replaced row already is.
-- No new structure, ledger, copy or policy. The acceptance rules (chain, event id QRE-R6-14, activity QRE-R6-13, conflicts, E-1 parts, SEC-CORE-14) are unchanged. A refused report has exactly the effect the same report has with no `correctionOf` (tests 5, 6, 13, 16, consumers).
+- No new structure, ledger, copy or policy. The acceptance rules (chain, event id QRE-R6-14, activity QRE-R6-13, conflicts, E-1 parts, SEC-CORE-14) are unchanged. A refused report has the effect the same report has with no `correctionOf` (tests 5, 6, 13, 16, consumers). **Corrected in cycle 1 (QRE-SR2-01):** this holds except for a session already in conflict. There a correction passes the quarantine gate, and the event-id or activity rule can then flag another session's row, where the plain report would be refused with no effect. That case is identical on FREEZE-3 and is routed with O-1. **Also corrected in cycle 1 (SEC-SR2-01):** before admission, the chain's first-recorded clock was still given; it now moves into `admit()` (`CYCLE1.md`).
 
 ### SEC-R2-04: two missing identities matched
 
@@ -88,7 +88,7 @@ Engine journey (plan A, week 0 reported in full, then a refused correction of ru
 | FREEZE-3 (d3 lost, d1 in conflict) | 2 | ≈20 | 15, 20, 20, 15 = 70 |
 | candidate = plain report (d3 kept, d1 in conflict) | 3 | ≈30 | 25, 20, 20, 15 = 80 |
 
-The +10 min of the candidate over both comes from the start classes, which are not monotonic (SSCTR O-1, B0-F05, a residual already open): a lower bound (30) maps to a higher first session than 40. The same 80 is what FREEZE-3 itself gives to the plain report. Strength (journey S): the restart plan is unchanged (STRENGTH 27, 27). No progression, threshold, periodization, calibration rule, Race Forecast, Pace Insights, Strength rule or coach profile is changed, and Pace Revision stays off.
+**Corrected in cycle 1 (SSCTR C-SR2-1).** The column above totals RUN-sport sessions, including optional brisk walks (role WALK). The bounds are 50 / 30 / 40 min a week (control / FREEZE-3 / candidate), all EASY_LOW with one run day. Running alone (EASY + LONG) in week 0 is 15+15+20 = 50, 15+15 = 30 and 25+15 = 40. So the candidate prescribes 10 min **less** running than the control, and 10 more than FREEZE-3, because it restores the lost run. The +10 in the total is one more optional walk. Start-class non-monotonicity (O-1/B0-F05) plays no part. SSCTR O-3 records the minute split at a bound of 40–45 (one 25-min easy run plus a shorter long run) for the run distribution revision. The same 80 is what FREEZE-3 itself gives to the plain report. Strength (journey S): the restart plan is unchanged (STRENGTH 27, 27). No progression, threshold, periodization, calibration rule, Race Forecast, Pace Insights, Strength rule or coach profile is changed, and Pace Revision stays off.
 
 ## D. Full suite
 

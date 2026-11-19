@@ -5,6 +5,7 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const cc=process.argv[2],sha=b=>createHash('sha256').update(b).digest('hex');
+const CLOCK='    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));';
 const M=[
  ['M1 never admit','src/r6-provenance.mjs','  admit?.();\n',''],
  ['M2 no quarantine clause in previous','src/r6-provenance.mjs','dropsIdentity||admit&&quarantined.has(identity)?undefined','dropsIdentity?undefined'],
@@ -15,12 +16,16 @@ const M=[
  ['M6 f08 null===null back','src/v1-f08.mjs','manualAt(o)!==null&&!r.sessionId&&activityOf(r)===null&&manualAt(r)===manualAt(o)','activityOf(r)===activityOf(o)'],
  ['M7 f08 no session guard','src/v1-f08.mjs','manualAt(o)!==null&&!r.sessionId&&','manualAt(o)!==null&&'],
  ['M8 f08 provider ignored','src/v1-f08.mjs',"const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?(o.provenance?.provider??'MANUAL')+'@'+o.observedAt:null;","const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?o.observedAt:null;"],
+ ['M9 chain clock before admission (SEC-SR2-01)','src/r6-provenance.mjs',[[CLOCK+'\n',''],['   const retire=row=>',CLOCK.trim()+'\n   const retire=row=>']]],
+ ['M10 (QRE Q11) any row with the id replaces a session row','src/v1-f08.mjs','o.sessionId?r.sessionId===o.sessionId:','o.sessionId?true:'],
+ ['M11 (QRE Q9) any row with the id replaces an activity row','src/v1-f08.mjs','activityOf(o)!==null?activityOf(r)===activityOf(o):','activityOf(o)!==null?true:'],
+ ['M12 (QRE Q10) manual match ignores the replacement activity','src/v1-f08.mjs','!r.sessionId&&activityOf(r)===null&&','!r.sessionId&&'],
 ];
 const tests=(process.env.TESTS??'test/v1core-secr2-correction-integrity.test.mjs').split(',');
 for(const [name,file,from,to] of M){
- const f=path.join(cc,file),orig=fs.readFileSync(f),h=sha(orig),s=orig.toString('utf8');
- if(s.split(from).length!==2){console.log(name,'SKIP (pattern count '+(s.split(from).length-1)+')');continue;}
- fs.writeFileSync(f,s.replace(from,to));
+ const f=path.join(cc,file),orig=fs.readFileSync(f),h=sha(orig),pairs=Array.isArray(from)?from:[[from,to]];let s=orig.toString('utf8');
+ const bad=pairs.find(([a])=>s.split(a).length!==2);if(bad){console.log(name,'SKIP (pattern count '+(s.split(bad[0]).length-1)+')');continue;}
+ for(const [a,b] of pairs)s=s.replace(a,b);fs.writeFileSync(f,s);
  const r=spawnSync(process.execPath,['--test',...tests],{cwd:cc,encoding:'utf8'});
  fs.writeFileSync(f,orig);if(sha(fs.readFileSync(f))!==h)throw new Error('restore failed: '+file);
  const fail=(r.stdout.match(/ℹ fail (\d+)/)||[])[1],killed=[...r.stdout.matchAll(/^✖ (.{0,60})/gm)].map(m=>m[1]).filter((x,i,a)=>a.indexOf(x)===i);

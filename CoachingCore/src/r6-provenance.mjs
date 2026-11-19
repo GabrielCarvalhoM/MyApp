@@ -133,8 +133,6 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
-   // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's.
-   setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
@@ -153,6 +151,9 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
    const live=old.superseded!==true&&accepted.includes(old);
    dropsIdentity=!!holder&&holder!==old&&!quarantined.has(identity)||live;
    admit=()=>{
+    // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's. Only once
+    // admitted (SEC-SR2-01): a refused report, or one read as a replay of another row, carries its own clock only, as with no correctionOf.
+    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
     if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
     if(live){retire(old);byIdentity.delete(identity);}
     // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.

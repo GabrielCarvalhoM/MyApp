@@ -1,9 +1,10 @@
 // SEC-R2-03 + SEC-R2-04 (Founder mission of 2026-11-19, after COACHINGCORE-V1-CORE-SAFETY-FREEZE-3): correction integrity.
-// SEC-R2-03: a correction the normalizer refuses never retires what it names: every row it named stays in force, as it was, and the refused
-// report has exactly the effect the same report has with no correctionOf (the event-id and watch-activity conflict rules, QRE-R6-13/-14,
-// unchanged). A correction that resolves a conflict is never merged into a row it retires. SEC-R2-04: a replaced row is history only when
-// the record holds its replacement by a positive identity (session, else activity, else the manual report's provider at its instant): two
-// missing ids are never the same session. Synthetic athletes only.
+// SEC-R2-03: a correction the normalizer refuses never retires what it names: every row it named stays in force, as it was, and it never takes
+// its chain's first-recorded clock (SEC-SR2-01). The event-id and watch-activity conflict rules (QRE-R6-13/-14) still apply to it as to any
+// report; outside a session already in conflict (QRE-SR2-01: a correction passes that session's quarantine, a plain report does not) it has the
+// effect the same report has with no correctionOf. A correction that resolves a conflict is never merged into a row it retires. SEC-R2-04: a
+// replaced row is history only when the record holds its replacement by a positive identity (session, else activity, else the manual report's
+// provider at its instant): two missing ids are never the same session, also on records FREEZE-3 stored (C1). Synthetic athletes only.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -264,4 +265,74 @@ test('generated records (seeded): no pass writes an orphan, no row in force is l
    prior=rows;}
  }
  assert.ok(passes>900);
+});
+
+// ---------- cycle 1 (SEC_SR2_R1, SEC-SR2-01): the chain's first-recorded clock is an effect of admission ----------
+import {generateProgram,evaluateProgram} from '../src/r6-index.mjs';
+import {signsFor,exerciseSignsFor} from '../src/v1-f08.mjs';
+import {HYBRID,doneBefore,live as liveSession} from './v1cp-fixtures.mjs';
+test('SEC-SR2-01: a correction read as a replay of another session\'s row (its id and its facts) never gives that row its chain\'s older first-recorded clock',()=>{
+ const R=(b,asOf,prior)=>normalizeObservations(json(b),{athleteId:ATH,asOf,maximumAgeDays:36500,...(prior?{prior:json(prior)}:{}),incoming:true,recordArrival:true});
+ const X=rep('X','sx','2026-11-01',{observedAt:'2026-11-01T09:00:00Z'}),l1=rec(R([X],'2026-11-01T20:00:00Z'));
+ const Y=rep('Y','sy','2026-11-06',{observedAt:'2026-11-06T09:00:00Z',actual:{completed:true,minutes:30},response:{...U,recovery:'ADVERSE'}}),l2=rec(R([Y],'2026-11-06T20:00:00Z',l1));
+ const C={...X,eventId:'Y',correctionOf:'X',correctedAt:'2026-11-08T08:00:00Z',reportedAt:'2026-11-08T08:00:00Z',actual:{completed:true,minutes:30}};
+ const clock=n=>rec(n).filter(o=>o.eventId==='Y').map(o=>o.provenance.firstRecordedAt),n=R([C],'2026-11-08T20:00:00Z',l2),plain=R([asPlain(C)],'2026-11-08T20:00:00Z',l2);
+ assert.deepEqual(clock(n),['2026-11-06T20:00:00.000Z'],'FREEZE-3 and 4e8cffe: 2026-11-01, the clock of X\'s chain');
+ assert.deepEqual(rec(n).map(view),rec(plain).map(view));assert.deepEqual(clock(n),clock(plain),'as the same report with no correctionOf');
+ const same=R([Y,{...C,correctedAt:'2026-11-06T13:00:00Z',reportedAt:'2026-11-06T13:00:00Z'}],'2026-11-06T20:00:00Z',l1);
+ assert.deepEqual(clock(same),['2026-11-06T20:00:00.000Z'],'in one batch too');
+ // An admitted correction still takes its chain's clock (QE-R7C-10).
+ const ok=R([{...C,eventId:'X2'}],'2026-11-08T20:00:00Z',l2);assert.equal(inForce(rec(ok),'X2')[0].provenance.firstRecordedAt,'2026-11-01T20:00:00.000Z');
+});
+test('SEC-SR2-01 through the engine (the QRE-V1CP-04 shape): a late adverse session after a wellbeing check is still asked about when a refused "correction" of an older row reuses its id',()=>{
+ const ELIG2=d=>({status:'NONCLINICAL_CONFIRMED',assessedAt:d,pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false});
+ const NO=c=>Object.fromEntries(signsFor(c).map(k=>[k,false])),XNO=c=>Object.fromEntries(exerciseSignsFor(c).map(k=>[k,false]));
+ const run=crafted=>{const g=generateProgram(HYBRID());assert.equal(g.status,'PROPOSED',g.reason);const t={p:g.program,ledger:[],ref:null,n:0};
+  const day=(w,d)=>addDays(t.p.startDate,w*7+d);
+  const step=(w,d,kind,x={},time='20:00')=>{const dd=day(w,d),r=evaluateProgram(t.p,{version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${dd}T${time}:00-03:00`,weekIndex:w,event:{id:`sr2-${++t.n}`,kind},eligibility:ELIG2(dd),observations:x.observations??[],...(x.wellbeing?{wellbeing:x.wellbeing}:{}),...(x.check?{wellbeingCheck:x.check}:{}),...(t.ledger.length?{actualLedger:t.ledger}:{}),...(t.ref?{referenceState:t.ref}:{})});
+   t.ledger=r.actualLedger??t.ledger;t.ref=r.referenceState??t.ref;if(r.proposal)t.p=r.proposal;return r;};
+  const doneWeek=(w,adverse=[])=>doneBefore(t.p,w+1).filter(o=>t.p.weeks[w].sessions.some(s=>s.id===o.sessionId)).map(o=>adverse.includes(o.sessionId)?{...o,eventId:o.eventId+'-adv',response:{...o.response,recovery:'ADVERSE'}}:o);
+  step(0,6,'WEEKLY_REVIEW',{observations:doneWeek(0)});
+  assert.equal(step(1,1,'NOT_FEELING_100',{wellbeing:{condition:'NEED_REST',warningSigns:NO('NEED_REST'),intent:'REDUCE_SUBSTANTIAL',days:5,returnSpeed:'BALANCED'}},'07:00').action,'WELLBEING_REDUCTION');
+  for(const w of [1]){const obs=doneWeek(w);step(w,6,'WEEKLY_REVIEW',{observations:obs,check:{warningSigns:NO('NEED_REST'),...(obs.length?{exerciseResponse:XNO('NEED_REST')}:{}),improved:true}});}
+  step(2,3,'WELLBEING_CHECK',{check:{warningSigns:NO('NEED_REST')}},'07:00');
+  const tue=t.p.weeks[2].sessions.find(s=>liveSession(s)&&s.sport==='RUN'&&s.date<=day(2,1)),a=doneWeek(2,[tue.id]).find(o=>o.sessionId===tue.id),obs=[a];
+  if(crafted){const old=t.ledger.filter(o=>!o.fact&&!o.superseded&&o.sessionId&&o.provenance?.firstRecordedAt&&Date.parse(o.provenance.firstRecordedAt)<Date.parse(day(2,3)+'T10:00:00Z')).at(-1),when=day(2,4)+'T09:59:00Z';
+   const c={...old,eventId:a.eventId,correctionOf:old.eventId,correctedAt:when,reportedAt:when,actual:a.actual,response:{...U}};delete c.provenance;delete c.context;obs.push(c);}
+  return step(2,4,'WEEKLY_REVIEW',{observations:obs},'07:00');};
+ const control=run(false),r=run(true);
+ assert.equal(control.status,'ASK',control.reason);
+ assert.deepEqual([r.status,r.reason],[control.status,control.reason],'FREEZE-3 and 4e8cffe: KEEP, the adverse session read as recorded before the check');
+});
+
+// ---------- cycle 1 (QRE_SR2_R1 C1): records holding orphans as FREEZE-3 stored them (hand-marked rows; the candidate normalizer writes none) ----------
+/** Normalized rows, then marked replaced by hand as FREEZE-3 left them after a refused correction. */
+function storedOrphan(shape,ath=ATH){
+ const norm=o=>normalizeObservations([json({...o,athleteId:ath})],{athleteId:ath,asOf:T1,maximumAgeDays:36500}).accepted[0],mark=(o,by)=>({...o,superseded:true,supersededBy:by,supersededAt:dx+'T14:00:00.000Z'});
+ const at=d=>({observedAt:d+'T09:00:00Z'});
+ if(shape==='a'){const Y=norm(rep('Y','sy',dy)),X=norm(rep('X','sx',dx));return [Y,mark(X,'Y')];}
+ if(shape==='b'){const X=norm(rep('X','sx',dx));return [norm(rep('Z','sz',shift(DAY,-20))),mark(X,'X2')];}
+ if(shape==='c'){const Y=norm(rep('Yw',null,dy,{...at(dy),...WATCH('hk-y')})),X=norm(rep('Xw',null,dx,{...at(dx),...WATCH('hk-x')}));return [Y,mark(X,'Yw')];}
+ // (q10) a manual row "replaced" by a row of the same provider and instant that carries a watch activity: another execution.
+ const X=norm(rep('X',null,dx,at(dx))),R={...norm(rep('R',null,dx,{...at(dx),...WATCH('hk-r'),actual:{completed:false,minutes:0}})),provenance:{...X.provenance,activityId:'hk-r'}};return [norm(rep('Z','sz',shift(DAY,-20))),mark(X,'R'),R];
+}
+test('C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c) or manual (q10), after a readiness declaration: the new stop is asked by restartIntake and restartProgram, also after a round trip',()=>{
+ const base=sixteen({asOf:DAY,start:shift(DAY,1)}),id=base.athlete.id;
+ for(const shape of ['a','b','c','q10']){
+  for(const record of [storedOrphan(shape),json(storedOrphan(shape))]){
+   assert.ok(record.some(o=>o.superseded===true),shape);
+   assert.equal(restart([ready(10),...record]).readinessDeclared,undefined,shape+': FREEZE-3 read (a) and (c) as replaced; the session after the declaration hidden');
+  }
+  const g=F.restartProgram({intake:base,record:json([ready(10,id),...storedOrphan(shape,id)]),referenceState:null,asOf:DAY+'T10:00:00-03:00',athleteId:id},DEV);
+  assert.equal(g.status,'ASK',shape+': '+g.reason);assert.ok(g.missingInputs.some(k=>k.startsWith('athlete.pause.')),shape);
+ }
+});
+test('C1 controls: a replaced row whose replacement shares its session, its watch activity or its manual instant is history (the declaration answers)',()=>{
+ const norm=o=>normalizeObservations([json(o)],{athleteId:ATH,asOf:T1,maximumAgeDays:36500}).accepted[0],mark=(o,by)=>({...o,superseded:true,supersededBy:by,supersededAt:dx+'T14:00:00.000Z'});
+ const Z=norm(rep('Z','sz',shift(DAY,-20))),notDone={completed:false,minutes:0};
+ const session=[mark(norm(rep('X','sx',dx)),'X2'),norm(rep('X2','sx',dx,{actual:notDone}))];
+ const watch=[mark(norm(rep('Xw',null,dx,{observedAt:dx+'T09:00:00Z',...WATCH('hk-x')})),'Xw2'),norm(rep('Xw2',null,dx,{observedAt:dx+'T09:00:00Z',...WATCH('hk-x'),actual:notDone}))];
+ const manual=[mark(norm(rep('X',null,dx,{observedAt:dx+'T09:00:00Z'})),'X2'),norm(rep('X2',null,dx,{observedAt:dx+'T09:00:00Z',actual:notDone}))];
+ for(const [label,rows] of [['session',session],['watch',watch],['manual',manual]])for(const record of [[Z,ready(10),...rows],json([Z,ready(10),...rows])])
+  assert.equal(restart(record).readinessDeclared,true,label);
 });

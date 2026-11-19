@@ -7,11 +7,11 @@
    "title": "SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked",
    "contract": "SEC-R2-03 (SEC_R2_R1, SEC_R2_R2): a refused correction never retires what it names",
    "before": "its first assertion (line 290) pins the defect itself: the normalizer marks X replaced and nothing replaces it, for (a) the event id reused and (b) the watch activity of another session",
-   "after": "the normalizer refuses both corrections and leaves X in force, as it was; that first assertion fails by design. The rest of the test (the new stop asked, after a JSON round trip and through restartProgram) is unchanged in meaning and passes in the successor",
+   "after": "the normalizer refuses both corrections and leaves X in force, as it was; that first assertion fails by design. The rest of the test (the new stop asked, after a JSON round trip and through restartProgram) is carried by the C1 tests on stored orphans (cycle 1, QRE_SR2_R1 C1), which kill the replacement-identity mutants M10 to M12",
    "sporting": "the session after the declaration counts again as training (it is in force); no dose rule changes",
    "safety": "stronger: the session is no longer hidden from any reader; SB-1 asks the reason of the new stop from the row in force, no longer only from an orphan",
-   "successor": "v1core-secr2-correction-integrity.test.mjs: 'SEC-R2-01 successor' (no orphan written; the stop asked, also after a round trip) and '18 (SEC-R2-04 through the normalizer)' (ASK through restartProgram)",
-   "result": "successor GREEN on 4e8cffe (20/20)"
+   "successor": "v1core-secr2-correction-integrity.test.mjs: \"C1 (QRE_SR2_R1)\" (records holding orphans as FREEZE-3 stored them, hand-marked: a session row replaced by another session's event id, by an id the record lacks, and a watch row with no session; the stop asked through restartIntake and restartProgram, also after a round trip), \"C1 controls\" (same session, same activity, same manual instant: history), plus \"SEC-R2-01 successor\" and \"18 (SEC-R2-04 through the normalizer)\" for the shapes the normalizer no longer writes",
+   "result": "successors GREEN on the cycle 1 runtime (24/24)"
   },
   {
    "historical": "v1core-cf011r2-freeze.test.mjs:12",
