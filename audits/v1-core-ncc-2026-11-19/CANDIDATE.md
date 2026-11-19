@@ -34,7 +34,7 @@ A tie (two reports with no report time, both at the end of the run's day) was br
 
 **Reproduction.** On FREEZE-4 (and FREEZE-3), when the athlete's report is the row and the watch report merges into it, the activity id lived only in that review's index. A later review admitted another session carrying it, so one activity was in force on two sessions:
 - 22, 22 and 38 passes on the three non-monotone seeds;
-- 22, 27 and 38 monotone;
+- 22, 27 and 33 monotone;
 - SEC-R2 dose journey B: one HealthKit activity on runs d1 and d3, d3 upgraded to wearable evidence.
 
 **Cause.**
@@ -79,25 +79,30 @@ FREEZE-4 vs candidate, 3000 generated three-pass records per run, with the candi
 | Class | late 20261119 | mono 20261119 | late 1 | mono 1 | late 2 | mono 2 |
 |---|---|---|---|---|---|---|
 | F1_LOSS (FREEZE-4 loses a carried row) | 47 | 0 | 52 | 0 | 40 | 0 |
-| F1_ORDER (same reports, read in record order) | 362 | 0 | 343 | 0 | 321 | 0 |
+| F1_ORDER (same reports, read in record order) | 359 | 0 | 336 | 0 | 318 | 0 |
 | F1_CHAIN (correction before its report: refused by both) | 2 | 0 | 1 | 0 | 4 | 0 |
 | F2_BIND (merged activity bound) | 25 | 26 | 28 | 32 | 41 | 34 |
-| F2_FLAG_TARGET | see JSON | | | | | |
+| F2_FLAG_TARGET (flag on the row in force, not a retired one) | 3 | 0 | 7 | 2 | 3 | 4 |
 | F3_QUARANTINE (only the kept quarantine differs) | 132 | 84 | 163 | 80 | 135 | 90 |
 | F3_RESOLUTION (a valid correction resolves a carried conflict) | 109 | 80 | 111 | 67 | 109 | 76 |
 | PART_ACTIVITY (record bytes only) | 1462 | 1521 | 1500 | 1540 | 1379 | 1590 |
 | ORDER_ONLY (list order) | 146 | 0 | 173 | 1 | 169 | 1 |
-
-The table is filled from the final JSON files at commit.
+| **UNEXPLAINED** | **0** | **0** | **0** | **0** | **0** | **0** |
+| identical passes | 6538/8823 | 7022/8733 | 6467/8838 | 7019/8741 | 6635/8833 | 6936/8731 |
 
 **FREEZE-4 on the same passes:**
 - rows in force lost: 48, 0, 52, 0, 40, 0;
-- activities on two sessions: 22 to 38;
-- re-read quarantine losses ("other", F3): about 630 to 710 per run.
+- passes with one activity in force on two identities: 22, 22, 22, 27, 38, 33;
+- re-read changes of rows in force: 1, 0, 1, 0, 3, 0;
+- re-read quarantine losses of a flagged row in force (F3): 681, 634, 710, 632, 644, 627.
+
+The candidate gives 0 on every one of these.
 
 **Quarantine-only re-read differences that remain, as on FREEZE-4.** These are not F3, but they are routed (§F):
-- REFUSED_IDENTITY: a refused report's own identity is quarantined in its pass only;
-- FLAGGED_LATER: a row flagged by event-id reuse is quarantined from the next review on.
+- REFUSED_IDENTITY: a refused report's own identity is quarantined in its pass only (candidate 381–450 passes per run, FREEZE-4 355–420);
+- FLAGGED_LATER: a row flagged by event-id reuse is quarantined from the next review on (candidate 226–269, FREEZE-4 112–242).
+
+FLAGGED_LATER rises on the late runs because the carried rows a late report used to evict now stay and are flagged instead.
 
 ## C. Sporting impact (`evidence/dose-impact.mjs`; `dose-e704180.json` vs `dose-candidate.json`)
 
@@ -124,7 +129,24 @@ Plan A, week 0 reported in full on its Sunday, run d1 reported by the athlete an
 - **Engine:** F1, F2 (journey B) and F3 (weekly review CONFLICTED on a later review).
 - The successor of the lineage matrix.
 
-Mutation and RED (`evidence/mutate.mjs`, `evidence/mutation.txt`): see §D results at commit. Full suite: at commit.
+- **On the candidate:** 21/21.
+- **RED** (`evidence/mutate.mjs`, `evidence/mutation.txt`): with `src/r6-provenance.mjs` at FREEZE-4 bytes, 5/21 pass (the controls) and 16 fail.
+- **Mutants:** 8/8 killed:
+  - no record-first order;
+  - carried first but history not first;
+  - no correction-before-report rule;
+  - parts keep no activity;
+  - parts' activities not indexed;
+  - flag on the history row;
+  - own flag read as a conflict to resolve;
+  - resolved quarantine not restored.
+- **Directed regression:** the 23 earlier test files that exercise the normalizer. Their failures are the baseline's, at the same assertion locations, plus the one ledger entry.
+
+**Full suite on `07301f3`** (`evidence/suite-07301f3.txt`): **1796 / 1765 / 31**. FREEZE-4's committed tree gave 1774 / 1745 / 29, and this line adds 22 tests, all passing.
+- The 29 earlier failures fail at the same assertion locations as in `audits/v1-core-sec-r2-2026-11-19/evidence/suite-36ea26a.txt`. That run's 30th was an untracked-file artifact of `v1core-secr2-freeze.test.mjs`.
+- `v1core-secr2-freeze.test.mjs:12` now fails by design: FREEZE-4's verifier names this line's files.
+- `v1core-successor-lineage.test.mjs:205` now fails by design: scenario 21 EASY (F1).
+- Both have successors in `SUCCESSOR_LEDGER.json`. No other test changes status.
 
 ## E. Performance (Node; `bench/bench.mjs`, `bench/bench-e704180-vs-candidate.json`; not an iPhone measurement)
 
@@ -140,6 +162,9 @@ Mutation and RED (`evidence/mutate.mjs`, `evidence/mutation.txt`): see §D resul
 | merged history: re-read | ×1.09 (+0.9 ms on 240 reports) |
 | merged history: late batch | ×0.96 |
 | merged history: kept bytes | ×1.017 (the parts' activity ids) |
+| heap per normalization of the corrected history | allocated 1200 → 1335 KiB (short-lived: the timestamp the chain rule reads per correction); **retained after collection 215 → 215 KiB** (`bench/heap-retained.mjs`, `heap-retained.json`) |
+
+A second bench run (5 rounds) gave the same picture: review ×0.975, corrected restart ×0.982, normalizer ×1.03 / ×1.03 / ×0.88, merged re-read ×1.04.
 
 - No copy of the history; one sort key added.
 - `accepted.includes` runs only when an incoming report's activity is already bound (a conflict or a re-sync). It is linear there, as `accepted.find` already is for corrections.

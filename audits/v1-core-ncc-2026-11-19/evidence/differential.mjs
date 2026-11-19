@@ -12,7 +12,7 @@
 //   F2_BIND        the candidate refuses ACTIVITY_BOUND_TO_TWO_SESSIONS where the activity is held by a carried row's merged part
 //   F2_FLAG_TARGET a report bound by activity to an execution whose row a correction retired: the candidate flags the row in force for that
 //                  execution; FREEZE-4 flagged the retired row object after its history copy was taken, so no output row carried it
-//                  (the row in force escaped the conflict)
+//                  (the row in force escaped the conflict; where it was already flagged for another conflict, only its label differs)
 //   F3_RESOLUTION  a valid correction of a carried execution in conflict resolves it (FREEZE-4 had dropped the quarantine on re-read, so it
 //                  refused the correction or merged it into the conflicted row); as in the review that flagged the conflict. The resolving
 //                  correction may itself be corrected later in the same review
@@ -95,7 +95,7 @@ function classify(a,b,prior,batch){
  const partActs=new Map();for(const p of prior.filter(x=>x.superseded!==true))for(const [id,part] of Object.entries(p.provenance?.parts??{}))if(part?.activityId&&p.provenance?.activityId!==part.activityId)partActs.set(part.activityId,identity(p));
  if(b.excluded.some(e=>e.reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'&&!a.excluded.some(f=>f.eventId===e.eventId&&f.reason===e.reason)&&batch.some(o=>o.eventId===e.eventId&&partActs.has(o.source?.activityId??o.canonicalActivityId))))return 'F2_BIND';
  // F2 flag target: an activity bound to an execution a correction retired: the candidate flags the row in force, FREEZE-4 the history row
- {const AB='ACTIVITY_BOUND_TO_TWO_SESSIONS',fa=new Set(a.accepted.filter(o=>o.conflicted).map(o=>o.eventId));
+ {const AB='ACTIVITY_BOUND_TO_TWO_SESSIONS',fa=new Set(a.accepted.filter(o=>o.conflicted&&o.provenance?.conflict===AB).map(o=>o.eventId));
   const moved=b.accepted.filter(o=>o.conflicted&&o.provenance?.conflict===AB&&!fa.has(o.eventId));
   if(moved.length&&canon(inForceSets(a))===canon(inForceSets(b))&&moved.every(o=>a.conflicts.some(c=>c.reason===AB&&a.superseded.some(e=>e.eventId===c.eventIds[0])&&a.supersededRows.some(h=>h.eventId===c.eventIds[0]&&identity(h)===identity(o)))))return 'F2_FLAG_TARGET';}
  // F1 chain: an incoming correction of a carried report, dated before that report was available, refused by both
