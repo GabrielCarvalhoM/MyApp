@@ -253,7 +253,18 @@ const sportOf=o=>{const t=String(o?.context?.sessionType??o?.context?.sport??'')
 const dayOfRow=o=>o.localDate??String(o.occurrenceDate??o.observedAt??'').slice(0,10);
 // CORE-C2-F01: a row a correction replaced (`superseded`) is history the record keeps, not an execution of its own: only the rows in force show
 // training done, as every other V1 reader reads them, and an event the record holds twice is one execution (`once`).
-const executed=o=>o&&!o.fact&&!o.conflicted&&o.superseded!==true&&(o.actual?.completed===true||Number(o.actual?.minutes)>0);
+const did=a=>a?.completed===true||Number(a?.minutes)>0;
+const executed=o=>o&&!o.fact&&!o.conflicted&&o.superseded!==true&&did(o.actual);
+// C-F01-1 r2 (SSCTR_F01_R1_ADDENDUM). The voices a row in force holds: its own report and each report merged into it (`provenance.parts`, E-1).
+const voices=o=>[o.actual,...Object.values(isObj(o.provenance?.parts)?o.provenance.parts:{}).map(p=>p?.actual)];
+// (ii) A session the record shows took place, only its amount (or response) disputed: a correction in conflict with a report still in force
+// (the normalizer keeps every voice on that row), each voice saying it took place. Its occurrence is a fact for the pause, the last executed
+// day and trainedAfter; its amount stays quarantined (QRE-R6-14), so C-Q08-1 counts neither its minutes nor its day. A direct conflict keeps
+// one voice only, so the record does not show its occurrence. (iii) A "not done" in force is no execution.
+const occurred=o=>executed(o)||!!o&&!o.fact&&o.conflicted===true&&o.superseded!==true&&o.provenance?.conflict==='CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'&&isObj(o.provenance?.parts)&&Object.keys(o.provenance.parts).length>1&&voices(o).every(did);
+// SB-1 (SEC-V1CPI-02, RC-11): a voice in force that says a session took place after the readiness declaration is training after it, in
+// conflict or not, so the declaration never stands in for a later stop on a disputed record. Only the readiness question reads it.
+const claimsDone=o=>!!o&&!o.fact&&o.superseded!==true&&voices(o).some(did);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
@@ -286,20 +297,23 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  const heldOnRecord=standingHolds(f08).holds.length>0;
  if(continuation||clinicalBreak||heldOnRecord)return {status:'CLINICAL_HUMAN_REQUIRED',reason:'A clinical hold is on record: before a new plan, tell us, sport by sport, that you are ready to train again (readiness declaration); your record keeps being kept',missingInputs:['readiness']};
  const next=clone(intake),a=next.athlete??(next.athlete={});
- const day=String(asOf??next.asOf??'').slice(0,10),done=rows.filter(executed).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort();
- const lastBy=s=>rows.filter(o=>executed(o)&&sportOf(o)===s).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort().at(-1)??null;
+ const day=String(asOf??next.asOf??'').slice(0,10),done=rows.filter(occurred).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort();
+ const lastBy=s=>rows.filter(o=>occurred(o)&&sportOf(o)===s).map(dayOfRow).filter(d=>isoDay(d)&&d<=day).sort().at(-1)??null;
  const daysSince=d=>d?gap(d,day):null,byDays={RUN:daysSince(lastBy('RUN')),STRENGTH:daysSince(lastBy('STRENGTH'))},any=daysSince(done.at(-1)??null);
  // The record's pause, per sport (Q08), as restart facts: a stated pause never shortens it (QRE-V1CP-06); a stated cause is screened as stated.
  const facts={pause:null,restart:null};
  // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
  // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
- const trainedAfter=!!readiness&&rows.some(o=>executed(o)&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ const trainedAfter=!!readiness&&rows.some(o=>claimsDone(o)&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
- else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},readinessDeclared:true};
+ else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},...(!trainedAfter?{readinessDeclared:true}:{})};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
- const from=isoDay(day)?addDays(day,-28):null,runRows=once(rows).filter(o=>executed(o)&&sportOf(o)==='RUN'&&from&&dayOfRow(o)>from&&dayOfRow(o)<=day);
+ const from=isoDay(day)?addDays(day,-28):null,inWindow=o=>!!from&&dayOfRow(o)>from&&dayOfRow(o)<=day,runRows=once(rows).filter(o=>executed(o)&&sportOf(o)==='RUN'&&inWindow(o));
  const shown={minutes:Math.round(runRows.reduce((n,o)=>n+(Number(o.actual?.minutes)||Number(o.context?.runMinutes)||0),0)/4),days:Math.min(7,Math.ceil(new Set(runRows.map(dayOfRow)).size/4))},bounded=[];
- if(rows.some(executed)&&isObj(a.recent)){
+ // C-F01-1 r2 (i): the record covers the window when it holds this athlete's reports of sessions there, in force, replaced, not done or in
+ // conflict: the stated exposure is then bounded to what it shows executed there, never left unbounded as if no record were kept. Those
+ // reports only open the bound; never counted as training.
+ if((rows.some(executed)||rows.some(o=>o&&!o.fact&&isObj(o.actual)&&inWindow(o)))&&isObj(a.recent)){
   if(Number.isFinite(a.recent.runMinutesPerWeek)&&a.recent.runMinutesPerWeek>shown.minutes){a.recent={...a.recent,runMinutesPerWeek:shown.minutes};bounded.push('recent.runMinutesPerWeek');}
   if(Number.isInteger(a.recent.runDaysPerWeek)&&a.recent.runDaysPerWeek>shown.days){a.recent={...a.recent,runDaysPerWeek:shown.days};bounded.push('recent.runDaysPerWeek');}
  }
