@@ -265,7 +265,67 @@ test('D8: a clinical break after the declaration still answers first, whatever t
  const brk={fact:'INTERRUPTION_DECLARED',eventId:'int-r2',athleteId:ATH,declaredAt:shift(DAY,-2)+'T08:00:00.000Z',interruption:{reasonCategory:'INJURY'}};
  assert.equal(read([run(20,50),ready(10),...engine(6,{completed:true,minutes:20}),brk]).status,'CLINICAL_HUMAN_REQUIRED');
 });
-test('D9: a row marked replaced with nothing in force behind it hides the session (custody residual C-F01-2, named for Security)',()=>{
- const x=run(6,50),forged={...x,superseded:true,supersededBy:'nowhere'};
- assert.equal(read([run(20,50),ready(10),forged]).pause?.readinessDeclared,true,'residual: the record must be the one the engine returned');
+test('D9 (inverted in cycle 1, SEC-R2-01): a row marked replaced with nothing behind it keeps its voice for the readiness question, and only there',()=>{
+ const x=run(6,50),forged={...x,superseded:true,supersededBy:'nowhere'},r=read([run(20,50),ready(10),forged]);
+ // 3f0b04f: readinessDeclared true (the session hidden). Now the stop is new, and asked; the dose and the pause still read no execution there.
+ assert.deepEqual([r.pause?.readinessDeclared,r.pause?.bySportDays?.RUN,r.lastExecuted],[undefined,20,shift(DAY,-20)]);
+});
+
+// ---------- cycle 1 (SEC_R2_R1, QRE_R2_R1): the one focal correction cycle ----------
+/** The two records the normalizer itself writes with an orphaned replaced mark (SEC-R2-01): the original X (after the declaration) is marked
+ *  replaced, then its correction is refused, (a) for reusing the event id of another session's report Y, (b) for carrying Y's watch activity. */
+function orphan(kind,ath=ATH){
+ const opt=asOf=>({athleteId:ath,asOf,maximumAgeDays:36500}),dx=shift(DAY,-5),dy=shift(DAY,-15);
+ const base=(id,sid,d,extra={})=>({athleteId:ath,sessionId:sid,eventId:id,occurrenceDate:d,reportedAt:d+'T12:00:00Z',context:{sport:'RUN',sessionType:'RUN_EASY'},response:UNKNOWN,actual:{completed:true,minutes:40},source:{provider:'MANUAL'},...extra});
+ const watch={source:{provider:'HEALTHKIT',activityId:'hk-y',quality:'WEARABLE_FULL'},canonicalActivityId:'hk-y'};
+ const Y=kind==='a'?base('Y','sy',dy):base('Yw','sy',dy,watch),X=base('X','sx',dx);
+ const l1=(n=>[...n.accepted,...n.supersededRows])(normalizeObservations([Y,X],opt(dx+'T13:00:00Z')));
+ const c={...X,eventId:kind==='a'?'Y':'X2',correctionOf:'X',correctedAt:dx+'T14:00:00Z',reportedAt:dx+'T14:00:00Z',actual:{completed:true,minutes:45},...(kind==='b'?watch:{})};
+ const n=normalizeObservations([c],{...opt(dx+'T15:00:00Z'),prior:l1});
+ return {record:[...n.accepted,...n.supersededRows],excluded:n.excluded.map(e=>e.reason)};
+}
+test('SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked',()=>{
+ for(const [kind,why] of [['a','EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'],['b','ACTIVITY_BOUND_TO_TWO_SESSIONS']]){
+  const {record,excluded}=orphan(kind);
+  assert.ok(excluded.includes(why)&&record.some(o=>o.sessionId==='sx'&&o.superseded===true)&&!record.some(o=>o.sessionId==='sx'&&o.superseded!==true),kind+': the original is marked replaced and nothing replaces it');
+  assert.equal(read([ready(10),...record]).pause?.readinessDeclared,undefined,kind+' (3f0b04f: true, the session after the declaration vanished)');
+  assert.equal(read([ready(10),...json(record)]).pause?.readinessDeclared,undefined,kind+' after the client stored and restored the record');
+ }
+ // Through restartProgram, with no stated reason: ASK (the SB-1 question).
+ const base=sixteen({asOf:DAY,start:shift(DAY,1)}),id=base.athlete.id;
+ const rd=readinessFact({athleteId:id},{event:{id:'ready-o'},readiness:{}},shift(DAY,-10)+'T08:00:00.000Z',READY_VALUE,null);
+ for(const kind of ['a','b']){const g=F.restartProgram({intake:base,record:json([rd,...orphan(kind,id).record]),referenceState:null,asOf:DAY+'T10:00:00-03:00',athleteId:id},DEV);
+  assert.equal(g.status,'ASK',kind+': '+g.reason);assert.ok(g.missingInputs.some(k=>k.startsWith('athlete.pause.')));}
+});
+test('SEC-R2-01 controls: a replaced row whose replacement the record holds is history (D2 kept, through the normalizer); a merged row corrected to "not done" against the watch is asked',()=>{
+ const d=shift(DAY,-5),X={athleteId:ATH,sessionId:'sn',eventId:'N',occurrenceDate:d,reportedAt:d+'T12:00:00Z',context:{sport:'RUN',sessionType:'RUN_EASY'},response:UNKNOWN,actual:{completed:true,minutes:40},source:{provider:'MANUAL'}};
+ const o={athleteId:ATH,asOf:d+'T13:00:00Z',maximumAgeDays:36500},l1=(n=>[...n.accepted,...n.supersededRows])(normalizeObservations([X],o));
+ const nd=(n=>[...n.accepted,...n.supersededRows])(normalizeObservations([{...X,eventId:'N2',correctionOf:'N',correctedAt:d+'T14:00:00Z',reportedAt:d+'T14:00:00Z',actual:NOT_DONE}],{...o,asOf:d+'T15:00:00Z',prior:l1}));
+ assert.equal(read([run(20,50),ready(10),...nd]).pause?.readinessDeclared,true,'a legitimate "not done": the declaration answers the stop');
+ assert.equal(read([run(20,50),ready(10),...engine(5,NOT_DONE)]).pause?.readinessDeclared,undefined,'the watch still says done');
+ // A replaced row of the same session whose replacement is a later correction chain (several corrections): history.
+ const x=run(6,50),c1=corr(x,{minutes:45},1),c2=corr(c1,NOT_DONE,2);
+ assert.equal(read([run(20,50),ready(10),replaced(x,c1),replaced(c1,c2),c2]).pause?.readinessDeclared,true);
+});
+test('SEC-R2-02: an occurrence is admitted only from well-formed voices (a malformed part reads as no occurrence)',()=>{
+ const c=corr(run(3,50),{minutes:20}),row=parts=>({...c,conflicted:true,provenance:{provider:'MANUAL',conflict:'CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE',parts}});
+ for(const bad of [{actual:{minutes:50}},{actual:{completed:true,minutes:'5'}},{actual:{completed:true,minutes:-1}},{actual:null},{}])
+  assert.equal(read([row({a:{actual:{completed:true,minutes:20}},b:bad})]).lastExecuted,null,JSON.stringify(bad));
+ assert.equal(read([row({a:{actual:{completed:true,minutes:20}},b:{actual:{completed:true,minutes:50}}})]).lastExecuted,shift(DAY,-3),'control');
+});
+test('QRE-R2-01: P4, then a further correction to "not done" (the disputed row now replaced): no occurrence, no pause read from it',()=>{
+ const p4=engine(3,{completed:true,minutes:20}),d=shift(DAY,-3),A2=p4.find(o=>o.eventId==='Ax2');
+ const n=normalizeObservations([{athleteId:ATH,sessionId:'sx',occurrenceDate:d,context:{sport:'RUN',sessionType:'RUN_EASY'},response:UNKNOWN,source:{provider:'MANUAL'},eventId:'Ax3',correctionOf:'Ax2',correctedAt:d+'T16:00:00Z',reportedAt:d+'T16:00:00Z',actual:NOT_DONE}],{athleteId:ATH,asOf:d+'T17:00:00Z',prior:p4,maximumAgeDays:36500});
+ const rec=[...n.accepted,...n.supersededRows],old=rec.find(o=>o.eventId==='Ax2');
+ assert.ok(A2?.conflicted===true&&old?.superseded===true&&old.conflicted===true,'the disputed row is kept, replaced, with its conflict and parts');
+ const r=read(rec);
+ assert.deepEqual([r.lastExecuted,r.pause,r.recent],[null,null,ZERO]);
+ assert.equal(read([run(13,50),...rec]).pause?.bySportDays?.RUN,13);
+});
+test('QRE-R2-04: "took place" is either a completion or minutes logged; the declaration boundary is strict',()=>{
+ assert.equal(read([run(3,20,{actual:{completed:false,minutes:20}})]).lastExecuted,shift(DAY,-3),'stopped early, 20 minutes: an execution');
+ assert.equal(read([run(3,20,{actual:{completed:true}})]).lastExecuted,shift(DAY,-3),'done, minutes not given: an execution');
+ const at=shift(DAY,-10)+'T08:00:00.000Z',x=run(10,50),same={...x,observedAt:at},later={...x,observedAt:shift(DAY,-10)+'T08:01:00.000Z'};
+ assert.equal(read([ready(10),same]).pause?.readinessDeclared,true,'at the declaration instant: not after it');
+ assert.equal(read([ready(10),later]).pause?.readinessDeclared,undefined,'a minute after: training after it');
 });
