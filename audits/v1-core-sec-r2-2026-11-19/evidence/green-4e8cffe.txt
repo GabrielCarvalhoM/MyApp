@@ -1,0 +1,28 @@
+✔ 1-4: a valid correction replaces its original: done, not done, duration, effort and recovery; the original stays as history (5.2844ms)
+✔ 5 (SEC-R2-03 A): a correction reusing another session's event id is refused and leaves the original in force, as it was (2.9826ms)
+✔ 6 (SEC-R2-03 B): a correction carrying another session's watch activity is refused and leaves the original in force (2.3201ms)
+✔ 7-8: a correction of an event the record does not hold, or of another athlete, is refused and changes nothing (1.0305ms)
+✔ 13: a partly malformed correction is refused and changes nothing; one reusing its own original's id with other facts is the event-id conflict, the original kept (1.7775ms)
+✔ 9: a correction that names an already replaced report and resolves a conflict is in force, never merged into the row it retires (1.826ms)
+✔ 10: a chain of corrections replaces in order and stays auditable; a refused correction of its head leaves the head in force (1.5498ms)
+✔ 11: an admitted correction sent again is a replay: nothing more is replaced, no credit is added (2.7581ms)
+✔ 12: a late correction (two reviews later) still replaces; a late refused one still changes nothing (1.9255ms)
+✔ 14: a refused correction after the record is stored and restored, then the record normalized again and again: stable, nothing accumulates (2.596ms)
+✔ 11: a second correction of an already corrected part, reusing the merged row's event id, is the event-id conflict: never a second row in force (4.3367ms)
+✔ 16: a merged row (athlete and watch): a refused correction of the athlete's part leaves the merged row with both parts in force (1.6004ms)
+✔ 17: corrections from two origins that disagree stay a conflict with both voices; a refused third report removes neither (2.0881ms)
+✔ 18 (SEC-R2-04 through the normalizer): two manual rows with no session, the later one after a readiness declaration; its refused correction reusing the earlier id: the new stop is asked (16.1125ms)
+✔ 18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked (1.2906ms)
+✔ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (2.3696ms)
+✔ SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked (3.1706ms)
+✔ 15 and consumers: a refused correction of a run or a strength session, through the engine: the weekly review, strength exposure, run history and restart read what the same plain report gives (1684.7265ms)
+✔ 15: a refused correction of a session of the plan a restart replaced, in the new plan's review: the old session stays in force (216.2477ms)
+✔ generated records (seeded): no pass writes an orphan, no row in force is lost under arrival order, and the result is deterministic (963.6293ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3126.8242

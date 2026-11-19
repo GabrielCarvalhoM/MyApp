@@ -1,0 +1,25 @@
+{
+ "line": "SEC-R2-03 + SEC-R2-04 (claude/v1-core-sec-r2, from a6e10d0)",
+ "note": "The tests that fail on this line and passed on a6e10d0; none is edited (v1core-cf011r2-restart-evidence.test.mjs and v1core-cf011r2-freeze.test.mjs are bound by COACHINGCORE-V1-CORE-SAFETY-FREEZE-3). The 27 earlier failures are unchanged: closure-2's 23, v1core-freeze.test.mjs:11 (audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json) and C-F01-1 r2's three (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json). Also by design, not a test: node CoachingCore/scripts/v1core-freeze-3.mjs --check names src/v1-f08.mjs as drift.",
+ "entries": [
+  {
+   "historical": "v1core-cf011r2-restart-evidence.test.mjs:287",
+   "title": "SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked",
+   "contract": "SEC-R2-03 (SEC_R2_R1, SEC_R2_R2): a refused correction never retires what it names",
+   "before": "its first assertion (line 290) pins the defect itself: the normalizer marks X replaced and nothing replaces it, for (a) the event id reused and (b) the watch activity of another session",
+   "after": "the normalizer refuses both corrections and leaves X in force, as it was; that first assertion fails by design. The rest of the test (the new stop asked, after a JSON round trip and through restartProgram) is unchanged in meaning and passes in the successor",
+   "sporting": "the session after the declaration counts again as training (it is in force); no dose rule changes",
+   "safety": "stronger: the session is no longer hidden from any reader; SB-1 asks the reason of the new stop from the row in force, no longer only from an orphan",
+   "successor": "v1core-secr2-correction-integrity.test.mjs: 'SEC-R2-01 successor' (no orphan written; the stop asked, also after a round trip) and '18 (SEC-R2-04 through the normalizer)' (ASK through restartProgram)",
+   "result": "successor GREEN on 4e8cffe (20/20)"
+  },
+  {
+   "historical": "v1core-cf011r2-freeze.test.mjs:12",
+   "title": "C-F01-1 r2: the seven earlier freezes are preserved; FREEZE-1 47/47, FREEZE-2 all but src/v1-f08.mjs; only that file amended since 4b6e1ea",
+   "contract": "freeze preservation (additive successor)",
+   "why": "scripts/v1core-freeze-3.mjs (bound by FREEZE-3, not edited) measures against 4b6e1ea: it names src/r6-provenance.mjs (FREEZE-1 now 46/47) and this line's added files as undeclared, by design",
+   "successor": "v1core-secr2-freeze.test.mjs (scripts/v1core-freeze-4.mjs --preserved: the eight earlier records are the a6e10d0 bytes; FREEZE-1 46/47, FREEZE-2 14/15 and FREEZE-3 23/24, each with only a declared amended file; nothing else changed since a6e10d0)",
+   "result": "successor GREEN once this line is committed (see evidence/freeze4-preserved.txt)"
+  }
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "A": {
+  "excluded": [
+   "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+  ],
+  "xLive": 0,
+  "xSuperseded": 1,
+  "superseded": [
+   {
+    "eventId": "X",
+    "supersededBy": "Y",
+    "correctedAt": "2026-11-05T14:00:00.000Z"
+   }
+  ],
+  "runsBefore": 2,
+  "runsAfter": 0,
+  "restartAfterReady": null
+ },
+ "B": {
+  "excluded": [
+   "ACTIVITY_BOUND_TO_TWO_SESSIONS"
+  ],
+  "xLive": 0,
+  "xSuperseded": 1,
+  "superseded": [
+   {
+    "eventId": "X",
+    "supersededBy": "X2",
+    "correctedAt": "2026-11-05T14:00:00.000Z"
+   }
+  ],
+  "runsBefore": 2,
+  "runsAfter": 0,
+  "restartAfterReady": null
+ },
+ "C_selfId": {
+  "excluded": [
+   "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+  ],
+  "xLive": 0,
+  "xSuperseded": 1,
+  "runsAfter": 0
+ },
+ "D_replayConflicted": {
+  "l2Live": [
+   "Ad2!"
+  ],
+  "l3Live": [
+   "Ad2!"
+  ],
+  "duplicates": [
+   "EXACT_REPLAY"
+  ],
+  "excluded": []
+ },
+ "E_secR204": {
+  "excluded": [
+   "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS"
+  ],
+  "xLive": 0,
+  "restartAfterReady": {
+   "status": "READY",
+   "readinessDeclared": true,
+   "runDays": null,
+   "recent": {
+    "runMinutesPerWeek": 0,
+    "runDaysPerWeek": 0
+   }
+  }
+ },
+ "E2_orphanCarried": {
+  "restartAfterReady": {
+   "status": "READY",
+   "readinessDeclared": true,
+   "runDays": 15,
+   "recent": {
+    "runMinutesPerWeek": 10,
+    "runDaysPerWeek": 1
+   }
+  },
+  "renormalized": {
+   "status": "READY",
+   "readinessDeclared": true,
+   "runDays": 15,
+   "recent": {
+    "runMinutesPerWeek": 10,
+    "runDaysPerWeek": 1
+   }
+  }
+ }
+}

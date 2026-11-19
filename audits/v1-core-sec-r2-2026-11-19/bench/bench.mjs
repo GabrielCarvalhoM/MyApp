@@ -1,0 +1,50 @@
+// SEC-R2-03 + SEC-R2-04: Node regression benchmark, base (a6e10d0, the COACHINGCORE-V1-CORE-SAFETY-FREEZE-3 line) vs this tree, interleaved in one
+// process. Not an iPhone measurement. Copied from audits/v1-core-cf011-r2-2026-11-18/bench/bench.mjs (the hybrid 8-week journey with a restart
+// at week 5; a restart from a record with every run of weeks 0-2 corrected) plus a normalizer micro-bench appended below.
+//   node --expose-gc audits/v1-core-sec-r2-2026-11-19/bench/bench.mjs <baseRoot> [rounds=5]   (baseRoot: a checkout of a6e10d0 with node_modules)
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+const here=path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Z]:)/,'$1')),cand=path.resolve(here,'..','..','..'),base=process.argv[2],rounds=Number(process.argv[3]??5);
+const load=async root=>({S:await import(pathToFileURL(path.join(root,'CoachingCore','src','v1-safety-index.mjs')).href),H:await import(pathToFileURL(path.join(root,'CoachingCore','test','v1core-helpers.mjs')).href)});
+const trees={base:await load(base),candidate:await load(cand)};
+function journey({S,H}){const c=H.client(S),t=[],r=[];c.onboard(H.athleteA({weeks:8,id:'bench'}));
+ const rev=(k,a,f,e)=>{const t0=performance.now();c.review(k,a,f,e);t.push(performance.now()-t0);};
+ for(let w=0;w<8;w++){if(w===5){const day=H.addDays(c.env.program.startDate,w*7),u={...H.athleteA({weeks:8,id:'bench'}),asOf:day,startDate:H.addDays(day,1)};u.athlete.eligibility=H.ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};const t0=performance.now();c.restart(u,H.at(day,'09:00'));r.push(performance.now()-t0);}
+  const wk=w>=5?w-5:w;if(!c.env.program.weeks[wk])break;const day=H.addDays(c.env.program.startDate,wk*7+6),obs=H.liveSessions(c.env,wk).map(s=>H.reportOf(c.env,s,{tag:'-'+w}));
+  rev('WEEKLY_REVIEW',H.at(day),{eligibility:H.ELIG(day),observations:obs},'w'+w);}
+ return {t,r,bytes:Buffer.byteLength(JSON.stringify(c.env.actualLedger))};}
+/** The F01 shape: weeks 0 to 2 reported and every run corrected; then the restart is timed (the record is restored through JSON each time). */
+function corrected({S,H}){const c=H.client(S),p=(c.onboard(H.athleteA({weeks:8,id:'bench-f01'})),c.env.program);
+ for(const w of [0,1,2]){const d=H.addDays(p.startDate,w*7+6);c.review('WEEKLY_REVIEW',H.at(d),{eligibility:H.ELIG(d),observations:H.liveSessions(c.env,w).map(s=>H.reportOf(c.env,s,{tag:'-'+w}))},'w'+w);
+  const runs=c.env.actualLedger.filter(o=>!o.fact&&!o.superseded&&o.context?.sport==='RUN'&&o.localDate>=H.addDays(p.startDate,w*7));
+  c.review('WEEKLY_REVIEW',H.at(d,'22:00'),{eligibility:H.ELIG(d),observations:runs.map(o=>({eventId:o.eventId+'-fix',athleteId:o.athleteId,sessionId:o.sessionId,occurrenceDate:o.localDate,actual:{...o.actual},response:o.response,correctionOf:o.eventId,correctedAt:H.at(d,'21:00')}))},'fix'+w);}
+ const kept=JSON.stringify(c.env.actualLedger),day=H.addDays(p.startDate,24),u={...H.athleteA({weeks:8,id:'bench-f01'}),asOf:day,startDate:H.addDays(day,3)};u.athlete.eligibility=H.ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ const t=[];for(let i=0;i<8;i++){const t0=performance.now();S.restartProgram({intake:structuredClone(u),record:JSON.parse(kept),referenceState:c.env.referenceState,asOf:H.at(day,'10:00'),athleteId:p.athleteId,runEvidenceRecord:c.env.runEvidenceRecord,runFormatRecord:c.env.runFormatRecord,runHistoryRecord:c.env.runHistoryRecord});t.push(performance.now()-t0);}
+ return {t};}
+const q=(xs,p)=>{const s=[...xs].sort((a,b)=>a-b);return s[Math.min(s.length-1,Math.ceil(p*s.length)-1)];};
+const acc={base:{t:[],r:[],f:[],bytes:0},candidate:{t:[],r:[],f:[],bytes:0}};
+for(let n=0;n<rounds;n++)for(const k of n%2?['candidate','base']:['base','candidate']){const x=journey(trees[k]),y=corrected(trees[k]);acc[k].t.push(...x.t);acc[k].r.push(...x.r);acc[k].f.push(...y.t);acc[k].bytes=x.bytes;}
+const stat=v=>({n:v.length,medianMs:+q(v,0.5).toFixed(1),p95Ms:+q(v,0.95).toFixed(1)});
+const out=Object.fromEntries(Object.entries(acc).map(([k,v])=>[k,{reviews:stat(v.t),journeyRestart:stat(v.r),correctedRestart:stat(v.f),recordBytes:v.bytes}]));
+const ratio=(a,b)=>+(b/a).toFixed(3);
+out.ratio={reviewMedian:ratio(out.base.reviews.medianMs,out.candidate.reviews.medianMs),reviewP95:ratio(out.base.reviews.p95Ms,out.candidate.reviews.p95Ms),correctedRestartMedian:ratio(out.base.correctedRestart.medianMs,out.candidate.correctedRestart.medianMs),correctedRestartP95:ratio(out.base.correctedRestart.p95Ms,out.candidate.correctedRestart.p95Ms),recordBytes:ratio(out.base.recordBytes,out.candidate.recordBytes)};
+// Normalizer micro-bench (the changed function): a small batch (6 reports), a 240-row history with 120 corrections (a third refused), and a
+// re-synchronization of that history with nothing new; each timed 200 times per round, interleaved. Heap delta over the corrected history.
+const norm={base:(await import(pathToFileURL(path.join(base,'CoachingCore','src','r6-provenance.mjs')).href)).normalizeObservations,candidate:(await import(pathToFileURL(path.join(cand,'CoachingCore','src','r6-provenance.mjs')).href)).normalizeObservations};
+const U={performance:'UNKNOWN',recovery:'UNKNOWN',effort:'UNKNOWN',nextDayFunction:'UNKNOWN'},day=i=>new Date(Date.parse('2026-09-01T00:00:00Z')+i*864e5).toISOString().slice(0,10);
+const rep=(i,extra={})=>({athleteId:'b',sessionId:'s'+i,eventId:'e'+i,observedAt:day(i)+'T09:00:00Z',reportedAt:day(i)+'T12:00:00Z',context:{sport:i%3?'RUN':'STRENGTH',sessionType:'RUN_EASY'},response:U,actual:{completed:true,minutes:40},source:{provider:'MANUAL'},...extra});
+const small=Array.from({length:6},(_,i)=>rep(i)),hist=Array.from({length:120},(_,i)=>rep(i));
+const fixes=Array.from({length:120},(_,i)=>({...rep(i),eventId:i%3===0?'e'+((i+1)%120):'c'+i,correctionOf:'e'+i,correctedAt:day(i)+'T20:00:00Z',reportedAt:day(i)+'T20:00:00Z',actual:{completed:true,minutes:35}}));
+const opt=asOf=>({athleteId:'b',asOf,maximumAgeDays:36500});
+const time=(f,n=200)=>{const t=[];for(let i=0;i<n;i++){const t0=performance.now();f();t.push(performance.now()-t0);}return t;};
+const nacc={base:{small:[],history:[],resync:[],bytes:0,heap:0},candidate:{small:[],history:[],resync:[],bytes:0,heap:0}};
+for(let n=0;n<rounds;n++)for(const k of n%2?['candidate','base']:['base','candidate']){const N=norm[k],a=nacc[k];
+ a.small.push(...time(()=>N(small,opt('2026-09-08T00:00:00Z'))));
+ a.history.push(...time(()=>N([...hist,...fixes],opt('2027-01-01T00:00:00Z')),50));
+ const kept=(r=>[...r.accepted,...r.supersededRows])(N([...hist,...fixes],opt('2027-01-01T00:00:00Z')));a.bytes=Buffer.byteLength(JSON.stringify(kept));
+ a.resync.push(...time(()=>N([],{...opt('2027-01-02T00:00:00Z'),prior:kept}),50));
+ globalThis.gc?.();const h0=process.memoryUsage().heapUsed;const keep=[];for(let i=0;i<20;i++)keep.push(N([...hist,...fixes],opt('2027-01-01T00:00:00Z')));a.heap=Math.round((process.memoryUsage().heapUsed-h0)/20/1024);keep.length=0;}
+const nstat=v=>({n:v.length,medianMs:+q(v,0.5).toFixed(3),p95Ms:+q(v,0.95).toFixed(3)});
+out.normalizer=Object.fromEntries(Object.entries(nacc).map(([k,v])=>[k,{small:nstat(v.small),correctedHistory:nstat(v.history),resync:nstat(v.resync),keptBytes:v.bytes,heapKiBPerRun:v.heap}]));
+out.normalizer.ratio={small:ratio(out.normalizer.base.small.medianMs,out.normalizer.candidate.small.medianMs),correctedHistory:ratio(out.normalizer.base.correctedHistory.medianMs,out.normalizer.candidate.correctedHistory.medianMs),resync:ratio(out.normalizer.base.resync.medianMs,out.normalizer.candidate.resync.medianMs),keptBytes:ratio(out.normalizer.base.keptBytes,out.normalizer.candidate.keptBytes)};
+console.log(JSON.stringify(out,null,1));

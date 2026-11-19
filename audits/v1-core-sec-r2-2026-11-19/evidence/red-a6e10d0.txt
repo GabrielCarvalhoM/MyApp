@@ -1,0 +1,500 @@
+✔ 1-4: a valid correction replaces its original: done, not done, duration, effort and recovery; the original stays as history (5.4265ms)
+✖ 5 (SEC-R2-03 A): a correction reusing another session's event id is refused and leaves the original in force, as it was (2.1341ms)
+✖ 6 (SEC-R2-03 B): a correction carrying another session's watch activity is refused and leaves the original in force (1.0845ms)
+✔ 7-8: a correction of an event the record does not hold, or of another athlete, is refused and changes nothing (2.1722ms)
+✖ 13: a partly malformed correction is refused and changes nothing; one reusing its own original's id with other facts is the event-id conflict, the original kept (2.1718ms)
+✖ 9: a correction that names an already replaced report and resolves a conflict is in force, never merged into the row it retires (1.386ms)
+✖ 10: a chain of corrections replaces in order and stays auditable; a refused correction of its head leaves the head in force (2.0424ms)
+✔ 11: an admitted correction sent again is a replay: nothing more is replaced, no credit is added (3.1687ms)
+✖ 12: a late correction (two reviews later) still replaces; a late refused one still changes nothing (1.7854ms)
+✔ 14: a refused correction after the record is stored and restored, then the record normalized again and again: stable, nothing accumulates (2.4373ms)
+✖ 11: a second correction of an already corrected part, reusing the merged row's event id, is the event-id conflict: never a second row in force (1.6709ms)
+✖ 16: a merged row (athlete and watch): a refused correction of the athlete's part leaves the merged row with both parts in force (1.2003ms)
+✖ 17: corrections from two origins that disagree stay a conflict with both voices; a refused third report removes neither (3.7868ms)
+✖ 18 (SEC-R2-04 through the normalizer): two manual rows with no session, the later one after a readiness declaration; its refused correction reusing the earlier id: the new stop is asked (1.2882ms)
+✖ 18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked (1.0029ms)
+✖ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (2.7095ms)
+✖ SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked (0.8013ms)
+✖ 15 and consumers: a refused correction of a run or a strength session, through the engine: the weekly review, strength exposure, run history and restart read what the same plain report gives (986.6969ms)
+✖ 15: a refused correction of a session of the plan a restart replaced, in the new plan's review: the old session stays in force (213.395ms)
+✖ generated records (seeded): no pass writes an orphan, no row in force is lost under arrival order, and the result is deterministic (16.8649ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 4
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1465.0407
+
+✖ failing tests:
+
+test at test\v1core-secr2-correction-integrity.test.mjs:54:1
+✖ 5 (SEC-R2-03 A): a correction reusing another session's event id is refused and leaves the original in force, as it was (2.1341ms)
+  AssertionError [ERR_ASSERTION]: nothing replaced (FREEZE-3: X marked replaced by Y)
+  + actual - expected
+  
+  + [
+  +   {
+  +     correctedAt: '2026-11-05T14:00:00.000Z',
+  +     eventId: 'X',
+  +     supersededBy: 'Y'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:58:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'X', supersededBy: 'Y', correctedAt: '2026-11-05T14:00:00.000Z' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:64:1
+✖ 6 (SEC-R2-03 B): a correction carrying another session's watch activity is refused and leaves the original in force (1.0845ms)
+  AssertionError [ERR_ASSERTION]: nothing replaced (FREEZE-3: X marked replaced by X2)
+  + actual - expected
+  
+  + [
+  +   {
+  +     correctedAt: '2026-11-05T14:00:00.000Z',
+  +     eventId: 'X',
+  +     supersededBy: 'X2'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:68:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'X', supersededBy: 'X2', correctedAt: '2026-11-05T14:00:00.000Z' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:78:1
+✖ 13: a partly malformed correction is refused and changes nothing; one reusing its own original's id with other facts is the event-id conflict, the original kept (2.1718ms)
+  TypeError: Cannot read properties of undefined (reading 'actual')
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:85:72)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\v1core-secr2-correction-integrity.test.mjs:90:1
+✖ 9: a correction that names an already replaced report and resolves a conflict is in force, never merged into the row it retires (1.386ms)
+  AssertionError [ERR_ASSERTION]: the session has a row in force (FREEZE-3: none, C3 merged into the retired C1)
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:96:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:102:1
+✖ 10: a chain of corrections replaces in order and stays auditable; a refused correction of its head leaves the head in force (2.0424ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'
+      ],
+  +   [
+  +     {
+  +       correctedAt: '2026-11-05T18:30:00.000Z',
+  +       eventId: 'C2',
+  +       supersededBy: 'Y'
+  +     }
+  +   ],
+  +   0
+  -   [],
+  -   1
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:107:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS' ], [ [Object] ], 0 ],
+    expected: [ [ 'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS' ], [], 1 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:117:1
+✖ 12: a late correction (two reviews later) still replaces; a late refused one still changes nothing (1.7854ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   [
+  +     {
+  +       correctedAt: '2026-11-09T08:00:00.000Z',
+  +       eventId: 'X',
+  +       supersededBy: 'Y'
+  +     }
+  +   ],
+  +   0
+  -   [],
+  -   1
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:122:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ [Object] ], 0 ],
+    expected: [ [], 1 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:132:1
+✖ 11: a second correction of an already corrected part, reusing the merged row's event id, is the event-id conflict: never a second row in force (1.6709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'M:EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:136:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'M:EVENT_ID_REUSED_WITH_DIFFERENT_FACTS' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:150:1
+✖ 16: a merged row (athlete and watch): a refused correction of the athlete's part leaves the merged row with both parts in force (1.2003ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-3: the merged row marked replaced by Y, both voices gone
+  + actual - expected
+  
+    [
+  -   [],
+      [
+  +     {
+  +       correctedAt: '2026-11-05T14:00:00.000Z',
+  +       eventId: 'M',
+  +       supersededBy: 'Y'
+  +     }
+  -     'M',
+  -     'W'
+      ],
+  +   []
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:155:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ [Object] ], [] ],
+    expected: [ [], [ 'M', 'W' ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:158:1
+✖ 17: corrections from two origins that disagree stay a conflict with both voices; a refused third report removes neither (3.7868ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  -   [],
+      [
+        {
+  +       correctedAt: '2026-11-05T16:00:00.000Z',
+  -       actual: {
+  -         completed: true,
+  -         minutes: 15
+  -       },
+  -       conflicted: true,
+          eventId: 'M2',
+  +       supersededBy: 'Y'
+  -       parts: {
+  -         M2: {
+  -           actual: {
+  -             completed: true,
+  -             minutes: 15
+  -           },
+  -           response: {
+  -             effort: 'UNKNOWN',
+  -             nextDayFunction: 'UNKNOWN',
+  -             performance: 'UNKNOWN',
+  -             recovery: 'UNKNOWN'
+  -           },
+  -           sourceQuality: 'MANUAL'
+  -         },
+  -         W2: {
+  -           actual: {
+  -             completed: true,
+  -             minutes: 41
+  -           },
+  -           response: {
+  -             effort: 'UNKNOWN',
+  -             nextDayFunction: 'UNKNOWN',
+  -             performance: 'UNKNOWN',
+  -             recovery: 'UNKNOWN'
+  -           },
+  -           sourceQuality: 'WEARABLE_FULL'
+  -         }
+  -       },
+  -       response: {
+  -         effort: 'UNKNOWN',
+  -         nextDayFunction: 'UNKNOWN',
+  -         performance: 'UNKNOWN',
+  -         recovery: 'UNKNOWN'
+  -       },
+  -       sessionId: 'sm',
+  -       superseded: false
+        }
+      ],
+  +   []
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:165:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ [Object] ], [] ],
+    expected: [ [], [ [Object] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:169:1
+✖ 18 (SEC-R2-04 through the normalizer): two manual rows with no session, the later one after a readiness declaration; its refused correction reusing the earlier id: the new stop is asked (1.2882ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'
+      ],
+  +   [
+  +     {
+  +       correctedAt: '2026-11-05T14:00:00.000Z',
+  +       eventId: 'X',
+  +       supersededBy: 'Y'
+  +     }
+  +   ],
+  +   0
+  -   [],
+  -   1
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:172:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS' ], [ [Object] ], 0 ],
+    expected: [ [ 'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS' ], [], 1 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:179:1
+✖ 18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked (1.0029ms)
+  TypeError: Cannot read properties of undefined (reading 'actual')
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:182:42)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\v1core-secr2-correction-integrity.test.mjs:185:1
+✖ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (2.7095ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-3: true (null === null)
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:189:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:198:1
+✖ SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked (0.8013ms)
+  AssertionError [ERR_ASSERTION]: no orphan is written
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:201:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:221:1
+✖ 15 and consumers: a refused correction of a run or a strength session, through the engine: the weekly review, strength exposure, run history and restart read what the same plain report gives (986.6969ms)
+  AssertionError [ERR_ASSERTION]: RUN
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      action: 'GATED_NEXT_STEP',
+      evidence: {
+        adverseSessions: 0,
+        completed: 0,
+  ...
+        'aif-w0-run-d1',
+  -     'aif-w0-run-d3',
+        'aif-w0-run-d5',
+        'aif-w0-run-d6',
+        'aif-w0-str-d2',
+        'aif-w0-str-d5'
+      ],
+  +   replaced: 1,
+  -   replaced: 0,
+      restart: 'PROPOSED',
+  +   runs: 2,
+  -   runs: 3,
+      status: 'MODIFY',
+      strength: {
+        counts: 'EACH_WORKING_SET_ONCE_PER_PRIMARY_MUSCLE',
+        descriptiveOnly: true,
+        executed: {
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:225:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { live: [ 'aif-w0-run-d1', 'aif-w0-run-d5', 'aif-w0-run-d6', 'aif-w0-str-d2', 'aif-w0-str-d5' ], replaced: 1, status: 'MODIFY', action: 'GATED_NEXT_STEP', evidence: { week: 1, rows: [Array], completed: 0, missed: 6, partial: 0, pending: 0, conflicted: 0, adverseSessions: 0, systemicConvergence: false }, strength: { version: 'V1X-STRENGTH-EXPOSURE-1', status: 'ACTIVE', descriptiveOnly: true, weekIndex: 1, unit: 'WORKING_SETS', label: 'Working sets where the muscle is a primary mover. Descriptive only.', counts: 'EACH_WORKING_SET_ONCE_PER_PRIMARY_MUSCLE', planned: [Object], executed: [Object] }, runs: 2, restart: 'PROPOSED', week0: [ [Array], [Array], [Array], [Array], [Array], [Array] ] },
+    expected: { live: [ 'aif-w0-run-d1', 'aif-w0-run-d3', 'aif-w0-run-d5', 'aif-w0-run-d6', 'aif-w0-str-d2', 'aif-w0-str-d5' ], replaced: 0, status: 'MODIFY', action: 'GATED_NEXT_STEP', evidence: { week: 1, rows: [Array], completed: 0, missed: 6, partial: 0, pending: 0, conflicted: 0, adverseSessions: 0, systemicConvergence: false }, strength: { version: 'V1X-STRENGTH-EXPOSURE-1', status: 'ACTIVE', descriptiveOnly: true, weekIndex: 1, unit: 'WORKING_SETS', label: 'Working sets where the muscle is a primary mover. Descriptive only.', counts: 'EACH_WORKING_SET_ONCE_PER_PRIMARY_MUSCLE', planned: [Object], executed: [Object] }, runs: 3, restart: 'PROPOSED', week0: [ [Array], [Array], [Array], [Array], [Array], [Array] ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:230:1
+✖ 15: a refused correction of a session of the plan a restart replaced, in the new plan's review: the old session stays in force (213.395ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:236:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-secr2-correction-integrity.test.mjs:241:1
+✖ generated records (seeded): no pass writes an orphan, no row in force is lost under arrival order, and the result is deterministic (16.8649ms)
+  AssertionError [ERR_ASSERTION]: no orphan written
+  + actual - expected
+  
+  + [
+  +   'C5-0'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:261:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'C5-0' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

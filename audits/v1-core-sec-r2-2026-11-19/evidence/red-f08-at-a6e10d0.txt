@@ -1,0 +1,53 @@
+✔ 1-4: a valid correction replaces its original: done, not done, duration, effort and recovery; the original stays as history (5.4149ms)
+✔ 5 (SEC-R2-03 A): a correction reusing another session's event id is refused and leaves the original in force, as it was (2.7695ms)
+✔ 6 (SEC-R2-03 B): a correction carrying another session's watch activity is refused and leaves the original in force (2.3976ms)
+✔ 7-8: a correction of an event the record does not hold, or of another athlete, is refused and changes nothing (1.0019ms)
+✔ 13: a partly malformed correction is refused and changes nothing; one reusing its own original's id with other facts is the event-id conflict, the original kept (1.9157ms)
+✔ 9: a correction that names an already replaced report and resolves a conflict is in force, never merged into the row it retires (1.3476ms)
+✔ 10: a chain of corrections replaces in order and stays auditable; a refused correction of its head leaves the head in force (1.8467ms)
+✔ 11: an admitted correction sent again is a replay: nothing more is replaced, no credit is added (3.3787ms)
+✔ 12: a late correction (two reviews later) still replaces; a late refused one still changes nothing (1.4015ms)
+✔ 14: a refused correction after the record is stored and restored, then the record normalized again and again: stable, nothing accumulates (2.2981ms)
+✔ 11: a second correction of an already corrected part, reusing the merged row's event id, is the event-id conflict: never a second row in force (3.9624ms)
+✔ 16: a merged row (athlete and watch): a refused correction of the athlete's part leaves the merged row with both parts in force (2.1424ms)
+✔ 17: corrections from two origins that disagree stay a conflict with both voices; a refused third report removes neither (2.1918ms)
+✔ 18 (SEC-R2-04 through the normalizer): two manual rows with no session, the later one after a readiness declaration; its refused correction reusing the earlier id: the new stop is asked (14.1902ms)
+✔ 18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked (1.3552ms)
+✖ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (1.826ms)
+✔ SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked (2.8868ms)
+✔ 15 and consumers: a refused correction of a run or a strength session, through the engine: the weekly review, strength exposure, run history and restart read what the same plain report gives (1661.2823ms)
+✔ 15: a refused correction of a session of the plan a restart replaced, in the new plan's review: the old session stays in force (206.8572ms)
+✔ generated records (seeded): no pass writes an orphan, no row in force is lost under arrival order, and the result is deterministic (884.962ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 19
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3004.9149
+
+✖ failing tests:
+
+test at test\v1core-secr2-correction-integrity.test.mjs:185:1
+✖ SEC-R2-04 (records kept before this fix): a replaced row whose "replacement" shares no positive identity keeps its voice; the controls stay history (1.826ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-3: true (null === null)
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-sec-r2/CoachingCore/test/v1core-secr2-correction-integrity.test.mjs:189:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
