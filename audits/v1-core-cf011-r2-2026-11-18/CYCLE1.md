@@ -22,6 +22,11 @@
 
 **Tests:** `v1core-cf011r2-restart-evidence.test.mjs` is now **36/36** (31 + 5). On the `3f0b04f` runtime it gives 33/36: D9, SEC-R2-01 and SEC-R2-02 fail; QRE-R2-01 and QRE-R2-04 are guards.
 
+**Full suite on `37c0f6f`** (`evidence/suite-37c0f6f.txt`): **1749 / 1721 / 28**. That is 1744 plus the five cycle tests.
+- 27 failures are the same locations as on `3f0b04f`: the 24 inherited plus the three re-pinned.
+- The 28th is `v1core-cf011r2-freeze.test.mjs:12`. During the run, `CYCLE1.md` was an untracked file in the audit folder, which check (iv) refuses. This is a working-tree artifact, not the runtime.
+- Once this record and `CYCLE1.md` (now bound by `v1core-freeze-3.mjs`) were committed at `944d9fb`, that test passes (1/1). So on the committed tree the suite is **1749 / 1722 / 27**.
+
 **Rechecks requested, narrow, on `37c0f6f`:**
 - Security: SEC-R2-01 and -02;
 - QRE: C1, C2 and the runtime delta;
