@@ -1,0 +1,66 @@
+{
+  "record": "SSCTR_R2_R1",
+  "closes": "C-F01-1 r2 (i)-(iv) for the SSCTR side (SSCTR_F01_R1_ADDENDUM section 4)",
+  "date": "2026-11-18",
+  "reviewer": {"role": "SSCTR", "agent": "SSCTR-1.0.0", "constitution": "SSCTR-CONST-1.0.0", "model": "claude-opus-5-5", "instance": "fresh instance launched by the Chief; not the author; not the instance that set C-F01-1 r2", "authority": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY", "humanReview": false, "clinicalJudgment": false, "delegated": false, "readOtherJudges": false},
+  "literature": {"needed": false, "reason": "fidelity to decided C-Q08-1, C-Q08-2, the RESTART class and QRE-R6-14; no new dose, threshold or progression", "toolsLoaded": false, "evidenceStatus": "none assigned (no empirical claim)"},
+  "target": {
+    "candidate": "3f0b04f780708299131289f8f84da482c39dddcc",
+    "base": "4b6e1ea",
+    "records": "7dc0ee5b642143236c2376ea0881c7b0b390840c",
+    "sha256": {
+      "CoachingCore/src/v1-f08.mjs@3f0b04f": "41cdbb3d85e7efc12197c3b073998dc9fde1f6932b9054f8f3122aec7e5abb55",
+      "CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs@3f0b04f": "a74adc52a34aff8eedbb2788b0cfd47ee80d08baf818765dbb1c0fbef42e2bc2",
+      "audits/v1-core-cf011-r2-2026-11-18/DECISION.md@7dc0ee5": "cc58a76a32ec69f6619ae9f2badfc936cbd3203618c1706d49dd50d3cc0c1854",
+      "audits/v1-core-cf011-r2-2026-11-18/CANDIDATE.md@7dc0ee5": "4edc59fffa33ebda6749b5227652e76a2b98ad01cc318bf54cf1802b79a3247e",
+      "audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json@7dc0ee5": "3f16168b43217a9025a2ace8042c575853059933cfcbc8aadc3b685f8b59d1ba",
+      "CoachingCore/src/v1-f08.mjs@4b6e1ea (= base extract)": "a06c580c2d4f9c64287af3105c4cb471913b66cbd38605c0b7d24cc5bdd4d68b",
+      "scratch/ssctr-r2r1-9e4b/dose.mjs": "c838e67ff55ef78dbffdc21530118cbb27238608d9d9ffd04479747737ba9925",
+      "scratch/ssctr-r2r1-9e4b/floor.mjs": "30a34cca943c53486478a3e547d7b9faabdd8b871775a4ef5782b5d8ba17a8af",
+      "scratch/ssctr-r2r1-9e4b/calib.mjs": "584b319d6a52c62e3c98948c481f62cc28960f350c64c0e6f8137c192b14ecd0",
+      "scratch/ssctr-r2r1-9e4b/strength.mjs": "19810d6d2386ebf931e301ae5cda17193a3f9224e0af32abbcde95b3d9ad8159",
+      "scratch/ssctr-r2r1-9e4b/shape.mjs": "2c704b0ed2fc5a7d8733383b474b3c551491ffd7c4a4d96dbb9285d44c73ec8b"
+    }
+  },
+  "commands": {"node": "v24.19.0", "newTests": "31/31 pass", "historicalRestartSizing": "19 pass / 2 fail (exactly :223 and :255; QRE-F01-04 passes)", "redEvidence": "31 tests, 19 pass, 12 fail", "notRun": ["npm run verify", "verify-r*", "freeze scripts", "full suite"]},
+  "verdict": "ACCEPT_WITH_CONDITIONS",
+  "focalCycleSpentBySSCTR": false,
+  "items": [
+    {"n": 1, "item": "(i) bound not ASK; 0/0 -> RESTART", "disposition": "ACCEPTED", "blocking": false,
+     "rationale": "C-Q08-1 already lowers without asking; an ASK can only end in the same bound. It removes the P1/P3 asymmetry. RESTART is the decided return entry (r6-program.mjs:49), not a capacity estimate: calibration goes EFFORT_ONLY (MODE_WALK_JOG_RESTART_RETURN). The cost is under-dosing for training outside the record, which is not a safety cost.",
+     "probe": {"A_undone3": {"base": "EASY_CURRENT 295", "candidate": "RESTART 45/60/75/90"}, "exec40_alone": "RESTART on both trees"}},
+    {"n": 2, "item": "(ii) occurred predicate; disputed amount = 0", "disposition": "ACCEPTED", "blocking": false,
+     "rationale": "Narrowest reading: CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE, 2+ parts, every voice did. A direct conflict, a not-done voice or a single voice is not shown (A12, B4, B5, B7, C7). Amount 0 is the normalizer's quarantine value and never exceeds the lowest value at the bound. P4 alone: zero gives RESTART at 45 in week 0; the lowest value (5 min/week) gives WALK_JOG at 60.",
+     "observation": "O-1"},
+    {"n": 3, "item": "dose changes = DECISION section 4", "disposition": "ACCEPTED_WITH_CONDITION", "blocking": false,
+     "rationale": "Section 4 is reproduced end to end. One consequence is unlisted: the shorter pause lifts the C-Q08-2 return floor (six executions 12-27 d plus P4 at 3 d: base RESTART 45; candidate EASY_CURRENT 80/80/80/104, identical to the in-force 20-minute control incl. calibration). It is correct. No forecast, pace, calibration, history or strength module reads recent; the diff is in restartIntake only.",
+     "condition": "C-R2-1"},
+    {"n": 4, "item": "pause, recovery, new execution; shorter pause", "disposition": "ACCEPTED", "blocking": false,
+     "rationale": "The pause and the last day read occurred (factual). trainedAfter reads claimsDone, erring toward asking at no dose cost. The else-if(readiness) change is correct (D3-D4). Clinical and HOLD paths answer first (D8).",
+     "residual": "R-R2-2"},
+    {"n": 5, "item": "(iv) re-pin; window residual", "disposition": "RE-PIN ACCEPTED; WINDOW RESIDUAL KEPT, NOT WIDENED", "blocking": false,
+     "rationale": "The re-pinned tests asserted open-labelled behaviour; the decided parts are kept (D2, QRE-F01-04). A lone not-done older than 28 d shows neither exposure nor capacity, and unbounded equals the accepted cold start. The asymmetry is large, though: exec40 gives RESTART 45, not-done40 gives EASY_CURRENT 295. It is a record-coverage definition (Data), per sport; a strength-only record already bounds running on the base.",
+     "condition": "C-R2-2"},
+    {"n": 6, "item": "calibration not contaminated", "disposition": "CONFIRMED", "blocking": false,
+     "rationale": "B3 passes; v1-run-history.mjs is not in the diff; runCalibration changes only through the program class and equals the in-force control."}
+  ],
+  "conditions": [
+    {"id": "C-R2-1", "blocking": false, "owner": "Chief (QRE for any test)", "what": "Record the return-floor lift row (disputed last session <=10 d, earlier execution >10 d: RESTART -> the class of the bound) in the closing record", "closesWhen": "the row is in the closing record"},
+    {"id": "C-R2-2", "blocking": false, "bindingBeforeRealAthleteUse": false, "owner": "next Core mission + Data semantics, then SSCTR", "what": "Define the period the record covers, per sport. It decides a lone not-done outside the window and strength-only records bounding running; harmonise with the execution gate", "closesWhen": "coverage is defined and both gates read it"}
+  ],
+  "observations": [
+    {"id": "O-1", "owner": "RUN_CLASS_THRESHOLDS revision (B0-F05), SSCTR", "what": "Cold-start classes are not monotonic in bounded minutes (0 -> RESTART 45 in week 0; 25/1 -> EASY_LOW 15). 'Zero never exceeds the lowest value' holds at the bound, not always at the plan. Pre-existing."},
+    {"id": "O-2", "owner": "Product/UX", "what": "Tell the athlete the start was lowered to what the record shows and how to add sessions it lacks (existing explainability obligation)"}
+  ],
+  "residuals": [
+    {"id": "R-R2-2", "status": "ACCEPTED", "what": "A direct conflict alone sets no pause; with unstated exposure this is EASY_UNKNOWN, identical on the base ('unknown stays unknown')"},
+    {"id": "C-F01-2/3/4", "status": "carried unchanged (custody incl. D9; SEC-CORE-03)"}
+  ],
+  "cF011r2": "SSCTR side closed for (i)-(iv); lifting its binding before real-athlete restart also requires Security (SB-1) and QRE",
+  "proposedHumanRevalidation": [
+    {"queue_id": "HQ-CORE-F01-SSCTR-B", "status": "PROPOSED_ONLY_NOT_APPENDED", "change": "conditional -> decided reading: (i) bound, mapped to RESTART; (ii) occurrence for the pause, amount 0; (iii) not-done is no execution", "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION"}
+  ],
+  "reReviewTriggers": ["RUN_CLASS_THRESHOLDS change", "normalizer conflict-kind change", "C-R2-2 decided", "Security or QRE finding that changes restartIntake", "real-athlete data"],
+  "gateStatus": "none closed by this record",
+  "publication": "none"
+}
