@@ -1,0 +1,38 @@
+{
+ "line": "C-F01-1 r2 (claude/v1-core-cf011-r2, from 4b6e1ea)",
+ "note": "The three tests that fail on this line and passed on 4b6e1ea; none is edited (v1core-c2f01-restart-sizing.test.mjs and v1core-c2f01-freeze.test.mjs are bound by COACHINGCORE-V1-CORE-SAFETY-FREEZE-2). The 24 earlier failures are unchanged: closure-2's 23 (audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json) and v1core-freeze.test.mjs:11 (audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json). Also by design, not a test: node CoachingCore/scripts/v1core-freeze-2.mjs --check names src/v1-f08.mjs as drift.",
+ "entries": [
+  {
+   "historical": "v1core-c2f01-restart-sizing.test.mjs:223",
+   "title": "QRE-F01-01 (open, SSCTR C-F01-1): a record with execution reports but none in force leaves the stated exposure unbounded",
+   "label": "open: pinned today's behaviour, not a decided reading (SSCTR_F01_R1 non-binding recommendation; ADDENDUM)",
+   "contract": "C-F01-1 r2 (i), (ii) (SSCTR_F01_R1_ADDENDUM section 4); C-Q08-1",
+   "before": {"shapeA": "recent 600/7, bounded [], pause null, last null", "P4": "recent 600/7, bounded [], pause null, last null"},
+   "after": {"shapeA": "recent 0/0, bounded both, pause null, last null", "P4": "recent 0/0, bounded both, pause 0 weeks (RUN 3 days), last executed 3 days ago"},
+   "sporting": "the record covers the window, so C-Q08-1 bounds to what it shows executed there; a disputed amount is quarantined (0); the disputed session took place, so its day sets the pause",
+   "safety": "the stated exposure no longer passes unbounded (restartProgram: EASY_CURRENT 65/65/65/100 becomes RESTART); the pause is read instead of lost",
+   "successor": "v1core-cf011r2-restart-evidence.test.mjs: A3-A4, A5, B1-B2, A e2e",
+   "result": "successor GREEN on 3f0b04f; RED on 4b6e1ea (evidence/red-on-4b6e1ea.txt)"
+  },
+  {
+   "historical": "v1core-c2f01-restart-sizing.test.mjs:255",
+   "title": "SSCTR_F01_R1_ADDENDUM: after a readiness declaration, (a) a run corrected to not done and (b) a disputed amount (open C-F01-1 (ii), the SB-1 question not asked)",
+   "label": "(a) decided-correct, kept; (b) open: today's behaviour",
+   "contract": "C-F01-1 r2 (ii); SB-1 (SEC-V1CPI-02, RC-11)",
+   "before": {"a": "readinessDeclared true", "b": "readinessDeclared true, last executed RUN day 20 days ago (the run before the declaration)"},
+   "after": {"a": "readinessDeclared true (unchanged)", "b": "readinessDeclared absent, RUN pause 6 days: the stop is new, its reason screened or asked"},
+   "sporting": "the disputed session took place after the declaration; the declaration answered an earlier stop",
+   "safety": "the SB-1 reason question is asked again (restartProgram status ASK on athlete.pause.* when no reason is stated)",
+   "successor": "v1core-cf011r2-restart-evidence.test.mjs: D1, D2 (a kept), D6 (through the intake)",
+   "result": "successor GREEN on 3f0b04f; D1 and D6 RED on 4b6e1ea, D2 GREEN on both (no change)"
+  },
+  {
+   "historical": "v1core-c2f01-freeze.test.mjs:12",
+   "title": "CORE-C2-F01: the six earlier freezes are preserved; FREEZE-1 binds 47/47 files unchanged; only src/v1-f08.mjs is amended since d92aa88",
+   "contract": "freeze preservation (additive successor)",
+   "why": "scripts/v1core-freeze-2.mjs (bound by FREEZE-2, not edited) measures against d92aa88 and names this line's added files as undeclared, by design",
+   "successor": "v1core-cf011r2-freeze.test.mjs (scripts/v1core-freeze-3.mjs --preserved: the seven earlier records are the 4b6e1ea bytes; FREEZE-1 47/47; FREEZE-2 14/15 with src/v1-f08.mjs declared; nothing else changed since 4b6e1ea)",
+   "result": "successor GREEN on 3f0b04f"
+  }
+ ]
+}

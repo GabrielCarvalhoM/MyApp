@@ -1,0 +1,380 @@
+✔ A1: a new athlete with no record: unknown stays unknown, the stated exposure stands (the self-reported cold start) (3.2389ms)
+✔ A2: a valid history bounds as before (unchanged) (0.8915ms)
+✖ A3-A4: one execution corrected to "not done" among others; every execution corrected to "not done" (shape A): bounded to the window, 0/0 (1.4617ms)
+✖ A5: reports in conflict (P4, through the normalizer): bounded to 0/0, the disputed amount never counted (3.5182ms)
+✔ A6-A7: replaced rows and duplicates: each execution once, at its value in force (CORE-C2-F01 unchanged) (1.0004ms)
+✔ A8: late rows and a late correction (after a restart, stored and restored): read as the record in force (0.3932ms)
+✔ A9: reports older than 28 days: an execution there bounds to 0/0 (unchanged); a "not done" alone there does not open the window (0.2453ms)
+✔ A10-A11: the stated exposure is only ever lowered to the record, never raised (0.3583ms)
+✖ A12: the information to resolve a conflict is missing (a direct conflict keeps one voice): bounded, and no occurrence read (0.7308ms)
+✖ A e2e: through restartProgram, shapes A and P4 start from the record (RESTART, the class of 0 weekly minutes), not from the stated 300 (108.694ms)
+✖ B1-B2: a session every voice says took place, only its amount disputed, is an execution for the pause and the last executed day (1.0268ms)
+✔ B3: the disputed amount does not reach calibration or history: the row stays in conflict, and no run fact is made of it (1.904ms)
+✔ B4-B5: occurrence itself disputed (a voice says not done), or one voice only on the record (direct conflict): not an execution (0.9608ms)
+✖ B6: only the response disputed (same minutes, recovery reported adverse against a compatible one): the session took place (0.6898ms)
+✖ B7: what a row must show to be read as a disputed execution (a forged or partial flag reads as no execution, and never raises the bound) (0.4061ms)
+✔ B persistence: a later review re-normalizes the record (carried rows): the disputed session keeps its reading (1.0062ms)
+✔ C1-C4: done -> not done; done -> other minutes; several corrections; not done -> done (0.6394ms)
+✔ C5: a duplicate of the replaced execution (marked) is no execution; an unmarked stale copy is the custody residual C-F01-2 (0.3088ms)
+✔ C6: a correction to "not done" that arrives after a restart: the next restart reads it (0.2521ms)
+✖ C7-C8: a device correction and a manual correction to "not done", through the normalizer (1.1353ms)
+✔ C9: a correction outside its chain (another session) is refused by the normalizer: the execution stays in force (0.4619ms)
+✔ C10: a partially malformed row is no execution and does not open the bound (0.192ms)
+✔ C11: a record across plans A, B, C: an execution of plan A corrected to "not done" is none, those of B and C count (0.2267ms)
+✖ D1: readiness, then a session of disputed amount after it: training after the declaration, so the new stop is screened (SB-1 asked) (1.0689ms)
+✔ D2: readiness, then a run corrected to "not done": the declaration still answers the stop (QRE-F01-04 kept) (0.2632ms)
+✖ D3-D4: readiness, then a disputed record where one voice says the athlete trained (direct conflict; watch against "not done"): asked (0.5252ms)
+✔ D5: a disputed session before the declaration: the declaration answers the stop (0.5859ms)
+✖ D6: through the intake: the reason of the new stop is asked when none is stated; a stated reason is screened as stated (22.4274ms)
+✖ D7: restarts A -> B -> C keep the safety facts: the record returned carries the declaration and the disputed session (1.1039ms)
+✔ D8: a clinical break after the declaration still answers first, whatever the disputed rows (0.7796ms)
+✔ D9: a row marked replaced with nothing in force behind it hides the session (custody residual C-F01-2, named for Security) (0.2814ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 19
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 328.3461
+
+✖ failing tests:
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:64:1
+✖ A3-A4: one execution corrected to "not done" among others; every execution corrected to "not done" (shape A): bounded to the window, 0/0 (1.4617ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      },
+  +   [],
+  -   [
+  -     'recent.runMinutesPerWeek',
+  -     'recent.runDaysPerWeek'
+  -   ],
+      null,
+      null
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:69:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { runMinutesPerWeek: 600, runDaysPerWeek: 7 }, [], null, null ],
+    expected: [ { runMinutesPerWeek: 0, runDaysPerWeek: 0 }, [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ], null, null ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:75:1
+✖ A5: reports in conflict (P4, through the normalizer): bounded to 0/0, the disputed amount never counted (3.5182ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      },
+  +   []
+  -   [
+  -     'recent.runMinutesPerWeek',
+  -     'recent.runDaysPerWeek'
+  -   ]
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:79:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { runMinutesPerWeek: 600, runDaysPerWeek: 7 }, [] ],
+    expected: [ { runMinutesPerWeek: 0, runDaysPerWeek: 0 }, [ 'recent.runMinutesPerWeek', 'recent.runDaysPerWeek' ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:108:1
+✖ A12: the information to resolve a conflict is missing (a direct conflict keeps one voice): bounded, and no occurrence read (0.7308ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      },
+      null,
+      null
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:112:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { runMinutesPerWeek: 600, runDaysPerWeek: 7 }, null, null ],
+    expected: [ { runMinutesPerWeek: 0, runDaysPerWeek: 0 }, null, null ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:114:1
+✖ A e2e: through restartProgram, shapes A and P4 start from the record (RESTART, the class of 0 weekly minutes), not from the stated 300 (108.694ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'EASY_CURRENT'
+  - 'RESTART'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:120:75)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'EASY_CURRENT',
+    expected: 'RESTART',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:124:1
+✖ B1-B2: a session every voice says took place, only its amount disputed, is an execution for the pause and the last executed day (1.0268ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   undefined,
+  +   null,
+  +   null
+  -   3,
+  -   '2026-11-07',
+  -   '2026-11-07'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:126:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ undefined, null, null ],
+    expected: [ 3, '2026-11-07', '2026-11-07' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:146:1
+✖ B6: only the response disputed (same minutes, recovery reported adverse against a compatible one): the session took place (0.6898ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   null,
+  -   '2026-11-07',
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:149:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ null, { runMinutesPerWeek: 600, runDaysPerWeek: 7 } ],
+    expected: [ '2026-11-07', { runMinutesPerWeek: 0, runDaysPerWeek: 0 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:151:1
+✖ B7: what a row must show to be read as a disputed execution (a forged or partial flag reads as no execution, and never raises the bound) (0.4061ms)
+  AssertionError [ERR_ASSERTION]: every voice says done: an execution, its amount still not counted
+  + actual - expected
+  
+    [
+  +   null,
+  -   '2026-11-07',
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:158:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ null, { runMinutesPerWeek: 600, runDaysPerWeek: 7 } ],
+    expected: [ '2026-11-07', { runMinutesPerWeek: 0, runDaysPerWeek: 0 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:191:1
+✖ C7-C8: a device correction and a manual correction to "not done", through the normalizer (1.1353ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      null,
+      {
+  +     runDaysPerWeek: 7,
+  +     runMinutesPerWeek: 600
+  -     runDaysPerWeek: 0,
+  -     runMinutesPerWeek: 0
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:202:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ null, { runMinutesPerWeek: 600, runDaysPerWeek: 7 } ],
+    expected: [ null, { runMinutesPerWeek: 0, runDaysPerWeek: 0 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:223:1
+✖ D1: readiness, then a session of disputed amount after it: training after the declaration, so the new stop is screened (SB-1 asked) (1.0689ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-2: readinessDeclared true, last executed day 20 days ago
+  + actual - expected
+  
+    [
+  +   true,
+  +   20
+  -   undefined,
+  -   6
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:226:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ true, 20 ],
+    expected: [ undefined, 6 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:232:1
+✖ D3-D4: readiness, then a disputed record where one voice says the athlete trained (direct conflict; watch against "not done"): asked (0.5252ms)
+  AssertionError [ERR_ASSERTION]: direct conflict after the declaration
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:233:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:243:1
+✖ D6: through the intake: the reason of the new stop is asked when none is stated; a stated reason is screened as stated (22.4274ms)
+  AssertionError [ERR_ASSERTION]: Complete conditional program generated from onboarding-like facts
+  
+  'PROPOSED' !== 'ASK'
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:249:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROPOSED',
+    expected: 'ASK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-cf011r2-restart-evidence.test.mjs:258:1
+✖ D7: restarts A -> B -> C keep the safety facts: the record returned carries the declaration and the disputed session (1.1039ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/AppData/Local/Temp/claude/858165ffefe5d744/bd5bc05f-f34c-4538-bfb8-fc330e278203/scratchpad/cf011/base-4b6e1ea-1023/CoachingCore/test/v1core-cf011r2-restart-evidence.test.mjs:262:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
