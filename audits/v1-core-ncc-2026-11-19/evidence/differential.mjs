@@ -13,11 +13,13 @@
 // of the candidate's record), BOUND_IN_FORCE / BOUND_HISTORY (another execution's row in force, or its history row, holds the activity), CONFLICT_
 // WITH_RECORD (a row in force on the identity is flagged conflicted, or the identity is quarantined), ID_HELD (another report of the record, or of
 // this review, holds the event id). Admissions: CHAIN_NOW_FOUND (valid by the named report's own clock), CONFLICT_STATE_DIFFERS (the rows in
-// force on the identity or activity it met differ between the two), QUARANTINE_RESOLVED (F3), REPLAY_OF_RECORD (an exact replay of a report the
+// force on the identity or activity it met differ between the two), CHAIN_OTHER_IDENTITY (the id it names is held by another execution of the
+// record), QUARANTINE_RESOLVED (F3), REPLAY_OF_RECORD (an exact replay of a report the
 // record holds, read as such because the record is rebuilt first). A report refused by both for another reason must have the candidate's reason
 // explained (REFUSED_BOTH:<why>). A refusal is also CONFLICT_THEN_RESOLVED when the
 // row it conflicted with was flagged and a valid correction of the same review then resolved that conflict.
-// Every pass whose two outputs differ is then classified (first matching class):
+// Every pass whose two outputs differ is then classified (first matching class). The classes below read carried rows and outputs; only the fate
+// accounting above reads every incoming report (QRE C5):
 //   F1_LOSS        FREEZE-4 drops a carried row in force (re-refused); the candidate keeps it (in force, merged, or replaced by its own chain)
 //   F1_ORDER       the same reports in force on the same identities, read in record order: a carried row stays the holder, a late report merges
 //                  into it (FREEZE-4 made the late report the holder), or a late conflicting report is refused against the carried row
@@ -85,7 +87,7 @@ function gen(){
  for(let j=0;j<2;j++)if(rnd()<(process.env.MONO?0:0.3))ev.push(JSON.parse(JSON.stringify(pick(ev))));
  const passes=[[],[],[]];
  ev.forEach((e,i)=>passes[Math.min(2,Math.floor(i/Math.max(1,Math.ceil(ev.length/3))))].push(e));
- const raw=new Map();for(const e of ev)if(!raw.has(e.eventId))raw.set(e.eventId,e);
+ const raw=new Map();for(const e of ev){if(!raw.has(e.eventId))raw.set(e.eventId,[]);raw.get(e.eventId).push(e);}
  return {passes,raw};
 }
 const rec=n=>[...n.accepted,...n.supersededRows];
@@ -102,7 +104,9 @@ function fates(a,b,prior,batch,raw){
  const out=[],recIds=new Set([...b.accepted,...b.supersededRows].flatMap(idsOfRow)),avail=o=>Date.parse(o.correctedAt??o.reportedAt??o.observedAt);
  const actHolders=(rows,act)=>rows.filter(o=>actsOf(o).includes(act));
  const whyRefused=(id,reason)=>{for(const o of batch.filter(x=>x.eventId===id)){
-   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf);if(named&&avail(o)<avail(named))return 'CHAIN_BEFORE_REPORT';if(!recIds.has(o.correctionOf))return 'CHAIN_CASCADE';}
+   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf)??[];if(named.length&&named.every(x=>avail(o)<avail(x)))return 'CHAIN_BEFORE_REPORT';if(!recIds.has(o.correctionOf))return 'CHAIN_CASCADE';
+    // the id it names is held in the record by another execution (the report that reused it was refused): the chain cannot reach it
+    if([...b.accepted,...b.supersededRows].some(x=>idsOfRow(x).includes(o.correctionOf)&&identity(x)!==identity(o)))return 'CHAIN_OTHER_IDENTITY';}
    else if(reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'){const act=o.source?.activityId??o.canonicalActivityId;if(actHolders(b.accepted,act).some(x=>identity(x)!==identity(o)))return 'BOUND_IN_FORCE';if(actHolders(b.supersededRows,act).some(x=>identity(x)!==identity(o)))return 'BOUND_HISTORY';}
    else if(reason==='DUPLICATE_CONFLICT_QUARANTINED'||reason==='IDENTITY_QUARANTINED_BY_CONFLICT'){const ident=identity(o);
     if(b.accepted.some(x=>identity(x)===ident&&x.conflicted)||b.quarantinedIdentities.includes(ident))return 'CONFLICT_WITH_RECORD';
@@ -113,7 +117,7 @@ function fates(a,b,prior,batch,raw){
  const whyAdmitted=(id,reason)=>{for(const o of batch.filter(x=>x.eventId===id)){
    if(b.duplicates.some(d=>d.eventId===id&&d.reason==='EXACT_REPLAY')&&prior.some(p=>idsOfRow(p).includes(id)))return 'REPLAY_OF_RECORD';
    if(o.correctionOf&&prior.some(p=>p.superseded!==true&&p.conflicted===true&&identity(p)===identity(o)))return 'QUARANTINE_RESOLVED';
-   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf);if(!named||avail(o)>=avail(named))return 'CHAIN_NOW_FOUND';}
+   if(reason==='INVALID_CORRECTION_CHAIN'&&o.correctionOf){const named=raw.get(o.correctionOf)??[];if(!named.length||named.some(x=>avail(o)>=avail(x)))return 'CHAIN_NOW_FOUND';}
    else if(['DUPLICATE_CONFLICT_QUARANTINED','ACTIVITY_BOUND_TO_TWO_SESSIONS','EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'].includes(reason)){
     const ident=identity(o),act=o.source?.activityId??o.canonicalActivityId,on=n=>canon(n.accepted.filter(x=>identity(x)===ident||act&&actsOf(x).includes(act)).map(x=>idsOfRow(x).sort()).sort());
     if(on(a)!==on(b)||lostOf(a,prior).length)return 'CONFLICT_STATE_DIFFERS';}
@@ -151,7 +155,7 @@ function classify(a,b,prior,batch,fate=[]){
  if(b.excluded.some(e=>e.reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'&&!a.excluded.some(f=>f.eventId===e.eventId&&f.reason===e.reason)&&batch.some(o=>o.eventId===e.eventId&&partActs.has(o.source?.activityId??o.canonicalActivityId))))return 'F2_BIND';
  // F2 flag target: an activity bound to an execution a correction retired: the candidate flags the row in force, FREEZE-4 the history row
  {const AB='ACTIVITY_BOUND_TO_TWO_SESSIONS',fa=new Set(a.accepted.filter(o=>o.conflicted&&o.provenance?.conflict===AB).map(o=>o.eventId));
-  const moved=b.accepted.filter(o=>o.conflicted&&o.provenance?.conflict===AB&&!fa.has(o.eventId));
+  const moved=[...b.accepted,...b.supersededRows.filter(h=>batch.some(c=>c.eventId===h.supersededBy))].filter(o=>o.conflicted&&o.provenance?.conflict===AB&&!fa.has(o.eventId)&&!a.supersededRows.some(h=>h.eventId===o.eventId&&h.conflicted&&h.provenance?.conflict===AB));
   if(moved.length&&canon(inForceSets(a))===canon(inForceSets(b))&&moved.every(o=>a.conflicts.some(c=>c.reason===AB&&a.superseded.some(e=>e.eventId===c.eventIds[0])&&a.supersededRows.some(h=>h.eventId===c.eventIds[0]&&identity(h)===identity(o)))))return 'F2_FLAG_TARGET';}
  // F1 chain: an incoming correction of a carried report, dated before that report was available, refused by both
  const avail=o=>Date.parse(o.correctedAt??o.reportedAt);

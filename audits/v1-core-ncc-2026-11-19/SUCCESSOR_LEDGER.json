@@ -8,13 +8,13 @@
    "contract": "F1 (this mission): a row the record holds is never refused again because a later review's report is read before it",
    "before": "scenario '21 a symptom stop in the app's report, the import says done (conflict), then the import re-syncs' expected, for EASY only, the reports in force ['app-stop','dev-x','dev-x-v2'] and no history reference (LONG: ['app-stop','dev-x-v2'] and 'whole'). On EASY the athlete's stop and the carried device report have no report time and tie at the end of the run's day; FREEZE-4 read the stop first by event id ('app-stop' < 'dev-x'), refused the carried device report (DUPLICATE_CONFLICT_QUARANTINED) and dropped it from the record (an F1 loss), so the device re-sync found nothing to correct (INVALID_CORRECTION_CHAIN)",
    "after": "the record is rebuilt before the review's reports are read: the device report stays in force, flagged conflicted, the stop is refused as the conflict, and the re-sync then resolves the conflict (it corrects the device's own report). EASY now reads as LONG always did: in force ['app-stop','dev-x-v2'], history reference 'whole'. The withholding word, the oracle written outside the runtime, the easy band and the calibration assertions of the matrix are unchanged and pass",
-   "sporting": "the re-synced device measurement becomes the run's history reference on EASY, as on LONG; the easy band is the control's and the calibration is untouched (assertion 4 of the matrix). For SSCTR",
+   "sporting": "the session's weekly status goes CONFLICTED -> COMPLETED on EASY, and the re-synced device measurement becomes the run's history reference, a distance the athlete's refused symptom-stop report disputes, as LONG already read (SSCTR C-NCC-2; mechanism SSCTR-NCC-01, routed to the conflict-policy mission). The easy band, the calibration and the next long run are unchanged (assertion 4 of the matrix), and the run stays withheld from pace readers",
    "safety": "the athlete's stop is still heard by its format record (in force by the reader as before); the device report is no longer silently lost",
    "successor": "v1core-ncc-normalization-consistency.test.mjs: 'successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY)', which runs the frozen file's whole SUCCESSOR closure-2 matrix (both families) from a temporary copy whose only change is that one EASY expectation, now LONG's",
-   "result": "successor GREEN on the candidate; RED on FREEZE-4 (evidence/mutation.txt)"
+   "result": "successor GREEN on the candidate (ef490bb and the cycle 1 runtime 963547b); RED on FREEZE-4 (evidence/mutation.txt)"
   },
   {
-   "historical": "v1core-secr2-freeze.test.mjs:12",
+   "historical": "v1core-secr2-freeze.test.mjs:12 (test), failing assertion at :14",
    "title": "SEC-R2-03/-04: the eight earlier freezes are preserved; only src/r6-provenance.mjs and src/v1-f08.mjs amended since a6e10d0",
    "contract": "freeze preservation (additive successor)",
    "why": "scripts/v1core-freeze-4.mjs (bound by FREEZE-4, not edited) measures against a6e10d0: it names this line's added files as undeclared, by design",

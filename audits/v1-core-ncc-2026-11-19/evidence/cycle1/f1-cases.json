@@ -1,0 +1,3406 @@
+{
+ "seed": 20261119,
+ "mono": false,
+ "lost": 210,
+ "sameOnFreeze3": 210,
+ "byFreeze4Refusal": {
+  "DUPLICATE_CONFLICT_QUARANTINED": 9,
+  "INVALID_CORRECTION_CHAIN": 12,
+  "ACTIVITY_BOUND_TO_TWO_SESSIONS": 27,
+  "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS": 125,
+  "none": 37
+ },
+ "byCandidate": {
+  "replaced": 32,
+  "in force, flagged conflicted": 140,
+  "in force": 38
+ },
+ "cases": [
+  {
+   "case": 7,
+   "pass": 2,
+   "row": "C2-2<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C3-3 (a valid correction in this review)"
+  },
+  {
+   "case": 13,
+   "pass": 2,
+   "row": "C1-1<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-3 (a valid correction in this review)"
+  },
+  {
+   "case": 27,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 47,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 61,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 79,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 102,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 114,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M2",
+    "W2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 204,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M0<M2",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 204,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 224,
+   "pass": 2,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 226,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M2",
+    "W2",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 226,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 252,
+   "pass": 1,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 266,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M2",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 283,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C2-2<C1-1",
+    "W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 307,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<M1",
+    "M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 312,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M3",
+    "C1-3<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-2 (a valid correction in this review)"
+  },
+  {
+   "case": 329,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 352,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 360,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-0<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 369,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W1",
+    "M2",
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 369,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 384,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 390,
+   "pass": 2,
+   "row": "C2-2<C1-1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "M1",
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 409,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "W2<W2",
+    "M0<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 450,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "M0<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 477,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<W1",
+    "W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 488,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 497,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W1",
+    "M0<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 522,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 537,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M3",
+    "C1-1<M3",
+    "C2-2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 537,
+   "pass": 2,
+   "row": "C2-2<M3",
+   "identity": "session:s3",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C1-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 537,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 539,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M1<M2",
+    "C0-1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 542,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "C0-0<M2",
+    "M0<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 550,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W0<W3",
+    "C0-1<M2",
+    "M2<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 553,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "C0-0<W2",
+    "W1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 617,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 629,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W3<M2",
+    "M1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 646,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 703,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 704,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M1",
+    "C1-1<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 711,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M2<M2",
+    "W0<M2",
+    "M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 762,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C1-1<M2",
+    "C0-0<C1-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 801,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 817,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 850,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 883,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 889,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<M3",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 924,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 928,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 933,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 939,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 941,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<W2",
+    "M1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 943,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C0-0<M3",
+    "M2",
+    "M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 978,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 982,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 991,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 992,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1001,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M3",
+    "C2-3<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1003,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C2-2<M1",
+    "C1-1<C2-2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1019,
+   "pass": 1,
+   "row": "M2",
+   "identity": "activity:MANUAL@2026-11-02T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M2<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1019,
+   "pass": 2,
+   "row": "M2",
+   "identity": "activity:MANUAL@2026-11-02T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1054,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "W2",
+    "M0<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1063,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2",
+    "C1-2<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 1070,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "C0-0<M1",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1084,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1121,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-0<M3",
+    "M2",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1144,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 1152,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<W2",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1161,
+   "pass": 2,
+   "row": "W1<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1190,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1193,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-1<M2",
+    "C0-1<M1",
+    "C1-3<C0-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1205,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C3-3<C0-0",
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-2 (a valid correction in this review)"
+  },
+  {
+   "case": 1223,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1244,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-0<M3",
+    "M3<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1247,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C2-3<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-2 (a valid correction in this review)"
+  },
+  {
+   "case": 1254,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C0-1<W1",
+    "C1-2<W2",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1282,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 1288,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "C0-0<W2",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1299,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1307,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "C0-0<M1",
+    "C0-0<C0-0",
+    "M0<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1308,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1308,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1311,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 1325,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1346,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1355,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<W0",
+    "C1-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1374,
+   "pass": 1,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M1<M2",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1382,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "W3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1384,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1411,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<M1",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1419,
+   "pass": 1,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M2<M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1435,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "W3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1454,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "C0-0<M2",
+    "M0<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1472,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1485,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1489,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M0<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 1492,
+   "pass": 2,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<W3",
+    "M2<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1512,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1538,
+   "pass": 2,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M2<M3",
+    "C1-2<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1541,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1559,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1563,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<W1",
+    "C1-2<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1565,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M1<M2",
+    "C1-2<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1569,
+   "pass": 1,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1575,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<C0-0",
+    "M0<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1585,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1587,
+   "pass": 2,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1597,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1605,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1614,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M1",
+    "M2<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1630,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1664,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M1",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1665,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1698,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1705,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<W1",
+    "C1-2<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1719,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1736,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 1756,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<W2",
+    "M0<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1758,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W2",
+    "M0<M1",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1774,
+   "pass": 2,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C2-2<C0-0",
+    "C3-3<C1-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1780,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<C1-1",
+    "M0<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1825,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1879,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1891,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1897,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "M0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1905,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W1",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 1955,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3",
+    "M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1957,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M1",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2006,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "W2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2007,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C2-2<M1",
+    "M0<C1-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2009,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W1",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2011,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2050,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2060,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2080,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2086,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M1<M2",
+    "C2-3<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2090,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2091,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2101,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M1<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2109,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M0<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2140,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "C0-0<M2",
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2148,
+   "pass": 1,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "C0-0<M2",
+    "M1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2150,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2151,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2162,
+   "pass": 1,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W2",
+    "M3",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2164,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C1-1<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2174,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2190,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2192,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W1",
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2192,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<W1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2195,
+   "pass": 1,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M1",
+    "C1-2<M1",
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2199,
+   "pass": 2,
+   "row": "M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W3",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2215,
+   "pass": 2,
+   "row": "C1-1<W0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C1-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-2 (a valid correction in this review)"
+  },
+  {
+   "case": 2219,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2229,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-2<W1",
+    "C2-3<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2276,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2278,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2287,
+   "pass": 1,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2309,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2324,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2326,
+   "pass": 2,
+   "row": "C1-1<M1",
+   "identity": "activity:MANUAL@2026-11-05T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<M3",
+    "M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2332,
+   "pass": 2,
+   "row": "C1-2<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2340,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M0",
+    "C1-2<C0-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2344,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<M1",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2353,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "C0-0<M1",
+    "C1-1<C0-0",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2353,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C2-3<M0",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2359,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W1",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2379,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C0-0<W3",
+    "M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-3 (a valid correction in this review)"
+  },
+  {
+   "case": 2392,
+   "pass": 1,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2395,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C1-2<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2422,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-0<C1-1",
+    "M2",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2470,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-1<M3",
+    "M1<W2",
+    "M1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2477,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2517,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<W1",
+    "C0-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2529,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "C0-0<nope",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2533,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2550,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M1<M2",
+    "C0-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2550,
+   "pass": 2,
+   "row": "C0-1<M3",
+   "identity": "session:s3",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 2562,
+   "pass": 2,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M3",
+    "C1-2<M0 (other athlete)"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2566,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2567,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2",
+    "C1-2<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2573,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M1",
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2593,
+   "pass": 2,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M2",
+    "C1-3<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2597,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "C2-2<M1",
+    "M0<W2",
+    "C2-2<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2606,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W3",
+    "M0<W3",
+    "M1<M1",
+    "C0-2<W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2606,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<W3",
+    "W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2666,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2676,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M2",
+    "M0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2694,
+   "pass": 1,
+   "row": "M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M3<M3",
+    "M3<M3",
+    "M2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2699,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C1-1<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2757,
+   "pass": 1,
+   "row": "M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2788,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M1<W3",
+    "M2<W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2814,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M1<M1",
+    "M0<M1",
+    "M1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2815,
+   "pass": 1,
+   "row": "M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "M1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2825,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-2 (a valid correction in this review)"
+  },
+  {
+   "case": 2826,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M3",
+    "C0-1<M0",
+    "C1-2<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2828,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C0-1<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2874,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "C2-2<M1",
+    "M0<C2-2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2903,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2923,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M0<M1",
+    "C2-3<C1-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2926,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2938,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2939,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "W0<W1",
+    "C0-1<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 2947,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "M0<W3",
+    "M2<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2972,
+   "pass": 2,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "EVENT_ID_REUSED_WITH_DIFFERENT_FACTS",
+    "how": "a late report reusing the carried row's event id, read first: the carried row was refused as the reuse"
+   },
+   "readFirst": [
+    "M0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2978,
+   "pass": 1,
+   "row": "M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "M3",
+    "M3<M3",
+    "M0<M3",
+    "C0-2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2999,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  }
+ ]
+}
