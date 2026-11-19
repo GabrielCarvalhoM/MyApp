@@ -164,3 +164,47 @@ Nada disso é material, então o `PerformanceTests` físico **não** é repetido
 - `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`.
 
 O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.
+
+## 9. C-F01-1 r2 (2026-11-18): evidências de execução no reinício
+
+Este pacote passa a validar também o fechamento de **C-F01-1 r2**, na branch **`claude/v1-core-cf011-r2`** (de `4b6e1ea`; runtime `37c0f6f`; freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-3**). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor continua sendo um arquivo só, `CoachingCore/src/v1-f08.mjs` (`restartIntake`):
+- **(i)** registro com relatos na janela de 28 dias, mesmo sem execução em vigor, limita a exposição declarada ao que mostra executado;
+- **(ii)** sessão em que todas as vozes dizem que aconteceu, com só a quantidade contestada, conta para a pausa, o último dia e `trainedAfter`, com quantidade zero no limite;
+- **SB-1:** qualquer voz em vigor dizendo que o atleta treinou depois da declaração de prontidão faz a pergunta do motivo da nova parada.
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA do `coachingcore-p0.js`: `4963a6f5…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Três jornadas novas: `restart-r2-notdone`, `restart-r2-notdone-control` e `restart-r2-disputed`. As dez anteriores ficam idênticas (entradas e esperados), assim como as âncoras, o driver, os ids de módulo e os idiomas |
+| `Fixtures/j5.json`, `p16.json` | **Inalterados** |
+| `FocalTests.swift` | **Sem mudança** |
+
+**Jornadas novas (oráculo Node `core-oracle.mjs`, seção 8):**
+- **`restart-r2-notdone`:** corridas da semana 0 relatadas e corrigidas para "não realizada" na mesma noite; ida e volta por JSON; reinício. Esperado: limitado ao registro, classe RESTART, 15/15/15/20. No freeze anterior (`4b6e1ea`) dava EASY_CURRENT 40/40/40/80, acima do controle.
+- **`restart-r2-notdone-control`:** as mesmas corridas relatadas como feitas. EASY_LOW 15/15/20/20.
+- **`restart-r2-disputed`:**
+  1. Bloqueio (`NOT_FEELING_100` com sinal), depois a declaração de prontidão.
+  2. Uma corrida em duas vozes (app + relógio), e a correção do atleta contra o relógio (quantidade contestada).
+  3. Ida e volta por JSON.
+  4. Reinício sem motivo declarado: **ASK** (`athlete.pause.reasonCategory`). No freeze anterior, PROPOSED sem perguntar.
+  5. Reinício com motivo: PROPOSED.
+
+O oráculo **falha** se o reinício "não realizada" não for RESTART limitado com a semana 0 no máximo igual à do controle, ou se a jornada contestada não perguntar. Saída esperada (primeira linha):
+```
+C-F01-1 r2: not done RESTART [[15,15,15,20],[20,20,20,20]] (control EASY_LOW [[15,15,20,20],[15,15,20,20]]); disputed after readiness: ASK ["athlete.pause.reasonCategory"] then PROPOSED
+```
+Nota: depois da semana 0, cada classe segue a sua progressão, e a RESTART passa da EASY_LOW nas semanas 2–4. Isso é a observação O-1 do SSCTR (classes não monotônicas, B0-F05), anterior a esta linha, e não um critério deste pacote.
+
+**Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das três jornadas. Um `DIVERGED` reprova.
+
+**Desempenho:** bench Node `4b6e1ea` × candidato: revisão ×1,004; reinício de registro corrigido ×0,994; registro ×1,000. QRE mediu ×1,12 (+0,28 ms) num registro com linhas em conflito. Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs` deixa J5/P16 byte-idênticos;
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`.
+
+O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.
