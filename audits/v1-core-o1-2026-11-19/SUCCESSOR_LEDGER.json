@@ -1,6 +1,6 @@
 {
  "line": "O-1 Conflict Evidence & Safety Policy Closure, SSCTR-NCC-01 + SEC-NCC-02 (claude/v1-core-conflict-policy, from f40fbe1 = COACHINGCORE-V1-CORE-SAFETY-FREEZE-5)",
- "note": "The tests that fail on this line and passed on f40fbe1. None is edited: each file is bound by an earlier freeze. FREEZE-5's 31 failures are unchanged, at the same locations. Successors are in test/v1core-o1-successors.test.mjs. Each runs the frozen test from a temporary copy with only the listed substitutions, each matched exactly once.",
+ "note": "The tests that fail on this line and passed on f40fbe1. None is edited: each file is bound by an earlier freeze. FREEZE-5's 31 failures are unchanged, at the same locations. Successors are in test/v1core-o1-successors.test.mjs. Each runs the frozen test from a temporary copy with only the listed substitutions, each matched exactly once. QRE-O1-03(a): two of the 31 now fail one assertion earlier, because the first O-1 move masks the old one: v1rws-fix-forward.test.mjs:285 now fails at :298 (was :316), and the lineage EASY matrix at :203 (was :205). Both are covered by successor chains that pass whole: closure-2 successor-fix-forward, then this ledger's successors.",
  "entries": [
   {
    "historical": "v1core-ncc-normalization-consistency.test.mjs:101",

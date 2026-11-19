@@ -1,4 +1,4 @@
-# O-1 Conflict Evidence & Safety Policy Closure: candidate (after cycle 1)
+# O-1 Conflict Evidence & Safety Policy Closure: candidate (after cycle 1 and the R2 record conditions)
 
 Founder mission of 2026-11-19, after `COACHINGCORE-V1-CORE-SAFETY-FREEZE-5` (`f40fbe1`, `v1core-freeze-5.mjs --check` 60/60 before any change). Synthetic athletes only. Nothing pushed or merged.
 
@@ -12,7 +12,8 @@ Founder mission of 2026-11-19, after `COACHINGCORE-V1-CORE-SAFETY-FREEZE-5` (`f4
 | `889d2ae` | POLICY r1 |
 | `24ca2ae` | The P4 amendment, found by the O-1 differential before any verdict |
 | `4ccca2d` | R1 reviews and cycle 1 (SEC-O1-01a) |
-| *the commit carrying this file* | Records, successors and evidence |
+| `774fcf0` | Records, successors and evidence, judged by QRE R1, SSCTR R2 and Security R2 |
+| *the commit carrying this revision* | QRE-O1-01 tests (no runtime change) and the record corrections QRE-O1-03, R2-REC-1..3 and C-O1-R2-1 |
 
 ## A. The change
 
@@ -38,18 +39,31 @@ f08, the run-format layer, run history, calibration, Race Forecast, Pace Insight
 - **Security items 6–7 (replaces P6's last sentences).**
   - A declared stop on record after the latest readiness declaration keeps SB-1 asking until a later readiness declaration. No correction, merge, speaker rule or dispute resolution answers it.
   - The speaker rule may settle amounts, never a safety signal. It is not an authentication boundary.
-  - This rule is **SEC-O1-01b/c**: not implemented here, it binds before a real-athlete restart and needs SSCTR's agreement (the SSCTR reviewed before it existed). Until then, a correction from the athlete's own source quality that names another report can still set aside a kept stop. That is the same class as SEC-CORE-03.
+  - This rule is **SEC-O1-01b/c**: not implemented here; it binds before a real-athlete restart. **SSCTR agrees with it as policy** (SSCTR_O1_R2 (c)), adding four clarifications:
+    - every declared stop counts, non-symptom reasons included;
+    - it also closes O-NCC-S1 (a zero-minute stop);
+    - it does not depend on C-O1-2;
+    - the athlete's own correction can still settle the amount, never the readiness question.
+  - Until then a kept stop can still be set aside by a correction (Security R2-REC-1), in each of these cases:
+    - the athlete's correction naming another report;
+    - the athlete's correction naming the stop;
+    - a correction with no source at all, which reads as the athlete;
+    - an unknown speaker naming the stop.
+  - The first of these happens with a genuine, authenticated correction. So it is a gap in the item-6 rule itself, not only the SEC-CORE-03 class.
+- **SEC-NCC-02: CLOSED on its stated evidence** (SEC_O1_R1 §3, SEC_O1_R2; R2-REC-2). f08 hears a refused report's stop, `e7` asks, and the answer survives a re-read, a JSON round trip and a later review. Its residuals are filed as SEC-O1-01b/c and SEC-O1-02 (with QRE-O1-02).
+- **SSCTR-NCC-01 / C-NCC-1: CLOSED** (SSCTR_O1_R1 §3, SSCTR_O1_R2).
 
 ## C. Tests (`evidence/`, `test/`)
 
-- **Focal tests** (`test/v1core-o1-conflict-evidence.test.mjs`): 15/15 on the candidate.
+- **Focal tests** (`test/v1core-o1-conflict-evidence.test.mjs`): 18/18 on the candidate. The three QRE-O1-01 tests pin M6, M7 and M8.
+- **Mutants** (`evidence/mutate-o1.mjs`, `mutation-o1.txt`): **9/9 killed by the focal file alone** (M1–M9: head-on `keepVoice`, speaker rule, `voicesOf` fallback, input hash, quarantine-path `keepVoice`, borrowed-activity guard, in-review event index, in-review activity binding, the 24ca2ae known-speaker fallback).
   - RED on `f40fbe1`: 8 of the first 12 (`evidence/red-on-f40fbe1.txt`).
   - The P4 test is RED on `1d418d1`.
   - The SEC-O1-01a test is RED on `24ca2ae`, so it kills the `mine?…:null` mutant.
 - **Successors** (`test/v1core-o1-successors.test.mjs`): 4/4. See `SUCCESSOR_LEDGER.json`.
-- **Suite:** **1820 / 1783 / 37** (`evidence/suite-cycle1.txt`).
-  - 1801 = FREEZE-5's tests; +15 focal; +4 successors.
-  - 31 of the failures are FREEZE-5's own, at the same locations.
+- **Suite:** **1823 / 1786 / 37** (`evidence/suite-r2.txt`; `suite-cycle1.txt` was 1820 / 1783 / 37 before the three QRE-O1-01 tests; the same failing titles).
+  - 1801 = FREEZE-5's tests; +18 focal; +4 successors.
+  - 31 of the failures are FREEZE-5's own (QRE-O1-03(a)). 29 fail at the same location. Two fail one assertion earlier, because the first O-1 move now masks the old one: `v1rws-fix-forward.test.mjs:285` fails at :298 (was :316), and the lineage EASY matrix fails at :203 (was :205). Both are covered by successor chains that pass whole (closure-2 `successor-fix-forward`, then the O-1 successors).
   - 6 are by design. Five have green successors; the sixth, freeze preservation, has its successor with FREEZE-6.
 - **Judges' focal runs:**
   - SEC-R2 24/24, f08 15/15, R7-D phase 3.3 14/14;
@@ -85,11 +99,17 @@ Every candidate invariant is 0 in all twelve:
 | SAME_DOSE_FLAG_LABEL | 4 | |
 | OWN_SPEAKER_E1 | 1 | Observation O-O1-A |
 
-**Credit direction (`credit` in each JSON):**
-- The candidate credits a session FREEZE-5 held only in classes where the voices now agree: VOICE_AGREES, CHAIN_TO_KEPT_VOICE ending in agreement, and SPEAKER_RULE.
-- It never credits through a kept voice that disagrees (unmergedVoiceOnCleanRow 0).
+**Credit direction (`credit` in each JSON; corrected per QRE-O1-03(b)):**
+- The candidate credits identities FREEZE-5 held mostly in VOICE_AGREES (120), CHAIN_TO_KEPT_VOICE (215) and SPEAKER_RULE (98).
+- It also credits, in fewer cases, in ACTIVITY_OF_KEPT_VOICE (13), REPLAY_OF_KEPT_VOICE (4), ID_HELD_BY_KEPT_VOICE (4+1), VOICE_CARRIED (1) and DISPUTE_STAYS (1). Every case QRE sampled was legitimate: an agreeing row kept in force because a correction was refused for integrity, or a same-speaker re-sync.
+- **The guarantee is the pass-wide invariant `unmergedVoiceOnCleanRow` = 0:** credit is never gained through a disagreeing voice.
 
-The classes were written while reading the residual passes. Each predicate is in the file and checkable; QRE should judge whether any class is too wide.
+The classes were written while reading the residual passes; each predicate is in the file and checkable. QRE-O1-04 records the generator's limits:
+- no unknown speaker (so M9 is invisible to it), and no borrowed activity on a disputed identity (M6);
+- no P4 check;
+- five classes read only the first identity in a pass.
+
+M3, M7 and M8 are caught by it; M6 and M9 are pinned by focal tests instead. QRE's added P4 invariant gives 1 hit each in EXT and EXT+MONO, both QRE-O1-02 (identical record on FREEZE-5).
 
 ## E. Sporting impact (SSCTR_O1_R1 §4; `evidence/lineage-diff.txt`, `lineage-dump.mjs DOSE=1`)
 
@@ -118,9 +138,9 @@ Engine journeys (`bench/bench-f40fbe1-vs-candidate.json`):
 | Merged-history merge / re-read / late batch | ×1.00 / ×1.01 / ×1.01 |
 | Record bytes (journeys) | ×1.00 (they hold no dispute) |
 
-Dispute-heavy generated records, 3000 cases (`differential.mjs` `size`):
-- record bytes ×1.028 (base) and ×1.039 (EXT);
-- the largest row grows by at most +111 bytes;
+Dispute-heavy generated records, 3000 cases per configuration (the `size` field, re-emitted in all twelve `o1-diff/*.json` per QRE-O1-03(c)):
+- record bytes ×1.028 to ×1.042;
+- the largest row grows by at most +295 bytes in any configuration;
 - normalizer time ×0.98–0.99.
 
 Unbounded voice spam (SEC-O1-03) is routed: 2000 voices make a 2.6 MB row.
@@ -132,15 +152,20 @@ Unbounded voice spam (SEC-O1-03) is routed: 2000 voices make a 2.6 MB row.
 | **SEC-O1-01a** | Freeze | Yes: **done in cycle 1** | Core; Security narrow recheck |
 | C-O1-1 (successors, record) | Freeze | No: **done here** | Author |
 | C-O1-4 (POLICY corrections) | Record | No: **§B here** | Author |
-| C-O1-2 (occurrence for the pause, decision A) | Before real-athlete restart | f08 | Core with QRE, Security |
-| SEC-O1-01b/c (a stop keeps SB-1 asking until a later declaration) | Before real-athlete restart | f08 or normalizer | Core; SSCTR to agree; with C-O1-2 |
-| C-O1-3 (weekly adverse count order) | Before weekly-review gating | `r6-adaptation.mjs` readers | Core with QRE |
-| SEC-O1-02 (phantom quarantine, pre-existing) | Before real athletes | Normalizer | Core with QRE |
+| C-O1-2 (occurrence for the pause, decision A) | Before real-athlete restart | f08 | Core with QRE, Security, then SSCTR |
+| SEC-O1-01b/c (a declared stop keeps SB-1 asking until a later declaration; SSCTR agrees, with its four clarifications) | Before real-athlete restart | f08 or normalizer | Core with Security, then a narrow SSCTR recheck; independent of C-O1-2 |
+| C-O1-3 (weekly adverse count order) | Before real-athlete weekly-review gating | `r6-adaptation.mjs` readers | Core with QRE |
+| SEC-O1-02 (phantom quarantine, pre-existing), with QRE-O1-02 (a reused event id quarantines a clean row's identity, and a later correction retires another speaker's voice unheard; identical on FREEZE-5) | Before real athletes | Normalizer | Core with QRE and Security |
+| QRE-O1-01 (the guards of `keepVoice` pinned) | Freeze | No: **done** (3 focal tests, 9/9 mutants) | Author |
+| QRE-O1-03 (record claims) | Freeze record | No: **done** (this revision) | Author |
+| QRE-O1-04 (differential generator limits) | Tooling | No | Author with QRE |
 | SEC-O1-03 (cap voices, keep only validated fields) | Before real athletes | Bounded | Core |
 | C-O1-5 (an athlete act against a device voice) | Before real-athlete use | Later | Product/UX with Security, Core, SSCTR |
-| O-O1-1 (sizing source can move when disputed evidence is withdrawn) | Observation | — | QRE |
+| SSCTR O-O1-1 (sizing source can move when disputed evidence is withdrawn) | Observation | — | QRE |
+| SSCTR O-O1-R2-1 (the composed RWS-B-01 successor lacks the one-review case naming the device's report; SSCTR's probe shows CONFLICTED) | Observation | — | QRE |
+| SEC-O-O1-1, SEC-O-O1-2 (Security's observations, SEC_O1_R1; renamed per R2-REC-3) | Observation | — | As recorded there |
 | O-O1-A (OWN_SPEAKER_E1: outside a dispute a correction naming another speaker's report is disputed by its own speaker's earlier correction; conservative) | Observation | — | SSCTR / QRE |
 
 Carried unchanged: C-F01-2 (custody), SEC-CORE-03 (correction author), C-NCC-3, SEC-NCC-03, OOS-1, OOS-2, and IOS_REVALIDATION_PENDING.
 
-Proposed human-queue items, not appended: HQ-SSCTR-O1-01, -02 and -03 (SSCTR_O1_R1).
+Proposed human-queue items, not appended: HQ-SSCTR-O1-01, -02 and -03 (SSCTR_O1_R1) and HQ-SSCTR-O1-04 (SSCTR_O1_R2).

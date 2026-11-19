@@ -154,6 +154,8 @@ test('O-1: a kept voice is never dose: the flagged row\'s amount is the first-ad
 test('O-1: a record written before this line (a flagged row with one voice) is read as it was; the next head-on report adds its voice',()=>{
  const old=rec(N([DEVICE()],T1)).map(o=>({...o,conflicted:true,provenance:{...o.provenance,conflict:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'}}));
  assert.deepEqual(held(reread(old)),{live:[{eventId:'X',actual:{completed:true,minutes:40},conflicted:true,voices:[]}],q:true});
+ // QRE-O1-03(d): the next head-on report on it is kept as a voice (the row's own report becomes its first part).
+ assert.deepEqual(held(N([ATHLETE_STOP()],T2,old)),{live:[{eventId:'X',actual:{completed:true,minutes:40},conflicted:true,voices:['A','X']}],q:true});
 });
 test('SSCTR-NCC-01: while the dispute stands, a correction is its speaker\'s word for all that speaker said; the other speaker\'s voice still has to agree',()=>{
  // The athlete said done and not done (two reports, head-on): the athlete's correction of the row in force settles it, either way.
@@ -198,4 +200,28 @@ test('SEC-O1-01a (cycle 1): while a dispute stands, a correction from an unknown
  const n=N([u],T3,l2),h=held(n);
  assert.ok(h.live.length===1&&h.live[0].conflicted&&h.live[0].voices.includes('S'),'24ca2ae: U1{}, S retired unheard: '+JSON.stringify(h));
  assert.equal(declared([R,...rec(n)]),undefined,'24ca2ae: DECLARED');
+});
+// ---------- QRE-O1-01: the guards of keepVoice, each pinned ----------
+test('QRE-O1-01 (M6): a report carrying another session\'s device activity on a disputed execution is never kept, so that session\'s run never leaves the record',()=>{
+ const Z=rep('Z','sz',shift(dx,2),{reportedAt:shift(dx,2)+'T12:00:00Z',...WATCH('hk-z')}),X1=rep('X1','sx',dx),X2=rep('X2','sx',dx,{reportedAt:dx+'T13:00:00Z',actual:{completed:false,minutes:0}});
+ const l1=rec(N([Z,X1,X2],shift(dx,2)+'T13:00:00Z')),B=rep('B','sx',dx,{reportedAt:dx+'T14:00:00Z',actual:{completed:true,minutes:30},...WATCH('hk-z')});
+ const n=N([B],T4,l1);
+ assert.deepEqual(n.excluded.map(e=>e.eventId+':'+e.reason),['B:IDENTITY_QUARANTINED_BY_CONFLICT']);
+ assert.ok(!rec(n).some(o=>voices(o).includes('B')),'not kept');
+ let cur=rec(n);for(let i=0;i<3;i++){const m=reread(json(cur));assert.deepEqual(live(m.accepted,'sz').map(o=>o.eventId),['Z'],'re-read '+i+': Z stays in force');cur=rec(m);}
+});
+test('QRE-O1-01 (M7): a voice kept in one review is found by a correction and a replay in that same review, as across reviews',()=>{
+ const A2=fix(ATHLETE_STOP(),{eventId:'A2',actual:{completed:true,minutes:40},response:U},dx+'T14:30:00Z');
+ const one=N([DEVICE(),ATHLETE_STOP(),A2],T3),split=N([A2],T3,rec(N([ATHLETE_STOP()],T2,rec(N([DEVICE()],T1)))));
+ assert.deepEqual(one.excluded.map(e=>e.eventId+':'+e.reason),['A:DUPLICATE_CONFLICT_QUARANTINED'],'the correction finds the kept voice: no INVALID_CORRECTION_CHAIN');
+ assert.deepEqual(held(one),held(split));assert.equal(held(one).live[0].conflicted,false,'settled by agreement');
+ const again=N([DEVICE(),ATHLETE_STOP(),ATHLETE_STOP()],T2);
+ assert.deepEqual(again.duplicates.map(d=>d.eventId+':'+d.reason),['A:EXACT_REPLAY'],'the second copy is a replay of the kept voice');
+});
+test('QRE-O1-01 (M8): a kept voice\'s device activity is bound to its execution in that same review: another session carrying it is refused, as across reviews',()=>{
+ const M=rep('M','sx',dx,{reportedAt:dx+'T11:00:00Z'}),W=rep('W','sx',dx,{reportedAt:dx+'T11:30:00Z',actual:{completed:false,minutes:0},...WATCH('hk-w')}),Y=rep('Y','sy',dx,{reportedAt:dx+'T12:00:00Z',...WATCH('hk-w')});
+ const one=N([M,W,Y],T1),split=N([Y],T1,rec(N([M,W],T1)));
+ assert.deepEqual(one.excluded.map(e=>e.eventId+':'+e.reason).sort(),['W:DUPLICATE_CONFLICT_QUARANTINED','Y:ACTIVITY_BOUND_TO_TWO_SESSIONS']);
+ assert.deepEqual(split.excluded.map(e=>e.eventId+':'+e.reason),['Y:ACTIVITY_BOUND_TO_TWO_SESSIONS']);
+ assert.deepEqual(live(one.accepted,'sy'),[],'no row in force for sy borrows the watch activity');
 });
