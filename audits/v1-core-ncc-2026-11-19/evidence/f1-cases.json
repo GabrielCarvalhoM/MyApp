@@ -1,0 +1,775 @@
+{
+ "seed": 20261119,
+ "mono": false,
+ "lost": 48,
+ "sameOnFreeze3": 48,
+ "byFreeze4Refusal": {
+  "DUPLICATE_CONFLICT_QUARANTINED": 9,
+  "INVALID_CORRECTION_CHAIN": 11,
+  "ACTIVITY_BOUND_TO_TWO_SESSIONS": 27,
+  "none": 1
+ },
+ "byCandidate": {
+  "replaced": 10,
+  "in force, flagged conflicted": 28,
+  "in force": 10
+ },
+ "cases": [
+  {
+   "case": 7,
+   "pass": 2,
+   "row": "C2-2<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C3-3 (a valid correction in this review)"
+  },
+  {
+   "case": 13,
+   "pass": 2,
+   "row": "C1-1<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-3 (a valid correction in this review)"
+  },
+  {
+   "case": 27,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 47,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (EVENT_ID_REUSED_WITH_DIFFERENT_FACTS)"
+  },
+  {
+   "case": 283,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C2-2<C1-1",
+    "W2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 369,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W1",
+    "M2",
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 369,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 384,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 390,
+   "pass": 2,
+   "row": "C2-2<C1-1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "M1",
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 537,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M3",
+    "C1-1<M3",
+    "C2-2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 537,
+   "pass": 2,
+   "row": "C2-2<M3",
+   "identity": "session:s3",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C1-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 537,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 704,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M1",
+    "C1-1<C0-0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 817,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 928,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 939,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1161,
+   "pass": 2,
+   "row": "W1<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2",
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1193,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-1<M2",
+    "C0-1<M1",
+    "C1-3<C0-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1205,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "C3-3<C0-0",
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-2 (a valid correction in this review)"
+  },
+  {
+   "case": 1247,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C2-3<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-2 (a valid correction in this review)"
+  },
+  {
+   "case": 1299,
+   "pass": 2,
+   "row": "C0-0<M2",
+   "identity": "session:s2",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M2<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1325,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1346,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1472,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "W3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1512,
+   "pass": 2,
+   "row": "C1-1<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 1563,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<W1",
+    "C1-2<M0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1587,
+   "pass": 2,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1719,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1774,
+   "pass": 2,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C2-2<C0-0",
+    "C3-3<C1-1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1879,
+   "pass": 2,
+   "row": "C0-0<M1",
+   "identity": "session:s1",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 1955,
+   "pass": 2,
+   "row": "W2",
+   "identity": "activity:hk-2",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M3",
+    "M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 1957,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M1",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2060,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2080,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2151,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "activity:MANUAL@2026-11-08T09:00:00.000Z",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2164,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C1-1<W1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C0-0 (a valid correction in this review)"
+  },
+  {
+   "case": 2190,
+   "pass": 2,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": null,
+    "how": "not refused: left the record as a replaced row whose replacement is not in force"
+   },
+   "readFirst": [
+    "W0"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C1-1 (a valid correction in this review)"
+  },
+  {
+   "case": 2229,
+   "pass": 2,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-2<W1",
+    "C2-3<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2287,
+   "pass": 1,
+   "row": "C0-0<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1",
+    "M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2309,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2332,
+   "pass": 2,
+   "row": "C1-2<M0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "INVALID_CORRECTION_CHAIN",
+    "how": "a carried correction whose original was no longer found when it was read: a late report read first had taken the original's event id or evicted it"
+   },
+   "readFirst": [
+    "M0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force"
+  },
+  {
+   "case": 2550,
+   "pass": 2,
+   "row": "C0-1<M3",
+   "identity": "session:s3",
+   "freeze4": {
+    "refused": "DUPLICATE_CONFLICT_QUARANTINED",
+    "how": "a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict"
+   },
+   "readFirst": [
+    "W3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS)"
+  },
+  {
+   "case": 2566,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2573,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M1",
+    "C0-0<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2825,
+   "pass": 2,
+   "row": "C0-0<W0",
+   "identity": "session:s0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "C1-1<M1"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "replaced by C2-2 (a valid correction in this review)"
+  },
+  {
+   "case": 2926,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M3",
+    "W3",
+    "C0-0<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2938,
+   "pass": 1,
+   "row": "W1",
+   "identity": "activity:hk-1",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "C0-1<M2"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  },
+  {
+   "case": 2999,
+   "pass": 1,
+   "row": "W0",
+   "identity": "activity:hk-0",
+   "freeze4": {
+    "refused": "ACTIVITY_BOUND_TO_TWO_SESSIONS",
+    "how": "a late report carrying the same watch activity for another session, read first: it bound the activity and the carried row was refused"
+   },
+   "readFirst": [
+    "M2",
+    "M3",
+    "C0-0<M3"
+   ],
+   "sameOnFreeze3": true,
+   "candidate": "in force, flagged conflicted (ACTIVITY_BOUND_TO_TWO_SESSIONS)"
+  }
+ ]
+}

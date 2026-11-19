@@ -1,0 +1,119 @@
+{
+ "candidateSha256": "fc04b9e21ed5435bbe66fd0bf6bfe40972755b5dc8311a1dd00b7fcf84eddb19",
+ "testFile": "test/v1core-ncc-normalization-consistency.test.mjs",
+ "variants": [
+  {
+   "variant": "FREEZE-4 (RED)",
+   "killed": true,
+   "pass": 5,
+   "fail": 16,
+   "failed": [
+    "F1 (SSCTR f1): a late watch sync of the session, reported before the carried correction, never removes it: the stop stays in force, flagged, as with a monotone clock",
+    "F1 (Security sb1): a late report reusing a carried row's event id for another session, dated earlier, never evicts the carried row; also a same-session \"not done\"",
+    "F1: a late agreeing report merges into the carried row, which stays the row in force; manual before or after the device gives one execution",
+    "F1: a correction made at the very instant of the report it names, with an event id that sorts first, stays in force on every re-read (history is rebuilt first)",
+    "F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move",
+    "F2: an athlete's row that merged the watch report keeps the watch activity bound in later reviews: another session carrying it is the conflict, as when the watch report is the row",
+    "F2: a correction of the athlete's part keeps the watch part and its binding; a device correction of the watch part keeps it too; restored from JSON as well",
+    "F2: in one review, a report bound to an execution a correction just retired flags the row in force, never the history row",
+    "F3: a correction in conflict, re-read with nothing new, restored and re-read again, keeps its identity's quarantine; so does a plain conflict",
+    "F3: a later agreeing plain report of the disputed session is refused by the quarantine, never merged into the conflicted row",
+    "F3: a valid correction resolves the conflict in a later review, as in the review that flagged it; one still in conflict keeps it; a refused one changes nothing",
+    "F3 (records not written by this line): a row in force flagged conflicted always quarantines its identity, also where a correction in conflict resolves another row",
+    "engine F1: a late watch report of run d3, dated before its carried correction, never removes the correction from the record, the review or run history",
+    "engine F2: one watch activity never backs two sessions in run history (dose journey B): a later correction of run d3 carrying d1's merged activity is refused",
+    "engine F3: a run whose athlete correction disputes the watch reads CONFLICTED, and still does on a later review with nothing new",
+    "successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY): the frozen matrix, its one EASY expectation now the LONG one, passes whole in both families"
+   ]
+  },
+  {
+   "variant": "F1: no record-first order",
+   "killed": true,
+   "pass": 12,
+   "fail": 9,
+   "failed": [
+    "F1 (SSCTR f1): a late watch sync of the session, reported before the carried correction, never removes it: the stop stays in force, flagged, as with a monotone clock",
+    "F1 (Security sb1): a late report reusing a carried row's event id for another session, dated earlier, never evicts the carried row; also a same-session \"not done\"",
+    "F1: a late agreeing report merges into the carried row, which stays the row in force; manual before or after the device gives one execution",
+    "F1: a correction made at the very instant of the report it names, with an event id that sorts first, stays in force on every re-read (history is rebuilt first)",
+    "F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move",
+    "F2: an athlete's row that merged the watch report keeps the watch activity bound in later reviews: another session carrying it is the conflict, as when the watch report is the row",
+    "F2: a correction of the athlete's part keeps the watch part and its binding; a device correction of the watch part keeps it too; restored from JSON as well",
+    "engine F1: a late watch report of run d3, dated before its carried correction, never removes the correction from the record, the review or run history",
+    "successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY): the frozen matrix, its one EASY expectation now the LONG one, passes whole in both families"
+   ]
+  },
+  {
+   "variant": "F1: carried first, history not first",
+   "killed": true,
+   "pass": 20,
+   "fail": 1,
+   "failed": [
+    "F1: a correction made at the very instant of the report it names, with an event id that sorts first, stays in force on every re-read (history is rebuilt first)"
+   ]
+  },
+  {
+   "variant": "F1: no correction-before-report rule",
+   "killed": true,
+   "pass": 20,
+   "fail": 1,
+   "failed": [
+    "F1: a correction made before the report it names was available is refused, the same in one review or two; the record is unchanged"
+   ]
+  },
+  {
+   "variant": "F2: parts keep no activity",
+   "killed": true,
+   "pass": 18,
+   "fail": 3,
+   "failed": [
+    "F2: an athlete's row that merged the watch report keeps the watch activity bound in later reviews: another session carrying it is the conflict, as when the watch report is the row",
+    "F2: a correction of the athlete's part keeps the watch part and its binding; a device correction of the watch part keeps it too; restored from JSON as well",
+    "engine F2: one watch activity never backs two sessions in run history (dose journey B): a later correction of run d3 carrying d1's merged activity is refused"
+   ]
+  },
+  {
+   "variant": "F2: parts' activities not indexed",
+   "killed": true,
+   "pass": 18,
+   "fail": 3,
+   "failed": [
+    "F2: an athlete's row that merged the watch report keeps the watch activity bound in later reviews: another session carrying it is the conflict, as when the watch report is the row",
+    "F2: a correction of the athlete's part keeps the watch part and its binding; a device correction of the watch part keeps it too; restored from JSON as well",
+    "engine F2: one watch activity never backs two sessions in run history (dose journey B): a later correction of run d3 carrying d1's merged activity is refused"
+   ]
+  },
+  {
+   "variant": "F2: conflict flagged on the history row",
+   "killed": true,
+   "pass": 20,
+   "fail": 1,
+   "failed": [
+    "F2: in one review, a report bound to an execution a correction just retired flags the row in force, never the history row"
+   ]
+  },
+  {
+   "variant": "F3: own flag read as a conflict to resolve",
+   "killed": true,
+   "pass": 15,
+   "fail": 6,
+   "failed": [
+    "F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move",
+    "F3: a correction in conflict, re-read with nothing new, restored and re-read again, keeps its identity's quarantine; so does a plain conflict",
+    "F3: a later agreeing plain report of the disputed session is refused by the quarantine, never merged into the conflicted row",
+    "F3: a valid correction resolves the conflict in a later review, as in the review that flagged it; one still in conflict keeps it; a refused one changes nothing",
+    "F3 (records not written by this line): a row in force flagged conflicted always quarantines its identity, also where a correction in conflict resolves another row",
+    "engine F3: a run whose athlete correction disputes the watch reads CONFLICTED, and still does on a later review with nothing new"
+   ]
+  },
+  {
+   "variant": "F3: resolved quarantine not restored for a correction still in conflict",
+   "killed": true,
+   "pass": 20,
+   "fail": 1,
+   "failed": [
+    "F3 (records not written by this line): a row in force flagged conflicted always quarantines its identity, also where a correction in conflict resolves another row"
+   ]
+  }
+ ]
+}

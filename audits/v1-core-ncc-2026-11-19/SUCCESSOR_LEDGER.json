@@ -1,0 +1,25 @@
+{
+ "line": "Normalization Consistency Closure, F1 + F2 + F3 (claude/v1-core-normalization-consistency, from e704180 = COACHINGCORE-V1-CORE-SAFETY-FREEZE-4)",
+ "note": "The tests that fail on this line and passed on e704180; none is edited (each file is bound by an earlier freeze). The 27 failures inherited by FREEZE-4 (audits/v1-core-sec-r2-2026-11-19/SUCCESSOR_LEDGER.json note) and FREEZE-4's two declared ones are unchanged, at the same locations.",
+ "entries": [
+  {
+   "historical": "v1core-successor-lineage.test.mjs:205",
+   "title": "SUCCESSOR closure-2 · lineage matrix, EASY: the word that withholds each run, the reports in force and the history reference, by the runtime and by the oracle",
+   "contract": "F1 (this mission): a row the record holds is never refused again because a later review's report is read before it",
+   "before": "scenario '21 a symptom stop in the app's report, the import says done (conflict), then the import re-syncs' expected, for EASY only, the reports in force ['app-stop','dev-x','dev-x-v2'] and no history reference (LONG: ['app-stop','dev-x-v2'] and 'whole'). On EASY the athlete's stop and the carried device report have no report time and tie at the end of the run's day; FREEZE-4 read the stop first by event id ('app-stop' < 'dev-x'), refused the carried device report (DUPLICATE_CONFLICT_QUARANTINED) and dropped it from the record (an F1 loss), so the device re-sync found nothing to correct (INVALID_CORRECTION_CHAIN)",
+   "after": "the record is rebuilt before the review's reports are read: the device report stays in force, flagged conflicted, the stop is refused as the conflict, and the re-sync then resolves the conflict (it corrects the device's own report). EASY now reads as LONG always did: in force ['app-stop','dev-x-v2'], history reference 'whole'. The withholding word, the oracle written outside the runtime, the easy band and the calibration assertions of the matrix are unchanged and pass",
+   "sporting": "the re-synced device measurement becomes the run's history reference on EASY, as on LONG; the easy band is the control's and the calibration is untouched (assertion 4 of the matrix). For SSCTR",
+   "safety": "the athlete's stop is still heard by its format record (in force by the reader as before); the device report is no longer silently lost",
+   "successor": "v1core-ncc-normalization-consistency.test.mjs: 'successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY)', which runs the frozen file's whole SUCCESSOR closure-2 matrix (both families) from a temporary copy whose only change is that one EASY expectation, now LONG's",
+   "result": "successor GREEN on the candidate; RED on FREEZE-4 (evidence/mutation.txt)"
+  },
+  {
+   "historical": "v1core-secr2-freeze.test.mjs:12",
+   "title": "SEC-R2-03/-04: the eight earlier freezes are preserved; only src/r6-provenance.mjs and src/v1-f08.mjs amended since a6e10d0",
+   "contract": "freeze preservation (additive successor)",
+   "why": "scripts/v1core-freeze-4.mjs (bound by FREEZE-4, not edited) measures against a6e10d0: it names this line's added files as undeclared, by design",
+   "successor": "v1core-ncc-freeze.test.mjs (scripts/v1core-freeze-5.mjs --preserved: the nine earlier records are the e704180 bytes; FREEZE-1 46/47 and FREEZE-4 39/40 with src/r6-provenance.mjs amended here; FREEZE-2 14/15 and FREEZE-3 23/24 with src/v1-f08.mjs at FREEZE-4's bytes; nothing else changed since e704180)",
+   "result": "successor GREEN once this line is committed"
+  }
+ ]
+}
