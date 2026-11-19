@@ -1,0 +1,25 @@
+{
+ "record": "SEC-R2-03 + SEC-R2-04 Mac/iPhone revalidation package (README section 10)",
+ "runtime": "36ea26a",
+ "status": "IOS_REVALIDATION_PENDING: Node and V8 vm only; no JavaScriptCore run, Swift not compiled",
+ "checks": {
+  "link": "41 modules, bundle sha256 449382cf...",
+  "j5p16": "byte-identical to a6e10d0",
+  "focal": "only bundleSha256 changes",
+  "core": "13 earlier journeys identical in inputs and expected; added sec-r2-refused-eventid, sec-r2-refused-activity, sec-r2-readiness; each refused-correction journey equals its plain-report control (Node); localeCompare calls 0",
+  "vmCheck": "ok true with JIT and --jitless",
+  "determinism": "second run leaves the files byte-identical"
+ },
+ "sha256": {
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Sources/P0Host/Resources/coachingcore-p0.js": "449382cfe02173578eb791b0dabf8a20897bc5a02b8a0bfffd759f3934553afb",
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Sources/P0Host/Resources/build-manifest.json": "cc9eed776f7a3d54c413a073df97322897237ae404f5331db57a41ea782a1718",
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Tests/P0HostTests/Fixtures/core.json": "bb45224f53683b83f22fc8257a4726493eaf8af31370d5aa8b801ff01b74d1a5",
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Tests/P0HostTests/Fixtures/focal.json": "65b2a6c726d3f3ea448013674f52bea76e76d3804468a0f1a39ffbb3fa0794ba",
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Tests/P0HostTests/Fixtures/j5.json": "81f2cb7daf06b05af8e9480e5ea60e3f970e86c0472d350d4a5de9c946ed65a6",
+  "audits/v1-aif-p0-jsc-2026-11-17/ios/Tests/P0HostTests/Fixtures/p16.json": "759953974df9bdc62f43a3da40abb974b5b6bf0f8b2033d70bc40a5766d0b731",
+  "audits/v1-core-safety-lifecycle-2026-11-18/mac/README.md": "befa794eedf42c6f3935a79fdb364766628ce67c958c2741a28bfa8648425b50",
+  "audits/v1-core-safety-lifecycle-2026-11-18/mac/core-oracle.mjs": "e03c4f2cd3be802632df042c603ba025df8ef8a51b072b0683f6a398c0b438c3",
+  "audits/v1-core-safety-lifecycle-2026-11-18/mac/core-driver.js": "5840d3df6f42a10ca6404b9991b16b53224b083f6c80de101c632c6924475a02",
+  "audits/v1-core-safety-lifecycle-2026-11-18/mac/vm-check.mjs": "f7e63fe9da3038ff9ce995e54baa27d510cf2de62df545bd29bfb8f88bb474f6"
+ }
+}

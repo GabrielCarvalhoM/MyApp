@@ -208,3 +208,55 @@ Nota: depois da semana 0, cada classe segue a sua progressão, e a RESTART passa
 - `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`.
 
 O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.
+
+## 10. SEC-R2-03 + SEC-R2-04 (2026-11-19): integridade das correções
+
+Este pacote passa a validar também o fechamento de **SEC-R2-03 e SEC-R2-04**, na branch **`claude/v1-core-sec-r2`** (de `a6e10d0`; runtime `36ea26a`; freeze **COACHINGCORE-V1-CORE-SAFETY-FREEZE-4**). No §2, troque o `git checkout` por ela, depois que o Founder autorizar o push. A mudança de motor está em dois arquivos:
+- **`src/r6-provenance.mjs`:** uma correção recusada (eventId de outra sessão, atividade do relógio de outra sessão, conflito) não marca mais o original como substituído, e não leva o relógio `firstRecordedAt` da sua cadeia.
+- **`src/v1-f08.mjs`:** um registro substituído só é histórico quando o substituto tem identidade positiva (mesma sessão, senão mesma atividade, senão o mesmo relato manual no mesmo instante). Dois ids ausentes nunca são a mesma sessão.
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA do `coachingcore-p0.js`: `449382cf…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Três jornadas novas: `sec-r2-refused-eventid`, `sec-r2-refused-activity` e `sec-r2-readiness`. As treze anteriores ficam idênticas (entradas e esperados), assim como as âncoras, o driver, os ids de módulo e os idiomas |
+| `Fixtures/j5.json`, `p16.json` | **Inalterados** |
+| `FocalTests.swift` | **Sem mudança** |
+
+**Jornadas novas (oráculo Node `core-oracle.mjs`, seção 9):**
+- **`sec-r2-refused-eventid`:** semana 0 relatada; uma correção da corrida d3 que reutiliza o eventId da corrida d1 (recusada); ida e volta por JSON; revisão seguinte; reinício. Esperado: d3 continua em vigor, nada marcado como substituído, e cada passo é igual ao do mesmo relato enviado sem `correctionOf`. No freeze anterior, d3 sumia do registro.
+- **`sec-r2-refused-activity`:** a corrida d1 relatada só pelo relógio (atividade HK-S1), depois uma correção de d3 com HK-S1 (recusada); o resto como acima.
+- **`sec-r2-readiness`:**
+  1. Bloqueio, depois a declaração de prontidão.
+  2. Uma corrida depois da declaração, e a correção recusada dessa corrida.
+  3. Ida e volta por JSON.
+  4. Reinício sem motivo: **ASK** (`athlete.pause.reasonCategory`).
+  5. Reinício com motivo: PROPOSED.
+
+O oráculo **falha** se uma correção recusada mudar o registro ou divergir do relato simples, ou se a corrida depois da declaração não ficar em vigor e a nova parada não for perguntada. Saída esperada (terceira linha):
+```
+SEC-R2-03/-04: refused event id [[25,20,20,15]] = plain; refused activity [[25,20,20,15]] = plain; nothing replaced; readiness then refused correction: ASK ["athlete.pause.reasonCategory"] then PROPOSED
+```
+
+**Fica só no Node, por não passar pelo cliente do aparelho:** registros manuais sem identidade de sessão, órfãos já gravados pela FREEZE-3 e o relógio `firstRecordedAt` (SEC-SR2-01). Estão em `CoachingCore/test/v1core-secr2-correction-integrity.test.mjs`. A equivalência Node/JavaScriptCore do motor que os lê é a destas jornadas.
+
+**Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das três jornadas. Um `DIVERGED` reprova.
+
+**Desempenho:** bench Node `a6e10d0` × candidato:
+- revisão ×1,009;
+- reinício de registro corrigido ×1,00 a ×1,06 (ruído entre execuções);
+- registro ×1,000;
+- normalizador ×0,98 a ×1,01;
+- heap igual.
+
+Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs` deixa J5/P16 byte-idênticos;
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
+- uma segunda execução não muda nada.
+
+O Swift não foi compilado. **IOS_REVALIDATION_PENDING:** não há aprovação no iPhone sem a medição física.

@@ -1939,12 +1939,10 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity.
   if(o.conflicted===true)quarantined.add(identity);
-  let inherited=null;
+  let inherited=null,admit=null,dropsIdentity=false;
   if(o.correctionOf){
    const old=byEvent.get(o.correctionOf),corrected=utcTimestamp(o.correctedAt??o.reportedAt);
    if(!old||!corrected||Date.parse(corrected)>Date.parse(now)||Date.parse(corrected)<Date.parse(old.observedAt)||old.identity!==identity){reject('INVALID_CORRECTION_CHAIN');continue;}
-   // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's.
-   setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
    // A correction carried in from an earlier review already replaced its original: the chain is valid and the correction stays live.
    const retire=row=>{const at=accepted.indexOf(row);if(at>=0)accepted.splice(at,1);superseded.push({eventId:row.eventId,supersededBy:o.eventId,correctedAt:corrected});const kept={...row,superseded:true,supersededBy:o.eventId,supersededAt:corrected};supersededRows.push(kept);byEvent.set(row.eventId,kept);};
    // E-1: the other reports of the row in force stay in force. That row is the live row on this identity that names the corrected report among
@@ -1954,10 +1952,23 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    // damaged part never discards another voice's valid report; with no well-formed part the correction replaces the row, as before. Never throws.
    const holder=accepted.find(x=>x.identity===identity&&isObject(x.provenance?.parts)&&Object.hasOwn(x.provenance.parts,o.correctionOf))??null;
    if(holder){const others=Object.entries(holder.provenance.parts).filter(([id,p])=>id!==o.correctionOf&&validPart(p));if(others.length)inherited=others.map(([id,p])=>({id,p:clone(p),inputHash:holder.provenance.inputHashes?.[id]??null}));}
-   if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
-   if(old.superseded!==true){if(accepted.includes(old))retire(old);else byEvent.delete(old.eventId);byIdentity.delete(identity);}
-   // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
-   if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
+   // SEC-R2-03: what a correction replaces is retired only once the correction is admitted (accepted, or merged into the row in force). A
+   // correction the checks below refuse (an event id or a watch activity of another session, a conflict) leaves every row it named in force, as
+   // it was. The event-id check reads the record before the admission (an id the record holds is never freed for this report); the identity
+   // checks read it as the admission would leave it. A report an earlier correction already replaced (its row no longer in force, even where a
+   // merged part's id still names that row) is replaced already: as for a carried replaced row, the correction meets the row in force on its
+   // identity (merged or in conflict), never a second row in force on one execution.
+   const live=old.superseded!==true&&accepted.includes(old);
+   dropsIdentity=!!holder&&holder!==old&&!quarantined.has(identity)||live;
+   admit=()=>{
+    // A correction reports the execution its chain reported: the record first held a report of it when it first held the chain's. Only once
+    // admitted (SEC-SR2-01): a refused report, or one read as a replay of another row, carries its own clock only, as with no correctionOf.
+    setFirstRecorded(o,firstRecorded(o,old,...(quarantined.has(identity)?accepted.filter(x=>x.identity===identity):[])));
+    if(holder&&holder!==old&&!quarantined.has(identity)){retire(holder);byIdentity.delete(identity);}
+    if(live){retire(old);byIdentity.delete(identity);}
+    // A correction resolves a conflict on its identity: the conflicted reports are superseded by it.
+    if(quarantined.has(identity)){for(const row of accepted.filter(x=>x.identity===identity))retire(row);quarantined.delete(identity);}
+   };
   }
   const sameEvent=byEvent.get(o.eventId);
   if(sameEvent){
@@ -1966,16 +1977,20 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
    flagConflict(sameEvent,'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');quarantined.add(identity);
    conflicts.push({identity,eventIds:[sameEvent.eventId],reason:'EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'});reject('EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');continue;
   }
-  if(quarantined.has(identity)&&o.conflicted!==true){reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
+  if(!admit&&quarantined.has(identity)&&o.conflicted!==true){reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   // One wearable activity is one execution: bound to a second session it is a conflict on both (QRE-R6-13).
   const activityId=o.source?.activityId??o.canonicalActivityId??null,boundTo=activityId?byActivity.get(activityId):null;
   if(boundTo&&boundTo.identity!==identity){flagConflict(boundTo,'ACTIVITY_BOUND_TO_TWO_SESSIONS');quarantined.add(boundTo.identity);quarantined.add(identity);conflicts.push({identity,eventIds:[boundTo.eventId,o.eventId],activityId,reason:'ACTIVITY_BOUND_TO_TWO_SESSIONS'});reject('ACTIVITY_BOUND_TO_TWO_SESSIONS');continue;}
-  const previous=byIdentity.get(identity);
+  // A correction that resolves a conflict retires every report on its identity: none of them is a row in force to merge it into (SEC-R2-03:
+  // merged into a retired row, the correction and the session would both leave the record in force).
+  const previous=dropsIdentity||admit&&quarantined.has(identity)?undefined:byIdentity.get(identity);
+  if(previous&&(!physicalAgrees(previous,o,loadIncrements)||responseConflicts(previous.response,o.response))){
+   flagConflict(previous,'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS');quarantined.add(identity);
+   conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
+  }
+  // Admitted: the correction now replaces what it names.
+  admit?.();
   if(previous){
-   if(!physicalAgrees(previous,o,loadIncrements)||responseConflicts(previous.response,o.response)){
-    flagConflict(previous,'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS');quarantined.add(identity);
-    conflicts.push({identity,eventIds:[previous.eventId,o.eventId],reason:'CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'});reject('DUPLICATE_CONFLICT_QUARANTINED');continue;
-   }
    // Complementary duplicate: one execution from two reports (R7-A mergeActual); subjective response from whoever reported it.
    const parts=previous.provenance.parts??{[previous.eventId]:partOf(previous)};
    previous.actual=mergeActual(previous,o,SOURCE_RANK[previous.provenance.sourceQuality]??0,SOURCE_RANK[o.provenance.sourceQuality]??0);
@@ -4801,7 +4816,11 @@ const claimsDone=o=>!!o&&!o.fact&&o.superseded!==true&&voices(o).some(did);
 // session or activity). The normalizer can mark an original replaced and then refuse the correction (an event id reused, an activity bound to
 // another session): the session would vanish. For the readiness question only, such a row keeps its voice; no dose reader reads it.
 const activityOf=o=>o?.canonicalActivityId??o?.source?.activityId??o?.provenance?.activityId??null;
-const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&(o.sessionId?r.sessionId===o.sessionId:activityOf(r)===activityOf(o)));
+// SEC-R2-04: only a positive identity matches (the same session, else the same activity, else the normalizer's own identity of a manual report:
+// its provider at its instant); two missing ids are never the same session. A record kept before SEC-R2-03 can still carry such an orphan.
+const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?(o.provenance?.provider??'MANUAL')+'@'+o.observedAt:null;
+const sameExecution=(r,o)=>o.sessionId?r.sessionId===o.sessionId:activityOf(o)!==null?activityOf(r)===activityOf(o):manualAt(o)!==null&&!r.sessionId&&activityOf(r)===null&&manualAt(r)===manualAt(o);
+const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&sameExecution(r,o));
 const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!replacedBy(o,rows)&&voices(o).some(did);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**

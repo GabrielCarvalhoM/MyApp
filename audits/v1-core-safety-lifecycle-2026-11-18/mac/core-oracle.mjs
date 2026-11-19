@@ -111,6 +111,38 @@ for(const fix of [true,false]){const id='core-mac-r2n',r=recorder();r.onboard(at
 const le=(a,b)=>a[0].every((x,j)=>x<=(b[0]?.[j]??Infinity));
 if(R2.notDone.status!=='PROPOSED'||R2.notDone.cls!=='RESTART'||JSON.stringify(R2.notDone.bounded)!=='["recent.runMinutesPerWeek","recent.runDaysPerWeek"]'||!le(R2.notDone.runs,R2.control.runs))throw new Error('C-F01-1 r2 (i): the "not done" record is not bounded to RESTART at or below its control: '+JSON.stringify(R2));
 if(R2.disputed.conflict!=='CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'||R2.disputed.ask!=='ASK'||!R2.disputed.missing?.some(k=>k.startsWith('athlete.pause.'))||R2.disputed.ok!=='PROPOSED')throw new Error('C-F01-1 r2 (ii) / SB-1: the disputed session after the declaration does not ask the new stop: '+JSON.stringify(R2.disputed));
+// 9. SEC-R2-03 + SEC-R2-04 (correction integrity): (a) week 0 reported, then a refused correction of run d3 reusing run d1's event id;
+//    (b) run d1 reported by the watch only (activity HK-S1), then a refused correction of run d3 carrying HK-S1; each with a round trip, the
+//    next review and a restart. Neither original may be marked replaced, and each journey must equal the same report sent with no correctionOf
+//    (checked here, in Node). (c) A hold, the readiness declaration, a run after it, a refused correction of that run reusing an earlier
+//    run's id, a round trip, then a restart with no stated reason: ASK (the SB-1 question), then with one: PROPOSED.
+const SR2={},U3={performance:'UNKNOWN',recovery:'UNKNOWN',effort:'UNKNOWN',nextDayFunction:'UNKNOWN'};
+const sr2=(kind,plain)=>{const id='core-mac-sr2'+kind,r=recorder(),rec=plain?{c:client(core),steps:[]}:r,c=plain?rec.c:r.c;
+ const go=(f,...a)=>plain?(f==='review'?c.review(...a):f==='restart'?c.restart(...a):f==='onboard'?c.onboard(...a):null):r[f](...a);
+ go('onboard',athleteA({weeks:8,id}));const p=c.env.program,d=addDays(p.startDate,6),obs=liveSessions(c.env,0).map(s=>reportOf(c.env,s));
+ if(kind==='b'){const i=obs.findIndex(o=>o.sessionId==='w0-run-d1'),o=obs[i],m={...o.actual};delete m.rpe;obs[i]={...o,eventId:'dev-s1',actual:m,response:U3,source:{provider:'HEALTHKIT',activityId:'HK-S1',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-S1'};}
+ go('review','WEEKLY_REVIEW',at(d),{eligibility:ELIG(d),observations:obs},'w0');
+ const x=c.env.actualLedger.find(o=>o.eventId==='aif-w0-run-d3'&&!o.superseded),d8=addDays(d,2);
+ const bad={sessionId:x.sessionId,occurrenceDate:x.localDate,eventId:kind==='a'?'aif-w0-run-d1':'aif-w0-run-d3-c',correctionOf:'aif-w0-run-d3',correctedAt:at(d8,'07:00'),reportedAt:at(d8,'07:00'),actual:{...x.actual,minutes:x.actual.minutes-5},response:x.response,...(kind==='b'?{source:{provider:'HEALTHKIT',activityId:'HK-S1',quality:'WEARABLE_FULL'},canonicalActivityId:'HK-S1'}:{})};
+ if(plain){delete bad.correctionOf;delete bad.correctedAt;}
+ go('review','WEEKLY_REVIEW',at(d8,'20:00'),{eligibility:ELIG(d8),observations:[bad]},'bad');if(!plain)r.roundtrip();else c.env.actualLedger=JSON.parse(JSON.stringify(c.env.actualLedger));
+ const d9=addDays(d8,1),next=go('review','WEEKLY_REVIEW',at(d9,'07:00'),{eligibility:ELIG(d9)},'next');
+ const day=addDays(p.startDate,10),u={...athleteA({weeks:8,id}),asOf:day,startDate:addDays(day,3)};u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ const g=go('restart',u,at(day,'10:00'));
+ const out={replaced:c.env.actualLedger.filter(o=>o.superseded===true).map(o=>o.eventId),d3:c.env.actualLedger.some(o=>o.eventId==='aif-w0-run-d3'&&!o.superseded),next:[next.status,next.action],restart:g.status,runs:(g.program??g.proposal)?.weeks.map(w=>w.sessions.filter(s=>s.sport==='RUN').map(s=>s.prescription?.durationMinutes??0))??null};
+ if(!plain)journeys.push({name:'sec-r2-refused-'+(kind==='a'?'eventid':'activity'),steps:r.steps});return out;};
+for(const k of ['a','b']){SR2[k]=sr2(k,false);SR2[k+'Plain']=sr2(k,true);}
+{const id='core-mac-sr2c',r=recorder();r.onboard(athleteA({weeks:8,id}));const p=r.c.env.program,d0=addDays(p.startDate,6);
+ r.review('WEEKLY_REVIEW',at(d0),{eligibility:ELIG(d0),observations:liveSessions(r.c.env,0).map(s=>reportOf(r.c.env,s))},'w0');
+ const h=addDays(p.startDate,8),rd=addDays(h,4);r.review('NOT_FEELING_100',at(h,'08:00'),notFeeling100WithSign(h),'hold');r.review('READINESS_DECLARATION',at(rd,'08:00'),readiness(rd),'ready');
+ const s=liveSessions(r.c.env,2).find(x=>x.sport==='RUN'&&x.date>rd),b=reportOf(r.c.env,s,{tag:'-c'});
+ r.review('WEEKLY_REVIEW',at(s.date,'21:00'),{eligibility:ELIG(s.date),observations:[b]},'after');
+ r.review('WEEKLY_REVIEW',at(s.date,'22:30'),{eligibility:ELIG(s.date),observations:[{...b,eventId:'aif-w0-run-d1',correctionOf:b.eventId,correctedAt:at(s.date,'22:00'),actual:{...b.actual,minutes:Math.max(1,(b.actual.minutes??40)-10)}}]},'refused');
+ r.roundtrip();const day=addDays(s.date,3),ask=r.restart(upd2(id,day,null),at(day,'10:00')),ok=r.restart(upd2(id,day,{reasonCategory:'SCHEDULE',nonclinical:true,weeks:0}),at(day,'10:00'));
+ SR2.c={inForce:r.c.env.actualLedger.some(o=>o.eventId===b.eventId&&!o.superseded),replaced:r.c.env.actualLedger.filter(o=>o.superseded===true).length,ask:ask.status,missing:ask.missingInputs,ok:ok.status};
+ journeys.push({name:'sec-r2-readiness',steps:r.steps});}
+for(const k of ['a','b'])if(SR2[k].replaced.length||!SR2[k].d3||JSON.stringify(SR2[k])!==JSON.stringify(SR2[k+'Plain']))throw new Error('SEC-R2-03 ('+k+'): a refused correction changed the record or differs from the plain report: '+JSON.stringify(SR2));
+if(!SR2.c.inForce||SR2.c.replaced||SR2.c.ask!=='ASK'||!SR2.c.missing?.some(k=>k.startsWith('athlete.pause.'))||SR2.c.ok!=='PROPOSED')throw new Error('SEC-R2-03/SB-1: the run after the declaration is not kept or the new stop is not asked: '+JSON.stringify(SR2.c));
 const input={journeys,anchors:['b','aa','h','ch','Z','_x','a-1','a_1'].map(id=>({id,prescription:{modality:'RUN',family:'EASY',durationMinutes:30}})),locales:['pt-BR','en-US','da-DK','nb-NO','cs-CZ']};
 vm.runInThisContext(fs.readFileSync(path.join(HERE,'core-driver.js'),'utf8'));
 const expected=JSON.parse(globalThis.__corefocal({core,contract,value},JSON.stringify(input)));
@@ -123,4 +155,5 @@ fs.writeFileSync(OUT,JSON.stringify({driver:fs.readFileSync(path.join(HERE,'core
 const summary=expected.journeys.map(j=>j.name+': '+j.steps.map(s=>s.status??s.op).join(' ')).join('\n');
 console.log('CORE-C2-F01 restart doses (corrected = control): '+JSON.stringify(F01.corrected.runs.slice(0,2))+'; superseded rows in the corrected record: '+F01.corrected.superseded);
 console.log('C-F01-1 r2: not done '+R2.notDone.cls+' '+JSON.stringify(R2.notDone.runs.slice(0,2))+' (control '+R2.control.cls+' '+JSON.stringify(R2.control.runs.slice(0,2))+'); disputed after readiness: '+R2.disputed.ask+' '+JSON.stringify(R2.disputed.missing)+' then '+R2.disputed.ok);
+console.log('SEC-R2-03/-04: refused event id '+JSON.stringify(SR2.a.runs?.slice(0,1))+' = plain; refused activity '+JSON.stringify(SR2.b.runs?.slice(0,1))+' = plain; nothing replaced; readiness then refused correction: '+SR2.c.ask+' '+JSON.stringify(SR2.c.missing)+' then '+SR2.c.ok);
 console.log(summary+'\nanchors equal across locales: '+(new Set(Object.values(expected.anchors)).size===1)+'; localeCompare calls: '+expected.localeCompareCalls+'\ndigest '+expected.digest);
