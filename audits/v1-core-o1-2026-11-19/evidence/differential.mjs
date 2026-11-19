@@ -210,9 +210,10 @@ function classifyO1(a,b,prior,batch,fate=[]){
  const chainKept=x=>rep_(x.eventId).some(c=>kept.has(c.correctionOf))&&(x.why==='CHAIN_NOW_FOUND'||x.why==='REPLAY_OF_RECORD'||x.reason==='INVALID_CORRECTION_CHAIN>EVENT_ID_REUSED_WITH_DIFFERENT_FACTS');
  const spk0=c=>speakerOf({activityId:c.source?.activityId??c.canonicalActivityId??null,sourceQuality:c.source?.quality??(c.source?.activityId?'WEARABLE_FULL':'MANUAL')});
  const EXPLAIN={CHAIN_TO_KEPT_VOICE:chainKept,
-  ACTIVITY_OF_KEPT_VOICE:x=>x.change==='newRefusal'&&x.reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'&&rep_(x.eventId).some(c=>{const act=c.source?.activityId??c.canonicalActivityId;return b.accepted.some(o=>identity(o)!==identity(c)&&Object.entries(o.provenance?.parts??{}).some(([id,p])=>p?.activityId===act&&kept.has(id)));}),
+  ACTIVITY_OF_KEPT_VOICE:x=>(x.change==='newRefusal'&&x.reason==='ACTIVITY_BOUND_TO_TWO_SESSIONS'||x.change==='reasonChanged'&&x.reason.endsWith('>ACTIVITY_BOUND_TO_TWO_SESSIONS'))&&rep_(x.eventId).some(c=>{const act=c.source?.activityId??c.canonicalActivityId;return b.accepted.some(o=>identity(o)!==identity(c)&&Object.entries(o.provenance?.parts??{}).some(([id,p])=>p?.activityId===act&&kept.has(id)));}),
   ID_HELD_BY_KEPT_VOICE:x=>x.change==='newRefusal'&&x.reason==='EVENT_ID_REUSED_WITH_DIFFERENT_FACTS'&&kept.has(x.eventId),
-  FORK_AFTER_SPEAKER_RULE:x=>x.change==='newRefusal'&&x.reason==='DUPLICATE_CONFLICT_QUARANTINED'&&rep_(x.eventId).some(c=>c.correctionOf&&b.superseded.some(e=>e.eventId===c.correctionOf&&batch.some(d=>d.eventId===e.supersededBy&&d!==c&&spk0(d)===spk0(c)))),
+  // the row in force it conflicted with is a correction of this review by the same speaker (the speaker rule settled the dispute with it)
+  FORK_AFTER_SPEAKER_RULE:x=>x.change==='newRefusal'&&x.reason==='DUPLICATE_CONFLICT_QUARANTINED'&&rep_(x.eventId).some(c=>c.correctionOf&&b.accepted.some(y=>identity(y)===identity(c)&&batch.some(d=>d.eventId===y.eventId&&d!==c&&d.correctionOf&&spk0(d)===spk0(c)))),
   REPLAY_OF_KEPT_VOICE:x=>x.why==='REPLAY_OF_KEPT_VOICE',
   CHAIN_CASCADE:x=>/CHAIN_CASCADE$/.test(x.why)};
  if(fate.length){const hit=fate.map(x=>Object.keys(EXPLAIN).find(k=>EXPLAIN[k](x)));
@@ -233,13 +234,32 @@ function classifyO1(a,b,prior,batch,fate=[]){
   const ma=new Set(x.provenance?.mergedSourceIds??[]);if((y.provenance?.mergedSourceIds??[]).some(id=>!ma.has(id)&&id!==y.eventId))return 'VOICE_AGREES';
   // P4: the voices FREEZE-5 carried and the candidate did not are all of the correction's own speaker (whatever the flags then read).
   for(const c of batch.filter(c=>c.correctionOf&&identity(c)===i&&y.eventId===c.eventId)){const me=speakerOf({activityId:c.source?.activityId??c.canonicalActivityId??null,sourceQuality:c.source?.quality??(c.source?.activityId?'WEARABLE_FULL':'MANUAL')}),have=new Set(partsOf(y)),had=new Set(partsOf(x));
-   const dropped=Object.entries(x.provenance?.parts??{}).filter(([id])=>!have.has(id)&&id!==c.eventId);if(me&&dropped.length&&dropped.every(([,p])=>speakerOf(p)===me)&&partsOf(y).every(id=>had.has(id)||id===c.eventId))return 'SPEAKER_RULE';}
+   const dropped=Object.entries(x.provenance?.parts??{}).filter(([id])=>!have.has(id)&&id!==c.eventId);if(me&&dropped.length&&dropped.every(([,p])=>speakerOf(p)===me)&&partsOf(y).every(id=>had.has(id)||id===c.eventId))return 'SPEAKER_RULE';
+   // P4 (24ca2ae): the candidate's row carries another speaker's voice FREEZE-5's dropped at a resolution (its holder was not found)
+   if(me&&Object.entries(y.provenance?.parts??{}).some(([id,p])=>id!==y.eventId&&!had.has(id)&&speakerOf(p)!==me))return 'VOICE_CARRIED';}
  }
  if(canon(sorted(a))===canon(sorted(b)))return 'ORDER_ONLY';
  // What a dose reader reads is the same: per identity, the row in force has the same amount, response and flag (its id, merged ids or conflict
  // label may differ), and history rows differ only in flags or merged ids. Never used when a row is resolved on one side and flagged on the other.
  if(!fate.some(x=>x.why.startsWith('UNEXPLAINED'))){const per=n=>Object.fromEntries([...new Set(n.accepted.map(identity))].map(i=>[i,n.accepted.filter(o=>identity(o)===i).map(o=>canon([o.actual,o.response,o.conflicted===true])).sort()]));
   if(canon(per(a))===canon(per(b))){const fl=n=>n.accepted.filter(o=>o.conflicted).map(o=>o.eventId).sort();return canon(fl(a))===canon(fl(b))&&a.accepted.every(o=>!o.conflicted||b.accepted.some(y=>y.eventId===o.eventId&&(y.provenance?.conflict??null)===(o.provenance?.conflict??null)))?'SAME_DOSE_PROVENANCE':'SAME_DOSE_FLAG_LABEL';}}
+ // Both trees flag the identity's row in force (no dose either way), and f08 reads it the same: its occurrence for the pause (a correction in
+ // conflict whose every voice says it took place) and SB-1's "a voice says it took place".
+ {const did=x=>x?.completed===true||Number(x?.minutes)>0,voices=o=>[o.actual,...Object.values(o.provenance?.parts??{}).map(p=>p?.actual)];
+  const f08=o=>[o.conflicted===true,o.conflicted===true&&o.provenance?.conflict==='CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'&&partsOf(o).length>1&&voices(o).every(did),voices(o).some(did),o.localDate];
+  const per=n=>Object.fromEntries([...new Set([...a.accepted,...b.accepted].map(identity))].map(i=>[i,n.accepted.filter(o=>identity(o)===i).map(o=>canon(f08(o))).sort()]));
+  const pa=per(a),pb=per(b);if(canon(pa)===canon(pb)&&Object.values(pb).every(v=>v.every(x=>JSON.parse(x)[0]))&&!fate.some(x=>x.why.startsWith('UNEXPLAINED'))){
+   const same=i=>canon(a.accepted.filter(o=>identity(o)===i).map(doseRow))===canon(b.accepted.filter(o=>identity(o)===i).map(doseRow));
+   if([...new Set([...a.accepted,...b.accepted].map(identity))].every(i=>same(i)||pb[i].every(x=>JSON.parse(x)[0])))return 'BOTH_FLAGGED_SAME_READING';}
+  // Both flag it, SB-1 reads the same, and only the pause's occurrence differs: the candidate's row is a correction in conflict whose every voice
+  // says the session took place (SSCTR_O1_R1 decision A: such a session occurred), FREEZE-5's a head-on flag over the same voices.
+  const ids=[...new Set([...a.accepted,...b.accepted].map(identity))],rd=(n,i)=>n.accepted.filter(o=>identity(o)===i).map(f08);
+  if(!fate.some(x=>x.why.startsWith('UNEXPLAINED'))&&ids.every(i=>{const x=rd(a,i),y=rd(b,i);return canon(x)===canon(y)||x.length===1&&y.length===1&&x[0][0]&&y[0][0]&&x[0][2]===y[0][2]&&x[0][3]===y[0][3]&&!x[0][1]&&y[0][1];}))return 'OCCURRENCE_PER_SSCTR_A';
+  // Both settle it (unflagged), with the same agreeing voices or fewer (those set aside are of the correction's own speaker), the amount within
+  // the agreement tolerance of physicalAgrees: which report heads the merge (an order of the merge rule), never which evidence counts.
+  const tol=(p,q)=>p.completed===q.completed&&(!Number.isFinite(p.minutes)||!Number.isFinite(q.minutes)||Math.abs(p.minutes-q.minutes)<=Math.max(3,0.1*Math.max(p.minutes,q.minutes)));
+  if(!fate.some(x=>x.why.startsWith('UNEXPLAINED'))&&ids.every(i=>{const x=a.accepted.filter(o=>identity(o)===i),y=b.accepted.filter(o=>identity(o)===i);if(canon(x.map(doseRow))===canon(y.map(doseRow)))return true;
+   if(x.length!==1||y.length!==1||x[0].conflicted||y[0].conflicted||!tol(x[0].actual,y[0].actual))return false;const mx=new Set([x[0].eventId,...(x[0].provenance?.mergedSourceIds??[])]);return [y[0].eventId,...(y[0].provenance?.mergedSourceIds??[])].every(id=>mx.has(id)||batch.some(c=>c.eventId===id));}))return 'SAME_VOICES_MERGE_ORDER';}
  return 'UNEXPLAINED';
 }
 function o1Invariants(b,prior,batch){
@@ -253,7 +273,7 @@ function o1Invariants(b,prior,batch){
  for(const o of b.accepted)if(!o.conflicted){const m=new Set([o.eventId,...(o.provenance?.mergedSourceIds??[])]);if(partsOf(o).some(id=>!m.has(id)))unmergedVoiceOnCleanRow++;}
  return {voiceLost,integrityVoiceKept,unmergedVoiceOnCleanRow};
 }
-const stats={seed:SEED,o1:!!process.env.O1,o1Invariants:{voiceLost:0,integrityVoiceKept:0,unmergedVoiceOnCleanRow:0},mono:!!process.env.MONO,ext:!!process.env.EXT,fates:{},cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
+const stats={seed:SEED,o1:!!process.env.O1,o1Invariants:{voiceLost:0,integrityVoiceKept:0,unmergedVoiceOnCleanRow:0},credit:{gainedByClass:{},lostByClass:{}},mono:!!process.env.MONO,ext:!!process.env.EXT,fates:{},cases:0,passes:0,identical:0,classes:{},candidate:{lostInForce:0,orphans:0,doubleIdentity:0,doubleActivity:0,rereadUnstable:0,roundTripUnstable:0,nondeterministic:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}},freeze4:{lostInForce:0,lostPasses:0,doubleActivity:0,rereadUnstable:0,rereadQuarantine:{REFUSED_IDENTITY:0,FLAGGED_LATER:0,other:0}}};
 const samples=[],lostCases=[];
 // One FREEZE-4 loss: the refusal it met when re-read, the incoming reports that sorted before it (FREEZE-4 read them first), and the candidate.
 const HOW={DUPLICATE_CONFLICT_QUARANTINED:'a late report of the same execution, conflicting, read first: it became the row and the carried one was refused as the conflict',
@@ -295,7 +315,9 @@ for(let c=0;c<N;c++){
   for(const R of la)lostCases.push(lostCase(c,p,R,batch,prior,a,b));
   const fate=fates(a,b,prior,batch,raw);for(const x of fate){const k=x.change+':'+x.reason+':'+x.why;stats.fates[k]=(stats.fates[k]??0)+1;}
   if(process.env.O1){const v=o1Invariants(b,prior,batch);for(const k of Object.keys(v)){stats.o1Invariants[k]+=v[k];if(v[k])samples.push({kind:k,batch,prior,old:a,new:b});}}
-  if(canon(a)===canon(b))stats.identical++;else{const k=(process.env.O1?classifyO1:classify)(a,b,prior,batch,fate);stats.classes[k]=(stats.classes[k]??0)+1;if(k==='UNEXPLAINED'||process.env.KIND===k)samples.push({kind:k,batch,prior,old:a,new:b,fate});}
+  if(canon(a)===canon(b))stats.identical++;else{const k=(process.env.O1?classifyO1:classify)(a,b,prior,batch,fate);
+   // credit direction: identities whose row in force is unflagged on one tree and flagged (or absent) on the other
+   if(process.env.O1){const clean=n=>new Set(n.accepted.filter(o=>!o.conflicted).map(identity)),ca=clean(a),cb=clean(b),g=[...cb].filter(i=>!ca.has(i)).length,l=[...ca].filter(i=>!cb.has(i)).length;if(g)stats.credit.gainedByClass[k]=(stats.credit.gainedByClass[k]??0)+g;if(l)stats.credit.lostByClass[k]=(stats.credit.lostByClass[k]??0)+l;}stats.classes[k]=(stats.classes[k]??0)+1;if(k==='UNEXPLAINED'||process.env.KIND===k)samples.push({kind:k,batch,prior,old:a,new:b,fate});}
   prior=rec(b);
  }
 }

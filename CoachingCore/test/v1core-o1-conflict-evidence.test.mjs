@@ -187,3 +187,15 @@ test('P4: while a dispute stands, a correction naming a report the row in force 
  const n=N([fix(A,{eventId:'A3'},dx+'T16:00:00Z')],T3,a2);
  assert.deepEqual(held(n).live.map(o=>[o.eventId,o.conflicted,o.voices]),[['A3',true,['A3','X']]],'the device\'s 20 minutes still disagree: never retired unheard');
 });
+test('SEC-O1-01a (cycle 1): while a dispute stands, a correction from an unknown speaker naming a report the row in force no longer holds still carries its other voices; SB-1 still asks',()=>{
+ // Security p2: the athlete's "not done" N disputes a device-recorded symptom stop S (kept); the athlete's N2 (naming N) stays disputed with S;
+ // then a correction from an unknown source names N, which the row in force (N2) no longer holds.
+ const {R}=afterReady(),Nn=rep('N','sx',dx,{reportedAt:dx+'T11:00:00Z',actual:{completed:false,minutes:0}});
+ const S=rep('S','sx',dx,{reportedAt:dx+'T12:30:00Z',actual:STOP,...WATCH('hk-s')}),l1=rec(N([Nn,S],T1));
+ const l2=rec(N([{...Nn,eventId:'N2',correctionOf:'N',correctedAt:dx+'T14:00:00Z',reportedAt:dx+'T14:00:00Z'}],T2,l1));
+ assert.deepEqual([held(N([],T2,l2)).live.map(o=>[o.eventId,o.conflicted,o.voices]),declared([R,...l2])],[[['N2',true,['N2','S']]],undefined]);
+ const u={...Nn,eventId:'U1',correctionOf:'N',correctedAt:dx+'T16:00:00Z',reportedAt:dx+'T16:00:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'}};
+ const n=N([u],T3,l2),h=held(n);
+ assert.ok(h.live.length===1&&h.live[0].conflicted&&h.live[0].voices.includes('S'),'24ca2ae: U1{}, S retired unheard: '+JSON.stringify(h));
+ assert.equal(declared([R,...rec(n)]),undefined,'24ca2ae: DECLARED');
+});
