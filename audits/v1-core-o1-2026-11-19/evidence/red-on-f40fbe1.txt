@@ -1,0 +1,268 @@
+✖ SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays (4.8423ms)
+✖ SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first (1.0896ms)
+✖ SSCTR-NCC-01: one review or three, any order of the batch: the same dispute (1.5244ms)
+✖ SSCTR-NCC-01: the dispute is resolved by the refused speaker (the athlete corrects their own report), or by the kept speaker agreeing with them (1.5029ms)
+✖ SSCTR-NCC-01: a correction that resolves only part of the dispute, a refused correction, a replay and a late re-sync of the same report: the dispute stays, nothing new is kept (0.8161ms)
+✖ SSCTR-NCC-01: a strength session disputed head-on keeps both voices too (0.5806ms)
+✖ SEC-NCC-02 (e7): after a readiness declaration, a "not done" in force and a late symptom stop that conflicts with it: the readiness question is asked (2.2042ms)
+✔ SEC-NCC-02: a declaration made after the disputed session answers it (no permanent block); an admitted stop is asked as before (1.1871ms)
+✔ SEC-NCC-02 / S3: a report refused for integrity is never kept, and cannot open the question nor add a voice (3.3596ms)
+✖ SEC-NCC-02: a report on an execution already in dispute is kept too (the third voice), and the readiness question hears it (1.1815ms)
+✔ O-1: a kept voice is never dose: the flagged row's amount is the first-admitted report's, and the restart pause reads no occurrence from a head-on dispute (0.8062ms)
+✔ O-1: a record written before this line (a flagged row with one voice) is read as it was; the next head-on report adds its voice (0.3518ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 4
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109.1162
+
+✖ failing tests:
+
+test at test\v1core-o1-conflict-evidence.test.mjs:40:1
+✖ SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays (4.8423ms)
+  AssertionError [ERR_ASSERTION]: its voice is kept on the flagged row; the amount is the device's, never merged
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      live: [
+        {
+          actual: {
+            completed: true,
+  ...
+          eventId: 'X',
+  +       voices: []
+  -       voices: [
+  -         'A',
+  -         'X'
+  -       ]
+        }
+      ],
+      q: true
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:43:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { live: [ [Object] ], q: true },
+    expected: { live: [ [Object] ], q: true },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:49:1
+✖ SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first (1.0896ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-5: INVALID_CORRECTION_CHAIN, the device report having left the record
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'X2',
+  +     inputHash: 'fbee3ce765f46dcefc23efdb8a034b34a0b2189418cfbcd985e39f238f5a501b',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 'sx'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:51:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'X2', sessionId: 'sx', reason: 'INVALID_CORRECTION_CHAIN', inputHash: 'fbee3ce765f46dcefc23efdb8a034b34a0b2189418cfbcd985e39f238f5a501b' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:59:1
+✖ SSCTR-NCC-01: one review or three, any order of the batch: the same dispute (1.5244ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      false,
+      1,
+  +   false,
+  -   true,
+      []
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:62:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ false, 1, false, [] ],
+    expected: [ false, 1, true, [] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:65:1
+✖ SSCTR-NCC-01: the dispute is resolved by the refused speaker (the athlete corrects their own report), or by the kept speaker agreeing with them (1.5029ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     eventId: 'A2',
+  +     inputHash: '1dfa19ad9860425a4e86076bd33f2f45001ca502b4cf58d80568445e7a4b573d',
+  +     reason: 'INVALID_CORRECTION_CHAIN',
+  +     sessionId: 'sx'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:69:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { eventId: 'A2', sessionId: 'sx', reason: 'INVALID_CORRECTION_CHAIN', inputHash: '1dfa19ad9860425a4e86076bd33f2f45001ca502b4cf58d80568445e7a4b573d' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:77:1
+✖ SSCTR-NCC-01: a correction that resolves only part of the dispute, a refused correction, a replay and a late re-sync of the same report: the dispute stays, nothing new is kept (0.8161ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   false,
+  -   true,
+      [
+  +     false
+  -     true
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:81:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ false, [ false ] ],
+    expected: [ true, [ true ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:90:1
+✖ SSCTR-NCC-01: a strength session disputed head-on keeps both voices too (0.5806ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      live: [
+        {
+          actual: {
+            completed: true,
+  ...
+          eventId: 'S1',
+  +       voices: []
+  -       voices: [
+  -         'S1',
+  -         'S2'
+  -       ]
+        }
+      ],
+      q: true
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:93:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { live: [ [Object] ], q: true },
+    expected: { live: [ [Object] ], q: true },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:98:1
+✖ SEC-NCC-02 (e7): after a readiness declaration, a "not done" in force and a late symptom stop that conflicts with it: the readiness question is asked (2.2042ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-5: true, SB-1 skipped
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:103:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\v1core-o1-conflict-evidence.test.mjs:136:1
+✖ SEC-NCC-02: a report on an execution already in dispute is kept too (the third voice), and the readiness question hears it (1.1815ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      [
+        true,
+  +     []
+  -     [
+  -       'M',
+  -       'N',
+  -       'S'
+  -     ]
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-o1/CoachingCore/test/v1core-o1-conflict-evidence.test.mjs:144:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ true, [] ] ],
+    expected: [ [ true, [Array] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
