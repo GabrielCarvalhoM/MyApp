@@ -22,7 +22,10 @@
 
 **Differential (cycle runtime):** the same as `4e8cffe` (`evidence/differential-cycle1.json`): 0 orphans, 0 second rows in force, 0 rows lost under monotone arrival, deterministic. F1 is unchanged.
 
-**Full suite on `36ea26a`:** see `evidence/suite-36ea26a.txt` and the line below.
+**Full suite on `36ea26a`** (`evidence/suite-36ea26a.txt`): **1774 / 1744 / 30**.
+- The 27 inherited failures and the two declared in `SUCCESSOR_LEDGER.json` are as on `4e8cffe`.
+- The 30th is `v1core-secr2-freeze.test.mjs:12`. During the run, `CYCLE1.md` and the new evidence were untracked in the audit folder, which check (iv) refuses: a working-tree artifact, not the runtime.
+- Once committed (`bbea6bc`), that test passes (25/25 for the line's two test files, and `--preserved` exits 0). So on the committed tree the suite is **1774 / 1745 / 29**.
 
 **Rechecks requested, narrow, on the cycle commit:**
 - Security: SEC-SR2-01.
