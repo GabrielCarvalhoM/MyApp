@@ -1803,6 +1803,7 @@ __def(20, function (__exports) {
 const {clone, hash} = __req(9);
 const {LB_TO_KG} = __req(11);
 Object.defineProperties(__exports, {
+  "VOICE_LIMIT": { enumerable: true, get: () => VOICE_LIMIT },
   "byCodePoint": { enumerable: true, get: () => byCodePoint },
   "localDate": { enumerable: true, get: () => localDate },
   "normalizeObservations": { enumerable: true, get: () => normalizeObservations },
@@ -1869,6 +1870,8 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
 // own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
 // holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
 const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
+/** SEC-O1-03: the most voices a flagged row keeps (measured: at most 3 on any row of the O-1 differential's 12 configurations). Exported for tests. */
+const VOICE_LIMIT=16;
 /** O-1: who gave a part or a report, as far as the record shows: one device activity, else the athlete (an own source), else nobody known. */
 const speakerOf=p=>typeof p?.activityId==='string'&&p.activityId?'DEVICE:'+p.activityId:['MANUAL','SELF_REPORT'].includes(p?.sourceQuality)?'ATHLETE':null;
 /** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
@@ -1923,6 +1926,14 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
  const keepVoice=(row,o,source,activityId)=>{
   if(!isObject(row.provenance.parts))row.provenance.parts={[row.eventId]:partOf(row)};
   if(Object.hasOwn(row.provenance.parts,o.eventId))return;
+  // SEC-O1-03: a flagged row keeps at most VOICE_LIMIT voices (its own and merged parts included). Beyond it a refused report stays refused,
+  // with its input hash in `excluded`, and is not kept, unless it declares a stop and the row holds none yet: SB-1 never loses its signal. The
+  // dispute then stays as the voices kept make it (no credit while they disagree); nothing is written for the excess, so a replay changes nothing.
+  // Cycle 1 (SEC-SC-01, QRE-SC-02): f08 reads three things from the voices (a stop, "took place", "did not take place"), so beyond the limit a
+  // report is also kept when it says one of them and no kept voice does: at most VOICE_LIMIT+3 voices, and arrival order never decides them.
+  const kept=Object.values(row.provenance.parts),stops=p=>isObject(p?.actual)&&p.actual.stop!==undefined&&p.actual.stop!==null&&p.actual.stop!==false;
+  const took=p=>isObject(p?.actual)&&(p.actual.completed===true||Number(p.actual.minutes)>0),untaken=p=>isObject(p?.actual)&&!took(p);
+  if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;
   row.provenance.parts[o.eventId]=partOf(o);row.provenance.inputHashes={...(row.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
   byEvent.set(o.eventId,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  };
@@ -1961,7 +1972,12 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity. F3: whether a correction resolves a conflict is read from the
   // quarantine its identity held before it (`heldBefore`), never from its own carried flag: re-reading a correction in conflict never resolves it.
-  const heldBefore=quarantined.has(identity);
+  // SEC-O1-02 / QRE-O1-02: an execution is in dispute while a flagged row in force on it is. A quarantine a report refused for integrity raised
+  // with no row flagged on that execution (an activity of another session, a self-flagged report whose chain is refused, an event id of another
+  // session's report) carries nothing to the next review, so it is no dispute of it here either: a later report of it in this review is read as
+  // in the next one (P7), never refused unkept, and a correction never resolves a dispute that is not on record.
+  const disputedHere=()=>quarantined.has(identity)&&accepted.some(x=>x.identity===identity&&x.conflicted===true);
+  const heldBefore=disputedHere();
   if(o.conflicted===true)quarantined.add(identity);
   let inherited=null,admit=null,dropsIdentity=false;
   if(o.correctionOf){
@@ -2017,7 +2033,7 @@ function normalizeObservations(observations,{athleteId,asOf,maximumAgeDays=56,fu
   // row now in force for that execution, never on the history row.
   const activityId=o.source?.activityId??o.canonicalActivityId??null,bound=activityId?byActivity.get(activityId):null,boundTo=bound&&!accepted.includes(bound)?accepted.find(x=>x.identity===bound.identity)??bound:bound;
   // O-1: on an execution already in dispute, the report is kept as a voice of the flagged row in force, unless its device activity is another's.
-  if(!admit&&quarantined.has(identity)&&o.conflicted!==true){const disputed=accepted.find(x=>x.identity===identity&&x.conflicted===true);if(disputed&&(!boundTo||boundTo.identity===identity))keepVoice(disputed,o,source,activityId);reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
+  if(!admit&&disputedHere()&&o.conflicted!==true){const disputed=accepted.find(x=>x.identity===identity&&x.conflicted===true);if(disputed&&(!boundTo||boundTo.identity===identity))keepVoice(disputed,o,source,activityId);reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   if(boundTo&&boundTo.identity!==identity){flagConflict(boundTo,'ACTIVITY_BOUND_TO_TWO_SESSIONS');quarantined.add(boundTo.identity);quarantined.add(identity);conflicts.push({identity,eventIds:[boundTo.eventId,o.eventId],activityId,reason:'ACTIVITY_BOUND_TO_TWO_SESSIONS'});reject('ACTIVITY_BOUND_TO_TWO_SESSIONS');continue;}
   // A correction that resolves a conflict retires every report on its identity: none of them is a row in force to merge it into (SEC-R2-03:
   // merged into a retired row, the correction and the session would both leave the record in force).
@@ -4846,9 +4862,13 @@ const voices=o=>[o.actual,...Object.values(isObj(o.provenance?.parts)?o.provenan
 const wellFormed=a=>isObj(a)&&typeof a.completed==='boolean'&&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>a[k]!==undefined&&a[k]!==null&&(!Number.isFinite(a[k])||a[k]<0));
 // (ii) A session the record shows took place, only its amount (or response) disputed: a correction in conflict with a report still in force
 // (the normalizer keeps every voice on that row), each voice saying it took place. Its occurrence is a fact for the pause, the last executed
-// day and trainedAfter; its amount stays quarantined (QRE-R6-14), so C-Q08-1 counts neither its minutes nor its day. A direct conflict keeps
-// one voice only, so the record does not show its occurrence. (iii) A "not done" in force is no execution.
-const occurred=o=>executed(o)||!!o&&!o.fact&&o.conflicted===true&&o.superseded!==true&&o.provenance?.conflict==='CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'&&isObj(o.provenance?.parts)&&Object.keys(o.provenance.parts).length>1&&voices(o).every(a=>wellFormed(a)&&did(a));
+// day and trainedAfter; its amount stays quarantined (QRE-R6-14), so C-Q08-1 counts neither its minutes nor its day. (iii) A "not done" in
+// force is no execution.
+// C-O1-2 (SSCTR_O1_R1 decision A): since O-1 a head-on dispute keeps every voice too (the refused report is a part of the flagged row), so it
+// reads as (ii): the same voices give the same occurrence whichever conflict path flagged the row. A flag an integrity refusal raised (an event id
+// reused with other facts, an activity of another session) keeps no voice of what refused it, so it shows no occurrence (the interim, erring long).
+const VOICED_DISPUTES=['CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE','CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'];
+const occurred=o=>executed(o)||!!o&&!o.fact&&o.conflicted===true&&o.superseded!==true&&VOICED_DISPUTES.includes(o.provenance?.conflict)&&isObj(o.provenance?.parts)&&Object.keys(o.provenance.parts).length>1&&voices(o).every(a=>wellFormed(a)&&did(a));
 // SB-1 (SEC-V1CPI-02, RC-11): a voice in force that says a session took place after the readiness declaration is training after it, in
 // conflict or not, so the declaration never stands in for a later stop on a disputed record. Only the readiness question reads it.
 const claimsDone=o=>!!o&&!o.fact&&o.superseded!==true&&voices(o).some(did);
@@ -4862,6 +4882,12 @@ const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?(o.provenance?.p
 const sameExecution=(r,o)=>o.sessionId?r.sessionId===o.sessionId:activityOf(o)!==null?activityOf(r)===activityOf(o):manualAt(o)!==null&&!r.sessionId&&activityOf(r)===null&&manualAt(r)===manualAt(o);
 const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&sameExecution(r,o));
 const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!replacedBy(o,rows)&&voices(o).some(did);
+// SEC-O1-01b/c (SEC_O1_R1 item 6, SSCTR_O1_R2 (c)): a declared stop is a safety signal, not an amount. Once on record it stays one wherever it
+// sits: the row in force, a voice kept on a disputed row, or a history row a correction replaced (the normalizer keeps every one). A correction,
+// the speaker rule or a resolution settles the amount, never the readiness question: only a readiness declaration made after the session
+// answers it. Every declared stop counts, whatever its reason and at zero minutes too (statedStop's reading: any value but none or false).
+const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null&&a.stop!==false;
+const stopOnRecord=o=>!!o&&!o.fact&&voices(o).some(stopped);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
@@ -4901,7 +4927,8 @@ function restartIntake({intake,record=[],referenceState=null,asOf,screen,athlete
  const facts={pause:null,restart:null};
  // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
  // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
- const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>voiced(o)&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ // SEC-O1-01b/c: a stop on record after the declaration asks as well, in force, kept or replaced.
+ const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>(voiced(o)||stopOnRecord(o))&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},...(!trainedAfter?{readinessDeclared:true}:{})};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).

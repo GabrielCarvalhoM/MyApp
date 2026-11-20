@@ -380,3 +380,69 @@ Nada disso é material, então o `PerformanceTests` físico **não** é repetido
 - `core-oracle.mjs` passa, com 0 chamadas de `localeCompare`;
 - `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
 - uma segunda execução não muda nada.
+
+## 13. Safety Continuity (2026-11-20): interrupções que não desaparecem, ocorrência disputada
+
+Este pacote passa a validar também **SEC-O1-01b/c**, **C-O1-2** e o caso de parada de zero minuto (O-NCC-S1).
+- **Branch:** **`claude/v1-core-safety-continuity`**, a partir de `48e428f`.
+- **Freeze:** `COACHINGCORE-V1-CORE-SAFETY-FREEZE-7`.
+- **Antes de usar:** no §2, troque o `git checkout` por essa branch, depois que o Founder autorizar o push.
+
+A mudança de motor está em dois arquivos:
+- **`src/v1-f08.mjs`** (sha256 `7ec9b6d5…`):
+  - uma parada declarada depois da declaração de prontidão continua pedindo a verificação, mesmo depois de uma correção esportiva;
+  - uma sessão disputada em que todas as vozes dizem que aconteceu conta como ocorrida para a pausa, sem crédito de quantidade.
+- **`src/r6-provenance.mjs`** (sha256 `cd0ede9d…`):
+  - sem quarentena "fantasma";
+  - no máximo 16 vozes mantidas por registro em disputa, mais uma por tipo de sinal (parada, aconteceu, não aconteceu).
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/*` | Bundle religado (41 módulos). SHA do `coachingcore-p0.js`: `cbd47958…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda |
+| `Fixtures/core.json` | Três jornadas novas: `sc-stop-corrected`, `sc-zero-stop` e `sc-occurrence`. As vinte e uma anteriores têm entradas **e** esperados idênticos |
+| `Fixtures/j5.json`, `Fixtures/p16.json` | **Inalterados** |
+| `FocalTests.swift` | **Sem mudança** |
+
+**Jornadas novas** (oráculo Node `core-oracle.mjs`, seção 12), cada uma com ida e volta por JSON:
+- **`sc-stop-corrected`** (SEC-O1-01b/c):
+  1. uma retenção, a declaração de prontidão e uma corrida depois dela, relatada com parada por SINTOMA;
+  2. o atleta corrige para "não feita";
+  3. ida e volta;
+  4. reinício sem motivo: **ASK**. A FREEZE-6 dava PROPOSED: a correção apagava a parada;
+  5. uma nova retenção e uma declaração posterior;
+  6. reinício: PROPOSED.
+- **`sc-zero-stop`** (O-NCC-S1): uma parada de zero minuto, por tempo, depois da declaração. Reinício sem motivo: **ASK** (FREEZE-6: PROPOSED); com motivo: PROPOSED.
+- **`sc-occurrence`** (C-O1-2):
+  1. o relógio e o atleta relatam d3 com minutos diferentes (disputa mantida, duas vozes);
+  2. ida e volta;
+  3. reinício PROPOSED, com a pausa lida a partir de d3.
+
+O oráculo **falha** se algum desses resultados mudar. Saída esperada (linha Safety Continuity):
+```
+Safety Continuity: corrected stop restart ASK ["athlete.pause.reasonCategory"] (history row kept), then after a later declaration PROPOSED; zero-minute stop ASK then PROPOSED; head-on d3 kept voices app-sc,dev-sc, restart PROPOSED
+```
+
+**Fica só no Node:**
+- o diferencial gerado (doze configurações);
+- as mutações (19/19);
+- os casos de quarentena e de limite de vozes.
+
+Estão em `audits/v1-core-sc-2026-11-20/evidence/` e em `CoachingCore/test/v1core-sc-safety-continuity.test.mjs`.
+
+**Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das vinte e quatro jornadas e de J5/P16. Um `DIVERGED` reprova.
+
+**Desempenho:** bench Node `48e428f` × candidato:
+- revisão ×0,98;
+- reinício corrigido ×1,03;
+- registro ×1,00.
+
+Nada disso é material, então o `PerformanceTests` físico **não** é repetido.
+
+**Conferido no Windows** (Node e `vm` do V8, sem JavaScriptCore):
+- `link.mjs` religa o bundle;
+- `lab/oracle.mjs`: J5 e P16 byte-idênticos;
+- `focal-oracle.mjs` muda só o SHA;
+- `core-oracle.mjs` passa;
+- `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
+- uma segunda execução não muda nada.
