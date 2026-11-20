@@ -47,7 +47,7 @@ The SEC-O1-03 policy proposal:
 - **The limit.** Measured: the most voices on any row is **3** in the O-1 differential (12 configurations, 3000 cases each) and **6** in the SC differential, whose generator adds stops and so more disputes (`evidence/sc-diff/SUMMARY.txt`, last column). The limit, 16, is more than 2.5 times the larger.
   - Bench (`bench/voice-load.json`): the normal load is byte-identical.
   - At 40 disputing reports the row is 16 voices, 5.5 KB (FREEZE-6: 41 voices, 12.9 KB).
-  - At the 2000-report abuse shape it is 16 voices, **20.7 KB** (FREEZE-6: 2001 voices, **2.6 MB**). Ingestion of 2000 refusals takes 446 ms (FREEZE-6: 1798 ms), and a re-read 1.3 ms (FREEZE-6: 125 ms).
+  - At the 2000-report abuse shape it is 16 voices, **20.7 KB** (FREEZE-6: 2001 voices, **2.6 MB**). Timings: see CYCLE1.md §3 (QRE-SC-01b: the figures first quoted here were not those of `voice-load.json`).
 - **What it preserves:**
   - identity and integrity, since the refusals are unchanged;
   - the audit trail: every excess report stays in the review's `excluded`, with its input hash;
