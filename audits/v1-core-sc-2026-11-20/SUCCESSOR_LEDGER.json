@@ -1,0 +1,61 @@
+{
+ "line": "Safety Continuity & Execution Occurrence Closure (claude/v1-core-safety-continuity, from 48e428f = COACHINGCORE-V1-CORE-SAFETY-FREEZE-6)",
+ "note": "The tests that fail on this line and passed on 48e428f. None is edited: each file is bound by an earlier freeze. FREEZE-6's 37 failures are unchanged in title. Successors are in test/v1core-sc-successors.test.mjs; each runs the frozen test from a temporary copy with only the listed substitutions, each matched exactly once (the mechanism of v1core-o1-successors.test.mjs).",
+ "entries": [
+  {
+   "historical": "v1core-o1-conflict-evidence.test.mjs:146",
+   "title": "O-1: a kept voice is never dose: the flagged row's amount is the first-admitted report's, and the restart pause reads no occurrence from a head-on dispute",
+   "contract": "C-O1-2 (SSCTR_O1_R1 decision A): a head-on dispute whose every well-formed voice says the session took place is an occurrence for the pause",
+   "before": "the pause read as a flagged row of one voice (no occurrence; P2 interim)",
+   "after": "the pause reads as the device run alone; a flagged row of one voice still shows no occurrence; the amount, flag and unmerged voices as before",
+   "sporting": "restart pause shorter by the disputed session (it took place); no minutes, days or credit (C-Q08-1 unchanged)",
+   "safety": "none (SB-1 reads the same)",
+   "successor": "v1core-sc-successors.test.mjs: 'successor of v1core-o1-conflict-evidence.test.mjs:146 (C-O1-2)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-cf011r2-restart-evidence.test.mjs:108 (A12)",
+   "title": "A12: the information to resolve a conflict is missing (a direct conflict keeps one voice): bounded, and no occurrence read",
+   "contract": "C-O1-2; since O-1 a direct conflict keeps both voices (the test title's premise is FREEZE-5's)",
+   "before": "[recent, pause, lastExecuted] = [ZERO, null, null]",
+   "after": "[recent, lastExecuted, pause.bySportDays.RUN] = [ZERO, DAY-3, 3]: an occurrence; the stated exposure still bounded at zero",
+   "sporting": "pause read from the disputed session; exposure bound unchanged",
+   "safety": "none",
+   "successor": "v1core-sc-successors.test.mjs: 'successor of v1core-cf011r2-restart-evidence.test.mjs:108 (A12, C-O1-2)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-cf011r2-restart-evidence.test.mjs:139 (B4-B5), last assertion",
+   "title": "B4-B5: occurrence itself disputed (a voice says not done), or one voice only on the record (direct conflict): not an execution",
+   "contract": "C-O1-2",
+   "before": "a direct conflict and a run 13 days ago: RUN pause 13",
+   "after": "RUN pause 3 (the direct conflict, both voices done, is an occurrence); exposure as the 13-day run alone. The 'not done' assertions are unchanged",
+   "sporting": "as above",
+   "safety": "none",
+   "successor": "v1core-sc-successors.test.mjs: 'successor of ...:139 (B4-B5, C-O1-2)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-cf011r2-restart-evidence.test.mjs:151 (B7), the 'another kind of conflict' assertion",
+   "title": "B7: what a row must show to be read as a disputed execution (a forged or partial flag reads as no execution, and never raises the bound)",
+   "contract": "C-O1-2: CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS with two well-formed 'done' voices is now an occurrence; integrity flags are not",
+   "before": "a CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS row with two done parts: no occurrence",
+   "after": "an occurrence with its amount not counted (recent ZERO); EVENT_ID_REUSED_WITH_DIFFERENT_FACTS, ACTIVITY_BOUND_TO_TWO_SESSIONS or no named conflict on the same row: no occurrence (added); the one-voice and malformed assertions unchanged",
+   "sporting": "as above",
+   "safety": "a forged flag still never raises the bound",
+   "successor": "v1core-sc-successors.test.mjs: 'successor of ...:151 (B7, C-O1-2)'",
+   "result": "GREEN on the candidate"
+  },
+  {
+   "historical": "v1core-o1-freeze.test.mjs:13",
+   "title": "O-1: the ten earlier freezes are preserved; only src/r6-provenance.mjs amended since f40fbe1",
+   "contract": "freeze preservation: this line amends v1-f08.mjs and r6-provenance.mjs after FREEZE-6",
+   "before": "only r6-provenance.mjs changed since f40fbe1",
+   "after": "fails by design on this line; its successor is the successor freeze's own preservation test, if a freeze is emitted",
+   "sporting": "none",
+   "safety": "none",
+   "successor": "pending the successor freeze (not emitted before the reviews)",
+   "result": "pending"
+  }
+ ]
+}
