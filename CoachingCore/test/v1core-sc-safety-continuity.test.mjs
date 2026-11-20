@@ -218,3 +218,49 @@ test('C-O1-2 engine: a run reported by the watch and by the athlete with other m
  assert.deepEqual([dis.conflicted,dis.voices,ctl.last.RUN],[true,2,ctl.d3],'the control: its last run is d3');
  assert.deepEqual([dis.last,dis.pause],[ctl.last,ctl.pause],'the disputed d3 run is the last executed run, as in the control');
 });
+
+// ---------- SEC-O1-02 / QRE-O1-02 (P1): a quarantine with no flagged row on its identity ----------
+// A report refused for integrity on an execution (an activity of another session, a self-flagged report whose chain is refused, an event id of
+// another session's report) quarantines that execution for the rest of the pass with no row flagged on it, so nothing of it carries to the next
+// review. Such a quarantine is no dispute of that execution: a later valid report of it in the same pass is read as in the next review (P7).
+const Z=rep('Z','sz',shift(dx,-4),{...WATCH('hk-z'),reportedAt:shift(dx,-4)+'T12:00:00Z'});
+const lz=()=>rec(N([NOTDONE,Z],T1));
+const BORROWED=rep('B','sx',dx,{reportedAt:dx+'T12:10:00Z',...WATCH('hk-z'),actual:{completed:true,minutes:30}});
+const SELF_FLAG={...rep('X','sx',dx,{reportedAt:dx+'T12:10:00Z'}),conflicted:true,correctionOf:'nothing',correctedAt:dx+'T12:10:00Z'};
+const shape=r=>live(r).map(o=>[o.eventId,o.conflicted===true,voices(o)]);
+test('SEC-O1-02 (p1 C1/C3): a valid stop after a refused borrowed-activity or self-flagged report in one review is read as in the next review: kept, SB-1 asks',()=>{
+ const split=rec(N([S()],T3,rec(N([BORROWED],T2,lz()))));
+ assert.deepEqual([shape(split),declared([R0,...split])],[[['N',true,['N','S']]],ASKED],'two reviews (the reference)');
+ for(const [label,first] of [['C1 borrowed activity',BORROWED],['C3 self-flagged, chain refused',SELF_FLAG]]){
+  const n=N([first,S()],T2,lz()),r=rec(n);
+  assert.deepEqual(n.excluded.map(e=>e.eventId+':'+e.reason),[first.eventId+':'+(label.startsWith('C1')?'ACTIVITY_BOUND_TO_TWO_SESSIONS':'INVALID_CORRECTION_CHAIN'),'S:DUPLICATE_CONFLICT_QUARANTINED'],label+': FREEZE-6 refused S as IDENTITY_QUARANTINED_BY_CONFLICT, not kept');
+  assert.deepEqual(shape(r),shape(split),label+': as the split');
+  assert.equal(declared([R0,...r]),ASKED,label);
+  assert.deepEqual(shape(reread(json(r))),shape(split),label+': and after a re-read');
+ }
+ const c2=rec(N([S({reportedAt:dx+'T12:05:00Z'}),BORROWED],T2,lz()));
+ assert.deepEqual([shape(c2),declared([R0,...c2])],[[['N',true,['N','S']]],ASKED],'C2: the other order');
+});
+test('SEC-O1-02: what stays: the borrowed report is refused and never kept, the session that holds the activity is flagged, a carried dispute still quarantines',()=>{
+ const n=N([BORROWED,S()],T2,lz()),r=rec(n);
+ assert.ok(!r.some(o=>voices(o).includes('B')||o.eventId==='B'),'the borrowed report is no voice');
+ assert.equal(live(r,'sz')[0].conflicted,true,'the session holding hk-z is flagged (QRE-R6-13)');
+ assert.ok(n.quarantinedIdentities.includes('session:sx')&&n.quarantinedIdentities.includes('session:sz'),'the pass still reports both identities quarantined');
+ // A valid report with no row on its identity, after the refusal: admitted in force, as in the next review.
+ const fresh=rep('F','sy',dx,{reportedAt:dx+'T12:20:00Z'}),b2={...BORROWED,eventId:'B2',sessionId:'sy'};
+ assert.deepEqual(live(rec(N([b2,fresh],T2,lz())),'sy').map(o=>o.eventId),live(rec(N([fresh],T3,rec(N([b2],T2,lz())))),'sy').map(o=>o.eventId));
+ // A dispute carried from an earlier review still quarantines: a third voice is kept, never admitted.
+ const k=N([rep('T','sx',dx,{reportedAt:dx+'T17:00:00Z',actual:{completed:true,minutes:5}})],T3,e7());
+ assert.deepEqual([k.excluded.map(e=>e.reason),shape(rec(k))],[['IDENTITY_QUARANTINED_BY_CONFLICT'],[['N',true,['N','S','T']]]]);
+});
+test('QRE-O1-02: an event id reused from another session quarantines no dispute here: a later correction meets the row in force and the device voice is heard',()=>{
+ const M1=rep('M1','s1',dx,{reportedAt:dx+'T10:00:00Z',actual:{completed:true,minutes:20}}),W1=rep('W1','s1',dx,{reportedAt:dx+'T10:30:00Z',...WATCH('hk-1'),actual:{completed:true,minutes:40}}),M2=rep('M2','s2',dx,{reportedAt:dx+'T10:45:00Z'});
+ const l=rec(N([M1,W1,M2],T1));
+ assert.deepEqual(shape(l.filter(o=>o.sessionId==='s1').map(o=>({...o,sessionId:'sx'}))),[['M1',true,['M1','W1']]]);
+ const C0=fix(M1,{eventId:'C0',actual:{completed:true,minutes:40}},dx+'T13:00:00Z'),reuse={...fix(C0,{eventId:'M2',actual:{completed:true,minutes:30}},dx+'T14:00:00Z'),correctionOf:'C0'};
+ const A9=fix(M1,{eventId:'A9',actual:NOT_DONE},dx+'T15:00:00Z');
+ const one=rec(N([C0,reuse,A9],T3,l)),split=rec(N([A9],T4,rec(N([C0,reuse],T3,l))));
+ const s1=r=>live(r,'s1').map(o=>[o.eventId,o.conflicted===true,voices(o)]);
+ assert.ok(s1(one).some(([,c,v])=>c&&v.includes('W1')),'FREEZE-6: A9 in force, clean, not done, W1 retired unheard: '+JSON.stringify(s1(one)));
+ assert.deepEqual(s1(one),s1(split),'one review reads as two');
+});

@@ -151,7 +151,12 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   const identity=o.sessionId?'session:'+o.sessionId:'activity:'+(o.canonicalActivityId??o.source?.activityId??o.provenance.provider+'@'+o.observedAt);
   // A conflict carried in from an earlier review stays quarantined for its identity. F3: whether a correction resolves a conflict is read from the
   // quarantine its identity held before it (`heldBefore`), never from its own carried flag: re-reading a correction in conflict never resolves it.
-  const heldBefore=quarantined.has(identity);
+  // SEC-O1-02 / QRE-O1-02: an execution is in dispute while a flagged row in force on it is. A quarantine a report refused for integrity raised
+  // with no row flagged on that execution (an activity of another session, a self-flagged report whose chain is refused, an event id of another
+  // session's report) carries nothing to the next review, so it is no dispute of it here either: a later report of it in this review is read as
+  // in the next one (P7), never refused unkept, and a correction never resolves a dispute that is not on record.
+  const disputedHere=()=>quarantined.has(identity)&&accepted.some(x=>x.identity===identity&&x.conflicted===true);
+  const heldBefore=disputedHere();
   if(o.conflicted===true)quarantined.add(identity);
   let inherited=null,admit=null,dropsIdentity=false;
   if(o.correctionOf){
@@ -207,7 +212,7 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   // row now in force for that execution, never on the history row.
   const activityId=o.source?.activityId??o.canonicalActivityId??null,bound=activityId?byActivity.get(activityId):null,boundTo=bound&&!accepted.includes(bound)?accepted.find(x=>x.identity===bound.identity)??bound:bound;
   // O-1: on an execution already in dispute, the report is kept as a voice of the flagged row in force, unless its device activity is another's.
-  if(!admit&&quarantined.has(identity)&&o.conflicted!==true){const disputed=accepted.find(x=>x.identity===identity&&x.conflicted===true);if(disputed&&(!boundTo||boundTo.identity===identity))keepVoice(disputed,o,source,activityId);reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
+  if(!admit&&disputedHere()&&o.conflicted!==true){const disputed=accepted.find(x=>x.identity===identity&&x.conflicted===true);if(disputed&&(!boundTo||boundTo.identity===identity))keepVoice(disputed,o,source,activityId);reject('IDENTITY_QUARANTINED_BY_CONFLICT');continue;}
   if(boundTo&&boundTo.identity!==identity){flagConflict(boundTo,'ACTIVITY_BOUND_TO_TWO_SESSIONS');quarantined.add(boundTo.identity);quarantined.add(identity);conflicts.push({identity,eventIds:[boundTo.eventId,o.eventId],activityId,reason:'ACTIVITY_BOUND_TO_TWO_SESSIONS'});reject('ACTIVITY_BOUND_TO_TWO_SESSIONS');continue;}
   // A correction that resolves a conflict retires every report on its identity: none of them is a row in force to merge it into (SEC-R2-03:
   // merged into a retired row, the correction and the session would both leave the record in force).
