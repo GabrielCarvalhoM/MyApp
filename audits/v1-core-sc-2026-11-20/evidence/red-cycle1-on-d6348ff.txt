@@ -1,0 +1,72 @@
+✔ SEC-O1-01b/c: on a contested record (a kept stop), no correction shape sets the stop aside: SB-1 asks, after a re-read and a JSON round trip too (76.3137ms)
+✔ SEC-O1-01b/c: the sporting correction is still applied: the amount the record holds in force is the correction's, and only SB-1 keeps asking (2.1766ms)
+✔ SEC-O1-01b/c: an admitted stop (no dispute) corrected away by its own speaker: SB-1 still asks; the reason does not matter, zero minutes included (10.4988ms)
+✔ SEC-O1-01b/c (O-NCC-S1): a zero-minute stop after the declaration asks, in force or kept as a voice (1.8ms)
+✔ SEC-O1-01b/c: what does not ask: a stop-less "done" retracted by its own speaker, a stop observed before the declaration, an integrity refusal (5.2023ms)
+✔ SEC-O1-01b/c: a refused correction leaves the stop as it was; an earlier declaration replayed never answers it; an independent clinical hold still holds (3.8683ms)
+✔ C-O1-2: the device and the athlete agree the run took place and dispute its duration: the restart reads it as an occurrence, never its minutes (9.4093ms)
+✔ C-O1-2: no occurrence when a voice says it did not take place, when a voice is malformed, or when the flag comes from an integrity refusal (9.8682ms)
+✔ C-O1-2: corrections, late reports, a resolution, a refused correction, duplicates, a re-read and a round trip (85.9901ms)
+✔ C-O1-2: an interrupted run in dispute (the device whole, the athlete's stop) is an occurrence, and SB-1 still asks for its stop; a later declaration answers it (5.076ms)
+✔ C-O1-2: a strength session in dispute on its loads is an occurrence for STRENGTH, never its sets or loads (2.9904ms)
+✔ SEC-O1-01b/c engine (symptom stop at 12 minutes): corrected to not done, then weekly reviews, a round trip and a replay: the restart asks; a later declaration or a stated reason answers (1552.4682ms)
+✔ SEC-O1-01b/c engine (zero-minute stop, no symptom): corrected to not done, then weekly reviews, a round trip and a replay: the restart asks; a later declaration or a stated reason answers (1179.2503ms)
+✔ C-O1-2 engine: a run reported by the watch and by the athlete with other minutes (head-on, kept), a round trip: the restart reads the record's pause as the control (495.5517ms)
+✔ SEC-O1-02 (p1 C1/C3): a valid stop after a refused borrowed-activity or self-flagged report in one review is read as in the next review: kept, SB-1 asks (7.8358ms)
+✔ SEC-O1-02: what stays: the borrowed report is refused and never kept, the session that holds the activity is flagged, a carried dispute still quarantines (4.1177ms)
+✔ QRE-O1-02: an event id reused from another session quarantines no dispute here: a later correction meets the row in force and the device voice is heard (6.076ms)
+✔ SEC-O1-03: 2000 disputing reports on one session keep at most VOICE_LIMIT voices; the row stays disputed; a replay changes nothing; a stop beyond the limit is still kept once (344.1594ms)
+✖ cycle 1 (QRE-SC-02 a): past the limit, the athlete's "not done" arriving last is still kept: no occurrence, the same pause in both orders (9.9576ms)
+✖ cycle 1 (QRE-SC-02 b, SEC-SC-01 a): past the limit, a "done" after the declaration arriving last is still kept: SB-1 asks in both orders (8.3409ms)
+✔ cycle 1 (QRE-SC-03): a stop:false is no stop; an excess report beyond the limit writes nothing, so its id reused later is not an integrity conflict of the row (8.1571ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 19
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4504.3992
+
+✖ failing tests:
+
+test at test\v1core-sc-safety-continuity.test.mjs:290:1
+✖ cycle 1 (QRE-SC-02 a): past the limit, the athlete's "not done" arriving last is still kept: no occurrence, the same pause in both orders (9.9576ms)
+  AssertionError [ERR_ASSERTION]: FREEZE-6 kept it; d6348ff dropped it
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-continuity/CoachingCore/test/v1core-sc-safety-continuity.test.mjs:295:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\v1core-sc-safety-continuity.test.mjs:300:1
+✖ cycle 1 (QRE-SC-02 b, SEC-SC-01 a): past the limit, a "done" after the declaration arriving last is still kept: SB-1 asks in both orders (8.3409ms)
+  AssertionError [ERR_ASSERTION]: d6348ff: DECLARED
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/carva/Desktop/myApp/MyApp/.claude/worktrees/v1-core-continuity/CoachingCore/test/v1core-sc-safety-continuity.test.mjs:306:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -285,3 +285,34 @@ test('SEC-O1-03: 2000 disputing reports on one session keep at most VOICE_LIMIT 
  const few=rec(N([rep('A','sd',dx,{reportedAt:dx+'T12:00:00Z',actual:{completed:true,minutes:70}}),rep('U','sd',dx,{reportedAt:dx+'T12:10:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:9}})],T2,ld));
  assert.deepEqual(voices(live(few,'sd')[0]),['A','D','U']);
 });
+
+// ---------- cycle 1 (SEC-SC-01, QRE-SC-02, QRE-SC-03): beyond the limit, arrival order never decides what f08 reads ----------
+test('cycle 1 (QRE-SC-02 a): past the limit, the athlete\'s "not done" arriving last is still kept: no occurrence, the same pause in both orders',()=>{
+ const dev=rep('D','sd',dx,{reportedAt:dx+'T11:00:00Z',...WATCH('hk-d')}),ld=rec(N([dev],T1));
+ const done=Array.from({length:20},(_,i)=>rep('d'+i,'sd',dx,{reportedAt:dx+'T12:'+String(10+i).padStart(2,'0')+':00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:5+i%7}}));
+ const nd=rep('ND','sd',dx,{reportedAt:dx+'T12:45:00Z',actual:NOT_DONE}),ndFirst={...nd,reportedAt:dx+'T12:05:00Z'};
+ const last=rec(N([...done,nd],T2,ld)),first=rec(N([ndFirst,...done],T2,ld));
+ assert.ok(voices(live(last,'sd')[0]).includes('ND'),'FREEZE-6 kept it; d6348ff dropped it');
+ assert.equal(read(last).last,read(first).last,'the same last executed day in both orders');
+ assert.deepEqual(read(last).pause,read(first).pause);
+ assert.ok(Object.keys(live(last,'sd')[0].provenance.parts).length<=16+3);
+});
+test('cycle 1 (QRE-SC-02 b, SEC-SC-01 a): past the limit, a "done" after the declaration arriving last is still kept: SB-1 asks in both orders',()=>{
+ const N0=rep('N0','sd',dx,{reportedAt:dx+'T11:00:00Z',actual:NOT_DONE}),l=rec(N([N0],T1));
+ const nds=Array.from({length:20},(_,i)=>rep('n'+i,'sd',dx,{reportedAt:dx+'T12:'+String(10+i).padStart(2,'0')+':00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:NOT_DONE,response:{...U,recovery:i%2?'ADVERSE':'COMPATIBLE'}}));
+ const D=rep('DN','sd',dx,{reportedAt:dx+'T12:45:00Z',actual:{completed:true,minutes:30}}),Dfirst={...D,reportedAt:dx+'T12:05:00Z'};
+ const last=rec(N([...nds,D],T2,l)),first=rec(N([Dfirst,...nds],T2,l));
+ assert.ok(live(last,'sd')[0].conflicted,'disputed (the responses disagree)');
+ assert.equal(declared([R0,...last]),ASKED,'d6348ff: DECLARED');
+ assert.equal(declared([R0,...first]),ASKED);
+});
+test('cycle 1 (QRE-SC-03): a stop:false is no stop; an excess report beyond the limit writes nothing, so its id reused later is not an integrity conflict of the row',()=>{
+ const D=rep('D','sx',dx,{reportedAt:dx+'T11:00:00Z'}),l=rec(N([D],T1));
+ assert.equal(declared([R0,...rec(N([fix(D,{eventId:'D2',actual:{completed:false,minutes:0,stop:false}})],T3,l))]),true,'stop:false is no stop');
+ const dev=rep('D','sd',dx,{reportedAt:dx+'T11:00:00Z',...WATCH('hk-d')}),ld=rec(N([dev],T1));
+ const spam=Array.from({length:30},(_,i)=>rep('sp'+i,'sd',dx,{reportedAt:dx+'T12:30:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:5+i%7}}));
+ const r=rec(N(spam,T2,ld)),row=live(r,'sd')[0];assert.ok(!voices(row).includes('sp29'),'sp29 is an excess report');
+ const reuse=rep('sp29','sd',dx,{reportedAt:dx+'T13:00:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:99}});
+ const after=live(rec(N([reuse],T3,r)),'sd')[0];
+ assert.equal(after.provenance.conflict,row.provenance.conflict,'its id was never the record\'s: no EVENT_ID_REUSED flag');
+});

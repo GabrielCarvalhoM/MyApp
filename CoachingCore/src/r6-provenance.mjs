@@ -118,8 +118,11 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
   // SEC-O1-03: a flagged row keeps at most VOICE_LIMIT voices (its own and merged parts included). Beyond it a refused report stays refused,
   // with its input hash in `excluded`, and is not kept, unless it declares a stop and the row holds none yet: SB-1 never loses its signal. The
   // dispute then stays as the voices kept make it (no credit while they disagree); nothing is written for the excess, so a replay changes nothing.
+  // Cycle 1 (SEC-SC-01, QRE-SC-02): f08 reads three things from the voices (a stop, "took place", "did not take place"), so beyond the limit a
+  // report is also kept when it says one of them and no kept voice does: at most VOICE_LIMIT+3 voices, and arrival order never decides them.
   const kept=Object.values(row.provenance.parts),stops=p=>isObject(p?.actual)&&p.actual.stop!==undefined&&p.actual.stop!==null&&p.actual.stop!==false;
-  if(kept.length>=VOICE_LIMIT&&!(stops(o)&&!kept.some(stops)))return;
+  const took=p=>isObject(p?.actual)&&(p.actual.completed===true||Number(p.actual.minutes)>0),untaken=p=>isObject(p?.actual)&&!took(p);
+  if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;
   row.provenance.parts[o.eventId]=partOf(o);row.provenance.inputHashes={...(row.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
   byEvent.set(o.eventId,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  };

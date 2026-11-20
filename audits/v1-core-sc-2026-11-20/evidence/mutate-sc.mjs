@@ -1,5 +1,5 @@
 // Safety Continuity: the mutants of this line's runtime (v1-f08.mjs and r6-provenance.mjs), each applied to its own copy in a new scratch extract
-// of HEAD, and the focal and successor files run against it. Usage: node mutate-sc.mjs <existing scratch parent>. Read-only for the
+// of HEAD (cycle 1: L3–L7 and S6 added for the voice-limit exceptions and QRE's QM8/QM11), and the focal and successor files run against it. Usage: node mutate-sc.mjs <existing scratch parent>. Read-only for the
 // repository; no deletion anywhere (the mutated file is rewritten with its original bytes after each mutant).
 import fs from 'node:fs';import path from 'node:path';import {execFileSync,spawnSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
 const here=path.dirname(fileURLToPath(import.meta.url)),ROOT=path.resolve(here,'..','..','..'),CC=path.join(ROOT,'CoachingCore'),parent=process.argv[2];
@@ -17,9 +17,14 @@ const MUTANTS={
  'O4 occurrence counted as executed (amount credited)':[F08,"const executed=o=>o&&!o.fact&&!o.conflicted&&o.superseded!==true&&did(o.actual);","const executed=o=>o&&!o.fact&&(!o.conflicted||o.provenance?.conflict==='CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS')&&o.superseded!==true&&did(o.actual);"],
  'Q1 heldBefore reads any quarantine (FREEZE-6)':[PROV,"const heldBefore=disputedHere();","const heldBefore=quarantined.has(identity);"],
  'Q2 quarantine refusal reads any quarantine (FREEZE-6)':[PROV,"if(!admit&&disputedHere()&&o.conflicted!==true){","if(!admit&&quarantined.has(identity)&&o.conflicted!==true){"],
- 'L1 no voice limit (FREEZE-6)':[PROV,"if(kept.length>=VOICE_LIMIT&&!(stops(o)&&!kept.some(stops)))return;",""],
- 'L2 the limit without the stop exception':[PROV,"if(kept.length>=VOICE_LIMIT&&!(stops(o)&&!kept.some(stops)))return;","if(kept.length>=VOICE_LIMIT)return;"],
- 'L3 the stop exception unbounded':[PROV,"if(kept.length>=VOICE_LIMIT&&!(stops(o)&&!kept.some(stops)))return;","if(kept.length>=VOICE_LIMIT&&!stops(o))return;"],
+ "L1 no voice limit (FREEZE-6)":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;",""],
+ "L2 the limit without exceptions":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT)return;"],
+ "L3 the stop exception only (d6348ff)":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT&&![stops].some(says=>says(o)&&!kept.some(says)))return;"],
+ "L4 no 'took place' exception":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT&&![stops,untaken].some(says=>says(o)&&!kept.some(says)))return;"],
+ "L5 no 'did not take place' exception":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT&&![stops,took].some(says=>says(o)&&!kept.some(says)))return;"],
+ "L6 the exceptions unbounded":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)))return;"],
+ "L7 the excess indexed by event id (QRE QM11)":[PROV,"if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says)))return;","if(kept.length>=VOICE_LIMIT&&![stops,took,untaken].some(says=>says(o)&&!kept.some(says))){byEvent.set(o.eventId,row);return;}"],
+ 'S6 stop:false read as a stop (QRE QM8)':[F08,"const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null&&a.stop!==false;","const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null;"],
 };
 const FILES=['v1core-sc-safety-continuity.test.mjs','v1core-sc-successors.test.mjs'];
 const dir=fs.mkdtempSync(path.join(parent,'sc-mutants-')),tar=path.join(dir,'tree.tar');
