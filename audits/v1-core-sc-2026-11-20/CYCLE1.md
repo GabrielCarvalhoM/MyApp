@@ -77,9 +77,28 @@ SEC-SC-01 and QRE-SC-02 are one defect. Both judges preferred the same fix. This
 
 | ID | What | Binding | Owner |
 |---|---|---|---|
-| SEC-SC-02 | Medium, pre-existing (SEC-O-O1-2): a voice is dated by its row's `observedAt`, so a stop or "done" observed after the declaration but kept on a row observed before it gives DECLARED on both trees | Before real athletes | Core with Security |
-| SEC-SC-03 | Low, pre-existing: a stop with minutes > 0 observed on the restart day gives no pause, so no SB-1 question | Before real athletes | Core |
-| SEC-SC-O-1 / -O-2 | The integrity first-claim class (depends on SEC-CORE-03 and C-F01-2); a client-supplied `provenance.conflict` label is kept by the incoming normalizer | Observation | Security |
+| SEC-SC-02 | Medium, pre-existing (SEC-O-O1-2): a voice is dated by its row's `observedAt`, so a stop or "done" observed after the declaration but kept on a row observed before it gives DECLARED on both trees | Before real athletes | Core with QRE (C-F01-1 r2), plus SSCTR |
+| SEC-SC-03 | Low, pre-existing: a stop with minutes > 0 observed on the restart day gives no pause, so no SB-1 question | Before real athletes | Core plus SSCTR |
+| SEC-SC-O-1 / -O-2 | The integrity first-claim class (depends on SEC-CORE-03 and C-F01-2); a client-supplied `provenance.conflict` label is kept by the incoming normalizer | Observation | Core/QRE (O-1), Core (O-2) |
 | QRE-SC-04 | See QRE-SC-01c | Before real-athlete weekly-review gating | Core with Security |
 | O-SC-1 | Agreeing-merge growth | Before real athletes (with SEC-O1-03) | Core |
 | O-SC-S1..S4 | SSCTR observations (SSCTR_SC_R1) | Observation | As recorded |
+
+## 6. R2 (on `a0fe31a`), as received
+
+| Judge | Verdict | Result |
+|---|---|---|
+| SEC_SC_R2 | **PASS** | SEC-SC-01 closed; SEC-O1-03 PARTIAL recorded correctly; no regression |
+| QRE_SC_R2 | **READY_WITH_CONDITIONS** | QRE-SC-02 and QRE-SC-01 closed; nothing binds |
+| SSCTR_SC_R2 | **ACCEPT_WITH_CONDITIONS** | O-SC-S3 closed, no sporting change; C-SC-1..3 discharged |
+
+Record corrections from R2, made here:
+- **Owners in §5** are as SEC_SC_R1 §3 states them.
+- **SEC-SC-O-3** (Low, Security): agreeing merges also land on a disputed row. With 2000 matching reports the row holds 35–36 parts (FREEZE-6: 2002). The 19 bound covers disputing voices only. This belongs with O-SC-1 under SEC-O1-03 PARTIAL.
+- **QRE wording note.** "An excess id reused writes nothing" holds when the reused facts add no class the kept voices lack. A reused id whose facts say something new is kept as a voice, as any report is.
+- **QRE-SC-03** (non-binding; owner the author): two surviving QRE mutants, both test gaps with correct code:
+  - QM8b, `stop:false` read as a stop inside `keepVoice`;
+  - QM10, "took place" read as completed only.
+
+  Each needs one assertion. They are not added after R2, because the bound test bytes are the judged ones.
+- **SSCTR** (under C-O1-3, not a new condition): past the limit an ADVERSE response can still be dropped depending on order. C-O1-3's readers must not depend on which excess voices were kept.
