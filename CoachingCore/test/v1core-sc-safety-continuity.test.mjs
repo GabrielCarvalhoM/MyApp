@@ -315,4 +315,7 @@ test('cycle 1 (QRE-SC-03): a stop:false is no stop; an excess report beyond the 
  const reuse=rep('sp29','sd',dx,{reportedAt:dx+'T13:00:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:99}});
  const after=live(rec(N([reuse],T3,r)),'sd')[0];
  assert.equal(after.provenance.conflict,row.provenance.conflict,'its id was never the record\'s: no EVENT_ID_REUSED flag');
+ // the same in one review (the event index of that pass): the reused id meets nothing, the row keeps its head-on dispute (and its occurrence)
+ const one=live(rec(N([...spam,reuse],T2,ld)),'sd')[0];
+ assert.deepEqual([one.provenance.conflict,voices(one)],[row.provenance.conflict,voices(row)],'in one review too');
 });
