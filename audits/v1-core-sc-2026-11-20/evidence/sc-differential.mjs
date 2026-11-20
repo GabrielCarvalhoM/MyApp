@@ -292,7 +292,8 @@ const OF=await loadF(oldRoot),NF=await loadF(newRoot);
 const READY=NF.readReadiness({declaredRecovered:true,sports:{RUN:{ready:true}},warningSigns:Object.fromEntries(NF.READINESS_SIGNS.map(k=>[k,false]))},{programmed:['RUN']}).value;
 const R0=NF.readinessFact({athleteId:ATH},{event:{id:'ready-sc'},readiness:{}},'2026-10-01T08:00:00.000Z',READY,null);
 const asOfDay=DAY;
-const readyAt=t=>({...R0,declaredAt:t});
+// cycle 1 (QRE-SC-01a): a declaration at another instant is made as the engine makes one (sealed), never a copy with its date changed
+const readyAt=t=>NF.readinessFact({athleteId:ATH},{event:{id:'ready-sc-'+t},readiness:{}},t,READY,null);
 const f08View=(F,record,withReady)=>{const r=F.restartIntake({intake:{asOf:asOfDay,athlete:{id:ATH,recent:{runMinutesPerWeek:600,runDaysPerWeek:7}}},record:json(withReady?[typeof withReady==='string'?readyAt(withReady):R0,...record]:record),asOf:asOfDay,screen:()=>({status:'NONCLINICAL'}),athleteId:ATH});
  return {status:r.status,declared:r.facts?.pause?.readinessDeclared===true,pause:r.facts?.pause?{weeks:r.facts.pause.weeks,bySportDays:r.facts.pause.bySportDays}:null,last:r.carried?.priorCapacity?.lastExecutedDay??null,bySport:r.carried?.priorCapacity?.lastExecutedBySport??null,recent:r.intake?.athlete?.recent??null};};
 const didA=x=>x?.completed===true||Number(x?.minutes)>0,stoppedA=x=>!!x&&typeof x==='object'&&x.stop!==undefined&&x.stop!==null&&x.stop!==false;
@@ -344,7 +345,7 @@ for(let c=0;c<N;c++){
   const r=rec(b);
   for(const withReady of [true,false,justBeforeStop(r)].filter(v=>v!==null)){
    const x=f08View(OF,r,withReady),y=f08View(NF,r,withReady);
-   if(canon(x)===canon(y)){SC.f08.same++;continue;}
+   if(canon(x)===canon(y)){SC.f08.same++;if(typeof withReady==='string')SC.f08.beforeStopCompared=(SC.f08.beforeStopCompared??0)+1;continue;}
    const inv=SC.f08.invariants;
    if(!x.declared&&y.declared)inv.declaredWhereOldAsked++;
    if(canon(x.recent)!==canon(y.recent))inv.recentDiffers++;
