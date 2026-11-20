@@ -262,9 +262,13 @@ const voices=o=>[o.actual,...Object.values(isObj(o.provenance?.parts)?o.provenan
 const wellFormed=a=>isObj(a)&&typeof a.completed==='boolean'&&!['minutes','sets','reps','loadKg','distanceKm'].some(k=>a[k]!==undefined&&a[k]!==null&&(!Number.isFinite(a[k])||a[k]<0));
 // (ii) A session the record shows took place, only its amount (or response) disputed: a correction in conflict with a report still in force
 // (the normalizer keeps every voice on that row), each voice saying it took place. Its occurrence is a fact for the pause, the last executed
-// day and trainedAfter; its amount stays quarantined (QRE-R6-14), so C-Q08-1 counts neither its minutes nor its day. A direct conflict keeps
-// one voice only, so the record does not show its occurrence. (iii) A "not done" in force is no execution.
-const occurred=o=>executed(o)||!!o&&!o.fact&&o.conflicted===true&&o.superseded!==true&&o.provenance?.conflict==='CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE'&&isObj(o.provenance?.parts)&&Object.keys(o.provenance.parts).length>1&&voices(o).every(a=>wellFormed(a)&&did(a));
+// day and trainedAfter; its amount stays quarantined (QRE-R6-14), so C-Q08-1 counts neither its minutes nor its day. (iii) A "not done" in
+// force is no execution.
+// C-O1-2 (SSCTR_O1_R1 decision A): since O-1 a head-on dispute keeps every voice too (the refused report is a part of the flagged row), so it
+// reads as (ii): the same voices give the same occurrence whichever conflict path flagged the row. A flag an integrity refusal raised (an event id
+// reused with other facts, an activity of another session) keeps no voice of what refused it, so it shows no occurrence (the interim, erring long).
+const VOICED_DISPUTES=['CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE','CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS'];
+const occurred=o=>executed(o)||!!o&&!o.fact&&o.conflicted===true&&o.superseded!==true&&VOICED_DISPUTES.includes(o.provenance?.conflict)&&isObj(o.provenance?.parts)&&Object.keys(o.provenance.parts).length>1&&voices(o).every(a=>wellFormed(a)&&did(a));
 // SB-1 (SEC-V1CPI-02, RC-11): a voice in force that says a session took place after the readiness declaration is training after it, in
 // conflict or not, so the declaration never stands in for a later stop on a disputed record. Only the readiness question reads it.
 const claimsDone=o=>!!o&&!o.fact&&o.superseded!==true&&voices(o).some(did);
@@ -278,6 +282,12 @@ const manualAt=o=>typeof o?.observedAt==='string'&&o.observedAt?(o.provenance?.p
 const sameExecution=(r,o)=>o.sessionId?r.sessionId===o.sessionId:activityOf(o)!==null?activityOf(r)===activityOf(o):manualAt(o)!==null&&!r.sessionId&&activityOf(r)===null&&manualAt(r)===manualAt(o);
 const replacedBy=(o,rows)=>rows.some(r=>r&&!r.fact&&r.eventId===o.supersededBy&&sameExecution(r,o));
 const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!replacedBy(o,rows)&&voices(o).some(did);
+// SEC-O1-01b/c (SEC_O1_R1 item 6, SSCTR_O1_R2 (c)): a declared stop is a safety signal, not an amount. Once on record it stays one wherever it
+// sits: the row in force, a voice kept on a disputed row, or a history row a correction replaced (the normalizer keeps every one). A correction,
+// the speaker rule or a resolution settles the amount, never the readiness question: only a readiness declaration made after the session
+// answers it. Every declared stop counts, whatever its reason and at zero minutes too (statedStop's reading: any value but none or false).
+const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null&&a.stop!==false;
+const stopOnRecord=o=>!!o&&!o.fact&&voices(o).some(stopped);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
@@ -317,7 +327,8 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  const facts={pause:null,restart:null};
  // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
  // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
- const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>voiced(o)&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ // SEC-O1-01b/c: a stop on record after the declaration asks as well, in force, kept or replaced.
+ const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>(voiced(o)||stopOnRecord(o))&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},...(!trainedAfter?{readinessDeclared:true}:{})};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
