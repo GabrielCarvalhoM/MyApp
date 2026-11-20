@@ -264,3 +264,24 @@ test('QRE-O1-02: an event id reused from another session quarantines no dispute 
  assert.ok(s1(one).some(([,c,v])=>c&&v.includes('W1')),'FREEZE-6: A9 in force, clean, not done, W1 retired unheard: '+JSON.stringify(s1(one)));
  assert.deepEqual(s1(one),s1(split),'one review reads as two');
 });
+
+// ---------- SEC-O1-03 (P1): a bounded number of kept voices per flagged row ----------
+test('SEC-O1-03: 2000 disputing reports on one session keep at most VOICE_LIMIT voices; the row stays disputed; a replay changes nothing; a stop beyond the limit is still kept once',async()=>{
+ const {VOICE_LIMIT}=await import('../src/r6-provenance.mjs');
+ const dev=rep('D','sd',dx,{reportedAt:dx+'T11:00:00Z',...WATCH('hk-d')}),ld=rec(N([dev],T1));
+ const spam=Array.from({length:2000},(_,i)=>rep('sp'+i,'sd',dx,{reportedAt:dx+'T12:30:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:5+i%7,pad:'x'.repeat(1000)}}));
+ const n=N(spam,T2,ld),r=rec(n),row=live(r,'sd')[0];
+ assert.equal(Object.keys(row.provenance.parts).length,VOICE_LIMIT,'FREEZE-6: 2001 voices, 2.6 MB');
+ assert.ok(Buffer.byteLength(JSON.stringify(r))<VOICE_LIMIT*1600,'the record is bounded');
+ assert.equal(n.excluded.length,2000,'every report is still refused, with its input hash');assert.ok(n.excluded.every(e=>typeof e.inputHash==='string'));
+ assert.equal(row.conflicted,true);
+ assert.deepEqual(rec(N(spam.slice(1990),T3,r)),json(rec(N([],T3,r))),'a replay of the excess changes nothing');
+ const stop=rep('ST','sd',dx,{reportedAt:dx+'T13:00:00Z',actual:{completed:false,minutes:3,stop:{reason:'SYMPTOM'}}});
+ const r2=rec(N([stop],T3,r)),row2=live(r2,'sd')[0];
+ assert.ok(voices(row2).includes('ST'),'a stop beyond the limit is kept while the row holds none');
+ assert.equal(declared([R0,...r2]),ASKED);
+ assert.equal(Object.keys(live(rec(N([{...stop,eventId:'ST2'}],T4,r2)),'sd')[0].provenance.parts).length,VOICE_LIMIT+1,'a second stop beyond it is not');
+ // At the measured load (a device, the athlete, a re-sync) nothing changes: the voices are all kept.
+ const few=rec(N([rep('A','sd',dx,{reportedAt:dx+'T12:00:00Z',actual:{completed:true,minutes:70}}),rep('U','sd',dx,{reportedAt:dx+'T12:10:00Z',source:{provider:'OTHER',quality:'UNVERIFIED'},actual:{completed:true,minutes:9}})],T2,ld));
+ assert.deepEqual(voices(live(few,'sd')[0]),['A','D','U']);
+});

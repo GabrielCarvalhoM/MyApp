@@ -59,6 +59,8 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
 // own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
 // holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
 const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
+/** SEC-O1-03: the most voices a flagged row keeps (measured: at most 3 on any row of the O-1 differential's 12 configurations). Exported for tests. */
+export const VOICE_LIMIT=16;
 /** O-1: who gave a part or a report, as far as the record shows: one device activity, else the athlete (an own source), else nobody known. */
 const speakerOf=p=>typeof p?.activityId==='string'&&p.activityId?'DEVICE:'+p.activityId:['MANUAL','SELF_REPORT'].includes(p?.sourceQuality)?'ATHLETE':null;
 /** A part that can be merged again: the same checks a report passes (completion, measures, response vocabulary). */
@@ -113,6 +115,11 @@ export function normalizeObservations(observations,{athleteId,asOf,maximumAgeDay
  const keepVoice=(row,o,source,activityId)=>{
   if(!isObject(row.provenance.parts))row.provenance.parts={[row.eventId]:partOf(row)};
   if(Object.hasOwn(row.provenance.parts,o.eventId))return;
+  // SEC-O1-03: a flagged row keeps at most VOICE_LIMIT voices (its own and merged parts included). Beyond it a refused report stays refused,
+  // with its input hash in `excluded`, and is not kept, unless it declares a stop and the row holds none yet: SB-1 never loses its signal. The
+  // dispute then stays as the voices kept make it (no credit while they disagree); nothing is written for the excess, so a replay changes nothing.
+  const kept=Object.values(row.provenance.parts),stops=p=>isObject(p?.actual)&&p.actual.stop!==undefined&&p.actual.stop!==null&&p.actual.stop!==false;
+  if(kept.length>=VOICE_LIMIT&&!(stops(o)&&!kept.some(stops)))return;
   row.provenance.parts[o.eventId]=partOf(o);row.provenance.inputHashes={...(row.provenance.inputHashes??{}),[o.eventId]:hash({...source,athleteId})};
   byEvent.set(o.eventId,row);if(activityId&&!byActivity.has(activityId))byActivity.set(activityId,row);
  };
