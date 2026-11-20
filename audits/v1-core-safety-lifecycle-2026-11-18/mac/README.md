@@ -428,7 +428,7 @@ Safety Continuity: corrected stop restart ASK ["athlete.pause.reasonCategory"] (
 - as mutações (19/19);
 - os casos de quarentena e de limite de vozes.
 
-Estão em `audits/v1-core-sc-2026-11-20/evidence/` e em `CoachingCore/test/v1core-sc-safety-continuity.test.mjs`.
+Estão em `audits/v1-core-sc-2026-11-20/evidence/` (registro do pacote: `audits/v1-core-sc-2026-11-20/MAC_PACKAGE.json`) e em `CoachingCore/test/v1core-sc-safety-continuity.test.mjs`.
 
 **Critério de equivalência no JavaScriptCore:** o do §4, em cada passo das vinte e quatro jornadas e de J5/P16. Um `DIVERGED` reprova.
 
