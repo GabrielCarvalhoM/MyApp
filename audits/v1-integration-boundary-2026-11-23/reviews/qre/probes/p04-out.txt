@@ -1,0 +1,7 @@
+(a) intact record version 2 read OK
+    acknowledgeRecordLoss on an intact record: OK -> read now NOT_ENROLLED stored GONE tombstone false
+(b) tampered: read INTEGRITY_FAILURE ack OK stored GONE
+(c) enroll write landed then threw: PERSISTENCE_FAILURE ; retry: CONFLICT_ALREADY_ENROLLED ; record version 1
+(d) anchor write failed; the answer: OK version 2 anchorStale surfaced: false
+    store rolled back to v1 (the anchor still says v1): OK version 1
+(e) store version race (no throw): CONFLICT_STALE_VERSION
