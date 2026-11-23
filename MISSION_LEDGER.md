@@ -1418,3 +1418,14 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
   - the queue stays at 235;
   - nothing pushed, merged or deleted.
 - **Checkpoint:** `audits/coachingcore-v1-run-calibration-2026-11-11/CHECKPOINT_V1RC.md`.
+
+
+<!-- V1INT-20261123-closure-r1 -->
+2026-11-23 · COACHINGCORE INTEGRATION BOUNDARY & CUSTODY FOUNDATION **CLOSED**, synthetic only; boundary successor V1INT-BOUNDARY-SUCCESSOR-1 (not an engine freeze).
+- **Line:** `claude/v1-cc-integration-foundation` from `e44d855` (FREEZE-7); candidate `a52db2b`, R1 `e3d193c`, cycle `d310faf`, R2 `0aa1288`, record after it. Nothing pushed or merged.
+- **What:** `src/boundary/integration.mjs` + `admission.mjs` over the frozen V1CIB custody and `v1-safety-index.mjs`; `custody.mjs` amended in `reconcile`/`evolves` only (the frozen custody refused every second voice arriving in a later review).
+- **Judges R2:** Security PASS_WITH_CONDITIONS, QRE READY_WITH_CONDITIONS, SSCTR ACCEPT_WITH_CONDITIONS (no dose change).
+- **Gates:** C-F01-2 closed at the portable layer (synthetic); SEC-CORE-03 closed at the portable layer, native part and D1 open; C-NCC-3 closed on the implemented paths; SEC-O1-03 boundary part PARTIAL.
+- **Open before real athletes:** QRE-INT-02 (Founder decision, Core + SSCTR), SEC-INT-02R, SEC-INT-04/05/06/07/08/12, native obligations, IOS_REVALIDATION_PENDING, and the earlier gates.
+- **Regression:** FREEZE-7 bound files 49/49; suite 1905/1862/43 (base 42 + one by design, with a successor test).
+- **Report:** `audits/v1-integration-boundary-2026-11-23/FINAL_REPORT.md`.
