@@ -110,3 +110,10 @@ test('QRE-INT-11 A04L: the limits are the reviewed values (a change to them is a
  assert.deepEqual({...LIMITS},{observationBytes:16384,requestBytes:131072,observationsPerRequest:32,depth:8,arrayLength:64,keysPerObject:32,stringLength:512,idLength:128,
   correctionsPerReport:16,deviceActivitiesPerSession:4,reportsPerDayPerChannel:8,intakeBytes:65536,intakeArrayLength:512});
 });
+
+test('SEC-INT-01 / QRE C-R2-1 (S02): the screen the athlete answers in their own review is the one a later delivery carries: a workout 40 days on is recorded after a screen answered on day 35',()=>{
+ const t=athlete({id:'c1-s02'});t.enroll();const run=t.sessions(0).find(s=>s.id==='w0-run-d1');
+ t.set(addDays(run.date,35),'09:00');assert.equal(code(t.screen(ELIG(addDays(run.date,35)))),'OK');
+ t.set(addDays(run.date,40),'09:00');const r=t.it.importActivities({actor:t.actor,clientRequestId:'hk-40',expectedVersion:t.version(),activities:[t.watch(run)]});
+ assert.deepEqual(r.activities.map(a=>a.outcome),['RECORDED']);
+});

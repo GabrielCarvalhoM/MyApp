@@ -40,7 +40,7 @@ Files: `CoachingCore/src/boundary/integration.mjs`, `CoachingCore/src/boundary/a
 
 A review answer is custody's (`decisionId`, `version`, `status`, `action`, `decision`, `observationIds`, …) plus:
 - `recorded`: the report ids the decision put on record;
-- `notRecorded`: `[{eventId, reason}]`, the engine's refusal reason (for example `FUTURE_OBSERVATION`) or `NOT_RECORDED_BY_THIS_DECISION` (for example an ASK for the screen). **The HealthKit queue keeps a workout until it is in `recorded`.**
+- `notRecorded`: `[{eventId, reason}]`, the engine's refusal reason (for example `FUTURE_OBSERVATION`) or `NOT_RECORDED_BY_THIS_DECISION` (for example an ASK for the screen). The HealthKit queue keys off `activities` (below), not `recorded`.
 - `warningSignScreen`: the engine's `runFormat.warningSignScreen`. Custody's answer never carried it, so before this boundary the app could not learn that the engine asked for the warning-sign screen.
 - `duplicates`: the indexes of reports already on record exactly. An athlete's report in force sent again unchanged is a duplicate too (cycle 1, SSCTR-INT-01).
 - `activities` (device): `[{index, activityId, outcome: RECORDED|NOT_RECORDED|DUPLICATE, eventId, reason?}]`. **The HealthKit queue keys off this** (cycle 1, QRE-INT-05).
@@ -156,7 +156,7 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
   - The engine (E-1 parts, O-1 voices; FREEZE-4..7) evolves the row in force in place.
   - V1CIB's `reconcile` (FREEZE-1) predates that and admitted only supersession annotations.
   - So the core V1 run journey (watch in the morning, effort in the evening) could not be recorded at all.
-  - 13 of the 41 new tests fail on the base custody.
+  - 13 of the 41 tests of `a52db2b` failed on the base custody (`evidence/red-on-base-custody.txt`); the cycle-1 tests, 12 of 12 on `a52db2b` (`evidence/red-cycle1-on-a52db2b.txt`).
 - **Change (as tightened in cycle 1, SEC-INT-02/QRE-INT-04):** `reconcile` also admits `evolves(x, y, incoming)`, and only in the two shapes `r6-provenance.mjs` writes (CYCLE1.md has the full rule), as the same append-only annotation entry. The conditions are:
   - every field but `actual`, `response`, `provenance` and `conflicted` is byte-equal;
   - in `provenance`, everything but `parts`, `mergedSourceIds`, `inputHashes` and `conflict` is byte-equal;
@@ -203,7 +203,8 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 
 ## 8. Regression
 
-- **Suite:** see `evidence/suite-candidate.txt` and the final report.
+- **Suite:** `evidence/suite-a52db2b.txt` (candidate) and `evidence/suite-cycle1.txt` (cycle 1: 1905 tests, 1862 pass, 43 fail; the base's 42 unchanged plus the FREEZE-7 preservation test by design, succeeded by `test/v1int-successor.test.mjs`).
+- **Successor:** `V1INT-BOUNDARY-SUCCESSOR-1` (`CoachingCore/v1/BOUNDARY_SUCCESSOR_V1INT_1.json`, verifier `scripts/v1int-boundary-1.mjs --check`): synthetic only, approved by SEC_INT_R2 and QRE_INT_R2 (C-R2-1 met: `evidence/c-r2-1-mutants.json`, C06-C09 and S02 killed). Not an engine freeze.
 - **Earlier custody, boundary, F08, V1FC and Core tests:** unchanged and passing as on the base, except the preservation tests of freezes that bind `custody.mjs`, which name it by design.
 - **Earlier freezes (corrected in cycle 1, QRE-INT-07 / SEC-INT-10):**
   - FREEZE-7's 49 bound files are byte-identical, **by a direct hash check** against `RUNTIME_FREEZE_V1CORE_7.json`;
@@ -221,7 +222,7 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 6. **HealthKit:**
    - `HKWorkout.uuid` → `activityId`; the end date → `observedAt` (ISO with offset); running only.
    - Distance, duration and route presence → `actual` and `sourceQuality`; nothing the athlete states.
-   - Workouts are queued until each is in `recorded`; deletions (`HKDeletedObject`) are not sent (open: what a withdrawn device voice means, with C-O1-5).
+   - Workouts are queued until each is RECORDED or DUPLICATE in `activities`; link **at most one workout per session** until Core decides how fragments of one run count (SSCTR_INT_R2: they are read as voices, not summed); deletions (`HKDeletedObject`) are not sent (open: what a withdrawn device voice means, with C-O1-5).
    - Re-delivery of the same workout is harmless: duplicate, or the device's own correction.
 7. **Crypto host functions in JavaScriptCore:** `createHmac('sha256', key).update(text).digest('hex')` and `timingSafeEqual` / `Buffer.from` for custody (the P0 prelude marks them unsupported today). `integration.mjs` and `admission.mjs` themselves need neither `Buffer` nor `TextEncoder`.
 8. **Clock:** the device clock; `CLOCK_BEHIND_RECORD` is shown as "check date and time", with a recovery screen. A revocation always passes. A clock set **ahead** is open (SEC-INT-04, Founder D1).
@@ -240,7 +241,8 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
      - never retry forever.
    - **Enroll retry:** `CONFLICT_ALREADY_ENROLLED` after a write that landed means the plan exists; read it.
    - **Athlete drafts:** keep them until their id is in `recorded`. Build every correction from the report in force. A refusal that names safety fields is never discarded.
-   - **Warning-sign screen:** show it whenever the answer carries one, whatever the status.
+   - **Warning-sign screen:** show it whenever the answer carries one, whatever the status. A duplicate-only answer is not an engine reading: its `warningSignScreen: null` never means no screen is needed; read `presentation.readings` (SSCTR-INT-R2-01).
+   - **Between a restart and the new plan's start,** a review (a background delivery included) answers HOLD and the view reads NEEDS_INPUT; the queue may wait for the start (QRE O-R2-1, Product/UX).
    - **Run forms:** forms with a stop, effort or conditions go through `submit`; the frozen `api.mjs` `logRun` cannot carry them (SSCTR-INT-06).
    - **Rule expiry:** the app shows sessions only through views that honour the authority-expiry state (SEC-CORE-07).
 
@@ -256,6 +258,12 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 - the expiry of the R7-B0 records;
 - Founder D1/D2/D3;
 - **IOS_REVALIDATION_PENDING**.
+
+**Open after R2 (owners and triggers as in CYCLE1.md and the successor record):**
+- **SEC-INT-02R** (Medium, defence in depth): six forged merge or kept-voice shapes that only a misbehaving engine produces still pass `evolves` (a new voice's ADVERSE/IMPAIRED dropped from the merged response, a disagreeing "not done" read as a merge, fabricated rpe/effort or kept-voice minutes, an unknown conflict label). Owner Engineering + QRE; before any real athlete or any change to the r6-provenance merge or kept-voice code.
+- **SEC-INT-12** (Low): unknown keys inside `actual` are kept as sent; Engineering/Core, before real athletes.
+- **SEC-INT-05 rest:** free text inside intake anchors is kept; Core (close anchors to known keys).
+- **SEC-INT-04:** a revocation passes under a behind clock; erasure and reports do not (Engineering); a clock ahead and trusted time are Founder D1.
 
 **Routed in cycle 1 (CYCLE1.md):**
 - QRE-INT-02 (core): the engine keeps a report fact for a report an ASK did not record, and the re-sent workout is then withheld from pace evidence. Owners Core + SSCTR + Founder; blocks real athletes.

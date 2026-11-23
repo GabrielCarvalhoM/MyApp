@@ -192,3 +192,21 @@ test('custody amendment: what is not the engine\'s evolution by this review stay
  const flagged=custodyRig((m,l)=>{const t=l.find(o=>!o.fact&&o.sessionId==='w0-run-d1'&&!o.superseded);delete t.conflicted;return l;});flagged.send('hk',[DEV(flagged.b)],'08:00');flagged.send('form',[ATH(flagged.b,{minutes:90})],'12:00');
  assert.equal(flagged.row().conflicted,true);assert.equal(flagged.send('hk2',[DEV(flagged.b,'HK2')],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','a conflict flag is never cleared in place');
 });
+
+test('custody amendment (QRE C-R2-1): each guard of evolves is needed: a kept voice whose own safety facts differ from its report, a non-boolean flag on a merge, a relabelled conflict, a kept voice whose amount changed',()=>{
+ const rowOf=l=>l.find(o=>!o.fact&&o.sessionId==='w0-run-d1'&&!o.superseded);
+ // C06: the dispute keeps the athlete as a voice; that voice says ADVERSE although the report did not (only the per-voice check sees it).
+ const c06=custodyRig((m,l)=>{const t=rowOf(l);const k=Object.keys(t.provenance.parts).find(k=>!t.provenance.parts[k].activityId);t.provenance.parts[k].response={...t.provenance.parts[k].response,recovery:'ADVERSE'};return l;});
+ c06.send('hk',[DEV(c06.b)],'08:00');assert.equal(c06.send('form',[ATH(c06.b,{minutes:90})],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','C06');
+ // C07: an agreeing merge marked with a flag that is not the boolean true.
+ const c07=custodyRig((m,l)=>{rowOf(l).conflicted='maybe';return l;});c07.send('hk',[DEV(c07.b)],'08:00');
+ assert.equal(c07.send('form',[ATH(c07.b)],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','C07');
+ // C08: a disputed row keeps a third voice, and its conflict label is changed.
+ const c08=custodyRig((m,l)=>{rowOf(l).provenance.conflict='SOMETHING_ELSE';return l;});c08.send('hk',[DEV(c08.b)],'08:00');c08.send('form',[ATH(c08.b,{minutes:90})],'12:00');
+ assert.equal(c08.row().conflicted,true);assert.equal(c08.send('hk2',[DEV(c08.b,'HK2',60)],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','C08');
+ // C09: a kept voice (the dispute) with the amount of the row changed.
+ const c09=custodyRig((m,l)=>{rowOf(l).actual.minutes=5;return l;});c09.send('hk',[DEV(c09.b)],'08:00');
+ assert.equal(c09.send('form',[ATH(c09.b,{minutes:90})],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','C09');
+ // Controls: the same reviews without the alteration are kept.
+ const ok=custodyRig();ok.send('hk',[DEV(ok.b)],'08:00');assert.equal(ok.send('form',[ATH(ok.b,{minutes:90})],'12:00').ok,true);assert.equal(ok.send('hk2',[DEV(ok.b,'HK2',60)],'20:00').ok,true);
+});
