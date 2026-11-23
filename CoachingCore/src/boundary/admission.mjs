@@ -1,0 +1,115 @@
+// V1 CoachingCore Integration Boundary (Founder mission of 2026-11-23, SEC-O1-03 boundary part): structural admission of what the app hands the
+// coach. It decides nothing about training: it refuses, whole and with a reproducible code, a request whose shape or size is not one a real
+// report can have, before custody or the engine reads any of it. Nothing is ever truncated or repaired, so no evidence (a stop, an adverse
+// response, a correction's target) can be silently lost here: a refused request records nothing and is answered with what to fix.
+// The limits are multiples of measured legitimate shapes (scratch measure on 2026-11-23, three synthetic plans, 112 run and 54 strength
+// reports: a run report 300 B, depth 2; a strength report 1,434 B, depth 7, arrays of 5, 6 keys per object; at most 6 sessions a week).
+export const ADMISSION_VERSION='V1INT-ADMISSION-1';
+export const LIMITS=Object.freeze({
+ /** One observation as JSON text: ~11x the largest strength report measured; room for ~150 laps of a run. */
+ observationBytes:16384,
+ /** One request as JSON text (every observation and the review's own fields). */
+ requestBytes:131072,
+ /** Observations per request: ~5x the most sessions a measured week holds; a HealthKit backfill is sent in chunks of this size. */
+ observationsPerRequest:32,
+ /** Nesting below the observation (measured 7: observation > actual > exercises > [i] > sets > [j] > load > value). */
+ depth:8,
+ /** Any one array (measured 5). */
+ arrayLength:64,
+ /** Keys of any one object (measured 6). */
+ keysPerObject:32,
+ /** Any string value or key. Identifiers have the engine's own ceiling (a report id is no longer than 128). */
+ stringLength:512,idLength:128,
+ /** Corrections of one report chain by its speaker (the athlete correcting one session again and again). */
+ correctionsPerReport:16,
+ /** Distinct device activities linked to one planned session (a run recorded in more than one workout). */
+ deviceActivitiesPerSession:4,
+ /** New reports one channel makes for one local day (no athlete trains in more than a handful of sessions a day). */
+ reportsPerDayPerChannel:8,
+});
+/** The keys an observation may hold, per channel. Everything else is refused (unknown), or boundary-owned (set by the boundary, never sent). */
+export const OBSERVATION_KEYS=Object.freeze({
+ ATHLETE:Object.freeze(['sessionId','occurrenceDate','observedAt','actual','response','correctionOf']),
+ DEVICE:Object.freeze(['activityId','activityType','sessionId','observedAt','actual','sourceQuality']),
+});
+/** What only the boundary sets on an observation: identity, author, provenance and the report clocks (C-NCC-3 b: one clock). */
+export const BOUNDARY_OWNED=Object.freeze(['eventId','athleteId','reportedAt','correctedAt','source','provider','canonicalActivityId','provenance','context','superseded','supersededBy','supersededAt','conflicted','stale','sourceHash','localDate','fact']);
+/** The device qualities a HealthKit workout may state (r6-provenance sourceQuality; the engine's own words). */
+export const DEVICE_QUALITIES=Object.freeze(['WEARABLE_FULL','WEARABLE_PARTIAL']);
+/** The activity types the V1 device channel admits: running only (strength is logged by the athlete; DR-117-123: HealthKit inbound, iOS). */
+export const DEVICE_ACTIVITY_TYPES=Object.freeze(['RUN']);
+
+const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
+const present=v=>v!==undefined;
+/** The structural measure of a JSON value, stopping at the first excess. Returns null or {limit, at}. Never throws (cycles are refused). */
+export function structureError(value,{depth=LIMITS.depth,arrayLength=LIMITS.arrayLength,keysPerObject=LIMITS.keysPerObject,stringLength=LIMITS.stringLength}={}){
+ const seen=new Set();
+ const walk=(v,d,at)=>{
+  if(d>depth)return {limit:'depth',at};
+  if(typeof v==='string')return v.length>stringLength?{limit:'stringLength',at}:null;
+  if(typeof v==='number')return Number.isFinite(v)?null:{limit:'number',at};
+  if(v===null||typeof v==='boolean'||v===undefined)return null;
+  if(typeof v!=='object')return {limit:'type',at};
+  if(seen.has(v))return {limit:'cycle',at};seen.add(v);
+  if(Array.isArray(v)){if(v.length>arrayLength)return {limit:'arrayLength',at};for(let i=0;i<v.length;i++){const e=walk(v[i],d+1,`${at}[${i}]`);if(e)return e;}return null;}
+  const keys=Object.keys(v);if(keys.length>keysPerObject)return {limit:'keysPerObject',at};
+  for(const k of keys){if(k.length>stringLength)return {limit:'stringLength',at:`${at}.<key>`};const e=walk(v[k],d+1,`${at}.${k}`);if(e)return e;}
+  return null;
+ };
+ return walk(value,0,'$');
+}
+/** The UTF-8 length of a string, counted from its code points (no TextEncoder: a bare JavaScriptCore context has none). A lone surrogate counts
+ * 3, as its replacement character would. */
+export function utf8Length(s){let n=0;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);
+ if(c<0x80)n+=1;else if(c<0x800)n+=2;else if(c>=0xd800&&c<0xdc00&&i+1<s.length&&(s.charCodeAt(i+1)&0xfc00)===0xdc00){n+=4;i++;}else n+=3;}return n;}
+const bytes=v=>{try{const t=JSON.stringify(v);return typeof t==='string'?utf8Length(t):Infinity;}catch{return Infinity;}};
+const idOk=v=>typeof v==='string'&&v.length>0&&v.length<=LIMITS.idLength&&!/[\u0000-\u001f]/.test(v);
+const instantOk=v=>typeof v==='string'&&/T/.test(v)&&Number.isFinite(Date.parse(v));
+const dayOk=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v+'T00:00:00Z'));
+/** The names (never the values) of what an observation or review states that the warning-sign screen and SB-1 read: shown on a refusal so the
+ * app keeps the athlete's draft and asks again. It is no clinical reading and changes nothing on record. */
+export function safetyFieldsOf(x){
+ const out=new Set();
+ const obs=o=>{if(!isObj(o))return;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};
+  if(present(a.stop)&&a.stop!==null&&a.stop!==false)out.add('actual.stop');if(r.recovery==='ADVERSE')out.add('response.recovery');if(r.nextDayFunction==='IMPAIRED')out.add('response.nextDayFunction');};
+ if(isObj(x)&&Array.isArray(x.observations))x.observations.forEach(obs);else obs(x);
+ if(isObj(x))for(const k of ['wellbeing','wellbeingCheck','readiness','interruption','eligibility'])if(present(x[k])&&x[k]!==null)out.add(k);
+ return [...out].sort();
+};
+const refuse=(code,extra={})=>({ok:false,error:{code,...extra}});
+/**
+ * The shape of one observation from `channel`. Returns {ok:true} or a refusal {code, index, field|limit, at}. It does not build the engine's
+ * observation (integration.mjs does) and reads no record.
+ */
+export function observationError(channel,o,index){
+ if(!isObj(o))return {code:'INVALID_OBSERVATION',index};
+ const keys=OBSERVATION_KEYS[channel];if(!keys)return {code:'UNKNOWN_CHANNEL',index};
+ for(const k of Object.keys(o)){if(!present(o[k]))continue;
+  if(BOUNDARY_OWNED.includes(k))return {code:'BOUNDARY_OWNED_FIELD',index,field:k};
+  if(!keys.includes(k))return {code:'UNKNOWN_FIELD',index,field:k};}
+ if(bytes(o)>LIMITS.observationBytes)return {code:'LIMIT_EXCEEDED',index,limit:'observationBytes'};
+ const s=structureError(o);if(s)return {code:'LIMIT_EXCEEDED',index,limit:s.limit,at:s.at};
+ if(!isObj(o.actual)||typeof o.actual.completed!=='boolean')return {code:'INVALID_OBSERVATION',index,field:'actual.completed'};
+ for(const k of Object.keys(o.actual))if(BOUNDARY_OWNED.includes(k))return {code:'BOUNDARY_OWNED_FIELD',index,field:'actual.'+k};
+ if(present(o.response)&&!isObj(o.response))return {code:'INVALID_OBSERVATION',index,field:'response'};
+ for(const k of ['sessionId','correctionOf'])if(present(o[k])&&!idOk(o[k]))return {code:'INVALID_IDENTIFIER',index,field:k};
+ if(present(o.observedAt)&&!instantOk(o.observedAt))return {code:'INVALID_TIME',index,field:'observedAt'};
+ if(present(o.occurrenceDate)&&!dayOk(o.occurrenceDate))return {code:'INVALID_TIME',index,field:'occurrenceDate'};
+ if(channel==='DEVICE'){
+  if(!idOk(o.activityId))return {code:'INVALID_IDENTIFIER',index,field:'activityId'};
+  if(!DEVICE_ACTIVITY_TYPES.includes(o.activityType))return {code:'UNSUPPORTED_ACTIVITY',index,field:'activityType'};
+  if(!instantOk(o.observedAt))return {code:'INVALID_TIME',index,field:'observedAt'};
+  if(present(o.sourceQuality)&&!DEVICE_QUALITIES.includes(o.sourceQuality))return {code:'INVALID_OBSERVATION',index,field:'sourceQuality'};
+ }else if(!present(o.observedAt)&&!present(o.occurrenceDate))return {code:'INVALID_TIME',index,field:'occurrenceDate'};
+ return null;
+}
+/** The whole request: its size, the number of observations, and the structure of every other field of the review. */
+export function requestError(review,{observations}){
+ if(!isObj(review))return {code:'INVALID_REQUEST'};
+ if(observations!==undefined&&!Array.isArray(observations))return {code:'INVALID_REQUEST',field:'observations'};
+ if((observations?.length??0)>LIMITS.observationsPerRequest)return {code:'LIMIT_EXCEEDED',limit:'observationsPerRequest'};
+ if(bytes(review)>LIMITS.requestBytes)return {code:'LIMIT_EXCEEDED',limit:'requestBytes'};
+ const {observations:_o,...rest}=review,s=structureError(rest);if(s)return {code:'LIMIT_EXCEEDED',limit:s.limit,at:s.at};
+ return null;
+}
+export {refuse};

@@ -94,14 +94,39 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
  const ANNOTATION=['superseded','supersededBy','supersededAt'];
  /** A correction's only change to a stored report: the supersession annotation added (R7-A: facts a correction replaced travel as inert history). */
  const annotates=(x,y)=>!x.fact&&x.superseded!==true&&y.superseded===true&&typeof y.supersededBy==='string'&&typeof y.supersededAt==='string'&&digest(Object.fromEntries(Object.entries(y).filter(([k])=>!ANNOTATION.includes(k))))===digest(x);
- /** The engine's record against the stored one: every stored row comes back, unchanged or (a report) only annotated by a correction; nothing else may
-  * change or disappear. Returns {added, annotations} in the engine's order, or {error}. The engine regroups rows by type; custody keeps arrival order. */
- function reconcile(doc,after){
+ /** V1 Integration Boundary (2026-11-23, candidate amendment): a stored report the engine evolved in place with this review's own reports, as
+  * E-1 merges another voice into the row in force and O-1 keeps a disputing voice and flags the row (r6-provenance.mjs). Its identity and every
+  * other field are unchanged; its parts, merged ids and input hashes only grow, each earlier one kept byte-equal, and every new one is a report
+  * of this review (`incoming`); the row's own voice is kept as it was; a conflict flag is never cleared in place. Its amount and response change
+  * only together with such a part. Anything else is still a stored row changed. */
+ const EVOLVING=['actual','response','provenance','conflicted'],PROVENANCE_EVOLVING=['parts','mergedSourceIds','inputHashes','conflict'];
+ const omit=(o,keys)=>Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k)));
+ function evolves(x,y,incoming){
+  if(!isObj(x)||!isObj(y)||x.fact||y.fact||x.superseded===true||y.superseded===true)return false;
+  if(digest(omit(x,EVOLVING))!==digest(omit(y,EVOLVING)))return false;
+  const px=isObj(x.provenance)?x.provenance:{},py=isObj(y.provenance)?y.provenance:{};
+  if(digest(omit(px,PROVENANCE_EVOLVING))!==digest(omit(py,PROVENANCE_EVOLVING)))return false;
+  if(x.conflicted===true&&y.conflicted!==true)return false;
+  const partsX=isObj(px.parts)?px.parts:null,partsY=isObj(py.parts)?py.parts:{};
+  if(partsX){for(const [k,v] of Object.entries(partsX))if(!Object.hasOwn(partsY,k)||digest(partsY[k])!==digest(v))return false;}
+  else if(Object.hasOwn(partsY,x.eventId)&&(digest(partsY[x.eventId]?.actual)!==digest(x.actual)||digest(partsY[x.eventId]?.response)!==digest(x.response)))return false;
+  const added=Object.keys(partsY).filter(k=>partsX?!Object.hasOwn(partsX,k):k!==x.eventId);
+  if(!added.length||!added.every(k=>incoming.has(k)))return false;
+  const list=v=>Array.isArray(v)?v:[],mx=list(px.mergedSourceIds),my=list(py.mergedSourceIds);
+  if(!mx.every(k=>my.includes(k))||!my.filter(k=>!mx.includes(k)).every(k=>incoming.has(k)||k===x.eventId))return false;
+  const hx=isObj(px.inputHashes)?px.inputHashes:{},hy=isObj(py.inputHashes)?py.inputHashes:{};
+  if(Object.entries(hx).some(([k,v])=>hy[k]!==v)||!Object.keys(hy).filter(k=>!Object.hasOwn(hx,k)).every(k=>incoming.has(k)))return false;
+  return true;
+ }
+ /** The engine's record against the stored one: every stored row comes back, unchanged, (a report) only annotated by a correction, or (a report)
+  * evolved by this review's own reports (evolves); nothing else may change or disappear. Returns {added, annotations} in the engine's order, or
+  * {error}. The engine regroups rows by type; custody keeps arrival order. */
+ function reconcile(doc,after,incoming=new Set()){
   const by=new Map();for(const y of after){const k=identity(y);if(by.has(k))return {error:'a row identity appears twice'};by.set(k,y);}
   const annotations=[];
   for(let i=0;i<doc.rows.length;i++){const x=doc.rows[i];if(x===null)continue;const k=identity(x),y=by.get(k);
    if(!y)return {error:'a stored row is missing'};by.delete(k);
-   if(digest(y)===digest(x))continue;if(annotates(x,y)){annotations.push({i,row:y});continue;}return {error:'a stored row changed'};}
+   if(digest(y)===digest(x))continue;if(annotates(x,y)||evolves(x,y,incoming)){annotations.push({i,row:y});continue;}return {error:'a stored row changed'};}
   return {added:[...by.values()],annotations};
  }
  /** Loads, authorizes and verifies the actor's document; {doc} or {error}. */
@@ -194,7 +219,7 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
     }
    }catch(e){return fail('OPERATIONAL_ERROR','The coach could not decide this request',{cause:e?.constructor?.name??'Error'});}
    // The record must keep every stored row (an absent record is the record unchanged: OBS-FFC-01); only new rows and a correction's annotation pass.
-   const after=Array.isArray(r.actualLedger)?r.actualLedger:visible(doc),rec=reconcile(doc,after);
+   const after=Array.isArray(r.actualLedger)?r.actualLedger:visible(doc),rec=reconcile(doc,after,new Set((Array.isArray(observations)?observations:[]).map(x=>x?.eventId).filter(x=>typeof x==='string')));
    if(rec.error)return fail('ENGINE_CONTRACT_VIOLATION',`The decision did not keep the stored record (${rec.error}); nothing was kept`);
    const {added,annotations}=rec,decisionId=id('dc');
    // Defence in depth: while the new record holds a hold, no prescription leaves custody, whatever the engine returned.

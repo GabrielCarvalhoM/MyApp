@@ -1,0 +1,18 @@
+# RED: the v1int tests on the base custody.mjs (e44d855 bytes), integration.mjs and admission.mjs as in the candidate
+ℹ tests 41
+ℹ pass 28
+ℹ fail 13
+✖ C-F01-2: after every operation the stored unit is the engine's last answer (ledger as a set, every carried record, reference state, model), and the next call is handed exactly that unit
+✖ C-NCC-3 (b): a workout imported days later keeps its day; a retroactive form keeps the day the athlete states; run and strength on one day are both kept
+✖ C-NCC-3 (b): reportedAt and correctedAt are the operation's clock (the asOf custody gives the engine), to the second; the activity's own times are kept as sent
+✖ C-NCC-3 (b): the same instant written in another offset (travel) is the same instant and the same local day of the plan; a clock behind the record is refused, never moved forward
+✖ Journey B, a run done: the watch in the morning, the athlete's effort in the evening, the Sunday review: one execution, two voices, never a second credit
+✖ Journey F, a restart: a plan, its records, a pause, a new plan from the canonical record: the engine is handed the whole record and every carried record, and the new plan continues after a restore
+✖ SEC-CORE-03 case 11: a correction after the record was restored by a new process is bound the same way (origins are kept under the record's seal)
+✖ SEC-CORE-03 case 2: the athlete contests an imported workout: a correction of the device's report is refused; the athlete's own account of the session is admitted as their voice beside it
+✖ SEC-CORE-03 case 9: a correction with forged provenance, another session, or another workout is refused; the record is unchanged
+✖ SEC-CORE-03 cases 12 and 13: a workout linked to its session is credited once with the athlete's form (one row, two voices); linked to a session of another sport, or to none the plan holds, it is refused
+✖ SEC-O1-03 boundary (O-SC-1, SEC-SC-O-3): 2000 workouts on one session keep at most deviceActivitiesPerSession; 2000 re-syncs of one workout change nothing
+✖ custody amendment: the engine's own evolutions of the row in force are kept (a second voice, either order; a dispute; a third voice), each under an append-only chain entry; FREEZE-1 refused them all
+✖ custody amendment: what is not the engine's evolution by this review stays refused: an earlier voice changed or dropped, a voice no report of this review gave, a cleared conflict, an identity field, an amount changed with no new voice
+✖ failing tests:

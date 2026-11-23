@@ -446,3 +446,44 @@ Nada disso é material, então o `PerformanceTests` físico **não** é repetido
 - `core-oracle.mjs` passa;
 - `vm-check.mjs` dá `ok: true`, com JIT e com `--jitless`;
 - uma segunda execução não muda nada.
+
+## 14. Integration Boundary (2026-11-23): a fronteira app ↔ treinador
+
+Contrato: `audits/v1-integration-boundary-2026-11-23/INTEGRATION_BOUNDARY_CONTRACT.md`. Linha: `claude/v1-cc-integration-foundation`. **Ordem:** primeiro a revalidação do FREEZE-7 como está (§2–§4, §8–§13, bundle inalterado); só depois esta seção. Ela não muda o bundle da revalidação.
+
+**O que já foi feito e testado no Windows (Node):** `integration.mjs` + `admission.mjs` sobre a custódia V1CIB (com a emenda de `reconcile`), 42 testes `v1int-*`, as jornadas A–H, e o oráculo `int-oracle.mjs`. O oráculo grava `Fixtures/int.json`: quatro jornadas (B duas vozes, D correção, G segurança, H recusas), com a reexecução determinística e igual, byte a byte, à execução viva. **Nada rodou em JavaScriptCore.**
+
+**A interface que o Swift consome:** a de `createBoundary({custody: createIntegration(...)})` (`api.mjs`), mais `importActivities` e `presentation`. As respostas já são projeções pequenas: `view`, `recorded`, `notRecorded`, `warningSignScreen`. O documento custodiado nunca atravessa a ponte, exceto para gravar.
+
+**Passos no Mac:**
+1. **Prelude:** em `audits/v1-aif-p0-jsc-2026-11-17/build/prelude.js`, trocar os `__unsupported` de `createHmac` e `timingSafeEqual` por shims sobre duas funções novas do host:
+   - `hmacSHA256(keyRef, text) -> hex`: CryptoKit `HMAC<SHA256>`, com a chave lida do Keychain pelo host; o JS recebe só uma referência opaca;
+   - `constantTimeEqual(a, b) -> bool`.
+   
+   Acrescentar um `Buffer.from(string)` mínimo, só para o `timingSafeEqual` da custódia.
+2. **Entrada:** `build/entry.mjs` passa a exportar `integration` (`CoachingCore/src/boundary/integration.mjs`) e `store` (`store.mjs`, só o `memoryStore` para o teste). Depois, religar com `link.mjs` e registrar o novo SHA.
+3. **Teste:** `FocalTests.testIntegrationBoundary`, no padrão de `testCoreSafetyLifecycle`. Ele carrega `Fixtures/int.json`, avalia `driver` no `JSContext` e chama `__intfocal(M, inputJSON)` com `M = {integration, store, value}` do registro do bundle. Compara o resultado com `expected`.
+   - `stored` igual em todos os passos prova que o HMAC do host é o do Node, ou seja, que a mesma chave dá os mesmos selos.
+   - Qualquer `DIVERGED` reprova.
+   
+   ```
+   node audits/v1-core-safety-lifecycle-2026-11-18/mac/int-oracle.mjs     # git diff vazio
+   T FocalTests/testIntegrationBoundary -testLanguage pt-BR -testRegion BR 2>&1 | tee int-pt.log
+   ```
+4. **Persistência nativa** (o contrato de `store.mjs`):
+   - um arquivo por atleta em Application Support;
+   - gravação `tmp + fsync + rename`, com sucesso só depois do rename;
+   - proteção `completeUntilFirstUserAuthentication`.
+   
+   **Âncora:** um item do Keychain `{version, docMac}` por atleta.
+   
+   Testes no aparelho: matar o processo entre a gravação e a resposta (a repetição tem de dar `replayed`); apagar o arquivo (tem de dar `RECORD_LOST`); restaurar um arquivo antigo (tem de dar `RECORD_ROLLED_BACK`); disco cheio (tem de dar `PERSISTENCE_FAILURE`, sem confirmação).
+5. **HealthKit** (permissão de leitura: `HKWorkoutType`, `distanceWalkingRunning`, `heartRate` se a RWS pedir; sem escrita na V1):
+   - **Entrega:** `HKObserverQuery` + `HKAnchoredObjectQuery` com background delivery.
+   - **Mapeamento:** `HKWorkout.uuid` → `activityId`; `endDate` → `observedAt`; corrida apenas.
+   - **Fila:** o workout sai da fila só quando o seu id estiver em `recorded`. Com `ASK` pela triagem, ele volta junto com a próxima triagem do atleta.
+   - **Exclusões:** não são enviadas (C-O1-5 em aberto).
+   - **Canal:** só esse caminho chama `importActivities`.
+6. **Teste no iPhone físico:** entrega em background com o app fechado; reentrega do mesmo workout (duplicado, nenhuma versão nova); workout editado (correção do próprio aparelho); relógio do aparelho atrasado (`CLOCK_BEHIND_RECORD`); reinício do processo no meio de uma gravação; uma semana real sincronizada.
+
+**O que exige o iPhone físico:** a entrega do HealthKit em background, a proteção de arquivo com o aparelho bloqueado, o Keychain, a morte do processo durante a gravação e o HMAC do CryptoKit igual ao do Node. Nada disso foi provado no Windows.
