@@ -21,13 +21,14 @@ test('SEC-O1-03 boundary: one request of 2000 reports is refused whole (no trunc
 
 test('SEC-O1-03 boundary (O-SC-1): 2000 agreeing reports of one session by the athlete keep one report: the record does not grow',()=>{
  const {t,run}=setup('lim-2');t.set(run.date);assert.equal(code(t.weekly(run.date,[t.form(run)])),'OK');const size=t.store.raw('lim-2').length,v=t.version();
- const form=t.form(run),codes=new Set();for(let k=0;k<2000;k++)codes.add(code(t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date),observations:[form]},{expectedVersion:v})));
- assert.deepEqual([...codes],['ALREADY_REPORTED']);assert.equal(t.version(),v);assert.equal(t.store.raw('lim-2').length,size);assert.equal(t.live(run.id).length,1);
+ const form=t.form(run),codes=new Set();for(let k=0;k<2000;k++){const r=t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date),observations:[form]},{expectedVersion:v});codes.add(code(r));assert.equal(r.duplicate,true);}
+ const other=t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date),observations:[{...form,actual:{...form.actual,minutes:41}}]},{expectedVersion:v});assert.equal(code(other),'ALREADY_REPORTED','a changed report of the session is a correction to make');
+ assert.deepEqual([...codes],['OK']);assert.equal(t.version(),v);assert.equal(t.store.raw('lim-2').length,size);assert.equal(t.live(run.id).length,1);
 });
 
 test('SEC-O1-03 boundary (O-SC-1, SEC-SC-O-3): 2000 workouts on one session keep at most deviceActivitiesPerSession; 2000 re-syncs of one workout change nothing',()=>{
- const {t,run}=setup('lim-3');t.set(run.date,'20:00');const codes=[],w=t.watch(run);let v=t.version();
- for(let k=0;k<2000;k++){const r=t.import([{...w,activityId:`HK-${k}`}],{eligibility:ELIG(run.date),expectedVersion:v});if(r.ok)v=r.version;codes.push(code(r));}
+ const {t,run}=setup('lim-3');t.set(run.date,'20:00');const codes=[],w=t.watch(run);t.screen(ELIG(run.date));let v=t.version();
+ for(let k=0;k<2000;k++){const r=t.import([{...w,activityId:`HK-${k}`}],{expectedVersion:v});if(r.ok)v=r.version;codes.push(code(r));}
  assert.equal(codes.filter(c=>c==='OK').length,LIMITS.deviceActivitiesPerSession);assert.deepEqual([...new Set(codes.slice(LIMITS.deviceActivitiesPerSession))],['LIMIT_EXCEEDED']);
  const parts=Object.keys(t.live(run.id)[0].provenance.parts??{}).length;assert.ok(parts<=LIMITS.deviceActivitiesPerSession,`${parts} voices`);
  const size=t.store.raw('lim-3').length;for(let k=0;k<2000;k++)assert.equal(t.import([{...w,activityId:'HK-0'}],{expectedVersion:v}).duplicate,true);

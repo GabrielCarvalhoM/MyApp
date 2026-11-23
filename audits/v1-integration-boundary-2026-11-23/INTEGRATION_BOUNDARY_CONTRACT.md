@@ -32,7 +32,7 @@ Files: `CoachingCore/src/boundary/integration.mjs`, `CoachingCore/src/boundary/a
 |---|---|---|
 | `enroll({actor, intake, consents})` | — | First plan. The carried records the engine returns are kept with it. |
 | `submit({actor, clientRequestId, expectedVersion, review})` | **ATHLETE** | Every athlete form (all of `api.mjs`). |
-| `importActivities({actor, clientRequestId, expectedVersion, activities, eligibility?})` | **DEVICE** | HealthKit workouts: `{activityId, activityType:'RUN', sessionId?, observedAt, actual, sourceQuality?}`. |
+| `importActivities({actor, clientRequestId, expectedVersion, activities})` | **DEVICE** | HealthKit workouts: `{activityId, activityType:'RUN', sessionId?, observedAt (with offset), actual, sourceQuality?}`. Nothing else: a delivery carries the athlete's **own last screen**, byte for byte, and states none of its own (cycle 1, SEC-INT-01). No screen yet: `SCREEN_REQUIRED`. Empty: `NOTHING_TO_IMPORT`. |
 | `restart({actor, intake, expectedVersion})` | — | A new plan from the record custody holds, with every carried record. |
 | `accept` / `decline` / `setConsent` / `eraseHealthFacts` / `eraseAccount` | — | Custody's, with the carried records carried forward. |
 | `acknowledgeRecordLoss({actor})` | — | The athlete's explicit act after `RECORD_LOST` / `RECORD_ROLLED_BACK`. |
@@ -42,7 +42,9 @@ A review answer is custody's (`decisionId`, `version`, `status`, `action`, `deci
 - `recorded`: the report ids the decision put on record;
 - `notRecorded`: `[{eventId, reason}]`, the engine's refusal reason (for example `FUTURE_OBSERVATION`) or `NOT_RECORDED_BY_THIS_DECISION` (for example an ASK for the screen). **The HealthKit queue keeps a workout until it is in `recorded`.**
 - `warningSignScreen`: the engine's `runFormat.warningSignScreen`. Custody's answer never carried it, so before this boundary the app could not learn that the engine asked for the warning-sign screen.
-- `duplicates`: the indexes of workouts already on record exactly.
+- `duplicates`: the indexes of reports already on record exactly. An athlete's report in force sent again unchanged is a duplicate too (cycle 1, SSCTR-INT-01).
+- `activities` (device): `[{index, activityId, outcome: RECORDED|NOT_RECORDED|DUPLICATE, eventId, reason?}]`. **The HealthKit queue keys off this** (cycle 1, QRE-INT-05).
+- `anchorStale: true` when the record was kept but its anchor could not be written; the native layer writes the anchor again (QRE-INT-08).
 
 ## 3. C-F01-2: the unit of custody
 
@@ -118,6 +120,8 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 | Restored data | what the seal, chain and carried MAC verify with the device key | anything that fails them |
 | Invalid / unknown origin | nothing; refused | — |
 
+**The screen** (cycle 1): only the athlete states one, at onboarding or in their own review. The boundary keeps the last one under the carried MAC and sends it, unchanged, with every delivery. The engine judges whether it is current. A delivery can never answer the warning-sign screen.
+
 **Not closed by these tests** (pinned by "scope, stated"): a caller that reaches `importActivities` *is* the device for this boundary. Whether the channel really comes from HealthKit, and how the key and entry points are protected, is a native obligation (§9). Founder D1 (the device-custody threat model) also still applies: an owner of a modified device is out of scope.
 
 ## 5. C-NCC-3: formats and time
@@ -153,7 +157,7 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
   - V1CIB's `reconcile` (FREEZE-1) predates that and admitted only supersession annotations.
   - So the core V1 run journey (watch in the morning, effort in the evening) could not be recorded at all.
   - 13 of the 41 new tests fail on the base custody.
-- **Change:** `reconcile` also admits `evolves(x, y, incoming)`, as the same append-only annotation entry. The conditions are:
+- **Change (as tightened in cycle 1, SEC-INT-02/QRE-INT-04):** `reconcile` also admits `evolves(x, y, incoming)`, and only in the two shapes `r6-provenance.mjs` writes (CYCLE1.md has the full rule), as the same append-only annotation entry. The conditions are:
   - every field but `actual`, `response`, `provenance` and `conflicted` is byte-equal;
   - in `provenance`, everything but `parts`, `mergedSourceIds`, `inputHashes` and `conflict` is byte-equal;
   - every earlier part and input hash is kept byte-equal;
@@ -181,6 +185,7 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 | device activities per session | 4 | |
 | new reports per channel per local day | 8 | |
 
+- **Intake** (cycle 1, SEC-INT-05): `enroll` and `restart` intakes are bounded by `intakeBytes` 65,536 and `intakeArrayLength` 512 (measured: 1,128 B, depth 5, arrays of 8 over ten profiles; a run history may be long). Depth, keys and strings are bounded as for reports.
 - **Behaviour:** the whole request is refused with `{code, index, limit|field, at}`, and nothing is recorded or truncated. A refusal names the safety fields the request carried (`safetyFields`: names only, no values), so the app keeps the athlete's draft. No hold or clinical state is invented: the stop is recorded when it is sent in an admissible request, and the engine then asks.
 - **Athlete channel:** a second new report of a session is `ALREADY_REPORTED`, with the id to correct. That bounds the O-SC-1 agreeing growth from that channel.
 - **Abuse shapes (tested):**
@@ -200,9 +205,10 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 
 - **Suite:** see `evidence/suite-candidate.txt` and the final report.
 - **Earlier custody, boundary, F08, V1FC and Core tests:** unchanged and passing as on the base, except the preservation tests of freezes that bind `custody.mjs`, which name it by design.
-- **Earlier freezes:**
-  - `v1core-freeze-7.mjs --check` stays 49/49: FREEZE-7 binds no boundary file;
-  - COACHINGCORE-V1-FREEZE-1 binds `custody.mjs`, and its check names the amended file.
+- **Earlier freezes (corrected in cycle 1, QRE-INT-07 / SEC-INT-10):**
+  - FREEZE-7's 49 bound files are byte-identical, **by a direct hash check** against `RUNTIME_FREEZE_V1CORE_7.json`;
+  - `node CoachingCore/scripts/v1core-freeze-7.mjs --check` **exits 1 on this line by design**: its preservation step names `custody.mjs` (bound by COACHINGCORE-V1-FREEZE-1) and this line's added files, as each predecessor verifier does on its successor line;
+  - a successor record and verifier for `custody.mjs` are issued only if the R2 rechecks approve the amendment.
 - No engine file changed.
 
 ## 9. Native obligations (before any real athlete)
@@ -218,7 +224,25 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
    - Workouts are queued until each is in `recorded`; deletions (`HKDeletedObject`) are not sent (open: what a withdrawn device voice means, with C-O1-5).
    - Re-delivery of the same workout is harmless: duplicate, or the device's own correction.
 7. **Crypto host functions in JavaScriptCore:** `createHmac('sha256', key).update(text).digest('hex')` and `timingSafeEqual` / `Buffer.from` for custody (the P0 prelude marks them unsupported today). `integration.mjs` and `admission.mjs` themselves need neither `Buffer` nor `TextEncoder`.
-8. **Clock:** the device clock; `CLOCK_BEHIND_RECORD` is shown as "check date and time".
+8. **Clock:** the device clock; `CLOCK_BEHIND_RECORD` is shown as "check date and time", with a recovery screen. A revocation always passes. A clock set **ahead** is open (SEC-INT-04, Founder D1).
+9. **Added after R1 (SEC-INT-09, QRE-INT-05/06/09, SSCTR-INT-02/03/05/06):**
+   - **HealthKit sources:** only workouts recorded by a device count as the device. A user-entered workout (`HKMetadataKeyWasUserEntered`) or another app's write is the athlete's statement and goes through the form, if at all.
+   - **No screen on the device route:** never build one there.
+   - **One writer:** across the app, its extensions and background delivery, under a file lock with compare-and-swap. A stale lock is recovered after the writer is known dead. Leftover `.tmp` and `.lock` files are cleaned at start.
+   - **Logs:** no payload content in logs or crash reports (inventory egress rule).
+   - **Keychain:** items can survive a reinstall. On reinstall, check the anchor against the store before `RECORD_LOST` is shown.
+   - **`acknowledgeRecordLoss`:** reachable only from the RECORD_LOST / ROLLED_BACK screen.
+   - **The queue:**
+     - a workout leaves it only on RECORDED or DUPLICATE;
+     - one refused at admission (the refusal names its index) is set aside, and the rest of its chunk is re-sent;
+     - a refused link (UNKNOWN_SESSION after a restart, SPORT_MISMATCH) is re-sent **unlinked**;
+     - link a workout to a session only when the match is unambiguous;
+     - never retry forever.
+   - **Enroll retry:** `CONFLICT_ALREADY_ENROLLED` after a write that landed means the plan exists; read it.
+   - **Athlete drafts:** keep them until their id is in `recorded`. Build every correction from the report in force. A refusal that names safety fields is never discarded.
+   - **Warning-sign screen:** show it whenever the answer carries one, whatever the status.
+   - **Run forms:** forms with a stop, effort or conditions go through `submit`; the frozen `api.mjs` `logRun` cannot carry them (SSCTR-INT-06).
+   - **Rule expiry:** the app shows sessions only through views that honour the authority-expiry state (SEC-CORE-07).
 
 ## 10. Open gates (unchanged by this mission)
 
@@ -232,6 +256,10 @@ After building, the frozen voice guard `checkReportVoice` applies: a device repo
 - the expiry of the R7-B0 records;
 - Founder D1/D2/D3;
 - **IOS_REVALIDATION_PENDING**.
+
+**Routed in cycle 1 (CYCLE1.md):**
+- QRE-INT-02 (core): the engine keeps a report fact for a report an ASK did not record, and the re-sent workout is then withheld from pace evidence. Owners Core + SSCTR + Founder; blocks real athletes.
+- SEC-INT-04 (clock ahead, D1), SEC-INT-06 (overall growth), SEC-INT-07 (no route past the limits), SEC-INT-08 (G07 erasure scope).
 
 **New observations:**
 - `runFormatRecord` and `origins` hold health-derived stop facts that `eraseHealthFacts` does not erase (Security / G07).

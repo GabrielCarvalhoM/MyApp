@@ -26,6 +26,9 @@ export const LIMITS=Object.freeze({
  deviceActivitiesPerSession:4,
  /** New reports one channel makes for one local day (no athlete trains in more than a handful of sessions a day). */
  reportsPerDayPerChannel:8,
+ /** Cycle 1 (SEC-INT-05): the intake of a first plan or a restart (measured: 1,128 B, depth 5, arrays of 8 over ten synthetic profiles; a
+  * run history brought at onboarding may hold many runs, hence its own array bound). */
+ intakeBytes:65536,intakeArrayLength:512,
 });
 /** The keys an observation may hold, per channel. Everything else is refused (unknown), or boundary-owned (set by the boundary, never sent). */
 export const OBSERVATION_KEYS=Object.freeze({
@@ -64,7 +67,8 @@ export function utf8Length(s){let n=0;for(let i=0;i<s.length;i++){const c=s.char
  if(c<0x80)n+=1;else if(c<0x800)n+=2;else if(c>=0xd800&&c<0xdc00&&i+1<s.length&&(s.charCodeAt(i+1)&0xfc00)===0xdc00){n+=4;i++;}else n+=3;}return n;}
 const bytes=v=>{try{const t=JSON.stringify(v);return typeof t==='string'?utf8Length(t):Infinity;}catch{return Infinity;}};
 const idOk=v=>typeof v==='string'&&v.length>0&&v.length<=LIMITS.idLength&&!/[\u0000-\u001f]/.test(v);
-const instantOk=v=>typeof v==='string'&&/T/.test(v)&&Number.isFinite(Date.parse(v));
+/** An instant with its offset (Z or ±hh:mm): one without is read in the runtime's own zone (QRE-INT-02, cycle 1). */
+const instantOk=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,9})?)?(Z|[+-]\d{2}:\d{2})$/.test(v)&&Number.isFinite(Date.parse(v));
 const dayOk=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v+'T00:00:00Z'));
 /** The names (never the values) of what an observation or review states that the warning-sign screen and SB-1 read: shown on a refusal so the
  * app keeps the athlete's draft and asks again. It is no clinical reading and changes nothing on record. */
@@ -74,8 +78,18 @@ export function safetyFieldsOf(x){
   if(present(a.stop)&&a.stop!==null&&a.stop!==false)out.add('actual.stop');if(r.recovery==='ADVERSE')out.add('response.recovery');if(r.nextDayFunction==='IMPAIRED')out.add('response.nextDayFunction');};
  if(isObj(x)&&Array.isArray(x.observations))x.observations.forEach(obs);else obs(x);
  if(isObj(x))for(const k of ['wellbeing','wellbeingCheck','readiness','interruption','eligibility'])if(present(x[k])&&x[k]!==null)out.add(k);
+ // Cycle 1 (SSCTR-INT-01): a review of how the athlete feels, a check, a readiness declaration or a break is itself safety content.
+ if(isObj(x)&&SAFETY_KINDS.includes(x.kind))out.add('kind:'+x.kind);
  return [...out].sort();
 };
+/** The review kinds that are themselves safety content (F08 and a declared break). */
+export const SAFETY_KINDS=Object.freeze(['NOT_FEELING_100','WELLBEING_CHECK','READINESS_DECLARATION','RETURN_AFTER_PAUSE']);
+/** The intake of a first plan or a restart: its size and structure (cycle 1, SEC-INT-05). Returns null or a refusal. */
+export function intakeError(intake){
+ if(!isObj(intake))return {code:'INVALID_REQUEST',field:'intake'};
+ if(bytes(intake)>LIMITS.intakeBytes)return {code:'LIMIT_EXCEEDED',limit:'intakeBytes'};
+ const s=structureError(intake,{arrayLength:LIMITS.intakeArrayLength});return s?{code:'LIMIT_EXCEEDED',limit:s.limit,at:s.at}:null;
+}
 const refuse=(code,extra={})=>({ok:false,error:{code,...extra}});
 /**
  * The shape of one observation from `channel`. Returns {ok:true} or a refusal {code, index, field|limit, at}. It does not build the engine's

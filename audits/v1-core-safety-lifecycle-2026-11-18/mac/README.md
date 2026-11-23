@@ -481,7 +481,12 @@ Contrato: `audits/v1-integration-boundary-2026-11-23/INTEGRATION_BOUNDARY_CONTRA
 5. **HealthKit** (permissão de leitura: `HKWorkoutType`, `distanceWalkingRunning`, `heartRate` se a RWS pedir; sem escrita na V1):
    - **Entrega:** `HKObserverQuery` + `HKAnchoredObjectQuery` com background delivery.
    - **Mapeamento:** `HKWorkout.uuid` → `activityId`; `endDate` → `observedAt`; corrida apenas.
-   - **Fila:** o workout sai da fila só quando o seu id estiver em `recorded`. Com `ASK` pela triagem, ele volta junto com a próxima triagem do atleta.
+   - **Fila (ciclo 1):**
+     - a resposta traz `activities[{index, activityId, outcome, eventId}]`;
+     - o workout sai da fila só com `RECORDED` ou `DUPLICATE`;
+     - a entrega nunca leva triagem própria: leva a última do atleta (sem nenhuma, `SCREEN_REQUIRED`); com `ASK` ele espera a próxima triagem do atleta;
+     - recusado na admissão, sai do lote e o resto é reenviado; um vínculo recusado é reenviado sem `sessionId`.
+   - **Fontes:** só workouts gravados por um aparelho; um `HKMetadataKeyWasUserEntered` não é do aparelho.
    - **Exclusões:** não são enviadas (C-O1-5 em aberto).
    - **Canal:** só esse caminho chama `importActivities`.
 6. **Teste no iPhone físico:** entrega em background com o app fechado; reentrega do mesmo workout (duplicado, nenhuma versão nova); workout editado (correção do próprio aparelho); relógio do aparelho atrasado (`CLOCK_BEHIND_RECORD`); reinício do processo no meio de uma gravação; uma semana real sincronizada.

@@ -26,7 +26,7 @@ import {createCustody} from './custody.mjs';
 import {checkReportVoice} from './report-voices.mjs';
 import {canonical} from '../value.mjs';
 import * as CORE from '../v1-safety-index.mjs';
-import {LIMITS,OBSERVATION_KEYS,observationError,requestError,safetyFieldsOf} from './admission.mjs';
+import {LIMITS,OBSERVATION_KEYS,observationError,requestError,safetyFieldsOf,intakeError} from './admission.mjs';
 
 export const INTEGRATION_SCHEMA='V1INT-CARRIED-1';
 /** The records the composed entry carries besides the ledger, reference state and model (the AIF client's CARRIED; the Mac core-driver's). */
@@ -93,7 +93,16 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
  };
  /** The carried records custody's next document goes with: what the engine last returned in this operation, or what was loaded. */
  function nextCarried(doc){
-  const base=op?.loaded??EMPTY,calls=op?.calls??[],last=calls.at(-1),records=last?last.records:base.records;
+  const base=op?.loaded??EMPTY,calls=op?.calls??[],last=calls.at(-1);let records=last?last.records:base.records;
+  // Cycle 1 (QRE-INT-01, AUTH-INT-01): a change that waits for the athlete (an offer, or a change they asked for) keeps the records of the engine
+  // answer that made it. When the athlete adopts exactly that plan (accept makes no engine call, and any later review closes the change), the
+  // records in force become those: the formats of the sessions the athlete is now shown. Otherwise the records are the answer applied.
+  if(op?.name==='accept'&&base.pendingRecords&&doc.program?.hash===base.pendingRecords.programHash)records=base.pendingRecords.records;
+  const pendingHash=doc.pending?.proposal?.hash??null,maker=pendingHash?calls.find(c=>c.programHash===pendingHash):null;
+  const pendingRecords=pendingHash?(maker?{programHash:pendingHash,records:maker.records}:base.pendingRecords?.programHash===pendingHash?base.pendingRecords:null):null;
+  // Cycle 1 (SEC-INT-01, SSCTR-INT-04): the athlete's own last screen, as they sent it (onboarding or an athlete review), byte for byte: the
+  // only screen the device channel ever carries.
+  const screen=op?.screen!==undefined?op.screen:base.screen??null;
   const origins={...base.origins};
   // Origins of this operation's reports: only those the engine admitted into the record (a report it refused is not on record, and may be sent
   // again). An admitted report is in the ledger as a row, a merged id or a kept voice (O-1).
@@ -102,13 +111,19 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
   // last answer: projections for the app, never sent to the engine and never canonical.
   const sessions={...(base.presentation?.sessions??{})};for(const c of calls)if(c.programHash&&c.runSessions!==undefined)sessions[c.programHash]=c.runSessions;
   const keep=new Set([doc.program?.hash,doc.pending?.proposal?.hash].filter(Boolean));for(const h of Object.keys(sessions))if(!keep.has(h))delete sessions[h];
-  const presentation={sessions,readings:last?{...last.readings,at:iso(op.at)}:base.presentation?.readings??null};
+  const erasing=op?.name==='eraseHealthFacts';
+  // Cycle 1 (SEC-INT-08, QRE-INT-10): an erasure takes the last answer's readings (a warning-sign screen among them) and the boundary's record of
+  // every request custody drops (the erased reports of how the athlete feels): a retry of one is then a new request, admitted again.
+  const presentation={sessions,readings:erasing?null:last?{...last.readings,at:iso(op.at)}:base.presentation?.readings??null};
   // The request record: what a retry needs to send custody exactly what was sent (its clock and the bindings admission chose), and what the
   // decision recorded of each report. Kept for as many requests as custody keeps (RETENTION.idempotencyEntries).
   let requests=base.requests??{};
+  if(erasing)requests=Object.fromEntries(Object.entries(requests).filter(([k])=>Object.hasOwn(doc.requests??{},k)));
   if(op?.request){op.request.outcome=outcomeOf(last);
    requests={...requests,[op.request.id]:{...op.request.info,outcome:op.request.outcome}};const ks=Object.keys(requests);for(const k of ks.slice(0,Math.max(0,ks.length-REQUEST_WINDOW)))delete requests[k];}
-  return {schema:INTEGRATION_SCHEMA,records,origins,presentation,requests,lastAt:op?iso(op.at):base.lastAt};
+  // The latest instant on record never moves back (a revocation allowed under a clock behind it keeps the later one).
+  const lastAt=op?(base.lastAt&&Date.parse(base.lastAt)>op.at?base.lastAt:iso(op.at)):base.lastAt;
+  return {schema:INTEGRATION_SCHEMA,records,pendingRecords,screen,origins,presentation,requests,lastAt};
  }
  /** What the decision recorded of each report of the request (the HealthKit queue keeps a workout until it is recorded), and the warning-sign
   * screen the engine asks for (runFormat.warningSignScreen: a stop for a symptom, from this request or kept in the record of formats). */
@@ -145,12 +160,14 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
   PERSISTENCE_FAILURE:['PERSISTENCE_FAILURE','The record could not be saved; nothing was changed, send again'],
   REQUEST_ID_REUSED:['REQUEST_ID_REUSED','This request id was used before; send the request with a new id']};
  /** One operation: one clock reading, one serial step, every failure explicit and nothing confirmed that was not stored. */
- function run(actor,mutating,fn){
+ function run(actor,mutating,fn,name=null){
   if(op)return fail('BUSY','Another operation is in progress');
-  op={athleteId:isObj(actor)?actor.athleteId:undefined,at:Math.floor(clock()/1000)*1000,mutating,loaded:null,calls:[],flag:null,pendingOrigins:null};
+  op={name,athleteId:isObj(actor)?actor.athleteId:undefined,at:Math.floor(clock()/1000)*1000,mutating,loaded:null,calls:[],flag:null,pendingOrigins:null};
   try{
    const r=fn();
    if(r&&r.ok===false&&op.flag){const [code,message]=CODES[op.flag];return {...fail(code,message,op.flag==='CARRIED_INTEGRITY'?{part:'carried'}:{}),...(r.safetyFields?{safetyFields:r.safetyFields}:{})};}
+   // Cycle 1 (QRE-INT-08): the record was kept but its anchor was not: said, so the native layer writes the anchor again before going on.
+   if(r&&r.ok!==false&&op.anchorStale)return {...r,anchorStale:true};
    return r;
   }catch(e){if(op.flag){const [code,message]=CODES[op.flag];return fail(code,message);}return fail('OPERATIONAL_ERROR','The operation failed',{cause:e?.constructor?.name??'Error'});}
   finally{op=null;}
@@ -186,6 +203,8 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
     if(s&&s.sport!==o.activityType)return {refusal:{code:'SPORT_MISMATCH',index:i,field:'sessionId'}};
     const known=Object.entries(all).filter(([,m])=>m.ch==='D'&&m.act===o.activityId);
     if(known.length){const head=headOf(known[0][0]),m=all[head];
+     // Cycle 1 (SEC-INT-11): one workout twice in one request is refused here (never sent with a provisional id).
+     if(head.startsWith('pending:'))return {refusal:{code:'DUPLICATE_IN_REQUEST',index:i,field:'activityId'}};
      if((m.s??null)!==(o.sessionId??null))return {refusal:{code:'ACTIVITY_LINKED_ELSEWHERE',index:i,eventId:head}};
      if(m.d===factsDigest(o)){duplicates.push(i);continue;}
      // A re-sync of a known workout with other values is the device's own correction of its report (SEC-CORE-03 resolution: a re-sync names
@@ -204,7 +223,11 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
     if(depthOf(correctionOf)+1>LIMITS.correctionsPerReport)return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};
    }else{
     if(channel===CHANNELS.ATHLETE&&o.sessionId!==undefined){const mine=Object.entries(all).find(([,m])=>m.ch==='A'&&m.s===o.sessionId);
-     if(mine)return {refusal:{code:'ALREADY_REPORTED',index:i,field:'sessionId',eventId:headOf(mine[0])}};}
+     if(mine){const head=headOf(mine[0]);
+      // Cycle 1 (SSCTR-INT-01): the same report again (the report in force, unchanged) is a duplicate, as on the device channel: the rest of the
+      // request (a report of how the athlete feels, a check, a declaration) goes on. Another report of the session is a correction to make.
+      if(!head.startsWith('pending:')&&all[head]?.d===factsDigest(o)){duplicates.push(i);continue;}
+      return {refusal:{code:'ALREADY_REPORTED',index:i,field:'sessionId',eventId:head}};}}
     const day=dayOf(o),ch=channel===CHANNELS.ATHLETE?'A':'D';
     if(day&&Object.values(all).filter(m=>m.ch===ch&&!m.of&&m.day===day).length>=LIMITS.reportsPerDayPerChannel)return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};
    }
@@ -234,34 +257,61 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
   }else{
    a=admit(channel,list,o.doc,op.loaded?.origins??{});
    if(a.refusal){const {code,...rest}=a.refusal;return {...fail(code,'A report of this request is not admitted; nothing was recorded',rest),safetyFields:safetyFieldsOf(rv)};}
-   if(!a.observations.length&&a.duplicates.length&&channel===CHANNELS.DEVICE)return {ok:true,duplicate:true,duplicates:a.duplicates,version:o.doc.version,recorded:0};
+   // Only duplicates and nothing else said (no screen, no report of how the athlete feels): nothing to decide, nothing written.
+   // (A screen equal to the one on record says nothing new either.)
+   const sameScreen=rv.eligibility===undefined||canonical(rv.eligibility)===canonical(op.loaded.screen??null);
+   if(!a.observations.length&&a.duplicates.length&&(channel===CHANNELS.DEVICE||Object.keys(rv).every(k=>['kind','observations','eligibility'].includes(k))&&rv.kind==='WEEKLY_REVIEW'&&sameScreen))
+    return {ok:true,duplicate:true,duplicates:a.duplicates,version:o.doc.version,recorded:[],notRecorded:[],warningSignScreen:null,...activitiesOf(channel,list,a.duplicates,null)};
    op.pendingOrigins=a.metas;op.request={id:clientRequestId,info:{d,at:iso(op.at),of:a.of,dup:a.duplicates}};
   }
-  const sent=channel===CHANNELS.ATHLETE?{...rv,...(Array.isArray(rv.observations)?{observations:a.observations}:{})}:{kind:'WEEKLY_REVIEW',observations:a.observations,...(rv.eligibility?{eligibility:rv.eligibility}:{})};
+  // The device channel carries no screen of its own: only the athlete's last one, as they sent it (SEC-INT-01). Without one the workouts wait.
+  if(channel===CHANNELS.DEVICE&&!seen&&!isObj(op.loaded.screen))return fail('SCREEN_REQUIRED','The athlete has answered no screen yet; the workouts wait for it (nothing was recorded)');
+  if(channel===CHANNELS.ATHLETE&&isObj(rv.eligibility))op.screen=clone(rv.eligibility);
+  const screen=channel===CHANNELS.DEVICE?(seen?seen.screen:op.loaded.screen):null;
+  if(channel===CHANNELS.DEVICE&&op.request)op.request.info.screen=screen;
+  const sent=channel===CHANNELS.ATHLETE?{...rv,...(Array.isArray(rv.observations)?{observations:a.observations}:{})}:{kind:'WEEKLY_REVIEW',observations:a.observations,...(screen?{eligibility:screen}:{})};
   const r=custody.submit({actor,clientRequestId,expectedVersion,review:sent});
   if(!r.ok)return r;
-  const outcome=seen?seen.outcome:op.request?.outcome;
-  return {...r,...(outcome??{recorded:[],notRecorded:[],warningSignScreen:null}),...(a.duplicates.length?{duplicates:a.duplicates}:{})};
+  const outcome=seen?seen.outcome:op.request?.outcome,out={...r,...(outcome??{recorded:[],notRecorded:[],warningSignScreen:null}),...(a.duplicates.length?{duplicates:a.duplicates}:{})};
+  return {...out,...activitiesOf(channel,list,a.duplicates,out)};
+ }
+ /** Cycle 1 (QRE-INT-05): what happened to each workout of a delivery, by its own activity id and index, for the HealthKit queue. */
+ function activitiesOf(channel,list,duplicates,out){
+  if(channel!==CHANNELS.DEVICE)return {};
+  const ids=Array.isArray(out?.observationIds)?out.observationIds:[],rec=new Set(out?.recorded??[]),why=new Map((out?.notRecorded??[]).map(x=>[x.eventId,x.reason]));let k=0;
+  return {activities:list.map((w,index)=>{const activityId=w?.activityId??null;if(duplicates.includes(index))return {index,activityId,outcome:'DUPLICATE',eventId:null};
+   const eventId=ids[k++]??null;return rec.has(eventId)?{index,activityId,outcome:'RECORDED',eventId}:{index,activityId,outcome:'NOT_RECORDED',eventId,reason:why.get(eventId)??'NOT_RECORDED_BY_THIS_DECISION'};})};
  }
  return {
   CHANNELS,
   /** The first plan (custody.enroll), its carried records kept with it. */
-  enroll:args=>run(args?.actor,true,()=>withScreen(custody.enroll(args))),
+  enroll:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
+   if(isObj(args.intake.athlete?.eligibility))op.screen=clone(args.intake.athlete.eligibility);return withScreen(custody.enroll(args));},'enroll'),
   /** The athlete's own review (the app's forms; channel ATHLETE). Every api.mjs operation reaches this. */
-  submit:args=>run(args?.actor,true,()=>review(CHANNELS.ATHLETE,args??{})),
-  /** HealthKit workouts (channel DEVICE): [{activityId, activityType:'RUN', sessionId?, observedAt, actual, sourceQuality?}]. The eligibility
-   * the athlete answered last can be sent with them (the device states none of its own). */
-  importActivities:({actor,clientRequestId,expectedVersion,activities,eligibility})=>run(actor,true,()=>review(CHANNELS.DEVICE,{actor,clientRequestId,expectedVersion,review:{kind:'WEEKLY_REVIEW',observations:activities,...(eligibility?{eligibility}:{})}})),
-  accept:args=>run(args?.actor,true,()=>custody.accept(args)),
-  decline:args=>run(args?.actor,true,()=>custody.decline(args)),
+  submit:args=>run(args?.actor,true,()=>review(CHANNELS.ATHLETE,args??{}),'submit'),
+  /** HealthKit workouts (channel DEVICE): [{activityId, activityType:'RUN', sessionId?, observedAt, actual, sourceQuality?}]. The device states
+   * no screen: the athlete's last one goes with them, byte for byte (SEC-INT-01); a delivery is never empty. */
+  importActivities:({actor,clientRequestId,expectedVersion,activities,...rest})=>run(actor,true,()=>{
+   if(Object.keys(rest).some(k=>rest[k]!==undefined))return fail('INVALID_REQUEST','A delivery holds workouts only (the device states no screen)',{fields:Object.keys(rest)});
+   if(!Array.isArray(activities)||!activities.length)return fail('NOTHING_TO_IMPORT','A delivery holds at least one workout');
+   return review(CHANNELS.DEVICE,{actor,clientRequestId,expectedVersion,review:{kind:'WEEKLY_REVIEW',observations:activities}});},'importActivities'),
+  accept:args=>run(args?.actor,true,()=>custody.accept(args),'accept'),
+  decline:args=>run(args?.actor,true,()=>custody.decline(args),'decline'),
   /** A new plan from the record custody holds (C-F01-2: the canonical record, never a reconstruction) with every carried record. */
-  restart:args=>run(args?.actor,true,()=>withScreen(custody.restart(args))),
-  setConsent:args=>run(args?.actor,true,()=>custody.setConsent(args)),
-  eraseHealthFacts:args=>run(args?.actor,true,()=>custody.eraseHealthFacts(args)),
-  eraseAccount:args=>run(args?.actor,false,()=>{const r=custody.eraseAccount(args);if(r.ok&&anchor)try{anchor.clear(args.actor.athleteId);}catch{}return r;}),
-  /** The athlete's explicit act after RECORD_LOST / RECORD_ROLLED_BACK: what remains is set aside and a new plan starts from a new intake. */
+  restart:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
+   if(isObj(args.intake.athlete?.eligibility))op.screen=clone(args.intake.athlete.eligibility);return withScreen(custody.restart(args));},'restart'),
+  /** A revocation is never held back by a clock behind the record (SEC-INT-04, cycle 1): withdrawing consent always works. */
+  setConsent:args=>run(args?.actor,args?.granted!==false,()=>custody.setConsent(args),'setConsent'),
+  eraseHealthFacts:args=>run(args?.actor,true,()=>custody.eraseHealthFacts(args),'eraseHealthFacts'),
+  eraseAccount:args=>run(args?.actor,false,()=>{const r=custody.eraseAccount(args);if(r.ok&&anchor)try{anchor.clear(args.actor.athleteId);}catch{}return r;},'eraseAccount'),
+  /** The athlete's explicit act after RECORD_LOST / RECORD_ROLLED_BACK, and only then (SEC-INT-03, QRE-INT-03, cycle 1): a record that is
+   * there and as anchored is never set aside this way (a hold on it would go with it). What remains is set aside; a new plan starts from a new intake. */
   acknowledgeRecordLoss:({actor})=>run(actor,false,()=>{if(!isObj(actor)||typeof actor.athleteId!=='string')return fail('UNAUTHENTICATED','No authenticated athlete');
-   const a=anchor?.get(actor.athleteId);if(!a)return fail('NOT_LOST','Nothing to acknowledge');store.remove(actor.athleteId);anchor.clear(actor.athleteId);return {ok:true};}),
+   const id=actor.athleteId,a=anchor?.get(id);if(!a)return fail('NOT_LOST','Nothing to acknowledge');
+   let doc;try{doc=store.load(id);}catch{return fail('NOT_LOST','The stored record is unreadable, not lost: it is an integrity failure (account erasure is the way out)');}
+   const lost=!doc||!Number.isInteger(doc.version)||doc.version<a.version||doc.version===a.version&&doc.docMac!==a.docMac;
+   if(!lost)return fail('NOT_LOST','The record is there and as last kept; nothing is set aside');
+   if(doc)store.remove(id);anchor.clear(id);return {ok:true};},'acknowledgeRecordLoss'),
   read:args=>run(args?.actor,false,()=>custody.read(args)),
   verify:doc=>custody.verify(doc),
   visible:doc=>custody.visible(doc),

@@ -1,0 +1,16 @@
+# RED: v1int-cycle1 and v1int-custody (cycle-1 version) on the a52db2b bytes of custody.mjs, integration.mjs, admission.mjs
+ℹ tests 23
+ℹ pass 11
+ℹ fail 12
+✖ QRE-INT-01 / AUTH-INT-01: after the athlete accepts an offered move, the moved session cites a format the kept record holds, and its report is recorded
+✖ QRE-INT-02 (boundary part), QRE-INT-11 A03: an instant without its offset, or a device report without its end, is refused (never read in the runtime zone)
+✖ QRE-INT-03 / SEC-INT-03: acknowledging a loss sets nothing aside when the record is there as kept (a standing hold stays), nor when it is unreadable; only a lost or rolled-back record
+✖ QRE-INT-05: a delivery is answered per workout (index, activity id, outcome, event id), duplicates included; a duplicate-only answer holds arrays; an empty delivery is refused and writes nothing; SEC-INT-11 one workout twice is refused
+✖ QRE-INT-08: a record kept whose anchor could not be written says so (anchorStale), so the native layer writes the anchor again
+✖ QRE-INT-11 A04L: the limits are the reviewed values (a change to them is a reviewed change, not a silent one)
+✖ SEC-INT-01: the device channel carries no screen of its own: after a symptom stop a workout delivered next is decided with the screen the athlete answered, and the screen is still asked
+✖ SEC-INT-04 (part): a consent revocation is never held back by a clock behind the record, and the latest instant on record does not move back
+✖ SEC-INT-05: the intake of a first plan or a restart is bounded (size, depth), refused whole, nothing stored
+✖ SEC-INT-08 / QRE-INT-10: an erasure of health facts also takes the last readings and the boundary record of the erased request: a retry of it is admitted as new, never a stored answer
+✖ SSCTR-INT-01: the same athlete report sent again is a duplicate, so a report of how the athlete feels riding with it reaches the engine (a warning sign routes clinically); safety kinds are named on a refusal
+✖ custody amendment: what is not the engine's evolution by this review stays refused: an earlier voice changed or dropped, a voice no report of this review gave, a cleared conflict, an identity field, an amount changed with no new voice

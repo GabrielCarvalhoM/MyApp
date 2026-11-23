@@ -99,29 +99,56 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
   * other field are unchanged; its parts, merged ids and input hashes only grow, each earlier one kept byte-equal, and every new one is a report
   * of this review (`incoming`); the row's own voice is kept as it was; a conflict flag is never cleared in place. Its amount and response change
   * only together with such a part. Anything else is still a stored row changed. */
+ // Cycle 1 (SEC-INT-02, QRE-INT-04): exactly the two shapes r6-provenance.mjs writes, each checked against what it may contain.
+ //  KEPT VOICE (keepVoice, O-1): the amount and the response are byte-equal; the row is flagged (a boolean true) and keeps or gains its conflict
+ //    label; no merged id is added.
+ //  MERGE (mergeActual, R7-A/E-1): neither row is flagged; a value the row or a new voice stated stays stated; every value is the row's, a new voice's, or the
+ //    lower of two numbers; a known response is never changed and an unknown one only takes a new voice's; the exercises are those of the voices.
+ //  Both: the row's own voice is present (from the first merge on) and equal to the row as stored; each new voice's completion, stop, recovery
+ //    and next-day function are those of the report of this review it names (`incoming`, a Map of event id to report).
  const EVOLVING=['actual','response','provenance','conflicted'],PROVENANCE_EVOLVING=['parts','mergedSourceIds','inputHashes','conflict'];
  const omit=(o,keys)=>Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k)));
+ const SAFETY_FACTS=p=>({completed:p?.actual?.completed??null,stop:p?.actual?.stop??null,recovery:p?.response?.recovery??'UNKNOWN',nextDayFunction:p?.response?.nextDayFunction??'UNKNOWN'});
  function evolves(x,y,incoming){
-  if(!isObj(x)||!isObj(y)||x.fact||y.fact||x.superseded===true||y.superseded===true)return false;
+  if(!isObj(x)||!isObj(y)||x.fact||y.fact||x.superseded===true||y.superseded===true||!(incoming instanceof Map))return false;
   if(digest(omit(x,EVOLVING))!==digest(omit(y,EVOLVING)))return false;
   const px=isObj(x.provenance)?x.provenance:{},py=isObj(y.provenance)?y.provenance:{};
   if(digest(omit(px,PROVENANCE_EVOLVING))!==digest(omit(py,PROVENANCE_EVOLVING)))return false;
+  if('conflicted' in y&&y.conflicted!==true||'conflicted' in x&&x.conflicted!==true)return false;
   if(x.conflicted===true&&y.conflicted!==true)return false;
-  const partsX=isObj(px.parts)?px.parts:null,partsY=isObj(py.parts)?py.parts:{};
+  if(px.conflict!==undefined&&py.conflict!==px.conflict)return false;
+  const partsX=isObj(px.parts)?px.parts:null,partsY=isObj(py.parts)?py.parts:null;if(!partsY)return false;
   if(partsX){for(const [k,v] of Object.entries(partsX))if(!Object.hasOwn(partsY,k)||digest(partsY[k])!==digest(v))return false;}
-  else if(Object.hasOwn(partsY,x.eventId)&&(digest(partsY[x.eventId]?.actual)!==digest(x.actual)||digest(partsY[x.eventId]?.response)!==digest(x.response)))return false;
+  else if(!Object.hasOwn(partsY,x.eventId)||digest(partsY[x.eventId]?.actual)!==digest(x.actual)||digest(partsY[x.eventId]?.response)!==digest(x.response))return false;
   const added=Object.keys(partsY).filter(k=>partsX?!Object.hasOwn(partsX,k):k!==x.eventId);
   if(!added.length||!added.every(k=>incoming.has(k)))return false;
+  for(const k of added)if(digest(SAFETY_FACTS(partsY[k]))!==digest(SAFETY_FACTS(incoming.get(k))))return false;
   const list=v=>Array.isArray(v)?v:[],mx=list(px.mergedSourceIds),my=list(py.mergedSourceIds);
-  if(!mx.every(k=>my.includes(k))||!my.filter(k=>!mx.includes(k)).every(k=>incoming.has(k)||k===x.eventId))return false;
   const hx=isObj(px.inputHashes)?px.inputHashes:{},hy=isObj(py.inputHashes)?py.inputHashes:{};
-  if(Object.entries(hx).some(([k,v])=>hy[k]!==v)||!Object.keys(hy).filter(k=>!Object.hasOwn(hx,k)).every(k=>incoming.has(k)))return false;
+  if(Object.entries(hx).some(([k,v])=>hy[k]!==v)||!Object.keys(hy).filter(k=>!Object.hasOwn(hx,k)).every(k=>added.includes(k)))return false;
+  if(y.conflicted===true){
+   // KEPT VOICE: nothing merged into the amount.
+   return digest(x.actual)===digest(y.actual)&&digest(x.response)===digest(y.response)&&digest(mx)===digest(my)&&typeof py.conflict==='string';
+  }
+  // MERGE.
+  if(!mx.every(k=>my.includes(k))||!my.filter(k=>!mx.includes(k)).every(k=>added.includes(k)||k===x.eventId))return false;
+  const ax=isObj(x.actual)?x.actual:{},ay=isObj(y.actual)?y.actual:null,voices=added.map(k=>isObj(partsY[k]?.actual)?partsY[k].actual:{});if(!ay)return false;
+  const stated=v=>v!==undefined&&v!==null;
+  for(const a of [ax,...voices])for(const k of Object.keys(a))if(k!=='exercises'&&stated(a[k])&&!stated(ay[k]))return false;
+  for(const [k,v] of Object.entries(ay)){if(k==='exercises')continue;
+   const from=[ax[k],...voices.map(a=>a[k])].filter(stated),nums=from.filter(n=>typeof n==='number');
+   if(!from.some(f=>digest(f)===digest(v))&&!(typeof v==='number'&&nums.length&&v===Math.min(...nums)))return false;}
+  const ids=a=>(Array.isArray(a?.exercises)?a.exercises:[]).map(e=>e?.id).filter(i=>typeof i==='string');
+  const allowed=new Set([...ids(ax),...voices.flatMap(ids)]);if(!ids(ay).every(i=>allowed.has(i))||!ids(ax).every(i=>ids(ay).includes(i)))return false;
+  const rx=isObj(x.response)?x.response:{},ry=isObj(y.response)?y.response:{};
+  for(const k of new Set([...Object.keys(rx),...Object.keys(ry)])){if(rx[k]!==undefined&&rx[k]!=='UNKNOWN'){if(ry[k]!==rx[k])return false;}
+   else if(ry[k]!==undefined&&ry[k]!=='UNKNOWN'&&!added.some(a=>partsY[a]?.response?.[k]===ry[k]))return false;}
   return true;
  }
  /** The engine's record against the stored one: every stored row comes back, unchanged, (a report) only annotated by a correction, or (a report)
   * evolved by this review's own reports (evolves); nothing else may change or disappear. Returns {added, annotations} in the engine's order, or
   * {error}. The engine regroups rows by type; custody keeps arrival order. */
- function reconcile(doc,after,incoming=new Set()){
+ function reconcile(doc,after,incoming=new Map()){
   const by=new Map();for(const y of after){const k=identity(y);if(by.has(k))return {error:'a row identity appears twice'};by.set(k,y);}
   const annotations=[];
   for(let i=0;i<doc.rows.length;i++){const x=doc.rows[i];if(x===null)continue;const k=identity(x),y=by.get(k);
@@ -219,7 +246,7 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
     }
    }catch(e){return fail('OPERATIONAL_ERROR','The coach could not decide this request',{cause:e?.constructor?.name??'Error'});}
    // The record must keep every stored row (an absent record is the record unchanged: OBS-FFC-01); only new rows and a correction's annotation pass.
-   const after=Array.isArray(r.actualLedger)?r.actualLedger:visible(doc),rec=reconcile(doc,after,new Set((Array.isArray(observations)?observations:[]).map(x=>x?.eventId).filter(x=>typeof x==='string')));
+   const after=Array.isArray(r.actualLedger)?r.actualLedger:visible(doc),rec=reconcile(doc,after,new Map((Array.isArray(observations)?observations:[]).filter(x=>isObj(x)&&typeof x.eventId==='string').map(x=>[x.eventId,x])));
    if(rec.error)return fail('ENGINE_CONTRACT_VIOLATION',`The decision did not keep the stored record (${rec.error}); nothing was kept`);
    const {added,annotations}=rec,decisionId=id('dc');
    // Defence in depth: while the new record holds a hold, no prescription leaves custody, whatever the engine returned.

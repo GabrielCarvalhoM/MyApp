@@ -4,7 +4,7 @@
 // it is protected, is a native obligation (the Mac/iOS package), so SEC-CORE-03 is not declared closed by these tests. Synthetic only.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {athlete,memoryStore,fileStore,scratchDir,ELIG,addDays,at,U} from './v1int-helpers.mjs';
+import {athlete,memoryStore,fileStore,scratchDir,ELIG,addDays,at,U,spy,athleteA} from './v1int-helpers.mjs';
 
 /** Week 0 of a fresh athlete, the clock on the session's evening. */
 const setup=(id,opts)=>{const t=athlete({id,...opts});t.enroll();const ss=t.sessions(0);return {t,run:ss.find(s=>s.id==='w0-run-d1'),run3:ss.find(s=>s.id==='w0-run-d3'),str:ss.find(s=>s.sport==='STRENGTH')};};
@@ -138,8 +138,14 @@ test('C-NCC-3 (b): a workout dated in the future is not recorded, and the answer
  t.set(addDays(run.date,9),'09:00');const later=t.import([t.watch(run)],{eligibility:ELIG(addDays(run.date,9))});assert.equal(later.recorded.length,1);
 });
 
-test('C-NCC-3 (b): a workout with no screen of the athlete is not recorded by the decision (ASK): the HealthKit queue is told, and sends it again with the athlete\'s next screen',()=>{
- const {t,run}=setup('tm-5');t.set(run.date,'09:00');const r=t.import([t.watch(run)]);
- assert.equal(r.status,'ASK');assert.equal(r.recorded.length,0);assert.equal(r.notRecorded[0].reason,'NOT_RECORDED_BY_THIS_DECISION');
- t.set(run.date,'20:00');const again=t.import([t.watch(run)],{eligibility:ELIG(run.date)});assert.equal(again.recorded.length,1,'not a duplicate: it was never on record');
+test('C-NCC-3 (b), SEC-INT-01: a delivery carries the last screen of the athlete exactly; when the engine still asks (a screen no longer current) the workout is not recorded and the queue is told; QRE-INT-02 (open, routed) pinned',()=>{
+ const sp=spy(),t=athlete({id:'tm-5',engine:sp.engine});t.enroll();const run=t.sessions(0).find(s=>s.id==='w0-run-d1');
+ const late=addDays(run.date,40);t.set(late,'09:00');const r=t.import([t.watch(run,{activityId:'HK-late'})]);
+ assert.deepEqual(sp.calls.at(-1).input.eligibility,t.doc()&&athleteA({weeks:8,id:'tm-5'}).athlete.eligibility,'the onboarding screen, byte for byte');
+ // 40 days on, the onboarding screen is no longer current (10 days on it still is: the engine judges, not the boundary).
+ assert.equal(r.status,'ASK');assert.deepEqual(r.decision.missingInputs,['eligibility.currentAssessment']);
+ assert.equal(r.recorded.length,0);assert.deepEqual(r.activities.map(a=>a.outcome),['NOT_RECORDED']);assert.equal(r.activities[0].reason,'NOT_RECORDED_BY_THIS_DECISION');
+ // QRE-INT-02 (open, routed to Core/SSCTR): the record of formats keeps a report fact for a workout the decision did not record.
+ assert.ok(t.carried().runFormatRecord.some(x=>x.fact==='RUN_REPORT_RECEIVED'&&x.sessionId===run.id),'QRE-INT-02 as it stands');
+ assert.equal(code(t.it.importActivities({actor:t.actor,clientRequestId:'x',expectedVersion:t.version(),activities:[t.watch(run)],eligibility:ELIG(late)})),'INVALID_REQUEST','the device states no screen');
 });

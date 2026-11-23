@@ -39,7 +39,11 @@ export function athlete({id='v1int-a',weeks=8,store=memoryStore(),anchor=null,en
  t.watch=(s,{activityId=`HK-${s.id}`,endTime='07:45',actual={}}={})=>{const r=reportOf(t.env(),s);return {activityId,activityType:'RUN',sessionId:s.id,observedAt:at(s.date,endTime),actual:{...drop(r.actual,ATHLETE_ONLY),...actual}};};
  t.submit=(review,{rid=t.rid(),expectedVersion=t.version()}={})=>t.it.submit({actor:t.actor,clientRequestId:rid,expectedVersion,review});
  t.weekly=(day,observations,extra={})=>t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(day),observations,...extra});
- t.import=(activities,{rid=t.rid('hk'),expectedVersion=t.version(),eligibility}={})=>t.it.importActivities({actor:t.actor,clientRequestId:rid,expectedVersion,activities,...(eligibility?{eligibility}:{})});
+ /** HealthKit workouts. The device states no screen (cycle 1, SEC-INT-01): with `eligibility`, the athlete first answers that screen through
+  * their own channel (an athlete review with the screen alone), as the app does, and the delivery then carries it. */
+ t.screen=eligibility=>t.submit({kind:'WEEKLY_REVIEW',eligibility});
+ t.import=(activities,{rid=t.rid('hk'),expectedVersion,eligibility}={})=>{if(eligibility){const s=t.screen(eligibility);if(!s.ok)return s;}
+  return t.it.importActivities({actor:t.actor,clientRequestId:rid,expectedVersion:expectedVersion??t.version(),activities});};
  t.rows=()=>t.it.visible(t.doc());
  t.live=sid=>t.rows().filter(o=>!o.fact&&o.sessionId===sid&&o.superseded!==true);
  t.carried=()=>t.it.carried({actor:t.actor}).records;

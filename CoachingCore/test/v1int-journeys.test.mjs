@@ -25,7 +25,8 @@ test('Journey B, a run done: the watch in the morning, the athlete\'s effort in 
  t.set(s.date,'08:00');const hk=t.import([t.watch(s)],{eligibility:ELIG(s.date)});assert.deepEqual([code(hk),hk.recorded.length],['OK',1]);
  t.set(s.date,'20:00');const form=t.weekly(s.date,[t.form(s)]);assert.deepEqual([code(form),form.recorded.length],['OK',1]);
  t.set(s.date,'20:05');assert.equal(t.import([t.watch(s)]).duplicate,true,'the same workout again');
- assert.equal(code(t.weekly(s.date,[t.form(s)])),'ALREADY_REPORTED','the same form again');
+ {const v=t.version(),again=t.submit({kind:'WEEKLY_REVIEW',observations:[t.form(s)]});assert.equal(again.duplicate,true,'the same form again: a duplicate (SSCTR-INT-01)');assert.equal(t.version(),v);}
+ assert.equal(code(t.weekly(s.date,[{...t.form(s),actual:{...t.form(s).actual,minutes:55}}])),'ALREADY_REPORTED','another form of the session: a correction to make');
  const sun=addDays(t.doc().program.startDate,6);t.set(sun);assert.equal(code(t.weekly(sun,[])),'OK');
  const live=t.live(s.id);assert.equal(live.length,1);assert.deepEqual(Object.keys(live[0].provenance.parts).sort(),[...hk.recorded,...form.recorded].sort());
  assert.equal(t.rows().filter(o=>!o.fact&&o.sessionId===s.id).length,1,'no row besides it');

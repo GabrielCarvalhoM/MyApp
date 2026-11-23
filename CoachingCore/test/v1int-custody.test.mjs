@@ -181,6 +181,12 @@ test('custody amendment: what is not the engine\'s evolution by this review stay
   'the provider rewritten':tamper(t=>{t.provenance.provider='MANUAL';})};
  for(const [name,alter] of Object.entries(cases)){const r=custodyRig(alter);r.send('hk',[DEV(r.b)],'08:00');r.send('form',[ATH(r.b)],'12:00');const before=r.store.raw('rc');
   const x=r.send('hk2',[DEV(r.b,'HK2')],'20:00','x');assert.equal(x.ok?'ok':x.error.code,'ENGINE_CONTRACT_VIOLATION',name);assert.equal(r.store.raw('rc'),before,name+': nothing kept');}
+ // Cycle 1 (QRE-INT-11 C03, SEC-INT-02): on the first merge the row's own voice must be there, as stored; a new voice says what its report said.
+ const first=(f)=>{const r=custodyRig((m,l)=>{const t=l.find(o=>!o.fact&&o.sessionId==='w0-run-d1'&&!o.superseded);f(t);return l;});r.send('hk',[DEV(r.b)],'08:00');return r.send('form',[ATH(r.b)],'20:00','x');};
+ assert.equal(first(t=>{delete t.provenance.parts[Object.keys(t.provenance.parts).find(k=>t.provenance.parts[k].activityId)];}).error.code,'ENGINE_CONTRACT_VIOLATION','first merge: own voice dropped');
+ assert.equal(first(t=>{const k=Object.keys(t.provenance.parts).find(k=>!t.provenance.parts[k].activityId);t.provenance.parts[k].actual={...t.provenance.parts[k].actual,stop:{reason:'TIME'}};}).error.code,'ENGINE_CONTRACT_VIOLATION','a new voice that says a stop its report did not');
+ assert.equal(first(t=>{t.actual={...t.actual,minutes:5};}).error.code,'ENGINE_CONTRACT_VIOLATION','an amount neither voice stated');
+ assert.equal(first(t=>{t.response={...t.response,recovery:'COMPATIBLE',nextDayFunction:'NORMAL'};delete t.actual.rpe;}).error.code,'ENGINE_CONTRACT_VIOLATION','a stated value dropped');
  const quiet=custodyRig((m,l)=>{const t=l.find(o=>!o.fact&&o.sessionId==='w0-run-d1'&&!o.superseded);t.actual.minutes=10;return l;});quiet.send('hk',[DEV(quiet.b)],'08:00');quiet.send('form',[ATH(quiet.b)],'12:00');
  assert.equal(quiet.send('none',[],'20:00','x').error.code,'ENGINE_CONTRACT_VIOLATION','an amount changed by a review that brought no report');
  const flagged=custodyRig((m,l)=>{const t=l.find(o=>!o.fact&&o.sessionId==='w0-run-d1'&&!o.superseded);delete t.conflicted;return l;});flagged.send('hk',[DEV(flagged.b)],'08:00');flagged.send('form',[ATH(flagged.b,{minutes:90})],'12:00');
