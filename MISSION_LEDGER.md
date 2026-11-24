@@ -1429,3 +1429,13 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Open before real athletes:** QRE-INT-02 (Founder decision, Core + SSCTR), SEC-INT-02R, SEC-INT-04/05/06/07/08/12, native obligations, IOS_REVALIDATION_PENDING, and the earlier gates.
 - **Regression:** FREEZE-7 bound files 49/49; suite 1905/1862/43 (base 42 + one by design, with a successor test).
 - **Report:** `audits/v1-integration-boundary-2026-11-23/FINAL_REPORT.md`.
+
+
+<!-- V1BC-20261124-closure-r1 -->
+2026-11-24 · REPMILE V1 COACHINGCORE BLOCKER CLOSURE **CLOSED**; release candidate REPMILE-COACHINGCORE-V1-RC-1 (synthetic only; not the FINAL RELEASE FREEZE).
+- **Line:** `claude/v1-cc-blocker-closure` from `ee256ae`; candidate `6e85222`, cycle `220c005`, R2 `963a9ad`, record `96a8ccc`. Nothing pushed or merged.
+- **Fixed:** C-O1-3, SEC-SC-02, SEC-SC-03, QRE-INT-02, SEC-INT-02R, SEC-INT-06, SEC-INT-07, SEC-INT-04 rest, SSCTR-INT-R2-01, G07 screen erasure; in the cycle, SEC-BC-01 and SEC-BC-02 (introduced by the candidate).
+- **Judges:** Security R1 FAIL, then R2 PASS_WITH_CONDITIONS; SSCTR ACCEPT_WITH_CONDITIONS (one dose change, C-O1-3, downward only); QRE R1 READY_WITH_CONDITIONS, then R2 READY.
+- **Open before real athletes:** SEC-BC-R2-01, Founder G07 retention, SEC-INT-05 rest, SEC-INT-12, native obligations (`NATIVE_OBLIGATIONS.md`), IOS_REVALIDATION_PENDING. The R7-B0 records expire 2027-04-30.
+- **Regression:** suite 1934/1888/46 (base 43 plus three by design, each with a successor); RC verifier 87/87.
+- **Report:** `audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md`.
