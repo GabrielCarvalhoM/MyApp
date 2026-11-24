@@ -1,0 +1,45 @@
+# tools/device-lock/with-device.sh (kernel flock inherited by the command) behaviour test, 2026-11-24T19:45:26Z, scratch lock dir
+1 exclusive:
+with-device: the iPhone is in use
+  session=coachinghost
+  pid=80963
+  started=2026-11-24T19:45:26Z
+  command=sleep
+  second rc=75 (expect 75)
+2 released:
+device FREE
+3 exit code passthrough:
+  rc=7 (expect 7)
+device FREE
+4 wait:
+RAN_AFTER_WAIT
+  rc=0 (expect 0)
+device FREE
+5 the parent of the wrapper SIGKILLed while the command runs: the command keeps the device, then the kernel frees it:
+  command alive after parent death: yes
+with-device: the iPhone is in use
+  session=coachinghost
+  pid=81055
+  started=2026-11-24T19:46:13Z
+  command=sleep
+  rc=75 (expect 75)
+  command alive: no
+device FREE
+RAN_AFTER_COMMAND_ENDED
+  rc=0 (expect 0)
+6 the command SIGKILLed: freed at once, no reclaim:
+device FREE
+RAN_AFTER_KILL
+  rc=0 (expect 0)
+7 two waiters race, one command at a time:
+  X start 1795549545
+  X end 1795549547
+  Y start 1795549547
+  Y end 1795549549
+device FREE
+8 bad session:
+usage: tools/device-lock/with-device.sh <coachinghost|healthkit|integration> [--wait] -- <command...>
+  rc=64 (expect 64)
+9 missing command:
+with-device: cannot run /nonexistent/cmd: No such file or directory
+  rc=127 (expect 127)
