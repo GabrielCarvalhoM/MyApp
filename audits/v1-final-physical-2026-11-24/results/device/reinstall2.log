@@ -1,0 +1,37 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch> "-only-testing:P0DeviceTests/BoundaryTests/testPhaseReinstall"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-final/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratch>
+
+Test Suite 'Selected tests' started at 2026-11-24 15:29:37.977.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-24 15:29:37.977.
+Test Suite 'BoundaryTests' started at 2026-11-24 15:29:37.977.
+Test Case '-[P0DeviceTests.BoundaryTests testPhaseReinstall]' started.
+P0RESULT reinstall-2 {"fileAfterReinstall":false,"keychainMarker":"installed-before","keychainStatus":0,"read":"RECORD_LOST"}
+Test Case '-[P0DeviceTests.BoundaryTests testPhaseReinstall]' passed (0.100 seconds).
+Test Suite 'BoundaryTests' passed at 2026-11-24 15:29:38.078.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.100 (0.100) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-24 15:29:38.078.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.100 (0.101) seconds
+Test Suite 'Selected tests' passed at 2026-11-24 15:29:38.078.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.100 (0.101) seconds
+2026-11-24 15:29:38.427 xcodebuild[32411:191369] [MT] IDETestOperationsObserverDebug: 2.339 elapsed -- Testing started completed.
+2026-11-24 15:29:38.427 xcodebuild[32411:191369] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-24 15:29:38.427 xcodebuild[32411:191369] [MT] IDETestOperationsObserverDebug: 2.339 sec, +2.339 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-502/-Users-<user>--codex-worktrees-myapp-p0-ios-MyApp/d3502311-6cdd-4e5f-90f3-7d42cadcc64d/scratchpad/device/xcr-reinstall2.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

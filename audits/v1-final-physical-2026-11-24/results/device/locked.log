@@ -1,0 +1,39 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch> "-only-testing:P0DeviceTests/BoundaryTests/testPhaseLockedDevice"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-final/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratch>
+
+Test Suite 'Selected tests' started at 2026-11-24 15:36:26.689.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-24 15:36:26.690.
+Test Suite 'BoundaryTests' started at 2026-11-24 15:36:26.690.
+Test Case '-[P0DeviceTests.BoundaryTests testPhaseLockedDevice]' started.
+P0RESULT lock-wait {"lockTheDeviceNow":true}
+2026-11-24 15:37:01.901444-0300 P0DeviceHost[12973:3050094] [BackgroundTask] Background Task 2 ("p0-locked"), was created over 30 seconds ago. In applications running in the background, this creates a risk of termination. Remember to call UIApplication.endBackgroundTask(_:) for your task in a timely manner to avoid this.
+P0RESULT locked-device {"keychainFailures":[],"locked":true,"protection":"NSFileProtectionCompleteUntilFirstUserAuthentication","read":"OK","stillLocked":true,"version":2,"write":"OK"}
+Test Case '-[P0DeviceTests.BoundaryTests testPhaseLockedDevice]' passed (66.940 seconds).
+Test Suite 'BoundaryTests' passed at 2026-11-24 15:37:33.630.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.940 (66.940) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-24 15:37:33.630.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.940 (66.940) seconds
+Test Suite 'Selected tests' passed at 2026-11-24 15:37:33.631.
+	 Executed 1 test, with 0 failures (0 unexpected) in 66.940 (66.941) seconds
+2026-11-24 15:37:33.987 xcodebuild[48633:219237] [MT] IDETestOperationsObserverDebug: 74.823 elapsed -- Testing started completed.
+2026-11-24 15:37:33.987 xcodebuild[48633:219237] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-24 15:37:33.987 xcodebuild[48633:219237] [MT] IDETestOperationsObserverDebug: 74.823 sec, +74.823 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-502/-Users-<user>--codex-worktrees-myapp-p0-ios-MyApp/d3502311-6cdd-4e5f-90f3-7d42cadcc64d/scratchpad/device/xcr-locked.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

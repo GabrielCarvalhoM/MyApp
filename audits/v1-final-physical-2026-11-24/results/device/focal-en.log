@@ -1,0 +1,37 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch> "-only-testing:P0DeviceTests/FocalTests/testLocaleAndSortCoverage" -testLanguage en -testRegion US
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-final/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratch>
+
+Test Suite 'Selected tests' started at 2026-11-24 15:15:53.329.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-24 15:15:53.329.
+Test Suite 'FocalTests' started at 2026-11-24 15:15:53.329.
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' started.
+P0RESULT focal-locale {"counts":{"generate":{"localeCompare":0,"toSorted":322},"learning":{"localeCompare":0,"toSorted":742},"schedule":{"localeCompare":0,"toSorted":742}},"defaultLocale":"en-US","digestEqual":true,"generateDiffer":[],"nodeCounts":{"generate":{"localeCompare":0,"toSorted":322},"learning":{"localeCompare":0,"toSorted":742},"schedule":{"localeCompare":0,"toSorted":742}},"nodePairs":0,"nodePairsRejudgedEqual":{"codeUnits":true,"default":true,"en-US":true,"pt-BR":true},"pairsCompared":0,"pairsDifferAcrossLocales":{"codeUnits":0,"en-US":0,"pt-BR":0},"reached":{"generate.localeCompare":false,"generate.toSorted":true,"learning.localeCompare":false,"schedule.localeCompare":false,"schedule.toSorted":true},"reachedEqual":true,"scheduleDiffer":[]}
+Test Case '-[P0DeviceTests.FocalTests testLocaleAndSortCoverage]' passed (0.366 seconds).
+Test Suite 'FocalTests' passed at 2026-11-24 15:15:53.696.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.366 (0.367) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-24 15:15:53.696.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.366 (0.367) seconds
+Test Suite 'Selected tests' passed at 2026-11-24 15:15:53.697.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.366 (0.368) seconds
+2026-11-24 15:15:54.017 xcodebuild[31128:167331] [MT] IDETestOperationsObserverDebug: 2.501 elapsed -- Testing started completed.
+2026-11-24 15:15:54.017 xcodebuild[31128:167331] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-24 15:15:54.017 xcodebuild[31128:167331] [MT] IDETestOperationsObserverDebug: 2.501 sec, +2.501 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-502/-Users-<user>--codex-worktrees-myapp-p0-ios-MyApp/d3502311-6cdd-4e5f-90f3-7d42cadcc64d/scratchpad/device/xcr-focal-en.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

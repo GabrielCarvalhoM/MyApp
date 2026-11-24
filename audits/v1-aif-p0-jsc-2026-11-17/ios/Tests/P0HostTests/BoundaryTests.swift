@@ -279,13 +279,18 @@ final class BoundaryTests: XCTestCase {
         let root = try Self.supportDir("locked"); try? FileManager.default.removeItem(at: root)
         let b = try NativeBridge(root: root, anchorPrefix: "test.locked"); try b.select("L")
         let e3 = try await persist(b, [0]); XCTAssertEqual(e3.steps.map { $0.code }, ["OK"])
+        // The host app is suspended when the screen locks: ask for background time, and detect the lock off the main thread with a canary
+        // written under .complete protection (unreadable once the class A keys are discarded, about 10 s after locking).
+        let bg = await MainActor.run { UIApplication.shared.beginBackgroundTask(withName: "p0-locked") {} }
+        let canary = root.appendingPathComponent("canary-complete")
+        try Data("canary".utf8).write(to: canary, options: .completeFileProtection)
         print("P0RESULT lock-wait {\"lockTheDeviceNow\":true}")
         var locked = false
-        for _ in 0..<240 { if await MainActor.run(body: { !UIApplication.shared.isProtectedDataAvailable }) { locked = true; break }; try await Task.sleep(nanoseconds: 500_000_000) }
-        guard locked else { throw XCTSkip("the device was not locked within 120 s") }
-        try await Task.sleep(nanoseconds: 12_000_000_000) // past the 10 s grace before class A keys are discarded
-        let stillLocked = await MainActor.run { !UIApplication.shared.isProtectedDataAvailable }
+        for _ in 0..<480 { if (try? Data(contentsOf: canary)) == nil { locked = true; break }; try await Task.sleep(nanoseconds: 250_000_000) }
+        guard locked else { await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }; throw XCTSkip("the device was not locked within 120 s") }
         let review = try await persist(b, [1])
+        let stillLocked = (try? Data(contentsOf: canary)) == nil
+        await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }
         struct R: Codable { let locked: Bool; let stillLocked: Bool; let read: String; let write: String; let version: Int?; let protection: String?; let keychainFailures: [Int32] }
         let r = R(locked: locked, stillLocked: stillLocked, read: review.read, write: review.steps[0].code, version: review.version, protection: b.store.protectionOf("fc"), keychainFailures: b.keychainFailures)
         await emit("locked-device", r)

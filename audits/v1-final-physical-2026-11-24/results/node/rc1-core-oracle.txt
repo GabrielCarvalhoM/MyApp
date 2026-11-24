@@ -1,0 +1,32 @@
+CORE-C2-F01 restart doses (corrected = control): [[25,25,25,60],[25,25,25,60]]; superseded rows in the corrected record: 12
+C-F01-1 r2: not done RESTART [[15,15,15,20],[20,20,20,20]] (control EASY_LOW [[15,15,20,20],[15,15,20,20]]); disputed after readiness: ASK ["athlete.pause.reasonCategory"] then PROPOSED
+SEC-R2-03/-04: refused event id [[25,20,20,15]] = plain; refused activity [[25,20,20,15]] = plain; nothing replaced; readiness then refused correction: ASK ["athlete.pause.reasonCategory"] then PROPOSED
+NCC F1/F2/F3: late report ["DUPLICATE_CONFLICT_QUARANTINED"], the correction d3-fix! in force; late re-sync in force (d1 [43]); merged activity reused ["ACTIVITY_BOUND_TO_TWO_SESSIONS","ACTIVITY_BOUND_TO_TWO_SESSIONS"], held by w0-run-d1; dispute CONFLICTED, again CONFLICTED, settled COMPLETED; restarts PROPOSED PROPOSED PROPOSED
+O-1: stop refused ["DUPLICATE_CONFLICT_QUARANTINED"] and kept (app-stop,dev-d3-v3); after the re-sync CONFLICTED, again CONFLICTED, agreed PARTIAL; late stop after readiness ["DUPLICATE_CONFLICT_QUARANTINED"]: restart ASK ["athlete.pause.reasonCategory"] then PROPOSED
+Safety Continuity: corrected stop restart ASK ["athlete.pause.reasonCategory"] (history row kept), then after a later declaration PROPOSED; zero-minute stop ASK then PROPOSED; head-on d3 kept voices app-sc,dev-sc, restart PROPOSED
+restart: PROPOSED KEEP PROPOSED KEEP KEEP roundtrip KEEP PROPOSED
+expiry: PROPOSED CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED UNSUPPORTED CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED CLINICAL_HUMAN_REQUIRED
+e1-ADVERSE: PROPOSED KEEP KEEP
+e1-HEAT: PROPOSED KEEP KEEP
+forecast-one: PROPOSED KEEP KEEP KEEP KEEP KEEP KEEP
+forecast-two: PROPOSED KEEP KEEP KEEP KEEP KEEP KEEP
+alert-b01r: PROPOSED KEEP PROPOSED ASK roundtrip KEEP ASK ASK PROPOSED KEEP KEEP
+expiry-record: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED roundtrip CLINICAL_HUMAN_REQUIRED
+restart-f01: PROPOSED KEEP KEEP KEEP KEEP KEEP KEEP roundtrip PROPOSED
+restart-f01-control: PROPOSED KEEP KEEP KEEP roundtrip PROPOSED
+restart-r2-notdone: PROPOSED MODIFY MODIFY roundtrip PROPOSED
+restart-r2-notdone-control: PROPOSED MODIFY roundtrip PROPOSED
+restart-r2-disputed: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED MODIFY KEEP KEEP roundtrip ASK PROPOSED
+sec-r2-refused-eventid: PROPOSED KEEP KEEP roundtrip KEEP PROPOSED
+sec-r2-refused-activity: PROPOSED KEEP KEEP roundtrip KEEP PROPOSED
+sec-r2-readiness: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED MODIFY KEEP KEEP roundtrip ASK PROPOSED
+ncc-late-report: PROPOSED KEEP KEEP KEEP KEEP KEEP roundtrip KEEP PROPOSED
+ncc-merged-activity: PROPOSED KEEP KEEP roundtrip KEEP KEEP PROPOSED
+ncc-quarantine: PROPOSED KEEP MODIFY roundtrip MODIFY KEEP PROPOSED
+o1-stop-resync: PROPOSED KEEP MODIFY MODIFY roundtrip MODIFY MODIFY PROPOSED
+o1-readiness: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED MODIFY KEEP KEEP roundtrip ASK PROPOSED
+sc-stop-corrected: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED MODIFY KEEP KEEP roundtrip ASK CLINICAL_HUMAN_REQUIRED MODIFY PROPOSED
+sc-zero-stop: PROPOSED KEEP CLINICAL_HUMAN_REQUIRED MODIFY KEEP roundtrip ASK PROPOSED
+sc-occurrence: PROPOSED MODIFY MODIFY roundtrip PROPOSED
+anchors equal across locales: true; localeCompare calls: 0
+digest dfecdce2cdb7bb8492aa1d374ca1ea283ce017d7add147df0514db969ec306d7

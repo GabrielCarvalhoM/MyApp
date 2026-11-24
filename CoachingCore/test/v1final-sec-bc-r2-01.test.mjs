@@ -58,3 +58,12 @@ test('SEC-BC-R2-01: the correction only adds a hold for an erasure marker dated 
  }
  assert.ok(compared>300&&added>0,`${compared} states compared, ${added} with a marker dated ahead`);
 });
+
+test('SEC-BC-R2-01 (QRE-FPV-01): only erasure markers are read ahead of the clock: a readiness declared under a clock set ahead does not release the view before its instant',()=>{
+ const t=athlete({id:'r201-ready-ahead'});t.enroll();const d0=t.sessions(0)[0].date,d=k=>addDays(d0,k);
+ t.set(d(0),'09:00');assert.equal(code(t.api.notFeeling100({actor:t.actor,clientRequestId:'nf',expectedVersion:t.version(),...notFeeling100WithSign(d(0))})),'OK');
+ t.set(d(20),'09:00');assert.equal(code(t.api.declareReadiness({actor:t.actor,clientRequestId:'rd',expectedVersion:t.version(),...readiness(d(20))})),'OK');
+ t.set(d(1),'10:00');const v=t.api.plan({actor:t.actor}).view;
+ assert.equal(v.state,'BLOCKED','the declaration is not read before its own instant');assert.equal(v.week.sessions.filter(s=>s.executable).length,0);
+ t.set(d(20),'10:00');assert.notEqual(t.api.plan({actor:t.actor}).view.state,'BLOCKED','read at its instant, the declaration answers the hold');
+});

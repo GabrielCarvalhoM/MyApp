@@ -531,3 +531,29 @@ Contrato: `audits/v1-integration-boundary-2026-11-23/INTEGRATION_BOUNDARY_CONTRA
 3. as checagens de `NATIVE_OBLIGATIONS.md` §1 a §8.
 
 Qualquer `DIVERGED` reprova.
+
+## 16. Final physical validation (2026-11-24): REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE
+
+- **Line:** `claude/v1-cc-final-physical`, from `8ff74bb` (RC-1).
+- **Mission folder:** `audits/v1-final-physical-2026-11-24/` (`FINAL_REPORT.md`, `results/`, `reviews/`, `mac/`).
+- **Record:** `CoachingCore/v1/FINAL_RELEASE_FREEZE_V1.json`; verifier: `node CoachingCore/scripts/v1-final-release-freeze.mjs --check`.
+
+**Done here:**
+- §14 steps 1–3:
+  - the prelude shims over host `hmacSHA256`/`constantTimeEqual` and a minimal `Buffer.from`;
+  - `entry.mjs` carries `integration`, `store` and `api.mjs` (48 modules);
+  - `BoundaryTests.testIntegrationBoundary`, plus the final journeys (`Fixtures/final.json`), the HMAC vectors and the native store + Keychain tests.
+- Run on the Mac (`swift test`) and on an iPhone 17 Pro Max.
+
+**Correction of §5 (QRE C-FPV-1).** "No persistence path for EXPLAINED_LIBM numbers" holds for the engine's own persisted state. It does **not** hold for the integration boundary:
+- custody keeps the last answer's readings, including the Race Forecast, in `carried.presentation.readings`, sealed by `carriedMac`;
+- so a record written by JavaScriptCore can differ from Node's in the last bit of a forecast number, and in `carriedMac`.
+
+The adopted rule (RFC-NUMERIC-1 applied to the boundary): a step is **EXPLAINED_LIBM** when only `answer`/`stored` differ, while all of these are equal:
+- the canonical record: the stored document without `carried`/`carriedMac`;
+- the answer and the stored document without any `runForecast` and `carriedMac`;
+- the forecasts at 9 significant digits.
+
+Anything else is **DIVERGED**.
+
+**Consequence:** a backend stores records as opaque bytes and never compares stored digests across runtimes.

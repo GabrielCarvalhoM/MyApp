@@ -1,0 +1,37 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch> "-only-testing:P0DeviceTests/FocalTests/testLibmBits"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-final/MyApp/audits/v1-aif-p0-jsc-2026-11-17/ios @ local
+
+Writing result bundle at path:
+	<scratch>
+
+Test Suite 'Selected tests' started at 2026-11-24 15:15:56.663.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-24 15:15:56.663.
+Test Suite 'FocalTests' started at 2026-11-24 15:15:56.663.
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' started.
+P0RESULT libm {"byFunction":{"exp":17,"pow":14},"calls":31,"differ":[{"args":[-0.6],"f":"exp","jsc":0.5488116360940264,"steps":[13,14],"ulp":-1,"v8":0.5488116360940265},{"args":[-1.1],"f":"exp","jsc":0.33287108369807955,"steps":[23,24],"ulp":1,"v8":0.3328710836980795},{"args":[-1.2],"f":"exp","jsc":0.30119421191220214,"steps":[25,26],"ulp":1,"v8":0.3011942119122021}]}
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' passed (0.049 seconds).
+Test Suite 'FocalTests' passed at 2026-11-24 15:15:56.713.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.049 (0.049) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-24 15:15:56.713.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.049 (0.050) seconds
+Test Suite 'Selected tests' passed at 2026-11-24 15:15:56.713.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.049 (0.050) seconds
+2026-11-24 15:15:57.047 xcodebuild[31129:167496] [MT] IDETestOperationsObserverDebug: 2.165 elapsed -- Testing started completed.
+2026-11-24 15:15:57.047 xcodebuild[31129:167496] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-24 15:15:57.047 xcodebuild[31129:167496] [MT] IDETestOperationsObserverDebug: 2.165 sec, +2.165 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/claude-502/-Users-<user>--codex-worktrees-myapp-p0-ios-MyApp/d3502311-6cdd-4e5f-90f3-7d42cadcc64d/scratchpad/device/xcr-libm.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
