@@ -1439,3 +1439,12 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Open before real athletes:** SEC-BC-R2-01, Founder G07 retention, SEC-INT-05 rest, SEC-INT-12, native obligations (`NATIVE_OBLIGATIONS.md`), IOS_REVALIDATION_PENDING. The R7-B0 records expire 2027-04-30.
 - **Regression:** suite 1934/1888/46 (base 43 plus three by design, each with a successor); RC verifier 87/87.
 - **Report:** `audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md`.
+
+<!-- V1FPV-20261124-freeze-r1 -->
+2026-11-24 · REPMILE COACHINGCORE V1 FINAL PHYSICAL VALIDATION **CLOSED**; **REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE** emitted (runtime frozen, integration contract stable, native host validated for the harness; REAL_ATHLETE_READY = NO, APPLICATION_READY_FOR_RELEASE = NO).
+- **Line:** `claude/v1-cc-final-physical` from `8ff74bb` (RC-1); candidate `503945a`, reviews `395c985`, bound commit `460a9ab`, record `6482749`. Nothing pushed or merged.
+- **Fixed:** SEC-BC-R2-01 (`views.mjs`); FPV-01 (`custody.mjs`, an essential journey impossible after a readiness declaration in the week of a report, found by this mission, pre-existing since V1INT).
+- **Physical:** Mac JSC and iPhone 17 Pro Max (iOS 27.2.1) 0 DIVERGED on J5/P16, core ×5 languages, int and final journeys (memory and native store + Keychain); CryptoKit HMAC = Node; process death, locked device, reinstall; PF-0 all PASS. HealthKit not validated (no native path).
+- **Judges:** QRE READY_WITH_CONDITIONS (met), Security PASS_WITH_CONDITIONS (before real athletes: SEC-FPV-01/02/03, G07 legal, D1, schemas), SSCTR ACCEPT.
+- **Regression:** suite 1942/1895/47 (RC-1's 46 plus its record test by design, with a successor); freeze verifier 87/87, bundle `9cf3149b`.
+- **Report:** `audits/v1-final-physical-2026-11-24/FINAL_REPORT.md`; handoff `SWIFTUI_BACKEND_HANDOFF.md`; native list `NATIVE_OBLIGATIONS_FINAL.md`.
