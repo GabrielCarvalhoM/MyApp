@@ -1,0 +1,230 @@
+{
+ "revision": "REPMILE-COACHINGCORE-V1-RC-1",
+ "mission": "REPMILE V1 COACHINGCORE BLOCKER CLOSURE (Founder, 2026-11-24)",
+ "scope": "release candidate for the physical validation on the Mac and iPhone; synthetic use only; not the FINAL RELEASE FREEZE; no real athlete before the native and security gates (NATIVE_OBLIGATIONS.md)",
+ "commit": "963a9ad1c97f70273bdc3f7795e6e7d1ea38f07c",
+ "base": "ee256ae",
+ "package": {
+  "name": "@vilumo/bounded-shadow-coaching-core",
+  "version": "0.1.0"
+ },
+ "entryPoints": {
+  "engine": "CoachingCore/src/v1-safety-index.mjs",
+  "boundary": "CoachingCore/src/boundary/integration.mjs (createIntegration) under CoachingCore/src/boundary/api.mjs (createBoundary)"
+ },
+ "amended": [
+  {
+   "file": "CoachingCore/src/r6-adaptation.mjs",
+   "base": "c82c5e113f2cdf5a97954a6ce3eb68588a6c438542af6f6c6b28a851a26857ee",
+   "now": "b8da4d12ba8f2d15cab56c85c1fd672125de748ce7221902035a5bfe5bfcfe9e",
+   "findings": [
+    "C-O1-3"
+   ],
+   "change": "kindOf: a flagged row any of whose voices states ADVERSE or IMPAIRED reads ADVERSE",
+   "boundBy": [
+    "COACHINGCORE-V1-FREEZE-1",
+    "COACHINGCORE-V1-CORE-SAFETY-FREEZE-1",
+    "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2",
+    "COACHINGCORE-V1-STRENGTH-FREEZE-1"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/r6-provenance.mjs",
+   "base": "cd0ede9d9d178691fa02be9b64d07a27449c51e500b09cc1edf2d76a02b7928a",
+   "now": "8705f1c92f0b5c03889c06754560fd52d25551522be73298fd26dbfa51891085",
+   "findings": [
+    "SEC-SC-02"
+   ],
+   "change": "partOf keeps the report's own observedAt",
+   "boundBy": [
+    "COACHINGCORE-V1-FREEZE-1",
+    "COACHINGCORE-V1-CORE-SAFETY-FREEZE-7"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/v1-f08.mjs",
+   "base": "7ec9b6d53be49dadcbd8ab5bd28e49b0df6f146545b2db8c322c0cf488e40997",
+   "now": "689c227ca9f8de4315a72d0a326d75887af7ae939994b73e7ccd8c526f944c66",
+   "findings": [
+    "SEC-SC-02",
+    "SEC-SC-03"
+   ],
+   "change": "restartIntake: each voice dated by its own instant (saidAfter); a stop after the latest declaration or on the restart day gives a 0-week pause",
+   "boundBy": [
+    "COACHINGCORE-V1-FREEZE-1",
+    "COACHINGCORE-V1-CORE-SAFETY-FREEZE-7"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/v1-run-format-index.mjs",
+   "base": "60ad593097e82d37dd766c509840f11fa2469e7f69103ac6acf69e6d61a5dbd4",
+   "now": "a21048f67ac25185170771ed3c606084ac4908a98c4753810f1de9086ef12bee",
+   "findings": [
+    "QRE-INT-02"
+   ],
+   "change": "evaluateProgram: a report the decision neither recorded nor refused keeps only its stop in the record of formats",
+   "boundBy": [
+    "COACHINGCORE-V1-CORE-SAFETY-FREEZE-1",
+    "COACHINGCORE-V1-RUN-FORMAT-FREEZE-2",
+    "COACHINGCORE-V1-RACE-FORECAST-FREEZE-1"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/boundary/custody.mjs",
+   "base": "a3e604f6200fcc3905bc42778a44b442cf6a73ffc665020a166991bf4fc80938",
+   "now": "f58b52399eca4d773962334844a533647a4b51b8f03933f3893a4a2ea915ae74",
+   "findings": [
+    "SEC-INT-02R"
+   ],
+   "change": "evolves: a new voice is its report whole; a merge keeps completion and every stated response; a kept voice's label is one the engine writes",
+   "boundBy": [
+    "COACHINGCORE-V1-FREEZE-1",
+    "V1INT-BOUNDARY-SUCCESSOR-1"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/boundary/integration.mjs",
+   "base": "c209775029a81dc97555f2ae8224b58a450b68c5b9fc58572867bbdc6b7c91ba",
+   "now": "5b4530edd9cda9b2f89a395beab167151b45693fba46231ac3047c804608ec9f",
+   "findings": [
+    "SEC-INT-06",
+    "SEC-INT-07",
+    "SEC-INT-04 rest",
+    "SSCTR-INT-R2-01",
+    "G07"
+   ],
+   "change": "admission: no report before the record began; a safety signal past a limit (at most 3 more); erasure under a behind clock; the duplicate answer carries the stored screen; erasure erases the stored screen",
+   "boundBy": [
+    "V1INT-BOUNDARY-SUCCESSOR-1"
+   ]
+  },
+  {
+   "file": "CoachingCore/src/boundary/admission.mjs",
+   "base": "92631d69e2403d4af29e00e336d80b562959e6aedf6ba35bb177968449a40b27",
+   "now": "fe78490f9c481af7eda6f50ae58c2cf3066b23449f8b7d976bbe1501ea7acd89",
+   "findings": [
+    "SEC-INT-07"
+   ],
+   "change": "LIMITS.safetyExcess 3; statesSafetySignal",
+   "boundBy": [
+    "V1INT-BOUNDARY-SUCCESSOR-1"
+   ]
+  }
+ ],
+ "added": [
+  "CoachingCore/scripts/v1-rc-1.mjs",
+  "CoachingCore/test/v1bc-blocker-closure.test.mjs",
+  "CoachingCore/test/v1bc-cycle1.test.mjs",
+  "CoachingCore/test/v1bc-rc-record.test.mjs"
+ ],
+ "preserved": [
+  "COACHINGCORE-V1-CORE-SAFETY-FREEZE-7: 47/47 of its other bound files byte-identical; 2 declared amendments",
+  "V1INT-BOUNDARY-SUCCESSOR-1: 8/8 of its other files byte-identical; 3 declared amendments",
+  "CoachingCore/src/r6-adaptation.mjs: amended (base c82c5e113f2c, now b8da4d12ba8f) for C-O1-3",
+  "CoachingCore/src/r6-provenance.mjs: amended (base cd0ede9d9d17, now 8705f1c92f0b) for SEC-SC-02",
+  "CoachingCore/src/v1-f08.mjs: amended (base 7ec9b6d53be4, now 689c227ca9f8) for SEC-SC-02, SEC-SC-03",
+  "CoachingCore/src/v1-run-format-index.mjs: amended (base 60ad593097e8, now a21048f67ac2) for QRE-INT-02",
+  "CoachingCore/src/boundary/custody.mjs: amended (base a3e604f6200f, now f58b52399eca) for SEC-INT-02R",
+  "CoachingCore/src/boundary/integration.mjs: amended (base c209775029a8, now 5b4530edd9cd) for SEC-INT-06, SEC-INT-07, SEC-INT-04 rest, SSCTR-INT-R2-01, G07",
+  "CoachingCore/src/boundary/admission.mjs: amended (base 92631d69e240, now fe78490f9c48) for SEC-INT-07",
+  "nothing else changed in CoachingCore since ee256ae (11 files)",
+  "no untracked file in CoachingCore",
+  "every file the runtime reads is present (87)"
+ ],
+ "records": {
+  "inventory": "audits/v1-blocker-closure-2026-11-24/V1_BLOCKER_INVENTORY.md",
+  "report": "audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md",
+  "native": "audits/v1-blocker-closure-2026-11-24/NATIVE_OBLIGATIONS.md"
+ },
+ "files": {
+  "CoachingCore/src/boundary/admission.mjs": "fe78490f9c481af7eda6f50ae58c2cf3066b23449f8b7d976bbe1501ea7acd89",
+  "CoachingCore/src/boundary/api.mjs": "b7c16af2c02f1a5f0d92fbd10c40b52515bea1abfc60ff3be3fa4c83b10475e2",
+  "CoachingCore/src/boundary/custody.mjs": "f58b52399eca4d773962334844a533647a4b51b8f03933f3893a4a2ea915ae74",
+  "CoachingCore/src/boundary/integration.mjs": "5b4530edd9cda9b2f89a395beab167151b45693fba46231ac3047c804608ec9f",
+  "CoachingCore/src/boundary/inventory.mjs": "04c872f42d52026e4f798602aa8101f5ff55724590abea6018ae732fe2c93b69",
+  "CoachingCore/src/boundary/report-voices.mjs": "9e0008755420970304c77915282df3666478e0a1997ed46a210b7b14a2239405",
+  "CoachingCore/src/boundary/store.mjs": "3bee966aa8b45aea5ac60be2b28498a86b24269f774f5364433c1e8f341ae763",
+  "CoachingCore/src/boundary/views.mjs": "38c3c6144273044e2bc713e96238d56b40a8715cde5ea3527583a1df998a1dd3",
+  "CoachingCore/src/fixtures.mjs": "b615c3db0022f0125e36f5ae573964de2863d587c3b9631dc48dddad581f2d13",
+  "CoachingCore/src/index.mjs": "f65801d023d69a5f2f4af7308a998b7771fc27bfd230d8a479748c200b3edc13",
+  "CoachingCore/src/r2-fixtures.mjs": "2c57aa5b9a9e473843790e17532108001b7bf600d1b07c091794a0dc9c95e302",
+  "CoachingCore/src/r2-runtime.mjs": "2dc76442339fadf3ddfbf0fb1f67dd2e9d6101cb2eb785a02171b70ad45902c8",
+  "CoachingCore/src/r3-consumption.mjs": "a0526a8954d1a27fe90ad5c5779d72bf05841306232df75e573f61935a5ae398",
+  "CoachingCore/src/r3-index.mjs": "7476017a5a9f4b21ce9cf546ecbf611751cc6e4a21b0887bd0e98ca6e90e50dc",
+  "CoachingCore/src/r3-input.mjs": "35320aac23badeab919ee6eb7479c5b6e1ff050596ca30a681f95f7d84b63b3b",
+  "CoachingCore/src/r3-runtime.mjs": "34ec4622b6511d33323c3bc2fb388692659d5617958233243470494a1a1718b7",
+  "CoachingCore/src/r4-athlete-model.mjs": "e87fd3343a7c82f70be1603396080f61939201f43e33c96b74b5aa46ffa9e8c8",
+  "CoachingCore/src/r4-authority.mjs": "8e39bbb54b7978ca1c0ac9c4cfc8986985e7bb61ecdf3e4f00c5d6716ad7e9b9",
+  "CoachingCore/src/r4-candidates.mjs": "d963de2ebb9700eb87cce4ed0a86e8a07b3c4fe5e1926e541928bf6296b0ab11",
+  "CoachingCore/src/r4-context.mjs": "f7873e30333a34335e8f315ea29cabcefff6e2c5277d46cda73e8c8d39b0282c",
+  "CoachingCore/src/r4-index.mjs": "4440316641c01a987dc1c8fc7562e970c45bb7c4c03c57b8e8186ede7dc01a7e",
+  "CoachingCore/src/r4-runtime.mjs": "557efc5b96c0fcaff70f1cf296f69b294129525d5519950a63741c1c096591af",
+  "CoachingCore/src/r5-adaptation.mjs": "434769da56d05618da7cfc757dfbfd5e96ffb2c2777a224e329a8f7b8de52220",
+  "CoachingCore/src/r5-authority.mjs": "0eafe07af8c04bc67bf7268ac791d003b1c823241ea2e8a6dd22cd60b10954ad",
+  "CoachingCore/src/r5-contract.mjs": "65cf5a6d345a5ae4007f6662408f94e831756c5397af8d9a7c91d5528d18aa8b",
+  "CoachingCore/src/r5-index.mjs": "2d2482122f695fe9c0a3faee72418d3eb723eed39c9f9bf9e87482826a58b8f7",
+  "CoachingCore/src/r5-learning.mjs": "fac850198898f0675d2ca950117ab700f5fd716690a35485991feb5f8208d992",
+  "CoachingCore/src/r5-observation.mjs": "91e9607a18702b6d47487369bd5ab823ffc1542b298a85f19423fa1c6ef43b8e",
+  "CoachingCore/src/r5-program.mjs": "05795bab7967bca751ebb1fa0eb18c3ff6939b6204188b5d2fbbd6e7189ee7ad",
+  "CoachingCore/src/r5-review-context.mjs": "c392a2ac7ab02ad74f3259a8a66ef657bb748e98458810816a4bcb7100384f3e",
+  "CoachingCore/src/r5-schedule.mjs": "2d11987a8dc78f0f60defeb4346d5d1d0f5c247f27a474dd8ae7676c01945831",
+  "CoachingCore/src/r5-selectors.mjs": "a4d755cdc8fad1bcd265fac7a2967a545db5a3f17781d62e9dfad2d33764c156",
+  "CoachingCore/src/r5-simulator.mjs": "e18ac696baff3dcf47305846a8b9b4c078453ca2841f8652835997a4e59d70c0",
+  "CoachingCore/src/r5-validity.mjs": "ef19dfb0a59c7c024d1e63c960bf2ece864b0e509b345766f5ede37ce1628867",
+  "CoachingCore/src/r6-adaptation.mjs": "b8da4d12ba8f2d15cab56c85c1fd672125de748ce7221902035a5bfe5bfcfe9e",
+  "CoachingCore/src/r6-authority.mjs": "ae6b58b119d5c302ccab2b91a18e5ca365e54014a17ad9838b6d596695e46003",
+  "CoachingCore/src/r6-balanced.mjs": "761770ac9a638a17b86fdf478388d09ed5645b63affcb3bf45e0ed3d0cde6b7f",
+  "CoachingCore/src/r6-catalogue.mjs": "1345682e5579293248fdb537510519344b9102e6a75ef0db3ea1ca61783dde5c",
+  "CoachingCore/src/r6-clinical.mjs": "cd594a788e927f11617be2bcb62ee465c877e9c6e2045c76a5905a2d9a50063a",
+  "CoachingCore/src/r6-composition.mjs": "4094116517f602fc1e21f680f7ed7b5a5cd23e4c44b8028ed266411b6ecc93e3",
+  "CoachingCore/src/r6-index.mjs": "a49388b30ea8bdaad2ee1557efd2970a759a3674ee4f4bc67cb3c88e4d363550",
+  "CoachingCore/src/r6-intake.mjs": "aa35e295e1b58031daeb27e039bf32e8e7f7c29dc37df6f8023483bd39ecbb09",
+  "CoachingCore/src/r6-learning.mjs": "dced0698ebbee06f81208b9fb9e404d3d6bb534a689fe0572c7d9949c9a22a10",
+  "CoachingCore/src/r6-legacy.mjs": "f0f09e0a60a43013d9e6fc746b8970743916cef2d9b9e545248b8e5c62215165",
+  "CoachingCore/src/r6-prescription.mjs": "35e3844cbf64d58baed672d5f9645eac6de76ad6d142164d5beea963ec8f0da4",
+  "CoachingCore/src/r6-program.mjs": "d8610065e4c58b959440893ea5299afc14e0ac4d8c16803b252f282a27be786f",
+  "CoachingCore/src/r6-provenance.mjs": "8705f1c92f0b5c03889c06754560fd52d25551522be73298fd26dbfa51891085",
+  "CoachingCore/src/r6-simulator.mjs": "8a78e3015f834801e3a88eca7c42376ce04bd6b648029bb86bd37386a41c7f0f",
+  "CoachingCore/src/r7b-repertoire.mjs": "1997a4e5e0e6090829686ed1a277036436b326543bfc1ac923ed6fc10eba776b",
+  "CoachingCore/src/runtime.mjs": "b52b1bbe9c8742a5a27eee9cec548cc06ac33d312713a02be6c24730737ebe9c",
+  "CoachingCore/src/semantics.mjs": "e1ef468c4eaf304a85fb5173a89d71dcaf094ab9712663c16e5fffadae588d8c",
+  "CoachingCore/src/v1-coaching.mjs": "2b8ce25b65b5046b53105ded804f69f36a47cce15fcec85953d994514820b4ae",
+  "CoachingCore/src/v1-events.mjs": "2e7c0e31299686c40d3fa48cb0afc6d463cde1ed1cbb674199b42d2cd99e7cd4",
+  "CoachingCore/src/v1-f08.mjs": "689c227ca9f8de4315a72d0a326d75887af7ae939994b73e7ccd8c526f944c66",
+  "CoachingCore/src/v1-index.mjs": "8a9bdd500663967ceed8eaedfc514665da8cef61e0a64536b7a02b9dd2cebd2d",
+  "CoachingCore/src/v1-pace-insights.mjs": "9b18063c5b2b77511d677b2afcec4d37392e39b39067d5284b4b1fe553c0fd7b",
+  "CoachingCore/src/v1-race-forecast.mjs": "8ab1815b16e27092774a12d2666011d99cded5b1364db1fe57cda86e2bc4a92e",
+  "CoachingCore/src/v1-run-calibration.mjs": "0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01",
+  "CoachingCore/src/v1-run-forecast-index.mjs": "b57c1c16a380f3b22eb8ee01a9ce7dc3230ae232c93816a433e6d16f73f5c5bd",
+  "CoachingCore/src/v1-run-format-index.mjs": "a21048f67ac25185170771ed3c606084ac4908a98c4753810f1de9086ef12bee",
+  "CoachingCore/src/v1-run-format.mjs": "e8f364e3c977d1127205a83a1bdae557dd503913a713b0df56dc8ad64cac6a99",
+  "CoachingCore/src/v1-run-history.mjs": "06deb84c3bb22c5af99108d8169d58fde3c319887dab5404c308ed4537676902",
+  "CoachingCore/src/v1-run-index.mjs": "a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608",
+  "CoachingCore/src/v1-safety-index.mjs": "86cd18805a44cd8aa0c73e1f9b5d820b58bf2493fe4340afed49a5c8b4095298",
+  "CoachingCore/src/v1-strength-index.mjs": "36666ab27894cf212c341cc373b303c71e0e77766626efdb6f4be8fd93bc1b10",
+  "CoachingCore/src/v1-strength.mjs": "6ea7486c009809d342943d3983592bdbfda409c6ddb29126761c8d7990328dda",
+  "CoachingCore/src/value.mjs": "fef5f8206ef3a06148ee93ca2c99f09a456e3530d7680f447e0f37e7b52d2acd",
+  "CoachingCore/r3/BOUNDED_POLICY_CANDIDATES_R3.json": "4d9044923ac05160db928a464466d5d6491c22cd496c9f43429cf6a9594c35fb",
+  "CoachingCore/r4/PRESCRIPTION_ENVELOPE_REGISTRY.json": "0e8f6c29dc75d6dc68c047f5bd3974de88fd7eeed724564d5183ece7b0db57b6",
+  "CoachingCore/r5/PROGRAM_POLICY_R5.json": "307a09213230baca8fe7802ae7eb271825dcd7346d29b5d8c7ba7632571eca12",
+  "CoachingCore/r6/PROGRAM_POLICY_R6.json": "a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100",
+  "CoachingCore/r7/b0/REPERTOIRE_CATALOG_B0.json": "ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9",
+  "CoachingCore/v1/EVENT_EXTENSION_V1.json": "8a4ba9b3f3f3ff0d379d0e5b008fce6fe3a38cacec75cd4ec6684707799396a8",
+  "CoachingCore/v1/RACE_FORECAST_EXTENSION_V1.json": "eae0111744d904211963ecc76a964a59d214dd84c541c9ac799480fd3f3de840",
+  "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa",
+  "CoachingCore/v1/RUN_FORMATS_V1.json": "26c6e3fbfeee864376643c485d64a616f1cf13ea49d82b2cc223c02d7a06353c",
+  "CoachingCore/v1/STRENGTH_EXTENSION_V1.json": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+  "audits/coachingcore-v1-final-closure-2026-11-11/reviews/ssctr/SSCTR_V1FC_EVENT_RECORDS.json": "818ce68f543c2e0be8f1b8dbd3a225b7d755a78ddedaa567fbec2918f93735af",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json": "66a6dab57bbdb3afcbc2d871295a1261c59d41729004ef54a3b63e64504511a6",
+  "audits/domain-closure-r3-2026-10-24/reviews/ssctr-records.json": "009ac1b374109f788331bbfd2020cf18284540d0f80e72e0cba2f8f4703aece4",
+  "audits/domain-closure-r4-2026-10-25/reviews/ssctr-envelope-review.json": "6ae5e2b6f8f41168e99779e0f22f124ffe05af873214ec31c19b20a502aac055",
+  "audits/domain-coaching-r5-2026-10-25/reviews/ssctr-policy-review.json": "2eb990ab0b9ff2c740bfeb0fe998b84a8f29ee19c88b4259f3ba359d6d5ea903",
+  "audits/domain-coaching-r6-2026-10-26/reviews/ssctr-policy-review.json": "6238cbf0ed9fdbf1e5337f97a21d720c9dc0f5311422c9c8ade4309e7f008c70",
+  "audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json": "6867d3e89ebd4bb309c018fb456508d3a4510038194269769b0a4ef16f23d885",
+  "audits/v1-run-extensions-2026-11-13/phase-a/reviews/ssctr/SSCTR_V1RWS_RUN_RECORDS.json": "a5b915c66f942e17e5e3eb39ef187921e4e65684866c7687af4f6997d44cbf02",
+  "audits/v1-run-extensions-2026-11-13/phase-b/reviews/ssctr/SSCTR_V1RFC_RUN_RECORDS.json": "a1274c5c0d83dd19ac40dfe35a059e2ccf803afdf9fdb4e6b080c701b673b8a6",
+  "audits/v1-strength-corrections-2026-11-16/candidate/reviews/ssctr/SSCTR_V1STR_RECORDS.json": "4cddc7eca48bfa4ff02f340cd0f4b77b8901684cb61b0d869524db27fd423711"
+ },
+ "fileCount": 87,
+ "filesDigest": "5f920e3d83a46ed0738027f1b72150e1e857d4e838cd9d20af5c7a05395b1547"
+}
