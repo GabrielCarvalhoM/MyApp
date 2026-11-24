@@ -1,0 +1,16 @@
+## 220c005
+(a) re-send after erasure: code / duplicate / duplicates / screen      ["OK",false,[0],"RUN_STOPPED_FOR_A_SYMPTOM"]
+(a) rows of the session, live rows, run-format facts: before -> after  [[1,1,25],[1,1,25]]
+(a) version step; same request id again: code / same answer / version  [1,"OK",false,0]
+(a) the next duplicate (readings stored again): duplicate / screen     [true,"RUN_STOPPED_FOR_A_SYMPTOM"]
+(b) lastAt via carried() / via doc().carried                           ["undefined","2026-11-18T00:00:00.000Z"]
+(b) erase at clock -1 day: code / stored lastAt unchanged              ["OK",true]
+(b) clock restored: next review                                        "OK"
+## 6e85222
+(a) re-send after erasure: code / duplicate / duplicates / screen      ["OK",true,[0],null]
+(a) rows of the session, live rows, run-format facts: before -> after  [[1,1,25],[1,1,25]]
+(a) version step; same request id again: code / same answer / version  [0,"OK",true,0]
+(a) the next duplicate (readings stored again): duplicate / screen     [true,null]
+(b) lastAt via carried() / via doc().carried                           ["undefined","2026-11-18T00:00:00.000Z"]
+(b) erase at clock -1 day: code / stored lastAt unchanged              ["OK",true]
+(b) clock restored: next review                                        "OK"

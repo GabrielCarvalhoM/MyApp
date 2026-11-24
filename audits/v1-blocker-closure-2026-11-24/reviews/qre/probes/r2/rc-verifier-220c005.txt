@@ -1,0 +1,54 @@
+### status of CoachingCore before
+(end)
+### T6a --write --commit deadbeef (HEAD 220c005, clean)
+--commit must be HEAD (220c0056801a593432f87dc5d00b24ac6efdcd25)
+exit 1 ; record exists: no
+### T6b --write --commit 220c005 with an uncommitted change to integration.mjs
+CoachingCore has uncommitted changes:  M CoachingCore/src/boundary/integration.mjs
+exit 1 ; record exists: no
+### T6c --write --commit 220c (too short)
+--commit must be HEAD (220c0056801a593432f87dc5d00b24ac6efdcd25)
+exit 1
+### T6d --write --commit 220c005 on a clean tree (honest)
+REPMILE-COACHINGCORE-V1-RC-1: written, 87 files bound
+exit 0
+### check on the honest record (staged in the scratch clone)
+COACHINGCORE-V1-CORE-SAFETY-FREEZE-7: 47/47 of its other bound files byte-identical; 2 declared amendments
+V1INT-BOUNDARY-SUCCESSOR-1: 8/8 of its other files byte-identical; 3 declared amendments
+CoachingCore/src/r6-adaptation.mjs: amended (base c82c5e113f2c, now b8da4d12ba8f) for C-O1-3
+CoachingCore/src/r6-provenance.mjs: amended (base cd0ede9d9d17, now 8705f1c92f0b) for SEC-SC-02
+CoachingCore/src/v1-f08.mjs: amended (base 7ec9b6d53be4, now 689c227ca9f8) for SEC-SC-02, SEC-SC-03
+CoachingCore/src/v1-run-format-index.mjs: amended (base 60ad593097e8, now a21048f67ac2) for QRE-INT-02
+CoachingCore/src/boundary/custody.mjs: amended (base a3e604f6200f, now f58b52399eca) for SEC-INT-02R
+CoachingCore/src/boundary/integration.mjs: amended (base c209775029a8, now 5b4530edd9cd) for SEC-INT-06, SEC-INT-07, SEC-INT-04 rest, SSCTR-INT-R2-01, G07
+CoachingCore/src/boundary/admission.mjs: amended (base 92631d69e240, now fe78490f9c48) for SEC-INT-07
+nothing else changed in CoachingCore since ee256ae (12 files)
+no untracked file in CoachingCore
+every file the runtime reads is present (87)
+REPMILE-COACHINGCORE-V1-RC-1: 87/87 consumed files byte-identical; the seven amendments declared
+exit 0
+### rc-record test
+✔ REPMILE-COACHINGCORE-V1-RC-1: FREEZE-7 and V1INT preserved but for the seven declared amendments; nothing else changed since ee256ae; the record holds (431.2535ms)
+### T9 fileCount:1, filesDigest:'x'
+the record's fileCount or filesDigest does not match its files
+exit 1
+### T9b only fileCount wrong
+the record's fileCount or filesDigest does not match its files
+exit 1
+### T9c files and digest edited consistently (an entry's hash replaced, digest recomputed)
+NOT byte-identical: CoachingCore/src/boundary/integration.mjs
+exit 1
+### R1 T1..T5, T7, T8 re-run
+CHANGED and not declared: CoachingCore/src/v1-strength.mjs
+T1 exit 1
+NOT byte-identical: CoachingCore/src/boundary/integration.mjs
+T2 exit 1
+UNTRACKED: CoachingCore/src/zz-new.mjs
+T3 exit 1
+NOT byte-identical: audits/domain-coaching-r7-b0-2026-10-31/reviews/SSCTR_RECHECK_B0.json
+T4 exit 1
+ NOT BOUND: CoachingCore/src/v1-f08.mjs
+T8 (entry removed, count/digest recomputed) exit 1
+### final
+REPMILE-COACHINGCORE-V1-RC-1: 87/87 consumed files byte-identical; the seven amendments declared
+exit 0
