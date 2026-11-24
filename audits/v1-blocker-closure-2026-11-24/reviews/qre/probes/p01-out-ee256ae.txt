@@ -1,0 +1,18 @@
+(a) stop sent: screen                                            "RUN_STOPPED_FOR_A_SYMPTOM"
+(a) erase                                                        "OK"
+(a) duplicate-only re-send (no eligibility): duplicate / screen  [true,null,"OK"]
+(a) empty review right after (engine call): screen               ["OK","RUN_STOPPED_FOR_A_SYMPTOM"]
+(a) duplicate-only after that engine call: screen                [true,null]
+(a2) control: duplicate-only, no erasure: screen                 [true,null]
+(b) erasure of an unknown id: code / screen kept                 ["NOT_FOUND",true]
+(b) erase under clock -1 day                                     ["CLOCK_BEHIND_RECORD",true]
+(b) the same erasure retried (stale version)                     "CLOCK_BEHIND_RECORD"
+(b) restored from the file store: lastAt / screen                [true,null]
+(b) delivery after restore, no screen                            "OK"
+(b) delivery after the athlete answers a screen                  "OK"
+(c) athlete per-day: 8 plain, plain, 4 with a stop               ["OK","OK","OK","OK","OK","OK","OK","OK","plain:LIMIT_EXCEEDED","stop:LIMIT_EXCEEDED","stop:LIMIT_EXCEEDED","stop:LIMIT_EXCEEDED","stop:LIMIT_EXCEEDED"]
+(c) athlete per-day past the limit: ADVERSE, IMPAIRED, TOO_HARD  ["recovery:LIMIT_EXCEEDED","nextDayFunction:LIMIT_EXCEEDED","effort:LIMIT_EXCEEDED"]
+(d) excess correction, then the same request id again            ["LIMIT_EXCEEDED","LIMIT_EXCEEDED",true,0]
+(e) mixed request                                                ["OK",null,null]
+(e) a workout on the enrollment day before the enrollment instant "OK"
+(f) stop dated before the record began: code / safetyFields      ["OK",null]

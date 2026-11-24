@@ -78,7 +78,10 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    if(!doc||doc.athleteId!==id)return doc;
    const c=openCarried(id,doc);if(!c){if(op)op.flag='CARRIED_INTEGRITY';throw new Error('carried records failed their integrity check');}
    if(op?.athleteId===id){op.loaded=c;
-    if(op.mutating&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at){op.flag='CLOCK_BEHIND_RECORD';throw new Error('clock behind the record');}}
+    if(op.mutating&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at){op.flag='CLOCK_BEHIND_RECORD';throw new Error('clock behind the record');}
+    // Cycle 1 (SEC-BC-01): an erasure or a revocation admitted under a clock behind the record is dated at the latest instant on record, never
+    // earlier: what it writes (an erasure marker, a consent change) can then never predate a readiness declaration and release a standing hold.
+    else if(!op.mutating&&['eraseHealthFacts','setConsent'].includes(op.name)&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at)op.at=Date.parse(c.lastAt);}
    return doc;
   },
   commit(id,expectedVersion,doc){
@@ -270,7 +273,9 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    // Only duplicates and nothing else said (no screen, no report of how the athlete feels): nothing to decide, nothing written.
    // (A screen equal to the one on record says nothing new either.)
    const sameScreen=rv.eligibility===undefined||canonical(rv.eligibility)===canonical(op.loaded.screen??null);
-   if(!a.observations.length&&a.duplicates.length&&(channel===CHANNELS.DEVICE||Object.keys(rv).every(k=>['kind','observations','eligibility'].includes(k))&&rv.kind==='WEEKLY_REVIEW'&&sameScreen))
+   // Cycle 1 (SEC-BC-02 = QRE-BC-01): only while the record holds the last answer's readings; after an erasure took them the engine is asked,
+   // so the answer names the screen the kept stop still requires.
+   if(!a.observations.length&&a.duplicates.length&&op.loaded?.presentation?.readings&&(channel===CHANNELS.DEVICE||Object.keys(rv).every(k=>['kind','observations','eligibility'].includes(k))&&rv.kind==='WEEKLY_REVIEW'&&sameScreen))
     // V1 blocker closure (SSCTR-INT-R2-01): no engine call is made, so the answer carries the screen the record last asked for (never a null
     // that could read as "no screen needed").
     return {ok:true,duplicate:true,duplicates:a.duplicates,version:o.doc.version,recorded:[],notRecorded:[],warningSignScreen:op.loaded?.presentation?.readings?.warningSignScreen??null,...activitiesOf(channel,list,a.duplicates,null)};

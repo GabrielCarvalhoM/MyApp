@@ -1,0 +1,40 @@
+### write (simulated in a scratch clone of 6e85222)
+REPMILE-COACHINGCORE-V1-RC-1: written, 87 files bound
+exit 0
+### check
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### rc-record test
+✖ REPMILE-COACHINGCORE-V1-RC-1: FREEZE-7 and V1INT preserved but for the seven declared amendments; nothing else changed since ee256ae; the record holds (398.9812ms)
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ REPMILE-COACHINGCORE-V1-RC-1: FREEZE-7 and V1INT preserved but for the seven declared amendments; nothing else changed since ee256ae; the record holds (398.9812ms)
+### T1 undeclared change to a consumed file not amended (src/v1-strength.mjs +1 byte)
+CHANGED and not declared: CoachingCore/src/v1-strength.mjs
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### T2 change to an amended file after the record
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### T3 new src file
+UNTRACKED: CoachingCore/src/zz-new.mjs, CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### T4 bound data file under audits changed
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### T5 a test file changed (not consumed by the app)
+V1INT-BOUNDARY-SUCCESSOR-1: 7/8 of its other files byte-identical; 3 declared amendments
+CHANGED and not declared: CoachingCore/test/v1int-limits.test.mjs
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+### T6 --write on a dirty tree with an unverified --commit
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1
+record commit 6e85222 files 87
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit (check after revert) 1
+### restore the honest record
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+UNTRACKED: CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json
+exit 1

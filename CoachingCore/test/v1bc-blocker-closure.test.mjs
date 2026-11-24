@@ -204,10 +204,10 @@ test('O-SC-1 at the V1 entry: the most voices one session can hold through the b
 test('SEC-INT-04 (rest): an erasure of health facts passes under a clock behind the record; the latest instant on record never moves back',()=>{
  const t=athlete({id:'b4'});t.enroll();const run=t.sessions(0).find(s=>s.id==='w0-run-d1');t.set(run.date,'08:00');
  const nf=t.api.notFeeling100({actor:t.actor,clientRequestId:'nf-b4',expectedVersion:t.version(),...notFeeling100WithSign(run.date)});assert.equal(nf.ok,true);t.set(run.date,'21:00');t.weekly(run.date,[t.form(run)]);
- const lastAt=t.it.carried({actor:t.actor}).lastAt;t.clock-=86400e3;
+ const lastAt=t.doc().carried.lastAt;assert.ok(Number.isFinite(Date.parse(lastAt)));t.clock-=86400e3;
  assert.equal(code(t.weekly(run.date,[])),'CLOCK_BEHIND_RECORD','a review still waits for the clock');
  const e=t.it.eraseHealthFacts({actor:t.actor,eventIds:[nf.eventId],expectedVersion:t.version()});assert.equal(code(e),'OK');
- assert.equal(t.it.carried({actor:t.actor}).lastAt,lastAt);
+ assert.equal(t.doc().carried.lastAt,lastAt);
 });
 test('SSCTR-INT-R2-01: a duplicate-only answer carries the screen the record last asked for, never null while it is required',()=>{
  const t=athlete({id:'r201'});t.enroll();const s=t.sessions(0).find(x=>x.id==='w0-run-d1');t.set(s.date,'20:00');

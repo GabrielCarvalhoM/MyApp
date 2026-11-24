@@ -1869,7 +1869,10 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
 // every later review (a row merged before this change kept none, and binds only its own). Cycle 1 (QRE C1, SEC-NCC-01): a part also keeps when its
 // own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
 // holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
-const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
+// V1 blocker closure (SEC-SC-02): a part also keeps when its own report says the execution took place (`observedAt`, as the normalizer read it),
+// so a voice kept on a row observed earlier (a planned session done late, a stop reported on a row of another day) is dated by itself, never by
+// the row holding it. Read only by f08's readiness question; a part kept without one (before this line) is read with its row's instant, as before.
+const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt),seen=utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{}),...(seen?{observedAt:seen}:{})};};
 /** SEC-O1-03: the most voices a flagged row keeps (measured: at most 3 on any row of the O-1 differential's 12 configurations). Exported for tests. */
 const VOICE_LIMIT=16;
 /** O-1: who gave a part or a report, as far as the record shows: one device activity, else the athlete (an own source), else nobody known. */
@@ -4888,6 +4891,11 @@ const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!r
 // answers it. Every declared stop counts, whatever its reason and at zero minutes too (statedStop's reading: any value but none or false).
 const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null&&a.stop!==false;
 const stopOnRecord=o=>!!o&&!o.fact&&voices(o).some(stopped);
+// V1 blocker closure (SEC-SC-02): each voice is dated by its own observation (`provenance.parts[id].observedAt`), never by the row that holds it;
+// a part kept without one is dated by its row, as before. Only the readiness question (trainedAfter) reads these instants.
+const datedVoices=o=>[{a:o.actual,at:o.observedAt},...Object.values(isObj(o.provenance?.parts)?o.provenance.parts:{}).map(p=>({a:p?.actual,at:typeof p?.observedAt==='string'?p.observedAt:o.observedAt}))];
+/** A voice of the row that says, after `t`, that the session took place (when `done` lets the row's voices say so) or that it was stopped. */
+const saidAfter=(o,t,done)=>!!o&&!o.fact&&datedVoices(o).some(v=>(done&&did(v.a)||stopped(v.a))&&Date.parse(v.at??'')>t);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
@@ -4928,9 +4936,15 @@ function restartIntake({intake,record=[],referenceState=null,asOf,screen,athlete
  // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
  // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
  // SEC-O1-01b/c: a stop on record after the declaration asks as well, in force, kept or replaced.
- const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>(voiced(o)||stopOnRecord(o))&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ // V1 blocker closure (SEC-SC-02): each voice is read at its own instant (saidAfter), so a voice kept on a row observed before the declaration
+ // that itself says, after it, that the session took place or was stopped is training after it.
+ const voiced=claimsDoneIn(rows),declaredAt=readiness?Date.parse(readiness.declaredAt):null,trainedAfter=!!readiness&&rows.some(o=>saidAfter(o,declaredAt,voiced(o)));
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},...(!trainedAfter?{readinessDeclared:true}:{})};
+ // V1 blocker closure (SEC-SC-03): a declared stop the record holds after the latest readiness declaration, or on the restart day itself, is never
+ // read as no pause because the session it stopped ran on the restart day (0 days since the last execution): the pause is then 0 weeks, with no
+ // declaration standing in for it, so its cause is screened as for any stop on record (the existing question; no new rule).
+ if(facts.pause===null&&rows.some(o=>readiness?saidAfter(o,declaredAt,false):stopOnRecord(o)&&dayOfRow(o)===day))facts.pause={weeks:0,bySportDays:clone(byDays)};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
  const from=isoDay(day)?addDays(day,-28):null,inWindow=o=>!!from&&dayOfRow(o)>from&&dayOfRow(o)<=day,runRows=once(rows).filter(o=>executed(o)&&sportOf(o)==='RUN'&&inWindow(o));
  const shown={minutes:Math.round(runRows.reduce((n,o)=>n+(Number(o.actual?.minutes)||Number(o.context?.runMinutes)||0),0)/4),days:Math.min(7,Math.ceil(new Set(runRows.map(dayOfRow)).size/4))},bounded=[];
@@ -5208,7 +5222,12 @@ function bindObservations(program,accepted,hybrid,policy,reads=null){
 /** R7-D F04: a confounded execution (heat or terrain, for example) cannot be read for performance or effort, so they neither earn nor count
  * against it; an adverse recovery or an impaired next day reported with it is independent of that reading and stays adverse evidence. */
 const adverseBeyondConfounding=o=>o.response?.recovery==='ADVERSE'||o.response?.nextDayFunction==='IMPAIRED';
-const kindOf=o=>o.partial?'PARTIAL':o.confounded?(adverseBeyondConfounding(o)?'ADVERSE':'CONFOUNDED'):classify(o);
+/** V1 blocker closure (C-O1-3, SSCTR_O1_R1 decision A): on a flagged row (an execution in dispute) the response shown is the first-admitted
+ * report's, so who spoke first decided whether an adverse recovery or an impaired next day reached the protective readers. Every voice the row
+ * keeps (its own and `provenance.parts`) is heard: when any of them states one, the row reads ADVERSE, in every order of arrival and after any
+ * correction that does not resolve the dispute. A flagged row is never credit, progression or calibration, so this only ever protects. */
+const voicedAdverse=o=>o?.conflicted===true&&[o.response,...Object.values(o.provenance?.parts&&typeof o.provenance.parts==='object'?o.provenance.parts:{}).map(p=>p?.response)].some(r=>!!r&&typeof r==='object'&&(r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED'));
+const kindOf=o=>voicedAdverse(o)?'ADVERSE':o.partial?'PARTIAL':o.confounded?(adverseBeyondConfounding(o)?'ADVERSE':'CONFOUNDED'):classify(o);
 /** A report that the session was not done at all (R7-C G01, record fidelity, CQ-R6-19/H17): not completed, no minutes and no logged set. */
 const notDone=o=>o.actual?.completed===false&&!(Number(o.actual?.minutes)>0)&&!(Array.isArray(o.actual?.exercises)&&o.actual.exercises.some(e=>Array.isArray(e?.sets)&&e.sets.length));
 function weekEvidence(program,w,asOfLocal,ledger,quarantined){
@@ -11300,7 +11319,7 @@ function evaluateProgram(program,review,options={}){
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);
  // under an instant the engine refused it is read and not kept.
- const read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
+ let read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
  // What an answer is about, with the arguments v1-run-index.mjs gave the calibration of the same result.
  const contextOf=(b,record)=>({program:validProgram(b.proposal)?b.proposal:program,ledger:Array.isArray(b.actualLedger)?b.actualLedger:Array.isArray(input.actualLedger)?input.actualLedger:[],formats:record,historyRecord:history,asOf,weekIndex:review.weekIndex,
   preference:preferenceOf(review.runExpression),engineStatus:b.status,eligibility:review.eligibility??null,hold:['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(b.status),requested,opts,ext,on});
@@ -11326,6 +11345,16 @@ function evaluateProgram(program,review,options={}){
  // and a symptom stop a report of the request declares. The engine keeps the rows of a review it accepts, an earlier one as well: what the
  // reports of that review state is kept with them, under the instant the engine accepted (the engine's own instant for those rows).
  if(refused(base))return held(base,'NOT_APPLICABLE','NO_DECISION',formats);
+ // V1 blocker closure (QRE-INT-02; SSCTR_INT_R2 item 4): a report this decision neither recorded (no row of its record is made of it, merged it
+ // or keeps it as a voice) nor refused (the normalizer names it) was not decided at all: the review asked first (the screen, a question). Its
+ // receipt is no report in force, or the same run sent again once the question is answered is withheld from pace readers for ever
+ // (REPORT_NOT_CARRIED). Only what it declares of a stop is kept (stopOnly), so the warning-sign screen still hears it. A report the engine
+ // refused, merged or kept in a dispute is in force as before (the lineage rule). Nothing is credited, added or read as pace by this.
+ const decided=(()=>{const ids=new Set();const add=k=>{if(typeof k==='string')ids.add(k);};
+  for(const r of list(Array.isArray(base.actualLedger)?base.actualLedger:input.actualLedger)){if(!isObj(r)||r.fact)continue;add(r.eventId);const p=isObj(r.provenance)?r.provenance:{};list(p.mergedSourceIds).forEach(add);Object.keys(isObj(p.parts)?p.parts:{}).forEach(add);Object.keys(isObj(p.inputHashes)?p.inputHashes:{}).forEach(add);}
+  list(base.provenance?.excluded).forEach(x=>add(x?.eventId));return ids;})();
+ const notDecided=list(input.observations).filter(o=>isObj(o)&&typeof o.eventId==='string'&&!decided.has(o.eventId)).map(o=>o.eventId);
+ if(notDecided.length&&asOf){const out=new Set(notDecided);read=appendReportFacts(formats,[...received.map(f=>out.has(f.reportId)?(f.stop?stopOnly(f):null):f).filter(Boolean),...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record;}
  if(early)return held(base,'NOT_APPLICABLE','REVIEW_BEFORE_THE_RECORD',read);
  // The report facts of this review join the record under the instant the engine accepted, before anything is read from it (`read`).
  // SSCTR-RWS-B-02: the engine asks for the current eligibility (the screen, or the check after the race): nothing native is delivered meanwhile.

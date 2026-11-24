@@ -29,7 +29,7 @@ const AMENDED={
  'CoachingCore/src/boundary/integration.mjs':{findings:['SEC-INT-06','SEC-INT-07','SEC-INT-04 rest','SSCTR-INT-R2-01','G07'],change:'admission: no report before the record began; a safety signal past a limit (at most 3 more); erasure under a behind clock; the duplicate answer carries the stored screen; erasure erases the stored screen',boundBy:['V1INT-BOUNDARY-SUCCESSOR-1']},
  'CoachingCore/src/boundary/admission.mjs':{findings:['SEC-INT-07'],change:'LIMITS.safetyExcess 3; statesSafetySignal',boundBy:['V1INT-BOUNDARY-SUCCESSOR-1']},
 };
-const ADDED=['CoachingCore/scripts/v1-rc-1.mjs','CoachingCore/test/v1bc-blocker-closure.test.mjs','CoachingCore/test/v1bc-rc-record.test.mjs'];
+const ADDED=['CoachingCore/scripts/v1-rc-1.mjs','CoachingCore/test/v1bc-blocker-closure.test.mjs','CoachingCore/test/v1bc-cycle1.test.mjs','CoachingCore/test/v1bc-rc-record.test.mjs'];
 const sha=f=>createHash('sha256').update(fs.readFileSync(path.join(ROOT,f))).digest('hex');
 const git=(...a)=>execFileSync('git',a,{cwd:ROOT,encoding:'utf8'});
 const blobSha=(rev,f)=>createHash('sha256').update(execFileSync('git',['show',`${rev}:${f}`],{cwd:ROOT})).digest('hex');
@@ -59,6 +59,10 @@ if(mode==='--write'||mode==='--check'){
  const c=checks();if(c.bad.length){for(const l of c.bad)console.error(l);process.exit(1);}
  if(mode==='--write'){
   const commit=arg('--commit');if(!commit)throw new Error('--commit <sha> is required');
+  // Cycle 1 (QRE C-BC-3): the record binds a commit only from that commit's own bytes: HEAD is it, and CoachingCore holds no change but the record.
+  const head=git('rev-parse','HEAD').trim(),dirty=git('status','--porcelain','--','CoachingCore').split('\n').filter(Boolean).filter(l=>!l.endsWith(RECORD));
+  if(!head.startsWith(commit)||commit.length<7){console.error('--commit must be HEAD ('+head+')');process.exit(1);}
+  if(dirty.length){console.error('CoachingCore has uncommitted changes: '+dirty.join(', '));process.exit(1);}
   const list=consumed(),files=Object.fromEntries(list.map(f=>[f,sha(f)])),pkg=JSON.parse(fs.readFileSync(path.join(ROOT,'CoachingCore/package.json'),'utf8'));
   const rec={revision:REVISION,mission:'REPMILE V1 COACHINGCORE BLOCKER CLOSURE (Founder, 2026-11-24)',
    scope:'release candidate for the physical validation on the Mac and iPhone; synthetic use only; not the FINAL RELEASE FREEZE; no real athlete before the native and security gates (NATIVE_OBLIGATIONS.md)',
@@ -72,6 +76,8 @@ if(mode==='--write'||mode==='--check'){
   if(!fs.existsSync(path.join(ROOT,RECORD))){console.error('no record');process.exit(1);}
   const rec=JSON.parse(fs.readFileSync(path.join(ROOT,RECORD),'utf8')),diff=Object.entries(rec.files).filter(([f,h])=>!fs.existsSync(path.join(ROOT,f))||sha(f)!==h).map(([f])=>f);
   const extra=consumed().filter(f=>!Object.hasOwn(rec.files,f));
+  // Cycle 1 (QRE C-BC-3): the count and digest are recomputed, never taken from the record.
+  if(rec.fileCount!==Object.keys(rec.files).length||rec.filesDigest!==createHash('sha256').update(JSON.stringify(rec.files)).digest('hex')){console.error('the record\'s fileCount or filesDigest does not match its files');process.exit(1);}
   if(diff.length||extra.length){console.error((diff.length?'NOT byte-identical: '+diff.join(', '):'')+(extra.length?' NOT BOUND: '+extra.join(', '):''));process.exit(1);}
   for(const l of c.out)console.log(l);console.log(`${REVISION}: ${rec.fileCount}/${rec.fileCount} consumed files byte-identical; the seven amendments declared`);
  }

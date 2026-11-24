@@ -492,3 +492,42 @@ Contrato: `audits/v1-integration-boundary-2026-11-23/INTEGRATION_BOUNDARY_CONTRA
 6. **Teste no iPhone físico:** entrega em background com o app fechado; reentrega do mesmo workout (duplicado, nenhuma versão nova); workout editado (correção do próprio aparelho); relógio do aparelho atrasado (`CLOCK_BEHIND_RECORD`); reinício do processo no meio de uma gravação; uma semana real sincronizada.
 
 **O que exige o iPhone físico:** a entrega do HealthKit em background, a proteção de arquivo com o aparelho bloqueado, o Keychain, a morte do processo durante a gravação e o HMAC do CryptoKit igual ao do Node. Nada disso foi provado no Windows.
+
+## 15. Release Candidate (2026-11-24): REPMILE-COACHINGCORE-V1-RC-1
+
+- **Linha:** `claude/v1-cc-blocker-closure`, a partir de `ee256ae`.
+- **Registro:** `CoachingCore/v1/RELEASE_CANDIDATE_V1_RC_1.json`; verificador: `node CoachingCore/scripts/v1-rc-1.mjs --check`.
+- **Obrigações nativas:** `audits/v1-blocker-closure-2026-11-24/NATIVE_OBLIGATIONS.md`.
+- **Antes de usar:** no §2, troque o `git checkout` por essa branch, depois que o Founder autorizar o push.
+
+**O que mudou no motor e na fronteira:**
+- **Recuperação adversa (C-O1-3):** numa sessão disputada, a recuperação adversa conta em qualquer ordem de chegada.
+- **Prontidão (SEC-SC-02/03):** cada voz é datada pela própria observação, e uma parada no dia do reinício pergunta a causa.
+- **Reenvio após triagem (QRE-INT-02):** um treino que recebeu ASK e é reenviado é registrado uma vez e entra no ritmo.
+- **Custódia (SEC-INT-02R):** seis falsificações passam a ser recusadas.
+- **Limites:**
+  - nenhum relato pode ser datado antes do dia do cadastro (`BEFORE_RECORD_START`);
+  - um sinal de segurança passa os limites, com no máximo 3 a mais;
+  - o apagamento funciona com o relógio atrasado;
+  - a resposta só de duplicados traz a tela guardada;
+  - o apagamento também apaga a tela guardada.
+
+**O que mudou no pacote, e como foi refeito:**
+
+| Arquivo | Mudança |
+|---|---|
+| `ios/Sources/P0Host/Resources/coachingcore-p0.js` + `build-manifest.json` | Bundle religado com `build/link.mjs` (41 módulos), SHA `f5d684e5…` |
+| `Fixtures/focal.json` | Só o `bundleSha256` muda (`focal-oracle.mjs`) |
+| `Fixtures/core.json`, `Fixtures/int.json` | Só os digests mudam (`core-oracle.mjs`, `int-oracle.mjs`). Nenhum status, ação ou contagem muda. O registro guarda agora o instante de cada voz (`parts.*.observedAt`) |
+| `Fixtures/j5.json`, `Fixtures/p16.json` | Inalterados |
+
+**Verificação no Windows (Node):**
+- `vm-check.mjs` ok, com JIT e com `--jitless`, sem diferenças.
+- Uma segunda execução dos oráculos não muda nada.
+
+**Ordem no Mac:**
+1. §2 a §4 e §8 a §13 com este bundle;
+2. §14 (`testIntegrationBoundary`);
+3. as checagens de `NATIVE_OBLIGATIONS.md` §1 a §8.
+
+Qualquer `DIVERGED` reprova.
