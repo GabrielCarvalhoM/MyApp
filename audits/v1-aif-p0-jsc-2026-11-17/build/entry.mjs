@@ -8,6 +8,13 @@ import { comparisonDigests } from './compare.mjs';
 // (audits/v1-core-safety-lifecycle-2026-11-18/mac); the facade below and its J5/P16 journeys are unchanged.
 import * as CORE from '../../../CoachingCore/src/v1-safety-index.mjs';
 export const coreEngine = CORE.V1_CORE_ENGINE;
+// Final physical validation (Mac README §14 step 2): the integration boundary the app consumes (createIntegration, the frozen api.mjs over it,
+// and the reference store adapters) is carried in the bundle, so the device validates the boundary and not only the engine. Imported after the
+// engine so every earlier module keeps its id (core.json names modules by id). The facade below is unchanged.
+import * as INTEGRATION from '../../../CoachingCore/src/boundary/integration.mjs';
+import * as STORE from '../../../CoachingCore/src/boundary/store.mjs';
+import * as BOUNDARY_API from '../../../CoachingCore/src/boundary/api.mjs';
+export const integration = INTEGRATION, store = STORE, boundaryApi = BOUNDARY_API;
 
 let client = null, snapshot = null;
 const now = () => performance.now();

@@ -168,14 +168,25 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
    else if(ry[k]!==undefined&&ry[k]!=='UNKNOWN'?!added.some(a=>partsY[a]?.response?.[k]===ry[k]):added.some(a=>![undefined,'UNKNOWN'].includes(partsY[a]?.response?.[k])))return false;}
   return true;
  }
+ /** Final physical validation (FPV-01, reproduced on 89796df and ee256ae): the engine binds every report to the plan in force on each decision
+  * (r6-adaptation.mjs bindObservations). A plan change that moves a week's mode (the return a readiness declaration adopts in the week of a
+  * report) reads a report already on record under the new plan: its context's `mode` and `phaseClass` come back different. That is the plan's
+  * reading of the report, not a change to it, and custody refused it as a stored row changed, so every later write of the athlete failed.
+  * Such a re-binding is read as the row as recorded: only those two context keys may differ (the session, its type, sport, role and every
+  * stated fact stay byte-equal), the recorded context is kept, and the checks below then apply unchanged. Nothing new is stored for it. */
+ const REBINDING=['mode','phaseClass'];
+ const asRecorded=(x,y)=>{if(!isObj(x)||!isObj(y)||x.fact||y.fact||!isObj(x.context)||!isObj(y.context)||digest(x.context)===digest(y.context))return y;
+  if(digest(omit(x.context,REBINDING))!==digest(omit(y.context,REBINDING))||REBINDING.some(k=>typeof y.context[k]!=='string'))return y;
+  return {...y,context:x.context};};
  /** The engine's record against the stored one: every stored row comes back, unchanged, (a report) only annotated by a correction, or (a report)
   * evolved by this review's own reports (evolves); nothing else may change or disappear. Returns {added, annotations} in the engine's order, or
   * {error}. The engine regroups rows by type; custody keeps arrival order. */
  function reconcile(doc,after,incoming=new Map()){
   const by=new Map();for(const y of after){const k=identity(y);if(by.has(k))return {error:'a row identity appears twice'};by.set(k,y);}
   const annotations=[];
-  for(let i=0;i<doc.rows.length;i++){const x=doc.rows[i];if(x===null)continue;const k=identity(x),y=by.get(k);
-   if(!y)return {error:'a stored row is missing'};by.delete(k);
+  for(let i=0;i<doc.rows.length;i++){const x=doc.rows[i];if(x===null)continue;const k=identity(x),found=by.get(k);
+   if(!found)return {error:'a stored row is missing'};by.delete(k);
+   const y=asRecorded(x,found);
    if(digest(y)===digest(x))continue;if(annotates(x,y)||evolves(x,y,incoming)){annotations.push({i,row:y});continue;}return {error:'a stored row changed'};}
   return {added:[...by.values()],annotations};
  }

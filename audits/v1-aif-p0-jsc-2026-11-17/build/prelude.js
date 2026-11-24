@@ -60,7 +60,10 @@ const Buffer = {
     s = String(s); let n = 0;
     for (let i = 0; i < s.length; i++) { const u = s.charCodeAt(i); if (u < 0x80) n += 1; else if (u < 0x800) n += 2; else if (u >= 0xd800 && u <= 0xdbff && i + 1 < s.length) { const l = s.charCodeAt(i + 1); if (l >= 0xdc00 && l <= 0xdfff) { n += 4; i++; } else n += 3; } else n += 3; }
     return n;
-  }
+  },
+  // Final physical validation (Mac README §14 step 1): the minimal Buffer.from(string) custody's timingSafeEqual needs. It carries the text
+  // only; the comparison is the host's constantTimeEqual over its UTF-8 bytes.
+  from(s) { if (typeof s !== 'string') { __p0.unsupported.push('Buffer.from:' + typeof s); throw new Error('P0 Buffer.from: strings only'); } return { __hostText: s, length: s.length }; }
 };
 
 // node:fs, node:crypto, node:path as the host provides them (same contract as the AIF portable proof, harness/portable/host-*.mjs).
@@ -88,7 +91,25 @@ const __hostCrypto = (() => {
     };
     return h;
   }
-  const c = { createHash, createHmac: __unsupported('createHmac'), timingSafeEqual: __unsupported('timingSafeEqual'), randomUUID: __unsupported('randomUUID') };
+  // Final physical validation (Mac README §14 step 1): HMAC-SHA256 and the constant-time comparison are the host's (CryptoKit HMAC<SHA256>;
+  // the key is resolved and read by the host from the reference the boundary is given, never handed to JavaScript by the host). Both are
+  // optional host functions: a context without them (J5/P16, the core focal run) still refuses createHmac loudly, as before.
+  function createHmac(alg, keyRef) {
+    if (alg !== 'sha256' || typeof keyRef !== 'string' || typeof __host.hmacSHA256 !== 'function') { __p0.unsupported.push('createHmac:' + alg + ':' + typeof keyRef); throw new Error('P0 host: createHmac is not provided'); }
+    const parts = [];
+    const h = {
+      update(d) { if (typeof d !== 'string') { __p0.unsupported.push('hmac.update:' + typeof d); throw new Error('host hmac: text only'); } parts.push(d); return h; },
+      digest(enc) { if (enc !== 'hex') { __p0.unsupported.push('hmac.digest:' + enc); throw new Error('host hmac: hex only'); } const text = parts.join(''); __p0.calls.hmac = (__p0.calls.hmac ?? 0) + 1;
+        const hex = __host.hmacSHA256(keyRef, text); if (typeof hex !== 'string' || hex.length !== 64) { __p0.unsupported.push('hmacSHA256:no-key'); throw new Error('P0 host: no HMAC key for this reference'); } return hex; }
+    };
+    return h;
+  }
+  function timingSafeEqual(a, b) {
+    if (!a || !b || typeof a.__hostText !== 'string' || typeof b.__hostText !== 'string' || typeof __host.constantTimeEqual !== 'function') { __p0.unsupported.push('timingSafeEqual'); throw new Error('P0 host: timingSafeEqual is not provided'); }
+    if (a.length !== b.length) { const e = new RangeError('Input buffers must have the same byte length'); throw e; }
+    __p0.calls.constantTimeEqual = (__p0.calls.constantTimeEqual ?? 0) + 1; return __host.constantTimeEqual(a.__hostText, b.__hostText) === true;
+  }
+  const c = { createHash, createHmac, timingSafeEqual, randomUUID: __unsupported('randomUUID') };
   return { ...c, default: c };
 })();
 const __hostPath = (() => { const p = { dirname: __unsupported('path.dirname'), join: __unsupported('path.join'), resolve: __unsupported('path.resolve') }; return { ...p, default: p }; })();

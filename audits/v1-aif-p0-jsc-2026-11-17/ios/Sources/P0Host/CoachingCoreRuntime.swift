@@ -19,6 +19,11 @@ public final class CoachingCoreRuntime {
         var assets: [String: String] = [:]
         public fileprivate(set) var readAsset = 0, existsAsset = 0, sha256Calls = 0, sha256UTF8Bytes = 0
         public fileprivate(set) var sha256Nanos: UInt64 = 0
+        /// Final physical validation (Mac README §14 step 1): HMAC-SHA256 (CryptoKit) and a constant-time comparison for the integration
+        /// boundary's custody. `keys` resolves the reference the boundary is given to the key bytes (the Keychain on the device); the key itself
+        /// never crosses into JavaScript. Without a resolver the bundle's createHmac refuses, as before.
+        public fileprivate(set) var hmacCalls = 0, hmacUTF8Bytes = 0, hmacNanos: UInt64 = 0, constantTimeEqualCalls = 0
+        var keys: ((String) -> Data?)?
         fileprivate var lastException: String?
     }
 
@@ -32,7 +37,7 @@ public final class CoachingCoreRuntime {
     public let host = Host()
     public private(set) var load: LoadMetrics!
     private var vm: JSVirtualMachine!
-    private var context: JSContext!
+    var context: JSContext!
     private var api: JSValue!
 
     private init(queue: DispatchQueue) { self.queue = queue }
@@ -42,8 +47,10 @@ public final class CoachingCoreRuntime {
     /// `exposeModules` (tests only) also publishes the bundle's module registry as `globalThis.__p0req`, the same one-line tail change the
     /// linker's own export gate makes (build/link.mjs), so the focal coverage can call engine functions the facade does not expose. Module
     /// code is unchanged; the app never sets it.
-    public static func make(label: String = "fit.vilumo.coachingcore", tamper: ((String, String) -> String)? = nil, exposeModules: Bool = false) async throws -> CoachingCoreRuntime {
+    public static func make(label: String = "fit.vilumo.coachingcore", tamper: ((String, String) -> String)? = nil, exposeModules: Bool = false,
+                            keys: ((String) -> Data?)? = nil) async throws -> CoachingCoreRuntime {
         let rt = CoachingCoreRuntime(queue: DispatchQueue(label: label, qos: .userInitiated))
+        rt.host.keys = keys
         return try await rt.run { rt in try rt.boot(tamper: tamper, exposeModules: exposeModules); return rt }
     }
 
@@ -116,11 +123,25 @@ public final class CoachingCoreRuntime {
             return hex
         }
         let now: @convention(block) () -> Double = { Clock.ms() }
+        let hmac: @convention(block) (String, String) -> String = { ref, text in
+            guard let key = h.keys?(ref) else { return "" }
+            let t0 = DispatchTime.now().uptimeNanoseconds
+            let bytes = Data(text.utf8)
+            let hex = CoachingCoreRuntime.hex(HMAC<SHA256>.authenticationCode(for: bytes, using: SymmetricKey(data: key)))
+            h.hmacCalls += 1; h.hmacUTF8Bytes += bytes.count; h.hmacNanos += DispatchTime.now().uptimeNanoseconds - t0
+            return hex
+        }
+        let constantTimeEqual: @convention(block) (String, String) -> Bool = { a, b in
+            h.constantTimeEqualCalls += 1
+            return CoachingCoreRuntime.constantTimeEqual(Array(a.utf8), Array(b.utf8))
+        }
         let obj = JSValue(newObjectIn: context)!
         obj.setObject(unsafeBitCast(readAsset, to: AnyObject.self), forKeyedSubscript: "readAsset" as NSString)
         obj.setObject(unsafeBitCast(existsAsset, to: AnyObject.self), forKeyedSubscript: "existsAsset" as NSString)
         obj.setObject(unsafeBitCast(sha256, to: AnyObject.self), forKeyedSubscript: "sha256" as NSString)
         obj.setObject(unsafeBitCast(now, to: AnyObject.self), forKeyedSubscript: "now" as NSString)
+        obj.setObject(unsafeBitCast(hmac, to: AnyObject.self), forKeyedSubscript: "hmacSHA256" as NSString)
+        obj.setObject(unsafeBitCast(constantTimeEqual, to: AnyObject.self), forKeyedSubscript: "constantTimeEqual" as NSString)
         context.setObject(obj, forKeyedSubscript: "__p0host" as NSString)
     }
 
@@ -168,6 +189,14 @@ public final class CoachingCoreRuntime {
         return String(decoding: out, as: UTF8.self)
     }
     private static let hexDigits = Array("0123456789abcdef".utf8)
+
+    /// Equal lengths and every byte equal; the time does not depend on where two equal-length inputs differ.
+    public static func constantTimeEqual(_ a: [UInt8], _ b: [UInt8]) -> Bool {
+        guard a.count == b.count else { return false }
+        var d: UInt8 = 0
+        for i in 0..<a.count { d |= a[i] ^ b[i] }
+        return d == 0
+    }
 }
 
 public enum Clock {

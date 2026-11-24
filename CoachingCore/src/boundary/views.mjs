@@ -1,6 +1,6 @@
 // V1 Coaching Integration Boundary: the views the iOS app consumes, derived from the custody document (layout-free: no screen, copy or style is set
 // here; the approved design decides how each state looks). The app never recomputes a prescription rule: it shows these states and sessions.
-import {readableF08,standingHolds,isF08Fact} from '../v1-f08.mjs';
+import {readableF08,standingHolds,isF08Fact,ERASED_F08} from '../v1-f08.mjs';
 
 /** The client states (V1CIB contract §3). NOT_SYNCED is the app's own state for reports still in its offline queue; the server never returns it. */
 export const CLIENT_STATES=Object.freeze({VALID_PLAN:'VALID_PLAN',PENDING_CONFIRMATION:'PENDING_CONFIRMATION',NEEDS_INPUT:'NEEDS_INPUT',REDUCED:'REDUCED',RETURNING:'RETURNING',
@@ -39,7 +39,11 @@ function sportState(program,w,day,sport){
  */
 export function planView(doc,{nowMs,week=null}={}){
  const p=doc.program,tz=p.timezoneOffsetMinutes??0,today=localDay(nowMs,tz),w=week??weekOf(p,today);
- const rows=doc.rows.filter(r=>r!==null),holds=standingHolds(readableF08(rows.filter(isF08Fact),{athleteId:doc.athleteId,at:nowMs})).holds;
+ // SEC-BC-R2-01 (final physical validation): an erasure is never read as recovery or readiness. An erasure marker on record is read as in force
+ // whatever its instant (one dated ahead of this clock, after an earlier operation ran with the clock set ahead, is not dropped): it can only add a
+ // hold, never release one. Every other fact is read as of the clock, as before.
+ const rows=doc.rows.filter(r=>r!==null),f08=rows.filter(isF08Fact),asOf=readableF08(f08,{athleteId:doc.athleteId,at:nowMs}),
+  ahead=readableF08(f08,{athleteId:doc.athleteId,at:Infinity}).filter(o=>o.fact===ERASED_F08&&!asOf.includes(o)),holds=standingHolds([...asOf,...ahead]).holds;
  const last=[...doc.decisions].reverse().find(d=>d.status)??null,pendingQuestion=doc.reference?.pending&&doc.reference.pending.status!=='CLINICAL_HUMAN_REQUIRED'?doc.reference.pending:null;
  const blocked=holds.length>0||doc.reference?.pending?.status==='CLINICAL_HUMAN_REQUIRED';
  const sports=Object.fromEntries(SPORTS.map(s=>[s,blocked?{programmed:sportState(p,w,today,s).programmed,state:'BLOCKED',exit:'READINESS_DECLARATION'}:sportState(p,w,today,s)]));
