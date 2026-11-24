@@ -109,6 +109,26 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
  const EVOLVING=['actual','response','provenance','conflicted'],PROVENANCE_EVOLVING=['parts','mergedSourceIds','inputHashes','conflict'];
  const omit=(o,keys)=>Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k)));
  const SAFETY_FACTS=p=>({completed:p?.actual?.completed??null,stop:p?.actual?.stop??null,recovery:p?.response?.recovery??'UNKNOWN',nextDayFunction:p?.response?.nextDayFunction??'UNKNOWN'});
+ // V1 blocker closure (SEC-INT-02R, SEC_INT_R2 §2): a new voice is the report custody sent under its id, whole, not only its safety facts.
+ //  - Its response is that report's, each of the four words read as the normalizer reads them (an unstated one is UNKNOWN).
+ //  - Its actual is that report's: no value it states is changed or dropped, and nothing is added, except what the engine's run-format layer
+ //    does to every report (v1-run-format-index.mjs `tidy`): a reading it carries (`completionRead`) and a field that states nothing (an empty
+ //    list or declaration, a zero) are not handed on, and a distance typed into the measured slot of a planned run is kept as the athlete's own
+ //    figure (`manualDistanceKm`).
+ //  - The conflict label of a kept voice is one r6-provenance.mjs writes.
+ const RESPONSE_WORDS=['performance','recovery','effort','nextDayFunction'],CONFLICT_LABELS=['CONFLICTING_PHYSICAL_OR_RESPONSE_REPORTS','CORRECTION_CONFLICTS_WITH_A_REPORT_IN_FORCE','EVENT_ID_REUSED_WITH_DIFFERENT_FACTS','ACTIVITY_BOUND_TO_TWO_SESSIONS'];
+ const statesNothing=v=>v===undefined||v===null||v===0||v===''||Array.isArray(v)&&!v.length||isObj(v)&&!Object.keys(v).length;
+ function sameReport(part,report){
+  const pr=isObj(part?.response)?part.response:{},rr=isObj(report?.response)?report.response:{};
+  if([...new Set([...Object.keys(pr),...Object.keys(rr)])].some(k=>!RESPONSE_WORDS.includes(k)&&digest(pr[k])!==digest(rr[k])))return false;
+  if(RESPONSE_WORDS.some(k=>(pr[k]??'UNKNOWN')!==(rr[k]??'UNKNOWN')))return false;
+  const pa=isObj(part?.actual)?part.actual:null,ra=isObj(report?.actual)?report.actual:null;if(!pa||!ra)return false;
+  for(const [k,v] of Object.entries(pa)){
+   if(k==='manualDistanceKm'&&!Object.hasOwn(ra,'manualDistanceKm')){if(pa.distanceKm!==undefined||ra.distanceKm!==v)return false;continue;}
+   if(!Object.hasOwn(ra,k)||digest(v)!==digest(ra[k]))return false;}
+  for(const [k,v] of Object.entries(ra))if(!Object.hasOwn(pa,k)&&!(k==='completionRead'||statesNothing(v)||k==='distanceKm'&&pa.manualDistanceKm===v))return false;
+  return true;
+ }
  function evolves(x,y,incoming){
   if(!isObj(x)||!isObj(y)||x.fact||y.fact||x.superseded===true||y.superseded===true||!(incoming instanceof Map))return false;
   if(digest(omit(x,EVOLVING))!==digest(omit(y,EVOLVING)))return false;
@@ -122,18 +142,21 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
   else if(!Object.hasOwn(partsY,x.eventId)||digest(partsY[x.eventId]?.actual)!==digest(x.actual)||digest(partsY[x.eventId]?.response)!==digest(x.response))return false;
   const added=Object.keys(partsY).filter(k=>partsX?!Object.hasOwn(partsX,k):k!==x.eventId);
   if(!added.length||!added.every(k=>incoming.has(k)))return false;
-  for(const k of added)if(digest(SAFETY_FACTS(partsY[k]))!==digest(SAFETY_FACTS(incoming.get(k))))return false;
+  for(const k of added)if(digest(SAFETY_FACTS(partsY[k]))!==digest(SAFETY_FACTS(incoming.get(k)))||!sameReport(partsY[k],incoming.get(k)))return false;
   const list=v=>Array.isArray(v)?v:[],mx=list(px.mergedSourceIds),my=list(py.mergedSourceIds);
   const hx=isObj(px.inputHashes)?px.inputHashes:{},hy=isObj(py.inputHashes)?py.inputHashes:{};
   if(Object.entries(hx).some(([k,v])=>hy[k]!==v)||!Object.keys(hy).filter(k=>!Object.hasOwn(hx,k)).every(k=>added.includes(k)))return false;
   if(y.conflicted===true){
    // KEPT VOICE: nothing merged into the amount.
-   return digest(x.actual)===digest(y.actual)&&digest(x.response)===digest(y.response)&&digest(mx)===digest(my)&&typeof py.conflict==='string';
+   return digest(x.actual)===digest(y.actual)&&digest(x.response)===digest(y.response)&&digest(mx)===digest(my)&&CONFLICT_LABELS.includes(py.conflict);
   }
   // MERGE.
   if(!mx.every(k=>my.includes(k))||!my.filter(k=>!mx.includes(k)).every(k=>added.includes(k)||k===x.eventId))return false;
   const ax=isObj(x.actual)?x.actual:{},ay=isObj(y.actual)?y.actual:null,voices=added.map(k=>isObj(partsY[k]?.actual)?partsY[k].actual:{});if(!ay)return false;
   const stated=v=>v!==undefined&&v!==null;
+  // SEC-INT-02R: a merge is of one execution: the row, every new voice and the result say the same of whether it took place (a disagreement is
+  // only ever a kept voice).
+  if([ax,...voices].some(a=>a.completed!==ay.completed))return false;
   for(const a of [ax,...voices])for(const k of Object.keys(a))if(k!=='exercises'&&stated(a[k])&&!stated(ay[k]))return false;
   for(const [k,v] of Object.entries(ay)){if(k==='exercises')continue;
    const from=[ax[k],...voices.map(a=>a[k])].filter(stated),nums=from.filter(n=>typeof n==='number');
@@ -142,7 +165,7 @@ export function createCustody({store,key,now=()=>Date.now(),newId,syntheticOnly=
   const allowed=new Set([...ids(ax),...voices.flatMap(ids)]);if(!ids(ay).every(i=>allowed.has(i))||!ids(ax).every(i=>ids(ay).includes(i)))return false;
   const rx=isObj(x.response)?x.response:{},ry=isObj(y.response)?y.response:{};
   for(const k of new Set([...Object.keys(rx),...Object.keys(ry)])){if(rx[k]!==undefined&&rx[k]!=='UNKNOWN'){if(ry[k]!==rx[k])return false;}
-   else if(ry[k]!==undefined&&ry[k]!=='UNKNOWN'&&!added.some(a=>partsY[a]?.response?.[k]===ry[k]))return false;}
+   else if(ry[k]!==undefined&&ry[k]!=='UNKNOWN'?!added.some(a=>partsY[a]?.response?.[k]===ry[k]):added.some(a=>![undefined,'UNKNOWN'].includes(partsY[a]?.response?.[k])))return false;}
   return true;
  }
  /** The engine's record against the stored one: every stored row comes back, unchanged, (a report) only annotated by a correction, or (a report)

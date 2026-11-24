@@ -288,6 +288,11 @@ const claimsDoneIn=rows=>o=>claimsDone(o)||!!o&&!o.fact&&o.superseded===true&&!r
 // answers it. Every declared stop counts, whatever its reason and at zero minutes too (statedStop's reading: any value but none or false).
 const stopped=a=>isObj(a)&&a.stop!==undefined&&a.stop!==null&&a.stop!==false;
 const stopOnRecord=o=>!!o&&!o.fact&&voices(o).some(stopped);
+// V1 blocker closure (SEC-SC-02): each voice is dated by its own observation (`provenance.parts[id].observedAt`), never by the row that holds it;
+// a part kept without one is dated by its row, as before. Only the readiness question (trainedAfter) reads these instants.
+const datedVoices=o=>[{a:o.actual,at:o.observedAt},...Object.values(isObj(o.provenance?.parts)?o.provenance.parts:{}).map(p=>({a:p?.actual,at:typeof p?.observedAt==='string'?p.observedAt:o.observedAt}))];
+/** A voice of the row that says, after `t`, that the session took place (when `done` lets the row's voices say so) or that it was stopped. */
+const saidAfter=(o,t,done)=>!!o&&!o.fact&&datedVoices(o).some(v=>(done&&did(v.a)||stopped(v.a))&&Date.parse(v.at??'')>t);
 const once=list=>{const seen=new Set();return list.filter(o=>typeof o?.eventId!=='string'||!executed(o)||(seen.has(o.eventId)?false:(seen.add(o.eventId),true)));};
 /**
  * The intake of a new plan from the athlete's updated facts (`intake`, R6-INTAKE-1: goals, availability, recent exposure, equipment, choices) and
@@ -328,9 +333,15 @@ export function restartIntake({intake,record=[],referenceState=null,asOf,screen,
  // V1CP Fix-Forward SB-1 (SEC-V1CPI-02 residual, RC-11): the declaration stands in only for the stop it answered. With a session executed after it,
  // the stop now read from the record is a new one: screened as the athlete states it, and a missing reason is asked, as with no declaration.
  // SEC-O1-01b/c: a stop on record after the declaration asks as well, in force, kept or replaced.
- const voiced=claimsDoneIn(rows),trainedAfter=!!readiness&&rows.some(o=>(voiced(o)||stopOnRecord(o))&&Date.parse(o.observedAt??'')>Date.parse(readiness.declaredAt));
+ // V1 blocker closure (SEC-SC-02): each voice is read at its own instant (saidAfter), so a voice kept on a row observed before the declaration
+ // that itself says, after it, that the session took place or was stopped is training after it.
+ const voiced=claimsDoneIn(rows),declaredAt=readiness?Date.parse(readiness.declaredAt):null,trainedAfter=!!readiness&&rows.some(o=>saidAfter(o,declaredAt,voiced(o)));
  if(any!==null){const days=Math.max(...Object.values(byDays).filter(Number.isInteger),any);if(days>0)facts.pause={weeks:Math.floor(days/7),bySportDays:clone(byDays),...(readiness&&!trainedAfter?{readinessDeclared:true}:{})};}
  else if(readiness)facts.pause={weeks:0,bySportDays:{RUN:null,STRENGTH:null},...(!trainedAfter?{readinessDeclared:true}:{})};
+ // V1 blocker closure (SEC-SC-03): a declared stop the record holds after the latest readiness declaration, or on the restart day itself, is never
+ // read as no pause because the session it stopped ran on the restart day (0 days since the last execution): the pause is then 0 weeks, with no
+ // declaration standing in for it, so its cause is screened as for any stop on record (the existing question; no new rule).
+ if(facts.pause===null&&rows.some(o=>readiness?saidAfter(o,declaredAt,false):stopOnRecord(o)&&dayOfRow(o)===day))facts.pause={weeks:0,bySportDays:clone(byDays)};
  // C-Q08-1: the record bounds the stated recent exposure (the last 28 days it covers).
  const from=isoDay(day)?addDays(day,-28):null,inWindow=o=>!!from&&dayOfRow(o)>from&&dayOfRow(o)<=day,runRows=once(rows).filter(o=>executed(o)&&sportOf(o)==='RUN'&&inWindow(o));
  const shown={minutes:Math.round(runRows.reduce((n,o)=>n+(Number(o.actual?.minutes)||Number(o.context?.runMinutes)||0),0)/4),days:Math.min(7,Math.ceil(new Set(runRows.map(dayOfRow)).size/4))},bounded=[];

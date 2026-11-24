@@ -1,0 +1,57 @@
+# Reproductions on ee256ae (before) and on the candidate tree (after). Each probe is the judges' own file, run in the tree it reads: C-O1-3 adv2.mjs (SSCTR O-1), SEC-SC p3b.mjs (Security SC R2), SEC-INT-02R p8-evolves-r2.mjs (Security INT R2), QRE-INT-02 p03b-athlete-ask.mjs (QRE INT R1).
+
+## before (ee256ae)
+### C-O1-3 adv2 [order, resync, row, flagged, row recovery, adverseSessions, conflicted]
+["device first","","dev-x",true,"UNKNOWN",0,1]
+["device first","+resync","dev-x-v2",true,"UNKNOWN",0,1]
+["athlete first","","app-x",true,"ADVERSE",1,1]
+["athlete first","+resync","dev-x-v2",true,"UNKNOWN",0,1]
+### SEC-SC p3b SB-1 readings
+G1_sameDayStop "NO_PAUSE"
+G2_stopObservedAfterDeclOnRowObservedBefore "DECLARED"
+G4_doneObservedAfterDeclOnRowObservedBefore "DECLARED"
+D3_preDeclStop "DECLARED"
+D4_preDeclStopCorrectedAfterDecl "DECLARED"
+A0_admittedStop "ASK"
+C5_laterDeclAnswers "DECLARED"
+### SEC-INT-02R p8-evolves-r2
+KEPT    MERGE: the new voice's ADVERSE/IMPAIRED left out of the merged response            {
+KEPT    MERGE: rpe fabricated in the new voice and the row (sent 4, kept 9)                {
+KEPT    MERGE: effort fabricated in the new voice and the row                              {
+KEPT    KEPT->MERGE: a disagreeing "not done" voice merged, completed true->false, unflagged
+KEPT    KEPT VOICE: a conflict label of no known kind                                      {
+KEPT    KEPT VOICE: the kept voice's amount fabricated (sent 90, kept 300)                 {
+KEPT    control: no alteration (MERGE)                                                     {
+KEPT    control: no alteration (KEPT VOICE)                                                {
+### QRE-INT-02 p03b
+no screen: ASK [{"eventId":"ob_4351c6f773fa183ee0efeb0bd8","reason":"NOT_RECORDED_BY_THIS_DECISION"}]
+again with the screen: KEEP recorded 1
+report facts: 2 reportsReading: {"withheld":"REPORT_NOT_CARRIED","wholeRow":"REPORT_NOT_CARRIED","firstKm":null,"wholeKm":7.06}
+
+## after (candidate)
+### C-O1-3 adv2 [order, resync, row, flagged, row recovery, adverseSessions, conflicted]
+["device first","","dev-x",true,"UNKNOWN",1,1]
+["device first","+resync","dev-x-v2",true,"UNKNOWN",1,1]
+["athlete first","","app-x",true,"ADVERSE",1,1]
+["athlete first","+resync","dev-x-v2",true,"UNKNOWN",1,1]
+### SEC-SC p3b SB-1 readings
+G1_sameDayStop "ASK"
+G2_stopObservedAfterDeclOnRowObservedBefore "ASK"
+G4_doneObservedAfterDeclOnRowObservedBefore "ASK"
+D3_preDeclStop "DECLARED"
+D4_preDeclStopCorrectedAfterDecl "DECLARED"
+A0_admittedStop "ASK"
+C5_laterDeclAnswers "DECLARED"
+### SEC-INT-02R p8-evolves-r2
+REFUSED MERGE: the new voice's ADVERSE/IMPAIRED left out of the merged response            E
+REFUSED MERGE: rpe fabricated in the new voice and the row (sent 4, kept 9)                E
+REFUSED MERGE: effort fabricated in the new voice and the row                              E
+REFUSED KEPT->MERGE: a disagreeing "not done" voice merged, completed true->false, unflagged
+REFUSED KEPT VOICE: a conflict label of no known kind                                      E
+REFUSED KEPT VOICE: the kept voice's amount fabricated (sent 90, kept 300)                 E
+KEPT    control: no alteration (MERGE)                                                     {
+KEPT    control: no alteration (KEPT VOICE)                                                {
+### QRE-INT-02 p03b
+no screen: ASK [{"eventId":"ob_4351c6f773fa183ee0efeb0bd8","reason":"NOT_RECORDED_BY_THIS_DECISION"}]
+again with the screen: KEEP recorded 1
+report facts: 1 reportsReading: {"withheld":null,"wholeRow":null,"firstKm":null,"wholeKm":null}

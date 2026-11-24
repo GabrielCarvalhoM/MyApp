@@ -29,6 +29,10 @@ export const LIMITS=Object.freeze({
  /** Cycle 1 (SEC-INT-05): the intake of a first plan or a restart (measured: 1,128 B, depth 5, arrays of 8 over ten synthetic profiles; a
   * run history brought at onboarding may hold many runs, hence its own array bound). */
  intakeBytes:65536,intakeArrayLength:512,
+ /** V1 blocker closure (SEC-INT-07): past `correctionsPerReport` or `reportsPerDayPerChannel`, a report that states a safety signal (a stop, an
+  * adverse recovery, an impaired next day) is still admitted, at most this many beyond the limit (the SEC-SC-01 pattern): a signal never loses
+  * its route, and the record stays bounded. */
+ safetyExcess:3,
 });
 /** The keys an observation may hold, per channel. Everything else is refused (unknown), or boundary-owned (set by the boundary, never sent). */
 export const OBSERVATION_KEYS=Object.freeze({
@@ -83,6 +87,8 @@ export function safetyFieldsOf(x){
  return [...out].sort();
 };
 /** The review kinds that are themselves safety content (F08 and a declared break). */
+/** V1 blocker closure (SEC-INT-07): whether an observation states a safety signal (what `safetyFieldsOf` names of an observation). */
+export const statesSafetySignal=o=>{if(!isObj(o))return false;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};return present(a.stop)&&a.stop!==null&&a.stop!==false||r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED';};
 export const SAFETY_KINDS=Object.freeze(['NOT_FEELING_100','WELLBEING_CHECK','READINESS_DECLARATION','RETURN_AFTER_PAUSE']);
 /** The intake of a first plan or a restart: its size and structure (cycle 1, SEC-INT-05). Returns null or a refusal. */
 export function intakeError(intake){

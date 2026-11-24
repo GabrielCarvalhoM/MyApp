@@ -58,7 +58,10 @@ const responseConflicts=(a,b)=>['performance','recovery','effort'].some(k=>a?.[k
 // every later review (a row merged before this change kept none, and binds only its own). Cycle 1 (QRE C1, SEC-NCC-01): a part also keeps when its
 // own report became available (`availableAt`), so a correction of that report is read against that report's clock, never the clock of the row
 // holding it (as `availability` reads a row: its correction, else its report, else its observed instant).
-const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{})};};
+// V1 blocker closure (SEC-SC-02): a part also keeps when its own report says the execution took place (`observedAt`, as the normalizer read it),
+// so a voice kept on a row observed earlier (a planned session done late, a stop reported on a row of another day) is dated by itself, never by
+// the row holding it. Read only by f08's readiness question; a part kept without one (before this line) is read with its row's instant, as before.
+const partOf=o=>{const at=utcTimestamp(o.correctedAt)??utcTimestamp(o.reportedAt)??utcTimestamp(o.observedAt),seen=utcTimestamp(o.observedAt);return {actual:clone(o.actual),response:clone(o.response),sourceQuality:o.provenance?.sourceQuality??null,...(o.provenance?.activityId?{activityId:o.provenance.activityId}:{}),...(at?{availableAt:at}:{}),...(seen?{observedAt:seen}:{})};};
 /** SEC-O1-03: the most voices a flagged row keeps (measured: at most 3 on any row of the O-1 differential's 12 configurations). Exported for tests. */
 export const VOICE_LIMIT=16;
 /** O-1: who gave a part or a report, as far as the record shows: one device activity, else the athlete (an own source), else nobody known. */

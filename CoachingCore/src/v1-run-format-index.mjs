@@ -370,7 +370,7 @@ export function evaluateProgram(program,review,options={}){
  // The record of formats with what the reports of this request state: what every answer reads. It is the record returned whenever the
  // engine accepts the review's instant (it then keeps the rows of those reports, and no row it keeps is left without what its reports said);
  // under an instant the engine refused it is read and not kept.
- const read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
+ let read=asOf?appendReportFacts(formats,[...received,...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record:formats;
  // What an answer is about, with the arguments v1-run-index.mjs gave the calibration of the same result.
  const contextOf=(b,record)=>({program:validProgram(b.proposal)?b.proposal:program,ledger:Array.isArray(b.actualLedger)?b.actualLedger:Array.isArray(input.actualLedger)?input.actualLedger:[],formats:record,historyRecord:history,asOf,weekIndex:review.weekIndex,
   preference:preferenceOf(review.runExpression),engineStatus:b.status,eligibility:review.eligibility??null,hold:['HOLD','CLINICAL_HUMAN_REQUIRED'].includes(b.status),requested,opts,ext,on});
@@ -396,6 +396,16 @@ export function evaluateProgram(program,review,options={}){
  // and a symptom stop a report of the request declares. The engine keeps the rows of a review it accepts, an earlier one as well: what the
  // reports of that review state is kept with them, under the instant the engine accepted (the engine's own instant for those rows).
  if(refused(base))return held(base,'NOT_APPLICABLE','NO_DECISION',formats);
+ // V1 blocker closure (QRE-INT-02; SSCTR_INT_R2 item 4): a report this decision neither recorded (no row of its record is made of it, merged it
+ // or keeps it as a voice) nor refused (the normalizer names it) was not decided at all: the review asked first (the screen, a question). Its
+ // receipt is no report in force, or the same run sent again once the question is answered is withheld from pace readers for ever
+ // (REPORT_NOT_CARRIED). Only what it declares of a stop is kept (stopOnly), so the warning-sign screen still hears it. A report the engine
+ // refused, merged or kept in a dispute is in force as before (the lineage rule). Nothing is credited, added or read as pace by this.
+ const decided=(()=>{const ids=new Set();const add=k=>{if(typeof k==='string')ids.add(k);};
+  for(const r of list(Array.isArray(base.actualLedger)?base.actualLedger:input.actualLedger)){if(!isObj(r)||r.fact)continue;add(r.eventId);const p=isObj(r.provenance)?r.provenance:{};list(p.mergedSourceIds).forEach(add);Object.keys(isObj(p.parts)?p.parts:{}).forEach(add);Object.keys(isObj(p.inputHashes)?p.inputHashes:{}).forEach(add);}
+  list(base.provenance?.excluded).forEach(x=>add(x?.eventId));return ids;})();
+ const notDecided=list(input.observations).filter(o=>isObj(o)&&typeof o.eventId==='string'&&!decided.has(o.eventId)).map(o=>o.eventId);
+ if(notDecided.length&&asOf){const out=new Set(notDecided);read=appendReportFacts(formats,[...received.map(f=>out.has(f.reportId)?(f.stop?stopOnly(f):null):f).filter(Boolean),...elsewhereStops],{athleteId:program.athleteId,recordedAt:asOf},V).record;}
  if(early)return held(base,'NOT_APPLICABLE','REVIEW_BEFORE_THE_RECORD',read);
  // The report facts of this review join the record under the instant the engine accepted, before anything is read from it (`read`).
  // SSCTR-RWS-B-02: the engine asks for the current eligibility (the screen, or the check after the race): nothing native is delivered meanwhile.

@@ -26,7 +26,7 @@ import {createCustody} from './custody.mjs';
 import {checkReportVoice} from './report-voices.mjs';
 import {canonical} from '../value.mjs';
 import * as CORE from '../v1-safety-index.mjs';
-import {LIMITS,OBSERVATION_KEYS,observationError,requestError,safetyFieldsOf,intakeError} from './admission.mjs';
+import {LIMITS,OBSERVATION_KEYS,observationError,requestError,safetyFieldsOf,intakeError,statesSafetySignal} from './admission.mjs';
 
 export const INTEGRATION_SCHEMA='V1INT-CARRIED-1';
 /** The records the composed entry carries besides the ledger, reference state and model (the AIF client's CARRIED; the Mac core-driver's). */
@@ -102,7 +102,9 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
   const pendingRecords=pendingHash?(maker?{programHash:pendingHash,records:maker.records}:base.pendingRecords?.programHash===pendingHash?base.pendingRecords:null):null;
   // Cycle 1 (SEC-INT-01, SSCTR-INT-04): the athlete's own last screen, as they sent it (onboarding or an athlete review), byte for byte: the
   // only screen the device channel ever carries.
-  const screen=op?.screen!==undefined?op.screen:base.screen??null;
+  // V1 blocker closure (G07): an erasure of health facts also erases the stored screen (the athlete's pain, injury and illness answers); with none
+  // stored the device channel waits for a new one (SCREEN_REQUIRED), never carries an erased one.
+  const screen=op?.name==='eraseHealthFacts'?null:op?.screen!==undefined?op.screen:base.screen??null;
   const origins={...base.origins};
   // Origins of this operation's reports: only those the engine admitted into the record (a report it refused is not on record, and may be sent
   // again). An admitted report is in the ledger as a row, a merged id or a kept voice (O-1).
@@ -191,12 +193,17 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
   const all={...origins},succ=new Map(),out=[],metas=[],duplicates=[],of=[];
   for(const [id,m] of Object.entries(all))if(m.of)succ.set(m.of,id);
   const replaced={has:id=>succ.has(id)};
-  const headOf=id=>{let h=id;for(let n=0;n<=LIMITS.correctionsPerReport+1&&succ.has(h);n++)h=succ.get(h);return h;};
-  const depthOf=id=>{let d=0;for(let x=all[id];x?.of&&d<=LIMITS.correctionsPerReport;x=all[x.of])d++;return d;};
+  const MAX_CHAIN=LIMITS.correctionsPerReport+LIMITS.safetyExcess;
+  const headOf=id=>{let h=id;for(let n=0;n<=MAX_CHAIN+1&&succ.has(h);n++)h=succ.get(h);return h;};
+  const depthOf=id=>{let d=0;for(let x=all[id];x?.of&&d<=MAX_CHAIN;x=all[x.of])d++;return d;};
   const dayOf=o=>o.occurrenceDate??(o.observedAt?localDay(o.observedAt,tz):null);
+  // V1 blocker closure (SEC-INT-06): no report is dated before the record began (the enrollment day, in the plan's offset). Training before it is
+  // the onboarding intake's (its run history), never a report: so the per-day bound bounds the record by the days the record has existed.
+  const firstDay=typeof doc.createdAt==='string'&&Number.isFinite(Date.parse(doc.createdAt))?localDay(doc.createdAt,tz):null;
   for(let i=0;i<list.length;i++){
    const o=list[i],shape=observationError(channel,o,i);if(shape)return {refusal:shape};
    let correctionOf=o.correctionOf??null;
+   {const d=dayOf(o);if(firstDay&&d&&d<firstDay)return {refusal:{code:'BEFORE_RECORD_START',index:i,field:o.occurrenceDate!==undefined?'occurrenceDate':'observedAt',firstDay}};}
    if(channel===CHANNELS.DEVICE){
     const s=o.sessionId!==undefined?sessions.get(o.sessionId):null;
     if(o.sessionId!==undefined&&!s)return {refusal:{code:'UNKNOWN_SESSION',index:i,field:'sessionId'}};
@@ -220,7 +227,8 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
     if(replaced.has(correctionOf))return {refusal:{code:'CORRECTION_OF_REPLACED',index:i,field:'correctionOf',eventId:headOf(correctionOf)}};
     if((m.s??null)!==(o.sessionId??null))return {refusal:{code:'CORRECTION_SESSION_MISMATCH',index:i,field:'sessionId'}};
     if(channel===CHANNELS.DEVICE&&m.act!==o.activityId)return {refusal:{code:'CORRECTION_ACTIVITY_MISMATCH',index:i,field:'activityId'}};
-    if(depthOf(correctionOf)+1>LIMITS.correctionsPerReport)return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};
+    // SEC-INT-07: past the limit only a correction that states a safety signal is admitted, at most safetyExcess more.
+    {const depth=depthOf(correctionOf)+1;if(depth>LIMITS.correctionsPerReport&&!(statesSafetySignal(o)&&depth<=MAX_CHAIN))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};}
    }else{
     if(channel===CHANNELS.ATHLETE&&o.sessionId!==undefined){const mine=Object.entries(all).find(([,m])=>m.ch==='A'&&m.s===o.sessionId);
      if(mine){const head=headOf(mine[0]);
@@ -229,7 +237,9 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
       if(!head.startsWith('pending:')&&all[head]?.d===factsDigest(o)){duplicates.push(i);continue;}
       return {refusal:{code:'ALREADY_REPORTED',index:i,field:'sessionId',eventId:head}};}}
     const day=dayOf(o),ch=channel===CHANNELS.ATHLETE?'A':'D';
-    if(day&&Object.values(all).filter(m=>m.ch===ch&&!m.of&&m.day===day).length>=LIMITS.reportsPerDayPerChannel)return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};
+    // SEC-INT-07: past the limit only a report that states a safety signal is admitted, at most safetyExcess more.
+    {const n=day?Object.values(all).filter(m=>m.ch===ch&&!m.of&&m.day===day).length:0;
+     if(day&&n>=LIMITS.reportsPerDayPerChannel&&!(statesSafetySignal(o)&&n<LIMITS.reportsPerDayPerChannel+LIMITS.safetyExcess))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};}
    }
    const built=build(channel,o,{at:op.at,correctionOf});
    const voice=checkReportVoice(channel,built);if(!voice.ok)return {refusal:{code:voice.code,index:i,fields:voice.errors}};
@@ -261,7 +271,9 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    // (A screen equal to the one on record says nothing new either.)
    const sameScreen=rv.eligibility===undefined||canonical(rv.eligibility)===canonical(op.loaded.screen??null);
    if(!a.observations.length&&a.duplicates.length&&(channel===CHANNELS.DEVICE||Object.keys(rv).every(k=>['kind','observations','eligibility'].includes(k))&&rv.kind==='WEEKLY_REVIEW'&&sameScreen))
-    return {ok:true,duplicate:true,duplicates:a.duplicates,version:o.doc.version,recorded:[],notRecorded:[],warningSignScreen:null,...activitiesOf(channel,list,a.duplicates,null)};
+    // V1 blocker closure (SSCTR-INT-R2-01): no engine call is made, so the answer carries the screen the record last asked for (never a null
+    // that could read as "no screen needed").
+    return {ok:true,duplicate:true,duplicates:a.duplicates,version:o.doc.version,recorded:[],notRecorded:[],warningSignScreen:op.loaded?.presentation?.readings?.warningSignScreen??null,...activitiesOf(channel,list,a.duplicates,null)};
    op.pendingOrigins=a.metas;op.request={id:clientRequestId,info:{d,at:iso(op.at),of:a.of,dup:a.duplicates}};
   }
   // The device channel carries no screen of its own: only the athlete's last one, as they sent it (SEC-INT-01). Without one the workouts wait.
@@ -302,7 +314,9 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    if(isObj(args.intake.athlete?.eligibility))op.screen=clone(args.intake.athlete.eligibility);return withScreen(custody.restart(args));},'restart'),
   /** A revocation is never held back by a clock behind the record (SEC-INT-04, cycle 1): withdrawing consent always works. */
   setConsent:args=>run(args?.actor,args?.granted!==false,()=>custody.setConsent(args),'setConsent'),
-  eraseHealthFacts:args=>run(args?.actor,true,()=>custody.eraseHealthFacts(args),'eraseHealthFacts'),
+  // V1 blocker closure (SEC-INT-04 rest): an erasure is never held back by a clock behind the record, as a revocation is not (the latest instant
+  // on record never moves back).
+  eraseHealthFacts:args=>run(args?.actor,false,()=>custody.eraseHealthFacts(args),'eraseHealthFacts'),
   eraseAccount:args=>run(args?.actor,false,()=>{const r=custody.eraseAccount(args);if(r.ok&&anchor)try{anchor.clear(args.actor.athleteId);}catch{}return r;},'eraseAccount'),
   /** The athlete's explicit act after RECORD_LOST / RECORD_ROLLED_BACK, and only then (SEC-INT-03, QRE-INT-03, cycle 1): a record that is
    * there and as anchored is never set aside this way (a hold on it would go with it). What remains is set aside; a new plan starts from a new intake. */

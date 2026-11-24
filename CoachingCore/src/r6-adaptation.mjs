@@ -219,7 +219,12 @@ function bindObservations(program,accepted,hybrid,policy,reads=null){
 /** R7-D F04: a confounded execution (heat or terrain, for example) cannot be read for performance or effort, so they neither earn nor count
  * against it; an adverse recovery or an impaired next day reported with it is independent of that reading and stays adverse evidence. */
 const adverseBeyondConfounding=o=>o.response?.recovery==='ADVERSE'||o.response?.nextDayFunction==='IMPAIRED';
-const kindOf=o=>o.partial?'PARTIAL':o.confounded?(adverseBeyondConfounding(o)?'ADVERSE':'CONFOUNDED'):classify(o);
+/** V1 blocker closure (C-O1-3, SSCTR_O1_R1 decision A): on a flagged row (an execution in dispute) the response shown is the first-admitted
+ * report's, so who spoke first decided whether an adverse recovery or an impaired next day reached the protective readers. Every voice the row
+ * keeps (its own and `provenance.parts`) is heard: when any of them states one, the row reads ADVERSE, in every order of arrival and after any
+ * correction that does not resolve the dispute. A flagged row is never credit, progression or calibration, so this only ever protects. */
+const voicedAdverse=o=>o?.conflicted===true&&[o.response,...Object.values(o.provenance?.parts&&typeof o.provenance.parts==='object'?o.provenance.parts:{}).map(p=>p?.response)].some(r=>!!r&&typeof r==='object'&&(r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED'));
+const kindOf=o=>voicedAdverse(o)?'ADVERSE':o.partial?'PARTIAL':o.confounded?(adverseBeyondConfounding(o)?'ADVERSE':'CONFOUNDED'):classify(o);
 /** A report that the session was not done at all (R7-C G01, record fidelity, CQ-R6-19/H17): not completed, no minutes and no logged set. */
 const notDone=o=>o.actual?.completed===false&&!(Number(o.actual?.minutes)>0)&&!(Array.isArray(o.actual?.exercises)&&o.actual.exercises.some(e=>Array.isArray(e?.sets)&&e.sets.length));
 function weekEvidence(program,w,asOfLocal,ledger,quarantined){
