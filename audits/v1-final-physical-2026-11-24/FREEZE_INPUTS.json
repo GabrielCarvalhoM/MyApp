@@ -1,0 +1,110 @@
+{
+ "mission": "REPMILE COACHINGCORE V1 FINAL PHYSICAL VALIDATION & RELEASE FREEZE (Founder, 2026-11-24)",
+ "scope": "the CoachingCore V1 runtime and its integration boundary, frozen for consumption by the SwiftUI implementation and the backend; validated with synthetic athletes only on Node, macOS JavaScriptCore and an iPhone 17 Pro Max; not an approval for real athletes nor for App Store release",
+ "states": {
+  "COACHINGCORE_RUNTIME_FROZEN": true,
+  "INTEGRATION_CONTRACT_STABLE": true,
+  "NATIVE_HOST_VALIDATED": "true for the harness host (JavaScriptCore, CryptoKit HMAC, Keychain, file store with protection, process death, locked device, reinstall); HealthKit background delivery, watch observations and a real synced week are NOT validated (no native implementation yet)",
+  "REAL_ATHLETE_READY": false,
+  "APPLICATION_READY_FOR_RELEASE": false
+ },
+ "physicallyRun": {
+  "bundleSha256": "9cf3149b83540685b35c38a899805de1f37f04680afa972fd6cd70786bc14101",
+  "coachingCoreAsIn": "503945a (no CoachingCore/src byte changed after it)",
+  "cleanBuildRerun": "a git archive of 395c985 built from scratch and run on the iPhone (results/device-395c985) and on the Mac",
+  "lockedAndReinstall": "run from the tree committed in 395c985 (BoundaryTests.swift unchanged since that build)"
+ },
+ "hostDependencies": {
+  "runtime": "JavaScriptCore, one JSVirtualMachine and one JSContext on one serial queue; the bundle is one classic script (build/link.mjs), floor iOS 16",
+  "hostFunctions": [
+   "readAsset(key)",
+   "existsAsset(key)",
+   "sha256(text)",
+   "now()",
+   "hmacSHA256(keyRef, text) (CryptoKit HMAC<SHA256>, key resolved by the host from the Keychain)",
+   "constantTimeEqual(a, b)"
+  ],
+  "prelude": "Buffer.from(string) minimal, createHmac/timingSafeEqual over the host; no Node API beyond these",
+  "store": "store.mjs contract {load, commit(id, expectedVersion, doc), remove, tombstone, tombstoneOf, raw}; anchor {get, set, clear}"
+ },
+ "authorityResources": "the 16 data files the runtime reads by URL, bound below by sha256 (among them the R7-B0 strength repertoire records, review_by 2027-04-30)",
+ "integrationContract": [
+  "audits/v1-integration-boundary-2026-11-23/INTEGRATION_BOUNDARY_CONTRACT.md",
+  "audits/v1-final-physical-2026-11-24/SWIFTUI_BACKEND_HANDOFF.md"
+ ],
+ "results": {
+  "node": "on 503945a (the bound sources): suite 1940 tests / 1893 pass / 47 fail; against RC-1 the only new failing title is the RC-1 record test (by design: its successor is v1final-freeze-record.test.mjs); QRE and SSCTR reproduced these titles independently. The suite with this record is in FINAL_REPORT.md. Oracles deterministic (git diff empty); vm-check and final-vm-check ok with JIT and --jitless",
+  "javascriptCoreMac": "swift test: EquivalenceTests, FocalTests (core lifecycle, locale, libm), BoundaryTests: 0 DIVERGED",
+  "iphone": "iPhone 17 Pro Max (iPhone18,2), iOS 27.2.1, Release: EquivalenceTests 5/5 (34 IDENTICAL + 4 EXPLAINED_LIBM); core lifecycle 24 journeys / 171 steps in en, pt-BR, da, nb, cs, 0 DIVERGED, digest equal; boundary int.json 78 steps and final.json 184 steps (memory store and native file store + Keychain) 0 DIVERGED with the same EXPLAINED_LIBM sets as the Mac; HMAC 40/40; one writer 200/200; failed write confirms nothing; process death after and before the rename; locked device read and write; reinstall: file gone, Keychain kept, RECORD_LOST",
+  "performance": "PF-0 all PASS: cold boot p95 47.7 ms, cold first plan p95 105.7 ms, review p95 290.8 ms, worst 296.9 ms, peak footprint 33.3 MB, write p95 3.1 ms, max main-queue stall 9.1 ms"
+ },
+ "opinions": {
+  "QRE": {
+   "verdict": "READY_WITH_CONDITIONS",
+   "review": "audits/v1-final-physical-2026-11-24/reviews/qre/QRE_FPV_R1.md",
+   "conditionsMet": [
+    "C-FPV-1: the persisted-forecast EXPLAINED_LIBM rule stated (Mac README §16, handoff §10)",
+    "C-FPV-2: the clean-build rerun of 395c985; the locked-device harness committed",
+    "QRE-FPV-01 closed by a test (no source change)"
+   ]
+  },
+  "Security": {
+   "verdict": "PASS_WITH_CONDITIONS",
+   "review": "audits/v1-final-physical-2026-11-24/reviews/security/SEC_FPV_R1.md",
+   "conditions": [
+    "C1 SEC-FPV-01: the G07 claim is scoped to holds",
+    "C2 G07 retention: Founder and legal validation",
+    "C3 D1 wording (handoff §8)",
+    "C4 schemas for SEC-INT-05/12",
+    "C5 SEC-FPV-02/03 native obligations, SEC-FPV-04 evidence (the locked run, done)",
+    "C6 sanitization (done)"
+   ]
+  },
+  "SSCTR": {
+   "verdict": "ACCEPT",
+   "review": "audits/v1-final-physical-2026-11-24/reviews/ssctr/SSCTR_FPV_R1.md",
+   "note": "no prescriptive change; the engine is untouched"
+  }
+ },
+ "g07Claim": "An erasure is never read as recovery or readiness for every clinical hold (an erased hold leaves a marker that holds until a valid readiness declaration, whatever the clock). Not for a 'not 100%' report that opened no hold (SEC-FPV-01): its question goes with the erasure and only the native obligation N-3 keeps sessions from being startable until a new screen.",
+ "nonBlockingFindings": [
+  "SEC-FPV-01 (Low; before real athletes)",
+  "SEC-FPV-02 (Low; before real athletes)",
+  "SEC-FPV-03 (Low; before real athletes)",
+  "QRE-FPV-02 (Low; met by C-FPV-1)",
+  "QRE-FPV-03 (Info)",
+  "SSCTR-FPV-01..03 (Info)",
+  "SEC-BC-O-1 (optional, from RC-1)",
+  "SSCTR-BC-02, SSCTR-BC-03 (pre-existing Core decisions)"
+ ],
+ "appObligations": "audits/v1-final-physical-2026-11-24/NATIVE_OBLIGATIONS_FINAL.md",
+ "maintenanceRules": [
+  "No planned change to CoachingCore before the V1 launch.",
+  "Exceptions only for a real safety defect, a proven incompatibility, an integrity failure, or a bug that makes an essential journey impossible; each needs a reproduction, a focal fix, the full regression, the device equivalence rerun and the competent reviews, and a successor record of this one.",
+  "Forbidden: new sporting features, optional refactors, prescription expansion, generic audits, intermediate freezes, a new engine architecture, unauthorised dose changes.",
+  "Further coach development happens on a successor line; this release stays as frozen.",
+  "Any app bundle must carry exactly the bound CoachingCore modules and replay core.json, int.json and final.json on the device with 0 DIVERGED."
+ ],
+ "reopeningCriteria": [
+  "a reproduced safety defect (a hold released, a stop or adverse signal lost, an erasure read as readiness, a prescription shown during a hold)",
+  "a reproduced integrity failure (a forged or altered record accepted, a lost or doubled record)",
+  "a reproduced DIVERGED step between Node and JavaScriptCore in prescription, safety or the canonical record",
+  "a proven incompatibility with the iOS host or the native store contract",
+  "an essential journey impossible (onboarding, logging, review, hold and readiness, restart, erasure)",
+  "the R7-B0 records' review_by (2027-04-30) without an SSCTR renewal"
+ ],
+ "realAthleteGates": [
+  "SEC-FPV-01 (or N-3 implemented)",
+  "Founder and legal G07 retention",
+  "D1 implemented and verified on the device",
+  "D2 backup",
+  "D3 minimum iOS",
+  "SEC-INT-05 rest and SEC-INT-12 schema tests",
+  "SEC-FPV-02, SEC-FPV-03",
+  "SSCTR-BC-01",
+  "C-BC-3 and SSCTR-BC-05 copy",
+  "HealthKit background delivery and a real synced week",
+  "no payload in logs or crash reports",
+  "the R7-B0 renewal before 2027-04-30"
+ ]
+}
