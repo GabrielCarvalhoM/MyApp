@@ -1,0 +1,23 @@
+step	result	status	action	state	pending	warningSignScreen
+A1-substitution-preference	OK	ASK	ASK			{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+A2-substitution-valid-reason	OK	MODIFY	SUBSTITUTE_FOR_REASON			{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+A2b-plan-after-substitution	OK			PENDING_CONFIRMATION	{"decisionId":"dc_000004","kind":"CHANGE_WAITING_CONFIRMATION","change":"REQUESTED_CHANGE"}	null
+A2c-accept-substitution	OK			VALID_PLAN		null
+A3-substitution-pain	OK	CLINICAL_HUMAN_REQUIRED	CLINICAL_HUMAN_REQUIRED			{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+B1-unavailable-day	OK	MODIFY	RESCHEDULE_WITHIN_WEEK	PENDING_CONFIRMATION	{"decisionId":"dc_000009","kind":"CHANGE_WAITING_CONFIRMATION","change":"REQUESTED_CHANGE"}	{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+B2-accept-unavailable	OK			VALID_PLAN		null
+B3-preferences-with-screen	OK	MODIFY	PREFERENCE_CHANGE	PENDING_CONFIRMATION	{"decisionId":"dc_000012","kind":"CHANGE_WAITING_CONFIRMATION","change":"REQUESTED_CHANGE"}	{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+C1-run-stop-symptom	OK	KEEP	KEEP			{"status":"REQUIRED","reason":"RUN_STOPPED_FOR_A_SYMPTOM","sessionIds":["w0-run-d1"],"decidedByThisExtension":false,"note":"Take the athlete to the existing warning-sign screen; run sessions are by time until it is answered after the stop"}
+C2-plan-after-symptom-stop	OK			VALID_PLAN		null
+C3-run-partial-time	OK	KEEP	KEEP			{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+C4-presentation-after-partial	OK					null
+D1-notFeeling100-no-sign	OK	KEEP	KEEP	VALID_PLAN		{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+D2-plan-after-nf	OK			VALID_PLAN		null
+D3-notFeeling100-no-screen	OK	ASK	ASK	NEEDS_INPUT		{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+E1-break-nonclinical	OK	ASK	ASK	NEEDS_INPUT		{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+E2-break-clinical	OK	CLINICAL_HUMAN_REQUIRED	CLINICAL_HUMAN_REQUIRED	BLOCKED		{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+F1-notFeeling100-sign	OK	CLINICAL_HUMAN_REQUIRED	CLINICAL_HUMAN_REQUIRED	BLOCKED		{"status":"NOT_RAISED_BY_THIS_EXTENSION"}
+F2-eraseHealthFacts	OK			BLOCKED		null
+F3-plan-after-erase	OK			BLOCKED		null
+F4-eraseAccount	OK					null
+F5-plan-after-account-erase	GONE			NO_DATA		null

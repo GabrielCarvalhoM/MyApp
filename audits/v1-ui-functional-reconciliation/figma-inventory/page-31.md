@@ -1,0 +1,1406 @@
+# 31 · Treino planejado (551:8)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 31 · Treino planejado (551:8) · items 48 · screens 21 · motion 21
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): «1» «2» «3» «9:41» «duração» «leve» «Por que este treino»
+
+#### Row: Corrida planejada `643:1629`
+### Treino planejado / Corrida · limiar 3 × 5 min
+`510:202` FRAME 393x2337 · +chrome
+- Plano
+- Limiar
+- Treino-chave
+- 3 × 5 min
+- Terça, 10 nov · semana 3 de 8 · Construção
+- 34 min
+- 6–7
+- esforço nos blocos
+- 4:50–5:15
+- ritmo por km, como orientação
+- ≈ 6 km
+- distância estimada
+- 15 min
+- tempo forte, nos blocos
+- 18h40
+- horário combinado
+- 3 × (5 min + 2 min de trote)
+- forte
+- 0
+- 10
+- 20
+- Aquecimento
+- Desaq.
+- Etapas · 34 min
+- 10 min
+- leve, de conversa
+- 6:15–7:10 /km
+- Bloco principal
+- 19 min
+- 3×
+- 5 min
+- 4:50–5:15 /km
+- Trote
+- 2 min
+- ou caminhada
+- Desaquecimento
+- No limiar, só frases curtas. Cada bloco de 5 min deve cobrir perto de 1 km.
+- Na Construção, a qualidade de corrida entra uma vez por semana, e esta é a primeira. Na fase específica ela vai para quinta e cresce para 4 × 5 min.
+- Como fazer
+- Se o esforço passar do combinado, encerre a parte forte antes. Terminar leve está ok.
+- Registre as repetições feitas, o esforço e como você está no dia seguinte.
+- Trocar por leve
+- Mover de dia
+- Coordenação com a força
+- Pernas ontem, limiar hoje
+- 35h
+- de intervalo
+- seg 5h
+- ter 21h
+- Inferior · seg 7h
+- Limiar · ter 18h40
+- O limiar vem um dia e meio depois do treino de pernas, para você chegar inteiro aos blocos fortes. Amanhã a força é de superiores.
+- Ver Inferior de segunda
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Limiar controlado
+- Fala: frases curtas
+- de 10
+- Leve, de conversa
+- Fala: frases completas
+- 2–4
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Longão
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Confiança alta, válida até 13 dez.
+- Começar limiar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/repetir ×2; Ícone/check ×2; Ícone/chevron-direita; Ícone/play
+### Treino planejado / Corrida · leve, 2º do dia (dia duplo)
+`643:45` FRAME 393x2250 · +chrome
+- Hoje
+- Corrida leve
+- Dia duplo · 2º
+- 45 min
+- Quinta, 12 nov · à noite · semana 3 de 8 · Construção
+- 2–4
+- esforço de conversa
+- 6:15–7:10
+- ritmo por km, como orientação
+- ≈ 7 km
+- distância estimada
+- 35 min
+- parte contínua
+- noite
+- depois da força
+- forte
+- 0
+- 15
+- 30
+- Aquec.
+- Contínuo · 35 min
+- Desaq.
+- Etapas · 45 min
+- Aquecimento
+- 5 min
+- 6:15–7:10 /km
+- Corrida contínua
+- esforço de conversa, frases inteiras
+- Desaquecimento
+- O ritmo é teto, não meta: se o esforço subir, desacelere. Caminhar um trecho também vale.
+- Semana 3 da Construção: o plano constrói resistência aeróbia e força, um passo de progressão por vez. A corrida leve soma volume sem pesar.
+- Como fazer
+- Mantenha o esforço de conversa; desacelere ou caminhe um pouco quando precisar.
+- Encurte a corrida se não der para manter o esforço leve.
+- Registre os minutos e o esforço.
+- Ver o dia
+- Mover de dia
+- Coordenação com a força
+- Força primeiro, corrida depois
+- 2º
+- do dia
+- qui cedo
+- qui à noite
+- Corpo inteiro · feita às 7h00
+- Corrida leve · à noite
+- A ordem do dia vem do plano: nesta semana, força primeiro e corrida leve depois. O plano define a ordem, não o horário.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Leve, de conversa
+- Fala: frases completas
+- de 10
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Limiar
+- Longão
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Estimada, confiança alta, válida até 13 dez. Se esforço e ritmo discordarem, vale o esforço.
+- Começar corrida leve
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/check ×3; Ícone/play
+### Treino planejado / Corrida · longão de 80 min
+`643:317` FRAME 393x2269 · +chrome
+- Plano
+- Longão
+- Treino-chave
+- 80 min
+- Sábado, 14 nov · de manhã · semana 3 de 8 · Construção
+- 2–4
+- esforço de conversa
+- 6:15–7:20
+- ritmo por km, como orientação
+- ≈ 12 km
+- distância estimada
+- 70 min
+- parte contínua
+- manhã
+- horário combinado
+- forte
+- 0
+- 40
+- Aquec.
+- Longo e leve · 70 min
+- Desaq.
+- Etapas · 80 min
+- Aquecimento
+- 5 min
+- 6:15–7:20 /km
+- Corrida longa
+- Desaquecimento
+- caminhando ou trotando
+- Tempo de pé, não velocidade. O lado rápido do longão nunca fica mais rápido que o da corrida leve.
+- O longão é o treino-chave da semana na Construção. Se ele não for feito, conta zero e não é reposto.
+- Como fazer
+- Corrida longa e leve: tempo de pé, não velocidade.
+- Leve o que você já usa em treinos longos (água, gel). Treino-chave não é dia de testar algo novo.
+- Encurte a corrida se não der para manter o esforço leve.
+- Mover de dia
+- Não posso neste dia
+- Coordenação com a força
+- Força na quinta, longão no sábado
+- 2 dias
+- depois da última força
+- qui
+- sáb
+- Corpo inteiro · quinta
+- Longão · sábado
+- A última força da semana foi na quinta, com as pernas em volume reduzido. Sexta é descanso planejado para você chegar inteiro ao longão.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Leve, de conversa
+- Fala: frases completas
+- de 10
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Limiar
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Estimada, confiança alta, válida até 13 dez. Se esforço e ritmo discordarem, vale o esforço.
+- Começar longão
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/check ×3; Ícone/play
+### Treino planejado / Corrida · toque de prova 3 × 2 min (semana da prova)
+`643:588` FRAME 393x2301 · +chrome
+- Plano
+- Toque de prova
+- Semana da prova
+- 3 × 2 min
+- Quinta, 17 dez · semana 8 de 8 · três dias antes da prova
+- 25 min
+- 7–8
+- esforço nos blocos
+- 4:45–5:15
+- ritmo por km, confiança baixa
+- ≈ 4 km
+- distância estimada
+- 6 min
+- tempo forte, nos blocos
+- manhã
+- horário combinado
+- 3 × (2 min + 2 min de trote)
+- forte
+- 0
+- 10
+- 20
+- Aquecimento
+- Desaq.
+- Etapas · 25 min
+- 10 min
+- 6:25–8:25 /km
+- Bloco principal
+- 3×
+- Ritmo de 10 km
+- 2 min
+- 4:45–5:15 /km
+- Trote
+- Desaquecimento
+- 5 min
+- Poucas palavras por vez nos blocos. Termine cada repetição com a forma inteira.
+- Semana da prova: corridas leves curtas, um toque breve no esforço de prova e a prova. O toque vem três dias antes.
+- Como fazer
+- Mantenha a forma e o esforço; se o esforço passar do indicado, encerre a parte forte.
+- Registre as repetições feitas, o esforço e como você está no dia seguinte.
+- Trocar por leve
+- Ver a prova
+- Rumo à prova
+- Três dias até a largada
+- 3 dias
+- até a prova
+- qui 17
+- dom 20
+- Toque de prova · quinta
+- Prova de 10 km · domingo, 7h
+- Depois do toque vêm um descanso, a soltura opcional de sábado e a prova no domingo.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Forte, mas controlado
+- Fala: poucas palavras por vez
+- de 10
+- Leve, de conversa
+- Fala: frases completas
+- 2–4
+- Faixas de ritmo, do mais rápido ao mais lento
+- Limiar
+- Longão
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. A referência passou de 8 semanas, então a confiança caiu para baixa. A faixa segue como guia; vale o esforço.
+- Começar toque de prova
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/repetir; Ícone/check ×2; Ícone/play
+### Treino planejado / Corrida · soltura opcional (véspera da prova)
+`643:888` FRAME 393x2214 · +chrome
+- Plano
+- Soltura
+- Opcional
+- Semana da prova
+- 15 min
+- Sábado, 19 dez · véspera da prova
+- 2–4
+- esforço de conversa
+- 6:25–8:25
+- ritmo por km, confiança baixa
+- ≈ 2 km
+- distância estimada
+- 3 × 20 s
+- acelerações soltas
+- manhã
+- horário combinado
+- forte
+- 0
+- 8
+- Aquec.
+- Leve com 3 acelerações
+- Desaq.
+- Etapas · 15 min
+- Aquecimento
+- 3 min
+- 6:25–8:25 /km
+- Corrida leve
+- 3:30
+- Acelerações
+- 5:30
+- 3×
+- Aceleração
+- 20 s
+- solta
+- Trote
+- 90 s
+- ou caminhada
+- 4
+- Desaquecimento
+- Pode ficar de fora; não é reposta.
+- Na véspera da prova o plano deixa só uma soltura curta, e ela é opcional.
+- Como fazer
+- Mantenha o esforço de conversa; desacelere ou caminhe quando precisar.
+- Registre os minutos e o esforço.
+- Pular a soltura
+- Ver a prova
+- Rumo à prova
+- Amanhã é a prova
+- 1 dia
+- até a prova
+- sáb 19
+- dom 20
+- Soltura · sábado
+- Prova de 10 km · domingo, 7h
+- Fazer ou não a soltura não muda o plano. Separe o que vai usar e durma cedo.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Leve, de conversa
+- Fala: frases completas
+- de 10
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- 9:00
+- mais rápido
+- mais lento
+- Confiança baixa porque a referência (5 km em 21:48, 18 out) passou de 8 semanas. Vale o esforço.
+- Começar soltura
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/repetir; Ícone/check ×2; Ícone/play
+### Treino planejado / Corrida · caminhada e trote (iniciante)
+`643:1155` FRAME 393x1679 · −chrome: «leve»
+- Plano
+- Caminhada e trote
+- Início
+- Só esforço
+- 20 min
+- Quinta, 12 nov · semana 1 de 8 · Início
+- conversa
+- esforço do trote
+- sem ritmo
+- o plano usa só o esforço
+- 3 × 30 s
+- de trote
+- 2 min
+- caminhando entre eles
+- noite
+- horário combinado
+- 3 × (30 s de trote + 2 min caminhando)
+- trote
+- andar
+- 0
+- 10
+- Caminhada
+- Volta à calma
+- Etapas · 20 min
+- 5 min
+- ritmo confortável
+- Trotes curtos
+- 7:30
+- 3×
+- Trote
+- 30 s
+- de conversa
+- caminhando
+- Caminhar é sempre permitido. Se a conversa ou o movimento piorarem, caminhe.
+- Início do plano: caminhada e trote em escada, até 3 vezes por semana, só por esforço.
+- Como fazer
+- Trote em esforço de conversa; caminhar é sempre permitido.
+- Registre os minutos e como foi.
+- Mover de dia
+- Esforço e ritmo
+- Só esforço, sem relógio de ritmo
+- Trote de conversa
+- Fala: frases completas
+- 3–4
+- de 10
+- Respiração solta
+- 1–2
+- Em caminhada e trote o plano não usa ritmo: no começo, o esforço manda. Se a conversa ou o movimento piorarem, caminhe.
+- Começar caminhada e trote
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/repetir; Ícone/check ×2; Ícone/play
+### Treino planejado / Corrida · leve só por esforço, sem faixa de ritmo
+`643:1391` FRAME 393x1682 · +chrome
+- Plano
+- Corrida leve
+- Início
+- Só esforço
+- 45 min
+- Quinta, 12 nov · semana 1 de 12 · Início
+- 2–4
+- esforço de conversa
+- sem ritmo
+- faixa só depois de 3 corridas
+- forte
+- 0
+- 15
+- 30
+- Aquec.
+- Contínuo · 35 min
+- Desaq.
+- Etapas · 45 min
+- Aquecimento
+- 5 min
+- esforço 2–4
+- Corrida contínua
+- 35 min
+- conversa solta, frases inteiras
+- Desaquecimento
+- O ritmo que sair hoje começa a formar a sua referência.
+- Primeira semana do plano, sem prova marcada: corridas leves, longão no domingo e um treino de força.
+- Como fazer
+- Mantenha o esforço de conversa; desacelere ou caminhe um pouco quando precisar.
+- Encurte a corrida se não der para manter o esforço leve.
+- Registre os minutos e o esforço.
+- Mover de dia
+- Esforço e ritmo
+- Como medir o esforço
+- Conversa solta
+- Frases inteiras · o alvo de hoje
+- de 10
+- Frases curtas
+- Forte e controlado
+- 6–7
+- Só algumas palavras
+- Muito forte
+- 8
+- Sem resultado recente, o plano usa só o esforço. Depois de 3 corridas leves registradas, as faixas de ritmo aparecem; um teste de 5 km também serve de referência.
+- Começar corrida leve
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/check ×3; Ícone/play
+
+#### Row: Motion · Corrida planejada `647:757`
+### Motion · Corrida · limiar 3 × 5 min
+`652:1532` FRAME 393x2337 · motion twin of `510:202`, same text
+### Motion · Corrida · leve, 2º do dia (dia duplo)
+`652:2209` FRAME 393x2250 · motion twin of `643:45`, same text
+### Motion · Corrida · longão de 80 min
+`652:2748` FRAME 393x2269 · motion twin of `643:317`, same text
+### Motion · Corrida · toque de prova 3 × 2 min (semana da prova)
+`652:3282` FRAME 393x2301 · motion twin of `643:588`, same text
+### Motion · Corrida · soltura opcional (véspera da prova)
+`652:3948` FRAME 393x2214 · motion twin of `643:888`, same text
+### Motion · Corrida · caminhada e trote (iniciante)
+`652:4608` FRAME 393x1679 · motion twin of `643:1155`, same text
+### Motion · Corrida · leve só por esforço, sem faixa de ritmo
+`652:5115` FRAME 393x1682 · motion twin of `643:1391`, same text
+
+#### Row: Força planejada `643:1630`
+### Treino planejado / Força · Inferior, treino-chave
+`644:247` FRAME 393x2619 · +chrome
+- Plano
+- Força
+- Treino-chave
+- Inferior
+- Segunda, 9 nov · semana 3 de 8 · Construção
+- 37 min
+- 13 séries
+- em 5 exercícios
+- repetições em reserva
+- 2 sobem
+- agachamento e stiff
+- 2:30
+- descanso nos principais
+- 7h00
+- horário combinado
+- 13 séries · principais primeiro
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · principais primeiro
+- Agachamento livre
+- +2,5 kg
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra e rack
+- Série
+- Carga
+- Reps
+- Anterior
+- A
+- 40 kg
+- 8
+- —
+- 70 kg
+- 1–4
+- 92,5 kg
+- 90 kg × 5
+- total na barra
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- 16 kg
+- por mão
+- Panturrilha com halteres
+- 2 × 7 · 3 em reserva · descanso 1:15
+- Acessório · halteres
+- 20 kg
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Onde a carga vem do último registro, ela só sobe depois de séries completas com repetições em reserva.
+- Nesta semana o agachamento passa de 90 para 92,5 kg e o stiff de 80 para 82,5 kg.
+- Séries por grupo · estimativa
+- Quadríceps e glúteos
+- 6
+- Posterior de coxa
+- Panturrilha
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Rack
+- Halteres
+- Coordenação com a corrida
+- Pernas hoje, limiar amanhã
+- 35h
+- de intervalo
+- seg 5h
+- ter 21h
+- Inferior · seg 7h
+- Limiar · ter 18h40
+- O limiar de terça vem um dia e meio depois deste treino de pernas, para você chegar inteiro aos blocos fortes.
+- Construção: corrida e força com o mesmo peso, um passo de progressão por vez.
+- Trocar um exercício
+- Mover de dia
+- Começar inferior
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/play
+### Treino planejado / Força · Superior, puxada sobe de regulagem
+`644:545` FRAME 393x2652 · +chrome
+- Plano
+- Força
+- Superior
+- Quarta, 11 nov · semana 3 de 8 · Construção
+- 41 min
+- 15 séries
+- em 5 exercícios
+- repetições em reserva
+- 1 sobe
+- puxada alta
+- 2:30
+- descanso nos principais
+- 7h00
+- horário combinado
+- 15 séries · principais primeiro
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · principais primeiro
+- Supino reto
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra, banco e rack
+- Série
+- Carga
+- Reps
+- Anterior
+- A
+- 30 kg
+- 8
+- —
+- 55 kg
+- 1–4
+- 72,5 kg
+- 72,5 kg × 5
+- total na barra
+- Remada curvada
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 62,5 kg
+- Desenvolvimento com barra
+- 3 × 6 · 3 em reserva · descanso 1:15
+- Acessório · barra e rack
+- 45 kg
+- Puxada alta
+- sobe
+- 3 × 7 · 3 em reserva · descanso 1:15
+- Acessório · máquina
+- > 55 kg
+- próxima regulagem
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Puxada alta: suba para a próxima regulagem que a máquina permite acima de 55 kg.
+- Registre a carga usada e a unidade; a regulagem nova vira referência quando você registrar.
+- Séries por grupo · estimativa
+- Costas
+- 6
+- Peito e tríceps
+- Ombros
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Banco
+- Rack
+- Máquina de puxada
+- Coordenação com a corrida
+- Limiar ontem, superiores hoje
+- 12h
+- depois do limiar de ontem
+- ter
+- qua
+- Limiar · ter 18h40
+- Superior · qua 7h
+- Ontem foi o limiar; amanhã, dia duplo. O treino de superiores deixa as pernas descansarem entre os dois.
+- Construção: corrida e força com o mesmo peso, um passo de progressão por vez.
+- Trocar um exercício
+- Mover de dia
+- Começar superior
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/play
+### Treino planejado / Força · Corpo inteiro, 1º do dia (dia duplo)
+`644:843` FRAME 393x2397 · +chrome
+- Hoje
+- Força
+- Dia duplo · 1º
+- Treino-chave
+- Corpo inteiro
+- Quinta, 12 nov · cedo · semana 3 de 8 · Construção
+- 42 min
+- 14 séries
+- em 5 exercícios
+- repetições em reserva
+- 14 séries · principais primeiro
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · principais primeiro
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- total na barra
+- Remada curvada
+- 62,5 kg
+- Supino reto
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra, banco e rack
+- 72,5 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- 16 kg
+- por mão
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- —
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Onde a carga vem do último registro, ela só sobe depois de séries completas com repetições em reserva.
+- Séries por grupo · estimativa
+- Posterior e glúteos
+- Costas
+- Peito e tríceps
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Banco
+- Rack
+- Halteres
+- Coordenação com a corrida
+- Força primeiro, corrida depois
+- 1º
+- do dia
+- qui cedo
+- qui à noite
+- Corpo inteiro · cedo
+- Corrida leve · à noite
+- No dia duplo de hoje o plano põe a força primeiro e a corrida leve depois. O plano define a ordem, não o horário.
+- Primeira sessão do dia duplo; a corrida leve vem depois, à noite.
+- Ver o dia
+- Trocar um exercício
+- Começar corpo inteiro
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/play
+### Treino planejado / Força · primeira semana, carga a estabelecer
+`644:1095` FRAME 393x2349 · +chrome
+- Plano
+- Força
+- Primeira semana
+- Inferior
+- Segunda, 26 out · semana 1 de 8 · Construção
+- 37 min
+- 13 séries
+- em 5 exercícios
+- exercícios com carga a estabelecer
+- Carga a estabelecer
+- No afundo e na panturrilha você escolhe a carga na hora
+- Comece leve e suba aos poucos. Nenhum número é chutado: o primeiro registro vira a referência do plano.
+- 13 séries · principais primeiro
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · principais primeiro
+- Agachamento livre
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · informada no início
+- 90 kg
+- total na barra
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- 80 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- a definir
+- por mão
+- Panturrilha com halteres
+- 2 × 7 · 3 em reserva · descanso 1:15
+- Acessório · halteres
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- —
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Pratique o movimento primeiro sem carga ou com carga mínima.
+- Suba aos poucos: comece pela carga mais leve disponível e some o menor incremento.
+- Não reaproveite carga de outro exercício ou implemento; registre a carga e a unidade.
+- Série
+- Carga
+- Reps
+- Sobrando
+- A
+- carga mínima
+- 10
+- aquecimento
+- você escolhe
+- 7
+- 4 ou mais: suba
+- ajustada
+- 3: mantenha, é a referência
+- Séries por grupo · estimativa
+- Quadríceps e glúteos
+- 6
+- Posterior de coxa
+- Panturrilha
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Rack
+- Halteres
+- Começo do plano: agachamento e stiff partem das cargas que você informou no início; os exercícios novos começam pela carga que você encontrar hoje.
+- Trocar um exercício
+- Mover de dia
+- Começar inferior
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca ×2; Ícone/play
+### Treino planejado / Força · manutenção na semana da prova
+`644:1351` FRAME 393x1848 · −chrome: «3»
+- Plano
+- Força
+- Semana da prova
+- Manutenção
+- Segunda, 14 dez · semana 8 de 8 · Semana da prova
+- 13 min
+- 2 séries
+- em 2 exercícios
+- 4
+- repetições em reserva
+- 2 séries · só os principais
+- pesado
+- Cheio é principal, suave é acessório.
+- Exercícios · só os principais
+- Agachamento livre
+- 1 × 5 · 4 em reserva · descanso 2:30
+- Principal · barra e rack
+- 92,5 kg
+- total na barra
+- Stiff com barra
+- 1 × 6 · 4 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Sem aumento de carga nesta fase.
+- Séries por grupo · estimativa
+- Quadríceps e glúteos
+- Posterior de coxa
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 2 exercícios e volta à calma de 3 min.
+- Barra e anilhas
+- Rack
+- Rumo à prova
+- Seis dias até a largada
+- 6 dias
+- até a prova
+- seg 14
+- dom 20
+- Manutenção · segunda
+- Prova de 10 km · domingo, 7h
+- A única força da semana da prova, curta e longe do domingo.
+- Perto da prova a força diminui: na semana 7 vira manutenção, com menos séries; na semana da prova fica só esta sessão curta.
+- Começar manutenção
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/play
+### Treino planejado / Força · trocar exercício (folha)
+`645:1683` FRAME 393x852 · +chrome
+- Plano
+- Força
+- Treino-chave
+- Inferior
+- Segunda, 9 nov · semana 3 de 8 · Construção
+- 37 min
+- 13 séries
+- em 5 exercícios
+- repetições em reserva
+- 2 sobem
+- agachamento e stiff
+- 2:30
+- descanso nos principais
+- 7h00
+- horário combinado
+- 13 séries · principais primeiro
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · principais primeiro
+- Agachamento livre
+- +2,5 kg
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra e rack
+- Série
+- Carga
+- Reps
+- Anterior
+- A
+- 40 kg
+- 8
+- —
+- 70 kg
+- 1–4
+- 92,5 kg
+- 90 kg × 5
+- total na barra
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- 16 kg
+- por mão
+- Panturrilha com halteres
+- 2 × 7 · 3 em reserva · descanso 1:15
+- Acessório · halteres
+- 20 kg
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Onde a carga vem do último registro, ela só sobe depois de séries completas com repetições em reserva.
+- Nesta semana o agachamento passa de 90 para 92,5 kg e o stiff de 80 para 82,5 kg.
+- Séries por grupo · estimativa
+- Quadríceps e glúteos
+- 6
+- Posterior de coxa
+- Panturrilha
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Rack
+- Halteres
+- Coordenação com a corrida
+- Pernas hoje, limiar amanhã
+- 35h
+- de intervalo
+- seg 5h
+- ter 21h
+- Inferior · seg 7h
+- Limiar · ter 18h40
+- O limiar de terça vem um dia e meio depois deste treino de pernas, para você chegar inteiro aos blocos fortes.
+- Construção: corrida e força com o mesmo peso, um passo de progressão por vez.
+- Trocar um exercício
+- Mover de dia
+- Começar inferior
+- Trocar exercício
+- Afundo com halteres · 2 × 7 por lado · 16 kg por mão. Vale para o Inferior (seg) e o Corpo inteiro (qui).
+- Por que trocar?
+- Não consigo fazer com técnica estável
+- Prefiro outro ou sinto desconforto, sem dor
+- Sinto dor
+- Dor não é troca de exercício: vamos à triagem de sinais
+- Confirmo que não há dor, lesão nem limitação neste exercício
+- Alternativas do mesmo padrão
+- Afundo búlgaro com halteres
+- Variação próxima · halteres e banco · sugestão do treinador
+- Afundo reverso com halteres
+- Variação próxima · halteres
+- Subida no banco com halteres
+- Mesmo padrão · halteres e banco
+- Cargas não são convertidas entre exercícios: a nova começa com carga a estabelecer.
+- Pedir proposta
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/play; Ícone/fechar; Ícone/check ×3
+### Treino planejado / Força · proposta de troca de exercício, aguardando
+`645:667` FRAME 393x1023 · −chrome: «1» «2» «3» «duração» «leve» «Por que este treino»
+- Proposta do treinador
+- Aguardando sua confirmação
+- Afundo búlgaro no lugar do afundo com halteres.
+- O plano em vigor continua valendo até você decidir.
+- O que muda a partir desta semana
+- Inferior · segunda
+- Afundo com halteres · 2 × 7 · 16 kg por mão
+- Afundo búlgaro com halteres · 2 × 7 · carga a estabelecer
+- Corpo inteiro · quinta
+- Por quê
+- Você pediu outro exercício por preferência, sem dor. O treinador escolheu uma variação próxima, do mesmo padrão de movimento.
+- Se aceitar
+- O afundo búlgaro entra no lugar do afundo com halteres no Inferior e no Corpo inteiro. Cargas não são convertidas entre exercícios: a nova começa a estabelecer.
+- Se recusar
+- Continua o afundo com halteres, com a carga do último registro.
+- Aceitar troca
+- Manter o exercício
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/forca ×2; Ícone/chevron-direita ×2
+
+#### Row: Motion · Força planejada `647:5552`
+### Motion · Força · Inferior, treino-chave
+`647:5553` FRAME 393x2619 · motion twin of `644:247`, same text
+### Motion · Força · Superior, puxada sobe de regulagem
+`647:6239` FRAME 393x2652 · motion twin of `644:545`, same text
+### Motion · Força · Corpo inteiro, 1º do dia (dia duplo)
+`647:6934` FRAME 393x2397 · motion twin of `644:843`, same text
+### Motion · Força · primeira semana, carga a estabelecer
+`647:7574` FRAME 393x2349 · motion twin of `644:1095`, same text
+### Motion · Força · manutenção na semana da prova
+`647:8116` FRAME 393x1848 · motion twin of `644:1351`, same text
+### Motion · Força · trocar exercício (folha)
+`647:8513` FRAME 393x852 · motion twin of `645:1683`, same text
+### Motion · Força · proposta de troca de exercício, aguardando
+`647:8931` FRAME 393x1023 · motion twin of `645:667`, same text
+
+#### Row: Dia duplo e estados `643:1631`
+### Treino planejado / Dia duplo · ordem do dia (força feita, corrida à noite)
+`645:475` FRAME 393x1281 · −chrome: «1» «2» «duração» «leve» «Por que este treino»
+- Hoje
+- Dia duplo · quinta, 12 nov · semana 3 de 8
+- Força primeiro, corrida depois.
+- Duas sessões hoje, na ordem que o plano definiu. O plano define a ordem, não o horário.
+- Ordem do dia
+- Feita · 7h00
+- 1º · Corpo inteiro
+- 42 min · 5 exercícios · 14 séries
+- Sem intervalo marcado: o plano não fixa horário entre as sessões.
+- Próxima · à noite
+- 2º · Corrida leve
+- 45 min · esforço 2–4 de 10 · 6:15–7:10 /km
+- Como a força se coordena com a corrida
+- A ordem do dia vem do plano. Nesta semana: força primeiro, corrida leve depois.
+- Na semana 4, com o limiar na quinta, a ordem se inverte: corrida primeiro, força depois.
+- Perto da prova a força diminui. Na semana 7 vira manutenção, com menos séries.
+- Na Construção, corrida e força têm o mesmo peso; na fase específica, a corrida da prova lidera.
+- Próximos dias duplos · provisórios
+- Qui
+- 19
+- 1º Limiar 4 × 5 min
+- 2º Força · Corpo inteiro
+- nov
+- 26
+- 1º 5 × 3 min no esforço de 10 km
+- 1º 6 × 3 min no esforço de 10 km
+- dez
+- 10
+- 1º 3 × 3 min
+- 2º Força de manutenção
+- Começar corrida leve
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/check; Ícone/forca ×5; Ícone/corrida ×5; Ícone/play ×2
+### Treino planejado / Estado · já feito, leva ao resumo do treino
+`644:1531` FRAME 393x2466 · +chrome
+- Hoje
+- Força
+- Dia duplo · 1º
+- Corpo inteiro
+- Quinta, 12 nov · semana 3 de 8 · Construção
+- 42 min
+- 14 séries
+- em 5 exercícios
+- repetições em reserva
+- Feito às 7h00
+- Treino feito e registrado
+- O que você fez, série por série, está no resumo do treino. A corrida leve vem à noite.
+- 14 séries · todas feitas
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · como estavam no plano
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- total na barra
+- Remada curvada
+- 62,5 kg
+- Supino reto
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra, banco e rack
+- 72,5 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- 16 kg
+- por mão
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- —
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- Onde a carga vem do último registro, ela só sobe depois de séries completas com repetições em reserva.
+- Séries por grupo · estimativa
+- Posterior e glúteos
+- Costas
+- Peito e tríceps
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Banco
+- Rack
+- Halteres
+- Coordenação com a corrida
+- Força primeiro, corrida depois
+- 1º
+- do dia
+- qui cedo
+- qui à noite
+- Corpo inteiro · cedo
+- Corrida leve · à noite
+- No dia duplo de hoje o plano põe a força primeiro e a corrida leve depois. O plano define a ordem, não o horário.
+- Primeira sessão do dia duplo, já feita. A corrida leve vem depois, à noite.
+- Ver o resumo do treino
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/check ×6
+### Treino planejado / Estado · parcial (3 de 5 exercícios)
+`644:1798` FRAME 393x1962 · −chrome: «duração»
+- Plano
+- Força
+- Parcial
+- Inferior
+- Segunda, 9 nov · semana 3 de 8 · Construção
+- 24 min
+- de 37 previstos
+- 9 séries
+- de 13 previstas
+- 3 de 5
+- exercícios
+- Feito em parte
+- 3 de 5 exercícios, 24 de 37 min. Conta só o que foi feito; o próximo passo compara com sessões completas.
+- 9 de 13 séries feitas
+- pesado
+- 4
+- 5
+- Cheio é principal, suave é acessório.
+- Exercícios · feitos e não feitos
+- Agachamento livre
+- 4 × 5 · 3 em reserva · descanso 2:30
+- Principal · barra e rack
+- 92,5 kg
+- total na barra
+- Stiff com barra
+- 3 × 6 · 3 em reserva · descanso 2:30
+- Principal · barra
+- 82,5 kg
+- Afundo com halteres
+- 2 × 7 por lado · 3 em reserva · descanso 1:15
+- Acessório · os lados nunca se somam
+- 16 kg
+- por mão
+- Panturrilha com halteres
+- 2 × 7 · 3 em reserva · descanso 1:15
+- Acessório · halteres
+- 20 kg
+- Dead bug
+- 2 × 10 · 3 em reserva · descanso 1:15
+- Acessório · sem equipamento
+- —
+- peso do corpo
+- A = aquecimento · em reserva = repetições que sobram no fim da série · halteres contam por mão
+- Carga e progressão
+- Use a carga indicada só enquanto a técnica e as repetições em reserva se mantiverem.
+- O que não foi feito conta zero e não é reposto.
+- Séries por grupo · estimativa
+- Quadríceps e glúteos
+- 6
+- Posterior de coxa
+- Panturrilha
+- 0
+- Core
+- Sessão e equipamentos
+- Aquecimento de 5 min, os 5 exercícios e volta à calma de 3 min. Descanso de 2:30 nos principais e 1:15 nos acessórios.
+- Barra e anilhas
+- Rack
+- Halteres
+- Construção: corrida e força com o mesmo peso, um passo de progressão por vez.
+- Ver o registro
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/forca; Ícone/lista; Ícone/check ×3
+### Treino planejado / Estado · não feito (limiar de terça)
+`645:807` FRAME 393x2406 · +chrome
+- Plano
+- Limiar
+- Treino-chave
+- Não feito
+- 3 × 5 min
+- Terça, 10 nov · semana 3 de 8 · Construção
+- 34 min
+- 6–7
+- esforço nos blocos
+- 4:50–5:15
+- ritmo por km, como orientação
+- ≈ 6 km
+- distância estimada
+- 15 min
+- tempo forte, nos blocos
+- 18h40
+- horário combinado
+- Conta zero e não é reposto
+- Nada mais muda nesta semana. Se você fez e o registro não chegou, corrija por aqui.
+- 3 × (5 min + 2 min de trote)
+- forte
+- 0
+- 10
+- 20
+- Aquecimento
+- Desaq.
+- Etapas · 34 min
+- 10 min
+- leve, de conversa
+- 6:15–7:10 /km
+- Bloco principal
+- 19 min
+- 3×
+- 5 min
+- 4:50–5:15 /km
+- Trote
+- 2 min
+- ou caminhada
+- Desaquecimento
+- No limiar, só frases curtas. Cada bloco de 5 min deve cobrir perto de 1 km.
+- Na Construção, a qualidade de corrida entra uma vez por semana, e esta é a primeira. Na fase específica ela vai para quinta e cresce para 4 × 5 min.
+- Como fazer
+- Se o esforço passar do combinado, encerre a parte forte antes. Terminar leve está ok.
+- Registre as repetições feitas, o esforço e como você está no dia seguinte.
+- Coordenação com a força
+- Pernas ontem, limiar hoje
+- 35h
+- de intervalo
+- seg 5h
+- ter 21h
+- Inferior · seg 7h
+- Limiar · ter 18h40
+- O limiar vem um dia e meio depois do treino de pernas, para você chegar inteiro aos blocos fortes. Amanhã a força é de superiores.
+- Ver Inferior de segunda
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Limiar controlado
+- Fala: frases curtas
+- de 10
+- Leve, de conversa
+- Fala: frases completas
+- 2–4
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Longão
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Confiança alta, válida até 13 dez.
+- Corrigir registro
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/fechar; Ícone/repetir; Ícone/check ×2; Ícone/chevron-direita
+### Treino planejado / Estado · movido (longão veio para quinta, 2º do dia)
+`645:1123` FRAME 393x2351 · +chrome
+- Hoje
+- Longão
+- Treino-chave
+- Movido de sáb
+- 80 min
+- Quinta, 12 nov · 2º do dia · semana 3 de 8 · Construção
+- 2–4
+- esforço de conversa
+- 6:15–7:20
+- ritmo por km, como orientação
+- ≈ 12 km
+- distância estimada
+- 70 min
+- parte contínua
+- noite
+- depois da força
+- Movido com a sua confirmação
+- Saiu de sábado para hoje
+- Entra como 2º do dia, no lugar da corrida leve de 45 min. Sábado ficou livre.
+- forte
+- 0
+- 40
+- Aquec.
+- Longo e leve · 70 min
+- Desaq.
+- Etapas · 80 min
+- Aquecimento
+- 5 min
+- 6:15–7:20 /km
+- Corrida longa
+- Desaquecimento
+- caminhando ou trotando
+- Tempo de pé, não velocidade. O lado rápido do longão nunca fica mais rápido que o da corrida leve.
+- O longão é o treino-chave da semana na Construção. Se ele não for feito, conta zero e não é reposto.
+- Como fazer
+- Corrida longa e leve: tempo de pé, não velocidade.
+- Leve o que você já usa em treinos longos (água, gel). Treino-chave não é dia de testar algo novo.
+- Encurte a corrida se não der para manter o esforço leve.
+- Mover de dia
+- Não posso neste dia
+- Coordenação com a força
+- Força cedo, longão à noite
+- 2º
+- do dia
+- qui cedo
+- qui à noite
+- Corpo inteiro · feita às 7h00
+- Longão · à noite
+- O longão veio para o mesmo dia da força: entra depois dela, no esforço de conversa. O plano define a ordem, não o horário.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Leve, de conversa
+- Fala: frases completas
+- de 10
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Limiar
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Estimada, confiança alta, válida até 13 dez. Se esforço e ritmo discordarem, vale o esforço.
+- Começar longão
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/repetir; Ícone/check ×3; Ícone/play
+### Treino planejado / Estado · sem prescrição por segurança
+`645:749` FRAME 393x852 · −chrome: «1» «2» «3» «duração» «leve» «Por que este treino»
+- Hoje
+- Corrida leve
+- Sem prescrição
+- Retido
+- Quinta, 12 nov · 2º do dia · semana 3 de 8 · Construção
+- Sem prescrição por segurança
+- Você informou um sinal de alerta. Procure avaliação de um profissional de saúde; nenhuma sessão é prescrita por enquanto.
+- Declarar prontidão para correr
+- Uma modalidade pode voltar enquanto a outra segue retida.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/cadeado
+### Treino planejado / Estado · provisória, o treinador precisa de uma resposta
+`645:1407` FRAME 393x2409 · +chrome
+- Hoje
+- Corrida leve
+- Dia duplo · 2º
+- Provisória
+- 45 min
+- Quinta, 12 nov · à noite · semana 3 de 8 · Construção
+- 2–4
+- esforço de conversa
+- 6:15–7:10
+- ritmo por km, como orientação
+- ≈ 7 km
+- distância estimada
+- 35 min
+- parte contínua
+- noite
+- depois da força
+- O treinador precisa de uma resposta
+- Até você responder, esta sessão fica provisória e não pode ser iniciada.
+- forte
+- 0
+- 15
+- 30
+- Aquec.
+- Contínuo · 35 min
+- Desaq.
+- Etapas · 45 min
+- Aquecimento
+- 5 min
+- 6:15–7:10 /km
+- Corrida contínua
+- esforço de conversa, frases inteiras
+- Desaquecimento
+- O ritmo é teto, não meta: se o esforço subir, desacelere. Caminhar um trecho também vale.
+- Semana 3 da Construção: o plano constrói resistência aeróbia e força, um passo de progressão por vez. A corrida leve soma volume sem pesar.
+- Como fazer
+- Mantenha o esforço de conversa; desacelere ou caminhe um pouco quando precisar.
+- Encurte a corrida se não der para manter o esforço leve.
+- Registre os minutos e o esforço.
+- Ver o dia
+- Mover de dia
+- Coordenação com a força
+- Força primeiro, corrida depois
+- 2º
+- do dia
+- qui cedo
+- qui à noite
+- Corpo inteiro · feita às 7h00
+- Corrida leve · à noite
+- A ordem do dia vem do plano: nesta semana, força primeiro e corrida leve depois. O plano define a ordem, não o horário.
+- Esforço e ritmo
+- O esforço manda, o ritmo orienta
+- Leve, de conversa
+- Fala: frases completas
+- de 10
+- Faixas de ritmo, do mais rápido ao mais lento
+- Ritmo de 10 km
+- Limiar
+- Longão
+- Leve
+- 4:00
+- 5:00
+- 6:00
+- 7:00
+- 8:00
+- mais rápido
+- mais lento
+- Base: 5 km em 21:48, em 18 out. Estimada, confiança alta, válida até 13 dez. Se esforço e ritmo discordarem, vale o esforço.
+- Responder
+- A sessão libera depois da sua resposta.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/corrida; Ícone/relogio; Ícone/check ×3
+
+#### Row: Motion · Dia duplo e estados `647:9223`
+### Motion · Dia duplo · ordem do dia (força feita, corrida à noite)
+`647:9224` FRAME 393x1281 · motion twin of `645:475`, same text
+### Motion · Estado · já feito, leva ao resumo do treino
+`647:9498` FRAME 393x2466 · motion twin of `644:1531`, same text
+### Motion · Estado · parcial (3 de 5 exercícios)
+`647:10178` FRAME 393x1962 · motion twin of `644:1798`, same text
+### Motion · Estado · não feito (limiar de terça)
+`652:5503` FRAME 393x2406 · motion twin of `645:807`, same text
+### Motion · Estado · movido (longão veio para quinta, 2º do dia)
+`652:6191` FRAME 393x2351 · motion twin of `645:1123`, same text
+### Motion · Estado · sem prescrição por segurança
+`647:11885` FRAME 393x852 · motion twin of `645:749`, same text
+### Motion · Estado · provisória, o treinador precisa de uma resposta
+`652:6750` FRAME 393x2409 · motion twin of `645:1407`, same text

@@ -1,0 +1,171 @@
+# 03 · Marca · nome e logo (941:23)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 03 · Marca · nome e logo (941:23) · items 3 · screens 3 · motion 0
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): 
+### Marca · nome: Repmile, escolhido em 16 nov 2026, e as outras opções
+`950:37` FRAME 1400x2275
+- Marca · nome
+- O nome é Repmile
+- Você escolheu em 16 nov 2026, entre 169 nomes triados. Rep é a repetição da força; mile é a milha da corrida. Abaixo, o que a busca mais funda achou sobre ele e, depois, as doze opções da triagem, guardadas como registro.
+- Fala-se répi-máil
+- Sem conflito encontrado
+- App Store do Brasil e dos EUA: nenhum app com o nome nem com grafia parecida (Repmiles, Repmyle, Rep Mile).
+- Google Play: nenhum app com o nome.
+- INPI: nenhum resultado para Repmile, Rep Mile, Repmiles, Repmyle e Rep Milha.
+- Sem registro hoje: repmile.app, repmile.com.br e repmile.net.
+- A fazer
+- Registrar repmile.app e repmile.com.br.
+- Pedir a marca no INPI (classes 9 e 41) com busca formal de um advogado ou agente de propriedade intelectual.
+- Atenção
+- repmile.com é de outra pessoa desde ago 2024 e leva a um perfil pessoal no LinkedIn.
+- Existe uma empresa Repmile LLC no Colorado, EUA, com esse nome desde ago 2024. Não identifiquei o ramo.
+- Nos EUA há a marca Reps & Miles, para roupas e brinquedos. Não confirmei a situação dela.
+- Não verificado
+- USPTO, EUIPO e WIPO direto na base oficial.
+- Nomes de usuário em redes sociais.
+- As doze opções da triagem
+- Inglês · as duas numa palavra
+- Escolhido
+- Rep, a repetição da força, e mile, a milha da corrida.
+- INPI sem resultado
+- App Store e Google Play sem app
+- .com.br e .app livres
+- .com registrado
+- Nome anterior
+- Inventado, três sílabas, sem sentido pronto em nenhuma língua.
+- Fala-se vi-lu-mo
+- Lojas sem app com o nome
+- .app livre
+- .com e .com.br já registrados
+- Kilo, o peso na barra, e mile, a distância na rua.
+- Fala-se quílo-máil
+- App Store sem app
+- .com.br livre
+- No Google Play: "Kilomile: Unit Converter"
+- Fast e strong emendados: rápido e forte.
+- Fala-se fés-trôn
+- INPI sem marca
+- Lojas sem app
+- Rep, a repetição, e dash, o tiro curto.
+- Fala-se répi-désh
+- .com e .app registrados
+- Steel, o aço da barra, e mile, a milha.
+- Fala-se stil-máil
+- Strength e run numa sílaba só.
+- Fala-se strân
+- Difícil de falar em português
+- Português · as duas numa palavra
+- O passo da corrida e o peso da força.
+- Fala-se pas-so-pe-so
+- .com, .com.br e .app livres
+- Leve é o esforço da corrida fácil; forte é o treino de força.
+- Fala-se le-ve-for-te
+- .com e .com.br registrados
+- A passada da corrida e a passada, o avanço da musculação.
+- Fala-se pas-sa-da
+- INPI sem marca em app e treino
+- Três marcas de roupa parecidas no INPI
+- Inventado
+- Lift com um u no fim, do jeito de Runna: "lift you".
+- Fala-se líf-tu
+- Fala só de força
+- De touro e taurus: força, com som de velocidade.
+- Fala-se tá-vro
+- Sem app de treino
+- App de viagem "Tavro - Travel Buddy"
+- Domínios registrados
+Instances: Marca/Repmile · logotipo; Marca/Repmile · ícone do app; Ícone/check ×39
+### Marca · logo canônico: Repmile, o corte
+`963:156` FRAME 1400x4185
+- Marca · logo canônico
+- Repmile, com o corte
+- Escolhido em 16 nov 2026. O nome vai em Unbounded Black e a inicial leva um corte a 52°, o ângulo da perna que avança. O mesmo corte desenha o ícone do app. Este é o logo que vale; a exploração em dois pesos fica guardada no quadro ao lado.
+- Construção
+- 52°
+- corte = 7,5% do corpo da letra, no meio da altura
+- Unbounded Black · espaço entre letras −3%
+- Versões de cor
+- Sobre o fundo do app
+- Sobre claro
+- Sobre o azul da corrida
+- Tamanhos
+- Abaixo de 20 pt de corpo entra a versão pequena: o corte fica mais largo e as letras mais soltas, para ele não fechar.
+- 48 pt
+- 32 pt
+- 22 pt
+- pequeno · 16 pt
+- pequeno · 13 pt
+- pequeno · 11 pt
+- Área de proteção e monograma
+- x
+- Margem livre de uma altura de letra (x) em volta do nome.
+- O R sozinho vira o ícone
+- O corte é o mesmo do nome. A parte de baixo, a passada, vai do azul da corrida ao laranja da força.
+- Ícone do app
+- 180 pt
+- claro
+- 120 pt
+- 87 pt
+- 60 pt
+- 40 pt
+- 29 pt
+- Em uso
+- 9:41
+- S
+- T
+- Q
+- D
+- Corrida e força na mesma semana
+- Algumas perguntas rápidas e o treinador monta o seu plano. Só o iPhone basta para começar.
+- Começar
+- Já tenho conta
+- Caixa de entrada · prévia na tela bloqueada
+- Repmile
+- Confirme seu e-mail no Repmile
+- Use o código no app para criar sua conta.
+- Corpo do e-mail
+- Confirme seu e-mail
+- Olá!
+- Use este código no app Repmile para confirmar seu e-mail e criar sua conta:
+- 482 917
+- Ele vale por pouco tempo.
+- Não compartilhe este código. O Repmile nunca pede seu código por mensagem ou telefone.
+- Se não foi você, ignore este e-mail: nenhuma conta é criada sem o código.
+- Os e-mails de conta do Repmile nunca trazem links nem pedem seus códigos. E-mail automático sobre a sua conta do Repmile. Não responda a esta mensagem.
+- Longão · sáb, 7 nov
+- 11,6
+- km
+- longão de 75 min
+- 6:31
+- /km
+- ritmo médio
+- 1:15:30
+- duração
+- 200 m
+- início e fim escondidos
+- Entrar
+- Seu plano, seus treinos e seu histórico estão na sua conta.
+- Continuar com a Apple
+- Continuar com o Google
+- Continuar com e-mail
+- Criar conta
+- Componentes
+- As telas usam instâncias destes cinco. Os nomes começam com "Marca/Repmile".
+- Regras curtas
+- Em texto corrido o nome é Repmile, com R maiúsculo e sem corte.
+- O corte é sempre de 52° e só na inicial. Não esticar, inclinar nem trocar a letra.
+- O degradê do ícone e o nome vetorizado não usam as variáveis do app; a cor do logotipo, sim.
+Instances: Marca/Repmile · logotipo ×12; Marca/Repmile · logotipo pequeno ×4; Marca/Repmile · monograma; Marca/Repmile · ícone do app ×6; Marca/Repmile · ícone do app claro; Barra de status ×3
+### Marca · exploração 2 · dois pesos (guardada, não é a canônica)
+`963:286` FRAME 1400x2274
+- Marca · exploração guardada
+- Dois pesos
+- Não é o logo que vale; fica aqui como registro. Cada metade do nome ganha um peso de letra: REP, a repetição da força, fica pesado; MILE, a milha da corrida, fica leve. O ícone usa RM, que também é "repetição máxima".
+- Repmile em dois pesos
+- REP em Unbounded Black · MILE em Unbounded Light
+- Caminho 2 · Dois pesos
+- Nos nomes compostos, cada metade ganha um peso de letra: a metade da corrida fica leve, a da força fica pesada. O nome já mostra as duas modalidades sem símbolo nenhum. O ícone usa as duas iniciais.
+- Coincidências que ajudam: RM é também "repetição máxima" na musculação, e KM é quilômetro. Em Fastrong o ST pertence às duas palavras; a divisão ficou depois dele.
+- Na tela de lançamento

@@ -1,0 +1,3534 @@
+# 50 · Treino concluído e histórico (551:11)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 50 · Treino concluído e histórico (551:11) · items 112 · screens 50 · motion 50
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): «9:41» «Plano» «Hoje» «Histórico» «Progresso»
+
+#### Row: Corrida concluída · limiar: leituras, folhas e correção `689:3912`
+### Concluído / Corrida · limiar · estado ao abrir
+`531:1630` FRAME 393x2913 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- · máx 171
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar · tudo aberto
+`531:1220` FRAME 393x3519 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- · máx 171
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- passos/min
+- · blocos 179
+- média 171
+- 170
+- m de ganho
+- 760
+- 757 m
+- 755
+- 750
+- 745
+- 740
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- Tempo por zona
+- 53% do treino em Z4
+- Muito leve
+- 0:00
+- 0%
+- Leve
+- 6:45
+- 20%
+- Moderado
+- 8:00
+- 23%
+- Forte
+- 18:00
+- 53%
+- Máximo
+- 1:15
+- 4%
+- Faixas aproximadas pela FC máxima que você informou (188 bpm). A FC máxima não é medida pelo app.
+- Parciais por km
+- km 1
+- 6:15
+- km 2
+- 5:47
+- km 3
+- 5:32
+- km 4
+- 5:11
+- km 5
+- 5:13
+- 0,96 km
+- 6:19
+- Cada km mistura etapas; o planejado × feito de cada etapa está nos blocos, acima.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×6; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar · leituras recolhidas
+`530:1131` FRAME 393x2505 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida · toque para abrir
+- · blocos 4:52–5:04
+- Frequência cardíaca
+- · máx 171
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-baixo ×6; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar · leitura ao toque
+`544:1329` FRAME 393x2931 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- km 3,44
+- 19:45 de corrida · bloco 2
+- min
+- 4:59
+- · média 5:42
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- 163
+- · Z4
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- Arraste o dedo sobre qualquer gráfico. A linha acompanha nos outros, e os números de cada leitura passam a mostrar aquele ponto, inclusive nas recolhidas.
+- 178
+- passos/min
+- · média 171
+- 745
+- · ganho de 13 m
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar · opções do treino (folha)
+`683:721` FRAME 393x852 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- · máx 171
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+- Limiar · ter 10 nov · planejada
+- Opções do treino
+- Duração, distância ou esforço
+- Compartilhar treino
+- Você vê a prévia exata antes de enviar
+- Distância parece errada?
+- Tirar o valor do relógio da análise
+- Excluir treino
+- Treinos do plano ficam no histórico. Se algo saiu errado, corrija o registro.
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita ×4; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/cadeado
+### Concluído / Corrida · limiar · corrigir registro (folha)
+`683:1141` FRAME 393x852 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- · máx 171
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · importado às 19:16
+- Corrigir registro
+- Compartilhar
+- Limiar · 3 × 5 min · ter 10 nov
+- Planejada · 34:00 · 5,96 km · esforço 7
+- Duração
+- Previsto: 34 min.
+- O relógio registrou 5,96 km. Corrija só se souber a distância certa.
+- 6,00 km
+- Esforço
+- Alvo da sessão: 6 a 7.
+- 7 de 10
+- A correção não apaga nada
+- O original fica guardado e a correção é anotada junto. O plano usa a versão corrigida nas próximas decisões e nos seus ritmos; o que já foi decidido não é refeito.
+- Salvar correção
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar · registro corrigido
+`683:1555` FRAME 393x2961 · +chrome
+- 6,00 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- Corrigido
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 6,00
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:40
+- /km
+- FC média
+- 148
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 13
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:00
+- 160
+- 3
+- 4:52
+- 166
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:40
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- Frequência cardíaca
+- · máx 171
+- 180
+- Z5
+- Z4
+- média 148
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 53% do treino em Z4
+- Z2 20%
+- Z3 23%
+- Z4 53%
+- Z5 4%
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- A FC média subiu 13 bpm do 1º ao 3º bloco, com o ritmo 12 s mais rápido.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- Apple Watch · corrigido por você qua 11, 8:05
+- Distância: 5,96 km no relógio, 6,00 km na sua correção. O original fica guardado e o plano usa a versão corrigida.
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+
+#### Row: Motion · Corrida concluída · limiar: leituras, folhas e correção `691:3918`
+### Motion · Corrida · limiar · estado ao abrir
+`691:3919` FRAME 393x2913 · motion twin of `531:1630`, same text
+### Motion · Corrida · limiar · tudo aberto
+`691:4527` FRAME 393x3519 · motion twin of `531:1220`, same text
+### Motion · Corrida · limiar · leituras recolhidas
+`691:5352` FRAME 393x2505 · motion twin of `530:1131`, same text
+### Motion · Corrida · limiar · leitura ao toque
+`691:5846` FRAME 393x2931 · motion twin of `544:1329`, same text
+### Motion · Corrida · limiar · opções do treino (folha)
+`691:6464` FRAME 393x852 · motion twin of `683:721`, same text
+### Motion · Corrida · limiar · corrigir registro (folha)
+`691:6905` FRAME 393x852 · motion twin of `683:1141`, same text
+### Motion · Corrida · limiar · registro corrigido
+`691:7343` FRAME 393x2961 · motion twin of `683:1555`, same text
+
+#### Row: Corrida concluída · outros tipos e origens `689:3913`
+### Concluído / Corrida · leve, 2º treino do dia
+`682:337` FRAME 393x3024 · +chrome
+- 7,02 km · 45:10
+- Qui 12 nov · 19:07–19:52 · Parque Ibirapuera
+- Corrida leve
+- 2º treino do dia
+- 45:10
+- de 45 min previstos
+- Esforço 3, dentro do combinado. O ritmo ficou na faixa leve do começo ao fim.
+- Distância
+- 7,02
+- km
+- Tempo
+- Ritmo médio
+- 6:26
+- /km
+- FC média
+- 129
+- bpm
+- Cadência
+- 165
+- ppm
+- Elevação
+- 25
+- m
+- Ao longo da corrida
+- min
+- Ritmo
+- · faixa 6:15–7:10
+- min/km
+- 5:30
+- 6:00
+- média 6:26
+- 6:30
+- 7:00
+- 7:30
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- Frequência cardíaca
+- · máx 134
+- 180
+- Z5
+- 160
+- Z4
+- 140
+- média 129
+- 134
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- A faixa azul é a faixa leve, 6:15–7:10 /km. A linha tracejada é a média do treino.
+- passos/min
+- m de ganho
+- Tempo por zona
+- 77% do treino em Z2
+- Z1 1%
+- Z2 77%
+- Z3 22%
+- Parciais por km
+- Mais rápido: km 4, a 6:20 /km. Mais lento: km 1, a 6:39 /km, com o aquecimento.
+- Planejado × feito
+- Aquecimento
+- planejado 5 min · leve
+- 5:00
+- 6:45 /km
+- Corrida contínua
+- planejado 35 min · esforço de conversa
+- 35:00
+- 6:22 /km
+- Desaquecimento
+- 5:10
+- 6:36 /km
+- O ritmo é teto, não meta. As três etapas ficaram dentro da faixa leve.
+- Comparado à corrida leve anterior
+- dom 8 nov
+- qui 12 nov
+- 45:05
+- 7,00 km
+- 7,02 km
+- 6:26 /km
+- Esforço
+- 2 de 10
+- 3 de 10
+- Mesmo ritmo médio, com o esforço um ponto acima: hoje foi o segundo treino do dia. Uma sessão sozinha não mostra tendência.
+- Como você se sentiu
+- de 10 · leve
+- Dentro do combinado para a corrida leve (2–4).
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- O que observamos
+- 45 min em esforço leve, com o ritmo dentro da faixa do começo ao fim.
+- A FC ficou estável: média de 129 bpm, máxima de 134.
+- Sexta é descanso. O longão de sábado segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Segundo treino do dia, depois da força das 7h: o ritmo leve se manteve. Este treino confirmou o que a semana previa.
+- Apple Watch · importado às 19:54
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · longão de 75 min
+`682:904` FRAME 393x3082 · +chrome
+- 11,60 km · 1:15:30
+- Sáb 7 nov · 7:05–8:21 · Parque Ibirapuera
+- Longão · 75 min
+- Semana 2
+- 1:15:30
+- de 75 min
+- Tempo de pé cumprido, em esforço de conversa. Ritmo dentro da faixa do longão.
+- Distância
+- 11,60
+- km
+- Tempo
+- Ritmo médio
+- 6:31
+- /km
+- FC média
+- 129
+- bpm
+- Cadência
+- 164
+- ppm
+- Elevação
+- 37
+- m
+- Ao longo da corrida
+- min
+- Ritmo
+- · faixa 6:15–7:20
+- min/km
+- 5:30
+- 6:00
+- 6:30
+- média 6:31
+- 7:00
+- 7:30
+- 0
+- 2
+- 4
+- 6
+- 8
+- 10
+- Frequência cardíaca
+- · máx 136
+- 180
+- Z5
+- 160
+- Z4
+- 140
+- média 129
+- 136
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- A faixa azul é a faixa do longão, 6:15–7:20 /km. A linha tracejada é a média do treino.
+- passos/min
+- m de ganho
+- Tempo por zona
+- 67% do treino em Z2
+- Z1 2%
+- Z2 67%
+- Z3 31%
+- Parciais por km
+- Mais rápido: km 6, a 6:22 /km. Mais lento: trecho final, a 7:04 /km, no desaquecimento.
+- Planejado × feito
+- Aquecimento
+- planejado 5 min · leve
+- 5:00
+- 6:54 /km
+- Corrida longa
+- planejado 65 min · esforço de conversa
+- 1:05:00
+- 6:28 /km
+- Desaquecimento
+- planejado 5 min · caminhando ou trotando
+- 7:06 /km
+- Tempo de pé, não velocidade: o longão é medido pelos minutos, não pelo ritmo.
+- Comparado ao longão anterior
+- sáb 31 out
+- sáb 7 nov
+- 1:15:12
+- 11,40 km
+- 11,60 km
+- 6:36 /km
+- 6:31 /km
+- Esforço
+- 3 de 10
+- Mesmo esforço registrado, com o ritmo médio 5 s mais rápido. Uma sessão sozinha não mostra tendência.
+- Como você se sentiu
+- 3
+- de 10 · leve
+- Dentro do combinado para o longão (2–4).
+- “Deu para conversar o tempo todo.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido dom 8, 8:05
+- O que observamos
+- 75 min em esforço de conversa, com o ritmo dentro da faixa do longão.
+- A FC subiu aos poucos e fechou em 136 bpm, sem sair do esforço leve.
+- A corrida leve de domingo segue como planejada.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo, FC e esforço
+- Este treino confirmou o que a semana previa. O longão da semana 3 sobe para 80 min, como estava no plano.
+- Apple Watch · importado às 8:23
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · limiar parcial (2 de 3 blocos)
+`682:1464` FRAME 393x2937 · +chrome
+- 4,16 km · 24:00
+- 2 de 3 blocos no limiar
+- Ter 10 nov · 18:40–19:04 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Parcial
+- 2 de 3
+- blocos feitos
+- Você encerrou depois do 2º bloco. Conta o que foi feito; o 3º bloco não é reposto.
+- Distância
+- 4,16
+- km
+- Tempo
+- 24:00
+- Ritmo médio
+- 5:46
+- /km
+- FC média
+- 146
+- bpm
+- Cadência
+- 171
+- ppm
+- Elevação
+- 14
+- m
+- Blocos · ritmo e frequência cardíaca
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- FC
+- 1
+- 5:04
+- 153
+- 2
+- 5:01
+- 160
+- 3
+- —
+- Faixa de limiar 4:50–5:15 /km. Os dois blocos feitos duraram 5:00 cada.
+- Ao longo da corrida
+- min
+- · blocos 5:01–5:04
+- min/km
+- 4:30
+- 5:00
+- 5:30
+- média 5:46
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- Frequência cardíaca
+- · máx 165
+- 180
+- Z5
+- 165
+- Z4
+- média 146
+- 140
+- Z3
+- 120
+- Z2
+- Z1
+- 100
+- As faixas numeradas 1 e 2 são os blocos feitos. A linha tracejada é a média do treino.
+- passos/min
+- · blocos 179
+- m de ganho
+- Tempo por zona
+- 52% do treino em Z4
+- Z2 7%
+- Z3 41%
+- Z4 52%
+- Parciais por km
+- Mais rápido: km 3, a 5:20 /km. Mais lento: trecho final, a 6:52 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:20 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:47 /km
+- Desaquecimento
+- planejado 5 min · leve
+- Como você se sentiu
+- 6
+- de 10 · moderado
+- Sessão encerrada antes: o esforço vale para o que foi feito.
+- “Panturrilha direita puxando no 2º bloco.”
+- Como foi
+- Parei antes · panturrilha direita
+- Dia seguinte
+- Pergunta amanhã, qua 11, às 8h
+- O que observamos
+- Os 2 blocos feitos ficaram na faixa de limiar.
+- Sessão parcial conta só o que foi feito. O 3º bloco não é reposto.
+- Você relatou a panturrilha: a corrida leve de quinta entra em revisão antes de valer.
+- O que isso muda no plano
+- Em revisão
+- proposta aparece em Hoje
+- Aprendizado
+- 2 blocos registrados
+- Nada muda sozinho: se houver ajuste, ele chega como proposta para você aceitar ou recusar.
+- Apple Watch · importado às 19:06
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo ×4; Ícone/check ×3; Ícone/fechar; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · leve, só com o iPhone, rota oculta
+`880:20729` FRAME 393x2296 · +chrome
+- Ter 3 nov · 18:42–19:22 · GPS do iPhone
+- Corrida leve
+- 40:22
+- de 40 min previstos
+- Esforço 3, dentro do combinado, com o ritmo na faixa leve.
+- Rota oculta
+- “Rotas no app” está desligado. A rota foi usada só para medir distância e ritmo e não foi guardada. Para ver o mapa nos próximos treinos, ative em Perfil › Dados e privacidade.
+- Distância
+- 6,30
+- km
+- Tempo
+- Ritmo médio
+- 6:24
+- /km
+- Elevação
+- 21
+- m
+- Ao longo da corrida
+- min
+- Ritmo
+- · faixa 6:15–7:10
+- min/km
+- 5:30
+- 6:00
+- média 6:24
+- 6:30
+- 7:00
+- 7:30
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- A faixa azul é a faixa leve, 6:15–7:10 /km.
+- m de ganho
+- Parciais por km
+- km 1
+- 6:31
+- km 2
+- 6:25
+- km 3
+- 6:22
+- km 4
+- km 5
+- 6:21
+- km 6
+- 6:23
+- 0,30 km
+- 6:20
+- Dados do GPS do iPhone. O primeiro km inclui o aquecimento.
+- Planejado × feito
+- Aquecimento
+- planejado 5 min · leve
+- 5:00
+- 6:38 /km
+- Corrida contínua
+- planejado 30 min · esforço de conversa
+- 30:00
+- 6:22 /km
+- Desaquecimento
+- 5:22
+- 6:27 /km
+- Como você se sentiu
+- de 10 · leve
+- Dentro do combinado para a corrida leve (2–4).
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 4, 8:10
+- O que observamos
+- 40 min em esforço leve, com o ritmo dentro da faixa.
+- A leitura usa o ritmo e o esforço que você informou (3 de 10).
+- A semana segue como planejada.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo e esforço
+- Nada muda: tempo e esforço são o que o plano pede.
+- GPS do iPhone · salvo às 19:23
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/cadeado; Ícone/chevron-cima ×2; Ícone/chevron-baixo; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/gps; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida avulsa · fora do plano
+`682:2528` FRAME 393x1874 · +chrome
+- 4,55 km · 30:00
+- Sex 13 nov · 7:10–7:41 · Parque Ibirapuera
+- Corrida avulsa
+- Fora do plano
+- 30:00
+- objetivo cumprido
+- Corrida livre, iniciada pelo +. Sexta era descanso no plano.
+- Distância
+- 4,55
+- km
+- Tempo
+- Ritmo médio
+- 6:36
+- /km
+- Elevação
+- 16
+- m
+- Ao longo da corrida
+- min
+- Ritmo
+- min/km
+- 5:30
+- 6:00
+- 6:30
+- média 6:36
+- 7:00
+- 7:30
+- 0
+- 1
+- 2
+- 3
+- 4
+- A linha tracejada é a média da corrida.
+- m de ganho
+- Parciais por km
+- km 1
+- 6:39
+- km 2
+- 6:31
+- km 3
+- km 4
+- 6:37
+- 0,55 km
+- 6:35
+- Dados do GPS do iPhone.
+- Como você se sentiu
+- de 10 · leve
+- Avulsas não têm esforço combinado.
+- Como foi
+- Sem dor ou algo incomum
+- Avulsa: fora do plano
+- Não foi prescrita pelo treinador e não muda o plano sozinha. Fica no histórico e nos seus totais; não conta na constância nem nas decisões da semana.
+- Avulsa · GPS do iPhone · salva sex 13, 7:42
+- Corrigir dados
+- Compartilhar
+- Excluir corrida
+- Avulsas podem ser corrigidas ou excluídas: excluir tira a corrida do histórico e dos totais.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo; Ícone/adicionar ×2; Ícone/gps; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+### Concluído / Corrida · importada do Apple Saúde
+`683:1959` FRAME 393x1045 · +chrome
+- Ter 20 out · 18:05 · antes do plano
+- Corrida
+- Importada · Apple Saúde
+- 41:10
+- do Apple Saúde
+- Veio do Apple Saúde só com tempo e distância. Não é sessão do plano nem avulsa.
+- Distância
+- 6,60
+- km
+- Tempo
+- Ritmo médio
+- 6:14
+- /km
+- O que veio do Apple Saúde
+- 6,60 km
+- Esforço
+- Não informado: o Apple Saúde não traz
+- Rota e FC
+- Não importadas
+- Antes do plano
+- Seu plano começou em 26 out. Os treinos anteriores aparecem como importados, para você ver o histórico completo. Ficam fora da conta do plano.
+- Importada do Apple Saúde em 24 out, no início do plano
+- Para corrigir, edite no app Saúde: a mudança chega na próxima sincronização. Ocultar tira daqui, sem apagar do Apple Saúde.
+- Ocultar do Repmile
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/mais; Ícone/corrida; Ícone/historico ×2; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/progresso
+### Concluído / Corrida · registro manual, sem distância (Marina)
+`683:2087` FRAME 393x913 · +chrome
+- Ter 10 nov · 19h00 · registro seu
+- Caminhada e trote
+- Manual
+- 20 min
+- de 20 previstos
+- Registrado à mão. Vale do mesmo jeito: o plano pede tempo e esforço.
+- Duração
+- 20
+- min
+- Esforço
+- 3
+- de 10
+- Planejado × feito
+- planejado 20 min · 5 min de caminhada e 3 × (30 s de trote + 2 min de caminhada)
+- 20:00
+- fiz tudo
+- Como você se sentiu
+- 3 de 10 · dava para conversar em frases inteiras
+- Como foi
+- Fiz tudo, sem dor ou algo incomum
+- Dia seguinte
+- Pergunta amanhã, qua 11, às 8h
+- Registro manual · salvo ter 10, 19h32
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/mais; Ícone/corrida; Ícone/check; Ícone/lista; Ícone/compartilhar; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Prova de 5 km · referência dos ritmos
+`683:2230` FRAME 393x1028 · +chrome
+- Dom 18 out · tempo oficial · antes do plano
+- Prova de 5 km
+- Informada por você
+- 21:48
+- em 5 km
+- É a referência dos seus ritmos neste plano. O tempo foi informado por você, não medido pelo app.
+- Ritmo médio
+- 4:22
+- /km
+- Distância
+- 5,00
+- km
+- Confiança
+- Alta
+- Ritmos que saíram desta prova
+- Ritmo de 10 km
+- 4:40–4:55 /km
+- Limiar
+- 4:50–5:15 /km
+- Longão
+- 6:15–7:20 /km
+- Corrida leve
+- 6:15–7:10 /km
+- Válidos até 13 dez. Na semana da prova a confiança cai e os ritmos viram só orientação.
+- Estimativa para os 10 km de 20 dez
+- 43:30–48:45
+- Sua meta é 44:30. A estimativa é uma faixa, não uma promessa: ela se ajusta com os treinos de limiar e os longões.
+- Tempo informado por você em 24 out, ao criar o plano
+- Corrigir tempo
+- Ver ritmos e esforço
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/mais; Ícone/prova ×2; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Corrida avulsa · excluir (confirmação)
+`683:2360` FRAME 393x852 · +chrome
+- 4,55 km · 30:00
+- Sex 13 nov · 7:10–7:41 · Parque Ibirapuera
+- Corrida avulsa
+- Fora do plano
+- 30:00
+- objetivo cumprido
+- Corrida livre, iniciada pelo +. Sexta era descanso no plano.
+- Distância
+- 4,55
+- km
+- Tempo
+- Ritmo médio
+- 6:36
+- /km
+- Elevação
+- 16
+- m
+- Ao longo da corrida
+- min
+- Ritmo
+- min/km
+- 5:30
+- 6:00
+- 6:30
+- média 6:36
+- 7:00
+- 7:30
+- 0
+- 1
+- 2
+- 3
+- 4
+- A linha tracejada é a média da corrida.
+- m de ganho
+- Parciais por km
+- km 1
+- 6:39
+- km 2
+- 6:31
+- km 3
+- km 4
+- 6:37
+- 0,55 km
+- 6:35
+- Dados do GPS do iPhone.
+- Como você se sentiu
+- de 10 · leve
+- Avulsas não têm esforço combinado.
+- Como foi
+- Sem dor ou algo incomum
+- Avulsa: fora do plano
+- Não foi prescrita pelo treinador e não muda o plano sozinha. Fica no histórico e nos seus totais; não conta na constância nem nas decisões da semana.
+- Avulsa · GPS do iPhone · salva sex 13, 7:42
+- Corrigir dados
+- Compartilhar
+- Excluir corrida
+- Avulsas podem ser corrigidas ou excluídas: excluir tira a corrida do histórico e dos totais.
+- Corrida avulsa · sex 13 nov
+- Excluir a corrida avulsa?
+- Ela sai do Histórico e do volume do Progresso. O plano não muda: avulsas não entram nele e nada é reposto. Dá para desfazer logo depois.
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima ×2; Ícone/chevron-baixo; Ícone/adicionar ×2; Ícone/gps; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Corrida concluída · outros tipos e origens `691:7954`
+### Motion · Corrida · leve, 2º treino do dia
+`691:7955` FRAME 393x3024 · motion twin of `682:337`, same text
+### Motion · Corrida · longão de 75 min
+`691:8516` FRAME 393x3082 · motion twin of `682:904`, same text
+### Motion · Corrida · limiar parcial (2 de 3 blocos)
+`691:9072` FRAME 393x2919 · motion twin of `682:1464`, same text
+### Motion · Corrida · leve, só com o iPhone, rota oculta
+`880:21027` FRAME 393x2296 · motion twin of `880:20729`, same text
+### Motion · Corrida avulsa · fora do plano
+`691:10179` FRAME 393x1874 · motion twin of `682:2528`, same text
+### Motion · Corrida · importada do Apple Saúde
+`691:10567` FRAME 393x1045 · motion twin of `683:1959`, same text
+### Motion · Corrida · registro manual, sem distância (Marina)
+`691:10735` FRAME 393x913 · motion twin of `683:2087`, same text
+### Motion · Prova de 5 km · referência dos ritmos
+`691:10930` FRAME 393x1028 · motion twin of `683:2230`, same text
+### Motion · Corrida avulsa · excluir (confirmação)
+`691:11100` FRAME 393x852 · motion twin of `683:2360`, same text
+
+#### Row: Força concluída · planejada, parcial, avulsa e importada `689:3914`
+### Concluído / Força · corpo inteiro · estado ao abrir
+`684:1208` FRAME 393x3234 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- 1º treino do dia
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 kg
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 72,5 × 5
+- 3
+- 2
+- 70 × 5
+- 4
+- kg total na barra × repetições · anterior: qua 11
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Como a carga segue
+- O próximo passo de cada exercício sai na revisão da semana, no domingo (15 nov). Se todas as séries chegaram às repetições com 2 ou mais em reserva, a carga sobe um passo; senão, repete.
+- Stiff
+- todas as séries com 2 ou mais em reserva
+- Remada
+- Supino
+- série 2 com menos de 2 em reserva: sobrou 1
+- Afundo
+- todas com 2 ou mais em reserva, já com 18 kg
+- peso do corpo: sem carga para subir
+- Comparado com qui 5 nov · Corpo inteiro
+- carga das séries
+- qui 5 nov
+- qui 12 nov
+- 80 kg
+- 60 kg
+- 70 kg
+- Afundo · por mão
+- 16 kg
+- 18 kg
+- 9 reps
+- 10 reps
+- 41 min
+- 42 min
+- Mesmo treino, uma semana antes. Só sessões do plano entram na comparação.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- O que observamos
+- As 14 séries foram feitas, 13 delas com 2 ou mais em reserva.
+- O afundo subiu para 18 kg por mão com reserva: nova marca no app.
+- O próximo passo de cada carga sai na revisão de domingo.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- cargas, repetições e reserva
+- Força feita cedo, como a ordem do dia duplo pedia. A corrida leve da noite segue prevista.
+- Registrada no app · salva e enviada às 7h42
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×4; Ícone/chevron-baixo ×5; Ícone/ajustes ×2; Ícone/chevron-cima ×7; Ícone/marco; Ícone/repetir ×2; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Força · corpo inteiro · séries abertas
+`684:1647` FRAME 393x3751 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- 1º treino do dia
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 kg
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 82,5 × 6
+- 3
+- 2
+- kg total na barra × repetições · anterior: seg 9
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- 62,5 × 6
+- kg total na barra × repetições · anterior: qua 11
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- 72,5 × 5
+- 70 × 5
+- 4
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- 10
+- repetições · anterior: seg 9
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Como a carga segue
+- O próximo passo de cada exercício sai na revisão da semana, no domingo (15 nov). Se todas as séries chegaram às repetições com 2 ou mais em reserva, a carga sobe um passo; senão, repete.
+- Stiff
+- todas as séries com 2 ou mais em reserva
+- Remada
+- Supino
+- série 2 com menos de 2 em reserva: sobrou 1
+- Afundo
+- todas com 2 ou mais em reserva, já com 18 kg
+- peso do corpo: sem carga para subir
+- Comparado com qui 5 nov · Corpo inteiro
+- carga das séries
+- qui 5 nov
+- qui 12 nov
+- 80 kg
+- 60 kg
+- 70 kg
+- Afundo · por mão
+- 16 kg
+- 18 kg
+- 9 reps
+- 10 reps
+- 41 min
+- 42 min
+- Mesmo treino, uma semana antes. Só sessões do plano entram na comparação.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- O que observamos
+- As 14 séries foram feitas, 13 delas com 2 ou mais em reserva.
+- O afundo subiu para 18 kg por mão com reserva: nova marca no app.
+- O próximo passo de cada carga sai na revisão de domingo.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- cargas, repetições e reserva
+- Força feita cedo, como a ordem do dia duplo pedia. A corrida leve da noite segue prevista.
+- Registrada no app · salva e enviada às 7h42
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×4; Ícone/chevron-cima ×10; Ícone/ajustes ×2; Ícone/chevron-baixo ×2; Ícone/marco; Ícone/repetir ×2; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Força · Inferior, com evolução do agachamento
+`684:2169` FRAME 393x2953 · +chrome
+- Seg 9 nov · 7:00–7:37 · academia
+- Inferior
+- Treino-chave
+- 13 de 13
+- séries feitas
+- Agachamento e stiff subiram 2,5 kg, o passo previsto pelo plano, com 3 em reserva.
+- Duração
+- 37
+- min
+- Séries
+- 13
+- de 13
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 4.791
+- kg
+- Reserva na meta
+- Marcas
+- 2
+- novas
+- Planejado × feito
+- Agachamento livre
+- previsto 4 × 5 · 92,5 kg
+- 4 × 5
+- 92,5 kg
+- Subiu 2,5 kg: o passo previsto pelo plano.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 1
+- 92,5 × 5
+- 3
+- 90 × 5
+- 4
+- kg total na barra × repetições · anterior: seg 2
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 kg
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 16 kg por mão
+- Panturrilha com halteres
+- previsto 2 × 7 · carga do último registro
+- 20 kg por mão
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Evolução · agachamento livre
+- 90 kg
+- 26 out
+- 2 nov
+- 9 nov
+- +2,5 kg desde 26 out, na mesma barra, com as 5 repetições completas e 3 em reserva.
+- Marcas no app
+- Nova marca
+- 92,5 kg × 5
+- antes: 90 kg × 5 (seg 2)
+- 82,5 kg × 6
+- antes: 80 kg × 6 (seg 2)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Comparado com seg 2 nov · Inferior
+- carga das séries
+- seg 2 nov
+- seg 9 nov
+- 80 kg
+- Afundo · por mão
+- 16 kg
+- Panturrilha · por mão
+- 18 kg
+- 20 kg
+- 9 reps
+- 10 reps
+- 38 min
+- 37 min
+- Mesmo treino, uma semana antes: mesmas séries e repetições nas principais, com 2,5 kg a mais.
+- Ver as três sessões de Inferior
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Normal · respondido ter 10, 8:04
+- O que observamos
+- As 13 séries foram feitas, todas com 2 ou mais em reserva.
+- Agachamento e stiff subiram 2,5 kg com a reserva mantida em 3.
+- O próximo passo de cada carga sai na revisão de domingo.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- cargas, repetições e reserva
+- Este treino confirmou o que a semana previa.
+- Registrada no app · salva e enviada às 7h38
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×6; Ícone/chevron-cima ×5; Ícone/chevron-baixo ×4; Ícone/marco ×2; Ícone/chevron-direita ×2; Ícone/progresso ×2; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Força · comparar Inferior, semana a semana
+`684:2562` FRAME 393x1176 · +chrome
+- Força · Inferior · 26 out–9 nov
+- Inferior, semana a semana
+- As três sessões de Inferior do plano, com o que foi registrado. Só sessões do plano entram.
+- Carga e repetições registradas
+- kg total na barra, salvo indicação
+- 26 out
+- 2 nov
+- 9 nov
+- Agachamento · 4 × 5
+- 90
+- 92,5
+- Stiff · 3 × 6
+- 80
+- 82,5
+- Afundo · kg/mão
+- 16 *
+- 16
+- Panturrilha · kg/mão
+- 18
+- 20
+- Dead bug · reps
+- 7
+- 9
+- 10
+- Reserva nas principais
+- 3
+- Duração · min
+- 38
+- 37
+- * carga estabelecida na primeira semana, escolhida por esforço.
+- O que mudou
+- Agachamento e stiff subiram 2,5 kg na semana 3: o passo previsto pelo plano.
+- Panturrilha subiu 2 kg por mão a cada sessão: todas as séries terminaram com 2 ou mais em reserva.
+- Afundo repetiu 16 kg nas três sessões: em 2 nov uma série terminou com menos de 2 em reserva.
+- Dead bug passou de 7 para 10 repetições por série, como previsto.
+- Carga nunca é convertida entre exercícios: cada linha compara o exercício com ele mesmo.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/mais; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Força · parcial (3 de 5 exercícios) · cenário com imprevisto
+`684:2695` FRAME 393x1576 · +chrome
+- Qua 11 nov · 7:00–7:28 · academia
+- Superior
+- Parcial
+- 3 de 5
+- exercícios feitos
+- Você encerrou antes. Conta só o que foi feito; nada é reposto, e o próximo passo compara com o que você registrou.
+- Duração
+- 28
+- de 41 min
+- Séries
+- 10
+- de 15
+- Exercícios
+- 3
+- de 5
+- Planejado × feito
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 kg
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 3 × 6
+- 62,5 kg
+- Desenvolvimento com barra
+- previsto 3 × 6 · 45 kg
+- 45 kg
+- Puxada alta
+- previsto 3 × 7 · acima de 55 kg
+- —
+- não feito
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- Como foi
+- Esforço da sessão
+- Mais difícil
+- Resposta do corpo
+- Normal
+- Por que parou
+- Faltou tempo
+- O que observamos
+- Os 3 exercícios principais foram feitos, com 3 em reserva.
+- Sessão parcial conta só o que foi feito. Puxada e dead bug não são repostos.
+- Na próxima sessão de Superior, a puxada mantém o que estava previsto.
+- O que isso muda no plano
+- Sem mudança
+- nada é reposto
+- Aprendizado
+- 10 séries registradas
+- Sessão incompleta não vira dívida: a semana segue como estava.
+- Registrada no app · encerrada antes às 7h28
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×4; Ícone/chevron-baixo ×3; Ícone/fechar ×2; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Força · carga a confirmar
+`684:2928` FRAME 393x2750 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- 1º treino do dia
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Carga acima do previsto
+- Série 3 do stiff: 92,5 kg, e o previsto era 82,5. Até você confirmar ou corrigir, a referência continua a prevista.
+- Confirmar ou corrigir
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 e 92,5 kg
+- Carga a confirmar na série 3: 92,5 kg, 10 kg acima do previsto.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 82,5 × 6
+- 3
+- 2
+- 92,5 × 6
+- kg total na barra × repetições · anterior: seg 9
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- 72,5 × 5
+- 70 × 5
+- 4
+- kg total na barra × repetições · anterior: qua 11
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Comparado com qui 5 nov · Corpo inteiro
+- carga das séries
+- qui 5 nov
+- qui 12 nov
+- 80 kg
+- 82,5 kg
+- 60 kg
+- 70 kg
+- Afundo · por mão
+- 16 kg
+- 18 kg
+- 9 reps
+- 10 reps
+- 41 min
+- 42 min
+- Mesmo treino, uma semana antes. Só sessões do plano entram na comparação.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- Registrada no app · salva e enviada às 7h42
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/ajustes ×4; Ícone/chevron-cima ×6; Ícone/check ×2; Ícone/chevron-baixo ×4; Ícone/marco; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Força · corrigir série (folha)
+`684:3337` FRAME 393x852 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- 1º treino do dia
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Carga acima do previsto
+- Série 3 do stiff: 92,5 kg, e o previsto era 82,5. Até você confirmar ou corrigir, a referência continua a prevista.
+- Confirmar ou corrigir
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 e 92,5 kg
+- Carga a confirmar na série 3: 92,5 kg, 10 kg acima do previsto.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 82,5 × 6
+- 3
+- 2
+- 92,5 × 6
+- kg total na barra × repetições · anterior: seg 9
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- 72,5 × 5
+- 70 × 5
+- 4
+- kg total na barra × repetições · anterior: qua 11
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Comparado com qui 5 nov · Corpo inteiro
+- carga das séries
+- qui 5 nov
+- qui 12 nov
+- 80 kg
+- 82,5 kg
+- 60 kg
+- 70 kg
+- Afundo · por mão
+- 16 kg
+- 18 kg
+- 9 reps
+- 10 reps
+- 41 min
+- 42 min
+- Mesmo treino, uma semana antes. Só sessões do plano entram na comparação.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- Registrada no app · salva e enviada às 7h42
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+- Série 3 · stiff com barra
+- Corrigir série
+- Registrado: 92,5 kg × 6, com 3 em reserva. Previsto: 82,5 kg.
+- Carga
+- total na barra
+- Repetições
+- 6
+- Reserva · repetições que ainda faria
+- 0
+- 4+
+- A correção fica anotada no histórico; o registro original não é apagado. Se mantiver 92,5 kg, o registro fica como está, mas a carga só vira referência depois de confirmada.
+- Salvar correção
+- Manter 92,5 kg no registro
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/ajustes ×4; Ícone/chevron-cima ×6; Ícone/check ×2; Ícone/chevron-baixo ×4; Ícone/marco; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Força · opções do treino (folha)
+`684:3688` FRAME 393x852 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- 1º treino do dia
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 kg
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 72,5 × 5
+- 3
+- 2
+- 70 × 5
+- 4
+- kg total na barra × repetições · anterior: qua 11
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Como a carga segue
+- O próximo passo de cada exercício sai na revisão da semana, no domingo (15 nov). Se todas as séries chegaram às repetições com 2 ou mais em reserva, a carga sobe um passo; senão, repete.
+- Stiff
+- todas as séries com 2 ou mais em reserva
+- Remada
+- Supino
+- série 2 com menos de 2 em reserva: sobrou 1
+- Afundo
+- todas com 2 ou mais em reserva, já com 18 kg
+- peso do corpo: sem carga para subir
+- Comparado com qui 5 nov · Corpo inteiro
+- carga das séries
+- qui 5 nov
+- qui 12 nov
+- 80 kg
+- 60 kg
+- 70 kg
+- Afundo · por mão
+- 16 kg
+- 18 kg
+- 9 reps
+- 10 reps
+- 41 min
+- 42 min
+- Mesmo treino, uma semana antes. Só sessões do plano entram na comparação.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- O que observamos
+- As 14 séries foram feitas, 13 delas com 2 ou mais em reserva.
+- O afundo subiu para 18 kg por mão com reserva: nova marca no app.
+- O próximo passo de cada carga sai na revisão de domingo.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- cargas, repetições e reserva
+- Força feita cedo, como a ordem do dia duplo pedia. A corrida leve da noite segue prevista.
+- Registrada no app · salva e enviada às 7h42
+- Corrigir registro
+- Compartilhar
+- Sessões do plano não são apagadas: a progressão das cargas depende delas. Se algo saiu errado, corrija.
+- Corpo inteiro · qui 12 nov · planejada
+- Opções do treino
+- Carga, repetições ou reserva de uma série
+- Compartilhar treino
+- Você vê a prévia exata antes de enviar
+- Excluir treino
+- Treinos do plano ficam no histórico. Se algo saiu errado, corrija o registro.
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×4; Ícone/chevron-baixo ×5; Ícone/ajustes ×2; Ícone/chevron-cima ×7; Ícone/marco; Ícone/repetir ×2; Ícone/progresso ×2; Ícone/chevron-direita ×3; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/cadeado
+### Concluído / Força · salvo neste iPhone, envio pendente
+`684:4050` FRAME 393x2101 · +chrome
+- Qui 12 nov · 7:00–7:42 · academia
+- Corpo inteiro
+- Envio pendente
+- 14 de 14
+- séries feitas
+- Sessão completa, quase toda com 3 em reserva. O supino pediu ajuste nas duas últimas séries.
+- Ainda não enviado
+- Sem conexão. O treino está salvo neste iPhone e vai sozinho quando a conexão voltar. Nada é perdido; até lá, o plano não o considera.
+- Tentar enviar agora
+- Duração
+- 42
+- min
+- Séries
+- 14
+- de 14
+- Exercícios
+- 5
+- de 5
+- Carga total
+- 5.043
+- kg
+- Reserva na meta
+- 13
+- Marcas
+- 1
+- nova
+- Planejado × feito
+- Stiff com barra
+- previsto 3 × 6 · 82,5 kg
+- 3 × 6
+- 82,5 kg
+- Remada curvada
+- previsto 3 × 6 · 62,5 kg
+- 62,5 kg
+- Supino reto
+- previsto 4 × 5 · 72,5 kg
+- 4 × 5
+- 72,5 e 70 kg
+- Carga ajustada por você nas séries 3 e 4, depois de sobrar 1 na série 2.
+- Nº
+- Previsto
+- Feito
+- Res.
+- Anterior
+- 72,5 × 5
+- 3
+- 2
+- 70 × 5
+- 4
+- kg total na barra × repetições · anterior: qua 11
+- Afundo com halteres
+- previsto 2 × 7 por lado · 16 kg por mão
+- 2 × 7
+- 18 kg por mão
+- Regra aplicada por você: subiu 2 kg por mão, com reserva.
+- 16 × 7
+- 18 × 7
+- kg por mão × repetições por lado · anterior: seg 9
+- Dead bug
+- previsto 2 × 10 · peso do corpo
+- 2 × 10
+- peso do corpo
+- Marcas no app
+- Nova marca
+- 18 kg por mão × 7
+- antes: 16 kg por mão × 7 (seg 9)
+- Conta só o que você registrou no app desde 26 out. Não é estimativa de máximo nem de capacidade.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Dia seguinte
+- Pergunta amanhã, sex 13, às 8h
+- Registrada no app · salva neste iPhone às 7h42 · ainda não enviada
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/relogio; Ícone/check ×3; Ícone/chevron-baixo ×5; Ícone/ajustes ×2; Ícone/chevron-cima ×4; Ícone/marco; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Concluído / Força avulsa · fora do plano
+`684:4381` FRAME 393x2102 · +chrome
+- Sáb 14 nov · 17:10–17:42 · academia
+- Força avulsa
+- Fora do plano
+- 8
+- séries registradas
+- Treino livre, iniciado pelo +. Não é prescrito pelo treinador e não muda o plano: a corrida leve de domingo segue prevista.
+- Duração
+- 32
+- min
+- Séries
+- Exercícios
+- 3
+- Exercícios e séries
+- Desenvolvimento com barra
+- anterior: qua 11, na sessão planejada
+- 3 × 6
+- 45 kg
+- Nº
+- Feito
+- Res.
+- Anterior
+- 1
+- 45 × 6
+- 2
+- kg total na barra × repetições
+- Rosca com halteres
+- primeira vez no app
+- 3 séries
+- 12 kg por mão
+- 12 × 10
+- —
+- 12 × 9
+- kg por mão × repetições
+- Tríceps na polia
+- 2 × 12
+- 25 kg
+- 25 × 12
+- kg na pilha da máquina × repetições
+- Marcas no app
+- Primeiro registro
+- 12 kg por mão × 10
+- 25 kg × 12
+- pilha da máquina
+- Igual à maior carga
+- 45 kg × 6
+- mesma carga de qua 11
+- Primeiro registro é ponto de partida, não recorde. Registros avulsos não mudam as cargas do plano.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Avulsa: fora do plano
+- Fica no histórico e nas suas marcas; não conta na constância nem nas decisões da semana.
+- Avulsa · registrada no app · salva sáb 14, 17h43
+- Corrigir registro
+- Compartilhar
+- Excluir treino
+- Avulsas podem ser corrigidas ou excluídas: excluir tira o treino do histórico e das suas marcas.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×3; Ícone/chevron-cima ×3; Ícone/marco ×3; Ícone/adicionar ×2; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+### Concluído / Força avulsa · excluir (confirmação)
+`684:4669` FRAME 393x852 · +chrome
+- Sáb 14 nov · 17:10–17:42 · academia
+- Força avulsa
+- Fora do plano
+- 8
+- séries registradas
+- Treino livre, iniciado pelo +. Não é prescrito pelo treinador e não muda o plano: a corrida leve de domingo segue prevista.
+- Duração
+- 32
+- min
+- Séries
+- Exercícios
+- 3
+- Exercícios e séries
+- Desenvolvimento com barra
+- anterior: qua 11, na sessão planejada
+- 3 × 6
+- 45 kg
+- Nº
+- Feito
+- Res.
+- Anterior
+- 1
+- 45 × 6
+- 2
+- kg total na barra × repetições
+- Rosca com halteres
+- primeira vez no app
+- 3 séries
+- 12 kg por mão
+- 12 × 10
+- —
+- 12 × 9
+- kg por mão × repetições
+- Tríceps na polia
+- 2 × 12
+- 25 kg
+- 25 × 12
+- kg na pilha da máquina × repetições
+- Marcas no app
+- Primeiro registro
+- 12 kg por mão × 10
+- 25 kg × 12
+- pilha da máquina
+- Igual à maior carga
+- 45 kg × 6
+- mesma carga de qua 11
+- Primeiro registro é ponto de partida, não recorde. Registros avulsos não mudam as cargas do plano.
+- Como foi
+- Esforço da sessão
+- Como previsto
+- Resposta do corpo
+- Normal
+- Avulsa: fora do plano
+- Fica no histórico e nas suas marcas; não conta na constância nem nas decisões da semana.
+- Avulsa · registrada no app · salva sáb 14, 17h43
+- Corrigir registro
+- Compartilhar
+- Excluir treino
+- Avulsas podem ser corrigidas ou excluídas: excluir tira o treino do histórico e das suas marcas.
+- Força avulsa · sáb 14 nov
+- Excluir o treino avulso?
+- Ele sai do Histórico e das suas marcas. O plano não muda. Dá para desfazer logo depois.
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/forca; Ícone/check ×3; Ícone/chevron-cima ×3; Ícone/marco ×3; Ícone/adicionar ×2; Ícone/lista; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+### Concluído / Força · importada do Apple Saúde
+`684:4890` FRAME 393x1097 · +chrome
+- Seg 19 out · 18:30 · antes do plano
+- Treino de força
+- Importada · Apple Saúde
+- 50 min
+- do Apple Saúde
+- Veio só com horário e duração. Exercícios, séries, cargas e repetições não vêm do Apple Saúde.
+- Duração
+- 50
+- min
+- Fonte
+- Watch
+- O que veio do Apple Saúde
+- Horário
+- 18:30–19:20
+- Exercícios e cargas
+- Não importados: o Apple Saúde não traz
+- Fora das marcas e das cargas
+- Sem séries nem cargas, este treino não entra nas marcas do app nem na progressão das cargas do plano.
+- Antes do plano
+- Seu plano começou em 26 out. Os treinos anteriores aparecem como importados, para você ver o histórico completo.
+- Importada do Apple Saúde em 24 out, no início do plano
+- Ocultar do Repmile
+- Os dados continuam no Apple Saúde. Para apagar de vez, use o próprio Saúde.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/mais; Ícone/forca; Ícone/marco; Ícone/historico ×2; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/progresso
+
+#### Row: Motion · Força concluída · planejada, parcial, avulsa e importada `691:12596`
+### Motion · Força · corpo inteiro · estado ao abrir
+`691:12597` FRAME 393x3234 · motion twin of `684:1208`, same text
+### Motion · Força · corpo inteiro · séries abertas
+`691:13149` FRAME 393x3751 · motion twin of `684:1647`, same text
+### Motion · Força · Inferior, com evolução do agachamento
+`691:13808` FRAME 393x2953 · motion twin of `684:2169`, same text
+### Motion · Força · comparar Inferior, semana a semana
+`691:14354` FRAME 393x1176 · motion twin of `684:2562`, same text
+### Motion · Força · parcial (3 de 5 exercícios) · cenário com imprevisto
+`691:14520` FRAME 393x1576 · motion twin of `684:2695`, same text
+### Motion · Força · carga a confirmar
+`691:14823` FRAME 393x2750 · motion twin of `684:2928`, same text
+### Motion · Força · corrigir série (folha)
+`691:15336` FRAME 393x852 · motion twin of `684:3337`, same text
+### Motion · Força · opções do treino (folha)
+`691:15721` FRAME 393x852 · motion twin of `684:3688`, same text
+### Motion · Força · salvo neste iPhone, envio pendente
+`691:16105` FRAME 393x2101 · motion twin of `684:4050`, same text
+### Motion · Força avulsa · fora do plano
+`691:16531` FRAME 393x2102 · motion twin of `684:4381`, same text
+### Motion · Força avulsa · excluir (confirmação)
+`691:16934` FRAME 393x852 · motion twin of `684:4669`, same text
+### Motion · Força · importada do Apple Saúde
+`691:17176` FRAME 393x1097 · motion twin of `684:4890`, same text
+
+#### Row: Histórico · lista, filtros, data e busca `689:3915`
+### Histórico / Lista · semana 3, quinta à noite
+`687:2298` FRAME 393x3085 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Desde o início do plano
+- 26 out · 3 semanas
+- Agachamento
+- 92,5
+- kg
+- era 90 · 5 reps
+- Supino
+- 72,5
+- era 70 · 5 reps
+- Semanas
+- 2
+- de 2
+- completas · descanso conta
+- Só entre treinos comparáveis: mesmo exercício, mesmas repetições.
+- Esta semana · 9–15 nov
+- 5 de 5 previstas até hoje
+- Semana 3 de 8 · sexta é descanso · 2 por vir no Plano
+- Qui
+- 12
+- Corrida leve
+- 19h07 · 45:10 · 7,02 km · 6:26 /km
+- Corpo inteiro
+- 7h00 · 42 min · 14 séries
+- Qua
+- 11
+- Superior
+- 41 min · 15 séries · supino 4 × 5 a 72,5 kg
+- Ter
+- 10
+- Limiar · 3 × 5 min
+- Chave
+- 34:00 · 5,96 km · 3 de 3 blocos na faixa
+- Seg
+- 9
+- Inferior
+- 37 min · 13 séries · agachamento 4 × 5 a 92,5 kg
+- Semana 2 · 2–8 nov
+- 7 de 7 feitas
+- Construção · corrida 200 min · força 119 min
+- Dom
+- 8
+- 45:05 · 7,00 km · 6:26 /km
+- Sáb
+- 7
+- Longão
+- 1:15:30 · 11,60 km · 6:31 /km
+- 5
+- 39:48 · 6,20 km · 2º do dia
+- 41 min · 14 séries · 1º do dia
+- 4
+- 40 min · 15 séries · supino 4 × 5 a 70 kg
+- 3
+- 40:22 · 6,30 km
+- 38 min · 13 séries · agachamento 4 × 5 a 90 kg
+- Semana 1 · 26 out–1 nov
+- 1
+- 45:02 · 6,90 km · 6:32 /km
+- 31
+- 1:15:12 · 11,40 km · 6:36 /km
+- 29
+- 40:10 · 6,20 km · 2º do dia
+- 28
+- 40 min · cargas estabelecidas na sessão
+- 27
+- 40:05 · 6,20 km · 6:28 /km
+- 26
+- Antes do plano · 19–25 out
+- Importados do Apple Saúde: ficam no histórico, fora da conta do plano
+- 25
+- 40 min · 6,4 km
+- 24
+- 80 min · 12,9 km
+- 22
+- 40 min · 6,5 km
+- 21
+- Treino de força
+- 52 min · sem séries nem cargas
+- 20
+- 41:10 · 6,60 km
+- 19
+- 50 min · sem séries nem cargas
+- 12–18 out
+- Importados do Apple Saúde
+- 18
+- Prova de 5 km
+- Informada
+- 21:48 · tempo oficial · referência dos ritmos
+- 15
+- 35 min · 5,6 km
+- 13
+- Role para ver treinos mais antigos importados do Apple Saúde.
+Instances: Barra de status; Ícone/plano ×2; Ícone/chevron-cima ×2; Ícone/corrida ×16; Ícone/chevron-direita ×30; Ícone/forca ×11; Ícone/prova; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Filtro · origem importada
+`687:3098` FRAME 393x1256 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Importada · 9 treinos nas últimas 4 semanas carregadas
+- Limpar filtros
+- Antes do plano · 19–25 out
+- Importados do Apple Saúde: ficam no histórico, fora da conta do plano
+- Dom
+- 25
+- 40 min · 6,4 km
+- Sáb
+- 24
+- 80 min · 12,9 km
+- Qui
+- 22
+- 40 min · 6,5 km
+- Qua
+- 21
+- Treino de força
+- 52 min · sem séries nem cargas
+- Ter
+- 20
+- 41:10 · 6,60 km
+- Seg
+- 19
+- 50 min · sem séries nem cargas
+- 12–18 out
+- Importados do Apple Saúde
+- 18
+- Prova de 5 km
+- Informada
+- 21:48 · tempo oficial · referência dos ritmos
+- 15
+- 35 min · 5,6 km
+- 13
+- Role para ver treinos mais antigos importados do Apple Saúde.
+Instances: Barra de status; Ícone/plano ×2; Ícone/corrida ×6; Ícone/chevron-direita ×9; Ícone/forca ×2; Ícone/prova; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Filtro · avulsas (sábado 14)
+`687:3404` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Avulsa · 2 treinos
+- Limpar filtros
+- Esta semana · 9–15 nov
+- Avulsas ficam no histórico e nos totais, fora da conta do plano
+- Sáb
+- 14
+- Força avulsa
+- 17h10 · 32 min · 8 séries · 3 exercícios
+- Sex
+- 13
+- Corrida avulsa
+- 7h10 · 30:00 · 4,55 km · 6:36 /km
+Instances: Barra de status; Ícone/plano ×2; Ícone/forca; Ícone/chevron-direita ×2; Ícone/corrida; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Filtro · sem resultado (força + manual)
+`687:3535` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Força · Manual · nenhum treino
+- Limpar filtros
+- Nenhum treino de força manual
+- Registros de força feitos à mão aparecem aqui depois do primeiro. Os treinos do plano continuam no filtro Planejada.
+Instances: Barra de status; Ícone/plano ×2; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Ir para uma data (folha)
+`687:3617` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Desde o início do plano
+- 26 out · 3 semanas
+- Agachamento
+- 92,5
+- kg
+- era 90 · 5 reps
+- Supino
+- 72,5
+- era 70 · 5 reps
+- Semanas
+- 2
+- de 2
+- completas · descanso conta
+- Só entre treinos comparáveis: mesmo exercício, mesmas repetições.
+- Esta semana · 9–15 nov
+- 5 de 5 previstas até hoje
+- Semana 3 de 8 · sexta é descanso · 2 por vir no Plano
+- Qui
+- 12
+- Corrida leve
+- 19h07 · 45:10 · 7,02 km · 6:26 /km
+- Corpo inteiro
+- 7h00 · 42 min · 14 séries
+- Qua
+- 11
+- Superior
+- 41 min · 15 séries · supino 4 × 5 a 72,5 kg
+- Ter
+- 10
+- Limiar · 3 × 5 min
+- Chave
+- 34:00 · 5,96 km · 3 de 3 blocos na faixa
+- Seg
+- 9
+- Inferior
+- 37 min · 13 séries · agachamento 4 × 5 a 92,5 kg
+- Semana 2 · 2–8 nov
+- 7 de 7 feitas
+- Construção · corrida 200 min · força 119 min
+- Dom
+- 8
+- 45:05 · 7,00 km · 6:26 /km
+- Sáb
+- 7
+- Longão
+- 1:15:30 · 11,60 km · 6:31 /km
+- 5
+- 39:48 · 6,20 km · 2º do dia
+- 41 min · 14 séries · 1º do dia
+- 4
+- 40 min · 15 séries · supino 4 × 5 a 70 kg
+- 3
+- 40:22 · 6,30 km
+- 38 min · 13 séries · agachamento 4 × 5 a 90 kg
+- Semana 1 · 26 out–1 nov
+- 1
+- 45:02 · 6,90 km · 6:32 /km
+- 31
+- 1:15:12 · 11,40 km · 6:36 /km
+- 29
+- 40:10 · 6,20 km · 2º do dia
+- 28
+- 40 min · cargas estabelecidas na sessão
+- 27
+- 40:05 · 6,20 km · 6:28 /km
+- 26
+- Antes do plano · 19–25 out
+- Importados do Apple Saúde: ficam no histórico, fora da conta do plano
+- 25
+- 40 min · 6,4 km
+- 24
+- 80 min · 12,9 km
+- 22
+- 40 min · 6,5 km
+- 21
+- Treino de força
+- 52 min · sem séries nem cargas
+- 20
+- 41:10 · 6,60 km
+- 19
+- 50 min · sem séries nem cargas
+- 12–18 out
+- Importados do Apple Saúde
+- 18
+- Prova de 5 km
+- Informada
+- 21:48 · tempo oficial · referência dos ritmos
+- 15
+- 35 min · 5,6 km
+- 13
+- Role para ver treinos mais antigos importados do Apple Saúde.
+- Ir para uma data
+- Esta semana
+- Início do plano · 26 out
+- Prova · 18 out
+- Novembro de 2026
+- S
+- T
+- Q
+- D
+- 30
+- 6
+- 14
+- 16
+- 17
+- 23
+- Contorno = hoje
+- Ter, 10 de novembro
+- Ver este dia no Histórico
+Instances: Barra de status; Ícone/plano ×2; Ícone/chevron-cima ×2; Ícone/corrida ×17; Ícone/chevron-direita ×32; Ícone/forca ×11; Ícone/prova; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso; Ícone/chevron-esquerda
+### Histórico / Buscar · resultado de “agachamento”
+`687:4438` FRAME 393x852 · +chrome
+- agachamento
+- Cancelar
+- Exercício
+- Agachamento livre
+- 3 sessões do plano · maior carga registrada 92,5 kg × 5
+- Ver evolução do exercício
+- Sessões com agachamento · 3
+- Seg
+- 9
+- Inferior
+- 9 nov · agachamento 4 × 5 a 92,5 kg
+- 2
+- 2 nov · agachamento 4 × 5 a 90 kg
+- 26
+- 26 out · agachamento 4 × 5 a 90 kg
+- Treinos de força importados do Apple Saúde não trazem exercícios, por isso não aparecem nesta busca.
+Instances: Barra de status; Ícone/fechar; Ícone/forca ×4; Ícone/chevron-direita ×4; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Buscar · sem resultado (“natação”)
+`687:4590` FRAME 393x852 · +chrome
+- natação
+- Cancelar
+- Nada com “natação”
+- A busca olha o nome do treino, o tipo e os exercícios. O Repmile registra corrida e força.
+- Limpar busca
+Instances: Barra de status; Ícone/fechar; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Lista · depois de excluir a avulsa (desfazer)
+`687:4651` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Desde o início do plano
+- 26 out · 3 semanas
+- Agachamento
+- 92,5
+- kg
+- era 90 · 5 reps
+- Supino
+- 72,5
+- era 70 · 5 reps
+- Semanas
+- 2
+- de 2
+- completas · descanso conta
+- Só entre treinos comparáveis: mesmo exercício, mesmas repetições.
+- Esta semana · 9–15 nov
+- 5 de 5 previstas até hoje
+- Semana 3 de 8 · sexta é descanso · 2 por vir no Plano
+- Qui
+- 12
+- Corrida leve
+- 19h07 · 45:10 · 7,02 km · 6:26 /km
+- Corpo inteiro
+- 7h00 · 42 min · 14 séries
+- Qua
+- 11
+- Superior
+- 41 min · 15 séries · supino 4 × 5 a 72,5 kg
+- Ter
+- 10
+- Limiar · 3 × 5 min
+- Chave
+- 34:00 · 5,96 km · 3 de 3 blocos na faixa
+- Seg
+- 9
+- Inferior
+- 37 min · 13 séries · agachamento 4 × 5 a 92,5 kg
+- Semana 2 · 2–8 nov
+- 7 de 7 feitas
+- Construção · corrida 200 min · força 119 min
+- Dom
+- 8
+- 45:05 · 7,00 km · 6:26 /km
+- Sáb
+- 7
+- Longão
+- 1:15:30 · 11,60 km · 6:31 /km
+- 5
+- 39:48 · 6,20 km · 2º do dia
+- 41 min · 14 séries · 1º do dia
+- 4
+- 40 min · 15 séries · supino 4 × 5 a 70 kg
+- 3
+- 40:22 · 6,30 km
+- 38 min · 13 séries · agachamento 4 × 5 a 90 kg
+- Semana 1 · 26 out–1 nov
+- 1
+- 45:02 · 6,90 km · 6:32 /km
+- 31
+- 1:15:12 · 11,40 km · 6:36 /km
+- 29
+- 40:10 · 6,20 km · 2º do dia
+- 28
+- 40 min · cargas estabelecidas na sessão
+- 27
+- 40:05 · 6,20 km · 6:28 /km
+- 26
+- Antes do plano · 19–25 out
+- Importados do Apple Saúde: ficam no histórico, fora da conta do plano
+- 25
+- 40 min · 6,4 km
+- 24
+- 80 min · 12,9 km
+- 22
+- 40 min · 6,5 km
+- 21
+- Treino de força
+- 52 min · sem séries nem cargas
+- 20
+- 41:10 · 6,60 km
+- 19
+- 50 min · sem séries nem cargas
+- 12–18 out
+- Importados do Apple Saúde
+- 18
+- Prova de 5 km
+- Informada
+- 21:48 · tempo oficial · referência dos ritmos
+- 15
+- 35 min · 5,6 km
+- 13
+- Role para ver treinos mais antigos importados do Apple Saúde.
+- Corrida avulsa excluída
+- Desfazer
+Instances: Barra de status; Ícone/plano ×2; Ícone/chevron-cima ×2; Ícone/corrida ×16; Ícone/chevron-direita ×30; Ícone/forca ×11; Ícone/prova; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Histórico · lista, filtros, data e busca `691:17365`
+### Motion · Lista · semana 3, quinta à noite
+`691:17366` FRAME 393x3085 · motion twin of `687:2298`, same text
+### Motion · Filtro · origem importada
+`691:18397` FRAME 393x1256 · motion twin of `687:3098`, same text
+### Motion · Filtro · avulsas (sábado 14)
+`691:18802` FRAME 393x852 · motion twin of `687:3404`, same text
+### Motion · Filtro · sem resultado (força + manual)
+`705:8367` FRAME 393x852 · motion twin of `687:3535`, same text
+### Motion · Ir para uma data (folha)
+`691:19093` FRAME 393x852 · motion twin of `687:3617`, same text
+### Motion · Buscar · resultado de “agachamento”
+`691:19950` FRAME 393x852 · motion twin of `687:4438`, same text
+### Motion · Buscar · sem resultado (“natação”)
+`705:8523` FRAME 393x852 · motion twin of `687:4590`, same text
+### Motion · Lista · depois de excluir a avulsa (desfazer)
+`691:20223` FRAME 393x852 · motion twin of `687:4651`, same text
+
+#### Row: Histórico · semana fechada, registro à mão e estados `689:3916`
+### Histórico / Semana fechada · semana 2 (2–8 nov)
+`688:3330` FRAME 393x1921 · +chrome
+- Semana 2 de 8 · Construção · fechada
+- 2 a 8 de novembro
+- 7 de 7
+- sessões feitas
+- A semana inteira cumprida: 7 treinos e o descanso planejado de sexta, sem resposta adversa.
+- S
+- T
+- Q
+- D
+- Corrida · de 200
+- 200
+- min
+- Força · de 119
+- 119
+- Distância
+- 31,1
+- km
+- Destaques
+- Maior longão até aqui
+- 1:15:30 e 11,60 km, em esforço de conversa.
+- Panturrilha subiu para 18 kg por mão
+- Todas as séries terminaram com 2 ou mais em reserva.
+- 2 semanas seguidas completas
+- Descanso planejado conta como plano cumprido.
+- Mudanças no plano
+- Nenhuma. O plano foi revisto depois de cada treino e continuou igual. As cargas que você registrou viraram a referência da semana 3.
+- Sua semana em uma imagem
+- Repmile · semana 2 · 2 a 8 nov
+- 7 treinos
+- 31,1 km de corrida · 3 treinos de força
+- Prévia exata antes de enviar. Só treinos feitos e distância.
+- Compartilhar semana
+- Dia a dia
+- Dom
+- 8
+- Corrida leve
+- 45:05 · 7,00 km · 6:26 /km
+- Sáb
+- 7
+- Longão
+- Chave
+- 1:15:30 · 11,60 km · 6:31 /km
+- Qui
+- 5
+- 39:48 · 6,20 km · 2º do dia
+- Corpo inteiro
+- 41 min · 14 séries · 1º do dia
+- Qua
+- 4
+- Superior
+- 40 min · 15 séries · supino 4 × 5 a 70 kg
+- Ter
+- 3
+- 40:22 · 6,30 km
+- Seg
+- 2
+- Inferior
+- 38 min · 13 séries · agachamento 4 × 5 a 90 kg
+- Semana fechada: os registros não mudam mais por aqui. Para corrigir um treino, abra o registro dele.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/marco ×3; Ícone/corrida ×4; Ícone/chevron-direita ×7; Ícone/forca ×3; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Treino não feito (Superior de qua 4) · cenário com imprevisto
+`688:3666` FRAME 393x1147 · +chrome
+- Qua 4 nov · semana 2 de 8
+- Superior
+- Não feita
+- Este treino não foi feito
+- Conta zero e não é reposto: nada foi empurrado para os dias seguintes.
+- Planejado · 41 min · 15 séries
+- Supino reto
+- 4 × 5 · 70 kg
+- Remada curvada
+- 3 × 6 · 60 kg
+- Desenvolvimento com barra
+- 3 × 6 · 42,5 kg
+- Puxada alta
+- 3 × 7 · regulagem de 55 kg
+- Dead bug
+- 2 × 9 · peso do corpo
+- Você contou
+- Resposta
+- Não fiz
+- Quando
+- Respondido em qui 5 nov, 8:10
+- Motivo
+- Não informado
+- O plano
+- Seguiu sem repor nem compensar. Nada foi empurrado para os dias seguintes, e as cargas de referência continuaram as da semana anterior.
+- Sem registro de execução. Se você treinou fora do app, dá para registrar à mão.
+- Registrar que fiz
+- Corrigir resposta
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/mais; Ícone/forca; Ícone/fechar; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Vazio · primeiro uso (Marina, seg 9)
+`688:3788` FRAME 393x852 · +chrome
+- Seu histórico começa amanhã
+- Cada treino feito aparece aqui, com o que estava planejado e o que você fez. Descanso planejado não é falta.
+- Primeiros treinos do plano
+- Ter
+- 10
+- Caminhada e trote
+- Previsto
+- 20 min · 3 × 30 s de trote, 2 min caminhando
+- Qua
+- 11
+- Força · prática
+- 15 min · peso do corpo
+- Treinou por conta própria?
+- Registrar
+- Dá para registrar à mão. Fica no Histórico como manual, fora do plano: não muda o plano.
+- Treinos anteriores do Apple Saúde podem ser trazidos depois, em Perfil. Aparecem como importados e não contam no plano.
+Instances: Barra de status; Ícone/corrida; Ícone/forca; Ícone/adicionar ×2; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+### Histórico / Registrar treino · corrida feita fora do app (Marina)
+`688:3900` FRAME 393x861 · −chrome: «Plano» «Hoje» «Histórico» «Progresso»
+- Cancelar
+- Registrar treino
+- Era uma sessão do plano?
+- Sim · caminhada e trote de ter 10
+- Do plano: 20 min, 5 min de caminhada e 3 × (30 s de trote + 2 min de caminhada). Entra na revisão da semana.
+- Não · fiz por conta própria
+- Fica no Histórico como registro manual, fora do plano. O plano não muda.
+- O treino
+- Quando
+- Ter 10 · 19h00
+- Duração
+- Previsto: 20 min. Se parou antes, informe o tempo real.
+- 20 min
+- Distância
+- Opcional. Sem distância não há ritmo.
+- —
+- Esforço
+- Dava para conversar em frases inteiras: 2 a 4.
+- 3 de 10
+- Como foi
+- Fiz parte
+- Fiz tudo
+- O que você registra é a fonte. O plano da Marina usa tempo e esforço. Dá para corrigir depois.
+- Salvar registro
+Instances: Barra de status; Ícone/check
+### Histórico / Registrar treino · força feita fora do app · cenário alternativo
+`688:3977` FRAME 393x1047 · −chrome: «Plano» «Hoje» «Histórico» «Progresso»
+- Cancelar
+- Registrar treino
+- Era uma sessão do plano?
+- Sim · Superior de qua 11
+- Do plano: 41 min, 5 exercícios, 15 séries. Entra na revisão da semana.
+- Não · fiz por conta própria
+- Fica no Histórico como registro manual, fora do plano.
+- Exercícios · toque para ajustar
+- Supino reto
+- 4 × 5 · 72,5 kg · como planejado
+- Remada curvada
+- 3 × 6 · 62,5 kg · como planejado
+- Desenvolvimento com barra
+- 3 × 6 · 42,5 kg · você mudou
+- Puxada alta
+- não fez · toque para ajustar
+- Dead bug
+- 2 × 10 · peso do corpo · como planejado
+- Adicionar exercício
+- A sessão
+- Quando
+- Qua 11 · 7h00
+- Duração
+- Previsto: 41 min.
+- 38 min
+- O que você registra aqui fica marcado como registro seu. Se o Apple Saúde mandar o mesmo treino depois, os dois viram um só, sem duplicar.
+- Salvar registro
+Instances: Barra de status; Ícone/check ×4; Ícone/chevron-direita ×5; Ícone/ajustes; Ícone/fechar; Ícone/adicionar
+### Histórico / Distância parece errada? (ignorar na análise)
+`688:4096` FRAME 393x940 · −chrome: «Plano» «Hoje» «Histórico» «Progresso»
+- Corrida leve · ter 27 out · Apple Watch, na esteira
+- Distância parece errada?
+- O valor do relógio não muda aqui. Se ele estiver errado, você pode tirá-lo da análise.
+- Do Apple Saúde · só leitura
+- Distância
+- Apple Watch · pelo Apple Saúde
+- 6,20 km
+- Ritmo médio
+- calculado da distância e do tempo
+- 6:28 /km
+- O que ignorar
+- Só a distância e o ritmo
+- O tempo e o esforço continuam valendo.
+- O treino inteiro
+- Fica no histórico, fora de qualquer análise.
+- Motivo (opcional)
+- Esteira
+- GPS falhou
+- Relógio descalibrado
+- Outro
+- Nada é apagado nem alterado no Apple Saúde. Dá para voltar a usar quando quiser.
+- Ignorar na análise
+- Cancelar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/check
+### Histórico / Treino indisponível · link antigo
+`688:4170` FRAME 393x852 · +chrome
+- Este treino não está mais aqui
+- Ele pode ter sido removido do Repmile ou juntado a outro registro. O resto do seu histórico continua igual.
+- Ir para o Histórico
+Instances: Barra de status; Ícone/chevron-esquerda; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Estado · carregando
+`688:4238` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Carregando seus treinos…
+Instances: Barra de status; Ícone/plano ×2; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Estado · sem conexão, treino ainda não enviado
+`688:4344` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Sem conexão
+- O treino de hoje, 7h00, está salvo neste aparelho e ainda não foi enviado. Ele vai sozinho quando a conexão voltar; até lá, o plano não o considera.
+- Tentar enviar agora
+- Esta semana · 9–15 nov
+- 4 de 4 previstas até agora
+- Semana 3 de 8 · 3 por vir no Plano
+- Qui
+- 12
+- Corpo inteiro
+- Não enviado
+- 7h00 · 42 min · salvo neste aparelho
+- Qua
+- 11
+- Superior
+- 41 min · 15 séries · supino 4 × 5 a 72,5 kg
+- Ter
+- 10
+- Limiar · 3 × 5 min
+- Chave
+- 34:00 · 5,96 km · 3 de 3 blocos na faixa
+- Seg
+- 9
+- Inferior
+- 37 min · 13 séries · agachamento 4 × 5 a 92,5 kg
+Instances: Barra de status; Ícone/plano ×2; Ícone/relogio; Ícone/forca ×3; Ícone/chevron-direita ×4; Ícone/corrida; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Estado · erro ao carregar
+`688:4542` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Não foi possível carregar o histórico
+- Seus registros continuam guardados. Verifique a conexão e tente de novo.
+- Tentar de novo
+Instances: Barra de status; Ícone/plano ×2; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Histórico / Estado · Apple Saúde não conectado
+`688:4621` FRAME 393x852 · +chrome
+- Buscar treino ou exercício
+- Tudo
+- Corrida
+- Força
+- Planejada
+- Avulsa
+- Importada
+- Manual
+- Apple Saúde não conectado
+- Treinos de antes de 26 out e os feitos só no relógio não aparecem aqui. O plano não depende disso.
+- Permitir nos Ajustes
+- Esta semana · 9–15 nov
+- 5 de 5 previstas até hoje
+- Semana 3 de 8 · sexta é descanso · 2 por vir no Plano
+- Qui
+- 12
+- Corrida leve
+- 19h07 · 45:10 · 7,02 km · 6:26 /km
+- Corpo inteiro
+- 7h00 · 42 min · 14 séries
+- Qua
+- 11
+- Superior
+- 41 min · 15 séries · supino 4 × 5 a 72,5 kg
+- Ter
+- 10
+- Limiar · 3 × 5 min
+- Chave
+- 34:00 · 5,96 km · 3 de 3 blocos na faixa
+- Seg
+- 9
+- Inferior
+- 37 min · 13 séries · agachamento 4 × 5 a 92,5 kg
+Instances: Barra de status; Ícone/plano ×2; Ícone/cadeado; Ícone/corrida ×2; Ícone/chevron-direita ×5; Ícone/forca ×3; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Histórico · semana fechada, registro à mão e estados `691:20803`
+### Motion · Semana fechada · semana 2 (2–8 nov)
+`691:20804` FRAME 393x1921 · motion twin of `688:3330`, same text
+### Motion · Treino não feito (Superior de qua 4) · cenário com imprevisto
+`691:21300` FRAME 393x1147 · motion twin of `688:3666`, same text
+### Motion · Vazio · primeiro uso (Marina, seg 9)
+`705:7788` FRAME 393x852 · motion twin of `688:3788`, same text
+### Motion · Registrar treino · corrida feita fora do app (Marina)
+`691:21632` FRAME 393x861 · motion twin of `688:3900`, same text
+### Motion · Registrar treino · força feita fora do app · cenário alternativo
+`691:21754` FRAME 393x1047 · motion twin of `688:3977`, same text
+### Motion · Distância parece errada? (ignorar na análise)
+`691:21942` FRAME 393x940 · motion twin of `688:4096`, same text
+### Motion · Treino indisponível · link antigo
+`705:8026` FRAME 393x852 · motion twin of `688:4170`, same text
+### Motion · Estado · carregando
+`691:22167` FRAME 393x852 · motion twin of `688:4238`, same text
+### Motion · Estado · sem conexão, treino ainda não enviado
+`691:22336` FRAME 393x852 · motion twin of `688:4344`, same text
+### Motion · Estado · erro ao carregar
+`705:8213` FRAME 393x852 · motion twin of `688:4542`, same text
+### Motion · Estado · Apple Saúde não conectado
+`691:22703` FRAME 393x852 · motion twin of `688:4621`, same text
+
+#### Row: Corrida concluída · o que chegou de cada fonte (só o iPhone, outro relógio pelo Apple Saúde) `880:22298`
+### Concluído / Corrida · limiar · só com o iPhone (mesmo treino, sem relógio)
+`880:19765` FRAME 393x2491 · +chrome
+- 5,96 km · 34:00
+- 3 × 5 min no limiar
+- Ter 10 nov · 18:40–19:14 · Parque Ibirapuera
+- Limiar · 3 × 5 min
+- Treino-chave
+- 3 de 3
+- blocos na faixa
+- Ritmo consistente: 12 s entre o bloco mais lento e o mais rápido, com o último mais forte.
+- Distância
+- 5,96
+- km
+- Tempo
+- 34:00
+- Ritmo médio
+- 5:42
+- /km
+- Elevação
+- 13
+- m
+- Blocos · ritmo
+- #
+- mais lento
+- mais rápido
+- Ritmo
+- 1
+- 5:04
+- 2
+- 5:00
+- 3
+- 4:52
+- Faixa de limiar 4:50–5:15 /km. Cada bloco durou 5:00 e cobriu perto de 1 km.
+- Ao longo da corrida
+- min
+- · blocos 4:52–5:04
+- min/km
+- 4:30
+- 5:30
+- média 5:42
+- 6:00
+- 6:30
+- 7:00
+- 0
+- 4
+- 5
+- As faixas numeradas 1, 2 e 3 são os blocos de limiar. A linha tracejada é a média do treino.
+- m de ganho
+- Parciais por km
+- Mais rápido: km 4, a 5:11 /km. Mais lento: trecho final, a 6:19 /km.
+- Fora dos blocos
+- Aquecimento
+- planejado 10 min · leve
+- 10:00
+- 6:15 /km
+- Trotes entre blocos
+- planejado 2 × 2 min · leve
+- 4:00
+- 6:40 /km
+- Desaquecimento
+- planejado 5 min · leve
+- 6:45 /km
+- Como você se sentiu
+- 7
+- de 10 · forte
+- Dentro do combinado para o limiar (6–7).
+- “Pernas boas, último bloco pesado.”
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 11, 8:02
+- O que observamos
+- Os 3 blocos ficaram na faixa, com 12 s de variação.
+- O 3º bloco foi o mais rápido: 12 s abaixo do 1º, com esforço 7 de 10.
+- O próximo limiar segue como planejado.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo e esforço
+- Este treino confirmou o que a semana previa. É o primeiro limiar do plano: a comparação com o anterior aparece depois do próximo.
+- GPS do iPhone · salvo às 19:15
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/chevron-cima; Ícone/chevron-baixo ×2; Ícone/check ×4; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/gps; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · leve do plano, veio do Apple Saúde por outro relógio (tempo, distância e FC média)
+`880:21503` FRAME 393x1393 · +chrome
+- Dom 8 nov · 7:32–8:17 · Apple Saúde
+- Corrida leve
+- 45:05
+- de 45 min previstos
+- Esforço 2, dentro do combinado, com o ritmo médio na faixa leve.
+- Distância
+- 7,00
+- km
+- Tempo
+- Ritmo médio
+- 6:26
+- /km
+- FC média
+- 141
+- bpm
+- Planejado × feito
+- planejado 45 min · esforço de conversa
+- 6:26 /km
+- Como você se sentiu
+- 2
+- de 10 · leve
+- Dentro do combinado para a corrida leve (2–4).
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido seg 9, 8:10
+- O que observamos
+- 45 min em esforço leve, com o ritmo médio dentro da faixa.
+- A leitura usa o tempo, o ritmo médio e o esforço que você informou (2 de 10).
+- A semana segue como planejada.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo médio e esforço
+- Nada muda: tempo e esforço são o que o plano pede.
+- Apple Saúde · Garmin Connect · chegou às 8:31
+- Chegaram tempo, distância e FC média. O percurso não veio.
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/check ×2; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+### Concluído / Corrida · leve em esteira (distância informada, sem mapa)
+`945:14796` FRAME 393x1300 · +chrome
+- Ter 3 nov · 18:42–19:22 · esteira
+- Corrida leve
+- 40:22
+- de 40 min previstos
+- Esforço 3, dentro do combinado, com o ritmo médio na faixa leve.
+- Distância
+- 6,30
+- km
+- Tempo
+- Ritmo médio
+- 6:24
+- /km
+- Planejado × feito
+- planejado 40 min · esforço de conversa
+- 6:24 /km
+- Como você se sentiu
+- 3
+- de 10 · leve
+- Dentro do combinado para a corrida leve (2–4).
+- Como foi
+- Como planejado, sem dor ou algo incomum
+- Dia seguinte
+- Normal · respondido qua 4, 8:10
+- O que observamos
+- 40 min em esforço leve, com o ritmo médio dentro da faixa.
+- A leitura usa o tempo, o ritmo médio e o esforço que você informou (3 de 10).
+- A semana segue como planejada.
+- O que isso muda no plano
+- Sem mudança
+- a semana segue igual
+- Aprendizado
+- Registrado
+- ritmo médio e esforço
+- Nada muda: tempo e esforço são o que o plano pede.
+- Esteira · salvo às 19:23
+- A distância é a que você informou, lida no painel da esteira.
+- Corrigir registro
+- Compartilhar
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/mais; Ícone/corrida; Ícone/check ×2; Ícone/progresso ×2; Ícone/chevron-direita; Ícone/relogio; Tab bar {Aba=Histórico}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico
+
+#### Row: Motion · Corrida concluída · o que chegou de cada fonte (só o iPhone, outro relógio pelo Apple Saúde) `880:22299`
+### Motion · Corrida · limiar · só com o iPhone (mesmo treino, sem relógio)
+`880:20167` FRAME 393x2491 · motion twin of `880:19765`, same text
+### Motion · Corrida · leve do plano, veio do Apple Saúde por outro relógio (tempo, distância e FC média)
+`880:21811` FRAME 393x1393 · motion twin of `880:21503`, same text
+### Motion · Corrida · leve em esteira (distância informada, sem mapa)
+`945:14941` FRAME 393x1300 · motion twin of `945:14796`, same text

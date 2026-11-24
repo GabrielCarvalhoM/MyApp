@@ -1,0 +1,212 @@
+# 01 · Fundamentos · tokens e estilos (551:3)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 01 · Fundamentos · tokens e estilos (551:3) · items 2 · screens 2 · motion 0
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): 
+### Fundamentos · direção aprovada
+`513:442` FRAME 1140x2362
+- Exploração autoral
+- O lima deixou de ser o acento da interface e ficou só como sinal de resultado. Saíram também o molde de cartão repetido em toda tela e os ícones de prateleira. O que era próprio cresceu: a luz por esporte, a manchete em dois tons, números com voz e a gramática espelhada de corrida e força.
+- Regra de cor
+- Cor é modalidade
+- Azul é corrida, laranja é força. As outras cores têm papel fixo e não disputam com as duas.
+- Preenchimento é estado
+- Cheio é feito, suave é previsto no plano, tracejado é o que ainda vem nesta semana.
+- Branco é agora
+- A luz marca o momento: próximo treino, série atual, aba aberta, a linha do agora.
+- Champanhe é marco
+- Prova, recorde e meta atingida. Nada mais usa essa cor.
+- Lima é feito, vermelho é falta
+- Lima marca treino concluído e melhora sobre o período anterior. Vermelho marca queda e treino não cumprido.
+- Paletas · modos da coleção Autoral · Cor (troque o modo do quadro para comparar)
+- A · Sem acento
+- Começar corrida
+- Concluir série
+- Próxima
+- é a luz do agora
+- Recomendada. O acento deixa de ser cor: o botão veste o esporte e o agora é luz.
+- B · Grafite e amarelo
+- Sua referência. O amarelo fica perto do laranja da força e do champanhe.
+- C · Lima (referência)
+- Como o arquivo está hoje, para comparar. É a que mais lembra a referência.
+- A · Claro
+- A mesma A em fundo claro, para treinar ao sol.
+- Tipografia · duas vozes
+- Números e títulos de tela · Unbounded
+- 3 × 5 min
+- 43:30–48:45
+- 92,5 kg
+- 5:42 /km
+- 34 min
+- Texto e manchetes · Geist
+- Força feita. Falta a corrida leve, à noite.
+- A manchete é a voz do treinador: o que já passou fica em cinza, o que importa agora fica em branco.
+- Rótulo de seção
+- Ícones · corrida é linha, força é bloco
+- Corrida
+- Tênis em traço contínuo, com as três marcas da passada atrás do calcanhar. Lê como corrida mesmo em 16 pt.
+- Força
+- Halter feito só de blocos cheios. A diferença entre linha e bloco separa os dois esportes sem depender da cor.
+- Hoje · pista de raia dupla
+- Plano
+- Histórico
+- Progresso
+- Descanso
+- Prova
+- Marco
+- Gramática espelhada · a forma do híbrido
+- corrida feita
+- força feita
+- prevista
+- vem na semana
+- dia duplo
+- próximo treino
+- A mesma regra desenha os painéis da Hoje, a marca de cada dia no Plano, as fases até a prova, o volume semanal, a grade de consistência e a pista de raia dupla, onde a raia de fora é linha e a de dentro são blocos.
+- Peças que vieram do arquivo Saúde e onde entraram
+- Treino
+- Painéis da semana: herói da Hoje
+- Pista de raia dupla: herói do Plano e ícone da aba Hoje
+- Gráfico de estrutura com colchete: detalhe do treino e faixa no topo da execução
+- Arco de coordenação: detalhe do treino
+- Escala de esforço em pontos e faixas de ritmo: detalhe e execução
+- Depois do treino e fora do app
+- Pílula no canto do mapa: corrida concluída
+- Dynamic Island: prancha de execução, com a pista como progresso
+- Mapa híbrido: herói do Progresso
+- Barras espelhadas: fases até a prova e volume semanal
+- Grade de consistência: Progresso
+- Anel do foco e perfil arrumado: Perfil e avatar
+- Em aberto
+- Decidido em 12 nov
+- Paleta A · Sem acento, Unbounded nos números, ícones de tênis e halter
+- Zonas de FC em cinza, ciano, verde, âmbar e vermelho; as curvas ficam numa cor só
+- Lima para feito e melhora, vermelho para queda e não cumprido; + no centro da tab bar
+- Para a reconciliação com o motor
+- Mapa híbrido usa VO2 máx e força relativa, que o motor pode não entregar
+- O arco afirma 35h de intervalo entre pernas e limiar
+- Progresso e Perfil usam 12 meses de histórico de demonstração
+- Marcos e volume em km precisam bater com o que é registrado
+- Não feito nesta rodada
+- Ilustrações novas de momento: prova, recorde, treino concluído
+- Movimento das peças
+- Demais telas do produto e estados de erro
+- Medição formal de contraste
+Instances: Ícone/play ×4; Ícone/check ×4; Ícone/corrida ×5; Ícone/forca ×5; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso; Ícone/descanso; Ícone/prova; Ícone/marco
+### Fundamentos · estilos de texto e cores, lidos do arquivo
+`901:109` FRAME 1140x2360
+- Repmile · canônico da primeira versão
+- Estilos e cores
+- Lido do próprio arquivo em 15 nov 2026: 15 estilos de texto "Repmile" e 44 variáveis de cor na coleção "Repmile · Cor". Toda tela usa estilo e variável. Exceção: as duas telas de texto grande da página 83, com o tamanho ampliado à mão. Modo padrão da coleção: A · Sem acento. Modo em uso nas telas: A · Sem acento.
+- Estilos de texto · duas vozes: Unbounded para número, Geist para o resto
+- 2:36
+- Número XXL
+- Unbounded Bold · 96 / 96
+- Cronômetro da execução
+- 43:30
+- Número XL
+- Unbounded Bold · 44 / 48
+- Resultado do treino, título de quadro
+- Número L
+- Unbounded Bold · 30 / 34
+- Estimativa, preço, código
+- Número M
+- Unbounded SemiBold · 21 / 26
+- Números de resumo
+- Número S
+- Unbounded SemiBold · 15 / 20
+- Valor em linha
+- Número XS
+- Unbounded SemiBold · 11 / 14
+- Minutos nas marcas da semana
+- Corrida e força
+- Manchete
+- Geist Medium · 28 / 33
+- Pergunta e manchete da tela
+- Título
+- Geist SemiBold · 20 / 25
+- Título de folha e de bloco
+- Subtítulo
+- Geist Medium · 16 / 21
+- Título de linha, pílula
+- Corpo
+- Geist Regular · 15 / 22
+- Texto de apoio
+- Detalhe
+- Geist Regular · 13 / 18
+- Segunda linha e notas
+- Rótulo
+- Geist Medium · 13 / 17
+- Etiqueta, link, valor curto
+- Etapa 2 de 4
+- Micro
+- Geist SemiBold · 11 / 14
+- Cabeçalho de seção, em maiúsculas
+- Botão
+- Geist SemiBold · 16 / 20
+- Botões
+- Tab
+- Geist Medium · 10.5 / 12
+- Barra de abas e eixos
+- Cores · coleção "Repmile · Cor"
+- Fundo e linha
+- fundo/app
+- fundo/elevado
+- fundo/elevado-2
+- fundo/trilho
+- linha/divisor
+- linha/base
+- Texto
+- texto/primario
+- texto/secundario
+- texto/terciario
+- Agora e ação
+- agora
+- agora/sobre
+- agora/suave
+- acao/corrida
+- acao/corrida-texto
+- acao/forca
+- acao/forca-texto
+- Corrida
+- corrida
+- corrida/cheio
+- corrida/sobre
+- corrida/suave
+- corrida/previsto
+- Força
+- forca
+- forca/sobre
+- forca/suave
+- forca/previsto
+- Marco e estado
+- marco
+- marco/suave
+- estado/positivo
+- estado/positivo-suave
+- estado/negativo
+- estado/negativo-suave
+- Zonas
+- zona/1
+- zona/2
+- zona/3
+- zona/4
+- zona/5
+- Luz
+- luz/corrida
+- luz/corrida-fim
+- luz/forca
+- luz/forca-fim
+- luz/neutra
+- luz/neutra-fim
+- luz/marco
+- luz/marco-fim
+- Modos da coleção
+- A · Sem acento
+- Padrão da coleção
+- B · Grafite e amarelo
+- Estudo de paleta, guardado como modo
+- C · Lima (referência)
+- A · Claro
+- Versão clara; usada nas artes claras do Compartilhar
+- Também estão no arquivo, da exploração anterior: 14 estilos "Pierre" e as coleções "Pierre · Cor (proposta)" e "Pierre · Medidas (proposta)".

@@ -1455,3 +1455,11 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **What:** shared A/B contract (derived from admission/integration/custody; gaps G-1..G-5, OPEN-1..5 recorded, not filled), `ios/Packages/IntegrationContracts` (7 tests against the frozen bytes, Node admission cross-check), `tools/device-lock/with-device.sh` (kernel flock), two mission handoffs; independent review R1: 9 findings (2 HIGH), all fixed before the base.
 - **No CoachingCore byte changed;** no backend, SwiftUI, Figma, CURRENT_MISSION change or new freeze.
 - **Report:** `audits/v1-parallel-foundation-2026-11-24/CONSOLIDATION_REPORT.md`.
+
+<!-- V1UIR-20261124-reconciliation-r1 -->
+2026-11-24 · REPMILE V1 UI FUNCTIONAL RECONCILIATION (Figma × frozen CoachingCore × iPhone) **CLOSED** as documentation; SWIFTUI_HANDOFF_READY = YES, PARALLEL_A_B_C_READY = NO until CHG-UI-1 + CHG-UI-4 are incorporated (A and B may start on `8d2a7c0`; REAL_ATHLETE_READY = NO unchanged).
+- **Line:** `claude/v1-ui-functional-reconciliation` from `claude/v1-parallel-foundation` `077f031`, own worktree. A/B branches and worktrees untouched at `8d2a7c0`; no merge, no force.
+- **What:** read-only inventory of the approved Figma (25 pages, 588 flow screens), 154-row capability traceability, data-state variants, 37 contract gaps (5 safety), the front C (SwiftUI) handoff, six foundation change proposals (CHG-UI-1 `CoachingPresentation` package drafted and tested 6/6 against real boundary answers), deterministic probes of the frozen boundary (59 files).
+- **Found:** warning signs are asked by condition (9/13/15; the Figma's 13 is correct); `specialPopulation` (pregnancy) missing from the closed intake key list; unplanned strength answered `recorded` but not kept (to investigate); in-app GPS run has no honest path to the record without a HealthKit write decision.
+- **No CoachingCore byte changed** (`--check` 87/87); no Figma edit, SwiftUI, HealthKit, CoachingHost or backend implementation.
+- **Report:** `audits/v1-ui-functional-reconciliation/FINAL_RECONCILIATION_REPORT.md`.

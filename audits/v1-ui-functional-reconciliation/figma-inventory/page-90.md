@@ -1,0 +1,93 @@
+# 90 · Fluxos (551:20)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 90 · Fluxos (551:20) · items 1 · screens 1 · motion 0
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): 
+### Fluxos · como as telas se ligam
+`898:23` FRAME 1500x1416
+- Repmile · canônico da primeira versão
+- Fluxos
+- Nove caminhos pelas telas. Cada passo diz a página onde ele está desenhado; os estados de cada passo ficam na fileira da própria página.
+- Primeira vez · do cadastro ao primeiro treino
+- Abertura
+- 10
+- Objetivo
+- 10 · etapa 1
+- Rotina
+- 10 · etapa 2
+- Você
+- 10 · etapa 3
+- Seus dados
+- 10 · etapa 4
+- Montando o plano
+- Prévia do plano
+- Salvar o plano
+- 10 · conta
+- Assinar · 7 dias grátis
+- 80
+- Primeira semana
+- Hoje
+- 20
+- Dia de corrida
+- Treino planejado
+- 31
+- Pronto para começar
+- 40
+- Em andamento
+- Registro: esforço e como foi
+- Resumo salvo
+- Concluído
+- 50
+- Dia seguinte: como você está?
+- Dia de força
+- Série atual
+- 41
+- Registro
+- Depois do treino
+- Histórico
+- Progresso
+- 60
+- Compartilhar
+- 82
+- Quando a semana muda
+- Algo mudou na sua semana?
+- Mover ou mudar a agenda
+- 30
+- Proposta
+- Aceita ou recusada
+- Plano atualizado
+- Mudanças no plano
+- Quando o corpo pede
+- Sinal de alerta, dor ou cansaço
+- 20 · 72
+- Um sinal por tela
+- 72
+- Pausa por segurança
+- Declaração de prontidão
+- Volta ao plano
+- Prova
+- Semana de prova
+- Dia da prova
+- Resultado registrado
+- 20 · 71
+- Calibração dos ritmos
+- 71
+- Compartilhar a prova
+- Conta e assinatura
+- Entrar
+- Assinar
+- Compra na App Store
+- 80 · folha do iOS
+- Assinatura ativa
+- Gerenciar ou cancelar
+- Excluir conta
+- Dados que chegam
+- Apple Saúde conectado
+- 81
+- Treino chega
+- Era o do plano?
+- Concluído com o que chegou
+- Histórico e Progresso
+- 50 · 60
+Instances: Ícone/chevron-direita ×46

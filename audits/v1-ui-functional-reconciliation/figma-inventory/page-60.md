@@ -1,0 +1,1892 @@
+# 60 · Progresso (551:12)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 60 · Progresso (551:12) · items 64 · screens 27 · motion 27
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): «9:41» «Progresso» «Hoje» «Plano» «Histórico»
+
+#### Row: Geral `728:1499`
+### Progresso / Geral · 12 meses
+`512:360` FRAME 393x2080 · +chrome
+- Geral
+- Corrida
+- Força
+- 12 meses
+- Últimos 12 meses
+- 1.240
+- km
+- +18% sobre o ano anterior
+- 186
+- sessões
+- 3 de 4 cargas principais subiram
+- Plano atual
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Mapa híbrido
+- Em 12 meses: mais fôlego e mais força.
+- Força relativa (agachamento ÷ peso)
+- Meta híbrida
+- Mais força
+- Hoje · 48,6 · 1,51×
+- 1,5×
+- 1,4×
+- Base
+- Mais fôlego
+- 46
+- 48
+- 50
+- VO2 máx
+- Os dois subiram juntos e você entrou na zona da meta em novembro. Isso não prova que um ajudou o outro; seguimos observando.
+- Volume semanal
+- 33 km e 3,5 sessões por semana
+- ago
+- set
+- out
+- nov
+- Corrida · km
+- Força · sessões
+- Descarga
+- Divisão do tempo
+- últimas 4 semanas · 5h13 por semana
+- Corrida 59% · 3h05
+- Força 41% · 2h08
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Consistência
+- 44 de 52 semanas com corrida e força
+- dez
+- fev
+- abr
+- jun
+- Os dois
+- Descanso
+- As lacunas de janeiro e julho foram as férias. Desde agosto, nenhuma semana sem os dois esportes.
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Watch
+- VFC
+- 61
+- ms
+- +1 ms
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · plano atual, semana 3 (quinta à noite)
+`728:68` FRAME 393x2594 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Watch
+- VFC
+- 61
+- ms
+- +1 ms
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- 50
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · 12 semanas, com o que veio do Apple Saúde
+`728:481` FRAME 393x1578 · +chrome
+- Geral
+- Corrida
+- Força
+- 12 semanas
+- Últimas 12 semanas · 24 ago a 15 nov
+- 34h38
+- 9 semanas vieram do Apple Saúde
+- 23h39
+- importados trazem só a duração
+- No plano
+- 3
+- de 12
+- semanas, desde 26 out
+- Minutos por semana · 24 ago a 15 nov
+- Antes e depois do plano
+- Apple Saúde · sem plano
+- 24 ago
+- 21 set
+- 19 out
+- hoje
+- Tom claro: importado
+- Contorno: previsto
+- Antes do plano, de 24 ago a 25 out: corrida entre 97 e 205 min por semana e força até 155 min, pela duração que o relógio registrou. A semana de 12 out foi a da prova de 5 km, sem força. Desde 26 out: corrida 200, 200 e 79 min até hoje; força 119, 119 e 120 min.
+- Constância
+- Só existe com plano
+- Antes de 26 out não havia sessões previstas, então não há constância para essas semanas. Desde 26 out: 19 de 19.
+- Importado do Apple Saúde
+- O que entra num período longo
+- Corridas: duração, distância e ritmo médio, como o relógio registrou.
+- Treinos de força: só a duração, sem séries nem cargas.
+- Importados não têm esforço nem plano: entram no volume deste período. Estimativas e decisões do plano vêm dos registros do plano e dos resultados que você informou.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- O maior longão, de 80 min em 24 out, veio do Apple Saúde. O resultado de 5 km foi informado por você e é a referência dos ritmos.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · escolher período (folha)
+`728:1106` FRAME 393x852 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Watch
+- VFC
+- 61
+- ms
+- +1 ms
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- 50
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+- Período
+- O que o Progresso mostra.
+- Desde 26 out · semana 3 de 8
+- 12 semanas
+- 24 ago a 15 nov · inclui o que veio do Apple Saúde
+- 12 meses
+- Dez 2025 a nov 2026 · inclui o que veio do Apple Saúde
+- Constância e estimativas só existem com plano. Em períodos longos, o que foi importado aparece marcado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso; Ícone/check
+### Progresso / Geral · semana 2 selecionada, dados em tabela
+`728:666` FRAME 393x2873 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- Semana 2 · 2–8 nov · selecionada
+- Corrida 200 de 200 min · força 119 de 119 min · 7 de 7 sessões
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ocultar tabela
+- Os mesmos números do gráfico
+- Semana
+- Sessões
+- 1 · 26 out
+- 200/200
+- 119/119
+- 7/7
+- 2 · 2 nov
+- 3 · até hoje
+- 120/120
+- 5/5
+- Feito/previsto, em minutos. Semana 3: 2 sessões por vir.
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Watch
+- VFC
+- 61
+- ms
+- +1 ms
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- 50
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-cima; Ícone/chevron-direita ×2; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Geral `732:1364`
+### Motion · Geral · 12 meses
+`732:1365` FRAME 393x2080 · motion twin of `512:360`, same text
+### Motion · Geral · plano atual, semana 3 (quinta à noite)
+`732:2378` FRAME 393x2594 · motion twin of `728:68`, same text
+### Motion · Geral · 12 semanas, com o que veio do Apple Saúde
+`732:3288` FRAME 393x1578 · motion twin of `728:481`, same text
+### Motion · Geral · escolher período (folha)
+`732:3779` FRAME 393x852 · motion twin of `728:1106`, same text
+### Motion · Geral · semana 2 selecionada, dados em tabela
+`732:4199` FRAME 393x2873 · motion twin of `728:666`, same text
+
+#### Row: Corrida `728:1500`
+### Progresso / Corrida · plano atual, capacidade e ritmos
+`729:478` FRAME 393x3041 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45. Estimativa da sua capacidade hoje, em condições comparáveis. Não é previsão nem promessa de tempo.
+- Sua meta, 44:30 em 20 dez, está dentro do intervalo estimado.
+- Confiança alta · válida até 13 dez · base: prova oficial de 5 km em 21:48, dom 18 out.
+- Estimativas de prova
+- 5 km, 10 km e meia; maratona indisponível sem meia ou mais
+- Plano atual · desde 26 out
+- Corridas
+- 10
+- 7 leves, 2 longões e 1 limiar
+- Tempo
+- 7h59
+- 479 de 479 min previstos até hoje
+- Distância
+- 74,8
+- km
+- a registrada em cada corrida
+- Desde 26 out
+- O que mudou
+- A estimativa não mudou: a referência continua a prova de 18 out.
+- A faixa leve passou de 5:45–7:10 para 6:15–7:10 /km na virada de 9 nov. Faixas só mudam na virada da semana.
+- A estimativa muda com um novo resultado de prova ou teste. Corridas leves mais rápidas não mudam a estimativa.
+- Seus ritmos · semana 3
+- Orientação ao lado do esforço
+- Se o ritmo e o esforço discordarem, vale o esforço.
+- Leve
+- Esforço 2–4 · dá para conversar
+- 6:15–7:10
+- /km
+- Longão
+- 6:15–7:20
+- Limiar
+- Esforço 6–7 · frases curtas
+- 4:50–5:15
+- Ritmo de 10 km
+- Esforço 7–8 · poucas palavras
+- 4:40–4:55
+- 4:30
+- ← mais rápido · /km
+- 7:30
+- Seus ritmos e esforço
+- Origem, confiança e validade de cada faixa
+- Volume de corrida
+- Minutos por semana
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- S1
+- S2
+- S3
+- S4
+- S5
+- S6
+- S7
+- S8
+- Feito
+- Previsto
+- Provisório
+- Distância registrada: 30,7 km na semana 1, 31,1 km na semana 2 e 13,0 km até hoje na semana 3.
+- Por tipo de treino
+- desde 26 out · pelo tipo de cada treino feito
+- Leve 62%
+- Longão 31%
+- Limiar 7%
+- Leve 4h55, longão 2h30 e limiar 34 min. É pelo tipo do treino, não pela frequência cardíaca.
+- Sessões comparáveis · leve e longão
+- Mesmo esforço, ritmo estável
+- 6:15
+- 6:40
+- 7:10
+- 26 out
+- 2 nov
+- 9 nov
+- hoje
+- Faixa leve em vigor
+- 9 sessões (7 leves e 2 longões), entre 6:24 e 6:36 /km, com esforço 2 a 3 de 10. Corridas leves mais rápidas não mudam a estimativa: o esforço manda.
+- Ter 10 nov · 3 de 3 blocos na faixa
+- 4:59
+- Longões
+- 2 no plano · próximo sáb 14, 80 min
+- 6:31
+- Resultados e marcas registradas
+- O que você fez
+- Cada coisa no seu lugar: resultado não é estimativa, e meta não é previsão.
+- Resultado de prova · 5 km
+- Oficial · dom 18 out · referência atual
+- 21:48
+- Maior corrida registrada
+- Sáb 24 out · 80 min · importada do Apple Saúde
+- 12,9
+- Maior longão no plano
+- Sáb 7 nov · 1:15:30
+- 11,60
+- Recorde pessoal histórico
+- Você pode informar em Perfil
+- não informado
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×4; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · 12 semanas, com o que veio do Apple Saúde
+`729:1204` FRAME 393x1337 · +chrome
+- Geral
+- Corrida
+- Força
+- 12 semanas
+- Últimas 12 semanas · 24 ago a 15 nov
+- Corridas
+- 45
+- 35 vieram do Apple Saúde
+- Tempo
+- 34h38
+- pela duração registrada
+- Distância
+- 331
+- km
+- 256 km importados
+- Minutos de corrida por semana
+- Antes e depois do plano
+- Apple Saúde · sem plano
+- 24 ago
+- 21 set
+- 19 out
+- hoje
+- No Repmile
+- Importado
+- Previsto
+- De 24 ago a 25 out, entre 97 e 205 min por semana, pela duração que o relógio registrou. A semana de 12 out foi a da prova de 5 km. Desde 26 out: 200, 200 e 79 min até hoje.
+- Capacidade estimada e ritmos
+- Só com plano e resultado
+- A estimativa de 10 km (43:30–48:45) e as faixas de ritmo vêm da prova de 5 km de 18 out e dos registros do plano. Corridas importadas entram no volume, não na estimativa.
+- Ver o plano atual
+- Capacidade, ritmos e sessões comparáveis
+- Resultados e marcas registradas
+- O que você fez
+- Resultado de prova · 5 km
+- Oficial · dom 18 out · referência atual
+- 21:48
+- Maior corrida registrada
+- Sáb 24 out · 80 min · importada do Apple Saúde
+- 12,9
+- Maior semana
+- 21 a 27 set · importada
+- 205
+- min
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · Limiar, bloco a bloco
+`729:1380` FRAME 393x1165 · +chrome
+- Corrida · treino de ritmo
+- Limiar
+- 1 limiar desde 26 out. Faixa atual: 4:50–5:15 /km, pela prova de 5 km de 18 out.
+- Ter 10 nov · 3 × 5 min
+- 3 de 3 blocos na faixa
+- 4:52
+- 4:50
+- 5:00
+- 5:04
+- 5:15
+- Bloco 1
+- Bloco 2
+- Bloco 3
+- Ritmo do bloco
+- Faixa do limiar
+- Cada bloco saiu um pouco mais rápido que o anterior, sem sair da faixa. Esforço relatado: 7 de 10.
+- Sessões
+- 3 × 5 min
+- Ter 10 nov · 3 de 3 na faixa · esforço 7
+- 4:59
+- /km
+- 4 × 5 min
+- Ter 17 nov · no plano, provisória
+- —
+- O que dá para dizer
+- Os três blocos caíram na faixa: 5:04, 5:00 e 4:52 /km.
+- Com uma sessão só, ainda não há comparação. Ela aparece depois do próximo limiar, na terça 17.
+- Bater a faixa não muda o ritmo sozinho: ele é revisto com uma nova referência, como uma prova ou um teste.
+- Ver o treino de ter 10 no Histórico
+- 34:00 · 5,96 km · leituras por bloco
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/chevron-direita ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · Longões
+`729:1517` FRAME 393x1131 · +chrome
+- Corrida · treino longo
+- Longões
+- 2 longões no plano desde 26 out e 1 importado antes dele. O longão é por tempo e esforço; a distância é consequência.
+- Longão por semana · minutos
+- 75 min nas duas semanas
+- 80
+- 75
+- 76
+- 0/80
+- 24 out
+- 31 out
+- 7 nov
+- sáb 14
+- Feito
+- Importado
+- Previsto
+- Últimos longões
+- 11,60 km
+- Sáb 7 nov · 1:15:30 · esforço 3
+- 6:31
+- /km
+- 11,40 km
+- Sáb 31 out · 1:15:12 · esforço 3
+- 6:36
+- 12,9 km
+- Sáb 24 out · 80 min · importado do Apple Saúde
+- 6:12
+- O que dá para dizer
+- Os dois longões do plano tiveram a mesma duração, e o segundo saiu 5 s por km mais rápido com o mesmo esforço.
+- O alvo é o esforço: dá para conversar, 2 a 4 de 10. Faixa de orientação: 6:15–7:20 /km.
+- Sábado 14: 80 min. As semanas seguintes são provisórias até a virada.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/chevron-direita ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · leitura ao toque nas sessões comparáveis
+`729:839` FRAME 393x3106 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45. Estimativa da sua capacidade hoje, em condições comparáveis. Não é previsão nem promessa de tempo.
+- Sua meta, 44:30 em 20 dez, está dentro do intervalo estimado.
+- Confiança alta · válida até 13 dez · base: prova oficial de 5 km em 21:48, dom 18 out.
+- Estimativas de prova
+- 5 km, 10 km e meia; maratona indisponível sem meia ou mais
+- Plano atual · desde 26 out
+- Corridas
+- 10
+- 7 leves, 2 longões e 1 limiar
+- Tempo
+- 7h59
+- 479 de 479 min previstos até hoje
+- Distância
+- 74,8
+- km
+- a registrada em cada corrida
+- Desde 26 out
+- O que mudou
+- A estimativa não mudou: a referência continua a prova de 18 out.
+- A faixa leve passou de 5:45–7:10 para 6:15–7:10 /km na virada de 9 nov. Faixas só mudam na virada da semana.
+- A estimativa muda com um novo resultado de prova ou teste. Corridas leves mais rápidas não mudam a estimativa.
+- Seus ritmos · semana 3
+- Orientação ao lado do esforço
+- Se o ritmo e o esforço discordarem, vale o esforço.
+- Leve
+- Esforço 2–4 · dá para conversar
+- 6:15–7:10
+- /km
+- Longão
+- 6:15–7:20
+- Limiar
+- Esforço 6–7 · frases curtas
+- 4:50–5:15
+- Ritmo de 10 km
+- Esforço 7–8 · poucas palavras
+- 4:40–4:55
+- 4:30
+- ← mais rápido · /km
+- 7:30
+- Seus ritmos e esforço
+- Origem, confiança e validade de cada faixa
+- Volume de corrida
+- Minutos por semana
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- S1
+- S2
+- S3
+- S4
+- S5
+- S6
+- S7
+- S8
+- Feito
+- Previsto
+- Provisório
+- Distância registrada: 30,7 km na semana 1, 31,1 km na semana 2 e 13,0 km até hoje na semana 3.
+- Por tipo de treino
+- desde 26 out · pelo tipo de cada treino feito
+- Leve 62%
+- Longão 31%
+- Limiar 7%
+- Leve 4h55, longão 2h30 e limiar 34 min. É pelo tipo do treino, não pela frequência cardíaca.
+- Sessões comparáveis · leve e longão
+- Mesmo esforço, ritmo estável
+- Sáb 7 nov · longão
+- 11,60 km · 1:15:30 · 6:31 /km · esforço 3
+- 6:15
+- 6:40
+- 7:10
+- 26 out
+- 2 nov
+- 9 nov
+- hoje
+- Faixa leve em vigor
+- 9 sessões (7 leves e 2 longões), entre 6:24 e 6:36 /km, com esforço 2 a 3 de 10. Corridas leves mais rápidas não mudam a estimativa: o esforço manda.
+- Ter 10 nov · 3 de 3 blocos na faixa
+- 4:59
+- Longões
+- 2 no plano · próximo sáb 14, 80 min
+- 6:31
+- Resultados e marcas registradas
+- O que você fez
+- Cada coisa no seu lugar: resultado não é estimativa, e meta não é previsão.
+- Resultado de prova · 5 km
+- Oficial · dom 18 out · referência atual
+- 21:48
+- Maior corrida registrada
+- Sáb 24 out · 80 min · importada do Apple Saúde
+- 12,9
+- Maior longão no plano
+- Sáb 7 nov · 1:15:30
+- 11,60
+- Recorde pessoal histórico
+- Você pode informar em Perfil
+- não informado
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×4; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Corrida `733:1648`
+### Motion · Corrida · plano atual, capacidade e ritmos
+`733:1649` FRAME 393x3041 · motion twin of `729:478`, same text
+### Motion · Corrida · 12 semanas, com o que veio do Apple Saúde
+`733:2410` FRAME 393x1337 · motion twin of `729:1204`, same text
+### Motion · Corrida · Limiar, bloco a bloco
+`733:2763` FRAME 393x1165 · motion twin of `729:1380`, same text
+### Motion · Corrida · Longões
+`733:2990` FRAME 393x1131 · motion twin of `729:1517`, same text
+### Motion · Corrida · leitura ao toque nas sessões comparáveis
+`733:3234` FRAME 393x3106 · motion twin of `729:839`, same text
+
+#### Row: Força `728:1501`
+### Progresso / Força · plano atual, cargas e séries
+`730:748` FRAME 393x2902 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Cargas principais registradas
+- Semana 3: as cinco principais subiram 2,5 kg.
+- Kg total na barra, nas repetições previstas e com reserva 3. O Repmile não estima carga máxima (1RM).
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Supino reto
+- 72,5
+- Remada curvada
+- 62,5
+- Desenvolvimento com barra
+- 45
+- Plano atual · desde 26 out
+- Sessões
+- 9
+- de 9
+- Inferior, Superior e Corpo inteiro
+- Séries
+- 126
+- de 126
+- todas registradas
+- Tempo
+- 5h58
+- 358 min em 3 semanas
+- Regra do plano
+- Como as cargas sobem
+- As principais sobem 2,5 kg, o menor incremento da barra, depois de duas semanas cumpridas com 2 ou mais repetições em reserva em todas as séries. No máximo um passo por semana.
+- Se alguma série fica abaixo, a carga repete. Se a técnica ou a reserva não se mantêm, reduza.
+- Acessórios seguem a mesma regra, a partir da carga do último registro.
+- Na fase específica, a partir de seg 16 nov, as principais param de subir; agachamento e supino passam de 4 para 3 séries.
+- Volume de força
+- Minutos por semana
+- 13
+- 74
+- 119
+- 120
+- 109
+- S1
+- S2
+- S3
+- S4
+- S5
+- S6
+- S7
+- S8
+- Feito
+- Provisório
+- Séries: 42 de 42 em cada uma das três semanas, 126 de 126 no total.
+- Séries por grupo · semana 3
+- 42 de 42 séries
+- Costas
+- 9 de 9
+- Peito
+- 8 de 8
+- Quadríceps e glúteos
+- Posterior de coxa
+- 6 de 6
+- Core
+- Ombros
+- 3 de 3
+- Panturrilha
+- 2 de 2
+- Cada série conta para o grupo principal do exercício. É uma estimativa de distribuição, não uma meta por músculo.
+- Acessórios
+- Carga do último registro
+- Kg por mão nos halteres; pilha da máquina na puxada.
+- Afundo com halteres · 2 × 7 por lado
+- Subiu na quinta 12: de 16 para 18 kg por mão
+- 18
+- kg/mão
+- Panturrilha com halteres · 2 × 7
+- 16, 18 e 20 kg por mão: todas as séries com 2 ou mais em reserva
+- 20
+- Puxada alta · 3 × 7
+- Pilha da máquina; próxima placa só quando você confirmar
+- 55
+- Dead bug · 2 séries
+- 7, 9 e 10 repetições por série, como previsto
+- 10
+- reps
+- Carga total por semana
+- 13,8 t · 13,9 t · 14,4 t
+- Soma de carga × repetições nas três semanas. Mostra quanto trabalho foi feito; não mede força nem hipertrofia.
+- Marcas no app
+- Seg 9 nov · 4 × 5 · reserva 3
+- Qua 11 nov · 4 × 5
+- Afundo com halteres
+- Qui 12 nov · nova marca, por mão
+- Marca é o que você levantou nas repetições previstas, não 1RM. Treinos de força importados do Apple Saúde trazem só a duração.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×5; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Força · 12 semanas, importados só com duração
+`730:1109` FRAME 393x1020 · +chrome
+- Geral
+- Corrida
+- Força
+- 12 semanas
+- Últimas 12 semanas · 24 ago a 15 nov
+- Sessões
+- 30
+- 21 vieram do Apple Saúde
+- Tempo
+- 23h39
+- pela duração registrada
+- Com cargas
+- 9
+- de 30
+- só as do plano
+- Minutos de força por semana
+- Antes e depois do plano
+- Apple Saúde · sem plano
+- 24 ago
+- 21 set
+- 19 out
+- hoje
+- No Repmile
+- Importado
+- De 24 ago a 25 out, até 155 min por semana, pela duração que o relógio registrou. Na semana de 12 out, a da prova de 5 km, não houve força. Desde 26 out: 119, 119 e 120 min.
+- Cargas e séries
+- Só desde 26 out
+- Treinos importados trazem só a duração: sem exercícios, séries nem cargas. A evolução de carga começa na primeira sessão registrada no Repmile.
+- Ver o plano atual
+- Cargas por exercício e regra de progressão
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Força · exercício Agachamento livre
+`730:1241` FRAME 393x1891 · +chrome
+- Força · barra livre · carga total na barra
+- Agachamento livre
+- Nas sessões de Inferior, às segundas: 4 × 5 com 3 repetições em reserva e 2:30 de descanso.
+- Carga por sessão · kg
+- 90 → 92,5 kg
+- 92,5
+- 90
+- 21 out
+- 26 out
+- 2 nov
+- 9 nov
+- 16 nov
+- início
+- no plano
+- Feita
+- Informada no início
+- Prevista no plano
+- Sempre 4 × 5 com reserva 3. A carga subiu na semana 3, como previsto pelo plano.
+- Próxima no plano: seg 16 nov, 3 × 5 com 92,5 kg. Na fase específica a carga não sobe e o agachamento passa de 4 para 3 séries.
+- Compartilhar evolução
+- Sessão a sessão
+- Séries registradas
+- Carga, repetições e reserva de cada série.
+- Seg 9 nov
+- Inferior · semana 3
+- kg
+- 5 reps
+- reserva 3
+- Seg 2 nov
+- Inferior · semana 2
+- Seg 26 out
+- Inferior · semana 1
+- Antes do plano · 21 out
+- Informado por você no início: 4 × 5 com reserva 3
+- Ver as sessões no Histórico
+- Busca por “agachamento”
+- Regra do plano
+- Como a carga sobe
+- Carga conhecida: use 92,5 kg enquanto técnica e reserva se mantêm; se não, reduza.
+- Sobe 2,5 kg, o menor incremento da barra, depois de duas semanas cumpridas com 2 ou mais em reserva em todas as séries. Se alguma série fica abaixo, repete.
+- Na fase específica, a partir de 16 nov, a carga fica e as séries passam de 4 para 3.
+- Maior carga registrada
+- kg × 5 · seg 9 nov · reserva 3
+- É o que você levantou, nas repetições previstas. Não é 1RM: o Repmile não estima carga máxima.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/chevron-direita; Ícone/marco; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Força · exercício Supino reto, com ajuste na quinta
+`730:1461` FRAME 393x1981 · +chrome
+- Força · barra livre · carga total na barra
+- Supino reto
+- No Superior, às quartas, e no Corpo inteiro, às quintas: 4 × 5 com 3 repetições em reserva e 2:30 de descanso.
+- Carga por sessão · kg
+- 70 → 72,5 kg
+- 72,5
+- 70
+- 28 out
+- 29 out
+- 4 nov
+- 5 nov
+- 11 nov
+- 12 nov
+- 18 nov
+- 2 a 70
+- no plano
+- Feita
+- Prevista no plano
+- Subiu na quarta 11. Na quinta 12, as séries 3 e 4 foram a 70 kg, depois de sobrar 1 repetição na série 2.
+- Ajustar para baixo no meio da sessão não é falha: é a regra da reserva. A carga de referência continua 72,5 kg.
+- Compartilhar evolução
+- Sessão a sessão
+- Séries registradas
+- Carga, repetições e reserva de cada série.
+- Qui 12 nov
+- Corpo inteiro · semana 3 · ajuste nas séries 3 e 4
+- kg
+- 72,5 × 5
+- reserva 2
+- reserva 1
+- 70 × 5
+- reserva 3
+- Qua 11 nov
+- Superior · semana 3
+- 5 reps
+- Qui 5 nov
+- Corpo inteiro · semana 2
+- Qua 4 nov
+- Superior · semana 2
+- Ver as sessões no Histórico
+- Busca por “supino”
+- Regra do plano
+- Como a carga sobe
+- Carga conhecida: use 72,5 kg enquanto técnica e reserva se mantêm; se uma série ficar com menos de 2 em reserva, reduza nas seguintes.
+- Sobe 2,5 kg depois de duas semanas cumpridas com 2 ou mais em reserva em todas as séries. A quinta 12 não cumpriu: a carga repete.
+- Na fase específica, a partir de 16 nov, a carga fica e as séries passam de 4 para 3.
+- Maior carga registrada
+- kg × 5 · qua 11 nov · reserva 3
+- É o que você levantou, nas repetições previstas. Não é 1RM: o Repmile não estima carga máxima.
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar ×2; Ícone/chevron-direita; Ícone/marco; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Força · Inferior, as três sessões lado a lado
+`730:1696` FRAME 393x1259 · +chrome
+- Força · sessão do plano
+- Inferior
+- As três segundas do plano, lado a lado. Só entre treinos comparáveis: mesmo exercício, mesmas repetições.
+- Carga por exercício · kg
+- Duas principais subiram na semana 3
+- Exercício
+- 26 out
+- 2 nov
+- 9 nov
+- Agachamento livre · 4 × 5
+- 90
+- 92,5
+- Stiff com barra · 3 × 6
+- 80
+- 82,5
+- Afundo com halteres · 2 × 7, por mão
+- 16
+- Panturrilha · 2 × 7, por mão
+- 18
+- 20
+- Dead bug · 2 séries, reps
+- 7
+- 9
+- 10
+- A sessão inteira
+- Duração · min
+- 38
+- 37
+- Séries
+- 13
+- Carga total · kg
+- 4.584
+- 4.640
+- 4.791
+- O que mudou
+- Agachamento e stiff subiram 2,5 kg na semana 3, depois de duas semanas com 2 ou mais em reserva em todas as séries.
+- Panturrilha subiu duas vezes: 16, 18 e 20 kg por mão.
+- O afundo ficou em 16 kg por mão nas segundas; na quinta 12, no Corpo inteiro, subiu para 18.
+- Ver a sessão de seg 9 no Histórico
+- 37 min · 13 séries
+Instances: Barra de status; Ícone/chevron-esquerda; Ícone/compartilhar; Ícone/chevron-direita; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Força · escolher exercício (folha)
+`730:1845` FRAME 393x852 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Cargas principais registradas
+- Semana 3: as cinco principais subiram 2,5 kg.
+- Kg total na barra, nas repetições previstas e com reserva 3. O Repmile não estima carga máxima (1RM).
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Supino reto
+- 72,5
+- Remada curvada
+- 62,5
+- Desenvolvimento com barra
+- 45
+- Plano atual · desde 26 out
+- Sessões
+- 9
+- de 9
+- Inferior, Superior e Corpo inteiro
+- Séries
+- 126
+- de 126
+- todas registradas
+- Tempo
+- 5h58
+- 358 min em 3 semanas
+- Regra do plano
+- Como as cargas sobem
+- As principais sobem 2,5 kg, o menor incremento da barra, depois de duas semanas cumpridas com 2 ou mais repetições em reserva em todas as séries. No máximo um passo por semana.
+- Se alguma série fica abaixo, a carga repete. Se a técnica ou a reserva não se mantêm, reduza.
+- Acessórios seguem a mesma regra, a partir da carga do último registro.
+- Na fase específica, a partir de seg 16 nov, as principais param de subir; agachamento e supino passam de 4 para 3 séries.
+- Volume de força
+- Minutos por semana
+- 13
+- 74
+- 119
+- 120
+- 109
+- S1
+- S2
+- S3
+- S4
+- S5
+- S6
+- S7
+- S8
+- Feito
+- Provisório
+- Séries: 42 de 42 em cada uma das três semanas, 126 de 126 no total.
+- Séries por grupo · semana 3
+- 42 de 42 séries
+- Costas
+- 9 de 9
+- Peito
+- 8 de 8
+- Quadríceps e glúteos
+- Posterior de coxa
+- 6 de 6
+- Core
+- Ombros
+- 3 de 3
+- Panturrilha
+- 2 de 2
+- Cada série conta para o grupo principal do exercício. É uma estimativa de distribuição, não uma meta por músculo.
+- Acessórios
+- Carga do último registro
+- Kg por mão nos halteres; pilha da máquina na puxada.
+- Afundo com halteres · 2 × 7 por lado
+- Subiu na quinta 12: de 16 para 18 kg por mão
+- 18
+- kg/mão
+- Panturrilha com halteres · 2 × 7
+- 16, 18 e 20 kg por mão: todas as séries com 2 ou mais em reserva
+- 20
+- Puxada alta · 3 × 7
+- Pilha da máquina; próxima placa só quando você confirmar
+- 55
+- Dead bug · 2 séries
+- 7, 9 e 10 repetições por série, como previsto
+- 10
+- reps
+- Carga total por semana
+- 13,8 t · 13,9 t · 14,4 t
+- Soma de carga × repetições nas três semanas. Mostra quanto trabalho foi feito; não mede força nem hipertrofia.
+- Marcas no app
+- Seg 9 nov · 4 × 5 · reserva 3
+- Qua 11 nov · 4 × 5
+- Afundo com halteres
+- Qui 12 nov · nova marca, por mão
+- Marca é o que você levantou nas repetições previstas, não 1RM. Treinos de força importados do Apple Saúde trazem só a duração.
+- Exercício
+- Evolução de carga, sessão a sessão.
+- Inferior · 92,5 kg
+- Inferior e Corpo inteiro · 82,5 kg
+- Superior e Corpo inteiro · 72,5 kg
+- Superior e Corpo inteiro · 62,5 kg
+- Superior · 45 kg
+- Inferior e Corpo inteiro · 18 kg por mão
+- Panturrilha com halteres
+- Inferior · 20 kg por mão
+- Puxada alta
+- Superior · 55 kg
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×13; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Força `733:4929`
+### Motion · Força · plano atual, cargas e séries
+`733:4930` FRAME 393x2902 · motion twin of `730:748`, same text
+### Motion · Força · 12 semanas, importados só com duração
+`733:5688` FRAME 393x1020 · motion twin of `730:1109`, same text
+### Motion · Força · exercício Agachamento livre
+`733:5973` FRAME 393x1891 · motion twin of `730:1241`, same text
+### Motion · Força · exercício Supino reto, com ajuste na quinta
+`733:6325` FRAME 393x1981 · motion twin of `730:1461`, same text
+### Motion · Força · Inferior, as três sessões lado a lado
+`733:6722` FRAME 393x1259 · motion twin of `730:1696`, same text
+### Motion · Força · escolher exercício (folha)
+`733:6904` FRAME 393x852 · motion twin of `730:1845`, same text
+
+#### Row: Outros perfis e estados `728:1502`
+### Progresso / Geral · poucos dados (Marina, semana 3, qui 26 nov)
+`731:1171` FRAME 393x2137 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 9 nov
+- Caminhada e trote
+- 123
+- min
+- 6 sessões em 2 semanas
+- 63
+- 3 sessões, 1 parcial
+- 9
+- de 10
+- sessões registradas até ontem
+- Constância · semana 3 de 8
+- 9 de 10 sessões registradas. Uma ainda sem registro.
+- S1
+- 4 de 4
+- S2
+- S3
+- 1 de 2
+- S4
+- S5
+- S6
+- S7
+- S8
+- Feita
+- Prevista
+- Sem registro
+- Ainda vem
+- Até ontem, qua 25 nov. 1 parcial (força de qua 18) e 1 sem registro (caminhada e trote de ter 24). Sem registro não é falta: se você fez, registre.
+- Registrar a caminhada e trote de ter 24
+- Do plano: 23 min, 5 × (60 s de trote + 2 min de caminhada)
+- Degrau 3 de 9 da escada
+- esta semana · 5 × 1 min
+- 20 min contínuos
+- Trote por sessão: 1 min 30 s na semana 1, 2 min 30 s na semana 2 e 5 min nesta semana. O degrau sobe depois de uma semana completa; se uma sessão fica parcial, ele se repete. Não há data marcada para cada degrau.
+- Força em casa
+- Cargas estabelecidas na semana 2
+- A semana 1 foi prática com o peso do corpo. Na semana 2 (qua 18) você escolheu as cargas pelo esforço, sem número inventado. Daqui em diante o plano parte do último registro.
+- Agachamento goblet · 2 × 10
+- Um halter
+- 8
+- kg
+- Supino no chão com halteres · 2 × 10
+- Halteres em casa
+- 4
+- kg/mão
+- Remada com halteres · 2 × 10
+- 6
+- Elevação de quadril · 2 × 10
+- Peso do corpo
+- 10
+- reps
+- Minutos por semana
+- Ainda sem gráfico
+- O gráfico de minutos por semana aparece com 3 semanas completas. Você tem 2; falta terminar esta.
+- 2 de 3 semanas
+- Até aqui: semana 1, 60 min de caminhada e trote e 15 de força (prática); semana 2, 63 e 20 (força parcial, de 28).
+- O que dá para acompanhar
+- Tempo e esforço de cada sessão, que você informa. Distância só quando o app grava a sessão com o GPS do iPhone. Frequência cardíaca não é necessária: seu plano é por esforço.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/adicionar ×2; Ícone/chevron-direita; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · só esforço, sem relógio (Marina)
+`731:1434` FRAME 393x1552 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Seus ritmos
+- Por esforço, não por ritmo.
+- Enquanto o plano estiver na escada de caminhada e trote, não há faixas de ritmo nem estimativa de prova. O guia é o esforço: dá para conversar, 2 a 4 de 10. Caminhar é sempre permitido.
+- Escada de caminhada e trote
+- Degrau 3 de 9
+- esta semana · 5 × 1 min
+- 20 min contínuos
+- Esta semana: 23 min, com 5 × (60 s de trote + 2 min de caminhada). O último degrau é 20 min de trote contínuo. Não há data marcada: o degrau sobe depois de uma semana completa.
+- Sessões · desde 9 nov
+- Caminhada e trote
+- Ter 24 · 23 min previstos · 5 × 60 s
+- Registrar
+- Sáb 21 · 21 min · 5 × 30 s · esforço 3
+- Qui 19 · 21 min · 5 × 30 s · esforço 3
+- Ter 17 · 21 min · 5 × 30 s · esforço 4
+- Sáb 14 · 20 min · 4 × 30 s · esforço 3
+- Qui 12 · 20 min · 3 × 30 s · esforço 3
+- Ter 10 · 20 min · 3 × 30 s · esforço 3
+- Minutos por semana
+- 60 · 63 · 0 de 69
+- 60
+- 63
+- 0/69
+- S1
+- S2
+- S3 · esta
+- Semana 1: 60 de 60. Semana 2: 63 de 63. Semana 3: a sessão de ter 24 está sem registro; qui 26 e sáb 28 ainda estão por vir. Distância e ritmo não são acompanhados: o plano é por tempo e esforço.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/check ×6; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Corrida · sem estimativa, teste oferecido (Rafa, seg 7 dez)
+`731:1601` FRAME 393x1424 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Capacidade atual estimada
+- Indisponível, por enquanto.
+- Ainda não há resultado recente de prova nem teste. Sem isso, o Repmile não estima tempo de prova: o plano segue por tempo e esforço. Objetivo: performance, sem prova marcada.
+- Teste de 5 km oferecido · ter 8 dez
+- Opcional, no lugar do limiar da semana; recusar não tem prejuízo. Se você fizer, a estimativa entra em vigor na semana seguinte, a partir de seg 14 dez.
+- Ver o teste
+- Seus ritmos · desde seg 7 dez
+- Leve: 6:35–7:05 /km
+- Observada nas suas corridas leves de 12 a 26 nov, em esforço 2 a 4. Válida até 17 dez. É orientação ao lado do esforço; se discordarem, vale o esforço.
+- Limiar, 10 km e 5 km
+- Aparecem com um teste ou resultado de prova
+- sem evidência
+- Longão e recuperação
+- Use o esforço: dá para conversar
+- Seus ritmos e esforço
+- Origem, confiança e validade de cada faixa
+- Volume de corrida
+- Minutos por semana
+- 150
+- 155
+- 149
+- 0/144
+- S1
+- S2
+- S3
+- S4
+- S5 · esta
+- Feito
+- Previsto
+- Feito: 150, 150, 155 e 149 min. Esta semana: 144 min previstos, com o teste de 5 km opcional na terça.
+- Sem prova, sem fase de prova
+- O plano anda em blocos de 4 semanas. Um teste de 5 km, quando você quiser, dá as faixas de ritmo e a estimativa.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · plano só de força (bloco 1, semana 4)
+`731:1737` FRAME 393x1577 · +chrome
+- Bloco 1
+- Bloco 1 · desde 19 out · semana 4
+- Sessões
+- 9
+- de 9
+- três semanas completas
+- Séries
+- 135
+- de 135
+- todas registradas
+- Tempo
+- 8h15
+- 495 min em 3 semanas
+- Constância · semana 4 do bloco
+- Três semanas completas. A quarta começa hoje.
+- S1
+- 3 de 3
+- S2
+- S3
+- S4
+- 0 de 3
+- S5
+- S6
+- revisão
+- Feita
+- Prevista
+- Ainda vem
+- Sem corrida no plano: o Progresso mostra só a raia da força. Descanso planejado não conta como falta.
+- Minutos por semana
+- 165 min nas três semanas
+- 165
+- 0/165
+- Feito
+- Previsto
+- Provisório
+- Inferior de 60 min, Superior de 50 e Corpo inteiro de 55. Hoje, às 18h30: Inferior.
+- Cargas principais
+- Um passo em cada uma no bloco
+- Agachamento livre · 4 × 6
+- Subiu na semana 3
+- 75
+- kg
+- Supino reto · 4 × 6
+- 57,5
+- Levantamento terra · 3 × 5
+- 95
+- Kg total na barra, nas repetições previstas. O Repmile não estima carga máxima (1RM).
+- Perto da semana 6 o bloco é revisto
+- Os exercícios principais ficam; séries e acessórios podem mudar. O que você já registrou continua no Histórico.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Vazio · antes do primeiro treino (Marina, seg 9)
+`731:1960` FRAME 393x852 · +chrome
+- S1
+- S2
+- S3
+- S4
+- S5
+- S6
+- S7
+- S8
+- Seu progresso começa no primeiro treino
+- Aqui vão aparecer a constância, os minutos por semana e os degraus da sua escada: só com dados seus, sem notas inventadas.
+- Próximo treino
+- Caminhada e trote
+- Amanhã, ter 10 · 20 min · 3 × 30 s de trote
+Instances: Barra de status; Ícone/corrida; Ícone/chevron-direita; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Estado · carregando
+`731:2039` FRAME 393x852 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Calculando o seu progresso…
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Estado · erro ao carregar
+`731:2088` FRAME 393x852 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Não foi possível carregar o progresso
+- Seus registros continuam guardados. Verifique a conexão e tente de novo.
+- Tentar de novo
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Estado · sem conexão, mostrando o que estava salvo
+`731:2239` FRAME 393x2699 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Sem conexão
+- Mostrando o progresso salvo neste aparelho hoje, às 19h58. Atualiza sozinho quando a conexão voltar.
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Watch
+- VFC
+- 61
+- ms
+- +1 ms
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- 50
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · Apple Saúde não conectado (sem sinais do relógio)
+`731:2618` FRAME 393x2589 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Apple Saúde não conectado
+- VFC, sono e frequência de repouso vêm do Apple Saúde. Sem eles nada muda no plano: são só contexto.
+- Permitir nos Ajustes
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Outros perfis e estados `733:7361`
+### Motion · Geral · poucos dados (Marina, semana 3, qui 26 nov)
+`733:7362` FRAME 393x2137 · motion twin of `731:1171`, same text
+### Motion · Corrida · só esforço, sem relógio (Marina)
+`733:7833` FRAME 393x1552 · motion twin of `731:1434`, same text
+### Motion · Corrida · sem estimativa, teste oferecido (Rafa, seg 7 dez)
+`733:8235` FRAME 393x1424 · motion twin of `731:1601`, same text
+### Motion · Geral · plano só de força (bloco 1, semana 4)
+`733:8495` FRAME 393x1577 · motion twin of `731:1737`, same text
+### Motion · Vazio · antes do primeiro treino (Marina, seg 9)
+`733:8893` FRAME 393x852 · motion twin of `731:1960`, same text
+### Motion · Estado · carregando
+`733:9228` FRAME 393x852 · motion twin of `731:2039`, same text
+### Motion · Estado · erro ao carregar
+`733:9346` FRAME 393x852 · motion twin of `731:2088`, same text
+### Motion · Estado · sem conexão, mostrando o que estava salvo
+`733:9516` FRAME 393x2699 · motion twin of `731:2239`, same text
+### Motion · Geral · Apple Saúde não conectado (sem sinais do relógio)
+`733:10436` FRAME 393x2589 · motion twin of `731:2618`, same text
+
+#### Row: Sinais do relógio que não chegam · sem relógio e sem VFC `880:11822`
+### Progresso / Geral · sem relógio (sem o bloco de sinais)
+`880:9310` FRAME 393x2348 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app, com o GPS do iPhone: 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+### Progresso / Geral · só sono e repouso chegaram (sem VFC)
+`880:10566` FRAME 393x2594 · +chrome
+- Geral
+- Corrida
+- Força
+- Plano atual
+- Plano atual · desde 26 out
+- 479
+- min
+- 74,8 km em 10 corridas
+- 358
+- 9 sessões, 126 séries
+- 19
+- de 19
+- sessões feitas, nenhuma perdida
+- Constância · semana 3 de 8
+- Semana 3 de 8: 19 de 19 sessões feitas.
+- S1
+- 7 de 7
+- S2
+- S3
+- 5 de 5
+- S4
+- S5
+- S6
+- S7
+- S8
+- prova
+- Feita
+- Prevista
+- Ainda vem
+- Prova
+- Até hoje, qui 12 nov. Corrida acima da linha, força abaixo; a altura é a duração (até 30 min, 31 a 60, mais de 60). Descanso planejado não conta como falta; sessão não feita conta como não feita, sem reposição. As semanas 4 a 8 são provisórias até a virada.
+- Minutos por semana
+- Planejado e feito
+- 200
+- 79/199
+- 206
+- 208
+- 213
+- 148
+- 65
+- 13
+- 74
+- 119
+- 120
+- 109
+- Previsto
+- Provisório
+- Corrida: 200, 200 e 79 de 199 min. Força: 119, 119 e 120 de 120 min.
+- Ver os dados em tabela
+- Semana a semana, por modalidade
+- Divisão do tempo
+- semanas 1 e 2 · 5h19 por semana
+- Corrida 63% · 3h20
+- Força 37% · 1h59
+- Tempo organiza a agenda; não mede esforço. Prioridade do plano: corrida primeiro.
+- Corrida · capacidade atual estimada · 10 km
+- 43:30–48:45
+- meta 44:30
+- ← mais rápido
+- 43:30
+- central 45:45
+- 48:45
+- Central 45:45, sempre com o intervalo. Sua meta, 44:30 em 20 dez, está dentro dele. Estimativa, não promessa.
+- Ver corrida
+- Ritmos, volume e o que mudou desde 26 out
+- Força · cargas principais
+- Subiram 2,5 kg na semana 3
+- Agachamento livre
+- 4 × 5 · +2,5 kg desde 26 out
+- 92,5
+- kg
+- Supino reto
+- 72,5
+- Stiff com barra
+- 3 × 6 · +2,5 kg desde 26 out
+- 82,5
+- Ver força
+- Cargas por exercício e regra de progressão
+- Sinais do relógio
+- Média de 4 semanas contra as 4 anteriores · Apple Saúde
+- Sono
+- 7h04
+- −12 min
+- Repouso
+- 50
+- bpm
+- −2 bpm
+- Contexto para o plano: nenhum sinal sozinho decide um treino.
+- Marcos
+- 5 km
+- 21:48
+- 18 out
+- Agachamento
+- 92,5 kg
+- 5 reps · 9 nov
+- Maior longão
+- 80 min
+- 24 out
+- Fontes: 19 sessões do plano registradas no app (1 delas com o GPS do iPhone): 479 min de corrida e 9 treinos de força. O que veio do Apple Saúde antes de 26 out aparece em períodos mais longos, marcado como importado.
+Instances: Barra de status; Ícone/compartilhar; Ícone/chevron-baixo; Ícone/chevron-direita ×3; Ícone/marco ×3; Tab bar {Aba=Progresso}; Ícone/hoje; Ícone/plano; Ícone/adicionar; Ícone/historico; Ícone/progresso
+
+#### Row: Motion · Sinais do relógio que não chegam · sem relógio e sem VFC `880:11823`
+### Motion · Geral · sem relógio (sem o bloco de sinais)
+`880:9685` FRAME 393x2348 · motion twin of `880:9310`, same text
+### Motion · Geral · só sono e repouso chegaram (sem VFC)
+`880:10941` FRAME 393x2594 · motion twin of `880:10566`, same text

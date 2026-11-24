@@ -1,0 +1,617 @@
+# ZZ · Legado (551:23)
+Non-authoritative legacy page — frame names only.
+
+PAGE ZZ · Legado (551:23) · 611 top-level nodes
+- TEXT `567:2` Legado · 0 · Índice e status · 1060x79
+- FRAME `315:4701` Índice e status do arquivo · 1020x924
+- TEXT `567:3` Legado · 1 · Onboarding (canônico · conversa em capítulos) · 2317x79
+- TEXT `279:2147` Abertura · antes do plano, uma conversa · 412x28
+- FRAME `279:2148` C0-01 · Boas-vindas — a trilha · 393x852
+- FRAME `279:2238` C0-02 · Abertura — Qual é o seu nome? · 393x852
+- FRAME `279:2294` C0-03 · Abertura — Quando você nasceu? · 393x852
+- FRAME `279:2354` C0-04 · Abertura — O roteiro da conversa (4 partes) · 393x852
+- FRAME `296:3948` Notas · Onboarding canônico (conversa em capítulos) · 420x2452
+- FRAME `278:2112` Componentes · Conversa (canônico) · 1120x1754
+- TEXT `281:2302` Parte 1 · O destino — onde você quer chegar · 452x28
+- FRAME `281:2303` C1-01 · O destino — O que você quer treinar? · 393x852
+- FRAME `281:2411` C1-02 · O destino — Na corrida, onde você quer chegar? · 393x852
+- FRAME `281:2516` C1-03 · O destino — Qual é a prova? · 393x900
+- FRAME `281:2628` C1-04 · O destino — E na força, o que você busca? · 393x852
+- FRAME `281:2743` C1-05 · O destino — O que vem primeiro? · 393x1040
+- TEXT `282:2637` Parte 2 · De onde você parte — o ponto certo para começar · 607x28
+- FRAME `282:2638` C2-00 · Abertura da parte 2 — De onde você parte · 393x852
+- FRAME `282:2784` C2-01 · Ponto de partida — Podemos ler seus treinos no Apple Saúde? · 393x852
+- FRAME `282:2882` C2-02 · Ponto de partida — Sua corrida recente · 393x900
+- FRAME `282:2964` C2-03 · Ponto de partida — Sua força hoje · 393x980
+- FRAME `282:3054` C2-04 · Ponto de partida — Um pouco sobre você · 393x980
+- TEXT `283:2863` Parte 3 · Como é a sua semana — o plano usa os seus dias · 598x28
+- FRAME `283:2864` C3-00 · Abertura da parte 3 — Como é a sua semana · 393x852
+- FRAME `283:3020` C3-01 · Sua semana — Dias e turno da força · 393x852
+- FRAME `283:3129` C3-02 · Sua semana — Dias da corrida e o longão · 393x1060
+- FRAME `283:3256` C3-03 · Sua semana — Onde você treina? · 393x900
+- FRAME `283:3368` C3-04 · Sua semana — Troca de exercícios da força · 393x960
+- TEXT `285:3206` Parte 4 · Antes de montar — cuidado e revisão · 472x28
+- FRAME `285:3207` C4-00 · Abertura da parte 4 — Antes de montar · 393x852
+- FRAME `285:3320` C4-01 · Antes de montar — Algo limita seu treino agora? · 393x852
+- FRAME `425:5140` C4-01b · Antes de montar — Como você quer ser treinado? (treinador) · 393x1099
+- FRAME `305:3845` C4-02 · Antes de montar — Seu retrato (revisão · primeiro momento uau) · 393x1177
+- TEXT `285:3477` Resultado · Seu plano — o fim da conversa e o começo do treino · 659x28
+- FRAME `285:3478` R-01 · Seu plano — Crie sua conta · 393x900
+- FRAME `285:3688` R-02 · Seu plano — Montando sua semana · 393x852
+- FRAME `286:3518` R-03 · Seu plano — Sua primeira semana (proposta) · 393x1844
+- FRAME `286:3933` R-04 · Seu plano — Assinatura (da exploração 1, sem mudança de conteúdo) · 393x852
+- FRAME `286:4099` R-05 · Seu plano — Começar o plano (da exploração 1, sem mudança de conteúdo) · 393x852
+- TEXT `286:4247` Estados de apoio · retomar e cuidado com dados de saúde · 599x28
+- FRAME `286:4248` S-01 · Retomar — Paramos na parte 2 · 393x852
+- FRAME `286:4326` S-02 · Antes de montar — Dor ou lesão (autorização, ao chegar desligada) · 393x1000
+- TEXT `335:1844` Perfis e casos especiais · a mesma conversa quando a resposta muda o caminho (migrados do arquivo principal) · 1151x28
+- FRAME `335:1845` ON-V1 · Corrida começando (força experiente) · 393x881
+- FRAME `335:2032` ON-V2 · Força começando (corrida experiente) · 393x852
+- FRAME `335:2256` ON-V3 · Sem relógio (perguntas rápidas) · 393x852
+- FRAME `335:2415` ON-V4 · Primeira semana com calibragem · 393x1138
+- FRAME `335:2937` ON-V5 · Dor ou lesão (escopo pausado) · 393x887
+- FRAME `335:3140` ON-V6 · Menor de 18 anos · 393x852
+- FRAME `335:3238` ON-V7 · Objetivos não cabem na agenda · 393x1163
+- FRAME `335:3545` ON-V7b · Mais dias do que você corre hoje · 393x913
+- FRAME `335:3841` PP-02 · Os dois juntos — escolha necessária · 393x852
+- FRAME `357:7761` Notas · Perfis e estados de apoio (migrados) · 420x340
+- TEXT `336:2304` Estados de apoio · retomar, consentimento, conta e folhas (migrados do arquivo principal) · 915x28
+- FRAME `336:2305` S-01s · Retomar — Apagar suas respostas (folha) [ON-01s] · 393x852
+- FRAME `336:2494` C3-02s · Sua semana — Força e corrida no mesmo turno (folha) [ON-12c] · 393x1060
+- FRAME `336:2745` S-02b · Antes de montar — Dor ou lesão (autorizado) [ON-15b] · 393x1000
+- FRAME `336:2909` S-02c · Antes de montar — Dor ou lesão (sem autorização) [ON-15d] · 393x1110
+- FRAME `336:3079` R-01b · Seu plano — Crie sua conta (sem conexão) [ON-02b] · 393x956
+- FRAME `336:3257` R-01d · Seu plano — Já existe conta com esta Conta Apple (folha) [ON-02d] · 393x900
+- FRAME `336:3445` H-01c · Hoje — Entrou numa conta existente (aviso) [ON-02c] · 393x1870
+- TEXT `567:4` Legado · 2 · Hoje (canônico · Pierre × Gentler) · 1730x79
+- TEXT `289:2233` Hoje · canônico desde 2026-11-08 — Pierre × Gentler · cenário A (Lucas): força seg e qui à noite, corrida ter, qua e sáb de manhã — 5 treinos. H-03 e H-04 usam o cenário B (dias duplos). · 1886x28
+- FRAME `289:2234` Referência · Hoje anterior (exploração 1 · substituído) · 393x1622
+- FRAME `289:2704` H-01 · Hoje — dia de treino (semana 9) · cenário A · 393x1386
+- FRAME `308:2819` H-03 · Hoje — dois treinos no dia (manhã) · cenário B · 393x1472
+- FRAME `308:3170` H-04 · Hoje — dois treinos no dia (tarde, corrida feita) · cenário B · 393x1392
+- FRAME `289:3061` H-02 · Hoje — descanso planejado (semana 9) · cenário A · 393x1347
+- FRAME `289:3473` H-00 · Hoje — véspera do primeiro treino (fim do onboarding) · cenário A · 393x1200
+- FRAME `296:4857` Notas · Hoje canônico (Pierre × Gentler) · 420x1678
+- TEXT `316:888` Estados do dia — cenário A (5 treinos) nos dias com um treino; cenário B (7 treinos: força seg, qua e qui · corrida ter, qua, qui e sáb · quarta e quinta com dois) nos dias duplos. O nome de cada frame diz o cenário. · 2152x28
+- FRAME `316:889` HJ-02 · Hoje — Dia de corrida (plano mantido) · cenário A · 393x1412
+- FRAME `316:1176` HJ-03 · Hoje — Dia de força · cenário A · 393x1390
+- FRAME `316:1472` HJ-06 · Hoje — Dia concluído · cenário B · 393x1386
+- FRAME `316:1835` HJ-07 · Hoje — Treino parcial · cenário B · 393x1584
+- FRAME `316:2186` HJ-08 · Hoje — Pergunta rápida · cenário B · 393x1374
+- FRAME `316:2511` HJ-09 · Hoje — Plano mantido após noite de 5h40 · cenário A · 393x1418
+- FRAME `317:1841` HJ-10 · Hoje — Sem dados recentes do relógio · cenário B · 393x1192
+- FRAME `317:2114` HJ-11 · Hoje — Treino de ontem sem registro · cenário B · 393x1180
+- FRAME `317:2398` HJ-12 · Hoje — Semana de prova · 393x1388
+- FRAME `317:2582` HJ-13 · Hoje — Volta depois de uma pausa · 393x1213
+- FRAME `317:2773` HJ-14 · Hoje — Sugestão de mudança pendente · cenário B · 393x1583
+- FRAME `317:3092` HJ-15 · Hoje — Segunda, semana anterior fechada · cenário A · 393x1439
+- TEXT `412:3560` Depende do motor — fora do canônico V1. A observação do histórico só volta à Home quando houver método aprovado (agrupamento, exclusões e fonte). · 1571x28
+- FRAME `412:2703` H-01x · Observação do histórico — DEPENDE DO MOTOR (fora do canônico V1; aprendizado sem método aprovado) · 393x1750
+- TEXT `439:5393` Hoje · variantes de perfil (A10) — sem prova e só força: outros perfis, não o Lucas. Dia duplo com os dois feitos: HJ-06 (cenário B). Sem registro ≠ não feito na trilha: HJ-10 e HJ-11. · 1817x28
+- FRAME `439:5394` H-05 · Hoje — sem prova (objetivo de constância) · outro perfil · 393x1178
+- FRAME `439:5717` H-06 · Hoje — só força (sem corrida no plano) · outro perfil · 393x1142
+- TEXT `567:5` Legado · 3 · Plano, Histórico, Progresso e Detalhe · 1934x79
+- FRAME `6:105` HJ · Hoje (substituído · ver 2 · Hoje canônico) · 393x1622
+- FRAME `8:230` PL · Plano — estilo Pierre (proposta) · cenário A · 393x1656
+- FRAME `13:509` Notas · Hoje e Plano no estilo Pierre (o Hoje daqui foi substituído pelo canônico) · 380x1394
+- FRAME `4:5` Componentes · estilo Pierre (proposta) · 930x7497
+- FRAME `24:568` PL-02 · Plano — Mês · estilo Pierre (proposta) · 393x1246
+- FRAME `25:623` HI-01 · Histórico · estilo Pierre (proposta) · cenário B · 393x1645
+- FRAME `28:883` PR-01 · Progresso · estilo Pierre (proposta) · 393x1921
+- FRAME `32:943` Notas · Plano (Mês), Histórico e Progresso · 380x1308
+- FRAME `44:992` DT-01 · Detalhe — Corrida planejada (ajustada) · estilo Pierre (proposta) · cenário A · 393x2057
+- FRAME `45:1168` DT-02 · Detalhe — Força planejada · estilo Pierre (proposta) · cenário A · 393x1801
+- FRAME `46:1371` CC-01 · Corrida concluída — Intervalado 5 × 1 km · estilo Pierre (proposta) · 393x1972
+- FRAME `49:1459` Notas · Detalhe do treino · 380x1212
+- FRAME `137:3749` PR-02 · Progresso — Corrida · estilo Pierre (proposta) · 393x1679
+- FRAME `137:4830` PR-03 · Progresso — Força · estilo Pierre (proposta) · 393x2208
+- FRAME `146:3681` Notas · Progresso — Corrida e Força · 380x1364
+- FRAME `164:3727` HI-07 · Histórico — Vazio (início) · estilo Pierre (proposta) · 393x852
+- FRAME `159:3727` Notas · Histórico vazio (HI-07) · 380x1062
+- FRAME `181:3737` DT-03 · Detalhe — Corrida leve · estilo Pierre (proposta) · cenário B · 393x1223
+- FRAME `182:3826` DT-04 · Detalhe — Longão com final em ritmo de prova · estilo Pierre (proposta) · 393x1226
+- FRAME `183:3922` DT-05 · Detalhe — Corrida sem referência de ritmo · estilo Pierre (proposta) · 393x1071
+- FRAME `184:4794` DT-06 · Detalhe — Força: encontrar a carga · estilo Pierre (proposta) · 393x1068
+- FRAME `186:4097` DT-07 · Detalhe — Trocar exercício (antes do treino) · estilo Pierre (proposta) · 393x852
+- FRAME `187:4140` Notas · Detalhe — variantes (2b) · 380x1792
+- TEXT `319:2348` 1c · Plano — outras semanas, mover, proposta, visão do plano e ajustes (migrado) · semanas no cenário B (7 treinos: força seg, qua e qui · corrida ter, qua, qui e sáb). O Plano canônico (PL) usa o cenário A. · 2061x28
+- FRAME `319:2349` PL-03 · Plano — Próxima semana · cenário B · 393x1318
+- FRAME `319:2768` PL-04 · Plano — Semana passada (com treino não feito) · cenário B · 393x1333
+- FRAME `319:3169` PL-05 · Plano — Mover treino (arrastando) · cenário B · 393x902
+- FRAME `319:3473` PL-06 · Plano — Mover treino (o que muda) · cenário B · 393x852
+- FRAME `319:3795` PL-07 · Plano — Semana com proposta pendente · cenário B · 393x1317
+- FRAME `320:3829` PL-08 · Plano — Visão do plano (16 semanas) · 393x2066
+- FRAME `320:4063` PL-09 · Plano — Ajustes do plano · 393x1274
+- TEXT `321:3505` 1d · Histórico — calendário, semana fechada, não feito, registro, correção, filtro, link antigo e busca (migrado) · semanas passadas no cenário B. · 1455x28
+- FRAME `321:3506` HI-02 · Histórico — Calendário do mês · 393x862
+- FRAME `321:3806` HI-03 · Histórico — Semana fechada (12 a 18 de outubro) · cenário B · 393x1725
+- FRAME `321:4217` HI-04 · Histórico — Treino não feito · cenário B · 393x891
+- FRAME `321:4332` HI-10 · Histórico — Buscar: resultados · 393x852
+- FRAME `322:3936` HI-05 · Histórico — Registrar treino feito fora do app · 393x852
+- FRAME `322:4074` HI-05b · Histórico — Registrar força feita fora do app · cenário B · 393x984
+- FRAME `322:4211` HI-06 · Histórico — Distância parece errada? (ignorar na análise) · 393x997
+- FRAME `322:4304` HI-08 · Histórico — Filtro sem resultado (Força, antes do 1º treino) · 393x852
+- FRAME `322:4405` HI-09 · Treino indisponível — link antigo (removido ou juntado) · 393x852
+- TEXT `323:4197` 3b · Progresso — intervalados, longões, agachamento, poucos dados e vazio (migrado) · 885x28
+- FRAME `323:4198` PR-04 · Progresso — Intervalados · 393x1247
+- FRAME `323:4329` PR-05 · Progresso — Longões · 393x1089
+- FRAME `323:4466` PR-06 · Progresso — Agachamento livre · 393x1161
+- FRAME `323:4599` PR-07 · Progresso — Poucos dados (2 semanas) · 393x852
+- FRAME `323:4716` PR-08 · Progresso — Vazio (antes do primeiro treino) · 393x852
+- TEXT `441:4398` Depende do motor — fora do canônico V1. Observações do histórico preservadas para quando o aprendizado tiver método aprovado (agrupamento, exclusões, fonte). · 1693x28
+- FRAME `441:4399` PR-01x · Observações do histórico — DEPENDE DO MOTOR (fora do canônico V1) · 393x2241
+- TEXT `567:6` Legado · 4 · Execução e conclusão · 1351x79
+- TEXT `86:1540` 3.1 · Execução de corrida — Intervalado 6 × 800 m · 507x28
+- FRAME `86:1541` EX-R01 · Corrida — Pronto para começar · 393x908
+- FRAME `86:1711` EX-R02 · Corrida — Aquecimento · 393x852
+- FRAME `86:1832` EX-R03 · Corrida — Tiro em andamento · 393x852
+- FRAME `86:1953` EX-R04 · Corrida — Trote entre tiros · 393x852
+- FRAME `86:2073` EX-R05 · Corrida — Fora da faixa (mais rápido) · 393x852
+- FRAME `88:447` EX-R06 · Corrida — Pausado · 393x852
+- FRAME `89:514` EX-R07 · Corrida — Pular etapa (confirmação) · 393x852
+- FRAME `89:594` EX-R08 · Corrida — Opção prevista para hoje · 393x852
+- FRAME `89:751` EX-R09 · Corrida — Encerrar antes (confirmação) · 393x852
+- FRAME `89:836` EX-R10 · Corrida — Sentiu dor? · 393x852
+- FRAME `88:548` EX-R11 · Corrida — Esteira (sem GPS) · 393x852
+- FRAME `88:651` EX-R12 · Corrida — Salvando · 393x852
+- FRAME `88:699` EX-R13 · Corrida — Tela bloqueada (Atividade ao vivo) · 393x852
+- FRAME `100:2017` Notas · Execução e conclusão (3) · 380x1672
+- TEXT `91:825` 3.2 · Execução de força · 239x28
+- FRAME `91:826` EX-F01 · Força — Visão da sessão · 393x852
+- FRAME `91:1008` EX-F02 · Força — Série atual · 393x852
+- FRAME `92:1183` EX-F03 · Força — Repetições sobrando (RIR) · 393x852
+- FRAME `91:1199` EX-F04 · Força — Descanso · 393x852
+- FRAME `91:1295` EX-F05 · Força — Série abaixo do alvo · 393x852
+- FRAME `92:1266` EX-F06 · Força — Trocar exercício · 393x852
+- FRAME `92:1410` EX-F07 · Força — Exercício opcional · 393x852
+- FRAME `92:1516` EX-F08 · Força — Sugestão durante a sessão · 393x852
+- FRAME `92:1615` EX-F09 · Força — Encerrar antes (confirmação) · 393x852
+- FRAME `92:1685` EX-F10 · Força — Lista da sessão (sessão longa) · 393x953
+- TEXT `93:1775` 3.3 · Conclusão e pós-treino · 289x28
+- FRAME `93:1776` CC-02 · Força concluída — Inferior · 393x2117
+- FRAME `94:1976` CC-03 · Corrida concluída — Parcial (4 de 6 tiros) · 393x2314
+- FRAME `93:2320` CC-04 · Pós-treino — Como foi? · 393x852
+- FRAME `94:2558` CC-07 · Corrida concluída — Sem relógio, rotas no app desligadas · 393x1039
+- TEXT `352:2110` 3.4 · Execução — descartar, retomar após fechar, tela bloqueada e barra fixa (migrado) · 883x28
+- FRAME `352:2111` EX-R14 · Corrida — descartar sem salvar: confirmação destrutiva · 393x852
+- FRAME `352:2272` EX-R15 · Ao abrir o app — treino interrompido quando o app fechou: retomar, salvar ou descartar · 393x2111
+- FRAME `352:2773` EX-R16 · Primeira execução — mostrar o treino na tela bloqueada? (opt-in) · 393x908
+- FRAME `352:3090` EX-F11 · Força — descanso com o app em segundo plano (Atividade ao vivo, depois do opt-in) · 393x852
+- FRAME `352:3126` EX-F12 · Treino em andamento — barra fixa ao navegar pelas abas (ex.: Histórico) · 393x1803
+- TEXT `567:7` Legado · 5 · Perfil, ajustes e prova · 1321x79
+- TEXT `109:2064` 6.1 · Você e ajustes — perfil, rotina, unidades e idioma · 543x28
+- FRAME `109:2065` CF-01 · Você (perfil) · 393x1490
+- FRAME `109:2426` CF-02 · Dados pessoais · 393x852
+- FRAME `109:2568` CF-03 · Objetivo e prioridade · 393x852
+- FRAME `109:2696` CF-04 · Rotina — dias, tempo e equipamento · 393x1137
+- FRAME `111:2486` CF-05 · Unidades e preferências · 393x852
+- FRAME `111:2563` CF-06 · Idioma · 393x852
+- FRAME `111:2649` CF-07 · Integrações — Apple Saúde recebendo (V1: só Apple Saúde) · 393x936
+- FRAME `111:2765` CF-08 · Integrações — nada recebido do Apple Saúde (leitura opaca, WEA-05) · 393x852
+- FRAME `111:2836` CF-09 · Notificações · 393x902
+- FRAME `113:2707` CF-10 · Dados e privacidade · 393x980
+- FRAME `113:2876` CF-11 · Apagar conta e dados (confirmação) · 393x852
+- FRAME `123:3607` Notas · Perfil, ajustes e prova (6) · 380x1512
+- TEXT `113:2950` 6.1 · Assinatura, conta e convite · 320x28
+- FRAME `113:2951` CF-12 · Assinatura — ativa · 393x852
+- FRAME `113:3025` CF-13 · Assinatura — expirada · 393x852
+- FRAME `113:3112` CF-17 · Conta e acesso · 393x852
+- FRAME `115:2911` CF-18 · Alterar senha · 393x852
+- FRAME `115:2991` CF-18b · Alterar senha — senha atual incorreta · 393x852
+- FRAME `115:3066` CF-18c · Alterar senha — senha nova comum ou vazada · 393x852
+- FRAME `115:3141` CF-19 · Aparelhos conectados · 393x852
+- FRAME `115:3235` RF-01 · Convidar — link pessoal (referral mínimo) · 393x852
+- FRAME `115:3310` RF-02 · Convidar — link copiado · 393x852
+- FRAME `115:3348` RF-03 · Convidar — sem conexão (link ainda não gerado) · 393x852
+- TEXT `118:3148` 6.2 · Prova — detalhe, edição, semana da prova, dia, resultado e depois · 721x28
+- FRAME `118:3149` EV-01 · Prova — detalhe · 393x855
+- FRAME `118:3327` EV-02 · Prova — editar · 393x852
+- FRAME `119:3348` EV-03 · Plano — Semana da prova · 393x1234
+- FRAME `119:4299` EV-04 · Hoje — Dia da prova · 393x878
+- FRAME `118:3463` EV-05 · Prova concluída — resultado · 393x1209
+- FRAME `118:3590` EV-06 · Depois da prova — próximo passo · 393x852
+- TEXT `421:1652` Rótulo · 6.3 Treinador, volume e dificuldade — novo. Três escolhas independentes. Comportamento de cada uma é contrato provisório até o motor publicar o seu (ver página 11 · Handoff). · 1890x28
+- FRAME `421:1653` CF-20 · Seu treinador (três perfis permanentes) · 393x1121
+- FRAME `421:1867` CF-21 · Trocar de treinador — confirmação (folha) · 393x852
+- FRAME `424:1793` CF-22 · Volume e dificuldade (dois controles independentes) · 393x1228
+- FRAME `424:2003` CF-23 · Volume — confirmar mudança (folha) · 393x852
+- TEXT `567:8` Legado · 6 · Adaptações e recuperação · 1556x79
+- TEXT `327:3` 6.1 · Propostas de ajuste — o treinador explica antes de mudar (migrado do arquivo principal) · 946x28
+- FRAME `327:4` AD-01 · Por que o plano continua igual · cenário A · 393x898
+- FRAME `327:68` AD-11 · Pergunta antes de decidir — Viagem · cenário A · 393x852
+- FRAME `327:205` AD-02 · Proposta — Reduzir volume (agenda) · cenário A · 393x1163
+- FRAME `327:325` AD-03 · Proposta — Reduzir intensidade · cenário A · 393x1151
+- FRAME `327:440` AD-04 · Proposta — Mover treino (escolha) · cenário B · 393x913
+- FRAME `327:542` AD-05 · Proposta — Substituição (só halteres) · cenário A · 393x1294
+- FRAME `328:304` AD-06 · Proposta — Trocar dois dias da semana · cenário B · 393x1172
+- FRAME `330:683` AD-07 · Proposta — Mudança material (data da prova) · cenário A · 393x1187
+- FRAME `357:1687` Notas · Adaptações e recuperação (migrado) · 420x828
+- TEXT `328:720` 6.2 · Depois da decisão — aplicado, mantido, outras opções, sem registro, encerrada, pausa e versões · 1037x28
+- FRAME `328:721` AD-08 · Aceita — Troca aplicada · cenário B · 393x974
+- FRAME `328:881` AD-09 · Recusada — Mantido como estava · 393x852
+- FRAME `328:967` AD-10 · Outras opções · cenário B · 393x852
+- FRAME `330:872` AD-12 · Plano mantido — faltam informações (sem registro) · cenário A · 393x1044
+- FRAME `330:1083` AD-13 · Sugestão encerrada (treino original começou) · cenário A · 393x852
+- FRAME `330:1157` AD-14 · Pausa — dor que continua (profissional de saúde) · F08 situação 2 · 393x921
+- FRAME `330:1228` AD-15 · Mudanças no plano (versões) · 393x852
+- TEXT `331:954` 6.3 · Recuperação — o que foi medido, o que vale para cada treino e o que o plano decidiu (migrado) · 1018x28
+- FRAME `331:955` RR-00 · Linha de sinais no Hoje — estados · 393x672
+- FRAME `331:1033` RR-01 · Recuperação — Dados completos (relógio) · 393x1260
+- FRAME `331:1147` RR-02 · Recuperação — Sem relógio · 393x1148
+- FRAME `331:1249` RR-03 · Recuperação — Relato diferente do relógio · 393x1176
+- FRAME `331:1355` RR-04 · Recuperação — Só o que você contou (pergunta) · 393x1229
+- FRAME `331:1484` RR-05 · Recuperação — Dados parciais · 393x1142
+- FRAME `331:1594` RR-06 · Recuperação — Primeiras noites com o relógio · 393x946
+- TEXT `431:1166` 6.4 · F08 — Não estou 100%: reduzir por 3 a 14 dias, pausar, voltar no seu ritmo e começar um plano novo (novo · contrato provisório: autoridade F08 em aberto, ver Handoff) · 1765x28
+- FRAME `431:1167` F08-01 · Algo mudou? — o que aconteceu (entrada a partir do Hoje) · 393x847
+- FRAME `431:1457` F08-02 · Não estou 100% — por quanto tempo e em quê (5 dias, caso intermediário) · 393x972
+- FRAME `431:1674` F08-02b · Desconforto pequeno — 3 dias, só corrida (mínimo) · 393x952
+- FRAME `431:1837` F08-02c · Desconforto pequeno — 14 dias, só força (máximo) · 393x970
+- FRAME `431:1320` F08-03 · Não estou 100% — como reduzir (quatro modos) · 393x935
+- FRAME `432:1580` F08-04 · Revisão — treinos mais leves, corrida e força, 5 dias · 393x1069
+- FRAME `432:1799` F08-04b · Revisão — só corrida em descanso, 3 dias; a força segue · 393x972
+- FRAME `436:1830` F08-05 · Hoje — redução ativa (dia 1 de 5) · cenário A · 393x1420
+- FRAME `436:2193` F08-06 · Hoje — gerenciar a redução (folha) · 393x852
+- FRAME `436:2450` F08-07 · Hoje — fim da redução: como você está? · cenário A · 393x1213
+- FRAME `432:1977` F08-08 · Fim da redução — em que ritmo voltar (conservadora, equilibrada, mais rápida) · 393x748
+- FRAME `436:2642` F08-09 · Hoje — voltando no ritmo equilibrado (terça, semana 10) · cenário A · 393x1346
+- TEXT `437:2347` 6.4b · F08 situação 2 — doença ou lesão: avaliação profissional recomendada, sem diagnóstico; volta pela prontidão que você informa (nunca "liberado"), com triagem atual e restrições respeitadas · 2013x28
+- FRAME `437:2356` F08-10 · Sinal de alerta ou sem melhora — avaliação profissional recomendada (pausa) · 393x843
+- FRAME `437:2427` F08-11 · Pronto para voltar — por modalidade, com a lista fechada de restrições · 393x1078
+- FRAME `437:2572` F08-12 · Prontidão com sinal hoje — a volta espera (segue a recomendação profissional) · 393x777
+- FRAME `437:2641` F08-13 · Recomeço com restrição informada — evitar força de pernas · 393x803
+- FRAME `437:2723` F08-14 · Recomeço depois de doença ou lesão — equilibrado (padrão) ou conservador · 393x683
+- TEXT `438:2545` 6.4c · F08 situação 3 e estados — pausa longa vira plano novo (histórico e recordes preservados), restrição fora da lista pede detalhe e pausa sem data · 1549x28
+- FRAME `438:2546` F08-15 · Hoje — depois de uma pausa longa: plano novo · cenário A · 393x796
+- FRAME `438:2725` F08-16 · Plano novo — o que revemos (histórico preservado) · 393x1054
+- FRAME `438:2960` F08-17 · Restrição fora da lista — em qual treino ela vale? (informação insuficiente) · 393x764
+- FRAME `438:3079` F08-18 · Vou parar por um tempo — o plano fica em pausa (sem data) · 393x791
+- TEXT `460:2804` 6.4d · F08 — antes de reduzir (DR-148, SSCTR-V1CP Q05, SEC-V1CP): consentimento no ponto de uso, como você está (5 condições), sinais de alerta respondidos um a um; dor ou lesão pela região (parte de cima ou de baixo); Home do recomeço · 2503x28
+- FRAME `460:2962` F08-01a · Consentimento no ponto de uso (folha; primeira vez) · 393x852
+- FRAME `460:2815` F08-01b · Não estou 100% — como você está (5 condições) · 393x926
+- FRAME `461:3019` F08-01c · Sinais de alerta — em andamento (nada pré-marcado; botão só com tudo respondido) · lista de Cansaço fora do normal (W1–W8, W10, W12–W14) · 393x1483
+- FRAME `461:3271` F08-01d · Sinais de alerta — todos respondidos "não" · lista de Cansaço fora do normal (W1–W8, W10, W12–W14) · 393x1465
+- FRAME `461:3536` F08-07b · Fim da redução por cansaço — sinais de novo (W1–W9, W10, W12–W14, X1, X2, X4) · 393x1836
+- FRAME `460:3024` F08-19 · Dor ou lesão — onde? (parte de cima ou de baixo) · 393x712
+- FRAME `464:3370` F08-11b · Sinais de hoje antes do recomeço (W1–W8, todas as condições) · 393x1199
+- FRAME `464:3495` F08-14b · Hoje — recomeço depois de dor (força de pernas fora) · cenário A · 393x1398
+- TEXT `567:9` Legado · 7 · Conta, acesso e assinatura · 1561x79
+- TEXT `338:3` 7.1 · Cadastro com e-mail e confirmação por código (migrado) · 623x28
+- FRAME `338:4` AC-01 · Cadastro com e-mail · 393x852
+- FRAME `338:72` AC-02 · Cadastro — campos com erro · 393x852
+- FRAME `338:132` AC-02b · Cadastro — senha comum ou vazada · 393x852
+- FRAME `338:192` AC-03 · Confirme seu e-mail (código) · 393x852
+- FRAME `338:242` AC-03a · Confirme seu e-mail — código incorreto ou expirado · 393x852
+- FRAME `338:296` AC-03b · Confirme seu e-mail — muitas tentativas com este código · 393x852
+- FRAME `338:350` AC-03c · Confirme seu e-mail — muitos códigos pedidos · 393x852
+- FRAME `338:404` AC-03d · Confirme seu e-mail — reenviar disponível · 393x852
+- TEXT `338:451` 7.2 · Entrar — e-mail, Apple, Google e os estados de erro (migrado) · 673x28
+- FRAME `338:452` AC-04 · Entrar · 393x852
+- FRAME `338:537` AC-04b · Entrar — entrando… · 393x852
+- FRAME `338:622` AC-04c · Entrar — sem conexão · 393x852
+- FRAME `338:715` AC-04d · Entrar — e-mail ainda não confirmado · 393x852
+- FRAME `339:313` AC-04e · Entrar — teclado aberto · 393x852
+- FRAME `339:431` AC-04f · Entrar — nenhuma conta com esta Conta Apple · 393x852
+- FRAME `339:469` AC-04f2 · Entrar — sem conta, com respostas incompletas neste aparelho · 393x852
+- FRAME `339:526` AC-04f3 · Entrar — sem conta, com respostas completas neste aparelho · 393x852
+- FRAME `339:577` AC-05 · Entrar — e-mail ou senha incorretos · 393x852
+- FRAME `339:669` AC-06 · Entrar — muitas tentativas · 393x852
+- FRAME `339:760` AC-05s · Stress — e-mail longo · 393x852
+- FRAME `339:852` AC-04 · ES · Iniciar sesión · 393x852
+- TEXT `340:487` 7.3 · Recuperar senha, confirmar identidade e entrar em outro iPhone (migrado) · 805x28
+- FRAME `340:488` AC-07 · Redefinir senha — pedido · 393x852
+- FRAME `340:531` AC-08 · Redefinir senha — código · 393x852
+- FRAME `340:579` AC-08a · Redefinir senha — código incorreto ou expirado · 393x852
+- FRAME `340:628` AC-08b · Redefinir senha — muitas tentativas com este código · 393x852
+- FRAME `340:676` AC-08c · Redefinir senha — muitos códigos pedidos · 393x852
+- FRAME `340:724` AC-09 · Nova senha · 393x852
+- FRAME `340:768` AC-09b · Nova senha — senha comum ou vazada · 393x852
+- FRAME `340:812` AC-10 · Confirme que é você · 393x852
+- FRAME `340:859` AC-10b · Confirme que é você — conta Apple ou Google · 393x852
+- FRAME `340:900` AC-10c · Confirme que é você — antes de baixar seus dados · 393x852
+- FRAME `340:945` AC-10d · Confirme que é você — senha incorreta · 393x852
+- FRAME `340:991` AC-11 · Entrando em outro iPhone · 393x852
+- TEXT `341:743` 7.4 · Sessão — sessão encerrada, sair da conta e conta apagada (migrado) · 756x28
+- FRAME `341:744` AU-01 · Sessão encerrada — entrar de novo na mesma conta (envio pendente preservado) · 393x852
+- FRAME `341:832` AU-02 · Você › Sair da conta — confirmação · 393x852
+- FRAME `341:1131` AU-03 · Sair com treino ainda não enviado — confirmação destrutiva · 393x852
+- FRAME `341:1417` AU-04 · Conta apagada — fim do fluxo (depois de CF-11 e AC-10) · 393x852
+- TEXT `341:1463` 7.5 · Assinatura — confirmando, não concluída, sem assinatura e os estados da App Store (migrado) · 1015x28
+- FRAME `341:1464` PP-06 · Assinatura — confirmando · 393x852
+- FRAME `341:1632` PP-07 · Assinatura — não concluída · 393x1049
+- FRAME `341:2153` PP-08 · Sem assinatura (plano salvo) · 393x852
+- FRAME `341:1810` SK-01 · Oferta — carregando os planos da App Store (sem preço inventado) · 393x852
+- FRAME `341:1980` SK-02 · Oferta — planos indisponíveis (App Store não respondeu) · 393x852
+- FRAME `343:1253` SK-03 · Compra aguardando aprovação (pending) — nada cobrado, plano salvo · 393x852
+- FRAME `343:1296` SK-04 · Oferta — “Restaurar compra” não encontrou assinatura · 393x963
+- FRAME `343:1468` SK-05 · Oferta — este ID Apple já tem assinatura ativa: usar nesta conta · 393x852
+- FRAME `343:1640` SK-06 · Assinatura deste ID Apple já está em outra conta do Vilumo · 393x852
+- FRAME `343:1688` SK-07 · Você › Assinatura — problema no pagamento (período de carência) · 393x852
+- FRAME `343:1757` SK-09 · Hoje — conta criada, sem assinatura (plano pronto, ainda não começou) · 393x852
+- FRAME `343:2150` SK-10 · Hoje — assinatura expirada (plano e treino guiado pausados) · 393x852
+- TEXT `344:1517` 7.6 · E-mails da conta — prévia na tela bloqueada + corpo do e-mail (migrado; sem links, sem pedir códigos) · 1095x28
+- FRAME `344:1518` EM-a · Código de cadastro · 393x847
+- FRAME `344:1553` EM-b · Você já tem conta · 393x759
+- FRAME `344:1584` EM-c · Código para redefinir a senha · 393x865
+- FRAME `344:1619` EM-d · Sua conta entra com a Apple · 393x723
+- FRAME `344:1649` EM-e · Senha alterada · 393x905
+- FRAME `344:1683` EM-f1 · Seus dados estão prontos · 393x785
+- FRAME `344:1716` EM-f2 · Pedido para apagar a conta · 393x791
+- FRAME `344:1749` EM-g · Novo acesso em um iPhone · 393x795
+- TEXT `567:10` Legado · 8 · Sistema, Apple Saúde e permissões · 1888x79
+- TEXT `346:3` 8.1 · Rede, sincronização e erros — local primeiro, nada se perde (migrado) · 752x28
+- FRAME `346:4` SS-01 · Hoje — Carregando · 393x1466
+- FRAME `346:494` SS-02 · Hoje — Sem internet · 393x1816
+- FRAME `346:934` SS-03 · Treino salvo sem internet · 393x852
+- FRAME `346:995` SS-04 · Falha ao aplicar mudança · 393x852
+- FRAME `346:1045` SS-05 · Plano — versão salva (não atualizada) · 393x1985
+- FRAME `346:1756` SS-06 · Histórico — sem internet: treino de hoje aguardando envio · 393x1881
+- FRAME `346:2336` SS-07 · Histórico — envio falhou: tentar de novo (o treino continua salvo) · 393x1869
+- FRAME `346:2864` SS-08 · Hoje — parte não carregou (erro parcial, o resto funciona) · 393x1294
+- FRAME `346:3310` SS-09 · Primeira carga sem nada salvo — não foi possível carregar (tela cheia, único caso) · 393x852
+- FRAME `346:3358` SS-10 · Atualização necessária — a versão do app não consegue mais enviar · 393x852
+- FRAME `357:4582` Notas · Sistema, Apple Saúde e permissões (migrado) · 420x530
+- TEXT `347:1349` 8.2 · Apple Saúde — ler, nada recebido, só parte, atrasado, desligar e ler de novo (migrado; envio ao relógio fica fora da V1) · 1244x28
+- FRAME `347:1350` HK-01 · Apple Saúde — lendo as últimas 8 semanas (depois do iOS) · 393x852
+- FRAME `347:1515` HK-02 · Apple Saúde — nenhum treino recebido (vazio opaco → perguntas rápidas) · 393x852
+- FRAME `347:1678` HK-03 · Apple Saúde — chegou só parte (corridas sem frequência cardíaca) · 393x868
+- FRAME `347:1803` HK-08 · Apple Saúde — o iPhone liberou só parte do histórico (janela menor que 8 semanas) · 393x918
+- FRAME `347:1927` HK-05 · Histórico — primeira importação do Apple Saúde em andamento · 393x852
+- FRAME `347:2474` HK-04 · Integrações — Apple Saúde ainda não conectado (pedir no momento de uso) · 393x858
+- FRAME `347:2535` HK-06 · Integrações — leitura atrasada (última leitura antiga; nova tentativa automática) · 393x852
+- FRAME `347:2606` HK-07 · Como conferir o acesso ao Apple Saúde (folha; o app não abre essa tela) · 393x852
+- FRAME `347:2700` HK-09 · Parar de ler o Apple Saúde — confirmação (desligar no Vilumo) · 393x852
+- FRAME `347:2786` HK-10 · Integrações — leitura do Apple Saúde desligada no Vilumo (ler de novo) · 393x882
+- TEXT `348:1676` 8.3 · Importação — origem, campo ausente, ignorar, duplicata, força só resumo e remover (migrado) · 1012x28
+- FRAME `348:1677` IM-01 · Hoje — chegou um treino do Apple Saúde: era o planejado? · 393x1988
+- FRAME `348:2127` IM-02 · Histórico — corrida importada: origem, só leitura e campos ausentes · 393x933
+- FRAME `348:2213` IM-03 · Adicionar campo ausente — FC média (registro seu, não substitui medição) · 393x933
+- FRAME `348:2334` IM-05 · Histórico — distância ignorada na análise (original guardado) · 393x852
+- FRAME `348:2398` IM-06 · Histórico — possível duplicata (registro seu + Apple Saúde) · 393x852
+- FRAME `348:2461` IM-07 · Histórico — força importada só com o resumo · 393x852
+- FRAME `348:2512` IM-08 · Remover do Vilumo (treino importado) — confirmação · 393x933
+- TEXT `348:2617` 8.4 · Localização e GPS — pedir com contexto, procurar sinal, negada, aproximada e sinal fraco (migrado) · 1073x28
+- FRAME `348:2618` LOC-01 · Corrida na rua — primeira vez: contexto antes do iOS · 393x912
+- FRAME `348:2998` LOC-02 · Corrida na rua — procurando sinal de GPS (pode começar) · 393x986
+- FRAME `348:3305` LOC-03 · Corrida na rua — localização não permitida (Ajustes ou correr por tempo) · 393x1098
+- FRAME `348:3623` LOC-04 · Corrida na rua — localização aproximada (pedir a precisa só para este treino) · 393x1088
+- FRAME `348:3928` LOC-05 · Corrida — sinal de GPS fraco durante o tiro (sem modal) · 393x852
+- TEXT `348:4206` 8.5 · Notificações — pedir com valor e por ato da pessoa; desligadas no iPhone (migrado) · 911x28
+- FRAME `348:4207` NT-01 · Hoje (véspera do 1º treino) — lembrete do treino: pedir com valor, por ato da pessoa · 393x1489
+- FRAME `348:4546` NT-02 · Você › Notificações — desligadas nos Ajustes do iPhone · 393x1268
+- FRAME `348:4712` NT-03 · Você › Notificações — ainda não pedidas (pedir aqui, por ato) · 393x1194
+- TEXT `567:11` Legado · 9 · Compartilhar · 1007x79
+- TEXT `350:3` 9.1 · Compor — formatos, prévia exata e proteção de início e fim (migrado; DR-133) · 837x28
+- FRAME `350:4` SH-01 · Compartilhar — Compor, padrão ao abrir (Dados, sem rota) · 393x1144
+- FRAME `350:115` SH-02 · Compartilhar — Mapa (rota protegida, escolhido nesta imagem) · 393x1254
+- FRAME `350:805` SH-03 · Compartilhar — Proteção de início e fim (folha, a partir de "Editar") · 393x852
+- FRAME `350:232` SH-04 · Compartilhar — Rota (traçado protegido, sem mapa) · 393x1254
+- FRAME `350:331` SH-05 · Compartilhar — Foto (escolhida pela pessoa) · 393x1241
+- FRAME `350:428` SH-06 · Compartilhar — Sem fundo (sobreposição transparente) · 393x1241
+- FRAME `350:719` SH-07 · Compartilhar — Força, contexto Recorde (sem formatos de rota) · 393x1024
+- FRAME `357:5055` Notas · Compartilhar (migrado) · 420x494
+- TEXT `350:960` 9.2 · Estados do compartilhamento — rota desligada, mapa carregando e mapa indisponível (migrado) · 1039x28
+- FRAME `350:961` ST-06 · Mapa e Rota indisponíveis — “Rotas no app” desligado · 393x1246
+- FRAME `350:1076` ST-07 · Mapa carregando — a rota protegida já está pronta no aparelho · 393x1300
+- FRAME `350:1194` ST-08 · Mapa não carregou — nada sai pela metade · 393x1356
+- FRAME `351:350` ST-01 · Folha de compartilhamento do iPhone (sistema) · 393x852
+- FRAME `351:482` ST-02 · Depois de abrir o compartilhamento (sem confirmação) · 393x852
+- FRAME `351:527` ST-03 · Falha ao gerar a imagem · 393x1144
+- FRAME `351:650` ST-04 · Escolher foto — seletor do sistema (só a foto escolhida) · 393x852
+- FRAME `351:693` ST-05 · Avisos rápidos do compartilhamento · 393x404
+- TEXT `351:719` 9.3 · Galeria — o mesmo sistema de imagem em cada contexto (Stories 9:16) · 781x28
+- FRAME `351:720` Galeria · artefatos de compartilhamento · 1802x508
+- TEXT `567:12` Legado · 10 · Idiomas, texto grande e stress · 1718x79
+- TEXT `354:3` 10.1 · Idiomas, unidades e texto grande (migrado; as mesmas telas canônicas, traduzidas) · 909x28
+- FRAME `354:4` I18N-01 · Today — English (H-01) · 393x1724
+- FRAME `354:486` I18N-02 · Hoy — Español (H-01) · 393x1742
+- FRAME `354:917` I18N-03 · Run detail — English + imperial (DT-03) · 393x1223
+- FRAME `354:1257` I18N-04 · Hoje — Texto grande (tipo dinâmico, +30%) · 393x1884
+- FRAME `354:1688` I18N-05 · Español — ubicación desactivada (LOC-03) · textos más largos · 393x1098
+- TEXT `355:799` 10.2 · Stress — nomes longos, números extremos, semana cheia e esparsa, primeiro dia e plano longo (migrado) · 1138x28
+- FRAME `355:800` STR-01 · Nomes longos · 393x852
+- FRAME `355:928` STR-02 · Números extremos (grandes e zerados) · 393x862
+- FRAME `355:1087` STR-03 · Semana cheia (10 treinos, maratonista) · 393x1044
+- FRAME `355:1318` STR-04 · Semana esparsa (2 treinos) · 393x852
+- FRAME `355:1450` STR-05 · Primeiro dia (dados mínimos) · 393x852
+- FRAME `355:1792` STR-06 · Plano longo (maratona, 24 semanas) · 393x852
+- TEXT `567:13` Legado · 11 · Handoff V1 — contratos e dependências · 2079x79
+- FRAME `443:3` Handoff · Dependências Figma × motor · 1260x2626
+- FRAME `443:124` Handoff · Métricas — fonte e status · 1180x1553
+- FRAME `444:2` Handoff · Cenários demonstrativos · 1180x490
+- FRAME `447:2` Handoff · O que mudou nesta rodada · 1180x1082
+- FRAME `444:20` Handoff · Decisões do Founder · 1260x898
+- TEXT `567:14` Legado · 12 · Exploração autoral (arquivo: estudos e comparações) · 2646x79
+- FRAME `505:3` Estudo · voz dos números (4 candidatas) · 1708x598
+- FRAME `506:2` Estudo · ícones de corrida e força (candidatos) · 1448x296
+- FRAME `530:1577` Estudo · cor das zonas (decidido em 12 nov: ciano e âmbar só nas zonas; curva de FC azul) · 1275x632
+- TEXT `513:1235` Paletas lado a lado · 347x34
+- TEXT `513:1236` Comparação feita antes da decisão. Paleta escolhida em 12 nov: A · Sem acento. Estas cópias não receberam o conteúdo devolvido depois. · 935x22
+- FRAME `513:1237` B · Grafite e amarelo · Hoje · dia duplo (força feita, corrida à noite) · 393x1115
+- FRAME `513:1339` C · Lima (referência) · Hoje · dia duplo (força feita, corrida à noite) · 393x1115
+- FRAME `513:1441` A · Claro · Hoje · dia duplo (força feita, corrida à noite) · 393x1115
+- FRAME `513:1543` B · Grafite e amarelo · Execução · corrida · limiar, bloco 2 de 3 · 393x852
+- FRAME `513:1637` C · Lima (referência) · Execução · corrida · limiar, bloco 2 de 3 · 393x852
+- FRAME `513:1731` A · Claro · Execução · corrida · limiar, bloco 2 de 3 · 393x852
+- FRAME `513:1825` B · Grafite e amarelo · Plano · semana (pista de raia dupla) · 393x1437
+- FRAME `513:2053` C · Lima (referência) · Plano · semana (pista de raia dupla) · 393x1437
+- FRAME `513:2281` A · Claro · Plano · semana (pista de raia dupla) · 393x1437
+- TEXT `835:2062` Legado · Onboarding denso, substituído em 15 nov 2026 (44 telas e motions) · 1383x34
+- TEXT `741:566` Boas-vindas e objetivos · 435x34
+- FRAME `741:2` Onboarding / 01 Apresentação · 393x852
+- FRAME `741:92` Onboarding / 02 Você · 393x852
+- FRAME `741:164` Onboarding / 03 Modalidades · 393x852
+- FRAME `741:261` Onboarding / 04 Objetivos · 393x852
+- FRAME `741:361` Onboarding / 05 Prova e meta · 393x852
+- FRAME `741:463` Onboarding / 06 Prioridade · 393x857
+- TEXT `748:1174` Motion · Boas-vindas e objetivos · 589x34
+- FRAME `748:1175` Motion · 01 Apresentação · 393x852
+- FRAME `748:1402` Motion · 02 Você · 393x852
+- FRAME `748:1518` Motion · 03 Modalidades · 393x852
+- FRAME `748:1668` Motion · 04 Objetivos · 393x852
+- FRAME `748:1818` Motion · 05 Prova e meta · 393x852
+- FRAME `748:2016` Motion · 06 Prioridade · 393x857
+- TEXT `741:567` Ponto de partida · 309x34
+- FRAME `743:243` Onboarding / 07 Apple Saúde · convite · 393x865
+- FRAME `743:331` Onboarding / 08 Corrida até aqui · do Apple Saúde · 393x892
+- FRAME `743:423` Onboarding / 09 Resultados e recordes · com resultado recente · 393x1121
+- FRAME `743:531` Onboarding / 10 Musculação até aqui · com cargas conhecidas · 393x1448
+- TEXT `748:2166` Motion · Ponto de partida · 463x34
+- FRAME `748:2167` Motion · 07 Apple Saúde · convite · 393x865
+- FRAME `748:2298` Motion · 08 Corrida até aqui · do Apple Saúde · 393x892
+- FRAME `748:2448` Motion · 09 Resultados e recordes · com resultado recente · 393x1121
+- FRAME `748:2605` Motion · 10 Musculação até aqui · com cargas conhecidas · 393x1448
+- TEXT `741:568` Rotina, cuidados e treinador · 516x34
+- FRAME `743:658` Onboarding / 11 Dias e turnos · 393x852
+- FRAME `743:789` Onboarding / 12 O que entra em cada dia · 393x1036
+- FRAME `743:998` Onboarding / 13 Duração · 393x852
+- FRAME `743:1114` Onboarding / 14 Equipamentos e ambiente · 393x924
+- FRAME `743:1237` Onboarding / 15 Triagem de segurança · tudo não · 393x1146
+- FRAME `743:1356` Onboarding / 16 Treinador, volume e dificuldade · 393x1111
+- TEXT `748:2787` Motion · Rotina, cuidados e treinador · 670x34
+- FRAME `748:2788` Motion · 11 Dias e turnos · 393x852
+- FRAME `748:2978` Motion · 12 O que entra em cada dia · 393x1036
+- FRAME `748:3236` Motion · 13 Duração · 393x852
+- FRAME `748:3396` Motion · 14 Equipamentos e ambiente · 393x924
+- FRAME `748:3568` Motion · 15 Triagem de segurança · tudo não · 393x1146
+- FRAME `748:3730` Motion · 16 Treinador, volume e dificuldade · 393x1111
+- TEXT `741:569` Resumo, consentimentos, conta e plano · 730x34
+- FRAME `745:639` Onboarding / 17 Resumo · 393x1863
+- FRAME `745:841` Onboarding / 18 Consentimentos · 393x852
+- FRAME `745:1486` Onboarding / 19 Conta · folha · 393x852
+- FRAME `745:897` Onboarding / 20 Construção do plano · carregando · 393x852
+- FRAME `745:979` Onboarding / 21 Construção do plano · falha · 393x852
+- FRAME `745:1024` Onboarding / 22 Plano montado · prévia · 393x2071
+- FRAME `745:1276` Onboarding / 23 Primeira semana · 393x1845
+- TEXT `749:1496` Motion · Resumo, consentimentos, conta e plano · 884x34
+- FRAME `749:1497` Motion · 17 Resumo · 393x1863
+- FRAME `749:1856` Motion · 18 Consentimentos · 393x852
+- FRAME `749:1941` Motion · 19 Conta · folha · 393x852
+- FRAME `749:2160` Motion · 20 Construção do plano · carregando · 393x852
+- FRAME `749:2382` Motion · 21 Construção do plano · falha · 393x852
+- FRAME `749:2497` Motion · 22 Plano montado · prévia · 393x2071
+- FRAME `749:2919` Motion · 23 Primeira semana · 393x1845
+- TEXT `741:570` Variantes de perfil · 338x34
+- FRAME `747:910` Onboarding / Variantes / 08 Corrida até aqui · iniciante, sem Apple Saúde (Marina) · 393x852
+- FRAME `747:991` Onboarding / Variantes / 10 Musculação até aqui · retomada após pausa · 393x936
+- FRAME `747:1090` Onboarding / Variantes / 10 Musculação até aqui · iniciante (Marina) · 393x1008
+- FRAME `747:1175` Onboarding / Variantes / 08 Corrida até aqui · sem Apple Saúde (Lucas) · 393x1131
+- FRAME `747:1288` Onboarding / Variantes / 09 Resultados e recordes · sem resultado recente (Rafa) · 393x876
+- FRAME `747:1376` Onboarding / Variantes / 05 Prova e meta · maratona · 393x869
+- FRAME `747:1486` Onboarding / Variantes / 22 Plano montado · iniciante completa, sem relógio (Marina) · 393x1242
+- FRAME `747:1568` Onboarding / Variantes / 22 Plano montado · sem prova, só esforço (Rafa) · 393x1342
+- FRAME `747:1675` Onboarding / Variantes / 22 Plano montado · maratona elegível · 393x1552
+- FRAME `747:1812` Onboarding / Variantes / 22 Plano montado · maratona sem base, plano preparatório · 393x1577
+- FRAME `747:1949` Onboarding / Variantes / 22 Plano montado · iniciante na corrida, experiente na musculação · 393x852
+- TEXT `749:3278` Motion · Variantes de perfil · 491x34
+- FRAME `749:3279` Motion · Variantes / 08 Corrida até aqui · iniciante, sem Apple Saúde (Marina) · 393x852
+- FRAME `749:3416` Motion · Variantes / 10 Musculação até aqui · retomada após pausa · 393x936
+- FRAME `749:3570` Motion · Variantes / 10 Musculação até aqui · iniciante (Marina) · 393x1008
+- FRAME `749:3710` Motion · Variantes / 08 Corrida até aqui · sem Apple Saúde (Lucas) · 393x1131
+- FRAME `749:3881` Motion · Variantes / 09 Resultados e recordes · sem resultado recente (Rafa) · 393x876
+- FRAME `749:4027` Motion · Variantes / 05 Prova e meta · maratona · 393x869
+- FRAME `749:4256` Motion · Variantes / 22 Plano montado · iniciante completa, sem relógio (Marina) · 393x1242
+- FRAME `749:4378` Motion · Variantes / 22 Plano montado · sem prova, só esforço (Rafa) · 393x1342
+- FRAME `749:4525` Motion · Variantes / 22 Plano montado · maratona elegível · 393x1552
+- FRAME `749:4762` Motion · Variantes / 22 Plano montado · maratona sem base, plano preparatório · 393x1577
+- FRAME `749:4957` Motion · Variantes / 22 Plano montado · iniciante na corrida, experiente na musculação · 393x852
+- TEXT `741:571` Triagem com sinal · 335x34
+- FRAME `747:1983` Onboarding / Triagem com sinal / 15 Triagem · com um sim (Marina, ramo alternativo) · 393x1285
+- FRAME `747:2486` Onboarding / Triagem com sinal / 15b Confirmar resposta (folha) · 393x852
+- FRAME `747:2100` Onboarding / Triagem com sinal / 22 Sem treinos prescritos · bloqueio (Marina, ramo alternativo) · 393x852
+- FRAME `747:2600` Onboarding / Triagem com sinal / 22b Refazer cadastro · bloqueio mantido (folha) · 393x852
+- TEXT `749:6143` Motion · Triagem com sinal · 488x34
+- FRAME `749:6144` Motion · Triagem com sinal / 15 Triagem · com um sim (Marina, ramo alternativo) · 393x1285
+- FRAME `749:6304` Motion · Triagem com sinal / 15b Confirmar resposta (folha) · 393x852
+- FRAME `749:6433` Motion · Triagem com sinal / 22 Sem treinos prescritos · bloqueio (Marina, ramo alternativo) · 393x852
+- FRAME `749:6564` Motion · Triagem com sinal / 22b Refazer cadastro · bloqueio mantido (folha) · 393x852
+- TEXT `741:572` Estados do fluxo · 309x34
+- FRAME `747:2157` Onboarding / Estados / 02 Você · campos e validação · 393x852
+- FRAME `747:2225` Onboarding / Estados / 05 Prova e meta · data inválida e meta desabilitada · 393x852
+- FRAME `747:2659` Onboarding / Estados / 11 Sair do cadastro (folha) · 393x852
+- FRAME `747:2310` Onboarding / Estados / 00 Retomar cadastro · 393x852
+- FRAME `747:2387` Onboarding / Estados / 20b Falta uma resposta · 393x852
+- FRAME `747:2434` Onboarding / Estados / 20c Fora do que esta versão atende · 393x852
+- TEXT `749:6638` Motion · Estados do fluxo · 463x34
+- FRAME `749:6639` Motion · Estados / 02 Você · campos e validação · 393x852
+- FRAME `749:6745` Motion · Estados / 05 Prova e meta · data inválida e meta desabilitada · 393x852
+- FRAME `749:6880` Motion · Estados / 11 Sair do cadastro (folha) · 393x852
+- FRAME `749:7008` Motion · Estados / 00 Retomar cadastro · 393x852
+- FRAME `749:7132` Motion · Estados / 20b Falta uma resposta · 393x852
+- FRAME `749:7217` Motion · Estados / 20c Fora do que esta versão atende · 393x852
+- TEXT `841:970` Legado · Perfil, telas densas substituídas na revisão de 15 nov 2026 · 1228x34
+- FRAME `751:147` Perfil / Como o treinador coordena · só leitura · 393x852
+- FRAME `751:186` Perfil / Seu treinador · 393x1538
+- FRAME `751:659` Perfil / Seu treinador · trocar para Conservador (proposta) · 393x852
+- FRAME `751:814` Perfil / Seu treinador · trocar para Exigente (proposta) · 393x852
+- FRAME `751:311` Perfil / Volume e dificuldade · 393x2170
+- FRAME `751:965` Perfil / Volume e dificuldade · volume menor na força (proposta) · 393x852
+- FRAME `754:494` Perfil / Objetivos e prioridade · 393x1676
+- FRAME `754:627` Perfil / Rotina e equipamentos · 393x1810
+- FRAME `754:1377` Perfil / Rotina · mudança pendente de envio · 393x852
+- FRAME `754:1124` Perfil / Dados e privacidade · 393x1620
+- FRAME `805:117` Adaptações / Não estou 100% · o que está acontecendo? · 393x1007
+- FRAME `805:184` Adaptações / Não estou 100% · sinais de alerta, 8 de 13 respondidos · 393x1380
+- FRAME `805:2135` Adaptações / Declaração de prontidão · corrida sim, força não · 393x1910
+- FRAME `805:2334` Adaptações / Declaração enviada · a corrida volta, a força segue retida · 393x1540
+- FRAME `806:1075` Adaptações / Pausa · 14 dias, retornando em dois passos · 393x1309
+- FRAME `806:2909` Adaptações / Revisão da semana 2 · semana feita, o plano segue · 393x1681
+- FRAME `778:1517` Prova / Teste de campo · oferta no lugar da sessão forte (Rafa) · 393x1350
+- FRAME `778:1617` Prova / Teste de campo · qual teste, 3 km ou 5 km · 393x1101
+- FRAME `778:2381` Prova / Teste de campo · não oferecido, motivos (Lucas) · 393x1023
+- FRAME `760:1762` Prova / Frequência cardíaca · sem zonas (Rafa) · 393x1390
+- FRAME `845:3681` Prova / Ponto de partida · caminho até a calibração (Marina) · 393x852
+- FRAME `845:3745` Prova / Ritmos e esforço · retirada depois de uma pausa de 16 dias · 393x852
+- FRAME `845:3800` Prova / Teste de campo · interrompido por sintoma, triagem antes de tudo (outro corredor) · 393x852
+- FRAME `845:3844` Prova / Ritmos e esforço · retida por bloqueio de segurança · 393x852
+- FRAME `845:3889` Prova / Teste de campo · antes do teste (Rafa) · 393x1516
+- TEXT `862:2270` Onboarding · trocadas em 2026-11-15: Sua semana (sem turno), Turnos e Dia duplo, com os motions · 1786x34
+- FRAME `836:320` Onboarding / 09 Sua semana · 393x852
+- FRAME `836:432` Onboarding / 11 Turnos · 393x852
+- FRAME `836:498` Onboarding / 12 Dia duplo · 393x852
+- FRAME `851:11220` Motion · 09 Sua semana · 393x852
+- FRAME `851:11607` Motion · 11 Turnos · 393x852
+- FRAME `851:11723` Motion · 12 Dia duplo · 393x852
+- TEXT `867:2286` Onboarding · trocada em 2026-11-15: Equipamentos (passou para dentro de Onde treina força), com o motion · 1972x34
+- FRAME `836:674` Onboarding / 13 Equipamentos · 393x852
+- FRAME `863:6809` Motion · 13 Equipamentos · 393x852
+- TEXT `880:22297` Concluído · trocada em 2026-11-15: Corrida sem relógio, rota oculta (mostrava traço em FC e cadência), com o motion · 2118x34
+- FRAME `682:1998` Concluído / Corrida · sem relógio, rota oculta · 393x2336
+- FRAME `691:9658` Motion · Corrida · sem relógio, rota oculta · 393x2336
+- TEXT `905:13469` Treino planejado · cópias de 2026-11-15, antes de sair a linha "Zonas de FC indisponíveis" · 1580x34
+- FRAME `905:13470` Treino planejado / Corrida · leve, 2º do dia (dia duplo) · 393x2298
+- FRAME `905:13715` Treino planejado / Corrida · longão de 80 min · 393x2317
+- FRAME `905:13958` Treino planejado / Corrida · toque de prova 3 × 2 min (semana da prova) · 393x2349
+- FRAME `905:14252` Treino planejado / Corrida · soltura opcional (véspera da prova) · 393x2262
+- FRAME `905:14543` Treino planejado / Corrida · caminhada e trote (iniciante) · 393x1709
+- FRAME `905:14771` Treino planejado / Corrida · leve só por esforço, sem faixa de ritmo · 393x1730
+- FRAME `905:14982` Treino planejado / Estado · movido (longão veio para quinta, 2º do dia) · 393x2399
+- FRAME `905:15235` Treino planejado / Estado · provisória, o treinador precisa de uma resposta · 393x2457
+- FRAME `905:16325` Sistema / Sem conexão · treino planejado aberto (longão de sábado) · 393x2444
+- TEXT `932:8062` Concluído e histórico · cópias de 2026-11-16, antes de saírem traços, avisos de falta de relógio e "Musculação avulsa" · 2113x34
+- FRAME `932:8063` Concluído / Corrida avulsa · fora do plano · 393x1892
+- FRAME `932:8273` Concluído / Corrida · registro manual, sem distância (Marina) · 393x1040
+- FRAME `932:8354` Concluído / Corrida avulsa · excluir (confirmação) · 393x852
+- FRAME `932:8578` Concluído / Musculação avulsa · fora do plano · 393x2102
+- FRAME `932:8788` Concluído / Musculação avulsa · excluir (confirmação) · 393x852
+- FRAME `932:9012` Concluído / Força · importada do Apple Saúde · 393x1097
+- FRAME `932:9088` Histórico / Lista · semana 3, quinta à noite · 393x3085
+- FRAME `932:9651` Histórico / Filtro · avulsas (sábado 14) · 393x852
+- FRAME `932:9726` Histórico / Ir para uma data (folha) · 393x852
+- FRAME `932:10537` Histórico / Lista · depois de excluir a avulsa (desfazer) · 393x852
+- FRAME `932:11105` Histórico / Semana fechada · semana 2 (2–8 nov) · 393x1921
+- FRAME `932:11337` Histórico / Registrar treino · corrida feita fora do app (Marina) · 393x879
+- TEXT `932:16565` Progresso · cópias de 2026-11-16, antes de saírem as menções a "sem relógio" · 1400x34
+- FRAME `932:16566` Progresso / Geral · plano atual, semana 3 (quinta à noite) · 393x2612
+- FRAME `932:16929` Progresso / Geral · semana 2 selecionada, dados em tabela · 393x2891
+- FRAME `932:17320` Progresso / Geral · escolher período (folha) · 393x852
+- FRAME `932:17711` Progresso / Geral · poucos dados (Marina, semana 3, qui 26 nov) · 393x2137
+- FRAME `932:17927` Progresso / Corrida · só esforço, sem relógio (Marina) · 393x1676
+- FRAME `932:18038` Progresso / Estado · sem conexão, mostrando o que estava salvo · 393x2717
+- FRAME `932:18405` Progresso / Geral · Apple Saúde não conectado (sem sinais do relógio) · 393x2607
+- FRAME `932:18747` Progresso / Geral · só sono e repouso chegaram (sem VFC) · 393x2612
+- FRAME `941:24` Marca · nome: funil de 16 nov 2026, finalistas e evidência · 1400x2091
+- FRAME `943:37` Marca · logo: três direções para Vilumo · 1400x2192
+- FRAME `951:93` Marca · logo: estudo com dois caminhos, antes da escolha (16 nov 2026) · 1400x1892
+
+(no sections/groups)

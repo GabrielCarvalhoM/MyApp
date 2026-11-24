@@ -1,0 +1,98 @@
+# 91 · Motion (551:21)
+CHROME strings are listed once and omitted from frame bodies; '+chrome' means all present, '−chrome:' lists missing ones.
+'motion twin' frames are the Motion row copy of a screen with identical text.
+
+PAGE 91 · Motion (551:21) · items 1 · screens 0 · motion 1
+CHROME (in >=80% of screens, omitted below; '−chrome:' lists any missing): 
+### Motion · como as telas se movem
+`898:1284` FRAME 1260x1836
+- Repmile · canônico da primeira versão
+- Motion
+- Cada tela tem uma amostra de 3 segundos no quadro logo abaixo dela. O movimento conta o estado: o que entrou, o que foi escolhido, o que apareceu depois. Nada decorativo.
+- Regras
+- De cima para baixo
+- Luz de fundo, cabeçalho, conteúdo e ação entram nessa ordem, em cascata.
+- O quadro de topo não anima
+- Só os filhos. A tela inteira nunca desliza nem pisca.
+- Escolha se vê
+- O que foi escolhido pulsa; o que depende da escolha entra depois dela.
+- Não desenhado
+- A versão com "Reduzir movimento" do iOS ligado. Proposta: só opacidade, sem deslocamento.
+- Gestos
+- Gesto
+- Onde
+- Tempo
+- Curva
+- Entrada em cascata
+- Blocos de toda tela
+- 400 ms cada, 90 ms entre blocos, sobe 10 pt
+- Expo
+- Luz de fundo
+- Topo de toda tela
+- 900 ms de opacidade
+- Saída
+- Manchete palavra por palavra
+- Manchetes de 28 pt
+- 600 ms
+- Número grande letra a letra
+- Números de destaque
+- 500 ms
+- Marcas e barras crescem da linha de base
+- Semana, gráficos e artes
+- 450 a 500 ms
+- Suave
+- Linha de base se abre
+- Semana e artes
+- 600 a 750 ms
+- Escolha pulsa
+- Pílula, cartão de opção e check
+- 280 a 320 ms, de 0,9 a 1
+- Volta
+- Folha sobe
+- Folhas sobre a tela
+- 600 ms; o véu acende em 350 ms
+- Revelação progressiva
+- Onde você treina força
+- O bloco entra 1,2 s depois, com 350 ms de opacidade e 500 ms de subida
+- Aviso breve
+- Rodapé
+- Entra em 1,5 s, 350 ms
+- Teclado do iOS
+- Formulários
+- Indicador de espera
+- Botões e carregamento
+- Giro contínuo
+- Linear
+- Curvas
+- Nome
+- Valor
+- Uso
+- ease-out
+- Opacidade e textos
+- cubic-bezier(0.16, 1, 0.3, 1)
+- Entradas, folhas e linhas
+- cubic-bezier(0.2, 1.12, 0.3, 1)
+- Barras e marcas, com leve passagem do ponto
+- ease-out-back
+- Pulso de escolha e de check
+- linear
+- Giro do indicador de espera
+- Onde fica o motion de cada página
+- Página
+- Distância abaixo da tela
+- Observação
+- 10 · Onboarding e 82 · Compartilhar
+- 1.500 pt
+- Na 82, só as telas têm motion; as artes não.
+- 20 · Hoje
+- 2.000 pt
+- —
+- 30 · Plano
+- 2.500 pt
+- 31, 60, 70, 71, 72, 80, 81 e 83
+- 3.000 pt
+- As telas novas de 15 nov são clones com o motion da tela de origem.
+- 40 e 41 · Execução
+- 1.100 pt
+- 50 · Concluído e histórico
+- 4.000 pt
