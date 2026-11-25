@@ -1,0 +1,40 @@
+# Negative checks, review cycle (runner redesigned after QRE_SAN_R1), on a scratch worktree of 5a3834f (node v24.19.0)
+
+## R-a: one run with five attacks: test/zz-attacks.test.mjs (N4 an active test with H50's exact title; N5 an unlisted test.skip; N6 QRE-SAN-01 a failing subtest named as H01's title; N7 QRE-SAN-08 a skipped test titled with its own file path) and N8 H10's failsAt.line moved by one (which also trips v1san-record: N9)
+✖ ACTIVE FAILURE v1san-record.test.mjs:25 — REPMILE-COACHINGCORE-V1-TEST-SUITE-SANITIZATION-1: the record is the bytes of its commit, and the historical layer is the bytes it binds
+✖ ACTIVE FAILURE zz-attacks.test.mjs:8 — REPMILE-COACHINGCORE-V1-RC-1: FREEZE-7 and V1INT preserved but for the seven declared amendments; nothing else changed since ee256ae; the record holds
+ACTIVE SUITE: 1955 active tests, 1952 pass, 2 fail. HISTORICAL (test/HISTORICAL_TESTS.json): 52/53 fail on this tree at their declared assertion; each is verified green at its own commit by `npm run test:historical` (not run here). node reported 2018 entries, 9 of them files without tests (helpers).
+SUITE: H10: fails at v1core-expiry.test.mjs:24, not at its declared assertion :25; the tree changed before the pinned point (v1core-expiry.test.mjs: "QRE-AIF-01: before and on the review-by day, the answer of the new entry point is the answ")
+SUITE: skipped and not a historical test: zz-attacks.test.mjs: an unlisted skip
+SUITE: skipped: zz-attacks.test.mjs: test/zz-attacks.test.mjs
+SUITE: node counts 56 failures, 55 are accounted for here (a failure outside a testcase, e.g. a parent after its subtests)
+SUITE: node counts 2 skipped
+R-a exit 1
+(N4: the same-titled active test simply runs and passes: nothing is filtered, so nothing can be hidden behind a title)
+
+## R-b: E-1 re-introduced in src/r6-provenance.mjs (correction inherits no other voice)
+ACTIVE SUITE: 1952 active tests, 1879 pass, 73 fail. HISTORICAL (test/HISTORICAL_TESTS.json): 30/53 fail on this tree at their declared assertion; each is verified green at its own commit by `npm run test:historical` (not run here). node reported 2013 entries, 8 of them files without tests (helpers)
+R-b exit 1
+historical tests passing again: 18
+SUITE: H20: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H31: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H32: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H33: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H34: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H35: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H36: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H38: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H39: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H42: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H43: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H44: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H45: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H46: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H47: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H48: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H49: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+SUITE: H50: PASSES on the current tree, so it is no longer incompatible with it. If it pin
+
+## N2: a byte appended to test/v1rws-lineage.test.mjs: refused before running (HISTORICAL: ... is not the pinned bytes), exit 1
+## N9: a successor weakened (v1san-boundary-safety: the adverse-count assertion made vacuous): v1san-record fails, 'the historical layer changed without a new record'
+## N3: a comment appended to src/value.mjs: v1san-runtime-integrity 2 pass, 3 fail
