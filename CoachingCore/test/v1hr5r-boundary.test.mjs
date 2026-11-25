@@ -93,3 +93,107 @@ test('HR5R boundary integrity and privacy: a changed carried profile is an integ
  const B=setup({id:'hr5r-b6',eng:{...engine,generateProgram:i=>{const g=engine.generateProgram(i);const {heartRateProfileRecord:_r,...rest}=g;return rest;}}});
  B.api.onboard({actor:B.actor,intake:B.intake,consents:CONSENTS});assert.deepEqual(B.record(),[]);
 });
+
+// ---------- QRE-SEC-HR5R review findings (each reproduced by the reviewer's probe; each now a regression test) ----------
+import {athlete,U,notFeeling100WithSign} from './v1int-helpers.mjs';
+import {hash as valueHash} from '../src/value.mjs';
+import {appendProfile} from '../src/v1-heart-rate-profile.mjs';
+import {EDGE_PROFILES} from '../r6/fixtures/profiles.mjs';
+const aged30=(t,x={})=>{const i=athleteA({weeks:8,id:t.id});i.athlete.ageYears=30;return {...i,...x};};
+const codeOf=r=>r.ok===false?r.error.code:'OK';
+const fiveOf=t=>t.it.presentation({actor:t.actor}).readings?.runCalibration?.heartRateFiveZones;
+const hrOf=(t,profile,rid)=>t.api.setHeartRateProfile({actor:t.actor,clientRequestId:rid,expectedVersion:t.version(),heartRateProfile:profile});
+
+test('QRE-HR5R-01: a heart-rate write after an erasure keeps the readings null, so a resent stopped run is asked again (its screen named), never a null-screen duplicate',()=>{
+ for(const withHr of [false,true]){
+  const t=athlete({id:'q01-'+withHr});t.enroll(aged30(t));const s=t.sessions(0).find(x=>x.sport==='RUN');t.set(s.date,'20:00');
+  const f={...t.form(s),actual:{completed:false,minutes:12,stop:{reason:'SYMPTOM'}},response:U};t.weekly(s.date,[f]);
+  t.set(s.date,'20:30');const nf=t.api.notFeeling100({actor:t.actor,clientRequestId:'nf',expectedVersion:t.version(),...notFeeling100WithSign(s.date)});
+  t.set(s.date,'21:00');assert.equal(codeOf(t.it.eraseHealthFacts({actor:t.actor,eventIds:[nf.eventId],expectedVersion:t.version()})),'OK');
+  if(withHr){t.set(s.date,'21:05');assert.equal(codeOf(hrOf(t,{maxHeartRateBpm:195},'hr')),'OK');assert.equal(t.it.presentation({actor:t.actor}).readings,null,'null stays null');}
+  t.set(s.date,'21:10');const again=t.submit({kind:'WEEKLY_REVIEW',observations:[f]});
+  assert.equal(!!again.duplicate,false,String(withHr));assert.equal(again.warningSignScreen?.reason,'RUN_STOPPED_FOR_A_SYMPTOM',String(withHr));
+ }
+});
+test('QRE-HR5R-02: accepting a pending change keeps the heart-rate profile in force (an override is never overwritten by a plan adoption)',()=>{
+ const i=JSON.parse(JSON.stringify(EDGE_PROFILES.TEN_K_EIGHT_WEEKS));i.asOf='2026-11-01';i.startDate='2026-11-02';i.athlete.ageYears=30;
+ const u=athlete({id:'q02',start:'2026-11-01T12:00:00-03:00',anchor:memoryAnchor()});assert.equal(u.enroll({...i,athlete:{...i.athlete,id:'q02'}}).status,'PROPOSED');
+ for(const w of [0,1,2,3]){const sun=addDays(u.doc().program.startDate,w*7+6);u.set(sun);u.weekly(sun,u.sessions(w).map(s=>u.form(s)));}
+ const q=u.doc().program.weeks[4].sessions.find(x=>x.role==='QUALITY');u.set(q.date,'21:00');
+ const r=u.api.logRun({actor:u.actor,clientRequestId:'miss',expectedVersion:u.version(),eligibility:ELIG(q.date),sessionId:q.id,occurredOn:q.date,completed:false});
+ assert.ok(r.offer?.decisionId&&u.doc().pending,'a pending offer');
+ u.set(q.date,'21:02');assert.equal(codeOf(hrOf(u,{maxHeartRateBpm:200},'hr1')),'OK');
+ u.set(q.date,'21:05');assert.equal(codeOf(u.api.accept({actor:u.actor,decisionId:r.offer.decisionId,expectedVersion:u.version()})),'OK');
+ assert.deepEqual(u.carried().heartRateProfileRecord.map(x=>x.declaration),[{ageYears:30},{maxHeartRateBpm:200}]);
+ const sun=addDays(u.doc().program.startDate,4*7+6);u.set(sun);u.weekly(sun,[]);assert.equal(fiveOf(u).reference.kind,'ATHLETE_DECLARED_MAXIMUM');assert.equal(fiveOf(u).reference.bpm,200);
+});
+test('QRE-HR5R-03 / N2: with coaching consent revoked a heart-rate write is refused (CONSENT_REQUIRED), nothing recorded; erasing is never refused for consent',()=>{
+ const t=athlete({id:'q03'});t.enroll(aged30(t));t.clock+=60000;
+ assert.equal(t.api.setConsent({actor:t.actor,purpose:'COACHING',granted:false,expectedVersion:t.version()}).ok,true);t.clock+=60000;
+ assert.equal(hrOf(t,{maxHeartRateBpm:199},'hr').error.code,'CONSENT_REQUIRED');
+ assert.deepEqual(t.carried().heartRateProfileRecord.map(x=>x.declaration),[{ageYears:30}]);
+ const u=athlete({id:'q03b'});u.enroll(aged30(u));u.clock+=60000;assert.equal(codeOf(hrOf(u,{maxHeartRateBpm:199},'hr')),'OK');u.clock+=60000;
+ assert.equal(u.api.setConsent({actor:u.actor,purpose:'COACHING',granted:false,expectedVersion:u.version()}).ok,true);u.clock+=60000;
+ const e=u.api.eraseHeartRateProfile({actor:u.actor,clientRequestId:'er',expectedVersion:u.version()});assert.equal(codeOf(e),'OK');assert.equal(e.erased.length,1);
+ assert.ok(!u.store.raw('q03b').includes('"maxHeartRateBpm":199'),'the erased value is gone from the stored record');
+});
+test('QRE-HR5R-N1 / N3 / N4: a carried rollback is released by the athlete\'s acknowledgement; an erasure under a clock behind the record works; a pending change keeps no copy of an erased value',()=>{
+ const store=memoryStore(),anchor=memoryAnchor(),t=athlete({id:'qn1',store,anchor});t.enroll(aged30(t));
+ t.clock+=60000;hrOf(t,{maxHeartRateBpm:200},'a');const old=store.raw('qn1');t.clock+=60000;hrOf(t,{maxHeartRateBpm:201},'b');
+ store.setRaw('qn1',old);assert.equal(t.it.read({actor:t.actor}).error.code,'RECORD_ROLLED_BACK');
+ assert.equal(t.it.acknowledgeRecordLoss({actor:t.actor}).ok,true,'the athlete\'s explicit act is the way out');assert.notEqual(t.it.read({actor:t.actor}).error?.code,'RECORD_ROLLED_BACK');
+ const c=athlete({id:'qn3'});c.enroll(aged30(c));c.clock+=3600e3;assert.equal(codeOf(hrOf(c,{maxHeartRateBpm:199},'hr')),'OK');c.clock-=1800e3;
+ const e=c.api.eraseHeartRateProfile({actor:c.actor,clientRequestId:'er',expectedVersion:c.version()});assert.equal(codeOf(e),'OK');assert.equal(e.erased.length,1);
+ const i=JSON.parse(JSON.stringify(EDGE_PROFILES.TEN_K_EIGHT_WEEKS));i.asOf='2026-11-01';i.startDate='2026-11-02';i.athlete.ageYears=30;
+ const u=athlete({id:'qn4',start:'2026-11-01T12:00:00-03:00'});u.enroll({...i,athlete:{...i.athlete,id:'qn4'}});
+ for(const w of [0,1,2,3]){const sun=addDays(u.doc().program.startDate,w*7+6);u.set(sun);u.weekly(sun,u.sessions(w).map(s=>u.form(s)));}
+ const q=u.doc().program.weeks[4].sessions.find(x=>x.role==='QUALITY');u.set(q.date,'21:00');
+ const r=u.api.logRun({actor:u.actor,clientRequestId:'miss',expectedVersion:u.version(),eligibility:ELIG(q.date),sessionId:q.id,occurredOn:q.date,completed:false});assert.ok(r.offer);
+ u.set(q.date,'21:02');hrOf(u,{maxHeartRateBpm:211},'hr');u.set(q.date,'21:03');assert.equal(codeOf(u.api.eraseHeartRateProfile({actor:u.actor,clientRequestId:'er',expectedVersion:u.version()})),'OK');
+ assert.ok(!u.store.raw('qn4').includes('"maxHeartRateBpm":211'),'no copy in the pending change');
+});
+test('QRE-HR5R-04: east and west of UTC, an intake day is the plan\'s local day: a declaration right after onboarding and a same-day restart are recorded; the age is read at a local instant',()=>{
+ for(const tz of [600,60,-180,-600]){
+  const t=athlete({id:'q04-'+tz,start:'2026-11-15T08:00:00+10:00'});const i=aged30(t);i.timezoneOffsetMinutes=tz;
+  assert.equal(t.enroll(i).status,'PROPOSED',String(tz));t.clock+=60000;
+  const h=hrOf(t,{maxHeartRateBpm:195},'hr');assert.equal(codeOf(h),'OK',tz+' '+JSON.stringify(h.error));
+  assert.equal(fiveOf(t).profile.ageYears,30,String(tz));assert.equal(fiveOf(t).reference.kind,'ATHLETE_DECLARED_MAXIMUM',String(tz));
+ }
+ // A restart later the same local day (-180, 23:45 local) after a declaration at 23:30: the intake's new age is recorded, never dropped.
+ const t=athlete({id:'q04-r'});t.enroll(aged30(t));const day=addDays(t.doc().program.startDate,8);t.set(day,'23:30');assert.equal(codeOf(hrOf(t,{maxHeartRateBpm:195},'hr')),'OK');
+ t.set(day,'23:45');const u={...athleteA({weeks:8,id:'q04-r'}),asOf:day,startDate:addDays(day,3)};u.athlete.ageYears=31;u.athlete.eligibility=ELIG(day);u.athlete.pause={reasonCategory:'SCHEDULE',nonclinical:true,weeks:0};
+ assert.equal(t.api.restart({actor:t.actor,intake:u,expectedVersion:t.version()}).ok,true);
+ assert.deepEqual(t.carried().heartRateProfileRecord.map(x=>x.declaration),[{ageYears:30},{maxHeartRateBpm:195},{ageYears:31}]);assert.equal(fiveOf(t).profile.ageYears,31);
+});
+test('QRE-HR5R-05: an intake can state no carried record and no invalid declaration; forged or invalid rows are never read; a fault is typed',()=>{
+ const t=athlete({id:'q05'});
+ for(const bad of [{heartRateProfileRecord:[{fact:'V1HR5R-HEART-RATE-PROFILE-DECLARED'}]},{runEvidenceRecord:[]},{heartRateProfile:{maxHeartRateBpm:999}},{heartRateProfile:{zoneUpperBpm:5}}]){
+  const r=t.enroll(aged30(t,bad));assert.equal(r.ok,false,JSON.stringify(bad));assert.equal(r.error.code,'INVALID_REQUEST');}
+ const ok=t.enroll(aged30(t,{heartRateProfile:{maxHeartRateBpm:190}}));assert.equal(ok.status,'PROPOSED');assert.equal(fiveOf(t).reference.kind,'ATHLETE_DECLARED_MAXIMUM');
+ // The engine entry: a first plan never reads a record from its input; rows invalid for their source are never read.
+ const g=CORE.generateProgram({...aged30({id:'q05b'}),heartRateProfileRecord:[{fact:'V1HR5R-HEART-RATE-PROFILE-DECLARED',athleteId:'q05b',eventId:'hrp-9999',declaredAt:'2099-01-01',source:'ATHLETE',declaration:{maxHeartRateBpm:999},inputHash:'x'}]},O);
+ assert.deepEqual(g.heartRateProfileRecord.map(r=>r.declaration),[{ageYears:30}]);
+ // Rows intact by hash but invalid for their source (an impossible maximum, a malformed limit, an athlete row with an age, an intake row with a
+ // maximum) are never read, and never lock the record against a valid declaration.
+ const rc=g.runCalibration,mk=(source,declaration)=>({fact:'V1HR5R-HEART-RATE-PROFILE-DECLARED',version:'V1HR5R-HEART-RATE-PROFILE-1',eventId:'hrp-0099',athleteId:'q05b',declaredAt:'2026-11-20T10:00:00Z',source,declaration,inputHash:valueHash(declaration)});
+ for(const bad of [mk('ATHLETE',{maxHeartRateBpm:999}),mk('ATHLETE',{zoneUpperBpm:5}),mk('ATHLETE',{ageYears:30}),mk('INTAKE',{maxHeartRateBpm:190}),mk('INTAKE',{ageYears:30,maxHeartRateBpm:190})]){
+  const read=CORE.heartRateProfileReading(rc,[...g.heartRateProfileRecord,bad],{athleteId:'q05b',at:'2026-11-21T10:00:00Z'},O).heartRateFiveZones;
+  assert.equal(read.reference.kind,'AGE_ESTIMATE',JSON.stringify(bad.declaration));assert.equal(read.profile.declaredMaximumBpm,null);
+  const r=appendProfile([...g.heartRateProfileRecord,bad],{athleteId:'q05b',at:'2026-11-21T10:00:00Z',declaration:{maxHeartRateBpm:188}});assert.deepEqual(r.added.length,1,JSON.stringify(bad.declaration));}
+});
+test('QRE-HR5R-06: a carried rollback at the same custody version (an older heart-rate write replayed) is RECORD_ROLLED_BACK',()=>{
+ const store=memoryStore(),anchor=memoryAnchor(),t=athlete({id:'q06',store,anchor});t.enroll(aged30(t));
+ t.clock+=60000;assert.equal(codeOf(hrOf(t,{maxHeartRateBpm:200},'a')),'OK');const old=store.raw('q06');
+ t.clock+=60000;assert.equal(codeOf(hrOf(t,{zoneUpperBpm:[120,140,160,175]},'b')),'OK');
+ store.setRaw('q06',old);assert.equal(t.it.read({actor:t.actor}).error.code,'RECORD_ROLLED_BACK');
+});
+test('QRE-HR5R-08: the athlete erases the heart-rate declarations (history included); the age stays; the zones go back to the estimate; the record compacts at its bound',()=>{
+ const t=athlete({id:'q08'});t.enroll(aged30(t));
+ for(let k=0;k<3;k++){t.clock+=60000;assert.equal(codeOf(hrOf(t,{maxHeartRateBpm:190+k},'h'+k)),'OK');}
+ t.clock+=60000;const e=t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'er',expectedVersion:t.version()});assert.equal(codeOf(e),'OK');assert.equal(e.erased.length,3);
+ assert.deepEqual(t.carried().heartRateProfileRecord.map(x=>x.declaration),[{ageYears:30}]);assert.equal(fiveOf(t).reference.kind,'AGE_ESTIMATE');
+ assert.equal(t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'er',expectedVersion:t.version()}).replayed,true);
+ // Past 128 rows the record keeps the rows in force and goes on accepting the athlete.
+ for(let k=0;k<130;k++){t.clock+=1000;assert.equal(codeOf(hrOf(t,{maxHeartRateBpm:150+(k%60)},'c'+k)),'OK','write '+k);}
+ const rec=t.carried().heartRateProfileRecord;assert.ok(rec.length<=128);assert.equal(rec.at(-1).declaration.maxHeartRateBpm,150+(129%60));assert.equal(rec[0].declaration.ageYears,30,'the age row stays');
+});

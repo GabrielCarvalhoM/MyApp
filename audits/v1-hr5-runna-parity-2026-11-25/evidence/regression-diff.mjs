@@ -5,7 +5,9 @@
 //   - anything inside a `heartRateFiveZones` value (the five-zone reading is what this correction changes), anywhere;
 //   - `hash` of an object that holds `heartRateFiveZones` (the run calibration's own hash covers its body);
 //   - `carriedMac` (the boundary's seal over the carried records, which hold the last answer's readings and the profile record);
-//   - the added keys `heartRateProfileRecord` and `heartRateProfileDeclared` (an answer's, and the carried records').
+//   - the added keys `heartRateProfileRecord` and `heartRateProfileDeclared` (an answer's, and the carried records'), and the carried sequence
+//     `carried.seq` (QRE-HR5R-06: one more on every carried commit, kept by the anchor).
+// `--tz <minutes>` replays every journey with that plan offset in each intake (QRE-HR5R-09: a positive offset), in both engines alike.
 // Anything else that differs is a regression and fails this script (exit 1). Synthetic athletes only; nothing here decides training.
 //   git worktree add --detach <dir> 4850560 && cp -R CoachingCore/node_modules <dir>/CoachingCore/
 //   node audits/v1-hr5-runna-parity-2026-11-25/evidence/regression-diff.mjs --old <dir> [--out <report json>]
@@ -50,13 +52,14 @@ function diff(a,b,at,out,parentHasFive,ctx={}){
  for(const k of new Set([...Object.keys(a),...Object.keys(b)])){
   const p=at+'.'+k;
   if(!Object.hasOwn(b,k)){out.push({at:p,allowed:null,old:short(a[k]),new:'<absent>'});continue;}
-  if(!Object.hasOwn(a,k)){out.push({at:p,allowed:PROFILE_KEYS.includes(k)?'ADDED_HEART_RATE_PROFILE_KEY':null,old:'<absent>',new:short(b[k])});continue;}
+  if(!Object.hasOwn(a,k)){out.push({at:p,allowed:PROFILE_KEYS.includes(k)?'ADDED_HEART_RATE_PROFILE_KEY':k==='seq'&&/\.carried$/.test(at)?'ADDED_CARRIED_SEQUENCE':null,old:'<absent>',new:short(b[k])});continue;}
   if(k==='heartRateFiveZones'){if(JSON.stringify(a[k])!==JSON.stringify(b[k]))out.push({at:p,allowed:'FIVE_ZONE_READING_REVISION_2',old:short(a[k]?.model),new:short(b[k]?.model)});continue;}
   if(k==='hash'&&hasFive&&a[k]!==b[k]){out.push({at:p,allowed:'HASH_OF_A_BODY_WITH_THE_FIVE_ZONES',old:a[k],new:b[k]});continue;}
   if(k==='carriedMac'&&a[k]!==b[k]){out.push({at:p,allowed:'SEAL_OF_THE_CARRIED_READINGS_AND_PROFILE',old:a[k],new:b[k]});continue;}
   diff(a[k],b[k],p,out,hasFive,ctx);
  }
 }
+const TZ=arg('--tz')===null?null:Number(arg('--tz'));
 const PROFILE_KEYS=['heartRateProfileRecord','heartRateProfileDeclared'];
 const short=v=>{const s=JSON.stringify(v);return s===undefined?String(v):s.length>160?s.slice(0,160)+'…':s;};
 
@@ -65,9 +68,10 @@ const fixtures=[
  ['final',path.join(REPO,'audits/v1-aif-p0-jsc-2026-11-17/ios/Tests/P0HostTests/Fixtures/final.json')],
  ['hr5',path.join(REPO,'audits/v1-five-zone-heart-rate-2026-11-25/native/ios/Tests/P0HostTests/Fixtures/hr5.json')],
 ];
-const report={old:OLD===REPO?'(same tree)':path.basename(OLD),fixtures:[],allowed:{},skipped:[],unexplained:[]};
+const report={old:OLD===REPO?'(same tree)':path.basename(OLD),tz:TZ,fixtures:[],allowed:{},skipped:[],unexplained:[]};
 for(const [name,file] of fixtures){
  const fx=JSON.parse(fs.readFileSync(file,'utf8')),input=JSON.parse(fx.inputJSON??JSON.stringify(fx));
+ if(TZ!==null)for(const j of input.journeys)for(const st of j.steps)if(st.args?.intake&&typeof st.args.intake==='object')st.args.intake.timezoneOffsetMinutes=TZ;
  let steps=0,differing=0,withFive=0,errors=0,skipped=0;
  for(const j of input.journeys){
   const ra=run(A,j,input.key),rb=run(B,j,input.key);let openAt=null;

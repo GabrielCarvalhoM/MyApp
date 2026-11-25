@@ -122,3 +122,36 @@ All of C1–C13 are carried in the record. C7 is accepted as a presentation rule
 - No gate is closed and nothing is published.
 - HQ-V1HR5R-SSCTR-ZONES is proposed, not appended.
 - Review by 2027-05-11.
+
+---
+
+## SSCTR-HR5R-RECHECK-r2: sporting effect of the QRE/Security fixes (2026-11-25)
+
+**Outcome: APPROVE_WITH_CONDITIONS.** The enabling record is re-bound as `SSCTR-HR5R-RECHECK-r2`. RECHECK-r1 is kept under `superseded` in the records file, where the authority does not read it. The values are unchanged at `784ba7fe…ca90`.
+
+**Newly bound code** (each recomputed with `shasum -a 256`):
+
+| File | sha256 |
+|---|---|
+| `v1-heart-rate-zones.mjs` | `3a4c2e32…0915e26` |
+| `v1-heart-rate-profile.mjs` | `ede68c09…f928ebc` |
+| `v1-safety-index.mjs` | `298f5ac8…ee763ee8e7` |
+| `v1-run-calibration.mjs` | `8203b875…`, unchanged |
+
+`integration.mjs` (`ce2ae212…`) and `api.mjs` are engineering-only and are not bound or judged here.
+
+**Verification.**
+- **Tests.** 45 of 45 pass, run by this instance, including "QRE-HR5R-07".
+- **Neutrality proof.** The result files read `HEART_RATE_ONLY` with no unexplained differences. I read them; I did not re-run the script.
+
+**Rulings.**
+- **QRE-HR5R-07: APPROVE.** The change is consistent with the approved week-boundary rule.
+  - Probe at age 40, with a strap maximum of 195 known only for next week. The easy session of the week in force cues from 161 (age estimate). The provisional long session next week cues from 174 (observed maximum). Threshold work keeps no heart-rate guidance.
+  - A declared 170 moves both cues to 152 at once. Erasure returns them to 161 and 174.
+  - The fix removes a defect, because a measured reference could previously reach the week in force mid-week.
+  - The age is read at the request instant, so an anniversary inside the provisional week can shift that week's cue by 1 bpm until it starts. This is negligible.
+- **Local-day aging: APPROVE.** At offset −180, the athlete is 40 at 23:00 local on 2027-10-31 and 41 at 01:00 local on 2027-11-01. Re-dating an intake age row can only delay an anniversary, by at most 1 bpm.
+- **Compaction: APPROVE.** In the probe, 140 declarations compact to 15 rows. The age keeps its declaration date and the latest override is kept.
+- **Source-typed validation, `eraseDeclarations`, and no profile read on a first plan: APPROVE.** No sporting objection.
+
+**Conditions.** All conditions of RECHECK-r1 carry over, plus the QRE-HR5R-07 week rule. No gate is closed and nothing is published. Review by 2027-05-11.

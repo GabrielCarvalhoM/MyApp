@@ -52,33 +52,34 @@ const marker=(e,clinicalRouteAnswered)=>({status:'EXPIRED',asOfDay:e.day,reviewB
 const HR_KEYS=['heartRateProfile','heartRateProfileRecord'];
 const without=(o,keys)=>isObj(o)?Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k))):o;
 const NOT_ACCEPTED=new Set(['INVALID_INPUT','UNSUPPORTED']);
-function profiled(base,{athleteId,at,record,ageYears,declaration,options}){
+function profiled(base,{athleteId,at,record,ageYears,declaration,options,offsetMinutes=0}){
  if(!isObj(base))return base;
  const refuseAll=typeof athleteId!=='string'?'heartRateProfile.noPlan':NOT_ACCEPTED.has(base.status)?'heartRateProfile.reviewNotAccepted':null;
- let r;try{r=appendProfile(record,{athleteId,at,ageYears:refuseAll?undefined:ageYears,declaration,refuseAll});}
+ let r;try{r=appendProfile(record,{athleteId,at,ageYears:refuseAll?undefined:ageYears,declaration,refuseAll,offsetMinutes});}
  catch{r={record:Array.isArray(record)?record:[],added:[],refused:declaration?[{errors:['heartRateProfile.unreadable']}]:[],unchanged:[]};}
- let rc=base.runCalibration;if(rc!==undefined&&!refuseAll)try{rc=applyHeartRateProfile(rc,profileOf(r.record,{athleteId,at}),options);}catch{rc=base.runCalibration;}
+ let rc=base.runCalibration;if(rc!==undefined&&!refuseAll)try{rc=applyHeartRateProfile(rc,profileOf(r.record,{athleteId,at,offsetMinutes}),options);}catch{rc=base.runCalibration;}
  return freeze({...base,...(rc!==undefined?{runCalibration:rc}:{}),heartRateProfileRecord:r.record,heartRateProfileDeclared:{added:r.added,refused:r.refused,unchanged:r.unchanged}});
 }
 const recordOf=o=>isObj(o)&&Array.isArray(o.heartRateProfileRecord)?o.heartRateProfileRecord:[];
 /** A stored run calibration `rc` with its five zones resolved with the profile of `record` at `at` (the integration's setHeartRateProfile, which
  * asks the engine nothing else). */
-export const heartRateProfileReading=(rc,record,{athleteId,at},options={})=>applyHeartRateProfile(rc,profileOf(record,{athleteId,at}),options);
-/** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. */
+export const heartRateProfileReading=(rc,record,{athleteId,at,offsetMinutes=0},options={})=>applyHeartRateProfile(rc,profileOf(record,{athleteId,at,offsetMinutes}),options);
+/** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. A first
+ * plan has no profile record yet (QRE-HR5R-05: a record in an intake is never read). */
 export function generateProgram(input,options={}){
  const base=S.generateProgram(without(input,HR_KEYS),options),p=base?.program;
- return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(input)?input.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile:undefined,options});
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,offsetMinutes:p?.timezoneOffsetMinutes??0,record:[],ageYears:isObj(input)?input.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile:undefined,options});
 }
 /** A new plan from the record: as below (a clinical hold on record is answered before any plan is made). */
 export function restartProgram(input,options={}){
  const intake=isObj(input)?input.intake:undefined,plain=isObj(input)?{...without(input,HR_KEYS),...(isObj(intake)?{intake:without(intake,HR_KEYS)}:{})}:input;
  const base=S.restartProgram(plain,options),p=base?.program;
- return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(intake)?intake.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile??(isObj(intake)?intake.heartRateProfile:undefined):undefined,options});
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,offsetMinutes:p?.timezoneOffsetMinutes??0,record:recordOf(input),ageYears:isObj(intake)?intake.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile??(isObj(intake)?intake.heartRateProfile:undefined):undefined,options});
 }
 /** A review: as below, with the athlete's heart-rate profile (V1HR5R). */
 export function evaluateProgram(program,review,options={}){
  const base=evaluateCore(program,without(review,HR_KEYS),options);
- return profiled(base,{athleteId:isObj(program)?program.athleteId:undefined,at:isObj(review)?review.asOf:undefined,record:recordOf(review),declaration:isObj(review)?review.heartRateProfile:undefined,options});
+ return profiled(base,{athleteId:isObj(program)?program.athleteId:undefined,at:isObj(review)?review.asOf:undefined,offsetMinutes:isObj(program)?program.timezoneOffsetMinutes??0:0,record:recordOf(review),declaration:isObj(review)?review.heartRateProfile:undefined,options});
 }
 /** A review: as below, except that after the records' review-by dates the clinical route still answers before the refusal (QRE-AIF-01). */
 function evaluateCore(program,review,options={}){

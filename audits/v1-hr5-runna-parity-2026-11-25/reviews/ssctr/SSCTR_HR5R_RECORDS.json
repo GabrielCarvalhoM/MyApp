@@ -1,6 +1,65 @@
 {
-  "note": "V1X-RUN-HR-FIVE-ZONE enabling records for revision 2 (FOUNDER-HR5-RUNNA-PARITY-2026-11-25). Only an independent SSCTR review of the implementation appends a record here, bound to the pinned sha256 of CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (valuesSha256). An empty list enables nothing (v1-heart-rate-zones.mjs fiveZoneAuthority: fail closed). The revision-1 records (audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json) are bound to V1 bytes and are kept unchanged as history.",
+  "note": "V1X-RUN-HR-FIVE-ZONE enabling records for revision 2 (FOUNDER-HR5-RUNNA-PARITY-2026-11-25). Only an independent SSCTR review of the implementation appends a record here, bound to the pinned sha256 of CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (valuesSha256). An empty list enables nothing (v1-heart-rate-zones.mjs fiveZoneAuthority: fail closed). The revision-1 records (audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json) are bound to V1 bytes and are kept unchanged as history. Superseded records are kept under 'superseded', which fiveZoneAuthority does not read.",
   "records": [
+    {
+      "boundaryId": "V1X-RUN-HR-FIVE-ZONE",
+      "valuesSha256": "784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "S01",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S11",
+        "S12",
+        "S17",
+        "S20",
+        "V1RC-SRC08",
+        "V1RC-SRC09"
+      ],
+      "conditions": [
+        "Synthetic data only; no real athletes and no production use.",
+        "Bound to CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90 and to the heart-rate paths of CoachingCore/src/v1-heart-rate-zones.mjs sha256 3a4c2e326b10afd72114089665f1bb2705573433402b80733431beea30915e26, CoachingCore/src/v1-heart-rate-profile.mjs sha256 ede68c09956373685e85e2aa370951b27ea412b9b696ad35bc7d779d4f928ebc, CoachingCore/src/v1-safety-index.mjs sha256 298f5ac846ca81135d809249e026ed72ef492010ceb32128199fcaee763ee8e7 and their call site in CoachingCore/src/v1-run-calibration.mjs sha256 8203b875b66bc3780bc13a14299c896d23449bf2201ec03f85eb92e43226dc83; a change to any of them requires an independent SSCTR recheck to confirm or remove this record. src/boundary/integration.mjs (sha256 ce2ae212d8049e654cf7ec9289bf8b73169c6710d7f08bb687853934f48bb65b) and src/boundary/api.mjs are engineering-only and not bound here; their consent, custody, idempotency, erasure and privacy semantics belong to QRE/Security.",
+        "Inert unless valid independent V1X-RUN-CAPACITY and V1X-RUN-HR records exist for the bound src/v1-run-calibration.mjs.",
+        "Operational estimate, not physiological measurement: 220 - age, the observed lower bound, a declared maximum, custom limits and the 65/81/89/97 bands are a reference scale only; zone model confidence LOW; no zone edge is a threshold.",
+        "Age estimate only for an age in force of 18-80 (AGE_OUTSIDE_ESTIMATE_RANGE past it); extending the population is a Founder / G01 decision.",
+        "Display-only reference: effort and pace govern every session; heart rate never changes the plan and is never primary, a target, a gate, a dose, progression, pace-band, estimate, medical evidence or safety-release input; a slow-down cue only from Z4 in EASY, LONG, RECOVERY_EASY, SHAKEOUT and (in EASY mode only) EASY_REESTABLISHMENT; never a cue to speed up.",
+        "QRE-HR5R-07 week rule: each easy-running session's cue is resolved over its own week's measured references (weekMeasuredReferences) with the profile in force; a measured reference reaches a provisional session of a later week only, never the week in force; the athlete's declared maximum, custom limits and their erasure apply to every week at once (an explicit athlete choice that changes no plan).",
+        "HR5R-C1: an unused qualifying chest-strap maximum more than 5 bpm above a declared maximum is shown beside it; the override is never replaced automatically.",
+        "HR5R-C2: under REFERENCE_CONFLICT, both measured values and the reference used are shown, with the option to enter one's own maximum.",
+        "HR5R-C3: the age-estimate disclosure keeps both the magnitude and the older-adult direction of the error, and 'You can enter your own'.",
+        "HR5R-C4: the cue keeps 'consider slowing down' and 'a low reading never means speed up'; no alarm styling, no health meaning.",
+        "HR5R-C5: a cue on an estimated or declared maximum carries that reference's disclosure and is never shown as a personal limit.",
+        "HR5R-C6: no live cue before a live heart-rate channel has its own SSCTR and Data review defining 'sustained'.",
+        "HR5R-C7: one heart-rate cue per session; where the five zones are AVAILABLE the five-zone Z4 cue is presented and the three-zone conservativeCueOnly is not presented as a second cue; the two scales are never presented as one (a presentation rule; the frozen three-zone bytes stay unchanged).",
+        "HR5R-C8: zones are named Z1-Z5 or with neutral effort words, never 'Tempo', 'Threshold' or 'Anaerobic'.",
+        "HR5R-C9: a classified single value is shown as the highest recorded heart rate in a zone, with its sensor (and the OPTICAL_MEASUREMENT disclosure when optical), never as time in a zone.",
+        "HR5R-C10: time in zone stays UNAVAILABLE; the classifier's numeric defaults are unwired placeholders, not approved rules; a heart-rate series channel requires its own SSCTR and Data review (limits, artifacts, cadence lock, plausibility floor, warm-up, sampling).",
+        "HR5R-C11: no heart-rate reading suggests rest, illness or overtraining; symptoms stay on the existing warning-sign route.",
+        "HR5R-C12: medication or conditions that alter heart rate remain ASK / ELIGIBILITY_UNASSESSED and CLINICAL_HUMAN_REQUIRED for any individual judgement; whether a generic nonclinical statement is shown is for the clinical owner and Product, routed by Chief.",
+        "HR5R-C13: heart-rate, lab and HealthKit values are health-adjacent data: Security and privacy review before any real athlete.",
+        "An AI reviewer's provisional internal sporting judgement, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1HR5R-SSCTR-ZONES (linked to HQ-V1HR5-SSCTR-ZONES and HQ-V1RC-SSCTR-HR), appended by Founder or Chief.",
+        "Review by 2027-05-11 or earlier on the triggers of SSCTR-HR5R-DECISION-r1."
+      ],
+      "reviewId": "SSCTR-HR5R-RECHECK-r2",
+      "decision": "audits/v1-hr5-runna-parity-2026-11-25/ssctr/SSCTR_HR5R_DECISION.json",
+      "reviewBy": "2027-05-11",
+      "supersedes": "SSCTR-HR5R-RECHECK-r1"
+    }
+  ],
+  "superseded": [
     {
       "boundaryId": "V1X-RUN-HR-FIVE-ZONE",
       "valuesSha256": "784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90",
@@ -54,7 +113,10 @@
       ],
       "reviewId": "SSCTR-HR5R-RECHECK-r1",
       "decision": "audits/v1-hr5-runna-parity-2026-11-25/ssctr/SSCTR_HR5R_DECISION.json",
-      "reviewBy": "2027-05-11"
+      "reviewBy": "2027-05-11",
+      "supersededBy": "SSCTR-HR5R-RECHECK-r2",
+      "supersededOn": "2026-11-25",
+      "why": "Three bound code files changed (QRE/Security fixes); the values bytes are unchanged. Kept outside 'records' so fiveZoneAuthority does not read a stale binding."
     }
   ]
 }

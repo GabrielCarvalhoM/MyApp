@@ -246,6 +246,12 @@ function fiveZonesOfWeek(wk,{evidence,breaks,V,on,auth,hold=false,experience=nul
 export function sessionHeartRate(s,ctx){
  try{return roleOf(s,ctx);}catch{return {primary:false,effortGoverns:true,role:ROLES.NONE,reason:'FIVE_ZONE_ERROR'};}
 }
+/**
+ * QRE-HR5R-07: the measured references of the week a session belongs to (the week in force, or the next for a provisional session), kept on each
+ * easy-running session so the composed entry resolves its cue with the athlete's profile over ITS week's references (the week-boundary rule).
+ */
+const compactRef=r=>r?{kind:r.kind,provenance:r.provenance,bpm:r.bpm,evidenceId:r.evidenceId,date:r.date}:null;
+const weekRefsOf=zones5=>isObj(zones5?.measuredReferences)?{lab:compactRef(zones5.measuredReferences.lab),observed:compactRef(zones5.measuredReferences.observed)}:null;
 /** The family's use under the values (an own key only; anything else is the unknown family). */
 const useOf=(U,family)=>typeof family==='string'&&Object.hasOwn(U.families,family)?U.families[family]:U.unknownFamily;
 /** The cue fields of a cue family over available zones, or a NONE with the reason. */
@@ -268,18 +274,19 @@ function roleOf(s,{zones5,hold,effortOnly,auth,on=true,mode=null}){
  if(effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
  const U=H5.sessionUse,use=useOf(U,p?.family);
  if(use.onlyInMode&&use.onlyInMode!==mode)return none('MODE_WALK_JOG_RESTART_RETURN');
- if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return none(zones5?.reason??'NO_HEART_RATE_ZONES');
+ const week=use.role===ROLES.CUE?weekRefsOf(zones5):null,withWeek=o=>week?{...o,weekMeasuredReferences:week}:o;
+ if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return withWeek(none(zones5?.reason??'NO_HEART_RATE_ZONES'));
  let out;
  if(use.role===ROLES.NONE)return {...base,role:ROLES.NONE,reason:use.reason};
  if(use.role===ROLES.NO_GUIDANCE)out={...base,role:use.role,reason:use.reason};
- else if(use.role===ROLES.CUE){out=cueOf(use,U,zones5,base);if(out.role!==ROLES.CUE)return out;}
+ else if(use.role===ROLES.CUE){out=withWeek(cueOf(use,U,zones5,base));if(out.role!==ROLES.CUE)return out;}
  else return none('UNKNOWN_ROLE');
  if(p?.strides){const st=U.families.STRIDES;out.strides={...base,role:st.role,reason:st.reason};}
  return out;
 }
 
 // ---------- the composed entry: the athlete's profile ----------
-const CUE_FIELDS=['role','reason','slowDownCueFromZone','slowDownCueAtOrAboveBpm','sustainedReadingOnly','neverSpeedUp','healthMeaning','effortConflict','reference','boundarySource','disclosure'];
+const CUE_FIELDS=['role','reason','slowDownCueFromZone','slowDownCueAtOrAboveBpm','sustainedReadingOnly','neverSpeedUp','healthMeaning','effortConflict','reference','boundarySource','disclosure','weekMeasuredReferences'];
 /**
  * The run calibration `rc` with its five-zone reading resolved with the athlete's `profile` (v1-heart-rate-profile.mjs profileOf), by the same
  * `resolve`, and the cue of each easy-running session set from the zones in force (a session that waited for zones gets its cue; one with no zones
@@ -300,7 +307,12 @@ export function applyHeartRateProfile(rc,profile,options={}){
    const use=useOf(U,s.family),waits=s.role===ROLES.CUE||s.role===ROLES.NONE&&PROFILE_REASONS.includes(s.reason)&&use.role===ROLES.CUE;
    if(!waits){sessions[id]=s;continue;}
    const keep=Object.fromEntries(Object.entries(s).filter(([k])=>!CUE_FIELDS.includes(k)));
-   const role=next.status==='AVAILABLE'?cueOf(use,U,next,{primary:false,effortGoverns:true}):{primary:false,effortGoverns:true,role:ROLES.NONE,reason:next.reason};
+   // The session's own week (QRE-HR5R-07): its measured references with the profile; a session without them (a reading of revision 2 before
+   // this fix) takes the week in force's.
+   const week=isObj(s.weekMeasuredReferences)?s.weekMeasuredReferences:null;
+   const own=week?resolve(H5,{head,measured:{lab:week.lab,observed:week.observed,measurements:[]},profile,newerRunner:z.newerRunner}):next;
+   const role=own.status==='AVAILABLE'?cueOf(use,U,own,{primary:false,effortGoverns:true}):{primary:false,effortGoverns:true,role:ROLES.NONE,reason:own.reason};
+   if(week)role.weekMeasuredReferences=week;
    // The stride part and the plan fields (family, week, provisional) are kept; only the cue moves with the zones.
    sessions[id]={...keep,...role};
   }

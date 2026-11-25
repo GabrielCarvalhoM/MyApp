@@ -1,0 +1,44 @@
+{
+ "mission": "REPMILE HR5 RUNNA PARITY CORRECTION (V1HR5R), Founder decision of 2026-11-25 (audits/v1-hr5-runna-parity-2026-11-25/FOUNDER_REQUEST.md)",
+ "reason": "Founder product decision: every athlete with a valid age (18-80) gets five heart-rate zones from 220 - age with no watch, strap, lab or history, Runna-style (Z1 up to 65 %, Z2 to 81, Z3 to 89, Z4 to 97, Z5 above, of maximum heart rate), personalisable (a declared maximum, custom limits), estimated / declared / measured references kept apart; heart rate never changes the plan. It corrects V1HR5 (REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1) in place: no parallel system.",
+ "method": {
+  "values": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (V1X-HR-FIVE-ZONE-2), pinned 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90; the revision-1 values kept byte for byte as history",
+  "decision": "SSCTR-HR5R-DECISION-r1 (REVISE) -> SSCTR-HR5R-RECHECK-r1 -> SSCTR-HR5R-RECHECK-r2 (APPROVE_WITH_CONDITIONS, SUPPORTED_WITH_LIMITS; audits/v1-hr5-runna-parity-2026-11-25/ssctr/)",
+  "summary": "Whole-bpm upper limit of Z_k = floor(max x percent / 100), next zone one bpm above (exact, no gap, no overlap); readings rounded half up. Reference order: athlete-declared maximum > qualifying lab maximum > chest-strap observed maximum above the age estimate > 220 - age (18-80; none past 80). A lab/strap conflict uses neither measured value. Custom limits replace the percentages and are kept as set. Single measured values classified one by one (never a distribution); time in zone only from a sufficient series (future channel). Session roles of revision 1 kept (effort governs; a Z4 slow-down cue in easy running; never primary); walk/jog, restart and return keep the zones with no session role; a hold withholds them."
+ },
+ "contracts": {
+  "engine": "runCalibration.heartRateFiveZones at revision 2 (every revision-1 field kept but `domain`/`domains`, which no longer nest); new answer keys heartRateProfileRecord (carried) and heartRateProfileDeclared; inputs heartRateProfile and heartRateProfileRecord taken off before the engine reads; every other key of every answer unchanged (regression proof)",
+  "boundary": "heartRateProfileRecord carried and sealed; carried.seq with the anchor's carriedSeq; setHeartRateProfile and eraseHeartRateProfile (no engine call, no custody decision); an intake states no carried record and no invalid declaration",
+  "shared": "no shared contract changed (ios/Packages/IntegrationContracts, the A/B handoffs, PARALLEL_IMPLEMENTATION_CONTRACT.md, the A/B worktrees); the Swift delta lives in this mission's proposal copy"
+ },
+ "tests": {
+  "line": "4850560 (V1HR5 closing): 1970 tests, 1922 pass, 48 fail",
+  "closing": "1993 tests, 1940 pass, 51 fail, 2 skipped (the amendment-2 record tests until the record exists): the 48 + three by design, each with a passing successor (test/v1hr5r-successors.test.mjs)",
+  "directed": "v1hr5-five-zones 33/33 (rewritten to revision 2), v1hr5r-boundary 13/13",
+  "regression": "326 recorded boundary steps through 4850560 and this tree, at offsets -180 and +600: 0 unexplained (FIVE_ZONE_READING_AND_PROFILE_ONLY)",
+  "neutrality": "the same 326 steps with 75 heart-rate writes injected: 0 unexplained at -180 and +600 (HEART_RATE_ONLY)"
+ },
+ "runtimes": {
+  "nodeVsMacJsc": "0 DIVERGED on final (57 IDENTICAL, 127 EXPLAINED_LIBM, the frozen pattern), int, hr5r (14 journeys, 98 steps, memory and native store + Keychain), core; five-zone module identical for 111 maxima and 63 ages",
+  "nodeVsIphoneJsc": "NOT RUN: the iPhone was offline (devicectl: unavailable) and Xcode had no signed-in account / provisioning profile in this session",
+  "swift": "proposals/CoachingPresentation 10/10; native/ios P0Host 29 tests, 0 failures (6 phase tests skipped by design)"
+ },
+ "device": {"status": "NOT_RUN", "why": "iPhone 17 Pro Max (iPhone18,2), iOS 27.2.1 listed as unavailable / offline; build-for-testing stopped at signing (No Accounts; no provisioning profile)", "bundle": "the bundle this record binds is ready to run; the commands are in NATIVE_VALIDATION_REPORT.md section 4"},
+ "reviews": {
+  "ssctr": "SSCTR-HR5R-DECISION-r1 REVISE; SSCTR-HR5R-RECHECK-r1 and -r2 APPROVE_WITH_CONDITIONS (PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY; not human, clinical or empirical validation)",
+  "qreSecurity": "round 1 NOT_READY (QRE-HR5R-01 BLOCKER, 02-05 MAJOR, 06-08 MINOR): all fixed with regression tests; round 2 READY_WITH_CONDITIONS (N1-N2 MAJOR, N3-N4 MINOR): all fixed with regression tests, the reviewer's probes rerun and passing"
+ },
+ "open": [
+  "iPhone physical validation of this bundle (blocked: device offline, Xcode signing)",
+  "G07 / Founder: whether HEALTH_SIGNALS (not only COACHING) governs the heart-rate profile",
+  "Risk accepted: the multi-process same-version carried-commit race (QRE-HR5R-06); the device runs one serial queue; the server store is PENDING",
+  "Security and privacy review of heart-rate data before any real athlete (SSCTR C13)",
+  "HQ-V1HR5R-SSCTR-ZONES revalidation queue item: proposed by SSCTR, not added (Chief/Founder artefact)",
+  "SSCTR C10: any heart-rate series channel needs its own SSCTR and Data review (the classifier's defaults are placeholders)",
+  "FND-HR5-01 (from V1HR5): the frozen custody refuses runEvidence in a review",
+  "FND-HR5-03 (from V1HR5): StrengthExposure.descriptiveOnly optional in CHG-UI-1",
+  "A/B/C incorporation of the contract delta (CONTRACT_DELTA.md section 3)",
+  "REAL_ATHLETE_READY = NO"
+ ],
+ "validates": "This amendment validates, for synthetic athletes only: the five-zone reading revision 2, the athlete heart-rate profile and its boundary operations of CoachingCore at the bound bytes; that every other engine output is unchanged from the first amendment's (regression proof) and that heart-rate operations change nothing but heart rate (neutrality proof); Node x macOS JavaScriptCore equivalence of the bound bundle. It does not validate the iPhone run of this bundle, real athletes, clinical populations, a heart-rate series channel, or any human or empirical validation of the sporting rules."
+}

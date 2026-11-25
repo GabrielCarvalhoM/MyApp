@@ -60,6 +60,9 @@ export function createBoundary({custody,now=()=>Date.now(),log=()=>{}}){
   setHeartRateProfile:({actor,clientRequestId,expectedVersion,heartRateProfile})=>typeof custody.setHeartRateProfile==='function'
    ?done('setHeartRateProfile',custody.setHeartRateProfile({actor,clientRequestId,expectedVersion,heartRateProfile}),actor)
    :{ok:false,error:{code:'NOT_SUPPORTED',message:'This custody keeps no heart-rate profile'},state:stateOfError({code:'NOT_SUPPORTED'})},
+  eraseHeartRateProfile:({actor,clientRequestId,expectedVersion})=>typeof custody.eraseHeartRateProfile==='function'
+   ?done('eraseHeartRateProfile',custody.eraseHeartRateProfile({actor,clientRequestId,expectedVersion}),actor)
+   :{ok:false,error:{code:'NOT_SUPPORTED',message:'This custody keeps no heart-rate profile'},state:stateOfError({code:'NOT_SUPPORTED'})},
   setConsent:({actor,purpose,granted,expectedVersion})=>done('setConsent',custody.setConsent({actor,purpose,granted,expectedVersion}),actor),
   eraseHealthFacts:({actor,eventIds,expectedVersion})=>done('eraseHealthFacts',custody.eraseHealthFacts({actor,eventIds,expectedVersion}),actor),
   eraseAccount:({actor})=>{const r=custody.eraseAccount({actor});log(telemetryOf('eraseAccount',r));return r;}

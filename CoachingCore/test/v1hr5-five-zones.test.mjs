@@ -431,3 +431,16 @@ test('HR5 texts: no physiological threshold claim in the values or any output',(
  assert.ok(!textsOf(H5).some(t=>FORBIDDEN_CLAIM.test(t)),'values file');
  for(const input of [aged(30,{id:'hr5-txt',anchors:[recent10(STRAP(186)),lab(195)]}),runner({id:'hr5-txt2'}),{...aged(30,{id:'hr5-txt3'}),heartRateProfile:{maxHeartRateBpm:190}}])assert.ok(!textsOf(fiveS(input)).some(t=>FORBIDDEN_CLAIM.test(t)));
 });
+test('QRE-HR5R-07: through the composed entry a provisional session is cued from ITS week\'s references with the profile — a strap maximum declared this week cues next week only',()=>{
+ const g=gen(aged(30,{id:'hr5r-q07',asOf:'2026-11-07',start:'2026-11-09'})),day=d=>new Date(Date.parse(g.program.startDate+'T00:00:00Z')+d*864e5).toISOString().slice(0,10);
+ const r=S.evaluateProgram(g.program,{version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${day(2)}T20:00:00-03:00`,weekIndex:0,event:{id:'q07',kind:'WEEKLY_REVIEW'},eligibility:ELIG(day(2)),
+  heartRateProfileRecord:g.heartRateProfileRecord,runEvidence:[{id:'tt-q07',kind:'TIME_TRIAL',distance:'5K',seconds:1500,date:day(1),measurement:'GPS',rpe:9,tolerated:true,...STRAP(200)}]},ON);
+ const z=r.runCalibration.heartRateFiveZones,cues=Object.values(z.sessions).filter(s=>s.role==='COMPLEMENTARY_CEILING_CUE');
+ assert.equal(z.reference.kind,'AGE_ESTIMATE','the week in force is fixed');
+ assert.ok(cues.filter(s=>!s.provisional).every(s=>s.slowDownCueAtOrAboveBpm===170&&s.reference==='AGE_ESTIMATE'));
+ const next=cues.filter(s=>s.provisional&&s.week===1);assert.ok(next.length);assert.ok(next.every(s=>s.slowDownCueAtOrAboveBpm===Math.floor(200*89/100)+1&&s.reference==='OBSERVED_MAXIMUM'),JSON.stringify(next[0]));
+ // The athlete's own maximum applies to every week at once, over each week's references.
+ const d=S.evaluateProgram(g.program,{version:'R6-REVIEW-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:`${day(3)}T20:00:00-03:00`,weekIndex:0,event:{id:'q07b',kind:'WEEKLY_REVIEW'},eligibility:ELIG(day(3)),
+  heartRateProfileRecord:r.heartRateProfileRecord,runEvidenceRecord:r.runEvidenceRecord,heartRateProfile:{maxHeartRateBpm:185}},ON).runCalibration.heartRateFiveZones;
+ assert.ok(Object.values(d.sessions).filter(s=>s.role==='COMPLEMENTARY_CEILING_CUE').every(s=>s.slowDownCueAtOrAboveBpm===Math.floor(185*89/100)+1&&s.reference==='ATHLETE_DECLARED_MAXIMUM'));
+});

@@ -8,7 +8,8 @@
     "why": "The values file is sound in method, arithmetic, reference order, roles and safety framing. Three changes are required before an enabling record: two disclosure meanings in the values bytes (HR5R-4, HR5R-7) and one implementation bound in resolve (HR5R-3). With no other change, a narrow SSCTR recheck can issue the V1X-RUN-HR-FIVE-ZONE record bound to the new values sha256.",
     "reviewedValuesSha256": "e795b90bddf9d3c8acf3281ae43407cf1a353cffcf5e4000b49391f40db2f6cd",
     "valuesShaRecomputedWith": "shasum -a 256 CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (matched the caller's value, twice during the run)",
-    "supersededByRecheck": "SSCTR-HR5R-RECHECK-r1 (below): APPROVE_WITH_CONDITIONS on values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90; the enabling record is written. The r1 REVISE above is kept as history."
+    "supersededByRecheck": "SSCTR-HR5R-RECHECK-r1 (below): APPROVE_WITH_CONDITIONS on values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90; the enabling record is written. The r1 REVISE above is kept as history.",
+    "supersededByRecheck2": "SSCTR-HR5R-RECHECK-r2: APPROVE_WITH_CONDITIONS; enabling record re-bound to the new code sha256 values; values unchanged."
   },
   "reviewer": {
     "role": "Sports Science and Concurrent Training Reviewer (SSCTR), independent review instance",
@@ -656,7 +657,7 @@
   "governance": {
     "gateStatus": "No gate closed by this record.",
     "publicationStatus": "Not published; no Product or Domain Truth promotion.",
-    "enablingRecord": "Written by SSCTR-HR5R-RECHECK-r1: audits/v1-hr5-runna-parity-2026-11-25/reviews/ssctr/SSCTR_HR5R_RECORDS.json, bound to values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90. (At r1 none was written.)"
+    "enablingRecord": "SSCTR-HR5R-RECHECK-r2 in audits/v1-hr5-runna-parity-2026-11-25/reviews/ssctr/SSCTR_HR5R_RECORDS.json, bound to values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90; RECHECK-r1 is kept under 'superseded'."
   },
   "expiry": {
     "reviewBy": "2027-05-11",
@@ -735,6 +736,63 @@
     "observation": "setHeartRateProfile re-resolves the stored reading at the request instant, so an athlete's own override takes effect mid-week, while measured references still change only at a week boundary. That is acceptable: it is the athlete's explicit choice and changes no plan.",
     "gateStatus": "No gate closed; not published; no Product or Domain Truth promotion.",
     "queue": "HQ-V1HR5R-SSCTR-ZONES proposed, not appended (outside this instance's write scope); Founder or Chief appends it as QUEUED_FOR_FUNDED_HUMAN_REVALIDATION.",
+    "reviewBy": "2027-05-11"
+  },
+  "recheck2": {
+    "recordId": "SSCTR-HR5R-RECHECK-r2",
+    "date": "2026-11-25",
+    "scope": "Sporting effect only of the QRE/Security fixes to three bound code files; values unchanged.",
+    "outcome": "APPROVE_WITH_CONDITIONS",
+    "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+    "supersedes": "SSCTR-HR5R-RECHECK-r1 (enabling record moved to 'superseded' in the records file)",
+    "boundValuesSha256": "784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90",
+    "boundCodeSha256": {
+      "CoachingCore/src/v1-heart-rate-zones.mjs": "3a4c2e326b10afd72114089665f1bb2705573433402b80733431beea30915e26",
+      "CoachingCore/src/v1-heart-rate-profile.mjs": "ede68c09956373685e85e2aa370951b27ea412b9b696ad35bc7d779d4f928ebc",
+      "CoachingCore/src/v1-safety-index.mjs": "298f5ac846ca81135d809249e026ed72ef492010ceb32128199fcaee763ee8e7",
+      "CoachingCore/src/v1-run-calibration.mjs": "8203b875b66bc3780bc13a14299c896d23449bf2201ec03f85eb92e43226dc83 (unchanged)"
+    },
+    "notBound": "src/boundary/integration.mjs (ce2ae212d8049e654cf7ec9289bf8b73169c6710d7f08bb687853934f48bb65b) and src/boundary/api.mjs: engineering only (consent, accept, null readings, anchor sequence, eraseHeartRateProfile); not judged.",
+    "verification": [
+      "Hashes recomputed with shasum -a 256; values sha unchanged.",
+      "Tests run by this instance: node --test test/v1hr5-five-zones.test.mjs test/v1hr5r-boundary.test.mjs -> 45 tests, 45 pass, including 'QRE-HR5R-07'.",
+      "Neutrality proof: results/hr-neutrality.json and hr-neutrality-tz600.json were read (verdict HEART_RATE_ONLY, unexplained []), not re-run by this instance; the files show tz null and 600.",
+      "fiveZoneAuthority() with the updated records file: approved true, sha 784ba7fe..., records SSCTR-HR5R-RECHECK-r2."
+    ],
+    "items": [
+      {
+        "id": "QRE-HR5R-07",
+        "disposition": "APPROVE",
+        "evidenceStatus": "WELL_SUPPORTED",
+        "basis": "Consistency with the approved week-boundary rule (v1-run-calibration.mjs z5next; SSCTR-HR5-DECISION-r1 HR5-8, measured references change only at a week boundary).",
+        "finding": "Confirmed as specified. Probe at age 40 (estimate 180), with a qualifying strap maximum of 195 known only for next week: the week-in-force EASY session cues from 161 (AGE_ESTIMATE), the provisional next-week LONG session from 174 (OBSERVED_MAXIMUM), THRESHOLD stays NO_HEART_RATE_GUIDANCE. With a declared 170, both cue from 152 at once; after eraseDeclarations both return to 161 and 174. The fix removes a defect: before it, a measured reference could reach the week in force mid-week.",
+        "notes": [
+          "The profile's age is read at the request instant for every week; an anniversary inside the provisional week can shift its cue by 1 bpm until that week starts. Negligible against the estimate's error; no change required.",
+          "Within one answer, sessions of different weeks may show different cue bpm; Product presents a provisional session's cue as provisional (consistent with the existing provisional flag)."
+        ]
+      },
+      {
+        "id": "PROFILE-TIME",
+        "disposition": "APPROVE",
+        "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+        "finding": "Aging by local days in the plan offset is the right reading of 'whole years since declared' (probe at -180: 40 at 23:00 on 2027-10-31 local, 41 at 01:00 on 2027-11-01 local). Re-dating an intake age row to no earlier than the record's last row can delay its anniversary by at most that gap: at most 1 bpm, never earlier aging."
+      },
+      {
+        "id": "PROFILE-COMPACTION",
+        "disposition": "APPROVE",
+        "evidenceStatus": "WELL_SUPPORTED",
+        "finding": "Probe: 140 declarations compact to 15 rows; the age keeps its declaration date (aging anchor preserved, 41 a year later) and the declared maximum is the latest (169). Overrides are never lost or invented by compaction."
+      },
+      {
+        "id": "PROFILE-VALIDATION-AND-ERASURE",
+        "disposition": "APPROVE",
+        "evidenceStatus": "WELL_SUPPORTED",
+        "finding": "Source-typed validation (INTAKE only a valid age, ATHLETE only a valid declaration) tightens the reference inputs. eraseDeclarations removes the athlete's maximum and limits and keeps the intake age, so zones fall back to the estimate, which is the athlete's choice. A first plan reading no profile from its input means the onboarding age governs. No sporting objection."
+      }
+    ],
+    "conditionsCarried": "All conditions of SSCTR-HR5R-RECHECK-r1 (C1-C13 and the general ones), plus the QRE-HR5R-07 week rule, as written in the enabling record.",
+    "gateStatus": "No gate closed; not published.",
+    "queue": "HQ-V1HR5R-SSCTR-ZONES proposed, not appended.",
     "reviewBy": "2027-05-11"
   }
 }

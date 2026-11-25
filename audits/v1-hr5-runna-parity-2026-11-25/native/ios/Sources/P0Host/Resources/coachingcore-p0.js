@@ -9413,6 +9413,12 @@ function fiveZonesOfWeek(wk,{evidence,breaks,V,on,auth,hold=false,experience=nul
 function sessionHeartRate(s,ctx){
  try{return roleOf(s,ctx);}catch{return {primary:false,effortGoverns:true,role:ROLES.NONE,reason:'FIVE_ZONE_ERROR'};}
 }
+/**
+ * QRE-HR5R-07: the measured references of the week a session belongs to (the week in force, or the next for a provisional session), kept on each
+ * easy-running session so the composed entry resolves its cue with the athlete's profile over ITS week's references (the week-boundary rule).
+ */
+const compactRef=r=>r?{kind:r.kind,provenance:r.provenance,bpm:r.bpm,evidenceId:r.evidenceId,date:r.date}:null;
+const weekRefsOf=zones5=>isObj(zones5?.measuredReferences)?{lab:compactRef(zones5.measuredReferences.lab),observed:compactRef(zones5.measuredReferences.observed)}:null;
 /** The family's use under the values (an own key only; anything else is the unknown family). */
 const useOf=(U,family)=>typeof family==='string'&&Object.hasOwn(U.families,family)?U.families[family]:U.unknownFamily;
 /** The cue fields of a cue family over available zones, or a NONE with the reason. */
@@ -9435,18 +9441,19 @@ function roleOf(s,{zones5,hold,effortOnly,auth,on=true,mode=null}){
  if(effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
  const U=H5.sessionUse,use=useOf(U,p?.family);
  if(use.onlyInMode&&use.onlyInMode!==mode)return none('MODE_WALK_JOG_RESTART_RETURN');
- if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return none(zones5?.reason??'NO_HEART_RATE_ZONES');
+ const week=use.role===ROLES.CUE?weekRefsOf(zones5):null,withWeek=o=>week?{...o,weekMeasuredReferences:week}:o;
+ if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return withWeek(none(zones5?.reason??'NO_HEART_RATE_ZONES'));
  let out;
  if(use.role===ROLES.NONE)return {...base,role:ROLES.NONE,reason:use.reason};
  if(use.role===ROLES.NO_GUIDANCE)out={...base,role:use.role,reason:use.reason};
- else if(use.role===ROLES.CUE){out=cueOf(use,U,zones5,base);if(out.role!==ROLES.CUE)return out;}
+ else if(use.role===ROLES.CUE){out=withWeek(cueOf(use,U,zones5,base));if(out.role!==ROLES.CUE)return out;}
  else return none('UNKNOWN_ROLE');
  if(p?.strides){const st=U.families.STRIDES;out.strides={...base,role:st.role,reason:st.reason};}
  return out;
 }
 
 // ---------- the composed entry: the athlete's profile ----------
-const CUE_FIELDS=['role','reason','slowDownCueFromZone','slowDownCueAtOrAboveBpm','sustainedReadingOnly','neverSpeedUp','healthMeaning','effortConflict','reference','boundarySource','disclosure'];
+const CUE_FIELDS=['role','reason','slowDownCueFromZone','slowDownCueAtOrAboveBpm','sustainedReadingOnly','neverSpeedUp','healthMeaning','effortConflict','reference','boundarySource','disclosure','weekMeasuredReferences'];
 /**
  * The run calibration `rc` with its five-zone reading resolved with the athlete's `profile` (v1-heart-rate-profile.mjs profileOf), by the same
  * `resolve`, and the cue of each easy-running session set from the zones in force (a session that waited for zones gets its cue; one with no zones
@@ -9467,7 +9474,12 @@ function applyHeartRateProfile(rc,profile,options={}){
    const use=useOf(U,s.family),waits=s.role===ROLES.CUE||s.role===ROLES.NONE&&PROFILE_REASONS.includes(s.reason)&&use.role===ROLES.CUE;
    if(!waits){sessions[id]=s;continue;}
    const keep=Object.fromEntries(Object.entries(s).filter(([k])=>!CUE_FIELDS.includes(k)));
-   const role=next.status==='AVAILABLE'?cueOf(use,U,next,{primary:false,effortGoverns:true}):{primary:false,effortGoverns:true,role:ROLES.NONE,reason:next.reason};
+   // The session's own week (QRE-HR5R-07): its measured references with the profile; a session without them (a reading of revision 2 before
+   // this fix) takes the week in force's.
+   const week=isObj(s.weekMeasuredReferences)?s.weekMeasuredReferences:null;
+   const own=week?resolve(H5,{head,measured:{lab:week.lab,observed:week.observed,measurements:[]},profile,newerRunner:z.newerRunner}):next;
+   const role=own.status==='AVAILABLE'?cueOf(use,U,own,{primary:false,effortGoverns:true}):{primary:false,effortGoverns:true,role:ROLES.NONE,reason:own.reason};
+   if(week)role.weekMeasuredReferences=week;
    // The stride part and the plan fields (family, week, provisional) are kept; only the cue moves with the zones.
    sessions[id]={...keep,...role};
   }
@@ -13411,6 +13423,7 @@ Object.defineProperties(__exports, {
   "SOURCES": { enumerable: true, get: () => SOURCES },
   "appendProfile": { enumerable: true, get: () => appendProfile },
   "declarationErrors": { enumerable: true, get: () => declarationErrors },
+  "eraseDeclarations": { enumerable: true, get: () => eraseDeclarations },
   "profileOf": { enumerable: true, get: () => profileOf },
   "readableRow": { enumerable: true, get: () => readableRow },
   "validAge": { enumerable: true, get: () => validAge }
@@ -13436,10 +13449,13 @@ const SOURCES=freeze({INTAKE:'INTAKE',ATHLETE:'ATHLETE'});
 
 const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
 const whole=(v,[lo,hi])=>Number.isInteger(v)&&v>=lo&&v<=hi;
-// A day-only instant (a plan made from an intake) is that day: a row it dates holds from the day's start, and a reading at it sees the whole day.
-const ms=(v,end)=>{if(typeof v!=='string')return NaN;const t=Date.parse(/T/.test(v)?v:v+(end?'T23:59:59.999Z':'T00:00:00.000Z'));return Number.isFinite(t)?t:NaN;};
-const rowMs=v=>ms(v,false),readMs=v=>ms(v,true);
-const dayOf=v=>typeof v==='string'?(/T/.test(v)?new Date(Date.parse(v)).toISOString().slice(0,10):v.slice(0,10)):null;
+// QRE-HR5R-04: every time is read in the plan's offset (`offsetMinutes`, the program's timezoneOffsetMinutes). A day-only value (a plan made
+// from an intake) is that LOCAL day: a row it dates holds from the day's local start, and a reading at it sees the whole local day.
+const ms=(v,end,tz)=>{if(typeof v!=='string')return NaN;if(/T/.test(v)){const t=Date.parse(v);return Number.isFinite(t)?t:NaN;}
+ const t=Date.parse(v.slice(0,10)+'T00:00:00.000Z');return Number.isFinite(t)?t-tz*60000+(end?86399999:0):NaN;};
+const offsetOf=tz=>Number.isInteger(tz)&&Math.abs(tz)<=14*60?tz:0;
+const dayOf=(v,tz)=>typeof v!=='string'?null:/T/.test(v)?(Number.isFinite(Date.parse(v))?new Date(Date.parse(v)+tz*60000).toISOString().slice(0,10):null):v.slice(0,10);
+const iso=t=>new Date(t).toISOString();
 
 /** An age as the intake states it: a whole number of years inside the V1 range, else null (the intake's own validation refuses it). */
 const validAge=v=>whole(v,PROFILE_LIMITS.ageYears)?v:null;
@@ -13462,54 +13478,82 @@ function declarationErrors(d){
  return [...new Set(errors)];
 }
 const rowOf=(athleteId,at,source,declaration,n)=>({fact:HR_PROFILE_DECLARED,version:HR_PROFILE_VERSION,eventId:'hrp-'+String(n).padStart(4,'0'),athleteId,declaredAt:at,source,declaration:clone(declaration),inputHash:hash(declaration)});
-/** Whether a row is readable: this athlete's, intact, and declared no later than `atMs`. */
-const readableRow=(o,athleteId,atMs)=>isObj(o)&&o.fact===HR_PROFILE_DECLARED&&o.athleteId===athleteId&&typeof o.eventId==='string'&&isObj(o.declaration)&&o.inputHash===hash(o.declaration)
- &&Object.values(SOURCES).includes(o.source)&&Number.isFinite(rowMs(o.declaredAt))&&rowMs(o.declaredAt)<=atMs;
+/** QRE-HR5R-05: a row's declaration is valid for its source: an INTAKE row is exactly a valid age; an ATHLETE row is a declaration the profile records. */
+const validFor=o=>o.source===SOURCES.INTAKE?Object.keys(o.declaration).length===1&&validAge(o.declaration.ageYears)!==null:o.source===SOURCES.ATHLETE&&declarationErrors(o.declaration).length===0;
+/** Whether a row is readable: this athlete's, intact, valid for its source, and declared no later than `atMs` (read in the plan's offset). */
+const readableRow=(o,athleteId,atMs,tz=0)=>isObj(o)&&o.fact===HR_PROFILE_DECLARED&&o.athleteId===athleteId&&typeof o.eventId==='string'&&isObj(o.declaration)&&o.inputHash===hash(o.declaration)
+ &&Object.values(SOURCES).includes(o.source)&&validFor(o)&&Number.isFinite(ms(o.declaredAt,false,offsetOf(tz)))&&ms(o.declaredAt,false,offsetOf(tz))<=atMs;
+const readable=(record,athleteId,atMs,tz)=>(Array.isArray(record)?record:[]).filter(o=>readableRow(o,athleteId,atMs,tz));
 
 /**
- * The profile in force at `at` (an instant, or a day read through its end): the latest readable value of each fact, in record order. The age in
- * force grows by the whole years elapsed since it was declared (anniversaries of the declaration day passed), never by a fraction.
+ * The profile in force at `at` (an instant, or a local day read through its end): the latest readable value of each fact, in record order. The
+ * age in force grows by the whole years elapsed since it was declared (anniversaries of the local declaration day passed), never by a fraction.
  */
-function profileOf(record,{athleteId,at}){
- const atMs=readMs(at),rows=(Array.isArray(record)?record:[]).filter(o=>readableRow(o,athleteId,atMs));
+function profileOf(record,{athleteId,at,offsetMinutes=0}){
+ const tz=offsetOf(offsetMinutes),atMs=ms(at,true,tz),rows=readable(record,athleteId,atMs,tz);
  let age=null,max=null,custom=null;
  for(const r of rows){const d=r.declaration;
-  if(r.source===SOURCES.INTAKE&&validAge(d.ageYears)!==null)age={ageYears:d.ageYears,declaredOn:dayOf(r.declaredAt),eventId:r.eventId};
+  if(r.source===SOURCES.INTAKE)age={ageYears:d.ageYears,declaredOn:dayOf(r.declaredAt,tz),eventId:r.eventId};
   if(r.source===SOURCES.ATHLETE&&Object.hasOwn(d,'maxHeartRateBpm'))max=d.maxHeartRateBpm===null?null:{bpm:d.maxHeartRateBpm,declaredAt:r.declaredAt,eventId:r.eventId};
   if(r.source===SOURCES.ATHLETE&&Object.hasOwn(d,'zoneUpperBpm'))custom=d.zoneUpperBpm===null?null:{zoneUpperBpm:[...d.zoneUpperBpm],declaredAt:r.declaredAt,eventId:r.eventId};}
- const today=dayOf(at);
- if(age&&today){const [y0,m0,d0]=age.declaredOn.split('-').map(Number),[y,m,d]=today.split('-').map(Number);
+ const today=dayOf(at,tz);
+ if(age&&today&&age.declaredOn){const [y0,m0,d0]=age.declaredOn.split('-').map(Number),[y,m,d]=today.split('-').map(Number);
   const years=Math.max(0,y-y0-(m<m0||m===m0&&d<d0?1:0));age={...age,ageInForce:age.ageYears+years,wholeYearsElapsed:years};}
  return freeze({version:HR_PROFILE_VERSION,age,declaredMaximum:max,customZones:custom,rows:rows.length,unreadableRows:(Array.isArray(record)?record.length:0)-rows.length});
 }
-/** The latest instant the record holds (a declaration is never recorded before it). */
-const lastOf=(record,athleteId)=>{let last=-Infinity;for(const o of Array.isArray(record)?record:[])if(isObj(o)&&o.athleteId===athleteId){const t=rowMs(o.declaredAt);if(t>last)last=t;}return last;};
+/** The latest instant of the record's VALID rows (QRE-HR5R-05: an altered, invalid or another athlete's row never locks the record). */
+const lastOf=(rows,tz)=>{let last=-Infinity;for(const o of rows){const t=ms(o.declaredAt,false,tz);if(t>last)last=t;}return last;};
+const nextNumber=record=>1+Math.max(0,...(Array.isArray(record)?record:[]).map(o=>isObj(o)&&/^hrp-\d+$/.test(o.eventId)?Number(o.eventId.slice(4)):0));
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+/**
+ * QRE-HR5R-08: the record kept to the latest value of each fact (age, maximum, limits) when it reaches its bound: the earlier rows go, the rows in
+ * force stay byte for byte (their own ids and hashes), so the profile read is the same and the record never stops accepting the athlete.
+ */
+function compact(rows){
+ const lastBy=k=>rows.filter(k).at(-1);
+ const keep=new Set([lastBy(r=>r.source===SOURCES.INTAKE),lastBy(r=>r.source===SOURCES.ATHLETE&&Object.hasOwn(r.declaration,'maxHeartRateBpm')),lastBy(r=>r.source===SOURCES.ATHLETE&&Object.hasOwn(r.declaration,'zoneUpperBpm'))].filter(Boolean));
+ return rows.filter(r=>keep.has(r));
+}
 /**
  * The record after this call: `ageYears` from an intake (a first plan or a restart), and/or the athlete's `declaration`, at the instant `at`.
  * Returns {record, added:[eventId], refused:[{errors}], unchanged:[field]}. An unchanged value is not appended again (the record stays bounded);
  * a refused declaration records nothing. `refuseAll` (a review the engine did not accept) refuses the declaration whole with that reason.
+ * The intake's age is a fact of the intake, never refused for time (QRE-HR5R-04): dated no earlier than the record's last row. An athlete's
+ * declaration earlier than the record is refused (never backdated). Invalid rows (another athlete's, altered, invalid for their source) are dropped.
  */
-function appendProfile(record,{athleteId,at,ageYears,declaration,refuseAll=null}){
- const out=(Array.isArray(record)?record:[]).map(clone),added=[],refused=[],unchanged=[];
- const atMs=rowMs(at);
- if(!Number.isFinite(atMs)||typeof athleteId!=='string'){if(declaration!==undefined&&declaration!==null)refused.push({errors:['heartRateProfile.noInstant']});return {record:out,added,refused,unchanged};}
- const now=profileOf(out,{athleteId,at}),behind=atMs<lastOf(out,athleteId);
- if(validAge(ageYears)!==null&&!behind){
+function appendProfile(record,{athleteId,at,ageYears,declaration,refuseAll=null,offsetMinutes=0}){
+ const tz=offsetOf(offsetMinutes),added=[],refused=[],unchanged=[];
+ const atMs=ms(at,false,tz);
+ if(!Number.isFinite(atMs)||typeof athleteId!=='string'){if(declaration!==undefined&&declaration!==null)refused.push({errors:['heartRateProfile.noInstant']});return {record:(Array.isArray(record)?record:[]).map(clone),added,refused,unchanged};}
+ // Only valid rows are kept (this athlete's, intact, valid for their source), whatever their time: a row later than `at` makes `at` backdated.
+ let out=readable(record,athleteId,Infinity,tz).map(clone),n=nextNumber(record);
+ const room=()=>{if(out.length>=PROFILE_LIMITS.rows)out=compact(out);return out.length<PROFILE_LIMITS.rows;};
+ if(validAge(ageYears)!==null){
+  const now=profileOf(out,{athleteId,at,offsetMinutes:tz});
   if(now.age?.ageInForce===ageYears)unchanged.push('ageYears');
-  else if(out.length<PROFILE_LIMITS.rows){const r=rowOf(athleteId,at,SOURCES.INTAKE,{ageYears},out.length+1);out.push(r);added.push(r.eventId);}
+  else if(room()){const last=lastOf(out,tz),when=atMs<last?iso(last):at;const r=rowOf(athleteId,when,SOURCES.INTAKE,{ageYears},n++);out.push(r);added.push(r.eventId);}
+  else refused.push({errors:['ageYears.recordFull']});
  }
  if(declaration!==undefined&&declaration!==null){
-  const errors=refuseAll?[refuseAll]:behind?['heartRateProfile.beforeTheRecord']:out.length>=PROFILE_LIMITS.rows?['heartRateProfile.recordFull']:declarationErrors(declaration);
+  const now=profileOf(out,{athleteId,at,offsetMinutes:tz}),behind=atMs<lastOf(out.filter(r=>r.source===SOURCES.ATHLETE),tz);
+  const errors=refuseAll?[refuseAll]:behind?['heartRateProfile.beforeTheRecord']:declarationErrors(declaration);
   if(errors.length)refused.push({errors});
   else{
    const d=Object.fromEntries(Object.entries(declaration).filter(([,v])=>v!==undefined)),cur={maxHeartRateBpm:now.declaredMaximum?.bpm??null,zoneUpperBpm:now.customZones?.zoneUpperBpm??null};
    const changed=Object.fromEntries(Object.entries(d).filter(([k,v])=>!same(v,cur[k])));
    for(const k of Object.keys(d))if(!Object.hasOwn(changed,k))unchanged.push(k);
-   if(Object.keys(changed).length){const r=rowOf(athleteId,at,SOURCES.ATHLETE,changed,out.length+1);out.push(r);added.push(r.eventId);}
+   if(Object.keys(changed).length){if(room()){const r=rowOf(athleteId,at,SOURCES.ATHLETE,changed,n++);out.push(r);added.push(r.eventId);}else refused.push({errors:['heartRateProfile.recordFull']});}
   }
  }
  return {record:out,added,refused,unchanged};
+}
+/**
+ * QRE-HR5R-08: the athlete's erasure of their heart-rate declarations (a maximum and limits they entered): every ATHLETE row goes, history
+ * included. The intake's age stays (it is onboarding data, erased with the account). Returns {record, erased:[eventId]}.
+ */
+function eraseDeclarations(record,{athleteId}){
+ const rows=Array.isArray(record)?record:[],erased=rows.filter(o=>isObj(o)&&o.athleteId===athleteId&&o.source===SOURCES.ATHLETE).map(o=>o.eventId);
+ return {record:rows.filter(o=>!(isObj(o)&&o.athleteId===athleteId&&o.source===SOURCES.ATHLETE)).map(clone),erased};
 }
 
 });
@@ -13623,33 +13667,34 @@ const marker=(e,clinicalRouteAnswered)=>({status:'EXPIRED',asOfDay:e.day,reviewB
 const HR_KEYS=['heartRateProfile','heartRateProfileRecord'];
 const without=(o,keys)=>isObj(o)?Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k))):o;
 const NOT_ACCEPTED=new Set(['INVALID_INPUT','UNSUPPORTED']);
-function profiled(base,{athleteId,at,record,ageYears,declaration,options}){
+function profiled(base,{athleteId,at,record,ageYears,declaration,options,offsetMinutes=0}){
  if(!isObj(base))return base;
  const refuseAll=typeof athleteId!=='string'?'heartRateProfile.noPlan':NOT_ACCEPTED.has(base.status)?'heartRateProfile.reviewNotAccepted':null;
- let r;try{r=appendProfile(record,{athleteId,at,ageYears:refuseAll?undefined:ageYears,declaration,refuseAll});}
+ let r;try{r=appendProfile(record,{athleteId,at,ageYears:refuseAll?undefined:ageYears,declaration,refuseAll,offsetMinutes});}
  catch{r={record:Array.isArray(record)?record:[],added:[],refused:declaration?[{errors:['heartRateProfile.unreadable']}]:[],unchanged:[]};}
- let rc=base.runCalibration;if(rc!==undefined&&!refuseAll)try{rc=applyHeartRateProfile(rc,profileOf(r.record,{athleteId,at}),options);}catch{rc=base.runCalibration;}
+ let rc=base.runCalibration;if(rc!==undefined&&!refuseAll)try{rc=applyHeartRateProfile(rc,profileOf(r.record,{athleteId,at,offsetMinutes}),options);}catch{rc=base.runCalibration;}
  return freeze({...base,...(rc!==undefined?{runCalibration:rc}:{}),heartRateProfileRecord:r.record,heartRateProfileDeclared:{added:r.added,refused:r.refused,unchanged:r.unchanged}});
 }
 const recordOf=o=>isObj(o)&&Array.isArray(o.heartRateProfileRecord)?o.heartRateProfileRecord:[];
 /** A stored run calibration `rc` with its five zones resolved with the profile of `record` at `at` (the integration's setHeartRateProfile, which
  * asks the engine nothing else). */
-const heartRateProfileReading=(rc,record,{athleteId,at},options={})=>applyHeartRateProfile(rc,profileOf(record,{athleteId,at}),options);
-/** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. */
+const heartRateProfileReading=(rc,record,{athleteId,at,offsetMinutes=0},options={})=>applyHeartRateProfile(rc,profileOf(record,{athleteId,at,offsetMinutes}),options);
+/** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. A first
+ * plan has no profile record yet (QRE-HR5R-05: a record in an intake is never read). */
 function generateProgram(input,options={}){
  const base=S.generateProgram(without(input,HR_KEYS),options),p=base?.program;
- return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(input)?input.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile:undefined,options});
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,offsetMinutes:p?.timezoneOffsetMinutes??0,record:[],ageYears:isObj(input)?input.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile:undefined,options});
 }
 /** A new plan from the record: as below (a clinical hold on record is answered before any plan is made). */
 function restartProgram(input,options={}){
  const intake=isObj(input)?input.intake:undefined,plain=isObj(input)?{...without(input,HR_KEYS),...(isObj(intake)?{intake:without(intake,HR_KEYS)}:{})}:input;
  const base=S.restartProgram(plain,options),p=base?.program;
- return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(intake)?intake.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile??(isObj(intake)?intake.heartRateProfile:undefined):undefined,options});
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,offsetMinutes:p?.timezoneOffsetMinutes??0,record:recordOf(input),ageYears:isObj(intake)?intake.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile??(isObj(intake)?intake.heartRateProfile:undefined):undefined,options});
 }
 /** A review: as below, with the athlete's heart-rate profile (V1HR5R). */
 function evaluateProgram(program,review,options={}){
  const base=evaluateCore(program,without(review,HR_KEYS),options);
- return profiled(base,{athleteId:isObj(program)?program.athleteId:undefined,at:isObj(review)?review.asOf:undefined,record:recordOf(review),declaration:isObj(review)?review.heartRateProfile:undefined,options});
+ return profiled(base,{athleteId:isObj(program)?program.athleteId:undefined,at:isObj(review)?review.asOf:undefined,offsetMinutes:isObj(program)?program.timezoneOffsetMinutes??0:0,record:recordOf(review),declaration:isObj(review)?review.heartRateProfile:undefined,options});
 }
 /** A review: as below, except that after the records' review-by dates the clinical route still answers before the refusal (QRE-AIF-01). */
 function evaluateCore(program,review,options={}){
@@ -14334,7 +14379,7 @@ const {checkReportVoice} = __req(45);
 const {canonical} = __req(9);
 const CORE = __req(41);
 const {LIMITS, OBSERVATION_KEYS, observationError, requestError, safetyFieldsOf, intakeError, statesSafetySignal} = __req(46);
-const {declarationErrors, appendProfile} = __req(42);
+const {declarationErrors, appendProfile, eraseDeclarations} = __req(42);
 Object.defineProperties(__exports, {
   "CARRIED_RECORDS": { enumerable: true, get: () => CARRIED_RECORDS },
   "CHANNELS": { enumerable: true, get: () => CHANNELS },
@@ -14421,7 +14466,10 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    const doc=store.load(id);
    if(anchor&&op?.athleteId===id){const a=anchor.get(id);
     if(a&&!doc){op.flag='RECORD_LOST';throw new Error('record lost');}
-    if(a&&doc&&(!Number.isInteger(doc.version)||doc.version<a.version||doc.version===a.version&&doc.docMac!==a.docMac)){op.flag='RECORD_ROLLED_BACK';throw new Error('record rolled back');}}
+    if(a&&doc&&(!Number.isInteger(doc.version)||doc.version<a.version||doc.version===a.version&&doc.docMac!==a.docMac)){op.flag='RECORD_ROLLED_BACK';throw new Error('record rolled back');}
+    // V1HR5R (QRE-HR5R-06): a carried commit at the same custody version (setHeartRateProfile) advances the carried sequence the anchor keeps,
+    // so an older carried blob of the same version is a rollback too. An anchor written before it has no sequence and checks none.
+    if(a&&doc&&doc.version===a.version&&Number.isInteger(a.carriedSeq)&&!(Number.isInteger(doc.carried?.seq)&&doc.carried.seq>=a.carriedSeq)){op.flag='RECORD_ROLLED_BACK';throw new Error('record rolled back');}}
    // Another athlete's document is custody's to refuse (FORBIDDEN), before anything of it is read here.
    if(!doc||doc.athleteId!==id)return doc;
    const c=openCarried(id,doc);if(!c){if(op)op.flag='CARRIED_INTEGRITY';throw new Error('carried records failed their integrity check');}
@@ -14429,14 +14477,14 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
     if(op.mutating&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at){op.flag='CLOCK_BEHIND_RECORD';throw new Error('clock behind the record');}
     // Cycle 1 (SEC-BC-01): an erasure or a revocation admitted under a clock behind the record is dated at the latest instant on record, never
     // earlier: what it writes (an erasure marker, a consent change) can then never predate a readiness declaration and release a standing hold.
-    else if(!op.mutating&&['eraseHealthFacts','setConsent'].includes(op.name)&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at)op.at=Date.parse(c.lastAt);}
+    else if(!op.mutating&&['eraseHealthFacts','setConsent','eraseHeartRateProfile'].includes(op.name)&&typeof c.lastAt==='string'&&Date.parse(c.lastAt)>op.at)op.at=Date.parse(c.lastAt);}
    return doc;
   },
   commit(id,expectedVersion,doc){
    const carried=nextCarried(doc);
    let r;try{r=store.commit(id,expectedVersion,{...doc,carried,carriedMac:macOf(id,doc,carried)});}catch(e){if(op)op.flag='PERSISTENCE_FAILURE';return {ok:false,busy:true};}
    if(!r?.ok)return r??{ok:false,busy:true};
-   if(anchor)try{anchor.set(id,{version:doc.version,docMac:doc.docMac});}catch{if(op)op.anchorStale=true;}
+   if(anchor)try{anchor.set(id,{version:doc.version,docMac:doc.docMac,carriedSeq:carried.seq});}catch{if(op)op.anchorStale=true;}
    return r;
   },
   remove:id=>store.remove(id),tombstone:(s,t)=>store.tombstone(s,t),tombstoneOf:s=>store.tombstoneOf(s),
@@ -14448,9 +14496,13 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
   // Cycle 1 (QRE-INT-01, AUTH-INT-01): a change that waits for the athlete (an offer, or a change they asked for) keeps the records of the engine
   // answer that made it. When the athlete adopts exactly that plan (accept makes no engine call, and any later review closes the change), the
   // records in force become those: the formats of the sessions the athlete is now shown. Otherwise the records are the answer applied.
-  if(op?.name==='accept'&&base.pendingRecords&&doc.program?.hash===base.pendingRecords.programHash)records=base.pendingRecords.records;
+  // V1HR5R (QRE-HR5R-02): the athlete's heart-rate profile is no part of a plan: adopting a plan keeps the profile record in force, never the one
+  // the offer was made with.
+  if(op?.name==='accept'&&base.pendingRecords&&doc.program?.hash===base.pendingRecords.programHash)records={...base.pendingRecords.records,heartRateProfileRecord:base.records.heartRateProfileRecord??[]};
   const pendingHash=doc.pending?.proposal?.hash??null,maker=pendingHash?calls.find(c=>c.programHash===pendingHash):null;
-  const pendingRecords=pendingHash?(maker?{programHash:pendingHash,records:maker.records}:base.pendingRecords?.programHash===pendingHash?base.pendingRecords:null):null;
+  // V1HR5R (QRE-HR5R-N4): a pending change keeps no copy of the heart-rate profile (accept takes the record in force), so an erased value is gone.
+  const noProfile=x=>x?{...x,records:Object.fromEntries(Object.entries(x.records??{}).filter(([k])=>k!=='heartRateProfileRecord'))}:null;
+  const pendingRecords=noProfile(pendingHash?(maker?{programHash:pendingHash,records:maker.records}:base.pendingRecords?.programHash===pendingHash?base.pendingRecords:null):null);
   // Cycle 1 (SEC-INT-01, SSCTR-INT-04): the athlete's own last screen, as they sent it (onboarding or an athlete review), byte for byte: the
   // only screen the device channel ever carries.
   // V1 blocker closure (G07): an erasure of health facts also erases the stored screen (the athlete's pain, injury and illness answers); with none
@@ -14467,7 +14519,9 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
   const erasing=op?.name==='eraseHealthFacts';
   // Cycle 1 (SEC-INT-08, QRE-INT-10): an erasure takes the last answer's readings (a warning-sign screen among them) and the boundary's record of
   // every request custody drops (the erased reports of how the athlete feels): a retry of one is then a new request, admitted again.
-  const presentation={sessions,readings:erasing?null:last?{...last.readings,at:iso(op.at)}:base.presentation?.readings??null};
+  // V1HR5R (QRE-HR5R-01): a heart-rate write keeps the readings as the last answer left them: null stays null (an erasure's, so a resend of an
+  // erased report goes back to the engine), and their time stays the answer's.
+  const presentation={sessions,readings:erasing?null:last?.readingsAsIs?last.readings:last?{...last.readings,at:iso(op.at)}:base.presentation?.readings??null};
   // The request record: what a retry needs to send custody exactly what was sent (its clock and the bindings admission chose), and what the
   // decision recorded of each report. Kept for as many requests as custody keeps (RETENTION.idempotencyEntries).
   let requests=base.requests??{};
@@ -14476,7 +14530,8 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    requests={...requests,[op.request.id]:{...op.request.info,outcome:op.request.outcome}};const ks=Object.keys(requests);for(const k of ks.slice(0,Math.max(0,ks.length-REQUEST_WINDOW)))delete requests[k];}
   // The latest instant on record never moves back (a revocation allowed under a clock behind it keeps the later one).
   const lastAt=op?(base.lastAt&&Date.parse(base.lastAt)>op.at?base.lastAt:iso(op.at)):base.lastAt;
-  return {schema:INTEGRATION_SCHEMA,records,pendingRecords,screen,origins,presentation,requests,lastAt};
+  // V1HR5R (QRE-HR5R-06): the carried sequence, one more on every carried commit (the anchor keeps it).
+  return {schema:INTEGRATION_SCHEMA,records,pendingRecords,screen,origins,presentation,requests,lastAt,seq:(Number.isInteger(base.seq)?base.seq:0)+1};
  }
  /** What the decision recorded of each report of the request (the HealthKit queue keeps a workout until it is recorded), and the warning-sign
   * screen the engine asks for (runFormat.warningSignScreen: a stop for a symptom, from this request or kept in the record of formats). */
@@ -14494,7 +14549,8 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    observationIds:Array.isArray(input.observations)?input.observations.map(o=>o?.eventId):[],programHash:r?.proposal?.hash??r?.program?.hash??programHash,
    readings:{warningSignScreen:clone(r?.runFormat?.warningSignScreen??r?.runCalibration?.warningSignScreen??null),...Object.fromEntries(READINGS.map(k=>[k,clone(r?.[k]??null)]))}});return r;};
  const tapped={
-  generateProgram(input,o){const full={...input};const r=engine.generateProgram(full,o);return take(r,{...full,...recordsIn()},null);},
+  // V1HR5R (QRE-HR5R-05): an intake carries no record of the boundary's: a first plan starts from none, whatever the intake states.
+  generateProgram(input,o){const full=Object.fromEntries(Object.entries(input??{}).filter(([k])=>!CARRIED_RECORDS.includes(k)));const r=engine.generateProgram(full,o);return take(r,{...full,...recordsIn()},null);},
   evaluateProgram(program,input,o){
    const full={...input,...recordsIn()};
    // A report id custody derives from a request id it no longer remembers (its idempotency window is 500 requests) would name a report already
@@ -14502,7 +14558,7 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    if(op&&Array.isArray(full.observations)){const held=new Set([...Object.keys(op.loaded?.origins??{}),...idsOf(full.actualLedger)]);
     if(full.observations.some(x=>held.has(x?.eventId))){op.flag='REQUEST_ID_REUSED';throw new Collision('report id already on record');}}
    return take(engine.evaluateProgram(program,full,o),full,program?.hash);},
-  restartProgram(input,o){const full={...input,...recordsIn()};return take(engine.restartProgram(full,o),full,null);},
+  restartProgram(input,o){const full={...input,...(isObj(input?.intake)?{intake:Object.fromEntries(Object.entries(input.intake).filter(([k])=>!CARRIED_RECORDS.includes(k)))}:{}),...recordsIn()};return take(engine.restartProgram(full,o),full,null);},
  };
  const custody=createCustody({store:carriedStore,key,now:()=>op?op.at:Math.floor(clock()/1000)*1000,newId,syntheticOnly,engine:tapped});
 
@@ -14601,6 +14657,11 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
   }
   return {observations:out,metas,duplicates,of};
  }
+ /** V1HR5R (QRE-HR5R-05): an intake's heart-rate declaration is one the profile records, or the intake is refused whole (never dropped unsaid);
+  * an intake states no carried record. */
+ const hrIntakeError=intake=>{if(!isObj(intake))return null;
+  const carried=Object.keys(intake).filter(k=>CARRIED_RECORDS.includes(k));if(carried.length)return {code:'INVALID_REQUEST',fields:carried};
+  if(intake.heartRateProfile===undefined)return null;const errors=declarationErrors(intake.heartRateProfile);return errors.length?{code:'INVALID_REQUEST',fields:errors}:null;};
  /** A plan answer (first plan, restart) with the warning-sign screen its engine answer asked for, if any. */
  const withScreen=r=>r?.ok===false?r:{...r,warningSignScreen:op.calls.at(-1)?.readings?.warningSignScreen??null};
  /** A review through custody, admitted first; the answer names the reports the engine refused (they are not on record and may be sent again). */
@@ -14640,6 +14701,36 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
   const outcome=seen?seen.outcome:op.request?.outcome,out={...r,...(outcome??{recorded:[],notRecorded:[],warningSignScreen:null}),...(a.duplicates.length?{duplicates:a.duplicates}:{})};
   return {...out,...activitiesOf(channel,list,a.duplicates,out)};
  }
+ /**
+  * V1HR5R: one write of the athlete's heart-rate profile (setHeartRateProfile, eraseHeartRateProfile). It is no review: the engine is not asked,
+  * custody records no decision, and no plan, session or record of custody changes. The new profile record and the last answer's five-zone
+  * reading resolved again with it (the engine's own heartRateProfileReading) are written with the carried records in one atomic store commit at
+  * the custody version the app last saw, advancing the carried sequence the anchor keeps (QRE-HR5R-06). Coaching consent is required, as for
+  * a review, to record a value (QRE-HR5R-03), never to erase one (QRE-HR5R-N2). Idempotent by request id. Any fault is a typed refusal, nothing written.
+  */
+ function profileWrite({actor,clientRequestId,expectedVersion,payload,tag,change,consent=true}){
+  if(typeof clientRequestId!=='string'||!clientRequestId||clientRequestId.length>LIMITS.idLength)return fail('INVALID_REQUEST','A request id (1 to 128 characters) is required');
+  const o=custody.read({actor});if(!o.ok)return o;const doc=o.doc,base=op.loaded;
+  const d=hmac(`${INTEGRATION_SCHEMA}|${tag}|`+(canonical(payload)??'null')),seen=base.requests?.[clientRequestId];
+  if(seen)return seen.d===d?{ok:true,replayed:true,version:doc.version,...(seen.hr??{})}:fail('CONFLICT_IDEMPOTENCY_KEY','This request id was already used for another request');
+  if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again',{version:doc.version});
+  if(consent&&doc.consents?.COACHING?.granted!==true)return fail('CONSENT_REQUIRED','Coaching consent was revoked',{purpose:'COACHING'});
+  const at=iso(op.at),tz=doc.program?.timezoneOffsetMinutes??0;
+  let c,next;
+  try{c=change(base.records.heartRateProfileRecord??[],doc,at);}catch{return fail('OPERATIONAL_ERROR','The heart-rate profile could not be read; nothing was recorded',{cause:'HEART_RATE_PROFILE'});}
+  if(c.refusal)return fail('INVALID_REQUEST','The heart-rate profile is not one the coach records; nothing was recorded',{fields:c.refusal});
+  const readings=base.presentation?.readings??null,rc=readings?.runCalibration??null;
+  try{next=rc&&typeof engine.heartRateProfileReading==='function'?engine.heartRateProfileReading(rc,c.record,{athleteId:doc.athleteId,at,offsetMinutes:tz}):rc;}catch{next=rc;}
+  const outcome={...c.outcome,fiveZones:next?.heartRateFiveZones?{status:next.heartRateFiveZones.status,reason:next.heartRateFiveZones.reason??null}:null};
+  // The carried records of this write: the loaded ones with the new profile record; the readings as the last answer left them, with only the
+  // five-zone reading resolved again (null readings stay null: QRE-HR5R-01).
+  op.calls.push({records:{...base.records,heartRateProfileRecord:c.record},ledger:[],runSessions:undefined,excluded:[],observationIds:[],programHash:doc.program?.hash??null,
+   readings:readings===null?null:{...readings,runCalibration:next},readingsAsIs:true});
+  op.request={id:clientRequestId,info:{d,at,of:[],dup:[],hr:outcome}};
+  const r=carriedStore.commit(doc.athleteId,doc.version,doc);
+  if(!r?.ok)return r?.conflict?fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again'):fail('PERSISTENCE_FAILURE','The record could not be saved; nothing was changed, send again');
+  return {ok:true,version:doc.version,...outcome};
+ }
  /** Cycle 1 (QRE-INT-05): what happened to each workout of a delivery, by its own activity id and index, for the HealthKit queue. */
  function activitiesOf(channel,list,duplicates,out){
   if(channel!==CHANNELS.DEVICE)return {};
@@ -14650,7 +14741,7 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
  return {
   CHANNELS,
   /** The first plan (custody.enroll), its carried records kept with it. */
-  enroll:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
+  enroll:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake)??hrIntakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
    if(isObj(args.intake.athlete?.eligibility))op.screen=clone(args.intake.athlete.eligibility);return withScreen(custody.enroll(args));},'enroll'),
   /** The athlete's own review (the app's forms; channel ATHLETE). Every api.mjs operation reaches this. */
   submit:args=>run(args?.actor,true,()=>review(CHANNELS.ATHLETE,args??{}),'submit'),
@@ -14670,27 +14761,21 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    */
   setHeartRateProfile:({actor,clientRequestId,expectedVersion,heartRateProfile,...rest})=>run(actor,true,()=>{
    if(Object.keys(rest).some(k=>rest[k]!==undefined))return fail('INVALID_REQUEST','A heart-rate profile request holds the profile only',{fields:Object.keys(rest)});
-   if(typeof clientRequestId!=='string'||!clientRequestId||clientRequestId.length>LIMITS.idLength)return fail('INVALID_REQUEST','A request id (1 to 128 characters) is required');
    const errors=declarationErrors(heartRateProfile);if(errors.length)return fail('INVALID_REQUEST','The heart-rate profile is not one the coach records; nothing was recorded',{fields:errors});
-   const o=custody.read({actor});if(!o.ok)return o;const doc=o.doc,base=op.loaded;
-   const d=hmac(`${INTEGRATION_SCHEMA}|heartRateProfile|`+(canonical(heartRateProfile)??'null')),seen=base.requests?.[clientRequestId];
-   if(seen)return seen.d===d?{ok:true,replayed:true,version:doc.version,...(seen.hr??{})}:fail('CONFLICT_IDEMPOTENCY_KEY','This request id was already used for another request');
-   if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again',{version:doc.version});
-   const at=iso(op.at),a=appendProfile(base.records.heartRateProfileRecord??[],{athleteId:doc.athleteId,at,declaration:heartRateProfile});
-   if(a.refused.length)return fail('INVALID_REQUEST','The heart-rate profile is not one the coach records; nothing was recorded',{fields:a.refused[0].errors});
-   const readings=base.presentation?.readings??null,rc=readings?.runCalibration??null;
-   let next=rc;try{if(rc&&typeof engine.heartRateProfileReading==='function')next=engine.heartRateProfileReading(rc,a.record,{athleteId:doc.athleteId,at});}catch{next=rc;}
-   const outcome={heartRateProfile:{added:a.added,unchanged:a.unchanged},fiveZones:next?.heartRateFiveZones?{status:next.heartRateFiveZones.status,reason:next.heartRateFiveZones.reason??null}:null};
-   // The carried records of this operation: the loaded ones with the new profile record, and the last answer's readings with the new reading.
-   op.calls.push({records:{...base.records,heartRateProfileRecord:a.record},ledger:[],runSessions:undefined,excluded:[],observationIds:[],programHash:doc.program?.hash??null,
-    readings:{...(readings??{}),runCalibration:next}});
-   op.request={id:clientRequestId,info:{d,at,of:[],dup:[],hr:outcome}};
-   const r=carriedStore.commit(doc.athleteId,doc.version,doc);if(!r?.ok)return r?.conflict?fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again'):{ok:false,busy:true};
-   return {ok:true,version:doc.version,...outcome};},'setHeartRateProfile'),
+   return profileWrite({actor,clientRequestId,expectedVersion,payload:heartRateProfile,tag:'heartRateProfile',consent:true,change:(rows,doc,at)=>{
+    const a=appendProfile(rows,{athleteId:doc.athleteId,at,declaration:heartRateProfile,offsetMinutes:doc.program?.timezoneOffsetMinutes??0});
+    return a.refused.length?{refusal:a.refused[0].errors}:{record:a.record,outcome:{heartRateProfile:{added:a.added,unchanged:a.unchanged}}};}});},'setHeartRateProfile'),
+  /** V1HR5R (QRE-HR5R-08): the athlete erases the heart-rate maximum and limits they entered (every such row, history included); the age of the
+   * intake stays (onboarding data, erased with the account). The same carried commit as setHeartRateProfile; idempotent by its request id. */
+  // QRE-HR5R-N2/N3: an erasure is never held back by revoked consent or by a clock behind the record (SEC-INT-04): it runs as a non-mutating
+  // operation dated at the record's latest instant, as eraseHealthFacts does.
+  eraseHeartRateProfile:({actor,clientRequestId,expectedVersion,...rest})=>run(actor,false,()=>{
+   if(Object.keys(rest).some(k=>rest[k]!==undefined))return fail('INVALID_REQUEST','An erasure of the heart-rate profile holds no field',{fields:Object.keys(rest)});
+   return profileWrite({actor,clientRequestId,expectedVersion,payload:null,tag:'eraseHeartRateProfile',consent:false,change:(rows,doc)=>{const e=eraseDeclarations(rows,{athleteId:doc.athleteId});return {record:e.record,outcome:{erased:e.erased}};}});},'eraseHeartRateProfile'),
   accept:args=>run(args?.actor,true,()=>custody.accept(args),'accept'),
   decline:args=>run(args?.actor,true,()=>custody.decline(args),'decline'),
   /** A new plan from the record custody holds (C-F01-2: the canonical record, never a reconstruction) with every carried record. */
-  restart:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
+  restart:args=>run(args?.actor,true,()=>{const e=intakeError(args?.intake)??hrIntakeError(args?.intake);if(e)return fail(e.code,'The intake is not one the coach admits',e);
    if(isObj(args.intake.athlete?.eligibility))op.screen=clone(args.intake.athlete.eligibility);return withScreen(custody.restart(args));},'restart'),
   /** A revocation is never held back by a clock behind the record (SEC-INT-04, cycle 1): withdrawing consent always works. */
   setConsent:args=>run(args?.actor,args?.granted!==false,()=>custody.setConsent(args),'setConsent'),
@@ -14703,7 +14788,9 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
   acknowledgeRecordLoss:({actor})=>run(actor,false,()=>{if(!isObj(actor)||typeof actor.athleteId!=='string')return fail('UNAUTHENTICATED','No authenticated athlete');
    const id=actor.athleteId,a=anchor?.get(id);if(!a)return fail('NOT_LOST','Nothing to acknowledge');
    let doc;try{doc=store.load(id);}catch{return fail('NOT_LOST','The stored record is unreadable, not lost: it is an integrity failure (account erasure is the way out)');}
-   const lost=!doc||!Number.isInteger(doc.version)||doc.version<a.version||doc.version===a.version&&doc.docMac!==a.docMac;
+   // V1HR5R (QRE-HR5R-N1): a carried rollback at the same custody version is a loss too (load flags it RECORD_ROLLED_BACK); the athlete's act sets it aside.
+   const lost=!doc||!Number.isInteger(doc.version)||doc.version<a.version||doc.version===a.version&&doc.docMac!==a.docMac
+    ||doc.version===a.version&&Number.isInteger(a.carriedSeq)&&!(Number.isInteger(doc.carried?.seq)&&doc.carried.seq>=a.carriedSeq);
    if(!lost)return fail('NOT_LOST','The record is there and as last kept; nothing is set aside');
    if(doc)store.remove(id);anchor.clear(id);return {ok:true};},'acknowledgeRecordLoss'),
   read:args=>run(args?.actor,false,()=>custody.read(args)),
@@ -14902,6 +14989,9 @@ function createBoundary({custody,now=()=>Date.now(),log=()=>{}}){
    * integration custody (createIntegration); a bare custody has no heart-rate profile. */
   setHeartRateProfile:({actor,clientRequestId,expectedVersion,heartRateProfile})=>typeof custody.setHeartRateProfile==='function'
    ?done('setHeartRateProfile',custody.setHeartRateProfile({actor,clientRequestId,expectedVersion,heartRateProfile}),actor)
+   :{ok:false,error:{code:'NOT_SUPPORTED',message:'This custody keeps no heart-rate profile'},state:stateOfError({code:'NOT_SUPPORTED'})},
+  eraseHeartRateProfile:({actor,clientRequestId,expectedVersion})=>typeof custody.eraseHeartRateProfile==='function'
+   ?done('eraseHeartRateProfile',custody.eraseHeartRateProfile({actor,clientRequestId,expectedVersion}),actor)
    :{ok:false,error:{code:'NOT_SUPPORTED',message:'This custody keeps no heart-rate profile'},state:stateOfError({code:'NOT_SUPPORTED'})},
   setConsent:({actor,purpose,granted,expectedVersion})=>done('setConsent',custody.setConsent({actor,purpose,granted,expectedVersion}),actor),
   eraseHealthFacts:({actor,eventIds,expectedVersion})=>done('eraseHealthFacts',custody.eraseHealthFacts({actor,eventIds,expectedVersion}),actor),
