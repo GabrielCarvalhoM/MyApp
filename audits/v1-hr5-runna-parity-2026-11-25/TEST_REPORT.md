@@ -7,7 +7,7 @@ All athletes and records are synthetic. Host: Mac mini M4, macOS 27.0, Node v24.
 | Run | Tests / pass / fail / skipped |
 |---|---|
 | The first amendment's line (`4850560`, V1HR5's record) | 1970 / 1922 / 48 |
-| This correction at closing, production authority on (SSCTR-HR5R-RECHECK-r2) | **1993 / 1940 / 51 / 2** |
+| This correction at closing, production authority on (SSCTR-HR5R-RECHECK-r2) | **1993 / 1942 / 51 / 0** |
 
 The three tests that fail beyond the 48 all fail **by design**; each has a successor that passes ([`results/node/suite-closing.txt`](results/node/suite-closing.txt)).
 
@@ -17,7 +17,7 @@ The three tests that fail beyond the 48 all fail **by design**; each has a succe
 | `v1hr5-amendment-record.test.mjs`: the original freeze fails only on what amendment-1 declares | It now also names amendment-2's files | The same successor, which checks the original freeze verifier against amendment-1 plus amendment-2 |
 | `v1core-expiry.test.mjs` QRE-AIF-01: byte for byte below the composed entry | The composed entry adds `heartRateProfileRecord` and `heartRateProfileDeclared` and resolves the five-zone reading | `v1hr5r-successors.test.mjs`: byte for byte with those keys and the five-zone reading set aside |
 
-The 2 skipped tests are the amendment-2 record tests. They run once the closing commit writes the record.
+The amendment-2 record tests (skipped until the record existed) pass with the record.
 
 ### 1.1 Directed tests
 

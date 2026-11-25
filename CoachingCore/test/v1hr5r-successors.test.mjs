@@ -24,7 +24,7 @@ test('REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2: the verifier passes; both e
  assert.match(r.stdout,/REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: its record is byte-identical to 6482749/);
  assert.match(r.stdout,/REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1: its record is byte-identical to bec39c5/);
  assert.match(r.stdout,/src\/v1-run-calibration\.mjs: byte-identical to the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1 binds/);
- assert.match(r.stdout,/V1X-RUN-HR-FIVE-ZONE ENABLED by SSCTR-HR5R-RECHECK-r1/);
+ assert.match(r.stdout,/V1X-RUN-HR-FIVE-ZONE ENABLED by SSCTR-HR5R-RECHECK-r\d+/);
  const rec=JSON.parse(fs.readFileSync(RECORD_PATH,'utf8'));assert.equal(rec.revision,'REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2');assert.equal(rec.first.revision,'REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1');
 });
 test('successor of v1hr5-amendment-record.test.mjs: REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1 fails by design, and only on what the second amendment declares',{skip:!fs.existsSync(RECORD_PATH)&&'the record is written by the closing commit'},()=>{
