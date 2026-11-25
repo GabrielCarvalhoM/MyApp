@@ -12,7 +12,8 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 BASE = '90452b8'
 load = lambda n: json.load(open(os.path.join(HERE, n)))
 fails, prov, cls = load('failures-90452b8.json'), load('provenance.json'), load('classification.json')
-titles = load('titles-90452b8.json') + load('titles-added.json')
+titles = load('titles-head.json')
+head_fail = {(t['file'], t['name']): t['failLine'] for t in titles if t['status'] == 'failed'}
 by_file = {}
 for t in titles:
     by_file.setdefault(t['file'], []).append(t)
@@ -48,7 +49,7 @@ for k in sorted(cls['items'], key=int):
     c, n = cls['items'][k], int(k)
     if c.get('new'):
         f = {'file': c['file'], 'name': c['title'], 'msg': '', 'text': ''}
-        p = {'lastGreen': BASE, 'firstRed': None}
+        p = {'lastGreen': BASE, 'firstRed': '2c527f7'}
     else:
         f, p = fails[n - 1], prov[n - 1]
         assert p['file'] == f['file'] and p['title'] == f['name'].replace('&quot;', '"'), k
@@ -63,6 +64,13 @@ for k in sorted(cls['items'], key=int):
         sys.exit(f'{k}: no audit reference for {sup_commit}')
     succ = resolve(c['succ'])
     also = [resolve(a) for a in c.get('also', [])]
+    fails_at = head_fail.get((f['file'], title))
+    if not fails_at:
+        sys.exit(f'{k}: does not fail on the current tree: {title[:80]}')
+    if not c.get('new'):
+        m = re.search(r'/test/' + re.escape(f['file']) + r':(\d+):\d+', f.get('text') or '')
+        if not m or int(m.group(1)) != fails_at:
+            sys.exit(f'{k}: fails at :{fails_at} on the current tree but at :{m and m.group(1)} on {BASE}')
     e = {
         'id': f'H{n:02d}', 'file': f['file'], 'title': title, 'line': title_line(f['file'], title) or first_line(f.get('text')),
         'category': c['cat'], 'kind': c['kind'], 'contract': c['contract'],
@@ -73,7 +81,8 @@ for k in sorted(cls['items'], key=int):
                   ('Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.'),
         'fileSha256': sha_at(BASE, f['file']),
         'belongsTo': {'commit': belongs[:7], 'meaning': 'the last commit (first parent, touching CoachingCore) where it passes, in its own tree'},
-        'firstFailedAt': {'commit': red[:7], 'relation': 'AT' if p['firstRed'] else 'FIRST_COMMIT_AFTER'},
+        'firstFailedAt': {'commit': red[:7], 'relation': 'AT'},
+        'failsAt': {'line': fails_at, 'meaning': 'the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)'},
         'supersededBy': f'{sup_commit}: {sup[0]} ({sup[1]})',
         'successor': succ, 'alsoCoveredBy': also,
     }
@@ -88,9 +97,9 @@ manifest = {
     'schema': 'REPMILE-V1-HISTORICAL-TESTS-1',
     'policy': 'audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md',
     'base': BASE,
-    'note': ('Tests of earlier lines, delegated from the active suite (npm test) to the historical suite (npm run test:historical), which runs '
-             'each at belongsTo.commit. None is edited or deleted: fileSha256 pins its bytes. The active suite also runs them on the current tree '
-             'and requires each to fail (phase 2). Entries H52 and H53 are made historical by this mission (it adds test infrastructure).'),
+    'note': ('Tests of earlier lines. npm test runs every discovered test unfiltered and requires each listed test to fail at failsAt.line '
+             '(and every other test to pass); npm run test:historical runs each at belongsTo.commit, where it must pass. None is edited or deleted: '
+             'fileSha256 pins its bytes. H52 and H53 are made historical by this mission (it adds test infrastructure).'),
     'entries': entries,
 }
 open(os.path.join(ROOT, 'CoachingCore', 'test', 'HISTORICAL_TESTS.json'), 'w').write(json.dumps(manifest, indent=1, ensure_ascii=False) + '\n')

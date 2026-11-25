@@ -158,6 +158,10 @@
   "1c5d29b": [
    "V1HR5 candidate: five zones amend src/v1-run-calibration.mjs, bound by the final freeze",
    "audits/v1-five-zone-heart-rate-2026-11-25/FINAL_REPORT.md"
+  ],
+  "2c527f7": [
+   "V1 test-suite sanitization candidate: adds test infrastructure (no runtime byte); amendment-2's 'nothing else changed since 4850560' step names it",
+   "audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md"
   ]
  },
  "items": {
@@ -460,14 +464,18 @@
    "also": []
   },
   "26": {
-   "cat": "A",
-   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "C-NCC-3 (b) / SEC-INT-01 tm-5: QRE-INT-02 'as it stands' (open, routed) pinned; the blocker closure closed QRE-INT-02 (a workout the engine asked about is not recorded and its receipt is no report in force)",
+   "cat": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "tm-5 (C-NCC-3 (b), SEC-INT-01): its last record assertion pinned QRE-INT-02 'as it stands' (open, routed): a receipt fact kept for a workout the decision did not record. The V1 blocker closure closed QRE-INT-02. Every other assertion of tm-5 (the engine handed the athlete's last screen byte for byte, ASK with eligibility.currentAssessment missing, nothing recorded, NOT_RECORDED_BY_THIS_DECISION, the device states no screen) is still the contract and is kept whole by its successor (QRE-SAN-02)",
    "succ": [
-    "v1bc-blocker-closure.test.mjs",
-    "QRE-INT-02 (device route, successor of tm-5)"
+    "v1san-successors.test.mjs",
+    "successor of v1int-authorship.test.mjs:141"
    ],
    "also": [
+    [
+     "v1bc-blocker-closure.test.mjs",
+     "QRE-INT-02 (device route, successor of tm-5)"
+    ],
     [
      "v1bc-blocker-closure.test.mjs",
      "QRE-INT-02 (athlete route"

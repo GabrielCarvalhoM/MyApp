@@ -2,7 +2,7 @@
  "schema": "REPMILE-V1-HISTORICAL-TESTS-1",
  "policy": "audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md",
  "base": "90452b8",
- "note": "Tests of earlier lines, delegated from the active suite (npm test) to the historical suite (npm run test:historical), which runs each at belongsTo.commit. None is edited or deleted: fileSha256 pins its bytes. The active suite also runs them on the current tree and requires each to fail (phase 2). Entries H52 and H53 are made historical by this mission (it adds test infrastructure).",
+ "note": "Tests of earlier lines. npm test runs every discovered test unfiltered and requires each listed test to fail at failsAt.line (and every other test to pass); npm run test:historical runs each at belongsTo.commit, where it must pass. None is edited or deleted: fileSha256 pins its bytes. H52 and H53 are made historical by this mission (it adds test infrastructure).",
  "entries": [
   {
    "id": "H01",
@@ -21,6 +21,10 @@
    "firstFailedAt": {
     "commit": "503945a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 15,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "503945a: V1 final physical candidate: SEC-BC-R2-01 (views), FPV-01 (custody) amend files RC-1 binds (audits/v1-final-physical-2026-11-24/FINAL_REPORT.md)",
    "successor": {
@@ -52,6 +56,10 @@
     "commit": "3f0b04f",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 14,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -81,6 +89,10 @@
    "firstFailedAt": {
     "commit": "3f0b04f",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 228,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -117,6 +129,10 @@
     "commit": "3f0b04f",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 270,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-cf011r2-restart-evidence.test.mjs",
@@ -152,6 +168,10 @@
     "commit": "4e8cffe",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 14,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "4e8cffe: SEC-R2-03 + SEC-R2-04: a refused correction retires nothing; the orphan the test pinned is no longer written (audits/v1-core-sec-r2-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -181,6 +201,10 @@
    "firstFailedAt": {
     "commit": "ec811c1",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 112,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -213,6 +237,10 @@
     "commit": "ec811c1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 144,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-sc-successors.test.mjs",
@@ -244,6 +272,10 @@
     "commit": "ec811c1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 156,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-sc-successors.test.mjs",
@@ -269,6 +301,10 @@
    "firstFailedAt": {
     "commit": "4e8cffe",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 290,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "4e8cffe: SEC-R2-03 + SEC-R2-04: a refused correction retires nothing; the orphan the test pinned is no longer written (audits/v1-core-sec-r2-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -309,6 +345,10 @@
     "commit": "23f6a86",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 24,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
    "successor": {
     "file": "v1hr5r-successors.test.mjs",
@@ -333,6 +373,10 @@
    "firstFailedAt": {
     "commit": "576e40c",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 15,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "576e40c: CORE-C2-F01: a restart counts only the executions in force; amends src/v1-f08.mjs (audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -364,6 +408,10 @@
     "commit": "1d418d1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 15,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -394,6 +442,10 @@
     "commit": "1d418d1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 101,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-o1-successors.test.mjs",
@@ -420,6 +472,10 @@
     "commit": "1d418d1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 162,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-o1-successors.test.mjs",
@@ -444,6 +500,10 @@
    "firstFailedAt": {
     "commit": "1d418d1",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 303,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -479,6 +539,10 @@
     "commit": "ec811c1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 152,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-sc-successors.test.mjs",
@@ -510,6 +574,10 @@
     "commit": "ec811c1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 15,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -539,6 +607,10 @@
    "firstFailedAt": {
     "commit": "a52db2b",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 15,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "a52db2b: V1INT candidate: the integration boundary amends src/boundary/custody.mjs, bound by FREEZE-7's line (audits/v1-integration-boundary-2026-11-23/FINAL_REPORT.md)",
    "successor": {
@@ -570,6 +642,10 @@
     "commit": "07301f3",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 14,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "07301f3: Normalization Consistency F1+F2+F3 (amends r6-provenance) (audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -599,6 +675,10 @@
    "firstFailedAt": {
     "commit": "1d418d1",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 105,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -630,6 +710,10 @@
    "firstFailedAt": {
     "commit": "07301f3",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 203,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "07301f3: Normalization Consistency F1+F2+F3 (amends r6-provenance) (audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -665,6 +749,10 @@
     "commit": "1d418d1",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 203,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-o1-successors.test.mjs",
@@ -699,6 +787,10 @@
     "commit": "1c5d29b",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 13,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "1c5d29b: V1HR5 candidate: five zones amend src/v1-run-calibration.mjs, bound by the final freeze (audits/v1-five-zone-heart-rate-2026-11-25/FINAL_REPORT.md)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -728,6 +820,10 @@
    "firstFailedAt": {
     "commit": "23f6a86",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 19,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
    "successor": {
@@ -763,6 +859,10 @@
     "commit": "23f6a86",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 31,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -775,10 +875,10 @@
    "file": "v1int-authorship.test.mjs",
    "title": "C-NCC-3 (b), SEC-INT-01: a delivery carries the last screen of the athlete exactly; when the engine still asks (a screen no longer current) the workout is not recorded and the queue is told; QRE-INT-02 (open, routed) pinned",
    "line": 141,
-   "category": "A",
-   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "C-NCC-3 (b) / SEC-INT-01 tm-5: QRE-INT-02 'as it stands' (open, routed) pinned; the blocker closure closed QRE-INT-02 (a workout the engine asked about is not recorded and its receipt is no report in force)",
-   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "tm-5 (C-NCC-3 (b), SEC-INT-01): its last record assertion pinned QRE-INT-02 'as it stands' (open, routed): a receipt fact kept for a workout the decision did not record. The V1 blocker closure closed QRE-INT-02. Every other assertion of tm-5 (the engine handed the athlete's last screen byte for byte, ASK with eligibility.currentAssessment missing, nothing recorded, NOT_RECORDED_BY_THIS_DECISION, the device states no screen) is still the contract and is kept whole by its successor (QRE-SAN-02)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
    "fileSha256": "173eafaff140e7462fa9602764920b3029d9db22f6f10167b16c0928e2cfc654",
    "belongsTo": {
     "commit": "fd1d8fd",
@@ -788,12 +888,20 @@
     "commit": "6e85222",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 149,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
    "successor": {
-    "file": "v1bc-blocker-closure.test.mjs",
-    "title": "QRE-INT-02 (device route, successor of tm-5): a workout the engine asked about (a screen no longer current) is not recorded, its receipt is no report in force; answered and re-delivered it is recorded once and carried"
+    "file": "v1san-successors.test.mjs",
+    "title": "successor of v1int-authorship.test.mjs:141 (tm-5, SEC-INT-01, C-NCC-3 (b)): a delivery carries the athlete's last screen byte for byte; when the engine still asks the workout is not recorded and the queue is told; the device states no screen; QRE-INT-02 closed"
    },
    "alsoCoveredBy": [
+    {
+     "file": "v1bc-blocker-closure.test.mjs",
+     "title": "QRE-INT-02 (device route, successor of tm-5): a workout the engine asked about (a screen no longer current) is not recorded, its receipt is no report in force; answered and re-delivered it is recorded once and carried"
+    },
     {
      "file": "v1bc-blocker-closure.test.mjs",
      "title": "QRE-INT-02 (athlete route, QRE p03b): a form answered ASK, then sent again with the screen: recorded once, carried; a stop it declared while asked is still screened"
@@ -818,6 +926,10 @@
    "firstFailedAt": {
     "commit": "6e85222",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 110,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
    "successor": {
@@ -850,6 +962,10 @@
     "commit": "6e85222",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 13,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -880,6 +996,10 @@
     "commit": "bcac30d",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 328,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "bcac30d: V1RWS candidate (run formats) amends files COACHINGCORE-V1-FREEZE-1 binds (audits/v1-run-workout-structure-2026-11-13)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -909,6 +1029,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 107,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -941,6 +1065,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 65,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-rfc-evidence.test.mjs",
@@ -965,6 +1093,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 240,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1001,6 +1133,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 79,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-rws-e01.test.mjs",
@@ -1025,6 +1161,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 155,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1051,6 +1191,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 183,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-rws-e01.test.mjs",
@@ -1076,6 +1220,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 217,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-rws-e01.test.mjs",
@@ -1100,6 +1248,10 @@
    "firstFailedAt": {
     "commit": "21838cb",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 163,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "21838cb: V1STR candidate amends a file the V1RC and V1RWS freezes bind (audits/v1-strength-corrections-2026-11-16)",
    "successor": {
@@ -1130,6 +1282,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 133,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1162,6 +1318,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 100,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-fix-forward-b01.test.mjs",
@@ -1193,6 +1353,10 @@
     "commit": "430c493",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 298,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "430c493: Core Safety & Lifecycle cycle 1 (QRE-CORE-01, E-1 composition) (audits/v1-core-safety-lifecycle-2026-11-18/CYCLE1.md; successor ledger of closure-2)",
    "successor": {
     "file": "v1core-o1-successors.test.mjs",
@@ -1223,6 +1387,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 152,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1258,6 +1426,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 152,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-o1-successors.test.mjs",
@@ -1292,6 +1464,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 177,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-lineage.test.mjs",
@@ -1316,6 +1492,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 200,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1347,6 +1527,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 216,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-lineage.test.mjs",
@@ -1377,6 +1561,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 244,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-lineage.test.mjs",
@@ -1401,6 +1589,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 409,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1427,6 +1619,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 545,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-lineage.test.mjs",
@@ -1452,6 +1648,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 584,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1core-successor-lineage.test.mjs",
@@ -1476,6 +1676,10 @@
    "firstFailedAt": {
     "commit": "0b8e45a",
     "relation": "AT"
+   },
+   "failsAt": {
+    "line": 609,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
    },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
@@ -1516,6 +1720,10 @@
     "commit": "0b8e45a",
     "relation": "AT"
    },
+   "failsAt": {
+    "line": 19,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
    "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
@@ -1543,10 +1751,14 @@
     "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
    },
    "firstFailedAt": {
-    "commit": "90452b8",
-    "relation": "FIRST_COMMIT_AFTER"
+    "commit": "2c527f7",
+    "relation": "AT"
    },
-   "supersededBy": "90452b8: V1 test-suite sanitization: test infrastructure added (no runtime byte changed) (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
+   "failsAt": {
+    "line": 23,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
+   "supersededBy": "2c527f7: V1 test-suite sanitization candidate: adds test infrastructure (no runtime byte); amendment-2's 'nothing else changed since 4850560' step names it (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
     "title": "successor of v1hr5r-successors.test.mjs (the amendment-2 verifier passes): it fails, if at all, only because test infrastructure was added or changed"
@@ -1577,10 +1789,14 @@
     "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
    },
    "firstFailedAt": {
-    "commit": "90452b8",
-    "relation": "FIRST_COMMIT_AFTER"
+    "commit": "2c527f7",
+    "relation": "AT"
    },
-   "supersededBy": "90452b8: V1 test-suite sanitization: test infrastructure added (no runtime byte changed) (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
+   "failsAt": {
+    "line": 41,
+    "meaning": "the assertion it fails at on the current tree (the same line as on 90452b8 for the 51)"
+   },
+   "supersededBy": "2c527f7: V1 test-suite sanitization candidate: adds test infrastructure (no runtime byte); amendment-2's 'nothing else changed since 4850560' step names it (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
    "successor": {
     "file": "v1san-runtime-integrity.test.mjs",
     "title": "successor of v1hr5r-successors.test.mjs (AMENDMENT-1 and the original freeze fail only on what amendment-2 declares): the same, with test infrastructure allowed"

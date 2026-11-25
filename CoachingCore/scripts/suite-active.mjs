@@ -1,30 +1,26 @@
 // REPMILE V1 test-suite sanitization (2026-11-25): the ACTIVE suite of the current CoachingCore (`npm test`).
 //
-// Phase 1 runs exactly what `node --test` discovers (every test file; nothing filtered by file) except the tests test/HISTORICAL_TESTS.json
-// lists: tests that verify a record or a contract of an earlier line (a freeze's own preservation check, a defect a test pinned as open that a
-// later versioned amendment closed, an expectation a later reviewed change replaced). Those are not deleted and not edited. Each is executed
-// green in its own context, at the commit it belongs to, by `npm run test:historical`, and each names a successor that covers the current
-// contract and must pass here.
-//
-// Phase 2 runs those historical tests, and only those, on this tree. It proves the delegation is exact and honest:
-// - every manifest title matches exactly one test, in the file the manifest names, and no other test anywhere (node omits a test excluded by
-//   pattern from its report, so this is what shows nothing else was left out);
-// - every one of them still FAILS here. A historical test that passes on the current tree means the current tree has gone back to the
-//   superseded behaviour (for a pinned defect: the defect is back), or that the entry is stale. Either is a failure of the active suite.
-//
-// It also fails when a successor is missing or not passing, a historical test file is not its pinned bytes, a test the manifest does not list
-// is skipped, or the manifest is malformed.
-// Usage (from CoachingCore): node scripts/suite-active.mjs [--junit <file>] [--no-phase2 | --phase2-only]
+// ONE run of exactly what `node --test` discovers, with nothing filtered (no name pattern, no skip pattern, no file excluded), so no test, subtest
+// or file can be left out of it (review cycle, QRE_SAN_R1 QRE-SAN-01/-08). The verdict is then read from the junit report:
+// - ACTIVE: every test the manifest does not list must pass. A skipped, todo or cancelled test fails the suite, and so does a file that fails to
+//   load. node's own failure count must equal the failures accounted for here (a parent that fails after its subtests is counted by node).
+// - HISTORICAL: every test test/HISTORICAL_TESTS.json lists (tests of an earlier line, not edited, bytes pinned) must be found exactly once and must
+//   FAIL, at the assertion line the manifest pins (failsAt.line, QRE-SAN-03). A historical test that passes, or fails elsewhere, means the current
+//   tree changed in a way the manifest does not describe: for a pinned defect, the defect may be back. Each is green in its own context, at
+//   the commit it belongs to (`npm run test:historical`).
+// - Every successor and alsoCoveredBy test the manifest names must pass.
+// The full spec output goes to a log file (its path is printed); stdout carries the verdict and every active failure.
+// Usage (from CoachingCore): node scripts/suite-active.mjs [--junit <file>] [--log <file>]
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {readManifest,manifestErrors,parseJunit,exactPattern,MANIFEST} from './suite-manifest.mjs';
+import {readManifest,manifestErrors,parseJunit,junitCounts,MANIFEST} from './suite-manifest.mjs';
 
 const CORE=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const argv=process.argv.slice(2),opt=k=>argv.includes(k),val=k=>opt(k)?argv[argv.indexOf(k)+1]:null;
+const argv=process.argv.slice(2),val=k=>argv.includes(k)?argv[argv.indexOf(k)+1]:null;
 const manifest=readManifest(CORE),errors=manifestErrors(manifest);
 if(errors.length){for(const e of errors)console.error('MANIFEST: '+e);process.exit(1);}
 const sha=f=>createHash('sha256').update(fs.readFileSync(path.join(CORE,f))).digest('hex');
@@ -33,37 +29,41 @@ for(const e of manifest.entries){const f='test/'+e.file;
  else if(sha(f)!==e.fileSha256)errors.push(`${e.id}: ${f} is not the pinned bytes (a historical test is never edited to pass; write a successor)`);}
 if(errors.length){for(const e of errors)console.error('HISTORICAL: '+e);process.exit(1);}
 
-const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'suite-active-')),junit=val('--junit')?path.resolve(val('--junit')):path.join(tmp,'active.xml');
-const key=(file,title)=>`${file}\u0000${title}`,listed=new Set(manifest.entries.map(e=>key(e.file,e.title)));
-const node=(args,dest,stdout)=>{const r=spawnSync(process.execPath,['--test',...args,...(stdout?['--test-reporter=spec','--test-reporter-destination=stdout']:[]),'--test-reporter=junit',`--test-reporter-destination=${dest}`],{cwd:CORE,stdio:['ignore',stdout?'inherit':'ignore','inherit'],maxBuffer:1<<28});
- if(!fs.existsSync(dest)){console.error('no junit report was written for '+dest);process.exit(1);}
- const all=parseJunit(fs.readFileSync(dest,'utf8'));return {status:r.status,cases:all.filter(c=>!c.fileLevel),loadFailures:all.filter(c=>c.fileLevel&&c.status==='failed')};};
+const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'suite-active-'));
+const junit=val('--junit')?path.resolve(val('--junit')):path.join(tmp,'junit.xml'),log=val('--log')?path.resolve(val('--log')):path.join(tmp,'spec.txt');
+console.log(`node --test (every discovered test, nothing filtered); spec log: ${log}`);
+spawnSync(process.execPath,['--test','--test-reporter=spec',`--test-reporter-destination=${log}`,'--test-reporter=junit',`--test-reporter-destination=${junit}`],{cwd:CORE,stdio:['ignore','ignore','inherit'],maxBuffer:1<<28});
+if(!fs.existsSync(junit)){console.error('no junit report was written');process.exit(1);}
+const xml=fs.readFileSync(junit,'utf8'),all=parseJunit(xml),counts=junitCounts(xml),problems=[];
+const key=(file,title)=>`${file}\u0000${title}`,listed=new Map(manifest.entries.map(e=>[key(e.file,e.title),e]));
+const seen=new Map();for(const c of all)if(!c.fileLevel){const k=key(c.file,c.name);seen.set(k,[...(seen.get(k)??[]),c]);}
 
-// ---- Phase 1: the active suite ----
-const only2=opt('--phase2-only'),p1=only2?{status:0,cases:[]}:node(manifest.entries.map(e=>`--test-skip-pattern=${exactPattern(e.title)}`),junit,true);
-const byKey=new Map(p1.cases.map(c=>[key(c.file,c.name),c])),problems=[];
-if(!only2)for(const e of manifest.entries){for(const [role,x] of [['successor',e.successor],...(e.alsoCoveredBy??[]).map(a=>['alsoCoveredBy',a])]){const s=byKey.get(key(x.file,x.title));
-  if(!s)problems.push(`${e.id}: ${role} not found: ${x.file}: "${x.title.slice(0,100)}"`);
-  else if(s.status!=='passed')problems.push(`${e.id}: ${role} ${s.status}: ${x.file}: "${x.title.slice(0,100)}"`);}
- if(byKey.has(key(e.file,e.title)))problems.push(`${e.id}: ran in the active suite although listed as historical`);}
-for(const c of p1.cases)if(c.status==='skipped')problems.push(`skipped and not delegated by the manifest: ${c.file}: ${c.name.slice(0,120)}`);
-for(const c of p1.loadFailures??[])problems.push(`a test file failed to load: ${c.file}`);
-const failed=p1.cases.filter(c=>c.status==='failed'),passed=p1.cases.filter(c=>c.status==='passed');
+// ---- historical ----
+let asDeclared=0;
+for(const e of manifest.entries){const hits=seen.get(key(e.file,e.title))??[];
+ if(hits.length!==1){problems.push(`${e.id}: found ${hits.length} times in ${e.file} (expected exactly once)`);continue;}
+ const c=hits[0];
+ if(c.status==='passed')problems.push(`${e.id}: PASSES on the current tree, so it is no longer incompatible with it. If it pins a defect, the defect may be back (${e.contract.slice(0,160)}). ${e.file}: "${e.title.slice(0,90)}"`);
+ else if(c.status!=='failed')problems.push(`${e.id}: ${c.status} on the current tree`);
+ else if(c.failLine!==e.failsAt.line)problems.push(`${e.id}: fails at ${e.file}:${c.failLine??'?'}, not at its declared assertion :${e.failsAt.line}; the tree changed before the pinned point (${e.file}: "${e.title.slice(0,90)}")`);
+ else asDeclared++;}
+// ---- active ----
+const active=all.filter(c=>!c.fileLevel&&!listed.has(key(c.file,c.name)));
+const failed=active.filter(c=>c.status==='failed'),passed=active.filter(c=>c.status==='passed');
+for(const c of active)if(c.status!=='passed'&&c.status!=='failed')problems.push(`${c.status} and not a historical test: ${c.file}: ${c.name.slice(0,120)}`);
+for(const c of all.filter(c=>c.fileLevel))if(c.status==='failed')problems.push(`a test file failed to load: ${c.file}`);else if(c.status!=='passed')problems.push(`${c.status}: ${c.file}: ${c.name.slice(0,120)}`);
+for(const e of manifest.entries)for(const [role,x] of [['successor',e.successor],...(e.alsoCoveredBy??[]).map(a=>['alsoCoveredBy',a])]){
+ const hits=seen.get(key(x.file,x.title))??[];
+ if(hits.length!==1)problems.push(`${e.id}: ${role} found ${hits.length} times: ${x.file}: "${x.title.slice(0,100)}"`);
+ else if(hits[0].status!=='passed')problems.push(`${e.id}: ${role} ${hits[0].status}: ${x.file}: "${x.title.slice(0,100)}"`);}
+// ---- node's own counters, against this accounting ----
+const accounted=all.filter(c=>c.status==='failed').length;
+if(counts.fail!==accounted)problems.push(`node counts ${counts.fail} failures, ${accounted} are accounted for here (a failure outside a testcase, e.g. a parent after its subtests)`);
+for(const k of ['cancelled','todo','skipped'])if(counts[k])problems.push(`node counts ${counts[k]} ${k}`);
 
-// ---- Phase 2: the delegated tests, on this tree ----
-let p2=null;
-if(!opt('--no-phase2')){
- p2=node(manifest.entries.map(e=>`--test-name-pattern=${exactPattern(e.title)}`),path.join(tmp,'historical-at-head.xml'),false);
- for(const c of p2.loadFailures)problems.push(`a test file failed to load: ${c.file}`);
- const seen=new Map();for(const c of p2.cases){const k=key(c.file,c.name);seen.set(k,(seen.get(k)??0)+1);
-  if(!listed.has(k))problems.push(`a manifest title also matches a test it does not list: ${c.file}: "${c.name.slice(0,100)}" (it would be left out of the active suite)`);}
- for(const e of manifest.entries){const n=seen.get(key(e.file,e.title))??0,c=p2.cases.find(x=>x.file===e.file&&x.name===e.title);
-  if(n!==1)problems.push(`${e.id}: matched ${n} times in ${e.file} (expected exactly once)`);
-  else if(c.status==='passed')problems.push(`${e.id}: PASSES on the current tree: it is no longer incompatible with it. If it pins a defect, the defect may be back (${e.contract}); otherwise retire the entry with its provenance. ${e.file}: "${e.title.slice(0,90)}"`);
-  else if(c.status!=='failed')problems.push(`${e.id}: ${c.status} on the current tree`);}
-}
-console.log((only2?`\nHISTORICAL AT HEAD:`:`\nACTIVE SUITE: ${passed.length+failed.length} active tests, ${passed.length} pass, ${failed.length} fail.`)+
- ` HISTORICAL: ${manifest.entries.length} tests delegated by ${MANIFEST} to \`npm run test:historical\` (executed at the commit each belongs to)`+
- (p2?`; on this tree ${p2.cases.filter(c=>c.status==='failed').length}/${manifest.entries.length} of them fail, as declared.`:'; phase 2 not run.'));
+for(const c of failed)console.error(`✖ ACTIVE FAILURE ${c.file}:${c.failLine??'?'} — ${c.name}\n    ${c.message.slice(0,600)}`);
+console.log(`\nACTIVE SUITE: ${active.length} active tests, ${passed.length} pass, ${failed.length} fail.`+
+ ` HISTORICAL (${MANIFEST}): ${asDeclared}/${manifest.entries.length} fail on this tree at their declared assertion; each is verified green at its own commit by \`npm run test:historical\` (not run here).`+
+ ` node reported ${counts.tests} entries, ${all.filter(c=>c.fileLevel).length} of them files without tests (helpers).`);
 for(const p of problems)console.error('SUITE: '+p);
-process.exit(p1.status===0&&!failed.length&&!problems.length?0:1);
+process.exit(!failed.length&&!problems.length?0:1);

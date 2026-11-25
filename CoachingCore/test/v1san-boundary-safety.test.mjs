@@ -4,7 +4,7 @@
 // expectation is a property (nothing lost, nothing counted twice, nothing of another athlete read), never a new prescription.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {athlete,spy,ELIG,U,addDays,memoryAnchor,json,athleteA} from './v1int-helpers.mjs';
+import {athlete,spy,ELIG,U,addDays,memoryAnchor,json,athleteA,CONSENTS} from './v1int-helpers.mjs';
 
 const code=r=>r.ok?'OK':r.error.code;
 const lastEval=sp=>sp.calls.filter(c=>c.op==='evaluate').at(-1).out;
@@ -107,14 +107,24 @@ test('SSCTR-RWS-B-01 / SEC-R2-01 at the boundary: a symptom stop the athlete rep
 });
 
 // ---------- 5. Records of another athlete or plan ----------
-test('another athlete at the boundary: a workout or a correction sent under another athlete reads and changes nothing of this one\'s record',()=>{
- const {t,run,tick}=rig('san-own');assert.equal(code(t.weekly(run.date,[t.form(run,{response:ADVERSE})])),'OK');
+test('another athlete at the boundary: an unenrolled actor and an ENROLLED athlete of the same custody read and change nothing of this one\'s record; a correction of this athlete\'s report by the other is refused',()=>{
+ const t=athlete({id:'san-own'});t.enroll();
+ // The same custody (store, key, clock) holds a second, enrolled athlete (QRE-SAN-06), enrolled on the same day.
+ const other={athleteId:'san-intruder'},en=t.it.enroll({actor:other,intake:athleteA({weeks:8,id:'san-intruder'}),consents:CONSENTS});assert.equal(en.enrolled,true,JSON.stringify(en.status));
+ const run=t.sessions(0).find(s=>s.sport==='RUN');t.set(run.date,'21:00');assert.equal(code(t.screen(ELIG(run.date))),'OK');const tick=()=>{t.clock+=60e3;};
+ tick();assert.equal(code(t.weekly(run.date,[t.form(run,{response:ADVERSE})])),'OK');
  const id=t.live(run.id)[0].eventId,v=t.version(),before=JSON.stringify(t.rows());
- const other={athleteId:'san-intruder'};tick();
- const a=t.it.importActivities({actor:other,clientRequestId:'x1',expectedVersion:v,activities:[t.watch(run)]});
- const b=t.it.submit({actor:other,clientRequestId:'x2',expectedVersion:v,review:{kind:'WEEKLY_REVIEW',observations:[{...t.form(run),correctionOf:id}]}});
- assert.equal(a.ok,false);assert.equal(b.ok,false);
+ const stranger={athleteId:'san-stranger'};tick();
+ assert.equal(t.it.importActivities({actor:stranger,clientRequestId:'x1',expectedVersion:v,activities:[t.watch(run)]}).ok,false);
+ assert.equal(t.it.submit({actor:stranger,clientRequestId:'x2',expectedVersion:v,review:{kind:'WEEKLY_REVIEW',observations:[{...t.form(run),correctionOf:id}]}}).ok,false);
+ const ov=()=>t.it.read({actor:other}).doc.version;tick();
+ const corr=t.it.submit({actor:other,clientRequestId:'x3',expectedVersion:ov(),review:{kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date),observations:[{...t.form(run),correctionOf:id}]}});
+ assert.equal(corr.ok,false,'a correction naming this athlete\'s report is refused for the other athlete');
+ assert.ok(['CORRECTION_TARGET_NOT_FOUND','CORRECTION_ORIGIN_UNKNOWN'].includes(corr.error.code),corr.error.code);
+ tick();t.it.importActivities({actor:other,clientRequestId:'x4',expectedVersion:ov(),activities:[t.watch(run)]});
  assert.equal(t.version(),v);assert.equal(JSON.stringify(t.rows()),before,'this athlete\'s record is byte-identical');
+ const theirs=t.it.visible(t.it.read({actor:other}).doc);assert.ok(Array.isArray(theirs));
+ assert.ok(theirs.every(r=>r.eventId!==id&&(r.athleteId===undefined||r.athleteId==='san-intruder')),'the other record holds none of this athlete\'s rows');
 });
 test('QRE-RFC-A-03 / QRE-AIF-02 at the boundary: after a restart, no session id of the new plan is an id of the old plan, and the old plan\'s row is no execution of the new plan',()=>{
  const sp=spy(),t=athlete({id:'san-rfc',engine:sp.engine});t.enroll();const w0=t.sessions(0),sun=addDays(t.doc().program.startDate,6);t.set(sun,'20:00');
@@ -147,11 +157,15 @@ test('the athlete\'s second form of a session is not a second execution: it is r
 // ---------- 8. Custody integrity, versioning and recovery ----------
 test('custody at the boundary: a stale version is refused, a reused request id replays, a tampered record or a rolled-back one is never read as a plan',()=>{
  const anchor=memoryAnchor(),t=athlete({id:'san-cust',anchor});t.enroll();const run=t.sessions(0).find(s=>s.sport==='RUN');t.set(run.date,'21:00');
- const v=t.version();assert.equal(code(t.weekly(run.date,[t.form(run)],{})),'OK');
+ const v=t.version(),first=t.weekly(run.date,[t.form(run)],{});assert.equal(code(first),'OK');
  assert.equal(code(t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date)},{expectedVersion:v})),'CONFLICT_STALE_VERSION');
- const raw=t.store.raw?.(t.id);
- if(typeof raw==='string'){const old=raw;t.clock+=60e3;assert.equal(code(t.screen(ELIG(run.date))),'OK');
-  t.store.setRaw(t.id,old);const back=t.it.read({actor:t.actor});assert.equal(back.ok,false);assert.equal(back.error.code,'RECORD_ROLLED_BACK');
-  const doc=JSON.parse(old);doc.carried.records.runFormatRecord=[];t.store.setRaw(t.id,JSON.stringify(doc));anchor.clear(t.id);
-  const bad=t.it.read({actor:t.actor});assert.equal(bad.ok,false);assert.equal(bad.error.code,'INTEGRITY_FAILURE');}
+ // A retry of the same request (same id, same body): its stored answer, nothing written again (QRE-SAN-06).
+ const v1=t.version(),again=t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date),observations:[t.form(run)]},{rid:'rq-1',expectedVersion:v});
+ assert.equal(again.ok,true,JSON.stringify(again.error??null));assert.equal(again.decisionId,first.decisionId,'the same decision is answered');assert.equal(t.version(),v1,'nothing written');
+ assert.equal(code(t.submit({kind:'WEEKLY_REVIEW',eligibility:ELIG(run.date)},{rid:'rq-1',expectedVersion:v1})),'CONFLICT_IDEMPOTENCY_KEY','the same id with another body is refused');
+ const raw=t.store.raw?.(t.id);assert.equal(typeof raw,'string','the memory store exposes its raw document (no silent skip)');
+ const old=raw;t.clock+=60e3;assert.equal(code(t.screen(ELIG(run.date))),'OK');
+ t.store.setRaw(t.id,old);const back=t.it.read({actor:t.actor});assert.equal(back.ok,false);assert.equal(back.error.code,'RECORD_ROLLED_BACK');
+ const doc=JSON.parse(old);doc.carried.records.runFormatRecord=[];t.store.setRaw(t.id,JSON.stringify(doc));anchor.clear(t.id);
+ const bad=t.it.read({actor:t.actor});assert.equal(bad.ok,false);assert.equal(bad.error.code,'INTEGRITY_FAILURE');
 });

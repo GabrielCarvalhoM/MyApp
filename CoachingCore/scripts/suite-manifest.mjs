@@ -25,6 +25,7 @@ export function manifestErrors(m){
   if(!SHA.test(x?.fileSha256??''))e.push(at+': fileSha256 (the pinned bytes of the historical test file) is required');
   if(!COMMIT.test(x?.belongsTo?.commit??''))e.push(at+': belongsTo.commit (where the test is green, in its own context) is required');
   if(!COMMIT.test(x?.firstFailedAt?.commit??''))e.push(at+': firstFailedAt.commit is required');
+  if(!Number.isInteger(x?.failsAt?.line)||x.failsAt.line<1)e.push(at+': failsAt.line (the assertion it fails at on the current tree) is required');
   if(typeof x?.supersededBy!=='string'||!x.supersededBy)e.push(at+': supersededBy (the versioned change that ended its line) is required');
   if(typeof x?.successor?.file!=='string'||typeof x?.successor?.title!=='string')e.push(at+': successor {file, title} (the current contract, active) is required');
   if(x?.successor&&x.successor.file===x.file&&x.successor.title===x.title)e.push(at+': a test is not its own successor');
@@ -49,9 +50,14 @@ export function parseJunit(xml){
   const rel=file.includes('/test/')?file.slice(file.lastIndexOf('/test/')+6):path.basename(file);
   // node reports a file of which no test ran (all filtered out) as one entry named after the file: not a test. If it failed, the file did
   // not load, and that is a failure of the suite.
-  out.push({file:rel,name,status,fileLevel:name==='test/'+rel||name===file});
+  // The line of the failing assertion: the first frame of the failure in the test's own file (QRE-SAN-03).
+  const esc=rel.replace(/[.*+?^${}()|[\]\\/]/g,'\\$&'),fm=status==='failed'?unescape(body).match(new RegExp(`/test/${esc}:(\\d+):\\d+`)):null;
+  const msg=status==='failed'?(unescape((body.match(/<failure\b[^>]*?message="([^"]*)"/)??[])[1]??'')).replace(/\s+/g,' '):'';
+  out.push({file:rel,name,status,fileLevel:name==='test/'+rel||name===file,failLine:fm?Number(fm[1]):null,message:msg});
  }
  return out;
 }
+/** node's own counters (the junit comments: tests, pass, fail, cancelled, skipped, todo). */
+export function junitCounts(xml){const o={};for(const k of ['tests','pass','fail','cancelled','skipped','todo']){const m=xml.match(new RegExp(`<!-- ${k} (\\d+) -->`));o[k]=m?Number(m[1]):null;}return o;}
 /** An anchored, fully escaped pattern for one exact title. */
 export const exactPattern=title=>'^'+title.replace(/[\\^$.|?*+()[\]{}/]/g,'\\$&')+'$';

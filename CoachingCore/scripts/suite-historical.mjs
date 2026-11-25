@@ -5,8 +5,8 @@
 // - the test file at that commit is the bytes the manifest pins, which are the bytes on the current tree (the historical test was never edited:
 //   what passes there is exactly what is kept here);
 // - the test is found exactly once and PASSES there.
-// The worktrees are removed afterwards; nothing in this checkout is written. With --at-head it also runs phase 2 of the active suite (each
-// historical test fails on the current tree), so one command shows both halves.
+// The worktrees are removed afterwards; nothing in this checkout is written. With --at-head it then runs the active suite (where each
+// historical test must fail at its declared assertion), so one command shows both halves.
 // Usage (from CoachingCore): node scripts/suite-historical.mjs [--only <commit>] [--json <file>] [--at-head]
 import fs from 'node:fs';
 import os from 'node:os';
@@ -26,6 +26,12 @@ const groups=new Map();for(const e of manifest.entries){if(val('--only')&&!e.bel
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'suite-historical-')),report=[];let bad=0;
 for(const [commit,entries] of groups){
  const wt=path.join(tmp,commit);
+ // QRE-SAN-07: belongsTo is a strict ancestor of firstFailedAt, which is an ancestor of (or is) HEAD.
+ const anc=(a,b)=>spawnSync('git',['merge-base','--is-ancestor',a,b],{cwd:ROOT}).status===0;
+ for(const e of entries){const f=e.firstFailedAt.commit,why=[];
+  if(git('rev-parse',commit).trim()===git('rev-parse',f).trim()||!anc(commit,f))why.push(`belongsTo ${commit} is not a strict ancestor of firstFailedAt ${f}`);
+  if(!anc(f,'HEAD'))why.push(`firstFailedAt ${f} is not an ancestor of HEAD`);
+  if(why.length){bad++;report.push({id:e.id,commit,file:e.file,title:e.title,result:'NOT_VERIFIED',why});console.log(`✖ ${e.id}: ${why.join('; ')}`);}}
  try{
   git('worktree','add','--detach','--quiet',wt,commit);
   // A copy, never a symlink: .gitignore's node_modules/ matches a directory only, so a symlink is an UNTRACKED file to the record verifiers.
@@ -49,5 +55,5 @@ try{git('worktree','prune');}catch{}
 console.log(`\nHISTORICAL SUITE: ${report.length-bad}/${report.length} historical tests pass at the commit they belong to (${groups.size} commits)`);
 if(val('--json'))fs.writeFileSync(path.resolve(val('--json')),JSON.stringify({schema:'REPMILE-V1-HISTORICAL-RUN-1',node:process.version,head:git('rev-parse','HEAD').trim(),report},null,1)+'\n');
 let head=0;
-if(argv.includes('--at-head')){const r=spawnSync(process.execPath,[path.join(CORE,'scripts/suite-active.mjs'),'--phase2-only'],{cwd:CORE,stdio:'inherit'});head=r.status;}
+if(argv.includes('--at-head')){const r=spawnSync(process.execPath,[path.join(CORE,'scripts/suite-active.mjs')],{cwd:CORE,stdio:'inherit'});head=r.status;}
 process.exit(bad||head?1:0);
