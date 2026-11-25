@@ -12,7 +12,8 @@ import {spawnSync} from 'node:child_process';
 const ROOT=path.resolve(import.meta.dirname,'../..');
 const run=script=>spawnSync(process.execPath,[path.join(ROOT,'CoachingCore/scripts',script),'--check'],{cwd:ROOT,encoding:'utf8'});
 const RECORD=JSON.parse(fs.readFileSync(path.join(ROOT,'CoachingCore/v1/FIVE_ZONE_AMENDMENT_V1.json'),'utf8'));
-const DECLARED=['CoachingCore/src/v1-run-calibration.mjs',...RECORD.addedConsumed,...RECORD.added];
+// What the amendment declares: its one amended file, the files it adds (consumed and not), and the amendment record itself.
+const DECLARED=['CoachingCore/src/v1-run-calibration.mjs','CoachingCore/v1/FIVE_ZONE_AMENDMENT_V1.json',...RECORD.addedConsumed,...RECORD.added];
 
 test('REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1: the amendment verifier passes; the original record is untouched; one declared amended file',()=>{
  const r=run('v1-five-zone-amendment.mjs');assert.equal(r.status,0,r.stderr);
