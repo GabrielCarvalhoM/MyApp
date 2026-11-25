@@ -32,6 +32,7 @@ export function manifestErrors(m){
  }
  // A successor is never itself historical: the chain must end in the active suite.
  for(const x of m.entries)if(keys.has(`${x.successor?.file}\u0000${x.successor?.title}`))e.push(`${x.id}: its successor is itself historical (point to the active end of the chain)`);
+ for(const x of m.entries)for(const a of Array.isArray(x.alsoCoveredBy)?x.alsoCoveredBy:[]){if(typeof a?.file!=='string'||typeof a?.title!=='string')e.push(`${x.id}: an alsoCoveredBy entry needs {file, title}`);else if(keys.has(`${a.file}\u0000${a.title}`))e.push(`${x.id}: an alsoCoveredBy test is itself historical`);}
  return e;
 }
 

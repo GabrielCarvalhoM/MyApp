@@ -71,7 +71,7 @@
    "line": 223,
    "category": "B",
    "kind": "PINNED_DEFECT_CLOSED_LATER",
-   "contract": "QRE-F01-01 / SSCTR C-F01-1 (open at the time): with reports but none in force the stated exposure stayed unbounded (600 min / 7 days). C-F01-1 r2 bounds it to the record (0/0): lower, never higher",
+   "contract": "QRE-F01-01 / SSCTR C-F01-1 (open at the time): with reports but none in force the stated exposure stayed unbounded (600 min / 7 days). C-F01-1 r2 bounds it to the record (0/0): the BOUND is lower, never higher. Not every consequence is more conservative (SSCTR-SAN-02): the shorter pause a disputed last session sets can lift the start out of the C-Q08-2 return floor (SSCTR's probe: RESTART at 45 min -> EASY_CURRENT at 80, as the in-force reading), and the class mapping is non-monotonic (SSCTR_R2_R1 O-1); both authorized, C-R2-1 discharged in SSCTR_R2_R2",
    "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
    "fileSha256": "7e427431ae9855541b52b30caeccd8cc0b2afbdffdb2ed4568bc2c2c06133b83",
    "belongsTo": {
@@ -106,7 +106,7 @@
    "line": 255,
    "category": "B",
    "kind": "PINNED_DEFECT_CLOSED_LATER",
-   "contract": "SSCTR_F01_R1_ADDENDUM (b), stated in the test as 'today's behaviour, NOT a decided reading': a disputed-amount session after a readiness declaration read as no session, so the SB-1 question was not asked. C-F01-1 r2 (ii): it is an execution, so the new stop is screened (SB-1 asked)",
+   "contract": "SSCTR_F01_R1_ADDENDUM (b), stated in the test as 'today's behaviour, NOT a decided reading': a disputed-amount session after a readiness declaration read as no session, so the SB-1 question was not asked. C-F01-1 r2 (ii): it is a recognized occurrence whose minutes never count; because a voice in force says the athlete trained after the declaration (claimsDone), the new stop is screened (SB-1 asked). No dose credit is involved (SSCTR-SAN-06)",
    "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
    "fileSha256": "7e427431ae9855541b52b30caeccd8cc0b2afbdffdb2ed4568bc2c2c06133b83",
    "belongsTo": {
@@ -171,7 +171,7 @@
    "line": 108,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "A12 (C-F01-1 r2): a direct conflict kept one voice, so no occurrence was read. C-O1-2 (Safety Continuity) keeps both voices; both say done: an occurrence, the exposure still bounded (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; queued HQ-SSCTR-O1-02 for funded-human revalidation)",
+   "contract": "A12 (C-F01-1 r2): a direct conflict kept one voice, so no occurrence was read. C-O1-2 (Safety Continuity) keeps both voices; both say done: an occurrence, the exposure still bounded (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; HQ-SSCTR-O1-02 and HQ-SSCTR-SC-01 were proposed by SSCTR and are NOT appended to the funded-human revalidation queue (SSCTR-SAN-01)). Less conservative consequences, authorized there: the restart pause is shorter by the disputed session, and the strength first exposure at restart goes 19 -> 27 min in the shape where the disputed run is the only recent row (O-SC-S1, SSCTR_SC_R1) (SSCTR-SAN-02)",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
    "belongsTo": {
@@ -202,7 +202,7 @@
    "line": 139,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "B4-B5, last assertion: on a direct conflict followed by a run 13 days ago, the pause's days since the last run were 13 (the conflict read as no occurrence). Under C-O1-2 a direct conflict whose voices both say done is an occurrence: 3 days, its 50 or 20 minutes never counted; a 'not done' voice is still no execution (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; queued HQ-SSCTR-O1-02 for funded-human revalidation)",
+   "contract": "B4-B5, last assertion: on a direct conflict followed by a run 13 days ago, the pause's days since the last run were 13 (the conflict read as no occurrence). Under C-O1-2 a direct conflict whose voices both say done is an occurrence: 3 days, its 50 or 20 minutes never counted; a 'not done' voice is still no execution (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; HQ-SSCTR-O1-02 and HQ-SSCTR-SC-01 were proposed by SSCTR and are NOT appended to the funded-human revalidation queue (SSCTR-SAN-01)). Less conservative consequences, authorized there: the restart pause is shorter by the disputed session, and the strength first exposure at restart goes 19 -> 27 min in the shape where the disputed run is the only recent row (O-SC-S1, SSCTR_SC_R1) (SSCTR-SAN-02)",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
    "belongsTo": {
@@ -233,7 +233,7 @@
    "line": 151,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "B7 'another kind of conflict': occurrence not shown; under C-O1-2 a head-on flag with two well-formed 'took place' voices is an occurrence (dated), a forged or partial flag still reads as none (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; queued HQ-SSCTR-O1-02 for funded-human revalidation)",
+   "contract": "B7 'another kind of conflict': occurrence not shown; under C-O1-2 a head-on flag with two well-formed 'took place' voices is an occurrence (dated), a forged or partial flag still reads as none (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; HQ-SSCTR-O1-02 and HQ-SSCTR-SC-01 were proposed by SSCTR and are NOT appended to the funded-human revalidation queue (SSCTR-SAN-01)). Less conservative consequences, authorized there: the restart pause is shorter by the disputed session, and the strength first exposure at restart goes 19 -> 27 min in the shape where the disputed run is the only recent row (O-SC-S1, SSCTR_SC_R1) (SSCTR-SAN-02)",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
    "belongsTo": {
@@ -434,7 +434,7 @@
    "line": 291,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "NCC successor of the lineage matrix (scenario 21 EASY); O-1 changes row 19 (now read as rows 08/10)",
+   "contract": "NCC successor of the lineage matrix (scenario 21 EASY); O-1 changes row 19 (now read as rows 08/10) Sporting effects on record (SSCTR-SAN-05; audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json and audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json, field 'sporting'): O-1 row 19, both families, completion credit COMPLETED -> PARTIAL with the downstream sessions LONG w+2 QUALITY 34 -> EASY 65 and EASY w+3 EASY 70 -> 65; NCC's interim credit for scenario 21 (CONFLICTED -> COMPLETED on EASY) reversed by O-1 to CONFLICTED, run-history 1 -> 0; and the E-1 matrix effects (closure-2 ledger, C-C1). SSCTR_O1_R1 decision C; the O-1 lineage dump with DOSE=1 on HEAD is byte-identical to the authorized one (SSCTR_SAN_R1).",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "05377a41317671d713376bcee7d9879ffbce27dc4322bffdc723406c273f64d3",
    "belongsTo": {
@@ -450,7 +450,16 @@
     "file": "v1core-o1-successors.test.mjs",
     "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
    },
-   "alsoCoveredBy": []
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays"
+    },
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first"
+    }
+   ]
   },
   {
    "id": "H16",
@@ -459,7 +468,7 @@
    "line": 146,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "O-1: the restart pause read no occurrence from a head-on dispute; C-O1-2: a head-on dispute whose voices both say it took place is an occurrence (bySportDays), a kept voice is still never dose (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; queued HQ-SSCTR-O1-02 for funded-human revalidation)",
+   "contract": "O-1: the restart pause read no occurrence from a head-on dispute; C-O1-2: a head-on dispute whose voices both say it took place is an occurrence (bySportDays), a kept voice is still never dose (SSCTR decision A, audits/v1-core-o1-2026-11-19/reviews/ssctr/SSCTR_O1_R1.md: occurrence is a fact for the pause and the last executed day when every well-formed voice says the session took place; never minutes or credit; HQ-SSCTR-O1-02 and HQ-SSCTR-SC-01 were proposed by SSCTR and are NOT appended to the funded-human revalidation queue (SSCTR-SAN-01)). Less conservative consequences, authorized there: the restart pause is shorter by the disputed session, and the strength first exposure at restart goes 19 -> 27 min in the shape where the disputed run is the only recent row (O-SC-S1, SSCTR_SC_R1) (SSCTR-SAN-02)",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "d729d3b2ad9af7a88cfd549e391ecf4794420b0bc190b8d405e6b6011acc6a14",
    "belongsTo": {
@@ -611,7 +620,7 @@
    "line": 203,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "closure-2 successor of the lineage matrix (EASY); NCC F1 (scenario 21) then O-1 (row 19: DISTANCE_DISPUTED, not REPORT_NOT_CARRIED)",
+   "contract": "closure-2 successor of the lineage matrix (EASY); NCC F1 (scenario 21) then O-1 (row 19: DISTANCE_DISPUTED, not REPORT_NOT_CARRIED) Sporting effects on record (SSCTR-SAN-05; audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json and audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json, field 'sporting'): O-1 row 19, both families, completion credit COMPLETED -> PARTIAL with the downstream sessions LONG w+2 QUALITY 34 -> EASY 65 and EASY w+3 EASY 70 -> 65; NCC's interim credit for scenario 21 (CONFLICTED -> COMPLETED on EASY) reversed by O-1 to CONFLICTED, run-history 1 -> 0; and the E-1 matrix effects (closure-2 ledger, C-C1). SSCTR_O1_R1 decision C; the O-1 lineage dump with DOSE=1 on HEAD is byte-identical to the authorized one (SSCTR_SAN_R1).",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "ccbc4269f8fc6597850846b691d87a6924599dd6c4ca3a471ec805f342aeea3c",
    "belongsTo": {
@@ -627,7 +636,16 @@
     "file": "v1core-o1-successors.test.mjs",
     "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
    },
-   "alsoCoveredBy": []
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays"
+    },
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first"
+    }
+   ]
   },
   {
    "id": "H22",
@@ -636,7 +654,7 @@
    "line": 203,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "closure-2 successor of the lineage matrix (LONG); O-1 row 19",
+   "contract": "closure-2 successor of the lineage matrix (LONG); O-1 row 19 Sporting effects on record (SSCTR-SAN-05; audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json and audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json, field 'sporting'): O-1 row 19, both families, completion credit COMPLETED -> PARTIAL with the downstream sessions LONG w+2 QUALITY 34 -> EASY 65 and EASY w+3 EASY 70 -> 65; NCC's interim credit for scenario 21 (CONFLICTED -> COMPLETED on EASY) reversed by O-1 to CONFLICTED, run-history 1 -> 0; and the E-1 matrix effects (closure-2 ledger, C-C1). SSCTR_O1_R1 decision C; the O-1 lineage dump with DOSE=1 on HEAD is byte-identical to the authorized one (SSCTR_SAN_R1).",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "ccbc4269f8fc6597850846b691d87a6924599dd6c4ca3a471ec805f342aeea3c",
    "belongsTo": {
@@ -652,7 +670,16 @@
     "file": "v1core-o1-successors.test.mjs",
     "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
    },
-   "alsoCoveredBy": []
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays"
+    },
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first"
+    }
+   ]
   },
   {
    "id": "H23",
@@ -954,7 +981,7 @@
      "title": "E-1 at the boundary (device first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row"
     }
    ],
-   "safetyPoint": "HARD GATE E-1 — closed, verified through the integration API"
+   "safetyPoint": "HARD GATE E-1 — closed at the Core and at the integration boundary, on synthetic inputs (Node, mutation-checked); for real athletes it stays open under C-C5 (a real HealthKit re-sync) (SSCTR-SAN-04)"
   },
   {
    "id": "H33",
@@ -1155,7 +1182,7 @@
    "line": 285,
    "category": "A",
    "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
-   "contract": "SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; E-1 cycle 1 then O-1 keep the dispute in every order",
+   "contract": "SSCTR-RWS-B-01 (the signal survives time, duplicates, updates and corrections). 430c493 (lifecycle cycle 1, SSCTR-CORE-B-01) made the warning-sign screen REQUIRED for a symptom stop on a session the plan in force does not name; O-1 (1d418d1) later made the dispute stay CONFLICTED in every order, which the active successor asserts (SSCTR-SAN-03)",
    "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
    "fileSha256": "ec26b27a25dd014cfe3e339ad84b5e396b4d78d252caa40e8a67656d04440d1e",
    "belongsTo": {
@@ -1186,7 +1213,7 @@
    "line": 152,
    "category": "B",
    "kind": "PINNED_DEFECT_CLOSED_LATER",
-   "contract": "lineage matrix EASY (E-1 compensation: REPORT_NOT_CARRIED); then NCC and O-1",
+   "contract": "lineage matrix EASY (E-1 compensation: REPORT_NOT_CARRIED); then NCC and O-1 Sporting effects on record (SSCTR-SAN-05; audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json and audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json, field 'sporting'): O-1 row 19, both families, completion credit COMPLETED -> PARTIAL with the downstream sessions LONG w+2 QUALITY 34 -> EASY 65 and EASY w+3 EASY 70 -> 65; NCC's interim credit for scenario 21 (CONFLICTED -> COMPLETED on EASY) reversed by O-1 to CONFLICTED, run-history 1 -> 0; and the E-1 matrix effects (closure-2 ledger, C-C1). SSCTR_O1_R1 decision C; the O-1 lineage dump with DOSE=1 on HEAD is byte-identical to the authorized one (SSCTR_SAN_R1).",
    "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
    "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
    "belongsTo": {
@@ -1202,7 +1229,16 @@
     "file": "v1core-o1-successors.test.mjs",
     "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
    },
-   "alsoCoveredBy": []
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays"
+    },
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first"
+    }
+   ]
   },
   {
    "id": "H42",
@@ -1211,7 +1247,7 @@
    "line": 152,
    "category": "B",
    "kind": "PINNED_DEFECT_CLOSED_LATER",
-   "contract": "lineage matrix LONG (E-1 compensation); then O-1",
+   "contract": "lineage matrix LONG (E-1 compensation); then O-1 Sporting effects on record (SSCTR-SAN-05; audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json and audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json, field 'sporting'): O-1 row 19, both families, completion credit COMPLETED -> PARTIAL with the downstream sessions LONG w+2 QUALITY 34 -> EASY 65 and EASY w+3 EASY 70 -> 65; NCC's interim credit for scenario 21 (CONFLICTED -> COMPLETED on EASY) reversed by O-1 to CONFLICTED, run-history 1 -> 0; and the E-1 matrix effects (closure-2 ledger, C-C1). SSCTR_O1_R1 decision C; the O-1 lineage dump with DOSE=1 on HEAD is byte-identical to the authorized one (SSCTR_SAN_R1).",
    "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
    "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
    "belongsTo": {
@@ -1227,7 +1263,16 @@
     "file": "v1core-o1-successors.test.mjs",
     "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
    },
-   "alsoCoveredBy": []
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (scenario 21): the device reports the run, the athlete says they stopped for a symptom (refused), the device re-syncs: the dispute stays"
+    },
+    {
+     "file": "v1core-o1-conflict-evidence.test.mjs",
+     "title": "SSCTR-NCC-01 (S21b): the athlete first, the device refused, the device re-syncs: the same dispute as when the device spoke first"
+    }
+   ]
   },
   {
    "id": "H43",
@@ -1451,7 +1496,7 @@
      "title": "E-1 at the boundary, late: a re-sync in the middle of the following week still keeps the athlete's answers and adds no execution"
     }
    ],
-   "safetyPoint": "HARD GATE E-1 — closed, verified through the integration API and by mutation"
+   "safetyPoint": "HARD GATE E-1 — closed at the Core and at the integration boundary, on synthetic inputs (Node, mutation-checked); for real athletes it stays open under C-C5 (a real HealthKit re-sync) (SSCTR-SAN-04)"
   },
   {
    "id": "H51",

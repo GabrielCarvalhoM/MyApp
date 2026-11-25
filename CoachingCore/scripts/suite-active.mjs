@@ -42,9 +42,9 @@ const node=(args,dest,stdout)=>{const r=spawnSync(process.execPath,['--test',...
 // ---- Phase 1: the active suite ----
 const only2=opt('--phase2-only'),p1=only2?{status:0,cases:[]}:node(manifest.entries.map(e=>`--test-skip-pattern=${exactPattern(e.title)}`),junit,true);
 const byKey=new Map(p1.cases.map(c=>[key(c.file,c.name),c])),problems=[];
-if(!only2)for(const e of manifest.entries){const s=byKey.get(key(e.successor.file,e.successor.title));
- if(!s)problems.push(`${e.id}: successor not found: ${e.successor.file}: "${e.successor.title.slice(0,100)}"`);
- else if(s.status!=='passed')problems.push(`${e.id}: successor ${s.status}: ${e.successor.file}: "${e.successor.title.slice(0,100)}"`);
+if(!only2)for(const e of manifest.entries){for(const [role,x] of [['successor',e.successor],...(e.alsoCoveredBy??[]).map(a=>['alsoCoveredBy',a])]){const s=byKey.get(key(x.file,x.title));
+  if(!s)problems.push(`${e.id}: ${role} not found: ${x.file}: "${x.title.slice(0,100)}"`);
+  else if(s.status!=='passed')problems.push(`${e.id}: ${role} ${s.status}: ${x.file}: "${x.title.slice(0,100)}"`);}
  if(byKey.has(key(e.file,e.title)))problems.push(`${e.id}: ran in the active suite although listed as historical`);}
 for(const c of p1.cases)if(c.status==='skipped')problems.push(`skipped and not delegated by the manifest: ${c.file}: ${c.name.slice(0,120)}`);
 for(const c of p1.loadFailures??[])problems.push(`a test file failed to load: ${c.file}`);
