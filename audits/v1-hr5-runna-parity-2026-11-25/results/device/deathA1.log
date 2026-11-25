@@ -1,0 +1,63 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <scratch>/dd-device DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch>/xcr/deathA1.xcresult "-only-testing:P0DeviceTests/BoundaryTests/testPhaseDeathA1_KillAfterRename"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-hr5-runna/MyApp/audits/v1-hr5-runna-parity-2026-11-25/native/ios @ local
+
+Writing result bundle at path:
+	<scratch>/xcr/deathA1.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-25 15:40:25.445.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 15:40:25.446.
+Test Suite 'BoundaryTests' started at 2026-11-25 15:40:25.446.
+Test Case '-[P0DeviceTests.BoundaryTests testPhaseDeathA1_KillAfterRename]' started.
+P0RESULT death-A1 {"enrolled":true,"killing":"after rename, before the answer"}
+
+Restarting after unexpected exit, crash, or test timeout; summary will include totals from previous launches.
+
+Test Suite 'Selected tests' started at 2026-11-25 15:40:26.453.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 15:40:26.453.
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-25 15:40:26.454.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'Selected tests' passed at 2026-11-25 15:40:26.454.
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+2026-11-25 15:40:26.840 xcodebuild[68861:443783]  IDETestOperationsObserverDebug: Failure collecting diagnostics from devices: Process exited with error 1:
+ ERROR: The operation couldn?t be completed. (CoreDeviceCLISupport.DiagnoseError error 0.)
+This tool generates files that allow Apple to investigate issues with your
+computer and help improve Apple products. The files might contain personal
+information found on your device or associated with your Apple Account(s),
+including but not limited to your name, serial numbers of your device,
+your device name, your device's location over the last one to two days,
+your attached peripheral devices, your user name, your email address and
+email settings, file paths, file names, Siri suggestions, your computer's
+IP addresses, and network connection information.
+
+This information is used by Apple in accordance with its privacy policy
+(www.apple.com/privacy) and is not shared with any other company. By using
+this tool and sending the results to Apple, you consent to Apple using the
+contents of these files to improve Apple products.
+
+An error occurred while running devicectl diagnose. Will archive the diagnostics collected thus far.
+Wrote file to <scratch>/xcr/deathA1.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+Partial devicectl diagnose bundle located here: <scratch>/xcr/deathA1.xcresult/Staging/1_Test/Diagnostics/devicectl_diagnostics.zip
+
+2026-11-25 15:40:26.848 xcodebuild[68861:443768] [MT] IDETestOperationsObserverDebug: 3.074 elapsed -- Testing started completed.
+2026-11-25 15:40:26.848 xcodebuild[68861:443768] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-25 15:40:26.848 xcodebuild[68861:443768] [MT] IDETestOperationsObserverDebug: 3.074 sec, +3.074 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratch>/xcr/deathA1.xcresult
+
+Failing tests:
+	BoundaryTests.testPhaseDeathA1_KillAfterRename()
+
+** TEST EXECUTE FAILED **
+
+Testing started
+exit=65

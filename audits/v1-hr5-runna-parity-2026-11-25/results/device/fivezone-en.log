@@ -1,0 +1,44 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <scratch>/dd-device DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch>/xcr/fivezone-en.xcresult "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneJourneys" "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneJourneysNativeStore" "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneModuleInJavaScriptCore" -testLanguage en -testRegion US
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-hr5-runna/MyApp/audits/v1-hr5-runna-parity-2026-11-25/native/ios @ local
+
+Writing result bundle at path:
+	<scratch>/xcr/fivezone-en.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-25 15:39:04.607.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 15:39:04.607.
+Test Suite 'BoundaryTests' started at 2026-11-25 15:39:04.608.
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneys]' started.
+P0RESULT boundary-hr5-memory {"bundleSha256":"d087ad51b37dfc4e35bcca60cfba55ee5ad854cfb5a6e67ba0ef3e7411829d44","constantTimeEqualCalls":291,"digestEqual":false,"diverged":[],"explainedLibm":["hr5r-age30#0","hr5r-age30#1","hr5r-age30#2","hr5r-age30#3","hr5r-age30#4","hr5r-age30#5","hr5r-age30#7","hr5r-age30#8","hr5r-age30#9","hr5r-age30#10","hr5r-age30#11","hr5r-age30#12","hr5r-age30#13","hr5r-age30#14","hr5r-age30#15","hr5r-age30#16","hr5r-declared#0","hr5r-declared#1","hr5r-declared#2","hr5r-declared#3","hr5r-declared#4","hr5r-declared#5","hr5r-declared#6","hr5r-declared#7","hr5r-declared#8","hr5r-declared#10","hr5r-declared#11","hr5r-declared#12","hr5r-declared#13","hr5r-declared#14","hr5r-declared#15","hr5r-declared#16","hr5r-declared#17","hr5r-declared#18","hr5r-declared#19","hr5r-declared#20","hr5r-declared#21","hr5r-declared#22","hr5r-declared#23","hr5r-strap-above#0","hr5r-strap-above#1","hr5r-strap-above#2","hr5r-strap-below#0","hr5r-strap-below#1","hr5r-strap-below#2","hr5r-lab#0","hr5r-lab#1","hr5r-lab#2","hr5r-conflict#0","hr5r-conflict#1","hr5r-conflict#2","hr5r-noage#0","hr5r-noage#1","hr5r-noage#2","hr5r-noage#3","hr5r-noage#4","hr5r-noage#5","hr5r-hold#0","hr5r-hold#1","hr5r-hold#2","hr5r-invalid#0","hr5r-invalid#1","hr5r-invalid#2","hr5r-invalid#3","hr5r-invalid#4","hr5r-invalid#5","hr5r-invalid#6","hr5r-invalid#7","hr5r-invalid#8","hr5r-invalid#9","hr5r-invalid#10","hr5r-invalid#11","hr5r-restart#0","hr5r-restart#1","hr5r-restart#2","hr5r-optical#0","hr5r-optical#1","hr5r-optical#2","hr5r-age18#0","hr5r-age18#1","hr5r-age18#2","hr5r-age80#0","hr5r-age80#1","hr5r-age80#2"],"fixture":"hr5","footprintMB":25.70490264892578,"hmacCalls":590,"hmacMs":8.375175,"identical":14,"journeys":13,"peakMB":37.57990264892578,"steps":98,"store":"memory","wallMs":7726.549875020981}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneys]' passed (7.826 seconds).
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneysNativeStore]' started.
+P0RESULT boundary-hr5-native {"anchorWrites":25,"bundleSha256":"d087ad51b37dfc4e35bcca60cfba55ee5ad854cfb5a6e67ba0ef3e7411829d44","constantTimeEqualCalls":291,"digestEqual":false,"diverged":[],"explainedLibm":["hr5r-age30#0","hr5r-age30#1","hr5r-age30#2","hr5r-age30#3","hr5r-age30#4","hr5r-age30#5","hr5r-age30#7","hr5r-age30#8","hr5r-age30#9","hr5r-age30#10","hr5r-age30#11","hr5r-age30#12","hr5r-age30#13","hr5r-age30#14","hr5r-age30#15","hr5r-age30#16","hr5r-declared#0","hr5r-declared#1","hr5r-declared#2","hr5r-declared#3","hr5r-declared#4","hr5r-declared#5","hr5r-declared#6","hr5r-declared#7","hr5r-declared#8","hr5r-declared#10","hr5r-declared#11","hr5r-declared#12","hr5r-declared#13","hr5r-declared#14","hr5r-declared#15","hr5r-declared#16","hr5r-declared#17","hr5r-declared#18","hr5r-declared#19","hr5r-declared#20","hr5r-declared#21","hr5r-declared#22","hr5r-declared#23","hr5r-strap-above#0","hr5r-strap-above#1","hr5r-strap-above#2","hr5r-strap-below#0","hr5r-strap-below#1","hr5r-strap-below#2","hr5r-lab#0","hr5r-lab#1","hr5r-lab#2","hr5r-conflict#0","hr5r-conflict#1","hr5r-conflict#2","hr5r-noage#0","hr5r-noage#1","hr5r-noage#2","hr5r-noage#3","hr5r-noage#4","hr5r-noage#5","hr5r-hold#0","hr5r-hold#1","hr5r-hold#2","hr5r-invalid#0","hr5r-invalid#1","hr5r-invalid#2","hr5r-invalid#3","hr5r-invalid#4","hr5r-invalid#5","hr5r-invalid#6","hr5r-invalid#7","hr5r-invalid#8","hr5r-invalid#9","hr5r-invalid#10","hr5r-invalid#11","hr5r-restart#0","hr5r-restart#1","hr5r-restart#2","hr5r-optical#0","hr5r-optical#1","hr5r-optical#2","hr5r-age18#0","hr5r-age18#1","hr5r-age18#2","hr5r-age80#0","hr5r-age80#1","hr5r-age80#2"],"fixture":"hr5","footprintMB":13.095527648925781,"hmacCalls":590,"hmacMs":8.494987,"identical":14,"journeys":13,"keychainFailures":[],"peakMB":37.57990264892578,"steps":98,"store":"native-file+keychain","wallMs":8452.250167012215}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneysNativeStore]' passed (8.548 seconds).
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneModuleInJavaScriptCore]' started.
+P0RESULT hr5-units {"bundleSha256":"d087ad51b37dfc4e35bcca60cfba55ee5ad854cfb5a6e67ba0ef3e7411829d44","identical":true,"maxima":111}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneModuleInJavaScriptCore]' passed (0.084 seconds).
+Test Suite 'BoundaryTests' passed at 2026-11-25 15:39:21.066.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 16.458 (16.458) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-25 15:39:21.066.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 16.458 (16.459) seconds
+Test Suite 'Selected tests' passed at 2026-11-25 15:39:21.066.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 16.458 (16.459) seconds
+2026-11-25 15:39:21.394 xcodebuild[68698:442312] [MT] IDETestOperationsObserverDebug: 18.650 elapsed -- Testing started completed.
+2026-11-25 15:39:21.395 xcodebuild[68698:442312] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-25 15:39:21.395 xcodebuild[68698:442312] [MT] IDETestOperationsObserverDebug: 18.650 sec, +18.650 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratch>/xcr/fivezone-en.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
+exit=0

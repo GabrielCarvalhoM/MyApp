@@ -1,0 +1,38 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <scratch>/dd-device DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch>/xcr/libm.xcresult "-only-testing:P0DeviceTests/FocalTests/testLibmBits"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-hr5-runna/MyApp/audits/v1-hr5-runna-parity-2026-11-25/native/ios @ local
+
+Writing result bundle at path:
+	<scratch>/xcr/libm.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-25 15:40:21.952.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 15:40:21.953.
+Test Suite 'FocalTests' started at 2026-11-25 15:40:21.953.
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' started.
+P0RESULT libm {"byFunction":{"exp":17,"pow":14},"calls":31,"differ":[{"args":[-0.6],"f":"exp","jsc":0.5488116360940264,"steps":[13,14],"ulp":-1,"v8":0.5488116360940265},{"args":[-1.1],"f":"exp","jsc":0.33287108369807955,"steps":[23,24],"ulp":1,"v8":0.3328710836980795},{"args":[-1.2],"f":"exp","jsc":0.30119421191220214,"steps":[25,26],"ulp":1,"v8":0.3011942119122021}]}
+Test Case '-[P0DeviceTests.FocalTests testLibmBits]' passed (0.050 seconds).
+Test Suite 'FocalTests' passed at 2026-11-25 15:40:22.003.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.050 (0.051) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-25 15:40:22.004.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.050 (0.051) seconds
+Test Suite 'Selected tests' passed at 2026-11-25 15:40:22.004.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.050 (0.052) seconds
+2026-11-25 15:40:22.322 xcodebuild[68839:443610] [MT] IDETestOperationsObserverDebug: 1.987 elapsed -- Testing started completed.
+2026-11-25 15:40:22.322 xcodebuild[68839:443610] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-25 15:40:22.323 xcodebuild[68839:443610] [MT] IDETestOperationsObserverDebug: 1.987 sec, +1.987 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratch>/xcr/libm.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
+exit=0

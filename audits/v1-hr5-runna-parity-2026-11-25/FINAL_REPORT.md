@@ -1,6 +1,6 @@
 # REPMILE — HR5 Runna parity correction: final report
 
-Mission V1HR5R: the [Founder decision](FOUNDER_REQUEST.md) of 2026-11-25, executed on the Mac mini M4. All athletes and records are synthetic.
+Mission V1HR5R: the [Founder decision](FOUNDER_REQUEST.md) of 2026-11-25, executed on the Mac mini M4. All athletes and records are synthetic. The iPhone run was completed in a second session the same day, on the published bytes (§8).
 
 ## 1. Git and isolation
 
@@ -84,7 +84,7 @@ Details: [INDEPENDENT_REVIEW.md](INDEPENDENT_REVIEW.md) and [SCIENCE_AND_CALIBRA
 | 4 | No valid user loses the zones for lack of a lab test or strap | **YES:** every age 18–80; a conflict does not take them away |
 | 5 | Missing measurements give no fictitious distribution | **YES:** `sessionDistribution` and `liveHeartRate` UNAVAILABLE; single values only; `fromAverageHeartRate: false` |
 | 6 | Pace, RPE, strength and safety unchanged | **YES:** regression proof and neutrality proof, 0 unexplained at −180 and +600; under a hold, the clinical answer is the one without heart rate |
-| 7 | Node, JavaScriptCore and the iPhone consistent | **PARTIAL:** Node = macOS JavaScriptCore, 0 DIVERGED everywhere. **The iPhone was not run:** it was offline and Xcode had no account or profile in this session (§8). |
+| 7 | Node, JavaScriptCore and the iPhone consistent | **YES:** Node = macOS JavaScriptCore = iPhone JavaScriptCore, 0 DIVERGED everywhere. On the iPhone 17 Pro Max: hr5r 14 / 84 / 0 over the memory and native stores, units identical over 111 maxima, final 57 / 127 / 0, Core Safety in en-US and pt-BR (§8). |
 | 8 | Published on the remote | **YES** (§11) |
 
 ## 5. Node
@@ -111,20 +111,38 @@ Details: [TEST_REPORT.md](TEST_REPORT.md), [`results/node/suite-closing.txt`](re
 |---|---|---|---|
 | final (184 steps) | 0 | 57 | 127 (the frozen pattern) |
 | int (78 steps) | 0 | 22 | 56 |
-| **hr5r** (14 journeys, 98 steps), memory and native file store + Keychain | **0** | 14 | 84 |
+| **hr5r** (13 journeys, 98 steps; the first session wrote 14, see NATIVE_VALIDATION_REPORT §7), memory and native file store + Keychain | **0** | 14 | 84 |
 | core | 0 | — | — |
 
 - The five-zone module in JavaScriptCore is identical to Node over 111 maxima and 63 ages.
 - **Swift contract delta** (`proposals/CoachingPresentation`): 10/10. It decodes the corrected captures, revision 1 and the frozen readings.
 
-## 8. iPhone: not run
+## 8. iPhone: validated
 
-- `devicectl` lists the iPhone 17 Pro Max (iOS 27.2.1) as **unavailable** and `xctrace` as **offline**. This was checked four times, the last at closing.
-- `xcodebuild build-for-testing` stopped at signing: *No Accounts*, and no provisioning profile (the profile folder is empty).
-- No device result is claimed. The bundle, fixtures and tests are committed and ready. To run:
-  1. Sign in to Xcode (Settings → Accounts).
-  2. Connect and unlock the iPhone.
-  3. Run the commands in [NATIVE_VALIDATION_REPORT.md §4](NATIVE_VALIDATION_REPORT.md), through `tools/device-lock/with-device.sh`.
+The first session could not reach the device (offline, no Xcode account). A second session ran it after the Founder connected the iPhone by cable and signed in to Xcode. The causes and the one manual step on the device are in [NATIVE_VALIDATION_REPORT.md §6](NATIVE_VALIDATION_REPORT.md): trusting the developer app in Settings → General → VPN & Device Management.
+
+**Setup:**
+- Nothing was rebuilt from source and nothing was changed: the committed `native/ios` copy, bundle `d087ad51…`, was built for the device and run.
+- iPhone 17 Pro Max, iOS 27.2.1, Release, no debugger, Low Power Mode off.
+- Every invocation went through `tools/device-lock/with-device.sh integration --wait`.
+- Logs: [`results/device/`](results/device/).
+
+| Check | iPhone result |
+|---|---|
+| Node × iPhone JavaScriptCore | **0 DIVERGED.** hr5r: 14 IDENTICAL / 84 EXPLAINED_LIBM over the memory and native file store + Keychain (25 anchor writes, 0 Keychain failures). final: 57 / 127 (the frozen pattern). int: 0 unexplained. Core Safety: 171 steps in en-US and pt-BR. J5 / P16: IDENTICAL. |
+| Five zones without a wearable, by age | 30 y: 190, **123 / 153 / 169 / 184**; 18 y 202; 80 y 140; units identical to Node over 111 maxima and 63 ages |
+| Personalised maximum and custom limits | declared 195 gives 126 / 157 / 173 / 189; limits 130 / 150 / 165 / 180 exact; cleared, back to the estimate |
+| Persistence after closing and reopening | kept across a reopen over the native store and a week. A killed process is recovered by a new process over the same files and Keychain (A `replayed`, B recorded anew). |
+| Integrity and custody | tampered cue and override give `INTEGRITY_FAILURE`; a tampered asset is refused; HMAC 40/40 = Node; write failure confirms nothing |
+| Safety states | a hold withholds the zones and every cue at once, and persists; Core Safety equal to Node |
+| Performance (PF-0) | **All 10 budgets pass, no regression against V1HR5.** Cold load p95 44.9 ms; cold first plan p95 103.5 ms; review p95 294.0 ms; footprint after GC 13.8 MB. Measured in thermal state `serious`. |
+
+**Not run:**
+- the locked-device phase, which needs a person to lock the device;
+- reinstall, which deletes the host app and is not authorised;
+- a cross-process heart-rate journey, for which no such test exists.
+
+The reasons are in NATIVE_VALIDATION_REPORT §4.
 
 ## 9. A/B/C integration delta
 
@@ -152,16 +170,23 @@ Summary of [CONTRACT_DELTA.md §3](CONTRACT_DELTA.md):
   - `FIVE_ZONE_AMENDMENT_V1.json` is byte-identical to `bec39c5`.
 - **REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2** is recorded beside them ([FIVE_ZONE_AMENDMENT_2.md](FIVE_ZONE_AMENDMENT_2.md)). Its verifier passes 91/91: five declared amended files with recorded diffs, the run calibration byte-identical, and the bundle bound.
 - The two earlier verifiers fail by design, and only on declared files (successor test).
+- **Rechecked in the iPhone session** (Node, Mac; nothing written):
+  - the amendment-2 verifier exits 0 (91/91, bundle `d087ad51…`);
+  - the freeze and amendment-1 verifiers fail, only on the declared files;
+  - `v1hr5r-successors` 3/3;
+  - both JSON records are still byte-identical to `6482749` / `bec39c5`.
+- That session changed only documents and device evidence: this report, NATIVE_VALIDATION_REPORT.md and `results/device/`. No evidence outside that scope changed.
 
 ## 11. Publication
 
 - Branch `claude/v1-hr5-runna-parity`, pushed without force.
 - The remote was checked equal to local HEAD with `git ls-remote`.
 - No merge.
+- The iPhone session added one documentation commit on top of `465e7c8`, also pushed without force and checked with `git ls-remote`.
 
 ## 12. Still open
 
-- **The iPhone run** of this bundle (§8).
+- **Device phases not run:** locked device, which needs a person, and reinstall, which is destructive. Also a heart-rate profile read across processes; no test exists for it (§8).
 - **G07 / Founder:** whether HEALTH_SIGNALS, and not only COACHING, governs the heart-rate profile.
 - **Accepted risk:** the multi-process same-version carried-commit race.
 - **Security:** a Security and privacy review of heart-rate data before any real athlete.
@@ -186,6 +211,6 @@ Summary of [CONTRACT_DELTA.md §3](CONTRACT_DELTA.md):
 | QRE_SECURITY_REVIEW | YES: every finding fixed with tests; one risk accepted; a Security review before real athletes stays open |
 | MACOS_JSC_VALIDATED | YES |
 | SWIFT_CONTRACT_DELTA_VALIDATED | YES (mission copy, not a shared package) |
-| IPHONE_PHYSICAL_VALIDATED | **NO**: device offline, no Xcode signing in this session |
+| IPHONE_PHYSICAL_VALIDATED | **YES**: iPhone 17 Pro Max, iOS 27.2.1, Release: 0 DIVERGED, the mission cases, persistence, integrity, safety, PF-0 without regression (§8); locked device and reinstall not run |
 | SUCCESSOR_AMENDMENT_RECORDED | YES |
 | REMOTE_BRANCH_PUBLISHED | YES |
