@@ -1,0 +1,48 @@
+{
+ "mission": "REPMILE FIVE-ZONE HEART RATE INTELLIGENCE V1 (V1HR5), Founder request of 2026-11-25 (audits/v1-five-zone-heart-rate-2026-11-25/FOUNDER_REQUEST.md)",
+ "reason": "Founder decision: V1 has five heart-rate zones truly computed by CoachingCore, not a five-segment drawing of the three; the three physiological domains are kept.",
+ "method": {
+  "decision": "SSCTR-HR5-DECISION-r1 (audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.json)",
+  "summary": "Z1-Z5 as fixed per-mille fractions of one reference maximum (720/800/870/920), nested in the approved LOW/MODERATE/HIGH domains (Z1+Z2, Z3, Z4+Z5); reference = a lab maximum (declared running test, chest strap or ECG, RPE >= 8, tolerated, <= 182 days) else the approved chest-strap observed maximum (Q6(b)); REFERENCE_CONFLICT when the strap reads > 5 bpm above the lab; LOW confidence; effort governs every session, heart rate never primary, a sustained Z4+ reading may suggest slowing in easy running only; time in zone UNAVAILABLE (no series in V1).",
+  "values": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json (pinned sha256 387d66a73f3ab9071aa2313af7cd616dce251e7f83b9e7eb8a23b7a62055c04d)",
+  "boundary": "V1X-RUN-HR-FIVE-ZONE, enabled by SSCTR-HR5-RECHECK-r1 (APPROVE_WITH_CONDITIONS, SUPPORTED_WITH_LIMITS), with V1X-RUN-CAPACITY and V1X-RUN-HR"
+ },
+ "contracts": {
+  "engine": "additive: runCalibration.heartRateFiveZones (with per-session roles in heartRateFiveZones.sessions); every other key byte-identical",
+  "shared": "no shared contract changed (ios/Packages/IntegrationContracts, A/B handoffs, the parallel contract, A/B worktrees untouched); Swift delta in the mission copy of CHG-UI-1 (audits/v1-five-zone-heart-rate-2026-11-25/proposals/CoachingPresentation)",
+  "delta": "audits/v1-five-zone-heart-rate-2026-11-25/CONTRACT_DELTA.md"
+ },
+ "tests": {
+  "baseline": "476b657 pristine: 1942 tests, 1895 pass, 47 fail (= the freeze record's 47)",
+  "amended": "822e2c0: 1968 tests, 1920 pass, 48 fail (the 47 + the final-release freeze record test by design; successor test/v1hr5-amendment-record.test.mjs)",
+  "directed": "test/v1hr5-five-zones.test.mjs, 26 tests",
+  "regression": "evidence/regression-diff.mjs, five zones on: ADDITIVE_ONLY over 326 recorded boundary steps (int, final, hr5), 0 unexplained, 3 named steps skipped (tamper of the new reading)",
+  "swift": "CoachingPresentation delta 9/9 (6 frozen-shape tests over the amended captures + 3 five-zone tests)"
+ },
+ "runtimes": {
+  "nodeVsMacJsc": "0 DIVERGED on final (57 IDENTICAL, 127 EXPLAINED_LIBM, the frozen pattern), int, hr5 (memory and native store), core (24 journeys); five-zone module identical for 81 maxima",
+  "nodeVsIphoneJsc": "the same on the iPhone; libm differences only at RFC-NUMERIC-1 sites (Race Forecast), never in the five zones",
+  "toleranceUsed": "RFC-NUMERIC-1 only (Race Forecast ULP); no tolerance on any heart-rate value"
+ },
+ "device": {
+  "model": "iPhone 17 Pro Max (iPhone18,2), iOS 27.2.1, Release, no debugger, thermal fair, battery 85 %, Low Power off",
+  "bundle": "2f69066416cdec4e8ed171933ab3d03a7412f44105122eb3a1a7f907e84b7e9c (49 modules, 18 assets)",
+  "results": "EquivalenceTests 5/5; BoundaryTests 9 run + 6 phase-skipped, 0 failures (pt-BR), five-zone tests 3/3 (en-US); Core Safety en and pt-BR 0 DIVERGED; process death A and B recovered; PF-0 10/10 PASS (review p95 294.6 ms, cold first plan p95 112.7 ms, footprint after GC 13.9 MB)",
+  "notRun": ["locked-device phase (needs a person)", "reinstall phase (deletes the host app)", "HealthKit / heart-rate series (out of scope)"]
+ },
+ "reviews": {
+  "ssctr": "SSCTR-HR5-REVIEW-r1 APPROVE_WITH_CONDITIONS; SSCTR-HR5-RECHECK-r1 APPROVE_WITH_CONDITIONS; V1RC file-level recheck CONFIRMED_UNCHANGED_BEHAVIOUR (CAPACITY, PACE, HR, ESTIMATE at v1-run-calibration.mjs 8203b875)",
+  "qreSecurity": "QRE-SEC-HR5-REVIEW READY_WITH_CONDITIONS; C1-C6 met (INDEPENDENT_REVIEW.md)"
+ },
+ "open": [
+  "FND-HR5-01: the integration boundary admits no runEvidence in a review; a heart-rate reference reaches the engine from the app only through intake anchors and plan race rows (contract-closure mission, A + SEC)",
+  "FND-HR5-03: CHG-UI-1 StrengthExposure.descriptiveOnly must become optional (C)",
+  "SSCTR-HR5-R-04: lab.modality only as a real declaration, never defaulted or inferred (Data, Product, A)",
+  "SSCTR-HR5-R-08: Product copy (one cue per session, meanings kept, no Olympiatoppen/Norwegian naming, no health meaning)",
+  "Security review of heart-rate and lab data before real athletes",
+  "HQ-V1HR5-SSCTR-ZONES funded-human revalidation (proposed, not appended); review by 2027-05-11",
+  "Clinical: medication or conditions changing heart-rate response stay ASK / ELIGIBILITY_UNASSESSED",
+  "Pending from earlier missions and not mixed in: specialPopulation intake key, unplanned strength retention, GPS run path (GAP-16), backend"
+ ],
+ "validates": "This amendment validates, for synthetic athletes only: the five-zone reading and per-session heart-rate roles of CoachingCore at the bound bytes; that every other engine output is byte-identical to the original freeze's (additive); that Node, macOS JavaScriptCore and iPhone JavaScriptCore agree on it; and its persistence and integrity through the integration boundary. It does not validate real athletes, HealthKit, heart-rate series, any UI, or the application; REAL_ATHLETE_READY stays NO."
+}

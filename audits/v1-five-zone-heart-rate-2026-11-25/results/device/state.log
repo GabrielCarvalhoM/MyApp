@@ -1,0 +1,37 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <scratch>/dd-device DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch>/xcr/state.xcresult "-only-testing:P0DeviceTests/FocalTests/testDeviceState"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-five-zone/MyApp/audits/v1-five-zone-heart-rate-2026-11-25/native/ios @ local
+
+Writing result bundle at path:
+	<scratch>/xcr/state.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-25 11:06:02.700.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 11:06:02.700.
+Test Suite 'FocalTests' started at 2026-11-25 11:06:02.700.
+Test Case '-[P0DeviceTests.FocalTests testDeviceState]' started.
+P0RESULT device-state {"batteryLevel":0.8500000238418579,"batteryState":"charging","configuration":"Release","date":"2026-11-25T14:06:02Z","debuggerAttached":false,"isSimulator":false,"lowPowerMode":false,"machine":"iPhone18,2","physicalMemoryMB":11695.296875,"processorCount":6,"system":"iOS 27.2.1","thermalState":"fair"}
+Test Case '-[P0DeviceTests.FocalTests testDeviceState]' passed (0.002 seconds).
+Test Suite 'FocalTests' passed at 2026-11-25 11:06:02.703.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-25 11:06:02.703.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'Selected tests' passed at 2026-11-25 11:06:02.703.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.004) seconds
+2026-11-25 11:06:03.061 xcodebuild[7799:216384] [MT] IDETestOperationsObserverDebug: 2.223 elapsed -- Testing started completed.
+2026-11-25 11:06:03.061 xcodebuild[7799:216384] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-25 11:06:03.061 xcodebuild[7799:216384] [MT] IDETestOperationsObserverDebug: 2.223 sec, +2.223 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratch>/xcr/state.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

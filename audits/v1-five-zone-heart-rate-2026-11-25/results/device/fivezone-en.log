@@ -1,0 +1,43 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -scheme P0DeviceHost -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <scratch>/dd-device DEVELOPMENT_TEAM=<TEAM_ID> -resultBundlePath <scratch>/xcr/fivezone-en.xcresult "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneJourneys" "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneJourneysNativeStore" "-only-testing:P0DeviceTests/BoundaryTests/testFiveZoneModuleInJavaScriptCore" -testLanguage en -testRegion US
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM_ID>
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  P0Host: ~/.codex/worktrees/myapp-v1-five-zone/MyApp/audits/v1-five-zone-heart-rate-2026-11-25/native/ios @ local
+
+Writing result bundle at path:
+	<scratch>/xcr/fivezone-en.xcresult
+
+Test Suite 'Selected tests' started at 2026-11-25 11:04:56.297.
+Test Suite 'P0DeviceTests.xctest' started at 2026-11-25 11:04:56.298.
+Test Suite 'BoundaryTests' started at 2026-11-25 11:04:56.298.
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneys]' started.
+P0RESULT boundary-hr5-memory {"bundleSha256":"2f69066416cdec4e8ed171933ab3d03a7412f44105122eb3a1a7f907e84b7e9c","constantTimeEqualCalls":302,"digestEqual":false,"diverged":[],"explainedLibm":["hr5-strap#0","hr5-strap#1","hr5-strap#2","hr5-strap#3","hr5-strap#4","hr5-strap#5","hr5-strap#7","hr5-strap#8","hr5-strap#9","hr5-strap#10","hr5-strap#11","hr5-strap#12","hr5-strap#13","hr5-strap#14","hr5-strap#15","hr5-strap#16","hr5-lab#0","hr5-lab#1","hr5-lab#2","hr5-conflict#0","hr5-conflict#1","hr5-conflict#2","hr5-none#0","hr5-none#1","hr5-none#2","hr5-none#3","hr5-none#4","hr5-none#5","hr5-none#6","hr5-none#7","hr5-none#8","hr5-invalid#0","hr5-invalid#1","hr5-invalid#2","hr5-extreme-low#0","hr5-extreme-low#1","hr5-extreme-low#2","hr5-extreme-high#0","hr5-extreme-high#1","hr5-extreme-high#2","hr5-hold#0","hr5-hold#1","hr5-hold#2","hr5-declared#0","hr5-declared#1","hr5-declared#2","hr5-declared#3","hr5-declared#4","hr5-declared#5","hr5-declared#6","hr5-declared#7","hr5-declared#8","hr5-restart#0","hr5-restart#1"],"fixture":"hr5","footprintMB":26.39240264892578,"hmacCalls":593,"hmacMs":6.986008,"identical":10,"journeys":10,"peakMB":37.23615264892578,"steps":64,"store":"memory","wallMs":5671.731458008289}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneys]' passed (5.772 seconds).
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneysNativeStore]' started.
+P0RESULT boundary-hr5-native {"anchorWrites":17,"bundleSha256":"2f69066416cdec4e8ed171933ab3d03a7412f44105122eb3a1a7f907e84b7e9c","constantTimeEqualCalls":302,"digestEqual":false,"diverged":[],"explainedLibm":["hr5-strap#0","hr5-strap#1","hr5-strap#2","hr5-strap#3","hr5-strap#4","hr5-strap#5","hr5-strap#7","hr5-strap#8","hr5-strap#9","hr5-strap#10","hr5-strap#11","hr5-strap#12","hr5-strap#13","hr5-strap#14","hr5-strap#15","hr5-strap#16","hr5-lab#0","hr5-lab#1","hr5-lab#2","hr5-conflict#0","hr5-conflict#1","hr5-conflict#2","hr5-none#0","hr5-none#1","hr5-none#2","hr5-none#3","hr5-none#4","hr5-none#5","hr5-none#6","hr5-none#7","hr5-none#8","hr5-invalid#0","hr5-invalid#1","hr5-invalid#2","hr5-extreme-low#0","hr5-extreme-low#1","hr5-extreme-low#2","hr5-extreme-high#0","hr5-extreme-high#1","hr5-extreme-high#2","hr5-hold#0","hr5-hold#1","hr5-hold#2","hr5-declared#0","hr5-declared#1","hr5-declared#2","hr5-declared#3","hr5-declared#4","hr5-declared#5","hr5-declared#6","hr5-declared#7","hr5-declared#8","hr5-restart#0","hr5-restart#1"],"fixture":"hr5","footprintMB":13.158027648925781,"hmacCalls":593,"hmacMs":6.810091,"identical":10,"journeys":10,"keychainFailures":[],"peakMB":37.23615264892578,"steps":64,"store":"native-file+keychain","wallMs":6149.529750049114}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneJourneysNativeStore]' passed (6.250 seconds).
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneModuleInJavaScriptCore]' started.
+P0RESULT hr5-units {"bundleSha256":"2f69066416cdec4e8ed171933ab3d03a7412f44105122eb3a1a7f907e84b7e9c","identical":true,"maxima":81}
+Test Case '-[P0DeviceTests.BoundaryTests testFiveZoneModuleInJavaScriptCore]' passed (0.081 seconds).
+Test Suite 'BoundaryTests' passed at 2026-11-25 11:05:08.402.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 12.103 (12.104) seconds
+Test Suite 'P0DeviceTests.xctest' passed at 2026-11-25 11:05:08.402.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 12.103 (12.104) seconds
+Test Suite 'Selected tests' passed at 2026-11-25 11:05:08.402.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 12.103 (12.105) seconds
+2026-11-25 11:05:08.755 xcodebuild[7750:215279] [MT] IDETestOperationsObserverDebug: 14.132 elapsed -- Testing started completed.
+2026-11-25 11:05:08.755 xcodebuild[7750:215279] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-25 11:05:08.755 xcodebuild[7750:215279] [MT] IDETestOperationsObserverDebug: 14.132 sec, +14.132 sec -- end
+
+Test session results, code coverage, and logs:
+	<scratch>/xcr/fivezone-en.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

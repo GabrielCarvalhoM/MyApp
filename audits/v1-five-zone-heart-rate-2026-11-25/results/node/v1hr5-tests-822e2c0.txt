@@ -1,0 +1,26 @@
+✔ HR5 authority: the values are read only as the pinned bytes; off without an independent enabling record bound to them
+✔ HR5 authority: the five zones need the run calibration's heart-rate boundary (and CAPACITY): without it there are none
+✔ HR5 calibration: five zones from a chest-strap maximum observed in a hard effort, nested in the three approved domains, with provenance
+✔ HR5 calibration: the highest qualifying observed maximum of the window is the reference (an observed maximum is a floor of the true one)
+✔ HR5 calibration: a lab maximum as supplied is the first reference; the supplied lab values stay as supplied in the three-zone output
+✔ HR5 conflict: an observed maximum more than 5 bpm ABOVE the lab maximum gives no zones and shows both; a lab maximum above it is used
+✔ HR5 calibration: no zones without a qualifying reference — no data, an age, an optical or declared maximum, an easy effort, or a value out of range
+✔ HR5 invalid values: a heart rate that is not a number is refused or ignored, never coerced, never a throw
+✔ HR5 arithmetic: over the whole plausible range the zones are contiguous, strictly increasing, open at both ends and share the approved edges
+✔ HR5 decision: the values file is SSCTR-HR5-DECISION-r1, and the decision's worked examples are what the engine computes
+✔ HR5 convention: a reading on an edge belongs to the higher zone; readings outside any plausible heart rate have no zone
+✔ HR5 sessions: effort governs every session and heart rate is never primary; easy, long and recovery runs get a slow-down cue only
+✔ HR5 sessions: interval, race and specific efforts carry no heart-rate guidance; without zones the cue has its reason; nothing is ever a target
+✔ HR5 sessions: a beginner's walk/jog plan is by effort only, with no heart-rate role; the five zones say so
+✔ HR5 disclosures: a newer runner in EASY mode is told the same heart rate can mean a harder effort; an experienced runner is not
+✔ HR5 additive: heart rate and the five zones change no plan, no pace band, no estimate, no session guidance and no other reading
+✔ HR5 determinism: the same record gives the same bytes; JSON round trip is identity
+✔ HR5 flow: a maximum declared during a week counts from the next week; a hold withholds the zones and every cue at once
+✔ HR5 flow: a declared break of 14 days or more withdraws the zones; the maximum from before it is not read again
+✔ HR5 flow: the athlete without any heart rate trains exactly as before — every session prescribed, logged and reviewed by effort
+✔ HR5 classifier: only a strap or ECG series, with limits the caller must give; gaps and artifacts are unknown, never interpolated; coverage always reported
+✔ HR5 sessions follow the reading's order: a hold, then the boundary off (either one), then an effort-only mode, then the family (C5, SSCTR-HR5-R-02)
+✔ HR5 fault isolation (QRE-HR5-08): a fault in the five-zone code is a typed UNAVAILABLE, never a broken run calibration
+✔ HR5 lab expiry and floors (QRE-HR5-11): a lab maximum lasts 182 days and is never read across a declared break of 14 days or more
+✔ HR5 production authority end to end (QRE-HR5-11): an independent record bound to the pinned bytes enables the zones through the engine; one bound to other bytes does not
+✔ HR5 texts: no physiological threshold claim in the values or any output

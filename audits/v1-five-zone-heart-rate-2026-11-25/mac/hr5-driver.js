@@ -10,7 +10,10 @@ globalThis.__hr5 = function (M, inputJSON) {
   const errorOf = e => ({ error: e && e.constructor ? e.constructor.name : typeof e });
   const viewOf = r => r && r.view && typeof r.view === 'object' ? r.view : null;
   const strip = (v, drop) => Array.isArray(v) ? v.map(x => strip(x, drop)) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).filter(k => !drop.includes(k)).map(k => [k, strip(v[k], drop)])) : v;
-  const docDigests = raw => { if (raw === null || raw === undefined) return { stored: null, canonical: null }; const d = JSON.parse(raw); return { stored: H(d), canonical: H(strip(d, ['carried', 'carriedMac'])) }; };
+  // As final-driver.js (RFC-NUMERIC-1): the Race Forecast's unrounded math-library bits may differ by an ULP between runtimes, so a step also
+  // carries its digests without any `runForecast` (and the seal over it). A step whose full digests differ is EXPLAINED_LIBM only if these, the
+  // canonical record, and the readable five- and three-zone summaries (with the five-zone digest) are all equal; anything else is DIVERGED.
+  const docDigests = raw => { if (raw === null || raw === undefined) return { stored: null, storedSans: null, canonical: null }; const d = JSON.parse(raw); return { stored: H(d), storedSans: H(strip(d, ['runForecast', 'carriedMac'])), canonical: H(strip(d, ['carried', 'carriedMac'])) }; };
   // The readings the record keeps (carried.presentation.readings), or the ones an answer carries (presentation()).
   const readingsOf = (r, raw) => (r && r.readings) || (raw ? (((JSON.parse(raw).carried || {}).presentation || {}).readings || null) : null);
   const five = rc => {
@@ -52,7 +55,7 @@ globalThis.__hr5 = function (M, inputJSON) {
         return { op: s.op, code: r.ok === false ? r.error.code : 'OK', status: r.status || null, version: r.version || null,
           state: v ? v.state : (typeof r.state === 'string' ? r.state : null), hold: v ? (v.hold ? v.hold.exit : null) : null,
           fiveZones: five(rc), threeZones: three(rc), calibration: rc ? rc.status : null,
-          answer: H(r), ...docDigests(raw) };
+          answer: H(r), answerSans: H(strip(r, ['runForecast', 'carriedMac'])), ...docDigests(raw) };
       } catch (e) { return { op: s.op, ...errorOf(e) }; }
     });
   }

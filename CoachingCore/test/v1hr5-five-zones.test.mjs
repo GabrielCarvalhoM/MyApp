@@ -216,6 +216,10 @@ test('HR5 additive: heart rate and the five zones change no plan, no pace band, 
 test('HR5 determinism: the same record gives the same bytes; JSON round trip is identity',()=>{
  const input=runner({id:'hr5-det',anchors:[recent10(STRAP(186)),lab(195)]}),a=five(input),b=five(JSON.parse(JSON.stringify(input)));
  assert.equal(hash(a),hash(b));assert.deepEqual(JSON.parse(JSON.stringify(a)),a);
+ // SSCTR RC-02: the fault catch never hides a defect on valid inputs — no valid record of these tests' kinds gives FIVE_ZONE_ERROR.
+ for(const anchors of [[recent10()],[recent10(STRAP(186))],[recent10(STRAP(140))],[recent10(STRAP(220))],[recent10(),lab(190)],[recent10(STRAP(192)),lab(180)],[recent10(STRAP(186)),lab(195)],[recent10(),lab(190,{},{modality:'CYCLE'})]]){
+  const c=cal(runner({id:'hr5-noerr',anchors}));assert.notEqual(c.heartRateFiveZones.reason,'FIVE_ZONE_ERROR',JSON.stringify(anchors));
+  assert.ok(Object.values(c.heartRateFiveZones.sessions).every(x=>x.reason!=='FIVE_ZONE_ERROR'));}
 });
 
 // ---------- the week boundary and withdrawal (HR5-8) ----------
