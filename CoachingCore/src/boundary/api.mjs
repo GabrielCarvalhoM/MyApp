@@ -55,6 +55,11 @@ export function createBoundary({custody,now=()=>Date.now(),log=()=>{}}){
   status:({actor})=>{const v=view(actor);return v.ok?{ok:true,state:v.view.state,sports:v.view.sports,hold:v.view.hold,question:v.view.question,pending:v.view.pending}:v;},
   /** A new plan from updated facts (F08 Situation 3 and any restart), the record carried. */
   restart:({actor,intake,expectedVersion})=>done('restart',custody.restart({actor,intake,expectedVersion}),actor),
+  /** V1HR5R: the athlete's maximum heart rate and/or custom zone limits (null clears); the five zones of the answer use them. Only over an
+   * integration custody (createIntegration); a bare custody has no heart-rate profile. */
+  setHeartRateProfile:({actor,clientRequestId,expectedVersion,heartRateProfile})=>typeof custody.setHeartRateProfile==='function'
+   ?done('setHeartRateProfile',custody.setHeartRateProfile({actor,clientRequestId,expectedVersion,heartRateProfile}),actor)
+   :{ok:false,error:{code:'NOT_SUPPORTED',message:'This custody keeps no heart-rate profile'},state:stateOfError({code:'NOT_SUPPORTED'})},
   setConsent:({actor,purpose,granted,expectedVersion})=>done('setConsent',custody.setConsent({actor,purpose,granted,expectedVersion}),actor),
   eraseHealthFacts:({actor,eventIds,expectedVersion})=>done('eraseHealthFacts',custody.eraseHealthFacts({actor,eventIds,expectedVersion}),actor),
   eraseAccount:({actor})=>{const r=custody.eraseAccount({actor});log(telemetryOf('eraseAccount',r));return r;}

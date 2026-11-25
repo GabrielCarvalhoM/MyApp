@@ -1,0 +1,106 @@
+{
+ "id": "V1X-HR-FIVE-ZONE-1",
+ "revision": 1,
+ "date": "2026-11-25",
+ "scope": "Five heart-rate zones (Z1-Z5) beside the unchanged three-zone heartRateZones of RUN_CALIBRATION_EXTENSION_V1; a display-only reference scale and a slow-down cue; never a session target, gate, dose or progression input",
+ "decisionRecord": "SSCTR-HR5-DECISION-r1 (audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.json)",
+ "requiresBoundaries": ["V1X-RUN-CAPACITY", "V1X-RUN-HR"],
+ "method": "FRACTION_OF_REFERENCE_MAXIMUM",
+ "namedScale": null,
+ "withinDomainSplitsHaveSportingRole": false,
+ "plausibleReferenceBpm": [140, 220],
+ "zones": [
+  {"zone": "Z1", "domain": "LOW", "fromFraction": null, "toFraction": 0.72, "fromPerMille": null, "toPerMille": 720},
+  {"zone": "Z2", "domain": "LOW", "fromFraction": 0.72, "toFraction": 0.8, "fromPerMille": 720, "toPerMille": 800},
+  {"zone": "Z3", "domain": "MODERATE", "fromFraction": 0.8, "toFraction": 0.87, "fromPerMille": 800, "toPerMille": 870},
+  {"zone": "Z4", "domain": "HIGH", "fromFraction": 0.87, "toFraction": 0.92, "fromPerMille": 870, "toPerMille": 920},
+  {"zone": "Z5", "domain": "HIGH", "fromFraction": 0.92, "toFraction": null, "fromPerMille": 920, "toPerMille": null}
+ ],
+ "convention": "FROM_INCLUSIVE_TO_EXCLUSIVE",
+ "rounding": "HALF_UP_INTEGER_PER_MILLE",
+ "references": {
+  "order": ["LAB_MEASURED_MAXIMUM", "OBSERVED_MAXIMUM"],
+  "LAB_MEASURED_MAXIMUM": {
+   "evidenceKind": "LAB_TEST",
+   "field": "heartRate.maxBpm",
+   "plausibleBpm": [140, 220],
+   "rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.measured (182 days, no declared break of 14 days or more since, not before a hold or return)",
+   "sensors": ["CHEST_STRAP", "ECG"],
+   "modalityField": "lab.modality",
+   "runningModalities": ["RUN", "TREADMILL_RUN", "FIELD_RUN"],
+   "rpeReportedMin": 8,
+   "completedNotFalse": true,
+   "toleratedNotFalse": true,
+   "suppliedLabValuesMappedToZones": false,
+   "basis": "LAB_MAXIMUM_AS_SUPPLIED",
+   "referenceConfidence": "LOW",
+   "checkedByTheApp": false
+  },
+  "OBSERVED_MAXIMUM": {
+   "rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.observedMaximum (SSCTR-V1RC-DECISION-r1 Q6(b), unchanged)",
+   "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+   "referenceConfidence": "LOW"
+  },
+  "notUsed": ["DECLARED_MAXIMUM_WITHOUT_PROVENANCE", "AGE_FORMULA", "HEART_RATE_RESERVE", "SESSION_AVERAGE_HEART_RATE", "OPTICAL_SENSOR"]
+ },
+ "conflict": {
+  "observedAboveLabMoreThanBpm": 5,
+  "outcome": "REFERENCE_CONFLICT",
+  "labAboveObserved": "NOT_A_CONFLICT_LAB_USED",
+  "lowerWins": false,
+  "prescriptionEffect": "NONE"
+ },
+ "zoneModelConfidence": "LOW",
+ "notes": {
+  "LAB_MEASURED_MAXIMUM": ["NOT_THRESHOLDS", "FIXED_FRACTIONS_OF_A_MAXIMUM", "NOT_CHECKED_BY_THE_APP"],
+  "OBSERVED_MAXIMUM": ["NOT_THRESHOLDS", "FIXED_FRACTIONS_OF_A_MAXIMUM", "OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM"]
+ },
+ "sessionUse": {
+  "primaryInV1": [],
+  "families": {
+   "EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "LONG": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "RECOVERY_EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "SHAKEOUT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "EASY_REESTABLISHMENT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4", "onlyInMode": "EASY"},
+   "THRESHOLD": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "HALF_MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "FIVE_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "TEN_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "STRIDES": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "RACE": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+   "RACE_TOUCH": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+   "WALK": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+   "WALK_JOG": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+   "FAMILIAR_REPEATED_BOUTS": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"}
+  },
+  "unknownFamily": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "UNKNOWN_FAMILY_FAIL_CLOSED"},
+  "cueRules": {"sustainedReadingOnly": true, "suggestsSpeedingUp": false, "effortGoverns": true, "gatesSizesOrProgressesSessions": false, "healthMeaning": false, "showUsualZonesForFamily": false},
+  "effortConflict": "EFFORT_GOVERNS_HEART_RATE_MAY_ONLY_SUGGEST_SLOWING"
+ },
+ "newerRunnerExperience": ["NONE", "NOVICE"],
+ "disclosures": {
+  "ZONES": "Zones are fixed percentages of your maximum heart rate. They are a rough guide, not your personal thresholds. How the run feels governs.",
+  "NEWER_RUNNER": "For newer runners the same heart rate can mean a harder effort than the zone name suggests; go by feel.",
+  "LAB_MEASURED_MAXIMUM": "The maximum your lab test reported, as you supplied it; not checked by the app.",
+  "OBSERVED_MAXIMUM": "Estimated from the highest heart rate your chest strap recorded in a hard effort; your true maximum may be higher.",
+  "REFERENCE_CONFLICT": "Your lab maximum is lower than a heart rate your chest strap recorded, so we are not showing zones. Effort governs.",
+  "CUE": "If your heart rate stays in Z4 or higher on an easy run, consider slowing down. A low reading never means speed up.",
+  "wording": "Product-owned; the meaning must be kept"
+ },
+ "sessionDistribution": {
+  "status": "UNAVAILABLE",
+  "reason": "NO_HEART_RATE_SERIES_IN_CONTRACT",
+  "fromAverageHeartRate": false,
+  "classifierWiredToInput": false,
+  "futureClassifier": {
+   "sensors": ["CHEST_STRAP", "ECG"],
+   "samplesAboveBpmUnknown": 220,
+   "gap": "UNKNOWN_NOT_INTERPOLATED",
+   "coverageReported": true,
+   "numericLimits": "NOT_SET: minimum coverage, maximum gap and the lower plausibility limit are set by a future SSCTR and Data review of the channel",
+   "neverUsedFor": ["ADHERENCE", "QUALITY_SESSION_JUDGEMENT", "PROGRESSION", "ADAPTATION"]
+  }
+ }
+}

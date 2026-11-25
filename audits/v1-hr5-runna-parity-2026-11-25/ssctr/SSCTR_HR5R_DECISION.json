@@ -1,0 +1,740 @@
+{
+  "recordId": "SSCTR-HR5R-DECISION-r1",
+  "date": "2026-11-25",
+  "mission": "V1HR5R: five heart-rate zones for every athlete with a valid age, Runna parity (Founder request audits/v1-hr5-runna-parity-2026-11-25/FOUNDER_REQUEST.md)",
+  "overall": {
+    "disposition": "REVISE",
+    "enablingRecordWritten": false,
+    "why": "The values file is sound in method, arithmetic, reference order, roles and safety framing. Three changes are required before an enabling record: two disclosure meanings in the values bytes (HR5R-4, HR5R-7) and one implementation bound in resolve (HR5R-3). With no other change, a narrow SSCTR recheck can issue the V1X-RUN-HR-FIVE-ZONE record bound to the new values sha256.",
+    "reviewedValuesSha256": "e795b90bddf9d3c8acf3281ae43407cf1a353cffcf5e4000b49391f40db2f6cd",
+    "valuesShaRecomputedWith": "shasum -a 256 CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (matched the caller's value, twice during the run)",
+    "supersededByRecheck": "SSCTR-HR5R-RECHECK-r1 (below): APPROVE_WITH_CONDITIONS on values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90; the enabling record is written. The r1 REVISE above is kept as history."
+  },
+  "reviewer": {
+    "role": "Sports Science and Concurrent Training Reviewer (SSCTR), independent review instance",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+    "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "nativeAdapter": ".claude/agents/sports-science-concurrent-training-reviewer.md (sha256 021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d) exists; this instance cannot verify from inside the run that it was dispatched through it, so no native dispatch is claimed.",
+    "instance": "A subagent instance (model claude-opus-5-5) launched by the implementing agent of mission V1HR5R. Specialist delegation was not used.",
+    "nature": "An AI software reviewer under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY. It holds no human credentials, licence or registration and has no clinical or legal equivalence. This is an internal, literature-based sporting review. It is not human validation, empirical product validation or medical clearance.",
+    "independence": "This instance did not author the values, the code or SSCTR-HR5-DECISION-r1. The implementer authored HEART_RATE_FIVE_ZONE_V2.json and the modules under review. No self-check is counted as independent approval.",
+    "inputsRead": [
+      "audits/v1-hr5-runna-parity-2026-11-25/FOUNDER_REQUEST.md (sha256 6c3f8fc49922e5ff189cfa3c16b9514bd5a0d2a673d541e166e09d7f23fd9b02)",
+      "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json (sha256 e795b90bddf9d3c8acf3281ae43407cf1a353cffcf5e4000b49391f40db2f6cd), in full",
+      "CoachingCore/src/v1-heart-rate-zones.mjs (sha256 92775e9114bc341eca3c89442f40c1e848ae19b78e32b5cc2c19d7999376a55d), in full",
+      "CoachingCore/src/v1-heart-rate-profile.mjs: read at sha256 75ae175e6e36c5cad2411fd464f6e820069923037d3adae755e235e3f3edc0dd; the file changed during the run to 0ab0e4c8fedfd04a184d7670755bc1bd6db8a64a6a96940cf6be8e201c46ffdc. The aging finding (HR5R-3) was re-run and reproduced on the new bytes.",
+      "CoachingCore/src/v1-safety-index.mjs: the git diff of the V1HR5R profile wiring was read at sha256 7b9d01472da6d71590be7a3836cc2ab0239cf2198c2212ee552ae03e3b204b73; the file changed during the run to 0749d7f0d80b19745f671f00408c0639b2effb232210b10445738090567e3ff1 and the later bytes were not re-read.",
+      "CoachingCore/src/v1-run-calibration.mjs (sha256 8203b875b66bc3780bc13a14299c896d23449bf2201ec03f85eb92e43226dc83): the heartRateOf three-zone output and the five-zone call sites only",
+      "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): heartRate only",
+      "audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.md and .json (sha256 4ccbd3eea2e6c1c51256bac99c3cd75b15e736dd380c2333c5517418a9e80aeb): rulings and sources, read as predecessor",
+      "audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json (sha256 f07aa1fc1a18607596e116e6cddc7d8a625a8fb8400bda11dad8608f0cc6e791): format model only"
+    ],
+    "probes": "A local Node probe in the session scratchpad (not in the repository) called zonesFromMaximum, zoneOfBpm, profileOf, appendProfile and applyHeartRateProfile under devFiveZone (development authority, never sporting evidence). Results are recorded per item. No repository test was run or changed."
+  },
+  "authority": {
+    "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+    "scope": "The bounded nonclinical sporting framing, caveats, disclosures and rules of a display-only five-zone heart-rate reference for adult recreational runners of the V1 plan (intake age 18-80); synthetic data only.",
+    "notReviewable": "The Founder's product decision that age-based estimated zones exist for every athlete with a valid age (FOUNDER-HR5-RUNNA-PARITY-2026-11-25). This review does not veto it; it judges how it is framed and bounded.",
+    "doesNot": [
+      "write an enabling record on these bytes",
+      "publish Product or Domain Truth, close G01-G04 or authorize runtime, release or real athletes",
+      "make any clinical judgement, clearance or contraindication",
+      "change the three-zone heartRateZones, its rules or bytes",
+      "edit any file outside audits/v1-hr5-runna-parity-2026-11-25/ssctr/ and .../reviews/ssctr/"
+    ]
+  },
+  "population": "Adult recreational runners of the V1 plan, intake age 18-80, novice to experienced, with or without a wearable; concurrent strength allowed. Synthetic data only.",
+  "separation": {
+    "OPERATIONAL_ESTIMATE": {
+      "members": [
+        "AGE_ESTIMATE (220 - age)",
+        "OBSERVED_MAXIMUM (chest-strap lower bound)",
+        "ATHLETE_DECLARED_MAXIMUM (unverified override)",
+        "ATHLETE_CUSTOM limits",
+        "the five default bands (65/81/89/97 % of one maximum)"
+      ],
+      "meaning": "A convenience reference for describing intensity beside pace and effort. It is not a measurement of the individual's physiology, and no part of it is an individual threshold. The band edges are a product convention (Runna parity), not physiological markers."
+    },
+    "PHYSIOLOGICAL_MEASUREMENT": {
+      "members": [
+        "a LAB_MEASURED_MAXIMUM from a declared maximal running test by chest strap or ECG (as supplied; not checked by the app)",
+        "a heart-rate reading itself, with its sensor"
+      ],
+      "meaning": "A measured value, with provenance. Even a measured maximum yields zones that are still fixed percentages, so the zones stay an operational model (zoneModelConfidence LOW) whatever the reference."
+    },
+    "rule": "No output may present an operational estimate as a measurement, or any zone edge as a threshold."
+  },
+  "literatureAccess": {
+    "tools": "PubMed E-utilities (esearch, efetch abstracts) via curl worked. PMC efetch XML for PMC7523886 returned front matter only; the PMC article HTML page was then read in full. The NCBI BioC API returned HTTP 429 and was not used. WebSearch served discovery only; no snippet is used as evidence. WebFetch read the two Runna support articles (product specification, not evidence). The ASEP-hosted JEPonline PDF of Robergs and Landwehr 2002 was downloaded with curl and its text extracted with macOS PDFKit.",
+    "fullTextRead": [
+      "R03 Shookster 2020 (PMC7523886): Methods, Table 1, Table 2 (Fox row: bias, LoA, RMSE), Results, Discussion opening",
+      "R04 Robergs and Landwehr 2002 (JEPonline 5(2):1-10): abstract, history, Sxy figures, 'acceptable error' section, conclusions"
+    ],
+    "abstractOnly": "R01 Tanaka 2001, R02 Nes 2013, R05 Gellish 2007, R06 Bent 2020, R07 Hogue 2026, R08 Cicone 2019 (non-applicable population) were read as abstracts only and are used only for what their abstracts state.",
+    "inheritedNotReRead": "Sources S01, S02, S06, S07, S08, S09, S11, S12, S17, S18, S20 and V1RC-SRC08, -SRC09 of SSCTR-HR5-DECISION-r1 are cited as recorded and appraised there; they were not re-read here.",
+    "negativeOrInaccessible": [
+      "PubMed search for 'Robergs Landwehr 220-age' returned nothing (the journal is not indexed); the paper was reached through ASEP instead.",
+      "No primary test-retest reliability study of HRmax was located in this run (search 'maximal heart rate test-retest reliability treadmill' returned device and fitness-test studies only). The only measurement-precision figure used (about +/-2 bpm when truly maximal) is Robergs and Landwehr's commentary statement, auxiliary only.",
+      "Nes 2013 and Tanaka 2001 full texts were not accessed; their per-age residual distributions were not read."
+    ],
+    "productReferenceNotEvidence": "The Runna support articles (6359409, 10547417) are the Founder's chosen product specification. They are commercial content and are used only to check that the values reproduce the specified behaviour, never as training-policy evidence (SSCTR-04)."
+  },
+  "searches": [
+    {
+      "tool": "PubMed esearch",
+      "query": "Robergs Landwehr 220-age",
+      "hits": 0
+    },
+    {
+      "tool": "PubMed esearch",
+      "query": "maximal heart rate prediction equation systematic review",
+      "hits": [
+        "36888751",
+        "31157608",
+        "24721146"
+      ],
+      "used": [
+        "31157608 (non-applicable youth population; counter-population check)"
+      ]
+    },
+    {
+      "tool": "PubMed esearch",
+      "query": "age-predicted maximal heart rate accuracy runners",
+      "hits": [
+        "38133102"
+      ],
+      "used": []
+    },
+    {
+      "tool": "PubMed esearch",
+      "query": "wrist-worn photoplethysmography heart rate accuracy exercise systematic review",
+      "hits": [
+        "42698643"
+      ],
+      "used": [
+        "42698643"
+      ]
+    },
+    {
+      "tool": "PubMed esearch",
+      "query": "Investigating sources of inaccuracy in wearable optical heart rate sensors",
+      "hits": [
+        "33637842",
+        "33637822",
+        "32047863"
+      ],
+      "used": [
+        "32047863"
+      ]
+    },
+    {
+      "tool": "PubMed esearch",
+      "query": "maximal heart rate test-retest reliability treadmill",
+      "hits": 8,
+      "used": [],
+      "note": "negative for the question"
+    },
+    {
+      "tool": "PubMed efetch",
+      "ids": [
+        "11153730",
+        "22376273",
+        "33042384",
+        "17468581"
+      ],
+      "note": "abstracts of the age-equation papers"
+    },
+    {
+      "tool": "WebSearch",
+      "query": "Robergs Landwehr 2002 surprising history HRmax 220-age JEPonline",
+      "note": "discovery only; the paper itself was then read"
+    },
+    {
+      "tool": "WebFetch",
+      "urls": [
+        "https://support.runna.com/en/articles/6359409",
+        "https://support.runna.com/en/articles/10547417"
+      ],
+      "note": "product specification check"
+    }
+  ],
+  "sources": [
+    {
+      "id": "R01",
+      "citation": "Tanaka H, Monahan KD, Seals DR. Age-predicted maximal heart rate revisited. J Am Coll Cardiol 2001;37(1):153-6.",
+      "pmid": "11153730",
+      "doi": "10.1016/s0735-1097(00)01054-8",
+      "type": "META_ANALYSIS_PLUS_LABORATORY_CROSS_VALIDATION",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "351 studies, 18,712 subjects, plus 514 laboratory subjects: HRmax = 208 - 0.7 x age, not different by sex or habitual activity; 220 - age underestimates HRmax in older adults.",
+      "limitations": [
+        "abstract only",
+        "group means in the meta-analysis; individual residuals not read"
+      ]
+    },
+    {
+      "id": "R02",
+      "citation": "Nes BM, Janszky I, Wisloff U, Stoylen A, Karlsen T. Age-predicted maximal heart rate in healthy subjects: The HUNT fitness study. Scand J Med Sci Sports 2013;23(6):697-704.",
+      "pmid": "22376273",
+      "doi": "10.1111/j.1600-0838.2012.01445.x",
+      "type": "CROSS_SECTIONAL_POPULATION_COHORT",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "3,320 healthy adults with verified maximal effort: HRmax = 211 - 0.64 x age, SEE 10.8 bpm; no interaction with sex, activity, VO2max or BMI; earlier equations underestimated HRmax above age 30.",
+      "limitations": [
+        "abstract only",
+        "treadmill walking/running protocol details not read",
+        "Norwegian cohort"
+      ]
+    },
+    {
+      "id": "R03",
+      "citation": "Shookster D, Lindsey B, Cortes N, Martin JR. Accuracy of commonly used age-predicted maximal heart rate equations. Int J Exerc Sci 2020;13(7):1242-1250.",
+      "pmid": "33042384",
+      "pmcid": "PMC7523886",
+      "doi": "10.70252/XFSJ6815",
+      "type": "CROSS_SECTIONAL_AGREEMENT_STUDY",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "locator": "Methods (Polar H10, treadmill incline protocol, RER > 1.10); Table 1; Table 2 Fox row; Results",
+      "findingsUsed": "99 adults (age 38.2 +/- 12.4 y), measured HRmax 181.7 bpm: for 220 - age, bias -0.15 bpm, 95% limits of agreement -23.1 to +22.8 bpm, RMSE 11.65 bpm; all nine equations agree poorly with measured HRmax; Fox showed the least proportional bias in this sample.",
+      "limitations": [
+        "n = 99, narrow age spread around the equations' crossover age, so it cannot test bias in older adults",
+        "single laboratory"
+      ]
+    },
+    {
+      "id": "R04",
+      "citation": "Robergs RA, Landwehr R. The surprising history of the 'HRmax = 220 - age' equation. J Exerc Physiol Online 2002;5(2):1-10.",
+      "pmid": null,
+      "doi": null,
+      "url": "https://www.asep.org/asep/asep/Robergs2.pdf",
+      "type": "COMMENTARY (journal of the American Society of Exercise Physiologists)",
+      "access": "FULL_TEXT",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "220 - age was not derived from original research; prediction error of age equations Sxy about 7-11 bpm, most univariate equations > 10 bpm; HRmax measurement accurate to about +/-2 bpm if maximal exertion is truly attained; errors up to about 8 bpm may be acceptable for prescribing training heart-rate ranges.",
+      "limitations": [
+        "commentary, auxiliary; never the sole basis of a rule",
+        "2002"
+      ]
+    },
+    {
+      "id": "R05",
+      "citation": "Gellish RL, Goslin BR, Olson RE, et al. Longitudinal modeling of the relationship between age and maximal heart rate. Med Sci Sports Exerc 2007;39(5):822-9.",
+      "pmid": "17468581",
+      "doi": "10.1097/mss.0b013e31803349c6",
+      "type": "RETROSPECTIVE_LONGITUDINAL",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "132 individuals, 908 GXTs over 25 years: HRmax = 207 - 0.7 x age, appreciably different from 220 - age.",
+      "limitations": [
+        "abstract only",
+        "fitness-centre sample"
+      ]
+    },
+    {
+      "id": "R06",
+      "citation": "Bent B, Goldstein BA, Kibbe WA, Dunn JP. Investigating sources of inaccuracy in wearable optical heart rate sensors. NPJ Digit Med 2020;3:18.",
+      "pmid": "32047863",
+      "pmcid": "PMC7010823",
+      "doi": "10.1038/s41746-020-0226-6",
+      "type": "VALIDATION_STUDY",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "Optical (PPG) wearables: absolute error during activity on average 30% higher than at rest; devices differ in responding to changes in activity; motion artifact and signal crossover are named error sources.",
+      "limitations": [
+        "abstract only",
+        "devices of 2019"
+      ]
+    },
+    {
+      "id": "R07",
+      "citation": "Hogue T, Khoury A, Njeim P, et al. Advancement in wrist worn physical activity trackers: technological developments and measurement accuracy: a systematic review. Front Digit Health 2026;8:1820224.",
+      "pmid": "42698643",
+      "pmcid": "PMC13542415",
+      "doi": "10.3389/fdgth.2026.1820224",
+      "type": "SYSTEMATIC_REVIEW",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "47 studies: wrist heart-rate validity improved over time (modern devices typically r > 0.80 during exercise) with persistent variability across brands, activities and populations.",
+      "limitations": [
+        "abstract only",
+        "heart rate is one of several metrics",
+        "correlation is not agreement"
+      ]
+    },
+    {
+      "id": "R08",
+      "citation": "Cicone ZS, Holmes CJ, Fedewa MV, et al. Age-based prediction of maximal heart rate in children and adolescents: a systematic review and meta-analysis. Res Q Exerc Sport 2019;90(3):417-428.",
+      "pmid": "31157608",
+      "doi": "10.1080/02701367.2019.1615605",
+      "type": "SYSTEMATIC_REVIEW_META_ANALYSIS",
+      "access": "ABSTRACT_ONLY",
+      "verified": true,
+      "accessedOn": "2026-11-25",
+      "findingsUsed": "Counter-population check only: in under-18s 220 - age overestimated HRmax by 12.4 bpm. Not applicable to the V1 population (18-80); it supports keeping the age floor at 18.",
+      "limitations": [
+        "abstract only",
+        "non-applicable population"
+      ]
+    },
+    {
+      "id": "P01",
+      "citation": "Runna support, 'Understanding and training to heart rate' (article 6359409) and 'Using your heart-rate device with Runna' (article 10547417), read 2026-11-25.",
+      "type": "PRODUCT_SPECIFICATION (commercial; not evidence)",
+      "access": "FULL_PAGE_VIA_WEBFETCH_SUMMARY",
+      "findingsUsed": "HRmax = 220 - age; zones 0-65 / 65.1-81 / 81.1-89 / 89.1-97 / 97.1-100 % of HRmax; zones editable and updated with age; HR 'a secondary data point'; 'this data will not influence your training plan'; 'most wrist-based HR data is inaccurate'; live HR only with a Bluetooth monitor or Apple Watch. Runna names Z3 Tempo, Z4 Threshold, Z5 Anaerobic, and says a higher-than-usual HR may indicate overtraining or illness and suggests extra rest.",
+      "limitations": [
+        "WebFetch returns a model summary of the page; quoted phrases were requested verbatim but not checked against raw HTML",
+        "never training-policy evidence"
+      ]
+    },
+    {
+      "id": "S01",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Seiler and Tonnessen 2009, Sportscience",
+      "use": "five-zone scales are not based on clearly defined physiological markers; HR time-in-zone underrepresents hard work"
+    },
+    {
+      "id": "S02",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Tonnessen et al. 2014, PLoS One",
+      "use": "five-zone %HRmax conventions; context"
+    },
+    {
+      "id": "S06",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Seiler-Viken et al. 2025, Sci Rep",
+      "use": "sub-splits of the three domains are arbitrary; elite-derived %HRmax at LT1/LT2"
+    },
+    {
+      "id": "S07",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Meixner et al. 2025, Transl Sports Med",
+      "use": "fixed-percentage zones misplace individuals relative to measured thresholds"
+    },
+    {
+      "id": "S08",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Gaskill et al. 2023, Med Sci Sports Exerc",
+      "use": "HR at VT varies widely between individuals; RPE at VT is more uniform"
+    },
+    {
+      "id": "S09",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Losnegard et al. 2021, IJSPP",
+      "use": "RPE tracks %HR, %VO2 and lactate; supports effort governing"
+    },
+    {
+      "id": "S11",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Lambert et al. 1998, J Sports Sci",
+      "use": "day-to-day HR variation about 6 bpm; race HR about 20 bpm higher at the same speed"
+    },
+    {
+      "id": "S12",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Wingo et al. 2012, Exerc Sport Sci Rev",
+      "use": "cardiovascular drift reflects a real rise in relative intensity"
+    },
+    {
+      "id": "S17",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Gillinov et al. 2017, Med Sci Sports Exerc",
+      "use": "chest strap agreed best with ECG; optical devices rc 0.67-0.92 by activity"
+    },
+    {
+      "id": "S18",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Gilgen-Ammann et al. 2019, Eur J Appl Physiol",
+      "use": "chest-strap signal quality at high intensity"
+    },
+    {
+      "id": "S20",
+      "inherited": "SSCTR-HR5-DECISION-r1",
+      "citation": "Montalvo et al. 2023, J Strength Cond Res",
+      "use": "smartwatch error increased with running speed"
+    },
+    {
+      "id": "V1RC-SRC08",
+      "inherited": "SSCTR-V1RC-DECISION-r1",
+      "citation": "Mann, Lamberts and Lambert 2013, Sports Med",
+      "use": "fixed %HRmax leaves individuals above and below their thresholds"
+    },
+    {
+      "id": "V1RC-SRC09",
+      "inherited": "SSCTR-V1RC-DECISION-r1",
+      "citation": "Iannetta et al. 2020, Med Sci Sports Exerc",
+      "use": "fixed percentages conform poorly to domains"
+    }
+  ],
+  "counterevidenceSearch": {
+    "soughtAgainst": [
+      "that 220 - age is unbiased across the age range (refuted for older adults by R01, R02, R05; R03 shows little bias only in a sample of mean age 38)",
+      "that the error is small enough for '10 bpm or more' to overstate it (refuted: R03 RMSE 11.65 and LoA about +/-23; R02 SEE 10.8; R04 Sxy 7-11)",
+      "that a Z4 easy-run cue on an estimated maximum could push an athlete harder (refuted by construction: the cue only suggests slowing and gates nothing; probed)",
+      "that a chest-strap observed maximum above the estimate could be an artifact (accepted as a limit; S17 and S18 support chest-strap accuracy, artifact spikes remain possible)",
+      "that optical session maxima are reliable enough to show without a caveat (refuted: R06, R07, S17, S20, and P01 itself)"
+    ]
+  },
+  "items": [
+    {
+      "id": "HR5R-1",
+      "question": "Whole-bpm edges (upper limit = floor(max x p / 100), next zone +1) and half-up rounding of readings: a faithful, non-misleading rendering of 'up to 65 % / above 65 %'?",
+      "disposition": "APPROVE",
+      "evidenceStatus": "WELL_SUPPORTED",
+      "evidenceBasis": "Arithmetic, verified by exhaustive probe; P01 for the specified bands.",
+      "class": "OPERATIONAL_ESTIMATE (convention)",
+      "findings": [
+        "For an integer reading x, x <= floor(m x p / 100) exactly when 100x / m <= p, so a whole bpm lies in Zk exactly when its percentage of the maximum is above the lower and at most the upper percentage. Floating-point is safe here: m x p is an exact integer and a non-integer quotient is at least 0.01 from an integer.",
+        "Probe: for every maximum 120-230 bpm and every reading 1-260 bpm, each reading lies in exactly one zone and that zone equals the exact-percentage zone (0 mismatches).",
+        "Runna's '65.1-81 %' labels are display rounding of 'above 65 %'; the bpm limits are the same, so parity holds.",
+        "Half-up rounding of fractional readings can move a reading less than 0.5 bpm from the exact-percentage zone (at 190: 169.4 bpm is Z3 though 89.16 %). That is below sensor precision and consistent with whole-bpm display; not misleading.",
+        "Examples (220 - age): 30 y, 190 -> Z1 <=123, Z2 124-153, Z3 154-169, Z4 170-184, Z5 >=185; 80 y, 140 -> Z4 from 125."
+      ],
+      "conditions": [],
+      "confidence": "HIGH",
+      "confidenceWhy": "Pure arithmetic, exhaustively checked."
+    },
+    {
+      "id": "HR5R-2",
+      "question": "Reference order (declared > qualifying lab > chest-strap observed only when above the age estimate > 220 - age) and the lab-vs-strap conflict rule (strap > lab + 5 bpm -> neither measured value; fall back to the declared maximum or the age estimate, with the conflict disclosed).",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "Lab: PHYSIOLOGICAL_MEASUREMENT as supplied; observed, declared, age: OPERATIONAL_ESTIMATE",
+      "findings": [
+        "Declared first: an athlete override is Founder-owned (FOUNDER_REQUEST 3). Scientifically it is unverified, which the values say (UNVERIFIED, checkedByTheApp false). Because heart rate changes nothing in the plan, an unverified override costs at most a mis-sized display or a mistimed slow-down cue.",
+        "Lab before age: a qualifying maximal running test (chest strap or ECG, RPE >= 8, completed and tolerated not false, 182 days) is closer to the individual than any population equation, whose individual error is about 11 bpm (R02, R03). It is used even when below the estimate. That is correct, because the estimate has no claim to override a measurement.",
+        "Observed only when higher: a genuine chest-strap reading cannot exceed the true maximum, so an observed value above the estimate shows the estimate is too low, and using it moves the reference toward the truth (still possibly below it). An observed value at or below the estimate shows nothing about the estimate, so keeping the estimate is right. Sound. The limit is that an artifact spike on a strap would inflate the reference; its effect is only a later cue (fails toward 'no cue', never toward 'go harder').",
+        "Conflict: a strap value more than 5 bpm above a lab maximum means one of the two is wrong (a submaximal lab test, a different modality or an artifact), and the record cannot say which. Using neither, falling back to the reference every athlete has, and disclosing both values is the least-assumption choice under the Founder's every-athlete-has-zones rule. The 5 bpm band is the decided tolerance of SSCTR-HR5-DECISION-r1 HR5-3, consistent with about +/-2 bpm measurement precision when truly maximal (R04, auxiliary). If the strap value is genuine, the age estimate may be low too; the disclosure of both values covers that.",
+        "Probe: age 40 (180), lab 178, strap 190 gives AGE_ESTIMATE 180 with both measured values in notUsed (REFERENCE_CONFLICT) and disclosures ZONES, AGE_ESTIMATE, REFERENCE_CONFLICT, NOT_MEDICAL. A strap value of 175 (below the estimate) gives AGE_ESTIMATE; 190 alone gives OBSERVED_MAXIMUM.",
+        "Probe: a declared 170 with a qualifying strap value of 190 keeps the declared 170 (correct: the override is never replaced), and the 190 is carried only in notUsed."
+      ],
+      "conditions": [
+        "HR5R-C1 (Product): when a qualifying OBSERVED_MAXIMUM in notUsed is more than 5 bpm above an ATHLETE_DECLARED_MAXIMUM in force, show it beside the declared maximum as a recorded chest-strap value above it. Never replace the override automatically. The engine already carries the data, so no values change is needed.",
+        "HR5R-C2 (Product): under REFERENCE_CONFLICT, show both measured values from the conflict object and the reference actually used, and offer the athlete the option to enter their own maximum."
+      ],
+      "nonBlocking": [
+        "HR5R-N1 (code, reason label): when a lab maximum is in force and a strap value within the 5 bpm band is not used, resolve labels it OBSERVED_NOT_ABOVE_THE_AGE_ESTIMATE when it is also below the estimate (probe: lab 170, strap 174, age 180). The truer reason is A_MORE_SPECIFIC_REFERENCE_IN_FORCE. Truthful either way, but the label hides that the lab is in force."
+      ],
+      "confidence": "MODERATE",
+      "confidenceWhy": "The ordering logic is deductive; the 5 bpm band is a decided tolerance with only auxiliary support for the measurement-precision figure."
+    },
+    {
+      "id": "HR5R-3",
+      "question": "Plausible ranges (declared 120-230; custom 60-230 strictly increasing; age 18-80 giving 202-140) and aging by whole years since the age was declared.",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "OPERATIONAL_ESTIMATE",
+      "findings": [
+        "The ranges are acceptable as plausibility limits, not physiological claims. 120-230 covers an 18-year-old about +2.5 SD above the mean of R01/R02 and an 80-year-old more than 2 SD below it. Custom limits of 60-230 are the athlete's own and harmless, and strictly increasing is enforced.",
+        "The age floor of 18 is supported: in under-18s 220 - age overestimates by about 12 bpm (R08, non-applicable population).",
+        "Aging by whole years since declaration is acceptable. With only a declared whole age and no birth date, the lag is at most one year, which is at most 1 bpm against an individual error of about 11 bpm (R02, R03), and it matches Runna updating zones with age (P01).",
+        "DEFECT (implementation): resolve builds the AGE_ESTIMATE reference whenever ageInForce >= ageYears[0] and never checks ageYears[1] = 80. Probe: an athlete declared at 80 on 2026-01-10 has ageInForce 82 on 2028-01-10 and 90 on 2036-01-10; the reading is AVAILABLE with an estimate of 130 bpm and a Z4 cue from 116 bpm. That is outside the values' own ageYears [18, 80] and the reviewed estimate range of 140-202, and it extends the formula where it underestimates most (R01, R02, R05). Extending the V1 population beyond 80 is a Founder/G01 decision, not an implementation default."
+      ],
+      "requiredChanges": [
+        {
+          "id": "HR5R-REV-3",
+          "target": "CoachingCore/src/v1-heart-rate-zones.mjs resolve (and any other AGE_ESTIMATE construction)",
+          "change": "Produce an AGE_ESTIMATE reference only when A.ageYears[0] <= ageInForce <= A.ageYears[1]. Above the range there is no age reference, with a typed reason (for example AGE_OUTSIDE_ESTIMATE_RANGE) when nothing else applies. A declared maximum, a qualifying measured maximum and custom limits keep working. Add a test for the 80 -> 81 crossing. Do not cap the estimate at 140.",
+          "valuesBytesChange": false
+        }
+      ],
+      "confidence": "HIGH",
+      "confidenceWhy": "The defect is reproduced by probe on both observed bytes of the profile module; the ranges are conservative plausibility gates."
+    },
+    {
+      "id": "HR5R-4",
+      "question": "Confidence labels (AGE_ESTIMATE LOW, OBSERVED LOW, LAB MODERATE, DECLARED UNVERIFIED, zone model LOW) and whether the age disclosure states its error honestly.",
+      "disposition": "REVISE",
+      "evidenceStatus": "WELL_SUPPORTED",
+      "class": "OPERATIONAL_ESTIMATE",
+      "findings": [
+        "Labels approved. AGE LOW: individual error about 11 bpm (R02 SEE 10.8; R03 RMSE 11.65, LoA -23.1 to +22.8; R04 Sxy 7-11), and the formula has no original derivation (R04). OBSERVED LOW: it is a lower bound. DECLARED UNVERIFIED: correctly not a confidence grade. Zone model LOW: fixed percentages misplace individuals relative to thresholds (V1RC-SRC08, V1RC-SRC09, S07, S08), whatever the reference.",
+        "LAB MODERATE supersedes SSCTR-HR5-DECISION-r1 HR5-5's 'LOW for a lab maximum too'. Rationale: under r1 every reference was measured, so a single LOW grade lost nothing. Now that a population formula is the default, grading a qualifying maximal test the same as the formula would hide a real difference (about +/-2 bpm when truly maximal, R04, auxiliary, against about +/-11 bpm). Unverifiability stays explicit through checkedByTheApp false and the 'as you supplied it' disclosure. MODERATE, not HIGH, because the app cannot verify maximality.",
+        "Disclosure magnitude: 'Many people's true maximum differs from this by 10 beats a minute or more' is honest and, if anything, modest. With RMSE about 11.65 bpm, roughly four in ten differ by more than 10 bpm, and the 95% limits are about +/-23 bpm (R03).",
+        "Disclosure direction: incomplete. Three independent large datasets agree that 220 - age underestimates HRmax in older adults: R01 (208 - 0.7 x age; equal at 40, 12 bpm low at 80), R05 (207 - 0.7 x age; 11 bpm low at 80) and R02 (211 - 0.64 x age; underestimates above 30, about 20 bpm low at 80). R03's minimal bias comes from a sample of mean age 38, near the crossover, so it does not contradict this. Within the 18-80 range the omission is systematic and predictable: most older athletes' zones will sit low. The current text implies a symmetric error."
+      ],
+      "requiredChanges": [
+        {
+          "id": "HR5R-REV-4a",
+          "target": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json disclosures.AGE_ESTIMATE",
+          "from": "Your maximum is estimated from your age (220 minus age). Many people's true maximum differs from this by 10 beats a minute or more. You can enter your own.",
+          "to": "Your maximum is estimated from your age (220 minus age). Many people's true maximum differs from this by 10 beats a minute or more, and in older adults it is more often higher than the estimate. You can enter your own.",
+          "valuesBytesChange": true
+        },
+        {
+          "id": "HR5R-REV-4b",
+          "target": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json ageEstimate.note",
+          "from": "A population formula: an individual's true maximum commonly differs from it by 10 bpm or more, in either direction",
+          "to": "A population formula: an individual's true maximum commonly differs from it by 10 bpm or more, in either direction; on average it underestimates the maximum of older adults",
+          "valuesBytesChange": true
+        }
+      ],
+      "optional": "Adding notes.AGE_ESTIMATE 'TENDS_TO_UNDERESTIMATE_IN_OLDER_ADULTS' is welcome but not required. No age threshold is set, because the crossover age differs by equation (about 25 to 43 years) and a single cut would be fabricated precision.",
+      "conditions": [
+        "HR5R-C3 (Product): wording is Product-owned, but neither the magnitude nor the direction may be softened or dropped, and 'You can enter your own' stays."
+      ],
+      "confidence": "MODERATE",
+      "confidenceWhy": "The direction of the bias in older adults is consistent across large datasets (abstract level for R01, R02, R05); the magnitude depends on the equation."
+    },
+    {
+      "id": "HR5R-5",
+      "question": "Session roles unchanged from r1, with the Z4 slow-down cue in easy/long/recovery/shakeout (and EASY_REESTABLISHMENT in EASY mode) now above 89 % of maximum. Is it acceptable on an age estimate that may be about 10 bpm wrong?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "OPERATIONAL_ESTIMATE",
+      "findings": [
+        "The cue fails safe in both error directions. If the estimate is too high (more common in younger adults), the cue fires late or never, which is no worse than having no wearable. If it is too low (more common in older adults), it fires early. For example, at 80 years the estimate is 140, Z4 starts at 125, and against a mean true maximum of about 152-160 (R01, R02) that is about 78-82 %, still near or above the typical VT1 (81.4 +/- 3.9 %HRmax, as recorded in SSCTR-HR5-DECISION-r1). The athlete is at worst advised to ease an easy run that may already sit near its ceiling. The cue never suggests speeding up, gates nothing and changes no dose.",
+        "With an accurate maximum, a sustained reading above 89 % in an easy run is well above VT1 for nearly all runners and near LT2 (S06, S07), so a slowing suggestion is apt. Drift in long or hot runs is real strain (S12), so a cue under drift is legitimate.",
+        "Moving the cue to Z3 (above 81 %) was considered and rejected. With the systematic underestimate in older adults, Z3 would start about 72-76 % of their true maximum and produce frequent false cues in genuinely easy running, and an earlier cue gains nothing a sustained Z4 does not.",
+        "No HR guidance in threshold, specific, interval, strides or race work remains right: fixed fractions are not thresholds, HR lags short hard bouts (S01) and race HR runs about 20 bpm higher at the same speed (S11). No role in walk, walk-jog, familiar bouts or restart/return modes, and zones withheld under a hold, are unchanged and approved.",
+        "There is no live heart-rate channel (liveHeartRate UNAVAILABLE), so in V1 the cue can only be static guidance attached to the session; 'sustained' has no operational definition yet."
+      ],
+      "conditions": [
+        "HR5R-C4 (Product): keep the cue's meaning ('consider slowing down'; 'a low reading never means speed up'). No alarm or warning styling, and no health meaning.",
+        "HR5R-C5 (Product): when the reference is AGE_ESTIMATE (or DECLARED), the cue's bpm is presented with the reference's disclosure reachable from it, never as a personal limit.",
+        "HR5R-C6: any future live heart-rate channel needs its own SSCTR and Data review that defines 'sustained' (window, smoothing, warm-up exclusion, optical handling) before a live cue exists."
+      ],
+      "confidence": "MODERATE",
+      "confidenceWhy": "The asymmetry argument is deductive; the VT1 and %HRmax figures are inherited group means with wide individual spread."
+    },
+    {
+      "id": "HR5R-6",
+      "question": "The five zones no longer nest in the three approved domains (80 / 87 %); nothing is mapped artificially and the three-zone heartRateZones is unchanged. Acceptable?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "OPERATIONAL_ESTIMATE",
+      "findings": [
+        "Not mapping is correct. The 65/81/89/97 bands are a product convention (P01), not physiological markers (S01, S06), so forcing a correspondence to the 80/87 domains would invent precision.",
+        "The three-zone output still carries its own slowing text (RUN_CALIBRATION_EXTENSION_V1 heartRate.observedMaximum.conservativeCueOnly: a HIGH reading, from 87 % of an observed maximum, may suggest slowing in easy, long or recovery runs). With both readings available, an athlete could get two slowing cues at different bpm, on different references, for the same session."
+      ],
+      "conditions": [
+        "HR5R-C7 (Product, carries SSCTR-HR5-R-08 forward): one heart-rate cue per session. Where the five zones are AVAILABLE, the session's cue is the five-zone Z4 cue, and the three-zone conservativeCueOnly is not presented as a second cue. The three-zone reading stays for its legitimate dependants (Founder, item 5) and is never presented as the same scale as the five zones, or derived from them, or the reverse.",
+        "HR5R-C8 (Product): zones are named Z1-Z5 or with neutral effort words. Runna's names 'Tempo', 'Threshold' and 'Anaerobic' (P01) are not adopted, because they assert physiological thresholds the model does not measure (namedThresholds false)."
+      ],
+      "confidence": "MODERATE"
+    },
+    {
+      "id": "HR5R-7",
+      "question": "Measurements and time in zone: single session maxima (optical included, provenance kept) classified one by one, never as a distribution; series-classifier defaults maxGap 30 s, minCoverage 0.8, minSamples 10, plausible 30-230; optical series for analysis and presentation only; no distribution from averages.",
+      "disposition": "REVISE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "PHYSIOLOGICAL_MEASUREMENT (a reading, with its sensor); its zone is an OPERATIONAL_ESTIMATE",
+      "subItems": [
+        {
+          "id": "HR5R-7a",
+          "topic": "single values, one by one, never a distribution; no distribution from averages; optical never a maximum reference",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "evidenceStatus": "WELL_SUPPORTED",
+          "basis": "S01 (time-in-zone needs time, and HR lags hard work); S17, R06, R07 (optical error during activity)"
+        },
+        {
+          "id": "HR5R-7b",
+          "topic": "optical session maxima shown without a caveat",
+          "disposition": "REVISE",
+          "evidenceStatus": "WELL_SUPPORTED",
+          "basis": "S17 (optical rc 0.67-0.92 vs chest strap 0.996), S20 (error grows with speed), R06 (error about 30% higher during activity; devices differ in responding to change), R07 (improved but variable), and P01, the specified product itself, which says most wrist HR data is inaccurate. A session maximum is the single most artifact-prone summary of an optical series, so classifying it into Z4/Z5 without a caveat would mislead."
+        },
+        {
+          "id": "HR5R-7c",
+          "topic": "series-classifier numeric defaults",
+          "disposition": "APPROVE_WITH_CONDITIONS",
+          "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+          "basis": "No source sets these numbers. What is approved is only their status as unwired OPERATIONAL_DEFAULTS_FOR_A_FUTURE_CHANNEL_REVIEW (classifierWiredToInput false, sessionDistribution UNAVAILABLE). The numbers themselves are not approved as rules. The methodology is approved: gaps are UNKNOWN and never interpolated, coverage is reported, nothing comes from an average, and the classifier is never used for adherence, quality judgement, progression, adaptation or safety."
+        }
+      ],
+      "findings": [
+        "Lower plausibility bounds of 40 bpm (session maximum) and 30 bpm (series sample) do not screen sensor dropouts during running; a run's session maximum below about 90 bpm is almost always an artifact. Acceptable only because nothing is wired; to be revisited in the channel review."
+      ],
+      "requiredChanges": [
+        {
+          "id": "HR5R-REV-7",
+          "target": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V2.json disclosures (new key) and resolve",
+          "change": "Add disclosures.OPTICAL_MEASUREMENT = \"Wrist (optical) readings are often less accurate than a chest strap, especially when your effort changes quickly. This reading is shown as recorded.\" In resolve, add 'OPTICAL_MEASUREMENT' to the reading's disclosures whenever any classified measurement has sensor OPTICAL.",
+          "valuesBytesChange": true
+        }
+      ],
+      "conditions": [
+        "HR5R-C9 (Product): a classified single value is presented as 'highest recorded heart rate, in Zx', with its sensor, never as time spent in a zone or a share of the session.",
+        "HR5R-C10: before any series reaches the classifier (HealthKit or otherwise), an SSCTR and Data channel review sets the numeric limits, artifact and cadence-lock handling, the plausibility floor, warm-up treatment and the sampling-cadence assumptions; optical series stay labelled as such."
+      ],
+      "confidence": "MODERATE"
+    },
+    {
+      "id": "HR5R-8",
+      "question": "Safety framing: HR never changes the plan, is not medical evidence, not a measured threshold and never releases a safety block; clinical modifiers stay ASK / CLINICAL_HUMAN_REQUIRED outside the module.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "class": "Governance framing",
+      "findings": [
+        "Verified structurally: the safety index removes heartRateProfile and heartRateProfileRecord from what the engine reads, so the plan, decisions and records are made without them; the five-zone reading is applied after the fact. The reading states changesThePlan, medicalEvidence and releasesASafetyBlock as false, and a hold withholds the zones first. This matches P01 ('will not influence your training plan').",
+        "Effort governing is supported (S08, S09): RPE at the ventilatory threshold is more uniform between individuals than %HRmax.",
+        "Runna's advice that a higher-than-usual heart rate may indicate overtraining or illness, with a suggestion of extra rest (P01), must not be adopted. It would give heart rate a health and plan meaning that this module forbids, and illness or symptoms already have the existing warning-sign route.",
+        "Medication that blunts heart rate (for example beta-blockers), pregnancy and cardiac conditions can make an age-based maximum and its zones inapplicable. Whether and how to ask, and what to tell the athlete, is an eligibility and clinical question: ASK / ELIGIBILITY_UNASSESSED for collection, CLINICAL_HUMAN_REQUIRED for any individual judgement. Not decided here."
+      ],
+      "conditions": [
+        "HR5R-C11 (Product): Runna's overtraining/illness heart-rate advice is not reproduced in any form; no heart-rate reading suggests rest, illness or overtraining.",
+        "HR5R-C12 (Chief to route): the clinical owner and Product decide whether a generic, nonclinical statement such as 'some medicines and health conditions change heart rate; if that applies to you, these zones may not fit' is shown. No such statement may imply screening or clearance. Symptoms stay on the existing warning-sign route.",
+        "HR5R-C13: heart-rate, lab and HealthKit values are health-adjacent data; a Security and privacy review is required before any real athlete."
+      ],
+      "confidence": "MODERATE"
+    }
+  ],
+  "aeReview": {
+    "note": "Display-only module; the ten SSCTR-07 questions answered briefly.",
+    "answers": {
+      "1_planAdequate": "Unchanged: heart rate is stripped from what the engine reads.",
+      "2_materialFact": "None for the plan; the age, the measured references and the profile reach only the reading.",
+      "3_keepDefensible": "KEEP for the plan is the only outcome; the unknown is the individual true maximum.",
+      "4_changeNecessary": "No plan change; only display framing changes.",
+      "5_smallestIntervention": "Two disclosure meanings and one range check.",
+      "6_whySmallerInsufficient": "Without them, an older athlete is told about a symmetric error that is in fact systematic, optical maxima are shown uncaveated, and the formula runs past the reviewed age range.",
+      "7_priorityProgression": "Not affected.",
+      "8_evidenceSupports": "Yes for the framing (R01-R07, inherited sources); the numeric classifier defaults are not evidence-backed and are not approved as rules.",
+      "9_uncertainty": "The individual HRmax error (about 11 bpm) is irreducible without a measurement; the size of the older-adult bias depends on the equation.",
+      "10_askHoldClinical": "ASK / CLINICAL_HUMAN_REQUIRED for HR-altering medication and conditions (HR5R-C12)."
+    }
+  },
+  "supersedesWithinSSCTR": [
+    "SSCTR-HR5-DECISION-r1 HR5-5 'referenceConfidence LOW for a lab maximum too': superseded by HR5R-4 (LAB MODERATE), with the rationale given there.",
+    "SSCTR-HR5-DECISION-r1 HR5-1 cuts 0.72 / 0.80 / 0.87 / 0.92 and the nesting claim: superseded for the five-zone reading by the Founder decision; HR5R-1 and HR5R-6 approve the 65/81/89/97 rendering and non-nesting.",
+    "Nothing in SSCTR-V1RC-DECISION-r1 Q6 (three-zone) is changed."
+  ],
+  "escalations": [
+    {
+      "to": "Implementer / Chief",
+      "what": "HR5R-REV-3, HR5R-REV-4a, HR5R-REV-4b, HR5R-REV-7, then a narrow SSCTR recheck of the new values sha256 and the changed resolve."
+    },
+    {
+      "to": "Chief",
+      "what": "v1-heart-rate-profile.mjs and v1-safety-index.mjs changed during this review (hashes in reviewer.inputsRead); the recheck must bind the final bytes of every heart-rate path."
+    },
+    {
+      "to": "Product",
+      "what": "HR5R-C1 to C5, C7 to C9, C11 (copy, naming, one cue, presentation)."
+    },
+    {
+      "to": "Data / SSCTR",
+      "what": "HR5R-C6, HR5R-C10 (live channel and series channel reviews)."
+    },
+    {
+      "to": "Clinical owner via Chief",
+      "what": "HR5R-C12 (HR-altering medication and conditions)."
+    },
+    {
+      "to": "Founder / G01",
+      "what": "Any extension of the five-zone age estimate beyond intake age 80 (HR5R-REV-3)."
+    },
+    {
+      "to": "Security",
+      "what": "HR5R-C13."
+    }
+  ],
+  "proposedQueueItems": [
+    {
+      "id": "HQ-V1HR5R-SSCTR-ZONES",
+      "status": "PROPOSED_NOT_APPENDED",
+      "linkedTo": [
+        "HQ-V1HR5-SSCTR-ZONES",
+        "HQ-V1RC-SSCTR-HR"
+      ],
+      "note": "Becomes QUEUED_FOR_FUNDED_HUMAN_REVALIDATION when an enabling record is issued after the recheck; appended by Founder or Chief. This instance has no write scope for the queue."
+    }
+  ],
+  "validation": "The skill validator (scripts/validate_records.py) was not run: this file follows the SSCTR-HR5-DECISION-r1 layout requested by the caller, not the per-review decision.schema.json record. JSON well-formedness was checked with python3 -m json.tool.",
+  "governance": {
+    "gateStatus": "No gate closed by this record.",
+    "publicationStatus": "Not published; no Product or Domain Truth promotion.",
+    "enablingRecord": "Written by SSCTR-HR5R-RECHECK-r1: audits/v1-hr5-runna-parity-2026-11-25/reviews/ssctr/SSCTR_HR5R_RECORDS.json, bound to values sha256 784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90. (At r1 none was written.)"
+  },
+  "expiry": {
+    "reviewBy": "2027-05-11",
+    "earlierOn": [
+      "any change to the values bytes or to a heart-rate code path",
+      "a revision of SSCTR-V1RC-DECISION-r1 Q6 or Q9",
+      "a new systematic review of age-predicted HRmax or of wrist HR accuracy in running",
+      "a heart-rate series or live channel entering the contract",
+      "a population change (age range, clinical groups)",
+      "real athlete data or an adverse event",
+      "the Founder's funding declaration"
+    ]
+  },
+  "recheck": {
+    "recordId": "SSCTR-HR5R-RECHECK-r1",
+    "date": "2026-11-25",
+    "instance": "The same SSCTR review instance as SSCTR-HR5R-DECISION-r1; it authored the REVISE texts it now checks, which is the requester's adoption of its own conditions, not a policy it authored. The values, code and tests are the implementer's.",
+    "outcome": "APPROVE_WITH_CONDITIONS",
+    "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+    "enablingRecordWritten": true,
+    "enablingRecord": "audits/v1-hr5-runna-parity-2026-11-25/reviews/ssctr/SSCTR_HR5R_RECORDS.json",
+    "boundValuesSha256": "784ba7feb3e4c61efc9ec2187e23d4abdc78504519b40559bbfc53325e75ca90",
+    "boundCodeSha256": {
+      "CoachingCore/src/v1-heart-rate-zones.mjs": "002a0323749c420a845b48a2a1fa39c9a61e8eaa1523be5f38a4860f463b996c",
+      "CoachingCore/src/v1-heart-rate-profile.mjs": "0ab0e4c8fedfd04a184d7670755bc1bd6db8a64a6a96940cf6be8e201c46ffdc",
+      "CoachingCore/src/v1-safety-index.mjs": "0749d7f0d80b19745f671f00408c0639b2effb232210b10445738090567e3ff1",
+      "CoachingCore/src/v1-run-calibration.mjs": "8203b875b66bc3780bc13a14299c896d23449bf2201ec03f85eb92e43226dc83"
+    },
+    "readForSportingEffectOnly": {
+      "CoachingCore/src/boundary/integration.mjs": "fcf644e1b4776e06147134913bae997d46d3a1075d110868f8e0dfc42fc71fdd (setHeartRateProfile: appends the declaration, re-resolves the stored reading with applyHeartRateProfile, makes no engine call and no plan change; custody/idempotency semantics not judged)"
+    },
+    "verification": [
+      "All hashes recomputed with shasum -a 256; the values sha equals the requester's.",
+      "Byte delta: reversing exactly the four stated edits (ageEstimate.outsideTheRange line, ageEstimate.note suffix, disclosures.AGE_ESTIMATE clause, disclosures.OPTICAL_MEASUREMENT line) on the new file reproduces sha256 e795b90bddf9d3c8acf3281ae43407cf1a353cffcf5e4000b49391f40db2f6cd, the bytes reviewed in r1. Nothing else in the values changed.",
+      "Tests run by this instance: node --test test/v1hr5-five-zones.test.mjs test/v1hr5r-boundary.test.mjs -> 37 tests, 37 pass, 0 fail.",
+      "Independent probe (session scratchpad, devFiveZone authority): edges 0 mismatches for maxima 120-230 x readings 1-260; without a records file fiveZoneAuthority().approved was false (fail closed)."
+    ],
+    "items": [
+      {
+        "id": "HR5R-REV-3",
+        "status": "RESOLVED",
+        "finding": "Declared at 80 on 2026-11-07: AVAILABLE, 140 bpm, Z4 cue from 125 on 2027-11-06; UNAVAILABLE / AGE_OUTSIDE_ESTIMATE_RANGE with ageOutsideEstimateRange true and EASY cue NONE with that reason on 2027-11-07 and in 2036; THRESHOLD stays NO_HEART_RATE_GUIDANCE. Past 80 a declared 165 gives zones (cue from 147); a qualifying chest-strap maximum of 150 gives zones as OBSERVED_MAXIMUM (a measured lower bound; with no estimate in force, using it is sound and its disclosure says the true maximum may be higher); a lab/strap conflict with no other reference stays UNAVAILABLE / REFERENCE_CONFLICT. The estimate is not capped."
+      },
+      {
+        "id": "HR5R-REV-4a",
+        "status": "RESOLVED",
+        "finding": "disclosures.AGE_ESTIMATE is exactly the required text."
+      },
+      {
+        "id": "HR5R-REV-4b",
+        "status": "RESOLVED",
+        "finding": "ageEstimate.note is exactly the required text."
+      },
+      {
+        "id": "HR5R-REV-7",
+        "status": "RESOLVED",
+        "finding": "disclosures.OPTICAL_MEASUREMENT is exactly the required text; an OPTICAL session maximum (186 bpm, Z5 at age 40) adds OPTICAL_MEASUREMENT to the disclosures; a CHEST_STRAP one does not."
+      },
+      {
+        "id": "HR5R-N1",
+        "status": "RESOLVED",
+        "finding": "Lab 170 in force, strap 174, age 180: the strap value is labelled A_MORE_SPECIFIC_REFERENCE_IN_FORCE; with no lab, a strap 175 below the estimate keeps OBSERVED_NOT_ABOVE_THE_AGE_ESTIMATE. References are unchanged by the relabel."
+      }
+    ],
+    "itemDispositionsAfterRecheck": {
+      "HR5R-1": "APPROVE",
+      "HR5R-2": "APPROVE_WITH_CONDITIONS",
+      "HR5R-3": "APPROVE_WITH_CONDITIONS",
+      "HR5R-4": "APPROVE_WITH_CONDITIONS",
+      "HR5R-5": "APPROVE_WITH_CONDITIONS",
+      "HR5R-6": "APPROVE_WITH_CONDITIONS",
+      "HR5R-7": "APPROVE_WITH_CONDITIONS (7c numeric defaults: placeholders only, not approved rules)",
+      "HR5R-8": "APPROVE_WITH_CONDITIONS"
+    },
+    "conditionsCarried": "HR5R-C1 to HR5R-C13 and the general conditions, as written in the enabling record. C7 is accepted as a presentation rule; the frozen three-zone session guidance stays byte-identical in the engine.",
+    "observation": "setHeartRateProfile re-resolves the stored reading at the request instant, so an athlete's own override takes effect mid-week, while measured references still change only at a week boundary. That is acceptable: it is the athlete's explicit choice and changes no plan.",
+    "gateStatus": "No gate closed; not published; no Product or Domain Truth promotion.",
+    "queue": "HQ-V1HR5R-SSCTR-ZONES proposed, not appended (outside this instance's write scope); Founder or Chief appends it as QUEUED_FOR_FUNDED_HUMAN_REVALIDATION.",
+    "reviewBy": "2027-05-11"
+  }
+}

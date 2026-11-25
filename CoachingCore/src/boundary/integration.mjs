@@ -27,12 +27,15 @@ import {checkReportVoice} from './report-voices.mjs';
 import {canonical} from '../value.mjs';
 import * as CORE from '../v1-safety-index.mjs';
 import {LIMITS,OBSERVATION_KEYS,observationError,requestError,safetyFieldsOf,intakeError,statesSafetySignal} from './admission.mjs';
+import {declarationErrors,appendProfile} from '../v1-heart-rate-profile.mjs';
 
 export const INTEGRATION_SCHEMA='V1INT-CARRIED-1';
 /** The records the composed entry carries besides the ledger, reference state and model (the AIF client's CARRIED; the Mac core-driver's). */
-export const CARRIED_RECORDS=Object.freeze(['runFormatRecord','runHistoryRecord','runEvidenceRecord']);
+// V1HR5R: heartRateProfileRecord (the athlete's age, declared maximum and custom zone limits) is carried and sealed as the others; a record stored
+// before it holds none, and is read as an empty one (a first plan or restart then records the intake's age).
+export const CARRIED_RECORDS=Object.freeze(['runFormatRecord','runHistoryRecord','runEvidenceRecord','heartRateProfileRecord']);
 export const CHANNELS=Object.freeze({ATHLETE:'ATHLETE',DEVICE:'DEVICE'});
-const EMPTY=Object.freeze({records:{runFormatRecord:[],runHistoryRecord:[],runEvidenceRecord:[]},origins:{},presentation:{},requests:{},lastAt:null});
+const EMPTY=Object.freeze({records:{runFormatRecord:[],runHistoryRecord:[],runEvidenceRecord:[],heartRateProfileRecord:[]},origins:{},presentation:{},requests:{},lastAt:null});
 /** As many requests as custody remembers (custody.mjs RETENTION.idempotencyEntries). */
 const REQUEST_WINDOW=500;
 /** The readings of an answer the app shows beside the plan (projections, as v1-safety-index READINGS names them). */
@@ -312,6 +315,33 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    if(Object.keys(rest).some(k=>rest[k]!==undefined))return fail('INVALID_REQUEST','A delivery holds workouts only (the device states no screen)',{fields:Object.keys(rest)});
    if(!Array.isArray(activities)||!activities.length)return fail('NOTHING_TO_IMPORT','A delivery holds at least one workout');
    return review(CHANNELS.DEVICE,{actor,clientRequestId,expectedVersion,review:{kind:'WEEKLY_REVIEW',observations:activities}});},'importActivities'),
+  /**
+   * V1HR5R: the athlete's heart-rate profile (the athlete's own form): {maxHeartRateBpm: whole bpm 120-230 | null, zoneUpperBpm: [the highest whole
+   * bpm of Z1..Z4, strictly increasing, 60-230] | null}, either or both (null clears). It is no review: the engine is not asked, custody records no
+   * decision and no plan, session or record of custody changes. The declaration is appended to the carried heartRateProfileRecord, the last
+   * answer's five-zone reading is resolved again with the new profile (the engine's own applyHeartRateProfile), and both are written with the
+   * carried records in one atomic store commit under the same seal, at the custody version the app last saw. Refused whole when not one the
+   * profile records. Idempotent by its request id.
+   */
+  setHeartRateProfile:({actor,clientRequestId,expectedVersion,heartRateProfile,...rest})=>run(actor,true,()=>{
+   if(Object.keys(rest).some(k=>rest[k]!==undefined))return fail('INVALID_REQUEST','A heart-rate profile request holds the profile only',{fields:Object.keys(rest)});
+   if(typeof clientRequestId!=='string'||!clientRequestId||clientRequestId.length>LIMITS.idLength)return fail('INVALID_REQUEST','A request id (1 to 128 characters) is required');
+   const errors=declarationErrors(heartRateProfile);if(errors.length)return fail('INVALID_REQUEST','The heart-rate profile is not one the coach records; nothing was recorded',{fields:errors});
+   const o=custody.read({actor});if(!o.ok)return o;const doc=o.doc,base=op.loaded;
+   const d=hmac(`${INTEGRATION_SCHEMA}|heartRateProfile|`+(canonical(heartRateProfile)??'null')),seen=base.requests?.[clientRequestId];
+   if(seen)return seen.d===d?{ok:true,replayed:true,version:doc.version,...(seen.hr??{})}:fail('CONFLICT_IDEMPOTENCY_KEY','This request id was already used for another request');
+   if(expectedVersion!==doc.version)return fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again',{version:doc.version});
+   const at=iso(op.at),a=appendProfile(base.records.heartRateProfileRecord??[],{athleteId:doc.athleteId,at,declaration:heartRateProfile});
+   if(a.refused.length)return fail('INVALID_REQUEST','The heart-rate profile is not one the coach records; nothing was recorded',{fields:a.refused[0].errors});
+   const readings=base.presentation?.readings??null,rc=readings?.runCalibration??null;
+   let next=rc;try{if(rc&&typeof engine.heartRateProfileReading==='function')next=engine.heartRateProfileReading(rc,a.record,{athleteId:doc.athleteId,at});}catch{next=rc;}
+   const outcome={heartRateProfile:{added:a.added,unchanged:a.unchanged},fiveZones:next?.heartRateFiveZones?{status:next.heartRateFiveZones.status,reason:next.heartRateFiveZones.reason??null}:null};
+   // The carried records of this operation: the loaded ones with the new profile record, and the last answer's readings with the new reading.
+   op.calls.push({records:{...base.records,heartRateProfileRecord:a.record},ledger:[],runSessions:undefined,excluded:[],observationIds:[],programHash:doc.program?.hash??null,
+    readings:{...(readings??{}),runCalibration:next}});
+   op.request={id:clientRequestId,info:{d,at,of:[],dup:[],hr:outcome}};
+   const r=carriedStore.commit(doc.athleteId,doc.version,doc);if(!r?.ok)return r?.conflict?fail('CONFLICT_STALE_VERSION','The record changed since this request was prepared; refresh and send again'):{ok:false,busy:true};
+   return {ok:true,version:doc.version,...outcome};},'setHeartRateProfile'),
   accept:args=>run(args?.actor,true,()=>custody.accept(args),'accept'),
   decline:args=>run(args?.actor,true,()=>custody.decline(args),'decline'),
   /** A new plan from the record custody holds (C-F01-2: the canonical record, never a reconstruction) with every carried record. */

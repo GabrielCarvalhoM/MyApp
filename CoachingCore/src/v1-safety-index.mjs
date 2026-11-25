@@ -19,6 +19,8 @@ import * as S from './v1-strength-index.mjs';
 import {repertoireAuthority} from './r7b-repertoire.mjs';
 import {RUN_FORMAT_EMITTED} from './v1-run-format.mjs';
 import {freeze} from './value.mjs';
+import {appendProfile,profileOf} from './v1-heart-rate-profile.mjs';
+import {applyHeartRateProfile} from './v1-heart-rate-zones.mjs';
 export * from './v1-strength-index.mjs';
 export const SAFETY_LIFECYCLE_ID='V1X-SAFETY-LIFECYCLE-1';
 export const V1_CORE_ENGINE=S.V1_STRENGTH_ENGINE+'+'+SAFETY_LIFECYCLE_ID;
@@ -41,12 +43,45 @@ export function authorityExpiry(options,asOf){
 }
 const marker=(e,clinicalRouteAnswered)=>({status:'EXPIRED',asOfDay:e.day,reviewBy:[...new Set(e.passed.map(r=>r.reviewBy))].sort(),records:e.passed.map(r=>r.id),clinicalRouteAnswered});
 
+// V1HR5R (Founder decision FOUNDER-HR5-RUNNA-PARITY-2026-11-25): the athlete's heart-rate profile (v1-heart-rate-profile.mjs). Every answer
+// carries `heartRateProfileRecord` (the append-only record of the athlete's age, declared maximum and custom zone limits, which the caller keeps and
+// sends back, as runEvidenceRecord) and `heartRateProfileDeclared` (what this call added, refused or found unchanged); its five-zone reading is
+// resolved with the profile in force (applyHeartRateProfile). The keys `heartRateProfile` (the athlete's declaration) and `heartRateProfileRecord`
+// are taken off what the engine reads, so every plan, decision and record of the engine is the one it makes without them: heart rate changes
+// nothing but the five-zone reading. The age comes from the intake (athlete.ageYears) of a first plan or a restart.
+const HR_KEYS=['heartRateProfile','heartRateProfileRecord'];
+const without=(o,keys)=>isObj(o)?Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k))):o;
+const NOT_ACCEPTED=new Set(['INVALID_INPUT','UNSUPPORTED']);
+function profiled(base,{athleteId,at,record,ageYears,declaration,options}){
+ if(!isObj(base))return base;
+ const refuseAll=typeof athleteId!=='string'?'heartRateProfile.noPlan':NOT_ACCEPTED.has(base.status)?'heartRateProfile.reviewNotAccepted':null;
+ let r;try{r=appendProfile(record,{athleteId,at,ageYears:refuseAll?undefined:ageYears,declaration,refuseAll});}
+ catch{r={record:Array.isArray(record)?record:[],added:[],refused:declaration?[{errors:['heartRateProfile.unreadable']}]:[],unchanged:[]};}
+ let rc=base.runCalibration;if(rc!==undefined&&!refuseAll)try{rc=applyHeartRateProfile(rc,profileOf(r.record,{athleteId,at}),options);}catch{rc=base.runCalibration;}
+ return freeze({...base,...(rc!==undefined?{runCalibration:rc}:{}),heartRateProfileRecord:r.record,heartRateProfileDeclared:{added:r.added,refused:r.refused,unchanged:r.unchanged}});
+}
+const recordOf=o=>isObj(o)&&Array.isArray(o.heartRateProfileRecord)?o.heartRateProfileRecord:[];
+/** A stored run calibration `rc` with its five zones resolved with the profile of `record` at `at` (the integration's setHeartRateProfile, which
+ * asks the engine nothing else). */
+export const heartRateProfileReading=(rc,record,{athleteId,at},options={})=>applyHeartRateProfile(rc,profileOf(record,{athleteId,at}),options);
 /** A first plan: as below. An expired authority makes none (UNSUPPORTED); a clinical intake is answered before the authority is read. */
-export const generateProgram=(input,options={})=>S.generateProgram(input,options);
+export function generateProgram(input,options={}){
+ const base=S.generateProgram(without(input,HR_KEYS),options),p=base?.program;
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(input)?input.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile:undefined,options});
+}
 /** A new plan from the record: as below (a clinical hold on record is answered before any plan is made). */
-export const restartProgram=(input,options={})=>S.restartProgram(input,options);
-/** A review: as below, except that after the records' review-by dates the clinical route still answers before the refusal (QRE-AIF-01). */
+export function restartProgram(input,options={}){
+ const intake=isObj(input)?input.intake:undefined,plain=isObj(input)?{...without(input,HR_KEYS),...(isObj(intake)?{intake:without(intake,HR_KEYS)}:{})}:input;
+ const base=S.restartProgram(plain,options),p=base?.program;
+ return profiled(base,{athleteId:p?.athleteId,at:p?.canonical?.asOf,record:recordOf(input),ageYears:isObj(intake)?intake.athlete?.ageYears:undefined,declaration:isObj(input)?input.heartRateProfile??(isObj(intake)?intake.heartRateProfile:undefined):undefined,options});
+}
+/** A review: as below, with the athlete's heart-rate profile (V1HR5R). */
 export function evaluateProgram(program,review,options={}){
+ const base=evaluateCore(program,without(review,HR_KEYS),options);
+ return profiled(base,{athleteId:isObj(program)?program.athleteId:undefined,at:isObj(review)?review.asOf:undefined,record:recordOf(review),declaration:isObj(review)?review.heartRateProfile:undefined,options});
+}
+/** A review: as below, except that after the records' review-by dates the clinical route still answers before the refusal (QRE-AIF-01). */
+function evaluateCore(program,review,options={}){
  const base=S.evaluateProgram(program,review,options);
  if(base?.status!=='UNSUPPORTED')return base;
  let e=null;try{e=authorityExpiry(options,isObj(review)?review.asOf:null);}catch{e=null;}

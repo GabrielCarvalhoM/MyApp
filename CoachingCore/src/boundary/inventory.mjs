@@ -24,6 +24,8 @@ export const DATA_INVENTORY=Object.freeze([
  {field:'response.unavailable (code, capability, paths)',class:C.HEALTH_DERIVED,purpose:'COACHING',egress:'NONE',note:'returned only to a report of how the athlete feels'},
  {field:'response.offer, document.pending (decisionId, kind, proposal), decision.offer',class:C.TRAINING,purpose:'COACHING',egress:'NONE',note:'a change waiting for the athlete; only its decisionId is operational'},
  {field:'document.agency.declined (kind, pattern key, time)',class:C.TRAINING,purpose:'LEARNING',egress:'NONE',note:'the athlete\'s declined learned patterns; under the seal'},
+ // V1HR5R: the heart-rate profile and the five-zone reading (heart rate is health data; it stays in the athlete's own record and views).
+ {field:'carried heartRateProfileRecord (ageYears, maxHeartRateBpm, zoneUpperBpm), runCalibration.heartRateFiveZones (reference, zones, measurements)',class:C.HEALTH,purpose:'COACHING',egress:'NONE',note:'shown only to the athlete; never in telemetry, push or shares'},
  {field:'custody version, decisionId, eventId (opaque, server-assigned), state, operation name, error code',class:C.OPERATIONAL,purpose:'OPERATIONS',egress:'LOGS_AND_TELEMETRY'}
 ]);
 /** The only decision categories telemetry may carry: a status class, never an action name (WELLBEING_REDUCTION or READINESS_RESTART reveal health), and
