@@ -1,0 +1,92 @@
+[
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "E-1 at the boundary (athlete first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "E-1 at the boundary (device first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "E-1 at the boundary, late: a re-sync in the middle of the following week still keeps the athlete's answers and adds no execution",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "A12, B4-B5, O-1 at the boundary: the athlete says \"not done\", the watch says done: one flagged row, not an execution, the athlete's voice kept",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "O-1 / C-O1-2 at the boundary: a disputed amount (other minutes) is never dose twice and never the larger amount",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "QRE-RWS-F-01 (still open in the engine, pinned by v1rfc-evidence) is not reachable through the boundary: a device report stating conditions is refused, and the athlete's heat stays on the merged row",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "QRE-RWS-B-01 / C-01 at the boundary: the same workout imported again, and the same form sent again, are duplicates: nothing recorded, the calibration unchanged",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "SSCTR-RWS-B-01 / SEC-R2-01 at the boundary: a symptom stop the athlete reported survives a HealthKit import and re-sync of the same run; the screen is still asked",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "another athlete at the boundary: a workout or a correction sent under another athlete reads and changes nothing of this one's record",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "QRE-RFC-A-03 / QRE-AIF-02 at the boundary: after a restart, no session id of the new plan is an id of the old plan, and the old plan's row is no execution of the new plan",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "duplicates at the boundary: one workout sent twice in one request is refused; sent again later it is a duplicate; credit and minutes counted once",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "the athlete's second form of a session is not a second execution: it is refused as ALREADY_REPORTED unless sent as their correction",
+"ok": true
+},
+{
+"file": "v1san-boundary-safety.test.mjs",
+"name": "custody at the boundary: a stale version is refused, a reused request id replays, a tampered record or a rolled-back one is never read as a plan",
+"ok": true
+},
+{
+"file": "v1san-runtime-integrity.test.mjs",
+"name": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle",
+"ok": true
+},
+{
+"file": "v1san-runtime-integrity.test.mjs",
+"name": "dependencies are unchanged: package.json differs from 90452b8 at most in its scripts, and the lockfile is byte-identical",
+"ok": true
+},
+{
+"file": "v1san-runtime-integrity.test.mjs",
+"name": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8",
+"ok": true
+},
+{
+"file": "v1san-runtime-integrity.test.mjs",
+"name": "successor of v1hr5r-successors.test.mjs (the amendment-2 verifier passes): it fails, if at all, only because test infrastructure was added or changed",
+"ok": true
+},
+{
+"file": "v1san-runtime-integrity.test.mjs",
+"name": "successor of v1hr5r-successors.test.mjs (AMENDMENT-1 and the original freeze fail only on what amendment-2 declares): the same, with test infrastructure allowed",
+"ok": true
+}
+]

@@ -1,0 +1,1546 @@
+{
+ "schema": "REPMILE-V1-HISTORICAL-TESTS-1",
+ "policy": "audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md",
+ "base": "90452b8",
+ "note": "Tests of earlier lines, delegated from the active suite (npm test) to the historical suite (npm run test:historical), which runs each at belongsTo.commit. None is edited or deleted: fileSha256 pins its bytes. The active suite also runs them on the current tree and requires each to fail (phase 2). Entries H52 and H53 are made historical by this mission (it adds test infrastructure).",
+ "entries": [
+  {
+   "id": "H01",
+   "file": "v1bc-rc-record.test.mjs",
+   "title": "REPMILE-COACHINGCORE-V1-RC-1: FREEZE-7 and V1INT preserved but for the seven declared amendments; nothing else changed since ee256ae; the record holds",
+   "line": 13,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "REPMILE-COACHINGCORE-V1-RC-1 record (FREEZE-7 + V1INT + seven declared amendments since ee256ae)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "10eaf096a8c9a6e4cc82b4ae7e0bdf08fad705f2ffc4c62c8a21bd1bcc995620",
+   "belongsTo": {
+    "commit": "96a8ccc",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "503945a",
+    "relation": "AT"
+   },
+   "supersededBy": "503945a: V1 final physical candidate: SEC-BC-R2-01 (views), FPV-01 (custody) amend files RC-1 binds (audits/v1-final-physical-2026-11-24/FINAL_REPORT.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H02",
+   "file": "v1core-c2f01-freeze.test.mjs",
+   "title": "CORE-C2-F01: the six earlier freezes are preserved; FREEZE-1 binds 47/47 files unchanged; only src/v1-f08.mjs is amended since d92aa88",
+   "line": 12,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "CORE-C2-F01 line: six earlier freezes preserved, only src/v1-f08.mjs amended since d92aa88",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "bb339903a9617c48f2c00d8657ee48d7acb409ab90ef77c538a8124b0e494353",
+   "belongsTo": {
+    "commit": "6491ac2",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "3f0b04f",
+    "relation": "AT"
+   },
+   "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H03",
+   "file": "v1core-c2f01-restart-sizing.test.mjs",
+   "title": "QRE-F01-01 (open, SSCTR C-F01-1): a record with execution reports but none in force leaves the stated exposure unbounded, as its in-force record",
+   "line": 223,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-F01-01 / SSCTR C-F01-1 (open at the time): with reports but none in force the stated exposure stayed unbounded (600 min / 7 days). C-F01-1 r2 bounds it to the record (0/0): lower, never higher",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "7e427431ae9855541b52b30caeccd8cc0b2afbdffdb2ed4568bc2c2c06133b83",
+   "belongsTo": {
+    "commit": "6491ac2",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "3f0b04f",
+    "relation": "AT"
+   },
+   "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-cf011r2-restart-evidence.test.mjs",
+    "title": "A3-A4: one execution corrected to \"not done\" among others; every execution corrected to \"not done\" (shape A): bounded to the window, 0/0"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-cf011r2-restart-evidence.test.mjs",
+     "title": "A5: reports in conflict (P4, through the normalizer): bounded to 0/0, the disputed amount never counted"
+    },
+    {
+     "file": "v1core-cf011r2-restart-evidence.test.mjs",
+     "title": "A e2e: through restartProgram, shapes A and P4 start from the record (RESTART, the class of 0 weekly minutes), not from the stated 300"
+    }
+   ],
+   "safetyPoint": "restart exposure (dose) — the current reading is the conservative one"
+  },
+  {
+   "id": "H04",
+   "file": "v1core-c2f01-restart-sizing.test.mjs",
+   "title": "SSCTR_F01_R1_ADDENDUM: after a readiness declaration, (a) a run corrected to \"not done\" and (b) a disputed amount (open C-F01-1 (ii), the SB-1 question not asked)",
+   "line": 255,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "SSCTR_F01_R1_ADDENDUM (b), stated in the test as 'today's behaviour, NOT a decided reading': a disputed-amount session after a readiness declaration read as no session, so the SB-1 question was not asked. C-F01-1 r2 (ii): it is an execution, so the new stop is screened (SB-1 asked)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "7e427431ae9855541b52b30caeccd8cc0b2afbdffdb2ed4568bc2c2c06133b83",
+   "belongsTo": {
+    "commit": "6491ac2",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "3f0b04f",
+    "relation": "AT"
+   },
+   "supersededBy": "3f0b04f: C-F01-1 r2: the restart reads what the record shows took place (bound whenever the window holds reports; a disputed amount is an execution) (audits/v1-core-cf011-r2-2026-11-18/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-cf011r2-restart-evidence.test.mjs",
+    "title": "D1: readiness, then a session of disputed amount after it: training after the declaration, so the new stop is screened (SB-1 asked)"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-cf011r2-restart-evidence.test.mjs",
+     "title": "D2: readiness, then a run corrected to \"not done\": the declaration still answers the stop (QRE-F01-04 kept)"
+    },
+    {
+     "file": "v1core-cf011r2-restart-evidence.test.mjs",
+     "title": "B1-B2: a session every voice says took place, only its amount disputed, is an execution for the pause and the last executed day"
+    }
+   ],
+   "safetyPoint": "SB-1 safety question after a readiness declaration — now asked"
+  },
+  {
+   "id": "H05",
+   "file": "v1core-cf011r2-freeze.test.mjs",
+   "title": "C-F01-1 r2: the seven earlier freezes are preserved; FREEZE-1 47/47, FREEZE-2 all but src/v1-f08.mjs; only that file amended since 4b6e1ea",
+   "line": 12,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "C-F01-1 r2 line: seven earlier freezes preserved",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "a6a0cf099925248075d4dbdbd1710dd3aa56ae75fe3bb6451b4a9d027c79538a",
+   "belongsTo": {
+    "commit": "adf343a",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "4e8cffe",
+    "relation": "AT"
+   },
+   "supersededBy": "4e8cffe: SEC-R2-03 + SEC-R2-04: a refused correction retires nothing; the orphan the test pinned is no longer written (audits/v1-core-sec-r2-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H06",
+   "file": "v1core-cf011r2-restart-evidence.test.mjs",
+   "title": "A12: the information to resolve a conflict is missing (a direct conflict keeps one voice): bounded, and no occurrence read",
+   "line": 108,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "A12 (C-F01-1 r2): a direct conflict kept one voice, so no occurrence was read. C-O1-2 (Safety Continuity) keeps both voices; both say done: an occurrence, the exposure still bounded",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
+   "belongsTo": {
+    "commit": "bc9af09",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "ec811c1",
+    "relation": "AT"
+   },
+   "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-sc-successors.test.mjs",
+    "title": "successor of v1core-cf011r2-restart-evidence.test.mjs:108 (A12, C-O1-2): a direct conflict now keeps both voices; both say done: an occurrence, the exposure still bounded at zero"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "A12, B4-B5, O-1 at the boundary: the athlete says \"not done\", the watch says done: one flagged row, not an execution, the athlete's voice kept"
+    }
+   ],
+   "safetyPoint": "import vs athlete conflict"
+  },
+  {
+   "id": "H07",
+   "file": "v1core-cf011r2-restart-evidence.test.mjs",
+   "title": "B4-B5: occurrence itself disputed (a voice says not done), or one voice only on the record (direct conflict): not an execution",
+   "line": 139,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "B4-B5: last assertion counted 13 voices on a direct conflict; C-O1-2 changes the voice count of a direct conflict (3), a 'not done' voice is still no execution",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
+   "belongsTo": {
+    "commit": "bc9af09",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "ec811c1",
+    "relation": "AT"
+   },
+   "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-sc-successors.test.mjs",
+    "title": "successor of v1core-cf011r2-restart-evidence.test.mjs:139 (B4-B5, C-O1-2): a \"not done\" voice is still no execution; a direct conflict whose voices both say done is one"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "A12, B4-B5, O-1 at the boundary: the athlete says \"not done\", the watch says done: one flagged row, not an execution, the athlete's voice kept"
+    }
+   ],
+   "safetyPoint": "disputed occurrence never an execution"
+  },
+  {
+   "id": "H08",
+   "file": "v1core-cf011r2-restart-evidence.test.mjs",
+   "title": "B7: what a row must show to be read as a disputed execution (a forged or partial flag reads as no execution, and never raises the bound)",
+   "line": 151,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "B7 'another kind of conflict': occurrence not shown; under C-O1-2 a head-on flag with two well-formed 'took place' voices is an occurrence (dated), a forged or partial flag still reads as none",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
+   "belongsTo": {
+    "commit": "bc9af09",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "ec811c1",
+    "relation": "AT"
+   },
+   "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-sc-successors.test.mjs",
+    "title": "successor of v1core-cf011r2-restart-evidence.test.mjs:151 (B7, C-O1-2): one voice or a malformed one still shows no execution; a head-on flag with two well-formed \"done\" voices does; an integrity flag does not"
+   },
+   "alsoCoveredBy": [],
+   "safetyPoint": "forged flags never raise the bound"
+  },
+  {
+   "id": "H09",
+   "file": "v1core-cf011r2-restart-evidence.test.mjs",
+   "title": "SEC-R2-01: the engine-written orphan (event id reused; watch activity of another session), after a declaration: the new stop is asked",
+   "line": 287,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "SEC-R2-01: the test drove the normalizer to write an orphan (an original marked replaced with nothing replacing it) and asserted the orphan; SEC-R2-03/-04 no longer write orphans, so its first assertion ('a: the original is marked replaced and nothing replaces it') fails. The safety property (after a declaration the new stop is asked) is asserted on stored orphans by the successor",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "6844a9c2e5e3591750ec2414c5e682e994760d07d21e2541e27ff09ed18e035a",
+   "belongsTo": {
+    "commit": "adf343a",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "4e8cffe",
+    "relation": "AT"
+   },
+   "supersededBy": "4e8cffe: SEC-R2-03 + SEC-R2-04: a refused correction retires nothing; the orphan the test pinned is no longer written (audits/v1-core-sec-r2-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-secr2-correction-integrity.test.mjs",
+    "title": "C1 (QRE_SR2_R1): a stored orphan, session (a, b) or watch (c) or manual (q10), after a readiness declaration: the new stop is asked by restartIntake and restartProgram, also after a round trip"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1core-secr2-correction-integrity.test.mjs",
+     "title": "SEC-R2-01 successor: the two shapes the normalizer wrote as orphans (FREEZE-3) now keep the original in force; the stop after the declaration is still asked"
+    },
+    {
+     "file": "v1core-secr2-correction-integrity.test.mjs",
+     "title": "18: a session stopped for a symptom keeps its voice after a refused correction: after a declaration the new stop is asked"
+    },
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "SSCTR-RWS-B-01 / SEC-R2-01 at the boundary: a symptom stop the athlete reported survives a HealthKit import and re-sync of the same run; the screen is still asked"
+    }
+   ],
+   "safetyPoint": "record integrity (no orphan), stop after declaration still asked"
+  },
+  {
+   "id": "H10",
+   "file": "v1core-expiry.test.mjs",
+   "title": "QRE-AIF-01: before and on the review-by day, the answer of the new entry point is the answer below it, byte for byte",
+   "line": 20,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "QRE-AIF-01: the composed entry answers byte for byte as the one below; FIVE-ZONE-AMENDMENT-2 adds heartRateProfileRecord/heartRateProfileDeclared and resolves the five-zone reading",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "5973f2efbe85103eec7a849d388e5b490464795c8878f9fd007067104cd0556b",
+   "belongsTo": {
+    "commit": "f363a25",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "23f6a86",
+    "relation": "AT"
+   },
+   "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
+   "successor": {
+    "file": "v1hr5r-successors.test.mjs",
+    "title": "successor of QRE-AIF-01 (v1core-expiry.test.mjs): before and on the review-by day, the new entry point answers as the one below it, the heart-rate profile keys and the five-zone reading set aside"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H11",
+   "file": "v1core-freeze.test.mjs",
+   "title": "the five earlier freezes are preserved on this line; the files it amends are declared and nothing else changed since the base",
+   "line": 11,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "closure-2 line: five earlier freezes preserved (base 16577b6)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "4d71ee0ca183d240daa1e0bb2f1d43d073b56ae84c01e00e03fc3f79ae3c7697",
+   "belongsTo": {
+    "commit": "0a9ed80",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "576e40c",
+    "relation": "AT"
+   },
+   "supersededBy": "576e40c: CORE-C2-F01: a restart counts only the executions in force; amends src/v1-f08.mjs (audits/v1-core-c2-f01-2026-11-18/F01_SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H12",
+   "file": "v1core-ncc-freeze.test.mjs",
+   "title": "F1/F2/F3: the nine earlier freezes are preserved; only src/r6-provenance.mjs amended since e704180",
+   "line": 13,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "NCC line: nine earlier freezes preserved (base e704180)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "6dddc4f69bdb588c01b39bcf1a541d372e52d25f54565c2119efce8905020467",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H13",
+   "file": "v1core-ncc-normalization-consistency.test.mjs",
+   "title": "F1: the record rebuilt again and again, restored from JSON, and the same late batch re-sent: what is in force does not move",
+   "line": 97,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "NCC F1: the re-sent late report W was refused again (IDENTITY_QUARANTINED_BY_CONFLICT); under O-1 W is a voice the record holds, so its re-send is EXACT_REPLAY; nothing admitted, what is in force does not move",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "05377a41317671d713376bcee7d9879ffbce27dc4322bffdc723406c273f64d3",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-ncc-normalization-consistency.test.mjs:101 (F1): the refused late report is a kept voice of the carried row, so its re-send is a replay; still never admitted"
+   },
+   "alsoCoveredBy": [],
+   "safetyPoint": "conflicting report content kept for SB-1"
+  },
+  {
+   "id": "H14",
+   "file": "v1core-ncc-normalization-consistency.test.mjs",
+   "title": "F3: a later agreeing plain report of the disputed session is refused by the quarantine, never merged into the conflicted row",
+   "line": 159,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "NCC F3: the refused report's voice set; O-1 keeps the refused report as a voice of the flagged row (never merged into the conflicted row)",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "05377a41317671d713376bcee7d9879ffbce27dc4322bffdc723406c273f64d3",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-ncc-normalization-consistency.test.mjs:162-163 (F3): a later plain report of the disputed session is still refused by the quarantine and never merged; it is kept as a voice"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H15",
+   "file": "v1core-ncc-normalization-consistency.test.mjs",
+   "title": "successor of v1core-successor-lineage.test.mjs:205 (F1, scenario 21, EASY): the frozen matrix, its one EASY expectation now the LONG one, passes whole in both families",
+   "line": 291,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "NCC successor of the lineage matrix (scenario 21 EASY); O-1 changes row 19 (now read as rows 08/10)",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "05377a41317671d713376bcee7d9879ffbce27dc4322bffdc723406c273f64d3",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H16",
+   "file": "v1core-o1-conflict-evidence.test.mjs",
+   "title": "O-1: a kept voice is never dose: the flagged row's amount is the first-admitted report's, and the restart pause reads no occurrence from a head-on dispute",
+   "line": 146,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "O-1: the restart pause read no occurrence from a head-on dispute; C-O1-2: a head-on dispute whose voices both say it took place is an occurrence (bySportDays), a kept voice is still never dose",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "d729d3b2ad9af7a88cfd549e391ecf4794420b0bc190b8d405e6b6011acc6a14",
+   "belongsTo": {
+    "commit": "bc9af09",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "ec811c1",
+    "relation": "AT"
+   },
+   "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-sc-successors.test.mjs",
+    "title": "successor of v1core-o1-conflict-evidence.test.mjs:146 (C-O1-2): a kept voice is never dose; the head-on dispute whose voices both say it took place is an occurrence for the pause"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "O-1 / C-O1-2 at the boundary: a disputed amount (other minutes) is never dose twice and never the larger amount"
+    }
+   ],
+   "safetyPoint": "a kept voice is never dose"
+  },
+  {
+   "id": "H17",
+   "file": "v1core-o1-freeze.test.mjs",
+   "title": "O-1: the ten earlier freezes are preserved; only src/r6-provenance.mjs amended since f40fbe1",
+   "line": 13,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "O-1 line: ten earlier freezes preserved (base f40fbe1)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "412458f63093c84037db08c3c5e9021a9e6a0063f6f4437d9579837c57e5aa2f",
+   "belongsTo": {
+    "commit": "bc9af09",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "ec811c1",
+    "relation": "AT"
+   },
+   "supersededBy": "ec811c1: Safety Continuity C-O1-2: a head-on dispute whose voices both say it took place is an occurrence; a kept voice is never dose (audits/v1-core-sc-2026-11-20/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H18",
+   "file": "v1core-sc-freeze.test.mjs",
+   "title": "Safety Continuity: the eleven earlier freezes are preserved; only src/r6-provenance.mjs and src/v1-f08.mjs amended since 48e428f",
+   "line": 13,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "Safety Continuity line: eleven earlier freezes preserved (base 48e428f)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "1ce7a47c5eea284d1d96782dfb090f0c97d091a1728a6fe06120cf4e6850fc44",
+   "belongsTo": {
+    "commit": "b309fbe",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "a52db2b",
+    "relation": "AT"
+   },
+   "supersededBy": "a52db2b: V1INT candidate: the integration boundary amends src/boundary/custody.mjs, bound by FREEZE-7's line (audits/v1-integration-boundary-2026-11-23/FINAL_REPORT.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H19",
+   "file": "v1core-secr2-freeze.test.mjs",
+   "title": "SEC-R2-03/-04: the eight earlier freezes are preserved; only src/r6-provenance.mjs and src/v1-f08.mjs amended since a6e10d0",
+   "line": 12,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "SEC-R2-03/-04 line: eight earlier freezes preserved (base a6e10d0)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "dfaa25b6ca370fea19efc24581792d7a273fc9a27620b68b2260583b4a088c09",
+   "belongsTo": {
+    "commit": "985c018",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "07301f3",
+    "relation": "AT"
+   },
+   "supersededBy": "07301f3: Normalization Consistency F1+F2+F3 (amends r6-provenance) (audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H20",
+   "file": "v1core-successor-fix-forward.test.mjs",
+   "title": "SUCCESSOR closure-2 · SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; only the screen answered after the stop clears it",
+   "line": 92,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "closure-2 successor of SSCTR-RWS-B-01; O-1 keeps the dispute in every order (the 'app-fix' row stays conflicted)",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "a3ab3295c46a8ca914d7f94c93af768fb38681b9656cdbc3296196d3d7f399f9",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-fix-forward.test.mjs:105 (SSCTR-RWS-B-01): the device measured 30 min, the athlete corrects to 100: the dispute stays in every order and named id; the symptom is not unsaid, the screen as before"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "SSCTR-RWS-B-01 / SEC-R2-01 at the boundary: a symptom stop the athlete reported survives a HealthKit import and re-sync of the same run; the screen is still asked"
+    }
+   ],
+   "safetyPoint": "a stop signal survives duplicates, updates and corrections"
+  },
+  {
+   "id": "H21",
+   "file": "v1core-successor-lineage.test.mjs",
+   "title": "SUCCESSOR closure-2 · lineage matrix, EASY: the word that withholds each run, the reports in force and the history reference, by the runtime and by the oracle",
+   "line": 203,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "closure-2 successor of the lineage matrix (EASY); NCC F1 (scenario 21) then O-1 (row 19: DISTANCE_DISPUTED, not REPORT_NOT_CARRIED)",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "ccbc4269f8fc6597850846b691d87a6924599dd6c4ca3a471ec805f342aeea3c",
+   "belongsTo": {
+    "commit": "985c018",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "07301f3",
+    "relation": "AT"
+   },
+   "supersededBy": "07301f3: Normalization Consistency F1+F2+F3 (amends r6-provenance) (audits/v1-core-ncc-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H22",
+   "file": "v1core-successor-lineage.test.mjs",
+   "title": "SUCCESSOR closure-2 · lineage matrix, LONG: the word that withholds each run, the reports in force and the history reference, by the runtime and by the oracle",
+   "line": 203,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "closure-2 successor of the lineage matrix (LONG); O-1 row 19",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "ccbc4269f8fc6597850846b691d87a6924599dd6c4ca3a471ec805f342aeea3c",
+   "belongsTo": {
+    "commit": "b71e9f8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1d418d1",
+    "relation": "AT"
+   },
+   "supersededBy": "1d418d1: O-1: a report refused only for disputing its execution is kept as a voice of the flagged row (audits/v1-core-o1-2026-11-19/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H23",
+   "file": "v1final-freeze-record.test.mjs",
+   "title": "REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: RC-1 preserved but for the two declared amendments; nothing else changed since 89796df; the bundle is the bound sources; the record holds",
+   "line": 11,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: RC-1 preserved but for two declared amendments; nothing else changed since 89796df",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "af216c3fcdc99b50b0d4deed52eba3718b1f6b5d464fd64a197f62702544a182",
+   "belongsTo": {
+    "commit": "6482749",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "1c5d29b",
+    "relation": "AT"
+   },
+   "supersededBy": "1c5d29b: V1HR5 candidate: five zones amend src/v1-run-calibration.mjs, bound by the final freeze (audits/v1-five-zone-heart-rate-2026-11-25/FINAL_REPORT.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H24",
+   "file": "v1hr5-amendment-record.test.mjs",
+   "title": "REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1: the amendment verifier passes; the original record is untouched; one declared amended file",
+   "line": 18,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1 verifier passes (binds the revision-1 bytes)",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "7c9f38f7bf03cc58d2a1890ae544f7b8ac614fcaeb604418507e822fcbd18a31",
+   "belongsTo": {
+    "commit": "f363a25",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "23f6a86",
+    "relation": "AT"
+   },
+   "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "successor of v1hr5r-successors.test.mjs (AMENDMENT-1 and the original freeze fail only on what amendment-2 declares): the same, with test infrastructure allowed"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+    },
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H25",
+   "file": "v1hr5-amendment-record.test.mjs",
+   "title": "REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE on this line: it fails by design, and only on what the amendment declares",
+   "line": 26,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "the final freeze fails only on what AMENDMENT-1 declares",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "7c9f38f7bf03cc58d2a1890ae544f7b8ac614fcaeb604418507e822fcbd18a31",
+   "belongsTo": {
+    "commit": "f363a25",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "23f6a86",
+    "relation": "AT"
+   },
+   "supersededBy": "23f6a86: V1HR5R (FIVE-ZONE-AMENDMENT-2): the composed entry carries the heart-rate profile (audits/v1-hr5-runna-parity-2026-11-25/TEST_REPORT.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "successor of v1hr5r-successors.test.mjs (AMENDMENT-1 and the original freeze fail only on what amendment-2 declares): the same, with test infrastructure allowed"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H26",
+   "file": "v1int-authorship.test.mjs",
+   "title": "C-NCC-3 (b), SEC-INT-01: a delivery carries the last screen of the athlete exactly; when the engine still asks (a screen no longer current) the workout is not recorded and the queue is told; QRE-INT-02 (open, routed) pinned",
+   "line": 141,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "C-NCC-3 (b) / SEC-INT-01 tm-5: QRE-INT-02 'as it stands' (open, routed) pinned; the blocker closure closed QRE-INT-02 (a workout the engine asked about is not recorded and its receipt is no report in force)",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "173eafaff140e7462fa9602764920b3029d9db22f6f10167b16c0928e2cfc654",
+   "belongsTo": {
+    "commit": "fd1d8fd",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "6e85222",
+    "relation": "AT"
+   },
+   "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
+   "successor": {
+    "file": "v1bc-blocker-closure.test.mjs",
+    "title": "QRE-INT-02 (device route, successor of tm-5): a workout the engine asked about (a screen no longer current) is not recorded, its receipt is no report in force; answered and re-delivered it is recorded once and carried"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1bc-blocker-closure.test.mjs",
+     "title": "QRE-INT-02 (athlete route, QRE p03b): a form answered ASK, then sent again with the screen: recorded once, carried; a stop it declared while asked is still screened"
+    }
+   ],
+   "safetyPoint": "a screen no longer current never lets a workout through"
+  },
+  {
+   "id": "H27",
+   "file": "v1int-cycle1.test.mjs",
+   "title": "QRE-INT-11 A04L: the limits are the reviewed values (a change to them is a reviewed change, not a silent one)",
+   "line": 109,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "QRE-INT-11 A04L: the admission limits are the reviewed values; SEC-INT-07 (reviewed) adds safetyExcess: 3",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "71675868c31197558516a016ebaef0bd92d513e31e196e2067428c7a3cf379fb",
+   "belongsTo": {
+    "commit": "fd1d8fd",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "6e85222",
+    "relation": "AT"
+   },
+   "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
+   "successor": {
+    "file": "v1bc-blocker-closure.test.mjs",
+    "title": "successor of QRE-INT-11 A04L: the limits are the reviewed values, with safetyExcess (SEC-INT-07) added"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1bc-blocker-closure.test.mjs",
+     "title": "SEC-INT-07: past the correction and per-day limits, a report that states a safety signal is still admitted (at most safetyExcess more) and the screen asks; a plain report past the limit is refused"
+    }
+   ],
+   "safetyPoint": "a safety signal is admitted past the limits"
+  },
+  {
+   "id": "H28",
+   "file": "v1int-successor.test.mjs",
+   "title": "V1INT-BOUNDARY-SUCCESSOR-1: FREEZE-7 preserved (49/49 bound files); only src/boundary/custody.mjs amended since e44d855; the record holds",
+   "line": 11,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "V1INT-BOUNDARY-SUCCESSOR-1: FREEZE-7 preserved, only custody.mjs amended since e44d855",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "887f23e96a55f12cd6ef30c3eac5de722d2050bfb8f4d20741fc46a43f486a33",
+   "belongsTo": {
+    "commit": "fd1d8fd",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "6e85222",
+    "relation": "AT"
+   },
+   "supersededBy": "6e85222: V1 blocker closure: QRE-INT-02 (engine), SEC-INT-07 (LIMITS.safetyExcess), RC-1 record (audits/v1-blocker-closure-2026-11-24/FINAL_REPORT.md (by-design table))",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H29",
+   "file": "v1rc-calibration.test.mjs",
+   "title": "V1RC COACHINGCORE-V1-FREEZE-1 is preserved: every file it binds is byte-identical here",
+   "line": 325,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "V1RC: COACHINGCORE-V1-FREEZE-1 byte-identical",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "55b473293d0d82f2b7f9745e3a1cb3f45fe92f0f6145ce4b6654a93b9d72d88d",
+   "belongsTo": {
+    "commit": "c8104c1",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "bcac30d",
+    "relation": "AT"
+   },
+   "supersededBy": "bcac30d: V1RWS candidate (run formats) amends files COACHINGCORE-V1-FREEZE-1 binds (audits/v1-run-workout-structure-2026-11-13)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H30",
+   "file": "v1rfc-cycle.test.mjs",
+   "title": "QRE-RFC-A-03 closed: after a restart, a row of the previous plan is no execution of the new plan's session of the same id",
+   "line": 101,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-RFC-A-03: the test asserted that the new plan's session ids are the old plan's (the collision it defended against); QRE-AIF-02 gives a restart its own namespace, so the ids no longer collide",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "943ece8846e2dcc3c347dc62a05d770714a90d73a4698f30ab3cee6176ec926a",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rfc-cycle.test.mjs",
+    "title": "SUCCESSOR closure-2 · QRE-RFC-A-03 closed: after a restart, a row of the previous plan is no execution of the new plan's session of the same id"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "QRE-RFC-A-03 / QRE-AIF-02 at the boundary: after a restart, no session id of the new plan is an id of the old plan, and the old plan's row is no execution of the new plan"
+    }
+   ],
+   "safetyPoint": "a row of another plan never credited"
+  },
+  {
+   "id": "H31",
+   "file": "v1rfc-evidence.test.mjs",
+   "title": "adherence is not pace evidence: a completed session the run formats withhold is credited whole and votes in nothing (E-01)",
+   "line": 52,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "adherence/E-01: the run was withheld (REPORT_NOT_CARRIED) because the frozen engine's re-sync row no longer carried the athlete's report (E-1); with E-1 fixed the row carries it, the reading is the merged row's",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "4731ac60cdc3cc3598db316060fac98693d161e2c75e77ae832c06602e90e97d",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rfc-evidence.test.mjs",
+    "title": "SUCCESSOR closure-2 · adherence is not pace evidence: a completed session the run formats withhold is credited whole and votes in nothing (E-01)"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H32",
+   "file": "v1rfc-evidence.test.mjs",
+   "title": "LIMIT, open (hard gate E-1 of a real integration): a device re-sync sent as a correction erases the athlete's answers from the engine's row",
+   "line": 234,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "LIMIT, open (hard gate E-1): a device re-sync erased the athlete's answers from the engine's row — closed by E-1 (0b8e45a)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "4731ac60cdc3cc3598db316060fac98693d161e2c75e77ae832c06602e90e97d",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rfc-evidence.test.mjs",
+    "title": "SUCCESSOR closure-2 · LIMIT CLOSED (hard gate E-1 of a real integration, closure-2): a device re-sync sent as a correction keeps the athlete's answers on the engine's row, as the merged row before it"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary (athlete first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row"
+    },
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary (device first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row"
+    }
+   ],
+   "safetyPoint": "HARD GATE E-1 — closed, verified through the integration API"
+  },
+  {
+   "id": "H33",
+   "file": "v1rws-e01.test.mjs",
+   "title": "QRE-RWS-E-01 reproduced and closed: a row with no distance whose own report gives a reason of the distance is still withheld when a report in force is not on it, and its work pace no longer moves the threshold band",
+   "line": 74,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-RWS-E-01 E-01 patch: the compensation for E-1 (wholeRow REPORT_NOT_CARRIED); with E-1 fixed the corrected row carries every report in force",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rws-e01.test.mjs",
+    "title": "SUCCESSOR closure-2 · QRE-RWS-E-01 reproduced and closed: a row with no distance whose own report gives a reason of the distance is still withheld when a report in force is not on it, and its work pace no longer moves the threshold band"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H34",
+   "file": "v1rws-e01.test.mjs",
+   "title": "E-01 in every order of arrival, with a late correction, and on a merged row that does not carry a report the engine refused",
+   "line": 150,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "E-01 in every order (compensation for E-1)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rws-e01.test.mjs",
+    "title": "SUCCESSOR closure-2 · E-01 in every order of arrival, with a late correction, and on a merged row that does not carry a report the engine refused"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H35",
+   "file": "v1rws-e01.test.mjs",
+   "title": "E-01 on the other readers of the row: the laps of a native session are no pace evidence, and the run is no sizing source of a later run",
+   "line": 177,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "E-01 on the other readers (compensation for E-1)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rws-e01.test.mjs",
+    "title": "SUCCESSOR closure-2 · E-01 on the other readers of the row: the laps of a native session are no pace evidence, and the run is no sizing source of a later run"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H36",
+   "file": "v1rws-e01.test.mjs",
+   "title": "E-01 from stored records, in another order, by the exported calibration, on a rebuilt history, after a restart and in an answer that delivers no session; with the boundary off nothing is changed",
+   "line": 213,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "E-01 from stored records (compensation for E-1; its namespace part was fixed in r6-index, QRE-AIF-02)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "0fb768e78868384f25f53e2187d0c404a05d7b3c3b102dac81274a79686dddc3",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-rws-e01.test.mjs",
+    "title": "SUCCESSOR closure-2 · E-01 from stored records, in another order, by the exported calibration, on a rebuilt history, after a restart and in an answer that delivers no session; with the boundary off nothing is changed"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H37",
+   "file": "v1rws-engine.test.mjs",
+   "title": "I10, V6: every file the two earlier freezes bind is byte-identical here except the one amended file; its base is the recorded bytes and its diff is the reader alone",
+   "line": 157,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "V1RWS I10/V6: the two earlier freezes byte-identical but the one amended file",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "1bd3abd0bd1452d23a3113a5cbec73c73308b548822a1ba8b94c9f1f6d54d499",
+   "belongsTo": {
+    "commit": "2dfa216",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "21838cb",
+    "relation": "AT"
+   },
+   "supersededBy": "21838cb: V1STR candidate amends a file the V1RC and V1RWS freezes bind (audits/v1-strength-corrections-2026-11-16)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H38",
+   "file": "v1rws-final-fix.test.mjs",
+   "title": "QRE-RWS-C-01: a duplicate, a late correction, a later re-reading, a stored record and a new plan leave the calibration where the facts of the run put it",
+   "line": 116,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-RWS-C-01: the corrected row's withholding word was REPORT_NOT_CARRIED (E-1 compensation); with E-1 fixed it is the merged row's (DISTANCE_DISPUTED)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "e04ac56ad41463ececbd9982d7923ed971308219075fbdf1d8e059451a4abdd9",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-final-fix.test.mjs",
+    "title": "SUCCESSOR closure-2 · QRE-RWS-C-01: a duplicate, a late correction, a later re-reading, a stored record and a new plan leave the calibration where the facts of the run put it"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "QRE-RWS-B-01 / C-01 at the boundary: the same workout imported again, and the same form sent again, are duplicates: nothing recorded, the calibration unchanged"
+    }
+   ],
+   "safetyPoint": "calibration not moved by duplicates or late corrections"
+  },
+  {
+   "id": "H39",
+   "file": "v1rws-fix-forward.test.mjs",
+   "title": "QRE-RWS-B-01: a duplicate, a late correction and a later re-reading leave the calibration where the facts of the run put it",
+   "line": 82,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-RWS-B-01 (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "ec26b27a25dd014cfe3e339ad84b5e396b4d78d252caa40e8a67656d04440d1e",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-fix-forward-b01.test.mjs",
+    "title": "SUCCESSOR closure-2 · QRE-RWS-B-01: a duplicate, a late correction and a later re-reading leave the calibration where the facts of the run put it"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "QRE-RWS-B-01 / C-01 at the boundary: the same workout imported again, and the same form sent again, are duplicates: nothing recorded, the calibration unchanged"
+    }
+   ],
+   "safetyPoint": "calibration not moved by duplicates or late corrections"
+  },
+  {
+   "id": "H40",
+   "file": "v1rws-fix-forward.test.mjs",
+   "title": "SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; only the screen answered after the stop clears it",
+   "line": 285,
+   "category": "A",
+   "kind": "CONTRACT_SUPERSEDED_BY_REVIEWED_CHANGE",
+   "contract": "SSCTR-RWS-B-01: the signal survives time, duplicates, updates and corrections; E-1 cycle 1 then O-1 keep the dispute in every order",
+   "reason": "Asserts a contract that a later reviewed, versioned change replaced; the successor asserts the contract in force.",
+   "fileSha256": "ec26b27a25dd014cfe3e339ad84b5e396b4d78d252caa40e8a67656d04440d1e",
+   "belongsTo": {
+    "commit": "f3a8871",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "430c493",
+    "relation": "AT"
+   },
+   "supersededBy": "430c493: Core Safety & Lifecycle cycle 1 (QRE-CORE-01, E-1 composition) (audits/v1-core-safety-lifecycle-2026-11-18/CYCLE1.md; successor ledger of closure-2)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-fix-forward.test.mjs:105 (SSCTR-RWS-B-01): the device measured 30 min, the athlete corrects to 100: the dispute stays in every order and named id; the symptom is not unsaid, the screen as before"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "SSCTR-RWS-B-01 / SEC-R2-01 at the boundary: a symptom stop the athlete reported survives a HealthKit import and re-sync of the same run; the screen is still asked"
+    }
+   ],
+   "safetyPoint": "warning signal never disappears"
+  },
+  {
+   "id": "H41",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "lineage matrix, EASY: the word that withholds each run, the reports in force and the history reference, by the runtime and by the oracle",
+   "line": 152,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "lineage matrix EASY (E-1 compensation: REPORT_NOT_CARRIED); then NCC and O-1",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H42",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "lineage matrix, LONG: the word that withholds each run, the reports in force and the history reference, by the runtime and by the oracle",
+   "line": 152,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "lineage matrix LONG (E-1 compensation); then O-1",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-o1-successors.test.mjs",
+    "title": "successor of v1core-successor-lineage.test.mjs:205 (NCC successor, scenario 21; O-1 row 19): the matrix passes whole in both families, row 19 reading as rows 08/10"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H43",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "QRE-RWS-D-01 reproduced and closed: the import's re-sync of its part of a merged row no longer hands the first file over the whole minutes to a pace reader",
+   "line": 172,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "QRE-RWS-D-01 (E-1 compensation: the re-synced row held only the import's part)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · QRE-RWS-D-01 reproduced and closed: the import's re-sync of its part of a merged row no longer hands the first file over the whole minutes to a pace reader"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H44",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "a late re-sync, in the middle of the following week, withholds the run from that review on",
+   "line": 196,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "a late re-sync withheld the run (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · a late re-sync, in the middle of the following week, withholds the run from that review on"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary, late: a re-sync in the middle of the following week still keeps the athlete's answers and adds no execution"
+    }
+   ]
+  },
+  {
+   "id": "H45",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "what the athlete said that is no distance fact (heat, walk breaks) is not lost with the row: the three orders, and the cost on the athlete who said nothing",
+   "line": 205,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "heat / walk breaks not lost with the row (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · what the athlete said that is no distance fact (heat, walk breaks) is not lost with the row: the three orders, and the cost on the athlete who said nothing"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "QRE-RWS-F-01 (still open in the engine, pinned by v1rfc-evidence) is not reachable through the boundary: a device report stating conditions is refused, and the athlete's heat stays on the merged row"
+    }
+   ]
+  },
+  {
+   "id": "H46",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "a race is read only from a row that carries every report in force: through the engine to race week, in the three orders, and on the judge's rows",
+   "line": 221,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "a race read only from a row carrying every report in force (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · a race is read only from a row that carries every report in force: through the engine to race week, in the three orders, and on the judge's rows"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H47",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "L4-e: the history reference and the next long run after a correction or a conflict between two sources, on an easy run and on a long run",
+   "line": 404,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "L4-e history reference after a correction (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · L4-e: the history reference and the next long run after a correction or a conflict between two sources, on an easy run and on a long run"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H48",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "the reading is the same from stored records, on a rebuilt history, after a restart, and with the boundary off nothing is changed",
+   "line": 533,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "the same reading from stored records (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · the reading is the same from stored records, on a rebuilt history, after a restart, and with the boundary off nothing is changed"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H49",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "an answer that delivers no session reads the lineage as every other: a queued review, earlier than the record, that brings the import's re-sync",
+   "line": 573,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "an answer that delivers no session (E-1 compensation)",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · an answer that delivers no session reads the lineage as every other: a queued review, earlier than the record, that brings the import's re-sync"
+   },
+   "alsoCoveredBy": []
+  },
+  {
+   "id": "H50",
+   "file": "v1rws-lineage.test.mjs",
+   "title": "HARD GATE OF A REAL INTEGRATION, NOT MET HERE (engine finding E-1, SSCTR item L5): a device re-sync still erases the athlete's answers from the frozen engine's row",
+   "line": 593,
+   "category": "B",
+   "kind": "PINNED_DEFECT_CLOSED_LATER",
+   "contract": "HARD GATE E-1 / SSCTR L5 'NOT MET HERE': pinned that a device re-sync still erased the athlete's answers ([UNKNOWN, UNKNOWN, 0]); at HEAD the row keeps them ([ADVERSE, HARDER, 1])",
+   "reason": "Pins a defect that was open on its line; a later versioned amendment closed it, so the pinned (unsafe or compensating) expectation no longer holds. The successor asserts the closed behaviour.",
+   "fileSha256": "2d0f294ae2400984677615989dafe18bc9a2cf7ffcd08da97fc2594e1cb6d502",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1core-successor-lineage.test.mjs",
+    "title": "SUCCESSOR closure-2 · HARD GATE OF A REAL INTEGRATION, restated (engine finding E-1, SSCTR item L5): at the Core a device re-sync keeps the athlete's answers, as the merged row; real HealthKit stays open (C-C5)"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary (athlete first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row"
+    },
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary (device first): a HealthKit re-sync of a merged run keeps the athlete's effort and recovery in the row, the week's adverse count and one row"
+    },
+    {
+     "file": "v1san-boundary-safety.test.mjs",
+     "title": "E-1 at the boundary, late: a re-sync in the middle of the following week still keeps the athlete's answers and adds no execution"
+    }
+   ],
+   "safetyPoint": "HARD GATE E-1 — closed, verified through the integration API and by mutation"
+  },
+  {
+   "id": "H51",
+   "file": "v1str-freeze.test.mjs",
+   "title": "the four earlier freezes are preserved on this line, and the one amended file is the authorized bytes and diff",
+   "line": 15,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "V1STR line: four earlier freezes preserved",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "6149e8e3084de8e1cf07d8ccfd75b22cc3092d0da927c8c53b42b29868d774d9",
+   "belongsTo": {
+    "commit": "b6a5df3",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "0b8e45a",
+    "relation": "AT"
+   },
+   "supersededBy": "0b8e45a: Core Safety & Lifecycle: E-1 fixed in r6-provenance (as-if invariant), QRE-AIF-02 (restart namespace), QRE-AIF-01 (composed entry) (audits/v1-core-safety-lifecycle-2026-11-18 (REGRESSION.md); successors audits/v1-core-safety-closure-2-2026-11-18/successors/SUCCESSOR_LEDGER.json)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H52",
+   "file": "v1hr5r-successors.test.mjs",
+   "title": "REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2: the verifier passes; both earlier records untouched; the run calibration byte-identical",
+   "line": 22,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "FIVE-ZONE-AMENDMENT-2: nothing else changed in CoachingCore since 4850560 (tests included); this mission adds test infrastructure only",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "5ef257fce338aa4b08dda9138e2bd8f8fbad6d81ab357777885a9c275d7e70ea",
+   "belongsTo": {
+    "commit": "90452b8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "90452b8",
+    "relation": "FIRST_COMMIT_AFTER"
+   },
+   "supersededBy": "90452b8: V1 test-suite sanitization: test infrastructure added (no runtime byte changed) (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "successor of v1hr5r-successors.test.mjs (the amendment-2 verifier passes): it fails, if at all, only because test infrastructure was added or changed"
+   },
+   "alsoCoveredBy": [
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "the runtime in force is the bytes REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds: every consumed file, nothing added or removed, the amended bundle"
+    },
+    {
+     "file": "v1san-runtime-integrity.test.mjs",
+     "title": "every record is its sealed bytes: the amendment chain at its own commits, and every record under v1/ as of 90452b8"
+    }
+   ]
+  },
+  {
+   "id": "H53",
+   "file": "v1hr5r-successors.test.mjs",
+   "title": "successor of v1hr5-amendment-record.test.mjs: REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1 fails by design, and only on what the second amendment declares",
+   "line": 30,
+   "category": "A",
+   "kind": "FREEZE_RECORD_OF_ITS_LINE",
+   "contract": "the earlier verifiers fail only on what amendment-2 declares; they now also name the test infrastructure this mission adds",
+   "reason": "Verifies the record of its own line: every later versioned amendment changes files it binds, so it fails on every later line by design. The record stays byte-identical and is executed green at its own commit.",
+   "fileSha256": "5ef257fce338aa4b08dda9138e2bd8f8fbad6d81ab357777885a9c275d7e70ea",
+   "belongsTo": {
+    "commit": "90452b8",
+    "meaning": "the last commit (first parent, touching CoachingCore) where it passes, in its own tree"
+   },
+   "firstFailedAt": {
+    "commit": "90452b8",
+    "relation": "FIRST_COMMIT_AFTER"
+   },
+   "supersededBy": "90452b8: V1 test-suite sanitization: test infrastructure added (no runtime byte changed) (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md)",
+   "successor": {
+    "file": "v1san-runtime-integrity.test.mjs",
+    "title": "successor of v1hr5r-successors.test.mjs (AMENDMENT-1 and the original freeze fail only on what amendment-2 declares): the same, with test infrastructure allowed"
+   },
+   "alsoCoveredBy": []
+  }
+ ]
+}

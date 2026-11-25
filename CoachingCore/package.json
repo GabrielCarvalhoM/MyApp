@@ -7,7 +7,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test",
+    "test": "node scripts/suite-active.mjs",
+    "test:historical": "node scripts/suite-historical.mjs",
+    "test:all-raw": "node --test",
     "compile:authority": "node scripts/compile-authority.mjs",
     "simulate": "node scripts/simulate-r6.mjs",
     "verify": "node scripts/verify-r6.mjs",
