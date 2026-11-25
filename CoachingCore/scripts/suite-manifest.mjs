@@ -4,6 +4,8 @@
 // - The exact-title pattern: a title is matched whole, never as a substring of another title.
 import fs from 'node:fs';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 
 export const MANIFEST='test/HISTORICAL_TESTS.json';
 export const SCHEMA='REPMILE-V1-HISTORICAL-TESTS-1';
@@ -61,3 +63,32 @@ export function parseJunit(xml){
 export function junitCounts(xml){const o={};for(const k of ['tests','pass','fail','cancelled','skipped','todo']){const m=xml.match(new RegExp(`<!-- ${k} (\\d+) -->`));o[k]=m?Number(m[1]):null;}return o;}
 /** An anchored, fully escaped pattern for one exact title. */
 export const exactPattern=title=>'^'+title.replace(/[\\^$.|?*+()[\]{}/]/g,'\\$&')+'$';
+
+// ---- The historical-layer record (QRE_SAN_R1 QRE-SAN-04, QRE_SAN_R2 QRE-SAN-10/-11) ----
+// The record is a file written by exactly ONE commit and never modified: git's history proves it, so no commit hash has to be written into a
+// file the record itself binds. A change to the layer is a new record file (a new version), never an edit. The record binds the manifest, the
+// suite scripts, package.json, the record test, every test file holding a successor or an alsoCoveredBy test, the helper modules and audit
+// harness they import, and the verifier scripts they run. Both the active runner and test/v1san-record.test.mjs check it.
+export const LAYER_RECORD='audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_LAYER_RECORD.json';
+export const RECORD_TEST={file:'v1san-record.test.mjs',title:'the historical-layer record: written once, never modified, and the layer is the bytes it binds'};
+export const LAYER_CORE=Object.freeze(['CoachingCore/test/HISTORICAL_TESTS.json','CoachingCore/package.json','CoachingCore/scripts/suite-active.mjs','CoachingCore/scripts/suite-historical.mjs','CoachingCore/scripts/suite-manifest.mjs','CoachingCore/test/'+RECORD_TEST.file]);
+const shaFile=f=>createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+/** The errors of the historical-layer record against the tree at root (the repository root); [] when it holds. */
+export function layerRecordErrors(root){
+ const abs=path.join(root,LAYER_RECORD),e=[];
+ if(!fs.existsSync(abs))return ['the historical-layer record is missing: '+LAYER_RECORD];
+ let commits;
+ try{commits=execFileSync('git',['log','--format=%H','--',LAYER_RECORD],{cwd:root,encoding:'utf8'}).split('\n').filter(Boolean);}catch{return ['git history is needed to verify the historical-layer record'];}
+ if(commits.length!==1)e.push(`the historical-layer record must be written by exactly one commit and never modified (${commits.length} commits touch it): a change to the layer is a new record file`);
+ else{const sealed=execFileSync('git',['show',`${commits[0]}:${LAYER_RECORD}`],{cwd:root,maxBuffer:1<<26});
+  if(createHash('sha256').update(sealed).digest('hex')!==shaFile(abs))e.push('the historical-layer record differs from the bytes its commit wrote');}
+ let rec;try{rec=JSON.parse(fs.readFileSync(abs,'utf8'));}catch{return [...e,'the historical-layer record is not JSON'];}
+ const files=rec?.files&&typeof rec.files==='object'?rec.files:{};
+ if(rec.filesDigest!==createHash('sha256').update(JSON.stringify(Object.fromEntries(Object.entries(files).sort()))).digest('hex'))e.push('the record is not internally consistent (filesDigest)');
+ for(const f of LAYER_CORE)if(!Object.hasOwn(files,f))e.push('the record does not bind '+f);
+ let m=null;try{m=readManifest(path.join(root,'CoachingCore'));}catch{}
+ if(m){if(m.entries.length!==rec.historicalEntries)e.push(`the manifest has ${m.entries.length} entries, the record ${rec.historicalEntries}`);
+  for(const x of m.entries.flatMap(y=>[y.successor,...(y.alsoCoveredBy??[])]))if(!Object.hasOwn(files,'CoachingCore/test/'+x.file))e.push('a successor file is not bound: '+x.file);}
+ for(const [f,h] of Object.entries(files)){const p=path.join(root,f);if(!fs.existsSync(p))e.push('a bound file is missing: '+f);else if(shaFile(p)!==h)e.push('the historical layer changed without a new record: '+f);}
+ return e;
+}

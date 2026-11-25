@@ -8,7 +8,8 @@
 //   FAIL, at the assertion line the manifest pins (failsAt.line, QRE-SAN-03). A historical test that passes, or fails elsewhere, means the current
 //   tree changed in a way the manifest does not describe: for a pinned defect, the defect may be back. Each is green in its own context, at
 //   the commit it belongs to (`npm run test:historical`).
-// - Every successor and alsoCoveredBy test the manifest names must pass.
+// - Every successor and alsoCoveredBy test the manifest names must pass, and so must the historical-layer record test; the record itself is
+//   checked before the run (QRE-SAN-10).
 // The full spec output goes to a log file (its path is printed); stdout carries the verdict and every active failure.
 // Usage (from CoachingCore): node scripts/suite-active.mjs [--junit <file>] [--log <file>]
 import fs from 'node:fs';
@@ -17,7 +18,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {readManifest,manifestErrors,parseJunit,junitCounts,MANIFEST} from './suite-manifest.mjs';
+import {readManifest,manifestErrors,parseJunit,junitCounts,MANIFEST,layerRecordErrors,RECORD_TEST} from './suite-manifest.mjs';
 
 const CORE=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const argv=process.argv.slice(2),val=k=>argv.includes(k)?argv[argv.indexOf(k)+1]:null;
@@ -28,6 +29,9 @@ for(const e of manifest.entries){const f='test/'+e.file;
  if(!fs.existsSync(path.join(CORE,f)))errors.push(`${e.id}: ${f} is missing (a historical test is kept, never deleted)`);
  else if(sha(f)!==e.fileSha256)errors.push(`${e.id}: ${f} is not the pinned bytes (a historical test is never edited to pass; write a successor)`);}
 if(errors.length){for(const e of errors)console.error('HISTORICAL: '+e);process.exit(1);}
+// QRE-SAN-10: the historical layer is the bytes its record binds, checked here before anything runs (and again by the record test, which must run).
+for(const e of layerRecordErrors(path.resolve(CORE,'..')))errors.push(e);
+if(errors.length){for(const e of errors)console.error('RECORD: '+e);process.exit(1);}
 
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'suite-active-'));
 const junit=val('--junit')?path.resolve(val('--junit')):path.join(tmp,'junit.xml'),log=val('--log')?path.resolve(val('--log')):path.join(tmp,'spec.txt');
@@ -56,6 +60,7 @@ for(const e of manifest.entries)for(const [role,x] of [['successor',e.successor]
  const hits=seen.get(key(x.file,x.title))??[];
  if(hits.length!==1)problems.push(`${e.id}: ${role} found ${hits.length} times: ${x.file}: "${x.title.slice(0,100)}"`);
  else if(hits[0].status!=='passed')problems.push(`${e.id}: ${role} ${hits[0].status}: ${x.file}: "${x.title.slice(0,100)}"`);}
+{const hits=seen.get(key(RECORD_TEST.file,RECORD_TEST.title))??[];if(hits.length!==1||hits[0].status!=='passed')problems.push(`the historical-layer record test must run once and pass (${RECORD_TEST.file}): found ${hits.length}, ${hits[0]?.status??'absent'}`);}
 // ---- node's own counters, against this accounting ----
 const accounted=all.filter(c=>c.status==='failed').length;
 if(counts.fail!==accounted)problems.push(`node counts ${counts.fail} failures, ${accounted} are accounted for here (a failure outside a testcase, e.g. a parent after its subtests)`);

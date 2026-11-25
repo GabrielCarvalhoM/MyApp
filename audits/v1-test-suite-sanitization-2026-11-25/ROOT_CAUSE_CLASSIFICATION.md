@@ -6,13 +6,13 @@ All athletes and records are synthetic. Per-test rows are in [RESOLUTION_MATRIX.
 
 | Category | Meaning (mission) | Tests | Of the 51 |
 |---|---|---|---|
-| **A** | contract or record of an earlier line, replaced by a versioned amendment | 31 (H52, H53 included) | 29 |
-| **B** | the test pinned a defect, or the compensation for one, as its line's behaviour; a later versioned amendment corrected it | 22 | 22 |
+| **A** | contract or record of an earlier line, replaced by a versioned amendment | 30 (H52, H53 included) | 28 |
+| **B** | the test pinned a defect, or the compensation for one, as its line's behaviour; a later versioned amendment corrected it | 23 | 23 |
 | **C** | defect still reproducible | **0** | 0 |
 | **D** | infrastructure or environment | **0** | 0 |
 | **E** | known blocker kept on purpose | **0** among the failures (the open limits are passing tests; §E) | 0 |
 
-**51 = 29 A + 22 B.** No failure is a defect of the current runtime. That conclusion does not rest on the failures having persisted across versions. It rests on four checks, made for every test:
+**51 = 28 A + 23 B** (H26 was re-filed from A to B in the review cycle: it pinned QRE-INT-02 as an open defect, QRE-SAN-09). No failure is a defect of the current runtime. That conclusion does not rest on the failures having persisted across versions. It rests on four checks, made for every test:
 
 1. **Own context.** Each test is replayed at all 73 first-parent commits that touch `CoachingCore`. Each one passes at a commit of its own line and first fails at a named amendment commit ([`evidence/provenance-matrix.json`](evidence/provenance-matrix.json)). The historical suite re-runs each at that commit: **53/53 pass**.
 2. **Declared change.** That amendment is recorded, with its reason, in its mission's audit and successor ledger (`supersededBy`).
@@ -28,7 +28,7 @@ All athletes and records are synthetic. Per-test rows are in [RESOLUTION_MATRIX.
 | **RC-3** | **C-F01-1 r2 (`3f0b04f`).** The restart reads what the record shows took place. QRE-F01-01 pinned the open behaviour: with reports present but none in force, the stated 600 min / 7 days stayed unbounded. It is now bounded to the record, 0/0: the *bound* is lower, never higher. Not every consequence is more conservative, and SSCTR authorized each (C-R2-1, discharged in SSCTR_R2_R2): a disputed last session sets a shorter pause, which can lift the start out of the C-Q08-2 return floor (RESTART at 45 min → EASY_CURRENT at 80 in SSCTR's probe), and the class mapping is non-monotonic (SSCTR_R2_R1 O-1). SSCTR_F01_R1_ADDENDUM (b) pinned "today's behaviour, NOT a decided reading": the SB-1 question was not asked after a disputed-amount session. It is now asked (D1). | H03 H04 | B |
 | **RC-4** | **SEC-R2-03/-04 (`4e8cffe`).** A refused correction retires nothing. SEC-R2-01's first assertion pinned the orphan that the normalizer used to write. The orphan is no longer written, so the session stays in force and SB-1 reads the row in force. | H09 | B |
 | **RC-5** | **The conflict-voice model.** NCC F1–F3 (`07301f3`). O-1 (`1d418d1`): a report refused for disputing its execution is kept as a voice of the flagged row. Safety Continuity C-O1-2 (`ec811c1`): when every well-formed voice says a disputed session took place, it is an occurrence for the pause, never minutes or credit. These are **SSCTR decisions A and C** (SSCTR_O1_R1). The revalidation items HQ-SSCTR-O1-02 and HQ-SSCTR-SC-01 were *proposed* by SSCTR and are **not appended** to the funded-human revalidation queue. C-O1-2 moves two readings in the less conservative direction, both authorized: the restart pause is shorter by the disputed session, and the strength first exposure at restart goes 19 → 27 min in the shape where the disputed run is the only recent row (O-SC-S1). O-1's lineage effects are on record in its ledger's `sporting` field (row 19: completion credit COMPLETED → PARTIAL, then LONG w+2 QUALITY 34 → EASY 65 and EASY w+3 EASY 70 → 65; NCC's interim credit for scenario 21 reversed to CONFLICTED). | H06 H07 H08 H13 H14 H15 H16 H20 H21 H22 | A |
-| **RC-6** | **V1 blocker closure (`6e85222`), reviewed.** QRE-INT-02 closed: a workout the engine asked about is not recorded, and its receipt is no report in force. tm-5 had pinned it "as it stands". SEC-INT-07 adds `LIMITS.safetyExcess: 3`, so a report that states a safety signal is still admitted past the limits. | H26 H27 | A |
+| **RC-6** | **V1 blocker closure (`6e85222`), reviewed.** QRE-INT-02 closed: a workout the engine asked about is not recorded, and its receipt is no report in force. tm-5 had pinned it "as it stands". SEC-INT-07 adds `LIMITS.safetyExcess: 3`, so a report that states a safety signal is still admitted past the limits. | H26 (B), H27 (A) | B, A |
 | **RC-7** | **FIVE-ZONE-AMENDMENT-2 (`23f6a86`).** The composed entry carries `heartRateProfileRecord` and `heartRateProfileDeclared` and resolves the five-zone reading. QRE-AIF-01's byte-for-byte comparison with the entry below therefore no longer holds as written. Its successor holds with those keys set aside. | H10 | A |
 
 ### Why B and not A for RC-2, RC-3 and RC-4
