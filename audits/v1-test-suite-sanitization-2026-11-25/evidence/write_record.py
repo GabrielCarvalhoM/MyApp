@@ -23,7 +23,7 @@ rec = {
     'historicalEntries': len(m['entries']),
     'successorFiles': succ,
     'files': bound,
-    'filesDigest': hashlib.sha256(json.dumps(bound, sort_keys=True).encode()).hexdigest(),
+    'filesDigest': hashlib.sha256(json.dumps(bound, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
 }
 open(os.path.join(MISSION, 'SANITIZATION_RECORD.json'), 'w').write(json.dumps(rec, indent=1) + '\n')
 print(f"{len(bound)} files bound ({len(succ)} successor files)")
