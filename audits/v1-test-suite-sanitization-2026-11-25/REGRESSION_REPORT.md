@@ -14,6 +14,8 @@ Final runner (after the review cycle): one unfiltered run, accounted from junit.
 | **Historical suite** (`npm run test:historical`) | 53 | **53** | 0 | each at its own commit (16 commits); file at that commit = pinned bytes; commit order checked |
 | `npm run test:all-raw` (the former `npm test`) | 2005 | 1952 | 53 | exactly the delegated set |
 
+The final numbers are from `npm test` on `2a865f8`, the record commit (`evidence/final-active.txt`).
+
 The 20 added tests are:
 
 - `v1san-boundary-safety` 13;
@@ -121,6 +123,15 @@ Every check ran on a scratch worktree.
 | N7 (QRE-SAN-08): a skipped test titled with its own file path | "skipped: …" |
 | N8 (QRE-SAN-03): a historical test's declared line moved by one | "fails at :24, not at its declared assertion :25" |
 | N9 (QRE-SAN-04): a successor weakened, or the manifest edited | `v1san-record` fails: "the historical layer changed without a new record" |
+
+**Final record, `2a865f8`** (`evidence/negative-checks-r2.txt`). All four attacks exit 1 in the runner's precheck:
+
+| Attack | Result |
+|---|---|
+| A1: QRE R2's QRE-SAN-10 repro (a weakened successor, and the record test deleted, committed) | refused |
+| A2: the record rewritten to bless the weakening (committed) | refused: "2 commits touch it" |
+| A3 (QRE-SAN-11): a helper weakened | refused |
+| A4 (QRE-SAN-11): a verifier script edited | refused |
 
 ## 7. What was not re-run, and why
 

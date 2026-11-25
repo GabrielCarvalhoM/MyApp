@@ -1,0 +1,18 @@
+# QRE-SAN-10/-11 attacks against 2a865f8 (record REPMILE-COACHINGCORE-V1-TEST-SUITE-SANITIZATION-2)
+
+## A1 (QRE-SAN-10 as reproduced by QRE R2): drop the SEC-INT-01 assertion from the H26 successor AND git rm the record test, then commit
+RECORD: a bound file is missing: CoachingCore/test/v1san-record.test.mjs
+RECORD: the historical layer changed without a new record: CoachingCore/test/v1san-successors.test.mjs
+exit 1
+
+## A2: edit the record to bind the weakened bytes, and commit it (the record is now touched by two commits)
+RECORD: the historical-layer record must be written by exactly one commit and never modified (2 commits touch it): a change to the layer is a new record file
+exit 1
+
+## A3 (QRE-SAN-11): weaken a helper a successor imports (v1int-helpers.mjs)
+RECORD: the historical layer changed without a new record: CoachingCore/test/v1int-helpers.mjs
+exit 1
+
+## A4 (QRE-SAN-11): edit a verifier script the integrity successors run
+RECORD: the historical layer changed without a new record: CoachingCore/scripts/v1-hr5-runna-amendment.mjs
+exit 1

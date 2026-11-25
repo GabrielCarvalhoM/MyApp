@@ -48,6 +48,60 @@ Not decided here, and flagged CLINICAL_HUMAN_REQUIRED by SSCTR R1:
 
 Both stay with a clinician.
 
-## Round 2
+## Round 2 (on `119e761`)
 
-_Appended as received, below._
+| Reviewer | Verdict | File |
+|---|---|---|
+| SSCTR | **ACCEPT**: SSCTR-SAN-01 to 06 all MET; 3 non-blocking notes | [reviews/ssctr/SSCTR_SAN_R2.md](reviews/ssctr/SSCTR_SAN_R2.md) |
+| QRE / Security | **READY_WITH_CONDITIONS**: QRE-SAN-01, 02, 03, 05, 06, 07, 08 and 09 CLOSED; QRE-SAN-04 partly closed. New: QRE-SAN-10 (MEDIUM), 11 (LOW), 12 (NOTE). The §4.3 residual is acceptable once 10 is fixed and 11 is fixed or named. | [reviews/qre/QRE_SAN_R2.md](reviews/qre/QRE_SAN_R2.md) |
+
+| R2 item | Disposition |
+|---|---|
+| **QRE-SAN-10** (MEDIUM): the record test was neither bound nor required, so deleting it together with a weakened successor stayed green | **Fixed**, condition met. |
+| **QRE-SAN-11** (LOW): the helpers, harness and verifier scripts the successors use were not bound | **Fixed.** |
+| **QRE-SAN-12** (NOTE) | Named in the residual (policy §4.3). |
+| SSCTR R2 N3: the A/B counts | **Fixed**: ROOT_CAUSE now says 28 A + 23 B, with H26 under B. |
+| SSCTR R2 N1: H03's `safetyPoint` wording | **Left as recorded.** It is optional per SSCTR, the `contract` field carries the qualification, and the manifest is now bound. |
+| SSCTR R2 N2 | Accepted by SSCTR; no action. |
+| QRE R2 remark: INDEPENDENT_REVIEW cited a FINAL_REPORT not yet committed | **Fixed.** The report is committed with this round. |
+
+**How QRE-SAN-10 and -11 were fixed.**
+
+- **The record.** REPMILE-COACHINGCORE-V1-TEST-SUITE-SANITIZATION-2 (`HISTORICAL_LAYER_RECORD.json`, commit `2a865f8`) binds 33 files: the layer's core including the record test, the 16 successor files, and 11 dependencies (8 test helpers and the audit harness `scenario.mjs`, plus the 3 verifier scripts).
+- **The check.** The runner verifies the record before anything runs, and it requires the record test to run and pass. The record is proven by git to be written once and never modified, so its check needs no hash inside a bound file. That is what made -1 unable to bind its own test.
+
+**The attacks re-run on `2a865f8`** (`evidence/negative-checks-r2.txt`). Each one exits 1 before the suite runs:
+
+| Attack | Refused with |
+|---|---|
+| A1: QRE R2's own repro: SEC-INT-01 dropped from the H26 successor, and `git rm` of the record test, committed | "a bound file is missing", "the historical layer changed" |
+| A2: the record edited to bless the weakening, committed | "2 commits touch it" |
+| A3: a helper weakened | the same refusal |
+| A4: a verifier script edited | the same refusal |
+
+The SSCTR clinical flags remain: whether the warning-sign screen is enough after a symptom stop, and the clinical part of O-SC-S2 (CLINICAL_HUMAN_REQUIRED).
+
+## Round 3 (QRE only, narrow: QRE-SAN-10 and -11, on `2a865f8`)
+
+| Reviewer | Verdict | File |
+|---|---|---|
+| QRE / Security | **READY**. QRE-SAN-10 CLOSED, QRE-SAN-11 CLOSED. The residual is acceptable. | [reviews/qre/QRE_SAN_R3.md](reviews/qre/QRE_SAN_R3.md) |
+
+**The reviewer's own attacks on `2a865f8`:**
+
+- **Refused:** its R2 attack again; an uncommitted rewrite of the record; a rewrite committed separately; the record deleted and re-added forged; a `git mv` away and back.
+- **Passes, through a visible edit of a bound guard file:** a new record path (an edit of `LAYER_RECORD`), and removing the check together with its test. Both are the stated residual.
+- **Passes, as new finding QRE-SAN-13 (LOW):** a shallow clone, and an `--amend` of the record's own commit.
+
+| Item | Disposition |
+|---|---|
+| **QRE-SAN-13** (LOW) | **Accepted residual, named** in policy §4.3: run `npm test` on a full clone, and protect the branch before real-athlete work. It was not fixed in code: that would need a third record version for a LOW item that R3 already rates READY. |
+| **QRE-SAN-14** (NOTE): the policy text, the R2 evidence and the final report were uncommitted at `2a865f8` | **Fixed**: committed with this round. None of these files is bound by the record. |
+
+**Independent review: PASSED.**
+
+- QRE/Security: **READY** (R3).
+- SSCTR: **ACCEPT** (R2).
+- No BLOCKER, HIGH or MEDIUM finding is open.
+- Accepted residuals, named in policy §4.3: active tests outside the historical layer; `process.exit` truncation; a commit rewriting the guard itself; shallow history or rewritten history.
+- The SSCTR clinical flags stay CLINICAL_HUMAN_REQUIRED.
