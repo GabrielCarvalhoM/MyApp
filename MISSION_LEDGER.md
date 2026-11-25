@@ -1463,3 +1463,13 @@ Overlays revised to r2; r1 bytes are kept in the audit. R6 is untouched. No impl
 - **Found:** warning signs are asked by condition (9/13/15; the Figma's 13 is correct); `specialPopulation` (pregnancy) missing from the closed intake key list; unplanned strength answered `recorded` but not kept (to investigate); in-app GPS run has no honest path to the record without a HealthKit write decision.
 - **No CoachingCore byte changed** (`--check` 87/87); no Figma edit, SwiftUI, HealthKit, CoachingHost or backend implementation.
 - **Report:** `audits/v1-ui-functional-reconciliation/FINAL_RECONCILIATION_REPORT.md`.
+
+<!-- V1HR5-20261125-amendment-r1 -->
+2026-11-25 · REPMILE FIVE-ZONE HEART RATE INTELLIGENCE V1 **CLOSED**; **REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1** emitted beside the original freeze (not a new freeze cycle; REAL_ATHLETE_READY = NO unchanged).
+- **Line:** `claude/v1-five-zone-heart-rate` from `476b657`, own worktree; candidate `1c5d29b`, review cycle `822e2c0`, native `dec5ad5`, record `bec39c5`. A/B untouched at `8d2a7c0`; no merge, no force.
+- **What:** `runCalibration.heartRateFiveZones` (Z1–Z5 at 720/800/870/920 per mille of one reference maximum, nested in the three approved domains; lab maximum then the chest-strap observed maximum; REFERENCE_CONFLICT; LOW confidence; effort governs, heart rate never primary, a Z4 slow-down cue in easy running only; no time in zone without a series). Additive: the three zones and every other output byte-identical (ADDITIVE_ONLY over 326 boundary steps).
+- **Judges:** SSCTR-HR5-DECISION-r1; SSCTR-HR5-REVIEW-r1 and RECHECK-r1 APPROVE_WITH_CONDITIONS (enabling record bound to values `387d66a7`); V1RC boundaries CONFIRMED_UNCHANGED_BEHAVIOUR at the new file hash; QRE/Security READY_WITH_CONDITIONS, C1–C6 met.
+- **Physical:** Mac JSC and iPhone 17 Pro Max (iOS 27.2.1) 0 DIVERGED on int/final/hr5 (memory and native store + Keychain), core en/pt-BR, J5/P16; five-zone module identical to Node for 81 maxima; process death recovered; PF-0 10/10. Amended bundle `2f690664`. Locked-device and reinstall not run.
+- **Freeze:** the original record untouched; its verifier 87/87 on `476b657` and failing on this line by design (successor test); the amendment verifier 90/90.
+- **Open:** FND-HR5-01 (boundary refuses runEvidence), FND-HR5-03 (CHG-UI-1 descriptiveOnly), lab.modality declaration, Product copy, Security review of HR/lab data, HQ-V1HR5-SSCTR-ZONES (proposed).
+- **Report:** `audits/v1-five-zone-heart-rate-2026-11-25/FINAL_REPORT.md`.

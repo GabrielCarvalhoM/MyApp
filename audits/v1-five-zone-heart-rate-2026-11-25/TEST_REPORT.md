@@ -8,7 +8,7 @@ Everything is synthetic. The Node results are in `results/node/`, the Mac result
 |---|---|---|---|---|
 | Baseline, pristine `476b657` (`suite-baseline-476b657.txt`) | 1942 | 1895 | 47 | = the freeze record's 47 (diff empty) |
 | Amended, content commit `822e2c0` (`suite-amended-822e2c0.txt`) | 1968 | 1920 | 48 | the 47, plus 1 by design |
-| With the amendment record (`suite-amended-record.txt`, closing commit) | see §5 | | | |
+| With the amendment record (`suite-amended-record.txt`, `f363a25`) | 1970 | 1922 | 48 | the 47, plus the original freeze-record test by design; both successor tests pass |
 
 - **New tests:** 26 (`test/v1hr5-five-zones.test.mjs`), all passing (`v1hr5-tests-822e2c0.txt`).
 - **The one new failure (by design):** `REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: RC-1 preserved but for the two declared amendments; … the record holds`. The original freeze binds the frozen bytes of `src/v1-run-calibration.mjs` and the frozen bundle, and the amendment changes the one and adds files to the other. Its successor is `test/v1hr5-amendment-record.test.mjs`, which proves two things:
@@ -65,7 +65,12 @@ The 3 skipped steps are `hr5-strap#10–12`: a tamper of the new reading, which 
 
 ## 5. Closing run
 
-The closing commit adds the amendment record and its verifier. Its suite result and the two verifiers' outputs are in §5 of [FIVE_ZONE_AMENDMENT.md](FIVE_ZONE_AMENDMENT.md).
+On `f363a25` (the amendment record committed), with outputs in `results/node/`:
+
+- the suite gives 1970 / 1922 / 48 (`suite-amended-record.txt`);
+- `v1-five-zone-amendment.mjs --check` passes 90/90 (`amendment-check.txt`);
+- `v1-final-release-freeze.mjs --check` fails on this line by design (`original-freeze-check-on-amended-line.txt`), naming only the declared files;
+- on the pristine `476b657` it passes 87/87.
 
 ## 6. Findings during testing
 
