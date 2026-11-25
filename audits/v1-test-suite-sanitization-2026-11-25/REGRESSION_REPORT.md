@@ -1,6 +1,6 @@
 # REGRESSION_REPORT — V1 test-suite sanitization
 
-Host: Mac mini M4, macOS 27.0, Node v24.19.0, TZ America/Sao_Paulo (−03:00) unless stated. All athletes and records are synthetic. Line: `claude/v1-test-sanitization` from `90452b8`, in its own worktree. Other worktrees untouched.
+Host: Mac mini M4, macOS 27.0, Node v24.19.0, TZ America/Sao_Paulo (−03:00) unless stated. All athletes and records are synthetic. Line: `claude/v1-test-suite-sanitization` from `90452b8`, in its own worktree. Other worktrees untouched.
 
 ## 1. Suites
 

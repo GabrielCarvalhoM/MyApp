@@ -2,7 +2,7 @@
 
 2026-11-25 · Mac mini M4 (macOS 27.0, Node v24.19.0) · all athletes and records synthetic.
 
-**Line.** Branch `claude/v1-test-sanitization`, created from `90452b8` (`claude/v1-hr5-runna-parity`, the published physical commit) in its own worktree. The baselines were confirmed in git before the work began:
+**Line.** Branch `claude/v1-test-suite-sanitization`, created from `90452b8` (`claude/v1-hr5-runna-parity`, the published physical commit) in its own worktree. The baselines were confirmed in git before the work began:
 
 | Commit | What it is |
 |---|---|
@@ -149,7 +149,7 @@ The author approved none of their own fixes.
 
 ## 8. Publication
 
-- **Branch** `claude/v1-test-sanitization`, pushed to `origin`. The remote head is verified equal to the final commit (see the ledger entry).
+- **Branch** `claude/v1-test-suite-sanitization`, pushed to `origin`. The remote head is verified equal to the final commit (see the ledger entry).
 - **Not merged** into A, B, C, `main` or any other branch.
 - **MISSION_LEDGER.md**: one entry, insert-only.
 - **Not changed:** CURRENT_MISSION.md, any freeze or record, and any runtime file.
