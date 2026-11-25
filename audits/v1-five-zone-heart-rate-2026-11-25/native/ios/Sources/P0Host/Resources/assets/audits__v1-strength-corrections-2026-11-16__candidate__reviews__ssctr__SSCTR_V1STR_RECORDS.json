@@ -1,0 +1,98 @@
+{
+ "records": [
+  {
+   "boundaryId": "V1X-STRENGTH-HOLD-DOSE",
+   "extensionSha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "independent": true,
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "sourceIds": ["SI-V1-SSCTR-SQ-1", "R7B0-SSCTR-B0-C03", "R7B0-SSCTR-B0-C05", "R7B0-CATALOG-2"],
+   "conditions": [
+    "Synthetic data only. No real athletes, no integration, no production. V1 authority NO. Not human review, not empirical validation, not clinical clearance.",
+    "Bound to the values above and to the runtime of 5f7f6f6fae64dbe0ad7a90ca550dce7bdc517636 as judged by SSCTR-V1STR-N4-RECHECK-R3: CoachingCore/src/r7b-repertoire.mjs 1997a4e5e0e6090829686ed1a277036436b326543bfc1ac923ed6fc10eba776b, CoachingCore/src/v1-strength.mjs 6ea7486c009809d342943d3983592bdbfda409c6ddb29126761c8d7990328dda, CoachingCore/src/v1-strength-index.mjs 36666ab27894cf212c341cc373b303c71e0e77766626efdb6f4be8fd93bc1b10, over catalog R7B0-CATALOG-2 ceee276a424ee7575b4477a2bc429de2e8cd854e3cb82ac767776492cdcb92f9, R6-POLICY-5 a75be1aae3818616888e641c104407926d5f16f213a04137f5b21024ccafe100 and decision JSON SI-V1-SSCTR-r1 f8dee36756f2a85184b6a61465dc3a3dced489382e7772f88975689c1347d379. The runtime checks only the values hash: any change to any of these files needs a new independent SSCTR check to confirm or remove this record.",
+    "Issued together with the other three V1X-STRENGTH records: plans are built under [V1X-STRENGTH-HOLD-DOSE, V1X-STRENGTH-PLANE, V1X-STRENGTH-UPPER-LOADING]. Withdrawing or adding a selection record later is a change of the rules in force for every plan already built (only the clinical answer passes, D-16) and belongs to SSCTR-STR-A-04b.",
+    "Before any non-synthetic use or integration: SSCTR-STR-A-03 (plans built before the rules are not migrated: every plan built under the rules, or a reviewed SQ1-C7 migration), SSCTR-STR-A-04b and QRE-STR-A-05 (a reviewed continuation path for a plan under other rules), SSCTR-STR-A-05 (the runtime reads no review date), QRE-STR-A-04 (every plan carrying the binding routed through v1-strength-index.mjs), and a focal Security review.",
+    "Both known limitations (NO_ANTI_LATERAL_FLEXION_ROW, TRUNK_ROW_LEFT_OUT_UNDER_A_TIGHT_SESSION_TIME) appear in every answer of a plan built under the rule. No copy claims that the remaining trunk work is equivalent, that it prevents injury, or any time for a hold. The Founder accepted that some short weeks lose the trunk row; that is not turned into a feature here.",
+    "v1str-time pins 85 weeks with fewer trunk rows and 32 with none (600 plans at 30/40/45 min) and requires every lost row to be a hold; a change of either is a re-review trigger, not a test update. TRUNK_SLOT_UNFILLED stays declared while it stands.",
+    "No hold configuration, duration, seconds value, reps-to-seconds conversion or hold progression anywhere. A time dose for holds (SQ-1 option b) needs its own SSCTR decision.",
+    "Re-review by 2027-04-30 (owner Chief) or earlier on: any byte change to the bound files; templates, template order or the template set of a number of days; a relevant new systematic review or meta-analysis; a V1 population, objective or scope change; an adverse event or runtime inconsistency; funded qualified human revalidation (no AI veto). Human revalidation entry HQ-SI-V1-SSCTR-SQ-1 is proposed, not appended."
+   ],
+   "reviewId": "SSCTR-V1STR-N4-RECHECK-R3"
+  },
+  {
+   "boundaryId": "V1X-STRENGTH-UPPER-LOADING",
+   "extensionSha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "independent": true,
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "sourceIds": ["SI-V1-SSCTR-SQ-2", "R6-S01", "R6-S25", "R6-S34", "N-KIKUCHI2017", "N-CALATAYUD2015", "R7B0-SSCTR-B0-C03"],
+   "conditions": [
+    "Synthetic data only. No real athletes, no integration, no production. V1 authority NO. Not human review, not empirical validation, not clinical clearance.",
+    "Bound to the values above and to the same three runtime files at 5f7f6f6 as the V1X-STRENGTH-HOLD-DOSE record (r7b-repertoire.mjs 1997a4e5…776b, v1-strength.mjs 6ea7486c…8dda, v1-strength-index.mjs 36666ab2…1b10), catalog ceee276a…92f9, R6-POLICY-5 a75be1aa…e100, decision JSON f8dee367…d379; any change needs a new independent SSCTR check.",
+    "Issued together with the other three V1X-STRENGTH records (plans built under [HOLD-DOSE, PLANE, UPPER-LOADING]); a later change of the selection records is a change of the rules in force and belongs to SSCTR-STR-A-04b.",
+    "Before any non-synthetic use or integration: SSCTR-STR-A-03, A-04b with QRE-STR-A-05, A-05, QRE-STR-A-04 closed, and a focal Security review.",
+    "Scope exactly SQ2-C1: UPPER-region slots where RUNNING_SUPPORT is a matching purpose; lower, calf and trunk running-support selection unchanged. Admissibility and dose unchanged (SQ2-C3, C4).",
+    "No copy that loaded upper work improves running or prevents injury.",
+    "Known behaviour, not a condition of SQ-2: the frozen engine's accessory rotation (B0-C06) has no loading guard, so a loaded accessory N2 selects can rotate into a bodyweight one at a block boundary (SSCTR-STR-C-02; routed with A-11 to the Founder as a frozen-engine question).",
+    "Re-review by 2027-04-30 (owner Chief) or earlier on: any byte change to the bound files; admission of added load for bodyweight exercises (LATER_GATE) or new upper configurations tagged RUNNING_SUPPORT; a relevant new systematic review or meta-analysis; a V1 scope change; an adverse event or runtime inconsistency; funded qualified human revalidation (no AI veto). Human revalidation entry HQ-SI-V1-SSCTR-SQ-2 is proposed, not appended."
+   ],
+   "reviewId": "SSCTR-V1STR-N4-RECHECK-R3"
+  },
+  {
+   "boundaryId": "V1X-STRENGTH-PLANE",
+   "extensionSha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "independent": true,
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "sourceIds": ["SI-V1-SSCTR-SQ-4", "R6-S01", "R6-S26", "R6-S27", "R7B0-SSCTR-B0-C05", "SRC-KASSIANO-2022"],
+   "conditions": [
+    "Synthetic data only. No real athletes, no integration, no production. V1 authority NO. Not human review, not empirical validation, not clinical clearance. The evidence status covers admissibility, stability and the unchanged dose only; the benefit of plane alternation is PLAUSIBLE_BUT_UNCERTAIN and is never claimed.",
+    "Bound to the values above and to the same three runtime files at 5f7f6f6 as the V1X-STRENGTH-HOLD-DOSE record (r7b-repertoire.mjs 1997a4e5…776b, v1-strength.mjs 6ea7486c…8dda, v1-strength-index.mjs 36666ab2…1b10), catalog ceee276a…92f9, R6-POLICY-5 a75be1aa…e100, decision JSON f8dee367…d379; any change needs a new independent SSCTR check. SSCTR-STR-B-01 is closed on these bytes only.",
+    "Issued together with the other three V1X-STRENGTH records (plans built under [HOLD-DOSE, PLANE, UPPER-LOADING]); a later change of the selection records is a change of the rules in force and belongs to SSCTR-STR-A-04b.",
+    "Before any non-synthetic use or integration: SSCTR-STR-A-03, A-04b with QRE-STR-A-05, A-05, QRE-STR-A-04 closed, and a focal Security review.",
+    "D-13 as amended: a new plan that opens with movement practice (strength class NONE) is identical to the plan without the plane rule; SQ4-C4's 'they do get lat-pulldown or band-pulldown' and SQ4-C9's sweep expectation hold only past movement practice; no copy shown to a class NONE plan suggests plane coverage. A restart from the record keeps class NONE unless the intake facts change (SSCTR-STR-B-03).",
+    "D-18, the rule in a plan in force: a slot asks only where the plan was built with it asking; it keeps the configuration it was built with while that fits, prefers nothing while it does not, and returns to it when it fits again; a plan in force never adopts the rule. After a change of strength days that replaces the template of the asking slots (2<->4, 3<->4, 2<->5, 5->2) the plan stops alternating for the rest of its life, also after a return to the original days, and the vertical lifts it was built with can leave it (QRE-STR-C-02: 88 of 308 QRE sequences); the alternation comes back only with a new plan (a plan from the intake or a restart). This is a declared, Founder-accepted cost with no dose, role or stability effect.",
+    "No copy for a plan in force claims both planes or alternation unless the current week's rows hold them (SQ4-C7, C8), and none presents the loss after a change of days as a coaching choice. Before any athlete-facing integration, Product/UX decides whether and how the athlete is told that the alternation ended and that a new plan would restore it (QRE-STR-C-02); that is a product and integration matter, not a sporting precondition of synthetic use.",
+    "Any later mechanism by which a plan in force adopts the rule is a new SQ-4 c5 question with its own SSCTR review, and must keep R2 criteria 1-3: no slot asks that the plan was not built with, no configuration held only in another role is moved into a MAIN row, and no loaded MAIN row leaves its goal range that stays inside it without the rule.",
+    "D-19 (SSCTR-STR-B-02), a known behaviour of plans in force: after a change from two to three or four strength days the vertical configurations a plan was built with can occupy upper accessory slots through the engine's continuity, and at the next block boundary the engine's rotation (B0-C06) can replace them with admissible bodyweight or assisted alternatives of the same plane (STRENGTH 56 of 672 changes, GENERAL 104, RUNNING_SUPPORT 104 with the plane rule alone; all ACCESSORY, week 9, DEVELOPMENT; none on a plane-asking row). This is the frozen rotation, not a plane-rule choice; no copy presents it as a progression or as the plane rule's doing; a change of these counts is a re-review trigger. The missing loading guard in accessory rotation is SSCTR-STR-C-02, routed with A-11 to the Founder; it is not a condition of SQ-4.",
+    "QRE-STR-C-01, a restart: restartProgram builds a new plan (the cold start; the record is context only, never a source of doses), so the plane rule asks as in any new plan, and an asking MAIN slot may take a configuration the previous plan used only as an accessory. Accepted as inside SQ-4 for new plans because the new MAIN row is established at the goal's MAIN dose: in 126 such slots over four goals, every first MAIN row is ESTABLISH or BODYWEIGHT, 0 carry a load or dose from the record, 0 differ in sets, repetitions or reserve from the same slot without the plane rule, and 0 externally loaded MAIN rows leave the goal range in nine weeks (QRE: 46 of 780, 0 of 46). Re-review if a restart ever carries prior doses into a new plan, or if the D-14 'earlier sessions of the week' reading or restartIntake changes.",
+    "D-3 is the guard's definition (the vertical preference never takes a slot down from the external load it would take without the rule). D-14 holds with the pinned catalog and template order. No claim that vertical work or alternation improves strength, hypertrophy, posture, shoulder health, injury risk or running (SQ4-C8).",
+    "The four directed tests that pin R2 criteria 1-3 ('SQ-4 c5 (SSCTR-STR-B-01, criterion 1)', 'SQ-4 c5, c6 (SSCTR-STR-B-01, criteria 2 and 3; QRE-STR-B-01)', 'SQ-4 c5, c6 what does not change the templates…', 'SQ-4 c5 (SSCTR-STR-B-01, criterion 2)') are re-review triggers if changed, not test updates.",
+    "Re-review by 2027-04-30 (owner Chief) or earlier on: any byte change to the bound files; new vertical configurations; templates, template order or the template set of a number of days; any adoption mechanism in plans in force; a relevant new systematic review or meta-analysis on exercise selection or variation; a V1 scope change; an adverse event or runtime inconsistency; funded qualified human revalidation (no AI veto). Human revalidation entry HQ-SI-V1-SSCTR-SQ-4 is proposed, not appended; it should cover whether plane coverage matters, the D-13 exclusion of beginners, the D-18 loss of alternation and the B-02 accessory rotation."
+   ],
+   "reviewId": "SSCTR-V1STR-N4-RECHECK-R3"
+  },
+  {
+   "boundaryId": "V1X-STRENGTH-EXPOSURE",
+   "extensionSha256": "06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33",
+   "independent": true,
+   "disposition": "APPROVE_WITH_CONDITIONS",
+   "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+   "sourceIds": ["SI-V1-SSCTR-SQ-3", "R6-S01", "N-PELLAND", "R7B0-SSCTR-B0-C04"],
+   "conditions": [
+    "Synthetic data only. No real athletes, no integration, no production. V1 authority NO. Not human review, not empirical validation, not clinical clearance.",
+    "Bound to the values above and to the same three runtime files at 5f7f6f6 as the V1X-STRENGTH-HOLD-DOSE record (r7b-repertoire.mjs 1997a4e5…776b, v1-strength.mjs 6ea7486c…8dda, v1-strength-index.mjs 36666ab2…1b10), catalog ceee276a…92f9, R6-POLICY-5 a75be1aa…e100, decision JSON f8dee367…d379; any change needs a new independent SSCTR check.",
+    "Before any non-synthetic use or integration: QRE-STR-A-04 closed and a focal Security review; Data/G03 joint review of the planned and executed numbers before any athlete-facing display.",
+    "Descriptive only: consumers [] and V-INT-01 stay green; nothing reads the exposure (dose, progression, time fit, selection, rotation, adaptation, readiness, notifications, recommendations).",
+    "Counts each working set once per primary muscle; secondary muscles, practice rows, warm-up and preparation never count; executed counts only whole logged repetitions of this athlete, with no imputation, and the executed number is described as sets logged in this week's sessions.",
+    "SQ3-C4 and C5 on every surface: no target line, range, colour, score or threshold; no 'optimal', 'science-based', '10 sets', 'enough/not enough', 'balanced' or growth promise; no claim that the plan neutralizes interference.",
+    "Any target, fraction, threshold or automatic volume increase only through G02 with its own SSCTR review.",
+    "Re-review by 2027-04-30 (owner Chief) or earlier on: any byte change to the bound files; a relevant new systematic review or meta-analysis on volume counting; a V1 scope change; an adverse event or runtime inconsistency; funded qualified human revalidation (no AI veto). Human revalidation entry HQ-SI-V1-SSCTR-SQ-3 is proposed, not appended."
+   ],
+   "reviewId": "SSCTR-V1STR-N4-RECHECK-R3"
+  }
+ ],
+ "rulings": {
+  "QRE-STR-C-01": {
+   "ruling": "INSIDE SQ-4 AS APPROVED FOR NEW PLANS; carried as a condition of the V1X-STRENGTH-PLANE record; not a blocker",
+   "reason": "A restart builds a new plan by design (restartIntake: 'the new plan starts from current capacity (the cold start), never from prior doses'), after a declared pause with a recorded reason, which is the kind of boundary SQ4-C5 allows an adoption at. The B-01 harm is a MAIN row carrying another role's dose state; here none reaches the row.",
+   "evidence": "SSCTR r3-restart.mjs (900 restarts: 4 goals x 5 equipment x 3 profiles x day pairs 4->2, 5->2, 4->3, 3->2, 2->2 x pause 0/1/6 weeks; pause 0 asks for the reason in both arms): 126 asking MAIN slots on a configuration held before only as ACCESSORY; first MAIN load mode ESTABLISH 114, BODYWEIGHT 12; 0 carried from the record; 0 differ in sets, reps or reserve from the same slot without the plane rule; 0 external MAIN outside the goal range in 9 weeks. QRE r3-b and r3-h: 46 of 780, 0 of 46 out of range."
+  },
+  "QRE-STR-C-02": {
+   "ruling": "D-18 CONFIRMED (ACCEPT_WITH_CONDITIONS), condition amended: the stop is stated as permanent for the plan, including after a return to the original days; the athlete-facing disclosure is routed to Product/UX before integration",
+   "reason": "SQ-4 rests on admissibility, stability and the Founder's request; the benefit of alternation is not evidenced, the loss changes no dose, role or stability, and the Founder recorded it as an accepted cost. Telling the athlete is a transparency and product matter, not a sporting precondition of synthetic use; the copy condition already forbids claiming coverage the rows do not hold.",
+   "evidence": "QRE r2-b rerun: 88 of 308 sequences lose a vertical MAIN, none in 2<->3. SSCTR r3-return-days.mjs: 12 of 12 round trips (2->4->2, 4->2->4, 3->4->3; STRENGTH, HYPERTROPHY, GENERAL, named barbell) end with no anchor and the built slots on the horizontal defaults, as the code implies (slotsInForce reads only rows that still ask)."
+  }
+ },
+ "note": "SSCTR-V1STR-N4-RECHECK-R3 (2026-11-16), the independent SSCTR judge of the V1STR N4 focused fix-forward 5f7f6f6 (author Chief on Fable 5.2; a fresh SSCTR instance, not the R1/R2 instance). Dispositions on 5f7f6f6: HOLD-DOSE, UPPER-LOADING, PLANE and EXPOSURE ACCEPT_WITH_CONDITIONS; SSCTR-STR-B-01 closed; no blocking finding. Values sha256 06d4731de7cf748adf53ff4b88bdffcfe14200ee69c9d8cd1d86257c0d749b33 and the three runtime hashes verified by the reviewer against the bytes at 1db6e38, which adds only review files to 5f7f6f6 (CoachingCore unchanged). Issued after the reviewer read in full QRE_V1STR_N4_RECHECK_R3.md (sha256 382b777c0f5284698849f3862f0b1542d0767e071edc4a8d268264c75d7f0342, READY_WITH_CONDITIONS, no blocking finding, every boundary 'may be issued') and its .json (449589cfdb57e515bdf9c33c50ec2bdcd3b56d5fe07a629e621323adbebc9d54); its two observations are ruled above. Source ids are those settled in SI-V1-SSCTR-r1 (SQ-1 to SQ-4) and R7B0; none was re-verified here; SRC-KASSIANO-2022 (PMID 35438660) was read at abstract-summary level as auxiliary context only. No scientific claim here is new; the records rest on conformance to SQ-1 to SQ-4 and on the reviewer's own probes. Authority: PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY, an AI software reviewer with no human credentials; not human or empirical validation, not clinical clearance. No gate is closed and nothing is published. Human revalidation entries HQ-SI-V1-SSCTR-SQ-1 to SQ-4 are proposed, not appended: the queue is not this reviewer's to edit. This file is not a freeze."
+}

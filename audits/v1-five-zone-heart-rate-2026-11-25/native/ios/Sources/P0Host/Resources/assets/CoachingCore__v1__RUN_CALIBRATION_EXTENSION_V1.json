@@ -1,0 +1,520 @@
+{
+ "id": "V1X-RUN-CALIBRATION-1",
+ "revision": 2,
+ "date": "2026-11-11",
+ "scope": "Run calibration, pace bands by effort domain, heart-rate zones and current race estimates beside the unchanged V1 prescription. Nonclinical recreational adults running on roads or tracks, as the R6 policy. No dose, gate, phase, progression, race-day mode or eligibility result is changed. No pace from a goal time; nothing harder derived from easy pace; no physiological threshold claim.",
+ "decisionRecord": [
+  "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json",
+  "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_REVIEW.json"
+ ],
+ "note": "Every number below is the value of SSCTR-V1RC-DECISION-r1 (values.*), restated in the form the runtime reads, as amended by the independent review SSCTR-V1RC-REVIEW-r1 (R-01: a repeat only after a stop that was not for a symptom; R-04: ceilings only ever slower; R-07: the marathon caution; R-10: aged evidence counts as one reduction). The formulas named in the decision are implemented in CoachingCore/src/v1-run-calibration.mjs. A test compares this file with the decision record.",
+ "evidence": {
+  "distanceKm": [
+   3,
+   42.195
+  ],
+  "durationMinutes": [
+   10,
+   360
+  ],
+  "excludedConditions": [
+   "HEAT",
+   "HILLY",
+   "TRAIL"
+  ],
+  "measurementTierReductions": {
+   "OFFICIAL": 0,
+   "TRACK": 0,
+   "GPS": 1,
+   "MANUAL": 2,
+   "TREADMILL": 2
+  },
+  "currentDays": 56,
+  "agingDays": 112,
+  "agingRequiresNoBreakDaysAtLeast": 14,
+  "lowerBoundRpeMax": 7,
+  "lowerBoundTierReduction": 1,
+  "unknownEffortTierReduction": 1
+ },
+ "conflict": {
+  "windowDays": 28,
+  "thresholdFraction": 0.03,
+  "tierReduction": 1
+ },
+ "model": {
+  "standard": {
+   "kLow": 1.04,
+   "kCentral": 1.07,
+   "kHigh": 1.12,
+   "maxDistanceKm": 21.0975,
+   "maxDistanceRatio": 4.3
+  },
+  "marathon": {
+   "kLow": 1.08,
+   "kCentral": 1.13,
+   "kHigh": 1.2,
+   "minEvidenceKm": 21.0975,
+   "maxDistanceRatio": 2
+  },
+  "sameDistanceRatioWithin": 0.01,
+  "referenceDurationMinutes": 60,
+  "population": {
+   "tenKEquivalentCentralMinutes": [
+    27,
+    75
+   ],
+   "slowRunnerExtraMargin": 0.01,
+   "slowRunnerFromTenKEquivalentMinutes": 60,
+   "slowRunnerFromMarathonMinutesWhenMarathonEvidenceOnly": 300
+  }
+ },
+ "confidence": {
+  "margin": {
+   "HIGH": 0.025,
+   "MODERATE": 0.04,
+   "LOW": 0.06
+  },
+  "unavailableFromReductions": 3,
+  "shortBreakTierReduction": 1,
+  "agingCountsAsReductions": 1
+ },
+ "effortCues": {
+  "EASY_CONVERSATIONAL": {
+   "rpe": [
+    2,
+    4
+   ],
+   "talk": "Full sentences"
+  },
+  "MARATHON_EFFORT": {
+   "rpe": [
+    5,
+    6
+   ],
+   "talk": "Short sentences"
+  },
+  "THRESHOLD_CONTROLLED": {
+   "rpe": [
+    6,
+    7
+   ],
+   "talk": "Short phrases"
+  },
+  "HALF_MARATHON_EFFORT": {
+   "rpe": [
+    6,
+    7
+   ],
+   "talk": "Controlled breathing"
+  },
+  "TEN_K_EFFORT": {
+   "rpe": [
+    7,
+    8
+   ],
+   "talk": "A few words at a time"
+  },
+  "FIVE_K_EFFORT": {
+   "rpe": [
+    8,
+    8
+   ],
+   "talk": "Single words"
+  }
+ },
+ "domains": {
+  "FIVE_K_EFFORT": {
+   "class": "HARDER",
+   "families": [
+    "FIVE_K_SPECIFIC"
+   ],
+   "method": "RACE_PACE_ESTIMATE",
+   "event": "5K",
+   "cue": "FIVE_K_EFFORT"
+  },
+  "TEN_K_EFFORT": {
+   "class": "HARDER",
+   "families": [
+    "TEN_K_SPECIFIC"
+   ],
+   "method": "RACE_PACE_ESTIMATE",
+   "event": "10K",
+   "cue": "TEN_K_EFFORT"
+  },
+  "THRESHOLD_CONTROLLED": {
+   "class": "HARDER",
+   "families": [
+    "THRESHOLD"
+   ],
+   "method": "DURATION_ON_CURVE",
+   "fastEdgeDurationMinutes": 55,
+   "slowEdgeDurationMinutes": 75,
+   "cue": "THRESHOLD_CONTROLLED"
+  },
+  "HALF_MARATHON_EFFORT": {
+   "class": "HARDER",
+   "families": [
+    "HALF_MARATHON_SPECIFIC"
+   ],
+   "method": "RACE_PACE_ESTIMATE",
+   "event": "HALF_MARATHON",
+   "cue": "HALF_MARATHON_EFFORT"
+  },
+  "MARATHON_EFFORT": {
+   "class": "HARDER",
+   "families": [
+    "MARATHON_SPECIFIC"
+   ],
+   "method": "RACE_PACE_ESTIMATE",
+   "event": "MARATHON",
+   "cue": "MARATHON_EFFORT",
+   "withdrawnOnCompletionRaceDay": true
+  },
+  "EASY": {
+   "class": "EASY",
+   "families": [
+    "EASY"
+   ],
+   "method": "FRACTION_OF_V60",
+   "fastFraction": 0.84,
+   "slowFraction": 0.72,
+   "ceiling": true,
+   "cue": "EASY_CONVERSATIONAL"
+  },
+  "LONG": {
+   "class": "EASY",
+   "families": [
+    "LONG"
+   ],
+   "method": "FRACTION_OF_V60",
+   "fastFraction": 0.82,
+   "slowFraction": 0.7,
+   "ceiling": true,
+   "cue": "EASY_CONVERSATIONAL"
+  },
+  "RECOVERY": {
+   "class": "EASY",
+   "families": [
+    "RECOVERY_EASY",
+    "SHAKEOUT"
+   ],
+   "method": "FRACTION_OF_V60",
+   "fastFraction": 0.78,
+   "slowFraction": 0.66,
+   "ceiling": true,
+   "cue": "EASY_CONVERSATIONAL"
+  }
+ },
+ "paceRules": {
+  "unit": "SECONDS_PER_KM",
+  "roundUpToSecondsPerKm": 5,
+  "racePaceFastEdgeMarginShare": 0.5,
+  "slowEdgeMarginMultiple": 2,
+  "minimumWidthSecondsPerKm": {
+   "HARDER": 10,
+   "EASY": 30
+  },
+  "raceTouchUsesEventDomain": true,
+  "noBandFamilies": [
+   "WALK",
+   "WALK_JOG",
+   "FAMILIAR_REPEATED_BOUTS"
+  ],
+  "noBandModes": [
+   "WALK_JOG",
+   "RESTART",
+   "RETURN"
+  ],
+  "namedFactors": [
+   "heat",
+   "hills",
+   "wind",
+   "fatigue"
+  ],
+  "raceDayPacingCautionEvents": [
+   "HALF_MARATHON",
+   "MARATHON"
+  ]
+ },
+ "assessment": {
+  "P0": {
+   "name": "LIGHT_START",
+   "session": "The first planned session as it is",
+   "records": [
+    "minutes done",
+    "walk breaks",
+    "effort 0-10",
+    "next-day response"
+   ],
+   "gives": "Effort domains only",
+   "never": [
+    "pace reference",
+    "estimate",
+    "threshold language",
+    "extension or intensification"
+   ]
+  },
+  "P1": {
+   "name": "EASY_PACE_OBSERVATION",
+   "families": [
+    "EASY"
+   ],
+   "qualifyingRunsMin": 3,
+   "windowDays": 28,
+   "useLatestRunsMax": 5,
+   "minDurationMinutes": 20,
+   "rpeReportedMax": 4,
+   "rpeRequired": true,
+   "slowEdgeAtLeastSecondsPerKmAboveFast": 30,
+   "calibrates": [
+    "EASY"
+   ]
+  },
+  "P2": {
+   "name": "QUALITY_OBSERVATION",
+   "onlyWithoutCapacityReference": true,
+   "concordantSessionsMin": 2,
+   "windowDays": 42,
+   "concordanceFraction": 0.03,
+   "slowEdgeSecondsPerKmAboveFast": 10,
+   "givesEstimate": false
+  },
+  "P3": {
+   "eligibility": {
+    "planMode": "EASY",
+    "harderSessionsExecutedCompatibleMin": 1,
+    "excludedPhases": [
+     "TAPER",
+     "RACE_WEEK",
+     "POST_EVENT"
+    ],
+    "daysBeforeRaceMin": 14,
+    "daysAfterAdverseOrHarderThanTargetMin": 7,
+    "longestRunWithinDays": 28,
+    "completedTestsPerDaysMax": {
+     "tests": 1,
+     "days": 42
+    }
+   },
+   "protocols": {
+    "TIME_TRIAL_3K": {
+     "distanceKm": 3,
+     "weeklyRunMinutesMin": 60,
+     "longestRunMinutesMin": 25,
+     "experience": [
+      "NOVICE",
+      "INTERMEDIATE",
+      "EXPERIENCED"
+     ]
+    },
+    "TIME_TRIAL_5K": {
+     "distanceKm": 5,
+     "weeklyRunMinutesMin": 120,
+     "longestRunMinutesMin": 45,
+     "experience": [
+      "INTERMEDIATE",
+      "EXPERIENCED"
+     ],
+     "continuousMonthsMinWhenKnown": 6
+    }
+   },
+   "protocol": {
+    "warmupEasyMinutes": [
+     10,
+     15
+    ],
+    "strides": {
+     "repetitions": [
+      3,
+      4
+     ],
+     "onlyIfStridesExecutedInTraining": true,
+     "cue": "STRIDE_RELAXED_FAST"
+    },
+    "course": "Flat and measured: a track, or GPS on an open-sky course; no flagged heat, hills or strong wind; a cool time of day",
+    "effortCue": "Strong and even (about 8 of 10): hard but controlled, the best pace you can hold evenly to the end without straining; never all-out, never a sprint start or finish; the first kilometre no faster than the rest",
+    "cooldownEasyMinutes": [
+     5,
+     10
+    ],
+    "complete": "The whole distance without stopping or walking, with distance and time recorded",
+    "stopOn": [
+     "pain",
+     "dizziness",
+     "chest pain or pressure",
+     "unusual breathlessness",
+     "palpitations",
+     "faintness"
+    ],
+    "afterStopForSymptom": "Report it; the existing warning-sign screen applies",
+    "incomplete": {
+     "used": false,
+     "extrapolated": false,
+     "penalty": false,
+     "repeatAfterDaysMin": 7,
+     "repeatAttemptsMax": 1
+    },
+    "rpeReported": true,
+    "replaces": "This week's harder session: the test is done instead of it, never as well as it"
+   },
+   "interpretation": {
+    "kind": "FIELD_TEST",
+    "flag": "TEST_NOT_RACE",
+    "lowerBound": "An effort of 7 of 10 or less is read as a lower bound",
+    "replacedSession": "Reported not done; no debt; its ladder step repeats",
+    "countsTowardProgression": false
+   },
+   "stops": {
+    "reasons": [
+     "SYMPTOM",
+     "PACING",
+     "CONDITIONS",
+     "TIME",
+     "OTHER"
+    ],
+    "missingReasonReadAs": "SYMPTOM",
+    "repeatAllowedAfter": [
+     "PACING",
+     "CONDITIONS",
+     "TIME",
+     "OTHER"
+    ],
+    "symptomOrNotTolerated": "Ends test offers for the plan in force; the athlete goes to the existing warning-sign screen"
+   }
+  }
+ },
+ "heartRate": {
+  "measured": {
+   "recencyDaysMax": 182,
+   "noDeclaredBreakDaysAtLeastSince": 14,
+   "basis": "MEASURED_AS_SUPPLIED",
+   "display": "The athlete's supplied values, as supplied, not checked by the app"
+  },
+  "observedMaximum": {
+   "sourceEvents": [
+    "RACE_RESULT",
+    "TIME_TRIAL",
+    "FIELD_TEST"
+   ],
+   "effortMinutesMin": 10,
+   "rpeReportedMin": 8,
+   "sensors": [
+    "CHEST_STRAP"
+   ],
+   "windowDays": 365,
+   "plausibleBpm": [
+    140,
+    220
+   ],
+   "zones": [
+    {
+     "name": "LOW",
+     "fromFraction": null,
+     "toFraction": 0.8
+    },
+    {
+     "name": "MODERATE",
+     "fromFraction": 0.8,
+     "toFraction": 0.87
+    },
+    {
+     "name": "HIGH",
+     "fromFraction": 0.87,
+     "toFraction": null
+    }
+   ],
+   "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+   "conservativeCueOnly": "A high-zone reading during an easy, long or recovery run may suggest slowing; never a cue to speed up"
+  }
+ },
+ "estimates": {
+  "distancesKm": {
+   "5K": 5,
+   "10K": 10,
+   "HALF_MARATHON": 21.0975,
+   "MARATHON": 42.195
+  },
+  "roundOutwardSeconds": {
+   "5K": 15,
+   "10K": 15,
+   "HALF_MARATHON": 60,
+   "MARATHON": 60
+  },
+  "presumedEvidenceAllowed": {
+   "5K": true,
+   "10K": true,
+   "HALF_MARATHON": true,
+   "MARATHON": false
+  },
+  "longestRunWithinDays": 28,
+  "tenK": {
+   "fromEvidenceShorterThanKm": 10,
+   "longestRunMinutesMin": 40
+  },
+  "halfMarathon": {
+   "longestRunMinutesMin": 60,
+   "fromEvidenceShorterThan10KmLongestRunMinutesMin": 75
+  },
+  "marathon": {
+   "evidenceKmMin": 21.0975,
+   "statementWhenUnavailable": "A shorter result does not show endurance for 42.2 km",
+   "cautions": [
+    {
+     "id": "MANY_RUNNERS_RACE_THE_MARATHON_SLOWER_THAN_SUCH_ESTIMATES",
+     "text": "Many runners race the marathon slower than such estimates"
+    }
+   ],
+   "assumes": [
+    {
+     "id": "BLOCK_LONG_RUNS_COMPLETED",
+     "text": "Assuming the block's long runs are completed"
+    }
+   ]
+  },
+  "requiredText": "Estimate of current capacity in comparable conditions; not a promise",
+  "raceDayText": "No finish time is promised",
+  "pacingCaution": "If you use the range for pacing, start at or slower than its slower end"
+ },
+ "recalibration": {
+  "deadbandFraction": 0.015,
+  "training": {
+   "domains": [
+    "THRESHOLD_CONTROLLED",
+    "HALF_MARATHON_EFFORT",
+    "MARATHON_EFFORT"
+   ],
+   "everyWorkBoutMinutesMin": 5,
+   "totalWorkMinutesMin": 15,
+   "consecutiveSessionsRequired": 2,
+   "triggerFraction": 0.015,
+   "up": {
+    "stepFraction": 0.015,
+    "totalMax": 0.045
+   },
+   "down": {
+    "stepFraction": 0.02,
+    "totalMax": 0.06,
+    "alsoLowersEstimateOf": [
+     "HALF_MARATHON_EFFORT",
+     "MARATHON_EFFORT"
+    ]
+   }
+  },
+  "notComparableConditions": [
+   "HEAT",
+   "HILLY",
+   "TRAIL",
+   "WIND_STRONG"
+  ],
+  "notComparableMeasurements": [
+   "TREADMILL"
+  ]
+ },
+ "withdrawal": {
+  "breakDaysWithdrawMin": 14,
+  "breakDaysTierDown": [
+   7,
+   13
+  ]
+ }
+}

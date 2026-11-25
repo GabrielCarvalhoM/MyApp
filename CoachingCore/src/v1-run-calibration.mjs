@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {clone,freeze,hash} from './value.mjs';
 import {utcTimestamp,localDate} from './r6-provenance.mjs';
 import {standingHolds,readableF08,isF08Fact} from './v1-f08.mjs';
+import {fiveZoneAuthority,fiveZonesOf,sessionHeartRate} from './v1-heart-rate-zones.mjs';
 
 /**
  * CoachingCore V1 Run Calibration Extension (Founder request of 2026-11-11): V1X-RUN-CALIBRATION. COACHINGCORE-V1-FREEZE-1 prescribes running by
@@ -580,12 +581,17 @@ export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekI
  // QRE-V1RC-08: the 10 km equivalent in the record of changes is an estimate too.
  const shownChange=c=>{const x=clone(c);if(!on.ESTIMATE)for(const k of ['from','to'])if(x[k])delete x[k].tenKEquivalentSeconds;return x;};
  const now=view(wk),after=nx?view(nx):null,sessions={};
+ // V1HR5 (additive): the five heart-rate zones of the week in force and of the next, and the heart-rate role of each planned run session, kept
+ // in the five-zone reading so the session guidance above stays exactly what it was (heart rate changes no session guidance).
+ const auth5=fiveZoneAuthority(options),zones5=k=>fiveZonesOf(k,{evidence,breaks,V,on:on.HR,auth:auth5,hold:standing,experience:program.capability?.run?.experience??null}),z5now=zones5(wk),z5next=nx?zones5(nx):null,hr5Sessions={};
  for(const week of program.weeks)for(const s of week.sessions)if(s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&week.index>=w){
   const k=week.index===w||!nx?wk:nx,v=week.index===w||!after?now:after;
   // The week in force is fixed; a later week shows what is known today and is settled when its own week starts. A later week takes its own mode
   // from the plan (a return planned ahead is by time and effort whatever the preview says).
   const weekStart=onDate(program.startDate,7*week.index),afterTest=testDays.some(d=>d>=weekStart&&d<=onDate(weekStart,6)&&s.date>d);
-  sessions[s.id]={...sessionGuidance(s,{effortOnly:k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index)),bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing,afterTest}),week:week.index,provisional:week.index>w};
+  const effortOnly=k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index));
+  sessions[s.id]={...sessionGuidance(s,{effortOnly,bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing,afterTest}),week:week.index,provisional:week.index>w};
+  hr5Sessions[s.id]={...sessionHeartRate(s,{zones5:week.index===w||!z5next?z5now:z5next,hold:standing,effortOnly,auth:auth5}),family:s.prescription.family,week:week.index,provisional:week.index>w};
  }
  const held=reason=>({status:'UNAVAILABLE',reason}),withheld=standing?{status:'WITHHELD',reason:'HOLD_NO_PRESCRIPTION'}:null;
  const historicalBest=wk.classified.filter(c=>c.use==='HISTORICAL_BEST').map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isCurrentCapacity:false,isEstimate:false,reasons:c.reasons}));
@@ -596,6 +602,7 @@ export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekI
   effortDomains:Object.entries(V.effortCues).map(([id,d])=>({id,rpe:clone(d.rpe),scale:'0-10',talk:d.talk,availableWithoutDevice:true})),
   paceBands:withheld?Object.fromEntries(Object.keys(V.domains).map(id=>[id,held('HOLD_NO_PRESCRIPTION')])):now.bands,
   heartRateZones:withheld?held('HOLD_NO_PRESCRIPTION'):heartRateOf(wk,{evidence,breaks,V,on:on.HR}),
+  heartRateFiveZones:{...z5now,sessions:hr5Sessions},
   estimates:withheld?Object.fromEntries(Object.keys(V.estimates.distancesKm).map(id=>[id,held('HOLD_NO_PRESCRIPTION')])):now.estimates,
   goal:goalOf(program,withheld?{}:now.estimates),
   projection:{status:'UNAVAILABLE',kind:'FUTURE_PROJECTION',reason:'NO_VALIDATED_PROJECTION_MODEL',comparisons:weeks.filter(x=>x.change&&x.week<=w).map(x=>shownChange(x.change))},

@@ -1,0 +1,57 @@
+{
+ "id": "V1X-HR-FIVE-ZONE-1",
+ "revision": 0,
+ "date": "2026-11-25",
+ "status": "DRAFT_PENDING_SSCTR_DECISION",
+ "scope": "Five heart-rate zones (Z1-Z5) beside the unchanged three-zone heartRateZones of RUN_CALIBRATION_EXTENSION_V1; a display-only reference scale and a slow-down cue; never a session target, gate, dose or progression input",
+ "decisionRecord": "SSCTR-HR5-DECISION-r1 (audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.json)",
+ "requiresBoundaries": ["V1X-RUN-CAPACITY", "V1X-RUN-HR"],
+ "method": "FRACTION_OF_REFERENCE_MAXIMUM",
+ "plausibleReferenceBpm": [140, 220],
+ "zones": [
+  {"zone": "Z1", "domain": "LOW", "fromFraction": null, "toFraction": 0.72},
+  {"zone": "Z2", "domain": "LOW", "fromFraction": 0.72, "toFraction": 0.8},
+  {"zone": "Z3", "domain": "MODERATE", "fromFraction": 0.8, "toFraction": 0.87},
+  {"zone": "Z4", "domain": "HIGH", "fromFraction": 0.87, "toFraction": 0.92},
+  {"zone": "Z5", "domain": "HIGH", "fromFraction": 0.92, "toFraction": null}
+ ],
+ "convention": "FROM_INCLUSIVE_TO_EXCLUSIVE",
+ "rounding": "NEAREST_BPM_AS_THE_THREE_ZONES",
+ "references": {
+  "order": ["LAB_MEASURED_MAXIMUM", "OBSERVED_MAXIMUM"],
+  "LAB_MEASURED_MAXIMUM": {"evidenceKind": "LAB_TEST", "field": "heartRate.maxBpm", "plausibleBpm": [140, 220], "rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.measured", "basis": "LAB_MAXIMUM_AS_SUPPLIED", "referenceConfidence": "MODERATE", "checkedByTheApp": false},
+  "OBSERVED_MAXIMUM": {"rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.observedMaximum", "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM", "referenceConfidence": "LOW"},
+  "notUsed": ["DECLARED_MAXIMUM_WITHOUT_QUALIFYING_EFFORT", "AGE_FORMULA", "HEART_RATE_RESERVE", "AVERAGE_HEART_RATE", "OPTICAL_SENSOR"]
+ },
+ "conflict": {"bpmApartMoreThan": 5, "use": "LOWER", "referenceConfidence": "LOW"},
+ "zoneModelConfidence": "LOW",
+ "sessionUse": {
+  "primaryInV1": [],
+  "families": {
+   "EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "LONG": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "RECOVERY_EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "SHAKEOUT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "EASY_REESTABLISHMENT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "THRESHOLD": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "EFFORT_GOVERNS_ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "HALF_MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "EFFORT_GOVERNS_ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "EFFORT_GOVERNS_ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "FIVE_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_EFFORTS"},
+   "TEN_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_EFFORTS"},
+   "RACE": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_GUIDANCE_UNCHANGED"},
+   "RACE_TOUCH": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_GUIDANCE_UNCHANGED"},
+   "WALK": {"role": "NONE", "reason": "EFFORT_ONLY_SESSION"},
+   "WALK_JOG": {"role": "NONE", "reason": "EFFORT_ONLY_SESSION"},
+   "FAMILIAR_REPEATED_BOUTS": {"role": "NONE", "reason": "EFFORT_ONLY_SESSION"}
+  },
+  "unknownFamily": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "NO_HEART_RATE_ROLE_FOR_SESSION_TYPE"},
+  "strides": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_EFFORTS"},
+  "effortConflict": "EFFORT_GOVERNS_HEART_RATE_MAY_ONLY_SUGGEST_SLOWING"
+ },
+ "sessionDistribution": {
+  "status": "UNAVAILABLE",
+  "reason": "NO_HEART_RATE_SERIES_IN_CONTRACT",
+  "fromAverageHeartRate": false,
+  "futureClassifier": {"plausibleBpm": [30, 230], "maxGapSeconds": 10, "minCoverageFraction": 0.8, "gap": "UNKNOWN_NOT_INTERPOLATED"}
+ }
+}

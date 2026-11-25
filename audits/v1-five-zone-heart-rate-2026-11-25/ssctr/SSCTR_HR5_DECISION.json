@@ -1,0 +1,710 @@
+{
+  "recordId": "SSCTR-HR5-DECISION-r1",
+  "date": "2026-11-25",
+  "mission": "V1HR5: five heart-rate zones computed by CoachingCore (Founder request audits/v1-five-zone-heart-rate-2026-11-25/FOUNDER_REQUEST.md)",
+  "reviewer": {
+    "role": "Sports Science and Concurrent Training Reviewer (SSCTR), acting as decision instance",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+    "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "nativeAdapter": ".claude/agents/sports-science-concurrent-training-reviewer.md (sha256 021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d), read as instructions",
+    "instance": "A subagent instance dispatched by the Chief of mission V1HR5 (model claude-opus-5-5). It cannot verify from inside the run whether it was started through the project native adapter, so it claims no native dispatch. Specialist delegation was disallowed and not used.",
+    "nature": "An AI software reviewer under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY. It holds no human credentials, licence, degree or registration and has no clinical or legal equivalence. This record is an internal, literature-based sporting decision. It is not human validation, empirical product validation or medical clearance.",
+    "independence": "This instance sets the values below. It must not judge the implementation; a separate, fresh SSCTR instance does that and issues any enabling record. No self-check here counts as independent approval. This instance writes no enabling record.",
+    "inputsRead": [
+      "audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION_REQUEST.md (sha256 0369230d48578ab940ef6a5a4e62551f45db5fc9f81b48c0055ee990164a961d)",
+      "audits/v1-five-zone-heart-rate-2026-11-25/FOUNDER_REQUEST.md (sha256 6df806e02214c4dbdcbe375f5584dd438d1fc55c2b2a9aea4a2bceafde7970ef)",
+      "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.md and .json (sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3): items Q6.*, Q9, abstentions, sources SRC08-SRC12, SRC23, SRC24",
+      "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json (record format only)",
+      "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json (sha256 d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa): heartRate, effortCues, domains, withdrawal; context only",
+      "CoachingCore/src/v1-run-calibration.mjs functions heartRateOf and readEvidence, context only. The working-tree copy was read, and git status showed it modified in parallel by the mission (HEAD 476b657 copy sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01). It binds nothing here."
+    ],
+    "notRead": "Draft implementation files that appeared untracked in the worktree during this run (CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json, CoachingCore/src/v1-heart-rate-zones.mjs, CoachingCore/test/v1hr5-five-zones.test.mjs) were not read and were not inputs. Only a one-line grep hit showing an EASY_REESTABLISHMENT entry was seen incidentally. They must be reconciled to the values below."
+  },
+  "authority": {
+    "type": "PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY",
+    "scope": "Bounded nonclinical sporting content of a display-only heart-rate reference for adult recreational runners of the V1 plan; synthetic data only.",
+    "doesNot": [
+      "enable any boundary or write an enabling record",
+      "judge the implementation",
+      "publish Product or Domain Truth or close G01-G04",
+      "make a clinical judgment, clearance or contraindication",
+      "change the three-zone output, its rules or bytes, or any frozen record",
+      "edit any file other than its two deliverables"
+    ]
+  },
+  "population": "Adult recreational runners of the V1 plan, novice to experienced, 5 km to marathon goals, concurrent strength allowed. Synthetic data only; no real athlete.",
+  "literatureAccess": {
+    "tools": "PubMed E-utilities (esearch, esummary, efetch for abstracts; efetch db=pmc for open-access full texts) via curl from the shell worked. The Europe PMC REST API used by the V1RC decision was unreachable from this sandbox (HTTP 000) and was not used. WebSearch and WebFetch were loaded via ToolSearch. WebSearch served discovery only, and no snippet is used as evidence. WebFetch read one page (sportsci.org); its summary was then checked against the raw HTML fetched with curl. The publisher page for Seiler 2010 (journals.humankinetics.com) returned HTTP 403. The Olympiatoppen PDF was downloaded with curl and its text extracted with macOS PDFKit through a local Swift script; WebFetch could not read it.",
+    "fullTextRead": [
+      "S01 Seiler and Tonnessen 2009, Sportscience (raw HTML): Table 1 and its footnote, the passages on 5-zone to 3-zone alignment, the statement that the five zones are not based on clearly defined physiological markers, and the passages on heart-rate time-in-zone underestimating high-intensity work",
+      "S02 Tonnessen et al. 2014, PLoS One (PMC4096917): Methods (intensity zones), Table 2 and its footnote, Results (zone distribution), reference list",
+      "S06 Seiler-Viken et al. 2025, Sci Rep (PMC12491423): Abstract, Introduction (Olympiatoppen 5-zone history, alignment with 3 zones), Table 1, Discussion (arbitrary sub-splits; elite-derived %HRmax at LT1/LT2; recreational athletes), Limitations",
+      "S07 Meixner et al. 2025, Transl Sports Med (PMC11986187): Abstract, Methods 2.8, Tables 1-2, Discussion",
+      "S08 Gaskill et al. 2023, Med Sci Sports Exerc (PMC10524184, author manuscript): Abstract, Methods (HR at VT as %HRR), Results",
+      "S10 Olympiatoppen intensity scale, version 2 (2024): Table 1, interpretation pages, heart-rate benefits and disadvantages (page 19), HRmax testing (pages 25-26), I-1 description (page 27)"
+    ],
+    "abstractOnly": "S03, S04, S09, S11-S19 were read as abstracts only. Each is used only for what its abstract reports. None is the sole basis of a ruling, and where a ruling leans on abstracts the confidence is LOW.",
+    "inheritedNotReRead": "V1RC sources SRC08 (Mann 2013), SRC09 (Iannetta 2020), SRC10 (Tanaka 2001), SRC11 (Shookster 2020), SRC23 (Seiler and Kjerland 2006) and SRC24 (Munoz 2014) are cited as recorded and appraised in SSCTR-V1RC-DECISION-r1. They were not re-read in this run. SRC12 (Gillinov 2017) was re-read as an abstract (S17).",
+    "notAccessible": [
+      "Seiler 2010 IJSPP full text (publisher HTTP 403). Whether its Table 1 states 60-72/72-82/82-87/87-92/92-97 %HRmax is therefore NOT verified; its abstract does not give the scale.",
+      "Sylta, Tonnessen and Seiler 2014 IJSPP 9:100-7 full text (not open access). Its zone cut-offs are known here only through S02 Table 2 (citing it as ref 43) and S07 (citing it as ref 10)."
+    ],
+    "validator": "The skill validator (scripts/validate_records.py) was not run: this file follows the V1RC decision layout requested by the Chief, not the per-review decision.schema.json record, and the V1RC precedent did not run it either. JSON well-formedness was checked with Node.",
+    "rule": "No effect estimate, participant count or endpoint is stated beyond what the accessed text reports. Search snippets, manufacturer pages and blogs were not used as evidence."
+  },
+  "searches": [
+    {"date": "2026-11-25", "db": "Europe PMC REST", "query": "TITLE:\"What is best practice for training intensity and duration distribution\"", "purpose": "access check", "result": "NEGATIVE: endpoint unreachable from sandbox (HTTP 000); tool not used further"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "seiler best practice training intensity", "purpose": "locate Seiler 2010", "result": "PMID 20861519; abstract read; no %HRmax scale in abstract"},
+    {"date": "2026-11-25", "db": "publisher (WebFetch)", "query": "journals.humankinetics.com/view/journals/ijspp/5/3/article-p276.xml", "purpose": "Seiler 2010 full text", "result": "NEGATIVE: HTTP 403"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "Tonnessen[au] AND 2014 AND (training distribution OR peak performance); Sylta[au] AND Seiler[au]", "purpose": "locate Tonnessen 2014 and Sylta 2014", "result": "PMIDs 25019608 (PMC4096917), 24408353, 23921186; abstracts read; PMC full text of 25019608 read"},
+    {"date": "2026-11-25", "db": "WebSearch (discovery)", "query": "Seiler 2010 ... Table 1 intensity zone %HRmax lactate", "purpose": "find accessible scale reports", "result": "pointed to Seiler and Tonnessen 2009 Sportscience; Seiler 2010 table not found"},
+    {"date": "2026-11-25", "db": "sportsci.org (WebFetch, then curl raw HTML)", "query": "https://www.sportsci.org/2009/ss.htm", "purpose": "verify the five-zone table", "result": "Table 1 verified in raw text"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(\"five-zone\" OR \"5-zone\" OR \"five zone\" OR \"5 zone\") AND (heart rate) AND (intensity) AND (endurance OR runners); (Olympiatoppen OR \"Norwegian Olympic\") AND intensity AND zone", "purpose": "peer-reviewed reports of the Norwegian scale", "result": "Seiler-Viken 2025 (PMC12491423) and Meixner 2025 (PMC11986187) found; full texts read"},
+    {"date": "2026-11-25", "db": "WebSearch (discovery) then direct download", "query": "\"72-82\" \"82-87\" \"87-92\" heart rate maximum intensity zone Olympiatoppen five-zone scale", "purpose": "locate the official scale", "result": "olt-skala.nif.no/olt_2024_en.pdf downloaded; text extracted with PDFKit; Table 1 verified"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(ventilatory threshold OR lactate threshold) AND (\"percentage of maximal heart rate\" OR \"%HRmax\") AND (variability OR individual) AND (runners OR recreational)", "purpose": "counterevidence: fixed %HRmax vs individual thresholds", "result": "164 hits screened by title; Meixner 2025, Gaskill 2023 and Losnegard 2021 retained"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(\"cardiovascular drift\" OR \"cardiac drift\") AND (prolonged exercise) AND (heart rate) AND (intensity OR prescription)", "purpose": "counterevidence: drift in long easy runs", "result": "19 hits; Wingo 2012, Wingo 2015 and Billat 2020 abstracts read"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(heart rate) AND (interval training OR intermittent) AND (kinetics OR lag OR \"time in zone\") AND (underestimat* OR delay) AND (intensity); (\"heart rate kinetics\" OR \"heart rate response\") AND (\"short intervals\" ...) AND (oxygen uptake OR VO2) AND (slower OR delay OR lag OR dissociat*); \"heart rate kinetics\" AND (exercise onset ...) AND (oxygen uptake kinetics)", "purpose": "counterevidence: HR lag in short intervals", "result": "PARTLY NEGATIVE: no runner-specific primary study of HR lag in short intervals retained (0 and off-topic hits). Lag evidence rests on S01 (full text), S04 (abstract) and S10 (governing-body document)."},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "Achten J[au] AND Jeukendrup[au] AND \"heart rate monitoring\"; Buchheit M[au] AND Laursen PB[au] AND \"programming puzzle\"", "purpose": "review-level HR limitations", "result": "Achten 2003 abstract used; Buchheit 2013 abstract read and not used (the abstract does not address HR lag)"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(chest strap OR \"heart rate monitor\" OR Polar H10) AND (electrocardiogram OR ECG) AND (agreement OR validity) AND (running OR exercise) AND (bias OR \"limits of agreement\"); Gilgen-Ammann R[au] AND Polar H10", "purpose": "chest strap vs ECG agreement", "result": "Gilgen-Ammann 2019 and Montalvo 2023 abstracts read; Gillinov 2017 re-read"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities and WebSearch (discovery, pubmed/pmc domains)", "query": "(\"maximal heart rate\" OR \"maximum heart rate\" OR HRmax) AND (field test OR race OR competition) AND (laboratory OR treadmill) AND (higher OR comparison OR difference) AND (runners OR running); maximal heart rate field test versus laboratory treadmill test runners", "purpose": "counterevidence: lab vs field HRmax", "result": "MIXED/SPARSE: one runner-relevant abstract (Assadi and Lepers 2012) found similar HRmax in field and treadmill tests; other hits concern team sports, swimming or para-athletes and were not used"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "Lambert MI[au] AND \"heart rate during training and competition\"; Millet GP[au] AND 2009 AND (running cycling); Bagger M AND Petersen PH AND Pedersen PK", "purpose": "verify primary sources cited by the Olympiatoppen document", "result": "Lambert 1998 and Millet 2009 abstracts used; Bagger 2003 abstract read and not used (no HR value in abstract)"},
+    {"date": "2026-11-25", "db": "PubMed E-utilities", "query": "(\"maximal heart rate\" OR \"maximum heart rate\" OR HRmax) AND (reliability OR reproducibility OR \"test-retest\") AND (treadmill OR incremental) AND (exercise test)", "purpose": "HRmax test-retest variability, for the conflict band", "result": "NEGATIVE: 105 hits screened by title; no applicable HRmax reliability study in healthy adult runners retained. The conflict band is therefore not derived from HRmax reliability (see HR5-3)."}
+  ],
+  "counterevidenceSearch": "Directed searches and findings. (1) Fixed %HRmax vs individual thresholds: in 50 trained cyclists HR at VT1 was 81.4 +/- 3.9 %HRmax and fixed %HRmax markers showed wide individual differences (S07). In 863 tests HR at VT ranged widely across individuals while RPE at VT was about 12.5 +/- 0.9 (S08). The Norwegian %HRmax guidance comes from elite athletes and is stated to strongly overestimate the threshold range for beginners and recreational athletes (S06, Discussion). The Z1/Z2 and Z4/Z5 splits are arbitrary rather than physiological (S06; S01). This keeps the zones display-only with zoneModelConfidence LOW, keeps effort primary, and puts a disclosure for newer runners. (2) HR lag in short hard bouts: heart-rate time-in-zone underestimates high-intensity work (S01 full text; S04 abstract: time-in-zone gave 1.1%/0.8% of time in zones 2/3 versus 11.1%/2.4% of sessions by session goal). HR is a useful intensity measure only where intervals are long enough to stabilize, more than 4 min (S10). No runner-specific primary study of lag was retained (negative search). This supports no HR guidance for 5K/10K-specific work and strides. (3) Cardiac drift: HR rises progressively in prolonged exercise, more in heat and with dehydration, and then reflects a higher relative intensity (S12, S13, S15; S11: about +7 bpm per 1% body-mass loss). This supports slowing-only use and does not make a high reading in a long run spurious. (4) Race-day HR: about 20 bpm higher at race pace than at the same speed outside competition (S11). This supports no HR guidance on race days. (5) Sensor agreement: a chest strap agrees closely with ECG (S17 rc 0.996; S18 99.4% correct RR detection at high intensity); optical sensors are less accurate (S17). A gap of more than a few bpm between two maxima is therefore not mainly sensor error. (6) Lab vs field and modality: one small runner study found similar HRmax in a field test and a treadmill test (S19). HR differs between cycling and running at maximal intensity (S16; S10 cites about 5% higher HRmax in running; S09 found running produced a higher %HR than cycling at the same RPE). A lab maximum from a non-running test would bias the zones low. This added a running-modality condition to the lab reference. (7) HRmax reliability: negative search; the conflict band rests on sensor agreement and on the physiology that a genuine reading cannot exceed the true maximum, not on a reliability figure.",
+  "sources": [
+    {"id": "S01", "citation": "Seiler S, Tonnessen E. Intervals, thresholds, and long slow distance: the role of intensity and duration in endurance training. Sportscience 2009;13:32-53 (sportsci.org/2009/ss.htm).", "pmid": null, "doi": null, "type": "NARRATIVE_REVIEW (journal-reviewed; reviewers named on the article)", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Table 1 and footnote; paragraph after Table 1 on 5-zone/3-zone alignment; section on time-in-zone analysis", "findingsUsed": "Table 1 'A typical five-zone scale': HR %max 55-75 / 75-85 / 85-90 / 90-95 / 95-100, lactate 0.8-1.5 / 1.5-2.5 / 2.5-4 / 4-6 / 6-10 mmol/L. Footnote: the HR scale is slightly simplified compared with the actual scale used by the Norwegian Olympic Federation, which is based primarily on decades of testing of cross-country skiers, biathletes and rowers. Zone 3 of the 5-zone system coincides well with zone 2 of the 3-zone model; the five aerobic zones are not based on clearly defined physiological markers. Heart-rate time-in-zone analysis underestimates time spent at high intensity and overestimates time at low intensity compared with athlete perception.", "limitations": ["narrative review, elite athletes", "the printed scale is a simplified version, not the official one"]},
+    {"id": "S02", "citation": "Tonnessen E, Sylta O, Haugen TA, et al. The road to gold: training and peaking characteristics in the year prior to a gold medal endurance performance. PLoS One 2014;9(7):e101796.", "pmid": "25019608", "pmcid": "PMC4096917", "doi": "10.1371/journal.pone.0101796", "type": "RETROSPECTIVE_OBSERVATIONAL", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Methods (intensity zones); Table 2 and footnote; Results", "findingsUsed": "Athletes used a 5-zone model; zones 1-2 below LT1, zone 3 between LT1 and LT2, zones 4-5 above LT2 (citing Seiler 2010 as ref 3). Table 2 typical HR %max: zone 1 54-73, zone 2 74-83, zone 3 84-88, zone 4 89-93, zone 5 >94, derived from average self-reported zone cut-offs of 29 elite cross-country skiers (ref 43, Sylta 2014), and 'individual adjustments are required'.", "limitations": ["elite cross-country skiers", "self-reported cut-offs", "does NOT report 60-72/72-82/82-87/87-92/92-97 as the request states"]},
+    {"id": "S03", "citation": "Seiler S. What is best practice for training intensity and duration distribution in endurance athletes? Int J Sports Physiol Perform 2010;5(3):276-91.", "pmid": "20861519", "doi": "10.1123/ijspp.5.3.276", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Only that elite endurance athletes typically train about 80% of sessions at low intensity (about 2 mM lactate) and about 20% at high intensity. Cited by S02 for the 5-zone to 3-zone aggregation.", "limitations": ["full text inaccessible (HTTP 403)", "its %HRmax table could not be verified"]},
+    {"id": "S04", "citation": "Sylta O, Tonnessen E, Seiler S. From heart-rate data to training quantification: a comparison of 3 methods of training-intensity analysis. Int J Sports Physiol Perform 2014;9(1):100-7.", "pmid": "24408353", "doi": "10.1123/IJSPP.2013-0298", "type": "OBSERVATIONAL_METHOD_COMPARISON", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "29 elite cross-country skiers, 570 sessions: time-in-zone gave 96.1% of time in zone 1 and 2.9%/1.1% in zones 2/3, whereas session goal gave 86.6% zone 1 and 11.1%/2.4% zone 2/3 sessions; conversion factors 0.9/1.1 for low intensity and 3.0/0.33 for high intensity.", "limitations": ["abstract only", "elite skiers", "zone cut-offs known only through S02 and S07"]},
+    {"id": "S06", "citation": "Seiler-Viken SA, Mentzoni F, Seiler S, Skarli S, Losnegard T. Contextualizing the Norwegian standardized intensity zone framework in an international sample of endurance practitioners. Sci Rep 2025;15:34367.", "pmid": "41038920", "pmcid": "PMC12491423", "doi": "10.1038/s41598-025-17023-z", "type": "CROSS_SECTIONAL_SURVEY", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Abstract; Introduction; Table 1; Discussion; Limitations", "findingsUsed": "Olympiatoppen has split the 3-zone scale into five aerobic zones; LT1 and LT2 remain the anchors; zone 3 aligns with 3-zone zone 2. The added splits within the low (zones 1-2) and high (zones 4-5) domains are arbitrary, not anchored in physiological transitions. About 80% and 88% of session peak HR at LT1 and LT2 are based on highly trained and elite athletes and are likely to strongly overestimate the threshold range for beginner and recreational athletes; a beginning runner's LT2 may correspond to 75-80% HRmax. HR without individual testing is easily misinterpreted. Survey, runners: lower limits of zones 1-5 were 55.4 +/- 10.2, 69.8 +/- 6.7, 79.6 +/- 5.7, 86.6 +/- 4.1 and 92.3 +/- 3.5 %HRmax (298 respondents using a 5-zone scale across sports).", "limitations": ["practitioner survey, not physiological measurement", "selection bias (80% male, social-media recruitment)", "the recreational-runner statement is a discussion inference with cited support, not a measured result of this study"]},
+    {"id": "S07", "citation": "Meixner B, Filipas L, Holmberg HC, et al. Zone 2 intensity: a critical comparison of individual variability in different submaximal exercise intensity boundaries. Transl Sports Med 2025;2025:2008291.", "pmid": "40225831", "pmcid": "PMC11986187", "doi": "10.1155/tsm2/2008291", "type": "CROSS_SECTIONAL_LABORATORY", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Methods 2.8; Tables 1-2; Discussion", "findingsUsed": "50 experienced cyclists (30 men, 20 women, age 31.2 +/- 7.8 y, VO2peak 54.1 +/- 8.1 mL/kg/min). Zone 2 of the Norwegian Olympic Federation is defined as 72-82% HRmax (citing Sylta 2014). HR at VT1 was 81.4 +/- 3.9 %HRmax and at FatMax 72.3 +/- 5.7 %HRmax. Fixed %HRmax markers showed wide individual differences and may misrepresent metabolic responses; a 5% difference is about 10 bpm.", "limitations": ["cycling, not running", "trained adults", "single laboratory"]},
+    {"id": "S08", "citation": "Gaskill SE, Skinner JS, Quindry J. Ventilatory threshold related to VO2 reserve, heart rate reserve, and rating of perceived exertion in a large varied sample. Med Sci Sports Exerc 2023;55(10):1876-1885.", "pmid": "37202881", "pmcid": "PMC10524184", "doi": "10.1249/MSS.0000000000003220", "type": "RETROSPECTIVE_CROSS_SECTIONAL", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Abstract; Methods; Results", "findingsUsed": "863 test records from sedentary to aerobic athletes: VT averaged 55.2 +/- 11.3 %VO2R, individuals 25.5-86.0%, and HR at VT as %HRR was very similar and not statistically different; large variance at every fitness level. RPE at VT was relatively homogeneous, 12.5 +/- 0.93, regardless of fitness or activity level.", "limitations": ["retrospective pooled datasets", "resting HR assumed 60 bpm outside HERITAGE", "%HRR not %HRmax", "mixed modalities"]},
+    {"id": "S09", "citation": "Losnegard T, Skarli S, Hansen J, et al. Is rating of perceived exertion a valuable tool for monitoring exercise intensity during steady-state conditions in elite endurance athletes? Int J Sports Physiol Perform 2021;16(11):1589-1595.", "pmid": "33831841", "doi": "10.1123/ijspp.2020-0866", "type": "CROSS_SECTIONAL_LABORATORY", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "160 elite athletes: RPE related strongly to %HR, %VO2 and lactate (r = .80-.82); between-subject CV of %HR fell from about 10-15% at RPE 8 to about 5% at RPE 17; running produced a systematically higher %HR (about 2%) than cycling at the same RPE.", "limitations": ["abstract only", "elite athletes"]},
+    {"id": "S10", "citation": "Olympiatoppen (Norwegian Olympic and Paralympic Committee and Confederation of Sports). Olympiatoppen's intensity scale, version 2 (2024), English edition. olt-skala.nif.no/olt_2024_en.pdf (authors listed by S06 ref 41: Skarli S, Svendsen I, Paulsen G, Mentzoni F, Losnegard T).", "pmid": null, "doi": null, "type": "GOVERNING_BODY_GUIDANCE_DOCUMENT (not peer reviewed)", "access": "FULL_TEXT", "verified": true, "accessedOn": "2026-11-25", "locator": "Table 1 (page 3); interpretation (page 4); HR benefits/disadvantages (page 19); HRmax testing (pages 25-26); I-1 (page 27)", "findingsUsed": "Table 1 %HRmax: I-1 ~55-72, I-2 ~72-82, I-3 ~82-87, I-4 ~87-92, I-5 ~92-100. The scale is guidance, not to be applied rigidly; it is to be adapted to modality, fitness level and individual differences, and athletes should develop their own I-scales. HR is a good measure in continuous work or intervals long enough to stabilize (>4 min) and less useful in short high-intensity intervals because of the delay at onset; daily HR variation about 6-12 beats; drift in long sessions, especially in heat or dehydration; a chest strap rather than the wrist; HRmax must be accurate and updated. HRmax varies by modality (about 5% higher in running than cycling, citing Millet 2009); HRmax test of 3 x 3 min ending at maximum.", "limitations": ["institutional guidance for Norwegian elite athletes, not peer reviewed", "used only to verify the published scale values and as auxiliary context; no ruling rests on it alone"]},
+    {"id": "S11", "citation": "Lambert MI, Mbambo ZH, St Clair Gibson A. Heart rate during training and competition for long-distance running. J Sports Sci 1998;16 Suppl:S85-90.", "pmid": "22587721", "doi": "10.1080/026404198366713", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Day-to-day variation of submaximal HR under controlled conditions about 6 bpm; about +7 bpm per 1% body-mass loss from dehydration; during a 10 km race HR is about 20 bpm higher at racing pace than at the same speed under non-competitive conditions.", "limitations": ["abstract only", "older review"]},
+    {"id": "S12", "citation": "Wingo JE, Ganio MS, Cureton KJ. Cardiovascular drift during heat stress: implications for exercise prescription. Exerc Sport Sci Rev 2012;40(2):88-94.", "pmid": "22410803", "doi": "10.1097/JES.0b013e31824c43af", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Cardiovascular drift (progressive HR rise and stroke-volume fall) begins after about 10 min of prolonged moderate exercise, is associated with lower VO2max, particularly in heat, and the higher HR then reflects a higher relative metabolic intensity.", "limitations": ["abstract only", "heat-focused"]},
+    {"id": "S13", "citation": "Wingo JE. Exercise intensity prescription during heat stress: a brief review. Scand J Med Sci Sports 2015;25 Suppl 1:90-5.", "pmid": "25943659", "doi": "10.1111/sms.12381", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Drift magnitude is modulated by hyperthermia, dehydration, intensity and ambient temperature, and changes the relation between HR and relative metabolic intensity.", "limitations": ["abstract only"]},
+    {"id": "S14", "citation": "Billat VL, Palacin F, Correa M, Pycke JR. Pacing strategy affects the sub-elite marathoner's cardiac drift and performance. Front Psychol 2020;10:3026.", "pmid": "32140116", "pmcid": "PMC7043260", "doi": "10.3389/fpsyg.2019.03026", "type": "OBSERVATIONAL", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "280 recreational marathoners (2:30-3:40): HR feedback alone is hard to interpret because of drift; runners who slowed after about 26 km had higher drift and lower performance.", "limitations": ["abstract only", "observational", "race, not training"]},
+    {"id": "S15", "citation": "Achten J, Jeukendrup AE. Heart rate monitoring: applications and limitations. Sports Med 2003;33(7):517-38.", "pmid": "12762827", "doi": "10.2165/00007256-200333070-00004", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Small day-to-day HR variability; a steady HR increase during exercise in most studies; dehydration and ambient temperature can strongly affect the HR-VO2 relation.", "limitations": ["abstract only", "older review"]},
+    {"id": "S16", "citation": "Millet GP, Vleck VE, Bentley DJ. Physiological differences between cycling and running: lessons from triathletes. Sports Med 2009;39(3):179-206.", "pmid": "19290675", "doi": "10.2165/00007256-200939030-00002", "type": "NARRATIVE_REVIEW", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "Heart rate differs between cycling and running at both maximal and submaximal intensities; VO2max is modality specific.", "limitations": ["abstract only; the magnitude of the HRmax difference is not in the abstract (S10 states about 5%)"]},
+    {"id": "S17", "citation": "Gillinov S, Etiwy M, Wang R, et al. Variable accuracy of wearable heart rate monitors during aerobic exercise. Med Sci Sports Exerc 2017;49(8):1697-1703. (= V1RC SRC12)", "pmid": "28709155", "doi": "10.1249/MSS.0000000000001284", "type": "VALIDATION_STUDY", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "50 adults: the chest strap agreed best with ECG (rc 0.996); optical devices rc 0.67-0.92, varying by exercise type; electrode chest monitors recommended when accuracy matters.", "limitations": ["abstract only", "device generations since changed"]},
+    {"id": "S18", "citation": "Gilgen-Ammann R, Schweizer T, Wyss T. RR interval signal quality of a heart rate monitor and an ECG Holter at rest and during exercise. Eur J Appl Physiol 2019;119(7):1525-1532.", "pmid": "31004219", "doi": "10.1007/s00421-019-04142-5", "type": "VALIDATION_STUDY", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "10 adults: Polar H10 chest strap RR signal quality 99.6% overall and 99.4% at high intensity (Holter 94.6% and 89.8%); correlation between systems r = 0.997.", "limitations": ["abstract only", "n = 10", "RR quality, not bpm bias"]},
+    {"id": "S19", "citation": "Assadi H, Lepers R. Comparison of the 45s-15s intermittent running field test and the continuous treadmill test. Int J Sports Physiol Perform 2012 (epub ahead of print record).", "pmid": "22832116", "doi": null, "type": "CROSS_SECTIONAL_COMPARISON", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "20 subjects: HRmax 200 +/- 8 bpm on a treadmill test and 201 +/- 7 bpm in a field running test.", "limitations": ["abstract only", "n = 20", "the record is an epub-ahead-of-print version; final publication details not verified", "intermittent field test, not a race"]},
+    {"id": "S20", "citation": "Montalvo S, Martinez A, Arias S, et al. Commercial smart watches and heart rate monitors: a concurrent validity analysis. J Strength Cond Res 2023;37(9):1802-1808.", "pmid": "36862131", "doi": "10.1519/JSC.0000000000004482", "type": "VALIDATION_STUDY", "access": "ABSTRACT_ONLY", "verified": true, "accessedOn": "2026-11-25", "findingsUsed": "A chest strap (Polar H10) was used as the field criterion device beside 12-lead ECG; smartwatch error increased with running speed.", "limitations": ["abstract only", "auxiliary"]},
+    {"id": "V1RC-SRC08", "citation": "Mann T, Lamberts RP, Lambert MI. Sports Med 2013;43(7):613-25.", "pmid": "23620244", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (abstract only there; not re-read)", "findingsUsed": "Fixed %VO2max or %HRmax leaves individuals above and below their metabolic thresholds."},
+    {"id": "V1RC-SRC09", "citation": "Iannetta D, et al. Med Sci Sports Exerc 2020;52(2):466-473.", "pmid": "31479001", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (abstract only there; not re-read)", "findingsUsed": "LT and MLSS fall at different %HRmax in women and men; fixed percentages conform poorly to domains."},
+    {"id": "V1RC-SRC10", "citation": "Tanaka H, Monahan KD, Seals DR. J Am Coll Cardiol 2001;37(1):153-6.", "pmid": "11153730", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (not re-read)", "findingsUsed": "Age equation is a population regression, not an individual measurement."},
+    {"id": "V1RC-SRC11", "citation": "Shookster D, et al. Int J Exerc Sci 2020;13(7):1242-1250.", "pmid": "33042384", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (not re-read)", "findingsUsed": "Age-predicted equations agree poorly with measured HRmax."},
+    {"id": "V1RC-SRC23", "citation": "Seiler KS, Kjerland GO. Scand J Med Sci Sports 2006;16(1):49-56.", "pmid": "16430681", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (not re-read)", "findingsUsed": "Three-zone distribution similar by HR (from measured thresholds) and session RPE."},
+    {"id": "V1RC-SRC24", "citation": "Munoz I, Seiler S, et al. Int J Sports Physiol Perform 2014;9(2):265-72.", "pmid": "23752040", "access": "AS_RECORDED_IN_SSCTR-V1RC-DECISION-r1 (not re-read)", "findingsUsed": "Recreational runners trained with HR zones from measured VT/RCT; context only."}
+  ],
+  "globalConditions": [
+    "G.1 Additive only: heartRateZones (three zones), its rules, values and bytes are unchanged. The five zones are a separate output, heartRateFiveZones.",
+    "G.2 Display-only reference: never a session target, never a gate, never converted to pace or effort, never used to size, progress, adapt or change any dose, never called thresholds (Q6, Q6.separation unchanged).",
+    "G.3 Effort is the prescription in every session; heart rate is never primary in V1.",
+    "G.4 Heart rate may only suggest slowing; a low reading never suggests speeding up.",
+    "G.5 Missing, withheld or conflicting heart rate never blocks or changes a prescription.",
+    "G.6 No age formula, no heart-rate reserve, no optical sensor, no declared maximum without qualifying provenance.",
+    "G.7 The three approved domains LOW / MODERATE / HIGH stay the sporting categories; Z1-Z2 and Z4-Z5 are display subdivisions with no separate sporting rule in V1.",
+    "G.8 Not a safety monitor: heart-rate copy must imply no health meaning; any symptom goes to the existing warning-sign route.",
+    "G.9 Synthetic data only; no real athletes; inert until an independent SSCTR record bound to the new values file exists, and only with V1X-RUN-CAPACITY and V1X-RUN-HR on."
+  ],
+  "items": [
+    {
+      "id": "HR5-1.a.method",
+      "question": "Is a five-zone fixed-fraction scale defensible as a display-only reference for this population?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusNote": "SUPPORTED_WITH_LIMITS that the five-zone %HRmax scale is an established, published convention nesting the three LT1/LT2 domains (S01, S02, S06, S07, S10). CONFLICTING_EVIDENCE for its individual physiological meaning (S06, S07, S08, V1RC-SRC08, V1RC-SRC09); that part supports display only.",
+      "confidence": "LOW",
+      "sourceIds": ["S01", "S02", "S06", "S07", "S08", "S10", "V1RC-SRC08", "V1RC-SRC09"],
+      "value": "see values.zones",
+      "conditions": [
+        "Display-only under G.2-G.5; zoneModelConfidence is always LOW.",
+        "Never presented as 'Olympiatoppen zones', 'Norwegian zones' or any named scale: the app's Z2/Z3 cut is 0.80, not the scale's ~0.82, so its Z2 and Z3 differ from I-2 and I-3.",
+        "The Z1/Z2 and Z4/Z5 splits are conventions without a physiological anchor (S06); no V1 rule may treat Z1 differently from Z2 or Z4 differently from Z5.",
+        "Disclosure that individual thresholds vary widely, and that for newer runners the same percentage can be a harder effort than the zone name suggests (S06)."
+      ],
+      "rationale": "The scale is a widely used and verifiable convention, and its 5 to 3 aggregation (I1+I2, I3, I4+I5) is stated by S02, S06 and S01. Fixed fractions misplace individuals relative to thresholds: VT1 was 81.4 +/- 3.9 %HRmax in trained cyclists (S07), HR at VT spans a very wide range across fitness levels (S08), and the elite-derived percentages likely overestimate the threshold range for recreational athletes (S06). It is therefore defensible only as a coarse descriptive reference subordinate to effort, as Q6 already decided for three zones.",
+      "disclosure": "'Zones are fixed percentages of your maximum heart rate. They are a rough guide, not your personal thresholds. How the run feels governs.'"
+    },
+    {
+      "id": "HR5-1.b.cut072",
+      "question": "Is 0.72 supported for Z1/Z2?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S10", "S07", "S02", "S06"],
+      "value": {"fraction": 0.72, "perMille": 720},
+      "conditions": ["Convention only (HR5-1.a); the split carries no sporting rule in V1."],
+      "rationale": "The official scale puts I-1/I-2 at ~72% (S10); S07 reports Norwegian zone 2 as 72-82% (citing Sylta 2014); S02 reports elite self-reported cut-offs of 73/74%; practitioners using a 5-zone scale put the zone 2 lower limit at 69.8 +/- 6.7 % in running (S06). 0.72 matches the published convention, not an individual marker.",
+      "disclosure": "None beyond HR5-1.a."
+    },
+    {
+      "id": "HR5-1.c.cut092",
+      "question": "Is 0.92 supported for Z4/Z5?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S10", "S06", "S02", "S01"],
+      "value": {"fraction": 0.92, "perMille": 920},
+      "conditions": ["Convention only (HR5-1.a); Z4 and Z5 share the HIGH domain and the same role."],
+      "rationale": "Official I-4/I-5 cut ~92% (S10); practitioner zone 5 lower limit 92.3 +/- 3.5 % in running (S06); elite self-report 93/94% (S02); the simplified Sportscience scale used 95% (S01). 0.92 matches the official scale and the survey mean.",
+      "disclosure": "None beyond HR5-1.a."
+    },
+    {
+      "id": "HR5-1.d.domainCuts",
+      "question": "Keep the approved 0.80 and 0.87 cuts rather than the scale's ~0.82?",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S06", "S07", "S10"],
+      "value": {"lowModerate": 0.80, "moderateHigh": 0.87},
+      "conditions": ["The bpm of the 0.80 and 0.87 boundaries must equal the three-zone output's bpm for the same observed reference (checked for 140-220 bpm: no rounding mismatch)."],
+      "rationale": "The Founder decision forbids moving domains or creating artificial ones, and Q6 approved 0.80/0.87. Both lie within the evidence spread: elite LT1 and LT2 at ~80% and ~88% of session peak HR (S06); VT1 81.4 +/- 3.9 %HRmax (S07); practitioner zone 3 lower limit 79.6 +/- 5.7 % and zone 4 lower limit 86.6 +/- 4.1 % in running (S06); official I-3/I-4 at ~87% (S10). The cost of 0.80 rather than 0.82 is a 0.08-wide Z2 and a wider Z3, disclosed under HR5-1.a.",
+      "disclosure": "None beyond HR5-1.a."
+    },
+    {
+      "id": "HR5-1.e.openEnds",
+      "question": "Should Z1 have a floor (0.50/0.60) or stay open? Z5 upper end?",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S10", "S01", "S06"],
+      "value": {"z1Floor": null, "z5Ceiling": null},
+      "conditions": ["Z1 open below 0.72, as LOW is open today; Z5 open above 0.92, because an observed maximum may be below the true maximum."],
+      "rationale": "Published floors disagree (~55% in S10 and S01; 54% in S02; runner survey 55.4 +/- 10.2 % in S06; 60% for running reported by S06 from another source). A floor would add a 'below zones' state with no sporting use in a display-only reference. The request's '60-72' and '92-97' are not the official values (S10: ~55-72 and ~92-100); with open ends neither number is needed.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-1.f.basis",
+      "question": "Request's stated basis (60-72/72-82/82-87/87-92/92-97 'for example in Tonnessen 2014 and Seiler 2010')",
+      "disposition": "AMEND",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["S02", "S03", "S10", "S07", "S01"],
+      "value": "Basis to cite in the values file: S10 Table 1 (~55-72/72-82/82-87/87-92/92-100, official, not peer reviewed), S07 (zone 2 72-82%, peer reviewed, citing Sylta 2014), S06 (5 to 3 alignment, arbitrary sub-splits), S02 (5 to 3 aggregation; elite cut-offs 54-73/74-83/84-88/89-93/>94).",
+      "conditions": ["The values file and any documentation must not attribute 60-72/72-82/82-87/87-92/92-97 to Tonnessen 2014 (its Table 2 says otherwise) or to Seiler 2010 (not verified)."],
+      "rationale": "Verified in full text: S02 Table 2 reports different numbers; the Seiler 2010 table could not be accessed.",
+      "disclosure": "Not athlete-facing."
+    },
+    {
+      "id": "HR5-2.a.labMaximum",
+      "question": "Is adding LAB_MEASURED_MAXIMUM supported?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S10", "S16", "S09", "S17", "S18", "S19", "V1RC-SRC10", "V1RC-SRC11"],
+      "value": "see values.reference.labMeasuredMaximum",
+      "conditions": [
+        "Added: the lab test must be declared a running test (treadmill or field running). Data/Engineering choose the existing field that carries this without changing frozen bytes or shared contracts. If none exists, the lab tier stays off (LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN) and five zones come only from the observed maximum.",
+        "Added: sensor CHEST_STRAP or ECG; optical, other or missing does not qualify.",
+        "Added: RPE 8 or higher reported for the test (the same maximality proxy as Q6(b)); completed not false; tolerated not false.",
+        "Kept: LAB_TEST in force under the existing lab rules (182 days, no declared break of 14 days or more since, not before a hold or return; SSCTR-V1RC-R-09), heartRate.maxBpm 140-220.",
+        "The lab's own supplied values (thresholds, etc.) stay shown as supplied in heartRateZones and are never mapped into zones or combined with them."
+      ],
+      "rationale": "A maximal test is the usual way to obtain HRmax, and S10 recommends a measured, updated HRmax over age estimates (consistent with V1RC-SRC10, SRC11). But the app cannot verify protocol, modality or maximality (Q6.a). HRmax differs between running and cycling (S16; about 5% in S10; S09 shows running gives a higher %HR at the same RPE), so a cycle-ergometer maximum would bias every running zone low. One small runner study found similar HRmax in field and treadmill running tests (S19), so a running lab test adds a second route to the same quantity, not a superior one.",
+      "disclosure": "'The maximum your lab test reported, as you supplied it; not checked by the app.'"
+    },
+    {
+      "id": "HR5-2.b.order",
+      "question": "Order: lab, then observed, then none.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S17", "S18"],
+      "value": "see values.reference.order",
+      "conditions": ["The order applies only subject to the HR5-3 conflict rule; with no qualifying reference, there are no five zones and a typed reason is given."],
+      "rationale": "Lab first is acceptable because the HR5-3 rule withholds zones whenever an observed chest-strap reading contradicts the lab value. The lab value is therefore used only when it is at least as high as, or within 5 bpm of, every qualifying observation.",
+      "disclosure": "None beyond HR5-2.a and Q6(b)."
+    },
+    {
+      "id": "HR5-2.c.observedMaximum",
+      "question": "OBSERVED_MAXIMUM exactly as approved Q6(b).",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S17", "S18", "V1RC-SRC10", "V1RC-SRC11"],
+      "value": "see values.reference.observedMaximum",
+      "conditions": ["Identical to the approved rule and value; no change."],
+      "rationale": "Consistency with Q6(b); the chest-strap evidence was re-checked (S17, S18).",
+      "disclosure": "Q6(b) disclosure unchanged."
+    },
+    {
+      "id": "HR5-2.d.notUsed",
+      "question": "Refuse a declared maximum without qualifying effort or sensor, age formula, HRR, session average HR, optical sensors?",
+      "disposition": "APPROVE",
+      "evidenceStatus": "WELL_SUPPORTED",
+      "confidence": "MODERATE",
+      "sourceIds": ["V1RC-SRC10", "V1RC-SRC11", "S17", "S10"],
+      "value": ["DECLARED_MAXIMUM_WITHOUT_PROVENANCE", "AGE_FORMULA", "HEART_RATE_RESERVE", "SESSION_AVERAGE_HEART_RATE", "OPTICAL_SENSOR"],
+      "conditions": [],
+      "rationale": "A declared maximum with no effort or sensor provenance may be an age estimate or an optical reading, both of which are poorly individual or less accurate (V1RC-SRC10, SRC11; S17). A session average is not a maximum. V1 has no resting HR for HRR.",
+      "disclosure": "'Zones need a maximum recorded by a chest strap in a hard effort or in a running lab test; a typed-in number is not enough.'"
+    },
+    {
+      "id": "HR5-3.conflict",
+      "question": "Lower-wins under a >5 bpm conflict?",
+      "disposition": "AMEND",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S17", "S18", "S16", "S10", "S19"],
+      "value": "see values.conflict",
+      "conditions": [
+        "Changed: no lower-wins. When both are in force and the highest qualifying observed maximum exceeds the lab maximum by more than 5 bpm, there are no five zones: UNAVAILABLE / REFERENCE_CONFLICT, reporting both values, dates and evidence ids.",
+        "Changed: a lab maximum above the observed maximum is not a conflict; the lab maximum is used.",
+        "Kept: within 5 bpm the hierarchy decides (lab), with no conflict.",
+        "The 5 bpm band is a DECIDED design tolerance, not an HRmax reliability estimate (negative search); it changes no session either way."
+      ],
+      "rationale": "An artifact-free chest-strap reading cannot exceed the true maximum, and chest straps agree closely with ECG (S17, S18). An observed value well above the lab value therefore shows that the lab value is not this athlete's running maximum (for example a submaximal or non-running test, S16, S10). Lower-wins would knowingly build zones on a value below a recorded heart rate. The reverse case is expected: a 10-minute effort at RPE 8 need not reach the maximum, so an observed value below the lab value is not a contradiction. Withholding is the abstention-preferring choice, because nothing is lost for prescription (G.5). 5 bpm is well above chest-strap measurement error, so a larger gap is not explained by the sensor. Within the band the choice of reference moves the boundaries by at most about 5 bpm.",
+      "disclosure": "'Your lab maximum (<bpm>, <date>) is lower than a heart rate your chest strap recorded (<bpm>, <date>), so we are not showing zones. Effort governs.'"
+    },
+    {
+      "id": "HR5-4.arithmetic",
+      "question": "Rounding, interval convention, open ends, degeneracy check.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusNote": "Arithmetic convention; no scientific claim beyond HR5-1.",
+      "confidence": "HIGH",
+      "sourceIds": [],
+      "value": "see values.boundaryRule",
+      "conditions": [
+        "boundaryBpm = floor((referenceBpm x perMille + 500) / 1000), integers only.",
+        "For an observed reference, the 0.80 and 0.87 boundaries must equal the three-zone bpm (Math.round(bpm x fraction)). This instance checked every integer 140-220 and found no mismatch and no degenerate set; the implementation must test this.",
+        "[from, to): a reading equal to a boundary belongs to the higher zone."
+      ],
+      "rationale": "Deterministic integer arithmetic avoids floating-point edge cases and agrees with the three-zone output over the plausible range.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-5.confidence",
+      "question": "referenceConfidence MODERATE for a lab maximum?",
+      "disposition": "AMEND",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["S16", "S10", "V1RC-SRC08", "V1RC-SRC09", "S07"],
+      "value": "see values.confidence",
+      "conditions": [
+        "Changed: referenceConfidence LOW for a lab maximum as well as for an observed one; under a conflict there are no zones, so no confidence is given.",
+        "Kept: zoneModelConfidence always LOW; estimated: true on every output.",
+        "Kept: every output names its reference (kind, bpm, evidence id, date, sensor, protocol as supplied, age in days)."
+      ],
+      "rationale": "The app cannot verify a supplied lab test's protocol, modality or maximality (Q6.a confidence LOW). A MODERATE label would imply a verification that did not happen.",
+      "disclosure": "Reference shown with its kind, date and age."
+    },
+    {
+      "id": "HR5-6.a.effortPrimary",
+      "question": "Effort as the prescription in every session; HR never primary in V1.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["S08", "S06", "S07", "S09", "V1RC-SRC23"],
+      "value": {"prescription": "EFFORT", "heartRatePrimaryInV1": false},
+      "conditions": ["No session is gated, sized, progressed or changed by heart rate; no dose changes."],
+      "rationale": "RPE at VT is homogeneous across fitness levels (S08), while %HRmax at thresholds varies widely (S07, S08) and is likely miscalibrated for recreational runners (S06). RPE tracks %HR strongly in trained athletes (S09), and HR- and RPE-based distributions agree when HR zones come from measured thresholds (V1RC-SRC23), which V1 does not have.",
+      "disclosure": "'How the run feels governs.'"
+    },
+    {
+      "id": "HR5-6.b.easyCeilingCue",
+      "question": "EASY, LONG, RECOVERY_EASY, SHAKEOUT, EASY_REESTABLISHMENT (EASY mode): ceiling cue from Z4.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S12", "S13", "S15", "S11", "S10", "S06"],
+      "value": "see values.sessionUse",
+      "conditions": [
+        "A sustained reading in Z4 or above may suggest slowing; never speeding up; effort governs.",
+        "The cue is not a safety signal and implies no health meaning (G.8).",
+        "Drift in long or hot runs is real added strain (S12), so the cue stays valid there. Copy may name heat and dehydration as reasons heart rate rises (S11, S13).",
+        "Known limit, disclosed: for newer runners Z4 is a late ceiling (S06); effort remains the guard."
+      ],
+      "rationale": "Z4 is the start of the approved HIGH domain, exactly the Q6 'high-zone reading may suggest slowing' rule. A ceiling cue fails safe under HR lag, because lag makes early readings low, never high. Drift raises HR with real strain (S12, S13), so slowing is the appropriate response.",
+      "disclosure": "'If your heart rate stays in Z4 or higher on an easy run, consider slowing down. A low reading never means speed up.'"
+    },
+    {
+      "id": "HR5-6.c.recoveryFromZ3",
+      "question": "Should RECOVERY_EASY / SHAKEOUT cue from Z3?",
+      "disposition": "ABSTAIN",
+      "evidenceStatus": "PLAUSIBLE_BUT_UNCERTAIN",
+      "confidence": "LOW",
+      "sourceIds": ["S06", "S07", "S09", "S10"],
+      "value": "Z4 kept for RECOVERY_EASY, SHAKEOUT and EASY_REESTABLISHMENT (no change from Q6)",
+      "conditions": ["Proposed for re-review (proposedQueueItems HQ-V1HR5-SSCTR-ZONES, reReviewNotes)."],
+      "rationale": "Recovery sessions share the EASY_CONVERSATIONAL effort cue (RPE 2-4) and differ only by a slower pace ceiling. Whether a reading of at least 0.80 HRmax marks a recovery run as too hard depends on individual VT1, which sits near or above 0.80 in many trained athletes (S07 81.4 +/- 3.9 %HRmax in cycling; running gives a higher %HR, S09) and lower in recreational ones (S06, discussion inference). The evidence does not support a separate cue zone for this population, and a Z3 cue would also differ from the three-zone cue text approved in Q6.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.d.noUsualZones",
+      "question": "Show the zones EASY/LONG 'usually sit in' (Z1-Z2)?",
+      "disposition": "REFUSE",
+      "evidenceStatus": "CONFLICTING_EVIDENCE",
+      "confidence": "MODERATE",
+      "sourceIds": ["S07", "S08", "S06", "V1RC-SRC08", "V1RC-SRC09"],
+      "value": {"showUsualZonesForFamily": false},
+      "conditions": [],
+      "rationale": "That would convert an effort domain into a heart-rate zone, which Q6.separation refused. Individual %HRmax at the easy/threshold boundary varies too widely to state (S07, S08), and labelling Z3 as 'not easy' would contradict effort for some runners.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.e.thresholdAndRaceSpecific",
+      "question": "THRESHOLD, HALF_MARATHON_SPECIFIC, MARATHON_SPECIFIC: no HR guidance.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S06", "S07", "S08", "S10", "V1RC-SRC08", "V1RC-SRC09"],
+      "value": "NO_HEART_RATE_GUIDANCE",
+      "conditions": [],
+      "rationale": "Fixed fractions are not individual thresholds, and Q6.separation keeps zones and effort domains apart. A Z5 ceiling on threshold work is plausible, since bouts of 5 min or more allow HR to stabilize (S10), but it was not requested and is not supported for this population; abstained (see abstentions).",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.f.shortHard",
+      "question": "FIVE_K_SPECIFIC, TEN_K_SPECIFIC, strides: no HR guidance.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S01", "S04", "S10"],
+      "value": "NO_HEART_RATE_GUIDANCE",
+      "conditions": [],
+      "rationale": "HR time-in-zone underestimates high-intensity work (S01; S04 conversion factor 3.0 in the high range). HR is less useful in short high-intensity intervals because of its delay at onset and is a good measure only above about 4 min (S10). No runner-specific primary lag study was retained (negative search); withholding guidance needs less evidence than giving it.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.g.race",
+      "question": "RACE, RACE_TOUCH: no HR guidance.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S11", "S14"],
+      "value": "NO_HEART_RATE_GUIDANCE",
+      "conditions": ["Race-day guidance stays as approved."],
+      "rationale": "Race HR is about 20 bpm higher at the same speed than outside competition (S11), and drift complicates HR feedback in marathons (S14).",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.h.none",
+      "question": "WALK, WALK_JOG, FAMILIAR_REPEATED_BOUTS; WALK_JOG/RESTART/RETURN modes; hold; no zones: NONE with typed reason.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "MODERATE",
+      "sourceIds": ["S10"],
+      "value": "NONE",
+      "conditions": ["Modes and hold withdraw the zones (Q9); effort-only families carry no HR role."],
+      "rationale": "Consistent with Q9 and the effort-only walk/jog design; intermittent walk/jog makes HR lag-dominated (S10).",
+      "disclosure": "'After a break we go by effort.' (Q9)"
+    },
+    {
+      "id": "HR5-6.i.unknownFamily",
+      "question": "Unknown family: NO_HEART_RATE_GUIDANCE.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "evidenceStatusNote": "Fail-closed design rule; no scientific claim.",
+      "confidence": "HIGH",
+      "sourceIds": [],
+      "value": "NO_HEART_RATE_GUIDANCE",
+      "conditions": [],
+      "rationale": "Fail closed.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-6.j.rpeConflict",
+      "question": "Conflict between HR and RPE: effort governs.",
+      "disposition": "APPROVE",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S08", "S11", "S12", "S15"],
+      "value": "EFFORT_GOVERNS; HIGH_READING_MAY_SUGGEST_SLOWING; LOW_READING_NEVER_SUGGESTS_SPEEDING_UP",
+      "conditions": [],
+      "rationale": "A high HR at a low RPE has known causes that do add strain (heat, dehydration, drift: S11, S12, S15), so slowing is acceptable. A low HR at a high RPE is governed by effort.",
+      "disclosure": "Under HR5-6.b."
+    },
+    {
+      "id": "HR5-6.k.novices",
+      "question": "Novices: same rules?",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S06", "S08"],
+      "value": "same rules; walk/jog stays effort only",
+      "conditions": ["The newer-runner disclosure of HR5-1.a is required.", "No novice-specific HR cue (abstained)."],
+      "rationale": "Same rules are safe because effort governs and the cue only slows. A novice-specific lower ceiling is plausible (S06) but not supported numerically.",
+      "disclosure": "Under HR5-1.a."
+    },
+    {
+      "id": "HR5-6.l.primaryAnywhere",
+      "question": "Any family where HR is primary guidance in V1?",
+      "disposition": "REFUSE",
+      "evidenceStatus": "INSUFFICIENT_EVIDENCE",
+      "confidence": "MODERATE",
+      "sourceIds": ["S06", "S07", "S08", "V1RC-SRC08", "V1RC-SRC09", "V1RC-SRC24"],
+      "value": "none",
+      "conditions": ["HR may become primary only with individually measured thresholds, mapped by a separately reviewed rule (future)."],
+      "rationale": "No individually anchored zones exist in V1; fixed fractions misclassify individuals.",
+      "disclosure": "None."
+    },
+    {
+      "id": "HR5-7.timeInZone",
+      "question": "Time in zone: conditions for a future classifier.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S01", "S04", "S10", "S12", "S17"],
+      "value": "see values.timeInZone",
+      "conditions": [
+        "V1 output: sessionDistribution UNAVAILABLE / NO_HEART_RATE_SERIES_IN_CONTRACT. The classifier is not wired to any input, and its existence enables nothing.",
+        "Time per zone is never derived from an average heart rate.",
+        "Future conditions are recorded under values.timeInZone.futureClassifierConditions; a future channel needs its own SSCTR and Data review."
+      ],
+      "rationale": "Time-in-zone systematically underrepresents hard work (S01, S04), drifts upward in long or hot sessions (S12), and depends on sensor quality (S17). It is descriptive at most.",
+      "disclosure": "None in V1."
+    },
+    {
+      "id": "HR5-8.updating",
+      "question": "Week-boundary updates, Q9 withdrawal, replacement and expiry.",
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "confidence": "LOW",
+      "sourceIds": ["S10", "V1RC-SRC10"],
+      "value": "see values.updating",
+      "conditions": [
+        "The reference and the conflict status are re-evaluated only at a week boundary, from evidence on record before the week starts.",
+        "Observed: the highest qualifying value within 365 days (Q6(b)); a newer higher one is used from the next week, and an older higher one stays until it ages out.",
+        "Lab: 182 days, never before a break of 14 days or more, a hold or a return (R-09). On expiry the observed maximum is used from the next week, if one qualifies.",
+        "Withdrawn by the Q9 events; evidence dated before a withdrawing event is not used again."
+      ],
+      "rationale": "Consistent with the approved three-zone behaviour. HRmax declines only slowly with age (V1RC-SRC10, S10), so the 365-day window is acceptable.",
+      "disclosure": "Reference age shown in days."
+    }
+  ],
+  "values": {
+    "file": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json",
+    "decisionRecord": "SSCTR-HR5-DECISION-r1",
+    "boundary": "V1X-RUN-HR-FIVE-ZONE (on only with V1X-RUN-CAPACITY and V1X-RUN-HR, and an independent SSCTR record bound to this file's bytes)",
+    "output": "heartRateFiveZones (separate from heartRateZones, which is unchanged)",
+    "zones": [
+      {"name": "Z1", "fromFraction": null, "toFraction": 0.72, "fromPerMille": null, "toPerMille": 720, "domain": "LOW"},
+      {"name": "Z2", "fromFraction": 0.72, "toFraction": 0.80, "fromPerMille": 720, "toPerMille": 800, "domain": "LOW"},
+      {"name": "Z3", "fromFraction": 0.80, "toFraction": 0.87, "fromPerMille": 800, "toPerMille": 870, "domain": "MODERATE"},
+      {"name": "Z4", "fromFraction": 0.87, "toFraction": 0.92, "fromPerMille": 870, "toPerMille": 920, "domain": "HIGH"},
+      {"name": "Z5", "fromFraction": 0.92, "toFraction": null, "fromPerMille": 920, "toPerMille": null, "domain": "HIGH"}
+    ],
+    "domainsUnchanged": {"LOW": {"toFraction": 0.80}, "MODERATE": {"fromFraction": 0.80, "toFraction": 0.87}, "HIGH": {"fromFraction": 0.87}},
+    "withinDomainSplitsHaveSportingRole": false,
+    "namedScale": null,
+    "boundaryRule": {
+      "bpm": "floor((referenceBpm * perMille + 500) / 1000), integer arithmetic (round half up)",
+      "interval": "[from, to): a reading equal to a boundary belongs to the higher zone",
+      "openEnds": "Z1 has no lower bound; Z5 has no upper bound",
+      "strictlyIncreasing": "required; otherwise UNAVAILABLE / ZONE_BOUNDARIES_DEGENERATE (none occurs for 140-220)",
+      "mustEqualThreeZoneBpm": "for an observed reference, the 800 and 870 per-mille boundaries equal heartRateZones MODERATE lowBpm and highBpm"
+    },
+    "reference": {
+      "order": ["LAB_MEASURED_MAXIMUM", "OBSERVED_MAXIMUM"],
+      "otherwise": "UNAVAILABLE with a typed reason",
+      "labMeasuredMaximum": {
+        "kind": "LAB_TEST",
+        "field": "heartRate.maxBpm",
+        "plausibleBpm": [140, 220],
+        "inForce": "existing lab rules: recencyDaysMax 182; no declared break of 14 days or more since; not dated before a hold or return (SSCTR-V1RC-R-09)",
+        "recencyDaysMax": 182,
+        "noDeclaredBreakDaysAtLeastSince": 14,
+        "sensors": ["CHEST_STRAP", "ECG"],
+        "runningModality": "REQUIRED_DECLARED (treadmill or field running). The field is chosen by Data/Engineering among existing inputs without changing frozen bytes or shared contracts; absent or other gives LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN",
+        "rpeReportedMin": 8,
+        "completedNotFalse": true,
+        "toleratedNotFalse": true,
+        "suppliedLabValuesMappedToZones": false,
+        "label": "The maximum your lab test reported, as you supplied it; not checked by the app",
+        "referenceConfidence": "LOW"
+      },
+      "observedMaximum": {
+        "rule": "exactly SSCTR-V1RC-DECISION-r1 Q6(b), unchanged",
+        "sourceEvents": ["RACE_RESULT", "TIME_TRIAL", "FIELD_TEST"],
+        "effortMinutesMin": 10,
+        "rpeReportedMin": 8,
+        "sensors": ["CHEST_STRAP"],
+        "windowDays": 365,
+        "plausibleBpm": [140, 220],
+        "use": "highest qualifying value in the window",
+        "notBeforeBreakHoldOrReturn": true,
+        "label": "The highest heart rate your chest strap recorded in a hard effort; your true maximum may be higher",
+        "referenceConfidence": "LOW"
+      },
+      "notUsed": ["DECLARED_MAXIMUM_WITHOUT_PROVENANCE", "AGE_FORMULA", "HEART_RATE_RESERVE", "SESSION_AVERAGE_HEART_RATE", "OPTICAL_SENSOR"]
+    },
+    "conflict": {
+      "appliesWhen": "a qualifying lab maximum and a qualifying observed maximum are both in force at the week boundary",
+      "rule": "if observedMaxBpm - labMaxBpm > 5: UNAVAILABLE / REFERENCE_CONFLICT; otherwise the lab maximum is used",
+      "bandBpm": 5,
+      "bandBasis": "DECIDED tolerance above chest-strap measurement error (S17, S18); not an HRmax reliability estimate",
+      "labAboveObserved": "not a conflict; lab used",
+      "lowerWins": false,
+      "conflictOutput": {"status": "UNAVAILABLE", "reason": "REFERENCE_CONFLICT", "report": ["labMaxBpm", "labDate", "labEvidenceId", "observedMaxBpm", "observedDate", "observedEvidenceId", "differenceBpm"]},
+      "prescriptionEffect": "none"
+    },
+    "confidence": {
+      "referenceConfidence": {"LAB_MEASURED_MAXIMUM": "LOW", "OBSERVED_MAXIMUM": "LOW", "REFERENCE_CONFLICT": null},
+      "zoneModelConfidence": "LOW",
+      "estimated": true,
+      "provenance": ["referenceKind", "referenceBpm", "evidenceId", "date", "sensor", "protocolAsSupplied (lab only)", "ageDays"],
+      "notes": ["NOT_THRESHOLDS", "FIXED_FRACTIONS_OF_A_MAXIMUM", "OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM (observed only)", "NOT_CHECKED_BY_THE_APP (lab only)"]
+    },
+    "sessionUse": {
+      "principle": "Effort is the prescription in every session; heart rate is never primary in V1; it may only suggest slowing.",
+      "families": {
+        "EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+        "LONG": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+        "RECOVERY_EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+        "SHAKEOUT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+        "EASY_REESTABLISHMENT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4", "onlyWhen": "plan in EASY mode and zones in force"},
+        "THRESHOLD": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+        "HALF_MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+        "MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+        "FIVE_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+        "TEN_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+        "STRIDES": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+        "RACE": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+        "RACE_TOUCH": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+        "WALK": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+        "WALK_JOG": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+        "FAMILIAR_REPEATED_BOUTS": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"}
+      },
+      "states": {
+        "MODE_WALK_JOG_RESTART_RETURN": {"role": "NONE", "reason": "MODE_WALK_JOG_RESTART_RETURN"},
+        "HOLD": {"role": "NONE", "reason": "HOLD_NO_PRESCRIPTION"},
+        "NO_ZONES": {"role": "NONE", "reason": "the typed reason of heartRateFiveZones (e.g. NO_MEASURED_HEART_RATE, HEART_RATE_DATA_NOT_QUALIFYING, REFERENCE_CONFLICT, EXTENSION_NOT_ENABLED)"},
+        "UNKNOWN_FAMILY": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "UNKNOWN_FAMILY_FAIL_CLOSED"}
+      },
+      "cueRules": {
+        "cueFromBpm": "lower bpm boundary of the cue zone for the reference in force",
+        "sustainedReadingOnly": true,
+        "suggestsSpeedingUp": false,
+        "effortGoverns": true,
+        "gatesSizesOrProgressesSessions": false,
+        "healthMeaning": false,
+        "showUsualZonesForFamily": false
+      }
+    },
+    "updating": {
+      "changesOnlyAtWeekBoundary": true,
+      "evidenceCutoff": "on record before the week starts (same rule as heartRateZones)",
+      "observedReplacement": "highest qualifying within 365 days; a newer higher value applies from the next week",
+      "labExpiryDays": 182,
+      "observedExpiryDays": 365,
+      "conflictReevaluatedWeekly": true,
+      "withdrawal": "Q9: a declared break of 14 days or more, a hold, or WALK_JOG, RESTART or RETURN mode; evidence dated before such an event is not used again"
+    },
+    "timeInZone": {
+      "sessionDistribution": {"status": "UNAVAILABLE", "reason": "NO_HEART_RATE_SERIES_IN_CONTRACT"},
+      "classifierWiredToInput": false,
+      "fromAverageHeartRate": false,
+      "futureClassifierConditions": [
+        "Samples only from a qualifying sensor (CHEST_STRAP or ECG); optical samples excluded.",
+        "Classify with the reference and boundaries in force for that session's week; never retroactively with a later reference.",
+        "Gaps and dropouts are UNKNOWN time, never interpolated; report covered and unknown time with the distribution.",
+        "A minimum-coverage threshold for reporting a distribution is not set here; a future review sets it with the channel's Data semantics (no evidence-based number found).",
+        "No exclusion of the first minutes is required, but no rule may read early readings (HR lag at onset) or late readings (drift) as fitness, readiness or adherence evidence.",
+        "Time in zone never judges whether a harder session was hard enough and never drives adherence (G03), progression or adaptation; it underrepresents hard work (S01, S04) and drifts upward in long or hot sessions (S12).",
+        "Samples above 220 bpm, or flagged by the device as artifacts, are UNKNOWN; physiological plausibility limits for samples are a Data decision.",
+        "A future channel requires its own SSCTR and Data review before any output."
+      ]
+    },
+    "reasons": ["EXTENSION_NOT_ENABLED", "MODE_WALK_JOG_RESTART_RETURN", "HOLD_NO_PRESCRIPTION", "NO_MEASURED_HEART_RATE", "HEART_RATE_DATA_NOT_QUALIFYING", "LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN", "REFERENCE_CONFLICT", "ZONE_BOUNDARIES_DEGENERATE", "AGE_FORMULA_NOT_INDIVIDUAL"],
+    "disclosures": {
+      "zones": "Zones are fixed percentages of your maximum heart rate. They are a rough guide, not your personal thresholds. How the run feels governs.",
+      "newerRunners": "For newer runners the same heart rate can mean a harder effort than the zone name suggests; go by feel.",
+      "lab": "The maximum your lab test reported, as you supplied it; not checked by the app.",
+      "observed": "Estimated from the highest heart rate your chest strap recorded in a hard effort; your true maximum may be higher.",
+      "conflict": "Your lab maximum is lower than a heart rate your chest strap recorded, so we are not showing zones. Effort governs.",
+      "cue": "If your heart rate stays in Z4 or higher on an easy run, consider slowing down. A low reading never means speed up.",
+      "note": "Wording is Product-owned; the meaning must be kept."
+    },
+    "workedExamples": [
+      {"reference": "OBSERVED_MAXIMUM 190", "boundariesBpm": {"Z2from": 137, "Z3from": 152, "Z4from": 165, "Z5from": 175}, "threeZoneCheck": "LOW <152, MODERATE 152-165, HIGH >=165: equal", "easyCueFromBpm": 165},
+      {"reference": "OBSERVED_MAXIMUM 150", "boundariesBpm": {"Z2from": 108, "Z3from": 120, "Z4from": 131, "Z5from": 138}},
+      {"reference": "OBSERVED_MAXIMUM 140", "boundariesBpm": {"Z2from": 101, "Z3from": 112, "Z4from": 122, "Z5from": 129}},
+      {"reference": "LAB_MEASURED_MAXIMUM 220", "boundariesBpm": {"Z2from": 158, "Z3from": 176, "Z4from": 191, "Z5from": 202}},
+      {"case": "lab 182 (running, chest strap, RPE 9, 60 days) and observed 191", "result": "UNAVAILABLE / REFERENCE_CONFLICT (difference 9 > 5)"},
+      {"case": "lab 190 and observed 194", "result": "lab 190 used; no conflict (difference 4)"},
+      {"case": "lab 195 and observed 180", "result": "lab 195 used; no conflict (lab above observed)"},
+      {"case": "lab on a cycle ergometer, or modality not declared, and observed 186", "result": "lab not qualifying (LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN); observed 186 used"},
+      {"case": "reading 165 with reference 190", "result": "Z4 (boundary belongs to the higher zone)"}
+    ]
+  },
+  "aeReview": {
+    "q1_planAdequate": "Unchanged: no session, dose, phase or progression changes.",
+    "q2_materialFact": "Only a provenance-qualified maximum; none is inferred.",
+    "q3_keepDefensible": "KEEP the prescription in every case; heart rate is descriptive.",
+    "q4_changeNecessary": "No prescription change; the five zones are an additive display.",
+    "q5_smallestIntervention": "Display-only reference with a slowing-only cue in easy families.",
+    "q6_smallerAlternatives": "No five zones at all is the smaller alternative; the Founder decided five zones exist, so the smallest compliant form is display-only.",
+    "q7_priorityAndProgression": "Protected: effort governs, nothing gates or progresses.",
+    "q8_evidenceSupportsDose": "No dose is set.",
+    "q9_uncertainty": "Individual meaning of fixed fractions (LOW zoneModelConfidence); unverifiable lab protocol; recreational-runner calibration.",
+    "q10_askHoldClinical": "Medication or conditions that alter heart-rate response are outside this role (escalated). Symptoms use the existing warning-sign route."
+  },
+  "changedFromProposal": [
+    "HR5-1: basis corrected; Tonnessen 2014 reports 54-73/74-83/84-88/89-93/>94, not 60-72/72-82/82-87/87-92/92-97; the official scale is ~55-72/72-82/82-87/87-92/92-100; Seiler 2010 not verified. Fractions themselves unchanged.",
+    "HR5-2: lab maximum needs a declared running test, a CHEST_STRAP or ECG sensor, RPE 8 or higher reported, and completed and tolerated not false.",
+    "HR5-3: no lower-wins. If the observed maximum exceeds the lab maximum by more than 5 bpm, no five zones (REFERENCE_CONFLICT); a lab value above the observed one is not a conflict.",
+    "HR5-5: referenceConfidence LOW for a lab maximum (was MODERATE)."
+  ],
+  "abstentions": [
+    {"item": "Heart-rate targets or heart rate as primary guidance in any V1 family", "status": "INSUFFICIENT_EVIDENCE without individually measured, reviewed thresholds", "result": "none (Q6 abstention kept)"},
+    {"item": "Z3 cue for RECOVERY_EASY, SHAKEOUT or EASY_REESTABLISHMENT", "status": "PLAUSIBLE_BUT_UNCERTAIN", "result": "Z4 kept"},
+    {"item": "A novice-specific lower ceiling", "status": "PLAUSIBLE_BUT_UNCERTAIN (S06 discussion inference)", "result": "same rules plus disclosure"},
+    {"item": "A ceiling cue (for example Z5) in threshold or race-specific sessions", "status": "PLAUSIBLE_BUT_UNCERTAIN", "result": "NO_HEART_RATE_GUIDANCE"},
+    {"item": "Mapping supplied lab thresholds into zones", "status": "method unverifiable by the app (Q6.a)", "result": "shown as supplied in heartRateZones only"},
+    {"item": "A numeric minimum coverage, sample plausibility window or warm-up exclusion for a future time-in-zone classifier", "status": "INSUFFICIENT_EVIDENCE for a number", "result": "conditions only; numbers left to a future review"},
+    {"item": "HRmax test-retest reliability as the basis of the conflict band", "status": "negative search", "result": "band set as a decided tolerance above sensor error"}
+  ],
+  "escalations": [
+    {"to": "Chief", "what": "Draft implementation files appeared in the worktree during this decision and were not inputs. They must be reconciled to these values (notably the lab conditions, the conflict rule and LOW reference confidence) before the independent implementation review."},
+    {"to": "Data / Engineering via Chief", "what": "How a LAB_TEST declares a running modality and its sensor (CHEST_STRAP or ECG) using existing inputs, without changing frozen bytes, the parallel contract or IntegrationContracts. If impossible, the lab tier stays off."},
+    {"to": "Product via Chief", "what": "Athlete-facing copy for every disclosure. The five zones must not be called Olympiatoppen or Norwegian zones. Heart-rate copy must imply no health meaning. Product decides how the five-zone cue and the three-zone text are presented so that one session never shows two different cues."},
+    {"to": "Security / Privacy via Chief", "what": "Heart-rate and lab values are health-adjacent data; their handling is outside this role."},
+    {"to": "Clinical owner / Product (existing route)", "what": "Medication or conditions that alter heart-rate response can make zones meaningless. Whether intake asks about this is ASK / ELIGIBILITY_UNASSESSED and a clinical-human matter, not decided here. Symptoms stay on the existing warning-sign route."}
+  ],
+  "proposedQueueItems": [
+    {"queue_id": "HQ-V1HR5-SSCTR-ZONES", "decision_id": "SSCTR-HR5-DECISION-r1", "scope": "five heart-rate zones: fractions, reference hierarchy and conflict rule, confidence labels, session roles and slowing cue (boundary V1X-RUN-HR-FIVE-ZONE)", "linkedTo": "HQ-V1RC-SSCTR-HR", "reReviewNotes": ["Z3 cue for recovery families", "novice-specific ceiling", "conflict band value"]}
+  ],
+  "proposedQueueItemCommon": {
+    "proposedState": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+    "appended": false,
+    "appendOwner": "Founder / Chief (this instance writes only its two files; the queue is unchanged)",
+    "human_review": null,
+    "approval_date": "2026-11-25",
+    "reReviewTrigger": "see expiry.triggers"
+  },
+  "validation": {
+    "jsonParsed": "checked with Node after writing",
+    "arithmeticChecked": "Node: for every integer reference 140-220, floor((b*p+500)/1000) equals Math.round(b*p/1000) for p = 720, 800, 870, 920, and the boundaries are strictly increasing",
+    "skillValidator": "not run (see literatureAccess.validator)",
+    "humanValidation": false,
+    "empiricalValidation": false,
+    "clinicalValidation": false
+  },
+  "governance": {
+    "dispositionIsNotEnablement": true,
+    "enablingRecordWritten": false,
+    "gateClosed": false,
+    "publishedAsProductTruth": false,
+    "independentImplementationReviewRequired": true,
+    "consistencyWithV1RC": "Q6(b), Q6.ageFormula, Q6.separation and Q9 are kept; the three-zone output is untouched; Q6.a lab rules are kept and extended only for the new output."
+  },
+  "expiry": {
+    "owner": "Chief / SSCTR",
+    "reviewBy": "2027-05-11 (aligned with SSCTR-V1RC-DECISION-r1, on whose Q6 and Q9 this depends)",
+    "triggers": [
+      "any revision of SSCTR-V1RC-DECISION-r1 Q6 or Q9, or of the three-zone values",
+      "a new systematic review or meta-analysis on heart-rate zone prescription or %HRmax at thresholds in recreational runners",
+      "a heart-rate series channel, resting heart rate or individually measured thresholds entering the contract",
+      "any change to the V1 population, session families, effort cues or plan modes",
+      "a revision of the Olympiatoppen scale cut-offs",
+      "first real product data, any adverse event, or a runtime inconsistency found by the independent review",
+      "the Founder's funding declaration (human revalidation)"
+    ]
+  }
+}

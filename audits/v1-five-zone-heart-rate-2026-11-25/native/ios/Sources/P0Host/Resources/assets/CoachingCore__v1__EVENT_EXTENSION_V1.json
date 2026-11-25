@@ -1,0 +1,142 @@
+{
+ "id": "V1X-EVENTS-1",
+ "revision": 1,
+ "date": "2026-11-11",
+ "scope": "The 5 km race and the marathon as extensions of the R6 event recipe (R6-POLICY-5 operational.run and operational.event). Time and effort cue only: no pace, no zone, no time prediction, no fuelling, drinking or heat prescription. Nonclinical recreational adults, as the R6 policy. The 10K and the half marathon are not changed.",
+ "decisionRecord": [
+  "audits/coachingcore-v1-final-closure-2026-11-11/ssctr-decision/SSCTR_V1FC_DECISION.json",
+  "audits/coachingcore-v1-final-closure-2026-11-11/ssctr-decision/SSCTR_V1FC_DECISION_AMENDMENT_1.json",
+  "audits/coachingcore-v1-final-closure-2026-11-11/ssctr-decision/SSCTR_V1FC_DECISION_AMENDMENT_2.json"
+ ],
+ "fiveK": {
+  "longRunTarget": 60,
+  "specificLadder": [
+   {
+    "repetitions": 6,
+    "workMinutes": 2,
+    "recoveryMinutes": 2
+   },
+   {
+    "repetitions": 8,
+    "workMinutes": 2,
+    "recoveryMinutes": 2
+   },
+   {
+    "repetitions": 5,
+    "workMinutes": 3,
+    "recoveryMinutes": 2
+   },
+   {
+    "repetitions": 6,
+    "workMinutes": 3,
+    "recoveryMinutes": 2
+   }
+  ],
+  "specificLadderRequiresRunExperience": [
+   "INTERMEDIATE",
+   "EXPERIENCED"
+  ],
+  "specificLadderMonthsAtLeastWhenKnown": 6,
+  "effortCue": "Hard (about 8 of 10): single words only; even, controlled repetitions, never a sprint; you finish each one able to repeat it",
+  "specificWeeks": 3,
+  "taperWeeks": 1,
+  "raceWeekTouch": {
+   "repetitions": 3,
+   "workMinutes": 1,
+   "recoveryMinutes": 2
+  },
+  "raceDayWindowMinutes": 45,
+  "raceDayWarmupMinutes": 12,
+  "minimumRunDays": 2
+ },
+ "marathon": {
+  "eligibility": {
+   "runClasses": [
+    "EASY_CURRENT",
+    "QUALITY_FAMILIAR"
+   ],
+   "longestRunMinutesAtLeast": 90,
+   "longestRunWithinDays": 30,
+   "weeklyRunMinutesAtLeast": 180,
+   "runDaysAtLeast": 4,
+   "longRunTimeAvailableMinutesAtLeast": 150,
+   "weeksToRaceAtLeast": 12,
+   "runExperience": [
+    "INTERMEDIATE",
+    "EXPERIENCED"
+   ],
+   "monthsAtLeastWhenKnown": 6,
+   "longestRunSemantics": "The intake's recent longest run is a fact of its recent window (28 days), inside the 30 days required; a completed, tolerated race result within that window counts as such a run (V1CP Q04). An unknown value is a criterion not met.",
+   "projectedPeakLongRunMinutesAtLeast": 150,
+   "projectionSemantics": "Read once, when a plan is made: the conditional projection of the marathon block itself (every session done with compatible responses, no earned release, every existing cap) must reach this long run before the first taper day. It never removes a block already planned."
+  },
+  "preparatoryLongRunTarget": {
+   "rule": "max(min, min(max, floor5(longest current run)))",
+   "min": 130,
+   "max": 150
+  },
+  "longRunTarget": 180,
+  "longRunTargetIsCapOnly": true,
+  "specificLadder": [
+   {
+    "repetitions": 2,
+    "workMinutes": 15,
+    "recoveryMinutes": 3
+   },
+   {
+    "repetitions": 3,
+    "workMinutes": 15,
+    "recoveryMinutes": 3
+   },
+   {
+    "repetitions": 2,
+    "workMinutes": 20,
+    "recoveryMinutes": 3
+   },
+   {
+    "repetitions": 3,
+    "workMinutes": 20,
+    "recoveryMinutes": 3
+   }
+  ],
+  "effortCue": "Steady and controlled (about 5-6 of 10): short sentences are possible; it should feel sustainable for a long time, clearly easier than threshold",
+  "specificWeeks": 6,
+  "taperWeeks": 2,
+  "taperPoints": [
+   {
+    "daysBeforeRaceAtLeast": 14,
+    "bound": "UPPER",
+    "runVolume": 0.8,
+    "longRun": 0.7,
+    "qualityWork": 0.6
+   },
+   {
+    "daysBeforeRaceAtLeast": 7,
+    "bound": "LOWER",
+    "runVolume": 0.6,
+    "longRun": 0.55,
+    "qualityWork": 0.5
+   }
+  ],
+  "taperPointsSemantics": "Each value is the upper or the lower bound of the R6 taper range it applies to (taperWeekRunVolumeRange, taperWeekLongRunRange, taperQualityWorkRange).",
+  "raceWeekTouch": {
+   "repetitions": 2,
+   "workMinutes": 5,
+   "recoveryMinutes": 3
+  },
+  "raceDayWindowMinutes": 360,
+  "raceDayWarmupMinutes": 5,
+  "completionLongRunBelowMinutes": 150,
+  "keepCautionLongRunBelowMinutes": 150,
+  "postEventFirstRunMinDaysAfterRace": 7,
+  "postEventEasyOnlyThroughDaysAfterRace": 14,
+  "postEventWeeks": 2,
+  "postEventStrengthMinDaysAfterRace": 3,
+  "minimumRunDays": 4,
+  "keepCautionSemantics": "Whenever a marathon race day is a completion, for any reason, the later or shorter event is offered first.",
+  "raceDayLongRunBasis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW",
+  "raceDayLongRunWindowDaysBeforeFirstTaperDay": 30,
+  "taperLongRunBasis": "LONGEST_LONG_RUN_EXECUTED_IN_WINDOW",
+  "raceDayLongRunSemantics": "Race day and the taper long run read the longest training long run executed in the window before the first taper day (days 21 to 50 before the race). Long runs outside it count for neither; with none inside it the value is 0. Every other rule keeps its own basis."
+ }
+}

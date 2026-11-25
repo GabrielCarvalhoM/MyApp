@@ -1,0 +1,1860 @@
+{
+ "driver": "// V1HR5 native validation (2026-11-25): the driver of the five-zone journeys, final-driver.js (V1 final physical validation) widened with what\n// this amendment adds. The SAME text runs in Node over the native ESM namespaces (hr5-oracle.mjs) and in the Mac and iPhone JSContext over the\n// bundle's module registry (FiveZoneTests). It replays recorded synthetic operations through createIntegration and the frozen api.mjs over a\n// memory store and anchor (or the native file store and Keychain anchor), with a deterministic id source and the clock of each step. Beside the\n// digests of final-driver.js, each step reports a READABLE summary of the five zones and of the three zones the record holds (status, reason,\n// reference, edges, the per-session heart-rate roles), so a divergence is visible as a sporting value, not only as a hash. It decides nothing.\n// M = { integration, store, api, value, newStore?, newAnchor? }; input = { key, journeys: [{name, athleteId, steps:[{op, at, args}]}] }\nglobalThis.__hr5 = function (M, inputJSON) {\n  const input = JSON.parse(inputJSON), H = v => M.value.hash(v);\n  const errorOf = e => ({ error: e && e.constructor ? e.constructor.name : typeof e });\n  const viewOf = r => r && r.view && typeof r.view === 'object' ? r.view : null;\n  const strip = (v, drop) => Array.isArray(v) ? v.map(x => strip(x, drop)) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).filter(k => !drop.includes(k)).map(k => [k, strip(v[k], drop)])) : v;\n  const docDigests = raw => { if (raw === null || raw === undefined) return { stored: null, canonical: null }; const d = JSON.parse(raw); return { stored: H(d), canonical: H(strip(d, ['carried', 'carriedMac'])) }; };\n  // The readings the record keeps (carried.presentation.readings), or the ones an answer carries (presentation()).\n  const readingsOf = (r, raw) => (r && r.readings) || (raw ? (((JSON.parse(raw).carried || {}).presentation || {}).readings || null) : null);\n  const five = rc => {\n    const z = rc && rc.heartRateFiveZones; if (!z) return null;\n    const roles = {}; for (const id of Object.keys(z.sessions || {}).sort()) { const s = z.sessions[id], k = s.role + (s.slowDownCueAtOrAboveBpm != null ? '@' + s.slowDownCueAtOrAboveBpm : '') + (s.reason ? ':' + s.reason : '') + (s.primary ? ':PRIMARY' : ''); roles[k] = (roles[k] || 0) + 1; }\n    return { status: z.status, reason: z.reason || null, reference: z.reference ? z.reference.kind + ':' + z.reference.bpm + ':' + z.reference.evidenceId : null,\n      referenceConfidence: z.referenceConfidence || null, zoneModelConfidence: z.zoneModelConfidence || null, conflict: z.conflict ? z.conflict.status + ':' + z.conflict.labMaxBpm + '<' + z.conflict.observedMaxBpm + ':' + z.conflict.differenceBpm : null,\n      edges: z.zones ? z.zones.map(x => x.zone + ':' + (x.fromBpm === null ? '' : x.fromBpm) + '-' + (x.toBpm === null ? '' : x.toBpm)).join(' ') : null,\n      flags: [z.primaryGuidance, z.sessionTarget, z.gatesProgression, z.convertedToPaceOrEffort].map(String).join(','),\n      roles: Object.keys(roles).sort().map(k => k + ' x' + roles[k]).join(', '), digest: H(z) };\n  };\n  const three = rc => { const z = rc && rc.heartRateZones; return z ? { status: z.status, reason: z.reason || null, basis: z.basis || null, edges: z.zones ? z.zones.map(x => x.name + ':' + (x.lowBpm === null ? '' : x.lowBpm) + '-' + (x.highBpm === null ? '' : x.highBpm)).join(' ') : null, digest: H(z) } : null; };\n  function run(j) {\n    let clock = 0, n = 0, it = null, api = null;\n    const store = M.newStore ? M.newStore(j.name) : M.store.memoryStore(), m = new Map(), kept = new Map();\n    const anchor = M.newAnchor ? M.newAnchor(j.name) : { get: id => (m.has(id) ? { ...m.get(id) } : null), set: (id, v) => m.set(id, { ...v }), clear: id => m.delete(id) };\n    const open = () => {\n      it = M.integration.createIntegration({ store, key: j.key || input.key, clock: () => clock, anchor, newId: p => p + '_' + String(++n).padStart(6, '0') });\n      api = M.api.createBoundary({ custody: it, now: () => clock });\n    };\n    open();\n    return j.steps.map(s => {\n      clock = s.at;\n      const args = JSON.parse(JSON.stringify(s.args || {})), who = args.athleteId || j.athleteId;\n      try {\n        if (s.op === 'reopen') { open(); return { op: s.op }; }\n        if (s.op.startsWith('raw.')) {\n          const raw = store.raw(who);\n          if (s.op === 'raw.keep') kept.set(who, raw);\n          else if (s.op === 'raw.restore') store.setRaw(who, kept.get(who));\n          else if (s.op === 'raw.tamper') { const i = raw.indexOf(args.find); if (i < 0) throw new Error('tamper target'); store.setRaw(who, raw.slice(0, i) + args.replace + raw.slice(i + args.find.length)); }\n          else throw new Error('unknown raw op');\n          return { op: s.op, ...docDigests(store.raw(who)) };\n        }\n        const [side, name] = s.op.split('.'), target = side === 'it' ? it : side === 'api' ? api : null;\n        if (!target || typeof target[name] !== 'function') throw new Error('unknown op');\n        const r = target[name]({ actor: { athleteId: j.athleteId }, ...args });\n        const raw = store.raw(j.athleteId), v = viewOf(r), rd = r.ok === false ? null : readingsOf(r, raw), rc = rd ? rd.runCalibration : null;\n        return { op: s.op, code: r.ok === false ? r.error.code : 'OK', status: r.status || null, version: r.version || null,\n          state: v ? v.state : (typeof r.state === 'string' ? r.state : null), hold: v ? (v.hold ? v.hold.exit : null) : null,\n          fiveZones: five(rc), threeZones: three(rc), calibration: rc ? rc.status : null,\n          answer: H(r), ...docDigests(raw) };\n      } catch (e) { return { op: s.op, ...errorOf(e) }; }\n    });\n  }\n  const out = { journeys: input.journeys.map(j => ({ name: j.name, steps: run(j) })) };\n  out.digest = H(out.journeys);\n  return JSON.stringify(out);\n};\n// The five-zone module itself, called directly (the same text in Node and in the JSContext): the edges for every plausible maximum, the zone\n// of readings on and around the edges, the sample classifier, and the refusals of impossible maxima. Z = v1-heart-rate-zones.mjs.\nglobalThis.__hr5units = function (Z, inputJSON) {\n  const input = JSON.parse(inputJSON), V = Z.HR5_VALUES, out = { pinned: Z.HR5_SHA256, fileSha256: Z.HR5_FILE_SHA256, valid: !!V, edges: {} };\n  for (let b = input.from; b <= input.to; b++) { const z = Z.zonesFromMaximum(b, V); out.edges[b] = z ? z.slice(1).map(x => x.fromBpm).join(',') : null; }\n  const z = Z.zonesFromMaximum(input.reference, V);\n  out.readings = input.readings.map(b => Z.zoneOfBpm(z, b, input.limits.plausibleBpm));\n  out.readingsWithoutRange = Z.zoneOfBpm(z, 150);\n  out.classified = Z.classifySamples(z, input.series, input.limits);\n  out.classifiedWithoutLimits = Z.classifySamples(z, input.series, {});\n  out.refused = input.bad.map(b => Z.zonesFromMaximum(b, V));\n  return JSON.stringify(out);\n};\n",
+ "inputJSON": "{\"key\":\"v1hr5-device-run-synthetic-key\",\"journeys\":[{\"name\":\"hr5-strap\",\"athleteId\":\"hr5-a\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-a\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":186,\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"wk-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d3\",\"occurrenceDate\":\"2026-11-19\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d6\",\"occurrenceDate\":\"2026-11-22\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"it.presentation\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}},{\"op\":\"reopen\",\"at\":1795388400000,\"args\":{}},{\"op\":\"it.presentation\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}},{\"op\":\"raw.keep\",\"at\":1795388400000,\"args\":{}},{\"op\":\"raw.tamper\",\"at\":1795388400000,\"args\":{\"find\":\"\\\"reason\\\":\\\"EXTENSION_NOT_ENABLED\\\"\",\"replace\":\"\\\"reason\\\":\\\"NO_MEASURED_HEART_RATE\\\"\"}},{\"op\":\"it.read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}},{\"op\":\"raw.restore\",\"at\":1795388400000,\"args\":{}},{\"op\":\"it.read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"it.presentation\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}}]},{\"name\":\"hr5-lab\",\"athleteId\":\"hr5-b\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-b\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true},{\"id\":\"lab-1\",\"kind\":\"LAB_TEST\",\"date\":\"2026-10-20\",\"rpe\":9,\"tolerated\":true,\"lab\":{\"protocol\":\"Incremental treadmill test\",\"source\":\"Laboratory report\",\"modality\":\"TREADMILL_RUN\",\"values\":[{\"name\":\"First measured anchor\",\"value\":150,\"unit\":\"bpm\"}]},\"heartRate\":{\"maxBpm\":190,\"sensor\":\"ECG\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}}]},{\"name\":\"hr5-conflict\",\"athleteId\":\"hr5-c\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-c\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":192,\"sensor\":\"CHEST_STRAP\"}},{\"id\":\"lab-1\",\"kind\":\"LAB_TEST\",\"date\":\"2026-10-20\",\"rpe\":9,\"tolerated\":true,\"lab\":{\"protocol\":\"Incremental treadmill test\",\"source\":\"Laboratory report\",\"modality\":\"TREADMILL_RUN\",\"values\":[{\"name\":\"First measured anchor\",\"value\":150,\"unit\":\"bpm\"}]},\"heartRate\":{\"maxBpm\":180,\"sensor\":\"ECG\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}}]},{\"name\":\"hr5-none\",\"athleteId\":\"hr5-d\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-d\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"wk-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d3\",\"occurrenceDate\":\"2026-11-19\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d6\",\"occurrenceDate\":\"2026-11-22\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"it.presentation\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795993200000,\"args\":{\"clientRequestId\":\"wk-2\",\"expectedVersion\":2,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-29\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w1-run-d1\",\"occurrenceDate\":\"2026-11-24\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w1-str-d2\",\"occurrenceDate\":\"2026-11-25\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w1-run-d3\",\"occurrenceDate\":\"2026-11-26\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w1-run-d5\",\"occurrenceDate\":\"2026-11-28\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w1-str-d5\",\"occurrenceDate\":\"2026-11-28\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w1-run-d6\",\"occurrenceDate\":\"2026-11-29\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"it.presentation\",\"at\":1795993200000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795993200000,\"args\":{}}]},{\"name\":\"hr5-invalid\",\"athleteId\":\"hr5-e\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-e\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":186,\"sensor\":\"OPTICAL\"}},{\"id\":\"tt-x\",\"kind\":\"RACE_RESULT\",\"distance\":\"5K\",\"seconds\":1500,\"date\":\"2026-10-25\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":300,\"sensor\":\"CHEST_STRAP\"}},{\"id\":\"tt-y\",\"kind\":\"RACE_RESULT\",\"distance\":\"5K\",\"seconds\":1500,\"date\":\"2026-10-18\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":\"188\",\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}}]},{\"name\":\"hr5-extreme-low\",\"athleteId\":\"hr5-f\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-f\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":140,\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}}]},{\"name\":\"hr5-extreme-high\",\"athleteId\":\"hr5-g\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-g\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":220,\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}}]},{\"name\":\"hr5-hold\",\"athleteId\":\"hr5-h\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-h\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":186,\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795042800000,\"args\":{\"clientRequestId\":\"pain-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":true,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[]}}},{\"op\":\"it.presentation\",\"at\":1795042800000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795042800000,\"args\":{}},{\"op\":\"reopen\",\"at\":1795042800000,\"args\":{}},{\"op\":\"it.presentation\",\"at\":1795042800000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795042800000,\"args\":{}}]},{\"name\":\"hr5-declared\",\"athleteId\":\"hr5-i\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-i\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.presentation\",\"at\":1794668400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1794668400000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795042800000,\"args\":{\"clientRequestId\":\"ev-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[],\"runEvidence\":[{\"id\":\"tt-1\",\"kind\":\"TIME_TRIAL\",\"distance\":\"5K\",\"seconds\":1500,\"date\":\"2026-11-17\",\"measurement\":\"GPS\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":188,\"sensor\":\"CHEST_STRAP\"}}]}}},{\"op\":\"it.presentation\",\"at\":1795042800000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795042800000,\"args\":{}},{\"op\":\"it.submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"wk-2\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d3\",\"occurrenceDate\":\"2026-11-19\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d6\",\"occurrenceDate\":\"2026-11-22\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"it.presentation\",\"at\":1795388400000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795388400000,\"args\":{}}]},{\"name\":\"hr5-restart\",\"athleteId\":\"hr5-j\",\"steps\":[{\"op\":\"it.enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-j\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":186,\"sensor\":\"CHEST_STRAP\"}}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"it.submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"wk-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d3\",\"occurrenceDate\":\"2026-11-19\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d6\",\"occurrenceDate\":\"2026-11-22\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"it.restart\",\"at\":1795525200000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-24\",\"startDate\":\"2026-11-27\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"hr5-j\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-24\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"id\":\"race-10k\",\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true,\"heartRate\":{\"maxBpm\":186,\"sensor\":\"CHEST_STRAP\"}}],\"pause\":{\"reasonCategory\":\"SCHEDULE\",\"nonclinical\":true,\"weeks\":0}},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"expectedVersion\":2}},{\"op\":\"it.presentation\",\"at\":1795525200000,\"args\":{}},{\"op\":\"api.plan\",\"at\":1795525200000,\"args\":{}}]}]}",
+ "expected": {
+  "journeys": [
+   {
+    "name": "hr5-strap",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "ff80309c613accd446f1c473dafd6b3efe9b0d21efd2e73b1452e3f401885c04",
+      "stored": "d6809cf9e0a7cd85ff20193d57e3fdd0fe5f02bce1951520adc51e3206a0f7dc",
+      "canonical": "115b175d34712fb0e90ffa25232d1b923213857791fe4dfea66d94e1576b2e8f"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "4843122684c43a161b0d0d17fc06abfaa37c3e1675218e832d28c45ba286137a",
+      "stored": "d6809cf9e0a7cd85ff20193d57e3fdd0fe5f02bce1951520adc51e3206a0f7dc",
+      "canonical": "115b175d34712fb0e90ffa25232d1b923213857791fe4dfea66d94e1576b2e8f"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "5c56d8975bfb4c5c61cb50212926623d34d3c99466251391a0e8cddd3c13a0df",
+      "stored": "d6809cf9e0a7cd85ff20193d57e3fdd0fe5f02bce1951520adc51e3206a0f7dc",
+      "canonical": "115b175d34712fb0e90ffa25232d1b923213857791fe4dfea66d94e1576b2e8f"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "d867d4eae877c1469882c4172e2cf30679167c14bee4c4f61100403d7ac8d07e",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "ab450fe11defd238e0104b7066d8a21b92f72a793473468cb0d26ae47c450caf",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "72b1843edeb598bf416c23a93777bfc93c57acb0c61bb25a1623a5ac8adf4a9e",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "reopen"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "ab450fe11defd238e0104b7066d8a21b92f72a793473468cb0d26ae47c450caf",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "72b1843edeb598bf416c23a93777bfc93c57acb0c61bb25a1623a5ac8adf4a9e",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "raw.keep",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "raw.tamper",
+      "stored": "643f44dbba12e3a22114e2f009b0e72a5522cb428b38e7bcbc276f41df51107e",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "it.read",
+      "code": "INTEGRITY_FAILURE",
+      "status": null,
+      "version": null,
+      "state": null,
+      "hold": null,
+      "fiveZones": null,
+      "threeZones": null,
+      "calibration": null,
+      "answer": "e7e30fdd8af73b27c7702c0917d92d4034892fbcccddb83dea2957252b925672",
+      "stored": "643f44dbba12e3a22114e2f009b0e72a5522cb428b38e7bcbc276f41df51107e",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "api.plan",
+      "code": "INTEGRITY_FAILURE",
+      "status": null,
+      "version": null,
+      "state": "INTEGRITY_FAILURE",
+      "hold": null,
+      "fiveZones": null,
+      "threeZones": null,
+      "calibration": null,
+      "answer": "2e193fa3a2d855ec4171ce1be5e0e29a00b1a4d9600f10e8406f5cbb8ac7cc2b",
+      "stored": "643f44dbba12e3a22114e2f009b0e72a5522cb428b38e7bcbc276f41df51107e",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "raw.restore",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "it.read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "eeb41fa5ad4c4124c7b8f027a7e85efa59f75773ed3ee817a96d768d585916f4",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "ab450fe11defd238e0104b7066d8a21b92f72a793473468cb0d26ae47c450caf",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "72b1843edeb598bf416c23a93777bfc93c57acb0c61bb25a1623a5ac8adf4a9e",
+      "stored": "9fa0698a198443ef1571af642e90f177266f871d6195043acda3861d9d1d75da",
+      "canonical": "48036805b324db201b7b742dcc0107cd79b8d234ce5a6b3c74d2e07dfbc0977a"
+     }
+    ]
+   },
+   {
+    "name": "hr5-lab",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "1324c067def9afbc6958e37ded0d340b775903d4cc897e524512fd6e8cf997fb",
+      "stored": "7cd392549ad77cb1eccac9c6614d9ec36c6cece8889c5d3129ac9e60734374a1",
+      "canonical": "95f720817c18c64571a29d7bd9dab006c0e9f89c9f4c69dc6e325e1fef33fe41"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "188e2f66b36087a18af0054f0b27fed492f8f11877e2ccec77322b8d5149fd47",
+      "stored": "7cd392549ad77cb1eccac9c6614d9ec36c6cece8889c5d3129ac9e60734374a1",
+      "canonical": "95f720817c18c64571a29d7bd9dab006c0e9f89c9f4c69dc6e325e1fef33fe41"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "e3e2b0bbedda443d9f8c295bdcab003b137c6f6383e89f8058b13a1996537351",
+      "stored": "7cd392549ad77cb1eccac9c6614d9ec36c6cece8889c5d3129ac9e60734374a1",
+      "canonical": "95f720817c18c64571a29d7bd9dab006c0e9f89c9f4c69dc6e325e1fef33fe41"
+     }
+    ]
+   },
+   {
+    "name": "hr5-conflict",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "385e6a94fda8b1659a95a4c3ccd7fcc4128225a79700320e95833807334b927d",
+      "stored": "78b6d281545f0e13b3c63efcbc84f9cb58f11ce5acf56e59ffeccf8dfc005385",
+      "canonical": "9e13161d881aef134fe944c6de575d5bd06b2259ea3dfb22aad2e7faedd50c53"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "188e2f66b36087a18af0054f0b27fed492f8f11877e2ccec77322b8d5149fd47",
+      "stored": "78b6d281545f0e13b3c63efcbc84f9cb58f11ce5acf56e59ffeccf8dfc005385",
+      "canonical": "9e13161d881aef134fe944c6de575d5bd06b2259ea3dfb22aad2e7faedd50c53"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "MEASURED_AS_SUPPLIED",
+       "edges": null,
+       "digest": "818b1be673109b83e9f5d7eb9c3d08004ac37c32898c54ca949a420fc56d5bcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "f8465145a827170e693179ca9b5694dab8a7948ba4cf74ac67e0436f879e7e69",
+      "stored": "78b6d281545f0e13b3c63efcbc84f9cb58f11ce5acf56e59ffeccf8dfc005385",
+      "canonical": "9e13161d881aef134fe944c6de575d5bd06b2259ea3dfb22aad2e7faedd50c53"
+     }
+    ]
+   },
+   {
+    "name": "hr5-none",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "2d737e7dd3f8e983f207608fcc88861fbdaa540dd6ac676779fc95cafb6b83e7",
+      "stored": "eb0a1f8c03f375fa76cc75e7dbef3199e2f17f2af2ab98866826a5e528d66881",
+      "canonical": "3cdbd4215755c30a818ccab424ce304037140f44249138cae49010e9af35e693"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "baadd7b9153d20b4c6a94fa383475e8de4372e84385b863c792b22820fbf224a",
+      "stored": "eb0a1f8c03f375fa76cc75e7dbef3199e2f17f2af2ab98866826a5e528d66881",
+      "canonical": "3cdbd4215755c30a818ccab424ce304037140f44249138cae49010e9af35e693"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "4f8629cb322a65351b38bad098e7ffc918ea20e8573882343b6302cc959fdd28",
+      "stored": "eb0a1f8c03f375fa76cc75e7dbef3199e2f17f2af2ab98866826a5e528d66881",
+      "canonical": "3cdbd4215755c30a818ccab424ce304037140f44249138cae49010e9af35e693"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "18fd7fd03041f71d4bdad13c9cc73f348b01dac2025b3773857a4a3b80d0c14a",
+      "stored": "e7f74eacdbb3216442a654c2f638ae6b031c9ef118da70cf19264ab7f2ea68ce",
+      "canonical": "0005f17acc986621f0ee949e2e730c663d625553f9bd3bb75062248079f48dd9"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "a75dbe1e26f8595a01842352d13866c911c8809fe73097576dfb8e7169e3c43e",
+      "stored": "e7f74eacdbb3216442a654c2f638ae6b031c9ef118da70cf19264ab7f2ea68ce",
+      "canonical": "0005f17acc986621f0ee949e2e730c663d625553f9bd3bb75062248079f48dd9"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "43170a5ed55dd71218f02864de882d9be14da5416c8569d77a62dd0663db9ecc",
+      "stored": "e7f74eacdbb3216442a654c2f638ae6b031c9ef118da70cf19264ab7f2ea68ce",
+      "canonical": "0005f17acc986621f0ee949e2e730c663d625553f9bd3bb75062248079f48dd9"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 3,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x28",
+       "digest": "52d619121b5038650dd5c61cead898064b29fe00d604f8c0fc2122d200f733e5"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "bd73a61a85b8baf34ee06eeba9e6d5791b541d5ed71efc0367d06850ea631070",
+      "stored": "0b5c7c79ed197a0268eba3a6b87938c2df5ffceb1d5947b3032f742b11724385",
+      "canonical": "47fd645e201f16bf285734734fddde434e49f76072235faf17e9778472726f53"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 3,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x28",
+       "digest": "52d619121b5038650dd5c61cead898064b29fe00d604f8c0fc2122d200f733e5"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "b6bd799dbea839e5e8a64c29a14eb706824717a8f88c2189cc79a07e74caf882",
+      "stored": "0b5c7c79ed197a0268eba3a6b87938c2df5ffceb1d5947b3032f742b11724385",
+      "canonical": "47fd645e201f16bf285734734fddde434e49f76072235faf17e9778472726f53"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x28",
+       "digest": "52d619121b5038650dd5c61cead898064b29fe00d604f8c0fc2122d200f733e5"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "02d549b057b3c7db8add12f1c4a960d78e0d0a3df385a67f3c0ec7626d2bc9d6",
+      "stored": "0b5c7c79ed197a0268eba3a6b87938c2df5ffceb1d5947b3032f742b11724385",
+      "canonical": "47fd645e201f16bf285734734fddde434e49f76072235faf17e9778472726f53"
+     }
+    ]
+   },
+   {
+    "name": "hr5-invalid",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HEART_RATE_DATA_NOT_QUALIFYING",
+       "basis": null,
+       "edges": null,
+       "digest": "6c964fb6d6a6b4c0eb9707d83f53bd53825ddf951813a2fb06e6b2653c754c78"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "0bdd87c550b34824997f71d0a4875a1f189942e2cef1ad35158c9cf403f2adf4",
+      "stored": "0cdb670aa67db80f13de297a25238bb259df101e9b73a78ec9c94142dff5605f",
+      "canonical": "4ee96e15b81389aeb1b227eb2b091efe848361f8e27a6cf631bc35c3442cd632"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HEART_RATE_DATA_NOT_QUALIFYING",
+       "basis": null,
+       "edges": null,
+       "digest": "6c964fb6d6a6b4c0eb9707d83f53bd53825ddf951813a2fb06e6b2653c754c78"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "f14d01205315552272bdc72c55852c755ddd62ae5ce75c0c37fd42ae36736277",
+      "stored": "0cdb670aa67db80f13de297a25238bb259df101e9b73a78ec9c94142dff5605f",
+      "canonical": "4ee96e15b81389aeb1b227eb2b091efe848361f8e27a6cf631bc35c3442cd632"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HEART_RATE_DATA_NOT_QUALIFYING",
+       "basis": null,
+       "edges": null,
+       "digest": "6c964fb6d6a6b4c0eb9707d83f53bd53825ddf951813a2fb06e6b2653c754c78"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "bb083b44341f523fe912345e75e07596b0c317e10f94ad9d6efe67e082dc71f4",
+      "stored": "0cdb670aa67db80f13de297a25238bb259df101e9b73a78ec9c94142dff5605f",
+      "canonical": "4ee96e15b81389aeb1b227eb2b091efe848361f8e27a6cf631bc35c3442cd632"
+     }
+    ]
+   },
+   {
+    "name": "hr5-extreme-low",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-112 MODERATE:112-122 HIGH:122-",
+       "digest": "964960a98740ab359a732e007ed09fc5b657c6fb78625269b8aa62ec262e9d64"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "383b26161231fa08834a13ca2a5505e2c17889673542c4b4a117185522eaedb2",
+      "stored": "32ba89efe940d466ccf7d8bcc5f98e08a06630774a807f47f73a7776908c7146",
+      "canonical": "0eafb0d74bcca1232440a7eca0ca514293558517138ba12b450c2e4a85075b0a"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-112 MODERATE:112-122 HIGH:122-",
+       "digest": "964960a98740ab359a732e007ed09fc5b657c6fb78625269b8aa62ec262e9d64"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "af1693c954fc60a778f47ea0d32b1381c1edc696754aef50cfb240968db043e0",
+      "stored": "32ba89efe940d466ccf7d8bcc5f98e08a06630774a807f47f73a7776908c7146",
+      "canonical": "0eafb0d74bcca1232440a7eca0ca514293558517138ba12b450c2e4a85075b0a"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-112 MODERATE:112-122 HIGH:122-",
+       "digest": "964960a98740ab359a732e007ed09fc5b657c6fb78625269b8aa62ec262e9d64"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "d8091e40c36adf68e9bd83ab78de37675e7ade797b90d6f9f977e59827df0107",
+      "stored": "32ba89efe940d466ccf7d8bcc5f98e08a06630774a807f47f73a7776908c7146",
+      "canonical": "0eafb0d74bcca1232440a7eca0ca514293558517138ba12b450c2e4a85075b0a"
+     }
+    ]
+   },
+   {
+    "name": "hr5-extreme-high",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-176 MODERATE:176-191 HIGH:191-",
+       "digest": "d2603be39b0c3b314a5fef034c17181f5d7865b833cd647b488d79d8491f4fcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "b5828741c4d942a3f1b6e58faccfe56d0f7839439bf9efc82fe3b12c88928f3e",
+      "stored": "22adf9888663c7921b7f582040a465598149b5f12564ebad098db61380acae64",
+      "canonical": "06cc123b5b6cdd858106ecfbb64e64022601ec2ed4de068d3edad2ac154fc921"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-176 MODERATE:176-191 HIGH:191-",
+       "digest": "d2603be39b0c3b314a5fef034c17181f5d7865b833cd647b488d79d8491f4fcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "0ec18615cbd5bc06eefaa2091636672cebe3dc28daabac57faffa296df5a1a5f",
+      "stored": "22adf9888663c7921b7f582040a465598149b5f12564ebad098db61380acae64",
+      "canonical": "06cc123b5b6cdd858106ecfbb64e64022601ec2ed4de068d3edad2ac154fc921"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-176 MODERATE:176-191 HIGH:191-",
+       "digest": "d2603be39b0c3b314a5fef034c17181f5d7865b833cd647b488d79d8491f4fcf"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "b438c85ed439f256ff6781cc98f3c660338dc0694310d0c63ab64b213af58071",
+      "stored": "22adf9888663c7921b7f582040a465598149b5f12564ebad098db61380acae64",
+      "canonical": "06cc123b5b6cdd858106ecfbb64e64022601ec2ed4de068d3edad2ac154fc921"
+     }
+    ]
+   },
+   {
+    "name": "hr5-hold",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "fbf82f93fbbe05253275af02cb77563f8553a34500ef40ad86107271028a869b",
+      "stored": "cfd41d507063ab25144a29b218d66d6cd5ad5f4fe3751d7a27f32ad6c6fa0c0e",
+      "canonical": "02748a13b84c375ea79b20b65188beb7569178f6487a0e512969176a7f6bf7cf"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "4843122684c43a161b0d0d17fc06abfaa37c3e1675218e832d28c45ba286137a",
+      "stored": "cfd41d507063ab25144a29b218d66d6cd5ad5f4fe3751d7a27f32ad6c6fa0c0e",
+      "canonical": "02748a13b84c375ea79b20b65188beb7569178f6487a0e512969176a7f6bf7cf"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "c1c183207d45192d21173e73bd1ac9ce199c03d5e92f76ee90645063a681a21f",
+      "stored": "cfd41d507063ab25144a29b218d66d6cd5ad5f4fe3751d7a27f32ad6c6fa0c0e",
+      "canonical": "02748a13b84c375ea79b20b65188beb7569178f6487a0e512969176a7f6bf7cf"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "79baabb7c719c1f8beb62cb61d619b33ff2331b8252e2ed4409c2d967d14d506"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "basis": null,
+       "edges": null,
+       "digest": "39bb852585d5626876395b7343984c951c6794c0b89775cdb5ed047ab2c191a4"
+      },
+      "calibration": "WITHHELD_HOLD",
+      "answer": "5cd4f5139046d21d8d5adc50ab475eff2ffaf030166455c0a0f64d2c4a29ad82",
+      "stored": "a6d0c9dd355455e3cd4d81ddec1bf938166f20ac9385892edacc48e23e474535",
+      "canonical": "de249832014dc825df13daa6418434d9cf6e572264f3ee7a483de3a1b6f1e406"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "79baabb7c719c1f8beb62cb61d619b33ff2331b8252e2ed4409c2d967d14d506"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "basis": null,
+       "edges": null,
+       "digest": "39bb852585d5626876395b7343984c951c6794c0b89775cdb5ed047ab2c191a4"
+      },
+      "calibration": "WITHHELD_HOLD",
+      "answer": "aa529d4d470b1d974167d56bfc188824a86a3c4fde419484566d195bacd84163",
+      "stored": "a6d0c9dd355455e3cd4d81ddec1bf938166f20ac9385892edacc48e23e474535",
+      "canonical": "de249832014dc825df13daa6418434d9cf6e572264f3ee7a483de3a1b6f1e406"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "BLOCKED",
+      "hold": "READINESS_DECLARATION",
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "79baabb7c719c1f8beb62cb61d619b33ff2331b8252e2ed4409c2d967d14d506"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "basis": null,
+       "edges": null,
+       "digest": "39bb852585d5626876395b7343984c951c6794c0b89775cdb5ed047ab2c191a4"
+      },
+      "calibration": "WITHHELD_HOLD",
+      "answer": "de8ba7da10544a1f91ce38acdbfa70d0e10d415748bfb9d05d17b9be64d341c1",
+      "stored": "a6d0c9dd355455e3cd4d81ddec1bf938166f20ac9385892edacc48e23e474535",
+      "canonical": "de249832014dc825df13daa6418434d9cf6e572264f3ee7a483de3a1b6f1e406"
+     },
+     {
+      "op": "reopen"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "79baabb7c719c1f8beb62cb61d619b33ff2331b8252e2ed4409c2d967d14d506"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "basis": null,
+       "edges": null,
+       "digest": "39bb852585d5626876395b7343984c951c6794c0b89775cdb5ed047ab2c191a4"
+      },
+      "calibration": "WITHHELD_HOLD",
+      "answer": "aa529d4d470b1d974167d56bfc188824a86a3c4fde419484566d195bacd84163",
+      "stored": "a6d0c9dd355455e3cd4d81ddec1bf938166f20ac9385892edacc48e23e474535",
+      "canonical": "de249832014dc825df13daa6418434d9cf6e572264f3ee7a483de3a1b6f1e406"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "BLOCKED",
+      "hold": "READINESS_DECLARATION",
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "79baabb7c719c1f8beb62cb61d619b33ff2331b8252e2ed4409c2d967d14d506"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "HOLD_NO_PRESCRIPTION",
+       "basis": null,
+       "edges": null,
+       "digest": "39bb852585d5626876395b7343984c951c6794c0b89775cdb5ed047ab2c191a4"
+      },
+      "calibration": "WITHHELD_HOLD",
+      "answer": "de8ba7da10544a1f91ce38acdbfa70d0e10d415748bfb9d05d17b9be64d341c1",
+      "stored": "a6d0c9dd355455e3cd4d81ddec1bf938166f20ac9385892edacc48e23e474535",
+      "canonical": "de249832014dc825df13daa6418434d9cf6e572264f3ee7a483de3a1b6f1e406"
+     }
+    ]
+   },
+   {
+    "name": "hr5-declared",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "98abba933410cbff8b6cd7cf81b2d67ad7ad0d10ad099879d7270a4d0e10b0be",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "baadd7b9153d20b4c6a94fa383475e8de4372e84385b863c792b22820fbf224a",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "8eeac2c516e08af75059e7bcfb556867394a60a00c57d81afd8629147c1b6538",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "it.submit",
+      "code": "INVALID_REQUEST",
+      "status": null,
+      "version": null,
+      "state": null,
+      "hold": null,
+      "fiveZones": null,
+      "threeZones": null,
+      "calibration": null,
+      "answer": "bdbc04d65f1da8f8dfb9314ec6edac03fb905d099ca3011e5cbee172aa44fab9",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "baadd7b9153d20b4c6a94fa383475e8de4372e84385b863c792b22820fbf224a",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "5e7843b0b9470ed2b4ce775fb5b7afe819f0dc8f2f0f0b48b3e66113552c050c",
+      "stored": "f0e2bde087996926260e51dab58ecaa5d72222c24104c45d249fa3b552b95ea3",
+      "canonical": "17cc144c2536ae87681abb3ae1ee37f554e82598f1cb1c7373171f79f31097da"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "37b2e854b39727eb479fd97f314afaf62dc3e1f6f1e59b74ecea0d0832d47378",
+      "stored": "7b1b480537524ac0f9941f6f61d90f36781084cf4648f544a40f0ad7262ecf2a",
+      "canonical": "42280b254b15141e8b882a2784acdd5bcfb5c52d7297ba03fa1448dd81dc01f6"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "77a87e87e2f8906a8d4622182d5663bc5e42f6f5c03adfe327fbb9307718070f",
+      "stored": "7b1b480537524ac0f9941f6f61d90f36781084cf4648f544a40f0ad7262ecf2a",
+      "canonical": "42280b254b15141e8b882a2784acdd5bcfb5c52d7297ba03fa1448dd81dc01f6"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "UNAVAILABLE",
+       "reason": "NO_MEASURED_HEART_RATE",
+       "basis": null,
+       "edges": null,
+       "digest": "1d391f3062192a6f6f6f73432444e1be9e92350222875e5ed900339cc4481962"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "20833dc6011a95f768a72da48cba74083d0d1b425341d352445bee3ccdb6f7c6",
+      "stored": "7b1b480537524ac0f9941f6f61d90f36781084cf4648f544a40f0ad7262ecf2a",
+      "canonical": "42280b254b15141e8b882a2784acdd5bcfb5c52d7297ba03fa1448dd81dc01f6"
+     }
+    ]
+   },
+   {
+    "name": "hr5-restart",
+    "steps": [
+     {
+      "op": "it.enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "89de65e1c7a71ccd499d26a7d1debceb9b5b5f15aa913dd3ab8761f0bb6b6cfb",
+      "stored": "07e324bad32447a063c25133201b2de32f52db49cee8cf720eacdbffc70e737b",
+      "canonical": "ef4ef82dc8f15fdd06962f73d30143fff1177411932f795755e2619357615f58"
+     },
+     {
+      "op": "it.submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "7aa07ab14ee643a304e47e60e8efd3311e801086011e0253978ae58676324dfd"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "1d1cc173a005397717139977841aec84a09458c17c550a6a4e0074e16be04f49",
+      "stored": "8de90f2c3ed66775113a9964f67f4d87f47f1239a3ffd9d30a0b20c5d074b5b5",
+      "canonical": "69330a2112236ffff419f971156afa83d40e1026c0eff8b1b4b2df5e2c93fcbe"
+     },
+     {
+      "op": "it.restart",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 3,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "ab77771043e3f973eff9cbc81e115af99131b49882ba6f0c9b8f05e1c1bd98b4"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "7c6d248009758c9a5651e560df25773feae9ce4c21de3eb5feadb6a7889e81b4",
+      "stored": "21e53166567f090f928e37bf8d5d64a784ac7e456bc9f1d126eb368e4a672df3",
+      "canonical": "fd14050bd524afe57a87a72adf84bd5143db7e4722cbd98ba8e13faac0688ee5"
+     },
+     {
+      "op": "it.presentation",
+      "code": "OK",
+      "status": null,
+      "version": 3,
+      "state": null,
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "ab77771043e3f973eff9cbc81e115af99131b49882ba6f0c9b8f05e1c1bd98b4"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "b655ddfed5ac8f4f8d01f52d25b7576c9c928a821f4fdc552b50244c461b7716",
+      "stored": "21e53166567f090f928e37bf8d5d64a784ac7e456bc9f1d126eb368e4a672df3",
+      "canonical": "fd14050bd524afe57a87a72adf84bd5143db7e4722cbd98ba8e13faac0688ee5"
+     },
+     {
+      "op": "api.plan",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "state": "VALID_PLAN",
+      "hold": null,
+      "fiveZones": {
+       "status": "UNAVAILABLE",
+       "reason": "EXTENSION_NOT_ENABLED",
+       "reference": null,
+       "referenceConfidence": null,
+       "zoneModelConfidence": null,
+       "conflict": null,
+       "edges": null,
+       "flags": "undefined,undefined,undefined,undefined",
+       "roles": "NONE:EXTENSION_NOT_ENABLED x32",
+       "digest": "ab77771043e3f973eff9cbc81e115af99131b49882ba6f0c9b8f05e1c1bd98b4"
+      },
+      "threeZones": {
+       "status": "AVAILABLE",
+       "reason": null,
+       "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+       "edges": "LOW:-149 MODERATE:149-162 HIGH:162-",
+       "digest": "b1078db211c09bb774fd99423ab41813c42e3358e1c41143e3c75e674a162561"
+      },
+      "calibration": "CALIBRATED",
+      "answer": "1f350798d5207b5ca02e88d97054e616e818658fee4bd99fc86dfc1905815e7b",
+      "stored": "21e53166567f090f928e37bf8d5d64a784ac7e456bc9f1d126eb368e4a672df3",
+      "canonical": "fd14050bd524afe57a87a72adf84bd5143db7e4722cbd98ba8e13faac0688ee5"
+     }
+    ]
+   }
+  ],
+  "digest": "32909f92b38a8eacc9471d861ac69de6000ee6c8eeda69a20d6845f7c5fd66f6"
+ },
+ "unitsInputJSON": "{\"from\":140,\"to\":220,\"reference\":186,\"readings\":[60,133,134,148,149,161,162,170,171,200,29,231],\"bad\":[0,-1,null,\"186\",1000],\"series\":{\"sensor\":\"CHEST_STRAP\",\"samples\":[{\"t\":0,\"bpm\":120},{\"t\":5,\"bpm\":140},{\"t\":10,\"bpm\":150},{\"t\":15,\"bpm\":165},{\"t\":20,\"bpm\":175},{\"t\":25,\"bpm\":999},{\"t\":30,\"bpm\":175,\"artifact\":true},{\"t\":35,\"bpm\":175},{\"t\":50,\"bpm\":150},{\"t\":55,\"bpm\":150}]},\"limits\":{\"maxGapSeconds\":10,\"minCoverageFraction\":0.5,\"plausibleBpm\":[30,220]}}",
+ "unitsExpectedJSON": "{\"pinned\":\"11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce\",\"fileSha256\":\"11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce\",\"valid\":true,\"edges\":{\"140\":\"101,112,122,129\",\"141\":\"102,113,123,130\",\"142\":\"102,114,124,131\",\"143\":\"103,114,124,132\",\"144\":\"104,115,125,132\",\"145\":\"104,116,126,133\",\"146\":\"105,117,127,134\",\"147\":\"106,118,128,135\",\"148\":\"107,118,129,136\",\"149\":\"107,119,130,137\",\"150\":\"108,120,131,138\",\"151\":\"109,121,131,139\",\"152\":\"109,122,132,140\",\"153\":\"110,122,133,141\",\"154\":\"111,123,134,142\",\"155\":\"112,124,135,143\",\"156\":\"112,125,136,144\",\"157\":\"113,126,137,144\",\"158\":\"114,126,137,145\",\"159\":\"114,127,138,146\",\"160\":\"115,128,139,147\",\"161\":\"116,129,140,148\",\"162\":\"117,130,141,149\",\"163\":\"117,130,142,150\",\"164\":\"118,131,143,151\",\"165\":\"119,132,144,152\",\"166\":\"120,133,144,153\",\"167\":\"120,134,145,154\",\"168\":\"121,134,146,155\",\"169\":\"122,135,147,155\",\"170\":\"122,136,148,156\",\"171\":\"123,137,149,157\",\"172\":\"124,138,150,158\",\"173\":\"125,138,151,159\",\"174\":\"125,139,151,160\",\"175\":\"126,140,152,161\",\"176\":\"127,141,153,162\",\"177\":\"127,142,154,163\",\"178\":\"128,142,155,164\",\"179\":\"129,143,156,165\",\"180\":\"130,144,157,166\",\"181\":\"130,145,157,167\",\"182\":\"131,146,158,167\",\"183\":\"132,146,159,168\",\"184\":\"132,147,160,169\",\"185\":\"133,148,161,170\",\"186\":\"134,149,162,171\",\"187\":\"135,150,163,172\",\"188\":\"135,150,164,173\",\"189\":\"136,151,164,174\",\"190\":\"137,152,165,175\",\"191\":\"138,153,166,176\",\"192\":\"138,154,167,177\",\"193\":\"139,154,168,178\",\"194\":\"140,155,169,178\",\"195\":\"140,156,170,179\",\"196\":\"141,157,171,180\",\"197\":\"142,158,171,181\",\"198\":\"143,158,172,182\",\"199\":\"143,159,173,183\",\"200\":\"144,160,174,184\",\"201\":\"145,161,175,185\",\"202\":\"145,162,176,186\",\"203\":\"146,162,177,187\",\"204\":\"147,163,177,188\",\"205\":\"148,164,178,189\",\"206\":\"148,165,179,190\",\"207\":\"149,166,180,190\",\"208\":\"150,166,181,191\",\"209\":\"150,167,182,192\",\"210\":\"151,168,183,193\",\"211\":\"152,169,184,194\",\"212\":\"153,170,184,195\",\"213\":\"153,170,185,196\",\"214\":\"154,171,186,197\",\"215\":\"155,172,187,198\",\"216\":\"156,173,188,199\",\"217\":\"156,174,189,200\",\"218\":\"157,174,190,201\",\"219\":\"158,175,191,201\",\"220\":\"158,176,191,202\"},\"readings\":[\"Z1\",\"Z1\",\"Z2\",\"Z2\",\"Z3\",\"Z3\",\"Z4\",\"Z4\",\"Z5\",\"Z5\",null,null],\"readingsWithoutRange\":null,\"classified\":{\"status\":\"AVAILABLE\",\"seconds\":{\"Z1\":5,\"Z2\":5,\"Z3\":10,\"Z4\":5,\"Z5\":15},\"coveredSeconds\":40,\"unknownSeconds\":15,\"coverage\":0.727,\"fromAverageHeartRate\":false},\"classifiedWithoutLimits\":{\"status\":\"UNAVAILABLE\",\"reason\":\"CLASSIFIER_LIMITS_NOT_SET\"},\"refused\":[null,null,null,null,null]}"
+}
