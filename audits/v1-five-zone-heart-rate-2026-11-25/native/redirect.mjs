@@ -19,7 +19,8 @@ const map=p=>{const a=asPath(p);return typeof a==='string'&&(a+path.sep).startsW
 // path, and removes it in a `finally`. That exact file may be written and removed in place; build.sh then checks the historical tree is unchanged.
 const TRANSIENT=path.join(REPO,'audits','v1-aif-p0-jsc-2026-11-17','results','.focal-input.tmp.json');
 const guard=(p,op)=>{const a=asPath(map(p));if(a===TRANSIENT)return a;if(typeof a!=='string'||!((a+path.sep).startsWith(TO)))throw new Error(`redirect: ${op} outside the mission copy refused: ${a}`);return a;};
-const orig={readFileSync:fs.readFileSync,existsSync:fs.existsSync,writeFileSync:fs.writeFileSync,mkdirSync:fs.mkdirSync,readdirSync:fs.readdirSync,statSync:fs.statSync,rmSync:fs.rmSync};
+const orig={readFileSync:fs.readFileSync,existsSync:fs.existsSync,writeFileSync:fs.writeFileSync,mkdirSync:fs.mkdirSync,readdirSync:fs.readdirSync,statSync:fs.statSync,rmSync:fs.rmSync,
+ appendFileSync:fs.appendFileSync,copyFileSync:fs.copyFileSync,renameSync:fs.renameSync,unlinkSync:fs.unlinkSync,rmdirSync:fs.rmdirSync,openSync:fs.openSync};
 export const redirected=[];
 fs.readFileSync=(p,...a)=>orig.readFileSync(map(p),...a);
 fs.existsSync=p=>orig.existsSync(map(p));
@@ -28,5 +29,15 @@ fs.statSync=(p,...a)=>orig.statSync(map(p),...a);
 fs.writeFileSync=(p,...a)=>{const t=guard(p,'write');redirected.push(t);return orig.writeFileSync(t,...a);};
 fs.mkdirSync=(p,...a)=>orig.mkdirSync(guard(p,'mkdir'),...a);
 fs.rmSync=(p,...a)=>orig.rmSync(guard(p,'rm'),...a);
+// QRE-HR5-10: every other way a script could write, rename, copy into or remove a file is guarded the same way; an open for writing too.
+fs.appendFileSync=(p,...a)=>orig.appendFileSync(guard(p,'append'),...a);
+fs.copyFileSync=(src,dst,...a)=>orig.copyFileSync(map(src),guard(dst,'copy'),...a);
+fs.renameSync=(src,dst)=>orig.renameSync(guard(src,'rename'),guard(dst,'rename'));
+fs.unlinkSync=p=>orig.unlinkSync(guard(p,'unlink'));
+fs.rmdirSync=(p,...a)=>orig.rmdirSync(guard(p,'rmdir'),...a);
+fs.openSync=(p,flags='r',...a)=>orig.openSync(/^[rR]$|^rs\+?$/.test(String(flags))&&!/\+/.test(String(flags))?map(p):guard(p,'open for writing'),flags,...a);
+const refuse=op=>()=>{throw new Error('redirect: asynchronous '+op+' is not allowed under the preload');};
+for(const op of ['writeFile','appendFile','mkdir','rm','rename','copyFile','unlink','rmdir','open'])fs.promises[op]=refuse(op);
+for(const op of ['writeFile','appendFile','mkdir','rm','rename','copyFile','unlink','rmdir','createWriteStream'])fs[op]=refuse(op);
 syncBuiltinESMExports();
 process.on('exit',()=>{if(redirected.length)process.stderr.write(`redirect: ${redirected.length} file(s) written under ${path.relative(REPO,TO)}\n`);});

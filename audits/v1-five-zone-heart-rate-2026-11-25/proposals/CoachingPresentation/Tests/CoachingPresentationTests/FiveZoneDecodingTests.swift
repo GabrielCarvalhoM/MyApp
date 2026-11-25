@@ -41,6 +41,11 @@ final class FiveZoneDecodingTests: XCTestCase {
         XCTAssertTrue(roles.allSatisfy { !$0.primary && $0.effortGoverns }, "heart rate is never primary; effort governs every session")
         XCTAssertTrue(roles.filter { $0.role == "COMPLEMENTARY_CEILING_CUE" }.allSatisfy { $0.neverSpeedUp == true && $0.sustainedReadingOnly == true && $0.healthMeaning == false && $0.slowDownCueAtOrAboveBpm == z.zones![3].fromBpm })
         XCTAssertEqual(z.referenceConfidence, "LOW"); XCTAssertEqual(z.disclosures, ["ZONES", "OBSERVED_MAXIMUM"])
+        XCTAssertEqual(z.notes, ["NOT_THRESHOLDS", "FIXED_FRACTIONS_OF_A_MAXIMUM", "OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM"]); XCTAssertNotNil(z.sha256)
+        XCTAssertTrue(roles.filter { $0.role == "COMPLEMENTARY_CEILING_CUE" }.allSatisfy { $0.disclosure == "CUE" })
+        let withStrides = roles.filter { $0.strides != nil }
+        XCTAssertFalse(withStrides.isEmpty, "the capture has easy runs with strides")
+        XCTAssertTrue(withStrides.allSatisfy { $0.strides!.role == "NO_HEART_RATE_GUIDANCE" && $0.strides!.reason == "HEART_RATE_LAGS_SHORT_HARD_BOUTS" }, "the cue never applies to strides")
         XCTAssertTrue(roles.contains { $0.role == "NO_HEART_RATE_GUIDANCE" })
     }
 

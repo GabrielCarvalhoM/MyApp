@@ -40,19 +40,20 @@ function run(M,j,key){
  });
 }
 /** Every difference between a frozen value and an amended one, with the allowance that explains it (or none). */
-function diff(a,b,at,out,parentHasFive){
+function diff(a,b,at,out,parentHasFive,ctx={}){
  if(a===b)return;
  const ta=Array.isArray(a)?'array':a===null?'null':typeof a,tb=Array.isArray(b)?'array':b===null?'null':typeof b;
  if(ta!==tb||ta!=='object'&&ta!=='array'){out.push({at,allowed:null,old:short(a),new:short(b)});return;}
- if(ta==='array'){if(a.length!==b.length)out.push({at:at+'.length',allowed:null,old:a.length,new:b.length});for(let i=0;i<Math.min(a.length,b.length);i++)diff(a[i],b[i],`${at}[${i}]`,out,false);return;}
+ if(ta==='array'){if(a.length!==b.length)out.push({at:at+'.length',allowed:null,old:a.length,new:b.length});for(let i=0;i<Math.min(a.length,b.length);i++)diff(a[i],b[i],`${at}[${i}]`,out,false,ctx);return;}
  const five=Object.hasOwn(b,'heartRateFiveZones')&&!Object.hasOwn(a,'heartRateFiveZones');
  for(const k of new Set([...Object.keys(a),...Object.keys(b)])){
   const p=at+'.'+k;
   if(!Object.hasOwn(b,k)){out.push({at:p,allowed:null,old:short(a[k]),new:'<absent>'});continue;}
   if(!Object.hasOwn(a,k)){out.push({at:p,allowed:k==='heartRateFiveZones'?'ADDED_FIVE_ZONE_READING':null,old:'<absent>',new:short(b[k])});continue;}
   if(k==='hash'&&five&&a[k]!==b[k]){out.push({at:p,allowed:'HASH_OF_A_BODY_WITH_THE_FIVE_ZONES',old:a[k],new:b[k]});continue;}
-  if(k==='carriedMac'&&a[k]!==b[k]){out.push({at:p,allowed:'SEAL_OF_THE_CARRIED_READINGS',old:a[k],new:b[k]});continue;}
-  diff(a[k],b[k],p,out,five);
+  // QRE-HR5-09: the seal may differ only where the carried readings it seals add the five zones (the stored document of this step).
+  if(k==='carriedMac'&&a[k]!==b[k]){out.push({at:p,allowed:ctx.storedAddsFive?'SEAL_OF_THE_CARRIED_READINGS':null,old:a[k],new:b[k]});continue;}
+  diff(a[k],b[k],p,out,five,ctx);
  }
 }
 const short=v=>{const s=JSON.stringify(v);return s===undefined?String(v):s.length>160?s.slice(0,160)+'…':s;};
@@ -67,18 +68,21 @@ for(const [name,file] of fixtures){
  const fx=JSON.parse(fs.readFileSync(file,'utf8')),input=JSON.parse(fx.inputJSON??JSON.stringify(fx));
  let steps=0,differing=0,withFive=0,errors=0,skipped=0;
  for(const j of input.journeys){
-  const ra=run(A,j,input.key),rb=run(B,j,input.key);
+  const ra=run(A,j,input.key),rb=run(B,j,input.key);let openAt=null;
   // A step that throws in either engine proves nothing about the answer: the harness itself is then wrong, and fails.
   for(const [k,x] of [...ra.entries(),...rb.entries()])if(x.error){errors++;report.unexplained.push({at:`${name}/${j.name}#${k}`,allowed:null,old:'harness',new:'step threw '+x.error});}
   // A tamper of the NEW reading (its target string exists only in the amended document) has nothing to tamper in the frozen one: the steps
   // from it to the next raw.restore are not comparable and are counted as skipped, never passed; the journey is compared again after it.
   let window=false;
   for(let k=0;k<Math.max(ra.length,rb.length);k++){steps++;
-   if(ra[k]?.tamperTargetAbsent&&!rb[k]?.tamperTargetAbsent)window=true;
-   if(window){if(rb[k]?.op==='raw.restore')window=false;else{skipped++;report.skipped.push(`${name}/${j.name}#${k}:${rb[k]?.op}`);continue;}}
-   const out=[];diff(ra[k],rb[k],`${name}/${j.name}#${k}`,out,false);
+   if(ra[k]?.tamperTargetAbsent&&!rb[k]?.tamperTargetAbsent){window=true;openAt=k;}
+   if(window){if(rb[k]?.op==='raw.restore'){window=false;openAt=null;}else{skipped++;report.skipped.push(`${name}/${j.name}#${k}:${rb[k]?.op}`);continue;}}
+   const out=[],addsFive=JSON.stringify(rb[k]?.stored??null).includes('"heartRateFiveZones"')&&!JSON.stringify(ra[k]?.stored??null).includes('"heartRateFiveZones"');
+   diff(ra[k],rb[k],`${name}/${j.name}#${k}`,out,false,{storedAddsFive:addsFive});
    if(out.length)differing++;if(out.some(d=>d.allowed==='ADDED_FIVE_ZONE_READING'))withFive++;
    for(const d of out){if(d.allowed)report.allowed[d.allowed]=(report.allowed[d.allowed]??0)+1;else report.unexplained.push(d);}}
+  // QRE-HR5-09: a tamper window never closed by a restore would skip the rest of the journey silently: it is a harness failure instead.
+  if(window)report.unexplained.push({at:`${name}/${j.name}#${openAt}`,allowed:null,old:'harness',new:'tamper window never closed by raw.restore'});
  }
  report.fixtures.push({name,journeys:input.journeys.length,steps,stepsWithADifference:differing,stepsThatAddTheFiveZones:withFive,stepsThatThrew:errors,stepsSkippedTamperOfTheNewReading:skipped});
 }

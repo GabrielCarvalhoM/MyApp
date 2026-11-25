@@ -1,0 +1,210 @@
+{
+ "reviewId": "QRE-SEC-HR5-R1",
+ "date": "2026-11-25",
+ "commit": "1c5d29bd1a9f3486a54c194681fb94a7108d5bec",
+ "base": "476b657",
+ "scope": "engineering, regression, contract, security; conformance to SSCTR-HR5-DECISION-r1 values (sporting merit reviewed separately)",
+ "verdict": "READY_WITH_CONDITIONS",
+ "verdictNote": "CoachingCore source change: no blocking defect (values implemented, additive, fail-closed). The committed native package is NOT_READY as committed (QRE-HR5-01). C1-C3 block use of the commit as integration input and the appending of any enabling record.",
+ "conditions": [
+  {
+   "id": "C1",
+   "blocking": true,
+   "text": "Regenerate and commit the mission native package from the committed tree; add a post-build no-diff and pin-equality check.",
+   "findings": [
+    "QRE-HR5-01"
+   ]
+  },
+  {
+   "id": "C2",
+   "blocking": true,
+   "text": "Declare the amendment against the final release freeze (successor or amendment record and verifier, or an explicit out-of-freeze statement); commit the amended suite result.",
+   "findings": [
+    "QRE-HR5-02"
+   ]
+  },
+  {
+   "id": "C3",
+   "blocking": true,
+   "text": "Correct CONTRACT_DELTA.md to the emitted shape.",
+   "findings": [
+    "QRE-HR5-04"
+   ]
+  },
+  {
+   "id": "C4",
+   "blocking": false,
+   "text": "Add boundary-ON evidence (oracle, JSC replay, regression diff) before an enabling record is appended.",
+   "findings": [
+    "QRE-HR5-03",
+    "QRE-HR5-09"
+   ]
+  },
+  {
+   "id": "C5",
+   "blocking": false,
+   "text": "Session-role precedence follows the reading (HR boundary, hold and authority order); SSCTR on NO_ZONES.",
+   "findings": [
+    "QRE-HR5-05"
+   ]
+  },
+  {
+   "id": "C6",
+   "blocking": false,
+   "text": "Swift: decode strides, source and notes; state the absent-key rule relative to runCalibration.status.",
+   "findings": [
+    "QRE-HR5-06",
+    "QRE-HR5-07"
+   ]
+  }
+ ],
+ "runs": {
+  "hr5UnitTests": "22/22 pass",
+  "fullSuite": "1964 tests, 1916 pass, 48 fail; the only new failure against the 476b657 baseline is the final-release-freeze record test",
+  "freezeCheck": "exit 1 at 1c5d29b; pass at 476b657",
+  "regressionDiff": "ADDITIVE_ONLY, 326 steps, 3 skipped (tamper window), 0 unexplained",
+  "buildSh": "12 committed files change on the first run; deterministic afterwards; historical tree clean (including ignored files)",
+  "hr5Oracle": "fiveZoneBoundaryOn false; hr5.json unchanged",
+  "probesDev": "no diff",
+  "swiftProposal": "9/9 pass",
+  "swiftP0HostFiveZoneCommitted": "3/3 FAIL",
+  "swiftP0HostFiveZoneRegenerated": "3/3 pass"
+ },
+ "findings": [
+  {
+   "id": "QRE-HR5-01",
+   "severity": "HIGH",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/native/ios/Sources/P0Host/Resources/coachingcore-p0.js",
+   "line": 9186,
+   "summary": "The committed native package (JSC bundle, assets, manifests, 7 fixtures) was built from a DRAFT of the values file and module: it pins HR5_SHA256 2878eb6e... (asset revision 0, status DRAFT_PENDING_SSCTR_DECISION, no perMille fields, older classifySamples/fiveZonesOf signatures), omits the SSCTR_HR5_RECORDS asset, and fails its own FiveZoneTests 3/3 on Mac JavaScriptCore. build.sh claims \"run twice, no diff\", but its first run from the committed tree changes 12 files. Fail-closed is preserved (the draft pin can never match a record bound to 11440a13...), but the evidence does not match the commit.",
+   "reproduction": "shasum -a 256 CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json audits/v1-five-zone-heart-rate-2026-11-25/native/ios/Sources/P0Host/Resources/assets/CoachingCore__v1__HEART_RATE_FIVE_ZONE_V1.json -> 11440a13... vs 2878eb6e...; grep -n \"const HR5_SHA256\" audits/v1-five-zone-heart-rate-2026-11-25/native/ios/Sources/P0Host/Resources/coachingcore-p0.js -> 2878eb6e...; in a detached worktree at 1c5d29b (node_modules copied): cd audits/v1-five-zone-heart-rate-2026-11-25/native/ios && swift test --filter FiveZone -> 3 failures (\"assets asked for but not bundled: .../SSCTR_HR5_RECORDS.json\", \"DIVERGED steps\", units != Node); sh audits/v1-five-zone-heart-rate-2026-11-25/native/build.sh -> git status shows 11 modified + 1 new file; then swift test --filter FiveZone -> 3/3 pass; a second build.sh -> no diff.",
+   "recommendation": "Regenerate with native/build.sh from the committed tree and commit the result. Make build.sh (or CI) fail when the mission package differs from what the build produces, and assert that the bundled HR5_SHA256 equals CoachingCore src HR5_SHA256 and that the 18 assets include both new data files."
+  },
+  {
+   "id": "QRE-HR5-02",
+   "severity": "MEDIUM",
+   "file": "CoachingCore/scripts/v1-final-release-freeze.mjs",
+   "line": null,
+   "summary": "The amendment breaks REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE without declaring it. \"--check\" exits 1 (CHANGED and not declared: src/v1-heart-rate-zones.mjs, src/v1-run-calibration.mjs, test/v1hr5-five-zones.test.mjs, v1/HEART_RATE_FIVE_ZONE_V1.json; bundle module not the bound source). The suite test \"REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: RC-1 preserved but for the two declared amendments; ...\" is the only new failure (48 vs baseline 47). CONTRACT_DELTA section 3 names an amendment record CoachingCore/v1/FIVE_ZONE_AMENDMENT_V1.json that does not exist, and no amended-tree suite result is committed (only results/node/suite-baseline-476b657.txt).",
+   "reproduction": "At 1c5d29b: cd CoachingCore && node scripts/v1-final-release-freeze.mjs --check; echo $? -> 1 (at 476b657: passes, 87/87). node --test -> tests 1964, fail 48; diff of failing titles against results/node/suite-baseline-476b657.txt -> one new title (the final release freeze record test).",
+   "recommendation": "Add a declared amendment or successor freeze record and verifier for V1HR5, or state explicitly that the candidate sits outside the freeze until promotion. Commit the amended-tree suite result with the diff of failing titles against the baseline."
+  },
+  {
+   "id": "QRE-HR5-03",
+   "severity": "MEDIUM",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/mac/hr5-oracle.mjs",
+   "line": 29,
+   "summary": "All native and integration evidence runs with the five-zone boundary OFF. The oracle uses the production authority (records empty, ON=false), so every if(ON) assertion is dead code, and all 10 journeys give EXTENSION_NOT_ENABLED (hr5-hold: HOLD_NO_PRESCRIPTION). In JavaScriptCore, the integration paths that compute AVAILABLE, lab, conflict and cue readings are never run; only __hr5units (zonesFromMaximum, zoneOfBpm, classifySamples) runs with values. regression-diff.mjs also proves additivity only with the boundary off. The ON path is covered only by Node unit tests and by dev-captured probes, which Swift decodes but no test compares across runtimes.",
+   "reproduction": "node audits/v1-five-zone-heart-rate-2026-11-25/mac/hr5-oracle.mjs -> \"fiveZoneBoundaryOn\": false; the summary for every journey is \"UNAVAILABLE | EXTENSION_NOT_ENABLED\".",
+   "recommendation": "Add an ON variant: inject the dev five-zone authority through the engine (as probes/capture-hr5.mjs --dev does) for the hr5 oracle fixture, the Swift FiveZoneTests replay and regression-diff (ON amended vs frozen: only the added key, its hash and carriedMac may differ). Require it before an enabling record is appended."
+  },
+  {
+   "id": "QRE-HR5-04",
+   "severity": "MEDIUM",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/CONTRACT_DELTA.md",
+   "line": 34,
+   "summary": "CONTRACT_DELTA.md does not match the emitted shape. (a) It gives conflict as {status:\"CONFLICTING_REFERENCES\", apartBpm, bandBpm, rule, candidates}; the code emits status UNAVAILABLE, reason REFERENCE_CONFLICT, conflict {status, labMaxBpm, labDate, labEvidenceId, observedMaxBpm, observedDate, observedEvidenceId, differenceBpm, bandBpm}, and conflict:null when AVAILABLE. (b) It gives rounding \"NEAREST_BPM_AS_THE_THREE_ZONES\"; the code emits \"HALF_UP_INTEGER_PER_MILLE\". (c) The reason list omits LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN and REFERENCE_CONFLICT, and lists CONFLICTING_REFERENCES, which is never emitted. (d) It references SCIENCE_AND_CALIBRATION_DECISION.md (line 32) and CoachingCore/v1/FIVE_ZONE_AMENDMENT_V1.json (line 104); neither is in the commit. (e) It says \"a session's heartRate role\"; the roles live in heartRateFiveZones.sessions[id]. (f) The session example omits strides, disclosure, sustainedReadingOnly and healthMeaning.",
+   "reproduction": "grep -rn \"CONFLICTING_REFERENCES\\|NEAREST_BPM\\|apartBpm\" CoachingCore/src CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json audits/v1-five-zone-heart-rate-2026-11-25/ssctr -> no match; git ls-files | grep -E \"FIVE_ZONE_AMENDMENT|SCIENCE_AND_CALIBRATION\" -> none at 1c5d29b; compare with audits/v1-five-zone-heart-rate-2026-11-25/probes/out/hr5-conflict-presentation.json readings.runCalibration.heartRateFiveZones.",
+   "recommendation": "Regenerate the shape section from a real capture of each state (AVAILABLE lab and strap, conflict, none, hold, off), correct the reason list from values.reasons, and remove or commit the referenced files."
+  },
+  {
+   "id": "QRE-HR5-05",
+   "severity": "LOW",
+   "file": "CoachingCore/src/v1-heart-rate-zones.mjs",
+   "line": 193,
+   "summary": "Session-role precedence does not follow the reading. sessionHeartRate does not receive the run calibration HR boundary (on.HR), so with V1X-RUN-HR off (the reading says EXTENSION_NOT_ENABLED) THRESHOLD, specific and race sessions still carry NO_HEART_RATE_GUIDANCE with their sporting reason. fiveZonesOf checks the hold before the authority (line 160), but sessionHeartRate checks the authority first (line 193). With the boundary off and a hold, the reading therefore says HOLD_NO_PRESCRIPTION while every session says EXTENSION_NOT_ENABLED (hr5-hold journey). In no-zone states (conflict, no heart rate), non-cue families keep their family role; decision sessionUse.states.NO_ZONES (role NONE with the reading's reason) can be read as applying to every family. The test at test:42-45 checks only the top-level reading.",
+   "reproduction": "X.generateProgram(runner({anchors:[10K race, CHEST_STRAP 186]}), {...DEV, heartRateFiveZone: devFiveZone(), runCalibration: devRunCalibration(all boundaries except V1X-RUN-HR)}).runCalibration.heartRateFiveZones -> status UNAVAILABLE / EXTENSION_NOT_ENABLED; sessions: 15 EASY NONE:EXTENSION_NOT_ENABLED, 12 LONG NONE:EXTENSION_NOT_ENABLED, 9 THRESHOLD NO_HEART_RATE_GUIDANCE:ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS.",
+   "recommendation": "Pass on.HR into sessionHeartRate (or derive the role from zones5.reason when it is EXTENSION_NOT_ENABLED), use one precedence order (authority, then hold, then mode) in both functions, test every session under each off state, and ask SSCTR whether NO_ZONES applies to the NO_HEART_RATE_GUIDANCE families."
+  },
+  {
+   "id": "QRE-HR5-06",
+   "severity": "LOW",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/proposals/CoachingPresentation/Sources/CoachingPresentation/HeartRateFiveZones.swift",
+   "line": 80,
+   "summary": "The Swift proposal drops fields a screen needs. SessionHeartRate has no strides (the engine marks the strides of an EASY or LONG session NO_HEART_RATE_GUIDANCE / HEART_RATE_LAGS_SHORT_HARD_BOUTS, so a UI decoding these types can apply the Z4 cue to the strides), disclosure, effortConflict or reference. HeartRateFiveZones has no source (DEV_TEST_ONLY cannot be told from CURRENT_INDEPENDENT_REVIEW), sha256, notes (NOT_THRESHOLDS ...), rounding, namedThresholds or withinDomainSplitsHaveSportingRole.",
+   "reproduction": "Compare HeartRateFiveZones.swift:12-94 with the keys of probes/out/hr5-strap-presentation.json readings.runCalibration.heartRateFiveZones and of its sessions entries that have strides.",
+   "recommendation": "Add at least SessionHeartRate.strides, disclosure and HeartRateFiveZones.source and notes, and add decoding assertions for them."
+  },
+  {
+   "id": "QRE-HR5-07",
+   "severity": "LOW",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/proposals/CoachingPresentation/Sources/CoachingPresentation/HeartRateFiveZones.swift",
+   "line": 8,
+   "summary": "The rule \"absent key = not computed by that engine version\" cannot be decided from the key alone. The amended engine also omits heartRateFiveZones when the calibration is DISABLED or NOT_APPLICABLE (v1-run-calibration.mjs:565) and when safely() returns CALIBRATION_ERROR (v1-run-index.mjs:24). RUN_CALIBRATION_VERSION is unchanged, so a reader cannot tell a record from before the amendment from a disabled calibration.",
+   "reproduction": "Generate with runCalibration: devRunCalibration([V1X-RUN-HR]) (CAPACITY off): runCalibration.status DISABLED and heartRateFiveZones undefined (test:46-47), with the same version string as the frozen engine.",
+   "recommendation": "State the rule relative to runCalibration.status: read the key only when the calibration was computed, and treat it as absent from an older engine only then. Alternatively add a shape or version marker for the amended reading."
+  },
+  {
+   "id": "QRE-HR5-08",
+   "severity": "LOW",
+   "file": "CoachingCore/src/v1-run-calibration.mjs",
+   "line": 586,
+   "summary": "The five-zone computation is not isolated. It runs inside runCalibrationOf without its own guard, so any throw would turn the whole run calibration (three zones, pace bands, estimates, session guidance) into {status: UNAVAILABLE, reason: CALIBRATION_ERROR} via safely() (v1-run-index.mjs:24). That would be a regression of approved readings caused by a display-only add-on. No throw was found with admitted or malformed inputs (bad bpm types, malformed records, prototype-named families, odd series).",
+   "reproduction": "Code reading: no try/catch around fiveZoneAuthority, fiveZonesOf or sessionHeartRate in runCalibrationOf; safely() wraps the whole call.",
+   "recommendation": "Wrap the five-zone computation so that a fault yields heartRateFiveZones {status: UNAVAILABLE, reason: FIVE_ZONE_ERROR} and leaves every other key unchanged. Add a fault-injection test."
+  },
+  {
+   "id": "QRE-HR5-09",
+   "severity": "LOW",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/evidence/regression-diff.mjs",
+   "line": 54,
+   "summary": "The regression harness allowances are slightly too wide. carriedMac may differ anywhere, unconditionally: carried content is still compared, so content regressions cannot hide, but a MAC-scheme regression would. The tamper window closes only on raw.restore; a journey that ends with the window open would skip its remaining steps and still pass (here the window covers exactly 3 steps, which is justified because the target string does not exist in the frozen document). The proof covers the boundary OFF only (see QRE-HR5-03).",
+   "reproduction": "node audits/v1-five-zone-heart-rate-2026-11-25/evidence/regression-diff.mjs --old <476b657 checkout> --hr5 audits/v1-five-zone-heart-rate-2026-11-25/native/ios/Tests/P0HostTests/Fixtures/hr5.json -> ADDITIVE_ONLY, skipped [hr5-strap#10 raw.tamper, #11 it.read, #12 api.plan]; code reading of lines 54 and 77-80.",
+   "recommendation": "Allow carriedMac only when every other difference in the same document is allowed, and verify that the amended MAC opens (re-open step). Fail if a tamper window is still open at the end of a journey. Add the ON run."
+  },
+  {
+   "id": "QRE-HR5-10",
+   "severity": "LOW",
+   "file": "audits/v1-five-zone-heart-rate-2026-11-25/native/redirect.mjs",
+   "line": 26,
+   "summary": "The redirect preload is an allow-list of patched sync APIs (readFileSync, existsSync, readdirSync, statSync, writeFileSync, mkdirSync, rmSync). fs.promises, writeFile, appendFileSync, copyFileSync, renameSync, unlinkSync, openSync/writeSync and createWriteStream are not guarded, and child processes (focal-oracle --child) do not inherit the preload. build.sh:16 checks only \"git diff --quiet\", which misses new untracked or ignored files in the historical tree (for example a leftover results/.focal-input.tmp.json after a kill). The current historical scripts use only guarded APIs, and this run left the historical tree clean, including ignored files.",
+   "reproduction": "grep of the 7 historical scripts for fs/child_process usage; after build.sh: git status --short --ignored -- audits/v1-aif-p0-jsc-2026-11-17 -> empty.",
+   "recommendation": "Post-check with \"git status --porcelain --ignored -- audits/v1-aif-p0-jsc-2026-11-17\" being empty. Make the preload deny by default: wrap every write-capable fs export and fs.promises, or run the historical scripts on a read-only copy."
+  },
+  {
+   "id": "QRE-HR5-11",
+   "severity": "LOW",
+   "file": "CoachingCore/test/v1hr5-five-zones.test.mjs",
+   "line": 42,
+   "summary": "Test gaps and weak assertions. (a) test:42-45 (HR off) asserts only the top-level reading, not the sessions (QRE-HR5-05 would pass). (b) No test runs the production-records path end to end (generateProgram with heartRateFiveZoneRecords binding the pin); the flows use devFiveZone, and test:64 asserts z.sha256 === HR5_FILE_SHA256, which also holds for unpinned bytes under dev authority. (c) Untested: a lab expiring at a week boundary (probe: works, a 179-day lab gives way to observed the next week), a lab withdrawn by the hold/return floor, and weekly re-evaluation of a conflict. (d) test:200 (NOVICE) is conditional and would pass without checking NEWER_RUNNER if the mode changed. (e) Classifier (unwired): minCoverageFraction 0, maxGapSeconds 0 or a reversed plausibleBpm give AVAILABLE with 0 coverage, and a durationSeconds shorter than the series gives coveredSeconds > duration (coverage capped at 1) (v1-heart-rate-zones.mjs:107,117).",
+   "reproduction": "classifySamples(zonesFromMaximum(186,V), {sensor:\"CHEST_STRAP\", samples:[{t:0,bpm:150},{t:100,bpm:150}]}, {maxGapSeconds:10, minCoverageFraction:0.5, plausibleBpm:[30,220], durationSeconds:5}) -> AVAILABLE, coveredSeconds 10, coverage 1; with maxGapSeconds:0 and minCoverageFraction:0 -> AVAILABLE with all zones at 0.",
+   "recommendation": "Add the missing tests, make test:200 unconditional (assert the mode), and assert the production authority via records through generateProgram. Before the classifier is wired: require maxGapSeconds > 0, minCoverageFraction > 0 and plausibleBpm[0] < plausibleBpm[1], and refuse a duration shorter than the covered span."
+  },
+  {
+   "id": "QRE-HR5-12",
+   "severity": "INFO",
+   "file": "CoachingCore/src/v1-heart-rate-zones.mjs",
+   "line": 143,
+   "summary": "The two readings can name different evidence. The three-zone reading uses the newest lab test under the lab rules (any modality, with or without a maximum) and, among observed maxima, the first in input order on a tie. The five-zone reading uses the newest QUALIFYING running lab and breaks ties by newest date, then id. This complies with decision HR5-2 and gives equal zones on ties, but the readings may show different reference ids side by side.",
+   "reproduction": "Anchors: labRun (TREADMILL_RUN, ECG 190, 60 days) and labCyc (CYCLE, ECG 170, 20 days) -> heartRateZones.reference labCyc, heartRateFiveZones.reference.evidenceId labRun. Two strap 186 results zz-old (40 days) and aa-new (14 days) -> three-zone zz-old, five-zone aa-new.",
+   "recommendation": "Tell front C that the two readings are separate references, so the UI never presents them as one source. Optionally align the observed tie-break."
+  },
+  {
+   "id": "QRE-HR5-13",
+   "severity": "INFO",
+   "file": "CoachingCore/src/v1-heart-rate-zones.mjs",
+   "line": 196,
+   "summary": "Two edge behaviours. (a) A fractional bpm is rounded before the plausibility check, inherited from readEvidence (v1-run-calibration.mjs:101): 139.5 -> 140 and 220.4 -> 220 are accepted, as in the three zones; the decision is silent. (b) U.families[p?.family] is read without Object.hasOwn, so a family named __proto__, constructor, toString or hasOwnProperty gives NONE/UNKNOWN_ROLE instead of NO_HEART_RATE_GUIDANCE/UNKNOWN_FAMILY_FAIL_CLOSED. Families are engine-generated and the stored plan is sealed, so the effect remains fail-closed.",
+   "reproduction": "sessionHeartRate({prescription:{family:\"constructor\"}}, {zones5:<AVAILABLE>, auth:devFiveZone()}) -> {role:\"NONE\", reason:\"UNKNOWN_ROLE\"}.",
+   "recommendation": "Use Object.hasOwn(U.families, family). Ask SSCTR or Data whether a non-integer maximum should be refused rather than rounded."
+  },
+  {
+   "id": "QRE-HR5-14",
+   "severity": "INFO",
+   "file": "CoachingCore/src/boundary/integration.mjs",
+   "line": 65,
+   "summary": "Positive security checks. The carried MAC covers canonical(carried), including the new key; a tampered five-zone value gives INTEGRITY_FAILURE (hr5-strap, Node and Mac JSC after regeneration). There is no new input channel: runEvidence is still refused, IntegrationContracts is byte-identical, and there is no HealthKit or permission change. Erasure clears the readings, the new key included (integration.mjs:122). The dev authority is reachable only through engine options, which custody never passes from a request (custody.mjs:233, 271, 344). A records file that is missing, empty or malformed enables nothing. No PII was found in the committed files. Minor: a record with sourceIds:[\"\"] counts as having a source (same rule as the run calibration). The key adds about 19 KB to a 72 KB run calibration (16-week plan, 48 sessions) that is carried and HMAC-sealed on every operation; performance budgets were not re-measured. The lab source and protocol (athlete free text) are now copied into a second reading.",
+   "reproduction": "fiveZoneAuthority({heartRateFiveZoneRecords: x}).approved for x in undefined, null, {}, {records:\"x\"}, {records:[null,5,\"s\",{}]} -> false; hr5-oracle tamper step -> INTEGRITY_FAILURE.",
+   "recommendation": "Require non-empty sourceIds strings in the next review of both authorities, and re-run PerformanceTests on the regenerated bundle."
+  },
+  {
+   "id": "QRE-HR5-15",
+   "severity": "INFO",
+   "file": "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json",
+   "line": 65,
+   "summary": "The decision values say EASY_REESTABLISHMENT gets the cue \"onlyWhen: plan in EASY mode and zones in force\". The values file and code drop onlyWhen. In practice it is covered: the family is produced only by the r4 re-establishment path (r4-candidates.mjs:183), and the WALK_JOG, RESTART and RETURN modes withdraw the zones. Every other machine value matches (arithmetic, worked examples, intervals, lab and observed rules, conflict band, confidences, notes, disclosures, family roles, Z4 cue, typed reasons, week-boundary updating).",
+   "reproduction": "diff of SSCTR_HR5_DECISION.json values.sessionUse.families.EASY_REESTABLISHMENT against HEART_RATE_FIVE_ZONE_V1.json:65.",
+   "recommendation": "SSCTR to confirm that the mode-based withdrawal satisfies onlyWhen, or encode the mode condition."
+  }
+ ]
+}

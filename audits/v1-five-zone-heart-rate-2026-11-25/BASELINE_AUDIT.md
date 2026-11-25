@@ -80,7 +80,14 @@ Two process notes, for honesty:
 
 ### 5.2 Constraints that bind the amendment
 
-- **The V1X-RUN-HR record** (`SSCTR_V1RC_RUN_RECORDS.json`) is bound to the heart-rate paths of `v1-run-calibration.mjs`: "a change to any of them requires the recheck to confirm or remove this record". So `heartRateOf`, the withdrawal fold and the heart-rate output fields must stay as they are. The amendment must be additive, beside them.
+- **The V1RC enabling records** (`SSCTR_V1RC_RUN_RECORDS.json`) bind two things:
+  - The records **in force**, SSCTR-V1RC-RECHECK-r1 (CAPACITY, PACE, HR, ESTIMATE, bound to the values `d9f7429b…`), bind the **whole file** `src/v1-run-calibration.mjs` at sha256 `0eae6521…` (the bytes at `476b657`) and `src/v1-run-index.mjs` at `a86b6f1e…`: "a change to any of them requires a new independent SSCTR check".
+  - The superseded first-round HR record (REVIEW-r1, bound to old values bytes, enabling nothing) bound only the heart-rate paths.
+
+  So any change to `v1-run-calibration.mjs`, however additive, triggers a file-level recheck of the four V1RC boundaries. The runtime does not read those file hashes (`runCalibrationAuthority` checks only the values hash), so the boundaries stay on, but the governance condition is real. *(Corrected after SSCTR-HR5-REVIEW-r1 R-01; the first version of this audit quoted only the REVIEW-r1 wording.)* The amendment therefore:
+  - keeps `heartRateOf`, the fold, `classify`, `readEvidence` and every output byte-identical (additive beside them);
+  - does not touch `v1-run-index.mjs`;
+  - routes the file-level recheck to an independent SSCTR instance, without editing the historical V1RC records file, which is another mission's evidence and a frozen consumed data file.
 - **The integration contract** (`audits/v1-parallel-foundation-2026-11-24/PARALLEL_IMPLEMENTATION_CONTRACT.md` G-1): `heartRate` is not sent on the DEVICE channel and no heart-rate permission is requested. `IntegrationContracts/DeviceActivity.swift` omits `heartRate` on purpose. This mission does not widen either.
 - **Custody keys:** the integration boundary's review allow-list does not include `runEvidence` (FND-HR5-01 below). Through the app, a heart-rate reference therefore reaches the engine only through intake anchors (enroll, restart) and the plan's own race rows.
 

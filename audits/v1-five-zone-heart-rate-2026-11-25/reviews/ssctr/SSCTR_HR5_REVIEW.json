@@ -1,0 +1,239 @@
+{
+  "reviewId": "SSCTR-HR5-REVIEW-r1",
+  "date": "2026-11-25",
+  "kind": "INDEPENDENT_IMPLEMENTATION_REVIEW",
+  "decisionReviewed": "SSCTR-HR5-DECISION-r1 (audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.json sha256 4ccbd3eea2e6c1c51256bac99c3cd75b15e736dd380c2333c5517418a9e80aeb; .md sha256 c22797bcb8cf6d62c1445be603b712c888c4a12fe7c9f5b8398516dee75b46d3)",
+  "reviewer": {
+    "role": "Sports Science and Concurrent Training Reviewer (SSCTR), fresh independent judge instance",
+    "agentVersion": "SSCTR-1.0.0",
+    "constitution": "SSCTR-CONST-1.0.0 (sha256 9de27b4d6ab0879419a92c218b98acc7ef3df63b73b3325010f033d403122180)",
+    "skill": "sports-science-review 1.0.0 (sha256 67374297e275d2ec9ded1a8653baf6dc078fbe3d1fd1002e61a13cd6f34065bf)",
+    "evidenceProtocol": "SSCTR-EP-1.0.0 (sha256 7885c126a724716a24c1e270b4d6983c7b8cd5a9797514830d1ea4d0b77e6f31)",
+    "nativeAdapter": ".claude/agents/sports-science-concurrent-training-reviewer.md (sha256 021b59519c9df2a95fbca91cd553a5cdc2b1ce3719d2364ed431ef3fa8c6c52d), read as instructions",
+    "instance": "A subagent instance (model claude-opus-5-5) started by the V1HR5 Chief with a task message. It cannot verify from inside the run whether it was dispatched through the project native adapter, so it claims no native dispatch. No specialist delegation was used.",
+    "independence": "This instance did not author SSCTR-HR5-DECISION-r1, its values, the code under review, the tests, the oracle or the regression proof. It did not take part in the decision run. It modified no code, test, values or other file; it wrote only this review, its .md reading view and (as the task allows on approval) one record in SSCTR_HR5_RECORDS.json.",
+    "nature": "An AI software reviewer under PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY. No human credentials, licence or clinical/legal equivalence. This is a provisional internal sporting judgement of an implementation's conformance; it is not human validation, empirical product validation or medical clearance."
+  },
+  "target": {
+    "worktree": "~/.codex/worktrees/myapp-v1-five-zone/MyApp",
+    "branch": "claude/v1-five-zone-heart-rate",
+    "candidate": "1c5d29bd1a9f3486a54c194681fb94a7108d5bec",
+    "base": "476b657",
+    "files": {
+      "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json": "11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce (equals HR5_SHA256 in the module)",
+      "CoachingCore/src/v1-heart-rate-zones.mjs": "4d4555e86f25150e930fe347dfb3b2367f58cc8466c2076f429f5ac8a50e570d",
+      "CoachingCore/src/v1-run-calibration.mjs": "d3e20f148cd4e0380c4009ba595d9aa5482b909f60b5b1e4a385fd267d1ef87e (base 476b657: 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01)",
+      "CoachingCore/src/v1-run-index.mjs": "a86b6f1e7c62b7b6b12253787e4525759208ac2438df8b9d46464cf7e602e608 (unchanged)",
+      "CoachingCore/v1/RUN_CALIBRATION_EXTENSION_V1.json": "d9f7429b9519de8dbe432e4b425c8c4a925fd93f495085bc240ed89370d784aa (unchanged)",
+      "CoachingCore/test/v1hr5-five-zones.test.mjs": "fb1b232d417b19cf5730d4830c26232a9998ef4f1e703be849dab3c9f1821f9b"
+    },
+    "worktreeState": "Clean at the start of the review apart from one untracked file, audits/v1-five-zone-heart-rate-2026-11-25/SCIENCE_AND_CALIBRATION_DECISION.md (mtime 10:27:54, after the candidate commit; written by another session, not by this instance). It is not part of 1c5d29b and was not reviewed."
+  },
+  "inputsRead": [
+    ".claude/agents/sports-science-concurrent-training-reviewer.md",
+    "governance/agents/sports-science-reviewer/CONSTITUTION.md",
+    "governance/agents/sports-science-reviewer/EVIDENCE_PROTOCOL.md",
+    ".agents/skills/sports-science-review/SKILL.md",
+    "audits/v1-five-zone-heart-rate-2026-11-25/ssctr/SSCTR_HR5_DECISION.json (values, globalConditions, items, sources, literatureAccess, escalations, proposedQueueItems, expiry) and .md",
+    "audits/coachingcore-v1-run-calibration-2026-11-11/ssctr-decision/SSCTR_V1RC_DECISION.json (sha256 3f0fbbe1348a7cbb9147a6f918359be17367bb305483a9f837cd62965356efc3): items Q6.a, Q6.b, Q6.ageFormula, Q6.separation, Q9.withdrawal",
+    "audits/coachingcore-v1-run-calibration-2026-11-11/reviews/ssctr/SSCTR_V1RC_RUN_RECORDS.json (sha256 66a6dab57bbdb3afcbc2d871295a1261c59d41729004ef54a3b63e64504511a6): record format and the conditions of the REVIEW-r1 and RECHECK-r1 records",
+    "audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json (before append: sha256 834c2b566298bd3381fbb0a56308c7dcce880859f51310c6a95bbfbfbca1a6b9, records empty)",
+    "CoachingCore/src/v1-heart-rate-zones.mjs (whole file, read as code)",
+    "git diff 476b657 1c5d29b -- CoachingCore (whole diff), and in v1-run-calibration.mjs: readEvidence, runCalibrationAuthority, allowsRun, floorOf, fold (week construction, floor, effortOnly), heartRateOf, runCalibrationOf",
+    "CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json (whole file)",
+    "CoachingCore/test/v1hr5-five-zones.test.mjs (whole file), CoachingCore/test/v1rc-helpers.mjs",
+    "audits/v1-five-zone-heart-rate-2026-11-25/BASELINE_AUDIT.md section 5.2, CONTRACT_DELTA.md (grep), mac/hr5-oracle.mjs (head), evidence/regression-diff.mjs (head), probes/capture-hr5.mjs, results/node/suite-baseline-476b657.txt"
+  ],
+  "commandsRun": [
+    {"command": "git show 1c5d29b --stat; git diff 476b657 1c5d29b -- CoachingCore", "result": "4 CoachingCore files: new v1-heart-rate-zones.mjs, values file, test; v1-run-calibration.mjs 3 hunks (import; five-zone computation and per-session role beside sessionGuidance, effortOnly expression extracted to a const with the same expression; one output key heartRateFiveZones)."},
+    {"command": "shasum -a 256 CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json", "result": "11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce = HR5_SHA256 in src/v1-heart-rate-zones.mjs line 23"},
+    {"command": "extract function bodies of heartRateOf, fold, floorOf, classify, readEvidence from git show 476b657:... and 1c5d29b:... (awk), shasum and cmp", "result": "all five byte-identical; heartRateOf sha256 243f6eedd93235d32ff659f8225c8fe238612fc52f742f25097dd0528c188f68 in both"},
+    {"command": "cd CoachingCore && node --test test/v1hr5-five-zones.test.mjs", "result": "22 tests, 22 pass, 0 fail"},
+    {"command": "node audits/v1-five-zone-heart-rate-2026-11-25/mac/hr5-oracle.mjs", "result": "ran with production authorities (records empty): every journey UNAVAILABLE / EXTENSION_NOT_ENABLED (hold journey HOLD_NO_PRESCRIPTION); git status unchanged afterwards (fixture deterministic)"},
+    {"command": "git archive 476b657 CoachingCore audits | tar -x -C <scratch>/base476 (no worktree created); node audits/v1-five-zone-heart-rate-2026-11-25/evidence/regression-diff.mjs --old <scratch>/base476 --hr5 .../Fixtures/hr5.json --out <scratch>/regress.json", "result": "int 78 steps, final 184, hr5 64 (3 tamper steps skipped); 0 threw; allowed differences only (added five-zone reading, hash of a body with it, carried seal); unexplained 0; verdict ADDITIVE_ONLY. Note: production authorities, so the five zones were off in this replay."},
+    {"command": "cd CoachingCore && node --test (full suite)", "result": "1964 tests, 1916 pass, 48 fail. Against the recorded baseline (1942/1895/47): the 22 new tests pass; the failing titles are the baseline's plus exactly one new failure, REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE, which reports the four HR5 files as undeclared amendments and v1-run-calibration.mjs as not the bundle's bound source (SSCTR-HR5-R-07)."},
+    {"command": "node <scratch>/probe.mjs (independent adversarial probes through X.generateProgram with {...DEV, heartRateFiveZone: devFiveZone()}, and runCalibrationOf directly)", "result": "all 77 checks pass (listed in probes below)"},
+    {"command": "node <scratch>/probe2.mjs", "result": "reference/conflict/stale cases, strides, every family through sessionHeartRate including unknown and prototype-key names (SSCTR-HR5-R-03)"},
+    {"command": "node <scratch>/probe3.mjs (through createIntegration via test/v1int-helpers athlete with the development five-zone authority)", "result": "lab.modality survives the integration boundary: TREADMILL_RUN lab -> LAB_MEASURED_MAXIMUM; CYCLE_ERGOMETER lab or no modality -> OBSERVED_MAXIMUM (no conflict raised by the non-running lab)"}
+  ],
+  "probes": {
+    "arithmetic": "For every integer reference 140-220 the edges equal Math.round(bpm x 0.72/0.80/0.87/0.92), are strictly increasing, Z1 open below, Z5 open above; 190 -> 137/152/165/175; 165 at 190 is Z4, 164 is Z3. zonesFromMaximum refuses 139, 221, 0, -5, 185.5, NaN, '190', null, 1e9.",
+    "references": "observed 186 used; highest observed in window used; observed edges equal the three-zone MODERATE/HIGH lowBpm and the same bpm; optical, RPE 7, 9-min effort, >365 days, 230 bpm, tolerated false, personal best, age, profile maxHeartRate, average-only heart rate: no zones (typed reason). Lab: running modality (normalised 'Treadmill run', 'field-run') with ECG or chest strap used; cycling, absent, 'RUNNING', numeric modality, optical, no sensor, RPE 7, RPE absent, completed false, tolerated false, 139, 221, older than 182 days, empty values list: not used; tolerated unstated: used (not false); 220 used.",
+    "conflict": "lab 182 / observed 191 -> UNAVAILABLE REFERENCE_CONFLICT with both values, dates, evidence ids, difference 9, no zones, no session cue; lab 190 / observed 195 (difference 5) -> lab used; observed 196 -> conflict; lab 195 / observed 180 -> lab used; lab older than 182 days + observed 196 -> observed used, no conflict; lab + observed older than 365 days -> lab used; cycling lab 170 + observed 186 -> observed used, no conflict.",
+    "invariance": "Nine synthetic athletes (observed, lab, conflict, NOVICE, NONE/walk-jog, 5K, marathon with lab, half-marathon at 220, observed 140): program, every other runCalibration key and every other answer key byte-identical with the five-zone authority on versus off. Hold via runCalibrationOf(hold:true): zones and every session NONE / HOLD_NO_PRESCRIPTION; rest identical on versus off. Strength-only intake: runCalibration NOT_APPLICABLE, no five-zone output, identical on versus off.",
+    "sessions": "Across all probe plans no cue outside EASY, LONG, RECOVERY_EASY (SHAKEOUT and EASY_REESTABLISHMENT checked directly); every cue from Z4 with neverSpeedUp and sustainedReadingOnly true; primary false and effortGoverns true everywhere; 21 sessions with strides all carry strides NO_HEART_RATE_GUIDANCE / HEART_RATE_LAGS_SHORT_HARD_BOUTS; unknown families (HILLS, VO2, undefined, null session) NO_HEART_RATE_GUIDANCE / UNKNOWN_FAMILY_FAIL_CLOSED; effort-only mode NONE / MODE_WALK_JOG_RESTART_RETURN; no zones -> cue families NONE with the zones' reason. No speed-up text in values or outputs.",
+    "withdrawal": "Lab dated before a 16-day nonclinical break: withdrawn (RETURN mode, then still unavailable through week 8, never read again); 10-day break: lab kept (Q9 withdraws only at 14 days or more; the tier reduction of Q9 applies to pace references, not heart rate). Hold and release floor for lab maxima is shared code (known() with wk.floor, byte-identical fold/floorOf) and was verified by reading, not by a dedicated probe.",
+    "gate": "fiveZoneAuthority: valid record on; disposition NOT_READY off; independent 'true' (string) off; default records file (empty) off."
+  },
+  "literatureAccess": {
+    "tools": "PubMed E-utilities (esummary, efetch for abstracts, efetch db=pmc for open-access full text) via curl worked, with a generic client name and no project data sent.",
+    "spotChecksOfDecisiveClaims": [
+      "S02 Tonnessen 2014 (PMC4096917) FULL_TEXT Table 2: zone 1 54-73, zone 2 74-83, zone 3 84-88, zone 4 89-93, zone 5 >94 %HRmax; zones 1-2 below LT1, 3 between LT1 and LT2, 4-5 above LT2; 'individual adjustments are required'. Confirms the decision's correction of the request's basis and the 5->3 nesting.",
+      "S06 Seiler-Viken 2025 (PMC12491423) FULL_TEXT: additional zone delimitations within domains are 'arbitrarily/experientially defined and not demarcated with physiologically well-defined break points'. Supports withinDomainSplitsHaveSportingRole false.",
+      "S07 Meixner 2025 (PMC11986187) FULL_TEXT Table: VT1 at 81.4 +/- 3.9 %HRmax. Supports the decision's statement and the display-only status of fixed fractions.",
+      "S17 Gillinov 2017 (PMID 28709155) ABSTRACT_ONLY: chest strap agreement with ECG rc = 0.996. Supports the chest-strap/ECG sensor rule.",
+      "S16 Millet 2009 (PMID 19290675) ABSTRACT_ONLY: heart rate differs between cycling and running at maximal and submaximal intensities. Supports the running-modality requirement (the ~5 % figure was not re-verified here; it is not used by the implementation)."
+    ],
+    "currencySearch": [
+      "PubMed: (\"maximal heart rate\" OR HRmax) AND (zones OR \"percentage of maximal heart rate\") AND (recreational runners) AND (systematic review[pt] OR meta-analysis[pt]) AND 2025:2026[dp] -> 0 hits (2026-11-25)",
+      "PubMed: (\"heart rate zone\" OR \"heart rate zones\" OR \"percentage of maximal heart rate\") AND (threshold OR ventilatory) AND (systematic review[pt] OR meta-analysis[pt]) AND 2024:2026[dp] -> 0 hits",
+      "PubMed: (\"maximal heart rate\") AND (running OR treadmill) AND (cycling) AND (comparison) AND 2020:2026[dp] -> 1 hit (PMID 34958846, hybrid cardiac rehabilitation review; clinical, not applicable)"
+    ],
+    "limits": "This review judges implementation conformance to a decision whose literature synthesis it did not author; it re-read only the five decisive sources above. No new systematic review or meta-analysis was found that would trigger re-review. A negative search is a logged search result, not proof of absence."
+  },
+  "findings": [
+    {
+      "id": "SSCTR-HR5-R-01",
+      "severity": "CONDITION",
+      "title": "The current V1RC records' code binding is triggered at the file level",
+      "detail": "The question frames the V1X-RUN-HR condition as 'a change to the heart-rate paths requires recheck'. That wording is the first record (SSCTR-V1RC-REVIEW-r1, bound to earlier bytes 9f2cf47d..., enabling nothing now). The records in force (SSCTR-V1RC-RECHECK-r1: CAPACITY, and PACE/HR/ESTIMATE 'bound to the runtime hashes named in the CAPACITY record') are bound to src/v1-run-calibration.mjs sha256 0eae6521... and say 'a change to any of them requires a new independent SSCTR check'. The base file is exactly 0eae6521...; the candidate makes it d3e20f14.... BASELINE_AUDIT.md 5.2 quotes only the superseded wording. The runtime does not check code hashes (runCalibrationAuthority checks the values sha only), so this is a governance binding, not a runtime one.",
+      "evidence": "heartRateOf, fold, floorOf, classify and readEvidence are byte-identical; the change is an import, one extracted const with the identical expression, the additive five-zone computation and one added key; regression ADDITIVE_ONLY (326 steps, 0 unexplained); on/off invariance probes identical. As an independent SSCTR instance I find no change to CAPACITY, PACE, HR or ESTIMATE behaviour from this delta.",
+      "disposition": "Not blocking the five-zone boundary (it is inert unless CAPACITY and HR are valid). Chief must route the V1RC recheck to confirm or remove the four RECHECK-r1 records for d3e20f14... before integration; this review's evidence is an input to it. This review does not edit SSCTR_V1RC_RUN_RECORDS.json."
+    },
+    {
+      "id": "SSCTR-HR5-R-02",
+      "severity": "NOTE",
+      "title": "Session roles do not see the run calibration's HR boundary",
+      "detail": "sessionHeartRate receives auth5 but not on.HR. With HR off and the five-zone authority on, cue families are NONE with the zones' reason EXTENSION_NOT_ENABLED (correct), but NO_GUIDANCE families report their family reason (e.g. ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS) rather than EXTENSION_NOT_ENABLED. Also the hold and authority checks are in opposite order in fiveZonesOf and sessionHeartRate (disabled plus hold: zones say HOLD_NO_PRESCRIPTION, sessions say EXTENSION_NOT_ENABLED). No cue is ever produced without zones; reason typing only.",
+      "disposition": "Fix in a later cycle if Product reads the reason; no sporting effect."
+    },
+    {
+      "id": "SSCTR-HR5-R-03",
+      "severity": "NOTE",
+      "title": "Prototype-key family names fail closed with a different reason",
+      "detail": "U.families[p.family] on a family named constructor, __proto__ or toString returns an inherited value, giving NONE / UNKNOWN_ROLE instead of NO_HEART_RATE_GUIDANCE / UNKNOWN_FAMILY_FAIL_CLOSED. Fails closed (no cue). Families come from the planner catalogue, not from athletes.",
+      "disposition": "Use an own-property lookup (Object.hasOwn) in a later cycle."
+    },
+    {
+      "id": "SSCTR-HR5-R-04",
+      "severity": "CONDITION",
+      "title": "lab.modality is acceptable for the sporting rule, as a declaration only",
+      "detail": "The field sits inside the existing free-form lab object, is carried whole by readEvidence (unchanged) and survives the integration boundary (probe3). It is normalised (trim, upper case, spaces/hyphens to underscore) and matched against RUN, TREADMILL_RUN, FIELD_RUN; anything else or absent gives LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN when nothing else qualifies, and otherwise the observed maximum is used. This meets REQUIRED_DECLARED (treadmill or field running) and fails closed (e.g. 'RUNNING' is refused). The sporting rule depends on the value being a real declaration.",
+      "disposition": "Condition: the modality is the athlete's or the lab report's declaration, never defaulted, pre-filled or inferred (e.g. from protocol text) by a client; Data and Product own its collection and the enum the client offers."
+    },
+    {
+      "id": "SSCTR-HR5-R-05",
+      "severity": "NOTE",
+      "title": "A lab report with only a maximum does not qualify",
+      "detail": "The lab tier also applies the three-zone lab readability rule (protocol, source and a non-empty values list). A lab test that supplies only a maximum heart rate is not used, and the observed maximum (if any) is. This is conservative and consistent with 'existing lab rules apply', but Data/Product should know it when designing collection.",
+      "disposition": "No change required for approval."
+    },
+    {
+      "id": "SSCTR-HR5-R-06",
+      "severity": "NOTE",
+      "title": "Newer-runner disclosure depends on a known experience",
+      "detail": "NEWER_RUNNER is added for experience NONE or NOVICE (same set as the planner's stridesOptional). Unknown experience gets no disclosure; NONE athletes are in WALK_JOG mode, where there are no zones. The V1 intake requires run experience, so the gap is theoretical.",
+      "disposition": "If experience ever becomes optional, show the disclosure when it is unknown."
+    },
+    {
+      "id": "SSCTR-HR5-R-07",
+      "severity": "NOTE",
+      "title": "Not sporting: answer shape and freeze record",
+      "detail": "Even with the boundary off, every runCalibration answer now carries heartRateFiveZones (UNAVAILABLE / EXTENSION_NOT_ENABLED, per-session NONE), so the calibration hash and the carried seal move (regression: allowed differences only). The full suite has one failure beyond the baseline, REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE, reporting the four HR5 files as undeclared amendments and the bundle module as not the bound source.",
+      "disposition": "Routed to QRE/Engineering via Chief: a declared freeze amendment or successor record and contract acceptance before release. Outside this role."
+    },
+    {
+      "id": "SSCTR-HR5-R-08",
+      "severity": "CONDITION",
+      "title": "One cue per session in presentation",
+      "detail": "With an observed reference both outputs carry a slow-down threshold at the same bpm (Z4 from = HIGH from; verified equal for 140-220). With a qualifying lab (by the three-zone rule, any modality) the three-zone output shows the supplied values and no zones, while the five-zone output may show zones from a running lab, from the observed maximum (non-running lab), or REFERENCE_CONFLICT. No contradictory cue bpm is produced, but the two readings can look different.",
+      "disposition": "Condition carried from the decision's Product escalation: Product presents one cue per session, keeps disclosure meanings, no 'Olympiatoppen'/'Norwegian' naming, no health meaning."
+    },
+    {
+      "id": "SSCTR-HR5-R-09",
+      "severity": "NOTE",
+      "title": "Future classifier is unwired and carries no approved numbers",
+      "detail": "classifySamples is called by nothing in the engine; it requires caller-supplied maxGapSeconds, minCoverageFraction and plausibleBpm (CLASSIFIER_LIMITS_NOT_SET otherwise); only CHEST_STRAP or ECG; gaps, artifacts and samples above 220 are unknown time, never interpolated; coverage always reported; sessionDistribution is UNAVAILABLE / NO_HEART_RATE_SERIES_IN_CONTRACT with fromAverageHeartRate false. The values file approves no numeric limit. Its existence is not an approval of any limit.",
+      "disposition": "A future series channel requires its own SSCTR and Data review before any output."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q1",
+      "question": "Does the implementation match SSCTR-HR5-DECISION-r1 exactly?",
+      "disposition": "YES_WITH_CONDITIONS",
+      "answer": [
+        "Zones and per-mille: values file Z1 <720, Z2 720-800, Z3 800-870, Z4 870-920, Z5 >=920, domains LOW/LOW/MODERATE/HIGH/HIGH, namedScale null, withinDomainSplitsHaveSportingRole false: equal to values.zones.",
+        "Arithmetic: floor((bpm x pm + 500)/1000) in integers on [from, to), boundary to the higher zone; integer reference inside 140-220 required; strictly increasing and contiguous or null (ZONE_BOUNDARIES_DEGENERATE). Worked examples reproduced.",
+        "Open ends: Z1 fromBpm null, Z5 toBpm null, enforced.",
+        "Lab tier: LAB_TEST, heartRate.maxBpm 140-220, CHEST_STRAP or ECG, RPE >= 8 reported, completed not false, tolerated not false, declared running modality (lab.modality, acceptable per R-04), 182 days, no declared break of 14 days or more since, after the hold/return floor; newest qualifying; supplied lab values are not mapped to zones; checkedByTheApp false.",
+        "Observed maximum: the filter is the same as heartRateOf (Q6(b) unchanged); only a deterministic id tie-break is added, which cannot change the bpm.",
+        "Conflict: only when both are in force; observed - lab > 5 -> UNAVAILABLE / REFERENCE_CONFLICT with labMaxBpm, labDate, labEvidenceId, observedMaxBpm, observedDate, observedEvidenceId, differenceBpm; lab above observed is not a conflict; no lower-wins.",
+        "Confidence: referenceConfidence LOW for both kinds, zoneModelConfidence LOW, estimated true, provenance fields present (kind, bpm, evidenceId, date, sensor, ageDays; protocol, source and modality for lab), notes per kind.",
+        "Session roles: the families table and unknownFamily equal the decision; strides on a session get NO_HEART_RATE_GUIDANCE / HEART_RATE_LAGS_SHORT_HARD_BOUTS; EASY_REESTABLISHMENT cue only outside WALK_JOG/RESTART/RETURN (the only other run mode is EASY) and only with zones.",
+        "Cue rules: cue at the lower bpm of Z4 for the reference in force; sustainedReadingOnly true; neverSpeedUp true; healthMeaning false; no usual zones per family; effortConflict EFFORT_GOVERNS_HEART_RATE_MAY_ONLY_SUGGEST_SLOWING.",
+        "Newer-runner disclosure for NONE/NOVICE (R-06).",
+        "Week boundary: the same cutoff/recordedOn rule as heartRateOf; later weeks use next week's reading, provisional; Q9 withdrawal via the shared floor (break >= 14 days, hold, return mode) and the lab break check; effort-only modes NONE / MODE_WALK_JOG_RESTART_RETURN; hold first, HOLD_NO_PRESCRIPTION.",
+        "Time in zone UNAVAILABLE / NO_HEART_RATE_SERIES_IN_CONTRACT; classifier unwired, no approved numbers (R-09).",
+        "Fail-closed authority: values only as pinned bytes; boundary on only with an independent enabling record bound to them and with CAPACITY and HR."
+      ]
+    },
+    {
+      "id": "Q2",
+      "question": "Can any path make heart rate primary, a target, a gate, change a dose/progression/pace band/estimate/session guidance, fabricate zones, use age/HRR/average/optical/declared maxima, or suggest speeding up?",
+      "disposition": "NO_PATH_FOUND",
+      "answer": "Nothing in the engine reads heartRateFiveZones (grep: only the module, its call site, its test and the mission's oracle/driver). sessionHeartRate is computed beside sessionGuidance from the same effortOnly value and writes only into hr5Sessions; the session guidance, plan, pace bands, estimates, capacity, assessment and every other answer key are byte-identical with the authority on versus off over nine athletes, a hold and a strength-only intake, and across 326 recorded boundary steps (production authorities). Zones are never produced without a qualifying lab or observed reference; age, profile maxima, average-only heart rate, optical sensors, personal bests, implausible or non-integer values and stale or pre-break references give typed UNAVAILABLE reasons. Every session output has primary false and effortGoverns true; no cue outside the five easy families; no text suggests speeding up. Extreme, invalid and conflicting inputs fail closed without throwing in the probes. Residual: reason-typing NOTES R-02 and R-03, no sporting effect."
+    },
+    {
+      "id": "Q3",
+      "question": "Is heartRateOf byte-identical to base, so the V1X-RUN-HR record's recheck condition is not triggered?",
+      "disposition": "CONFIRMED_FOR_THE_FUNCTION; FILE_LEVEL_BINDING_TRIGGERED (R-01)",
+      "answer": "heartRateOf is byte-identical (sha256 of the function text 243f6eed... at both commits), as are fold, floorOf, classify and readEvidence, and the heartRateZones output expression. The heart-rate paths named by the superseded SSCTR-V1RC-REVIEW-r1 record are therefore unchanged. The records in force (SSCTR-V1RC-RECHECK-r1) bind the whole src/v1-run-calibration.mjs at 0eae6521..., which the candidate changes to d3e20f14...; their recheck condition is triggered at the file level although no V1RC behaviour changes. See R-01."
+    }
+  ],
+  "aeReview": {
+    "adequacyAndNecessity": "The change prescribes nothing; KEEP of every prescription is preserved by construction and verified by invariance probes.",
+    "smallestSufficientChange": "Additive reading beside the frozen three zones; no planner, dose or gate change.",
+    "agencyAndExplainability": "Effort governs; heart rate may only suggest slowing; references carry provenance and LOW confidence; conflict shows both values.",
+    "clinicalBoundary": "No health meaning; symptoms stay on the existing warning-sign route; medication or conditions that alter heart rate remain ASK / ELIGIBILITY_UNASSESSED for the clinical owner (not decided here)."
+  },
+  "overallDisposition": "APPROVE_WITH_CONDITIONS",
+  "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+  "confidence": "MODERATE for implementation conformance (code read, directed tests, independent probes, regression); LOW for the physiological meaning of the zones, as in the decision.",
+  "blockingFindings": [],
+  "conditions": [
+    "Synthetic data only; no real athletes and no production use.",
+    "Bound to CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json sha256 11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce and to the heart-rate paths of CoachingCore/src/v1-heart-rate-zones.mjs sha256 4d4555e86f25150e930fe347dfb3b2367f58cc8466c2076f429f5ac8a50e570d (and its call site in src/v1-run-calibration.mjs sha256 d3e20f148cd4e0380c4009ba595d9aa5482b909f60b5b1e4a385fd267d1ef87e); a change to any of them requires an independent SSCTR recheck to confirm or remove the record.",
+    "SSCTR-HR5-R-01: inert unless valid independent V1X-RUN-CAPACITY and V1X-RUN-HR records exist; Chief routes the V1RC recheck of the RECHECK-r1 records for the new v1-run-calibration.mjs hash before integration.",
+    "Display-only reference: effort governs every session; never primary, a target, a gate or a dose input; a slow-down cue only from Z4 on a sustained reading in EASY, LONG, RECOVERY_EASY, SHAKEOUT and EASY_REESTABLISHMENT; never a cue to speed up; no 'Olympiatoppen' or 'Norwegian' naming; within-domain splits have no sporting role.",
+    "SSCTR-HR5-R-04: lab.modality is a declaration by the athlete or the lab report, never defaulted or inferred by a client; Data and Product own its collection.",
+    "SSCTR-HR5-R-08: Product presents one heart-rate cue per session and keeps every disclosure's meaning; heart-rate copy implies no health meaning.",
+    "Time in zone stays UNAVAILABLE; no classifier limit is approved; a future heart-rate series channel needs its own SSCTR and Data review.",
+    "Security review of heart-rate and lab data (health-adjacent) before any real athlete.",
+    "Medication or conditions that alter heart rate: ASK / ELIGIBILITY_UNASSESSED for the clinical owner, not decided here.",
+    "An AI reviewer's provisional internal sporting judgement, not human, clinical or empirical validation.",
+    "Proposed for funded human revalidation under HQ-V1HR5-SSCTR-ZONES (linked to HQ-V1RC-SSCTR-HR), appended by Founder or Chief.",
+    "Review by 2027-05-11 or earlier on the triggers of SSCTR-HR5-DECISION-r1 expiry."
+  ],
+  "routedTo": {
+    "Chief": ["R-01 V1RC recheck of the RECHECK-r1 records", "R-07 freeze amendment record (with QRE)", "queue append HQ-V1HR5-SSCTR-ZONES", "untracked SCIENCE_AND_CALIBRATION_DECISION.md is not part of the reviewed commit"],
+    "QRE/Engineering": ["R-07", "R-02 and R-03 in a later fix cycle"],
+    "Data/Product": ["R-04", "R-05", "R-06", "R-08"],
+    "Security": ["heart-rate and lab data handling"],
+    "ClinicalOwner": ["medication/conditions altering heart rate: ASK / ELIGIBILITY_UNASSESSED"]
+  },
+  "recordAppended": {
+    "file": "audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json",
+    "boundaryId": "V1X-RUN-HR-FIVE-ZONE",
+    "valuesSha256": "11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce",
+    "effect": "fiveZoneAuthority() with the default records file becomes approved for these bytes; the five zones are produced only where V1X-RUN-CAPACITY and V1X-RUN-HR are also on. Synthetic use only under the conditions."
+  },
+  "governance": {
+    "dispositionIsNotEnablementOfRealUse": true,
+    "gateClosed": false,
+    "publishedAsProductTruth": false,
+    "humanValidation": false,
+    "empiricalValidation": false,
+    "clinicalValidation": false,
+    "skillValidator": "not run: this file follows the mission's V1RC/HR5 review layout, not the per-review decision.schema.json record; JSON well-formedness checked with Python."
+  },
+  "expiry": {
+    "owner": "Chief / SSCTR",
+    "reviewBy": "2027-05-11",
+    "triggers": [
+      "any change to the bound bytes or code hashes above",
+      "the triggers of SSCTR-HR5-DECISION-r1 expiry (Q6/Q9 revision, new systematic review on HR zones or %HRmax at thresholds in recreational runners, a heart-rate series or measured thresholds in the contract, population or session-family change, Olympiatoppen scale revision, real data or an adverse event, the Founder's funding declaration)",
+      "the outcome of the V1RC recheck required by SSCTR-HR5-R-01"
+    ]
+  }
+}

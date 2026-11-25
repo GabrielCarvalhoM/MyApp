@@ -5,13 +5,19 @@ import Foundation
 //
 // Rules a screen keeps (the engine's, restated so a reader sees them where the type is used):
 // - Show zones only when `status == "AVAILABLE"`, and exactly `zones` (never recomputed from `reference.bpm`, never from age).
-// - `nil` (the key absent) means "not computed by this engine version" (a record stored before the amendment): it is NOT "no zones".
+// - The key absent (QRE-HR5-07): read it with `runCalibration.status`. When the run calibration itself is DISABLED, NOT_APPLICABLE or an
+//   error (or absent), the amended engine also gives no five-zone key: show no zones. When the run calibration answered (any other status)
+//   and the key is absent, the reading was computed by an engine before the amendment (a record stored before it): "not computed", never
+//   "no zones". `model` and `sha256` name the version of an answer that has the key.
 // - Heart rate is never the primary guidance: `primaryGuidance`, `sessionTarget`, `gatesProgression`, `convertedToPaceOrEffort` are false.
 //   The effort cue stays the prescription of every session; a session's `heartRate` role can only suggest slowing (`neverSpeedUp`).
 // - Intervals are [fromBpm, toBpm): `fromBpm == nil` is open below (Z1), `toBpm == nil` open above (Z5).
 public struct HeartRateFiveZones: Decodable, Equatable, Sendable {
     public let version: String?
     public let model: String?
+    /// The pinned sha256 of the five-zone values the answer used, and the authority that enabled them (CURRENT_INDEPENDENT_REVIEW).
+    public let sha256: String?
+    public let source: Code?
     public let status: Code
     public let reason: Code?
     public let method: Code?
@@ -32,6 +38,8 @@ public struct HeartRateFiveZones: Decodable, Equatable, Sendable {
     /// Time in zone: UNAVAILABLE in V1 (NO_HEART_RATE_SERIES_IN_CONTRACT); never derived from an average heart rate.
     public let sessionDistribution: StatusAndReason?
     public let ageFormula: Code?
+    /// NOT_THRESHOLDS, FIXED_FRACTIONS_OF_A_MAXIMUM, and OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM or NOT_CHECKED_BY_THE_APP.
+    public let notes: [Code]?
     /// Codes of the copy a screen shows beside the zones (ZONES, OBSERVED_MAXIMUM | LAB_MEASURED_MAXIMUM, NEWER_RUNNER, REFERENCE_CONFLICT);
     /// the wording is Product's, the meaning the engine's values file (`disclosures`).
     public let disclosures: [Code]?
@@ -88,7 +96,17 @@ public struct SessionHeartRate: Decodable, Equatable, Sendable {
     public let neverSpeedUp: Bool?
     public let sustainedReadingOnly: Bool?
     public let healthMeaning: Bool?
+    /// CUE when the session shows the slow-down cue (the copy code of the values file).
+    public let disclosure: Code?
+    /// The strides of an easy run have their own role (NO_HEART_RATE_GUIDANCE): the cue never applies to them.
+    public let strides: StridesHeartRate?
     public let family: Code?
     public let week: Int?
     public let provisional: Bool?
+}
+public struct StridesHeartRate: Decodable, Equatable, Sendable {
+    public let role: Code
+    public let reason: Code?
+    public let primary: Bool
+    public let effortGoverns: Bool
 }

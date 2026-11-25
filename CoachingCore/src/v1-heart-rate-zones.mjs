@@ -20,7 +20,7 @@ import {clone,freeze} from './value.mjs';
 export const HR5_ID='V1X-HR-FIVE-ZONE-1';
 export const HR5_BOUNDARY='V1X-RUN-HR-FIVE-ZONE';
 export const HR5_VERSION='V1X-HR-FIVE-ZONE-STATE-1';
-export const HR5_SHA256='11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce';
+export const HR5_SHA256='387d66a73f3ab9071aa2313af7cd616dce251e7f83b9e7eb8a23b7a62055c04d';
 export const HR5_URL=new URL('../v1/HEART_RATE_FIVE_ZONE_V1.json',import.meta.url);
 export const HR5_RECORDS_URL=new URL('../../audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json',import.meta.url);
 export const ZONE_NAMES=freeze(['Z1','Z2','Z3','Z4','Z5']);
@@ -104,7 +104,8 @@ export function zoneOfBpm(zones,bpm,plausible){
 export function classifySamples(zones,series,{durationSeconds=null,maxGapSeconds,minCoverageFraction,plausibleBpm,values=HR5_VALUES}={}){
  const F=values?.sessionDistribution?.futureClassifier;
  if(!Array.isArray(zones))return {status:'UNAVAILABLE',reason:'NO_ZONES'};
- if(!F||!num(maxGapSeconds,0)||!num(minCoverageFraction,0,1)||!Array.isArray(plausibleBpm)||!num(plausibleBpm[0])||!num(plausibleBpm[1]))return {status:'UNAVAILABLE',reason:'CLASSIFIER_LIMITS_NOT_SET'};
+ // QRE-HR5-11: a limit of zero, a reversed range or a coverage outside (0, 1] is no limit.
+ if(!F||!num(maxGapSeconds,Number.MIN_VALUE)||!num(minCoverageFraction,Number.MIN_VALUE,1)||!Array.isArray(plausibleBpm)||!num(plausibleBpm[0],0)||!num(plausibleBpm[1])||!(plausibleBpm[0]<plausibleBpm[1]))return {status:'UNAVAILABLE',reason:'CLASSIFIER_LIMITS_NOT_SET'};
  if(!isObj(series)||!F.sensors.includes(series.sensor))return {status:'UNAVAILABLE',reason:'SENSOR_NOT_QUALIFYING'};
  const samples=series.samples,hi=Math.min(plausibleBpm[1],F.samplesAboveBpmUnknown);
  if(!Array.isArray(samples)||samples.length<2)return {status:'UNAVAILABLE',reason:'NO_HEART_RATE_SERIES'};
@@ -114,7 +115,8 @@ export function classifySamples(zones,series,{durationSeconds=null,maxGapSeconds
   if(!next)break;if(!isObj(next)||!num(next.t,0)||next.t<s.t)return {status:'UNAVAILABLE',reason:'SERIES_OUT_OF_ORDER'};
   const span=next.t-s.t,held=Math.min(span,maxGapSeconds),zone=s.artifact===true?null:zoneOfBpm(zones,s.bpm,[plausibleBpm[0],hi]);
   if(zone)seconds[zone]+=held;else unknown+=held;unknown+=span-held;}
- const total=num(durationSeconds,1)?durationSeconds:samples[samples.length-1].t-samples[0].t,covered=ZONE_NAMES.reduce((a,z)=>a+seconds[z],0);
+ const span=samples[samples.length-1].t-samples[0].t;if(durationSeconds!==null&&!(num(durationSeconds,1)&&durationSeconds>=span))return {status:'UNAVAILABLE',reason:'INVALID_DURATION'};
+ const total=durationSeconds??span,covered=ZONE_NAMES.reduce((a,z)=>a+seconds[z],0);
  if(!(total>0))return {status:'UNAVAILABLE',reason:'NO_DURATION'};
  const coverage=Math.round(Math.min(1,covered/total)*1000)/1000,unknownSeconds=Math.max(0,Math.round(total-covered));
  if(covered/total<minCoverageFraction)return {status:'UNAVAILABLE',reason:'INSUFFICIENT_COVERAGE',coveredSeconds:covered,unknownSeconds,coverage};
@@ -153,7 +155,11 @@ const withdrawnBy=freeze(['BREAK_OF_14_DAYS_OR_MORE','HOLD','WALK_JOG_RESTART_OR
  * CAPACITY); `auth` is this boundary's authority; `experience` the athlete's running experience (a newer runner's disclosure). Unavailable is
  * typed; nothing is ever fabricated without a qualifying reference.
  */
-export function fiveZonesOf(wk,{evidence,breaks,V,on,auth,hold=false,experience=null}){
+export function fiveZonesOf(wk,ctx){
+ // QRE-HR5-08: a fault here can never take the run calibration with it: the five zones are then UNAVAILABLE / FIVE_ZONE_ERROR, typed.
+ try{return fiveZonesOfWeek(wk,ctx);}catch{return {version:HR5_VERSION,model:HR5_ID,sha256:ctx?.auth?.sha256??null,source:ctx?.auth?.source??null,status:'UNAVAILABLE',reason:'FIVE_ZONE_ERROR',ageFormula:AGE};}
+}
+function fiveZonesOfWeek(wk,{evidence,breaks,V,on,auth,hold=false,experience=null}){
  const H5=auth?.values,head={version:HR5_VERSION,model:HR5_ID,sha256:auth?.sha256??null,source:auth?.source??null};
  const none=(reason,extra={})=>({...head,status:'UNAVAILABLE',reason,ageFormula:AGE,...extra});
  // A hold withholds them first, whatever else holds (as the three zones: HOLD_NO_PRESCRIPTION).
@@ -186,18 +192,28 @@ export function fiveZonesOf(wk,{evidence,breaks,V,on,auth,hold=false,experience=
  * suggest slowing, never speeding up; elsewhere there is no heart-rate guidance (zones are not individual thresholds; heart rate lags short hard
  * bouts; race guidance is unchanged). With no zones, a hold or an effort-only mode there is none, with its reason.
  */
-export function sessionHeartRate(s,{zones5,hold,effortOnly,auth}){
+export function sessionHeartRate(s,ctx){
+ try{return roleOf(s,ctx);}catch{return {primary:false,effortGoverns:true,role:ROLES.NONE,reason:'FIVE_ZONE_ERROR'};}
+}
+/**
+ * The decision's order, the reading's own (C5, SSCTR-HR5-R-02): a hold, then the boundary off (the run calibration's HR boundary or this one),
+ * then an effort-only mode or a family that holds only in another mode, then the family's role; a cue family with no zones in force is NONE
+ * with the zones' typed reason (state NO_ZONES). A family is read as an own key only (SSCTR-HR5-R-03): anything else is the unknown family.
+ */
+function roleOf(s,{zones5,hold,effortOnly,auth,on=true,mode=null}){
  const base={primary:false,effortGoverns:true};
  const none=reason=>({...base,role:ROLES.NONE,reason});
  const p=s?.prescription,H5=auth?.values;
- if(!allowsFiveZones(auth))return none('EXTENSION_NOT_ENABLED');
  if(hold)return none('HOLD_NO_PRESCRIPTION');
+ if(!on||!allowsFiveZones(auth))return none('EXTENSION_NOT_ENABLED');
  if(effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
- const U=H5.sessionUse,use=U.families[p?.family]??U.unknownFamily,out={...base,role:use.role};
+ const U=H5.sessionUse,family=typeof p?.family==='string'?p.family:null,use=family!==null&&Object.hasOwn(U.families,family)?U.families[family]:U.unknownFamily;
+ if(use.onlyInMode&&use.onlyInMode!==mode)return none('MODE_WALK_JOG_RESTART_RETURN');
+ if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return none(zones5?.reason??'NO_HEART_RATE_ZONES');
+ const out={...base,role:use.role};
  if(use.role===ROLES.NONE)return {...out,reason:use.reason};
  if(use.role===ROLES.NO_GUIDANCE)Object.assign(out,{reason:use.reason});
  else if(use.role===ROLES.CUE){
-  if(zones5?.status!=='AVAILABLE')return none(zones5?.reason??'NO_HEART_RATE_ZONES');
   const z=zones5.zones.find(x=>x.zone===use.slowDownCueFromZone);
   if(!z||!Number.isInteger(z.fromBpm))return none('ZONE_BOUNDARIES_DEGENERATE');
   // The cue rules of the decision: a sustained reading only, never a cue to speed up, no health meaning, no "usual zone" of the family.

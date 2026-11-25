@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {X,DEV,VALUES,ELIG,runner,result,timeline,textsOf,hash,report,live} from './v1rc-helpers.mjs';
 import {devRunCalibration,RUN_BOUNDARIES} from '../src/v1-run-calibration.mjs';
-import {fiveZoneAuthority,devFiveZone,fiveZoneValuesOf,zonesFromMaximum,zoneOfBpm,classifySamples,HR5_SHA256,HR5_FILE_SHA256,HR5_URL,HR5_BOUNDARY,ZONE_NAMES} from '../src/v1-heart-rate-zones.mjs';
+import {fiveZoneAuthority,devFiveZone,fiveZoneValuesOf,zonesFromMaximum,zoneOfBpm,classifySamples,sessionHeartRate,fiveZonesOf,HR5_SHA256,HR5_FILE_SHA256,HR5_URL,HR5_BOUNDARY,ZONE_NAMES} from '../src/v1-heart-rate-zones.mjs';
 import {FORBIDDEN_CLAIM} from '../src/r6-prescription.mjs';
 
 const H5=JSON.parse(fs.readFileSync(HR5_URL,'utf8'));
@@ -197,7 +197,7 @@ test('HR5 sessions: a beginner\'s walk/jog plan is by effort only, with no heart
 });
 test('HR5 disclosures: a newer runner in EASY mode is told the same heart rate can mean a harder effort; an experienced runner is not',()=>{
  const nov=five(runner({id:'hr5-nov',runExperience:'NOVICE',goal:'REGULAR',anchors:[recent10(STRAP(186))]}));
- if(nov.status==='AVAILABLE')assert.ok(nov.disclosures.includes('NEWER_RUNNER'));else assert.equal(nov.reason,'MODE_WALK_JOG_RESTART_RETURN');
+ assert.equal(nov.status,'AVAILABLE','a NOVICE with recent running is in EASY mode');assert.deepEqual(nov.disclosures,['ZONES','OBSERVED_MAXIMUM','NEWER_RUNNER']);
  const exp=five(runner({id:'hr5-exp',runExperience:'EXPERIENCED',anchors:[recent10(STRAP(186))]}));assert.equal(exp.status,'AVAILABLE');assert.deepEqual(exp.disclosures,['ZONES','OBSERVED_MAXIMUM']);
 });
 
@@ -265,6 +265,54 @@ test('HR5 classifier: only a strap or ECG series, with limits the caller must gi
  assert.equal(classifySamples(z,S([{t:0,bpm:150}]),T).reason,'NO_HEART_RATE_SERIES','one value (an average) is never a distribution');
  assert.equal(classifySamples(null,S(series),T).reason,'NO_ZONES');
  assert.equal(H5.sessionDistribution.classifierWiredToInput,false);
+ // QRE-HR5-11: a limit of zero, a reversed or open range, a coverage of 0 or above 1, or a duration shorter than the series is no limit.
+ for(const bad of [{...T,maxGapSeconds:0},{...T,minCoverageFraction:0},{...T,minCoverageFraction:1.5},{...T,plausibleBpm:[220,30]},{...T,plausibleBpm:[30]},{...T,plausibleBpm:[-5,220]}])
+  assert.equal(classifySamples(z,S(series),bad).reason,'CLASSIFIER_LIMITS_NOT_SET',JSON.stringify(bad));
+ assert.equal(classifySamples(z,S(series),{...T,durationSeconds:10}).reason,'INVALID_DURATION');assert.equal(classifySamples(z,S(series),{...T,durationSeconds:30}).coverage,0.833);
+});
+
+// ---------- review findings (QRE-SEC-HR5-REVIEW, SSCTR-HR5-REVIEW-r1) ----------
+test('HR5 sessions follow the reading\'s order: a hold, then the boundary off (either one), then an effort-only mode, then the family (C5, SSCTR-HR5-R-02)',()=>{
+ const input=runner({id:'hr5-order',anchors:[recent10(STRAP(186))]});
+ const noHr=cal(input,{...ON,runCalibration:devRunCalibration(Object.values(RUN_BOUNDARIES).filter(b=>b!==RUN_BOUNDARIES.HR))}).heartRateFiveZones;
+ assert.ok(Object.values(noHr.sessions).every(s=>s.role==='NONE'&&s.reason==='EXTENSION_NOT_ENABLED'),'no sporting reason is given while the heart-rate boundary is off');
+ const off=cal(input,{...DEV,heartRateFiveZone:fiveZoneAuthority({heartRateFiveZoneRecords:{records:[]}})}).heartRateFiveZones;
+ assert.ok(Object.values(off.sessions).every(s=>s.role==='NONE'&&s.reason==='EXTENSION_NOT_ENABLED'));
+ const s={prescription:{family:'EASY'}},z=five(input),auth=devFiveZone();
+ assert.equal(sessionHeartRate(s,{zones5:z,hold:true,effortOnly:false,auth:fiveZoneAuthority({heartRateFiveZoneRecords:{records:[]}}),on:false}).reason,'HOLD_NO_PRESCRIPTION','a hold comes first, as in the reading');
+ assert.equal(sessionHeartRate(s,{zones5:z,hold:false,effortOnly:true,auth,on:true}).reason,'MODE_WALK_JOG_RESTART_RETURN');
+ assert.equal(sessionHeartRate(s,{zones5:z,hold:false,effortOnly:false,auth,on:true,mode:'EASY'}).slowDownCueAtOrAboveBpm,162);
+ // QRE-HR5-15: EASY_REESTABLISHMENT has its cue only in EASY mode.
+ assert.equal(sessionHeartRate({prescription:{family:'EASY_REESTABLISHMENT'}},{zones5:z,hold:false,effortOnly:false,auth,on:true,mode:'RESTART'}).reason,'MODE_WALK_JOG_RESTART_RETURN');
+ assert.equal(sessionHeartRate({prescription:{family:'EASY_REESTABLISHMENT'}},{zones5:z,hold:false,effortOnly:false,auth,on:true,mode:'EASY'}).role,'COMPLEMENTARY_CEILING_CUE');
+ // SSCTR-HR5-R-03: a family read only as an own key; a prototype name or a non-string is the unknown family, failing closed.
+ for(const family of ['constructor','__proto__','toString','hasOwnProperty',7,null,undefined])
+  assert.deepEqual([sessionHeartRate({prescription:{family}},{zones5:z,hold:false,effortOnly:false,auth,on:true,mode:'EASY'}).role,sessionHeartRate({prescription:{family}},{zones5:z,hold:false,effortOnly:false,auth,on:true,mode:'EASY'}).reason],['NO_HEART_RATE_GUIDANCE','UNKNOWN_FAMILY_FAIL_CLOSED'],String(family));
+});
+test('HR5 fault isolation (QRE-HR5-08): a fault in the five-zone code is a typed UNAVAILABLE, never a broken run calibration',()=>{
+ const broken={...devFiveZone(),values:{...devFiveZone().values,references:null,sessionUse:null}};
+ const c=cal(runner({id:'hr5-fault',anchors:[recent10(STRAP(186))]}),{...DEV,heartRateFiveZone:broken});
+ assert.notEqual(c.status,'CALIBRATION_ERROR');assert.equal(c.heartRateFiveZones.status,'UNAVAILABLE');assert.equal(c.heartRateFiveZones.reason,'FIVE_ZONE_ERROR');
+ assert.ok(Object.values(c.heartRateFiveZones.sessions).every(s=>s.role==='NONE'&&s.reason==='FIVE_ZONE_ERROR'&&s.primary===false));
+ const good=cal(runner({id:'hr5-fault',anchors:[recent10(STRAP(186))]}),DEV);assert.equal(hash(withoutFive(c)),hash(withoutFive(good)),'nothing else of the reading moves');
+});
+test('HR5 lab expiry and floors (QRE-HR5-11): a lab maximum lasts 182 days and is never read across a declared break of 14 days or more',()=>{
+ const at=d=>five(runner({id:'hr5-lab-age',anchors:[recent10(),lab(190,{date:daysBefore(d)})]}));
+ const week0=d=>d+2; // the plan's first week starts two days after the intake
+ assert.equal(at(180).status,'AVAILABLE');assert.equal(at(180).reference.ageDays,week0(180));
+ assert.equal(at(181).status,'UNAVAILABLE','182 days old at the week start is the last day in force; 183 is past it');assert.equal(at(181).reason,'HEART_RATE_DATA_NOT_QUALIFYING');
+ const W=VALUES.withdrawal,t=timeline(RECENT({id:'hr5-lab-break',anchors:[recent10(),{id:'lab-b',...lab(190,{date:'2026-10-20'})}]}),{opts:ON});
+ assert.equal(t.cal.heartRateFiveZones.reference.evidenceId,'lab-b');
+ t.step(4,3,'RETURN_AFTER_PAUSE',{interruption:{startDate:t.day(2,0),endDate:t.day(2,W.breakDaysWithdrawMin+1),days:W.breakDaysWithdrawMin+2,nonclinical:true,reasonCategory:'SCHEDULE'}});
+ assert.equal(t.cal.heartRateFiveZones.status,'UNAVAILABLE','the lab maximum from before the break is not read again');
+ assert.ok(t.same,t.differences.join(','));
+});
+test('HR5 production authority end to end (QRE-HR5-11): an independent record bound to the pinned bytes enables the zones through the engine; one bound to other bytes does not',()=>{
+ const rec=(x={})=>({boundaryId:HR5_BOUNDARY,valuesSha256:HR5_SHA256,independent:true,disposition:'APPROVE_WITH_CONDITIONS',evidenceStatus:'SUPPORTED_WITH_LIMITS',sourceIds:['S02'],reviewId:'TEST',...x});
+ const input=runner({id:'hr5-prod',anchors:[recent10(STRAP(186))]});
+ const on=five(input,{...DEV,heartRateFiveZoneRecords:{records:[rec()]}}),stale=five(input,{...DEV,heartRateFiveZoneRecords:{records:[rec({valuesSha256:'0'.repeat(64)})]}});
+ assert.equal(on.status,'AVAILABLE');assert.equal(on.source,'CURRENT_INDEPENDENT_REVIEW');assert.equal(on.sha256,HR5_SHA256);
+ assert.equal(stale.reason,'EXTENSION_NOT_ENABLED');
 });
 
 // ---------- the standing rules ----------

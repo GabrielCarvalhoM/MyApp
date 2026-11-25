@@ -9183,7 +9183,7 @@ Object.defineProperties(__exports, {
 const HR5_ID='V1X-HR-FIVE-ZONE-1';
 const HR5_BOUNDARY='V1X-RUN-HR-FIVE-ZONE';
 const HR5_VERSION='V1X-HR-FIVE-ZONE-STATE-1';
-const HR5_SHA256='2878eb6eef5ba3fd123c9b1baec83ebc7d8a82559ccb4ceccc997d8985d140bc';
+const HR5_SHA256='387d66a73f3ab9071aa2313af7cd616dce251e7f83b9e7eb8a23b7a62055c04d';
 const HR5_URL=new URL('../v1/HEART_RATE_FIVE_ZONE_V1.json',"file:///p0/CoachingCore/src/v1-heart-rate-zones.mjs");
 const HR5_RECORDS_URL=new URL('../../audits/v1-five-zone-heart-rate-2026-11-25/reviews/ssctr/SSCTR_HR5_RECORDS.json',"file:///p0/CoachingCore/src/v1-heart-rate-zones.mjs");
 const ZONE_NAMES=freeze(['Z1','Z2','Z3','Z4','Z5']);
@@ -9231,17 +9231,17 @@ const AGE='AGE_FORMULA_NOT_INDIVIDUAL';
 
 // ---------- the zones of one reference (HR5-1, HR5-4) ----------
 /**
- * The five zones of a reference maximum: each edge is round(bpm x fraction), the same arithmetic as the three zones, so the edges they share
- * (0.80, 0.87) are equal by construction. Intervals are [fromBpm, toBpm): a reading on an edge belongs to the higher zone; Z1 is open below and
- * Z5 open above (an observed maximum may be below the true one). Returns null for a reference that is not a whole bpm inside the plausible
- * range of the values (a pure function refuses an impossible maximum itself, whoever calls it), and unless the edges are integers, strictly
- * increasing and contiguous.
+ * The five zones of a reference maximum. Each edge is floor((bpm x perMille + 500) / 1000): integer arithmetic, half up (HR5-4); for every
+ * maximum of the plausible range it equals the three zones' Math.round(bpm x fraction), so the edges both outputs have (800 and 870 per mille)
+ * are the same bpm. Intervals are [fromBpm, toBpm): a reading on an edge belongs to the higher zone; Z1 is open below and Z5 open above (an
+ * observed maximum may be below the true one). Returns null for a reference that is not a whole bpm inside the plausible range of the values
+ * (the pure function refuses an impossible maximum itself, whoever calls it), and unless the edges are integers, strictly increasing and contiguous.
  */
 function zonesFromMaximum(bpm,H5){
  const P=H5?.plausibleReferenceBpm;
  if(!Array.isArray(P)||!Number.isInteger(bpm)||!num(bpm,P[0],P[1])||!Array.isArray(H5?.zones)||H5.zones.length!==ZONE_NAMES.length)return null;
- const edge=f=>f===null?null:num(f,0,1)?Math.round(bpm*f):NaN;
- const zones=H5.zones.map((z,i)=>({zone:ZONE_NAMES[i],domain:z.domain,fromBpm:edge(z.fromFraction),toBpm:edge(z.toFraction),fromFraction:z.fromFraction,toFraction:z.toFraction}));
+ const edge=pm=>pm===null?null:Number.isInteger(pm)&&pm>0&&pm<1000?Math.floor((bpm*pm+500)/1000):NaN;
+ const zones=H5.zones.map((z,i)=>({zone:ZONE_NAMES[i],domain:z.domain,fromBpm:edge(z.fromPerMille),toBpm:edge(z.toPerMille),fromFraction:z.fromFraction,toFraction:z.toFraction}));
  if(zones.some((z,i)=>H5.zones[i].zone!==z.zone))return null;
  if(zones[0].fromBpm!==null||zones[zones.length-1].toBpm!==null)return null;
  for(let i=0;i<zones.length;i++){const z=zones[i];
@@ -9250,82 +9250,103 @@ function zonesFromMaximum(bpm,H5){
   if(i>0&&zones[i-1].toBpm!==z.fromBpm)return null;}
  return zones;
 }
-/** The zone of one reading under [from, to): null for a reading that is not a plausible number. */
-function zoneOfBpm(zones,bpm,plausible=[30,230]){
- if(!Array.isArray(zones)||!num(bpm,plausible[0],plausible[1]))return null;
+/** The zone of one reading under [from, to): null for a reading that is not a number inside `plausible` ([low, high], a caller's choice). */
+function zoneOfBpm(zones,bpm,plausible){
+ if(!Array.isArray(zones)||!Array.isArray(plausible)||!num(bpm,plausible[0],plausible[1]))return null;
  return zones.find(z=>(z.fromBpm===null||bpm>=z.fromBpm)&&(z.toBpm===null||bpm<z.toBpm))?.zone??null;
 }
 /**
- * HR5-7, for a future reviewed channel (no V1 input carries a series; nothing calls this from the engine): seconds per zone of a series of
- * samples [{t: seconds from the start, bpm}] in time order. A sample holds until the next one, never longer than maxGapSeconds; a longer gap,
- * an implausible or missing value, or time out of order is UNKNOWN time, never interpolated. Below the coverage floor there is no distribution.
+ * HR5-7, for a future reviewed channel (no V1 input carries a series; nothing in the engine calls this; classifierWiredToInput false). Seconds
+ * per zone of one series {sensor, samples:[{t: seconds from the start, bpm, artifact?}]} in time order, classified with the zones of the week
+ * the session belongs to. Only a CHEST_STRAP or ECG series is classified. A sample holds until the next one, never longer than maxGapSeconds;
+ * a longer gap, an artifact, a value outside the plausible range or above 220 bpm is UNKNOWN time, never interpolated; covered and unknown time
+ * are always reported. The numeric limits (maxGapSeconds, minCoverageFraction, plausibleBpm) are NOT set by the decision: the caller must give
+ * them (a future SSCTR and Data review of the channel); without them there is no distribution. Never used for adherence, a quality session's
+ * judgement, progression or adaptation.
  */
-function classifySamples(zones,samples,{durationSeconds=null,classifier}={}){
- const C=classifier??{plausibleBpm:[30,230],maxGapSeconds:10,minCoverageFraction:0.8};
+function classifySamples(zones,series,{durationSeconds=null,maxGapSeconds,minCoverageFraction,plausibleBpm,values=HR5_VALUES}={}){
+ const F=values?.sessionDistribution?.futureClassifier;
  if(!Array.isArray(zones))return {status:'UNAVAILABLE',reason:'NO_ZONES'};
+ // QRE-HR5-11: a limit of zero, a reversed range or a coverage outside (0, 1] is no limit.
+ if(!F||!num(maxGapSeconds,Number.MIN_VALUE)||!num(minCoverageFraction,Number.MIN_VALUE,1)||!Array.isArray(plausibleBpm)||!num(plausibleBpm[0],0)||!num(plausibleBpm[1])||!(plausibleBpm[0]<plausibleBpm[1]))return {status:'UNAVAILABLE',reason:'CLASSIFIER_LIMITS_NOT_SET'};
+ if(!isObj(series)||!F.sensors.includes(series.sensor))return {status:'UNAVAILABLE',reason:'SENSOR_NOT_QUALIFYING'};
+ const samples=series.samples,hi=Math.min(plausibleBpm[1],F.samplesAboveBpmUnknown);
  if(!Array.isArray(samples)||samples.length<2)return {status:'UNAVAILABLE',reason:'NO_HEART_RATE_SERIES'};
- const seconds=Object.fromEntries(ZONE_NAMES.map(z=>[z,0]));let unknown=0,last=null;
+ const seconds=Object.fromEntries(ZONE_NAMES.map(z=>[z,0]));let unknown=0;
  for(let i=0;i<samples.length;i++){const s=samples[i],next=samples[i+1];
-  if(!isObj(s)||!num(s.t,0)||last!==null&&s.t<last)return {status:'UNAVAILABLE',reason:'SERIES_OUT_OF_ORDER'};last=s.t;
+  if(!isObj(s)||!num(s.t,0)||i>0&&s.t<samples[i-1].t)return {status:'UNAVAILABLE',reason:'SERIES_OUT_OF_ORDER'};
   if(!next)break;if(!isObj(next)||!num(next.t,0)||next.t<s.t)return {status:'UNAVAILABLE',reason:'SERIES_OUT_OF_ORDER'};
-  const span=next.t-s.t,held=Math.min(span,C.maxGapSeconds),zone=zoneOfBpm(zones,s.bpm,C.plausibleBpm);
+  const span=next.t-s.t,held=Math.min(span,maxGapSeconds),zone=s.artifact===true?null:zoneOfBpm(zones,s.bpm,[plausibleBpm[0],hi]);
   if(zone)seconds[zone]+=held;else unknown+=held;unknown+=span-held;}
- const total=num(durationSeconds,1)?durationSeconds:samples[samples.length-1].t-samples[0].t,known=ZONE_NAMES.reduce((a,z)=>a+seconds[z],0);
+ const span=samples[samples.length-1].t-samples[0].t;if(durationSeconds!==null&&!(num(durationSeconds,1)&&durationSeconds>=span))return {status:'UNAVAILABLE',reason:'INVALID_DURATION'};
+ const total=durationSeconds??span,covered=ZONE_NAMES.reduce((a,z)=>a+seconds[z],0);
  if(!(total>0))return {status:'UNAVAILABLE',reason:'NO_DURATION'};
- const coverage=Math.min(1,known/total);
- if(coverage<C.minCoverageFraction)return {status:'UNAVAILABLE',reason:'INSUFFICIENT_COVERAGE',coverage:Math.round(coverage*1000)/1000};
- return {status:'AVAILABLE',seconds,unknownSeconds:Math.max(0,Math.round(total-known)),coverage:Math.round(coverage*1000)/1000,fromAverageHeartRate:false};
+ const coverage=Math.round(Math.min(1,covered/total)*1000)/1000,unknownSeconds=Math.max(0,Math.round(total-covered));
+ if(covered/total<minCoverageFraction)return {status:'UNAVAILABLE',reason:'INSUFFICIENT_COVERAGE',coveredSeconds:covered,unknownSeconds,coverage};
+ return {status:'AVAILABLE',seconds,coveredSeconds:covered,unknownSeconds,coverage,fromAverageHeartRate:false};
 }
 
 // ---------- the reference of a week (HR5-2, HR5-3, HR5-5, HR5-8) ----------
 /**
- * The two candidate references of the week whose calibration is `wk`, read with the very rules of the three zones (heartRateOf): evidence on
- * record before the week starts, after the last withdrawal, not superseded; the lab rule of RUN_CALIBRATION_EXTENSION_V1 heartRate.measured
- * (and SSCTR-V1RC-R-09: no break of 14 days or more since) plus a stated maximum in the plausible range; the observed-maximum rule unchanged.
+ * The candidate references of the week whose calibration is `wk`, read with the very rules of the three zones (heartRateOf): evidence on record
+ * before the week starts, after the last withdrawal, not superseded.
+ * - LAB_MEASURED_MAXIMUM (HR5-2): a LAB_TEST under RUN_CALIBRATION_EXTENSION_V1 heartRate.measured (182 days, no declared break of 14 days or
+ *   more since; SSCTR-V1RC-R-09) that also states a maximum in the plausible range, from a running test declared in `lab.modality` (the
+ *   existing free-form lab object, carried whole by readEvidence), measured by chest strap or ECG, at a reported RPE of 8 or more, and neither
+ *   stopped nor reported not tolerated. The most recent such test.
+ * - OBSERVED_MAXIMUM: the approved Q6(b) rule, unchanged: the highest qualifying value of the window.
+ * `labNotRunning`: a lab maximum that meets every rule but the declared running modality (its own typed reason when nothing else qualifies).
  */
 function candidatesOf(wk,{evidence,breaks,V,H5}){
  const use=new Map(wk.classified.map(c=>[c.id,c.use])),H=V.heartRate,cutoff=wk.cutoff,start=wk.weekStart;
  const known=e=>e.date&&e.date<cutoff&&(!e.recordedOn||e.recordedOn<cutoff)&&(!wk.floor||e.date>wk.floor)&&use.get(e.id)!=='SUPERSEDED';
  const M=H.measured,L=H5.references.LAB_MEASURED_MAXIMUM,labOk=l=>isObj(l)&&typeof l.protocol==='string'&&l.protocol.trim()&&typeof l.source==='string'&&l.source.trim()&&Array.isArray(l.values)&&l.values.length>0&&l.values.every(v=>isObj(v)&&typeof v.name==='string'&&v.name.trim()&&num(v.value)&&typeof v.unit==='string'&&v.unit.trim());
- const lab=evidence.filter(e=>e.kind===L.evidenceKind&&known(e)&&dayGap(e.date,start)<=M.recencyDaysMax&&labOk(e.lab)&&!breaks.some(b=>b.days>=M.noDeclaredBreakDaysAtLeastSince&&b.to>e.date&&b.from<cutoff)&&num(e.heartRate?.maxBpm,L.plausibleBpm[0],L.plausibleBpm[1])).sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:a.id<b.id?-1:1)[0]??null;
+ const running=e=>typeof e.lab?.modality==='string'&&L.runningModalities.includes(e.lab.modality.trim().toUpperCase().replace(/[\s-]+/g,'_'));
+ const newest=(a,b)=>a.date<b.date?1:a.date>b.date?-1:a.id<b.id?-1:1;
+ const labs=evidence.filter(e=>e.kind===L.evidenceKind&&known(e)&&dayGap(e.date,start)<=M.recencyDaysMax&&labOk(e.lab)&&!breaks.some(b=>b.days>=M.noDeclaredBreakDaysAtLeastSince&&b.to>e.date&&b.from<cutoff)
+  &&num(e.heartRate?.maxBpm,L.plausibleBpm[0],L.plausibleBpm[1])&&L.sensors.includes(e.heartRate?.sensor)&&e.rpe!==null&&e.rpe>=L.rpeReportedMin&&(!L.completedNotFalse||e.completed!==false)&&(!L.toleratedNotFalse||e.tolerated!==false)).sort(newest);
+ const lab=labs.find(running)??null,labNotRunning=!lab&&labs.length>0;
  const O=H.observedMaximum,ok=new Map(wk.classified.map(c=>[c.id,c])),qualifies=e=>{const c=ok.get(e.id);return c&&['CAPACITY','HISTORICAL_BEST'].includes(c.use)&&!c.reasons.includes('BEFORE_BREAK_HOLD_OR_RETURN');};
- const observed=evidence.filter(e=>O.sourceEvents.includes(e.kind)&&known(e)&&dayGap(e.date,start)<=O.windowDays&&qualifies(e)&&num(e.seconds,O.effortMinutesMin*60)&&e.rpe!==null&&e.rpe>=O.rpeReportedMin&&O.sensors.includes(e.heartRate?.sensor)&&num(e.heartRate?.maxBpm,O.plausibleBpm[0],O.plausibleBpm[1])).sort((a,b)=>b.heartRate.maxBpm-a.heartRate.maxBpm||(a.date<b.date?1:a.date>b.date?-1:a.id<b.id?-1:1))[0]??null;
+ const observed=evidence.filter(e=>O.sourceEvents.includes(e.kind)&&known(e)&&dayGap(e.date,start)<=O.windowDays&&qualifies(e)&&num(e.seconds,O.effortMinutesMin*60)&&e.rpe!==null&&e.rpe>=O.rpeReportedMin&&O.sensors.includes(e.heartRate?.sensor)&&num(e.heartRate?.maxBpm,O.plausibleBpm[0],O.plausibleBpm[1])).sort((a,b)=>b.heartRate.maxBpm-a.heartRate.maxBpm||newest(a,b))[0]??null;
  const ref=(kind,e)=>e&&{kind,bpm:e.heartRate.maxBpm,evidenceId:e.id,evidenceKind:e.kind,date:e.date,ageDays:dayGap(e.date,start),sensor:e.heartRate.sensor??null,
-  ...(kind==='LAB_MEASURED_MAXIMUM'?{protocol:e.lab.protocol,source:e.lab.source,checkedByTheApp:false}:{})};
- return {lab:ref('LAB_MEASURED_MAXIMUM',lab),observed:ref('OBSERVED_MAXIMUM',observed),anyHeartRate:evidence.some(e=>e.heartRate?.maxBpm)};
+  ...(kind==='LAB_MEASURED_MAXIMUM'?{protocol:e.lab.protocol,source:e.lab.source,modality:e.lab.modality,checkedByTheApp:false}:{})};
+ return {lab:ref('LAB_MEASURED_MAXIMUM',lab),observed:ref('OBSERVED_MAXIMUM',observed),labNotRunning,anyHeartRate:evidence.some(e=>e.heartRate?.maxBpm)};
 }
 const withdrawnBy=freeze(['BREAK_OF_14_DAYS_OR_MORE','HOLD','WALK_JOG_RESTART_OR_RETURN_MODE','REFERENCE_PAST_ITS_RECENCY']);
 /**
  * The five zones of the week `wk` (the run calibration's internal week, built by its fold). `on` is the run calibration's HR boundary (with
- * CAPACITY); `auth` is this boundary's authority. Unavailable is typed; nothing is ever fabricated without a qualifying reference.
+ * CAPACITY); `auth` is this boundary's authority; `experience` the athlete's running experience (a newer runner's disclosure). Unavailable is
+ * typed; nothing is ever fabricated without a qualifying reference.
  */
-function fiveZonesOf(wk,{evidence,breaks,V,on,auth,hold=false}){
+function fiveZonesOf(wk,ctx){
+ // QRE-HR5-08: a fault here can never take the run calibration with it: the five zones are then UNAVAILABLE / FIVE_ZONE_ERROR, typed.
+ try{return fiveZonesOfWeek(wk,ctx);}catch{return {version:HR5_VERSION,model:HR5_ID,sha256:ctx?.auth?.sha256??null,source:ctx?.auth?.source??null,status:'UNAVAILABLE',reason:'FIVE_ZONE_ERROR',ageFormula:AGE};}
+}
+function fiveZonesOfWeek(wk,{evidence,breaks,V,on,auth,hold=false,experience=null}){
  const H5=auth?.values,head={version:HR5_VERSION,model:HR5_ID,sha256:auth?.sha256??null,source:auth?.source??null};
  const none=(reason,extra={})=>({...head,status:'UNAVAILABLE',reason,ageFormula:AGE,...extra});
  // A hold withholds them first, whatever else holds (as the three zones: HOLD_NO_PRESCRIPTION).
  if(hold)return none('HOLD_NO_PRESCRIPTION');
  if(!on||!allowsFiveZones(auth))return none('EXTENSION_NOT_ENABLED');
  if(wk.effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
- const {lab,observed,anyHeartRate}=candidatesOf(wk,{evidence,breaks,V,H5}),R=H5.references,C=H5.conflict;
- if(!lab&&!observed)return none(anyHeartRate?'HEART_RATE_DATA_NOT_QUALIFYING':'NO_MEASURED_HEART_RATE');
- // HR5-3: two references more than the band apart: the one the decision names wins, the confidence drops, and both are shown.
- let reference=R.order.map(k=>k==='LAB_MEASURED_MAXIMUM'?lab:observed).find(Boolean),conflict=null;
- if(lab&&observed&&Math.abs(lab.bpm-observed.bpm)>C.bpmApartMoreThan){
-  reference=C.use==='LOWER'?(lab.bpm<=observed.bpm?lab:observed):C.use==='HIGHER'?(lab.bpm>=observed.bpm?lab:observed):null;
-  conflict={status:'CONFLICTING_REFERENCES',apartBpm:Math.abs(lab.bpm-observed.bpm),bandBpm:C.bpmApartMoreThan,rule:C.use,candidates:[clone(lab),clone(observed)]};
-  if(!reference)return none('CONFLICTING_REFERENCES',{conflict});
- }
+ const {lab,observed,labNotRunning,anyHeartRate}=candidatesOf(wk,{evidence,breaks,V,H5}),R=H5.references,C=H5.conflict;
+ if(!lab&&!observed)return none(labNotRunning?'LAB_MODALITY_NOT_RUNNING_OR_UNKNOWN':anyHeartRate?'HEART_RATE_DATA_NOT_QUALIFYING':'NO_MEASURED_HEART_RATE');
+ // HR5-3: an accurate chest-strap reading cannot exceed the true maximum. An observed maximum more than the band ABOVE the lab maximum is a
+ // conflict: no zones, both shown, re-read every week. A lab maximum above the observed one is expected: the lab maximum is used.
+ if(lab&&observed&&observed.bpm-lab.bpm>C.observedAboveLabMoreThanBpm)
+  return none(C.outcome,{conflict:{status:C.outcome,labMaxBpm:lab.bpm,labDate:lab.date,labEvidenceId:lab.evidenceId,observedMaxBpm:observed.bpm,observedDate:observed.date,observedEvidenceId:observed.evidenceId,differenceBpm:observed.bpm-lab.bpm,bandBpm:C.observedAboveLabMoreThanBpm},disclosures:[C.outcome]});
+ const reference=R.order.map(k=>k==='LAB_MEASURED_MAXIMUM'?lab:observed).find(Boolean);
  const zones=zonesFromMaximum(reference.bpm,H5);
  if(!zones)return none('ZONE_BOUNDARIES_DEGENERATE');
  const rule=R[reference.kind];
  return {...head,status:'AVAILABLE',method:H5.method,basis:rule.basis,estimated:true,reference:clone(reference),
-  referenceConfidence:conflict?C.referenceConfidence:rule.referenceConfidence,zoneModelConfidence:H5.zoneModelConfidence,conflict,
+  referenceConfidence:rule.referenceConfidence,zoneModelConfidence:H5.zoneModelConfidence,conflict:null,
   convention:H5.convention,rounding:H5.rounding,zones,
-  domains:Object.fromEntries(['LOW','MODERATE','HIGH'].map(d=>[d,zones.filter(z=>z.domain===d).map(z=>z.zone)])),
+  domains:Object.fromEntries(['LOW','MODERATE','HIGH'].map(d=>[d,zones.filter(z=>z.domain===d).map(z=>z.zone)])),withinDomainSplitsHaveSportingRole:false,
   role:'REFERENCE_SCALE_ONLY',primaryGuidance:false,sessionTarget:false,gatesProgression:false,convertedToPaceOrEffort:false,namedThresholds:false,
   sessionDistribution:{status:H5.sessionDistribution.status,reason:H5.sessionDistribution.reason,fromAverageHeartRate:false},
-  changesAt:'WEEK_BOUNDARY',withdrawnBy:[...withdrawnBy],ageFormula:AGE,
-  notes:reference.kind==='OBSERVED_MAXIMUM'?['NOT_THRESHOLDS','OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM']:['NOT_THRESHOLDS','LAB_MAXIMUM_AS_SUPPLIED_NOT_CHECKED_BY_THE_APP']};
+  changesAt:'WEEK_BOUNDARY',withdrawnBy:[...withdrawnBy],ageFormula:AGE,notes:[...H5.notes[reference.kind]],
+  disclosures:['ZONES',reference.kind,...(H5.newerRunnerExperience.includes(experience)?['NEWER_RUNNER']:[])]};
 }
 
 // ---------- the role of heart rate in one planned run session (HR5-6) ----------
@@ -9334,23 +9355,35 @@ function fiveZonesOf(wk,{evidence,breaks,V,on,auth,hold=false}){
  * suggest slowing, never speeding up; elsewhere there is no heart-rate guidance (zones are not individual thresholds; heart rate lags short hard
  * bouts; race guidance is unchanged). With no zones, a hold or an effort-only mode there is none, with its reason.
  */
-function sessionHeartRate(s,{zones5,hold,effortOnly,auth}){
+function sessionHeartRate(s,ctx){
+ try{return roleOf(s,ctx);}catch{return {primary:false,effortGoverns:true,role:ROLES.NONE,reason:'FIVE_ZONE_ERROR'};}
+}
+/**
+ * The decision's order, the reading's own (C5, SSCTR-HR5-R-02): a hold, then the boundary off (the run calibration's HR boundary or this one),
+ * then an effort-only mode or a family that holds only in another mode, then the family's role; a cue family with no zones in force is NONE
+ * with the zones' typed reason (state NO_ZONES). A family is read as an own key only (SSCTR-HR5-R-03): anything else is the unknown family.
+ */
+function roleOf(s,{zones5,hold,effortOnly,auth,on=true,mode=null}){
  const base={primary:false,effortGoverns:true};
  const none=reason=>({...base,role:ROLES.NONE,reason});
  const p=s?.prescription,H5=auth?.values;
- if(!allowsFiveZones(auth))return none('EXTENSION_NOT_ENABLED');
  if(hold)return none('HOLD_NO_PRESCRIPTION');
+ if(!on||!allowsFiveZones(auth))return none('EXTENSION_NOT_ENABLED');
  if(effortOnly)return none('MODE_WALK_JOG_RESTART_RETURN');
- const U=H5.sessionUse,use=U.families[p?.family]??U.unknownFamily,out={...base,role:use.role};
+ const U=H5.sessionUse,family=typeof p?.family==='string'?p.family:null,use=family!==null&&Object.hasOwn(U.families,family)?U.families[family]:U.unknownFamily;
+ if(use.onlyInMode&&use.onlyInMode!==mode)return none('MODE_WALK_JOG_RESTART_RETURN');
+ if(zones5?.status!=='AVAILABLE'&&use.role===ROLES.CUE)return none(zones5?.reason??'NO_HEART_RATE_ZONES');
+ const out={...base,role:use.role};
  if(use.role===ROLES.NONE)return {...out,reason:use.reason};
  if(use.role===ROLES.NO_GUIDANCE)Object.assign(out,{reason:use.reason});
  else if(use.role===ROLES.CUE){
-  if(zones5?.status!=='AVAILABLE')return none(zones5?.reason??'NO_HEART_RATE_ZONES');
   const z=zones5.zones.find(x=>x.zone===use.slowDownCueFromZone);
   if(!z||!Number.isInteger(z.fromBpm))return none('ZONE_BOUNDARIES_DEGENERATE');
-  Object.assign(out,{slowDownCueFromZone:z.zone,slowDownCueAtOrAboveBpm:z.fromBpm,neverSpeedUp:true,effortConflict:U.effortConflict,reference:zones5.reference.kind});
+  // The cue rules of the decision: a sustained reading only, never a cue to speed up, no health meaning, no "usual zone" of the family.
+  Object.assign(out,{slowDownCueFromZone:z.zone,slowDownCueAtOrAboveBpm:z.fromBpm,sustainedReadingOnly:U.cueRules.sustainedReadingOnly,neverSpeedUp:true,healthMeaning:false,
+   effortConflict:U.effortConflict,reference:zones5.reference.kind,disclosure:'CUE'});
  }else return none('UNKNOWN_ROLE');
- if(p?.strides)out.strides={...base,role:U.strides.role,reason:U.strides.reason};
+ if(p?.strides){const st=U.families.STRIDES;out.strides={...base,role:st.role,reason:st.reason};}
  return out;
 }
 
@@ -9974,7 +10007,7 @@ function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekIndex=0,
  const now=view(wk),after=nx?view(nx):null,sessions={};
  // V1HR5 (additive): the five heart-rate zones of the week in force and of the next, and the heart-rate role of each planned run session, kept
  // in the five-zone reading so the session guidance above stays exactly what it was (heart rate changes no session guidance).
- const auth5=fiveZoneAuthority(options),zones5=k=>fiveZonesOf(k,{evidence,breaks,V,on:on.HR,auth:auth5,hold:standing}),z5now=zones5(wk),z5next=nx?zones5(nx):null,hr5Sessions={};
+ const auth5=fiveZoneAuthority(options),zones5=k=>fiveZonesOf(k,{evidence,breaks,V,on:on.HR,auth:auth5,hold:standing,experience:program.capability?.run?.experience??null}),z5now=zones5(wk),z5next=nx?zones5(nx):null,hr5Sessions={};
  for(const week of program.weeks)for(const s of week.sessions)if(s.sport==='RUN'&&s.prescription&&s.status!=='SKIPPED'&&week.index>=w){
   const k=week.index===w||!nx?wk:nx,v=week.index===w||!after?now:after;
   // The week in force is fixed; a later week shows what is known today and is settled when its own week starts. A later week takes its own mode
@@ -9982,7 +10015,7 @@ function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekIndex=0,
   const weekStart=onDate(program.startDate,7*week.index),afterTest=testDays.some(d=>d>=weekStart&&d<=onDate(weekStart,6)&&s.date>d);
   const effortOnly=k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index));
   sessions[s.id]={...sessionGuidance(s,{effortOnly,bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing,afterTest}),week:week.index,provisional:week.index>w};
-  hr5Sessions[s.id]={...sessionHeartRate(s,{zones5:week.index===w||!z5next?z5now:z5next,hold:standing,effortOnly,auth:auth5}),family:s.prescription.family,week:week.index,provisional:week.index>w};
+  hr5Sessions[s.id]={...sessionHeartRate(s,{zones5:week.index===w||!z5next?z5now:z5next,hold:standing,effortOnly,auth:auth5,on:on.HR,mode:modeOf(program,week.index)}),family:s.prescription.family,week:week.index,provisional:week.index>w};
  }
  const held=reason=>({status:'UNAVAILABLE',reason}),withheld=standing?{status:'WITHHELD',reason:'HOLD_NO_PRESCRIPTION'}:null;
  const historicalBest=wk.classified.filter(c=>c.use==='HISTORICAL_BEST').map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isCurrentCapacity:false,isEstimate:false,reasons:c.reasons}));

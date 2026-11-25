@@ -1,4 +1,87 @@
 {
   "note": "V1X-RUN-HR-FIVE-ZONE enabling records. Only an independent SSCTR review of the implementation appends a record here, bound to the pinned sha256 of CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json (valuesSha256). An empty list enables nothing (v1-heart-rate-zones.mjs fiveZoneAuthority: fail closed).",
-  "records": []
+  "records": [
+    {
+      "boundaryId": "V1X-RUN-HR-FIVE-ZONE",
+      "valuesSha256": "11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": [
+        "S01",
+        "S02",
+        "S04",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S12",
+        "S16",
+        "S17",
+        "S18",
+        "V1RC-SRC08",
+        "V1RC-SRC09",
+        "V1RC-SRC10",
+        "V1RC-SRC11"
+      ],
+      "conditions": [
+        "Synthetic data only; no real athletes and no production use.",
+        "Bound to CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json sha256 11440a132a83fb5d5d7468742112064c036949b707e49497736baa2c00b409ce and to the heart-rate paths of CoachingCore/src/v1-heart-rate-zones.mjs sha256 4d4555e86f25150e930fe347dfb3b2367f58cc8466c2076f429f5ac8a50e570d (fiveZoneAuthority, zonesFromMaximum, zoneOfBpm, candidatesOf, fiveZonesOf, sessionHeartRate, classifySamples) and their call site in src/v1-run-calibration.mjs sha256 d3e20f148cd4e0380c4009ba595d9aa5482b909f60b5b1e4a385fd267d1ef87e; a change to any of them requires an independent SSCTR recheck to confirm or remove this record.",
+        "Inert unless valid independent V1X-RUN-CAPACITY and V1X-RUN-HR records exist. SSCTR-HR5-R-01: the SSCTR-V1RC-RECHECK-r1 records are bound to src/v1-run-calibration.mjs sha256 0eae652116915342a28f0c8a5b4da7aa4724e743b45e08dee1852bf578ab9f01, which this candidate changes; Chief routes the V1RC recheck to confirm or remove them before integration.",
+        "Display-only reference: effort governs every session; never primary, a target, a gate, a dose, progression, pace-band or estimate input; a slow-down cue only from Z4 on a sustained reading in EASY, LONG, RECOVERY_EASY, SHAKEOUT and EASY_REESTABLISHMENT; never a cue to speed up; never called thresholds or Olympiatoppen/Norwegian zones; within-domain splits have no sporting role.",
+        "SSCTR-HR5-R-04: lab.modality is the athlete's or the lab report's declaration, never defaulted or inferred by a client; Data and Product own its collection.",
+        "SSCTR-HR5-R-08: Product presents one heart-rate cue per session, keeps every disclosure's meaning and implies no health meaning.",
+        "Time in zone stays UNAVAILABLE; no classifier limit is approved; a future heart-rate series channel requires its own SSCTR and Data review.",
+        "Heart-rate and lab values are health-adjacent data: Security review before any real athlete.",
+        "Medication or conditions that alter heart rate remain ASK / ELIGIBILITY_UNASSESSED for the clinical owner; not decided here.",
+        "An AI reviewer's provisional internal sporting judgement, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1HR5-SSCTR-ZONES (linked to HQ-V1RC-SSCTR-HR), appended by Founder or Chief.",
+        "Review by 2027-05-11 or earlier on the triggers of SSCTR-HR5-REVIEW-r1 and SSCTR-HR5-DECISION-r1."
+      ],
+      "reviewId": "SSCTR-HR5-REVIEW-r1"
+    },
+    {
+      "boundaryId": "V1X-RUN-HR-FIVE-ZONE",
+      "valuesSha256": "387d66a73f3ab9071aa2313af7cd616dce251e7f83b9e7eb8a23b7a62055c04d",
+      "independent": true,
+      "disposition": "APPROVE_WITH_CONDITIONS",
+      "evidenceStatus": "SUPPORTED_WITH_LIMITS",
+      "sourceIds": [
+        "S01",
+        "S02",
+        "S04",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S12",
+        "S16",
+        "S17",
+        "S18",
+        "V1RC-SRC08",
+        "V1RC-SRC09",
+        "V1RC-SRC10",
+        "V1RC-SRC11"
+      ],
+      "conditions": [
+        "Synthetic data only; no real athletes and no production use.",
+        "Bound to CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json sha256 387d66a73f3ab9071aa2313af7cd616dce251e7f83b9e7eb8a23b7a62055c04d and to the heart-rate paths of CoachingCore/src/v1-heart-rate-zones.mjs sha256 86ff6fd52311bece46796883ef22cdda49000de1c50c47d84e411d3f0856644a and their call site in src/v1-run-calibration.mjs sha256 8203b875b66bc3780bc13a14299c896d23449bf2201ec03f85eb92e43226dc83; a change to any of them requires an independent SSCTR recheck to confirm or remove this record.",
+        "Inert unless valid independent V1X-RUN-CAPACITY and V1X-RUN-HR records exist; their file-level binding to the new v1-run-calibration.mjs hash is confirmed in SSCTR_HR5_V1RC_FILE_RECHECK.json (SSCTR-HR5-R-01).",
+        "Display-only reference: effort governs every session; never primary, a target, a gate, a dose, progression, pace-band or estimate input; a slow-down cue only from Z4 on a sustained reading in EASY, LONG, RECOVERY_EASY, SHAKEOUT and (in EASY mode only) EASY_REESTABLISHMENT; never a cue to speed up; never called thresholds or Olympiatoppen/Norwegian zones; within-domain splits have no sporting role.",
+        "SSCTR-HR5-RC-03: zone availability is read from the week-level heartRateFiveZones status, never from a per-session NO_HEART_RATE_GUIDANCE reason.",
+        "SSCTR-HR5-R-04: lab.modality is the athlete's or the lab report's declaration, never defaulted or inferred by a client; Data and Product own its collection.",
+        "SSCTR-HR5-R-08: Product presents one heart-rate cue per session, keeps every disclosure's meaning and implies no health meaning.",
+        "Time in zone stays UNAVAILABLE; no classifier limit is approved; a future heart-rate series channel requires its own SSCTR and Data review.",
+        "Heart-rate and lab values are health-adjacent data: Security review before any real athlete.",
+        "Medication or conditions that alter heart rate remain ASK / ELIGIBILITY_UNASSESSED for the clinical owner; not decided here.",
+        "An AI reviewer's provisional internal sporting judgement, not human, clinical or empirical validation.",
+        "Proposed for funded human revalidation under HQ-V1HR5-SSCTR-ZONES (linked to HQ-V1RC-SSCTR-HR), appended by Founder or Chief.",
+        "Review by 2027-05-11 or earlier on the triggers of SSCTR-HR5-RECHECK-r1 and SSCTR-HR5-DECISION-r1."
+      ],
+      "reviewId": "SSCTR-HR5-RECHECK-r1",
+      "supersedes": "SSCTR-HR5-REVIEW-r1"
+    }
+  ]
 }

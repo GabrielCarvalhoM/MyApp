@@ -591,7 +591,7 @@ export function runCalibrationOf({program,ledger=[],evidenceRecord=[],asOf,weekI
   const weekStart=onDate(program.startDate,7*week.index),afterTest=testDays.some(d=>d>=weekStart&&d<=onDate(weekStart,6)&&s.date>d);
   const effortOnly=k.effortOnly||V.paceRules.noBandModes.includes(modeOf(program,week.index));
   sessions[s.id]={...sessionGuidance(s,{effortOnly,bands:v.bands,estimates:v.estimates,V,on:on.PACE,hold:standing,afterTest}),week:week.index,provisional:week.index>w};
-  hr5Sessions[s.id]={...sessionHeartRate(s,{zones5:week.index===w||!z5next?z5now:z5next,hold:standing,effortOnly,auth:auth5}),family:s.prescription.family,week:week.index,provisional:week.index>w};
+  hr5Sessions[s.id]={...sessionHeartRate(s,{zones5:week.index===w||!z5next?z5now:z5next,hold:standing,effortOnly,auth:auth5,on:on.HR,mode:modeOf(program,week.index)}),family:s.prescription.family,week:week.index,provisional:week.index>w};
  }
  const held=reason=>({status:'UNAVAILABLE',reason}),withheld=standing?{status:'WITHHELD',reason:'HOLD_NO_PRESCRIPTION'}:null;
  const historicalBest=wk.classified.filter(c=>c.use==='HISTORICAL_BEST').map(c=>({id:c.id,kind:c.kind,date:c.date,distanceKm:c.distanceKm,seconds:c.seconds,isCurrentCapacity:false,isEstimate:false,reasons:c.reasons}));
