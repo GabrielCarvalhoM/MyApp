@@ -7,7 +7,7 @@ final class PlanAndSessionTests: XCTestCase {
     @MainActor
     private func launch(_ scenario: String) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-scenario", scenario, "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launchArguments = ["-scenario", scenario, "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
         app.launch()
         return app
     }

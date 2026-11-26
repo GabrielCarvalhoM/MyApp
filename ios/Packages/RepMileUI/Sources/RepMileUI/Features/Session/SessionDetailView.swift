@@ -90,7 +90,7 @@ struct SessionDetailView: View {
                 ForEach(Array(steps.enumerated()), id: \.offset) { i, s in StepRow(index: i + 1, step: s.step, repeats: s.repeats, highlighted: s.step.kind.raw == main?.kind.raw) }
             }
             .padding(.top, 8)
-            .accessibilityIdentifier("session-steps")
+            .accessibilityElement(children: .contain).accessibilityIdentifier("session-steps")
         } else {
             Text(L.t("session.noSteps")).rmText(.detalhe, RM.Palette.textoSecundario).padding(.top, 16)
         }
@@ -164,7 +164,7 @@ struct SessionDetailView: View {
             }
         }
         .padding(.top, 8)
-        .accessibilityIdentifier("session-exercises")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("session-exercises")
     }
 
     /// The athlete's last logged working load for this exercise (the record, never the engine): "Anterior".

@@ -7,7 +7,7 @@ final class NavigationTests: XCTestCase {
     @MainActor
     private func launch(_ scenario: String, language: String = "pt-BR") -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-scenario", scenario, "-AppleLanguages", "(\(language))", "-AppleLocale", language == "pt-BR" ? "pt_BR" : language]
+        app.launchArguments = ["-scenario", scenario, "-simulatedLocation", "-AppleLanguages", "(\(language))", "-AppleLocale", language == "pt-BR" ? "pt_BR" : language]
         app.launch()
         return app
     }
@@ -40,7 +40,7 @@ final class NavigationTests: XCTestCase {
         XCTAssertTrue(start.waitForExistence(timeout: 10))
         XCTAssertTrue(start.isEnabled)
         start.tap()
-        XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.descendants(matching: .any)["run-timer"].waitForExistence(timeout: 5))
     }
 
     @MainActor

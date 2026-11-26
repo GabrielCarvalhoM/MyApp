@@ -32,7 +32,7 @@ struct WeekPanels: View {
         }
         .frame(height: height)
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("week-panels")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("week-panels")
     }
 
     private func xFor(_ i: Int, todayIndex: Int?, todayX: CGFloat, width: CGFloat) -> CGFloat {

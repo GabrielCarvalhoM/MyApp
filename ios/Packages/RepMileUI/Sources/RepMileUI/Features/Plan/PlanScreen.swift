@@ -344,7 +344,7 @@ struct PhasesChart: View {
             }
             Text(L.t("plan.phases.legend")).rmText(.detalhe, RM.Palette.textoSecundario)
         }
-        .accessibilityIdentifier("plan-phases")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("plan-phases")
     }
 
     private var phaseGroups: [(name: String, count: Int, containsCurrent: Bool)] {
@@ -390,6 +390,6 @@ struct MonthGrid: View {
                 }
             }
         }
-        .accessibilityIdentifier("plan-month")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("plan-month")
     }
 }

@@ -7,6 +7,7 @@ struct TodayView: View {
     @Environment(AppModel.self) private var model
     var openProfile: () -> Void
     var openSession: (PlannedSession) -> Void
+    var startSession: (PlannedSession) -> Void
     var openChanges: () -> Void
     var openReadiness: () -> Void
 
@@ -116,7 +117,7 @@ struct TodayView: View {
             if let next = c.next {
                 let startable = c.startability == .startable
                 PrimaryActionButton(L.f("today.start", next.title.lowercased(with: Fmt.locale)), fill: next.sport.action, textColor: next.sport.actionText,
-                                    enabled: startable) { openSession(next.session) }
+                                    enabled: startable) { startSession(next.session) }
                     .accessibilityIdentifier("today-start")
                 if case .notStartable(let r) = c.startability, model.globalGate == nil {
                     Text(L.t("reason." + r.rawValue)).rmText(.detalhe, RM.Palette.textoSecundario).frame(maxWidth: .infinity)
@@ -160,7 +161,7 @@ struct TodayView: View {
                 PhaseTrack(phases: c.phases)
             }
         }
-        .accessibilityIdentifier("today-race")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("today-race")
     }
 }
 

@@ -1,0 +1,127 @@
+import XCTest
+
+/// Execution (40/41), unplanned workouts and the safety flows (72) on the dedicated simulator. Location is scripted (`-simulatedLocation`):
+/// no permission prompt; the run counts by time.
+final class ExecutionAndSafetyTests: XCTestCase {
+    override func setUp() { continueAfterFailure = false }
+
+    @MainActor
+    private func launch(_ scenario: String) -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = ["-scenario", scenario, "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launch()
+        return app
+    }
+    @MainActor private func el(_ app: XCUIApplication, _ id: String) -> XCUIElement { app.descendants(matching: .any)[id] }
+    @MainActor
+    private func attach(_ app: XCUIApplication, _ name: String) {
+        let a = XCTAttachment(screenshot: app.screenshot()); a.name = name; a.lifetime = .keepAlways; add(a)
+    }
+
+    @MainActor
+    func testPlannedRunRecordReportAndSave() {
+        let app = launch("today")
+        app.buttons["today-start"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10))
+        XCTAssertTrue(el(app, "run-step").exists)
+        XCTAssertTrue(el(app, "run-location-NO_SIGNAL").exists, "location state visible, the run continues by time")
+        attach(app, "Execução — corrida sem FC ao vivo (40)")
+        app.buttons["run-pause"].tap()
+        XCTAssertTrue(app.staticTexts["Pausado"].waitForExistence(timeout: 3))
+        app.buttons["run-pause"].tap()
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
+        app.buttons["report-rpe-4"].tap()
+        attach(app, "Relato — corrida planejada")
+        let save = app.buttons["report-save"]
+        while !save.isHittable { app.swipeUp() }
+        save.tap()
+        XCTAssertTrue(el(app, "report-saved").waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testUnplannedRunAsksTheSymptomQuestionAndOpensNotFeeling100() {
+        let app = launch("today")
+        app.buttons["tab-add"].tap()
+        XCTAssertTrue(app.buttons["add-run-now"].waitForExistence(timeout: 5))
+        app.buttons["add-run-now"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10))
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Parou ou sentiu algo fora do normal?"].exists)
+        XCTAssertFalse(app.buttons["report-save"].isEnabled, "no answer is not 'no': the report waits for one")
+        attach(app, "Avulsa — pergunta obrigatória (661:1215)")
+        app.buttons["report-unusual-yes"].tap()
+        XCTAssertTrue(app.buttons["report-save"].isEnabled)
+        app.buttons["report-save"].tap()
+        XCTAssertTrue(el(app, "flow-not-feeling-100").waitForExistence(timeout: 5), "'yes' opens Não estou 100% at once")
+    }
+
+    @MainActor
+    func testNotFeeling100AsksTheEngineSignsForTheCondition() {
+        let app = launch("today")
+        el(app, "today-changed").tap()
+        XCTAssertTrue(app.buttons["changes-not-feeling"].waitForExistence(timeout: 5))
+        app.buttons["changes-not-feeling"].tap()
+        XCTAssertTrue(el(app, "flow-not-feeling-100").waitForExistence(timeout: 5))
+        app.buttons["condition-MINOR_DISCOMFORT"].tap()
+        XCTAssertTrue(el(app, "signs-9").waitForExistence(timeout: 5), "MINOR_DISCOMFORT asks 9 signs")
+        attach(app, "72 — 9 sinais (843:1751)")
+        for sign in ["feverOrChills", "chestPainPressureOrTightness", "breathlessAtRest", "palpitationsAtRest", "faintingOrDizziness",
+                     "painThatChangesMovement", "swelling", "injuryFromFallOrImpact", "gettingWorse"] {
+            let b = app.buttons["sign-\(sign)-no"]
+            while !b.isHittable { app.swipeUp() }
+            b.tap()
+        }
+        let intent = app.buttons["intent-REDUCE_LIGHT"]
+        while !intent.isHittable { app.swipeUp() }
+        intent.tap()
+        app.buttons["nf-send"].tap()
+        XCTAssertTrue(el(app, "nf-kept").waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testBlockedReadinessAsksFifteenSignsAndReturns() {
+        let app = launch("blocked")
+        app.buttons["Estou pronto para voltar"].tap()
+        XCTAssertTrue(el(app, "signs-15").waitForExistence(timeout: 5))
+        app.buttons["readiness-recovered-yes"].tap()
+        attach(app, "72 — prontidão, 15 sinais (843:1980)")
+        let send = app.buttons["readiness-send"]
+        while !send.isHittable { app.swipeUp() }
+        send.tap()
+        XCTAssertTrue(el(app, "readiness-returning").waitForExistence(timeout: 5))
+    }
+
+    /// A recording survives a killed process and comes back on screen (handoff C §5).
+    @MainActor
+    func testRecordingResumesAfterTheProcessIsKilled() {
+        let store = UUID().uuidString
+        let app = XCUIApplication()
+        app.launchArguments = ["-scenario", "today", "-simulatedLocation", "-recordingStore", store, "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launch()
+        app.buttons["today-start"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10))
+        app.buttons["run-pause"].tap()  // persists the state
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10), "the recording in progress is back")
+        XCTAssertTrue(app.staticTexts["Pausado"].exists)
+        attach(app, "Execução — retomada depois de matar o processo")
+        app.buttons["run-finish"].tap()
+        app.buttons["Descartar sem salvar"].firstMatch.tap()
+    }
+
+    @MainActor
+    func testUnplannedStrengthSavedOnlyWhenKept() {
+        let app = launch("today")
+        app.buttons["tab-add"].tap()
+        XCTAssertTrue(app.buttons["add-log-strength"].waitForExistence(timeout: 5))
+        app.buttons["add-log-strength"].tap()
+        XCTAssertTrue(el(app, "screen-strength-log").waitForExistence(timeout: 5))
+        app.buttons["strength-save"].tap()
+        XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
+    }
+}

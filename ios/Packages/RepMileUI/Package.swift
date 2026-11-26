@@ -12,11 +12,12 @@ let package = Package(
     dependencies: [
         .package(path: "../CoachingPresentation"),
         .package(path: "../IntegrationContracts"),
+        .package(path: "../RunRecorder"),
     ],
     targets: [
         .target(
             name: "RepMileUI",
-            dependencies: ["CoachingPresentation", "IntegrationContracts"],
+            dependencies: ["CoachingPresentation", "IntegrationContracts", "RunRecorder"],
             resources: [.process("Resources")]
         ),
         .testTarget(name: "RepMileUIUnitTests", dependencies: ["RepMileUI"]),
