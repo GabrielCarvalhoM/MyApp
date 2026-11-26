@@ -5,6 +5,10 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 
 **Atualizado:** 2026-11-26 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
+## Pausa
+_Nenhuma pausa ativa._ Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada). Ao pausar, esta seção
+registra data/hora, tarefas e seu estado, commits WIP, processos interrompidos, últimos testes válidos e o próximo passo exato.
+
 ## Agora
 
 | | |
