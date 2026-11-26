@@ -1,5 +1,6 @@
 #!/bin/sh
-# RepMile V1 parallel fronts (audits/v1-parallel-foundation-2026-11-24/PARALLEL_IMPLEMENTATION_CONTRACT.md §9): the connected iPhone is ONE
+# RepMile V1 parallel fronts (audits/v1-parallel-foundation-2026-11-24/PARALLEL_IMPLEMENTATION_CONTRACT.md §9; front C admitted by the ABC
+# foundation consolidation, 2026-11-26, CHG-UI-4): the connected iPhone is ONE
 # exclusive resource. Every command that installs, launches or tests on the physical device runs through this wrapper, so two sessions never
 # use the device at once.
 #
@@ -8,7 +9,7 @@
 # is released by the kernel when they exit or die. There is no stale lock to reclaim and so no reclaim race. The owner file is information
 # for `status` only. Local builds and simulator/macOS tests do NOT need it.
 #
-#   tools/device-lock/with-device.sh <coachinghost|healthkit|integration> [--wait] -- <command...>
+#   tools/device-lock/with-device.sh <coachinghost|healthkit|swiftui|integration> [--wait] -- <command...>
 #   tools/device-lock/with-device.sh status
 #
 # Exit 75 (EX_TEMPFAIL): the device is held by another session (without --wait). Otherwise the command's own exit code.
@@ -22,7 +23,7 @@ status() { if held; then echo "device HELD:"; sed 's/^/  /' "$WD_OWNER" 2>/dev/n
 
 if [ "${1:-}" = "status" ]; then status; exit 0; fi
 SESSION="${1:-}"; shift || true
-case "$SESSION" in coachinghost|healthkit|integration) ;; *) echo "usage: $0 <coachinghost|healthkit|integration> [--wait] -- <command...>" >&2; exit 64;; esac
+case "$SESSION" in coachinghost|healthkit|swiftui|integration) ;; *) echo "usage: $0 <coachinghost|healthkit|swiftui|integration> [--wait] -- <command...>" >&2; exit 64;; esac
 export WD_SESSION="$SESSION" WD_WAIT=0
 if [ "${1:-}" = "--wait" ]; then WD_WAIT=1; shift; fi
 [ "${1:-}" = "--" ] && shift
