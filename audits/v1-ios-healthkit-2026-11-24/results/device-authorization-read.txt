@@ -1,0 +1,21 @@
+# Device authorization and count-only read (2026-11-26). Run INSIDE the installed lab (-labStatus / -labDeviceProbe), no test-runner reinstall.
+# Every value below is a status, a code or a count. No duration, distance, date, source name or id. Nothing written to Apple Health;
+# heart rate not requested; host double answered WAITING (nothing reaches CoachingCore); temporary queue purged; observer and
+# background registration removed at the end (setEnabled(false)).
+## Finding: every reinstall of a new build resets the HealthKit answer (seen on the iPhone: an answered sheet followed by an
+## xcodebuild test install read back NOT_YET_ASKED and HK_ERROR_5 = errorAuthorizationNotDetermined; and in the Simulator the sheet reappeared after each rebuild).
+## Before the answer (after the reinstall): lab-status.txt = NOT_YET_ASKED; probe: READ lastReadError=HK_ERROR_5, backgroundDelivery code=REGISTERED
+## Founder answered the sheet (read: workouts, running distance, workout route); the app's own confirmation:
+lab-status.txt = ANSWERED
+## -labDeviceProbe (window: last 28 days):
+READ authorization=NOT_REQUESTED lastReadError=none
+READ receivedTypes=
+READ queued=0 pending=0 held=0 setAside=0 deliveriesToDouble=0
+READ excluded=THIRD_PARTY_SOURCE:3
+READ nonRunSummaries=0
+READ log hki.started inFlight=0 queued=0
+READ log hki.backgroundDelivery code=REGISTERED
+READ log hki.observerFired
+READ log hki.readCompleted THIRD_PARTY_SOURCE=3
+READ log hki.readCompleted
+READ purged=yes observerStopped=yes
