@@ -1,0 +1,40 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseReinstall"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 11:32:45.814.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:32:45.815.
+Test Suite 'DevicePhaseTests' started at 2026-11-26 11:32:45.815.
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseReinstall]' started.
+2026-11-26 11:32:45.820729-0300 CoachingHostLab[17303:4234247] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-26 11:32:45.871716-0300 CoachingHostLab[17303:4234247] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 11:32:45.872832-0300 CoachingHostLab[17303:4234247] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+CHRESULT device-reinstall-2 {"keychainItemsAfter":"key.integrity.v1","keychainItemsBefore":"3","newKey":"true","plan":"NOT_ENROLLED","purge":"purge:FRESH_INSTALL,deliveryConditionsChanged","reconciliation":"FRESH_INSTALL_PURGED","startability":"notStartable(reason: CoachingPresentation.NotStartableReason.recordUnavailable)"}
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseReinstall]' passed (0.062 seconds).
+Test Suite 'DevicePhaseTests' passed at 2026-11-26 11:32:45.877.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.062 (0.062) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:32:45.877.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.062 (0.063) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 11:32:45.878.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.062 (0.063) seconds
+2026-11-26 11:32:46.210 xcodebuild[64416:2914447] [MT] IDETestOperationsObserverDebug: 2.144 elapsed -- Testing started completed.
+2026-11-26 11:32:46.210 xcodebuild[64416:2914447] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 11:32:46.210 xcodebuild[64416:2914447] [MT] IDETestOperationsObserverDebug: 2.144 sec, +2.144 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-32-44--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

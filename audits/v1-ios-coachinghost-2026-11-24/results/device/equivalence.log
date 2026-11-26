@@ -1,0 +1,57 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/EquivalenceTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 11:28:29.115.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:28:29.116.
+Test Suite 'EquivalenceTests' started at 2026-11-26 11:28:29.116.
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testCore]' started.
+CHRESULT equivalence-core {"anchorsEqual":true,"digestEqual":true,"diverged":[],"explainedLibm":56,"journeys":24,"localeCompareCalls":0,"steps":171}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testCore]' passed (18.600 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFinal]' started.
+CHRESULT equivalence-final-memory {"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":127,"fixture":"final","hmacCalls":1912,"identical":57,"journeys":12,"steps":184,"store":"memory"}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFinal]' passed (19.215 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFinalNativeStore]' started.
+CHRESULT equivalence-final-native {"anchorWrites":66,"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":127,"fixture":"final","hmacCalls":1912,"identical":57,"journeys":12,"keychainFailures":[],"steps":184,"store":"native-file+keychain"}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFinalNativeStore]' passed (22.307 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFiveZoneModule]' started.
+CHRESULT equivalence-hr5-units {"identical":true}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testFiveZoneModule]' passed (0.091 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testHR5R]' started.
+CHRESULT equivalence-hr5-memory {"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":84,"fixture":"hr5","hmacCalls":590,"identical":14,"journeys":13,"steps":98,"store":"memory"}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testHR5R]' passed (9.523 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testHR5RNativeStore]' started.
+CHRESULT equivalence-hr5-native {"anchorWrites":25,"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":84,"fixture":"hr5","hmacCalls":590,"identical":14,"journeys":13,"keychainFailures":[],"steps":98,"store":"native-file+keychain"}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testHR5RNativeStore]' passed (10.666 seconds).
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testInt]' started.
+CHRESULT equivalence-int-memory {"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":56,"fixture":"int","hmacCalls":1003,"identical":22,"journeys":4,"steps":78,"store":"memory"}
+CHRESULT equivalence-final-memory {"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","digestEqual":false,"diverged":[],"explainedLibm":127,"fixture":"final","hmacCalls":1912,"identical":57,"journeys":12,"steps":184,"store":"memory"}
+CHRESULT equivalence-int-classified {"candidates":56,"unexplained":0}
+Test Case '-[CoachingHostDeviceTests.EquivalenceTests testInt]' passed (32.986 seconds).
+Test Suite 'EquivalenceTests' passed at 2026-11-26 11:30:22.506.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 113.388 (113.390) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:30:22.506.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 113.388 (113.390) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 11:30:22.506.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 113.388 (113.391) seconds
+2026-11-26 11:30:23.069 xcodebuild[12688:2846108] [MT] IDETestOperationsObserverDebug: 116.064 elapsed -- Testing started completed.
+2026-11-26 11:30:23.069 xcodebuild[12688:2846108] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 11:30:23.069 xcodebuild[12688:2846108] [MT] IDETestOperationsObserverDebug: 116.064 sec, +116.064 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-28-26--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

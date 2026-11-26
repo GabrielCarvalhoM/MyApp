@@ -1,0 +1,37 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseCrossProcessRead"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 11:31:45.579.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:31:45.579.
+Test Suite 'DevicePhaseTests' started at 2026-11-26 11:31:45.579.
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseCrossProcessRead]' started.
+CHRESULT device-xp-read {"bpm":"195","kind":"ATHLETE_DECLARED_MAXIMUM","readerPid":"17293","writerPid":"17291"}
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseCrossProcessRead]' passed (0.093 seconds).
+Test Suite 'DevicePhaseTests' passed at 2026-11-26 11:31:45.673.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.093 (0.094) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:31:45.673.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.093 (0.094) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 11:31:45.673.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.093 (0.095) seconds
+2026-11-26 11:31:45.984 xcodebuild[63816:2909467] [MT] IDETestOperationsObserverDebug: 2.109 elapsed -- Testing started completed.
+2026-11-26 11:31:45.984 xcodebuild[63816:2909467] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 11:31:45.984 xcodebuild[63816:2909467] [MT] IDETestOperationsObserverDebug: 2.109 sec, +2.109 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-31-43--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

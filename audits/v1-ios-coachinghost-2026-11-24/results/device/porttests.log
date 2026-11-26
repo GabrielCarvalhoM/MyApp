@@ -1,0 +1,107 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/PortTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 11:30:58.304.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:30:58.304.
+Test Suite 'PortTests' started at 2026-11-26 11:30:58.304.
+Test Case '-[CoachingHostDeviceTests.PortTests testBC01ResendWithTheScreen]' started.
+2026-11-26 11:30:58.308866-0300 CoachingHostLab[17283:4231645] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:30:58.467710-0300 CoachingHostLab[17283:4231640] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:30:58.651113-0300 CoachingHostLab[17283:4231640] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_22d5e484feafa89b9e46634147
+2026-11-26 11:30:58.856161-0300 CoachingHostLab[17283:4231645] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_681e884f5c32cc327b1f09bf1c
+CHRESULT ssctr-bc-01 {"firstStatus":"ASK","secondKept":"1"}
+Test Case '-[CoachingHostDeviceTests.PortTests testBC01ResendWithTheScreen]' passed (0.580 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testClinicalRestartGateAndReinstall]' started.
+2026-11-26 11:30:58.886305-0300 CoachingHostLab[17283:4231645] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:30:59.014248-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:30:59.087414-0300 CoachingHostLab[17283:4231643] [boundary] op=restart ok=true code=- version=-1 category=PLAN_CHANGED decision=-
+2026-11-26 11:30:59.164903-0300 CoachingHostLab[17283:4231645] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-26 11:30:59.206475-0300 CoachingHostLab[17283:4231643] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 11:30:59.206988-0300 CoachingHostLab[17283:4231643] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 11:30:59.294466-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:30:59.364487-0300 CoachingHostLab[17283:4231643] [boundary] op=restart ok=true code=- version=-1 category=PLAN_CHANGED decision=-
+2026-11-26 11:30:59.432748-0300 CoachingHostLab[17283:4231650] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PortTests testClinicalRestartGateAndReinstall]' passed (0.553 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testHeartRateProfileOperations]' started.
+2026-11-26 11:30:59.438995-0300 CoachingHostLab[17283:4231650] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:30:59.567692-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:30:59.648846-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=1 category=- decision=-
+2026-11-26 11:30:59.719851-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=false code=INVALID_REQUEST version=-1 category=- decision=-
+2026-11-26 11:30:59.776562-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=1 category=- decision=-
+2026-11-26 11:30:59.884351-0300 CoachingHostLab[17283:4231643] [boundary] op=consent ok=true code=- version=2 category=- decision=-
+2026-11-26 11:30:59.949103-0300 CoachingHostLab[17283:4231650] [boundary] op=review ok=false code=CONSENT_REQUIRED version=-1 category=- decision=-
+2026-11-26 11:31:00.006888-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=2 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PortTests testHeartRateProfileOperations]' passed (0.596 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testRestartOutsideScopeGate]' started.
+2026-11-26 11:31:00.035444-0300 CoachingHostLab[17283:4231645] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:00.171966-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:00.244927-0300 CoachingHostLab[17283:4231643] [boundary] op=restart ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 11:31:00.558066-0300 CoachingHostLab[17283:4231645] [boundary] op=restart ok=true code=- version=2 category=OTHER decision=-
+CHRESULT fnd-abc-04 {"afterReopen":"outsideV1Scope","refused":"outsideV1Scope","releasedBy":"planCreated"}
+Test Case '-[CoachingHostDeviceTests.PortTests testRestartOutsideScopeGate]' passed (3.978 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testSecFpv01AfterErasure]' started.
+2026-11-26 11:31:04.013720-0300 CoachingHostLab[17283:4231650] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:04.160116-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:04.366353-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_9b1d121d2da44f2cc7d3e5e956
+2026-11-26 11:31:04.460761-0300 CoachingHostLab[17283:4231643] [boundary] op=erasure ok=true code=- version=3 category=- decision=-
+2026-11-26 11:31:04.838846-0300 CoachingHostLab[17283:4231650] [boundary] op=review ok=true code=- version=4 category=PLAN_KEPT decision=dc_97529c032222acd87779d12500
+CHRESULT n3-sec-fpv-01 {"afterErasure":"screenRequired","afterNewScreen":"startable","afterReopen":"screenRequired"}
+Test Case '-[CoachingHostDeviceTests.PortTests testSecFpv01AfterErasure]' passed (0.942 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testSpecialPopulationBlocksThePlan]' started.
+2026-11-26 11:31:04.955554-0300 CoachingHostLab[17283:4231640] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:05.012900-0300 CoachingHostLab[17283:4231650] [boundary] op=onboard ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 11:31:05.014971-0300 CoachingHostLab[17283:4231650] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 11:31:05.018305-0300 CoachingHostLab[17283:4231640] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:05.076823-0300 CoachingHostLab[17283:4231650] [boundary] op=onboard ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 11:31:05.078530-0300 CoachingHostLab[17283:4231640] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 11:31:05.081859-0300 CoachingHostLab[17283:4231650] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:05.244005-0300 CoachingHostLab[17283:4231640] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+Test Case '-[CoachingHostDeviceTests.PortTests testSpecialPopulationBlocksThePlan]' passed (0.348 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testWarningSignFlowsAndTheRoute]' started.
+2026-11-26 11:31:05.304059-0300 CoachingHostLab[17283:4231643] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:05.468050-0300 CoachingHostLab[17283:4231640] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:05.700513-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_261ed4edbbc3a4ec90b190b8a2
+2026-11-26 11:31:06.028934-0300 CoachingHostLab[17283:4231640] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_86594e9500b2cac5dd4fd008ab
+2026-11-26 11:31:06.292085-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=4 category=PLAN_CHANGED decision=dc_146c4fa2850a6656856e9625ba
+2026-11-26 11:31:06.676137-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=5 category=PLAN_CHANGED decision=dc_66bed5926cee302c49cc5400d9
+Test Case '-[CoachingHostDeviceTests.PortTests testWarningSignFlowsAndTheRoute]' passed (1.442 seconds).
+Test Case '-[CoachingHostDeviceTests.PortTests testWriteOutcomeKeptAndSymptomStop]' started.
+2026-11-26 11:31:06.746792-0300 CoachingHostLab[17283:4231650] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:06.944847-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:07.208503-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_7a2982af8be09a630819802e18
+2026-11-26 11:31:07.244988-0300 CoachingHostLab[17283:4231643] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:07.434739-0300 CoachingHostLab[17283:4231650] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:07.702903-0300 CoachingHostLab[17283:4231650] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_15004f45f459748c6cb713d2f8
+2026-11-26 11:31:07.739697-0300 CoachingHostLab[17283:4231650] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 11:31:07.935233-0300 CoachingHostLab[17283:4231643] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 11:31:08.207689-0300 CoachingHostLab[17283:4231643] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_aa32be3334ce214d9dd3969d99
+CHRESULT write-outcome {"withObservedAtKept":2,"withoutObservedAtKept":1,"withoutObservedAtNotKept":1}
+Test Case '-[CoachingHostDeviceTests.PortTests testWriteOutcomeKeptAndSymptomStop]' passed (1.609 seconds).
+Test Suite 'PortTests' passed at 2026-11-26 11:31:08.354.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 10.048 (10.050) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:31:08.354.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 10.048 (10.050) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 11:31:08.355.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 10.048 (10.051) seconds
+2026-11-26 11:31:08.703 xcodebuild[62989:2904436] [MT] IDETestOperationsObserverDebug: 12.575 elapsed -- Testing started completed.
+2026-11-26 11:31:08.703 xcodebuild[62989:2904436] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 11:31:08.703 xcodebuild[62989:2904436] [MT] IDETestOperationsObserverDebug: 12.575 sec, +12.575 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-30-56--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
