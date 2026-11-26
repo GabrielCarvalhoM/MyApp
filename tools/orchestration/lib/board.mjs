@@ -130,3 +130,16 @@ export function setFieldValue({ projectId, itemId, field, def, value }, cwd) {
   else args.push('--text', value);
   run('gh', args, { cwd });
 }
+
+// Saved views. The API sets name, layout, filter and visible fields; grouping, sorting and the roadmap's date fields are UI-only
+// (ProjectV2View.groupByFields is read-only), so `uiGroupBy` / `uiDates` are printed as the remaining one-click steps.
+const COMMON_FIELDS = ['Title', 'Status', 'Tipo', 'Área', 'Frente', 'Prioridade', 'Release', 'Validação', 'Dependências', 'Evidências'];
+export const VIEWS = [
+  { name: 'Visão Geral', layout: 'BOARD_LAYOUT', filter: '', fields: COMMON_FIELDS },
+  { name: 'Por Área', layout: 'TABLE_LAYOUT', filter: '', fields: COMMON_FIELDS, uiGroupBy: 'Área' },
+  { name: 'Por Tipo', layout: 'TABLE_LAYOUT', filter: '', fields: COMMON_FIELDS, uiGroupBy: 'Tipo' },
+  { name: 'Por Frente', layout: 'TABLE_LAYOUT', filter: '', fields: COMMON_FIELDS, uiGroupBy: 'Frente' },
+  { name: 'Bugs & Fixes', layout: 'TABLE_LAYOUT', filter: 'tipo:"Bug Fix"', fields: COMMON_FIELDS, uiGroupBy: 'Status' },
+  { name: 'Roadmap', layout: 'ROADMAP_LAYOUT', filter: '-status:Verified', fields: ['Title', 'Status', 'Release', 'Frente', 'Início', 'Entrega alvo'], uiGroupBy: 'Release', uiDates: ['Início', 'Entrega alvo'] },
+  { name: 'Bloqueios', layout: 'TABLE_LAYOUT', filter: 'status:Blocked', fields: COMMON_FIELDS, uiGroupBy: 'Frente' },
+];

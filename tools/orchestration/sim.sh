@@ -194,6 +194,9 @@ test_app() {
     grep -E 'error:|TEST FAILED|BUILD FAILED' "$OUT/test.log" | head -20 >&2
   fi
   [ $rc -eq 0 ] || { RESULT=tests_failed; exit 1; }
+  # A green run that ran nothing, or skipped something, is a lost check.
+  node -e 'const t=JSON.parse(process.argv[1]||"{}");process.exit(t.total>0&&!t.skipped?0:1)' "$TEST_SUMMARY" \
+    || { echo "sim: no tests ran, or some were skipped" >&2; RESULT=tests_skipped_or_empty; exit 1; }
 }
 
 case "$CMD" in

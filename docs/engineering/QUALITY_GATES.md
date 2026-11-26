@@ -10,7 +10,7 @@ Roda em todo push para `claude/v1-**` e em todo PR. Check obrigatório único: *
 |---|---|---|---|
 | Repository integrity and ownership | ubuntu | actionlint · tag da fundação no lugar (`065178f`) · testes de `tools/orchestration` · `guard.mjs` (contrato §10) · gitleaks nos commits novos | estrutura, ownership, segredos |
 | CoachingCore (npm test) | ubuntu | `npm ci --ignore-scripts` + `npm test` com **histórico completo** (`fetch-depth: 0`) | a suíte oficial (1952 ativos + 53 históricos contabilizados); a prova de "escrito uma vez" do registro histórico exige o histórico inteiro (HISTORICAL_TEST_POLICY §4) |
-| Swift packages (macOS) | macos-latest | `swift test` de IntegrationContracts e CoachingPresentation com **0 testes pulados**; pacotes das frentes: `swift build --build-tests`; detecção do app shell | contratos compartilhados; os testes chamam `node` e dariam `XCTSkip` sem ele — sem Node o `swift test` termina com exit 0 e 2 testes pulados (provado em 26/11), por isso o gate falha em qualquer skip |
+| Swift packages (macOS) | macos-latest | `swift test` de IntegrationContracts e CoachingPresentation com **0 testes pulados**; pacotes das frentes: `swift build --build-tests`, ou `xcodebuild build` para o simulador genérico quando o pacote é só iOS (ex.: RepMileUI); detecção do app shell | contratos compartilhados; os testes chamam `node` e dariam `XCTSkip` sem ele — sem Node o `swift test` termina com exit 0 e 2 testes pulados (provado em 26/11), por isso o gate falha em qualquer skip |
 
 Nada é condicional por caminho: os três jobs são baratos (repositório público: minutos gratuitos) e cada push deve provar o CoachingCore.
 
@@ -18,9 +18,13 @@ Nada é condicional por caminho: os três jobs são baratos (repositório públi
 segredo, nenhum Keychain, nenhuma assinatura, nunca `pull_request_target`. **Nenhum runner self-hosted**: o repositório é público e
 um PR de fork executaria código no Mac mini, que tem o iPhone, o Keychain e dados reais de saúde.
 
-**Liberação do guard:** mudança em contrato compartilhado, governança ou CoachingCore numa branch de integração só passa com o rótulo
-`governance:approved` no PR, posto depois da decisão (contrato §11 ou emenda versionada). Rótulos só podem ser postos por quem tem
-acesso de escrita.
+**O guard (contrato §10)** — endurecido pela revisão independente R1:
+- Em PR, o guard roda **a partir do commit base** do PR (o PR não reescreve as regras pelas quais é julgado) e mede o **head do PR**, não o merge com o alvo.
+- A base do diff é a tag mais nova de uma **lista fechada** (`BASE_TAGS` em `lib/ownership.mjs`); criar outra tag `v1-abc-*` não muda a base.
+- Diff com `-z` e `core.quotePath=false`: caminhos com acento são classificados como os outros.
+- **Falha fechada:** branch sem papel na matriz, ou PR de fork (nome de branch não confiável), precisa de aprovação para tocar qualquer caminho que o contrato atribui; diretórios de audit existentes não aceitam nem arquivo novo.
+- **Aprovação** (`governance:approved`) vale só na execução disparada pela aplicação do rótulo; um push posterior roda sem ela. Aprovar = aplicar o rótulo depois do último commit, após a decisão (contrato §11 ou emenda). Fork não pode aplicar rótulo.
+- Limite que o repositório não resolve sozinho: o arquivo do workflow vem do próprio PR (comportamento do GitHub). A defesa é a revisão exigida de code owner (`.github/CODEOWNERS`) no ruleset da branch de integração (§4).
 
 ## 2. Gate nativo — Mac mini (Xcode do Mac mini, simulador)
 
@@ -52,7 +56,7 @@ Ativas (reversíveis, sem checks exigidos): rulesets que **bloqueiam force-push 
 
 | Branch | Recomendação | Quando |
 |---|---|---|
-| `claude/v1-ios-integration` | exigir o check `CI` e PR | ao criar a branch (issue I1) |
+| `claude/v1-ios-integration` | exigir o check `CI`, PR e revisão de code owner (`.github/`, `tools/orchestration/`, contratos, CoachingCore) | ao criar a branch (issue I1) |
 | release (`release/v1*`) | exigir `CI`, PR e revisão; bloquear push direto | ao criar a primeira release |
 | branch padrão | decidir com o fundador (hoje é `r7/decision-authority-closure-base`; não existe `main`) | issue O1 |
 

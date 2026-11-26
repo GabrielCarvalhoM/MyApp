@@ -8,7 +8,8 @@
 # skip is a lost check, not a pass. Front packages under ios/Packages/ (CoachingHost, HealthKitIngest, RepMileUI,
 # RunRecorder, ...) are compiled with their tests (`--fronts=build`, the CI default) or tested (`--fronts=test`, for the
 # Mac mini native gate). Front tests are not run on hosted CI: they may need the Keychain, a device or the simulator.
-# A package that does not declare macOS is reported NATIVE_ONLY (it needs xcodebuild + simulator: tools/orchestration/sim.sh).
+# A front package that does not declare macOS (iOS-only, e.g. RepMileUI) is compiled with xcodebuild for the generic iOS Simulator;
+# its tests run in the simulator pipeline (tools/orchestration/sim.sh test). It is never silently skipped.
 #
 # Exit 0: all gates passed. 1: a gate failed. 2: missing dependency.
 set -uo pipefail
@@ -41,7 +42,14 @@ for manifest in ios/Packages/*/Package.swift; do
   dir="$(dirname "$manifest")"; name="$(basename "$dir")"; log="$LOGDIR/$name.log"
   shared=0; case " $SHARED " in *" $name "*) shared=1;; esac
   if [ $shared -eq 0 ] && [ "$FRONTS" = off ]; then summary+=("SKIP_BY_OPTION $name"); continue; fi
-  if [ $shared -eq 0 ] && ! grep -q '\.macOS(' "$manifest"; then summary+=("NATIVE_ONLY    $name (no macOS platform; validate with xcodebuild + simulator)"); continue; fi
+  if [ $shared -eq 0 ] && ! grep -q '\.macOS(' "$manifest"; then
+    command -v xcodebuild >/dev/null || { summary+=("FAIL           $name · iOS-only package and no xcodebuild"); status=1; continue; }
+    echo "::group::xcodebuild build $name (generic iOS Simulator)"
+    (cd "$dir" && xcodebuild build -scheme "$name" -destination 'generic/platform=iOS Simulator' -derivedDataPath "$LOGDIR/dd-$name") >"$log" 2>&1; rc=$?
+    tail -20 "$log"; echo "::endgroup::"
+    if [ $rc -eq 0 ]; then summary+=("IOS_BUILD_OK   $name (iOS-only; tests run in sim.sh test)"); else summary+=("FAIL           $name · xcodebuild exit $rc"); status=1; fi
+    continue
+  fi
   mode=test; [ $shared -eq 0 ] && mode="$FRONTS"
   echo "::group::swift $mode $name"
   if [ "$mode" = test ]; then

@@ -46,6 +46,11 @@ const WRITES = {
 };
 
 export const BASE_TAG_GLOB = 'v1-abc-*';
+// Base tags the guard accepts (contract §11: the integration mission publishes each new base). A tag that is not listed here is
+// ignored, so pushing a new `v1-abc-*` tag cannot move the diff base. In CI this list is read from the PR's *base* commit.
+export const BASE_TAGS = ['v1-abc-ready-2026-11-26'];
+// Areas the contract assigns to someone: a branch without a role (or a fork PR) needs approval to touch any of them.
+const MATRIX_AREAS = ['A', 'B', 'C', 'INT', 'CORE', 'SHARED', 'GOV', 'ORCH', 'DESIGN'];
 
 export function classify(path) {
   for (const a of AREAS) {
@@ -63,24 +68,26 @@ export function roleForBranch(branch) {
   return ROLES.find((r) => b === r.branch || b.startsWith(`${r.branch}-`)) ?? null;
 }
 
-// changes: [{ status: 'A'|'M'|'D'|'R'|'C'|'T', path, oldPath? }]; existedAtBase(path) -> boolean
+// changes: [{ status: 'A'|'M'|'D'|'R'|'C'|'T', path, oldPath? }]
+// auditDirExisted(path) -> true when the path is inside an audits/<dir>/ that already existed at the base (insert-only history).
 // Returns { role, results: [{ path, status, area, verdict: 'OK'|'APPROVAL'|'FORBIDDEN', reason }] }
-export function evaluate(changes, roleId, { existedAtBase = () => false, approved = false } = {}) {
+export function evaluate(changes, roleId, { auditDirExisted = () => false, approved = false } = {}) {
   const rules = roleId ? WRITES[roleId] : null;
   const results = [];
   for (const ch of changes) {
     const paths = ch.oldPath && ch.oldPath !== ch.path ? [ch.oldPath, ch.path] : [ch.path];
     for (const p of paths) {
       const area = classify(p);
-      const removedOrChanged = ch.status !== 'A' || p === ch.oldPath;
       let verdict = 'OK';
       let reason = '';
-      // Historical audits are insert-only for everyone (contract §10: "leitura"); a new audit directory is a new record.
-      if (area === 'AUDIT' && removedOrChanged && existedAtBase(p)) {
-        verdict = 'FORBIDDEN'; reason = 'audit histórico é só leitura (contrato §10)';
+      // Existing audit directories are read-only for everyone (contract §10: "leitura"), including new files inside them;
+      // a new record is a new directory.
+      if (area === 'AUDIT' && auditDirExisted(p)) {
+        verdict = 'FORBIDDEN'; reason = 'diretório de audit existente é só leitura (contrato §10); registre num diretório novo';
       } else if (!rules) {
-        verdict = area === 'CORE' ? 'APPROVAL' : 'OK';
-        reason = rules ? '' : 'branch sem papel definido: só o CoachingCore é verificado';
+        // Fail closed: no role (unknown branch name, or a fork PR) means nothing the contract assigns may change unapproved.
+        verdict = MATRIX_AREAS.includes(area) ? (approved ? 'OK' : 'APPROVAL') : 'OK';
+        reason = verdict === 'OK' ? '' : `branch sem papel na matriz (ou PR de fork): ${AREAS.find((a) => a.id === area)?.label} exige aprovação`;
       } else {
         const effective = area === 'AUDIT' || area === 'OTHER' ? 'OTHER_NEW' : area;
         if (rules.own.includes(effective)) verdict = 'OK';
@@ -105,7 +112,21 @@ export function summarize({ results }) {
   return { files: results.length, ok: count('OK'), approval: count('APPROVAL'), forbidden: count('FORBIDDEN') };
 }
 
-// Parses `git diff --name-status -M` output.
+// Parses `git -c core.quotePath=false diff -z --name-status -M` output (NUL-separated; paths are never quoted or escaped).
+export function parseNameStatusZ(text) {
+  const t = text.split('\0');
+  const out = [];
+  for (let i = 0; i < t.length && t[i]; ) {
+    const code = t[i][0];
+    if (code === 'R' || code === 'C') { out.push({ status: code, oldPath: t[i + 1], path: t[i + 2] }); i += 3; }
+    else { out.push({ status: code, path: t[i + 1] }); i += 2; }
+  }
+  return out;
+}
+
+export const auditDirOf = (p) => (p.startsWith('audits/') ? p.split('/').slice(0, 2).join('/') + '/' : null);
+
+// Tab-separated form, kept for tests and humans.
 export function parseNameStatus(text) {
   return text.split('\n').filter(Boolean).map((line) => {
     const parts = line.split('\t');

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classify, evaluate, parseNameStatus, roleForBranch, summarize } from '../lib/ownership.mjs';
+import { auditDirOf, classify, evaluate, parseNameStatus, parseNameStatusZ, roleForBranch, summarize, BASE_TAGS } from '../lib/ownership.mjs';
 import { issueState, parseDependencies, parseLinkedIssues, priorityOf } from '../lib/states.mjs';
 
 test('classify follows contract §10', () => {
@@ -37,12 +37,12 @@ test('a front may write only its own column', () => {
   assert.deepEqual(summarize(r), { files: 5, ok: 1, approval: 0, forbidden: 4 });
 });
 
-test('integration: shared contracts, governance and CoachingCore need approval; historical audits are insert-only', () => {
-  const existed = new Set(['audits/v1-hr5-runna-parity-2026-11-25/R.md']);
+test('integration: shared contracts, governance and CoachingCore need approval; existing audit directories are read-only', () => {
+  const existed = new Set(['audits/v1-hr5-runna-parity-2026-11-25/']);
   const ch = [{ status: 'M', path: 'ios/Packages/CoachingPresentation/X.swift' }, { status: 'M', path: 'CoachingCore/src/a.mjs' },
     { status: 'A', path: 'ios/App/Composition/Root.swift' }, { status: 'A', path: 'audits/v1-ios-integration-2026-12-01/R.md' },
     { status: 'M', path: 'audits/v1-hr5-runna-parity-2026-11-25/R.md' }, { status: 'A', path: 'ios/Packages/CoachingHost/X.swift' }];
-  const opts = { existedAtBase: (p) => existed.has(p) };
+  const opts = { auditDirExisted: (p) => existed.has(auditDirOf(p)) };
   assert.deepEqual(evaluate(ch, 'INT', opts).results.map((x) => x.verdict), ['APPROVAL', 'APPROVAL', 'OK', 'OK', 'FORBIDDEN', 'OK']);
   assert.deepEqual(evaluate(ch, 'INT', { ...opts, approved: true }).results.map((x) => x.verdict), ['OK', 'OK', 'OK', 'OK', 'FORBIDDEN', 'OK']);
 });
@@ -53,10 +53,30 @@ test('a rename is checked at both ends', () => {
   assert.deepEqual(evaluate(ch, 'C').results.map((x) => x.verdict), ['FORBIDDEN', 'OK', 'OK']);
 });
 
-test('a branch without a role is checked only for CoachingCore and historical audits', () => {
-  const r = evaluate([{ status: 'M', path: 'CoachingCore/x' }, { status: 'M', path: 'README.md' }, { status: 'D', path: 'audits/old/x.md' }],
-    null, { existedAtBase: () => true });
-  assert.deepEqual(r.results.map((x) => x.verdict), ['APPROVAL', 'OK', 'FORBIDDEN']);
+test('fail closed: a branch without a role (or a fork) needs approval for anything the contract assigns (review R1 #1)', () => {
+  const ch = [{ status: 'M', path: 'CLAUDE.md' }, { status: 'M', path: 'canon/CANONICAL_INDEX.md' }, { status: 'M', path: 'ios/Packages/IntegrationContracts/X.swift' },
+    { status: 'A', path: '.github/workflows/evil.yml' }, { status: 'M', path: 'CoachingCore/x' }, { status: 'A', path: 'ios/Packages/RepMileUI/X.swift' },
+    { status: 'A', path: 'README.md' }, { status: 'D', path: 'audits/old/x.md' }];
+  const r = evaluate(ch, null, { auditDirExisted: (p) => p.startsWith('audits/old/') });
+  assert.deepEqual(r.results.map((x) => x.verdict), ['APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'OK', 'FORBIDDEN']);
+});
+
+test('new files inside an existing audit directory are refused (review R1 #6)', () => {
+  const r = evaluate([{ status: 'A', path: 'audits/v1-aif-p0-jsc-2026-11-17/INJECTED.md' }, { status: 'A', path: 'audits/v1-ios-integration-2026-12-01/R.md' }],
+    'INT', { auditDirExisted: (p) => auditDirOf(p) === 'audits/v1-aif-p0-jsc-2026-11-17/' });
+  assert.deepEqual(r.results.map((x) => x.verdict), ['FORBIDDEN', 'OK']);
+});
+
+test('NUL-separated diff keeps non-ASCII paths classifiable (review R1 #4)', () => {
+  const ch = parseNameStatusZ('A\0CoachingCore/é.mjs\0R087\0ios/Packages/CoachingPresentation/á.swift\0ios/Packages/RepMileUI/á.swift\0');
+  assert.deepEqual(ch, [{ status: 'A', path: 'CoachingCore/é.mjs' }, { status: 'R', oldPath: 'ios/Packages/CoachingPresentation/á.swift', path: 'ios/Packages/RepMileUI/á.swift' }]);
+  assert.equal(evaluate(ch, 'INT').results[0].verdict, 'APPROVAL');
+  assert.equal(evaluate(ch, 'C').results[1].verdict, 'FORBIDDEN');
+});
+
+test('only allowlisted base tags count (review R1 #3)', () => {
+  assert.ok(BASE_TAGS.includes('v1-abc-ready-2026-11-26'));
+  assert.ok(!BASE_TAGS.some((t) => t.includes('*')));
 });
 
 test('states: blocked wins, an open PR means in review, no label means backlog', () => {

@@ -8,6 +8,7 @@
 //   board.mjs evidence <issue> "<link or short text>" [--validation Simulador|iPhone|Dados reais]
 //   board.mjs show <issue>
 //   board.mjs list [--json]
+//   board.mjs views [--apply]                       create the saved views (name, layout, filter, visible fields)
 //
 // Rules enforced here (not by convention): Status and its status:* label are always written together; an issue with
 // `needs:founder-approval` cannot leave Backlog/Blocked; Verified needs Validação ≠ "Não validado" and Evidências, and closes the
@@ -16,13 +17,12 @@ import { parseArgs } from 'node:util';
 import { readFileSync } from 'node:fs';
 import { run, repoRoot, MissingDependency } from './lib/sh.mjs';
 import {
-  APPROVAL_LABEL, FIELDS, FLAG_FIELDS, STATUS, STATUS_LABEL, labelsFor, loadConfig, findProject, loadFields, listItems, graphql,
+  APPROVAL_LABEL, FIELDS, FLAG_FIELDS, STATUS, STATUS_LABEL, VIEWS, labelsFor, loadConfig, findProject, loadFields, listItems, graphql,
   setFieldValue, transitionError, validateValue,
 } from './lib/board.mjs';
 import { similarTitles } from './lib/dedupe.mjs';
 
-const cwd = repoRoot();
-const cfg = loadConfig();
+let cwd, cfg;
 const gh = (args) => run('gh', args, { cwd }).out;
 
 function board({ required = true } = {}) {
@@ -50,10 +50,14 @@ function issue(n, b) {
   return { ...i, labels: i.labels.nodes.map((l) => l.name), itemId: item?.id ?? null, values };
 }
 
+// Managed label families: when a family is in `wanted`, any other label of that family is stale and removed.
 function syncLabels(i, wanted, { removeStatus = false } = {}) {
   const add = wanted.filter((l) => !i.labels.includes(l));
   const statusLabels = Object.values(STATUS_LABEL);
-  const remove = removeStatus ? i.labels.filter((l) => statusLabels.includes(l) && !wanted.includes(l)) : [];
+  const family = (l) => (statusLabels.includes(l) ? 'status' : l.split(':')[0]);
+  const managed = new Set(wanted.map(family).filter((f) => ['priority', 'area', 'type'].includes(f)));
+  if (removeStatus) managed.add('status');
+  const remove = i.labels.filter((l) => managed.has(family(l)) && (family(l) !== 'status' || statusLabels.includes(l)) && !wanted.includes(l));
   if (!add.length && !remove.length) return;
   const args = ['issue', 'edit', String(i.number), '-R', cfg.repo];
   if (add.length) args.push('--add-label', add.join(','));
@@ -135,9 +139,37 @@ function setup(applyChanges) {
   if (cfg.number !== p.number) console.log(`registre "number": ${p.number} em tools/orchestration/board.json`);
 }
 
+function views(applyChanges) {
+  const b = board();
+  const existing = graphql(`query($owner:String!,$number:Int!){user(login:$owner){projectV2(number:$number){views(first:50){nodes{id name layout filter}}}}}`,
+    { owner: cfg.owner, number: b.number }, cwd).user.projectV2.views.nodes;
+  const ui = [];
+  for (const v of VIEWS) {
+    let view = existing.find((x) => x.name === v.name);
+    const ids = v.fields.map((f) => b.fields[f]?.id).filter(Boolean);
+    if (!view) {
+      console.log(`${applyChanges ? '' : '[dry-run] '}criar a visão "${v.name}" (${v.layout}${v.filter ? `, filtro ${v.filter}` : ''})`);
+      if (!applyChanges) continue;
+      view = graphql(`mutation($p:ID!,$n:String!,$l:ProjectV2ViewLayout!){createProjectV2View(input:{projectId:$p,name:$n,layout:$l}){projectV2View{id name layout filter}}}`,
+        { p: b.projectId, n: v.name, l: v.layout }, cwd).createProjectV2View.projectV2View;
+    }
+    if (applyChanges) {
+      const fieldList = ids.map((id) => JSON.stringify(id)).join(',');
+      graphql(`mutation($v:ID!,$f:String!){updateProjectV2View(input:{viewId:$v,filter:$f,configuration:{visibleFieldIds:[${fieldList}]}}){projectV2View{id}}}`,
+        { v: view.id, f: v.filter }, cwd);
+    }
+    if (v.uiGroupBy) ui.push(`"${v.name}": agrupar por ${v.uiGroupBy}${v.uiDates ? `; datas = ${v.uiDates.join(' → ')}` : ''}`);
+  }
+  if (ui.length) { console.log('\nAjustes que a API do GitHub não permite (um clique cada, no menu da visão):'); for (const u of ui) console.log(`  - ${u}`); }
+  console.log(`\nquadro: ${b.url}`);
+}
+
 function main() {
+  cwd = repoRoot();
+  cfg = loadConfig();
   const [cmd, ...rest] = process.argv.slice(2);
   if (cmd === 'setup') return setup(rest.includes('--apply'));
+  if (cmd === 'views') return views(rest.includes('--apply'));
   if (cmd === 'list') {
     const b = board();
     const items = listItems(cfg, b.number, cwd);

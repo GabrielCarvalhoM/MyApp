@@ -20,7 +20,7 @@ O Figma é a autoridade visual (`90oyvXHxxBQAvr1netov7S`, na **versão nomeada**
 
 ## Regras
 
-- Nenhuma screenshot fictícia: `verify` confere o hash de cada captura com o `manifest.json` da execução do `sim.sh` que a produziu.
+- Cada captura fica ligada à execução do `sim.sh` que a produziu: `verify` confere o hash de cada PNG com o `manifest.json` (commit, simulador, idioma, aparência) e exige `run`/`all` com ao menos uma screenshot. Não é prova criptográfica: o manifest também é um arquivo; a revisão confere o commit e o run.
 - Nenhuma fidelidade declarada sem o app rodando: `MATCHES` exige captura de cada condição exigida e a referência do Figma.
 - Simulador e iPhone são capturas distintas (`target` no manifest).
 - CI verde não é validação visual.

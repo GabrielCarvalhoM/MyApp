@@ -54,8 +54,27 @@ jobs:
       - name: Ownership guard (contract §10)
         env:
           GUARD_BRANCH: ${{ github.head_ref || github.ref_name }}
-          GUARD_APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'governance:approved') && '1' || '0' }}
-        run: node tools/orchestration/guard.mjs --head HEAD
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          THIS_REPO: ${{ github.repository }}
+          # Approval is bound to the moment the label is applied: a later push (synchronize) runs without it.
+          GUARD_APPROVED: ${{ github.event.action == 'labeled' && github.event.label.name == 'governance:approved' && '1' || '0' }}
+        run: |
+          guard_dir=tools/orchestration
+          if [ -n "$PR_BASE_SHA" ] && git cat-file -e "$PR_BASE_SHA:tools/orchestration/guard.mjs" 2>/dev/null; then
+            # The PR cannot rewrite the rules it is judged by: run the guard as it is on the target branch.
+            mkdir -p "$RUNNER_TEMP/trusted"
+            git archive "$PR_BASE_SHA" tools/orchestration | tar -x -C "$RUNNER_TEMP/trusted"
+            guard_dir="$RUNNER_TEMP/trusted/tools/orchestration"
+            echo "guard from the PR base $PR_BASE_SHA"
+          elif [ -n "$PR_BASE_SHA" ]; then
+            echo "::warning::the PR base has no guard yet; running the guard from this PR"
+          fi
+          head=HEAD; [ -n "$PR_HEAD_SHA" ] && head="$PR_HEAD_SHA"   # the PR's own commits, not the merge with its target
+          GUARD_FORK=0; [ -n "$HEAD_REPO" ] && [ "$HEAD_REPO" != "$THIS_REPO" ] && GUARD_FORK=1
+          export GUARD_FORK
+          node "$guard_dir/guard.mjs" --head "$head"
       - name: No secrets in the new commits
         env:
           PR_BASE: ${{ github.event.pull_request.base.sha }}

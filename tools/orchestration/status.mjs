@@ -8,7 +8,8 @@
 // Exit 0: report produced. Exit 2: missing dependency (git, or gh when not --offline) or not a checkout.
 import { parseArgs } from 'node:util';
 import { writeFileSync } from 'node:fs';
-import { ROLES, evaluate, parseNameStatus, summarize } from './lib/ownership.mjs';
+import { ROLES, auditDirOf, evaluate, parseNameStatusZ, summarize } from './lib/ownership.mjs';
+import { allowlistedBase } from './guard.mjs';
 import { git, ghJson, run, repoRoot, refExists, baseTagFor, MissingDependency } from './lib/sh.mjs';
 import { issueState, parseDependencies, parseLinkedIssues, priorityOf, STATE_LABELS } from './lib/states.mjs';
 import { APPROVAL_LABEL, loadConfig, findProject, listItems } from './lib/board.mjs';
@@ -44,14 +45,14 @@ function collectGit(cwd) {
     const tip = localAhead ? local : (remote ?? local);
     const f = { role: role.id, label: role.label, branch: b, exists: Boolean(tip), published: Boolean(remote) };
     if (tip) {
-      const base = baseTagFor(tip, cwd);
+      const base = allowlistedBase(tip, cwd) ?? baseTagFor(tip, cwd);
       const [sha, date, subject] = git(['log', '-1', '--format=%h%x09%cs%x09%s', tip], { cwd }).out.split('\t');
       Object.assign(f, { sha, date, subject, base, containsBase: Boolean(base) });
       if (base) {
         f.aheadOfBase = Number(git(['rev-list', '--count', `${base}..${tip}`], { cwd }).out);
-        const changes = parseNameStatus(git(['diff', '--name-status', '-M', `${base}...${tip}`], { cwd }).out);
-        const auditsAtBase = new Set(git(['ls-tree', '-r', '--name-only', base, '--', 'audits/'], { cwd }).out.split('\n'));
-        const ev = evaluate(changes, role.id, { existedAtBase: (p) => auditsAtBase.has(p) });
+        const changes = parseNameStatusZ(git(['-c', 'core.quotePath=false', 'diff', '-z', '--name-status', '-M', `${base}...${tip}`], { cwd }).out);
+        const auditDirs = new Set(git(['ls-tree', '-d', '--name-only', base, 'audits/'], { cwd }).out.split('\n').filter(Boolean).map((d) => `${d}/`));
+        const ev = evaluate(changes, role.id, { auditDirExisted: (p) => auditDirs.has(auditDirOf(p)) });
         f.ownership = { ...summarize(ev), violations: ev.results.filter((r) => r.verdict !== 'OK').slice(0, 10) };
       }
       if (local && remote) {
@@ -81,8 +82,9 @@ function collectGitHub(cwd, fronts) {
   const prs = ghJson(['pr', 'list', '-R', R, '--state', 'open', '--limit', '100', '--json',
     'number,title,headRefName,baseRefName,isDraft,url,reviewDecision,statusCheckRollup,labels,body,updatedAt,headRefOid'], { cwd });
   const issues = ghJson(['issue', 'list', '-R', R, '--state', 'open', '--limit', '300', '--json', 'number,title,labels,url,updatedAt,body'], { cwd });
-  const closed = ghJson(['issue', 'list', '-R', R, '--state', 'closed', '--limit', '300', '--json', 'number,title,closedAt,stateReason'], { cwd });
-  const closedSet = new Set(closed.map((i) => i.number));
+  const closed = ghJson(['issue', 'list', '-R', R, '--state', 'closed', '--limit', '2000', '--json', 'number,title,closedAt,stateReason'], { cwd });
+  // Only work closed as completed satisfies a dependency (NOT_PLANNED does not).
+  const closedSet = new Set(closed.filter((i) => i.stateReason === 'COMPLETED').map((i) => i.number));
   for (const f of fronts) {
     if (!f.published) continue;
     const runs = ghJson(['run', 'list', '-R', R, '--branch', f.branch, '--limit', '1', '--json', 'status,conclusion,headSha,url,workflowName,createdAt'], { cwd });
@@ -149,6 +151,10 @@ function render(data) {
     if (f.ci && f.ci.status === 'completed' && f.ci.conclusion !== 'success') alerts.push(`${f.label}: CI ${f.ci.conclusion} — ${f.ci.url}`);
   }
   if (gh) for (const p of gh.prs) if (p.ci === 'FALHOU') alerts.push(`PR #${p.number}: checks falharam — ${p.url}`);
+  if (gh) {
+    const off = gh.issues.filter((i) => i.offBoard);
+    if (off.length) alerts.push(`${off.length} issue(s) aberta(s) fora do quadro: ${off.map((i) => `#${i.number}`).join(', ')} (board.mjs add)`);
+  }
 
   if (gh) {
     const by = (s) => gh.issues.filter((i) => i.state === s);
@@ -192,8 +198,7 @@ function render(data) {
     section('Próximos incrementos (READY, por prioridade)', ready, (i) => (i.openDeps.length ? ` · ⚠ dependências abertas ${i.openDeps.map((n) => `#${n}`).join(', ')}` : ''));
     if (promotable.length) section('Backlog com dependências cumpridas (candidatas a READY)', promotable.filter((i) => !i.awaitingFounder));
     section('Aguardando decisão do fundador', gh.issues.filter((i) => i.awaitingFounder).sort((a, b) => a.priority - b.priority || a.number - b.number));
-    const off = gh.issues.filter((i) => i.offBoard);
-    if (off.length) alerts.push(`${off.length} issue(s) aberta(s) fora do quadro: ${off.map((i) => `#${i.number}`).join(', ')} (board.mjs add)`);
+
   }
 
   L.push('## Alertas', '');

@@ -14,8 +14,7 @@ import { parseBacklog, renderBody } from './lib/backlog-parse.mjs';
 
 const { values } = parseArgs({ options: { apply: { type: 'boolean', default: false }, file: { type: 'string' }, 'no-board': { type: 'boolean', default: false } } });
 const APPLY = values.apply;
-const cwd = repoRoot();
-const cfg = loadConfig();
+let cwd, cfg;
 const gh = (args) => run('gh', args, { cwd }).out;
 const say = (m) => console.log(`${APPLY ? '' : '[dry-run] '}${m}`);
 
@@ -37,6 +36,8 @@ function ensureLabels() {
 }
 
 function main() {
+  cwd = repoRoot();
+  cfg = loadConfig();
   const file = values.file ?? fileURLToPath(new URL('./backlog/V1_INITIAL_BACKLOG.md', import.meta.url));
   const items = parseBacklog(readFileSync(file, 'utf8'));
   for (const it of items) for (const [k, v] of Object.entries(it.fields)) {

@@ -34,7 +34,10 @@ export function verifyRecord(dir) {
     const m = readJson(mf);
     if (m.result !== 'ok') errors.push(`captura ${c}: a execução terminou com result=${m.result}`);
     if (!['simulator', 'device'].includes(m.target)) errors.push(`captura ${c}: target desconhecido`);
-    for (const png of readdirSync(join(capDir, c)).filter((f) => f.endsWith('.png'))) {
+    const pngs = readdirSync(join(capDir, c)).filter((f) => f.endsWith('.png'));
+    if (!['run', 'all'].includes(m.command)) errors.push(`captura ${c}: vem de \`sim.sh ${m.command}\`, que não abre o app (use run ou all)`);
+    if (!pngs.length) { errors.push(`captura ${c}: nenhuma screenshot`); continue; }
+    for (const png of pngs) {
       if (m.screenshots?.[png] !== sha(join(capDir, c, png))) errors.push(`captura ${c}/${png}: o hash não confere com o manifest da execução`);
     }
     covered.push({ locale: m.locale, appearance: m.appearance, contentSize: m.contentSize ?? 'default', target: m.target });
@@ -79,7 +82,9 @@ function main() {
     const dest = join(dir, 'captures', basename(values.run));
     mkdirSync(dest, { recursive: true });
     cpSync(join(values.run, 'manifest.json'), join(dest, 'manifest.json'));
-    for (const png of Object.keys(m.screenshots ?? {})) cpSync(join(values.run, png), join(dest, png));
+    const shots = Object.keys(m.screenshots ?? {});
+    if (!shots.length || shots.some((f) => f !== basename(f) || !f.endsWith('.png'))) { console.error('visual: manifest sem screenshots válidas'); process.exitCode = 1; return; }
+    for (const png of shots) cpSync(join(values.run, png), join(dest, png));
     return console.log(`visual: ${Object.keys(m.screenshots ?? {}).length} screenshot(s) de ${m.simulator?.name} (${m.locale}, ${m.appearance}, ${m.contentSize}) → ${dest}`);
   }
   if (cmd === 'verify') {
