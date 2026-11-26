@@ -120,7 +120,7 @@ final class StatusSeriesLogTests: XCTestCase {
                        workout("CANARY-3P", end: at("2026-11-18", "09:00"), minutes: 55.55, source: "com.canary.thirdparty", sourceName: "CANARY-3P"))
         let ing = rig.make(); await ing.start(); await ing.deliveryConditionsChanged()
         rig.clock.advance(10); await rig.scheduler.runAll()
-        rig.reader.delete("CANARY-STR"); await rig.reader.fire()
+        rig.reader.delete("CANARY-STR"); await rig.reader.fire(); await ing.settled()
         try await ing.purge(.accountErased)
         let lines = rig.log.lines
         XCTAssertGreaterThan(lines.count, 8)

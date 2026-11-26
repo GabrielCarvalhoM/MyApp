@@ -92,4 +92,7 @@ public enum IngestCode {
     public static let deletedBeforeDelivery = "DELETED_BEFORE_DELIVERY"
     /// SSCTR-ABC-S4 b: a workout set aside as the same run as an app recording, whose measured distance therefore does not reach the record.
     public static let measuredDistanceLostToAppRecording = "MEASURED_DISTANCE_LOST_TO_APP_RECORDING"
+    /// FND-ABC-06 (b): a workout delivered by the normal rule although a REPORTED app recording overlaps it below the same-run threshold
+    /// (both may count; the decision is Core + SSCTR + B). Counted once, when the workout is first sent.
+    public static let partialOverlapWithReportedAppRecording = "PARTIAL_OVERLAP_WITH_REPORTED_APP_RECORDING"
 }

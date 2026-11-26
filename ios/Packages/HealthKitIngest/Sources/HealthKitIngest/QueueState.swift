@@ -97,3 +97,47 @@ struct StoredSummary: Codable, Equatable {
         ImportedWorkoutSummary(id: id, activityKind: activityKind, start: start, end: end, durationSeconds: durationSeconds, sourceName: sourceName)
     }
 }
+
+// QRE-B-10: decoding takes every field's default when it is absent, so a field added by a later version never makes an existing queue file
+// unreadable (the schema string changes only for an incompatible layout, and then the file fails closed).
+extension QueueState {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let d = QueueState()
+        schema = try c.decodeIfPresent(String.self, forKey: .schema) ?? ""
+        generation = try c.decodeIfPresent(Int.self, forKey: .generation) ?? d.generation
+        enabled = try c.decodeIfPresent(Bool.self, forKey: .enabled) ?? d.enabled
+        authorizationRequested = try c.decodeIfPresent(Bool.self, forKey: .authorizationRequested) ?? d.authorizationRequested
+        anchor = try c.decodeIfPresent(Data.self, forKey: .anchor)
+        anchorStartDay = try c.decodeIfPresent(String.self, forKey: .anchorStartDay)
+        items = try c.decodeIfPresent([QueueItem].self, forKey: .items) ?? []
+        ledger = try c.decodeIfPresent([String: LedgerEntry].self, forKey: .ledger) ?? [:]
+        inFlight = try c.decodeIfPresent(InFlight.self, forKey: .inFlight)
+        block = try c.decodeIfPresent(QueueBlock.self, forKey: .block)
+        excluded = try c.decodeIfPresent([String: String].self, forKey: .excluded) ?? [:]
+        counters = try c.decodeIfPresent([String: Int].self, forKey: .counters) ?? [:]
+        summaries = try c.decodeIfPresent([StoredSummary].self, forKey: .summaries) ?? []
+        lastReadAt = try c.decodeIfPresent(Date.self, forKey: .lastReadAt)
+        lastWorkoutReceivedAt = try c.decodeIfPresent(Date.self, forKey: .lastWorkoutReceivedAt)
+        lastReadError = try c.decodeIfPresent(String.self, forKey: .lastReadError)
+        initialImportDone = try c.decodeIfPresent(Bool.self, forKey: .initialImportDone) ?? d.initialImportDone
+        receivedTypes = try c.decodeIfPresent([String].self, forKey: .receivedTypes) ?? []
+        retryLaterStreak = try c.decodeIfPresent(Int.self, forKey: .retryLaterStreak) ?? 0
+        nextRetryAt = try c.decodeIfPresent(Date.self, forKey: .nextRetryAt)
+    }
+}
+
+extension QueueItem {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        activityId = try c.decode(String.self, forKey: .activityId)
+        start = try c.decode(Date.self, forKey: .start)
+        end = try c.decode(Date.self, forKey: .end)
+        activity = try c.decode(DeviceActivity.self, forKey: .activity)
+        frozen = try c.decodeIfPresent(Bool.self, forKey: .frozen) ?? false
+        state = try c.decodeIfPresent(ItemState.self, forKey: .state) ?? .pending
+        attempts = try c.decodeIfPresent(Int.self, forKey: .attempts) ?? 0
+        adapterBugStrikes = try c.decodeIfPresent(Int.self, forKey: .adapterBugStrikes) ?? 0
+        deletedWhileInFlight = try c.decodeIfPresent(Bool.self, forKey: .deletedWhileInFlight) ?? false
+    }
+}

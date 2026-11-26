@@ -46,7 +46,7 @@ final class QueueTests: XCTestCase {
         // A second workout that day: the session already has one → unlinked.
         sink.context = .ready(Self.plan)
         rig.reader.add(workout("A2", end: at("2026-11-17", "19:00")))
-        await rig.reader.fire()
+        await rig.reader.fire(); await ing.settled()
         XCTAssertEqual(sink.deliveries.last!.activities.map(\.activityId), ["A2"]); XCTAssertNil(sink.deliveries.last!.activities[0].sessionId)
         // Re-read of a delivered workout (an anchor lost): nothing sent again.
         let rig3Reader = ScriptedReader(); let a = workout("A", end: at("2026-11-17", "07:45")); rig3Reader.add(a, a, a)
@@ -76,7 +76,7 @@ final class QueueTests: XCTestCase {
         sink.answers = [{ _ in .halted(code: "RECORD_LOST") }]
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); await ing.start()
-        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.readNow()
+        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled(); await ing.readNow()
         XCTAssertEqual(sink.deliveries.count, 1, "never retried on a trigger or a timer")
         XCTAssertTrue(rig.scheduler.delays.isEmpty)
         let st = await ing.status(); XCTAssertEqual(st.waitingReason, "RECORD_LOST"); XCTAssertEqual(st.queued, 2)
@@ -102,7 +102,7 @@ final class QueueTests: XCTestCase {
         sink.answers = (0..<9).map { _ in ScriptedSink.each(.notRecorded(reason: "NOT_RECORDED_BY_THIS_DECISION")) }
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); await ing.start()
-        await rig.reader.fire(); await ing.readNow()
+        await rig.reader.fire(); await ing.settled(); await ing.readNow()
         XCTAssertEqual(sink.deliveries.count, 1, "NOT_RECORDED is re-sent only after deliveryConditionsChanged()")
         for _ in 0..<8 { await ing.deliveryConditionsChanged() }
         XCTAssertEqual(sink.deliveries.count, 9, "the first send and 8 re-sends")
@@ -189,8 +189,8 @@ final class QueueTests: XCTestCase {
         sink.answers = [ScriptedSink.recordAll, { _ in .waiting(code: "SCREEN_REQUIRED") }]
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); await ing.start()
-        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire()
-        rig.reader.delete("B"); rig.reader.delete("A"); await rig.reader.fire()
+        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled()
+        rig.reader.delete("B"); rig.reader.delete("A"); await rig.reader.fire(); await ing.settled()
         await ing.deliveryConditionsChanged()
         XCTAssertEqual(sink.deliveries.count, 2, "neither the deleted queued workout nor a deletion is ever sent")
         let c = await ing.counts()
@@ -203,9 +203,9 @@ final class QueueTests: XCTestCase {
             sink.answers = [ScriptedSink.recordAll, { _ in .refused(code: "BEFORE_RECORD_START", index: 0, disposition: .setAsideItem) }, { _ in .waiting(code: "SCREEN_REQUIRED") }]
             rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
             let ing = rig.make(); await ing.start()
-            rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire()
+            rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled()
             rig.reader.add(workout("C", end: at("2026-11-19", "07:45")), workout("S", end: at("2026-11-19", "18:00"), type: WorkoutKind.traditionalStrengthTraining))
-            await rig.reader.fire()
+            await rig.reader.fire(); await ing.settled()
             let before = await ing.counts(); XCTAssertEqual(before.delivered, 1); XCTAssertEqual(before.setAside.count, 1); XCTAssertEqual(before.pending, 1)
             try await ing.purge(reason)
             let after = await ing.counts()

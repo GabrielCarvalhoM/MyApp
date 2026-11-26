@@ -67,7 +67,8 @@ final class SimulatorHealthKitTests: XCTestCase {
         let summaries = await ing.importedNonRunWorkouts(since: .distantPast)
         XCTAssertEqual(summaries.map(\.id), [s1.uuid.uuidString]); XCTAssertEqual(summaries.first?.durationSeconds, 2700)
         let st = await ing.status()
-        XCTAssertEqual(st.authorization, .requested); XCTAssertNil(st.lastReadError, "observer and background delivery registered: \(log.lines)")
+        XCTAssertEqual(st.authorization, .requested); XCTAssertNil(st.lastReadError)
+        XCTAssertTrue(log.lines.contains("hki.backgroundDelivery code=REGISTERED"), "background delivery registered: \(log.lines)")
         XCTAssertTrue(st.receivedTypes.contains("RUN_WORKOUT") && st.receivedTypes.contains("DISTANCE"))
 
         // Observer: a new workout reaches the queue without any call from the test.

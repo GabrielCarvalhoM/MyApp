@@ -53,13 +53,19 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     private var state = QueueState()
     private var loaded = false
-    /// The queue file exists but cannot be read (before the first unlock): nothing is read, written or sent.
-    private var storeLocked = false
     /// The queue file could not be decoded: fail closed, never overwritten; only `purge` clears it.
     private var storeUnreadable = false
     /// HealthKit answered `errorDatabaseInaccessible` (device locked): reads wait for `protectedDataDidBecomeAvailable`.
     private var healthLocked = false
     private var hostUnavailable = false
+    /// QRE-B-04: B could not write an answer or a signal. Nothing is sent until a write succeeds again (retried on every trigger).
+    private var writeFailed = false
+    /// QRE-B-05: a purge whose durable write failed. Memory already holds the purged state; nothing is read or sent, and every trigger
+    /// retries the write, until it is on disk.
+    private var purgePending: QueuePurgeReason?
+    /// QRE-B-03: advanced by every `deliveryConditionsChanged()`. The answer to a delivery sent before the latest signal cannot park the
+    /// queue (that signal may be exactly what the answer was waiting for).
+    private var conditionsEpoch = 0
     private var contextUnavailableCode: String?
     private var lastRetryCode: String?
     private var chunkLimit = DeliveryLimits.activitiesPerDelivery
@@ -127,16 +133,42 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     /// One anchored read (observer notification, launch, a trigger). The anchor is written only together with what the read queued.
     public func readNow() async {
-        guard !dead else { return }
-        if reading { readAgain = true; return }
-        reading = true
-        repeat { readAgain = false; await readOnce() } while readAgain && !dead
-        reading = false
+        await read()
         await pump()
     }
 
+    /// Reads until no read is pending. A caller arriving during a read returns only once that read (and the one it asked for) is durable.
+    private func read() async {
+        guard !dead else { return }
+        // Contract §6.2 "tenta no próximo gatilho": every trigger retries a host that was unavailable and B's own failed writes (QRE-B-04).
+        hostUnavailable = false
+        guard retryPendingWrites() else { return }
+        if reading {
+            readAgain = true
+            await withCheckedContinuation { readWaiters.append($0) }
+            return
+        }
+        reading = true
+        repeat { readAgain = false; await readOnce() } while readAgain && !dead
+        reading = false
+        let waiters = readWaiters; readWaiters = []
+        for w in waiters { w.resume() }
+    }
+    private var readWaiters: [CheckedContinuation<Void, Never>] = []
+
+    /// A pending purge or a failed write is written again before anything else happens. False while it still cannot be written.
+    private func retryPendingWrites() -> Bool {
+        guard loaded, purgePending != nil || writeFailed else { return true }
+        do {
+            try commit(state)
+            if let r = purgePending { log.log(.init(.purged, code: r.rawValue)) }
+            purgePending = nil; writeFailed = false
+            return true
+        } catch { return false }
+    }
+
     private func readOnce() async {
-        guard ensureLoaded(), state.enabled, !storeUnreadable else { return }
+        guard ensureLoaded(), state.enabled, !storeUnreadable, purgePending == nil else { return }
         let gen = state.generation
         let ctxResult = await sink.ingestContext()
         guard gen == state.generation, !dead else { return }
@@ -160,8 +192,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         } catch let e as HealthReadError {
             if e == .protectedDataUnavailable { healthLocked = true; log.log(.init(.protectedDataUnavailable)) }
             noteReadError(e.code)
-        } catch let e as QueueStoreError {
-            if e == .unavailable { storeLocked = true }
+        } catch is QueueStoreError {
             noteReadError("QUEUE_WRITE_FAILED")
         } catch {
             noteReadError("READ_FAILED")
@@ -225,7 +256,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     }
 
     private func drain() async {
-        while !dead, ensureLoaded(), !storeUnreadable, state.enabled, state.block == nil, !hostUnavailable {
+        while !dead, ensureLoaded(), !storeUnreadable, purgePending == nil, !writeFailed, state.enabled, state.block == nil, !hostUnavailable {
             if let at = state.nextRetryAt, at > clock() { scheduleRetry(at: at); return }
             let gen = state.generation
             let flight: InFlight
@@ -239,12 +270,13 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 var s = state; s.inFlight = nil; s.block = .halted(code: "INVALID_DELIVERY"); try? commit(s); return
             }
             log.log(.init(.deliverySent, counts: ["activities": flight.activities.count], deliveryId: flight.deliveryId))
+            let epoch = conditionsEpoch
             let result = await sink.deliver(delivery)
             if dieAfterDeliverBeforeApply { dead = true; return }
             guard gen == state.generation, state.inFlight?.deliveryId == flight.deliveryId else {
                 log.log(.init(.deliveryDiscardedAfterPurge, deliveryId: flight.deliveryId)); return
             }
-            apply(result, to: flight)
+            apply(result, to: flight, signalledSince: epoch != conditionsEpoch)
         }
     }
 
@@ -261,10 +293,16 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         // Dedupe against the iPhone's own recordings, for every workout never sent (held ones are re-decided here: the index never notifies).
         let open = state.items.filter { !$0.frozen && Self.isOpen($0.state) }.sorted(by: Self.byEnd)
         var decisions: [String: RecordingDedupe.Decision] = [:]
+        var partialOverlap = Set<String>()
         for item in open {
             let interval = DateInterval(start: item.start, end: max(item.start, item.end))
             let recs = await recordings?.recordings(overlapping: interval) ?? []
             decisions[item.activityId] = RecordingDedupe.decision(workout: interval, recordings: recs)
+            // FND-ABC-06 (b): a REPORTED app recording that overlaps the workout below the same-run threshold. Both go on record (the
+            // dedupe rule says "a different run"); B counts it so the possible double count is visible (decision: Core + SSCTR + B).
+            if recs.contains(where: { $0.reportedEventId != nil && $0.interval.intersects(interval) && !RecordingDedupe.sameRun($0.interval, interval) }) {
+                partialOverlap.insert(item.activityId)
+            }
         }
         guard gen == state.generation, !dead, state.inFlight == nil else { return nil }
 
@@ -300,6 +338,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 s.items[i].state = .pending
                 guard chosen.count < chunkLimit else { continue }
                 s.items[i].activity.sessionId = Self.normalLink(s.items[i], ctx: ctx, in: s)
+                if partialOverlap.contains(s.items[i].activityId) { s.counters[IngestCode.partialOverlapWithReportedAppRecording, default: 0] += 1 }
             }
             s.items[i].frozen = true
             chosen.append(i)
@@ -343,7 +382,10 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     private static func byEnd(_ a: QueueItem, _ b: QueueItem) -> Bool { (a.end, a.activityId) < (b.end, b.activityId) }
 
     /// Contract §6.2, every row.
-    private func apply(_ result: DeliveryResult, to flight: InFlight) {
+    /// `signalledSince`: A called `deliveryConditionsChanged()` while this delivery was in flight (QRE-B-03). A waiting, halted or
+    /// hostUnavailable answer then does not park the queue, and a NOT_RECORDED workout counts as already signalled: it is re-sent at once
+    /// in a new delivery (attempt counted), never left for a signal that already came.
+    private func apply(_ result: DeliveryResult, to flight: InFlight, signalledSince: Bool) {
         var s = state
         s.inFlight = nil
         let ids = flight.activities.map(\.activityId)
@@ -374,6 +416,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                         s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1
                     } else if s.items[i].attempts >= config.maxAttempts {
                         s.items[i].state = .setAside(code: IngestCode.attemptsExhausted)
+                    } else if signalledSince {
+                        s.items[i].attempts += 1; s.items[i].state = .pending
                     } else {
                         s.items[i].state = .notRecorded(reason: reason)
                     }
@@ -391,9 +435,9 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 // Frozen unlinked for good: the boundary refused the link (UNKNOWN_SESSION, SPORT_MISMATCH).
                 s.items[culprit!].activity = s.items[culprit!].activity.unlinked()
             case .waiting:
-                s.block = .waiting(code: c)
+                if !signalledSince { s.block = .waiting(code: c) }
             case .halted:
-                s.block = .halted(code: c)
+                if !signalledSince { s.block = .halted(code: c) }
             case .retryLater:
                 s.inFlight = flight
                 retryLater(&s, flight, code: c)
@@ -408,21 +452,26 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
             }
             if s.inFlight == nil { dropDeletedUnrecorded() }
         case .waiting(let c):
-            code = c; s.block = .waiting(code: c); dropDeletedUnrecorded()
+            code = c; if !signalledSince { s.block = .waiting(code: c) }; dropDeletedUnrecorded()
         case .halted(let c):
-            code = c; s.block = .halted(code: c); dropDeletedUnrecorded()
+            code = c; if !signalledSince { s.block = .halted(code: c) }; dropDeletedUnrecorded()
         case .retryLater(let c):
             code = c; s.inFlight = flight
             retryLater(&s, flight, code: c)
         case .hostUnavailable:
             code = HostCode.hostUnavailable
             s.inFlight = flight
-            hostUnavailable = true
+            if !signalledSince { hostUnavailable = true }
+        }
+        // QRE-B-02: only CONSECUTIVE retryLater answers count; any other answer breaks the streak.
+        if case .retryLater = result {} else if case .refused(_, _, .retryLater) = result {} else {
+            s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
         }
         if case .answered = result {} else { log.log(.init(.deliveryAnswered, code: code, deliveryId: flight.deliveryId)) }
         do { try commit(s) } catch {
-            // The answer could not be written: the in-flight delivery stays on disk and is re-sent with the same id (replayed by custody).
-            hostUnavailable = true
+            // The answer could not be written: the in-flight delivery stays on disk and is re-sent with the same id (custody replays its
+            // stored answer: QRE-B-15, one extra round trip at most). Nothing is sent until a write succeeds; every trigger retries.
+            writeFailed = true
         }
     }
 
@@ -459,28 +508,42 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     public func deliveryConditionsChanged() async {
         guard !dead, ensureLoaded(), !storeUnreadable else { return }
+        conditionsEpoch += 1
         var s = state
         s.block = nil
         for i in s.items.indices { if case .notRecorded = s.items[i].state { s.items[i].attempts += 1; s.items[i].state = .pending } }
         hostUnavailable = false
-        try? commit(s)
+        // A signal is never lost to a failed write (QRE-B-04): memory takes it now; the write is retried on the next trigger.
+        do { try commit(s) } catch { state = s; writeFailed = true }
         log.log(.init(.conditionsChanged))
         await readNow()
     }
 
     public func purge(_ reason: QueuePurgeReason) async throws {
-        // The generation advances first, in memory, so an answer to a delivery started before this purge is discarded even if the write fails.
-        let next = state.generation + 1
-        state.generation = next
+        // QRE-B-01: the athlete's switch and the authorization bookkeeping survive a purge, so the file is read first. A file that exists
+        // but cannot be read now (before the first unlock) is NOT treated as absent: A retries the purge. (Never loaded: nothing of it is
+        // in flight in this process.)
+        if !loaded && !storeUnreadable && !ensureLoaded() && !storeUnreadable { throw HealthReadError.protectedDataUnavailable }
+        // The generation advances before anything is written, so an answer to a delivery started before this purge is discarded whatever
+        // happens next.
+        state.generation += 1
         state.inFlight = nil
-        if !loaded || storeUnreadable { try store.remove() }
         var s = QueueState()
-        s.generation = next
-        s.enabled = loaded && !storeUnreadable ? state.enabled : true
-        s.authorizationRequested = loaded && !storeUnreadable ? state.authorizationRequested : false
-        try commit(s)
-        loaded = true; storeUnreadable = false; storeLocked = false
+        s.generation = state.generation
+        if storeUnreadable {
+            // The switch is unknown: off, never on by default (the athlete turns it on again; `disabledInApp` says so).
+            try store.remove()
+            s.enabled = false
+        } else {
+            s.enabled = state.enabled; s.authorizationRequested = state.authorizationRequested
+        }
+        // QRE-B-05: fail closed. Memory holds the purged state whatever the write does, so nothing purged can be read, linked or sent; a
+        // failed write stays pending and is retried on every trigger before anything else.
+        state = s; loaded = true; storeUnreadable = false
         chunkLimit = DeliveryLimits.activitiesPerDelivery; hostUnavailable = false; contextUnavailableCode = nil; lastRetryCode = nil
+        purgePending = reason
+        do { try commit(s) } catch { log.log(.init(.purged, code: "WRITE_PENDING")); throw error }
+        purgePending = nil; writeFailed = false
         log.log(.init(.purged, code: reason.rawValue))
     }
 
@@ -493,7 +556,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                                       queued: 0, waitingReason: storeUnreadable ? "QUEUE_UNREADABLE" : IngestCode.protectedDataUnavailable, setAside: 0, receivedTypes: [])
         }
         let setAside = state.items.filter { if case .setAside = $0.state { return true }; return false }.count
-        let waiting = state.block?.code ?? (hostUnavailable ? HostCode.hostUnavailable : nil) ?? contextUnavailableCode
+        let waiting = (purgePending != nil || writeFailed ? "QUEUE_WRITE_FAILED" : nil) ?? state.block?.code
+            ?? (hostUnavailable ? HostCode.hostUnavailable : nil) ?? contextUnavailableCode
             ?? (state.nextRetryAt != nil ? lastRetryCode : nil)
         return HealthIngestStatus(authorization: state.authorizationRequested ? .requested : .notRequested, disabledInApp: !state.enabled,
                                   lastReadAt: state.lastReadAt, lastWorkoutReceivedAt: state.lastWorkoutReceivedAt,
@@ -536,10 +600,10 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 }
                 state = s
             } else { state = QueueState() }
-            loaded = true; storeLocked = false
+            loaded = true
             return true
         } catch {
-            storeLocked = true
+            // The file exists but cannot be read (before the first unlock): nothing is read, written or sent until it can be.
             log.log(.init(.protectedDataUnavailable, code: "QUEUE_FILE"))
             return false
         }
@@ -566,10 +630,16 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         catch { log.log(.init(.backgroundDelivery, code: "BACKGROUND_DELIVERY_FAILED")); noteReadError("BACKGROUND_DELIVERY_FAILED") }
     }
 
+    /// The observer's completion handler runs when this returns: after the read is durably queued, not after the delivery to A
+    /// (background-delivery time budget, QRE-B-08). The delivery continues on its own.
     private func observerFired() async {
         log.log(.init(.observerFired))
-        await readNow()
+        await read()
+        observerPump = Task { await self.pump() }
     }
+    private var observerPump: Task<Void, Never>?
+    /// Tests: waits for the delivery an observer notification started.
+    func settled() async { while let t = observerPump { observerPump = nil; await t.value } }
 
     /// The plan-local midnight of `day` (`YYYY-MM-DD`): the start of the read window (the anchor starts at the enrolment day).
     static func startOfDay(_ day: String, offsetMinutes: Int) -> Date {

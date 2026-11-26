@@ -49,7 +49,7 @@ final class DedupeTests: XCTestCase {
         let st = await ing.status(); XCTAssertEqual(st.queued, 1, "a held run is queued, never lost")
         // The index never notifies: the next HealthKit read re-decides.
         index.set([Self.rec("w0-run-d1", "ob_9")])
-        await r.reader.fire()
+        await r.reader.fire(); await ing.settled()
         XCTAssertEqual(linkOf(sink, "HK-W"), .some("w0-run-d1"))
         c = await ing.counts(); XCTAssertEqual(c.held, 0); XCTAssertEqual(c.delivered, 2)
     }
@@ -85,7 +85,7 @@ final class DedupeTests: XCTestCase {
         let other = WorkoutSnapshot(id: "HK-W2", activityTypeRaw: WorkoutKind.running, start: Self.wStart.addingTimeInterval(30), end: Self.wEnd,
                                     durationSeconds: 1770, distanceMeters: nil, hasRoute: false, indoor: nil, wasUserEntered: false,
                                     sourceBundleId: "com.apple.health.Y", sourceName: "iPhone", timeZoneIdentifier: nil)
-        r.reader.add(other); await r.reader.fire()
+        r.reader.add(other); await r.reader.fire(); await ing.settled()
         XCTAssertNil(linkOf(sink, "HK-W2"), "the session already has its run: never a second link, never a second unlinked row")
         let c = await ing.counts(); XCTAssertEqual(c.setAside, ["OVERLAPS_APP_RECORDING": 1]); XCTAssertNil(c.counters["MEASURED_DISTANCE_LOST_TO_APP_RECORDING"])
     }

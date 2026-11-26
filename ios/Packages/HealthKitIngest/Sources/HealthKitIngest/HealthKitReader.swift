@@ -56,7 +56,9 @@ public final class HealthKitReader: HealthReading, @unchecked Sendable {
     private func hasRoute(_ w: HKWorkout) async throws -> Bool {
         try await withCheckedThrowingContinuation { cont in
             let q = HKSampleQuery(sampleType: HKSeriesType.workoutRoute(), predicate: HKQuery.predicateForObjects(from: w), limit: 1, sortDescriptors: nil) { _, s, e in
-                if let e = e as? HKError, e.code == .errorDatabaseInaccessible { cont.resume(throwing: HealthReadError.protectedDataUnavailable); return }
+                // QRE-B-07: an error is not "no route" (iOS hides a denial behind an EMPTY result, never an error). The whole read fails, the
+                // anchor does not advance, and the workout is read again: its frozen bytes never depend on a transient failure.
+                if let e { cont.resume(throwing: Self.map(e)); return }
                 // No route, or no route authorization (iOS never says which): no route. Missing stays missing (no GPS claim).
                 cont.resume(returning: !(s ?? []).isEmpty)
             }
