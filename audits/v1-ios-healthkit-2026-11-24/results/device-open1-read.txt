@@ -1,0 +1,69 @@
+# OPEN-1 policy 2 on the iPhone (2026-11-26): count-only read INSIDE the installed lab, every command through tools/device-lock/with-device.sh healthkit --wait, DerivedData-B.
+# Two runs, both installed IN PLACE with 'xcrun devicectl device install app': run 1 = policy 2 before the independent review fixes; run 2 = after the
+# round-O1 fixes (QRE-B-O1-01/02/05/06); run 3 = the final build of the OPEN-1 commit (round-O1-R2 fixes QRE-B-O1-10/11 included).
+# Every value is a status, a code or a count: no duration, distance, date, source name, origin class or workout id. Nothing written to Apple Health;
+# heart rate not requested; host double answered WAITING (LAB_NO_HOST: nothing reaches CoachingCore); temporary queue purged; observer and background
+# registration removed at the end (setEnabled(false)).
+## Permission before the update (old build 077077a): lab-status.txt = ANSWERED
+## Permission after the in-place update (no sheet shown, no new authorization asked): lab-status.txt = ANSWERED
+## Finding: an in-place 'devicectl device install app' keeps the HealthKit answer; the earlier reset came from the 'xcodebuild test' install path.
+## Before (policy 1, results/device-authorization-read.txt): READ excluded=THIRD_PARTY_SOURCE:3, queued=0
+## Run 1, -labDeviceProbe (window: last 28 days), before the review fixes:
+READ authorization=NOT_REQUESTED lastReadError=none
+READ receivedTypes=DISTANCE,RUN_WORKOUT
+READ queued=3 pending=3 held=0 setAside=0 deliveriesToDouble=1
+READ excluded=
+READ nonRunSummaries=0
+READ runsRead=3 eligibleForEngine=3
+READ runStatus=AWAITING_DELIVERY:3
+READ consolidated=0 reconcile=0
+READ provenancePreserved=3/3
+READ partialData=3/3
+READ log hki.started inFlight=0 queued=0
+READ log hki.backgroundDelivery code=REGISTERED
+READ log hki.observerFired
+READ log hki.readCompleted added=3
+READ log hki.readCompleted
+READ log hki.deliverySent delivery=<uuid> activities=3
+READ log hki.deliveryAnswered code=LAB_NO_HOST delivery=<uuid>
+READ purged=yes observerStopped=yes
+## Run 2, after the round-O1 fixes: permission after the second in-place update: lab-status.txt = ANSWERED (no sheet shown)
+## Run 2, -labDeviceProbe (window: last 28 days):
+READ authorization=NOT_REQUESTED lastReadError=none
+READ receivedTypes=DISTANCE,RUN_WORKOUT
+READ queued=3 pending=3 held=0 setAside=0 deliveriesToDouble=1
+READ excluded=
+READ nonRunSummaries=0
+READ runsRead=3 eligibleForEngine=3
+READ runStatus=AWAITING_DELIVERY:3
+READ consolidated=0 reconcile=0
+READ provenancePreserved=3/3
+READ partialData=3/3
+READ log hki.started inFlight=0 queued=0
+READ log hki.backgroundDelivery code=REGISTERED
+READ log hki.observerFired
+READ log hki.readCompleted added=3
+READ log hki.readCompleted
+READ log hki.deliverySent delivery=<uuid> activities=3
+READ log hki.deliveryAnswered code=LAB_NO_HOST delivery=<uuid>
+READ purged=yes observerStopped=yes
+## Run 3, final build: permission after the third in-place update: lab-status.txt = ANSWERED (no sheet shown)
+## Run 3, -labDeviceProbe (window: last 28 days):
+READ authorization=NOT_REQUESTED lastReadError=none
+READ receivedTypes=DISTANCE,RUN_WORKOUT
+READ queued=3 pending=3 held=0 setAside=0 deliveriesToDouble=1
+READ excluded=
+READ nonRunSummaries=0
+READ runsRead=3 eligibleForEngine=3
+READ runStatus=AWAITING_DELIVERY:3
+READ consolidated=0 reconcile=0
+READ provenancePreserved=3/3
+READ partialData=3/3
+READ log hki.started inFlight=0 queued=0
+READ log hki.backgroundDelivery code=REGISTERED
+READ log hki.observerFired
+READ log hki.readCompleted added=3
+READ log hki.readCompleted
+READ log hki.deliverySent delivery=<uuid> activities=3
+READ log hki.deliveryAnswered code=LAB_NO_HOST delivery=<uuid>
+READ purged=yes observerStopped=yes
