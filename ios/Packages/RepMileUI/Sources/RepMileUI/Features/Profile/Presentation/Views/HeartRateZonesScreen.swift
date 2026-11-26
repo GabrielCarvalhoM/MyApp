@@ -7,8 +7,7 @@ import SwiftUI
 /// only (C8); only ever a cue to slow down (C11). The bars sit on a 90 → maximum axis (addendum §4), positions from the engine's limits.
 struct HeartRateZonesScreen: View {
     @Environment(AppModel.self) private var model
-    @State private var editing: Editor?
-    enum Editor: String, Identifiable { case maximum, limits; var id: String { rawValue } }
+    @State private var editing: HeartRateZonesViewModel.Editor?
 
     private var calibration: RunCalibration? { model.presentation?.readings?.runCalibration }
     private var five: HeartRateFiveZones? { calibration?.heartRateFiveZones }
@@ -42,7 +41,7 @@ struct HeartRateZonesScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .navigationTitle("").navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(RM.Palette.fundoApp, for: .navigationBar)
-        .sheet(item: $editing) { HeartRateProfileEditor(mode: $0, current: five) }
+        .sheet(item: $editing) { HeartRateProfileEditor(viewModel: HeartRateZonesViewModel(writer: model.writer, mode: $0, current: five), current: five) }
     }
 
     @ViewBuilder private var content: some View {
@@ -164,78 +163,6 @@ struct ZoneRow: View {
         case (let a?, nil): L.f("hr.range.above", "\(a)")
         case (let a?, let up?): L.f("hr.range.between", "\(a)", "\(up)")
         default: ""
-        }
-    }
-}
-
-/// Informar a máxima / personalizar limites: `setHeartRateProfile` (validation is the engine's answer: `fields`); erase inside the sheet
-/// (`eraseHeartRateProfile`, never held back by consent).
-struct HeartRateProfileEditor: View {
-    @Environment(AppModel.self) private var model
-    @Environment(\.dismiss) private var dismiss
-    let mode: HeartRateZonesScreen.Editor
-    let current: HeartRateFiveZones?
-    @State private var maximum = ""
-    @State private var limits = ["", "", "", ""]
-    @State private var message: (text: String, ok: Bool)?
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if mode == .maximum {
-                        field(L.t("hr.max.field"), $maximum, id: "hr-max-field")
-                    } else {
-                        ForEach(0..<4, id: \.self) { i in field(L.f("hr.limit.field", "Z\(i + 1)"), $limits[i], id: "hr-limit-\(i + 1)") }
-                    }
-                    if let m = message { Text(m.text).rmText(.detalhe, m.ok ? RM.Palette.positivo : RM.Palette.negativo).accessibilityIdentifier("hr-message") }
-                    PrimaryActionButton(L.t("hr.save"), icon: .check, enabled: request != nil) { Task { await save() } }.accessibilityIdentifier("hr-save")
-                    if current?.profile?.declaredMaximumBpm != nil || current?.profile?.customZoneUpperBpm != nil || current?.boundarySource?.raw == "ATHLETE_CUSTOM" || current?.reference?.kind.raw == "ATHLETE_DECLARED_MAXIMUM" {
-                        Button(role: .destructive) { Task { await erase() } } label: { Text(L.t("hr.erase")).rmText(.rotulo, RM.Palette.negativo) }
-                            .accessibilityIdentifier("hr-erase")
-                    }
-                }
-                .padding(RM.Space.gutter)
-            }
-            .background(RM.Palette.fundoApp.ignoresSafeArea())
-            .navigationTitle(mode == .maximum ? L.t("hr.enterMax") : L.t("hr.customize")).navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button { dismiss() } label: { RMIconView(.fechar, size: 18) }.accessibilityLabel(L.t("common.close")) } }
-        }
-        .onAppear {
-            if let m = current?.profile?.declaredMaximumBpm { maximum = "\(m)" }
-            if let z = current?.profile?.customZoneUpperBpm, z.count == 4 { limits = z.map(String.init) }
-        }
-    }
-
-    private func field(_ label: String, _ text: Binding<String>, id: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(label).rmText(.detalhe, RM.Palette.textoSecundario)
-            TextField("", text: text).keyboardType(.numberPad).rmText(.numeroM)
-                .padding(12).background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier(id)
-        }
-    }
-
-    /// Whole numbers only; the range and order are the engine's to judge (its `fields` come back on refusal).
-    var request: HeartRateProfileRequest? {
-        if mode == .maximum { return Int(maximum).map { HeartRateProfileRequest(maxHeartRateBpm: .some($0)) } }
-        let v = limits.compactMap(Int.init)
-        return v.count == 4 ? HeartRateProfileRequest(zoneUpperBpm: .some(v)) : nil
-    }
-
-    private func save() async {
-        guard let r = request else { return }
-        switch await model.writer.setHeartRateProfile(r) {
-        case .success: message = (L.t("hr.saved"), true)
-        case .failure(let e):
-            if e.code.raw == "CONSENT_REQUIRED" { message = (L.t("hr.error.consent"), false) }
-            else { message = ((e.fields ?? []).compactMap { L.code("hr.error", Code(raw: $0)) }.first ?? L.t("state.opError.body"), false) }
-        }
-    }
-
-    private func erase() async {
-        switch await model.writer.eraseHeartRateProfile() {
-        case .success: message = (L.t("hr.erased"), true)
-        case .failure: message = (L.t("state.opError.body"), false)
         }
     }
 }
