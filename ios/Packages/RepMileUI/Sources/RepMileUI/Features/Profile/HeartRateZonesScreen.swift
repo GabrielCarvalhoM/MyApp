@@ -110,9 +110,10 @@ struct ZoneRow: View {
     let maximum: Int
     var body: some View {
         let color = RM.Palette.zonas[min(index, 4)]
-        let lo = Double(zone.minBpm ?? 90), hi = Double(zone.maxBpm ?? maximum)
-        let axis = (90.0, Double(max(maximum, 91)))
-        VStack(alignment: .leading, spacing: 8) {
+        // Fractions of the 90…maximum axis, computed apart: as one expression inside the view builder, Swift 6.3 (the CI runner's
+        // Xcode 26.6) gave up type-checking it ("unable to type-check this expression in reasonable time").
+        let bar = Self.barFractions(minBpm: zone.minBpm, maxBpm: zone.maxBpm, maximum: maximum)
+        return VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
                 Text(zone.zone.raw).rmText(.rotulo, RM.Palette.agoraSobre).frame(width: 28, height: 22).background(color, in: RoundedRectangle(cornerRadius: 6))
                 Text(percentText).rmText(.detalhe, RM.Palette.textoSecundario)
@@ -124,16 +125,29 @@ struct ZoneRow: View {
                 ZStack(alignment: .leading) {
                     Capsule().fill(RM.Palette.fundoTrilho).frame(height: 4)
                     Capsule().fill(color)
-                        .frame(width: max(4, g.size.width * CGFloat((min(hi, axis.1) - max(lo, axis.0)) / (axis.1 - axis.0))), height: 4)
-                        .offset(x: g.size.width * CGFloat((max(lo, axis.0) - axis.0) / (axis.1 - axis.0)))
+                        .frame(width: max(4, g.size.width * bar.width), height: 4)
+                        .offset(x: g.size.width * bar.start)
                 }
                 .frame(maxHeight: .infinity)
             }
             .frame(height: 8)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(zone.zone.raw + ", " + bpmText + " bpm" + (percentText.isEmpty ? "" : ", " + percentText))
+        .accessibilityLabel(accessibilityText)
         .accessibilityIdentifier("hr-zone-\(zone.zone.raw)")
+    }
+    private var accessibilityText: String {
+        let base = "\(zone.zone.raw), \(bpmText) bpm"
+        return percentText.isEmpty ? base : "\(base), \(percentText)"
+    }
+    /// Where the zone's bar starts and how wide it is, as fractions of the axis 90 bpm … maximum (open ends at the axis limits).
+    static func barFractions(minBpm: Int?, maxBpm: Int?, maximum: Int) -> (start: CGFloat, width: CGFloat) {
+        let axisLow = 90.0
+        let axisHigh = Double(max(maximum, 91))
+        let span = axisHigh - axisLow
+        let lo = max(Double(minBpm ?? 90), axisLow)
+        let hi = min(Double(maxBpm ?? maximum), axisHigh)
+        return (CGFloat((lo - axisLow) / span), CGFloat((hi - lo) / span))
     }
     private var bpmText: String {
         switch (zone.minBpm, zone.maxBpm) {
