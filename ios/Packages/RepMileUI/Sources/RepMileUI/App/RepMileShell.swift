@@ -37,7 +37,7 @@ public struct RepMileShell: View {
             case .loading: LoadingSkeleton()
             case .app: AppTabs()
             case .onboarding:
-                OnboardingFlow(onEnrolled: {
+                OnboardingFlow(viewModel: OnboardingViewModel(writer: model.writer), onEnrolled: {
                     // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
                     if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
                     else { Task { await model.load() } }
