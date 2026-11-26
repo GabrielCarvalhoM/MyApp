@@ -15,7 +15,7 @@
 | `33e1198` | CoachingHostLab (iPhone host and device tests), device and macOS evidence |
 | (closing commit) | QRE/Security R1 fixes (QRE-A-01 to 03, 05 to 12) with their tests; CCP-A-01 to 04; the device evidence run again on the final bundle; this report |
 
-Every changed path is in front A's column (contract §10): 89 files under `ios/Packages/CoachingHost/`, `ios/Labs/CoachingHostLab/` and `audits/v1-ios-coachinghost-2026-11-24/` (`results/mac/gates.log`).
+Every changed path is in front A's column (contract §10): 98 files under `ios/Packages/CoachingHost/`, `ios/Labs/CoachingHostLab/` and `audits/v1-ios-coachinghost-2026-11-24/` (`results/mac/gates.log`).
 
 ## 2. The production bundle
 
