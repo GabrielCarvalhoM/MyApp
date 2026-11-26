@@ -1,0 +1,179 @@
+{
+ "id": "V1X-HR-FIVE-ZONE-2",
+ "revision": 2,
+ "date": "2026-11-25",
+ "supersedes": "V1X-HR-FIVE-ZONE-1 (CoachingCore/v1/HEART_RATE_FIVE_ZONE_V1.json, kept byte for byte as the historical values of REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1)",
+ "founderDecision": "FOUNDER-HR5-RUNNA-PARITY-2026-11-25 (audits/v1-hr5-runna-parity-2026-11-25/FOUNDER_REQUEST.md)",
+ "scope": "The canonical operational heart-rate model: five zones as percentages of one maximum heart rate, always computable from a valid age (220 - age), personalisable (a declared maximum, custom zone limits), refined by a measured maximum when one qualifies. A reference intensity scale beside pace and effort; never a session target, gate, dose, progression input, medical evidence or safety release. The three-zone heartRateZones of RUN_CALIBRATION_EXTENSION_V1 is unchanged.",
+ "requiresBoundaries": ["V1X-RUN-CAPACITY", "V1X-RUN-HR"],
+ "method": "PERCENT_OF_MAXIMUM_HEART_RATE",
+ "zones": [
+  {"zone": "Z1", "abovePercent": null, "upToPercent": 65},
+  {"zone": "Z2", "abovePercent": 65, "upToPercent": 81},
+  {"zone": "Z3", "abovePercent": 81, "upToPercent": 89},
+  {"zone": "Z4", "abovePercent": 89, "upToPercent": 97},
+  {"zone": "Z5", "abovePercent": 97, "upToPercent": null}
+ ],
+ "convention": "ABOVE_LOWER_PERCENT_UP_TO_UPPER_PERCENT_INCLUSIVE",
+ "rounding": "WHOLE_BPM_UPPER_LIMIT_FLOOR_OF_EXACT_PERCENT",
+ "roundingRule": "A zone's highest whole bpm is floor(maximum x upToPercent / 100), in integer arithmetic; the next zone starts one bpm above. Every whole bpm then lies in exactly one zone, and a whole bpm is in a zone exactly when its percentage of the maximum is above the zone's lower percentage and at most its upper one.",
+ "readingRounding": "HALF_UP_TO_WHOLE_BPM",
+ "threeDomains": "NOT_NESTED",
+ "threeDomainsNote": "The 65/81/89/97 bands do not nest in the three approved domains (80 / 87 per cent); no correspondence is imposed. The three-zone heartRateZones keeps its own reading and its own legitimate dependants.",
+ "ageEstimate": {
+  "kind": "AGE_ESTIMATE",
+  "formula": "220_MINUS_AGE",
+  "constant": 220,
+  "ageYears": [18, 80],
+  "ageSource": "INTAKE_ATHLETE_AGE_YEARS",
+  "aging": "WHOLE_YEARS_ELAPSED_SINCE_THE_AGE_WAS_DECLARED",
+  "provenance": "ESTIMATED",
+  "basis": "ESTIMATED_FROM_AGE",
+  "referenceConfidence": "LOW",
+  "outsideTheRange": "AGE_OUTSIDE_ESTIMATE_RANGE",
+  "note": "A population formula: an individual's true maximum commonly differs from it by 10 bpm or more, in either direction; on average it underestimates the maximum of older adults"
+ },
+ "declaredMaximum": {
+  "kind": "ATHLETE_DECLARED_MAXIMUM",
+  "plausibleBpm": [120, 230],
+  "provenance": "DECLARED",
+  "basis": "DECLARED_BY_THE_ATHLETE",
+  "referenceConfidence": "UNVERIFIED",
+  "checkedByTheApp": false,
+  "precedence": "AN_EXPLICIT_ATHLETE_OVERRIDE_WINS_UNTIL_THE_ATHLETE_CLEARS_IT"
+ },
+ "customZones": {
+  "kind": "ATHLETE_CUSTOM",
+  "field": "zoneUpperBpm",
+  "limits": 4,
+  "meaning": "the highest whole bpm of Z1, Z2, Z3 and Z4; Z5 is open above",
+  "plausibleBpm": [60, 230],
+  "strictlyIncreasing": true,
+  "keptWhenTheMaximumChanges": true,
+  "recomputedFromTheMaximum": false
+ },
+ "references": {
+  "order": ["ATHLETE_DECLARED_MAXIMUM", "LAB_MEASURED_MAXIMUM", "OBSERVED_MAXIMUM", "AGE_ESTIMATE"],
+  "LAB_MEASURED_MAXIMUM": {
+   "evidenceKind": "LAB_TEST",
+   "field": "heartRate.maxBpm",
+   "plausibleBpm": [140, 220],
+   "rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.measured (182 days, no declared break of 14 days or more since, not before a hold or return)",
+   "sensors": ["CHEST_STRAP", "ECG"],
+   "modalityField": "lab.modality",
+   "runningModalities": ["RUN", "TREADMILL_RUN", "FIELD_RUN"],
+   "rpeReportedMin": 8,
+   "completedNotFalse": true,
+   "toleratedNotFalse": true,
+   "provenance": "MEASURED",
+   "basis": "LAB_MAXIMUM_AS_SUPPLIED",
+   "referenceConfidence": "MODERATE",
+   "checkedByTheApp": false
+  },
+  "OBSERVED_MAXIMUM": {
+   "rules": "RUN_CALIBRATION_EXTENSION_V1 heartRate.observedMaximum (SSCTR-V1RC-DECISION-r1 Q6(b), unchanged): chest strap, a race, time trial or field test of 10 minutes or more at RPE 8 or more, within 365 days",
+   "provenance": "MEASURED",
+   "basis": "ESTIMATED_FROM_OBSERVED_MAXIMUM",
+   "referenceConfidence": "LOW",
+   "isALowerBoundOfTheTrueMaximum": true,
+   "replacesTheAgeEstimateOnlyWhenHigher": true
+  },
+  "notUsedAsAMaximum": ["HEART_RATE_RESERVE", "SESSION_AVERAGE_HEART_RATE", "OPTICAL_SENSOR_MAXIMUM", "A_MAXIMUM_FROM_AN_EASY_EFFORT"]
+ },
+ "conflict": {
+  "observedAboveLabMoreThanBpm": 5,
+  "outcome": "REFERENCE_CONFLICT",
+  "measuredReferencesUsed": false,
+  "fallback": "THE_NEXT_REFERENCE_IN_ORDER_THAT_IS_NOT_MEASURED",
+  "lowerWins": false,
+  "prescriptionEffect": "NONE"
+ },
+ "zoneModelConfidence": "LOW",
+ "notes": {
+  "ALL": ["NOT_THRESHOLDS", "FIXED_PERCENTAGES_OF_A_MAXIMUM", "NOT_MEDICAL_EVIDENCE"],
+  "AGE_ESTIMATE": ["POPULATION_FORMULA_NOT_INDIVIDUAL"],
+  "ATHLETE_DECLARED_MAXIMUM": ["DECLARED_NOT_CHECKED_BY_THE_APP"],
+  "LAB_MEASURED_MAXIMUM": ["NOT_CHECKED_BY_THE_APP"],
+  "OBSERVED_MAXIMUM": ["OBSERVED_MAXIMUM_MAY_BE_BELOW_TRUE_MAXIMUM"],
+  "ATHLETE_CUSTOM": ["CUSTOM_LIMITS_AS_SET_BY_THE_ATHLETE"]
+ },
+ "measurements": {
+  "kind": "SESSION_MAXIMUM",
+  "field": "heartRate.maxBpm",
+  "sensors": ["CHEST_STRAP", "ECG", "OPTICAL"],
+  "plausibleBpm": [40, 230],
+  "classifiedAsASingleValue": true,
+  "isADistribution": false,
+  "provenanceKept": true,
+  "windowDays": 365,
+  "mostShown": 16
+ },
+ "sessionUse": {
+  "primaryInV1": [],
+  "families": {
+   "EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "LONG": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "RECOVERY_EASY": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "SHAKEOUT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4"},
+   "EASY_REESTABLISHMENT": {"role": "COMPLEMENTARY_CEILING_CUE", "slowDownCueFromZone": "Z4", "onlyInMode": "EASY"},
+   "THRESHOLD": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "HALF_MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "MARATHON_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "ZONES_ARE_NOT_INDIVIDUAL_THRESHOLDS"},
+   "FIVE_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "TEN_K_SPECIFIC": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "STRIDES": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "HEART_RATE_LAGS_SHORT_HARD_BOUTS"},
+   "RACE": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+   "RACE_TOUCH": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "RACE_DAY_GUIDANCE_AS_APPROVED"},
+   "WALK": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+   "WALK_JOG": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"},
+   "FAMILIAR_REPEATED_BOUTS": {"role": "NONE", "reason": "EFFORT_ONLY_FAMILY"}
+  },
+  "unknownFamily": {"role": "NO_HEART_RATE_GUIDANCE", "reason": "UNKNOWN_FAMILY_FAIL_CLOSED"},
+  "cueRules": {"sustainedReadingOnly": true, "suggestsSpeedingUp": false, "effortGoverns": true, "gatesSizesOrProgressesSessions": false, "healthMeaning": false, "showUsualZonesForFamily": false},
+  "effortConflict": "EFFORT_GOVERNS_HEART_RATE_MAY_ONLY_SUGGEST_SLOWING"
+ },
+ "safety": {
+  "changesThePlan": false,
+  "medicalEvidence": false,
+  "measuredPhysiologicalThreshold": false,
+  "releasesASafetyBlock": false,
+  "underAHold": "WITHHELD_HOLD_NO_PRESCRIPTION",
+  "inAWalkJogRestartOrReturnMode": "ZONES_SHOWN_NO_SESSION_HEART_RATE_ROLE"
+ },
+ "newerRunnerExperience": ["NONE", "NOVICE"],
+ "disclosures": {
+  "ZONES": "Zones are fixed percentages of your maximum heart rate. They are a rough guide, not your personal thresholds. Pace and how the run feels govern your training.",
+  "AGE_ESTIMATE": "Your maximum is estimated from your age (220 minus age). Many people's true maximum differs from this by 10 beats a minute or more, and in older adults it is more often higher than the estimate. You can enter your own.",
+  "ATHLETE_DECLARED_MAXIMUM": "The maximum heart rate you entered; not checked by the app.",
+  "LAB_MEASURED_MAXIMUM": "The maximum your lab test reported, as you supplied it; not checked by the app.",
+  "OBSERVED_MAXIMUM": "From the highest heart rate your chest strap recorded in a hard effort; your true maximum may be higher.",
+  "ATHLETE_CUSTOM": "The zone limits you set. They stay as you set them until you change them.",
+  "OPTICAL_MEASUREMENT": "Wrist (optical) readings are often less accurate than a chest strap, especially when your effort changes quickly. This reading is shown as recorded.",
+  "NEWER_RUNNER": "For newer runners the same heart rate can mean a harder effort than the zone name suggests; go by feel.",
+  "REFERENCE_CONFLICT": "Your lab maximum is lower than a heart rate your chest strap recorded, so neither is used for your zones.",
+  "CUE": "If your heart rate stays in Z4 or higher on an easy run, consider slowing down. A low reading never means speed up.",
+  "NOT_MEDICAL": "Heart-rate zones are a training aid, not a medical measure. They never change your plan or clear a safety check.",
+  "wording": "Product-owned; the meaning must be kept"
+ },
+ "sessionDistribution": {
+  "status": "UNAVAILABLE",
+  "reason": "NO_HEART_RATE_SERIES_IN_CONTRACT",
+  "fromAverageHeartRate": false,
+  "classifierWiredToInput": false,
+  "futureClassifier": {
+   "input": "a time series {sensor, source, samples:[{t: seconds from the start, bpm, artifact?}]} in time order (a HealthKit heart-rate sample series of one workout, for example)",
+   "sensors": ["CHEST_STRAP", "ECG", "OPTICAL"],
+   "provenanceKept": true,
+   "defaultLimits": {"maxGapSeconds": 30, "minCoverageFraction": 0.8, "minSamples": 10, "plausibleBpm": [30, 230]},
+   "limitsStatus": "OPERATIONAL_DEFAULTS_FOR_A_FUTURE_CHANNEL_REVIEW",
+   "gap": "UNKNOWN_NOT_INTERPOLATED",
+   "coverageReported": true,
+   "neverUsedFor": ["ADHERENCE", "QUALITY_SESSION_JUDGEMENT", "PROGRESSION", "ADAPTATION", "SAFETY"]
+  }
+ },
+ "liveHeartRate": {
+  "status": "UNAVAILABLE",
+  "reason": "NO_LIVE_HEART_RATE_CHANNEL_IN_CONTRACT",
+  "assumedFromASyncedWatch": false
+ }
+}
