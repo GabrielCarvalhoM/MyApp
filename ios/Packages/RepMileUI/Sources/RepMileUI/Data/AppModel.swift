@@ -54,15 +54,23 @@ public final class AppModel {
     public private(set) var startability: [String: Startability] = [:]
     public private(set) var pendingReports = PendingReports(count: 0, oldestQueuedAt: nil)
     public private(set) var healthStatus: HealthIngestStatus?
+    /// True while a read is in flight. Every start (planned or unplanned) fails closed while it is set: the gates shown are the previous
+    /// read's, kept on screen so a safety banner never disappears during a reload, but they are not trusted to start anything.
+    public private(set) var isLoading = false
+    /// Overlapping loads (a sheet's dismissal plus a write's own reload): only the newest one publishes.
+    private var loadGeneration = 0
 
     public init(reader: CoachingReading, writer: CoachingWriting, health: HealthIngestStatusSource, athleteName: String) {
         self.reader = reader; self.writer = writer; self.health = health; self.athleteName = athleteName
     }
 
-    /// Reads every port, then publishes everything at once: a new plan is never shown with the previous plan's gates (the gates are
-    /// cleared first, so a start during the read fails closed).
+    /// Reads every port, then publishes everything at once: a new plan is never shown with the previous plan's gates. During the read
+    /// `isLoading` makes every start fail closed (QRE R1 P1-9) while the previous gates stay visible (QRE recheck N1: clearing them made
+    /// `globalGate` nil, which opened the unplanned run and dropped the outside-scope / clinical banners for the length of the read).
     public func load() async {
-        startability = [:]
+        loadGeneration += 1
+        let generation = loadGeneration
+        isLoading = true
         let planResult = await reader.plan(week: nil)
         let newPlan = try? planResult.get()
         async let w = reader.allWeeks()
@@ -75,9 +83,11 @@ public final class AppModel {
         for s in newPlan?.week?.sessions ?? [] { gates[s.id] = await reader.startability(sessionId: s.id) }
         let pending = await reader.pendingReports()
         let hs = await health.status()
+        guard generation == loadGeneration else { return }   // a newer load is running; it publishes
         plan = newPlan; weeks = (try? nw.get()) ?? []; presentation = try? np.get(); logged = try? nl.get(); weekPlan = try? nwp.get()
         history = try? nh.get(); startability = gates; pendingReports = pending; healthStatus = hs
         route = RootRoute.from(plan: planResult)
+        isLoading = false
     }
 
     /// Parallel phase only: after an enrolment the composition root hands the reader of the state the engine captured next (A's reader
@@ -86,11 +96,16 @@ public final class AppModel {
 
     /// After a successful `eraseAccount`: nothing of the record stays in memory and the root shows the erased state.
     public func accountErased() async {
+        loadGeneration += 1   // a read still in flight must not bring the erased record back on screen
         plan = nil; weeks = []; presentation = nil; logged = nil; weekPlan = nil; history = nil; startability = [:]
+        isLoading = false
         route = .accountErased
     }
 
     public func startability(of session: PlannedSession) -> Startability { startability[session.id] ?? .notStartable(reason: .notExecutable) }
+
+    /// Whether `session` may start now: the host said `.startable` and no read is in flight.
+    public func canStart(_ session: PlannedSession) -> Bool { !isLoading && startability(of: session) == .startable }
 
     /// The persistent host gate that applies to every session (FND-ABC-04 outside scope, clock, screen required), if any.
     public var globalGate: NotStartableReason? {

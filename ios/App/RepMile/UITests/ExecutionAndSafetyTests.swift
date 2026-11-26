@@ -98,6 +98,20 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(el(app, "add-run-blocked").exists)
     }
 
+    /// Founder provisional decision (26/11): no unplanned run outside V1 scope or with a symptom screen pending (QRE/SSCTR recheck N8/N11).
+    @MainActor
+    func testUnplannedRunIsNotStartedOutsideScopeOrWithAScreenPending() {
+        for scenario in ["restart-outside-scope", "screen-required"] {
+            let app = launch(scenario)
+            app.buttons["tab-add"].tap()
+            XCTAssertTrue(app.buttons["add-run-now"].waitForExistence(timeout: 5), scenario)
+            XCTAssertFalse(app.buttons["add-run-now"].isEnabled, scenario)
+            XCTAssertTrue(el(app, "add-run-blocked").exists, scenario)
+            XCTAssertTrue(app.buttons["add-log-strength"].isEnabled, "logging what was done stays possible: \(scenario)")
+            app.terminate()
+        }
+    }
+
     @MainActor
     func testReportCanBeLeftWithoutSaving() {
         let app = launch("today")

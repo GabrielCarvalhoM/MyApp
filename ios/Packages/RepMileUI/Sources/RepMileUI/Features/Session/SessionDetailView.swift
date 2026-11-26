@@ -185,7 +185,7 @@ struct SessionDetailView: View {
         VStack(spacing: 6) {
             if done == nil, !paused {
                 PrimaryActionButton(L.f("today.start", TodayContent.title(session).lowercased(with: Fmt.locale)), fill: sport.action, textColor: sport.actionText,
-                                    enabled: startability == .startable) { onStart(session) }
+                                    enabled: model.canStart(session)) { onStart(session) }
                     .accessibilityIdentifier("session-start")
                 if case .notStartable(let r) = startability {
                     Text(L.t("reason." + r.rawValue)).rmText(.detalhe, RM.Palette.textoSecundario).multilineTextAlignment(.center)

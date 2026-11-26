@@ -98,7 +98,11 @@ struct RunReportView: View {
             .padding(.bottom, 40)
         }
         .scrollIndicators(.hidden)
-        .onAppear { minutes = max(1, recording.movingMinutes.rounded()) }
+        .onAppear {
+            minutes = max(1, recording.movingMinutes.rounded())
+            // A recording restored after a killed process may already be reported: never offer to send it a second time (QRE recheck N2).
+            if recording.ref.reportedEventId != nil, result == nil { result = .saved }
+        }
         // Closing "Não estou 100%" returns to the report (still to save or resend); it never closes the run screen.
         .sheet(isPresented: $showSigns) { NotFeeling100Flow(requireEligibility: true) }
         .confirmationDialog(L.t("report.leave.confirm"), isPresented: $confirmLeave, titleVisibility: .visible) {
@@ -154,8 +158,17 @@ struct RunReportView: View {
 
     func observation() -> AthleteObservation {
         Self.makeObservation(planned: recording.ref.sessionId.flatMap { id in recording.sessionDate.map { (id, $0) } },
-                             today: model.plan?.today ?? Fmt.deviceDay(Date()), end: recording.ref.end, completed: completed,
+                             today: Self.occurrenceDay(end: recording.ref.end, planToday: model.plan?.today), end: recording.ref.end, completed: completed,
                              minutes: minutes, rpe: rpe, stop: stopped ? stopReason : nil, effort: effort)
+    }
+
+    /// The day an unplanned run happened: the device-local day of the recording's end, not the day it is reported (QRE recheck N5: a run
+    /// ending at 23:50 reported after midnight, or a restored recording, was filed under the wrong day). The plan's own "today" is used
+    /// only when it is that same day.
+    static func occurrenceDay(end: Date, planToday: String?, now: Date = Date()) -> String {
+        let endDay = Fmt.deviceDay(end)
+        if let planToday, endDay == Fmt.deviceDay(now) { return planToday }
+        return endDay
     }
 
     /// The report the form produces: only the athlete's statements. There is no parameter for a distance: the iPhone's measurement cannot
@@ -179,7 +192,8 @@ struct RunReportView: View {
         let id = outcome.answer.recorded?.first
         let kept = id.map { outcome.kept.contains($0) } ?? false
         if kept, let id { recorder.markReported(eventId: id) }
-        if outcome.answer.warningSignScreen?.status.raw == "REQUIRED" { withAnimation { result = .screenRequired }; return }
+        // A screen required with the report NOT kept stays resendable (QRE recheck N7): "Concluir" would close the recording and lose it.
+        if kept, outcome.answer.warningSignScreen?.status.raw == "REQUIRED" { withAnimation { result = .screenRequired }; return }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { result = kept ? .saved : .notKept }
     }
 }

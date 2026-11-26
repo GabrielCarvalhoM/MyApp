@@ -9,11 +9,13 @@ struct AddWorkoutSheet: View {
     /// A persistent host gate (hold, outside V1 scope, clinical, screen required): no live run starts (fail closed, pending a Product/SSCTR
     /// ruling on unplanned runs under a gate).
     var runBlockedReason: String?
+    /// A read is in flight: the gate is not known yet, so the run waits (fail closed) without claiming a reason.
+    var runPending = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(L.t("add.title")).rmText(.titulo)
-            PrimaryActionButton(L.t("add.runNow"), icon: .corrida, fill: RM.Palette.acaoCorrida, textColor: RM.Palette.acaoCorridaTexto, enabled: runBlockedReason == nil) { dismiss(); startRun() }
+            PrimaryActionButton(L.t("add.runNow"), icon: .corrida, fill: RM.Palette.acaoCorrida, textColor: RM.Palette.acaoCorridaTexto, enabled: runBlockedReason == nil && !runPending) { dismiss(); startRun() }
                 .accessibilityIdentifier("add-run-now")
             if let r = runBlockedReason { Text(L.f("add.runNow.blocked", r)).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("add-run-blocked") }
             SecondaryPillButton(L.t("add.logDone") + " · " + L.t("add.logStrength"), icon: .forca) { dismiss(); logStrength() }

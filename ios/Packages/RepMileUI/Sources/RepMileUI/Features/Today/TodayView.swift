@@ -115,7 +115,7 @@ struct TodayView: View {
     private func actions(_ c: TodayContent) -> some View {
         VStack(spacing: 10) {
             if let next = c.next {
-                let startable = c.startability == .startable
+                let startable = c.startability == .startable && !model.isLoading
                 PrimaryActionButton(L.f("today.start", next.title.lowercased(with: Fmt.locale)), fill: next.sport.action, textColor: next.sport.actionText,
                                     enabled: startable) { startSession(next.session) }
                     .accessibilityIdentifier("today-start")

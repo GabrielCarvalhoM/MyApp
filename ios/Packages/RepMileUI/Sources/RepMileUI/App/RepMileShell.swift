@@ -84,11 +84,17 @@ struct AppTabs: View {
 
     /// Defence in depth: a session starts only when the host says `.startable` (the buttons are already gated).
     private func start(_ s: PlannedSession) {
-        guard model.startability(of: s) == .startable else { return }
+        guard model.canStart(s) else { return }
         if s.sport.raw == "RUN" { runLaunch = Launch(session: s) } else { sheet = .strength(Launch(session: s)) }
     }
     private func then(_ action: @escaping () -> Void) { afterDismiss = action }
-    /// The gate that stops a live unplanned run (a hold or a persistent host gate).
+    /// Defence in depth, as `start(_:)`: the gate is read again when the sheet is gone (a reload may have raised it meanwhile).
+    private func startUnplannedRun() {
+        guard !model.isLoading, runGate == nil else { return }
+        runLaunch = Launch(session: nil)
+    }
+    /// The gate that stops a live unplanned run (a hold or a persistent host gate). Founder provisional decision (26/11) and SSCTR
+    /// recheck ruling on QRE P1-11: a clinical block, outside V1 scope or a pending symptom assessment; nothing else is added here.
     private var runGate: NotStartableReason? {
         if model.plan?.hold != nil || model.plan?.state == .blocked { return .blocked }
         if let g = model.globalGate, [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired].contains(g) { return g }
@@ -130,8 +136,8 @@ struct AppTabs: View {
             if let next { next() } else { Task { await model.load() } }
         }) { which in
             switch which {
-            case .add: AddWorkoutSheet(startRun: { then { runLaunch = Launch(session: nil) } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
-                                       runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) })
+            case .add: AddWorkoutSheet(startRun: { then { startUnplannedRun() } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
+                                       runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) }, runPending: model.isLoading)
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
             case .notFeeling: NotFeeling100Flow()
             case .readiness: ReadinessFlow()
