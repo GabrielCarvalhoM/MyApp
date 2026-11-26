@@ -45,6 +45,11 @@ sua frente.
 
 ## 3. iPhone físico
 
+**Simulador é o padrão** (decisão do fundador, 26/11): build, unit, XCUITest, validação visual e integração rodam no iOS Simulator. O iPhone
+físico só entra em **checkpoints de hardware agrupados**, pedidos ao fundador nesse momento (lista viva: `specs/v1/CONTINUITY.md` →
+"Checkpoint de hardware"). Teste de aparelho não executado nunca conta como aprovado: o campo Validação fica em "Simulador".
+
+
 Só por `tools/device-lock/with-device.sh <coachinghost|healthkit|swiftui|integration> [--wait] -- <comando>` (exit 75 = em uso). Os
 scripts de orquestração nunca falam com o aparelho. Evidência do aparelho é marcada `target: device` e nunca somada à do simulador.
 Dados reais de saúde: só contagens em log, nada no repositório.

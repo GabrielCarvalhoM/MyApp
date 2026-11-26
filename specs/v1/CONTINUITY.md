@@ -5,15 +5,22 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 
 **Atualizado:** 2026-11-26 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
+## Pausa
+_Nenhuma pausa ativa._ Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada). Ao pausar, esta seção
+registra data/hora, tarefas e seu estado, commits WIP, processos interrompidos, últimos testes válidos e o próximo passo exato.
+
 ## Agora
 
 | | |
 |---|---|
-| Concluídas | #31 Verified · frente C integrada em `claude/v1-ios-integration` (`cbf051f`, PR #42; #4–#13 = Integrated, validação simulador/sintético) · #32.1 (PR #43) e #32.2 (PR #44) na frente C (`0a05d95`) · specs/v1 · gate de 350 linhas · ruleset da integração (PR + `CI`) |
-| Em andamento | nada em execução |
-| Próxima pronta | **#32.3** ViewModels de segurança (`NotFeeling100ViewModel`, `ReadinessViewModel`, ARCHITECTURE §4 #3) — absorve QRE N8 (duplo envio na prontidão) e SSCTR N5/N6 de #39 · depois **#38** (regra SSCTR registrada na issue) |
-| Depois | PR C → integração com #32.1/#32.2 (C está à frente da integração) · #41 · #39 · #37 (precisa da escolha de UX "fiz como prescrito") |
-| Regra nova | `claude/v1-ios-integration` só por PR com `CI` verde (inclusive a orquestração) |
+| Integração `claude/v1-ios-integration` | `7255221` = orquestração + A (#50) + B (#51) + C até `24c9096` (#42) + composição real (#60, #16). Visualização em `7255221` |
+| Frente C `claude/v1-ios-swiftui` | `5a4872a`: #32.1–32.3, #32.5–32.8, #38, #41 (todos revisados); **à frente da integração**, falta o PR C → integração |
+| Em merge | **#61** (PR #64): ponta mesclada `210d567` em teste (RepMile-INT); revisão QRE + verificação do #61b READY |
+| Em verificação | **#58/#59** (PR #65, `a3c56f6`): verificação SSCTR + QRE do #59b em andamento |
+| Aguardando | **#37** (PR #53, `3454551`): condições aplicadas; entra depois do #61, com nova suíte (o 35/36 era o teste instável de onboarding, corrigido no #61) |
+| Próximas | PR C → integração (com #37/#58/#59/#61) e tirar o contorno `chip-12` do teste ao vivo · **#66** (P0, onboarding declarado; aguarda o fundador confirmar o princípio) · #63 (background delivery) · #49 (condições de A) · #48 (P3 de B) · #39 · #62 |
+| Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
+| Simuladores | RepMile-INT (#61 merge/integração), RepMile-C-2 (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
 
 ## Branches e worktrees
 
@@ -50,6 +57,18 @@ Outras worktrees (`myapp-p0-ios`, `myapp-v1-abc-foundation`, `myapp-v1-final`, `
 | C inc. 10 | verificação independente | READY_WITH_CONDITIONS (F1 banner persistente, F2 teste) | F1/F2/F3 aplicados em `f8ed507` |
 | #32.1 | revisão independente | READY (só P3: curva de animação, Task da View) | P3 anotados |
 | #32.2 | revisão independente | READY (só P3: animação, 4 testes extras de VM) | P3 anotados |
+
+## Visualização do fundador (Xcode)
+Worktree só de leitura `~/.codex/worktrees/myapp-v1-viewer/MyApp` (destacada, nunca usada por agentes). Abrir
+`~/.codex/worktrees/myapp-v1-viewer/MyApp/ios/App/RepMile.xcodeproj`. Atualizar com `tools/orchestration/viewer.sh` **depois** de cada
+integração validada (CI verde e suíte do simulador no mesmo conteúdo). A worktree original da sessão C (`myapp-v1-ios-swiftui`) está
+parada em `a8aefa0` e não deve ser usada para ver o app.
+
+## Checkpoint de hardware (iPhone, agrupado; pedir ao fundador só quando a lista estiver pronta)
+- [ ] Corrida real com GPS (RunRecorder), pausa, morte do processo e retomada; #38 retomada sob bloqueio (#19)
+- [ ] HealthKit: autorização e leitura real com o build integrado; background delivery com o app fechado (B R2-03)
+- [ ] CoachingHost no app integrado: aparelho bloqueado, reinstalação (já provados no lab de A; repetir no app)
+- [ ] Desempenho de scroll e animação; Live Activity (#35)
 
 ## Bloqueios
 - Integração A/B: aguarda as entregas finais revisadas das sessões A e B.

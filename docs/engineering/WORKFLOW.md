@@ -77,3 +77,41 @@ Bug, Technical Debt, Integration Task) pedem exatamente isso. Tarefa pequena nã
 `tools/orchestration/backlog/V1_INITIAL_BACKLOG.md` → `node tools/orchestration/backlog.mjs --apply` (idempotente pelo marcador
 `backlog-key`). O trabalho que A, B e C já executavam tem uma issue de acompanhamento por frente; os próximos incrementos são issues
 próprias.
+
+## 7. Pausa segura e retomada
+
+Comandos do fundador. O estado nunca depende da conversa: vive no Git, no GitHub e em [`specs/v1/CONTINUITY.md`](../../specs/v1/CONTINUITY.md).
+Sem daemon, sem nada em execução depois da confirmação.
+
+### "PAUSAR REPMILE"
+
+1. **Parar de iniciar:** nenhuma issue, agente, build ou teste novo a partir desse momento.
+2. **Inventariar o que roda:** `tools/orchestration/pause-check.sh` (processos de build/teste/git/simulador, worktrees sujas, commits em nenhuma branch remota) e a lista de agentes em background da sessão.
+3. **Encerrar no ponto seguro:**
+   - deixar terminar só o que é curto e atômico (um `git commit`/`merge`/`push` em curso, uma escrita de arquivo);
+   - interromper builds, suítes de simulador e CI locais longos: o resultado parcial não conta como evidência e o teste é refeito na retomada;
+   - pedir aos agentes implementadores que parem e commitem;
+   - interromper os revisores, cuja revisão é refeita.
+4. **Checkpoint no Git:**
+   - alteração incompleta vira commit `WIP checkpoint (pausa): <o que falta>` na própria branch de incremento, e o push vai para essa branch;
+   - nunca na branch da frente ou na de integração, nunca force push, nunca PR marcado como pronto;
+   - o PR existente recebe um comentário dizendo que o topo é WIP;
+   - um arquivo que não deve ser commitado fica listado no checkpoint com o caminho.
+5. **Registrar cada tarefa** com um destes estados: concluída · incompleta (o que falta) · aguardando revisão · aguardando CI · aguardando o fundador.
+6. **Atualizar `specs/v1/CONTINUITY.md`:**
+   - na seção "Pausa": data e hora, commits, branches, worktrees, PRs, issues, últimos testes válidos (comando, resultado, commit), decisões, processos interrompidos e o **próximo passo exato**;
+   - fazer commit e push na branch de orquestração. O PR para a integração fica para a retomada, porque a integração exige CI.
+7. **Quadro:** um comentário de pausa nas issues em andamento (`board.mjs evidence` ou `gh issue comment`). O status real é mantido: nunca Verified ou Blocked por causa da pausa.
+8. **Verificar:** `pause-check.sh` precisa dizer `PAUSE_CHECK: SAFE`. Commits locais que estão no disco não impedem o desligamento, mas ficam registrados.
+9. **Responder só então:** **"REPMILE PAUSADO — SEGURO PARA DESLIGAR"**. Nada é retomado automaticamente.
+
+### "RETOMAR REPMILE"
+
+1. Ler `specs/v1/CONTINUITY.md` (seção "Pausa" primeiro) e só as specs/issues citadas no próximo passo.
+2. `git fetch --prune` · `node tools/orchestration/status.mjs` · `git worktree list` · `gh pr list` · CI dos PRs abertos.
+3. Comparar com o checkpoint: commits novos, PRs mesclados, CI que terminou, decisões do fundador nas issues.
+4. **Reaproveitar**:
+   - revisões concluídas e testes registrados no checkpoint continuam válidos para o mesmo commit;
+   - refazer só o que foi interrompido, ou o que mudou de commit.
+5. **Retomar as tarefas incompletas** a partir do commit WIP, com um agente novo que recebe só: a issue, a branch, o commit WIP, o que falta e os comandos de teste.
+6. Voltar ao ciclo autônomo (§1–§5) a partir do próximo passo registrado.
