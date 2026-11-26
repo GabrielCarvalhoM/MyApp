@@ -24,6 +24,35 @@ final class NotFeeling100ViewModelTests: XCTestCase {
         XCTAssertTrue(vm.answers.isEmpty, "nothing is preset")
     }
 
+    /// QRE #32.3: tap A, then B; B's set arrives first and A's late. The questions are B's, never the first set to arrive.
+    func testTheLatestConditionTapWins() async throws {
+        let reader = DelayedSignReader(delays: ["MILD_ILLNESS": .milliseconds(150), "MINOR_DISCOMFORT": .milliseconds(10)])
+        let vm = viewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store))
+        let first = Task { await vm.choose(.mildIllness) }
+        for _ in 0..<100 where reader.journal.entries.isEmpty { await Task.yield() }
+        await vm.choose(.minorDiscomfort)
+        XCTAssertEqual(vm.phase, .answering(.minorDiscomfort, try Safety.set("MINOR_DISCOMFORT")))
+        vm.answers["feverOrChills"] = false
+        await first.value
+        XCTAssertEqual(vm.phase, .answering(.minorDiscomfort, try Safety.set("MINOR_DISCOMFORT")), "the late set of the earlier tap is dropped")
+        XCTAssertEqual(vm.answers, ["feverOrChills": false], "answers already given are not reset by the late set")
+        XCTAssertEqual(reader.journal.entries.count, 2)
+    }
+
+    /// The reverse order: A's set arrives first while B is pending. A is dropped; the screen waits for B.
+    func testAnEarlierTapResolvingFirstIsDropped() async throws {
+        let reader = DelayedSignReader(delays: ["MILD_ILLNESS": .milliseconds(50), "MINOR_DISCOMFORT": .milliseconds(250)])
+        let vm = viewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store))
+        let first = Task { await vm.choose(.mildIllness) }
+        for _ in 0..<100 where reader.journal.entries.isEmpty { await Task.yield() }
+        let second = Task { await vm.choose(.minorDiscomfort) }
+        for _ in 0..<100 where reader.journal.entries.count < 2 { await Task.yield() }
+        await first.value
+        XCTAssertEqual(vm.phase, .choosingCondition, "the earlier condition's set never reaches the screen")
+        await second.value
+        XCTAssertEqual(vm.phase, .answering(.minorDiscomfort, try Safety.set("MINOR_DISCOMFORT")))
+    }
+
     func testUnansweredSignsAreOmittedAndNoEligibilityWhenNotAsked() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let vm = viewModel(writer: w)

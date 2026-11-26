@@ -29,6 +29,8 @@ final class NotFeeling100ViewModel {
     private let writer: CoachingWriting
     private let planToday: () -> String?
     private let now: () -> Date
+    /// The condition last tapped whose set is still loading.
+    @ObservationIgnored private var pendingCondition: WellbeingCondition?
 
     init(reader: CoachingReading, writer: CoachingWriting, requireEligibility: Bool = false, planToday: @escaping () -> String?,
          now: @escaping () -> Date = Date.init) {
@@ -47,10 +49,15 @@ final class NotFeeling100ViewModel {
     /// The intents the engine accepts for the chosen condition (an illness offers no near-normal week).
     var intents: [WellbeingIntent] { questionSet?.intents.compactMap(WellbeingIntent.init(rawValue:)) ?? [] }
 
-    /// Reads the engine's set for `condition`; a failed read keeps the condition list on screen.
+    /// Reads the engine's set for `condition`; a failed read keeps the condition list on screen. The latest tap wins: a set that arrives
+    /// for a condition no longer pending is dropped, so the questions shown are always those of the condition last chosen.
     func choose(_ condition: WellbeingCondition) async {
         guard case .choosingCondition = phase else { return }
-        guard case .success(let set) = await reader.warningSignSet(condition: condition.rawValue), case .choosingCondition = phase else { return }
+        pendingCondition = condition
+        let read = await reader.warningSignSet(condition: condition.rawValue)
+        guard pendingCondition == condition, case .choosingCondition = phase else { return }
+        pendingCondition = nil
+        guard case .success(let set) = read else { return }
         answers = [:]
         phase = .answering(condition, set)
     }

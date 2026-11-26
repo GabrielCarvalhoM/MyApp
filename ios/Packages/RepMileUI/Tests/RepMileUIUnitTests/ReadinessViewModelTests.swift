@@ -23,6 +23,17 @@ final class ReadinessViewModelTests: XCTestCase {
         XCTAssertTrue(vm.answers.isEmpty)
     }
 
+    func testTheSetIsReadOnceAndAnswersSurviveAReappearance() async throws {
+        let reader = DelayedSignReader(delays: [:])
+        let vm = ReadinessViewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store))
+        await vm.load()
+        vm.recovered = true
+        await vm.load()
+        XCTAssertEqual(reader.journal.entries.count, 1)
+        XCTAssertEqual(vm.phase, .answering(try Safety.set("READINESS")))
+        XCTAssertEqual(vm.recovered, true)
+    }
+
     func testNothingIsSentUntilRecoveredIsAnswered() async {
         let w = FixtureCoachingWriter(store: Repo.store)
         let vm = await loaded(w)

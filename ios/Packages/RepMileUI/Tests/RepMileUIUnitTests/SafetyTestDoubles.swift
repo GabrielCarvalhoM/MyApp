@@ -56,3 +56,27 @@ final class ScriptedSubmitWriter: CoachingWriting {
     func eraseAccount() async -> WriteOutcome { none }
     func acknowledgeRecordLoss() async -> WriteOutcome { none }
 }
+
+/// The fixture reader with a delay per condition on `warningSignSet` (reads resolving out of order), counting its sign-set reads.
+final class DelayedSignReader: CoachingReading {
+    let base: FixtureCoachingReader
+    let delays: [String: Duration]
+    let journal = RequestJournal()
+
+    init(delays: [String: Duration], base: FixtureCoachingReader = Safety.reader()) { self.base = base; self.delays = delays }
+
+    func warningSignSet(condition: String) async -> Result<WarningSignQuestionSet, BoundaryError> {
+        journal.add("warningSignSet", [condition])
+        if let d = delays[condition] { try? await Task.sleep(for: d) }
+        return await base.warningSignSet(condition: condition)
+    }
+    func plan(week: Int?) async -> Result<PlanView, BoundaryError> { await base.plan(week: week) }
+    func allWeeks() async -> Result<[Week], BoundaryError> { await base.allWeeks() }
+    func presentation() async -> Result<PresentationSnapshot, BoundaryError> { await base.presentation() }
+    func history() async -> Result<HistoryView, BoundaryError> { await base.history() }
+    func decision(id: String) async -> Result<DecisionDetail, BoundaryError> { await base.decision(id: id) }
+    func loggedEntries() async -> Result<LoggedEntries, BoundaryError> { await base.loggedEntries() }
+    func weekPlan() async -> Result<WeekPlanProjection, BoundaryError> { await base.weekPlan() }
+    func startability(sessionId: String) async -> Startability { await base.startability(sessionId: sessionId) }
+    func pendingReports() async -> PendingReports { await base.pendingReports() }
+}
