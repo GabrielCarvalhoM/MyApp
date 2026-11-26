@@ -51,6 +51,18 @@ Outras worktrees (`myapp-p0-ios`, `myapp-v1-abc-foundation`, `myapp-v1-final`, `
 | #32.1 | revisão independente | READY (só P3: curva de animação, Task da View) | P3 anotados |
 | #32.2 | revisão independente | READY (só P3: animação, 4 testes extras de VM) | P3 anotados |
 
+## Visualização do fundador (Xcode)
+Worktree só de leitura `~/.codex/worktrees/myapp-v1-viewer/MyApp` (destacada, nunca usada por agentes). Abrir
+`~/.codex/worktrees/myapp-v1-viewer/MyApp/ios/App/RepMile.xcodeproj`. Atualizar com `tools/orchestration/viewer.sh` **depois** de cada
+integração validada (CI verde e suíte do simulador no mesmo conteúdo). A worktree original da sessão C (`myapp-v1-ios-swiftui`) está
+parada em `a8aefa0` e não deve ser usada para ver o app.
+
+## Checkpoint de hardware (iPhone, agrupado; pedir ao fundador só quando a lista estiver pronta)
+- [ ] Corrida real com GPS (RunRecorder), pausa, morte do processo e retomada; #38 retomada sob bloqueio (#19)
+- [ ] HealthKit: autorização e leitura real com o build integrado; background delivery com o app fechado (B R2-03)
+- [ ] CoachingHost no app integrado: aparelho bloqueado, reinstalação (já provados no lab de A; repetir no app)
+- [ ] Desempenho de scroll e animação; Live Activity (#35)
+
 ## Bloqueios
 - Integração A/B: aguarda as entregas finais revisadas das sessões A e B.
 - Decisões do fundador: [PRODUCT_SCOPE §4](PRODUCT_SCOPE.md#4-decisões-pendentes-do-fundador).

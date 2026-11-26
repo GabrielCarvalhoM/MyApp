@@ -33,4 +33,5 @@ node tools/orchestration/board.mjs evidence 42 "<link do run>" --validation Simu
 node tools/orchestration/board.mjs create --title "[C] …" --body-file nota.md --type Bug\ Fix --area "iOS Frontend" --front C --priority P1 --release V1
 tools/orchestration/sim.sh all                           # build → simulador → screenshot → testes → manifest.json
 node tools/orchestration/swift-size.mjs                  # limite de 350 linhas por arquivo Swift (legado inventariado só avisa)
+tools/orchestration/viewer.sh                            # worktree de visualização do fundador = última integração validada (Xcode)
 ```
