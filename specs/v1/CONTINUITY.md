@@ -13,11 +13,14 @@ registra data/hora, tarefas e seu estado, commits WIP, processos interrompidos, 
 
 | | |
 |---|---|
-| Concluídas | C integrada (PR #42) · #32.1/#32.2 na frente C · #31 Verified · orquestração na integração (PR #45) |
-| Em revisão | **PR #50** (A → integração) e **PR #51** (B → integração): revisões independentes READY_WITH_CONDITIONS, sem P0/P1, condições em #49 (A), #47 (decisão) e #48 (B); aguardando CI · **PR #46** (#38 retomada sob bloqueio → C): revisão independente em andamento |
-| Em implementação | #37 (worktree `myapp-v1-c-i37`, simulador RepMile-C-2) · #32.3 (worktree `myapp-v1-c-i32c`, simulador RepMile-C-3) |
-| Próxima | **#16** raiz de composição real (`ios/App/Composition`): proxy para a dependência circular A↔B (`CoachingHost.open(queueControl:)` × `HealthKitIngestor(sink:)`), id de atleta local aleatório (CCP-A-05), linkar CoachingHost e HealthKitIngest no app, entitlement e textos de permissão do HealthKit, modo fixture mantido para `-scenario`; uma instância de `CoachingHost` por atleta (condição de #49) → depois #17, #18, #19 |
-| Simuladores | RepMile-C-SwiftUI (orquestrador), RepMile-C-2 (#37), RepMile-C-3 (#32.3) |
+| Integração `claude/v1-ios-integration` | `7255221` = orquestração + A (#50) + B (#51) + C até `24c9096` (#42) + composição real (#60, #16). Visualização em `7255221` |
+| Frente C `claude/v1-ios-swiftui` | `5a4872a`: #32.1–32.3, #32.5–32.8, #38, #41 (todos revisados); **à frente da integração**, falta o PR C → integração |
+| Em merge | **#61** (PR #64): ponta mesclada `210d567` em teste (RepMile-INT); revisão QRE + verificação do #61b READY |
+| Em verificação | **#58/#59** (PR #65, `a3c56f6`): verificação SSCTR + QRE do #59b em andamento |
+| Aguardando | **#37** (PR #53, `3454551`): condições aplicadas; entra depois do #61, com nova suíte (o 35/36 era o teste instável de onboarding, corrigido no #61) |
+| Próximas | PR C → integração (com #37/#58/#59/#61) e tirar o contorno `chip-12` do teste ao vivo · **#66** (P0, onboarding declarado; aguarda o fundador confirmar o princípio) · #63 (background delivery) · #49 (condições de A) · #48 (P3 de B) · #39 · #62 |
+| Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
+| Simuladores | RepMile-INT (#61 merge/integração), RepMile-C-2 (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
 
 ## Branches e worktrees
 
