@@ -1,0 +1,47 @@
+{
+  "target": "simulator",
+  "command": "all",
+  "result": "tests_failed",
+  "label": "pipeline validation (existing P0DeviceHost, not the RepMile app)",
+  "generatedAt": "2026-11-26T14:07:01.629Z",
+  "git": {
+    "branch": "claude/v1-engineering-orchestration",
+    "commit": "065178fa91bd4049880466166b186360c6339682",
+    "uncommittedFiles": 1
+  },
+  "project": "audits/v1-hr5-runna-parity-2026-11-25/native/ios/DeviceHost/P0DeviceHost.xcodeproj",
+  "scheme": "P0DeviceHost",
+  "simulator": {
+    "name": "iPhone 18 Pro",
+    "runtime": "iOS-27-2",
+    "udid": "3ADA12D0-485A-4FA0-A254-8E092606BB19"
+  },
+  "xcode": "Xcode 27.2 Build version 27B52",
+  "appearance": "dark",
+  "locale": "en_US",
+  "bundleId": "fit.vilumo.p0.devicehost.",
+  "artifacts": [
+    "Tests.xcresult",
+    "app.log",
+    "build.log",
+    "launch.txt",
+    "screenshot-iPhone-18-Pro-en_US-dark.png",
+    "test-summary.json",
+    "test-tree.json",
+    "test.log"
+  ],
+  "tests": {
+    "result": "Failed",
+    "total": 29,
+    "passed": 22,
+    "failed": 1,
+    "skipped": 6,
+    "failures": [
+      {
+        "test": "testConcurrentWriters()",
+        "target": "P0DeviceTests",
+        "message": "XCTAssertEqual failed: (\"nil\") is not equal to (\"Optional(\"NSFileProtectionCompleteUntilFirstUserAuthentication\")\")"
+      }
+    ]
+  }
+}
