@@ -223,6 +223,7 @@ session.label.sets|séries|sets|series
 move.ask|Você avisa que não pode treinar %1$@ (%2$@). O treinador reorganiza a semana e mostra a proposta; nada muda até você confirmar.|You tell us you can't train %1$@ (%2$@). The coach rearranges the week and shows a proposal; nothing changes until you confirm.|Avisas que no puedes entrenar %1$@ (%2$@). El entrenador reorganiza la semana y muestra la propuesta; nada cambia hasta que confirmes.
 move.send|Avisar o treinador|Tell the coach|Avisar al entrenador
 move.proposed|Proposta do treinador para a semana. Confirme para valer.|The coach's proposal for the week. Confirm for it to count.|Propuesta del entrenador para la semana. Confirma para que cuente.
+move.proposal.unavailable|A mudança ainda não está disponível para revisar.|The change isn't available to review yet.|El cambio aún no está disponible para revisar.
 move.accept|Confirmar a mudança|Confirm the change|Confirmar el cambio
 move.later|Decidir depois|Decide later|Decidir después
 move.accepted|Plano atualizado.|Plan updated.|Plan actualizado.
@@ -338,6 +339,14 @@ changes.notFeeling.detail|Cansaço, indisposição, incômodo ou doença leve|Ti
 changes.cantDay|Não posso em um dia|I can't on one day|No puedo un día
 changes.cantDay.detail|Escolha o treino no Plano e toque em “Não posso neste dia”.|Pick the session in Plan and tap “I can't on this day”.|Elige el entrenamiento en Plan y toca “No puedo este día”.
 strength.minutes|Minutos de treino|Training minutes|Minutos de entrenamiento
+strength.hint|Só entram no registro as séries que você confirmar: toque na série para marcá-la como prescrita ou ajuste as repetições. A carga é sempre digitada por você.|Only the sets you confirm are logged: tap a set to mark it as prescribed, or adjust its reps. You always type the load yourself.|Solo se registran las series que confirmes: toca la serie para marcarla como indicada o ajusta sus repeticiones. La carga siempre la escribes tú.
+strength.asPrescribed|Fiz como prescrito|I did it as prescribed|Lo hice como estaba indicado
+strength.set|%1$@, série %2$@|%1$@, set %2$@|%1$@, serie %2$@
+strength.set.doneReps|registrada, %@ repetições|logged, %@ reps|registrada, %@ repeticiones
+strength.set.doneOneRep|registrada, 1 repetição|logged, 1 rep|registrada, 1 repetición
+strength.set.notDone|não registrada|not logged|no registrada
+strength.reps.label|%1$@, série %2$@, repetições|%1$@, set %2$@, reps|%1$@, serie %2$@, repeticiones
+strength.needsSet|Confirme ao menos uma série para salvar.|Confirm at least one set to save.|Confirma al menos una serie para guardar.
 history.empty|Nada registrado ainda. Seus treinos aparecem aqui depois de salvos.|Nothing logged yet. Your sessions appear here once saved.|Nada registrado aún. Tus entrenamientos aparecen aquí una vez guardados.
 history.unplannedRun|Corrida avulsa|Unplanned run|Carrera libre
 history.unplannedStrength|Força avulsa|Unplanned strength|Fuerza libre
@@ -478,6 +487,7 @@ profile.consent.LEARNING.detail|Uso anônimo para melhorar o treinador.|Anonymou
 profile.consent.grant|Dar consentimento|Give consent|Dar consentimiento
 profile.consent.revoke|Retirar consentimento|Withdraw consent|Retirar consentimiento
 profile.consent.done|Registrado.|Recorded.|Registrado.
+profile.consent.failed|Sua escolha não foi registrada. Tente de novo.|Your choice was not recorded. Try again.|Tu elección no se registró. Inténtalo de nuevo.
 profile.eraseHealth|Apagar meus dados de saúde|Erase my health data|Borrar mis datos de salud
 profile.eraseHealth.detail|Apaga os sinais de saúde informados. Apagar não é estar pronto para treinar.|Erases the health signals you entered. Erasing is not being ready to train.|Borra las señales de salud informadas. Borrar no es estar listo para entrenar.
 profile.eraseHealth.confirm|Apagar os dados de saúde?|Erase health data?|¿Borrar los datos de salud?
@@ -504,6 +514,10 @@ goal.run.PERFORMANCE|Correr mais rápido|Run faster|Correr más rápido
 goal.run.REGULAR|Correr com regularidade|Run regularly|Correr con regularidad
 goal.run.GENERAL|Saúde e bem-estar|Health and well-being|Salud y bienestar
 ob.event.title|Qual prova e quando?|Which race and when?|¿Qué carrera y cuándo?
+ob.event.date|Data da prova|Race date|Fecha de la carrera
+ob.event.date.choose|Escolher|Choose|Elegir
+ob.event.date.confirm|Usar esta data|Use this date|Usar esta fecha
+ob.event.date.required|Escolha a data da prova para continuar.|Choose the race date to continue.|Elige la fecha de la carrera para continuar.
 ob.strength.title|E da força?|And from strength?|¿Y de la fuerza?
 goal.strength.RUNNING_SUPPORT|Força para correr melhor|Strength to run better|Fuerza para correr mejor
 goal.strength.STRENGTH|Ficar mais forte|Get stronger|Ponerme más fuerte
@@ -529,6 +543,7 @@ ob.schedule.strengthMinutes|Minutos por treino de força|Minutes per strength se
 ob.schedule.longMinutes|Minutos do longão|Long-run minutes|Minutos de la tirada larga
 ob.weeks|Duração do plano|Plan length|Duración del plan
 ob.weeks.value|%@ semanas|%@ weeks|%@ semanas
+ob.weeks.required|Escolha a duração do plano para continuar.|Choose the plan length to continue.|Elige la duración del plan para continuar.
 ob.equipment.title|O que você tem para treinar força?|What do you have for strength?|¿Qué tienes para entrenar fuerza?
 equipment.BARBELL|Barra|Barbell|Barra
 equipment.RACK|Rack|Rack|Rack
@@ -564,6 +579,18 @@ ob.outsideScope.review|Revisar minhas respostas|Review my answers|Revisar mis re
 ob.clinical.title|Antes, uma avaliação profissional|First, a professional assessment|Antes, una evaluación profesional
 ob.clinical.body.interim|Você informou dor, lesão, doença ou outra preocupação de saúde. Procure uma avaliação profissional; o plano não é montado por enquanto.|You reported pain, injury, illness or another health concern. Please get a professional assessment; the plan isn't built for now.|Informaste dolor, lesión, enfermedad u otra preocupación de salud. Busca una evaluación profesional; por ahora no se arma el plan.
 ob.needsInput|Falta uma resposta para montar o plano. Revise os passos e tente de novo.|One answer is missing to build the plan. Review the steps and try again.|Falta una respuesta para armar el plan. Revisa los pasos e inténtalo de nuevo.
+ob.invalidInput.title|Algumas respostas não combinam entre si|Some answers don't fit together|Algunas respuestas no encajan entre sí
+ob.invalidInput.body|Com essas respostas juntas, o plano não pode ser montado. Revise e tente de novo.|With these answers together, the plan can't be built. Review them and try again.|Con estas respuestas juntas no se puede armar el plan. Revísalas e inténtalo de nuevo.
+ob.invalidInput.steps|Revise: %@|Review: %@|Revisa: %@
+ob.invalidInput.action|Revisar respostas|Review answers|Revisar respuestas
+ob.stepName.age|Idade|Age|Edad
+ob.stepName.goals|Objetivos|Goals|Objetivos
+ob.stepName.experience|Experiência|Experience|Experiencia
+ob.stepName.schedule|Sua semana|Your week|Tu semana
+ob.stepName.equipment|Equipamento|Equipment|Equipamiento
+ob.stepName.anchor|Resultado recente|Recent result|Resultado reciente
+ob.stepName.care|Cuidados|Care|Cuidados
+ob.stepName.consents|Consentimentos|Consents|Consentimientos
 weekday.0|Seg|Mon|Lun
 weekday.1|Ter|Tue|Mar
 weekday.2|Qua|Wed|Mié

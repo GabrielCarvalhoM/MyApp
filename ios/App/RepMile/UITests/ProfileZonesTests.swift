@@ -80,6 +80,39 @@ final class ProfileZonesTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Os limites precisam subir de Z1 a Z4."].waitForExistence(timeout: 5))
     }
 
+    /// #58: after "salvo" the model is read again and the zones screen is drawn from that read. The fixture reader is static per scenario, so
+    /// the re-read returns the same capture: this asserts the screen after the reload still shows the engine's zones, not the new values.
+    @MainActor
+    func testSavedMaximumReadsTheZonesAgain() {
+        let app = openZones("zones-age30")
+        app.buttons["hr-enter-max"].tap()
+        let f = app.textFields["hr-max-field"]
+        XCTAssertTrue(f.waitForExistence(timeout: 5))
+        f.tap(); f.typeText("195")
+        app.buttons["hr-save"].tap()
+        XCTAssertTrue(app.staticTexts["Salvo. As zonas passam a usar o que você informou."].waitForExistence(timeout: 5))
+        app.buttons["Fechar"].firstMatch.tap()
+        XCTAssertTrue(el(app, "hr-zones").waitForExistence(timeout: 5))
+        XCTAssertTrue(el(app, "hr-zone-Z2").label.contains("124–153"), "the re-read capture (static per scenario)")
+        attach(app, "71 — depois de salvar, relido")
+    }
+
+    /// #58: a recorded consent says "Registrado." and no error; the failure path (no capture refuses a consent) is covered by unit tests.
+    @MainActor
+    func testRecordedConsentIsShownWithoutError() {
+        let app = launch("today")
+        XCTAssertTrue(app.buttons["open-profile"].waitForExistence(timeout: 10))
+        app.buttons["open-profile"].tap()
+        let revoke = app.buttons["consent-revoke-LEARNING"]
+        XCTAssertTrue(revoke.waitForExistence(timeout: 5))
+        while !revoke.isHittable { app.swipeUp() }
+        revoke.tap()
+        XCTAssertTrue(app.staticTexts["Registrado."].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["consent-revoke-LEARNING"].exists)
+        XCTAssertFalse(el(app, "consent-failed-LEARNING").exists)
+        attach(app, "70 — consentimento registrado")
+    }
+
     @MainActor
     func testEraseAccountReachesTheErasedState() {
         let app = launch("today")
