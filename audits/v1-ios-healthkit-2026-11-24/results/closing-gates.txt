@@ -1,0 +1,55 @@
+# Closing gates (contract rev. 2 §1, handoff §9), 2026-11-26T14:28Z, HEAD 077077a
+## merge-base
+BASE_OK
+## diff --stat vs tag: CoachingCore, IntegrationContracts, CoachingPresentation, tools/device-lock (must be empty)
+(end)
+## files changed vs tag (must be only B's paths)
+audits/v1-ios-healthkit-2026-11-24/results/device-authorization-read.txt
+audits/v1-ios-healthkit-2026-11-24/results/device-preflight.txt
+audits/v1-ios-healthkit-2026-11-24/results/macos-swift-test.log
+audits/v1-ios-healthkit-2026-11-24/results/simulator-lab-tests.log
+ios/Labs/HealthKitLab/HealthKitLab.xcodeproj/project.pbxproj
+ios/Labs/HealthKitLab/HealthKitLab.xcodeproj/xcshareddata/xcschemes/HealthKitLab.xcscheme
+ios/Labs/HealthKitLab/HealthKitLab/DeviceProbe.swift
+ios/Labs/HealthKitLab/HealthKitLab/HealthKitLab.entitlements
+ios/Labs/HealthKitLab/HealthKitLab/HealthKitLabApp.swift
+ios/Labs/HealthKitLab/HealthKitLabTests/LabSupport.swift
+ios/Labs/HealthKitLab/HealthKitLabTests/SimulatorHealthKitTests.swift
+ios/Labs/HealthKitLab/HealthKitLabUITests/AuthorizationUITests.swift
+ios/Packages/HealthKitIngest/Package.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/HealthKitIngestor.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/HealthKitReader.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/HealthReading.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/HeartRateSeriesMapping.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/IngestLog.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/Normalization.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/QueueState.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/QueueStore.swift
+ios/Packages/HealthKitIngest/Sources/HealthKitIngest/WorkoutKind.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/BoundaryQueueTests.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/DedupeTests.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/NodeDouble/boundary-double.mjs
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/NormalizationTests.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/QueueTests.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/StatusSeriesLogTests.swift
+ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/TestSupport.swift
+## outside B's paths:
+(none)
+## forbidden imports in the package (must be empty)
+(none)
+## imports in the lab (SwiftUI only in the empty App)
+HealthKitLab/DeviceProbe.swift:1:import Foundation
+HealthKitLab/DeviceProbe.swift:2:import HealthKit
+HealthKitLab/DeviceProbe.swift:3:import UIKit
+HealthKitLab/DeviceProbe.swift:4:import HealthKitIngest
+HealthKitLab/DeviceProbe.swift:5:import IntegrationContracts
+HealthKitLab/HealthKitLabApp.swift:1:import SwiftUI
+HealthKitLab/HealthKitLabApp.swift:2:import HealthKit
+HealthKitLabTests/LabSupport.swift:1:import Foundation
+HealthKitLabTests/LabSupport.swift:2:import HealthKit
+HealthKitLabTests/LabSupport.swift:3:import XCTest
+HealthKitLabTests/LabSupport.swift:5:import IntegrationContracts
+HealthKitLabTests/SimulatorHealthKitTests.swift:2:import XCTest
+HealthKitLabTests/SimulatorHealthKitTests.swift:3:import HealthKit
+HealthKitLabTests/SimulatorHealthKitTests.swift:5:import IntegrationContracts
+HealthKitLabUITests/AuthorizationUITests.swift:1:import XCTest
