@@ -154,9 +154,11 @@ function views(applyChanges) {
         { p: b.projectId, n: v.name, l: v.layout }, cwd).createProjectV2View.projectV2View;
     }
     if (applyChanges) {
+      // Roadmap views reject visibleFieldIds (GitHub: "Roadmap views do not support visible fields"); only the filter applies.
       const fieldList = ids.map((id) => JSON.stringify(id)).join(',');
-      graphql(`mutation($v:ID!,$f:String!){updateProjectV2View(input:{viewId:$v,filter:$f,configuration:{visibleFieldIds:[${fieldList}]}}){projectV2View{id}}}`,
-        { v: view.id, f: v.filter }, cwd);
+      const config = v.layout === 'ROADMAP_LAYOUT' ? '' : `,configuration:{visibleFieldIds:[${fieldList}]}`;
+      graphql(`mutation($v:ID!,$f:String!){updateProjectV2View(input:{viewId:$v,filter:$f${config}}){projectV2View{id}}}`,
+        { v: view.id, f: v.filter ?? '' }, cwd);
     }
     if (v.uiGroupBy) ui.push(`"${v.name}": agrupar por ${v.uiGroupBy}${v.uiDates ? `; datas = ${v.uiDates.join(' → ')}` : ''}`);
   }
