@@ -560,7 +560,10 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
             }
             observing = true
         } catch let e as HealthReadError { noteReadError(e.code) } catch { noteReadError("OBSERVER_FAILED") }
-        do { try await reader.setBackgroundDelivery(true) } catch let e as HealthReadError { noteReadError(e.code) } catch { noteReadError("BACKGROUND_DELIVERY_FAILED") }
+        // Registration only: an observed background wake-up is a separate fact (BACKGROUND_DELIVERY_ON_DEVICE), never inferred from this.
+        do { try await reader.setBackgroundDelivery(true); log.log(.init(.backgroundDelivery, code: "REGISTERED")) }
+        catch let e as HealthReadError { log.log(.init(.backgroundDelivery, code: e.code)); noteReadError(e.code) }
+        catch { log.log(.init(.backgroundDelivery, code: "BACKGROUND_DELIVERY_FAILED")); noteReadError("BACKGROUND_DELIVERY_FAILED") }
     }
 
     private func observerFired() async {
