@@ -187,6 +187,30 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["Descartar sem salvar"].firstMatch.tap()
     }
 
+    /// #38: a recording resumed after a killed process, when a safety block arrived meanwhile, keeps recording but shows no step,
+    /// target or countdown, and can still be finished and reported (SSCTR rule).
+    @MainActor
+    func testResumedRunUnderABlockShowsNoPrescriptionAndCanBeReported() {
+        let store = UUID().uuidString
+        let app = XCUIApplication()
+        app.launchArguments = ["-scenario", "today", "-simulatedLocation", "-recordingStore", store, "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launch()
+        app.buttons["today-start"].tap()
+        XCTAssertTrue(el(app, "run-step").waitForExistence(timeout: 10), "a planned run shows its steps before the block")
+        app.buttons["run-pause"].tap()  // persists the state
+        app.terminate()
+        app.launchArguments = ["-scenario", "blocked", "-simulatedLocation", "-recordingStore", store, "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launch()
+        XCTAssertTrue(el(app, "run-safety-gate").waitForExistence(timeout: 10), "the block that arrived meanwhile is shown")
+        XCTAssertFalse(el(app, "run-step").exists, "no prescribed step under a block")
+        XCTAssertTrue(el(app, "run-timer").exists, "the recording continues: elapsed time only")
+        XCTAssertTrue(app.staticTexts["Pausado"].exists, "the recording itself is untouched")
+        attach(app, "Execução — retomada sob bloqueio (#38)")
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5), "finishing still leads to the report")
+    }
+
     @MainActor
     func testUnplannedStrengthSavedOnlyWhenKept() {
         let app = launch("today")

@@ -47,7 +47,10 @@ struct RunSessionScreen: View {
     }
 
     private var live: some View {
-        let current = recorder.currentStep
+        // #38: a safety gate that applies now (also one that arrived while the recording was stopped by a killed process) withholds the
+        // prescription: no step, target, intensity or countdown; the recording, its measurement, pause and finish → report stay.
+        let gate = model.runSafetyGate(for: session)
+        let current = gate == nil ? recorder.currentStep : nil
         let step = current.map { runSteps.indices.contains($0.index) ? runSteps[$0.index] : nil } ?? nil
         let paused = recorder.state?.phase == .paused
         return VStack(alignment: .leading, spacing: 0) {
@@ -57,6 +60,11 @@ struct RunSessionScreen: View {
                 LocationChip(state: recorder.location)
             }
             .padding(.top, 12)
+            if let gate {
+                StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("reason." + gate.rawValue) + " " + L.t("run.safety.keepRecording"))
+                    .padding(.top, 20)
+                    .accessibilityIdentifier("run-safety-gate")
+            }
             if let c = current, let s = recorder.state {
                 Text(L.f("run.step", "\(c.index + 1)", "\(s.steps.count)") + " · " + (L.code("step", Code(raw: c.step.kind)) ?? ""))
                     .rmText(.micro, RM.Palette.textoSecundario).padding(.top, 32)
