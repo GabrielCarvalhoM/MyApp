@@ -134,8 +134,8 @@ struct AppTabs: View {
             case .add: AddWorkoutSheet(startRun: { then { startUnplannedRun() } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
                                        runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) }, runPending: model.isLoading)
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
-            case .notFeeling: NotFeeling100Flow()
-            case .readiness: ReadinessFlow()
+            case .notFeeling: NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
+            case .readiness: ReadinessFlow(viewModel: ReadinessViewModel(reader: model.reader, writer: model.writer))
             case .strength(let l): StrengthLogView(session: l.session)
             case .moving(let s): UnavailableDaySheet(session: s)
             }
