@@ -53,6 +53,13 @@ Task {
                 }
             case "hrIds": emit(["ok": true, "ids": await host.heartRateDeclarationIdsForTesting()])
             case "version": emit(["ok": true, "version": await host.versionForTesting() ?? -1])
+            case "arm": await host.armFaultForTesting(c["fault"] as? String ?? ""); emit(["armed": c["fault"] as? String ?? ""])
+            case "screen":
+                // An athlete review with only the screen, under a FIXED request id (the retry of the same action after a death).
+                let day = c["day"] as? String ?? "2026-11-17"
+                let json = #"{"kind":"WEEKLY_REVIEW","observations":[],"eligibility":{"status":"NONCLINICAL_CONFIRMED","assessedAt":"\#(day)","pain":false,"persistentPain":false,"injury":false,"illness":false,"functionalLimitation":false,"clinicalConcern":false}}"#
+                let o = await host.submitRawForTesting(json, requestId: c["rid"] as? String, screened: true)
+                emit(["ok": o.answer.ok, "replayed": o.answer.replayed ?? false, "version": o.answer.version ?? -1, "code": o.answer.error?.code.raw ?? "-", "cleaned": await host.cleanedAtStartForTesting()])
             case "exit": emit(["bye": true]); exit(0)
             default: emit(["error": "unknown command"])
             }

@@ -22,4 +22,19 @@ extension CoachingHost {
             return self.submitOnQueue(review: reviewJSON, screened: screened)
         }
     }
+    /// Tests only: kill this process at the next record write, after the temporary file is synced (`afterTmp`) or after the rename
+    /// (`afterRename`), before the answer (the process-death proofs of NATIVE 1.1).
+    @_spi(CoachingHostTesting)
+    public func armFaultForTesting(_ kind: String) async {
+        await onQueue {
+            switch kind {
+            case "afterTmp": self.store.faultAfterTmp = { _exit(137) }
+            case "afterRename": self.store.faultAfterRename = { _exit(137) }
+            default: break
+            }
+        }
+    }
+    /// Tests only: what this process cleaned at start (a dead writer's `.tmp`).
+    @_spi(CoachingHostTesting)
+    public func cleanedAtStartForTesting() async -> [String] { await onQueue { self.store.cleanedAtStart } }
 }
