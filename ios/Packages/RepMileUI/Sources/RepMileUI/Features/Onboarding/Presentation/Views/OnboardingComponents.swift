@@ -36,3 +36,31 @@ struct PlanBuildingMark: View {
         .accessibilityHidden(true)
     }
 }
+
+/// The race-date calendar (#61): it opens on the date already chosen, else today, and keeps nothing until the athlete confirms. With no
+/// earlier choice, confirming stays off until a day is tapped (the opening day is not a choice).
+struct EventDateSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var date: Date
+    @State private var picked: Bool
+    let choose: (Date) -> Void
+
+    init(initial: Date?, choose: @escaping (Date) -> Void) {
+        _date = State(initialValue: initial ?? Date())
+        _picked = State(initialValue: initial != nil)
+        self.choose = choose
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(L.t("ob.event.date")).rmText(.titulo)
+            DatePicker("", selection: $date, in: Calendar.current.startOfDay(for: Date())..., displayedComponents: .date)
+                .datePickerStyle(.graphical).labelsHidden().tint(RM.Palette.corrida).accessibilityIdentifier("ob-event-date-picker")
+                .onChange(of: date) { picked = true }
+            Spacer()
+            PrimaryActionButton(L.t("ob.event.date.confirm"), icon: .check, enabled: picked) { choose(date); dismiss() }.accessibilityIdentifier("ob-event-date-confirm")
+        }
+        .padding(RM.Space.gutter)
+        .background(RM.Palette.fundoApp.ignoresSafeArea())
+    }
+}
