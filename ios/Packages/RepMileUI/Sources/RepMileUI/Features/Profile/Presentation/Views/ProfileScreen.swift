@@ -80,6 +80,10 @@ struct ProfileScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .navigationTitle(L.t("profile.title")).navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(RM.Palette.fundoApp, for: .navigationBar)
+        .onChange(of: viewModel.consentFailed) { old, new in
+            // VoiceOver hears a consent write that was not recorded (a failed revocation is a privacy fact), not only sees it.
+            if !new.subtracting(old).isEmpty { AccessibilityNotification.Announcement(L.t("profile.consent.failed")).post() }
+        }
         .confirmationDialog(viewModel.confirm == .account ? L.t("profile.eraseAccount.confirm") : L.t("profile.eraseHealth.confirm"),
                             isPresented: Binding(get: { viewModel.confirm != nil }, set: { if !$0 { viewModel.confirm = nil } }), titleVisibility: .visible) {
             Button(L.t("profile.erase"), role: .destructive) {

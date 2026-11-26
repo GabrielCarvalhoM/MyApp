@@ -83,13 +83,20 @@ enum Reread {
 
     /// A captured logged entry with its ATHLETE voice removed: what the record holds for a linked device run the athlete never reported (#59).
     static func deviceOnly(_ name: String, sessionId: String = "w0-run-d1") throws -> LoggedEntry {
+        try edited(name, sessionId: sessionId) { e in
+            e["voices"] = (e["voices"] as? [[String: Any]] ?? []).filter { $0["channel"] as? String != "ATHLETE" }
+            e["channels"] = ["DEVICE"]
+            e["conflicted"] = false
+        }
+    }
+
+    /// A captured logged entry, edited as raw JSON before decoding (shapes the record can hold that no capture has).
+    static func edited(_ name: String, sessionId: String = "w0-run-d1", _ edit: (inout [String: Any]) -> Void) throws -> LoggedEntry {
         let obj = try Repo.store.object(name)
         guard var e = (obj["entries"] as? [[String: Any]])?.first(where: { $0["sessionId"] as? String == sessionId }) else {
             throw NSError(domain: "Reread", code: 1, userInfo: [NSLocalizedDescriptionKey: "no \(sessionId) in \(name)"])
         }
-        e["voices"] = (e["voices"] as? [[String: Any]] ?? []).filter { $0["channel"] as? String != "ATHLETE" }
-        e["channels"] = ["DEVICE"]
-        e["conflicted"] = false
+        edit(&e)
         return try JSONDecoder().decode(LoggedEntry.self, from: JSONSerialization.data(withJSONObject: e))
     }
 }

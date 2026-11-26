@@ -170,9 +170,53 @@ final class RereadAfterWriteTests: XCTestCase {
                 return XCTFail(name)
             }
             XCTAssertEqual(a.completed, mine.completed, name)
-            XCTAssertEqual(a.minutes, mine.minutes ?? e.minutes, name)
+            XCTAssertEqual(a.minutes, mine.minutes, name)
             XCTAssertEqual(a.rpe, mine.rpe, name)
         }
+    }
+
+    /// #59b: the athlete's voice states no minutes, the device measured 40: the correction sends no minutes, never the device's.
+    func testDeviceMinutesAreNeverSentAsTheAthletes() throws {
+        let e = try Reread.edited("P-logged-two-voices") { row in
+            row["minutes"] = 40
+            row["voices"] = (row["voices"] as? [[String: Any]] ?? []).map { v in
+                var v = v
+                if v["channel"] as? String == "ATHLETE" { v.removeValue(forKey: "minutes") } else { v["minutes"] = 40 }
+                return v
+            }
+        }
+        XCTAssertEqual(e.voices.first { $0.channel.raw == "DEVICE" }?.minutes, 40)
+        XCTAssertNil(try XCTUnwrap(HistoryCorrectionViewModel.athleteVoice(e)).minutes)
+        XCTAssertTrue(HistoryCorrectionViewModel.canContest(e), "the athlete's voice is there: still offered")
+        guard case .plannedRun(let a)? = HistoryCorrectionViewModel.observation(entry: e, distanceKm: 6, reason: .signalLoss)?.actual else {
+            return XCTFail("no observation")
+        }
+        XCTAssertNil(a.minutes)
+        let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: JSONEncoder().encode(a)) as? [String: Any])
+        XCTAssertNil(json["minutes"], "absent, as the engine handles missing minutes")
+    }
+
+    /// #59b: two ATHLETE voices on one row: neither is picked, the correction is not offered and nothing is built.
+    func testSeveralAthleteVoicesAreNeverOffered() async throws {
+        let e = try Reread.edited("P-logged-two-voices") { row in
+            var voices = row["voices"] as? [[String: Any]] ?? []
+            if var other = voices.first(where: { $0["channel"] as? String == "ATHLETE" }) {
+                other["eventId"] = "ob_second_athlete_voice"; other["minutes"] = 25; other["completed"] = false
+                voices.append(other)
+            }
+            row["voices"] = voices
+            row["conflicted"] = true
+        }
+        XCTAssertEqual(e.voices.filter { $0.channel.raw == "ATHLETE" }.count, 2)
+        XCTAssertNil(HistoryCorrectionViewModel.athleteVoice(e))
+        XCTAssertFalse(HistoryCorrectionViewModel.canContest(e))
+        XCTAssertNil(HistoryCorrectionViewModel.observation(entry: e, distanceKm: 6, reason: .signalLoss))
+        let w = FixtureCoachingWriter(store: Repo.store)
+        let vm = HistoryCorrectionViewModel(entry: e, writer: w, reload: {})
+        vm.startContesting(); vm.km = "6"
+        await vm.send()
+        XCTAssertEqual(vm.phase, .idle)
+        XCTAssertTrue(w.journal.entries.isEmpty)
     }
 
     // MARK: Empty proposal
