@@ -43,3 +43,34 @@ P1–P6 pass at the new HEAD. Repo suite: 61/61.
 | QRE-B-R2-05 | NOTE | `settled()` / `observerPump` are a test seam in production code |
 
 Also verified: the conditions epoch is in memory only and captured just before `deliver`; attempts never count twice; the pending-write retry re-sends the same delivery id (a replay).
+
+## Round O1 (OPEN-1 policy 2), on the working tree over `4cffa10`: NOT_READY
+
+Same reviewer, same rules (read-only; probes in a scratch copy; no device). It received the request and the authorities, not the author's conclusions. Author suite: 90/90.
+
+| id | sev | finding | disposition |
+|---|---|---|---|
+| QRE-B-O1-01 | HIGH | the app-recording dedupe was applied to the run's chosen copy only; (a) a copy matching an unplanned reported recording was consolidated into a delivered copy that did not; (b) a chosen copy set aside `OVERLAPS_APP_RECORDING` left the groups and its copy was promoted and sent | FIXED: set-aside `OVERLAPS_APP_RECORDING` stays a fixed member; the index is consulted for every copy (`ReviewOpen1RegressionTests`) |
+| QRE-B-O1-02 | HIGH | any overlap > 0 s below `sameRun` was inconclusive; a copy's drift dragged a distinct back-to-back run into `RECONCILE_SEVERAL_RUNS`; a 1 s overlap of two watch runs held both (regression) | FIXED: 60 s touching tolerance, PROVISIONAL OPEN-B-3 |
+| QRE-B-O1-03 | MEDIUM | no way to reconcile; CCP-B-07 had no "distinct runs" outcome | CCP-B-07 amended (keep a set of non-overlapping runs); "withheld until changed in Apple Health" left to Product/UX acceptance |
+| QRE-B-O1-04 | MEDIUM (Sec) | SEC-INT-09 (a) not re-dispositioned by Security; policy doc said every run without a route is PARTIAL (false for indoor) | doc §6 corrected; Security disposition is an integration condition |
+| QRE-B-O1-05 | LOW | lost-distance counter counted copies | FIXED with 01 |
+| QRE-B-O1-06 | LOW | a promoted copy waited for the next trigger | FIXED (`pumpAgain`) |
+| QRE-B-O1-07 | LOW | test gaps (restart leg never re-read; unplanned recording + copies; drift; migration without anchor) | FIXED: tests added or corrected |
+| QRE-B-O1-08 | LOW | `FINAL_REPORT.md` still described policy 1 | FIXED |
+| QRE-B-O1-09 | NOTE | group id not stable; `preferred` not a strict order; sync id ignores time; ledger regroup cost; migration read in background budget; reuse of `RecordingDedupe.sameRun` | `preferred` replaced by a strict total order (`representative`); the rest documented in the policy doc §4 |
+
+Verified clean in O1: no edits to read-only paths and no new shared type; exact identity; chunking (40 runs + 40 copies); crash between send and answer; restart; deletions and new versions; reentrancy of a better copy during the index await; anchor written with both reads; policy-1 migration; user-entered runs kept off DEVICE; logs counts and codes only; close distinct runs kept.
+
+## Round O1-R2, narrow recheck of the O1 fixes: NOT_READY (narrow)
+
+01, 02, 05, 06 closed; `representative` deterministic and order-independent (all 24 orders).
+
+| id | sev | finding | disposition |
+|---|---|---|---|
+| QRE-B-O1-10 | HIGH | the copy set used for the index check came from a snapshot taken before the awaits; a copy committed during the await that was the recorded run escaped it (two counts) | FIXED with the reviewer's checked sketch: copy set compared in phase 2, decided again on a change |
+| QRE-B-O1-11 | MEDIUM | the 60 s tolerance was checked before `sameRun`: two copies of a run ≤ ~2 min were delivered twice | FIXED with the reviewer's checked sketch: tolerance only for a non-`sameRun` overlap |
+
+## Round O1-R3, confirmation: READY_WITH_CONDITIONS
+
+The applied code matches the checked sketches (comments only differ). 10 and 11 closed. Reviewer's full probe set on the final tree: 111/111 (101 author + 10 probes). Conditions (documents and owners, not code): CCP-B-07 "distinct runs" outcome (done in the amendment); Security disposition of SEC-INT-09 (a); SSCTR + Engineering on OPEN-B-1 and OPEN-B-3; the accepted limit of copies offset by nearly their whole duration.

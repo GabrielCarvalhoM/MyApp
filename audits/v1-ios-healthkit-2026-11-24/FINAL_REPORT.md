@@ -12,7 +12,8 @@
 | `077077a` | sondas dentro do app instalado (estado da autorização, leitura só com contagens), evidência do iPhone; testes hospedados de aparelho removidos (§5) |
 | `9570837` | portões de encerramento, `CONTRACT_CHANGE_PROPOSALS.md` |
 | `312cbef` | correções da revisão independente R1 (QRE-B-01..08, 10, 11, 12) com testes de regressão; 61 testes macOS |
-| (este) | correção da R2 (QRE-B-R2-01, R2-02 c) com testes; 63 testes macOS; CCP-B-04; relatório final |
+| `4cffa10` | correção da R2 (QRE-B-R2-01, R2-02 c) com testes; 63 testes macOS; CCP-B-04; relatório final |
+| (este) | **OPEN-1 política 2** (decisão do Founder de 2026-11-26): corridas de qualquer app pelo Apple Saúde, a mesma corrida contada uma vez (`SameRunRule`), proveniência e estados por corrida para C; revisões O1/O1-R2/O1-R3 corrigidas; 101 testes macOS; 4/4 no Simulator; iPhone no build final. Ver §10 |
 
 Sem merge com outra frente ou com `main`; push sem force.
 
@@ -28,7 +29,7 @@ Sem merge com outra frente ou com `main`; push sem force.
 | `actual.measurement` | indoor (`HKMetadataKeyIndoorWorkout`) → `TREADMILL`; senão, rota associada → `GPS`; senão omitido | **PROVISIONAL** (OPEN-2) |
 | `actual.gpsQuality` | sempre omitido (o HealthKit não o expõe) | |
 | `sourceQuality` | `WEARABLE_FULL` com duração positiva, distância positiva e uma forma de medir (rota ou indoor); senão `WEARABLE_PARTIAL`; nunca omitido (ausente a fronteira leria FULL) | **PROVISIONAL** (OPEN-3) |
-| Seleção | só `running` de fonte Apple (`com.apple.health…`) e não `WasUserEntered` vai ao canal DEVICE; corrida digitada → `USER_ENTERED`, de outro app → `THIRD_PARTY_SOURCE` (OPEN-1); força → `STRENGTH_NOT_DEVICE_CHANNEL` (G-4); outros → `NON_RUN_WORKOUT`; não-corridas viram `ImportedWorkoutSummary` (só duração e proveniência) | |
+| Seleção | **política 2 (§10):** `running` de **qualquer** fonte e não `WasUserEntered` vai ao canal DEVICE; corrida digitada → `USER_ENTERED` (histórico só); força → `STRENGTH_NOT_DEVICE_CHANNEL` (G-4); outros → `NON_RUN_WORKOUT`; não-corridas viram `ImportedWorkoutSummary`. A política 1 (só `com.apple.health…`, `THIRD_PARTY_SOURCE`) vale até `4cffa10`; um arquivo dela é migrado | `OPEN1_THIRD_PARTY_POLICY.md` |
 | Vínculo | §4.3 exato, no offset do plano; congelado na primeira entrega; uma sessão já vinculada (em qualquer plano) não é vinculada de novo (ver CCP-B-01) | |
 | Dedupe com o iPhone | `RecordingDedupe.decision` antes da primeira entrega de cada treino; `deliverLinked` só se a sessão existe e está livre, senão de lado `OVERLAPS_APP_RECORDING`; em espera é redecidido a cada leitura, sinal de A e partida; distância medida perdida e sobreposição parcial com gravação relatada (FND-ABC-06 b) são contadas | regra da fundação; revisão SSCTR + Eng. na integração |
 
@@ -52,7 +53,7 @@ Sem merge com outra frente ou com `main`; push sem force.
 | Regressões das revisões R1 e R2 (sondas P1–P6 e N1 do revisor, ida e volta do arquivo da fila) | macOS | PASS | `ReviewRegressionTests`, `ReviewR2RegressionTests` |
 | 8 Simulator: autorização (folha respondida pelo teste de UI), anchored query, observer disparado por um treino novo, deleções, background delivery registrado, série de FC de amostras sintéticas | Simulator dedicado `RepMile-B-HealthKit` (iOS 27.2) | 3/3 PASS | `results/simulator-lab-tests.log` |
 | iPhone: preflight de entitlements | iPhone 17 Pro Max, trava `healthkit` | PASS: `healthkit` e `healthkit.background-delivery` concedidos pelo perfil | `results/device-preflight.txt` |
-| iPhone: autorização e leitura real só com contagens | idem | PASS: folha respondida pelo Founder; leitura de 28 dias sem erro; 3 treinos lidos, os 3 corridas de fonte de terceiros (excluídas, OPEN-1); 0 Apple; 0 não-corrida | `results/device-authorization-read.txt` |
+| iPhone: autorização e leitura real só com contagens | idem | PASS: folha respondida pelo Founder; leitura de 28 dias sem erro; 3 treinos lidos, os 3 corridas de fonte de terceiros (excluídas, OPEN-1); 0 Apple; 0 não-corrida | `results/device-authorization-read.txt` (política 1). **Política 2:** as mesmas 3 agora elegíveis, 0 consolidadas, 0 em reconciliação, proveniência 3/3, `results/device-open1-read.txt` |
 | iPhone: aparelho bloqueado | idem | **NOT_RUN** no aparelho (o Founder dispensou o teste de travar/destravar); coberto por dublês no macOS (`testLockedQueueFileWaitsAndNeverOverwrites`, `testHealthKitLockedWaitsForProtectedData`) | — |
 | §1 do contrato no fim | macOS | `npm test` 1952/1952/0 (53 históricos no ponto declarado); `CoachingPresentation` 29/0; diff vazio em CoachingCore e pacotes compartilhados | `results/coachingcore-npm-test.log`, `results/coachingpresentation-swift-test.log`, `results/closing-gates.txt` |
 
@@ -63,7 +64,7 @@ Suíte macOS final: **63/63**, três execuções seguidas sem falha. A evidênci
 | # | Estado em B |
 |---|---|
 | 3.1 | implementada do lado de B: só `HealthKitIngestor` chama `DeviceActivitySink.deliver`; a fila serial é de A |
-| 3.2 | implementada e provada (macOS; no aparelho, 3 corridas de terceiros excluídas) |
+| 3.2 | revista pela política 2 (§10): o lançamento manual continua fora do canal DEVICE, de qualquer app; a escrita de outro app **medida** entra (decisão do Founder; texto da obrigação: CCP-B-06; disposição de Security pendente) |
 | 3.3 | implementada: B nunca envia triagem (`DeviceActivity` não tem o campo; admissão real testada) |
 | 3.4 / 3.4a | implementada e provada: predicado do HealthKit desde o dia da inscrição; `BEFORE_RECORD_START` com índice → de lado, o resto reenviado (fronteira real) |
 | 3.5 | implementada e provada (canário, evento de log sem campo de payload); crash reports: integração |
@@ -79,6 +80,7 @@ Suíte macOS final: **63/63**, três execuções seguidas sem falha. A evidênci
 
 - **Background delivery:** o entitlement foi concedido e `enableBackgroundDelivery(.immediate)` respondeu sem erro no iPhone (`hki.backgroundDelivery code=REGISTERED`). Nenhum treino novo foi feito com o app em segundo plano, então nenhuma entrega em background foi observada: **BACKGROUND_DELIVERY_ON_DEVICE = NOT_OBSERVED**. O disparo do observer que aparece no log da sonda é o disparo inicial do iOS ao registrar a consulta, não uma entrega em background.
 - **Reinstalação zera a autorização** (iPhone e Simulator, iOS 27): uma folha respondida seguida de uma instalação feita pelo `xcodebuild test` voltou como `NOT_YET_ASKED` / `HK_ERROR_5` (`errorAuthorizationNotDetermined`). Por isso a leitura no aparelho roda dentro do app instalado, sem reinstalar entre a resposta do Founder e a leitura. Isso vale para a integração: um teste hospedado que reinstala o app nunca prova a leitura autorizada.
+- **Atualização in place mantém a autorização** (2026-11-26, política 2): `xcrun devicectl device install app` de três builds novos sobre o lab instalado leu `ANSWERED` depois de cada um, sem nova folha. A perda vem do caminho de instalação do `xcodebuild test`, não de um build novo.
 - **iOS 27** acrescenta à folha uma segunda página (período do histórico compartilhado). O teste de UI do Simulator responde as duas páginas por identificadores e posição, sem depender do idioma.
 - A revogação da leitura não é detectável (o iOS só devolve menos dados): B não afirma detectá-la. `disabledInApp` vem só de `setEnabled(false)`.
 
@@ -94,7 +96,9 @@ Suíte macOS final: **63/63**, três execuções seguidas sem falha. A evidênci
 | G-2 `seconds`, G-3 `segments` | não enviados | Engineering + QRE / Core + SSCTR |
 | G-4 força do HealthKit | nunca ao motor; resumo só com duração; contada | Product/UX |
 | G-5 deleção/edição após a entrega | nada enviado; contado (`DELETED_AFTER_DELIVERY`) | Core + SSCTR |
-| OPEN-1 fontes de terceiros | fora do canal DEVICE, contadas. **Dado do aparelho:** os 3 treinos de corrida dos últimos 28 dias do Founder são de fonte de terceiros, então nenhum chegaria ao motor com a regra atual | Founder + Security |
+| OPEN-1 fontes de terceiros | **RESOLVIDO pelo Founder (2026-11-26), política 2 implementada (§10).** Restam: disposição de Security de SEC-INT-09 (a); textos das autoridades (CCP-B-06) | Founder (decidido) + Security |
+| OPEN-B-1 / OPEN-B-3 | concordância de distância 10 % e tolerância de 60 s da `SameRunRule`, PROVISIONAL | SSCTR + Engineering |
+| Reconciliação pelo atleta | estado guardado e exposto; ação não existe (CCP-B-07); até lá, uma corrida em reconciliação fica fora do motor até mudar no Apple Saúde | Product/UX + integração |
 | OPEN-2 indoor → `TREADMILL` | PROVISIONAL | SSCTR (antes da integração) |
 | OPEN-3 `sourceQuality` | regra determinística PROVISIONAL (§2) | SSCTR + Engineering |
 | OPEN-4 / OPEN-5 | não tocados; a semana real não foi executada | Founder |
@@ -129,4 +133,42 @@ B-13 (gancho de teste interno), B-14 (`authorization` é a contabilidade de B, n
 | HR_SERIES_MAPPING (SIMULATOR) | **YES** (Simulator + `classifySamples` congelado no macOS; `NOT_IN_V1` em V1) |
 | LOCKED_DEVICE_ON_DEVICE | **NOT_RUN** (dispensado pelo Founder; provado com dublês) |
 | READY_FOR_INTEGRATION | **YES**, com condições levadas à integração: decidir CCP-B-01..04; OPEN-2/OPEN-3 (SSCTR); provar background delivery com o app fechado e envolver a entrega numa background task (R2-03); leitura no aparelho com o build final (a evidência é de `077077a`); teste de aparelho bloqueado no iPhone; aceite de Product/UX para R2-02 (b); QRE-B-09 (backup) com D2/Security |
+| REAL_ATHLETE_READY | **NO** |
+
+## 10. OPEN-1 política 2: corridas de outros apps pelo Apple Saúde (2026-11-26)
+
+Decisão do Founder: a V1 importa pelo Apple Saúde as corridas de qualquer app (Garmin Connect, Strava, COROS, Polar, Apple Watch, iPhone…), sem integração direta com fabricante, e nunca conta duas vezes a mesma corrida física. Política, regras, limites e estados para C: `OPEN1_THIRD_PARTY_POLICY.md`. Propostas: CCP-B-05 (registro por corrida para C), CCP-B-06 (textos das autoridades), CCP-B-07 (ação de reconciliação).
+
+**O que mudou em B:**
+- `WorkoutNormalizer.select` não olha mais a fonte; o lançamento manual (`USER_ENTERED`) continua fora do motor, de qualquer app.
+- Nova `SameRunRule`, determinística e sem pontuação:
+  - **identidade exata:** UUID e `syncIdentifier` dentro da mesma fonte;
+  - **mesma corrida:** sobreposição de mais de 60 s (PROVISIONAL), mais a regra compartilhada `sameRun`, mais a concordância de duração R7-A do próprio motor e de distância 10 % (PROVISIONAL);
+  - **inconclusivo:** reconciliação; os registros ficam preservados e nada vai ao motor.
+- A regra de gravação do app e a regra de vínculo §4.3 olham a corrida inteira, não a cópia.
+- A proveniência fica no arquivo de B; `source.provider = HEALTHKIT` continua sendo o canal.
+- `importedRuns(since:)` expõe a origem e o estado de cada corrida (adaptador local).
+- Um arquivo da política 1 é migrado: as corridas excluídas só pela fonte são relidas uma vez, sem perder deleções.
+
+**Nenhum arquivo compartilhado ou somente leitura foi alterado** (`results/closing-gates-open1.txt`). Teste de controle: se B mandasse as duas cópias, a fronteira congelada gravaria duas linhas. Por isso a deduplicação é de B.
+
+| Evidência | Resultado | Log |
+|---|---|---|
+| macOS | 101/101, três execuções (os 14 cenários pedidos + regras nos pontos de corte + regressões da revisão) | `results/macos-swift-test-open1.log` |
+| Simulator (HealthKit real, sintético) | 4/4: fonte de terceiro entregue, cópia sobreposta consolidada, versão 2 de registro sincronizado substitui a 1 sem novo envio | `results/simulator-lab-tests-open1.log` |
+| iPhone (só leitura, contagens, build final) | as 3 corridas reais antes `THIRD_PARTY_SOURCE` agora elegíveis (3/3), 0 consolidadas, 0 em reconciliação, proveniência 3/3; nada ao motor; fila purgada; permissão mantida sem nova folha | `results/device-open1-read.txt` |
+| Contrato §1 | `npm test` 1952/1952/0; `IntegrationContracts` 10/0; `CoachingPresentation` 29/0; diff vazio | `results/*-open1.log` |
+| Revisão independente | O1 NOT_READY (2 HIGH, 2 MEDIUM) → corrigido; O1-R2 NOT_READY estreito (1 HIGH, 1 MEDIUM) → corrigido com os esboços verificados do revisor; **O1-R3 READY_WITH_CONDITIONS** (111/111 com as sondas do revisor) | `INDEPENDENT_REVIEW.md` |
+
+**Dado do aparelho para SSCTR.** As 3 corridas reais chegam sem rota: pela regra OPEN-3 provisória são `WEARABLE_PARTIAL` (`partialData=3/3`).
+
+| Critério (política 2) | Resultado |
+|---|---|
+| THIRD_PARTY_RUNS_IMPORTABLE | **YES** (macOS + fronteira real; Simulator; iPhone 3/3 elegíveis) |
+| SAME_RUN_COUNTED_ONCE | **YES** (Garmin+Strava, Watch+terceiro, gravação do RepMile + cópias, crash, reinício, deleção, nova versão; fronteira real: uma linha) |
+| DISTINCT_CLOSE_RUNS_KEPT | **YES** (encostadas, deriva de cópia, 1 s de sobreposição, mesmos números em outra hora) |
+| AMBIGUOUS_TO_RECONCILIATION | **YES** (preservados, fora do motor, motivo e grupo guardados, nunca "importado") |
+| MANUAL_ENTRY_DISTINCT | **YES** (`NOT_FOR_ENGINE`, sem distância) |
+| PROVENANCE_PRESERVED | **YES** (arquivo de B; iPhone 3/3; nada nos logs) |
+| READY_FOR_INTEGRATION | **YES, com condições:** Security redispor SEC-INT-09 (a) para a política 2; SSCTR + Engineering para OPEN-B-1, OPEN-B-3 e OPEN-3 (as corridas reais de terceiros são PARTIAL); integração decidir CCP-B-05..07; Product/UX aceitar "em reconciliação fica fora do motor até a ação de CCP-B-07"; as condições da §9 continuam |
 | REAL_ATHLETE_READY | **NO** |

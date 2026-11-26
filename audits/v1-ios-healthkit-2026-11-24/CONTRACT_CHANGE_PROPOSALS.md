@@ -42,4 +42,36 @@ Contract rev. 2 §11. Front B edited none of these files. Each proposal goes on 
 | **Impact** | A: its purge after `eraseAccount` / `acknowledgeRecordLoss` / first-launch reconciliation needs a retry intent (A already keeps durable signals of this kind, e.g. SEC-FPV-01). B: none. C: none. |
 | **Tests that change** | A: a test that a failed `purge` is retried. B: none (in place). |
 
+## CCP-B-05 (OPEN-1 policy 2): one record per imported run, for C
+
+| | |
+|---|---|
+| **Reason** | The Founder's decision of 2026-11-26 (`OPEN1_THIRD_PARTY_POLICY.md`) asks C to show, per run: imported from Apple Health, its origin (Garmin, Strava, other, unknown), consolidated duplicate, awaiting reconciliation, imported but not yet counted, partial data. `HealthIngestStatus` only has counts, and `ImportedWorkoutSummary` is for non-run workouts. No shared type carries a run's provenance or its state between Apple Health and the engine. |
+| **Local adapter (in force)** | `HealthKitIngestor.importedRuns(since:) -> [ImportedRunRecord]` with `ImportedRunOrigin` and `ImportedRunStatus`, all in `HealthKitIngest/SameRunRule.swift`. C does not consume them until the integration adopts this proposal. |
+| **Exact diff** | `HealthIngest.swift`: move `ImportedRunOrigin`, `ImportedRunStatus` and `ImportedRunRecord` there unchanged (public, `Equatable, Sendable`, the two enums `Codable`). On `HealthIngestStatusSource`, add `func importedRuns(since: Date) async -> [ImportedRunRecord]`, with an extension default returning `[]` so existing conformers still compile. B deletes its local copies. |
+| **Impact** | C: a history and import list per run (no route, heart rate, pace or split field is promised). A: none (nothing reaches the engine). B: rename only. |
+| **Tests that change** | IntegrationContracts: a conformance test that every `ImportedRunStatus` raw value is stable. B: none (the `ThirdPartyImportTests` already cover the states). |
+
+## CCP-B-06 (OPEN-1 policy 2): the text of the authorities that still say "Apple sources only"
+
+| | |
+|---|---|
+| **Reason** | Four texts still say third-party writes stay outside the DEVICE channel, which the Founder's decision changes. They are outside B's column: `PARALLEL_IMPLEMENTATION_CONTRACT.md` §4.1 item 4 and §4.4 OPEN-1, `NATIVE_OBLIGATIONS.md` 3.2, and `INTEGRATION_BOUNDARY_CONTRACT.md` §9.9 ("HealthKit sources"). |
+| **Local adapter (in force)** | B implements policy 2 (`OPEN1_THIRD_PARTY_POLICY.md` §3–4). |
+| **Exact diff** | (1) §4.4, OPEN-1 row: "RESOLVED (Founder, 2026-11-26): any app's measured run that reaches Apple Health enters the DEVICE channel; user-entered runs (`HKMetadataKeyWasUserEntered`) stay out; the same physical run is delivered once (B's `SameRunRule`); provenance is kept by B, `source.provider = HEALTHKIT` is the channel. Security acceptance of the residual risk: pending." (2) §4.1 item 4, last sentence → "Only measured workouts enter (user-entered ones are the athlete's statement); the app that recorded them is provenance, not a filter (OPEN-1 policy 2)." (3) NATIVE 3.2 and boundary §9.9, the same wording. |
+| **Impact** | Documentation and Security sign-off only. No code in A, C or CoachingCore. |
+| **Tests that change** | None. |
+
+## CCP-B-07 (OPEN-1 policy 2): a reconciliation action
+
+| | |
+|---|---|
+| **Reason** | Runs left in `AWAITING_RECONCILIATION` (`RECONCILE_PARTIAL_OVERLAP`, `RECONCILE_MEASUREMENTS_DISAGREE`, `RECONCILE_SEVERAL_RUNS`) only move when Apple Health changes (a deletion or a new version). The athlete has no way to say "this one is my run". |
+| **Local adapter (in force)** | None. The state is kept and exposed (`reconciliationGroup`, `statusCode`), but nothing in B lets anyone choose. The runs are never lost and never double-counted; they just do not reach the engine. |
+| **Exact diff (proposal)** | A port implemented by B and called by C: `func resolveReconciliation(group: String, keep activityIds: Set<String>) async throws`. B refuses a set in which two runs overlap by more than `SameRunRule.touchingTolerance`, since two of them would count the same minutes twice. The kept runs are delivered by the normal rules. The others become `CONSOLIDATED_DUPLICATE` of the kept run they overlap most, recorded as the athlete's choice. This covers "this one is my run" (one id) and, for a `RECONCILE_SEVERAL_RUNS` group, "these are distinct runs; the long one is a copy" (QRE-B-O1-03). "Keep two runs that overlap" is left out on purpose: overlapping minutes are one person's one run (G-3, Core + SSCTR). The group id is resolved against the current state; a group that changed since C read it is refused (`RECONCILIATION_STALE`). |
+| **Impact** | C: a screen (Product/UX). B: the action, stored in its file and erased by `purge`. A: none. |
+| **Tests that change** | B: a resolution test through the Node boundary (one row). |
+
+No change to `CoachingCore` is proposed: the boundary admits every DEVICE run B now sends, and the original app stays in B's file (a `source.origin` field on the boundary row would be a CoachingCore change, and V1 does not need it).
+
 No other shared type, port, fixture or the device lock needed a change.
