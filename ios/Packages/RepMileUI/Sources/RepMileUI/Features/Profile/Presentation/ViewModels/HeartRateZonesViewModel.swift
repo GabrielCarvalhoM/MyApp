@@ -82,7 +82,8 @@ final class HeartRateZonesViewModel {
     }
 
     static func eraseMessage(_ result: Result<HeartRateProfileAnswer, BoundaryError>) -> Message {
-        if case .success = result { return .erased }
+        // Erased only on an answer that says ok (the protocol does not promise `.success` implies `ok`), as the save.
+        if case .success(let a) = result, a.ok { return .erased }
         return .failed
     }
 
