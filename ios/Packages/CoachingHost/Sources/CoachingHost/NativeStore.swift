@@ -133,12 +133,11 @@ final class NativeStore {
     func tombstone(_ s: String, _ text: String) throws { try atomicWrite(Data(text.utf8), to: tomb(s)) }
     func tombstoneOf(_ s: String) -> String? { try? String(contentsOf: tomb(s), encoding: .utf8) }
 
-    /// Account erasure on the native side (6.3): the athlete's file and its `.tmp`. The lock file is removed last by the caller, after the lock
-    /// is released (see the type comment).
+    /// Account erasure on the native side (6.3): the athlete's file and its `.tmp`, under the athlete's lock. The lock file is kept: it holds no
+    /// data, and unlinking it while another process waits on it would split the lock in two (QRE-A-07).
     func eraseFiles(_ id: String) {
         for u in [file(id), file(id).appendingPathExtension("tmp")] { try? FileManager.default.removeItem(at: u) }
     }
-    func removeLockFile(_ id: String) { try? FileManager.default.removeItem(at: lockFile(id)) }
 
     func protectionOf(_ id: String) -> String? {
         ((try? FileManager.default.attributesOfItem(atPath: file(id).path))?[.protectionKey] as? FileProtectionType)?.rawValue
@@ -180,11 +179,17 @@ final class KeychainAnchor {
     init(items: KeychainItems) { self.items = items }
     static func account(_ id: String) -> String { "anchor." + NativeStore.name(id) }
 
+    /// The facade's anchor adapter throws on this value (QRE-A-03): a Keychain read that fails is never read as "no anchor", which would turn
+    /// off the RECORD_LOST / RECORD_ROLLED_BACK checks.
+    static let readFailed = "\u{0}KEYCHAIN_READ_FAILED"
+    /// Tests only: the next reads fail as an unreadable Keychain would.
+    var failReadsForTesting = false
     func get(_ id: String) -> String? {
         reads += 1
-        let r = items.get(Self.account(id))
-        if r.status != errSecSuccess && r.status != errSecItemNotFound { failures.append(r.status) }
-        return r.data.flatMap { String(data: $0, encoding: .utf8) }
+        let r = failReadsForTesting ? (data: nil, status: errSecInteractionNotAllowed) : items.get(Self.account(id))
+        if r.status == errSecItemNotFound { return nil }
+        guard r.status == errSecSuccess, let d = r.data, let s = String(data: d, encoding: .utf8) else { failures.append(r.status); return Self.readFailed }
+        return s
     }
     func set(_ id: String, _ json: String) -> Bool {
         writes += 1

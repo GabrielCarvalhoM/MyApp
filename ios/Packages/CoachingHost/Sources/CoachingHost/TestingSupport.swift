@@ -1,6 +1,8 @@
 import Foundation
 import CoachingPresentation
 
+#if COACHINGHOST_TESTING
+
 /// Test-only reads (SPI): never part of a shared port. They expose opaque ids and versions, never a value.
 extension CoachingHost {
     @_spi(CoachingHostTesting)
@@ -18,8 +20,8 @@ extension CoachingHost {
     @_spi(CoachingHostTesting)
     public func submitRawForTesting(_ reviewJSON: String, requestId: String? = nil, screened: Bool = false) async -> WriteOutcome {
         await write {
-            if let requestId { let saved = self.idSource; self.idSource = { requestId }; defer { self.idSource = saved }; return self.submitOnQueue(review: reviewJSON, screened: screened) }
-            return self.submitOnQueue(review: reviewJSON, screened: screened)
+            if let requestId { let saved = self.idSource; self.idSource = { requestId }; defer { self.idSource = saved }; return self.submitOnQueue(review: reviewJSON, screened: screened, answersSigns: screened) }
+            return self.submitOnQueue(review: reviewJSON, screened: screened, answersSigns: screened)
         }
     }
     /// Tests only: kill this process at the next record write, after the temporary file is synced (`afterTmp`) or after the rename
@@ -38,3 +40,4 @@ extension CoachingHost {
     @_spi(CoachingHostTesting)
     public func cleanedAtStartForTesting() async -> [String] { await onQueue { self.store.cleanedAtStart } }
 }
+#endif

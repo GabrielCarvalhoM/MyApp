@@ -1,101 +1,102 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/PlatformTests"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/PlatformTests"
 
 Build settings from command line:
     DEVELOPMENT_TEAM = <TEAM>
     ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
 
 Resolve Package Graph
 
 
 Resolved source packages:
   IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
-  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
   CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
 
-Test Suite 'Selected tests' started at 2026-11-26 11:31:13.571.
-Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:31:13.571.
-Test Suite 'PlatformTests' started at 2026-11-26 11:31:13.571.
+Test Suite 'Selected tests' started at 2026-11-26 12:06:54.923.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:06:54.924.
+Test Suite 'PlatformTests' started at 2026-11-26 12:06:54.924.
 Test Case '-[CoachingHostDeviceTests.PlatformTests testBootRefusesATamperedAssetOrBundle]' started.
-CHRESULT bundle-boot {"loadMs":"44.9","pinned":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","tamperedAsset":"refused","tamperedBundle":"refused"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testBootRefusesATamperedAssetOrBundle]' passed (0.095 seconds).
+CHRESULT bundle-boot {"loadMs":"43.6","pinned":"c3c4cf981fa3c1ac7014bded55abe210cd5b1344728b40811e0c2d0dd70f29fc","tamperedAsset":"refused","tamperedBundle":"refused"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testBootRefusesATamperedAssetOrBundle]' passed (0.090 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testDeviceActivitySink]' started.
-2026-11-26 11:31:13.670128-0300 CoachingHostLab[17285:4232065] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:13.812203-0300 CoachingHostLab[17285:4232062] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:14.022180-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_8d83b751addae28529f606a8f2
-2026-11-26 11:31:14.088184-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=true code=- version=2 category=- decision=-
-2026-11-26 11:31:14.156657-0300 CoachingHostLab[17285:4232062] [boundary] op=review ok=false code=BEFORE_RECORD_START version=-1 category=- decision=-
-2026-11-26 11:31:14.201923-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=false code=UNKNOWN_SESSION version=-1 category=- decision=-
-2026-11-26 11:31:14.267801-0300 CoachingHostLab[17285:4232062] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
-2026-11-26 11:31:14.401542-0300 CoachingHostLab[17285:4232062] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_aa704ae437097d718fcf503028
-2026-11-26 11:31:14.646380-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
-2026-11-26 11:31:14.647992-0300 CoachingHostLab[17285:4232065] [boundary] op=review ok=false code=RECORD_LOST version=-1 category=- decision=-
-2026-11-26 11:31:14.649476-0300 CoachingHostLab[17285:4232065] [boundary] op=review ok=true code=- version=-1 category=- decision=-
+2026-11-26 12:06:55.018257-0300 CoachingHostLab[17334:4247686] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:55.153817-0300 CoachingHostLab[17334:4247680] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:55.364329-0300 CoachingHostLab[17334:4247683] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_489e05f5ea5881407a4c255217
+2026-11-26 12:06:55.437133-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=true code=- version=2 category=- decision=-
+2026-11-26 12:06:55.504537-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=false code=BEFORE_RECORD_START version=-1 category=- decision=-
+2026-11-26 12:06:55.549223-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=false code=UNKNOWN_SESSION version=-1 category=- decision=-
+2026-11-26 12:06:55.613443-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+2026-11-26 12:06:55.746368-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_1eb97dfb64529f0f6e5a937735
+2026-11-26 12:06:55.989721-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
+2026-11-26 12:06:55.991449-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=false code=RECORD_LOST version=-1 category=- decision=-
+2026-11-26 12:06:55.992907-0300 CoachingHostLab[17334:4247686] [boundary] op=review ok=true code=- version=-1 category=- decision=-
 CHRESULT device-sink {"beforeRecordStart":"setAsideItem#0","busy":"retryLater","duplicate":"no double credit","persistenceFailure":"retryLater","recordLost":"halted","recorded":"answered","stale":"resolved ~1","unknownSession":"resendUnlinked#0"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testDeviceActivitySink]' passed (0.986 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testDeviceActivitySink]' passed (0.982 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testFailedWriteConfirmsNothingAndProtection]' started.
-2026-11-26 11:31:14.654378-0300 CoachingHostLab[17285:4232066] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:14.782114-0300 CoachingHostLab[17285:4232062] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:14.940913-0300 CoachingHostLab[17285:4232062] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
-2026-11-26 11:31:15.095611-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_60d0f60111c99eeea1b08b76b9
+2026-11-26 12:06:55.998391-0300 CoachingHostLab[17334:4247680] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:56.126490-0300 CoachingHostLab[17334:4247683] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:56.286819-0300 CoachingHostLab[17334:4247683] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
+2026-11-26 12:06:56.443514-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_7b51e4ed85bc29bc678ef92ea8
 CHRESULT store-write-failure {"after":"OK","failed":"PERSISTENCE_FAILURE"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testFailedWriteConfirmsNothingAndProtection]' passed (0.471 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFailedWriteConfirmsNothingAndProtection]' passed (0.476 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testFirstLaunchReconciliation]' started.
-2026-11-26 11:31:15.127418-0300 CoachingHostLab[17285:4232062] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
-2026-11-26 11:31:15.261133-0300 CoachingHostLab[17285:4232065] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:56.484509-0300 CoachingHostLab[17334:4247686] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-26 12:06:56.626079-0300 CoachingHostLab[17334:4247680] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
 CHRESULT first-launch {"first":"FRESH_INSTALL_PURGED","second":"NOT_NEEDED"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testFirstLaunchReconciliation]' passed (0.206 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFirstLaunchReconciliation]' passed (0.228 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testHmacVectorsAndProductionKey]' started.
 CHRESULT hmac-and-key {"direct":"40","keyBytes":"32","keychainAccessible":"cku","vectors":"40","viaJS":"40"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testHmacVectorsAndProductionKey]' passed (0.096 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testHmacVectorsAndProductionKey]' passed (0.101 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testSignalsComeAfterTheCommit]' started.
-2026-11-26 11:31:15.428675-0300 CoachingHostLab[17285:4232062] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:15.556593-0300 CoachingHostLab[17285:4232065] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:15.744062-0300 CoachingHostLab[17285:4232065] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_c113808b1987417e53c70ba9af
-2026-11-26 11:31:15.828853-0300 CoachingHostLab[17285:4232065] [boundary] op=consent ok=true code=- version=3 category=- decision=-
-2026-11-26 11:31:15.881057-0300 CoachingHostLab[17285:4232065] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
-Test Case '-[CoachingHostDeviceTests.PlatformTests testSignalsComeAfterTheCommit]' passed (0.458 seconds).
+2026-11-26 12:06:56.804230-0300 CoachingHostLab[17334:4247686] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:56.947034-0300 CoachingHostLab[17334:4247680] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:57.146383-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_16a507668bb1fbda116166259f
+2026-11-26 12:06:57.242863-0300 CoachingHostLab[17334:4247680] [boundary] op=consent ok=true code=- version=3 category=- decision=-
+2026-11-26 12:06:57.296992-0300 CoachingHostLab[17334:4247680] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSignalsComeAfterTheCommit]' passed (0.499 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testSinkWaitsForTheScreen]' started.
-2026-11-26 11:31:15.886509-0300 CoachingHostLab[17285:4232066] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:16.025885-0300 CoachingHostLab[17285:4232065] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:16.191487-0300 CoachingHostLab[17285:4232065] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_4d4c5b11ca730a2b6ef2a5fd63
-2026-11-26 11:31:16.359912-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_c90a4bbc5c56b5a6bf3409b976
-2026-11-26 11:31:16.529564-0300 CoachingHostLab[17285:4232066] [boundary] op=review ok=true code=- version=4 category=PLAN_KEPT decision=dc_4303aaca348f11fc7d34f5832e
+2026-11-26 12:06:57.303451-0300 CoachingHostLab[17334:4247680] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:57.462874-0300 CoachingHostLab[17334:4247683] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:57.654285-0300 CoachingHostLab[17334:4247683] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_525b720c4dc8ecf5f8b1716459
+2026-11-26 12:06:57.892617-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_f763340d14969822cbffea9cc8
+2026-11-26 12:06:58.138832-0300 CoachingHostLab[17334:4247680] [boundary] op=review ok=true code=- version=4 category=PLAN_KEPT decision=dc_2b8dd087eae544dee811587588
 CHRESULT device-sink-screen {"afterScreen":"recorded","first":"answered(version: 2, activities: [IntegrationContracts.ActivityResult(index: 0, activityId"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testSinkWaitsForTheScreen]' passed (0.648 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSinkWaitsForTheScreen]' passed (0.842 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testTimeInZoneIsGated]' started.
-2026-11-26 11:31:16.534900-0300 CoachingHostLab[17285:4232066] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:16.677626-0300 CoachingHostLab[17285:4232062] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-Test Case '-[CoachingHostDeviceTests.PlatformTests testTimeInZoneIsGated]' passed (0.198 seconds).
+2026-11-26 12:06:58.146816-0300 CoachingHostLab[17334:4247680] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:58.347080-0300 CoachingHostLab[17334:4247681] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTimeInZoneIsGated]' passed (0.291 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testTrustedClockD1]' started.
-2026-11-26 11:31:16.733345-0300 CoachingHostLab[17285:4232065] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:16.876690-0300 CoachingHostLab[17285:4232062] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:16.966873-0300 CoachingHostLab[17285:4232062] [boundary] op=consent ok=true code=- version=2 category=- decision=-
-2026-11-26 11:31:16.995277-0300 CoachingHostLab[17285:4232062] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
-2026-11-26 11:31:16.995458-0300 CoachingHostLab[17285:4232062] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
-2026-11-26 11:31:17.143564-0300 CoachingHostLab[17285:4232062] [boundary] op=consent ok=true code=- version=3 category=- decision=-
-2026-11-26 11:31:17.234156-0300 CoachingHostLab[17285:4232062] [boundary] op=review ok=true code=- version=3 category=- decision=-
-2026-11-26 11:31:17.328255-0300 CoachingHostLab[17285:4232065] [boundary] op=consent ok=true code=- version=4 category=- decision=-
-2026-11-26 11:31:17.392569-0300 CoachingHostLab[17285:4232065] [boundary] op=consent ok=false code=CLOCK_BEHIND_RECORD version=-1 category=- decision=-
-2026-11-26 11:31:17.463127-0300 CoachingHostLab[17285:4232062] [boundary] op=consent ok=true code=- version=5 category=- decision=-
+2026-11-26 12:06:58.438088-0300 CoachingHostLab[17334:4247683] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:58.653174-0300 CoachingHostLab[17334:4247681] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:06:58.785292-0300 CoachingHostLab[17334:4247681] [boundary] op=consent ok=true code=- version=2 category=- decision=-
+2026-11-26 12:06:58.829974-0300 CoachingHostLab[17334:4247681] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 12:06:58.830481-0300 CoachingHostLab[17334:4247681] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 12:06:59.048731-0300 CoachingHostLab[17334:4247683] [boundary] op=consent ok=true code=- version=3 category=- decision=-
+2026-11-26 12:06:59.196929-0300 CoachingHostLab[17334:4247681] [boundary] op=review ok=true code=- version=3 category=- decision=-
+2026-11-26 12:06:59.368290-0300 CoachingHostLab[17334:4247683] [boundary] op=consent ok=true code=- version=4 category=- decision=-
+2026-11-26 12:06:59.482167-0300 CoachingHostLab[17334:4247683] [boundary] op=consent ok=false code=CLOCK_BEHIND_RECORD version=-1 category=- decision=-
+2026-11-26 12:06:59.602363-0300 CoachingHostLab[17334:4247681] [boundary] op=consent ok=true code=- version=5 category=- decision=-
 CHRESULT d1 {"behind":"CLOCK_BEHIND_RECORD","plus299":"accepted","plus301":"CLOCK_AHEAD_OF_REFERENCE","reboot":"reference invalidated","sink":"waiting","version":"2"}
-Test Case '-[CoachingHostDeviceTests.PlatformTests testTrustedClockD1]' passed (0.765 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTrustedClockD1]' passed (1.219 seconds).
 Test Case '-[CoachingHostDeviceTests.PlatformTests testUnknownKeyRefRefuses]' started.
-2026-11-26 11:31:17.498591-0300 CoachingHostLab[17285:4232062] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:17.551206-0300 CoachingHostLab[17285:4232065] [boundary] op=onboard ok=false code=OPERATIONAL_ERROR version=-1 category=- decision=-
-Test Case '-[CoachingHostDeviceTests.PlatformTests testUnknownKeyRefRefuses]' passed (0.056 seconds).
-Test Suite 'PlatformTests' passed at 2026-11-26 11:31:17.553.
-	 Executed 10 tests, with 0 failures (0 unexpected) in 3.980 (3.982) seconds
-Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:31:17.554.
-	 Executed 10 tests, with 0 failures (0 unexpected) in 3.980 (3.982) seconds
-Test Suite 'Selected tests' passed at 2026-11-26 11:31:17.554.
-	 Executed 10 tests, with 0 failures (0 unexpected) in 3.980 (3.983) seconds
-2026-11-26 11:31:17.880 xcodebuild[63172:2905551] [MT] IDETestOperationsObserverDebug: 6.408 elapsed -- Testing started completed.
-2026-11-26 11:31:17.880 xcodebuild[63172:2905551] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
-2026-11-26 11:31:17.880 xcodebuild[63172:2905551] [MT] IDETestOperationsObserverDebug: 6.408 sec, +6.408 sec -- end
+2026-11-26 12:06:59.658533-0300 CoachingHostLab[17334:4247680] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:06:59.741704-0300 CoachingHostLab[17334:4247683] [boundary] op=onboard ok=false code=OPERATIONAL_ERROR version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testUnknownKeyRefRefuses]' passed (0.090 seconds).
+Test Suite 'PlatformTests' passed at 2026-11-26 12:06:59.746.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.819 (4.822) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:06:59.746.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.819 (4.822) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:06:59.746.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.819 (4.823) seconds
+2026-11-26 12:07:00.064 xcodebuild[24918:3051327] [MT] IDETestOperationsObserverDebug: 7.053 elapsed -- Testing started completed.
+2026-11-26 12:07:00.064 xcodebuild[24918:3051327] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:07:00.064 xcodebuild[24918:3051327] [MT] IDETestOperationsObserverDebug: 7.053 sec, +7.053 sec -- end
 
 Test session results, code coverage, and logs:
-	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-31-11--0300.xcresult
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-06-52--0300.xcresult
 
 ** TEST EXECUTE SUCCEEDED **
 

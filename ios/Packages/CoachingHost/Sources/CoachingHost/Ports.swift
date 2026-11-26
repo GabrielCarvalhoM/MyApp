@@ -52,7 +52,9 @@ extension CoachingHost: CoachingReading {
 
     func startabilityOnQueue(_ sessionId: String) -> Startability {
         dispatchPrecondition(condition: .onQueue(queue))
-        if signals.unreadable { return .notStartable(reason: .recordUnavailable) }
+        // QRE-A-02/08: signals that are not durable, unreadable, or a restart whose outcome was never resolved: nothing starts.
+        signals.flush()
+        if signals.unreadable || signals.dirty || signals.current.pendingIntake { return .notStartable(reason: .recordUnavailable) }
         // FND-ABC-04 / 04b first: a refused or clinical restart leaves the earlier plan executable in the record.
         switch signals.current.scope {
         case .outsideV1Scope: return .notStartable(reason: .outsideV1Scope)
@@ -109,7 +111,7 @@ extension CoachingHost: CoachingWriting {
     }
 
     func write(_ body: @escaping () -> Write) async -> WriteOutcome {
-        let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; let w = body(); self.lastAnswerJSON = w.answer.json; return w }
+        let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; let w = body(); if self.testing { self.lastAnswerJSON = w.answer.json }; return w }
         if let p = w.purge { try? await queueControl?.purge(p) }
         if w.signalConditions { await queueControl?.deliveryConditionsChanged() }
         return w.outcome
@@ -137,7 +139,8 @@ extension CoachingHost: CoachingWriting {
             var w = Write(answer: a, outcome: self.outcome(a))
             if a.ok {
                 self.afterIntake(w.outcome.answer)
-                w.signalConditions = true                      // enroll (contract §4.2)
+                // enroll (contract §4.2): only when a record now exists (a refusal by scope enrols nothing).
+                if w.outcome.answer.planOutcome == .planCreated { w.signalConditions = true }
             }
             if self.takeClockRecovery(a) { w.signalConditions = true }
             return w
@@ -149,9 +152,12 @@ extension CoachingHost: CoachingWriting {
         let intake = intake(answers, learning: false)
         return await write {
             guard let i = try? JSONText.encode(intake) else { return self.invalid() }
+            // QRE-A-02: the restart is marked in flight, durably, BEFORE it is sent; if that cannot be written, nothing is sent.
+            guard self.signals.update({ $0.pendingIntake = true }) else { return self.notDurable() }
             let a = self.perform("restart", [("intake", i)], versioned: true, clockRule: .bounded)
             var w = Write(answer: a, outcome: self.outcome(a))
-            if a.ok { self.afterIntake(w.outcome.answer); w.signalConditions = true }
+            if a.ok { self.afterIntake(w.outcome.answer); if w.outcome.answer.planOutcome == .planCreated { w.signalConditions = true } }
+            else { self.signals.update { $0.pendingIntake = false } }      // refused before the engine: nothing changed
             if self.takeClockRecovery(a) { w.signalConditions = true }
             return w
         }
@@ -160,20 +166,27 @@ extension CoachingHost: CoachingWriting {
     /// FND-ABC-04 / 04b: the persistent scope signal, from the engine's own outcome of the intake.
     func afterIntake(_ answer: BoundaryAnswer) {
         switch answer.planOutcome {
-        case .planCreated: signals.update { $0.scope = nil; $0.warningSignsAsked = false }
-        case .outsideV1Scope: signals.update { $0.scope = .outsideV1Scope }
-        case .clinicalHumanRequired: signals.update { $0.scope = .clinicalHumanRequired }
-        default: break                                   // ASK, INVALID_INPUT: no signal (the earlier state stands)
+        case .planCreated: signals.update { $0.scope = nil; $0.pendingIntake = false; $0.warningSignsAsked = false }
+        case .outsideV1Scope: signals.update { $0.scope = .outsideV1Scope; $0.pendingIntake = false }
+        case .clinicalHumanRequired: signals.update { $0.scope = .clinicalHumanRequired; $0.pendingIntake = false }
+        default: signals.update { $0.pendingIntake = false }   // ASK, INVALID_INPUT: no scope signal (the earlier state stands)
         }
-        trackWarningSigns(answer)
+        trackWarningSigns(answer, releasable: true)
     }
 
     /// A18a (ii): an answer that asks for the warning signs keeps every session from starting until an answer no longer asks for them.
-    func trackWarningSigns(_ answer: BoundaryAnswer) {
+    /// QRE-A-05: set by any answer that asks; released only by the answer to a request that carried sign answers or a screen (`releasable`).
+    func trackWarningSigns(_ answer: BoundaryAnswer, releasable: Bool) {
         guard answer.ok else { return }
         let asks = answer.warningSignScreen?.status == "REQUIRED" || (answer.missingInputs ?? []).contains(where: Self.asksWarningSigns)
             || (answer.view?.question?.missingInputs ?? []).contains(where: Self.asksWarningSigns)
-        signals.update { $0.warningSignsAsked = asks }
+        if asks { signals.update { $0.warningSignsAsked = true } } else if releasable { signals.update { $0.warningSignsAsked = false } }
+    }
+
+    /// A safety signal could not be made durable before the operation: nothing is sent (QRE-A-02).
+    func notDurable() -> Write {
+        let a = Self.hostFailure("PERSISTENCE_FAILURE", "A safety signal could not be saved; nothing was sent")
+        return Write(answer: a, outcome: outcome(a))
     }
 
     func invalid() -> Write {
@@ -184,12 +197,13 @@ extension CoachingHost: CoachingWriting {
     public func submit(_ review: ReviewRequest) async -> WriteOutcome {
         await write {
             guard let r = try? JSONText.encode(review) else { return self.invalid() }
-            return self.submitOnQueue(review: r, screened: review.eligibility != nil)
+            let answersSigns: Bool = { switch review.body { case .notFeeling100, .wellbeingCheck, .readiness: return true; default: return false } }()
+            return self.submitOnQueue(review: r, screened: review.eligibility != nil, answersSigns: answersSigns)
         }
     }
 
     /// Every athlete review through `integration.submit` (FND-ABC-03). `screened`: the review carries `eligibility` (a new screen).
-    func submitOnQueue(review json: String, screened: Bool) -> Write {
+    func submitOnQueue(review json: String, screened: Bool, answersSigns: Bool = false) -> Write {
         let a = perform("submit", [("review", json)], versioned: true, requestId: idSource(), clockRule: .bounded)
         var w = Write(answer: a, outcome: outcome(a))
         if a.ok {
@@ -198,7 +212,7 @@ extension CoachingHost: CoachingWriting {
                 signals.update { $0.screenRequiredAfterErasure = false }
                 w.signalConditions = true                    // a new screen frees SCREEN_REQUIRED and the NOT_RECORDED of an ASK (§4.2)
             }
-            trackWarningSigns(w.outcome.answer)
+            trackWarningSigns(w.outcome.answer, releasable: screened || answersSigns)
         }
         if takeClockRecovery(a) { w.signalConditions = true }
         return w
@@ -242,9 +256,12 @@ extension CoachingHost: CoachingWriting {
     public func eraseHealthFacts(eventIds: [String]) async -> WriteOutcome {
         await write {
             guard let ids = try? JSONText.encode(eventIds) else { return self.invalid() }
+            // SEC-FPV-01 / N-3: after ANY erasure, no session starts until a new screen is recorded. Set durably BEFORE the erasure is sent
+            // (QRE-A-02); withdrawn only if the erasure was refused and the signal was not set before.
+            let before = self.signals.current.screenRequiredAfterErasure
+            guard self.signals.update({ $0.screenRequiredAfterErasure = true }) else { return self.notDurable() }
             let a = self.perform("eraseHealthFacts", [("eventIds", ids)], versioned: true, clockRule: .exempt)
-            // SEC-FPV-01 / N-3: after ANY successful erasure, no session starts until a new screen is recorded.
-            if a.ok { self.signals.update { $0.screenRequiredAfterErasure = true } }
+            if !a.ok && !before { self.signals.update { $0.screenRequiredAfterErasure = false } }
             return Write(answer: a, outcome: self.outcome(a))
         }
     }
@@ -255,12 +272,13 @@ extension CoachingHost: CoachingWriting {
         await write {
             let a = self.perform("eraseAccount", clockRule: .exempt)
             var w = Write(answer: a, outcome: self.outcome(a))
-            if a.ok {
-                self.store.eraseFiles(self.athleteId)
+            // QRE-A-06: the native side is erased also when the boundary has no record (never enrolled, or after a record loss): the signals,
+            // the clock reference and the key must not outlive the athlete's erasure request.
+            if a.ok || a.code == "NOT_ENROLLED" || a.code == "GONE" {
+                try? self.store.withLock(self.athleteId) { self.store.eraseFiles(self.athleteId) }
                 self.anchor.clear(self.athleteId)
                 self.productionKey?.erase()
                 self.signals.erase(); self.clock.erase()
-                self.store.removeLockFile(self.athleteId)
                 w.purge = .accountErased
             }
             return w
@@ -341,7 +359,7 @@ extension CoachingHost: DeviceActivitySink {
         }
         let e = a.object["error"] as? [String: Any], code = e?["code"] as? String ?? "OPERATIONAL_ERROR", index = (e?["index"] as? NSNumber)?.intValue
         if code == HostCode.clockAheadOfReference { return .waiting(code: code) }
-        if code == "HOST_NOT_OPEN" { return .hostUnavailable }
+        if code == "HOST_NOT_OPEN" || code == HostCode.hostUnavailable { return .hostUnavailable }
         switch BoundaryDisposition.of(code: code, index: index) {
         case .waiting: return .waiting(code: code)
         case .retryLater: return .retryLater(code: code)

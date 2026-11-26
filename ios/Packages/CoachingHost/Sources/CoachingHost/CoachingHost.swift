@@ -51,6 +51,10 @@ public final class CoachingHost: @unchecked Sendable {
     public private(set) var reconciliation: FirstLaunch.Outcome = .notNeeded
     /// D1 / CLOCK_BEHIND_RECORD: the next committed mutating operation signals B (contract §4.2).
     private var conditionsWaitOnClock = false
+    /// Whether the last `perform` ran on a trusted clock (D1).
+    private var lastPerformTrusted = true
+    /// Set only by `openForTesting`: the test bookkeeping below is kept only then (QRE-A-09).
+    var testing = false
     var inFlightWritesValue = 0
     /// Test hooks.
     var idSource: () -> String = { UUID().uuidString }
@@ -76,7 +80,9 @@ public final class CoachingHost: @unchecked Sendable {
         return host
     }
 
-    /// Tests only (SPI): any key resolver (the fixture keys of the equivalence journeys), the test mode of the facade, the module registry.
+    #if COACHINGHOST_TESTING
+    /// Tests only (SPI, compiled only with COACHINGHOST_TESTING: debug `swift test`, the lab's device build; QRE-A-09): any key resolver (the
+    /// fixture keys of the equivalence journeys), the test mode of the facade, the module registry.
     @_spi(CoachingHostTesting)
     public static func openForTesting(_ configuration: Configuration, keychainPrefix: String, queueControl: DeviceQueueControl? = nil,
                                       clock: HostClockSource = DeviceClock(), keys: IntegrityKeyResolving? = nil, keyRef: String? = nil,
@@ -85,9 +91,11 @@ public final class CoachingHost: @unchecked Sendable {
         let keychain = KeychainItems(service: c.keychainService, prefix: keychainPrefix)
         let production = keys == nil ? KeychainIntegrityKey(items: keychain) : nil
         let host = try CoachingHost(c, queueControl: queueControl, clock: clock, keys: keys ?? production!, keyRef: keyRef ?? KeychainIntegrityKey.keyRef, production: production)
+        host.testing = true
         try await host.start(testMode: true, exposeModules: exposeModules)
         return host
     }
+    #endif
 
     private init(_ configuration: Configuration, queueControl: DeviceQueueControl?, clock: HostClockSource, keys: IntegrityKeyResolving, keyRef: String,
                  production: KeychainIntegrityKey?) throws {
@@ -95,6 +103,9 @@ public final class CoachingHost: @unchecked Sendable {
         athleteId = configuration.athleteId
         queue = DispatchQueue(label: "fit.vilumo.repmile.coachinghost.engine", qos: .userInitiated)
         store = try NativeStore(dir: configuration.root)
+        // QRE-A-11 (until D2): the record, its side files and the install marker are not in the device backup. A restore elsewhere would bring
+        // the container without its ThisDeviceOnly key and anchor (an INTEGRITY_FAILURE), and the health record into an OS backup.
+        var root = configuration.root; var rv = URLResourceValues(); rv.isExcludedFromBackup = true; try? root.setResourceValues(rv)
         keychain = KeychainItems(service: configuration.keychainService, prefix: configuration.keychainPrefix)
         anchor = KeychainAnchor(items: keychain)
         self.keys = keys; self.keyRef = keyRef; productionKey = production
@@ -158,11 +169,14 @@ public final class CoachingHost: @unchecked Sendable {
         while true {
             let nowMs: Double
             switch clock.check() {
-            case .trusted(let now): nowMs = now
-            case .aheadOfReference(let now, _):
+            case .trusted(let now): nowMs = now; lastPerformTrusted = true
+            case .aheadOfReference(let now, let bound):
+                lastPerformTrusted = false
                 if clockRule == .bounded { conditionsWaitOnClock = true; HostLog.host("d1-refused", code: HostCode.clockAheadOfReference)
                     return Self.hostFailure(HostCode.clockAheadOfReference, "The device clock is ahead of the trusted reference; check date and time") }
-                nowMs = now
+                // QRE-A-01: an exempt operation (revocation, erasures) passes, but at the trusted bound, never at the clock that is ahead: it can
+                // neither move the record's lastAt nor the reference forward. A read keeps the device clock (it writes nothing).
+                nowMs = clockRule == .exempt ? bound.rounded(.down) : now
             }
             let a: Answer
             do {
@@ -174,31 +188,37 @@ public final class CoachingHost: @unchecked Sendable {
                         let skew = self.versionSkewForTesting > 0 ? 1 : 0; if skew > 0 { self.versionSkewForTesting -= 1 }
                         fields.append(("expectedVersion", (vo["version"] as? NSNumber).map { String($0.intValue - skew) } ?? "null"))
                     }
-                    if let rid { fields.append(("clientRequestId", JSONText.string(rid))); self.sentRequestIds.append(rid) }
+                    if let rid { fields.append(("clientRequestId", JSONText.string(rid))); if self.testing { self.sentRequestIds.append(rid) } }
                     let out = args == nil && !versioned && rid == nil ? try self.runtime.call(fn, [nowMs]) : try self.runtime.call(fn, [JSONText.object(fields), nowMs])
-                    return Answer(json: out, object: (try? JSONSerialization.jsonObject(with: Data(out.utf8)) as? [String: Any]) ?? [:])
+                    let ans = Answer(json: out, object: (try? JSONSerialization.jsonObject(with: Data(out.utf8)) as? [String: Any]) ?? [:])
+                    // A committed write whose anchor could not be written: rewrite it from the record now, under the same lock (contract §6.1).
+                    if ans.object["anchorStale"] as? Bool == true, let s = self.store.anchorOfStored(self.athleteId) { _ = self.anchor.set(self.athleteId, s) }
+                    return ans
                 }
             } catch NativeStore.StoreError.busy {
                 a = Self.hostFailure("BUSY", "Another process holds this record")
+            } catch NativeStore.StoreError.io {
+                // QRE-A-12: the store cannot be opened (e.g. protected data unavailable before the first unlock): the host is unavailable.
+                HostLog.host("store-unavailable", code: HostCode.hostUnavailable)
+                return Self.hostFailure(HostCode.hostUnavailable, "The record cannot be opened now")
             } catch {
                 HostLog.host("facade-error", code: "OPERATIONAL_ERROR")
                 return Self.hostFailure("OPERATIONAL_ERROR", "The coaching engine could not run this operation")
             }
-            // A committed write whose anchor could not be written: rewrite it from the record now, before answering (contract §6.1).
-            if a.object["anchorStale"] as? Bool == true, let s = store.anchorOfStored(athleteId) { _ = anchor.set(athleteId, s) }
             if let c = a.code, c == "CONFLICT_STALE_VERSION" || c == "REQUEST_ID_REUSED", versioned, stale < 3 {
                 stale += 1; if rid != nil { rid = idSource() }; continue
             }
             if a.code == "BUSY", busy < 3 { busy += 1; usleep(busyRetryDelay); continue }
             if a.code == "CLOCK_BEHIND_RECORD" { conditionsWaitOnClock = true }
-            if a.ok && clockRule != .read && a.object["replayed"] as? Bool != true { clock.recordWrite(atMs: nowMs) }
+            if a.ok && clockRule != .read && lastPerformTrusted && a.object["replayed"] as? Bool != true { clock.recordWrite(atMs: nowMs) }
             return a
         }
     }
 
     /// After a committed mutating operation: whether B must hear `deliveryConditionsChanged()` because an earlier clock refusal is over.
     func takeClockRecovery(_ a: Answer) -> Bool {
-        guard a.ok, conditionsWaitOnClock else { return false }
+        // QRE-A-01: only a committed operation that ran on a trusted clock ends a clock refusal (an exempt one under a clock ahead does not).
+        guard a.ok, lastPerformTrusted, conditionsWaitOnClock else { return false }
         conditionsWaitOnClock = false; return true
     }
 

@@ -5,7 +5,7 @@
 import os
 HERE=os.path.dirname(os.path.abspath(__file__))
 PKG='../../Packages/CoachingHost/Tests/CoachingHostTests'
-pkg_tests=['Support.swift','SmokeTests.swift','EquivalenceTests.swift','FacadeReplayTests.swift','PortTests.swift','PlatformTests.swift','CrossProcessTests.swift']
+pkg_tests=['Support.swift','SmokeTests.swift','EquivalenceTests.swift','FacadeReplayTests.swift','PortTests.swift','PlatformTests.swift','CrossProcessTests.swift','ReviewFixTests.swift']
 lab_tests=['DeviceTests.swift','PerformanceTests.swift']
 n=[0]
 def nid():

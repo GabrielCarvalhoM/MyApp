@@ -74,7 +74,8 @@ final class TrustedClock {
 /// tmp + fsync + rename + directory fsync for the host's small side files (signals, clock reference, install marker).
 enum AtomicFile {
     static func write(_ data: Data, to url: URL) throws {
-        let tmp = url.appendingPathExtension("tmp")
+        // A unique temporary name per writer: two processes writing the same side file never share a .tmp (QRE-A-07).
+        let tmp = url.deletingLastPathComponent().appendingPathComponent(".\(url.lastPathComponent).\(getpid()).\(UUID().uuidString).tmp")
         let fd = open(tmp.path, O_CREAT | O_TRUNC | O_WRONLY | O_CLOEXEC, 0o600)
         guard fd >= 0 else { throw NativeStore.StoreError.io(errno) }
         var ok = data.withUnsafeBytes { buf -> Bool in

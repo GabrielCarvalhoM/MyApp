@@ -9,6 +9,7 @@ import Foundation
 @_spi(CoachingHostTesting) import CoachingHost
 import CoachingPresentation
 
+#if COACHINGHOST_TESTING
 final class FixedWall: HostClockSource, @unchecked Sendable {
     let ms: Double; let device = DeviceClock()
     init(_ ms: Double) { self.ms = ms }
@@ -60,6 +61,21 @@ Task {
                 let json = #"{"kind":"WEEKLY_REVIEW","observations":[],"eligibility":{"status":"NONCLINICAL_CONFIRMED","assessedAt":"\#(day)","pain":false,"persistentPain":false,"injury":false,"illness":false,"functionalLimitation":false,"clinicalConcern":false}}"#
                 let o = await host.submitRawForTesting(json, requestId: c["rid"] as? String, screened: true)
                 emit(["ok": o.answer.ok, "replayed": o.answer.replayed ?? false, "version": o.answer.version ?? -1, "code": o.answer.error?.code.raw ?? "-", "cleaned": await host.cleanedAtStartForTesting()])
+            case "restartPostpartum":
+                let screen = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "2026-11-14", pain: false, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false)
+                let a = OnboardingAnswers(athlete: AthleteIntake(id: athlete, ageYears: 32, eligibility: screen, specialPopulation: [.postpartum], strengthTrainingMonths: 18, runTrainingMonths: 36,
+                    exerciseRotationPreference: "COACH_DECIDES", goals: IntakeGoals(run: RunGoal(kind: "RACE", event: GoalEvent(kind: "10K", date: "2027-01-10")), strength: "RUNNING_SUPPORT"),
+                    equipment: ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR"],
+                    recent: RecentTraining(strengthDaysPerWeek: 2, runDaysPerWeek: 4, runMinutesPerWeek: 200, longestRunMinutes: 80),
+                    performanceAnchors: [PerformanceAnchor(kind: "RACE_RESULT", distance: "10K", seconds: 3000, date: "2026-11-01", measurement: "OFFICIAL", rpe: 9, tolerated: true)]),
+                    schedule: TrainingSchedule(strengthDays: [2, 5], strengthMinutes: 45, runDays: [1, 3, 5, 6], runMinutes: 50, longRunMinutes: 90, longRunDay: 6, runTurn: "AM", strengthTurn: "PM"),
+                    weeks: 8, startDate: "2026-11-23")
+                let o = await host.restart(a)
+                emit(["ok": o.answer.ok, "status": o.answer.status?.raw ?? o.answer.error?.code.raw ?? "-"])
+            case "startability":
+                let ids = ((try? await host.allWeeks().get()) ?? []).flatMap(\.sessions).filter(\.executable).map(\.id)
+                var rs: [String] = []; for id in ids { rs.append("\(await host.startability(sessionId: id))") }
+                emit(["ok": true, "executable": ids.count, "startability": Array(Set(rs)).sorted()])
             case "exit": emit(["bye": true]); exit(0)
             default: emit(["error": "unknown command"])
             }
@@ -68,3 +84,6 @@ Task {
     sem.signal()
 }
 sem.wait()
+#else
+print("coachinghost-proc is a test tool: build it in debug (COACHINGHOST_TESTING)"); exit(2)
+#endif

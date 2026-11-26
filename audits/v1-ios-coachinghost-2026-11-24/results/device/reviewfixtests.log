@@ -1,0 +1,86 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/ReviewFixTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 12:07:10.212.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:07:10.212.
+Test Suite 'ReviewFixTests' started at 2026-11-26 12:07:10.212.
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testBytesCompareAndSwap]' started.
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testBytesCompareAndSwap]' passed (0.005 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testEraseAccountThenSameIdPinned]' started.
+2026-11-26 12:07:10.221135-0300 CoachingHostLab[17341:4248115] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:10.378221-0300 CoachingHostLab[17341:4248115] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:10.429686-0300 CoachingHostLab[17341:4248115] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 12:07:10.500226-0300 CoachingHostLab[17341:4248115] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+CHRESULT qre-a-04-pinned {"code":"-","outcome":"planCreated","reEnrolOk":"true"}
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testEraseAccountThenSameIdPinned]' passed (0.309 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testEraseAccountWithoutARecordErasesTheNativeSide]' started.
+2026-11-26 12:07:10.528647-0300 CoachingHostLab[17341:4248112] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:10.573708-0300 CoachingHostLab[17341:4248115] [boundary] op=onboard ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 12:07:10.575499-0300 CoachingHostLab[17341:4248115] [boundary] op=erasure ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testEraseAccountWithoutARecordErasesTheNativeSide]' passed (0.051 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testExemptOperationDoesNotLaunderAnAheadClock]' started.
+2026-11-26 12:07:10.579597-0300 CoachingHostLab[17341:4248115] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:10.704675-0300 CoachingHostLab[17341:4248112] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:10.729935-0300 CoachingHostLab[17341:4248112] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 12:07:10.790189-0300 CoachingHostLab[17341:4248112] [boundary] op=consent ok=true code=- version=2 category=- decision=-
+2026-11-26 12:07:10.867450-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=true code=- version=2 category=- decision=-
+2026-11-26 12:07:10.889042-0300 CoachingHostLab[17341:4248112] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 12:07:10.889165-0300 CoachingHostLab[17341:4248112] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testExemptOperationDoesNotLaunderAnAheadClock]' passed (0.314 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testKeychainReadFailureFailsClosed]' started.
+2026-11-26 12:07:10.894095-0300 CoachingHostLab[17341:4248113] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:11.021889-0300 CoachingHostLab[17341:4248112] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:11.101896-0300 CoachingHostLab[17341:4248112] [boundary] op=review ok=true code=- version=1 category=- decision=-
+2026-11-26 12:07:11.125825-0300 CoachingHostLab[17341:4248113] [boundary] op=read ok=false code=INTEGRITY_FAILURE version=-1 category=- decision=-
+2026-11-26 12:07:11.130170-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=false code=INTEGRITY_FAILURE version=-1 category=- decision=-
+2026-11-26 12:07:11.133504-0300 CoachingHostLab[17341:4248113] [boundary] op=read ok=false code=RECORD_ROLLED_BACK version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testKeychainReadFailureFailsClosed]' passed (0.244 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testSafetySignalsAreDurableBeforeTheOperation]' started.
+2026-11-26 12:07:11.138075-0300 CoachingHostLab[17341:4248113] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:11.267046-0300 CoachingHostLab[17341:4248112] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:11.339216-0300 CoachingHostLab[17341:4248112] [boundary] op=restart ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 12:07:11.469046-0300 CoachingHostLab[17341:4248113] [boundary] op=erasure ok=false code=NOT_FOUND version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testSafetySignalsAreDurableBeforeTheOperation]' passed (0.377 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testStaleRetriesThenHalted]' started.
+2026-11-26 12:07:11.515212-0300 CoachingHostLab[17341:4248115] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:11.648206-0300 CoachingHostLab[17341:4248113] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:11.736593-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+2026-11-26 12:07:11.801310-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+2026-11-26 12:07:11.865954-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+2026-11-26 12:07:11.929126-0300 CoachingHostLab[17341:4248113] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testStaleRetriesThenHalted]' passed (0.419 seconds).
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testWarningSignGateNotReleasedByAnUnrelatedReport]' started.
+2026-11-26 12:07:11.934022-0300 CoachingHostLab[17341:4248112] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:12.079135-0300 CoachingHostLab[17341:4248115] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:12.269244-0300 CoachingHostLab[17341:4248115] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_47e845d73717c1c7a65185cfb4
+2026-11-26 12:07:12.449870-0300 CoachingHostLab[17341:4248115] [boundary] op=review ok=true code=- version=3 category=INPUT_NEEDED decision=dc_1d2da620b49bdc439029446080
+Test Case '-[CoachingHostDeviceTests.ReviewFixTests testWarningSignGateNotReleasedByAnUnrelatedReport]' passed (0.545 seconds).
+Test Suite 'ReviewFixTests' passed at 2026-11-26 12:07:12.477.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.264 (2.265) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:07:12.478.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.264 (2.265) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:07:12.478.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.264 (2.266) seconds
+2026-11-26 12:07:12.826 xcodebuild[25041:3052534] [MT] IDETestOperationsObserverDebug: 4.334 elapsed -- Testing started completed.
+2026-11-26 12:07:12.826 xcodebuild[25041:3052534] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:07:12.826 xcodebuild[25041:3052534] [MT] IDETestOperationsObserverDebug: 4.334 sec, +4.334 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-07-08--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

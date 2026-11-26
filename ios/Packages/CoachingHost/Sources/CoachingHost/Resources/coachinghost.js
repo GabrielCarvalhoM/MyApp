@@ -15031,7 +15031,8 @@ function nativeStore(){
 }
 function keychainAnchor(){
  const a=globalThis.__chanchor;if(!a)throw new Error('facade: the Keychain anchor is not installed');
- return {get:id=>{const t=a.get(id);return t===null||t===undefined||t===''?null:JSON.parse(t);},
+ // QRE-A-03: a failed Keychain read is an error (the boundary then answers a failure), never "no anchor".
+ return {get:id=>{const t=a.get(id);if(t==='\u0000KEYCHAIN_READ_FAILED')throw new Error('keychain anchor read failed');return t===null||t===undefined||t===''?null:JSON.parse(t);},
   set:(id,v)=>{if(!a.set(id,JSON.stringify(v)))throw new Error('keychain anchor write failed');},
   clear:id=>{a.clear(id);}};
 }

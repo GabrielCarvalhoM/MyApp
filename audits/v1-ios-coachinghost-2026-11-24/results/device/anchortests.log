@@ -1,40 +1,41 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/AnchorTests"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/AnchorTests"
 
 Build settings from command line:
     DEVELOPMENT_TEAM = <TEAM>
     ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
 
 Resolve Package Graph
 
 
 Resolved source packages:
-  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
   CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
   IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
 
-Test Suite 'Selected tests' started at 2026-11-26 11:31:22.049.
-Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:31:22.049.
-Test Suite 'AnchorTests' started at 2026-11-26 11:31:22.050.
+Test Suite 'Selected tests' started at 2026-11-26 12:07:03.051.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:07:03.051.
+Test Suite 'AnchorTests' started at 2026-11-26 12:07:03.052.
 Test Case '-[CoachingHostDeviceTests.AnchorTests testRollbackSameVersionAndAnchorWindow]' started.
-2026-11-26 11:31:22.054645-0300 CoachingHostLab[17287:4232320] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
-2026-11-26 11:31:22.209236-0300 CoachingHostLab[17287:4232321] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
-2026-11-26 11:31:22.293838-0300 CoachingHostLab[17287:4232321] [boundary] op=review ok=true code=- version=1 category=- decision=-
-2026-11-26 11:31:22.323743-0300 CoachingHostLab[17287:4232321] [boundary] op=read ok=false code=RECORD_ROLLED_BACK version=-1 category=- decision=-
+2026-11-26 12:07:03.057086-0300 CoachingHostLab[17337:4247962] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:03.208562-0300 CoachingHostLab[17337:4247967] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:03.290374-0300 CoachingHostLab[17337:4247959] [boundary] op=review ok=true code=- version=1 category=- decision=-
+2026-11-26 12:07:03.321038-0300 CoachingHostLab[17337:4247959] [boundary] op=read ok=false code=RECORD_ROLLED_BACK version=-1 category=- decision=-
 CHRESULT anchor {"missingReads":"0","rollback":"RECORD_ROLLED_BACK","updates":"300"}
-Test Case '-[CoachingHostDeviceTests.AnchorTests testRollbackSameVersionAndAnchorWindow]' passed (0.472 seconds).
-Test Suite 'AnchorTests' passed at 2026-11-26 11:31:22.522.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.472 (0.473) seconds
-Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:31:22.522.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.472 (0.473) seconds
-Test Suite 'Selected tests' passed at 2026-11-26 11:31:22.523.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.472 (0.474) seconds
-2026-11-26 11:31:22.902 xcodebuild[63268:2906262] [MT] IDETestOperationsObserverDebug: 3.021 elapsed -- Testing started completed.
-2026-11-26 11:31:22.902 xcodebuild[63268:2906262] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
-2026-11-26 11:31:22.902 xcodebuild[63268:2906262] [MT] IDETestOperationsObserverDebug: 3.021 sec, +3.021 sec -- end
+Test Case '-[CoachingHostDeviceTests.AnchorTests testRollbackSameVersionAndAnchorWindow]' passed (0.469 seconds).
+Test Suite 'AnchorTests' passed at 2026-11-26 12:07:03.521.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.469 (0.470) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:07:03.522.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.469 (0.470) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:07:03.522.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.469 (0.471) seconds
+2026-11-26 12:07:03.839 xcodebuild[24953:3051655] [MT] IDETestOperationsObserverDebug: 2.729 elapsed -- Testing started completed.
+2026-11-26 12:07:03.839 xcodebuild[24953:3051655] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:07:03.839 xcodebuild[24953:3051655] [MT] IDETestOperationsObserverDebug: 2.729 sec, +2.729 sec -- end
 
 Test session results, code coverage, and logs:
-	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-31-19--0300.xcresult
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-07-01--0300.xcresult
 
 ** TEST EXECUTE SUCCEEDED **
 

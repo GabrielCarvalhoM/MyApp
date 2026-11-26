@@ -121,7 +121,14 @@ final class PlatformTests: XCTestCase {
         XCTAssertTrue(imports.allSatisfy { !$0.contains("HealthKit") && !$0.contains("SwiftUI") && !$0.contains("HealthKitIngest") }, "\(Set(imports))")
         // 18a (iv): the review-only time-in-zone path is never called outside tests.
         let facade = try String(contentsOf: TestEnv.repo.appendingPathComponent("ios/Packages/CoachingHost/facade/entry.mjs"), encoding: .utf8)
-        XCTAssertFalse(facade.contains("timeInZonesForReviewOnly")); XCTAssertFalse(hits.contains { $0.contains("timeInZonesForReviewOnly") })
+        XCTAssertFalse(facade.contains("timeInZonesForReviewOnly"))
+        // QRE-A-10: every call site in the production sources and the linked bundle (its one definition, linked verbatim, excluded).
+        let pe = FileManager.default.enumerator(at: prod, includingPropertiesForKeys: nil)!
+        var calls: [String] = []
+        for case let u as URL in pe where !u.hasDirectoryPath && ["swift", "js", "mjs"].contains(u.pathExtension) {
+            for l in ((try? String(contentsOf: u, encoding: .utf8)) ?? "").split(separator: "\n") where l.contains("timeInZonesForReviewOnly(") && !l.contains("=(readings,series") { calls.append("\(u.lastPathComponent): \(l.prefix(80))") }
+        }
+        XCTAssertEqual(calls, [], "timeInZonesForReviewOnly is never called outside tests")
         emit("no-fixture-key", ["references": String(refs.count), "hits": String(hits.count)])
     }
     #endif

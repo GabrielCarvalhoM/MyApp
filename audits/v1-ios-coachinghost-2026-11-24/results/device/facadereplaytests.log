@@ -1,9 +1,10 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES "-only-testing:CoachingHostDeviceTests/FacadeReplayTests"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/FacadeReplayTests"
 
 Build settings from command line:
     DEVELOPMENT_TEAM = <TEAM>
     ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
 
 Resolve Package Graph
 
@@ -13,25 +14,25 @@ Resolved source packages:
   IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
   CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
 
-Test Suite 'Selected tests' started at 2026-11-26 11:30:37.368.
-Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 11:30:37.369.
-Test Suite 'FacadeReplayTests' started at 2026-11-26 11:30:37.369.
+Test Suite 'Selected tests' started at 2026-11-26 12:06:18.607.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:06:18.608.
+Test Suite 'FacadeReplayTests' started at 2026-11-26 12:06:18.608.
 Test Case '-[CoachingHostDeviceTests.FacadeReplayTests testFacadeAnswersAreTheFixtures]' started.
-CHRESULT facade-replay {"bundleSha256":"66ec7183e1c4476492c1d8f873e066de6c212cae196f16736dfd09e82a1a457b","calls":232,"callsDiverged":0,"callsExplainedLibm":11,"callsIdentical":221,"fixtures":98,"fixturesDecoded":97,"fixturesDiverged":[],"fixturesExplainedLibm":["hr5r-age30-presentation.json","hr5r-strap-above-presentation.json","hr5r-strap-below-presentation.json","hr5r-lab-presentation.json","hr5r-conflict-presentation.json","hr5r-noage-presentation.json","hr5r-optical-presentation.json","hr5r-declared-presentation.json","hr5r-custom-presentation.json","hr5r-after-erase-presentation.json"],"fixturesIdentical":87,"wallSeconds":14.059231042861938}
-Test Case '-[CoachingHostDeviceTests.FacadeReplayTests testFacadeAnswersAreTheFixtures]' passed (14.205 seconds).
-Test Suite 'FacadeReplayTests' passed at 2026-11-26 11:30:51.574.
-	 Executed 1 test, with 0 failures (0 unexpected) in 14.205 (14.206) seconds
-Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 11:30:51.575.
-	 Executed 1 test, with 0 failures (0 unexpected) in 14.205 (14.206) seconds
-Test Suite 'Selected tests' passed at 2026-11-26 11:30:51.575.
-	 Executed 1 test, with 0 failures (0 unexpected) in 14.205 (14.207) seconds
-2026-11-26 11:30:51.574954-0300 CoachingHostLab[17281:4231144] [] Hang detected: 14.21s (overlaps extended launch)
-2026-11-26 11:30:51.924 xcodebuild[62190:2902079] [MT] IDETestOperationsObserverDebug: 16.786 elapsed -- Testing started completed.
-2026-11-26 11:30:51.924 xcodebuild[62190:2902079] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
-2026-11-26 11:30:51.924 xcodebuild[62190:2902079] [MT] IDETestOperationsObserverDebug: 16.786 sec, +16.786 sec -- end
+CHRESULT facade-replay {"bundleSha256":"c3c4cf981fa3c1ac7014bded55abe210cd5b1344728b40811e0c2d0dd70f29fc","calls":232,"callsDiverged":0,"callsExplainedLibm":11,"callsIdentical":221,"fixtures":98,"fixturesDecoded":97,"fixturesDiverged":[],"fixturesExplainedLibm":["hr5r-age30-presentation.json","hr5r-strap-above-presentation.json","hr5r-strap-below-presentation.json","hr5r-lab-presentation.json","hr5r-conflict-presentation.json","hr5r-noage-presentation.json","hr5r-optical-presentation.json","hr5r-declared-presentation.json","hr5r-custom-presentation.json","hr5r-after-erase-presentation.json"],"fixturesIdentical":87,"wallSeconds":18.070883989334106}
+Test Case '-[CoachingHostDeviceTests.FacadeReplayTests testFacadeAnswersAreTheFixtures]' passed (18.232 seconds).
+Test Suite 'FacadeReplayTests' passed at 2026-11-26 12:06:36.840.
+	 Executed 1 test, with 0 failures (0 unexpected) in 18.232 (18.232) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:06:36.840.
+	 Executed 1 test, with 0 failures (0 unexpected) in 18.232 (18.232) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:06:36.840.
+	 Executed 1 test, with 0 failures (0 unexpected) in 18.232 (18.233) seconds
+2026-11-26 12:06:36.840313-0300 CoachingHostLab[17330:4246758] [] Hang detected: 18.23s (overlaps extended launch)
+2026-11-26 12:06:37.184 xcodebuild[24779:3049983] [MT] IDETestOperationsObserverDebug: 20.499 elapsed -- Testing started completed.
+2026-11-26 12:06:37.184 xcodebuild[24779:3049983] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:06:37.184 xcodebuild[24779:3049983] [MT] IDETestOperationsObserverDebug: 20.499 sec, +20.499 sec -- end
 
 Test session results, code coverage, and logs:
-	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_11-30-35--0300.xcresult
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-06-16--0300.xcresult
 
 ** TEST EXECUTE SUCCEEDED **
 
