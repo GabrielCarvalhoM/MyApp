@@ -56,6 +56,14 @@ public extension Scenario {
     static let weekDone = Scenario(id: "week-done", title: "Semana registrada · dia concluído", plan: .file("13-plan-w1"), allWeeks: base.allWeeks,
                                    presentation: .file("12-presentation-after-w0"), history: .file("26-history-final"), logged: .file("P-logged-after-w0"),
                                    weekPlan: base.weekPlan, hostGate: .none, pendingReports: 0, healthQueued: 0)
+    /// History variants: unplanned runs merged by the engine (FND-ABC-01), a contested measured distance, an unplanned strength row.
+    static let historyUnplanned = Scenario(id: "history-unplanned", title: "Histórico · avulsas e distância corrigida", plan: .file("13-plan-w1"), allWeeks: base.allWeeks,
+                                           presentation: .file("unplanned-8-presentation"), history: .file("unplanned-7-history"), logged: .file("P-logged-unplanned"),
+                                           weekPlan: base.weekPlan, hostGate: .none, pendingReports: 0, healthQueued: 0)
+    /// A symptom stop against a completed device run: one row, both voices (QRE-ABC-01).
+    static let historyConflict = Scenario(id: "history-conflict", title: "Histórico · vozes em conflito", plan: .file("13-plan-w1"), allWeeks: base.allWeeks,
+                                          presentation: .file("12-presentation-after-w0"), history: base.history, logged: .file("P-logged-conflict"),
+                                          weekPlan: base.weekPlan, hostGate: .none, pendingReports: 0, healthQueued: 0)
     /// The eve of the first week (plan created, nothing logged yet).
     static let firstWeek = Scenario(id: "first-week", title: "Plano criado · véspera da semana 1", plan: .file("02-plan-w0"), allWeeks: base.allWeeks,
                                     presentation: .file("04-presentation-after-onboard"), history: base.history, logged: .file("P-logged-two-voices"),
@@ -102,7 +110,7 @@ public extension Scenario {
                                      presentation: .hostFailure("RECORD_LOST"), history: .hostFailure("RECORD_LOST"), logged: .hostFailure("RECORD_LOST"),
                                      weekPlan: .hostFailure("RECORD_LOST"), hostGate: .none, pendingReports: 0, healthQueued: 0)
 
-    static let all: [Scenario] = [.today, .weekDone, .firstWeek, .blocked, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
+    static let all: [Scenario] = [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
                                   .clockUntrusted, .notEnrolled, .accountErased, .staleVersion, .integrityFailure, .recordLost]
 
     static func named(_ id: String?) -> Scenario { all.first { $0.id == id } ?? .today }

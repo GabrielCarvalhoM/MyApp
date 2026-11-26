@@ -100,8 +100,8 @@ struct AppTabs: View {
                         PlanScreen(openSession: { planPath.append(.session($0.id, $0.date)) }, cantThisDay: { sheet = .moving($0) })
                             .navigationDestination(for: Route.self, destination: destination)
                     }
-                case .history: NavigationStack { PreviewScreen(title: L.t("history.title"), icon: .historico) }
-                case .progress: NavigationStack { PreviewScreen(title: L.t("progress.title"), icon: .progresso) }
+                case .history: NavigationStack { HistoryScreen() }
+                case .progress: NavigationStack { ProgressScreen() }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
