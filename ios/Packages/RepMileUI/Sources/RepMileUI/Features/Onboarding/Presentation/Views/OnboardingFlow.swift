@@ -2,7 +2,8 @@ import CoachingPresentation
 import SwiftUI
 
 /// Onboarding (Figma page 10; Cuidados `836:3299`; out of scope `838:4053`). Every answer the engine reads is asked; the outcome is the engine's
-/// (`BoundaryAnswer.planOutcome`): a plan, "Plano indisponível · sinal informado no cadastro", a professional assessment, or a missing answer.
+/// (`BoundaryAnswer.planOutcome`): a plan, "Plano indisponível · sinal informado no cadastro", a professional assessment, a missing answer, or
+/// answers that do not fit together (INVALID_INPUT, #61).
 /// State and the write live in `OnboardingViewModel`; this view renders them.
 struct OnboardingFlow: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -50,7 +51,7 @@ struct OnboardingFlow: View {
             }
             .scrollIndicators(.hidden)
             VStack(spacing: 6) {
-                if step == .care, !viewModel.draft.careAnswered { Text(L.t("ob.care.required")).rmText(.detalhe, RM.Palette.textoSecundario) }
+                if let note = viewModel.requiredNote { Text(L.t(note)).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("ob-required") }
                 PrimaryActionButton(step == .welcome ? L.t("ob.start") : step == .consents ? L.t("ob.build") : L.t("ob.next"), icon: .chevronDireita,
                                     enabled: viewModel.canContinue) { advance() }
                     .accessibilityIdentifier("ob-next")
@@ -104,7 +105,16 @@ struct OnboardingFlow: View {
                 Text(L.t("ob.clinical.title")).rmText(.manchete)
                 Text(L.t("ob.clinical.body.interim")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
                 Spacer()
-            case .needsInput, .invalidInput:
+            case .invalidInput:
+                Text(L.t("ob.invalidInput.title")).rmText(.manchete).accessibilityIdentifier("ob-invalid-input")
+                Text(L.t("ob.invalidInput.body")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                if !viewModel.reviewSteps.isEmpty {
+                    Text(L.f("ob.invalidInput.steps", viewModel.reviewSteps.map { L.t("ob.stepName.\($0)") }.formatted(.list(type: .and))))
+                        .rmText(.subtitulo).accessibilityIdentifier("ob-invalid-steps")
+                }
+                Spacer()
+                SecondaryPillButton(L.t("ob.invalidInput.action")) { withAnimation { viewModel.reviewAnswers() } }.accessibilityIdentifier("ob-invalid-review")
+            case .needsInput:
                 Text(L.t("state.needsInput.title")).rmText(.manchete)
                 Text(L.t("ob.needsInput")).rmText(.corpo, RM.Palette.textoSecundario)
                 Spacer()
