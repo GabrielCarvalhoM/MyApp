@@ -79,19 +79,6 @@ final class ReviewFixTests: XCTestCase {
         TestEnv.cleanup("qre03")
     }
 
-    /// QRE-A-04 (open, CCP-A-04): pins what happens today when the account is erased (the key with it) and the same athlete id enrols again.
-    func testEraseAccountThenSameIdPinned() async throws {
-        let f = try await HostFixture.make("qre04")
-        _ = await f.host.onboard(Athlete.answers(), consents: Athlete.all)
-        let _v5 = (await f.host.eraseAccount()).answer.ok
-        XCTAssertTrue(_v5)
-        let again = await f.host.onboard(Athlete.answers(), consents: Athlete.all)
-        emit("qre-a-04-pinned", ["reEnrolOk": String(again.answer.ok), "outcome": "\(again.answer.planOutcome)", "code": again.answer.error?.code.raw ?? "-"])
-        // Today: the tombstone is sealed under the erased key, so a new key cannot find it and the same id enrols again (no GONE).
-        XCTAssertEqual(again.answer.planOutcome, .planCreated, "pinned behaviour; the decision is CCP-A-04 (Security + Core)")
-        TestEnv.cleanup("qre04")
-    }
-
     /// QRE-A-05: the warning-sign gate is released only by the answer to a request that carried sign answers or a screen.
     func testWarningSignGateNotReleasedByAnUnrelatedReport() async throws {
         let f = try await HostFixture.make("qre05")

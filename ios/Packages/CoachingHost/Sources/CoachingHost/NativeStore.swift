@@ -40,23 +40,38 @@ final class NativeStore {
     #endif
 
     static func name(_ id: String) -> String { String(EngineRuntime.hex(SHA256.hash(data: Data(id.utf8))).prefix(32)) }
-    func file(_ id: String) -> URL { dir.appendingPathComponent("athlete-\(Self.name(id)).json") }
-    func lockFile(_ id: String) -> URL { dir.appendingPathComponent("athlete-\(Self.name(id)).lock") }
+    func file(_ id: String) -> URL { file(tag: Self.name(id)) }
+    func lockFile(_ id: String) -> URL { lockFile(tag: Self.name(id)) }
+    func file(tag: String) -> URL { dir.appendingPathComponent("athlete-\(tag).json") }
+    func lockFile(tag: String) -> URL { dir.appendingPathComponent("athlete-\(tag).lock") }
     func tomb(_ s: String) -> URL { dir.appendingPathComponent("tombstone-\(Self.name(s)).json") }
     static func digest(_ data: Data) -> String { EngineRuntime.hex(SHA256.hash(data: data)) }
 
     /// Whether any athlete record exists in this store (the first-launch reconciliation).
+    /// The folder's names; nil when it cannot be listed (code review R1 #3: a failed listing is "unknown", never "empty").
+    func names() -> [String]? { try? FileManager.default.contentsOfDirectory(atPath: dir.path) }
+    /// Whether any athlete record exists. An unlistable folder counts as "yes" (nothing is removed on that guess).
     func hasAnyRecord() -> Bool {
-        ((try? FileManager.default.contentsOfDirectory(atPath: dir.path)) ?? []).contains { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") }
+        guard let n = names() else { return true }
+        return n.contains { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") }
     }
+    /// The install-wide lock (CCP-A-04, code review R1 #1): the key removal and an enrolment's check-and-seal never interleave.
+    static let installTag = "install"
 
     // MARK: the operation lock (kernel flock, across processes)
 
     /// Runs `body` holding the athlete's kernel lock; re-entrant within this process (one serial queue). A `.tmp` left by a dead writer is
     /// removed once the lock is held. Throws `.busy` if another process keeps the lock longer than `lockWait`.
     func withLock<T>(_ id: String, _ body: () throws -> T) throws -> T {
-        if held[id] != nil { return try body() }
-        let fd = open(lockFile(id).path, O_CREAT | O_RDWR | O_CLOEXEC, 0o600)
+        let tag = Self.name(id)
+        if held[tag] != nil { return try body() }
+        return try withLock(tag: tag) { loaded.removeValue(forKey: id); defer { loaded.removeValue(forKey: id) }; return try body() }
+    }
+
+    /// The same kernel lock by the athlete's file tag alone (CCP-A-04: the completion of an erasure knows only the tag).
+    func withLock<T>(tag: String, _ body: () throws -> T) throws -> T {
+        if held[tag] != nil { return try body() }
+        let fd = open(lockFile(tag: tag).path, O_CREAT | O_RDWR | O_CLOEXEC, 0o600)
         guard fd >= 0 else { throw StoreError.io(errno) }
         let deadline = Date().addingTimeInterval(lockWait)
         while flock(fd, LOCK_EX | LOCK_NB) != 0 {
@@ -64,12 +79,11 @@ final class NativeStore {
             if Date() > deadline { close(fd); throw StoreError.busy }
             usleep(2_000)
         }
-        if !Self.protection.isEmpty { try? FileManager.default.setAttributes(Self.protection, ofItemAtPath: lockFile(id).path) }
-        held[id] = fd
-        loaded.removeValue(forKey: id)
-        let tmp = file(id).appendingPathExtension("tmp")
+        if !Self.protection.isEmpty { try? FileManager.default.setAttributes(Self.protection, ofItemAtPath: lockFile(tag: tag).path) }
+        held[tag] = fd
+        let tmp = file(tag: tag).appendingPathExtension("tmp")
         if FileManager.default.fileExists(atPath: tmp.path) { try? FileManager.default.removeItem(at: tmp); cleanedAtStart.append(tmp.lastPathComponent) }
-        defer { loaded.removeValue(forKey: id); held.removeValue(forKey: id); flock(fd, LOCK_UN); close(fd) }
+        defer { held.removeValue(forKey: tag); flock(fd, LOCK_UN); close(fd) }
         return try body()
     }
 
@@ -81,7 +95,7 @@ final class NativeStore {
     /// `load`: the stored text, remembering the digest of exactly these bytes for this operation's commit.
     func load(_ id: String) -> String? {
         let d = rawData(id)
-        if held[id] != nil { loaded[id] = .some(d.map(Self.digest)) }
+        if held[Self.name(id)] != nil { loaded[id] = .some(d.map(Self.digest)) }
         return d.flatMap { String(data: $0, encoding: .utf8) }
     }
 
@@ -101,7 +115,7 @@ final class NativeStore {
         }
         let data = Data(text.utf8)
         try atomicWrite(data, to: file(id))
-        if held[id] != nil { loaded[id] = .some(Self.digest(data)) }
+        if held[Self.name(id)] != nil { loaded[id] = .some(Self.digest(data)) }
         commits += 1
         return #"{"ok":true}"#
     }
@@ -132,12 +146,34 @@ final class NativeStore {
     func setRaw(_ id: String, _ text: String) { try? atomicWrite(Data(text.utf8), to: file(id)) }
     func tombstone(_ s: String, _ text: String) throws { try atomicWrite(Data(text.utf8), to: tomb(s)) }
     func tombstoneOf(_ s: String) -> String? { try? String(contentsOf: tomb(s), encoding: .utf8) }
+    /// Removes every custody tombstone file (only once the key that named them is gone: `CoachingHost.completeErasure`). True when none is left.
+    func removeTombstones() -> Bool {
+        guard let all = self.names() else { return false }
+        let names = all.filter { $0.hasPrefix("tombstone-") && $0.hasSuffix(".json") }
+        for n in names { try? FileManager.default.removeItem(at: dir.appendingPathComponent(n)) }
+        return names.allSatisfy { !FileManager.default.fileExists(atPath: dir.appendingPathComponent($0).path) }
+    }
+    /// Whether a record of an athlete other than `tag` exists (V1: one enrolled athlete per install).
+    func hasRecord(otherThan tag: String) -> Bool {
+        guard let n = names() else { return true }
+        return n.contains { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") && $0 != "athlete-\(tag).json" }
+    }
 
     /// Account erasure on the native side (6.3): the athlete's file and its `.tmp`, under the athlete's lock. The lock file is kept: it holds no
     /// data, and unlinking it while another process waits on it would split the lock in two (QRE-A-07).
-    func eraseFiles(_ id: String) {
-        for u in [file(id), file(id).appendingPathExtension("tmp")] { try? FileManager.default.removeItem(at: u) }
+    func eraseFiles(_ id: String) { _ = eraseFiles(tag: Self.name(id)) }
+    /// The same by tag; true when neither file exists afterwards (CCP-A-04: an erasure is complete only when this is checked).
+    func eraseFiles(tag: String) -> Bool {
+        if failErasureForTesting { return false }
+        var gone = true
+        for u in [file(tag: tag), file(tag: tag).appendingPathExtension("tmp")] {
+            try? FileManager.default.removeItem(at: u)
+            if FileManager.default.fileExists(atPath: u.path) { gone = false }
+        }
+        return gone
     }
+    /// Tests only: the native removal of the record fails (CCP-A-04 T8c).
+    var failErasureForTesting = false
 
     func protectionOf(_ id: String) -> String? {
         ((try? FileManager.default.attributesOfItem(atPath: file(id).path))?[.protectionKey] as? FileProtectionType)?.rawValue
@@ -153,7 +189,10 @@ final class NativeStore {
     }
 
     /// The JS adapters (`__chstore`): store.mjs's signature over this store.
-    func jsMembers() -> [String: Any] {
+    /// `fenced` (CCP-A-04): whether this host's athlete is behind an erasure fence. The custody asks `tombstoneOf` only for the subject of
+    /// the host's own actor (`custody.mjs` open/enroll), so a fenced athlete answers with a tombstone even when the key that named the custody's
+    /// own tombstone file was removed by the account erasure (6.3). The frozen custody then answers GONE through its own code.
+    func jsMembers(fenced: @escaping () -> Bool = { false }) -> [String: Any] {
         let s = self
         let load: @convention(block) (String) -> String? = { s.load($0) }
         let raw: @convention(block) (String) -> String? = { s.raw($0) }
@@ -162,7 +201,7 @@ final class NativeStore {
         }
         let remove: @convention(block) (String) -> Void = { s.remove($0) }
         let tombstone: @convention(block) (String, String) -> String? = { a, t in do { try s.tombstone(a, t); return nil } catch { return "write failed" } }
-        let tombstoneOf: @convention(block) (String) -> String? = { s.tombstoneOf($0) }
+        let tombstoneOf: @convention(block) (String) -> String? = { s.tombstoneOf($0) ?? (fenced() ? ErasureFence.tombstoneText : nil) }
         let setRaw: @convention(block) (String, String) -> Void = { s.setRaw($0, $1) }
         return ["load": unsafeBitCast(load, to: AnyObject.self), "raw": unsafeBitCast(raw, to: AnyObject.self),
                 "commit": unsafeBitCast(commit, to: AnyObject.self), "remove": unsafeBitCast(remove, to: AnyObject.self),
@@ -177,7 +216,8 @@ final class KeychainAnchor {
     let items: KeychainItems
     private(set) var writes = 0, reads = 0, failures: [Int32] = []
     init(items: KeychainItems) { self.items = items }
-    static func account(_ id: String) -> String { "anchor." + NativeStore.name(id) }
+    static func account(_ id: String) -> String { account(tag: NativeStore.name(id)) }
+    static func account(tag: String) -> String { "anchor." + tag }
 
     /// The facade's anchor adapter throws on this value (QRE-A-03): a Keychain read that fails is never read as "no anchor", which would turn
     /// off the RECORD_LOST / RECORD_ROLLED_BACK checks.

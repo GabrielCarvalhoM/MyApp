@@ -65,8 +65,14 @@ final class TrustedClock {
     func recordWrite(atMs: Double) {
         let r = Reference(lastAtMs: atMs, continuousNanos: source.continuousNanos(), bootSession: source.bootSession())
         reference = r
+        if erased() { return }
         if let d = try? JSONEncoder().encode(r) { try? AtomicFile.write(d, to: file) }
+        // CCP-A-04: an erasure in another process writes its fence BEFORE it removes this file, so a write that lands after the removal sees
+        // the fence here and takes the file back out: no clock reference outlives the account.
+        if erased() { try? FileManager.default.removeItem(at: file) }
     }
+    /// Whether this athlete is behind an erasure fence (set by the host).
+    var erased: () -> Bool = { false }
 
     func erase() { reference = nil; try? FileManager.default.removeItem(at: file) }
 }

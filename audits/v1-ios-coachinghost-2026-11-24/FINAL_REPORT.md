@@ -13,7 +13,8 @@
 | `36c1999` | Equivalence on the production bundle, the facade replay in JSC, the port behaviour tests |
 | `d535901` | Platform, cross-process and item-18 tests |
 | `33e1198` | CoachingHostLab (iPhone host and device tests), device and macOS evidence |
-| (closing commit) | QRE/Security R1 fixes (QRE-A-01 to 03, 05 to 12) with their tests; CCP-A-01 to 04; the device evidence run again on the final bundle; this report |
+| `85af7bd`, `df9b69b` | QRE/Security R1 fixes (QRE-A-01 to 03, 05 to 12) with their tests; CCP-A-01 to 04; the device evidence run again on the final bundle; this report |
+| (directed closing commits, 2026-11-26) | **CCP-A-04 resolved in A** (the native erasure fence, `ErasureTests`), with Core and Security design reviews and a targeted code review, its findings fixed; CCP-A-05/06; **the locked-device phase run on the iPhone (PASS, final code)**; **macOS tests without Keychain dialogs** (`ios/Packages/CoachingHost/KEYCHAIN_TESTING.md`) |
 
 Every changed path is in front A's column (contract §10): 98 files under `ios/Packages/CoachingHost/`, `ios/Labs/CoachingHostLab/` and `audits/v1-ios-coachinghost-2026-11-24/` (`results/mac/gates.log`).
 
@@ -43,7 +44,7 @@ Nothing else differs. `prelude.js` is byte-identical. `compare.mjs` is not linke
 
 ## 3. Tests: result and log
 
-**macOS** (`swift test` in `ios/Packages/CoachingHost`): 42 tests, 0 failures (`results/mac/swift-test-coachinghost.log`). **iPhone 17 Pro Max** (iOS 27.2.1, Release):
+**macOS** (`swift test` in `ios/Packages/CoachingHost`): 57 tests, 0 failures, 1 skipped. That is the 42 earlier tests, less the superseded QRE-A-04 pin, plus 14 `ErasureTests` and 2 `MacKeychainIntegrationTests`; the opt-in real-Keychain test is the skipped one. It was run 3 times in a row (clean rebuild, incremental, recompiled) without a dialog (`results/mac/keychain-autonomy.log`). **On macOS the tests use the test-only file Keychain storage, never the login keychain** (see "Keychain in the macOS tests" below). Wherever this report says "native + Keychain" for macOS, that is the file storage, with the same contract as the Keychain. The real Keychain is the iPhone's (`results/mac/swift-test-coachinghost.log`). **iPhone 17 Pro Max** (iOS 27.2.1, Release):
 - every command went through `tools/device-lock/with-device.sh coachinghost --wait`, with `-derivedDataPath <worktree>/ios/.build/DerivedData-A`;
 - bundle id `fit.vilumo.repmile.lab.coachinghost.<TEAM>`;
 - logs in `results/device/`.
@@ -79,7 +80,8 @@ Nothing else differs. `prelude.js` is byte-identical. `compare.mjs` is not linke
 | 17 | Time in zone: `UNAVAILABLE / SERIES_CHANNEL_NOT_REVIEWED`, no distribution | PASS | PASS |
 | 18 | `pendingWeek`, LOCAL_FATIGUE, an exercise outside the prescription (Node, real boundary) | 3/3 (`item18-node.log`, `results/item18-evidence.json`) | — |
 | iPhone | Reinstall with the reconciliation | — | **PASS**. Phase 1: enrolled, clinical restart, 3 Keychain items. The lab app was deleted (`devicectl uninstall`, only `fit.vilumo.repmile.lab.coachinghost.*`) and installed again. Phase 2: `FRESH_INSTALL_PURGED`, the leftovers removed, a **new** key, `NOT_ENROLLED` (never `RECORD_LOST`), nothing startable, B told `purge(.freshInstall)` |
-| iPhone | Locked device | — | **NOT RUN**. It needs a person to lock the iPhone during the 120 s wait: skipped by its own rule (`phase-locked.log`) |
+| iPhone | Locked device | — | **PASS on the final code** (`phase-locked.log`), with the Founder locking and unlocking the device on cue. While locked: a write and a read of the record (`NSFileProtectionCompleteUntilFirstUserAuthentication`) with 0 Keychain failures; an account erasure (key removed, fence `ERASED`, the erased id `GONE`) and a new account (`planCreated`, new key). After the unlock: a new host instance recovers the record (plan OK, version 2, 0 anchor failures). History: a first attempt was skipped by its own rule ("not locked within 300 s") because the block-buffered log delayed the cue (`phase-locked-attempt1-not-run.log`). A pass followed, before the code-review fixes (`phase-locked-pre-review-fixes.log`). On the final code, one attempt was skipped because the cue reached the Founder too late (`phase-locked-final-attempt1-not-run.log`), and the next one passed |
+| CCP-A-04 | Account erasure: the fence, recovery and rollback refused, restart and reinstall, a new account, write failures, concurrency (`ErasureTests`, `CCP_A_04_RESOLUTION.md` §7) | **14/14** (`swift-test-coachinghost.log`) | **13/13 + 1 macOS-only skip** (`erasuretests.log`) |
 | iPhone | PF-0 (below) | — | PASS, all budgets |
 
 **About the reinstall evidence.** The first device run of phase 2 failed on an assertion that was wrong: it expected an empty Keychain, but the host had already created its new key on the first seal. The test was corrected to prove that the leftover marker and anchor are gone and that the only item is a newly created key. The full cycle (phase 1, delete, phase 2) was then run again and passed. The committed logs are those of the second cycle.
@@ -103,6 +105,13 @@ Every budget passes. Some numbers are higher than the HR5R host's, for three rea
 
 The review is the host's own operation, not the harness P16 step, so the two numbers compare budgets, not identical work.
 
+**Keychain in the macOS tests** (`ios/Packages/CoachingHost/KEYCHAIN_TESTING.md`).
+- **The problem:** the Founder was interrupted by repeated dialogs ("xctest wants to access `fit.vilumo.repmile.lab.coachinghost`"), even after "Always Allow".
+- **The cause:** the macOS tests used the legacy login keychain, whose item ACL trusts the creating binary's code identity. The test binaries are signed ad hoc, with no team, so the CDHash changes at every rebuild. And the cross-process tests read in one binary what another binary created.
+- **The fix:** a file-backed storage with the Keychain's contract, compiled only in test builds, used by every macOS test and by `coachinghost-proc`. A tripwire stops any macOS test that would reach the login keychain for the production service. The production path is unchanged: `.system` always, and `swift build -c release` compiles without the test storage.
+- **Where the real Keychain is still tested:** on the iPhone, and in an opt-in macOS test in an isolated per-run service (`CH_REAL_KEYCHAIN=1`).
+- **Leftovers:** 12 `test.*` items left by earlier runs stay inert in the login keychain. A command to remove them is in the document, for the owner to run.
+
 ## 4. Native obligations
 
 | Obligation | State |
@@ -110,7 +119,7 @@ The review is the host's own operation, not the harness P16 step, so the two num
 | 2.2 the bundle carries exactly the frozen modules | **implemented, proven** (§2) |
 | 3.1 one serial queue, every boundary call on it | implemented (one `DispatchQueue`, one `JSContext`; `dispatchPrecondition`) |
 | 1.1 tmp + fsync + rename + dir fsync | **proven** (death before and after the rename, separate process) |
-| 1.2 `completeUntilFirstUserAuthentication` | implemented; class asserted on the iPhone. The locked-device phase is **not run** |
+| 1.2 `completeUntilFirstUserAuthentication` | **proven** on the iPhone: the locked-device phase (read, write, Keychain, erasure while locked; recovery after the unlock) |
 | 1.3 / N-5 one writer across processes | **proven** on macOS (two processes, 200 rounds). The extension (App Groups) is for the integration |
 | 1.4 anchor `{version, docMac, carriedSeq}` whole, updated in place | **proven** (rollback, window) |
 | 1.5 / 6.1 reconciliation, no backup | **proven** on the iPhone. D2 (backup) is an extension point only (`RecordBackupRestoring`) |
@@ -118,7 +127,7 @@ The review is the host's own operation, not the harness P16 step, so the two num
 | N-4 production key | **proven** (random 256-bit, allowlist, `SecItemAdd` once, `cku`, never in JS, never logged, no fixture key) |
 | N-3 SEC-FPV-01 | **proven**. It stays open until the screen respects it (C) |
 | 5.1 / D1 local reference | **proven**. The server reference is pending (no backend) |
-| 6.3 account erasure | file, `.tmp`, side files, anchor, key and lock file removed; then `purge(.accountErased)` |
+| 6.3 account erasure | **proven**: the file, `.tmp`, side files, anchor and key are removed, each checked; the custody tombstones named by the removed key are removed too; then `purge(.accountErased)`, owed until it returns. The erased id stays `GONE` through the native fence (CCP-A-04). The `.lock` (no data, QRE-A-07) and the fence (no time) remain |
 | N-1 SEC-INT-05/12 | the admission in the JSContext accepts every shape the shared types produce (E2E, replay) |
 | 3.5 logs | only `telemetryOf` records and host codes; the code, operation class and version are public, the decision id is private |
 | FND-ABC-04 / 04b | **proven** (reopen, real reinstall). Open until SSCTR + SEC confirm and Core decides on the boundary |
@@ -136,11 +145,13 @@ The review is the host's own operation, not the harness P16 step, so the two num
 
 ## 6. Contract change proposals
 
-`CONTRACT_CHANGE_PROPOSALS.md` lists four proposals, each with a local adapter or a pinned behaviour in place and no shared file edited:
+`CONTRACT_CHANGE_PROPOSALS.md` lists six proposals, each with a local adapter in place and no shared file edited:
 - **CCP-A-01:** a `pendingWeek` port and its type;
 - **CCP-A-02:** LOCAL_FATIGUE has no request type; the engine answers MODIFY/REDUCE and changes the week at once;
 - **CCP-A-03:** an explicit write for the open symptom route;
-- **CCP-A-04:** account erasure removes the key that seals the tombstone (QRE-A-04).
+- **CCP-A-04:** account erasure removes the key that seals the tombstone (QRE-A-04). **Resolved in A** (`CCP_A_04_RESOLUTION.md`);
+- **CCP-A-05:** a new account is a new athlete id, never derived from a stable personal identifier (a binding rule for the account layer);
+- **CCP-A-06:** record the fence in the contract's §7 table and the G07 row; a later Core option (a key-independent tombstone subject).
 
 ## 7. Independent review
 
@@ -151,7 +162,7 @@ QRE/Security R1, by an independent agent instance (read-only, worker ≠ judge),
 | **QRE-A-01** MAJOR: an exempt operation turned an ahead clock into the reference | **Fixed.** Under a clock ahead, an exempt operation runs at the trusted bound. Only an operation on a trusted clock updates the reference or counts as clock recovery. Test: +1 day, revoke and erase pass, B is not told, and the next submit and delivery are still refused |
 | **QRE-A-02** MAJOR: the FND-ABC-04/04b and SEC-FPV-01 signals were written after the operation, and their failure was ignored | **Fixed.** A restart is marked in flight durably before it is sent (`pendingIntake`); if the marker cannot be written, nothing is sent. The erasure's signal is set before the erasure. Every write result is checked; a write that is not durable keeps startability `recordUnavailable` until it succeeds. A new process that finds a restart in flight starts nothing. Tests: in-process, and across processes (`testScopeSignalAcrossRealProcesses`, real `coachinghost-proc` processes) |
 | **QRE-A-03** MAJOR: a Keychain read failure read as "no anchor" | **Fixed.** A failed read is an error in the facade's anchor adapter; the boundary answers a failure and nothing is committed. Test: a rolled-back blob is never served while the anchor cannot be read, and is `RECORD_ROLLED_BACK` once it can |
-| **QRE-A-04** MAJOR: the erased key makes the tombstone unfindable | **Open, needs a decision.** The current behaviour is pinned by a test (the same id enrols again) and goes to Security + Core as **CCP-A-04** |
+| **QRE-A-04** MAJOR: the erased key makes the tombstone unfindable | **Fixed in A** (CCP-A-04 resolution, below). The earlier pin is superseded |
 | QRE-A-05 MINOR: the warning-sign gate was released by an unrelated report | **Fixed:** released only by an answer to a request carrying sign answers or a screen. Test |
 | QRE-A-06 MINOR: no native erasure without a record | **Fixed:** also on `NOT_ENROLLED` / `GONE`. Test. Also found: a refused onboarding no longer tells B anything |
 | QRE-A-07 MINOR: side effects outside the flock | **Fixed:** the erasure of the files and the anchor rewrite run under the lock; the lock file is kept; side files use a unique temporary name per writer |
@@ -161,25 +172,44 @@ QRE/Security R1, by an independent agent instance (read-only, worker ≠ judge),
 | QRE-A-11 NOTE: backup | **Applied until D2:** the store folder is excluded from the device backup |
 | QRE-A-12 NOTE: store I/O | **Applied:** store I/O errors are `HOST_UNAVAILABLE` (`hostUnavailable` in the sink, not `retryLater`). That user writes never see CONFLICT_STALE_VERSION (the version is read under the lock) follows the port design; it is recorded here |
 
-The review fixes were not reviewed a second time.
+The R1 fixes were not reviewed a second time, except the CCP-A-04 work below.
+
+**CCP-A-04 (directed closing, 2026-11-26).** Before any code changed, the design (`CCP_A_04_RESOLUTION.md`) went to two independent reviewers, both read-only agent instances, both received as is:
+- **Core R1** (`reviews/CORE_CCP_A_04_R1.md`): APPROVE_WITH_CHANGES. The store-interface reading is faithful (exactly two `tombstoneOf` callers, both for the actor). The change is in A's column, with no effect on equivalence;
+- **Security R1** (`reviews/SECURITY_CCP_A_04_R1.md`): APPROVE_WITH_CHANGES. Four MAJOR findings: the per-install key, B's purge after a death, CCP-A-05 to be made binding, and completion that must fail closed.
+
+Every required change is applied; the disposition is in `CCP_A_04_RESOLUTION.md` §6. The implemented code then went to a third, targeted review: **QRE/Security code R1** (`reviews/QRE_SECURITY_CCP_A_04_CODE_R1.md`), READY_WITH_CONDITIONS, with no blocker.
+
+| Code R1 finding | Disposition |
+|---|---|
+| #1 MAJOR: a key cached by another host instance could seal a new enrolment after the key was removed | **Fixed.** `KeychainIntegrityKey.revalidate()` runs once per operation and drops a cached key the Keychain no longer holds. The key removal ("no record left → remove the key → remove the tombstones") and an enrolment's checks and seal run under one **install-wide** lock, always taken after the athlete's lock. `onboard` scans the fences again under that lock. Test: `testCachedOldKeyNeverSealsANewEnrolment`, which fails when `revalidate()` is removed (mutation) |
+| #2 MAJOR: CCP-A-05, the design text and the documentation | **Done.** The review ran while they were being written: `CONTRACT_CHANGE_PROPOSALS.md` CCP-A-05 (binding) and CCP-A-06; `CCP_A_04_RESOLUTION.md` rewritten |
+| #3 a failed folder listing failed open | **Fixed.** A failed listing is "unknown": the key is kept, the erasure stays pending, onboarding is refused, the tombstones are not counted as removed, and the fence scan at start blocks until it succeeds |
+| #4 completion outside one lock hold | **Fixed.** The whole native completion runs under one hold of the athlete's lock, with the key part under the install lock |
+| #5 the owed purge had gaps | **Fixed.** Start also purges B for REQUESTED fences. A completion inside a delivery sends the owed purge outside B's call. No enrolment happens while a purge is owed, so it reaches B before a new athlete's data does. Test in `testPurgeFailureIsOwed` |
+| #6 unreadable fences | **Fixed and documented.** Unreadable bytes (protected data) fence the athlete but never drive a removal. Bytes that read but do not decode complete the erasure: the file exists only after a request, so there is no permanent block. `eraseAccount` writes REQUESTED over an unreadable own fence, as a new request. Test: `testUnreadableAndMalformedFences` |
+| #7 `eraseAccount` had lost its BUSY retries | **Fixed.** The lock is tried 3 times. A lock never obtained answers `HOST_UNAVAILABLE` ("the account erasure is pending"), and the REQUESTED fence completes it at the next operation |
+| #8 notes | A repeat erasure removes a record file put back since. `ANOTHER_ATHLETE_ON_THIS_INSTALL` is a host code, listed in CCP-A-05 for C's mapping; it is now checked after the pending-erasure check. Cross-tag lock nesting is bounded by the flock timeout. No retain cycle. The logs carry codes only |
+| #9 test gaps | T4 checks the clock file too. The cached-key scenario is tested. T13: the bundle sha is unchanged (`c3c4cf98…`), and equivalence and replay are unchanged on Mac and iPhone. T14: `perform` does not throw, and the flag is reset by `defer`. Process kills between steps are not simulated: the persistent fence states and the completion at start cover them, and failures are simulated at each step. Directory names cannot contain `/`, so there is no traversal to test |
 
 ## 8. Pending items and their owners
 
 | Item | Owner |
 |---|---|
-| Locked-device phase on the iPhone (needs a person to lock it): `CH_PHASE=locked`, command in §9 | Founder (one command) |
 | SEC-FPV-01 until the screen respects it; FND-ABC-04/04b confirmation | C; SSCTR + SEC; Core |
 | SEC-FPV-03 with a real extension (App Groups); background delivery with the app closed; a real synced week (OPEN-5) | Integration |
 | G07 retention of stop facts; D1 server reference; D2 backup; D3 minimum iOS | Founder / legal |
 | SSCTR-BC-01 on screen; C-BC-3 / SSCTR-BC-05 copy; R7-B0 renewal before 2027-04-30 | C + SSCTR; SSCTR |
 | OPEN-1..5, G-1..G-5, GAP-16/DR-121, SSCTR C10 (time in zone) | as in contract §4.4 / §12 |
-| CCP-A-01..03 | Integration mission |
+| CCP-A-01..03, CCP-A-05 (the account layer issues a new random id per account), CCP-A-06 (contract §7 row, G07 note) | Integration mission (+ Security for 05, Founder/legal for 06's G07 note) |
+| CCP-A-06 Core option: a key-independent tombstone subject (later cycle, not a blocker) | Core |
 
 ## 9. Reproducing
 
 ```sh
 ./ios/Packages/CoachingHost/build/build.sh --twice                # bundle, manifest, pin, fixture reproduction
-(cd ios/Packages/CoachingHost && swift test)                      # 42 tests
+(cd ios/Packages/CoachingHost && swift test)                      # 57 tests, no Keychain dialog (KEYCHAIN_TESTING.md)
+CH_REAL_KEYCHAIN=1 swift test --filter MacKeychainIntegrationTests # opt-in: the real macOS Keychain, isolated service
 node --test ios/Packages/CoachingHost/facade/test/item18.test.mjs
 python3 ios/Labs/CoachingHostLab/generate-project.py
 tools/device-lock/with-device.sh coachinghost --wait -- xcodebuild build-for-testing -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj \
@@ -188,7 +218,9 @@ tools/device-lock/with-device.sh coachinghost --wait -- xcodebuild build-for-tes
 TEST_RUNNER_CH_PHASE=<phase> tools/device-lock/with-device.sh coachinghost --wait -- xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj \
   -scheme CoachingHostLab -configuration Release -destination 'platform=iOS,id=<UDID>' -derivedDataPath "$PWD/ios/.build/DerivedData-A" \
   DEVELOPMENT_TEAM=<team> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING '-only-testing:CoachingHostDeviceTests/<Suite>[/<test>]'
-# Locked device: CH_PHASE=locked, -only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseLockedDevice; lock the iPhone when the log prints lockTheDeviceNow.
+# Locked device: CH_PHASE=locked, -only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseLockedDevice. Run it under a pty
+# (`script -q <log> <command>`) so the log is not buffered. When it prints lockTheDeviceNow, lock the iPhone; when it prints
+# unlockTheDeviceNow (or after ~30 s), unlock it. Each wait lasts 300 s.
 ```
 
 ## 10. Final table
@@ -196,7 +228,7 @@ TEST_RUNNER_CH_PHASE=<phase> tools/device-lock/with-device.sh coachinghost --wai
 | Criterion | Result |
 |---|---|
 | FREEZE_CHECK (rev. 2: the runtime gate `v1san-runtime-integrity` in `npm test`; the `--check` verifiers are historical, contract §1) | **PASS**: 1952/1952/0, 53 historical at their declared point |
-| PRODUCTION_BUNDLE_EQUIVALENT | **YES**: manifest = AMENDMENT-2 + `app-projections.mjs`, export gate 0, `core`/`int`/`final`/`hr5r` 0 DIVERGED on macOS JSC and the iPhone |
+| PRODUCTION_BUNDLE_EQUIVALENT | **YES**: manifest = AMENDMENT-2 + `app-projections.mjs`, export gate 0, bundle `c3c4cf98…` unchanged, `core`/`int`/`final`/`hr5r` 0 DIVERGED on macOS JSC and the iPhone (final code) |
 | N4_KEY | **YES** |
 | N5_LOCK | **YES** (two macOS processes; the real extension is the integration's, SEC-FPV-03) |
 | D1_LOCAL | **YES** (local reference; the server reference is pending, no backend) |
@@ -205,7 +237,9 @@ TEST_RUNNER_CH_PHASE=<phase> tools/device-lock/with-device.sh coachinghost --wai
 | PORTS_IMPLEMENTED (`CoachingReading`, `CoachingWriting`, `TimeInZoneClassifying`, `DeviceActivitySink`) | **YES** |
 | FND_ABC_04_GATE (04 and 04b; reopen, real processes, real reinstall on the iPhone) | **YES** |
 | HR5_CROSS_PROCESS (200-round race; persistence between processes on Mac and iPhone; rollback) | **YES** |
-| Independent QRE/Security review | done: READY_WITH_CONDITIONS; the conditions on A-01 to A-03 are fixed with tests; **A-04 is open** (CCP-A-04) |
-| Locked-device phase on the iPhone (A §7 iPhone list) | **NOT RUN** (needs a person to lock the device) |
-| READY_FOR_INTEGRATION | **NO**. Two items remain: the locked-device phase on the iPhone (one command, §9), and the CCP-A-04 decision (or acceptance of the pinned behaviour) by Security + Core. Everything else in §9 of the A handoff holds with evidence |
+| ACCOUNT_ERASURE (6.3 + CCP-A-04: effective erasure, key removed, old record and rollback refused, restart and reinstall, a new account genuinely new, write failures, concurrency) | **YES** (`ErasureTests` on Mac and iPhone, the locked phase on the iPhone; Core R1 and Security R1 design reviews, and the code R1 with its findings fixed) |
+| Locked-device phase on the iPhone (A §7 iPhone list) | **PASS** (final code, Founder present) |
+| macOS tests run without human intervention | **YES** (3 consecutive runs, a clean rebuild included; login keychain untouched; `KEYCHAIN_TESTING.md`) |
+| Independent reviews | QRE/Security R1: A-01 to 03 and 05 to 12 fixed, **A-04 fixed** (CCP-A-04). CCP-A-04: Core R1 and Security R1 APPROVE_WITH_CHANGES, every change applied; code R1 READY_WITH_CONDITIONS, the conditions (#1, #2) and the minors fixed. The fixes for code R1 were not reviewed again; they carry tests, one of them checked by mutation |
+| READY_FOR_INTEGRATION | **YES**. Both blockers of the previous closing are resolved with evidence: the locked-device phase passes on the iPhone, and CCP-A-04 is resolved inside A's column with no shared-contract change. What remains belongs to the integration, as proposals and rules, not as blockers of A: CCP-A-01..03; CCP-A-05 (the account layer issues a new random id per account, binding); CCP-A-06 (the contract §7 row, the G07 note, a later Core option); and the items in §8 |
 | REAL_ATHLETE_READY | **NO** |

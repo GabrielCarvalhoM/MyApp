@@ -80,28 +80,59 @@ final class DevicePhaseTests: XCTestCase {
     }
 
     /// The device locked after the first unlock: the record and the Keychain anchor stay readable and writable (classes
-    /// completeUntilFirstUserAuthentication and AfterFirstUnlockThisDeviceOnly). Waits up to 120 s for the lock; skipped if not locked in time.
+    /// completeUntilFirstUserAuthentication and AfterFirstUnlockThisDeviceOnly), an account erasure and a new account work while locked
+    /// (CCP-A-04: the fence, the key removal and the new key), and after the unlock a new host instance recovers the same record.
+    /// Waits up to 300 s for the lock (skipped if not locked in time), then up to 300 s for the unlock.
     func testPhaseLockedDevice() async throws {
         guard phase == "locked" else { throw XCTSkip("CH_PHASE=locked only") }
         #if os(iOS)
         let f = try await HostFixture.make("locked-device")
         _ = await f.host.onboard(Athlete.answers(), consents: Athlete.all)
+        let e = try await HostFixture.make("locked-erase")
+        _ = await e.host.onboard(Athlete.answers(), consents: Athlete.all)
         let bg = await MainActor.run { UIApplication.shared.beginBackgroundTask(withName: "ch-locked") {} }
         let canary = TestEnv.rootNoClean("locked-device").appendingPathComponent("canary-complete")
         try Data("canary".utf8).write(to: canary, options: .completeFileProtection)
         print("CHRESULT lock-wait {\"lockTheDeviceNow\":true}")
         var locked = false
-        for _ in 0..<480 { if (try? Data(contentsOf: canary)) == nil { locked = true; break }; try await Task.sleep(nanoseconds: 250_000_000) }
-        guard locked else { await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }; throw XCTSkip("the device was not locked within 120 s") }
+        for _ in 0..<1200 { if (try? Data(contentsOf: canary)) == nil { locked = true; break }; try await Task.sleep(nanoseconds: 250_000_000) }
+        guard locked else { await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }; throw XCTSkip("the device was not locked within 300 s") }
+        // While locked (inside the background task's time): a write, a read, the anchor.
         f.clock.set(day: "2026-11-17", "07:00")
         let w = await f.host.submit(ReviewRequest(.sessionReports([]), eligibility: Athlete.screen("2026-11-17")))
         let plan = await f.host.plan(week: nil)
+        // CCP-A-04 while locked: the account erasure (fence, key removal) and a new account (new id, new key).
+        let oldKey = e.host.keychain.get(KeychainIntegrityKey.account).data
+        let er = await e.host.eraseAccount()
+        let keyAfterErasure = e.host.keychain.get(KeychainIntegrityKey.account).data
+        let fenceState = e.host.fence.state(e.host.tag)?.rawValue ?? "-"
+        let gp = await e.host.plan(week: nil)
+        let gone: String = { if case .failure(let x) = gp { return x.code.raw }; return "OK" }()
+        let n = try await e.reopen(athlete: "athlete-locked-erase-new-account")
+        let no = await n.host.onboard(Athlete.answers(), consents: Athlete.all)
+        let newKey = n.host.keychain.get(KeychainIntegrityKey.account).data
         let stillLocked = (try? Data(contentsOf: canary)) == nil
-        await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }
         emit("device-locked", ["locked": String(locked), "stillLocked": String(stillLocked), "write": w.answer.ok ? "OK" : w.answer.error?.code.raw ?? "-",
-                               "read": (try? plan.get()) != nil ? "OK" : "-", "protection": f.host.store.protectionOf(f.host.athleteId) ?? "-", "keychainFailures": String(f.host.anchor.failures.count)])
+                               "read": (try? plan.get()) != nil ? "OK" : "-", "protection": f.host.store.protectionOf(f.host.athleteId) ?? "-", "keychainFailures": String(f.host.anchor.failures.count),
+                               "eraseAccount": er.answer.ok ? "OK" : er.answer.error?.code.raw ?? "-", "keyRemoved": String(oldKey != nil && keyAfterErasure == nil),
+                               "fence": fenceState, "erasedIdAfter": gone, "newAccount": "\(no.answer.planOutcome)", "newKeyDiffers": String(newKey != nil && newKey != oldKey)])
+        // Recovery: after the unlock, a NEW host instance reads the same record (version after the locked write) and its anchor.
+        print("CHRESULT unlock-wait {\"unlockTheDeviceNow\":true}")
+        var unlocked = false
+        for _ in 0..<1200 { if (try? Data(contentsOf: canary)) != nil { unlocked = true; break }; try await Task.sleep(nanoseconds: 250_000_000) }
+        await MainActor.run { UIApplication.shared.endBackgroundTask(bg) }
+        var recovered = "-", recoveredVersion = -1
+        if unlocked {
+            let r = try await f.reopen()
+            recovered = (try? (await r.host.plan(week: nil)).get()) != nil ? "OK" : "-"
+            recoveredVersion = await r.host.versionForTesting() ?? -1
+            emit("device-unlocked-recovery", ["unlocked": "true", "plan": recovered, "version": String(recoveredVersion), "anchorFailures": String(r.host.anchor.failures.count)])
+        } else { emit("device-unlocked-recovery", ["unlocked": "false"]) }
         XCTAssertTrue(stillLocked); XCTAssertTrue(w.answer.ok); XCTAssertNotNil(try? plan.get()); XCTAssertTrue(f.host.anchor.failures.isEmpty)
-        TestEnv.cleanup("locked-device")
+        XCTAssertTrue(er.answer.ok); XCTAssertNotNil(oldKey); XCTAssertNil(keyAfterErasure); XCTAssertEqual(gone, "GONE")
+        XCTAssertEqual(no.answer.planOutcome, .planCreated); XCTAssertNotEqual(newKey, oldKey)
+        XCTAssertTrue(unlocked, "the device was not unlocked within 300 s"); XCTAssertEqual(recovered, "OK"); XCTAssertEqual(recoveredVersion, 2)
+        TestEnv.cleanup("locked-device"); TestEnv.cleanup("locked-erase")
         #else
         throw XCTSkip("iOS only")
         #endif

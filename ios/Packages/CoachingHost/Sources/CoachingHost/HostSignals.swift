@@ -62,9 +62,16 @@ final class SignalStore {
 
     private func persist() -> Bool {
         if writeHook?() == false { dirty = true; return false }
+        // CCP-A-04: nothing is written for an erased athlete; a write racing an erasure in another process is taken back out (the erasure
+        // writes its fence before it removes this file).
+        if erased() { dirty = false; return true }
         guard let d = try? JSONEncoder().encode(current) else { dirty = true; return false }
-        do { try AtomicFile.write(d, to: file); dirty = false; return true } catch { dirty = true; return false }
+        do { try AtomicFile.write(d, to: file); dirty = false } catch { dirty = true; return false }
+        if erased() { try? FileManager.default.removeItem(at: file) }
+        return true
     }
+    /// Whether this athlete is behind an erasure fence (set by the host).
+    var erased: () -> Bool = { false }
 
     /// Applies a change. Returns whether it is durable.
     @discardableResult

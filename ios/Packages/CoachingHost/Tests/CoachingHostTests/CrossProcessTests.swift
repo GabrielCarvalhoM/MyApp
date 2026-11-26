@@ -14,7 +14,7 @@ final class CrossProcessTests: XCTestCase {
         init(root: URL, prefix: String, athlete: String) throws {
             let exe = Bundle(for: CrossProcessTests.self).bundleURL.deletingLastPathComponent().appendingPathComponent("coachinghost-proc")
             p.executableURL = exe
-            p.arguments = ["--root", root.path, "--prefix", prefix, "--athlete", athlete, "--wall", String(TestClock.ms("2026-11-14T12:00:00-03:00"))]
+            p.arguments = ["--root", root.path, "--prefix", prefix, "--keychain-dir", TestEnv.keychainDirectory!.path, "--athlete", athlete, "--wall", String(TestClock.ms("2026-11-14T12:00:00-03:00"))]
             p.standardInput = inp; p.standardOutput = out; p.standardError = FileHandle.nullDevice
             try p.run()
             let r = try line(); precondition(r["ready"] as? Bool == true, "\(r)")
@@ -121,7 +121,7 @@ final class AnchorTests: XCTestCase {
         guard case .failure(let e) = await f.host.plan(week: nil) else { return XCTFail("a rolled-back blob was read") }
         XCTAssertEqual(e.code, "RECORD_ROLLED_BACK")
         // The anchor window: 300 updates while another thread reads; never missing.
-        let items = KeychainItems(prefix: TestEnv.prefix("anchor-window")); items.deleteAll()
+        let items = TestEnv.items(TestEnv.prefix("anchor-window")); items.deleteAll()
         XCTAssertEqual(items.set("anchor.w", Data("0".utf8)), errSecSuccess)
         let stop = ManagedAtomicFlag(), missing = ManagedCounter()
         let reader = Thread { while !stop.value { if items.get("anchor.w").status == errSecItemNotFound { missing.add() } } }

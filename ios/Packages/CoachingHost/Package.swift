@@ -15,7 +15,8 @@ let package = Package(
     targets: [
         // The four resources are copied one by one, not the folder (an iOS shallow bundle with a top-level "Resources" folder is rejected by
         // codesign: HR5R/P0 Package.swift).
-        // COACHINGHOST_TESTING (debug only, and the lab's device build on its command line) compiles the test SPI (QRE-A-09).
+        // COACHINGHOST_TESTING (debug only, and the lab's device build on its command line) compiles the test SPI (QRE-A-09) and the test-only
+        // file Keychain storage that macOS `swift test` uses instead of the login keychain (KEYCHAIN_TESTING.md: no authorization dialogs).
         .target(name: "CoachingHost", dependencies: ["IntegrationContracts", "CoachingPresentation"],
                 resources: [.copy("Resources/coachinghost.js"), .copy("Resources/assets"),
                             .copy("Resources/assets-manifest.json"), .copy("Resources/build-manifest.json")],

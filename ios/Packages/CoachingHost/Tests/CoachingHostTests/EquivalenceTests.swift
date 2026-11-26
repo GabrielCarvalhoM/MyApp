@@ -17,12 +17,12 @@ final class EquivalenceTests: XCTestCase {
         var store: NativeStore; var anchor: KeychainAnchor
         init(root: URL, prefix: String) throws {
             self.root = root; self.prefix = prefix
-            store = try NativeStore(dir: root.appendingPathComponent("default")); anchor = KeychainAnchor(items: KeychainItems(prefix: prefix))
+            store = try NativeStore(dir: root.appendingPathComponent("default")); anchor = KeychainAnchor(items: TestEnv.items(prefix))
         }
         func select(_ name: String) throws {
             let d = root.appendingPathComponent(name); try? FileManager.default.removeItem(at: d)
             store = try NativeStore(dir: d)
-            let items = KeychainItems(prefix: prefix + name + "."); items.deleteAll()
+            let items = TestEnv.items(prefix + name + "."); items.deleteAll()
             let w = anchor.writes, f = anchor.failures
             anchor = KeychainAnchor(items: items); writesBefore += w; failuresBefore += f
         }

@@ -49,8 +49,21 @@ enum TestEnv {
         return u
     }
     static func prefix(_ name: String) -> String { "test.\(name)." }
+    /// KEYCHAIN_TESTING.md: on macOS the tests never touch the login keychain (its access is bound to the ad-hoc signature of each rebuilt
+    /// test binary, so it prompts a person); they use the file storage below, shared by the test processes. On iOS (the iPhone tests) it is
+    /// nil: the real data-protection Keychain, isolated by the lab bundle id and the test prefix.
+    static var keychainDirectory: URL? {
+        #if os(macOS)
+        let base = (try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)) ?? FileManager.default.temporaryDirectory
+        return base.appendingPathComponent("coachinghost-tests").appendingPathComponent("keychain", isDirectory: true)
+        #else
+        return nil
+        #endif
+    }
+    static var keychainStorage: KeychainItems.Storage { keychainDirectory.map { .file($0) } ?? .system }
+    static func items(_ prefix: String) -> KeychainItems { KeychainItems(service: CoachingHost.keychainService, prefix: prefix, storage: keychainStorage) }
     static func cleanup(_ name: String) {
-        KeychainItems(service: CoachingHost.keychainService, prefix: prefix(name)).deleteAll()
+        items(prefix(name)).deleteAll()
         try? FileManager.default.removeItem(at: root(name))
     }
     static func fixture(_ name: String) throws -> Data {
@@ -70,13 +83,14 @@ struct HostFixture {
     /// What B heard while the host opened (the first-launch purge, "available again").
     var callsAtOpen: [String] = []
     static func make(_ name: String, clock: TestClock = TestClock(), fixtureKeys: Bool = false, keyRef: String? = nil, clean: Bool = true,
-                     exposeModules: Bool = false) async throws -> HostFixture {
+                     exposeModules: Bool = false, athlete: String? = nil, b: RecordingQueueControl? = nil) async throws -> HostFixture {
         if clean { TestEnv.cleanup(name) }
-        let b = RecordingQueueControl()
+        let b = b ?? RecordingQueueControl()
         let root = clean ? TestEnv.root(name) : TestEnv.rootNoClean(name)
-        let host = try await CoachingHost.openForTesting(.init(athleteId: "athlete-\(name)", root: root), keychainPrefix: TestEnv.prefix(name),
+        let host = try await CoachingHost.openForTesting(.init(athleteId: athlete ?? "athlete-\(name)", root: root), keychainPrefix: TestEnv.prefix(name),
                                                          queueControl: b, clock: clock, keys: fixtureKeys ? FixtureKeys() : nil,
-                                                         keyRef: keyRef ?? (fixtureKeys ? "v1int-synthetic-key" : nil), exposeModules: exposeModules)
+                                                         keyRef: keyRef ?? (fixtureKeys ? "v1int-synthetic-key" : nil), exposeModules: exposeModules,
+                                                         testKeychainDirectory: TestEnv.keychainDirectory)
         host.timezoneOffsetOverride = -180
         let store = host.store, id = host.athleteId
         b.probe = { (NativeStore.versionOf(store.rawData(id)), FileManager.default.fileExists(atPath: store.file(id).path)) }
@@ -85,8 +99,8 @@ struct HostFixture {
         return HostFixture(name: name, clock: clock, b: b, host: host, callsAtOpen: atOpen)
     }
     /// A new host over the same store and Keychain (a new process would see the same).
-    func reopen(clock: TestClock? = nil) async throws -> HostFixture {
-        try await HostFixture.make(name, clock: clock ?? self.clock, clean: false)
+    func reopen(clock: TestClock? = nil, athlete: String? = nil, b: RecordingQueueControl? = nil) async throws -> HostFixture {
+        try await HostFixture.make(name, clock: clock ?? self.clock, clean: false, athlete: athlete ?? host.athleteId, b: b)
     }
 }
 extension TestEnv {

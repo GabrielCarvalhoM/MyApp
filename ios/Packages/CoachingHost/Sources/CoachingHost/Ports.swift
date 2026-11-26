@@ -112,7 +112,8 @@ extension CoachingHost: CoachingWriting {
 
     func write(_ body: @escaping () -> Write) async -> WriteOutcome {
         let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; let w = body(); if self.testing { self.lastAnswerJSON = w.answer.json }; return w }
-        if let p = w.purge { try? await queueControl?.purge(p) }
+        // CCP-A-04: an account erasure's purge, or one still owed by an earlier erasure (fence NATIVE_DONE), marks the fence ERASED once it returns.
+        if let p = w.purge, p != .accountErased { try? await queueControl?.purge(p); await settleOwedPurge(nil) } else { await settleOwedPurge(w.purge) }
         if w.signalConditions { await queueControl?.deliveryConditionsChanged() }
         return w.outcome
     }
@@ -135,7 +136,22 @@ extension CoachingHost: CoachingWriting {
         let intake = intake(answers, learning: consents.learning)
         return await write {
             guard let i = try? JSONText.encode(intake), let c = try? JSONText.encode(consents) else { return self.invalid() }
-            let a = self.perform("onboard", [("intake", i), ("consents", c)], requestId: self.idSource(), clockRule: .bounded)
+            // CCP-A-04 (Security R1 F1, code review R1 #1/#5c): the enrolment's checks and its seal run under the athlete's lock and then the
+            // install lock, the same order as an erasure's key removal, so the two never interleave. Nothing is enrolled while any erasure is
+            // incomplete or its B purge is owed (that purge must reach B before a new athlete's data does), nor beside another athlete's record
+            // (the integrity key is per install, NATIVE 1.5, and an erasure removes it, 6.3).
+            var a = Self.hostFailure("BUSY", "Another process holds this record")
+            do {
+                try self.store.withLock(self.athleteId) { try self.store.withLock(tag: NativeStore.installTag) {
+                    if self.fence.state(self.tag) == nil, (self.fence.tags(.requested) ?? ["?"]).isEmpty == false || (self.fence.tags(.nativeDone) ?? ["?"]).isEmpty == false {
+                        a = Self.hostFailure(HostCode.hostUnavailable, "An account erasure is still completing on this install; try again")
+                    } else if self.fence.state(self.tag) == nil, self.store.hasRecord(otherThan: self.tag) {
+                        a = Self.hostFailure("ANOTHER_ATHLETE_ON_THIS_INSTALL", "Another athlete is enrolled on this install")
+                    } else {
+                        a = self.perform("onboard", [("intake", i), ("consents", c)], requestId: self.idSource(), clockRule: .bounded)
+                    }
+                } }
+            } catch NativeStore.StoreError.io { a = Self.hostFailure(HostCode.hostUnavailable, "The record cannot be opened now") } catch {}
             var w = Write(answer: a, outcome: self.outcome(a))
             if a.ok {
                 self.afterIntake(w.outcome.answer)
@@ -153,6 +169,8 @@ extension CoachingHost: CoachingWriting {
         return await write {
             guard let i = try? JSONText.encode(intake) else { return self.invalid() }
             // QRE-A-02: the restart is marked in flight, durably, BEFORE it is sent; if that cannot be written, nothing is sent.
+            // CCP-A-04 F5: no side file is recreated for an erased athlete (the custody answers GONE).
+            if self.fencedOnQueue { let a = self.perform("restart", [("intake", i)], versioned: true, clockRule: .bounded); return Write(answer: a, outcome: self.outcome(a)) }
             guard self.signals.update({ $0.pendingIntake = true }) else { return self.notDurable() }
             let a = self.perform("restart", [("intake", i)], versioned: true, clockRule: .bounded)
             var w = Write(answer: a, outcome: self.outcome(a))
@@ -258,6 +276,9 @@ extension CoachingHost: CoachingWriting {
             guard let ids = try? JSONText.encode(eventIds) else { return self.invalid() }
             // SEC-FPV-01 / N-3: after ANY erasure, no session starts until a new screen is recorded. Set durably BEFORE the erasure is sent
             // (QRE-A-02); withdrawn only if the erasure was refused and the signal was not set before.
+            if self.fencedOnQueue {      // CCP-A-04 F5
+                let a = self.perform("eraseHealthFacts", [("eventIds", ids)], versioned: true, clockRule: .exempt); return Write(answer: a, outcome: self.outcome(a))
+            }
             let before = self.signals.current.screenRequiredAfterErasure
             guard self.signals.update({ $0.screenRequiredAfterErasure = true }) else { return self.notDurable() }
             let a = self.perform("eraseHealthFacts", [("eventIds", ids)], versioned: true, clockRule: .exempt)
@@ -266,21 +287,51 @@ extension CoachingHost: CoachingWriting {
         }
     }
 
-    /// Account erasure (G07, 6.3): the boundary erases the record and clears the anchor; then the native side removes the store file, its
-    /// `.tmp`, the host's side files, the anchor and the integrity key; then B purges.
+    /// Account erasure (G07, 6.3; CCP-A-04): the erasure fence is written REQUESTED first; the boundary erases the record, writes its tombstone
+    /// and clears the anchor; then the native side removes the store file, its `.tmp`, the host's side files, the anchor and the integrity key,
+    /// each checked, and the fence becomes NATIVE_DONE; then B purges, and the fence becomes ERASED once that returned. From then on the custody answers GONE for this athlete id in every process,
+    /// whatever the key (a new account is a new athlete). A fence that cannot be written starts nothing (not durable: retry).
     public func eraseAccount() async -> WriteOutcome {
         await write {
-            let a = self.perform("eraseAccount", clockRule: .exempt)
+            let was = self.fence.state(self.tag), complete = was == .erased || was == .nativeDone
+            // Core R1 F1: an erasure already complete is served the fence, so the custody answers GONE itself, as in the frozen flow.
+            if !complete {
+                guard self.fence.set(self.tag, .requested) else {
+                    let a = Self.hostFailure("PERSISTENCE_FAILURE", "The account erasure could not be started; nothing was erased")
+                    return Write(answer: a, outcome: self.outcome(a))
+                }
+                self.pendingErasures.insert(self.tag)
+            }
+            // Security R1 F6: the boundary erasure, the native removals and the fence update run under ONE hold of the athlete's lock; the
+            // fence is not served only for this one call (reset by defer), and never when the erasure was already complete.
+            // Code review R1 #7: the lock is retried as `perform` retries BUSY; a lock never obtained leaves the erasure pending (the fence is
+            // REQUESTED, nothing else runs, the next operation or start completes it), and the answer says so.
+            var a = Self.hostFailure(HostCode.hostUnavailable, "The account erasure is pending; it completes at the next attempt"), done = false
+            for attempt in 0..<3 {
+                do {
+                    try self.store.withLock(self.athleteId) {
+                        self.servingErasure = !complete
+                        defer { self.servingErasure = false }
+                        a = self.perform("eraseAccount", clockRule: .exempt)
+                        // A repeat of a complete erasure writes no new fence and no new time (the custody's GONE is its answer); a record file
+                        // put back since is removed again (code review R1 #8).
+                        if a.ok || a.code == "NOT_ENROLLED" || a.code == "GONE" { done = complete ? self.store.eraseFiles(tag: self.tag) : self.completeErasure(tag: self.tag) }
+                    }
+                    break
+                } catch NativeStore.StoreError.busy { if attempt < 2 { usleep(self.busyRetryDelay) } } catch { break }
+            }
             var w = Write(answer: a, outcome: self.outcome(a))
             // QRE-A-06: the native side is erased also when the boundary has no record (never enrolled, or after a record loss): the signals,
-            // the clock reference and the key must not outlive the athlete's erasure request.
+            // the clock reference and the key must not outlive the athlete's erasure request. Core R1 F2: that id is fenced too (A's host-level
+            // outcome: the athlete asked to erase this account; a new account is a new athlete).
             if a.ok || a.code == "NOT_ENROLLED" || a.code == "GONE" {
-                try? self.store.withLock(self.athleteId) { self.store.eraseFiles(self.athleteId) }
-                self.anchor.clear(self.athleteId)
-                self.productionKey?.erase()
-                self.signals.erase(); self.clock.erase()
+                if !done {
+                    let f = Self.hostFailure("PERSISTENCE_FAILURE", "The account was erased but a device copy could not be removed yet; try again")
+                    w = Write(answer: f, outcome: self.outcome(f))
+                }
                 w.purge = .accountErased
             }
+            // Any other answer (a technical failure): the fence stays REQUESTED, nothing else runs, and the next operation or start completes it.
             return w
         }
     }
@@ -288,6 +339,8 @@ extension CoachingHost: CoachingWriting {
     /// Reachable only from the RECORD_LOST / RECORD_ROLLED_BACK screen (the boundary refuses it otherwise: NOT_LOST).
     public func acknowledgeRecordLoss() async -> WriteOutcome {
         await write {
+            // Security R1 F3: the one boundary path that does not consult the tombstone refuses an erased athlete as the custody would.
+            if self.fencedOnQueue { let g = Self.gone(); return Write(answer: g, outcome: self.outcome(g)) }
             let a = self.perform("acknowledgeRecordLoss", clockRule: .exempt)
             var w = Write(answer: a, outcome: self.outcome(a))
             if a.ok { w.purge = .recordLossAcknowledged }
@@ -340,6 +393,8 @@ extension CoachingHost: DeviceActivitySink {
             return (Self.deliveryResult(a), self.takeClockRecovery(a))
         }
         if r.1 { await queueControl?.deliveryConditionsChanged() }
+        // Code review R1 #5b: an erasure completed during this delivery owes B a purge; it is sent outside B's call (never re-entering it).
+        if await onQueue({ !self.purgeOwed.isEmpty }) { Task { await self.settleOwedPurge(nil) } }
         return r.0
     }
 

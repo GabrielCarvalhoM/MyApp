@@ -77,10 +77,10 @@ final class PlatformTests: XCTestCase {
         XCTAssertEqual(o.macs, f.vectors.map(\.hex), "through the JSContext host function"); XCTAssertEqual(o.eq, f.constantTimeEqual.map(\.equal))
         // N-4: 32 random bytes created once; the same key for a second resolver; another install (prefix) gets another key; only the allowlist.
         TestEnv.cleanup("n4"); TestEnv.cleanup("n4b")
-        let items = KeychainItems(prefix: TestEnv.prefix("n4")), k1 = KeychainIntegrityKey(items: items)
+        let items = TestEnv.items(TestEnv.prefix("n4")), k1 = KeychainIntegrityKey(items: items)
         let a = try XCTUnwrap(k1.key(for: KeychainIntegrityKey.keyRef)); XCTAssertEqual(a.count, 32); XCTAssertTrue(k1.created)
         let k2 = KeychainIntegrityKey(items: items); XCTAssertEqual(k2.key(for: KeychainIntegrityKey.keyRef), a); XCTAssertFalse(k2.created)
-        let other = try XCTUnwrap(KeychainIntegrityKey(items: KeychainItems(prefix: TestEnv.prefix("n4b"))).key(for: KeychainIntegrityKey.keyRef))
+        let other = try XCTUnwrap(KeychainIntegrityKey(items: TestEnv.items(TestEnv.prefix("n4b"))).key(for: KeychainIntegrityKey.keyRef))
         XCTAssertNotEqual(other, a, "random per install")
         XCTAssertNil(k1.key(for: "v1int-synthetic-key")); XCTAssertNil(k1.key(for: ""))
         let accessible = items.accessible(KeychainIntegrityKey.account)
@@ -296,7 +296,7 @@ final class PlatformTests: XCTestCase {
     func testFirstLaunchReconciliation() async throws {
         TestEnv.cleanup("reinstall")
         // Leftovers of a deleted install: the Keychain items survive, the container does not.
-        let items = KeychainItems(prefix: TestEnv.prefix("reinstall"))
+        let items = TestEnv.items(TestEnv.prefix("reinstall"))
         items.set("anchor.leftover", Data(#"{"version":3,"docMac":"x"}"#.utf8)); _ = KeychainIntegrityKey(items: items).key(for: KeychainIntegrityKey.keyRef)
         XCTAssertEqual(Set(items.accounts()), ["anchor.leftover", KeychainIntegrityKey.account])
         let f = try await HostFixture.make("reinstall", clean: false)

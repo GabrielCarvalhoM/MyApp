@@ -1,0 +1,153 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/ErasureTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 14:52:09.407.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 14:52:09.407.
+Test Suite 'ErasureTests' started at 2026-11-26 14:52:09.407.
+Test Case '-[CoachingHostDeviceTests.ErasureTests testBoundaryFailureIsCompletedLater]' started.
+2026-11-26 14:52:09.411252-0300 CoachingHostLab[17543:4318884] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:09.548553-0300 CoachingHostLab[17543:4318882] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:09.593233-0300 CoachingHostLab[17543:4318887] [boundary] op=erasure ok=false code=OPERATIONAL_ERROR version=-1 category=- decision=-
+2026-11-26 14:52:09.596873-0300 CoachingHostLab[17543:4318882] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:09.597773-0300 CoachingHostLab[17543:4318887] [boundary] op=consent ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testBoundaryFailureIsCompletedLater]' passed (0.193 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testCachedOldKeyNeverSealsANewEnrolment]' started.
+2026-11-26 14:52:09.602438-0300 CoachingHostLab[17543:4318884] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:09.720216-0300 CoachingHostLab[17543:4318884] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:09.779702-0300 CoachingHostLab[17543:4318887] [boundary] op=read ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 14:52:09.807900-0300 CoachingHostLab[17543:4318887] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:09.936750-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+CHRESULT ccp-a-04-cached-key {"newEnrolment":"planCreated","reopened":"OK"}
+Test Case '-[CoachingHostDeviceTests.ErasureTests testCachedOldKeyNeverSealsANewEnrolment]' passed (0.430 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testConcurrentOperationsAndASecondProcess]' started.
+2026-11-26 14:52:10.032518-0300 CoachingHostLab[17543:4318887] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:10.148370-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:10.307875-0300 CoachingHostLab[17543:4318890] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_2e6465d85e73742601b0c1474d
+2026-11-26 14:52:10.442675-0300 CoachingHostLab[17543:4318890] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_2944d0cb6f245c2bf514894819
+2026-11-26 14:52:10.494496-0300 CoachingHostLab[17543:4318890] [boundary] op=consent ok=true code=- version=4 category=- decision=-
+2026-11-26 14:52:10.549076-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:10.553147-0300 CoachingHostLab[17543:4318890] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+CHRESULT ccp-a-04-t9 {"otherProcess":[]}
+Test Case '-[CoachingHostDeviceTests.ErasureTests testConcurrentOperationsAndASecondProcess]' passed (0.525 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testErasureIsEffectiveAndIdempotent]' started.
+2026-11-26 14:52:10.557153-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:10.674832-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:10.746394-0300 CoachingHostLab[17543:4318889] [boundary] op=consent ok=true code=- version=2 category=- decision=-
+2026-11-26 14:52:10.788332-0300 CoachingHostLab[17543:4318889] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+CHRESULT ccp-a-04-t1 {"files":["athlete-<tag>.lock","athlete-<tag>.lock","erased-<tag>.json","install-marker.json"]}
+2026-11-26 14:52:10.792380-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:10.828068-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testErasureIsEffectiveAndIdempotent]' passed (0.276 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testFenceWriteFailureStartsNothing]' started.
+2026-11-26 14:52:10.832792-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:10.945693-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testFenceWriteFailureStartsNothing]' passed (0.158 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNativeRemovalFailureBlocksEverythingUntilCompleted]' started.
+2026-11-26 14:52:10.990896-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:11.105649-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:11.146955-0300 CoachingHostLab[17543:4318889] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:11.147535-0300 CoachingHostLab[17543:4318889] [boundary] host=erasure-incomplete code=PERSISTENCE_FAILURE
+2026-11-26 14:52:11.148522-0300 CoachingHostLab[17543:4318890] [boundary] host=erasure-incomplete code=PERSISTENCE_FAILURE
+2026-11-26 14:52:11.148528-0300 CoachingHostLab[17543:4318890] [boundary] host=erasure-pending code=HOST_UNAVAILABLE
+2026-11-26 14:52:11.149753-0300 CoachingHostLab[17543:4318890] [boundary] host=erasure-incomplete code=PERSISTENCE_FAILURE
+2026-11-26 14:52:11.149760-0300 CoachingHostLab[17543:4318890] [boundary] host=erasure-pending code=HOST_UNAVAILABLE
+2026-11-26 14:52:11.150809-0300 CoachingHostLab[17543:4318889] [boundary] host=erasure-incomplete code=PERSISTENCE_FAILURE
+2026-11-26 14:52:11.150814-0300 CoachingHostLab[17543:4318889] [boundary] host=erasure-pending code=HOST_UNAVAILABLE
+2026-11-26 14:52:11.192470-0300 CoachingHostLab[17543:4318890] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNativeRemovalFailureBlocksEverythingUntilCompleted]' passed (0.206 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNeverEnrolledIdIsFenced]' started.
+2026-11-26 14:52:11.196464-0300 CoachingHostLab[17543:4318889] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:11.241670-0300 CoachingHostLab[17543:4318889] [boundary] op=onboard ok=true code=- version=-1 category=NOT_DECIDED decision=-
+2026-11-26 14:52:11.244982-0300 CoachingHostLab[17543:4318887] [boundary] op=erasure ok=false code=NOT_ENROLLED version=-1 category=- decision=-
+2026-11-26 14:52:11.248365-0300 CoachingHostLab[17543:4318889] [boundary] op=onboard ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNeverEnrolledIdIsFenced]' passed (0.055 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNewAccountIsGenuinelyNew]' started.
+2026-11-26 14:52:11.251333-0300 CoachingHostLab[17543:4318887] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:11.370060-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:11.411494-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:11.529111-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:11.613702-0300 CoachingHostLab[17543:4318887] [boundary] op=read ok=false code=RECORD_ROLLED_BACK version=-1 category=- decision=-
+2026-11-26 14:52:11.615327-0300 CoachingHostLab[17543:4318887] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-26 14:52:11.734307-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+CHRESULT ccp-a-04-t2-t5-t7 {"newAccount":"planCreated","newKeyDiffers":"true","oldRecordInNewPlace":"RECORD_ROLLED_BACK","reinstallSameId":"planCreated"}
+Test Case '-[CoachingHostDeviceTests.ErasureTests testNewAccountIsGenuinelyNew]' passed (0.511 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testOldRecordRecoveryAndRollbackRefused]' started.
+2026-11-26 14:52:11.763040-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:11.879745-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:11.921539-0300 CoachingHostLab[17543:4318889] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:11.924761-0300 CoachingHostLab[17543:4318890] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:11.926533-0300 CoachingHostLab[17543:4318889] [boundary] op=onboard ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:11.968870-0300 CoachingHostLab[17543:4318889] [boundary] op=read ok=false code=INTEGRITY_FAILURE version=-1 category=- decision=-
+2026-11-26 14:52:11.976494-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=false code=INTEGRITY_FAILURE version=-1 category=- decision=-
+2026-11-26 14:52:12.019535-0300 CoachingHostLab[17543:4318889] [boundary] op=read ok=false code=INTEGRITY_FAILURE version=-1 category=- decision=-
+CHRESULT ccp-a-04-t3-t6 {"fenceDeleted":["INTEGRITY_FAILURE","INTEGRITY_FAILURE"],"rolledBackWithAnchor":["INTEGRITY_FAILURE","INTEGRITY_FAILURE"],"withFence":["GONE","GONE"]}
+Test Case '-[CoachingHostDeviceTests.ErasureTests testOldRecordRecoveryAndRollbackRefused]' passed (0.268 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testOneAthletePerInstallAndTheOtherRecordSurvives]' started.
+2026-11-26 14:52:12.030926-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:12.146468-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:12.284864-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:12.366254-0300 CoachingHostLab[17543:4318889] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:12.425419-0300 CoachingHostLab[17543:4318889] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testOneAthletePerInstallAndTheOtherRecordSurvives]' passed (0.401 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testPinnedBundleTombstoneCallSites]' started.
+<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost/Tests/CoachingHostTests/ErasureTests.swift:392: -[CoachingHostDeviceTests.ErasureTests testPinnedBundleTombstoneCallSites] : Test skipped - macOS: reads the repository's bundle file
+Test Case '-[CoachingHostDeviceTests.ErasureTests testPinnedBundleTombstoneCallSites]' skipped (0.008 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testPurgeFailureIsOwed]' started.
+2026-11-26 14:52:12.440548-0300 CoachingHostLab[17543:4318887] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:12.563165-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:12.603903-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:12.605603-0300 CoachingHostLab[17543:4318887] [boundary] host=purge-failed code=PURGE_OWED
+2026-11-26 14:52:12.763905-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:12.806325-0300 CoachingHostLab[17543:4318887] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:12.808045-0300 CoachingHostLab[17543:4318890] [boundary] host=purge-failed code=PURGE_OWED
+2026-11-26 14:52:12.844812-0300 CoachingHostLab[17543:4318887] [boundary] host=purge-failed code=PURGE_OWED
+2026-11-26 14:52:12.845915-0300 CoachingHostLab[17543:4318890] [boundary] host=purge-failed code=PURGE_OWED
+2026-11-26 14:52:12.932867-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testPurgeFailureIsOwed]' passed (0.520 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testRestartAndOtherProcessStayGone]' started.
+2026-11-26 14:52:12.960807-0300 CoachingHostLab[17543:4318890] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:13.079757-0300 CoachingHostLab[17543:4318890] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:13.122027-0300 CoachingHostLab[17543:4318887] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+2026-11-26 14:52:13.161529-0300 CoachingHostLab[17543:4318890] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:13.163616-0300 CoachingHostLab[17543:4318890] [boundary] op=review ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:13.164540-0300 CoachingHostLab[17543:4318890] [boundary] op=erasure ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:13.165652-0300 CoachingHostLab[17543:4318887] [boundary] op=restart ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:13.167018-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=false code=GONE version=-1 category=- decision=-
+2026-11-26 14:52:13.167803-0300 CoachingHostLab[17543:4318887] [boundary] op=review ok=false code=GONE version=-1 category=- decision=-
+CHRESULT ccp-a-04-t4 {"delivery":["GONE"],"ingestContext":["GONE"],"otherProcess":["not run (iOS: no second process tool)"],"reads":["GONE","GONE","GONE"],"writes":["GONE","GONE","GONE","GONE","GONE"]}
+Test Case '-[CoachingHostDeviceTests.ErasureTests testRestartAndOtherProcessStayGone]' passed (0.212 seconds).
+Test Case '-[CoachingHostDeviceTests.ErasureTests testUnreadableAndMalformedFences]' started.
+2026-11-26 14:52:13.172459-0300 CoachingHostLab[17543:4318887] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:13.292422-0300 CoachingHostLab[17543:4318887] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:13.410467-0300 CoachingHostLab[17543:4318889] [boundary] host=erasure-pending code=HOST_UNAVAILABLE
+2026-11-26 14:52:13.450143-0300 CoachingHostLab[17543:4318887] [boundary] op=read ok=false code=GONE version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.ErasureTests testUnreadableAndMalformedFences]' passed (0.283 seconds).
+Test Suite 'ErasureTests' passed at 2026-11-26 14:52:13.455.
+	 Executed 14 tests, with 1 test skipped and 0 failures (0 unexpected) in 4.045 (4.047) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 14:52:13.455.
+	 Executed 14 tests, with 1 test skipped and 0 failures (0 unexpected) in 4.045 (4.047) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 14:52:13.455.
+	 Executed 14 tests, with 1 test skipped and 0 failures (0 unexpected) in 4.045 (4.048) seconds
+2026-11-26 14:52:13.768 xcodebuild[16431:3602377] [MT] IDETestOperationsObserverDebug: 6.296 elapsed -- Testing started completed.
+2026-11-26 14:52:13.768 xcodebuild[16431:3602377] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 14:52:13.768 xcodebuild[16431:3602377] [MT] IDETestOperationsObserverDebug: 6.296 sec, +6.296 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_14-52-07--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

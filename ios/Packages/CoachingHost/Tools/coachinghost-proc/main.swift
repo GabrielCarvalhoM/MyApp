@@ -4,7 +4,7 @@
 //   {"cmd":"enroll","startDate":"YYYY-MM-DD"} | {"cmd":"setMax","bpm":Int} | {"cmd":"setLimits","limits":[Int x4]} | {"cmd":"hr"} (reference
 //   kind/bpm/declared of the five-zone reading) | {"cmd":"hrIds"} (event ids of the athlete's heart-rate declarations on record) |
 //   {"cmd":"version"} | {"cmd":"exit"}
-// Arguments: --root <dir> --prefix <keychain prefix> --athlete <id> --wall <epoch ms, fixed wall clock>
+// Arguments: --root <dir> --prefix <keychain prefix> --keychain-dir <test keychain storage> --athlete <id> --wall <epoch ms, fixed wall clock>
 import Foundation
 @_spi(CoachingHostTesting) import CoachingHost
 import CoachingPresentation
@@ -24,7 +24,10 @@ let root = URL(fileURLWithPath: arg("--root")!), prefix = arg("--prefix")!, athl
 let sem = DispatchSemaphore(value: 0)
 Task {
     do {
-        let host = try await CoachingHost.openForTesting(.init(athleteId: athlete, root: root), keychainPrefix: prefix, clock: FixedWall(wall))
+        // KEYCHAIN_TESTING.md: the test keychain storage shared with the XCTest process (never the login keychain, which would prompt).
+        guard let kc = arg("--keychain-dir") else { emit(["error": "--keychain-dir is required (KEYCHAIN_TESTING.md)"]); exit(2) }
+        let host = try await CoachingHost.openForTesting(.init(athleteId: athlete, root: root), keychainPrefix: prefix, clock: FixedWall(wall),
+                                                         testKeychainDirectory: URL(fileURLWithPath: kc, isDirectory: true))
         emit(["ready": true])
         while let line = readLine() {
             guard let c = try? JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any], let cmd = c["cmd"] as? String else { emit(["error": "bad command"]); continue }

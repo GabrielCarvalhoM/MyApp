@@ -1,6 +1,6 @@
 # Front A (CoachingHost): contract change proposals
 
-Contract §11: front A did not edit any shared contract. `git diff --stat v1-abc-ready-2026-11-26 -- CoachingCore ios/Packages/IntegrationContracts ios/Packages/CoachingPresentation` is empty (`results/mac/gates.log`). Each proposal below has a local adapter inside `ios/Packages/CoachingHost`, so the interface the other fronts consume stays as it is. The integration mission decides.
+Contract §11: front A did not edit any shared contract (CCP-A-01 to 06). `git diff --stat v1-abc-ready-2026-11-26 -- CoachingCore ios/Packages/IntegrationContracts ios/Packages/CoachingPresentation` is empty (`results/mac/gates.log`). Each proposal below has a local adapter inside `ios/Packages/CoachingHost`, so the interface the other fronts consume stays as it is. The integration mission decides.
 
 ## CCP-A-01: a `pendingWeek` read in `CoachingReading` (CHG-UI-2 2.3, GAP-08 / GAP-CORE-03)
 
@@ -50,13 +50,39 @@ Contract §11: front A did not edit any shared contract. `git diff --stat v1-abc
 - **`hr5r-carried.json`** is not reproduced through the facade. The app never reads the raw sealed carried records. A test-only read (`heartRateDeclarationIds`, ids only, refused outside `__chTestMode`) serves the HR5 two-process proof.
 - **`PendingReports`.** A keeps no offline queue of athlete reports in this phase: drafts are C's (handoff §1). `pendingReports()` counts the writes in flight on A's queue, `oldestQueuedAt: nil`. If the integration wants a durable A-side queue, that is a new decision, not a type change.
 
-## CCP-A-04: account erasure removes the key, and the key seals the tombstone (QRE-A-04; Security + Core decide)
+## CCP-A-04: account erasure removes the key, and the key seals the tombstone (QRE-A-04): **RESOLVED IN A**
 
-- **Conflict.** NATIVE 6.3 / handoff §9 make the native side of `eraseAccount` remove the integrity key. But the custody's tombstone (the "no resurrection" `GONE` of an erased athlete) is keyed by `hmac(key, …|subject|athleteId)`. With a new key, `tombstoneOf` cannot find it.
-- **Pinned today** (`ReviewFixTests.testEraseAccountThenSameIdPinned`, Mac and iPhone): after `eraseAccount`, an `onboard` with the same athlete id is `planCreated`, not `GONE`.
-- **Options for the deciders:**
-  1. Keep the key after an account erasure (only the record, the anchor and the side files go), so `GONE` holds. This deviates from 6.3's "remove the key".
-  2. Keep 6.3, and accept that an erased id can enrol again as a new account (the old record is gone either way).
-  3. Seal the tombstone subject with a separate long-lived host key that survives account erasure (a boundary-side or native change).
-- **What A ships meanwhile.** Option 2, i.e. the literal 6.3, pinned by the test above.
-- **Impact.** Security, Core (custody), Founder/legal (G07). None on B or C.
+- **Conflict.** NATIVE 6.3 / handoff §9 make the native side of `eraseAccount` remove the integrity key. But the custody keys its tombstone (the "no resurrection" `GONE` of an erased athlete) by `hmac(key, …|subject|athleteId)`. With a new key, `tombstoneOf` could not find it, and the same id enrolled again.
+- **Resolution (native, no shared change).** `CCP_A_04_RESOLUTION.md`, reviewed by Core R1 and Security R1 (both APPROVE_WITH_CHANGES, every change applied):
+  - The key is still removed (6.3).
+  - A native erasure fence, keyed by the store's existing digest tag and holding no time, makes the store adapter answer `tombstoneOf` for the host's own athlete. The frozen custody then answers `GONE` itself, for every read, write and delivery, in every process, whatever the key.
+  - The old record is unrecoverable: it is deleted, and the key that sealed it is gone.
+  - A new account (a new id) is genuinely new: new state, new key.
+  - Tests: `ErasureTests` (Mac and iPhone), and the locked-device phase on the iPhone.
+- **Superseded:** the pinned test `testEraseAccountThenSameIdPinned` ("the same id enrols again"). The same id on the same install is now `GONE`, as the custody defines it.
+- **Impact.** None on B or C beyond CCP-A-05 (who issues the id). Security, Core: done. Founder/legal (G07): see CCP-A-06.
+
+## CCP-A-05: a new account is a new athlete id (binding rule for whoever issues the id; Integration + Security)
+
+- **Why.** The custody refuses an erased **id** for good ("a new account is a new athlete"). The fence keeps that on the device (CCP-A-04). This is right only if a person who comes back gets a **new** id. If the id were derived from a stable personal identifier, the erasure would turn into a lifetime ban of that person on that install, against the Founder's intent.
+- **Rule (binding):**
+  1. The athlete id is an opaque random value of at least 128 bits, issued at each account creation.
+  2. It is never derived from an email, a phone number, an identity-provider subject (for example the Sign in with Apple user id), a device id or any other stable personal identifier.
+  3. Re-creating an account after an erasure always issues a new id. An erased id is never re-issued.
+  4. The `GONE` state on screen leads to "create a new account", never to "restore".
+- **Shared text to reconcile (not edited by A).** `CoachingPresentation/…/Intake.swift:44` says "A sets it from the authenticated account". Proposed: "The app's athlete id: an opaque random id issued by the account layer at each account creation (CCP-A-05); A passes it as the actor; C passes what A gives."
+- **Host code for C to map.** `ANOTHER_ATHLETE_ON_THIS_INSTALL`: onboarding refused because another athlete is enrolled on this install (one athlete per install; the integrity key is per install, NATIVE 1.5).
+- **What A does.** A takes the id the app opens it with (`CoachingHost.Configuration.athleteId`), refuses an erased one, and enforces one enrolled athlete per install. A does not invent an account system.
+- **Impact.** Integration (the account layer), C (the GONE screen copy), Security. None on B.
+
+## CCP-A-06: record the fence in the contract; a later Core option (Core recommendation)
+
+- **Persistence table, contract §7.** Proposed new row: "Erasure fence `erased-<tag>.json` (`{scope, state}`, no time) | A | `CoachingHost/` | `completeUntilFirstUserAuthentication` | never removed by the host; goes with the app container at a reinstall."
+- **G07 row (line 310).** Proposed note: "The fence is a mechanism inside the tombstone retention the custody already declares (`custody.mjs:31-33`, MECHANISM_ONLY_PENDING_G07), not a new retention."
+  - The custody's own tombstone files, which hold `erasedAt`, are removed once the key that named them is gone.
+  - On a device, "no resurrection" cannot outlive the container. A server account service must keep its own tombstone.
+- **Recorded deviations from the literal 6.3:**
+  - the `.lock` file is kept (QRE-A-07: it holds no data, and unlinking it would split the lock);
+  - the fence remains.
+- **Core option, later cycle (not a blocker).** Let the custody's tombstone subject not depend on the key that seals the record: a separate long-lived subject key, or `tombstone(athleteId)` with the adapter pseudonymising. The core would then not rely on the adapter invariant that `testPinnedBundleTombstoneCallSites` pins today.
+- **Impact.** Contract owners (integration mission), Core, Founder/legal (G07). None on B or C.
