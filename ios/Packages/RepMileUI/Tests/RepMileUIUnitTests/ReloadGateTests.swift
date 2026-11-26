@@ -95,9 +95,9 @@ final class ReloadGateTests: XCTestCase {
         var cal = Calendar(identifier: .gregorian); cal.timeZone = .current
         let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 23, hour: 0, minute: 10)))
         let lateRun = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 22, hour: 23, minute: 50)))
-        XCTAssertEqual(RunReportView.occurrenceDay(end: lateRun, planToday: "2026-11-23", now: now), "2026-11-22")
+        XCTAssertEqual(RunReportViewModel.occurrenceDay(end: lateRun, planToday: "2026-11-23", now: now), "2026-11-22")
         let sameDay = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 23, hour: 0, minute: 5)))
-        XCTAssertEqual(RunReportView.occurrenceDay(end: sameDay, planToday: "2026-11-23", now: now), "2026-11-23")
-        XCTAssertEqual(RunReportView.occurrenceDay(end: sameDay, planToday: nil, now: now), "2026-11-23")
+        XCTAssertEqual(RunReportViewModel.occurrenceDay(end: sameDay, planToday: "2026-11-23", now: now), "2026-11-23")
+        XCTAssertEqual(RunReportViewModel.occurrenceDay(end: sameDay, planToday: nil, now: now), "2026-11-23")
     }
 }

@@ -1,0 +1,127 @@
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testActivityLinkedElsewhereIsSetAside]' passed (0.406 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testAnAskOnlyChunkIsRecordedAfterTheScreenBecauseTheIdIsNew]' passed (0.354 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testBackfillOf100InChunksOfAtMost32]' passed (0.465 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testBeforeRecordStartIsSetAsideAndTheRestIsResent]' passed (0.238 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testDeathBetweenSendAndAnswerReplaysTheSameId]' passed (0.262 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testLimitExceededWithAnIndexIsSetAside]' passed (0.243 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testRecordedAndDuplicateLeaveTheQueueAndAnIdenticalResyncMakesNoVersion]' passed (0.270 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testScreenRequiredWaitsUntilTheAthleteAnswers]' passed (0.401 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testSourceQualityAloneIsADuplicate]' passed (0.229 seconds).
+Test Case '-[HealthKitIngestTests.BoundaryQueueTests testUnknownSessionIsResentUnlinked]' passed (0.287 seconds).
+Test Suite 'BoundaryQueueTests' passed at 2026-11-26 16:27:53.136.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 3.157 (3.158) seconds
+Test Case '-[HealthKitIngestTests.DedupeTests testALinkedRecordingWhoseSessionIsTakenIsSetAside]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testAShortRecordingInsideALongRunNeverSetsItAside]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testLinkedDedupeCountsTheRunOnceAtTheBoundary]' passed (0.240 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testNoRecordingFollowsTheNormalRule]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testPlannedReportedRecordingLinksTheWatchRunToThatSession]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testUnplannedReportedRecordingSetsTheWatchRunAsideAndCountsTheLostDistance]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testUnreportedRecordingHoldsThenRedecidesWhenReported]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.DedupeTests testUnreportedUnplannedRecordingHoldsThenDiscardedGoesByTheNormalRule]' passed (0.001 seconds).
+Test Suite 'DedupeTests' passed at 2026-11-26 16:27:53.381.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.245 (0.245) seconds
+Test Case '-[HealthKitIngestTests.NormalizationTests testDeterministicAndIndependentOfTheDeviceZone]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.NormalizationTests testDigestLeavesSourceQualityOut]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.NormalizationTests testExclusionsCarryTheirReason]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.NormalizationTests testFrozenAdmissionAcceptsEveryOutput]' passed (0.101 seconds).
+Test Case '-[HealthKitIngestTests.NormalizationTests testTableGivesExactBytes]' passed (0.000 seconds).
+Test Suite 'NormalizationTests' passed at 2026-11-26 16:27:53.485.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.103 (0.103) seconds
+Test Case '-[HealthKitIngestTests.QueueTests testAdapterBugSplitsTheChunkThenSetsAsideOnRepetition]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testBackfillChunksOf32InEndOrder]' passed (0.023 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testConsecutiveRetryLaterAreBounded]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testDayIsReadInThePlanOffsetNotTheDevice]' passed (0.003 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testDeathBeforeTheEnqueueRereadsTheSample]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testDeletionBeforeAndAfterDelivery]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testFileStoreIsAtomicAndSurvivesARestart]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testHaltedStopsUntilTheHostSignals]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testHealthKitLockedWaitsForProtectedData]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testHostUnavailableKeepsTheSameDeliveryForTheNextTrigger]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testLinkOnlyWhenUnambiguous]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testLockedQueueFileWaitsAndNeverOverwrites]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testNotRecordedWaitsForTheHostThenStopsAtTheLimit]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testOneWorkoutPerSessionAndLinkKeptForever]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testPurgeDuringADeliveryInFlightDiscardsItsAnswer]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testPurgeForEveryReasonErasesEverything]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testRefusedItemSetAsideAndUnlinkedResend]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testRetryLaterReusesTheIdWithBoundedBackoff]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testSetEnabledFalseStopsObservingAndSending]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.QueueTests testWaitingAndHaltedNeverCountTowardTheLimit]' passed (0.003 seconds).
+Test Suite 'QueueTests' passed at 2026-11-26 16:27:53.529.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.044 (0.044) seconds
+Test Case '-[HealthKitIngestTests.ReviewOpen1R2RegressionTests testACopyArrivingDuringTheIndexAwaitIsMatchedAgainstTheRecording]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1R2RegressionTests testCopiesOfAVeryShortRunCountOnce]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1R2RegressionTests testTheRepresentativeIsOrderIndependent]' passed (0.000 seconds).
+Test Suite 'ReviewOpen1R2RegressionTests' passed at 2026-11-26 16:27:53.531.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testABetterCopyArrivingDuringTheIndexAwaitIsSentAlone]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testACopyOfARunCountedByARecordingIsNeverPromoted]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testACopysDriftDoesNotHoldTheNextRun]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testChunkingWithCopies]' passed (0.010 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testLostDistanceIsCountedOncePerRun]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testOneSecondOverlapIsTwoRuns]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewOpen1RegressionTests testTheRecordingIsMatchedAgainstEveryCopyOfTheRun]' passed (0.000 seconds).
+Test Suite 'ReviewOpen1RegressionTests' passed at 2026-11-26 16:27:53.543.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds
+Test Case '-[HealthKitIngestTests.ReviewR2RegressionTests testAPopulatedQueueFileRoundTrips]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ReviewR2RegressionTests testASignalFromInsideTheHostNeverDeadlocks]' passed (0.001 seconds).
+Test Suite 'ReviewR2RegressionTests' passed at 2026-11-26 16:27:53.545.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testAFailedPurgeFailsClosed]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testALaunchRedecidesAHeldWorkout]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testAnOlderQueueFileStillLoads]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testASignalDuringAFlightIsNeverLost]' passed (0.225 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testHostUnavailableIsRetriedOnTheNextTrigger]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testObserverCompletionDoesNotWaitForTheDelivery]' passed (0.009 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testOwnWriteFailureIsRetriedOnTheNextTrigger]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testPartialOverlapWithAReportedRecordingIsCounted]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testPurgeBeforeLoadKeepsTheAthletesSwitch]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testPurgeOfALockedFileThrowsAndWritesNothing]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ReviewRegressionTests testRetryLaterStreakBreaksOnAnyOtherAnswer]' passed (0.001 seconds).
+Test Suite 'ReviewRegressionTests' passed at 2026-11-26 16:27:53.789.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.243 (0.244) seconds
+Test Case '-[HealthKitIngestTests.SameRunRuleTests testDecisionsDoNotDependOnOrder]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.SameRunRuleTests testOriginIsDisplayOnly]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.SameRunRuleTests testPairVerdictsAtTheirBoundaries]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.SameRunRuleTests testTheMoreCompleteCopyIsTheRunAndAFixedOneAlwaysIs]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.SameRunRuleTests testTheSourceNeverChangesSelectionNormalizationOrQuality]' passed (0.000 seconds).
+Test Suite 'SameRunRuleTests' passed at 2026-11-26 16:27:53.792.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testAnEmptyReadNeverClaimsADenial]' passed (0.002 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testEngineClassifierReadsTheMappedSeries]' passed (0.182 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testImportsAreTheAllowedOnes]' passed (0.005 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testNoHealthValueEverReachesTheLog]' passed (0.012 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testSeriesMappingOrdersKeepsOnlyTheWorkoutAndNeverGuessesTheSensor]' passed (0.023 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testStatusCountsTypesAndSummariesAndPurgeEmptiesThem]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.StatusSeriesLogTests testV1ProvidersAnswerNotInV1]' passed (0.000 seconds).
+Test Suite 'StatusSeriesLogTests' passed at 2026-11-26 16:27:54.017.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.225 (0.225) seconds
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testACopyArrivingAfterTheRunWasDeliveredIsConsolidatedIntoIt]' passed (0.188 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testACrashBetweenSendAndAnswerKeepsOneCredit]' passed (0.197 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testAManualEntryIsTheAthletesStatement]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testAnAppUpdatingItsRecordAfterDeliveryIsNotASecondRun]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testAPolicyOneFileIsMigratedAndItsThirdPartyRunsAreReadAgain]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testAPolicyOneFileWithNoAnchorReadsEverythingOnce]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testAppleWatchAndAThirdPartyCopyOfOneRunCountOnce]' passed (0.176 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testARepMileRecordingAndTwoHealthCopiesAreOneRun]' passed (0.243 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testARestartKeepsTheDedupeIndexes]' passed (0.188 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testARunOverlappingTwoRunsIsNotForcedIntoEither]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testARunWithoutDistance]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testASingleAppleWatchRunIsImported]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testASingleGarminRunIsImported]' passed (0.177 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testASingleStravaRunIsImported]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testControlTheBoundaryWouldRecordTwoCopiesAsTwoRuns]' passed (0.165 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testDeletingOneInconclusiveCopyLetsTheOtherThrough]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testDeletingTheChosenCopyBeforeItIsSentDeliversTheOther]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testGarminAndStravaCopiesOfOneRunCountOnce]' passed (0.179 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testInconclusiveCopiesAwaitReconciliationAndAreNeverDiscarded]' passed (0.001 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testLogsNameNoSourceAndNoValue]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testTheNewestVersionOfARecordIsTheRunWhenNoneWasSent]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testTheSameWorkoutReadAgainIsImportedOnce]' passed (0.000 seconds).
+Test Case '-[HealthKitIngestTests.ThirdPartyImportTests testTwoLegitimateRunsCloseInTimeAreBothKept]' passed (0.179 seconds).
+Test Suite 'ThirdPartyImportTests' passed at 2026-11-26 16:27:55.718.
+	 Executed 23 tests, with 0 failures (0 unexpected) in 1.700 (1.701) seconds
+Test Suite 'HealthKitIngestTests.xctest' passed at 2026-11-26 16:27:55.718.
+	 Executed 101 tests, with 0 failures (0 unexpected) in 5.732 (5.740) seconds
+Test Suite 'All tests' passed at 2026-11-26 16:27:55.718.
+	 Executed 101 tests, with 0 failures (0 unexpected) in 5.732 (5.741) seconds

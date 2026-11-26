@@ -6,8 +6,20 @@ import SwiftUI
 /// The app root. In the parallel phase it composes the fixture providers (front C); at integration the composition root passes front A's
 /// CoachingHost and front B's adapter instead, and nothing below changes.
 public struct RepMileShell: View {
+    /// What the production composition root (`ios/App/Composition`, #16) hands the shell besides the model: the athlete id the host was
+    /// opened with (the intake carries it) and the hook run once the account is known erased (the next launch is a new account, CCP-A-05).
+    public struct Live {
+        public let athleteId: String
+        public let accountErased: @MainActor () -> Void
+        public init(athleteId: String, accountErased: @escaping @MainActor () -> Void) {
+            self.athleteId = athleteId; self.accountErased = accountErased
+        }
+    }
+
     @State private var model: AppModel
-    @State private var recorder: RunRecorder = RepMileShell.makeRecorder()
+    @State private var recorder: RunRecorder
+    /// nil: the fixture composition (`-scenario`). Set: the live composition, which never swaps in a fixture reader.
+    private let live: Live?
 
     /// CoreLocation on a device; a scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
     @MainActor static func makeRecorder() -> RunRecorder {
@@ -27,9 +39,16 @@ public struct RepMileShell: View {
         let chosen = Scenario.named(scenario ?? UserDefaults.standard.string(forKey: "scenario"))
         _model = State(initialValue: AppModel(reader: FixtureCoachingReader(scenario: chosen, store: store), writer: FixtureCoachingWriter(store: store),
                                               health: FixtureHealthIngestStatus(queued: chosen.healthQueued), athleteName: "Lucas Andrade"))
+        _recorder = State(initialValue: RepMileShell.makeRecorder())
+        live = nil
     }
 
-    public init(model: AppModel) { RMFonts.register(); _model = State(initialValue: model) }
+    public init(model: AppModel) { RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: RepMileShell.makeRecorder()); live = nil }
+
+    /// The live composition: the recorder is the composition's (its `RecordingStore` is also front B's `AppRecordingIndex`).
+    public init(model: AppModel, recorder: RunRecorder, live: Live) {
+        RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: recorder); self.live = live
+    }
 
     public var body: some View {
         Group {
@@ -37,9 +56,11 @@ public struct RepMileShell: View {
             case .loading: LoadingSkeleton()
             case .app: AppTabs()
             case .onboarding:
-                OnboardingFlow(viewModel: OnboardingViewModel(writer: model.writer), onEnrolled: {
+                OnboardingFlow(viewModel: live.map { OnboardingViewModel(writer: model.writer, athleteId: $0.athleteId) } ?? OnboardingViewModel(writer: model.writer), onEnrolled: {
+                    // Live: the host reads the new record. Never a fixture reader here.
+                    if live != nil { Task { await model.load() } }
                     // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
-                    if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
+                    else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
                     else { Task { await model.load() } }
                 })
             default: StateScreen(route: model.route, primary: {}, retry: { Task { await model.load() } })
@@ -48,7 +69,7 @@ public struct RepMileShell: View {
         .environment(model)
         .environment(recorder)
         // An account found erased (GONE) erases this front's recordings too (G07), also when the erasure happened elsewhere.
-        .onChange(of: model.route) { _, r in if r == .accountErased { recorder.eraseAllRecordings() } }
+        .onChange(of: model.route) { _, r in if r == .accountErased { recorder.eraseAllRecordings(); live?.accountErased() } }
         .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
@@ -93,13 +114,8 @@ struct AppTabs: View {
         guard !model.isLoading, runGate == nil else { return }
         runLaunch = Launch(session: nil)
     }
-    /// The gate that stops a live unplanned run (a hold or a persistent host gate). Founder provisional decision (26/11) and SSCTR
-    /// recheck ruling on QRE P1-11: a clinical block, outside V1 scope or a pending symptom assessment; nothing else is added here.
-    private var runGate: NotStartableReason? {
-        if model.plan?.hold != nil || model.plan?.state == .blocked { return .blocked }
-        if let g = model.globalGate, [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired].contains(g) { return g }
-        return nil
-    }
+    /// The gate that stops a live unplanned run (`AppModel.unplannedRunGate`, the same rule that withholds the steps of a run in progress).
+    private var runGate: NotStartableReason? { model.unplannedRunGate }
 
     var body: some View {
         ZStack(alignment: .bottom) {
