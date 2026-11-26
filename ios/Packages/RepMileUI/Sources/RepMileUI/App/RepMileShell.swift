@@ -48,6 +48,7 @@ public struct RepMileShell: View {
 
 enum Route: Hashable {
     case profile
+    case hrZones
     case session(String, String)
 }
 
@@ -135,7 +136,8 @@ struct AppTabs: View {
 
     @ViewBuilder private func destination(_ r: Route) -> some View {
         switch r {
-        case .profile: PreviewScreen(title: L.t("profile.title"), icon: .ajustes)
+        case .profile: ProfileScreen(openZones: { todayPath.append(.hrZones) })
+        case .hrZones: HeartRateZonesScreen()
         case .session(let id, let date):
             if let s = (model.plan?.week?.sessions ?? []).first(where: { $0.id == id && $0.date == date })
                 ?? model.weeks.flatMap(\.sessions).first(where: { $0.id == id && $0.date == date }) {

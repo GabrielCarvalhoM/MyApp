@@ -80,6 +80,12 @@ public final class AppModel {
         route = RootRoute.from(plan: planResult)
     }
 
+    /// After a successful `eraseAccount`: nothing of the record stays in memory and the root shows the erased state.
+    public func accountErased() async {
+        plan = nil; weeks = []; presentation = nil; logged = nil; weekPlan = nil; history = nil; startability = [:]
+        route = .accountErased
+    }
+
     public func startability(of session: PlannedSession) -> Startability { startability[session.id] ?? .notStartable(reason: .notExecutable) }
 
     /// The persistent host gate that applies to every session (FND-ABC-04 outside scope, clock, screen required), if any.

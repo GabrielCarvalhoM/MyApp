@@ -110,7 +110,15 @@ public extension Scenario {
                                      presentation: .hostFailure("RECORD_LOST"), history: .hostFailure("RECORD_LOST"), logged: .hostFailure("RECORD_LOST"),
                                      weekPlan: .hostFailure("RECORD_LOST"), hostGate: .none, pendingReports: 0, healthQueued: 0)
 
-    static let all: [Scenario] = [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
+    /// Heart-rate zone variants (Figma 71): the plan of `today` with the presentation captured for each five-zone reading.
+    static func zones(_ name: String) -> Scenario {
+        Scenario(id: "zones-" + name, title: "Zonas de FC · " + name, plan: .file(name == "hold" ? "17-plan-blocked" : "13-plan-w1"), allWeeks: base.allWeeks,
+                 presentation: .file("hr5r-\(name)-presentation"), history: base.history, logged: .file("P-logged-two-voices"), weekPlan: base.weekPlan,
+                 hostGate: name == "hold" ? .notStartable(.blocked) : .none, pendingReports: 0, healthQueued: 0)
+    }
+    static let zoneVariants = ["age30", "declared", "custom", "strap-above", "strap-below", "lab", "conflict", "noage", "hold", "optical", "after-erase"]
+
+    static let all: [Scenario] = zoneVariants.map(zones) + [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
                                   .clockUntrusted, .notEnrolled, .accountErased, .staleVersion, .integrityFailure, .recordLost]
 
     static func named(_ id: String?) -> Scenario { all.first { $0.id == id } ?? .today }

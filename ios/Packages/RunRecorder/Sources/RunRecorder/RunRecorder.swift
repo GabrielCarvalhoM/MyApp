@@ -91,6 +91,9 @@ public final class RunRecorder {
         source.stop(); state = nil
     }
 
+    /// Account erasure (G07): every recording, the index and the active file; nothing of a run stays on the device.
+    public func eraseAllRecordings() { source.stop(); state = nil; store.eraseAll() }
+
     /// Closes the screen after a finished recording (the file stays until erased; the index keeps the ref).
     public func close() { if state?.phase == .finished { store.clearActive(); state = nil } }
 
