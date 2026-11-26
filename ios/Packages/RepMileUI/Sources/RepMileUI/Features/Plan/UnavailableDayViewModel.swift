@@ -30,7 +30,10 @@ final class UnavailableDayViewModel {
     }
 
     var canSend: Bool { phase == .ask }
-    var canAccept: Bool { if case .proposed = phase { true } else { false } }
+    /// Only a proposal the athlete can see: a re-read with no rows keeps "Aceitar" off (never an invisible change confirmed).
+    var canAccept: Bool { if case .proposed = phase { !proposal.isEmpty } else { false } }
+    /// Proposed, but the re-read shows no row to review: the view shows `move.proposal.unavailable` instead of the rows.
+    var proposalUnavailable: Bool { if case .proposed = phase { proposal.isEmpty } else { false } }
 
     /// The engine's proposal: the run sessions of `presentation().pending`, by date (strength rows are not exposed yet, GAP-08).
     var proposal: [RunSessionPresentation] { Self.proposal(presentation()) }
@@ -44,7 +47,7 @@ final class UnavailableDayViewModel {
     }
 
     func accept() async {
-        guard case .proposed(let id) = phase else { return }
+        guard canAccept, case .proposed(let id) = phase else { return }
         phase = .accepting(decisionId: id)
         phase = Self.phase(afterAccept: await writer.accept(decisionId: id).answer)
     }

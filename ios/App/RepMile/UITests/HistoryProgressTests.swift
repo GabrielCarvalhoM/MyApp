@@ -42,6 +42,27 @@ final class HistoryProgressTests: XCTestCase {
         attach(app, "Histórico — vozes do atleta e do relógio")
     }
 
+    /// #58: a kept correction says "salvo" and the history is read again. The fixture reader is static per scenario, so the re-read returns
+    /// the same capture (the uncontested row): that the row then carries the correction and is not offered again is covered by unit tests.
+    @MainActor
+    func testKeptCorrectionIsSaved() {
+        let app = launch("today")
+        app.buttons["tab-history"].tap()
+        let row = app.buttons["history-row-ob_0e0b22854e702dd5da6c7bca67"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        let contest = app.buttons["history-contest"]
+        XCTAssertTrue(contest.waitForExistence(timeout: 5))
+        contest.tap()
+        let km = app.textFields["contest-km"]
+        XCTAssertTrue(km.waitForExistence(timeout: 5))
+        km.tap(); km.typeText("7")
+        app.buttons["contest-send"].tap()
+        XCTAssertTrue(app.staticTexts["Salvo no seu histórico."].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["history-contest"].exists, "not offered again on this screen")
+        attach(app, "Histórico — correção salva")
+    }
+
     @MainActor
     func testEmptyHistory() {
         let app = launch("first-week")

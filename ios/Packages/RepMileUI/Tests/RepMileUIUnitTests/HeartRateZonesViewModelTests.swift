@@ -23,10 +23,10 @@ final class HeartRateZonesViewModelTests: XCTestCase {
 
     func testFieldsStartFromTheProfileInForce() throws {
         let w = PrivacyWriter()
-        let custom = VM(writer: w, mode: .limits, current: try Zones.five("custom"))
+        let custom = VM(writer: w, mode: .limits, current: try Zones.five("custom"), reload: {})
         XCTAssertEqual(custom.maximum, "195")
         XCTAssertEqual(custom.limits, ["130", "150", "165", "180"])
-        let estimate = VM(writer: w, mode: .maximum, current: try Zones.five("age30"))
+        let estimate = VM(writer: w, mode: .maximum, current: try Zones.five("age30"), reload: {})
         XCTAssertEqual(estimate.maximum, "")
         XCTAssertEqual(estimate.limits, ["", "", "", ""])
         XCTAssertNil(estimate.message)
@@ -62,11 +62,11 @@ final class HeartRateZonesViewModelTests: XCTestCase {
 
     func testDeclaredMaximumSavedAndDecreasingLimitsRefusedByTheEngine() async throws {
         let w = PrivacyWriter()
-        let max = VM(writer: w, mode: .maximum, current: try Zones.five("age30"))
+        let max = VM(writer: w, mode: .maximum, current: try Zones.five("age30"), reload: {})
         max.maximum = "195"
         await max.save()
         XCTAssertEqual(max.message, .saved)
-        let limits = VM(writer: w, mode: .limits, current: try Zones.five("age30"))
+        let limits = VM(writer: w, mode: .limits, current: try Zones.five("age30"), reload: {})
         limits.limits = ["150", "140", "160", "170"]
         await limits.save()
         XCTAssertEqual(limits.message, .refused(field: "zoneUpperBpm.strictlyIncreasing"))
@@ -75,7 +75,7 @@ final class HeartRateZonesViewModelTests: XCTestCase {
 
     func testSaveSentOnceWhileInFlight() async throws {
         let w = PrivacyWriter(delay: .milliseconds(80))
-        let vm = VM(writer: w, mode: .maximum, current: try Zones.five("age30"))
+        let vm = VM(writer: w, mode: .maximum, current: try Zones.five("age30"), reload: {})
         vm.maximum = "195"
         XCTAssertTrue(vm.canSave)
         let first = Task { await vm.save() }
@@ -93,12 +93,12 @@ final class HeartRateZonesViewModelTests: XCTestCase {
 
     func testEraseAnswersAndIsOfferedOnlyForTheAthletesOwnValues() async throws {
         let w = PrivacyWriter()
-        let vm = VM(writer: w, mode: .maximum, current: try Zones.five("declared"))
+        let vm = VM(writer: w, mode: .maximum, current: try Zones.five("declared"), reload: {})
         await vm.erase()
         XCTAssertEqual(vm.message, .erased)
         XCTAssertEqual(w.calls("eraseHeartRateProfile").count, 1)
         let failing = VM(writer: PrivacyWriter(eraseProfileResult: .failure(BoundaryError(code: "PERSISTENCE_FAILURE"))), mode: .limits,
-                         current: try Zones.five("custom"))
+                         current: try Zones.five("custom"), reload: {})
         await failing.erase()
         XCTAssertEqual(failing.message, .failed)
         XCTAssertTrue(VM.offersErase(try Zones.five("declared")))

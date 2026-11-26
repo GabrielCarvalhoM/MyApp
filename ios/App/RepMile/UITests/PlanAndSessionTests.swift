@@ -56,19 +56,42 @@ final class PlanAndSessionTests: XCTestCase {
         attach(app, "Treino planejado — força, carga a estabelecer (730:…)")
     }
 
+    /// #58: the proposal is the one re-read after the write. "pending" reads the engine's captured proposal (its run sessions are on screen),
+    /// so it can be confirmed. (Before #58 this ran on "today", whose re-read has no proposal rows: it confirmed a change nobody could see.)
     @MainActor
     func testCantThisDayProposesAndConfirms() {
-        let app = launch("today")
-        app.buttons["today-view-session"].tap()
+        let app = launch("pending")
+        app.buttons["tab-plan"].tap()
+        let row = app.buttons["plan-session-w0-run-d3"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
         let cant = app.buttons["session-cant-this-day"]
         XCTAssertTrue(cant.waitForExistence(timeout: 10))
         cant.tap()
         app.buttons["move-send"].tap()
         let accept = app.buttons["move-accept"]
         XCTAssertTrue(accept.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.descendants(matching: .any)["move-proposal-unavailable"].exists, "the proposal's rows are on screen")
         attach(app, "Mover — proposta aguardando confirmação")
         accept.tap()
         XCTAssertTrue(app.staticTexts["Plano atualizado."].waitForExistence(timeout: 5))
+    }
+
+    /// #58: "today" re-reads a presentation with no proposal rows: "Confirmar a mudança" stays off and the fallback says why.
+    @MainActor
+    func testCantThisDayWithNoVisibleProposalCannotBeConfirmed() {
+        let app = launch("today")
+        app.buttons["today-view-session"].tap()
+        let cant = app.buttons["session-cant-this-day"]
+        XCTAssertTrue(cant.waitForExistence(timeout: 10))
+        cant.tap()
+        app.buttons["move-send"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["move-proposal-unavailable"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["A mudança ainda não está disponível para revisar."].exists)
+        let accept = app.buttons["move-accept"]
+        XCTAssertTrue(accept.exists)
+        XCTAssertFalse(accept.isEnabled, "never an invisible change confirmed")
+        attach(app, "Mover — proposta sem linhas para revisar")
     }
 
     @MainActor

@@ -16,8 +16,12 @@ final class ProfileViewModel {
     /// The erase confirmation on screen, if any.
     var confirm: Confirm?
     private(set) var activity: Activity = .idle
-    /// The purposes whose grant or revocation the engine recorded on this screen.
+    /// The purposes whose grant or revocation the engine recorded on this screen. The read ports expose no consent state, so this is the
+    /// engine's own answer; the record is read again after it (CODE_AND_ARCHITECTURE §2).
     private(set) var consentDone: Set<ConsentPurpose> = []
+    /// The purposes whose last grant or revocation the engine did not record: shown as an error, never as silence (a revocation that
+    /// failed is a privacy fact the athlete must see). Cleared when that purpose is written again.
+    private(set) var consentFailed: Set<ConsentPurpose> = []
 
     private let writer: CoachingWriting
     private let reload: @MainActor () async -> Void
@@ -33,11 +37,16 @@ final class ProfileViewModel {
 
     var isWriting: Bool { activity != .idle }
 
+    /// Recorded: "registrado", then the record is read again (the gate opens first: the reload is not a write). Not recorded: the error,
+    /// and nothing is read again.
     func setConsent(_ purpose: ConsentPurpose, granted: Bool) async {
         guard begin(.consent(purpose)) else { return }
-        defer { activity = .idle }
+        consentFailed.remove(purpose)
         let out = await writer.setConsent(purpose, granted: granted)
-        if Self.outcome(out.answer) == .done { consentDone.insert(purpose) }
+        let done = Self.outcome(out.answer) == .done
+        if done { consentDone.insert(purpose) } else { consentFailed.insert(purpose) }
+        activity = .idle
+        if done { await reload() }
     }
 
     /// The confirmation's destructive button. `which` is read when it is tapped: the dialog clears `confirm` as it closes, before this runs.
