@@ -53,6 +53,8 @@ for manifest in ios/Packages/*/Package.swift; do
       what="no test action in the scheme"
     fi
     tail -20 "$log"; echo "::endgroup::"
+    # The tail of an xcodebuild log rarely holds the compiler error: print every diagnostic line on failure.
+    if [ $rc -ne 0 ]; then echo "::group::$name compiler errors"; grep -E "(error|fatal error):" "$log" | sort -u | head -60; echo "::endgroup::"; fi
     if [ $rc -eq 0 ]; then summary+=("IOS_BUILD_OK   $name (iOS-only, $what; tests run in sim.sh test)"); else summary+=("FAIL           $name · xcodebuild exit $rc"); status=1; fi
     continue
   fi
