@@ -213,12 +213,14 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(el(app, "strength-needs-set").exists)
         for _ in 0..<8 where !app.buttons["strength-as-prescribed"].isHittable { app.swipeDown() }
         app.buttons["strength-as-prescribed"].tap()
-        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada")
-        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada, 8 repetições")
+        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada, 8 repetições")
+        XCTAssertEqual(app.steppers["reps-goblet-squat-1"].value as? String, "8", "VoiceOver hears the stated count")
+        XCTAssertFalse(app.buttons["strength-as-prescribed"].exists, "offered only while nothing is stated")
         attach(app, "Execução de força — fiz como prescrito (41)")
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled)
-        XCTAssertEqual(app.buttons["set-dead-bug-0"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-dead-bug-0"].value as? String, "registrada, 10 repetições")
         save.tap()
         XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
     }
@@ -230,9 +232,13 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["set-goblet-squat-0"].tap()
         let reps = app.steppers["reps-goblet-squat-1"].buttons.element(boundBy: 1)
         for _ in 0..<5 { reps.tap() }
-        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada")
-        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada, 8 repetições")
+        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada, 5 repetições")
+        XCTAssertEqual(app.steppers["reps-goblet-squat-1"].value as? String, "5", "VoiceOver hears the stated count")
         XCTAssertEqual(app.buttons["set-db-bench-press-0"].value as? String, "não registrada")
+        XCTAssertEqual(app.steppers["reps-db-bench-press-0"].value as? String, "não registrada")
+        XCTAssertTrue(app.textFields["load-goblet-squat-1"].isEnabled)
+        XCTAssertFalse(app.textFields["load-db-bench-press-0"].isEnabled, "no load before the set is stated")
         attach(app, "Execução de força — registro parcial (41)")
         addStrengthMinutes(app)
         let save = app.buttons["strength-save"]

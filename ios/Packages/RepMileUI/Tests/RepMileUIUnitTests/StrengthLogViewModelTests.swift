@@ -61,16 +61,57 @@ final class StrengthLogViewModelTests: XCTestCase {
         let squat = try XCTUnwrap(vm.actual().exercises.first { $0.id == "goblet-squat" })
         XCTAssertEqual(squat.sets, [LoggedSetEntry(reps: 8, load: nil, rir: nil),
                                     LoggedSetEntry(reps: 6, load: LoggedLoadEntry(value: 16.5, unit: .kg, convention: .singleImplement), rir: nil)])
-        XCTAssertFalse(vm.actual().completed, "fewer repetitions than prescribed is a shortfall (CoachingCore strengthLogs)")
-        vm.setReps(10, "goblet-squat", 1)
-        XCTAssertTrue(vm.actual().completed, "more repetitions than prescribed still meets it")
+        XCTAssertTrue(vm.actual().completed, "every set done: completion does not depend on reps (SSCTR #37b F1)")
+    }
+
+    /// SSCTR #37b F1: completion is sets done >= sets planned (CoachingCore `bindObservations` setsOk); a reps shortfall is the
+    /// per-exercise target, read by the engine from the reps sent as stated. A missing set or an omitted exercise keeps it false.
+    func testCompletedCountsSetsNotReps() throws {
+        let vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store))
+        for e in vm.exercises { for i in 0..<e.sets { vm.setReps(3, e.id, i) } }
+        vm.setReps(1, "db-row", 0)
+        let a = vm.actual()
+        XCTAssertTrue(a.completed, "every prescribed set stated, some with fewer reps than prescribed")
+        XCTAssertEqual(a.exercises.first { $0.id == "db-row" }?.sets.map(\.reps), [1, 3], "reps are sent as stated")
+        XCTAssertEqual(a.exercises.first { $0.id == "goblet-squat" }?.sets.map(\.reps), [3, 3])
+        vm.setReps(nil, "goblet-squat", 1)
+        XCTAssertFalse(vm.actual().completed, "a missing set")
+        vm.setReps(3, "goblet-squat", 1)
+        vm.setReps(nil, "dead-bug", 0)
+        XCTAssertFalse(vm.actual().completed, "an omitted exercise")
+    }
+
+    /// SSCTR #37b F2: confirm first, then edit. Once any set is stated, "Fiz como prescrito" is no longer offered and cannot overwrite it.
+    func testConfirmAsPrescribedNeverOverwritesAStatedSet() throws {
+        let vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store))
+        vm.setReps(5, "goblet-squat", 0)
+        XCTAssertFalse(vm.canConfirmAsPrescribed)
+        vm.confirmAsPrescribed()
+        XCTAssertEqual(vm.draft("goblet-squat", 0)?.reps, 5)
+        XCTAssertEqual(vm.statedSetCount, 1)
+        vm.setReps(nil, "goblet-squat", 0)
+        XCTAssertTrue(vm.canConfirmAsPrescribed, "offered again once nothing is stated")
+    }
+
+    /// SSCTR #37b F7: a planned session presented without exercises has nothing to state; it fails closed (never sendable on minutes alone).
+    func testPlannedSessionWithoutExercisesIsNotSendable() async throws {
+        let w = FixtureCoachingWriter(store: Repo.store)
+        let vm = viewModel(try session { $0 = [] }, w)
+        XCTAssertNotNil(vm.session)
+        XCTAssertTrue(vm.exercises.isEmpty)
+        vm.minutes = 30
+        XCTAssertFalse(vm.canSend)
+        XCTAssertFalse(vm.completed)
+        await vm.send()
+        XCTAssertTrue(submits(w).isEmpty)
     }
 
     func testUnconfirmedSetsAndExercisesAreAbsent() throws {
         let vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store))
         vm.toggleSet(try exercise(vm, "goblet-squat"), 0)
         vm.setReps(5, "db-row", 1)
-        vm.setLoad("20", "db-bench-press", 0)  // a load on a set the athlete never stated is not a set
+        vm.setLoad("20", "db-bench-press", 0)  // a load never states a set (SSCTR #37b F4): ignored on an unstated set
+        XCTAssertEqual(vm.draft("db-bench-press", 0), StrengthLogViewModel.SetDraft())
         let a = vm.actual()
         XCTAssertEqual(a.exercises, [LoggedExerciseEntry(id: "goblet-squat", sets: [LoggedSetEntry(reps: 8, load: nil, rir: nil)]),
                                      LoggedExerciseEntry(id: "db-row", sets: [LoggedSetEntry(reps: 5, load: nil, rir: nil)])])
@@ -84,14 +125,19 @@ final class StrengthLogViewModelTests: XCTestCase {
         XCTAssertFalse(vm.canSend)
     }
 
-    /// The same session with no rep count prescribed for one exercise (the shared type allows `reps: nil`).
-    private func session(withoutRepsOn id: String) throws -> PlannedSession {
+    /// The same session with its presented exercises edited (the shared type allows `reps: nil` and an empty list).
+    private func session(_ edit: (inout [[String: Any]]) -> Void) throws -> PlannedSession {
         let view = try XCTUnwrap(try Repo.store.object("02-plan-w0")["view"] as? [String: Any])
         var s = try XCTUnwrap(((view["week"] as? [String: Any])?["sessions"] as? [[String: Any]])?.first { $0["id"] as? String == "w0-str-d2" })
         var p = try XCTUnwrap(s["prescription"] as? [String: Any])
-        p["exercises"] = try XCTUnwrap(p["exercises"] as? [[String: Any]]).map { e in var e = e; if e["id"] as? String == id { e.removeValue(forKey: "reps") }; return e }
+        var exercises = try XCTUnwrap(p["exercises"] as? [[String: Any]])
+        edit(&exercises)
+        p["exercises"] = exercises
         s["prescription"] = p
         return try JSONDecoder().decode(PlannedSession.self, from: JSONSerialization.data(withJSONObject: s))
+    }
+    private func session(withoutRepsOn id: String) throws -> PlannedSession {
+        try session { $0 = $0.map { e in var e = e; if e["id"] as? String == id { e.removeValue(forKey: "reps") }; return e } }
     }
 
     func testNoPrescribedRepsIsNeverInvented() async throws {

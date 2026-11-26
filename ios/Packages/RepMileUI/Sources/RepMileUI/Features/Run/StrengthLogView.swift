@@ -70,6 +70,7 @@ struct StrengthLogView: View {
 
     private func setRow(_ e: PrescribedExercise, _ i: Int) -> some View {
         let reps = viewModel.draft(e.id, i)?.reps
+        let stated = reps.map { L.f("strength.set.doneReps", "\($0)") } ?? L.t("strength.set.notDone")
         return HStack(spacing: 10) {
             Text("\(i + 1)").rmText(.rotulo, RM.Palette.textoSecundario).frame(width: 20)
             Button { viewModel.toggleSet(e, i) } label: {
@@ -77,26 +78,31 @@ struct StrengthLogView: View {
                     .foregroundStyle(reps != nil ? RM.Palette.acaoForcaTexto : RM.Palette.textoTerciario)
                     .frame(width: 36, height: 36)
                     .background(reps != nil ? RM.Palette.acaoForca : RM.Palette.fundoElevado2, in: Circle())
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(PressableStyle())
             .disabled(!viewModel.canToggle(e, i))
             .accessibilityLabel(L.f("strength.set", "\(i + 1)"))
-            .accessibilityValue(L.t(reps != nil ? "strength.set.done" : "strength.set.notDone"))
+            .accessibilityValue(stated)
             .accessibilityIdentifier("set-\(e.id)-\(i)")
             Stepper(value: Binding(get: { reps ?? 0 }, set: { viewModel.setReps($0, e.id, i) }), in: 0...50) {
                 Text(reps.map(String.init) ?? "–").rmText(.numeroS)
             }
             .frame(width: 140)
             .disabled(!viewModel.editable)
-            .accessibilityLabel(L.t("strength.reps"))
+            .accessibilityLabel(L.f("strength.reps.label", L.code("exercise", Code(raw: e.id)) ?? e.id, "\(i + 1)"))
+            .accessibilityValue(reps.map(String.init) ?? L.t("strength.set.notDone"))
             .accessibilityIdentifier("reps-\(e.id)-\(i)")
             if e.load?.mode.raw != "BODYWEIGHT" {
+                // The load belongs to a stated set: off until the set is stated, and typing it never states the set.
                 TextField("kg", text: Binding(get: { viewModel.draft(e.id, i)?.load ?? "" }, set: { viewModel.setLoad($0, e.id, i) }))
                     .keyboardType(.decimalPad)
                     .rmText(.numeroS)
                     .padding(.horizontal, 10).frame(height: 36)
                     .background(RM.Palette.fundoElevado2, in: RoundedRectangle(cornerRadius: 8))
-                    .disabled(!viewModel.editable)
+                    .disabled(!viewModel.editable || reps == nil)
+                    .opacity(reps == nil ? 0.5 : 1)
                     .accessibilityIdentifier("load-\(e.id)-\(i)")
             }
         }

@@ -45,8 +45,9 @@ final class StrengthLogViewModel {
         sets[id]?[i].reps = reps.flatMap { $0 > 0 ? $0 : nil }
     }
 
+    /// A load belongs to a stated set: typing it never states the set (the field stays off until the set is stated).
     func setLoad(_ text: String, _ id: String, _ i: Int) {
-        guard editable, draft(id, i) != nil else { return }
+        guard editable, draft(id, i)?.reps != nil else { return }
         sets[id]?[i].load = text
     }
 
@@ -62,9 +63,12 @@ final class StrengthLogViewModel {
         return d.reps != nil || (e.reps ?? 0) > 0
     }
 
-    /// "Fiz como prescrito" is offered only when the prescription gives every set a repetition count: it states exactly those sets and
-    /// counts (edits made before are replaced by the prescription the athlete confirms). Loads are left as typed.
-    var canConfirmAsPrescribed: Bool { editable && !exercises.isEmpty && exercises.allSatisfy { ($0.reps ?? 0) > 0 } }
+    /// "Fiz como prescrito" is offered only when the prescription gives every set a repetition count, and only while no set is stated
+    /// (confirm first, then edit: it never overwrites what the athlete already stated). It states exactly those sets and counts; it never
+    /// fills a load.
+    var canConfirmAsPrescribed: Bool {
+        editable && statedSetCount == 0 && !exercises.isEmpty && exercises.allSatisfy { ($0.reps ?? 0) > 0 }
+    }
 
     func confirmAsPrescribed() {
         guard canConfirmAsPrescribed else { return }
@@ -73,17 +77,17 @@ final class StrengthLogViewModel {
 
     var statedSetCount: Int { sets.values.reduce(0) { $0 + $1.filter { $0.reps != nil }.count } }
 
-    /// Minutes are always the athlete's; a planned session also needs at least one stated set (an untouched form sends nothing).
-    var canSend: Bool { editable && (minutes ?? 0) > 0 && (exercises.isEmpty || statedSetCount > 0) }
+    /// Minutes are always the athlete's. A planned session also needs at least one stated set (an untouched form sends nothing); a planned
+    /// session presented without exercises has no set to state, so it fails closed: never sendable on minutes alone.
+    var canSend: Bool { editable && (minutes ?? 0) > 0 && (session == nil || statedSetCount > 0) }
 
-    /// The contract's reading of a strength session done (CoachingCore `bindObservations` / `strengthLogs`: a shortfall is fewer sets, or
-    /// fewer repetitions, than prescribed): every prescribed set stated, none below its prescribed repetitions. Anything less is partial. An
-    /// unplanned session has no prescription; its stated minutes are the whole report.
+    /// Session completion as the contract reads it (CoachingCore `bindObservations`: `completed && setsOk`, `setsOk` = sets done >= planned
+    /// sets): every prescribed set stated; an omitted exercise or a missing set keeps it false. Repetitions do NOT enter it: a reps shortfall
+    /// is the per-exercise target (`strengthLogs.repsMet`), read by the engine from the reps sent as stated. An unplanned session has no
+    /// prescription; its stated minutes are the whole report.
     var completed: Bool {
-        exercises.allSatisfy { e in
-            let stated = (sets[e.id] ?? []).compactMap(\.reps)
-            return stated.count >= e.sets && stated.allSatisfy { $0 >= (e.reps ?? 1) }
-        }
+        if session != nil, exercises.isEmpty { return false }
+        return exercises.allSatisfy { e in (sets[e.id] ?? []).filter { $0.reps != nil }.count >= e.sets }
     }
 
     /// The report exactly as the shared types encode it: only stated sets, each with the athlete's repetitions and, when typed, the load.
