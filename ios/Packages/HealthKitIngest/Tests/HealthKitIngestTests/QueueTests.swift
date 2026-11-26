@@ -209,10 +209,10 @@ final class QueueTests: XCTestCase {
             let before = await ing.counts(); XCTAssertEqual(before.delivered, 1); XCTAssertEqual(before.setAside.count, 1); XCTAssertEqual(before.pending, 1)
             try await ing.purge(reason)
             let after = await ing.counts()
-            XCTAssertEqual(after, IngestCounts(pending: 0, notRecorded: 0, held: 0, inFlight: 0, setAside: [:], delivered: 0, excluded: [:], counters: [:]), "\(reason)")
+            XCTAssertEqual(after, IngestCounts(pending: 0, notRecorded: 0, held: 0, inFlight: 0, setAside: [:], delivered: 0, excluded: [:], counters: [:], consolidated: 0, reconcile: [:]), "\(reason)")
             let summaries = await ing.importedNonRunWorkouts(since: .distantPast); XCTAssertTrue(summaries.isEmpty)
             let disk = try JSONDecoder().decode(QueueState.self, from: XCTUnwrap(store.data))
-            XCTAssertNil(disk.anchor); XCTAssertTrue(disk.items.isEmpty && disk.ledger.isEmpty && disk.summaries.isEmpty && disk.excluded.isEmpty)
+            XCTAssertNil(disk.anchor); XCTAssertTrue(disk.items.isEmpty && disk.ledger.isEmpty && disk.summaries.isEmpty && disk.excluded.isEmpty && disk.enteredRuns.isEmpty && disk.rescanIds.isEmpty)
             XCTAssertEqual(disk.generation, 1)
             XCTAssertTrue(rig.log.lines.contains("hki.purged code=\(reason.rawValue)"))
         }

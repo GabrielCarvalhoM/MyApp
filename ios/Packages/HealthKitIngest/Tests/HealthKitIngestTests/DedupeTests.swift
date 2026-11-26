@@ -87,7 +87,9 @@ final class DedupeTests: XCTestCase {
                                     sourceBundleId: "com.apple.health.Y", sourceName: "iPhone", timeZoneIdentifier: nil)
         r.reader.add(other); await r.reader.fire(); await ing.settled()
         XCTAssertNil(linkOf(sink, "HK-W2"), "the session already has its run: never a second link, never a second unlinked row")
-        let c = await ing.counts(); XCTAssertEqual(c.setAside, ["OVERLAPS_APP_RECORDING": 1]); XCTAssertNil(c.counters["MEASURED_DISTANCE_LOST_TO_APP_RECORDING"])
+        // OPEN-1 policy 2: HK-W2 overlaps the delivered HK-W and agrees with it, so it is consolidated into it (SameRunRule) before the
+        // app-recording rule is consulted. Either way it is never sent.
+        let c = await ing.counts(); XCTAssertEqual(c.consolidated, 1); XCTAssertEqual(c.setAside, [:]); XCTAssertNil(c.counters["MEASURED_DISTANCE_LOST_TO_APP_RECORDING"])
     }
 
     /// The linked case through the REAL boundary: the athlete's report of the recording and the watch run end up on ONE row of the session.

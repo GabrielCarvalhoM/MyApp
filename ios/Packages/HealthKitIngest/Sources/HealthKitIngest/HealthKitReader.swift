@@ -46,10 +46,14 @@ public final class HealthKitReader: HealthReading, @unchecked Sendable {
         let indoor = (w.metadata?[HKMetadataKeyIndoorWorkout] as? NSNumber)?.boolValue
         let userEntered = (w.metadata?[HKMetadataKeyWasUserEntered] as? NSNumber)?.boolValue ?? false
         let tz = w.metadata?[HKMetadataKeyTimeZone] as? String
+        // Provenance only (OPEN-1 policy 2): which app and device wrote it, and the app's own record identity when it set one.
+        let syncId = w.metadata?[HKMetadataKeySyncIdentifier] as? String
+        let syncVersion = (w.metadata?[HKMetadataKeySyncVersion] as? NSNumber)?.intValue
         return WorkoutSnapshot(id: w.uuid.uuidString, activityTypeRaw: w.workoutActivityType.rawValue, start: w.startDate, end: w.endDate,
                                durationSeconds: w.duration, distanceMeters: meters, hasRoute: try await hasRoute(w), indoor: indoor,
                                wasUserEntered: userEntered, sourceBundleId: w.sourceRevision.source.bundleIdentifier,
-                               sourceName: w.sourceRevision.source.name, timeZoneIdentifier: tz)
+                               sourceName: w.sourceRevision.source.name, timeZoneIdentifier: tz,
+                               sourceProductType: w.sourceRevision.productType, syncIdentifier: syncId, syncVersion: syncVersion)
     }
 
     /// Whether a route is associated with the workout (limit 1; the route's locations are never queried).

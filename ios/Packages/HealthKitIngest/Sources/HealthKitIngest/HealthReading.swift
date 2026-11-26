@@ -26,12 +26,20 @@ public struct WorkoutSnapshot: Sendable, Equatable, Codable {
     public let sourceName: String?
     /// `HKMetadataKeyTimeZone` (a time-zone identifier), nil when absent.
     public let timeZoneIdentifier: String?
+    /// `sourceRevision.productType` (e.g. "Watch7,1", "iPhone17,2"), nil when HealthKit has none. Provenance only (which Apple device).
+    public let sourceProductType: String?
+    /// `HKMetadataKeySyncIdentifier` / `HKMetadataKeySyncVersion`, when the writing app set them. A sync identifier is scoped to its source:
+    /// the same identifier from the SAME source is the same record (a newer version replaces an older one); across sources it means nothing.
+    public let syncIdentifier: String?
+    public let syncVersion: Int?
 
     public init(id: String, activityTypeRaw: UInt, start: Date, end: Date, durationSeconds: Double, distanceMeters: Double?, hasRoute: Bool,
-                indoor: Bool?, wasUserEntered: Bool, sourceBundleId: String, sourceName: String?, timeZoneIdentifier: String?) {
+                indoor: Bool?, wasUserEntered: Bool, sourceBundleId: String, sourceName: String?, timeZoneIdentifier: String?,
+                sourceProductType: String? = nil, syncIdentifier: String? = nil, syncVersion: Int? = nil) {
         self.id = id; self.activityTypeRaw = activityTypeRaw; self.start = start; self.end = end; self.durationSeconds = durationSeconds
         self.distanceMeters = distanceMeters; self.hasRoute = hasRoute; self.indoor = indoor; self.wasUserEntered = wasUserEntered
         self.sourceBundleId = sourceBundleId; self.sourceName = sourceName; self.timeZoneIdentifier = timeZoneIdentifier
+        self.sourceProductType = sourceProductType; self.syncIdentifier = syncIdentifier; self.syncVersion = syncVersion
     }
 }
 
@@ -82,8 +90,11 @@ public enum IngestCode {
     public static let attemptsExhausted = "ATTEMPTS_EXHAUSTED"
     public static let notInV1 = "NOT_IN_V1"
     public static let noSamples = "NO_SAMPLES"
-    /// Exclusions from the DEVICE channel (counted, contract §4.4 G-4 / OPEN-1, handoff §4.3).
+    /// Exclusions from the DEVICE channel (counted, contract §4.4 G-4, handoff §4.3). A user-entered run is the athlete's statement, never a
+    /// device measurement (SEC-INT-09 a): it is kept for the history only (`ImportedRunStatus.notForEngine`).
     public static let userEntered = "USER_ENTERED"
+    /// Policy 1 only (OPEN-1 before the Founder's decision of 2026-11-26). No longer produced; a file written under policy 1 is migrated: its
+    /// workouts excluded with this reason are read again under policy 2 (`QueueState.selectionPolicy`).
     public static let thirdPartySource = "THIRD_PARTY_SOURCE"
     public static let strengthNotDeviceChannel = "STRENGTH_NOT_DEVICE_CHANNEL"
     public static let otherNonRun = "NON_RUN_WORKOUT"
@@ -95,4 +106,12 @@ public enum IngestCode {
     /// FND-ABC-06 (b): a workout delivered by the normal rule although a REPORTED app recording overlaps it below the same-run threshold
     /// (both may count; the decision is Core + SSCTR + B). Counted once, when the workout is first sent.
     public static let partialOverlapWithReportedAppRecording = "PARTIAL_OVERLAP_WITH_REPORTED_APP_RECORDING"
+    /// Same physical run in several HealthKit workouts (OPEN-1 policy 2, `SameRunRule`): one is delivered, the others are consolidated into it.
+    public static let consolidatedSameRun = "CONSOLIDATED_SAME_RUN"
+    /// Probably the same run, not enough evidence to consolidate: none of the open records is delivered until reconciled (`SameRunRule`).
+    public static let reconcilePartialOverlap = "RECONCILE_PARTIAL_OVERLAP"
+    public static let reconcileMeasurementsDisagree = "RECONCILE_MEASUREMENTS_DISAGREE"
+    public static let reconcileSeveralRuns = "RECONCILE_SEVERAL_RUNS"
+    /// `HealthIngestStatus.waitingReason` when every queued run awaits reconciliation (nothing else is pending).
+    public static let awaitingReconciliation = "AWAITING_RECONCILIATION"
 }

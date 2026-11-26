@@ -21,10 +21,14 @@ public struct IngestCounts: Equatable, Sendable {
     /// Set-aside workouts by code (BEFORE_RECORD_START, OVERLAPS_APP_RECORDING, ATTEMPTS_EXHAUSTED, …).
     public let setAside: [String: Int]
     public let delivered: Int
-    /// Workouts never queued, by reason (USER_ENTERED, THIRD_PARTY_SOURCE, STRENGTH_NOT_DEVICE_CHANNEL, NON_RUN_WORKOUT).
+    /// Workouts never queued, by reason (USER_ENTERED, STRENGTH_NOT_DEVICE_CHANNEL, NON_RUN_WORKOUT).
     public let excluded: [String: Int]
     /// G-5 deletions, measured distance lost to an app recording.
     public let counters: [String: Int]
+    /// Workouts consolidated into another workout of the same physical run (`SameRunRule`): never sent.
+    public let consolidated: Int
+    /// Workouts awaiting reconciliation, by code (RECONCILE_PARTIAL_OVERLAP, RECONCILE_MEASUREMENTS_DISAGREE, RECONCILE_SEVERAL_RUNS).
+    public let reconcile: [String: Int]
 }
 
 /// Front B's queue: one Swift actor, one delivery in flight at a time (contract §7). It implements `DeviceQueueControl` (called by A) and
@@ -37,8 +41,6 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         public var maxConsecutiveRetryLater = 8
         public var backoffBase: TimeInterval = 2
         public var backoffCap: TimeInterval = 300
-        /// OPEN-1 policy (default: Apple sources only). Overridden only by the Simulator lab tests for the lab's own bundle id.
-        public var isDeviceSource: @Sendable (String) -> Bool = { WorkoutNormalizer.isAppleSource($0) }
         public init() {}
     }
 
@@ -181,15 +183,35 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         contextUnavailableCode = nil
         let anchor = state.anchorStartDay == ctx.recordStartDay ? state.anchor : nil
         do {
-            let batch = try await reader.readWorkouts(anchor: anchor, startingAt: Self.startOfDay(ctx.recordStartDay, offsetMinutes: ctx.timezoneOffsetMinutes))
+            let from = Self.startOfDay(ctx.recordStartDay, offsetMinutes: ctx.timezoneOffsetMinutes)
+            let batch = try await reader.readWorkouts(anchor: anchor, startingAt: from)
             guard gen == state.generation, !dead else { log.log(.init(.readCompleted, code: "DISCARDED_AFTER_PURGE")); return }
+            // Policy-1 migration: the workouts once excluded as THIRD_PARTY_SOURCE are behind the anchor. One full read, filtered to exactly
+            // those ids, brings them back; the anchored read above still carries every deletion. (No anchor: the read above was full.)
+            var rescanned: [WorkoutSnapshot] = []
+            if anchor != nil, !state.rescanIds.isEmpty {
+                let full = try await reader.readWorkouts(anchor: nil, startingAt: from)
+                guard gen == state.generation, !dead else { log.log(.init(.readCompleted, code: "DISCARDED_AFTER_PURGE")); return }
+                let want = Set(state.rescanIds)
+                rescanned = full.added.filter { want.contains($0.id) }
+            }
             healthLocked = false
             var s = state
-            let counts = merge(batch, into: &s)
+            var counts = merge(batch, into: &s)
+            if !s.rescanIds.isEmpty {
+                let deleted = Set(batch.deletedIds)
+                let again = merge(WorkoutReadBatch(added: rescanned.filter { !deleted.contains($0.id) }, deletedIds: [], anchor: batch.anchor), into: &s)
+                for (k, v) in again { counts[k, default: 0] += v }
+                counts["rescanned"] = rescanned.count
+                s.rescanIds = []
+            }
             s.anchor = batch.anchor; s.anchorStartDay = ctx.recordStartDay
             s.lastReadAt = clock(); s.lastReadError = nil; s.initialImportDone = true
             if counts["added", default: 0] > 0 { s.lastWorkoutReceivedAt = s.lastReadAt }
             try commit(s)
+            let c = Self.sameRunCounts(state)
+            if c.consolidated > 0 { counts["consolidated"] = c.consolidated }
+            if c.reconcile > 0 { counts["reconcile"] = c.reconcile }
             log.log(.init(.readCompleted, counts: counts))
         } catch let e as HealthReadError {
             if e == .protectedDataUnavailable { healthLocked = true; log.log(.init(.protectedDataUnavailable)) }
@@ -220,22 +242,27 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1
             }
             s.summaries.removeAll { $0.id == id }
+            s.enteredRuns.removeAll { $0.id == id }
+            s.rescanIds.removeAll { $0 == id }
             s.excluded.removeValue(forKey: id)
             counts["deleted", default: 0] += 1
         }
         let known = Set(s.items.map(\.activityId)).union(s.ledger.keys).union(s.excluded.keys)
         var types = Set(s.receivedTypes)
         for w in batch.added.sorted(by: { ($0.end, $0.id) < ($1.end, $1.id) }) where !known.contains(w.id) {
-            switch WorkoutNormalizer.select(w, isDeviceSource: config.isDeviceSource) {
+            switch WorkoutNormalizer.select(w) {
             case .device:
                 let a = WorkoutNormalizer.activity(w)
-                s.items.append(QueueItem(activityId: w.id, start: w.start, end: w.end, activity: a))
+                s.items.append(QueueItem(activityId: w.id, start: w.start, end: w.end, activity: a, provenance: RunProvenance(w)))
                 types.insert("RUN_WORKOUT")
                 if a.actual.distanceKm != nil { types.insert("DISTANCE") }
                 if w.hasRoute { types.insert("ROUTE_PRESENCE") }
                 counts["added", default: 0] += 1
             case .excludedRun(let reason):
                 s.excluded[w.id] = reason
+                if reason == IngestCode.userEntered {
+                    s.enteredRuns.append(StoredEnteredRun(id: w.id, start: w.start, end: w.end, durationSeconds: w.durationSeconds, provenance: RunProvenance(w)))
+                }
                 counts[reason, default: 0] += 1
             case .nonRun(let reason):
                 s.excluded[w.id] = reason
@@ -293,13 +320,28 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         }
         contextUnavailableCode = nil
         // Dedupe against the iPhone's own recordings, for every workout never sent (held ones are re-decided here: the index never notifies).
-        let open = state.items.filter { !$0.frozen && Self.isOpen($0.state) }.sorted(by: Self.byEnd)
+        // The same-run groups first (`SameRunRule`): only the run a group delivers is a candidate.
+        let grouped = Self.regrouped(state)
+        let open = grouped.items.filter { !$0.frozen && Self.isOpen($0.state) }.sorted(by: Self.byEnd)
         var decisions: [String: RecordingDedupe.Decision] = [:]
         var partialOverlap = Set<String>()
+        var copySets: [String: Set<String>] = [:]
         for item in open {
+            copySets[item.activityId] = Set(grouped.items.filter { $0.state == .sameRunAs(activityId: item.activityId) }.map(\.activityId))
             let interval = DateInterval(start: item.start, end: max(item.start, item.end))
             let recs = await recordings?.recordings(overlapping: interval) ?? []
-            decisions[item.activityId] = RecordingDedupe.decision(workout: interval, recordings: recs)
+            var d = RecordingDedupe.decision(workout: interval, recordings: recs)
+            // QRE-B-O1-01: the app recording is matched against the whole physical run, not only the copy chosen to deliver it. If any
+            // copy consolidated into this one is the same run as an app recording, that decision is the group's (in id order).
+            if d == .deliverByNormalRule {
+                let copies = grouped.items.filter { $0.state == .sameRunAs(activityId: item.activityId) }.sorted { $0.activityId < $1.activityId }
+                for m in copies {
+                    let mi = DateInterval(start: m.start, end: max(m.start, m.end))
+                    let md = RecordingDedupe.decision(workout: mi, recordings: await recordings?.recordings(overlapping: mi) ?? [])
+                    if md != .deliverByNormalRule { d = md; break }
+                }
+            }
+            decisions[item.activityId] = d
             // FND-ABC-06 (b): a REPORTED app recording that overlaps the workout below the same-run threshold. Both go on record (the
             // dedupe rule says "a different run"); B counts it so the possible double count is visible (decision: Core + SSCTR + B).
             if recs.contains(where: { $0.reportedEventId != nil && $0.interval.intersects(interval) && !RecordingDedupe.sameRun($0.interval, interval) }) {
@@ -308,7 +350,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         }
         guard gen == state.generation, !dead, state.inFlight == nil else { return nil }
 
-        var s = state
+        var s = Self.regrouped(state)
         var chosen: [Int] = []
         let order = s.items.indices.filter { Self.isOpen(s.items[$0].state) }.sorted { Self.byEnd(s.items[$0], s.items[$1]) }
         for i in order {
@@ -318,6 +360,9 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
             }
             // A workout that arrived after the dedupe queries waits for the next round (never decided without the index).
             guard let d = decisions[s.items[i].activityId] else { continue }
+            // QRE-B-O1-10: a copy joined (or left) this run while the index was awaited; the decision above did not see it. Decide again.
+            let nowCopies = Set(s.items.filter { $0.state == .sameRunAs(activityId: s.items[i].activityId) }.map(\.activityId))
+            guard nowCopies == copySets[s.items[i].activityId] else { decisions[s.items[i].activityId] = nil; pumpAgain = true; continue }
             let measured = s.items[i].activity.actual.distanceKm != nil
             switch d {
             case .holdUntilRecordingSettles(let rid):
@@ -347,6 +392,9 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         }
         guard !chosen.isEmpty else {
             if s != state { try? commit(s) }
+            // QRE-B-O1-06: this write may have made a copy the run of its group (its chosen copy was set aside or held); it was never
+            // decided in this round, so decide it now rather than at the next trigger.
+            if state.items.contains(where: { !$0.frozen && $0.state == .pending && decisions[$0.activityId] == nil }) { pumpAgain = true }
             return nil
         }
         chosen.sort { Self.byEnd(s.items[$0], s.items[$1]) }
@@ -367,7 +415,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         let day = BoundaryInstant.day(item.end, offsetMinutes: ctx.timezoneOffsetMinutes)
         let sessions = ctx.runSessions.filter { $0.day == day }
         guard sessions.count == 1 else { return nil }
-        let onDay = s.items.filter { BoundaryInstant.day($0.end, offsetMinutes: ctx.timezoneOffsetMinutes) == day }.count
+        // A workout consolidated into another one is the same run, not a second candidate (`SameRunRule`).
+        let onDay = s.items.filter { !Self.isConsolidated($0.state) && BoundaryInstant.day($0.end, offsetMinutes: ctx.timezoneOffsetMinutes) == day }.count
             + s.ledger.values.filter { BoundaryInstant.day($0.end, offsetMinutes: ctx.timezoneOffsetMinutes) == day }.count
         guard onDay == 1 else { return nil }
         let sid = sessions[0].sessionId
@@ -379,7 +428,48 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     }
 
     private static func isOpen(_ st: ItemState) -> Bool {
-        switch st { case .pending, .held: return true; case .notRecorded, .setAside: return false }
+        switch st { case .pending, .held: return true; case .notRecorded, .setAside, .sameRunAs, .reconcile: return false }
+    }
+    private static func isConsolidated(_ st: ItemState) -> Bool { if case .sameRunAs = st { return true }; return false }
+
+    /// `SameRunRule` over everything B holds: every queued workout (except set-aside ones, which are never sent) and every delivered one.
+    /// Applied on every write, so the decisions always follow the current facts (a deletion, a new copy, a delivery).
+    static func regroup(_ s: inout QueueState) {
+        var facts: [SameRunRule.Facts] = []
+        var ids = Set<String>()
+        for it in s.items {
+            // A run set aside because the athlete's reported app recording already counts it IS on record: it stays the run of its group,
+            // so its copies are consolidated into it (QRE-B-O1-01). Any other set-aside item is never sent and leaves the groups.
+            var countedByRecording = false
+            if case .setAside(let c) = it.state { guard c == RecordingDedupe.overlapsAppRecording else { continue }; countedByRecording = true }
+            ids.insert(it.activityId)
+            facts.append(.init(id: it.activityId, start: it.start, end: it.end, minutes: it.activity.actual.minutes, distanceKm: it.activity.actual.distanceKm,
+                               quality: it.activity.sourceQuality, sourceBundleId: it.provenance?.sourceBundleId ?? "",
+                               syncIdentifier: it.provenance?.syncIdentifier, syncVersion: it.provenance?.syncVersion, fixed: it.frozen || countedByRecording))
+        }
+        for (id, e) in s.ledger where !ids.contains(id) {
+            let start = e.start ?? e.activity.actual.minutes.map { e.end.addingTimeInterval(-$0 * 60) } ?? e.end
+            facts.append(.init(id: id, start: start, end: e.end, minutes: e.activity.actual.minutes, distanceKm: e.activity.actual.distanceKm,
+                               quality: e.activity.sourceQuality, sourceBundleId: e.provenance?.sourceBundleId ?? "",
+                               syncIdentifier: e.provenance?.syncIdentifier, syncVersion: e.provenance?.syncVersion, fixed: true))
+        }
+        let decisions = SameRunRule.decide(facts)
+        for i in s.items.indices where !s.items[i].frozen {
+            guard let d = decisions[s.items[i].activityId] else { continue }
+            switch s.items[i].state { case .setAside, .notRecorded: continue; default: break }
+            switch d {
+            case .deliver:
+                switch s.items[i].state { case .sameRunAs, .reconcile: s.items[i].state = .pending; default: break }
+            case .duplicateOf(let r): s.items[i].state = .sameRunAs(activityId: r)
+            case .reconcile(let c, let g): s.items[i].state = .reconcile(code: c, group: g)
+            }
+        }
+    }
+    static func regrouped(_ s: QueueState) -> QueueState { var c = s; regroup(&c); return c }
+    static func sameRunCounts(_ s: QueueState) -> (consolidated: Int, reconcile: Int) {
+        var c = 0, r = 0
+        for i in s.items { switch i.state { case .sameRunAs: c += 1; case .reconcile: r += 1; default: break } }
+        return (c, r)
     }
     private static func byEnd(_ a: QueueItem, _ b: QueueItem) -> Bool { (a.end, a.activityId) < (b.end, b.activityId) }
 
@@ -410,7 +500,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                 case .recorded, .duplicate:
                     var eventId: String?; if case .recorded(let e) = r { eventId = e }
                     s.ledger[a.activityId] = LedgerEntry(eventId: eventId, outcome: eventId == nil ? "DUPLICATE" : "RECORDED", sessionId: a.sessionId,
-                                                         digest: WorkoutNormalizer.digest(a), end: s.items[i].end, activity: a)
+                                                         digest: WorkoutNormalizer.digest(a), end: s.items[i].end, activity: a,
+                                                         start: s.items[i].start, provenance: s.items[i].provenance)
                     if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1 }
                     s.items.remove(at: i)
                 case .notRecorded(let reason):
@@ -558,14 +649,51 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
                                       queued: 0, waitingReason: storeUnreadable ? "QUEUE_UNREADABLE" : IngestCode.protectedDataUnavailable, setAside: 0, receivedTypes: [])
         }
         let setAside = state.items.filter { if case .setAside = $0.state { return true }; return false }.count
+        // A consolidated workout is done (its run is the other one); one awaiting reconciliation is still queued, never "imported".
+        let same = Self.sameRunCounts(state)
+        let queued = state.items.count - setAside - same.consolidated
         let waiting = (purgePending != nil || writeFailed ? "QUEUE_WRITE_FAILED" : nil) ?? state.block?.code
             ?? (hostUnavailable ? HostCode.hostUnavailable : nil) ?? contextUnavailableCode
             ?? (state.nextRetryAt != nil ? lastRetryCode : nil)
+            ?? (same.reconcile > 0 && same.reconcile == queued ? IngestCode.awaitingReconciliation : nil)
         return HealthIngestStatus(authorization: state.authorizationRequested ? .requested : .notRequested, disabledInApp: !state.enabled,
                                   lastReadAt: state.lastReadAt, lastWorkoutReceivedAt: state.lastWorkoutReceivedAt,
                                   initialImportInProgress: reading && !state.initialImportDone,
                                   lastReadError: state.lastReadError ?? (healthLocked ? IngestCode.protectedDataUnavailable : nil),
-                                  queued: state.items.count - setAside, waitingReason: waiting, setAside: setAside, receivedTypes: state.receivedTypes)
+                                  queued: queued, waitingReason: waiting, setAside: setAside, receivedTypes: state.receivedTypes)
+    }
+
+    /// Every run B read from Apple Health since `since` (by end), with its provenance and where it stands (local adapter for C, CCP-B-05).
+    /// Values are what HealthKit stated; nothing missing is filled in.
+    public func importedRuns(since: Date) async -> [ImportedRunRecord] {
+        guard ensureLoaded(), !storeUnreadable else { return [] }
+        var out: [ImportedRunRecord] = []
+        func record(_ id: String, _ start: Date, _ end: Date, _ p: RunProvenance?, _ a: DeviceActivity?, _ status: ImportedRunStatus, code: String? = nil,
+                    sameRunAs: String? = nil, group: String? = nil, minutes: Double? = nil, sessionId: String? = nil) -> ImportedRunRecord {
+            ImportedRunRecord(id: id, start: start, end: end, origin: p?.origin ?? .unknown, sourceName: p?.sourceName, status: status, statusCode: code,
+                              sameRunAs: sameRunAs, reconciliationGroup: group, minutes: a?.actual.minutes ?? minutes, distanceKm: a?.actual.distanceKm,
+                              hasRoute: p?.hasRoute ?? false, completeness: a?.sourceQuality, sessionId: sessionId)
+        }
+        for it in state.items where it.end >= since {
+            let sid = it.frozen ? it.activity.sessionId : nil
+            switch it.state {
+            case .pending, .held: out.append(record(it.activityId, it.start, it.end, it.provenance, it.activity, .awaitingDelivery, sessionId: sid))
+            case .notRecorded(let r): out.append(record(it.activityId, it.start, it.end, it.provenance, it.activity, .awaitingDelivery, code: r, sessionId: sid))
+            case .setAside(let c): out.append(record(it.activityId, it.start, it.end, it.provenance, it.activity, .setAside, code: c, sessionId: sid))
+            case .sameRunAs(let r): out.append(record(it.activityId, it.start, it.end, it.provenance, it.activity, .consolidatedDuplicate,
+                                                      code: IngestCode.consolidatedSameRun, sameRunAs: r))
+            case .reconcile(let c, let g): out.append(record(it.activityId, it.start, it.end, it.provenance, it.activity, .awaitingReconciliation, code: c, group: g))
+            }
+        }
+        for (id, e) in state.ledger where e.end >= since {
+            let start = e.start ?? e.activity.actual.minutes.map { e.end.addingTimeInterval(-$0 * 60) } ?? e.end
+            out.append(record(id, start, e.end, e.provenance, e.activity, .counted, code: e.outcome, sessionId: e.sessionId))
+        }
+        for r in state.enteredRuns where r.end >= since {
+            out.append(record(r.id, r.start, r.end, r.provenance, nil, .notForEngine, code: IngestCode.userEntered,
+                              minutes: WorkoutNormalizer.minutes(r.durationSeconds)))
+        }
+        return out.sorted { ($0.start, $0.id) < ($1.start, $1.id) }
     }
 
     public func importedNonRunWorkouts(since: Date) async -> [ImportedWorkoutSummary] {
@@ -575,19 +703,22 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     public func counts() async -> IngestCounts {
         _ = ensureLoaded()
-        var setAside: [String: Int] = [:], pending = 0, notRecorded = 0, held = 0
+        var setAside: [String: Int] = [:], reconcile: [String: Int] = [:], pending = 0, notRecorded = 0, held = 0, consolidated = 0
         for i in state.items {
             switch i.state {
             case .pending: pending += 1
             case .notRecorded: notRecorded += 1
             case .held: held += 1
             case .setAside(let c): setAside[c, default: 0] += 1
+            case .sameRunAs: consolidated += 1
+            case .reconcile(let c, _): reconcile[c, default: 0] += 1
             }
         }
         var excluded: [String: Int] = [:]
         for r in state.excluded.values { excluded[r, default: 0] += 1 }
         return IngestCounts(pending: pending, notRecorded: notRecorded, held: held, inFlight: state.inFlight?.activities.count ?? 0,
-                            setAside: setAside, delivered: state.ledger.count, excluded: excluded, counters: state.counters)
+                            setAside: setAside, delivered: state.ledger.count, excluded: excluded, counters: state.counters,
+                            consolidated: consolidated, reconcile: reconcile)
     }
 
     // MARK: - Persistence
@@ -597,8 +728,17 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         if storeUnreadable { return false }
         do {
             if let d = try store.load() {
-                guard let s = try? JSONDecoder().decode(QueueState.self, from: d), s.schema == QueueState.schema else {
+                guard var s = try? JSONDecoder().decode(QueueState.self, from: d), s.schema == QueueState.schema else {
                     storeUnreadable = true; log.log(.init(.readFailed, code: "QUEUE_UNREADABLE")); return false
+                }
+                if s.selectionPolicy < QueueState.currentSelectionPolicy {
+                    // OPEN-1 policy 1 → 2: a run once excluded only for its source is read again (it may now be delivered). Written with the
+                    // next commit; until then the migration is simply done again at the next load (idempotent).
+                    let ids = s.excluded.filter { $0.value == IngestCode.thirdPartySource }.map(\.key)
+                    for id in ids { s.excluded.removeValue(forKey: id) }
+                    s.rescanIds = Array(Set(s.rescanIds).union(ids)).sorted()
+                    s.selectionPolicy = QueueState.currentSelectionPolicy
+                    log.log(.init(.policyMigrated, counts: ["rescan": ids.count]))
                 }
                 state = s
             } else { state = QueueState() }
@@ -612,6 +752,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     }
 
     private func commit(_ s: QueueState) throws {
+        var s = s
+        Self.regroup(&s)
         let e = JSONEncoder(); e.outputFormatting = [.sortedKeys]
         try store.save(try e.encode(s))
         state = s

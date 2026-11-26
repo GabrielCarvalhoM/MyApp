@@ -2,11 +2,16 @@ import Foundation
 import IntegrationContracts
 
 /// Which channel, if any, a workout goes to (handoff §4 item 3). Exactly one answer per workout, decided only from what HealthKit states.
+///
+/// OPEN-1, policy 2 (Founder decision 2026-11-26, `audits/v1-ios-healthkit-2026-11-24/OPEN1_THIRD_PARTY_POLICY.md`): the app that wrote a
+/// run to Apple Health (Apple Watch, iPhone, Garmin Connect, Strava, COROS, Polar, any other) is provenance, never a reason to exclude it.
+/// The source never changes the selection, the normalization or `sourceQuality`; it is kept in B's own file and shown by C. The same
+/// physical run written by several apps is counted once (`SameRunRule`).
 public enum WorkoutSelection: Equatable, Sendable {
-    /// A running workout recorded by an Apple source: normalized for the DEVICE channel.
+    /// A measured running workout (any source): normalized for the DEVICE channel.
     case device
-    /// A running workout B does not send (counted by reason): `USER_ENTERED` (`HKMetadataKeyWasUserEntered`, the athlete's statement) or
-    /// `THIRD_PARTY_SOURCE` (OPEN-1: another app's write is outside the DEVICE channel until the Founder + Security decide).
+    /// A running workout B does not send (counted by reason): `USER_ENTERED` (`HKMetadataKeyWasUserEntered`, the athlete's statement, from
+    /// any app: SEC-INT-09 a). It stays in the history, marked as the athlete's entry, never as a measurement.
     case excludedRun(reason: String)
     /// Not a run: history only (`ImportedWorkoutSummary`, GAP-18), never to the engine (G-4). `reason` is the counter it adds to.
     case nonRun(reason: String)
@@ -14,17 +19,15 @@ public enum WorkoutSelection: Equatable, Sendable {
 
 /// Normalization rules (handoff §4 item 4). Deterministic: the same snapshot always gives the same bytes. Provisional rules are marked.
 public enum WorkoutNormalizer {
-    /// OPEN-1: only Apple sources (`com.apple.health` prefix: the Apple Watch and iPhone workout recorders) enter the DEVICE channel.
+    /// Apple's own workout recorders (Apple Watch, iPhone) write with this bundle prefix. Provenance only (origin, heart-rate sensor class):
+    /// since OPEN-1 policy 2 it selects nothing.
     public static let appleSourcePrefix = "com.apple.health"
 
     public static func isAppleSource(_ bundleId: String) -> Bool { bundleId.hasPrefix(appleSourcePrefix) }
 
-    /// `isDeviceSource` is the OPEN-1 policy; the default is Apple sources only. Tests in the Simulator, where the only writer is the lab app
-    /// itself, pass the lab's own bundle id explicitly; production never overrides it.
-    public static func select(_ w: WorkoutSnapshot, isDeviceSource: (String) -> Bool = isAppleSource) -> WorkoutSelection {
+    public static func select(_ w: WorkoutSnapshot) -> WorkoutSelection {
         if w.activityTypeRaw == WorkoutKind.running {
             if w.wasUserEntered { return .excludedRun(reason: IngestCode.userEntered) }
-            if !isDeviceSource(w.sourceBundleId) { return .excludedRun(reason: IngestCode.thirdPartySource) }
             return .device
         }
         if w.activityTypeRaw == WorkoutKind.traditionalStrengthTraining || w.activityTypeRaw == WorkoutKind.functionalStrengthTraining {

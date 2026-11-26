@@ -7,7 +7,7 @@ import IntegrationContracts
 /// Device probes run INSIDE the installed lab app (no test-runner reinstall between the Founder's answer and the read). Each writes a
 /// counts-and-codes-only report to the lab's own Documents folder, copied out with `devicectl device copy from`. Contract §9: nothing is
 /// written to Apple Health, heart rate is never requested on a device, nothing reaches CoachingCore (the host double answers WAITING), the
-/// queue lives in a temporary folder and is purged at the end, and no value, date or source name is ever written.
+/// queue lives in a temporary folder and is purged at the end, and no value, date, source name or origin class is ever written.
 enum DeviceProbe {
     /// The host double: never forwards anything; every workout stays queued (and is purged at the end).
     final class NoHost: DeviceActivitySink, @unchecked Sendable {
@@ -39,7 +39,21 @@ enum DeviceProbe {
                 "\(tag) receivedTypes=\(st.receivedTypes.joined(separator: ","))",
                 "\(tag) queued=\(st.queued) pending=\(c.pending) held=\(c.held) setAside=\(c.setAside.count) deliveriesToDouble=\(sink.deliveries)",
                 "\(tag) excluded=\(c.excluded.sorted { $0.key < $1.key }.map { "\($0.key):\($0.value)" }.joined(separator: ","))",
-                "\(tag) nonRunSummaries=\(await ing.importedNonRunWorkouts(since: .distantPast).count)"] + log.all.map { "\(tag) log \($0)" }
+                "\(tag) nonRunSummaries=\(await ing.importedNonRunWorkouts(since: .distantPast).count)"]
+            + runLines(await ing.importedRuns(since: .distantPast), c, tag: tag) + log.all.map { "\(tag) log \($0)" }
+    }
+
+    /// OPEN-1 policy 2 evidence, counts only: how many runs are DEVICE candidates now, how the same-run rule grouped them, and whether each
+    /// kept a provenance. Never which app or device (that would be a personal source), never a value or a date.
+    static func runLines(_ runs: [ImportedRunRecord], _ c: IngestCounts, tag: String) -> [String] {
+        var byStatus: [String: Int] = [:]
+        for r in runs { byStatus[r.status.rawValue, default: 0] += 1 }
+        let measured = runs.filter { $0.status != .notForEngine }
+        return ["\(tag) runsRead=\(runs.count) eligibleForEngine=\(measured.filter { $0.status != .setAside }.count)",
+                "\(tag) runStatus=\(byStatus.sorted { $0.key < $1.key }.map { "\($0.key):\($0.value)" }.joined(separator: ","))",
+                "\(tag) consolidated=\(c.consolidated) reconcile=\(c.reconcile.values.reduce(0, +))",
+                "\(tag) provenancePreserved=\(runs.filter { $0.origin != .unknown }.count)/\(runs.count)",
+                "\(tag) partialData=\(measured.filter { $0.completeness == .wearablePartial }.count)/\(measured.count)"]
     }
 
     /// `-labDeviceProbe`: authorization state, one anchored read of the last 28 days, observer + background-delivery registration.

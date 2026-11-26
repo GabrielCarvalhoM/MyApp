@@ -6,7 +6,14 @@ import IntegrationContracts
 /// without the entries it read (they are in the same write). Erased by `purge`.
 struct QueueState: Codable, Equatable {
     static let schema = "RM-HKI-QUEUE-1"
+    /// OPEN-1 selection policy: 1 = Apple sources only (before 2026-11-26); 2 = every measured run, the same run counted once. A file
+    /// without the field was written under policy 1 (decoded as 1, then migrated by the ingestor).
+    static let currentSelectionPolicy = 2
     var schema = QueueState.schema
+    var selectionPolicy = QueueState.currentSelectionPolicy
+    /// Policy-1 migration: workouts excluded as THIRD_PARTY_SOURCE, to be read once more (a full read filtered to exactly these ids, next to
+    /// the normal anchored read, so no deletion is missed). Emptied by the first such read that succeeds.
+    var rescanIds: [String] = []
     /// Advanced first by every `purge`; an answer to a delivery started under another generation is discarded (G07).
     var generation = 0
     var enabled = true
@@ -23,6 +30,8 @@ struct QueueState: Codable, Equatable {
     /// Counters with no workout to key them by (G-5 deletions, lost measured distance).
     var counters: [String: Int] = [:]
     var summaries: [StoredSummary] = []
+    /// User-entered runs, for the history only (never delivered: the athlete's statement, SEC-INT-09 a).
+    var enteredRuns: [StoredEnteredRun] = []
     var lastReadAt: Date?
     var lastWorkoutReceivedAt: Date?
     var lastReadError: String?
@@ -45,6 +54,8 @@ struct QueueItem: Codable, Equatable {
     var adapterBugStrikes = 0
     /// Deleted in Apple Health while its delivery was in flight: settled when the answer arrives.
     var deletedWhileInFlight = false
+    /// What HealthKit said about where the run came from (nil only in a file written before policy 2).
+    var provenance: RunProvenance?
 }
 
 enum ItemState: Codable, Equatable {
@@ -55,6 +66,11 @@ enum ItemState: Codable, Equatable {
     case held(recordingId: String)
     /// Not sent again (unless HealthKit's sample changes, which for HealthKit is a new UUID).
     case setAside(code: String)
+    /// `SameRunRule`: another workout of the same physical run is the one delivered. Re-decided on every write (if that one disappears
+    /// before it is sent, this one may become the run); never sent while it lasts.
+    case sameRunAs(activityId: String)
+    /// `SameRunRule`: probably the same run as other workouts, not enough evidence. Never sent while it lasts; re-decided on every write.
+    case reconcile(code: String, group: String)
 }
 
 struct LedgerEntry: Codable, Equatable {
@@ -66,6 +82,9 @@ struct LedgerEntry: Codable, Equatable {
     let end: Date
     /// The bytes first delivered (a re-send would reuse them; V1 sends none after delivery).
     let activity: DeviceActivity
+    /// nil only in a file written before policy 2 (then `end − minutes`, or `end`, stands in for it in `SameRunRule`).
+    var start: Date?
+    var provenance: RunProvenance?
 }
 
 struct InFlight: Codable, Equatable {
@@ -98,6 +117,15 @@ struct StoredSummary: Codable, Equatable {
     }
 }
 
+/// A user-entered run, kept for the history only: the athlete's entry, not a measurement (no distance is kept).
+struct StoredEnteredRun: Codable, Equatable {
+    let id: String
+    let start: Date
+    let end: Date
+    let durationSeconds: Double
+    let provenance: RunProvenance
+}
+
 // QRE-B-10: decoding takes every field's default when it is absent, so a field added by a later version never makes an existing queue file
 // unreadable (the schema string changes only for an incompatible layout, and then the file fails closed).
 extension QueueState {
@@ -105,6 +133,9 @@ extension QueueState {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         let d = QueueState()
         schema = try c.decodeIfPresent(String.self, forKey: .schema) ?? ""
+        selectionPolicy = try c.decodeIfPresent(Int.self, forKey: .selectionPolicy) ?? 1
+        rescanIds = try c.decodeIfPresent([String].self, forKey: .rescanIds) ?? []
+        enteredRuns = try c.decodeIfPresent([StoredEnteredRun].self, forKey: .enteredRuns) ?? []
         generation = try c.decodeIfPresent(Int.self, forKey: .generation) ?? d.generation
         enabled = try c.decodeIfPresent(Bool.self, forKey: .enabled) ?? d.enabled
         authorizationRequested = try c.decodeIfPresent(Bool.self, forKey: .authorizationRequested) ?? d.authorizationRequested
@@ -139,5 +170,6 @@ extension QueueItem {
         attempts = try c.decodeIfPresent(Int.self, forKey: .attempts) ?? 0
         adapterBugStrikes = try c.decodeIfPresent(Int.self, forKey: .adapterBugStrikes) ?? 0
         deletedWhileInFlight = try c.decodeIfPresent(Bool.self, forKey: .deletedWhileInFlight) ?? false
+        provenance = try c.decodeIfPresent(RunProvenance.self, forKey: .provenance)
     }
 }

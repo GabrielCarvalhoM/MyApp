@@ -56,8 +56,10 @@ final class NormalizationTests: XCTestCase {
     func testExclusionsCarryTheirReason() {
         let end = Self.end
         XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, userEntered: true)), .excludedRun(reason: "USER_ENTERED"))
-        XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, source: "com.strava.stravaride")), .excludedRun(reason: "THIRD_PARTY_SOURCE"))
-        XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, source: "com.garmin.connect.mobile")), .excludedRun(reason: "THIRD_PARTY_SOURCE"))
+        // OPEN-1 policy 2: another app's measured run is a run like any other.
+        XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, source: "com.strava.stravaride")), .device)
+        XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, source: "com.garmin.connect.mobile")), .device)
+        XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, userEntered: true, source: "com.garmin.connect.mobile")), .excludedRun(reason: "USER_ENTERED"))
         XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, type: WorkoutKind.traditionalStrengthTraining)), .nonRun(reason: "STRENGTH_NOT_DEVICE_CHANNEL"))
         XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, type: WorkoutKind.functionalStrengthTraining)), .nonRun(reason: "STRENGTH_NOT_DEVICE_CHANNEL"))
         XCTAssertEqual(WorkoutNormalizer.select(workout("x", end: end, type: 52)), .nonRun(reason: "NON_RUN_WORKOUT"), "walking is not a run")

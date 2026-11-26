@@ -8,7 +8,8 @@ import os
 public struct IngestLogEvent: Equatable, Sendable, CustomStringConvertible {
     public enum Name: String, Sendable {
         case started, readCompleted, readFailed, enqueued, deliverySent, deliveryAnswered, deliveryDiscardedAfterPurge, purged, enabledChanged,
-             conditionsChanged, protectedDataUnavailable, protectedDataAvailable, adapterBug, observerFired, authorizationRequested, backgroundDelivery
+             conditionsChanged, protectedDataUnavailable, protectedDataAvailable, adapterBug, observerFired, authorizationRequested, backgroundDelivery,
+             policyMigrated
     }
     public let name: Name
     public let counts: [String: Int]

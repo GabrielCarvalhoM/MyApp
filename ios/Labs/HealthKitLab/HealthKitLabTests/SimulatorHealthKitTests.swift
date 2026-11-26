@@ -42,10 +42,9 @@ final class SimulatorHealthKitTests: XCTestCase {
         let now = Date()
         let start = now.addingTimeInterval(-36 * 3600)
         let sink = LabSink(recordStartDay: Lab.day(now.addingTimeInterval(-3 * 86_400)))
-        var cfg = HealthKitIngestor.Configuration(); let lab = self.lab
-        cfg.isDeviceSource = { $0 == lab } // the Simulator's only writer is the lab itself (production: Apple sources only, OPEN-1)
+        // The Simulator's only writer is this lab app: a third-party source, delivered like any other (OPEN-1 policy 2, production default).
         let log = LabLog()
-        let ing = HealthKitIngestor(reader: HealthKitReader(store: hk), sink: sink, recordings: nil, store: Lab.tmpStore(), log: log, configuration: cfg)
+        let ing = HealthKitIngestor(reader: HealthKitReader(store: hk), sink: sink, recordings: nil, store: Lab.tmpStore(), log: log)
 
         let r1 = try await save(.running, start: start, minutes: 30, meters: 5000, metadata: [HKMetadataKeyTimeZone: "America/Sao_Paulo"])
         let r2 = try await save(.running, start: start.addingTimeInterval(3 * 3600), minutes: 25, meters: 4000, metadata: [HKMetadataKeyIndoorWorkout: true])
@@ -64,6 +63,9 @@ final class SimulatorHealthKitTests: XCTestCase {
         XCTAssertEqual(sink.sent.count, 2, "strength and user-entered never reach the DEVICE channel")
         var c = await ing.counts()
         XCTAssertEqual(c.excluded, ["STRENGTH_NOT_DEVICE_CHANNEL": 1, "USER_ENTERED": 1]); XCTAssertEqual(c.delivered, 2)
+        let runs = await ing.importedRuns(since: .distantPast)
+        XCTAssertEqual(runs.filter { $0.status == .counted }.count, 2); XCTAssertTrue(runs.allSatisfy { $0.origin == .otherApp }, "the lab is not an Apple source")
+        XCTAssertEqual(runs.filter { $0.status == .notForEngine }.map(\.statusCode), ["USER_ENTERED"])
         let summaries = await ing.importedNonRunWorkouts(since: .distantPast)
         XCTAssertEqual(summaries.map(\.id), [s1.uuid.uuidString]); XCTAssertEqual(summaries.first?.durationSeconds, 2700)
         let st = await ing.status()
@@ -89,6 +91,39 @@ final class SimulatorHealthKitTests: XCTestCase {
         try await ing.purge(.accountErased)
         try await ing.setEnabled(false)
         for l in log.lines { XCTAssertFalse(l.contains("5000") || l.contains("Sao_Paulo") || l.contains(r1.uuid.uuidString), l) }
+    }
+
+    /// OPEN-1 policy 2 against REAL HealthKit: the sync identifier and version are read from the workout's metadata, a newer version of a
+    /// delivered record is not a second run, and an overlapping copy of a delivered run is consolidated into it. Counts only.
+    func testSyncedRecordUpdateAndOverlappingCopyCountOnce() async throws {
+        let now = Date()
+        let start = now.addingTimeInterval(-10 * 3600)
+        let sink = LabSink(recordStartDay: Lab.day(now.addingTimeInterval(-3 * 86_400)))
+        let log = LabLog()
+        let ing = HealthKitIngestor(reader: HealthKitReader(store: hk), sink: sink, recordings: nil, store: Lab.tmpStore(), log: log)
+        let v1 = try await save(.running, start: start, minutes: 30, meters: 5000,
+                                metadata: [HKMetadataKeySyncIdentifier: "lab-sync-1", HKMetadataKeySyncVersion: 1])
+        await ing.start()
+        let first = await Lab.wait(20) { sink.sent.count == 1 }
+        XCTAssertTrue(first, "\(log.lines)")
+        XCTAssertEqual(sink.sent.first?.activityId, v1.uuid.uuidString)
+        // Another copy of the same run (no sync identifier): consolidated into the delivered one, never sent.
+        try await save(.running, start: start.addingTimeInterval(10), minutes: 30, meters: 4990)
+        let copy = await Lab.wait(30) { await ing.counts().consolidated == 1 }
+        XCTAssertTrue(copy, "\(log.lines)")
+        // The app writes version 2 of its record (same sync identifier): HealthKit replaces version 1, B sends nothing new (G-5).
+        try await save(.running, start: start.addingTimeInterval(60), minutes: 29, meters: 4950,
+                       metadata: [HKMetadataKeySyncIdentifier: "lab-sync-1", HKMetadataKeySyncVersion: 2])
+        let update = await Lab.wait(30) { await ing.counts().consolidated == 2 }
+        XCTAssertTrue(update, "\(log.lines)")
+        let c = await ing.counts()
+        XCTAssertEqual(sink.sent.count, 1, "one physical run, one delivery"); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(c.reconcile, [:])
+        XCTAssertEqual(c.counters["DELETED_AFTER_DELIVERY"], 1, "HealthKit replaced version 1 (sync identifier semantics): \(c.counters)")
+        let runs = await ing.importedRuns(since: .distantPast)
+        XCTAssertEqual(runs.map(\.status).filter { $0 == .consolidatedDuplicate }.count, 2)
+        XCTAssertTrue(runs.filter { $0.status == .consolidatedDuplicate }.allSatisfy { $0.sameRunAs == v1.uuid.uuidString })
+        try await ing.purge(.accountErased); try await ing.setEnabled(false)
+        for l in log.lines { XCTAssertFalse(l.contains("5000") || l.contains("lab-sync") || l.contains(v1.uuid.uuidString), l) }
     }
 
     func testHeartRateSeriesMappingFromSimulatorSamples() async throws {
