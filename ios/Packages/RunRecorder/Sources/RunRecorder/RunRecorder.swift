@@ -33,11 +33,18 @@ public final class RunRecorder {
         source.onFix = { [weak self] f in MainActor.assumeIsolated { self?.receive(f) } }
     }
 
-    /// After a process death: the recording in progress comes back from the temporary file (running time keeps counting from `segmentStart`).
+    /// After a process death: the recording comes back from the temporary file. A running one keeps counting from `segmentStart`; a finished
+    /// one that was not closed (its report not done) comes back too, so the report is never silently lost.
     public func resumeIfNeeded() {
-        guard state == nil, let saved = store.loadActive(), saved.phase != .finished else { return }
+        guard state == nil, let saved = store.loadActive() else { return }
         state = saved
         if saved.phase == .running { source.start() }
+    }
+
+    /// The finished recording in memory (e.g. restored after a process death on the report screen).
+    public var finishedRecording: FinishedRecording? {
+        guard let s = state, s.phase == .finished else { return nil }
+        return FinishedRecording(ref: ref(s), sessionDate: s.sessionDate, movingMinutes: s.accumulated / 60, local: local(s))
     }
 
     public func start(sessionId: String?, sessionDate: String?, steps: [RecorderStep]) {
@@ -58,6 +65,7 @@ public final class RunRecorder {
         guard var s = state, s.phase == .paused else { return }
         s.segmentStart = clock.now(); s.phase = .running; s.segment += 1
         state = s; persist()
+        source.start()  // idempotent; needed after a process death while paused
     }
 
     /// The athlete moves on from a distance step when no usable distance exists (GPS denied, no signal): never converted from time.
@@ -76,7 +84,7 @@ public final class RunRecorder {
         source.stop()
         persist()
         store.index(ref(s))
-        return FinishedRecording(ref: ref(s), movingMinutes: s.accumulated / 60, local: local(s))
+        return FinishedRecording(ref: ref(s), sessionDate: s.sessionDate, movingMinutes: s.accumulated / 60, local: local(s))
     }
 
     /// The host accepted the athlete's report of this recording: B may now link a matching watch workout to it.

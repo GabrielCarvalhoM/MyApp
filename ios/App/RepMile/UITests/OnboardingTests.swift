@@ -28,7 +28,10 @@ final class OnboardingUITests: XCTestCase {
     private func reachCare(_ app: XCUIApplication) {
         XCTAssertTrue(el(app, "screen-onboarding").waitForExistence(timeout: 10))
         attach(app, "10 — boas-vindas")
-        for _ in 0..<7 { app.buttons["ob-next"].tap() }
+        app.buttons["ob-next"].tap()
+        XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no age typed: cannot continue (never defaulted)")
+        let age = app.textFields["ob-age"]; age.tap(); age.typeText("32")
+        for _ in 0..<6 { app.buttons["ob-next"].tap() }
         XCTAssertTrue(app.staticTexts["Cuidados"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no choice: cannot continue")
         attach(app, "10 — Cuidados sem escolha (836:3299)")

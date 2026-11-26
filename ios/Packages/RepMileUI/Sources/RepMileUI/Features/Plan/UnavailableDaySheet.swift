@@ -62,6 +62,7 @@ struct UnavailableDaySheet: View {
         phase = .sending
         let outcome = await model.writer.submit(ReviewRequest(.unavailableDays([session.date]), eligibility: nil))
         if outcome.answer.ok, let id = outcome.answer.view?.pending?.decisionId ?? outcome.answer.decisionId {
+            await model.load()  // the proposal's run sessions are read after the write, never the pre-write presentation
             phase = .proposed(decisionId: id)
         } else {
             phase = .failed(outcome.answer.error?.code.raw ?? "UNKNOWN")

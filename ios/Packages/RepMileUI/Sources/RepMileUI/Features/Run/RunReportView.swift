@@ -9,15 +9,19 @@ import SwiftUI
 struct RunReportView: View {
     @Environment(AppModel.self) private var model
     @Environment(RunRecorder.self) private var recorder
+    /// For the title only. Whether the report is planned comes from the recording itself (QRE: a resumed recording whose session is no
+    /// longer in the loaded week is still reported as that planned session, never as an unplanned run).
     let session: PlannedSession?
     let recording: FinishedRecording
     var close: () -> Void
+    private var planned: Bool { recording.ref.sessionId != nil }
+    @State private var confirmLeave = false
 
     @State private var completed = true
     @State private var minutes: Double = 0
     @State private var rpe: Double?
     @State private var stopped = false
-    @State private var stopReason: StopReason = .fatigue
+    @State private var stopReason: StopReason?
     @State private var effort: EffortResponse = .unknown
     @State private var unusual: Bool?
     @State private var sending = false
@@ -30,7 +34,7 @@ struct RunReportView: View {
             VStack(alignment: .leading, spacing: 20) {
                 Text(L.t("report.title")).rmText(.manchete).padding(.top, 16)
                 LocalSummary(local: recording.local, movingMinutes: recording.movingMinutes)
-                if session != nil {
+                if planned {
                     Picker("", selection: $completed) {
                         Text(L.t("report.completed")).tag(true)
                         Text(L.t("report.partial")).tag(false)
@@ -59,7 +63,7 @@ struct RunReportView: View {
                         }
                     }
                 }
-                if session != nil {
+                if planned {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(L.t("report.effort")).rmText(.detalhe, RM.Palette.textoSecundario)
                         Picker("", selection: $effort) {
@@ -71,7 +75,8 @@ struct RunReportView: View {
                         .tint(RM.Palette.corrida).accessibilityIdentifier("report-stopped")
                     if stopped {
                         Picker(L.t("report.stopReason"), selection: $stopReason) {
-                            ForEach(StopReason.allCases, id: \.self) { Text(L.t("stop." + $0.rawValue)).tag($0) }
+                            Text(L.t("report.stopReason")).tag(StopReason?.none)
+                            ForEach(StopReason.allCases, id: \.self) { Text(L.t("stop." + $0.rawValue)).tag(Optional($0)) }
                         }
                         .pickerStyle(.menu).tint(RM.Palette.textoPrimario)
                         .accessibilityIdentifier("report-stop-reason")
@@ -80,15 +85,25 @@ struct RunReportView: View {
                     unusualQuestion
                 }
                 resultView
-                PrimaryActionButton(result == .notKept ? L.t("report.resend") : L.t("report.save"), icon: .check, enabled: canSend) { Task { await send() } }
-                    .accessibilityIdentifier("report-save")
+                if result == .saved || result == .screenRequired {
+                    PrimaryActionButton(L.t("report.done"), icon: .check) { close() }.accessibilityIdentifier("report-done")
+                } else {
+                    PrimaryActionButton(result == .notKept ? L.t("report.resend") : L.t("report.save"), icon: .check, enabled: canSend) { Task { await send() } }
+                        .accessibilityIdentifier("report-save")
+                    Button { confirmLeave = true } label: { Text(L.t("report.leave")).rmText(.rotulo, RM.Palette.textoSecundario).frame(maxWidth: .infinity) }
+                        .accessibilityIdentifier("report-leave")
+                }
             }
             .padding(.horizontal, RM.Space.gutter)
             .padding(.bottom, 40)
         }
         .scrollIndicators(.hidden)
         .onAppear { minutes = max(1, recording.movingMinutes.rounded()) }
-        .sheet(isPresented: $showSigns, onDismiss: close) { NotFeeling100Flow(requireEligibility: true) }
+        // Closing "Não estou 100%" returns to the report (still to save or resend); it never closes the run screen.
+        .sheet(isPresented: $showSigns) { NotFeeling100Flow(requireEligibility: true) }
+        .confirmationDialog(L.t("report.leave.confirm"), isPresented: $confirmLeave, titleVisibility: .visible) {
+            Button(L.t("report.leave"), role: .destructive) { recorder.discard(); close() }
+        }
         .accessibilityElement(children: .contain).accessibilityIdentifier("screen-report")
     }
 
@@ -97,7 +112,8 @@ struct RunReportView: View {
             Text(L.t("report.symptomQuestion")).rmText(.subtitulo)
             HStack(spacing: 8) {
                 choice(L.t("report.symptomNo"), unusual == false, id: "report-unusual-no") { unusual = false }
-                choice(L.t("report.symptomYes"), unusual == true, id: "report-unusual-yes") { unusual = true }
+                // "Sim" opens the flow at once (SSCTR-ABC-S1); the report is saved apart.
+                choice(L.t("report.symptomYes"), unusual == true, id: "report-unusual-yes") { unusual = true; showSigns = true }
             }
             if unusual == nil { Text(L.t("report.symptomRequired")).rmText(.detalhe, RM.Palette.textoSecundario) }
         }
@@ -128,7 +144,7 @@ struct RunReportView: View {
         }
     }
 
-    private var canSend: Bool { !sending && result != .saved && result != .screenRequired && (session != nil || unusual != nil) }
+    private var canSend: Bool { !sending && result != .saved && result != .screenRequired && (planned || unusual != nil) && (!stopped || stopReason != nil) }
 
     /// The end of the recording with its offset (BoundaryInstant format).
     static func instant(_ d: Date) -> String {
@@ -137,18 +153,19 @@ struct RunReportView: View {
     }
 
     func observation() -> AthleteObservation {
-        Self.makeObservation(session: session, today: model.plan?.today ?? Fmt.dayString(Date()), end: recording.ref.end, completed: completed,
+        Self.makeObservation(planned: recording.ref.sessionId.flatMap { id in recording.sessionDate.map { (id, $0) } },
+                             today: model.plan?.today ?? Fmt.deviceDay(Date()), end: recording.ref.end, completed: completed,
                              minutes: minutes, rpe: rpe, stop: stopped ? stopReason : nil, effort: effort)
     }
 
     /// The report the form produces: only the athlete's statements. There is no parameter for a distance: the iPhone's measurement cannot
     /// reach a report by construction (GAP-16).
-    static func makeObservation(session: PlannedSession?, today: String, end: Date, completed: Bool, minutes: Double, rpe: Double?,
+    static func makeObservation(planned: (sessionId: String, date: String)?, today: String, end: Date, completed: Bool, minutes: Double, rpe: Double?,
                                 stop: StopReason?, effort: EffortResponse) -> AthleteObservation {
         let at = instant(end)
-        let response = SessionResponse(performance: .unknown, recovery: .unknown, effort: session == nil ? .unknown : effort, nextDayFunction: .unknown)
-        if let s = session {
-            return .plannedRun(sessionId: s.id, occurrenceDate: s.date, observedAt: at,
+        let response = SessionResponse(performance: .unknown, recovery: .unknown, effort: planned == nil ? .unknown : effort, nextDayFunction: .unknown)
+        if let s = planned {
+            return .plannedRun(sessionId: s.sessionId, occurrenceDate: s.date, observedAt: at,
                                actual: PlannedRunActual(completed: completed && stop == nil, minutes: minutes, rpe: rpe, stop: stop.map(RunStop.init(reason:))),
                                response: response)
         }
@@ -158,18 +175,12 @@ struct RunReportView: View {
     private func send() async {
         sending = true; defer { sending = false }
         let outcome = await model.writer.submit(ReviewRequest(.sessionReports([observation()]), eligibility: nil))
-        guard outcome.answer.ok else {
-            result = .failed(outcome.answer.error?.code.raw ?? "UNKNOWN")
-            if session == nil, unusual == true { showSigns = true }
-            return
-        }
+        guard outcome.answer.ok else { result = .failed(outcome.answer.error?.code.raw ?? "UNKNOWN"); return }
         let id = outcome.answer.recorded?.first
         let kept = id.map { outcome.kept.contains($0) } ?? false
         if kept, let id { recorder.markReported(eventId: id) }
         if outcome.answer.warningSignScreen?.status.raw == "REQUIRED" { withAnimation { result = .screenRequired }; return }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { result = kept ? .saved : .notKept }
-        // "Sim" opens "Não estou 100%" at once, whatever happened to the report (saved apart, SSCTR-ABC-S1).
-        if session == nil, unusual == true { showSigns = true }
     }
 }
 

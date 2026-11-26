@@ -5,7 +5,9 @@ import SwiftUI
 /// always sent (`[]` for "Nenhum destes"; no choice = cannot continue), the eligibility flags stay nil until answered (never false by default).
 struct OnboardingDraft: Equatable {
     enum Care: Equatable { case pregnancy, postpartum, noneOfThese }
-    var age = 30
+    /// Typed by the athlete; no default and no clamp: an age outside 18–80 is the engine's to refuse (POPULATION_OUTSIDE_V1_AGE_RANGE).
+    var ageText = ""
+    var age: Int? { Int(ageText.trimmingCharacters(in: .whitespaces)).flatMap { (1...120).contains($0) ? $0 : nil } }
     var runGoal = "RACE"
     var eventKind = "10K"
     var eventDate = Calendar.current.date(byAdding: .day, value: 84, to: Date()) ?? Date()
@@ -49,7 +51,7 @@ struct OnboardingDraft: Equatable {
 
     /// The shared request. `id` and the dates of the plan-local day come from the host side in integration (A sets the athlete id).
     func answers(athleteId: String, today: String, startDate: String) -> OnboardingAnswers? {
-        guard let care, eligibilityAnswered else { return nil }
+        guard let care, let age, eligibilityAnswered else { return nil }
         var e = eligibility; e.assessedAt = today
         let special: [SpecialPopulation] = care == .pregnancy ? [.pregnancy] : care == .postpartum ? [.postpartum] : []
         var anchors: [PerformanceAnchor] = []
@@ -127,6 +129,7 @@ struct OnboardingFlow: View {
 
     private var canContinue: Bool {
         switch step {
+        case .age: draft.age != nil
         case .schedule: !draft.runDays.isEmpty
         case .anchor: !draft.hasAnchor || OnboardingDraft.seconds(draft.anchorTime) != nil
         case .care: draft.careAnswered && draft.eligibilityAnswered
@@ -147,7 +150,8 @@ struct OnboardingFlow: View {
             Text(L.t("ob.welcome.body")).rmText(.corpo, RM.Palette.textoSecundario)
         case .age:
             Text(L.t("ob.age.title")).rmText(.manchete)
-            Stepper(value: $draft.age, in: 18...80) { Text(L.f("ob.age.value", "\(draft.age)")).rmText(.numeroL) }.accessibilityIdentifier("ob-age")
+            TextField(L.t("ob.age.placeholder"), text: $draft.ageText).keyboardType(.numberPad).rmText(.numeroL)
+                .padding(14).background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 14)).accessibilityIdentifier("ob-age")
             Text(L.t("ob.age.note")).rmText(.detalhe, RM.Palette.textoSecundario)
         case .goals:
             Text(L.t("ob.goal.title")).rmText(.manchete)
@@ -276,8 +280,8 @@ struct OnboardingFlow: View {
     // MARK: submit and outcomes
 
     private func submit() async {
-        let today = Fmt.dayString(Date())
-        let start = Fmt.calendar.nextDate(after: Date(), matching: DateComponents(weekday: 2), matchingPolicy: .nextTime).map(Fmt.dayString) ?? today
+        let today = Fmt.deviceDay(Date())
+        let start = Calendar.current.nextDate(after: Date(), matching: DateComponents(weekday: 2), matchingPolicy: .nextTime).map(Fmt.deviceDay) ?? today
         guard let answers = draft.answers(athleteId: "synthetic-athlete", today: today, startDate: start) else { return }
         withAnimation { phase = .building }
         let out = await model.writer.onboard(answers, consents: draft.consentsValue)

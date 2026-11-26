@@ -13,7 +13,7 @@ final class RequestShapeTests: XCTestCase {
 
     func testPlannedRunReportCarriesNoDistance() throws {
         let s = try XCTUnwrap(try plan.week?.sessions.first { $0.id == "w0-run-d6" })
-        let obs = RunReportView.makeObservation(session: s, today: "2026-11-22", end: Date(timeIntervalSince1970: 1_795_850_000), completed: true,
+        let obs = RunReportView.makeObservation(planned: (s.id, s.date), today: "2026-11-22", end: Date(timeIntervalSince1970: 1_795_850_000), completed: true,
                                                 minutes: 81, rpe: 4, stop: nil, effort: .onTarget)
         let review = try encoded(ReviewRequest(.sessionReports([obs]), eligibility: nil))
         XCTAssertEqual(review["kind"] as? String, "WEEKLY_REVIEW")
@@ -27,14 +27,14 @@ final class RequestShapeTests: XCTestCase {
 
     func testSymptomStopIsReportedAsAStopNotCompleted() throws {
         let s = try XCTUnwrap(try plan.week?.sessions.first { $0.id == "w0-run-d6" })
-        let obs = RunReportView.makeObservation(session: s, today: "", end: Date(), completed: true, minutes: 20, rpe: nil, stop: .symptom, effort: .unknown)
+        let obs = RunReportView.makeObservation(planned: (s.id, s.date), today: "", end: Date(), completed: true, minutes: 20, rpe: nil, stop: .symptom, effort: .unknown)
         let a = try XCTUnwrap((try encoded(obs))["actual"] as? [String: Any])
         XCTAssertEqual(a["completed"] as? Bool, false)
         XCTAssertEqual((a["stop"] as? [String: Any])?["reason"] as? String, "SYMPTOM")
     }
 
     func testUnplannedRunHasObservedAtSportAndNoStop() throws {
-        let obs = RunReportView.makeObservation(session: nil, today: "2026-11-22", end: Date(), completed: true, minutes: 30, rpe: 3, stop: .symptom, effort: .harder)
+        let obs = RunReportView.makeObservation(planned: nil, today: "2026-11-22", end: Date(), completed: true, minutes: 30, rpe: 3, stop: .symptom, effort: .harder)
         let o = try encoded(obs)
         XCTAssertNil(o["sessionId"])
         XCTAssertNotNil(o["observedAt"], "FND-ABC-01: required for an unplanned report")
@@ -77,6 +77,18 @@ final class RequestShapeTests: XCTestCase {
         XCTAssertEqual(blocked.answer.status?.raw, "CLINICAL_HUMAN_REQUIRED")
         let partial = await w.submit(try XCTUnwrap(NotFeeling100Flow.makeRequest(condition: .mildIllness, set: set, answers: [:], intent: .rest, eligibility: nil, today: "")))
         XCTAssertNotEqual(partial.answer.status?.raw, "KEEP", "unanswered signs are never read as no")
+    }
+
+    /// SSCTR review: only KEEP is "the plan stays"; MODIFY says the next sessions changed; unknown fails closed.
+    func testNotFeeling100OutcomeReadsTheEngineStatus() throws {
+        func answer(_ json: String) throws -> BoundaryAnswer { try JSONDecoder().decode(BoundaryAnswer.self, from: Data(json.utf8)) }
+        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"KEEP"}"#)), .kept)
+        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"MODIFY"}"#)), .modified)
+        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"ASK"}"#)), .needsAnswers)
+        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#)), .blocked)
+        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#)), .failed("SOMETHING_NEW"))
+        XCTAssertEqual(NotFeeling100Flow.outcome(try Repo.store.decode(BoundaryAnswer.self, "actions-D1-notFeeling100-no-sign")), .kept)
+        XCTAssertEqual(NotFeeling100Flow.outcome(try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign")), .blocked)
     }
 
     func testUnplannedStrengthKeptOnlyWithObservedAt() async throws {

@@ -52,7 +52,7 @@ struct TodayView: View {
 
     private func header(_ c: TodayContent) -> some View {
         HStack {
-            Text(c.header).rmText(.micro, RM.Palette.textoSecundario).lineLimit(1).minimumScaleFactor(0.8)
+            Text(c.header).rmText(.micro, RM.Palette.textoSecundario).lineLimit(2).minimumScaleFactor(0.9)
             Spacer()
             Button(action: openProfile) { FocusRingAvatar(initials: model.initials) }
                 .buttonStyle(.plain)

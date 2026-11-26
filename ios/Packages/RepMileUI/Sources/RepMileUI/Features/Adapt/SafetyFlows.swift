@@ -55,17 +55,21 @@ struct EligibilityForm: View {
             row("pain", \.pain); row("persistentPain", \.persistentPain); row("injury", \.injury)
             row("illness", \.illness); row("functionalLimitation", \.functionalLimitation); row("clinicalConcern", \.clinicalConcern)
             Toggle(isOn: Binding(get: { screen.status == .nonclinicalConfirmed }, set: { screen.status = $0 ? .nonclinicalConfirmed : nil })) {
-                Text(L.t("eligibility.confirm")).rmText(.corpo).fixedSize(horizontal: false, vertical: true)
+                Text(L.t("eligibility.confirm.interim")).rmText(.corpo).fixedSize(horizontal: false, vertical: true)
             }
             .tint(RM.Palette.corrida)
-            .disabled(screen.statesAClinicalFlag)
+            // Only when every flag is answered and none is "sim": the athlete confirms none applies, never judges what is clinical.
+            .disabled(!allNo)
             .accessibilityIdentifier("eligibility-confirm")
         }
+    }
+    private var allNo: Bool {
+        [screen.pain, screen.persistentPain, screen.injury, screen.illness, screen.functionalLimitation, screen.clinicalConcern].allSatisfy { $0 == false }
     }
     private func row(_ key: String, _ path: WritableKeyPath<EligibilityScreen, Bool?>) -> some View {
         HStack {
             Text(L.t("eligibility." + key)).rmText(.corpo).frame(maxWidth: .infinity, alignment: .leading)
-            YesNo(value: Binding(get: { screen[keyPath: path] }, set: { screen[keyPath: path] = $0; if $0 == true { screen.status = nil } }), id: "eligibility-\(key)")
+            YesNo(value: Binding(get: { screen[keyPath: path] }, set: { screen[keyPath: path] = $0; if $0 != false { screen.status = nil } }), id: "eligibility-\(key)")
         }
     }
 }
@@ -73,7 +77,7 @@ struct EligibilityForm: View {
 /// "Não estou 100%" (Figma 72; F08 Situation 1). Condition → the engine's signs for it → (eligibility, when asked by the entry point) → the
 /// intents the engine accepts for it → submit. The answer decides; the UI shows its state (BLOCKED, ASK, kept).
 struct NotFeeling100Flow: View {
-    enum Outcome: Equatable { case kept, blocked, needsAnswers, failed(String) }
+    enum Outcome: Equatable { case kept, modified, blocked, needsAnswers, failed(String) }
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     var requireEligibility = false
@@ -137,11 +141,24 @@ struct NotFeeling100Flow: View {
     @ViewBuilder private func outcomeView(_ o: Outcome) -> some View {
         switch o {
         case .kept: StateBanner(tone: .neutral, icon: .check, title: L.t("nf.title"), message: L.t("nf.kept")).accessibilityIdentifier("nf-kept")
+        case .modified: StateBanner(tone: .neutral, icon: .repetir, title: L.t("nf.title"), message: L.t("nf.modified")).accessibilityIdentifier("nf-modified")
         case .blocked: StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim")).accessibilityIdentifier("nf-blocked")
         case .needsAnswers: StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("nf.needsAnswers")).accessibilityIdentifier("nf-needs-answers")
         case .failed(let c): StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.opError.title"), message: c == "CONFLICT_STALE_VERSION" ? L.t("state.stale.body") : L.t("state.opError.body"))
         }
         SecondaryPillButton(L.t("common.close")) { dismiss() }
+    }
+
+    /// The engine's answer, read without guessing: only KEEP is "the plan stays"; an unknown status fails closed.
+    static func outcome(_ a: BoundaryAnswer) -> Outcome {
+        guard a.ok else { return .failed(a.error?.code.raw ?? "UNKNOWN") }
+        if a.view?.state == .blocked || a.status?.raw == "CLINICAL_HUMAN_REQUIRED" { return .blocked }
+        switch a.status?.raw {
+        case "ASK": return .needsAnswers
+        case "KEEP": return .kept
+        case "MODIFY": return .modified
+        default: return .failed(a.status?.raw ?? "UNRECOGNIZED")
+        }
     }
 
     private func choose(_ c: WellbeingCondition) async {
@@ -153,7 +170,7 @@ struct NotFeeling100Flow: View {
     func request(_ set: WarningSignQuestionSet) -> ReviewRequest? {
         guard let condition else { return nil }
         return Self.makeRequest(condition: condition, set: set, answers: answers, intent: intent,
-                                eligibility: requireEligibility ? eligibility : nil, today: model.plan?.today ?? Fmt.dayString(Date()))
+                                eligibility: requireEligibility ? eligibility : nil, today: model.plan?.today ?? Fmt.deviceDay(Date()))
     }
 
     /// Asked signs only (a sign outside the engine's set is refused by `SignAnswers`), unanswered omitted, eligibility dated today.
@@ -170,10 +187,7 @@ struct NotFeeling100Flow: View {
         sending = true; defer { sending = false }
         let out = await model.writer.submit(r)
         withAnimation {
-            if !out.answer.ok { outcome = .failed(out.answer.error?.code.raw ?? "UNKNOWN") }
-            else if out.answer.view?.state == .blocked || out.answer.status?.raw == "CLINICAL_HUMAN_REQUIRED" { outcome = .blocked }
-            else if out.answer.status?.raw == "ASK" || out.answer.view?.state == .needsInput { outcome = .needsAnswers }
-            else { outcome = .kept }
+            outcome = Self.outcome(out.answer)
         }
     }
 }
@@ -188,12 +202,17 @@ struct ReadinessFlow: View {
     @State private var run = false
     @State private var strength = false
     @State private var done: Bool?
+    @State private var needsAnswers = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    if let done {
+                    if needsAnswers {
+                        StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("nf.needsAnswers"))
+                            .accessibilityIdentifier("readiness-needs-answers")
+                        SecondaryPillButton(L.t("ob.back")) { needsAnswers = false }
+                    } else if let done {
                         StateBanner(tone: done ? .neutral : .safety, icon: done ? .repetir : .pausa,
                                     title: done ? L.t("state.returning.title") : L.t("state.blocked.title"),
                                     message: done ? L.t("state.returning.body") : L.t("state.blocked.body.interim"))
@@ -207,7 +226,7 @@ struct ReadinessFlow: View {
                         SignQuestionnaire(title: L.t("signs.title"), signs: set.warningSigns, answers: $answers)
                         Toggle(isOn: $run) { Text(L.t("readiness.run")).rmText(.corpo) }.tint(RM.Palette.corrida)
                         Toggle(isOn: $strength) { Text(L.t("readiness.strength")).rmText(.corpo) }.tint(RM.Palette.forca)
-                        Text(L.t("readiness.note")).rmText(.detalhe, RM.Palette.textoSecundario)
+                        Text(L.t("readiness.note.interim")).rmText(.detalhe, RM.Palette.textoSecundario)
                         PrimaryActionButton(L.t("nf.send"), icon: .check, enabled: recovered != nil) { Task { await send(set) } }
                             .accessibilityIdentifier("readiness-send")
                     }
@@ -232,6 +251,10 @@ struct ReadinessFlow: View {
     private func send(_ set: WarningSignQuestionSet) async {
         guard let r = request(set) else { return }
         let out = await model.writer.submit(r)
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) { done = out.answer.ok && out.answer.view?.state != .blocked }
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            if out.answer.status?.raw == "ASK" || out.answer.view?.state == .needsInput { needsAnswers = true; return }
+            // Returning only when the engine restarts training; anything else keeps the hold on screen (fail closed).
+            done = out.answer.ok && (out.answer.action?.raw == "READINESS_RESTART" || out.answer.view?.state == .returning)
+        }
     }
 }

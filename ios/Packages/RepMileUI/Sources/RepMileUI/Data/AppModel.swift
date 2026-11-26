@@ -59,24 +59,24 @@ public final class AppModel {
         self.reader = reader; self.writer = writer; self.health = health; self.athleteName = athleteName
     }
 
+    /// Reads every port, then publishes everything at once: a new plan is never shown with the previous plan's gates (the gates are
+    /// cleared first, so a start during the read fails closed).
     public func load() async {
+        startability = [:]
         let planResult = await reader.plan(week: nil)
-        plan = try? planResult.get()
+        let newPlan = try? planResult.get()
         async let w = reader.allWeeks()
         async let p = reader.presentation()
         async let l = reader.loggedEntries()
         async let wp = reader.weekPlan()
         async let h = reader.history()
-        weeks = (try? await w.get()) ?? []
-        presentation = try? await p.get()
-        logged = try? await l.get()
-        weekPlan = try? await wp.get()
-        history = try? await h.get()
+        let (nw, np, nl, nwp, nh) = (await w, await p, await l, await wp, await h)
         var gates: [String: Startability] = [:]
-        for s in plan?.week?.sessions ?? [] { gates[s.id] = await reader.startability(sessionId: s.id) }
-        startability = gates
-        pendingReports = await reader.pendingReports()
-        healthStatus = await health.status()
+        for s in newPlan?.week?.sessions ?? [] { gates[s.id] = await reader.startability(sessionId: s.id) }
+        let pending = await reader.pendingReports()
+        let hs = await health.status()
+        plan = newPlan; weeks = (try? nw.get()) ?? []; presentation = try? np.get(); logged = try? nl.get(); weekPlan = try? nwp.get()
+        history = try? nh.get(); startability = gates; pendingReports = pending; healthStatus = hs
         route = RootRoute.from(plan: planResult)
     }
 

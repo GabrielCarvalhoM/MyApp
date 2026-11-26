@@ -54,9 +54,16 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertFalse(app.buttons["report-save"].isEnabled, "no answer is not 'no': the report waits for one")
         attach(app, "Avulsa — pergunta obrigatória (661:1215)")
         app.buttons["report-unusual-yes"].tap()
-        XCTAssertTrue(app.buttons["report-save"].isEnabled)
-        app.buttons["report-save"].tap()
         XCTAssertTrue(el(app, "flow-not-feeling-100").waitForExistence(timeout: 5), "'yes' opens Não estou 100% at once")
+        app.buttons["Fechar"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5), "closing the flow returns to the report, still to save")
+        let save = app.buttons["report-save"]
+        XCTAssertTrue(save.isEnabled)
+        while !save.isHittable { app.swipeUp() }
+        save.tap()
+        XCTAssertTrue(el(app, "report-saved").waitForExistence(timeout: 5))
+        app.buttons["report-done"].tap()
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5), "the report has a way out")
     }
 
     @MainActor
@@ -80,6 +87,30 @@ final class ExecutionAndSafetyTests: XCTestCase {
         intent.tap()
         app.buttons["nf-send"].tap()
         XCTAssertTrue(el(app, "nf-kept").waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testUnplannedRunIsNotStartedUnderAHold() {
+        let app = launch("blocked")
+        app.buttons["tab-add"].tap()
+        XCTAssertTrue(app.buttons["add-run-now"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["add-run-now"].isEnabled)
+        XCTAssertTrue(el(app, "add-run-blocked").exists)
+    }
+
+    @MainActor
+    func testReportCanBeLeftWithoutSaving() {
+        let app = launch("today")
+        app.buttons["today-start"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10))
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
+        let leave = app.buttons["report-leave"]
+        while !leave.isHittable { app.swipeUp() }
+        leave.tap()
+        app.buttons["Sair sem salvar"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5))
     }
 
     @MainActor
@@ -121,6 +152,9 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(app.buttons["add-log-strength"].waitForExistence(timeout: 5))
         app.buttons["add-log-strength"].tap()
         XCTAssertTrue(el(app, "screen-strength-log").waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["strength-save"].isEnabled, "minutes are the athlete's, never defaulted")
+        let inc = app.steppers["strength-minutes"].buttons.element(boundBy: 1)
+        for _ in 0..<6 { inc.tap() }
         app.buttons["strength-save"].tap()
         XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
     }

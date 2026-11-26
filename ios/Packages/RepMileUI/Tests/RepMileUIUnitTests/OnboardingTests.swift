@@ -10,7 +10,7 @@ final class OnboardingTests: XCTestCase {
         return try XCTUnwrap(try JSONSerialization.jsonObject(with: e.encode(v)) as? [String: Any])
     }
     func answered(_ care: OnboardingDraft.Care?) -> OnboardingDraft {
-        var d = OnboardingDraft(); d.care = care
+        var d = OnboardingDraft(); d.care = care; d.ageText = "32"
         d.eligibility = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "", pain: false, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false)
         return d
     }
@@ -43,6 +43,13 @@ final class OnboardingTests: XCTestCase {
         XCTAssertEqual(none.answer.planOutcome, .planCreated)
         let preg = await w.onboard(try XCTUnwrap(answered(.pregnancy).answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30")), consents: .init(coaching: true, healthSignals: false, learning: false))
         guard case .outsideV1Scope = preg.answer.planOutcome else { return XCTFail("pregnancy must be outside the V1 scope, got \(preg.answer.planOutcome)") }
+    }
+
+    func testAgeIsTypedNeverDefaultedOrClamped() throws {
+        var d = answered(.noneOfThese); d.ageText = ""
+        XCTAssertNil(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"), "no age, no request")
+        d.ageText = "16"
+        XCTAssertEqual(try XCTUnwrap(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30")).athlete.ageYears, 16, "the engine refuses, not the form")
     }
 
     func testAnchorTimeParsing() {

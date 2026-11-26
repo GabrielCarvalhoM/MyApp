@@ -185,9 +185,16 @@ struct HistoryDetail: View {
 
     private func contest() async {
         guard let id = entry.sessionId, let d = Double(km.replacingOccurrences(of: ",", with: ".")) else { return }
+        let mine = entry.voices.first { $0.channel.raw == "ATHLETE" }
+        let response = SessionResponse(performance: PerformanceResponse(rawValue: mine?.response?.performance?.raw ?? "") ?? .unknown,
+                                       recovery: RecoveryResponse(rawValue: mine?.response?.recovery?.raw ?? "") ?? .unknown,
+                                       effort: EffortResponse(rawValue: mine?.response?.effort?.raw ?? "") ?? .unknown,
+                                       nextDayFunction: NextDayFunctionResponse(rawValue: mine?.response?.nextDayFunction?.raw ?? "") ?? .unknown)
         let obs = AthleteObservation.plannedRun(sessionId: id, occurrenceDate: entry.date, observedAt: entry.observedAt,
-                                                actual: PlannedRunActual(completed: entry.completed, minutes: entry.minutes, declared: ContestedDistance(distanceKm: d, reason: reason)),
-                                                response: .unknown)
+                                                actual: PlannedRunActual(completed: mine?.completed ?? entry.completed, minutes: mine?.minutes ?? entry.minutes, rpe: mine?.rpe,
+                                                                         stop: mine?.stopReason.flatMap { StopReason(rawValue: $0.raw) }.map(RunStop.init(reason:)),
+                                                                         declared: ContestedDistance(distanceKm: d, reason: reason)),
+                                                response: response)
         let out = await model.writer.submit(ReviewRequest(.sessionReports([obs]), eligibility: nil))
         withAnimation { sent = out.answer.ok && !(out.answer.recorded ?? []).filter(out.kept.contains).isEmpty }
     }

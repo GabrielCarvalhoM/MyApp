@@ -66,8 +66,7 @@ public final class RecordingStore: AppRecordingIndex, @unchecked Sendable {
     }
 
     public func recordings(overlapping interval: DateInterval) async -> [AppRecordedRunRef] {
-        lock.lock(); defer { lock.unlock() }
-        return readIndex().filter { $0.interval.intersects(interval) }
+        lock.withLock { readIndex().filter { $0.interval.intersects(interval) } }
     }
 
     /// Account erasure: every recording, the index and the active file.
@@ -75,5 +74,6 @@ public final class RecordingStore: AppRecordingIndex, @unchecked Sendable {
         lock.lock(); defer { lock.unlock() }
         try? FileManager.default.removeItem(at: directory)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        var url = directory; var values = URLResourceValues(); values.isExcludedFromBackup = true; try? url.setResourceValues(values)
     }
 }

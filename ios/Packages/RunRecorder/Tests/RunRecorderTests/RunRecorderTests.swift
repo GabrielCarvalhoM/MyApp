@@ -113,6 +113,33 @@ final class RunRecorderTests: XCTestCase {
         XCTAssertLessThanOrEqual(r.currentStep?.remaining ?? 0, 60)
     }
 
+    /// QRE: killed while paused, then resumed: GPS restarts and fixes count again.
+    func testKilledWhilePausedResumesWithFixes() {
+        let clock = TestClock()
+        var r: RunRecorder? = RunRecorder(source: SimulatedLocationSource(), store: RecordingStore(directory: dir), clock: clock)
+        r?.start(sessionId: nil, sessionDate: nil, steps: steps); r?.pause(); r = nil
+        let src = SimulatedLocationSource()
+        let again = RunRecorder(source: src, store: RecordingStore(directory: dir), clock: clock)
+        again.resumeIfNeeded()
+        XCTAssertFalse(src.running, "paused: no GPS until resumed")
+        again.resume()
+        XCTAssertTrue(src.running)
+        for i in 0..<3 { clock.advance(4); src.send(fix(i, clock: clock)) }
+        XCTAssertGreaterThan(again.measuredMetres ?? 0, 0)
+    }
+
+    /// QRE: killed on the report screen: the finished recording comes back with its planned identity, so the report is not lost.
+    func testFinishedUnreportedRecordingComesBack() {
+        let clock = TestClock()
+        var r: RunRecorder? = RunRecorder(source: SimulatedLocationSource(), store: RecordingStore(directory: dir), clock: clock)
+        r?.start(sessionId: "w0-run-d6", sessionDate: "2026-11-22", steps: steps); clock.advance(600); r?.finish(); r = nil
+        let again = RunRecorder(source: SimulatedLocationSource(), store: RecordingStore(directory: dir), clock: clock)
+        again.resumeIfNeeded()
+        XCTAssertEqual(again.finishedRecording?.ref.sessionId, "w0-run-d6")
+        XCTAssertEqual(again.finishedRecording?.sessionDate, "2026-11-22")
+        XCTAssertEqual(again.finishedRecording?.movingMinutes ?? 0, 10, accuracy: 0.01)
+    }
+
     func testPoorAccuracyIsVisibleAndNotCounted() {
         let clock = TestClock(), src = SimulatedLocationSource()
         let r = RunRecorder(source: src, store: RecordingStore(directory: dir), clock: clock)

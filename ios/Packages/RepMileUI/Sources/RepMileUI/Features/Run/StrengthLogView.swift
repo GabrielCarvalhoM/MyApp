@@ -11,7 +11,7 @@ struct StrengthLogView: View {
     /// nil = unplanned strength.
     let session: PlannedSession?
     @State private var drafts: [String: [SetDraft]] = [:]
-    @State private var minutes: Double = 30
+    @State private var minutes: Double?
     @State private var startedAt = Date()
     @State private var result: RunReportView.Result?
     @State private var sending = false
@@ -23,10 +23,10 @@ struct StrengthLogView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     ForEach(exercises, id: \.id) { e in exerciseBlock(e) }
-                    Stepper(value: $minutes, in: 1...300) {
+                    Stepper(value: Binding(get: { minutes ?? 0 }, set: { minutes = $0 }), in: 0...300, step: 5) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(L.t("strength.minutes")).rmText(.detalhe, RM.Palette.textoSecundario)
-                            Text(L.f("common.minutes", Fmt.minutes(minutes))).rmText(.numeroM)
+                            Text(minutes.map { L.f("common.minutes", Fmt.minutes($0)) } ?? "–").rmText(.numeroM)
                         }
                     }
                     .accessibilityIdentifier("strength-minutes")
@@ -37,7 +37,7 @@ struct StrengthLogView: View {
                     default: EmptyView()
                     }
                     PrimaryActionButton(result == .notKept ? L.t("report.resend") : L.t("report.save"), icon: .check, fill: RM.Palette.acaoForca, textColor: RM.Palette.acaoForcaTexto,
-                                        enabled: !sending && result != .saved) { Task { await send() } }
+                                        enabled: !sending && result != .saved && (minutes ?? 0) > 0) { Task { await send() } }
                         .accessibilityIdentifier("strength-save")
                     if result == .saved { SecondaryPillButton(L.t("common.close")) { dismiss() } }
                 }
@@ -49,8 +49,8 @@ struct StrengthLogView: View {
         }
         .onAppear {
             startedAt = Date()
-            if let m = session?.prescription?.durationMinutes { minutes = m }
-            for e in exercises where drafts[e.id] == nil { drafts[e.id] = Array(repeating: SetDraft(reps: e.reps ?? 8, load: "", rir: e.rir), count: e.sets) }
+            // Reps start from the prescribed target for the athlete to adjust; RIR is not asked here, so none is stated.
+            for e in exercises where drafts[e.id] == nil { drafts[e.id] = Array(repeating: SetDraft(reps: e.reps ?? 0, load: "", rir: nil), count: e.sets) }
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier("screen-strength-log")
     }
@@ -99,7 +99,7 @@ struct StrengthLogView: View {
         let end = RunReportView.instant(Date())
         let obs: AthleteObservation = session.map {
             .plannedStrength(sessionId: $0.id, occurrenceDate: $0.date, observedAt: end, actual: actual(), response: .unknown)
-        } ?? .unplannedStrength(occurrenceDate: model.plan?.today ?? Fmt.dayString(Date()), observedAt: end, actual: actual(), response: .unknown)
+        } ?? .unplannedStrength(occurrenceDate: model.plan?.today ?? Fmt.deviceDay(Date()), observedAt: end, actual: actual(), response: .unknown)
         let out = await model.writer.submit(ReviewRequest(.sessionReports([obs]), eligibility: nil))
         guard out.answer.ok else { result = .failed(out.answer.error?.code.raw ?? ""); return }
         let kept = out.answer.recorded?.first.map { out.kept.contains($0) } ?? false

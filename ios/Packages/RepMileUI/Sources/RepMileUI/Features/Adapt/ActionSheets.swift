@@ -6,12 +6,16 @@ struct AddWorkoutSheet: View {
     @Environment(\.dismiss) private var dismiss
     var startRun: () -> Void
     var logStrength: () -> Void
+    /// A persistent host gate (hold, outside V1 scope, clinical, screen required): no live run starts (fail closed, pending a Product/SSCTR
+    /// ruling on unplanned runs under a gate).
+    var runBlockedReason: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(L.t("add.title")).rmText(.titulo)
-            PrimaryActionButton(L.t("add.runNow"), icon: .corrida, fill: RM.Palette.acaoCorrida, textColor: RM.Palette.acaoCorridaTexto) { dismiss(); startRun() }
+            PrimaryActionButton(L.t("add.runNow"), icon: .corrida, fill: RM.Palette.acaoCorrida, textColor: RM.Palette.acaoCorridaTexto, enabled: runBlockedReason == nil) { dismiss(); startRun() }
                 .accessibilityIdentifier("add-run-now")
+            if let r = runBlockedReason { Text(L.f("add.runNow.blocked", r)).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("add-run-blocked") }
             SecondaryPillButton(L.t("add.logDone") + " · " + L.t("add.logStrength"), icon: .forca) { dismiss(); logStrength() }
                 .accessibilityIdentifier("add-log-strength")
             Spacer()
@@ -34,7 +38,7 @@ struct ChangesSheet: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(L.t("changes.title")).rmText(.titulo).padding(.bottom, 8)
             if blocked {
-                Button { dismiss(); readiness() } label: { ChevronRow(title: L.t("readiness.title"), detail: L.t("readiness.note")).padding(.vertical, 10) }
+                Button { dismiss(); readiness() } label: { ChevronRow(title: L.t("readiness.title"), detail: L.t("readiness.note.interim")).padding(.vertical, 10) }
                     .buttonStyle(.plain).accessibilityIdentifier("changes-readiness")
             } else {
                 Button { dismiss(); notFeeling100() } label: { ChevronRow(title: L.t("changes.notFeeling"), detail: L.t("changes.notFeeling.detail")).padding(.vertical, 10) }

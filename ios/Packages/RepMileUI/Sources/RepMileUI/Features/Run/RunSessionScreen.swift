@@ -16,7 +16,11 @@ struct RunSessionScreen: View {
 
     private var presentation: RunSessionPresentation? { session.flatMap { model.presentation?.runSession(for: $0) } }
     /// The prescribed steps expanded like the recorder's, for each step's intensity (pace band, RPE) on screen.
-    private var runSteps: [RunStep] { (presentation?.blocks ?? []).flatMap { b in (0..<max(1, b.repeat_)).flatMap { _ in b.steps } } }
+    /// Expanded exactly like `RecorderStep.steps(of:)` (same filter), so the recorder's step index names the same step here.
+    private var runSteps: [RunStep] {
+        (presentation?.blocks ?? []).flatMap { b in (0..<max(1, b.repeat_)).flatMap { _ in b.steps.filter { s in
+            (s.target.type.raw == "TIME" && s.target.seconds != nil) || (s.target.type.raw == "DISTANCE" && s.target.metres != nil) } } }
+    }
 
     var body: some View {
         Group {
@@ -35,6 +39,8 @@ struct RunSessionScreen: View {
         .onAppear {
             recorder.resumeIfNeeded()
             if recorder.state == nil { recorder.start(sessionId: session?.id, sessionDate: session?.date, steps: RecorderStep.steps(of: presentation)) }
+            // Killed on the report screen: the finished recording comes back to its report.
+            if finished == nil, let f = recorder.finishedRecording { finished = f }
         }
     }
 

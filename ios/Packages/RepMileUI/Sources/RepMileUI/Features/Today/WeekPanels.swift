@@ -32,6 +32,9 @@ struct WeekPanels: View {
         }
         .frame(height: height)
         .accessibilityElement(children: .contain)
+        // A fixed-geometry graphic: its text stops growing at Large; every mark keeps its full VoiceOver label, and the hero and summary
+        // carry the same information at any size.
+        .dynamicTypeSize(...DynamicTypeSize.large)
         .accessibilityElement(children: .contain).accessibilityIdentifier("week-panels")
     }
 

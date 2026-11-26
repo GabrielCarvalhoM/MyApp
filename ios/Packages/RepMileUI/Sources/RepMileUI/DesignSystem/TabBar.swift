@@ -29,6 +29,7 @@ struct RMTabBar: View {
         }
         .padding(10)
         .frame(height: 68)
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .background(RM.Palette.fundoElevado, in: Capsule())
         .padding(.horizontal, RM.Space.gutter)
     }
@@ -46,6 +47,7 @@ struct RMTabBar: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityShowsLargeContentViewer { Label { Text(tab.title) } icon: { tab.icon.image } }
         .accessibilityLabel(tab.title)
         .accessibilityAddTraits(active ? [.isSelected, .isButton] : .isButton)
         .accessibilityIdentifier("tab-" + tab.rawValue)

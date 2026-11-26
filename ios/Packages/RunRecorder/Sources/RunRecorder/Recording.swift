@@ -86,6 +86,8 @@ public struct LocalMeasurement: Equatable, Sendable {
 
 public struct FinishedRecording: Equatable, Sendable {
     public let ref: AppRecordedRunRef
+    /// The planned session's plan-local day (nil for an unplanned run): with `ref.sessionId`, the identity the report must carry.
+    public let sessionDate: String?
     public let movingMinutes: Double
     public let local: LocalMeasurement
 }

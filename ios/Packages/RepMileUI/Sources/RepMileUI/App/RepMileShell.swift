@@ -47,6 +47,8 @@ public struct RepMileShell: View {
         }
         .environment(model)
         .environment(recorder)
+        // An account found erased (GONE) erases this front's recordings too (G07), also when the erasure happened elsewhere.
+        .onChange(of: model.route) { _, r in if r == .accountErased { recorder.eraseAllRecordings() } }
         .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
@@ -86,6 +88,12 @@ struct AppTabs: View {
         if s.sport.raw == "RUN" { runLaunch = Launch(session: s) } else { sheet = .strength(Launch(session: s)) }
     }
     private func then(_ action: @escaping () -> Void) { afterDismiss = action }
+    /// The gate that stops a live unplanned run (a hold or a persistent host gate).
+    private var runGate: NotStartableReason? {
+        if model.plan?.hold != nil || model.plan?.state == .blocked { return .blocked }
+        if let g = model.globalGate, [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired].contains(g) { return g }
+        return nil
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -122,7 +130,8 @@ struct AppTabs: View {
             if let next { next() } else { Task { await model.load() } }
         }) { which in
             switch which {
-            case .add: AddWorkoutSheet(startRun: { then { runLaunch = Launch(session: nil) } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } })
+            case .add: AddWorkoutSheet(startRun: { then { runLaunch = Launch(session: nil) } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
+                                       runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) })
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
             case .notFeeling: NotFeeling100Flow()
             case .readiness: ReadinessFlow()
@@ -134,8 +143,10 @@ struct AppTabs: View {
         .onAppear {
             // A recording that survived a killed process comes back on screen.
             recorder.resumeIfNeeded()
-            if let st = recorder.state, st.phase != .finished, runLaunch == nil {
-                runLaunch = Launch(session: (model.plan?.week?.sessions ?? []).first { $0.id == st.sessionId && $0.date == st.sessionDate })
+            // Running, paused or finished-but-not-reported: the report identity comes from the recording itself, whatever week is loaded.
+            if let st = recorder.state, runLaunch == nil {
+                let all = (model.plan?.week?.sessions ?? []) + model.weeks.flatMap(\.sessions)
+                runLaunch = Launch(session: all.first { $0.id == st.sessionId && $0.date == st.sessionDate })
             }
         }
     }

@@ -80,6 +80,24 @@ final class NavigationTests: XCTestCase {
         }
     }
 
+    /// Handoff C §8.8 / §9.4: large text keeps the decision and the main action reachable (no crash, start still present).
+    @MainActor
+    func testLargeDynamicType() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-scenario", "today", "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR",
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityL"]
+        app.launch()
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 10))
+        attach(app, "Hoje — texto grande (Accessibility L)")
+        let start = app.buttons["today-start"]
+        var tries = 0
+        while !start.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
+        XCTAssertTrue(start.isHittable, "the main action stays reachable with large text")
+        app.buttons["today-view-session"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["screen-session"].waitForExistence(timeout: 5))
+        attach(app, "Treino planejado — texto grande")
+    }
+
     @MainActor
     func testLanguages() {
         for (lang, title) in [("en", "Today"), ("es", "Hoy")] {
