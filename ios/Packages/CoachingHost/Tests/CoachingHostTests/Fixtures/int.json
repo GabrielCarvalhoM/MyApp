@@ -1,0 +1,809 @@
+{
+ "driver": "// V1 CoachingCore Integration Boundary (2026-11-23): focal driver for the Mac/iPhone run of the integration boundary (the core-driver.js\n// pattern). The SAME text runs in Node over the native ESM namespaces (int-oracle.mjs) and in the device JSContext over the bundle's own module\n// registry. It replays frozen synthetic operations (precomputed by the Node oracle) through createIntegration over a memory store, with a\n// deterministic id source and the clock of each step, and returns digests made by the engine's own hash. It adds no training rule.\n// M = { integration: integration.mjs, store: store.mjs, value: value.mjs }\n// input = { key, journeys: [{name, athleteId, steps:[{op, at, args}]}] }   op: enroll | submit | importActivities | restart | read | carried\nglobalThis.__intfocal = function (M, inputJSON) {\n  const input = JSON.parse(inputJSON), H = v => M.value.hash(v);\n  const errorOf = e => ({ error: e && e.constructor ? e.constructor.name : typeof e }); // never the message (QRE-P0-03)\n  function run(j) {\n    let clock = 0, n = 0;\n    const store = M.store.memoryStore(), actor = { athleteId: j.athleteId };\n    const it = M.integration.createIntegration({ store, key: input.key, clock: () => clock, newId: p => p + '_' + String(++n).padStart(6, '0') });\n    return j.steps.map(s => {\n      clock = s.at;\n      try {\n        const r = it[s.op]({ actor, ...JSON.parse(JSON.stringify(s.args)) });\n        const raw = store.raw(j.athleteId);\n        return { op: s.op, code: r.ok === false ? r.error.code : 'OK', status: r.status ?? null, version: r.version ?? null,\n          recorded: Array.isArray(r.recorded) ? r.recorded.length : null, screen: r.warningSignScreen && r.warningSignScreen.reason ? r.warningSignScreen.reason : null,\n          answer: H(r), stored: raw === null ? null : H(JSON.parse(raw)) };\n      } catch (e) { return { op: s.op, ...errorOf(e) }; }\n    });\n  }\n  const out = { journeys: input.journeys.map(j => ({ name: j.name, steps: run(j) })) };\n  out.digest = H(out.journeys);\n  return JSON.stringify(out);\n};\n",
+ "inputJSON": "{\"key\":\"v1int-device-run-synthetic-key\",\"journeys\":[{\"name\":\"int-b-two-voices\",\"athleteId\":\"int-b\",\"steps\":[{\"op\":\"enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-b\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"read\",\"at\":1794668400000,\"args\":{}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"submit\",\"at\":1794913200000,\"args\":{\"clientRequestId\":\"rq-2\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"importActivities\",\"at\":1794913200000,\"args\":{\"clientRequestId\":\"hk-1\",\"expectedVersion\":2,\"activities\":[{\"activityId\":\"HK-w0-run-d1\",\"activityType\":\"RUN\",\"sessionId\":\"w0-run-d1\",\"observedAt\":\"2026-11-17T07:45:00-03:00\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\"}}]}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"submit\",\"at\":1794956400000,\"args\":{\"clientRequestId\":\"rq-3\",\"expectedVersion\":3,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"read\",\"at\":1794956700000,\"args\":{}},{\"op\":\"read\",\"at\":1794956700000,\"args\":{}},{\"op\":\"importActivities\",\"at\":1794956700000,\"args\":{\"clientRequestId\":\"hk-4\",\"expectedVersion\":4,\"activities\":[{\"activityId\":\"HK-w0-run-d1\",\"activityType\":\"RUN\",\"sessionId\":\"w0-run-d1\",\"observedAt\":\"2026-11-17T07:45:00-03:00\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\"}}]}},{\"op\":\"read\",\"at\":1794956700000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"rq-5\",\"expectedVersion\":4,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[]}}},{\"op\":\"carried\",\"at\":1795388400000,\"args\":{}}]},{\"name\":\"int-d-correction\",\"athleteId\":\"int-d\",\"steps\":[{\"op\":\"enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-d\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"read\",\"at\":1794668400000,\"args\":{}},{\"op\":\"read\",\"at\":1795042800000,\"args\":{}},{\"op\":\"read\",\"at\":1795042800000,\"args\":{}},{\"op\":\"submit\",\"at\":1795042800000,\"args\":{\"clientRequestId\":\"rq-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"read\",\"at\":1795046400000,\"args\":{}},{\"op\":\"read\",\"at\":1795046400000,\"args\":{}},{\"op\":\"read\",\"at\":1795046400000,\"args\":{}},{\"op\":\"submit\",\"at\":1795046400000,\"args\":{\"clientRequestId\":\"rq-2\",\"expectedVersion\":2,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":18,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"correctionOf\":\"ob_2626ad30d467ce230286b1efd5\"}]}}},{\"op\":\"read\",\"at\":1795046400000,\"args\":{}},{\"op\":\"submit\",\"at\":1795046400000,\"args\":{\"clientRequestId\":\"rq-3\",\"expectedVersion\":3,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-18\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":18,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"correctionOf\":\"ob_2626ad30d467ce230286b1efd5\"}]}}}]},{\"name\":\"int-g-safety\",\"athleteId\":\"int-g\",\"steps\":[{\"op\":\"enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-g\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"read\",\"at\":1794668400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"read\",\"at\":1795388400000,\"args\":{}},{\"op\":\"submit\",\"at\":1795388400000,\"args\":{\"clientRequestId\":\"rq-1\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-22\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d2\",\"occurrenceDate\":\"2026-11-18\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"goblet-squat\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"SINGLE_IMPLEMENT\"},\"rir\":3}]},{\"id\":\"db-bench-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-row\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-calf-raise\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d3\",\"occurrenceDate\":\"2026-11-19\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-str-d5\",\"occurrenceDate\":\"2026-11-21\",\"actual\":{\"completed\":true,\"minutes\":27,\"exercises\":[{\"id\":\"db-rdl\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"lat-pulldown\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"MACHINE_STACK\"},\"rir\":3}]},{\"id\":\"db-overhead-press\",\"sets\":[{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3},{\"reps\":8,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"db-split-squat\",\"sets\":[{\"reps\":10,\"load\":{\"value\":20,\"unit\":\"KG\",\"convention\":\"PER_HAND\"},\"rir\":3}]},{\"id\":\"dead-bug\",\"sets\":[{\"reps\":10,\"load\":{\"value\":0,\"unit\":\"BODYWEIGHT\",\"convention\":\"BODYWEIGHT\"},\"rir\":3}]}]},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d6\",\"occurrenceDate\":\"2026-11-22\",\"actual\":{\"completed\":true,\"minutes\":80,\"distanceKm\":13.15,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"read\",\"at\":1795518000000,\"args\":{}},{\"op\":\"submit\",\"at\":1795518000000,\"args\":{\"clientRequestId\":\"hold\",\"expectedVersion\":2,\"review\":{\"kind\":\"NOT_FEELING_100\",\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4},\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-24\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1795518000000,\"args\":{}},{\"op\":\"read\",\"at\":1795863600000,\"args\":{}},{\"op\":\"submit\",\"at\":1795863600000,\"args\":{\"clientRequestId\":\"ready\",\"expectedVersion\":3,\"review\":{\"kind\":\"READINESS_DECLARATION\",\"readiness\":{\"declaredRecovered\":true,\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":false,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"sports\":{\"RUN\":{\"ready\":true},\"STRENGTH\":{\"ready\":true,\"restrictions\":[]}}},\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-28\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1795863600000,\"args\":{}},{\"op\":\"read\",\"at\":1795863600000,\"args\":{}},{\"op\":\"read\",\"at\":1796169600000,\"args\":{}},{\"op\":\"read\",\"at\":1796169600000,\"args\":{}},{\"op\":\"submit\",\"at\":1796169600000,\"args\":{\"clientRequestId\":\"rq-2\",\"expectedVersion\":4,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-01\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w2-run-d1\",\"occurrenceDate\":\"2026-12-01\",\"actual\":{\"completed\":false,\"minutes\":12,\"stop\":{\"reason\":\"SYMPTOM\"}},\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"ADVERSE\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"}}]}}},{\"op\":\"read\",\"at\":1796175000000,\"args\":{}},{\"op\":\"read\",\"at\":1796175000000,\"args\":{}},{\"op\":\"submit\",\"at\":1796175000000,\"args\":{\"clientRequestId\":\"rq-3\",\"expectedVersion\":5,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-01\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w2-run-d1\",\"occurrenceDate\":\"2026-12-01\",\"actual\":{\"completed\":false,\"minutes\":0},\"response\":{\"performance\":\"UNKNOWN\",\"recovery\":\"UNKNOWN\",\"effort\":\"UNKNOWN\",\"nextDayFunction\":\"UNKNOWN\"},\"correctionOf\":\"ob_b689984e87ab4b237b77b03eb9\"}]}}},{\"op\":\"read\",\"at\":1796389200000,\"args\":{}},{\"op\":\"restart\",\"at\":1796389200000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-12-04\",\"startDate\":\"2026-12-07\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-g\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-04\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"expectedVersion\":6}},{\"op\":\"read\",\"at\":1796209200000,\"args\":{}},{\"op\":\"submit\",\"at\":1796209200000,\"args\":{\"clientRequestId\":\"hold-2\",\"expectedVersion\":6,\"review\":{\"kind\":\"NOT_FEELING_100\",\"wellbeing\":{\"condition\":\"MILD_ILLNESS\",\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":true,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"intent\":\"REST\",\"days\":4},\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-02\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1796209200000,\"args\":{}},{\"op\":\"read\",\"at\":1796295600000,\"args\":{}},{\"op\":\"submit\",\"at\":1796295600000,\"args\":{\"clientRequestId\":\"ready-2\",\"expectedVersion\":7,\"review\":{\"kind\":\"READINESS_DECLARATION\",\"readiness\":{\"declaredRecovered\":true,\"warningSigns\":{\"feverOrChills\":false,\"chestPainPressureOrTightness\":false,\"breathlessAtRest\":false,\"palpitationsAtRest\":false,\"faintingOrDizziness\":false,\"painThatChangesMovement\":false,\"swelling\":false,\"injuryFromFallOrImpact\":false,\"gettingWorse\":false,\"bodyWideAches\":false,\"exhaustionAtRest\":false,\"vomitingDiarrhoeaNauseaOrAbdominalPain\":false,\"moderateOrSevereCough\":false,\"severeHeadache\":false,\"severeNoseOrThroat\":false},\"sports\":{\"RUN\":{\"ready\":true},\"STRENGTH\":{\"ready\":true,\"restrictions\":[]}}},\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-03\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1796295600000,\"args\":{}},{\"op\":\"read\",\"at\":1796389200000,\"args\":{}},{\"op\":\"restart\",\"at\":1796389200000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-12-04\",\"startDate\":\"2026-12-07\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-g\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-12-04\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"expectedVersion\":8}}]},{\"name\":\"int-h-refusals\",\"athleteId\":\"int-h\",\"steps\":[{\"op\":\"enroll\",\"at\":1794668400000,\"args\":{\"intake\":{\"version\":\"R6-INTAKE-1\",\"synthetic\":true,\"purpose\":\"SHADOW_REFERENCE\",\"asOf\":\"2026-11-13\",\"startDate\":\"2026-11-16\",\"weeks\":8,\"timezoneOffsetMinutes\":-180,\"learningConsent\":true,\"athlete\":{\"id\":\"int-h\",\"ageYears\":32,\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-13\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"strengthTrainingMonths\":18,\"runTrainingMonths\":36,\"goals\":{\"run\":{\"kind\":\"RACE\",\"event\":{\"kind\":\"10K\",\"date\":\"2027-01-10\"}},\"strength\":\"RUNNING_SUPPORT\"},\"equipment\":[\"BARBELL\",\"RACK\",\"BENCH\",\"DUMBBELLS\",\"KETTLEBELL\",\"MACHINES\",\"BANDS\",\"PULL_UP_BAR\"],\"recent\":{\"strengthDaysPerWeek\":2,\"runDaysPerWeek\":4,\"runMinutesPerWeek\":200,\"longestRunMinutes\":80},\"exerciseRotationPreference\":\"COACH_DECIDES\",\"performanceAnchors\":[{\"kind\":\"RACE_RESULT\",\"distance\":\"10K\",\"seconds\":3000,\"date\":\"2026-11-01\",\"measurement\":\"OFFICIAL\",\"rpe\":9,\"tolerated\":true}]},\"schedule\":{\"strengthDays\":[2,5],\"strengthMinutes\":45,\"runDays\":[1,3,5,6],\"runMinutes\":50,\"longRunMinutes\":90,\"longRunDay\":6,\"runTurn\":\"AM\",\"strengthTurn\":\"PM\"}},\"consents\":{\"COACHING\":true,\"HEALTH_SIGNALS\":true,\"LEARNING\":true}}},{\"op\":\"read\",\"at\":1794668400000,\"args\":{}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"submit\",\"at\":1794913200000,\"args\":{\"clientRequestId\":\"rq-2\",\"expectedVersion\":1,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false}}}},{\"op\":\"read\",\"at\":1794913200000,\"args\":{}},{\"op\":\"importActivities\",\"at\":1794913200000,\"args\":{\"clientRequestId\":\"hk-1\",\"expectedVersion\":2,\"activities\":[{\"activityId\":\"HK-w0-run-d1\",\"activityType\":\"RUN\",\"sessionId\":\"w0-run-d1\",\"observedAt\":\"2026-11-17T07:45:00-03:00\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"measurement\":\"GPS\"}}]}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"submit\",\"at\":1794956400000,\"args\":{\"clientRequestId\":\"rq-3\",\"expectedVersion\":3,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}},{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"read\",\"at\":1794956400000,\"args\":{}},{\"op\":\"submit\",\"at\":1794956400000,\"args\":{\"clientRequestId\":\"rq-4\",\"expectedVersion\":3,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"},\"correctionOf\":\"ob_70d87802cf8433ed4a54b32414\"}]}}},{\"op\":\"read\",\"at\":1794909600000,\"args\":{}},{\"op\":\"read\",\"at\":1794909600000,\"args\":{}},{\"op\":\"submit\",\"at\":1794909600000,\"args\":{\"clientRequestId\":\"rq-5\",\"expectedVersion\":3,\"review\":{\"kind\":\"WEEKLY_REVIEW\",\"eligibility\":{\"status\":\"NONCLINICAL_CONFIRMED\",\"assessedAt\":\"2026-11-17\",\"pain\":false,\"persistentPain\":false,\"injury\":false,\"illness\":false,\"functionalLimitation\":false,\"clinicalConcern\":false},\"observations\":[{\"sessionId\":\"w0-run-d1\",\"occurrenceDate\":\"2026-11-17\",\"actual\":{\"completed\":true,\"minutes\":40,\"distanceKm\":7.06,\"rpe\":4},\"response\":{\"performance\":\"COMPATIBLE\",\"recovery\":\"COMPATIBLE\",\"effort\":\"ON_TARGET\",\"nextDayFunction\":\"NORMAL\"}}]}}}]}]}",
+ "expected": {
+  "journeys": [
+   {
+    "name": "int-b-two-voices",
+    "steps": [
+     {
+      "op": "enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "recorded": null,
+      "screen": null,
+      "answer": "2d89b54b26379ab2e695def454357211f5c246bb7342c3745757da8093dcf4e7",
+      "stored": "504cd65ad890c325750ac609ce74fcc3f4315d8a89b4599e4fa051f628cc4eb2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "63109b542cdc286291ca019e1f2bac5ce2cf749593c5b21b937701cce964eff7",
+      "stored": "504cd65ad890c325750ac609ce74fcc3f4315d8a89b4599e4fa051f628cc4eb2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "63109b542cdc286291ca019e1f2bac5ce2cf749593c5b21b937701cce964eff7",
+      "stored": "504cd65ad890c325750ac609ce74fcc3f4315d8a89b4599e4fa051f628cc4eb2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "63109b542cdc286291ca019e1f2bac5ce2cf749593c5b21b937701cce964eff7",
+      "stored": "504cd65ad890c325750ac609ce74fcc3f4315d8a89b4599e4fa051f628cc4eb2"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "recorded": 0,
+      "screen": null,
+      "answer": "e5721f312cb56fe7a84b85cc9d5a1685f1e1a58c5718c759af3927ffab0e9543",
+      "stored": "daa885c1a01825fdfb362383502216df4f25e43af51076697acc398168450bbd"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "e092fbf30524f19b1caed4ea4b9e107811adf1a6e3f228e2034d34ae5629cb4e",
+      "stored": "daa885c1a01825fdfb362383502216df4f25e43af51076697acc398168450bbd"
+     },
+     {
+      "op": "importActivities",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 3,
+      "recorded": 1,
+      "screen": null,
+      "answer": "9f7d73e9244d46d30af71c57c433a78557fc8efbec256c3d0b8781192b5c1006",
+      "stored": "3be9053b33e7011c49d40c17c97e6dd1aac5cf1234e9ed6f08aef431be15815f"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "07e6b4ec7c06362c92223841abfc6c4ccdf12ccee54ad01193e232305191f371",
+      "stored": "3be9053b33e7011c49d40c17c97e6dd1aac5cf1234e9ed6f08aef431be15815f"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "07e6b4ec7c06362c92223841abfc6c4ccdf12ccee54ad01193e232305191f371",
+      "stored": "3be9053b33e7011c49d40c17c97e6dd1aac5cf1234e9ed6f08aef431be15815f"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 4,
+      "recorded": 1,
+      "screen": null,
+      "answer": "4e952e883b2dc67b8eaac613bfaf7c32a703cb7fa5a218d5880609124c15b1ae",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "559ccbb738b2846636fe05b36826b45c1ee31c5fdfcfda907005bd33d64644a4",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "559ccbb738b2846636fe05b36826b45c1ee31c5fdfcfda907005bd33d64644a4",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "importActivities",
+      "code": "OK",
+      "status": null,
+      "version": 4,
+      "recorded": 0,
+      "screen": null,
+      "answer": "c782d9faa3d44d341724f4ec5ac1e842268c75d06bb781bdea4c6a7648cc71ad",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "559ccbb738b2846636fe05b36826b45c1ee31c5fdfcfda907005bd33d64644a4",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "559ccbb738b2846636fe05b36826b45c1ee31c5fdfcfda907005bd33d64644a4",
+      "stored": "f61f9bd78e0774a5c490b9ea9b342ff6a085deaade681117c4dda1cc51eb2bca"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "MODIFY",
+      "version": 5,
+      "recorded": 0,
+      "screen": null,
+      "answer": "18166b3f9a502d0324b6f69dd1ed184d0110b4678263264f19fdf9c0677213bb",
+      "stored": "665c637ed2bf3b72f4f2c429252f72095809d1759d533ed97caabb0a3e102c4d"
+     },
+     {
+      "op": "carried",
+      "code": "OK",
+      "status": null,
+      "version": 5,
+      "recorded": null,
+      "screen": null,
+      "answer": "4b2759c5a299469593e6de11fd2d65b9a45e3968e1ce723eb70a137406ce6eff",
+      "stored": "665c637ed2bf3b72f4f2c429252f72095809d1759d533ed97caabb0a3e102c4d"
+     }
+    ]
+   },
+   {
+    "name": "int-d-correction",
+    "steps": [
+     {
+      "op": "enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "recorded": null,
+      "screen": null,
+      "answer": "1e579aaba629da375e0ebeabd8a08ea679f7440a261be363e7fba6e2d46ab30d",
+      "stored": "d6be9cd5d36255a0b565c8df14b161d0822860b121e8e4b6242b76ea78ed4a15"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "86209ba5a587dbfdcc4f57fec4cffc48dad671185d539145c79c50cb59e91357",
+      "stored": "d6be9cd5d36255a0b565c8df14b161d0822860b121e8e4b6242b76ea78ed4a15"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "86209ba5a587dbfdcc4f57fec4cffc48dad671185d539145c79c50cb59e91357",
+      "stored": "d6be9cd5d36255a0b565c8df14b161d0822860b121e8e4b6242b76ea78ed4a15"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "86209ba5a587dbfdcc4f57fec4cffc48dad671185d539145c79c50cb59e91357",
+      "stored": "d6be9cd5d36255a0b565c8df14b161d0822860b121e8e4b6242b76ea78ed4a15"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "recorded": 1,
+      "screen": null,
+      "answer": "246d3e7826bfba5feefe66bb1df40311c8a22752b6a966f7aed47d1d99a4de29",
+      "stored": "1d9a8a0de6ee49472aa9cc800fdcf7c696d95dbb560da8a223feda480a2fcc1e"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "720d0110f8323b389298a667c56a254a8b105dd3827fda6f556903807646bb6c",
+      "stored": "1d9a8a0de6ee49472aa9cc800fdcf7c696d95dbb560da8a223feda480a2fcc1e"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "720d0110f8323b389298a667c56a254a8b105dd3827fda6f556903807646bb6c",
+      "stored": "1d9a8a0de6ee49472aa9cc800fdcf7c696d95dbb560da8a223feda480a2fcc1e"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "720d0110f8323b389298a667c56a254a8b105dd3827fda6f556903807646bb6c",
+      "stored": "1d9a8a0de6ee49472aa9cc800fdcf7c696d95dbb560da8a223feda480a2fcc1e"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 3,
+      "recorded": 1,
+      "screen": null,
+      "answer": "ec72597dd46610a506090ea755eb8fb0791a3bd2d2db43892c159a6904accb22",
+      "stored": "484634ded257d529768f0e9fd20b3ad195acf342f4d159a007ced2654d90ef8c"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "5a63ebee4bcd13b2d33c7ffdb5feface3e5ecc73558cc6c75c9911a16f1c4b9b",
+      "stored": "484634ded257d529768f0e9fd20b3ad195acf342f4d159a007ced2654d90ef8c"
+     },
+     {
+      "op": "submit",
+      "code": "CORRECTION_OF_REPLACED",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1f06607340fc13bc4740d34bea5e73c8cc3a79c52f1c692330fbbb9f39159813",
+      "stored": "484634ded257d529768f0e9fd20b3ad195acf342f4d159a007ced2654d90ef8c"
+     }
+    ]
+   },
+   {
+    "name": "int-g-safety",
+    "steps": [
+     {
+      "op": "enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "recorded": null,
+      "screen": null,
+      "answer": "7839860a99665627f9254827f4183285040470c92f4cdbb4aa09a4717303202b",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "ea142436aef380a65f6c4c43736d90ced827edd313a306f98de2ece33cb331e0",
+      "stored": "220dfb619973c860d66623d2cc744fa348494e1a5b4ef186bfe67f9153e2c9c4"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "recorded": 6,
+      "screen": null,
+      "answer": "0c298ff5df155edb23fe664562df37846da2abe8052ca711f115cf9a94040a6e",
+      "stored": "b8512bff688cc162ff87039ebe97d54307f5d7bf8ad5e58c62d6ffc6651f2a52"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "eee57f00febc5a08170f649848a72572837d8988776f9e30cf1397dddf3fdfd0",
+      "stored": "b8512bff688cc162ff87039ebe97d54307f5d7bf8ad5e58c62d6ffc6651f2a52"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "version": 3,
+      "recorded": 0,
+      "screen": null,
+      "answer": "573847bd5e1cfaa480b87f47306b7a2344e69220ff1f3d56a6b532a2f161c0e4",
+      "stored": "91c3fae3eaa849d2585eaf89863813f1b3ccb93b4658863ce5c80130bdd40205"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "77d3616deb1e02af4a7a74cb6fbb6223f145f76cd0928d2fd665573aa0ba7b6a",
+      "stored": "91c3fae3eaa849d2585eaf89863813f1b3ccb93b4658863ce5c80130bdd40205"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "77d3616deb1e02af4a7a74cb6fbb6223f145f76cd0928d2fd665573aa0ba7b6a",
+      "stored": "91c3fae3eaa849d2585eaf89863813f1b3ccb93b4658863ce5c80130bdd40205"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "MODIFY",
+      "version": 4,
+      "recorded": 0,
+      "screen": null,
+      "answer": "e1e3b03f2d5e0d86a9e517aca5aff797f4f819f188b10fccb479dc3b61d4a147",
+      "stored": "d2917b39d864fc593f9c15bf3c42aeb29ad11145a3b866724de67c83ce2952a2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "b45704b939ee2be94351f6a562dd35d378f31e0534e2db972c6f833772f3ba64",
+      "stored": "d2917b39d864fc593f9c15bf3c42aeb29ad11145a3b866724de67c83ce2952a2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "b45704b939ee2be94351f6a562dd35d378f31e0534e2db972c6f833772f3ba64",
+      "stored": "d2917b39d864fc593f9c15bf3c42aeb29ad11145a3b866724de67c83ce2952a2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "b45704b939ee2be94351f6a562dd35d378f31e0534e2db972c6f833772f3ba64",
+      "stored": "d2917b39d864fc593f9c15bf3c42aeb29ad11145a3b866724de67c83ce2952a2"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "b45704b939ee2be94351f6a562dd35d378f31e0534e2db972c6f833772f3ba64",
+      "stored": "d2917b39d864fc593f9c15bf3c42aeb29ad11145a3b866724de67c83ce2952a2"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 5,
+      "recorded": 1,
+      "screen": "RUN_STOPPED_FOR_A_SYMPTOM",
+      "answer": "e132a81714404a8eaf875b612a83a1a1772a07d4a0f2f5339ffccd5b174c3270",
+      "stored": "0574ba0b0b274d0b41e9e0105ec483c28b659629e7e5f60afa65e4bff4f5b151"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "666fceb7d0924a518966d70e83b0835bb639d346eebb24d09ebadacaca37ea2b",
+      "stored": "0574ba0b0b274d0b41e9e0105ec483c28b659629e7e5f60afa65e4bff4f5b151"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "666fceb7d0924a518966d70e83b0835bb639d346eebb24d09ebadacaca37ea2b",
+      "stored": "0574ba0b0b274d0b41e9e0105ec483c28b659629e7e5f60afa65e4bff4f5b151"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 6,
+      "recorded": 1,
+      "screen": "RUN_STOPPED_FOR_A_SYMPTOM",
+      "answer": "f10ddbd85ae74a36d93333d510f980ee935eddd1be90b78252d81d6ba15a051d",
+      "stored": "254a7b5252393e32ab270a45a5abe3a0402c50db6d7afa68de27999eab189a80"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "e3f78d064afce1bad1b09f05b6980280659344574f18575873cd761bbd2dce23",
+      "stored": "254a7b5252393e32ab270a45a5abe3a0402c50db6d7afa68de27999eab189a80"
+     },
+     {
+      "op": "restart",
+      "code": "OK",
+      "status": "ASK",
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "f54b73a8a40276a9c8c57ae961f508de38fcf7c1c7814443a8c1534f5da2be1b",
+      "stored": "254a7b5252393e32ab270a45a5abe3a0402c50db6d7afa68de27999eab189a80"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "e3f78d064afce1bad1b09f05b6980280659344574f18575873cd761bbd2dce23",
+      "stored": "254a7b5252393e32ab270a45a5abe3a0402c50db6d7afa68de27999eab189a80"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "CLINICAL_HUMAN_REQUIRED",
+      "version": 7,
+      "recorded": 0,
+      "screen": null,
+      "answer": "208d3eccbaed48f735a77c83c6a29db20658e0fe1726d08461838bb25f607f51",
+      "stored": "a973fd7d9dc5ebdeae4b46735976edd90478042c5620317a19afb9e140c583d5"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "7ac5cb7374bd44eddaed0635b41d1c932cb0eaef8e36fb38d3f936dcad8820e4",
+      "stored": "a973fd7d9dc5ebdeae4b46735976edd90478042c5620317a19afb9e140c583d5"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "7ac5cb7374bd44eddaed0635b41d1c932cb0eaef8e36fb38d3f936dcad8820e4",
+      "stored": "a973fd7d9dc5ebdeae4b46735976edd90478042c5620317a19afb9e140c583d5"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "MODIFY",
+      "version": 8,
+      "recorded": 0,
+      "screen": null,
+      "answer": "e08b4c0474ce4f5f8fe75465d60661d14519dba7af43b35270fd5a06b6204bbf",
+      "stored": "101af938b6101fcea7bd1125a3cf6a0745be7bcd21725038542ed67c912d9d5b"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "f224bf95a8e149472b5fbc85f81bc86cf57287dddee50c0491e5eb35a23ef9f2",
+      "stored": "101af938b6101fcea7bd1125a3cf6a0745be7bcd21725038542ed67c912d9d5b"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "f224bf95a8e149472b5fbc85f81bc86cf57287dddee50c0491e5eb35a23ef9f2",
+      "stored": "101af938b6101fcea7bd1125a3cf6a0745be7bcd21725038542ed67c912d9d5b"
+     },
+     {
+      "op": "restart",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 9,
+      "recorded": null,
+      "screen": null,
+      "answer": "059ffbaea3b73548d646cfd9d93257becf281bf08ad515206029ef9a71680224",
+      "stored": "3477c253b8fcccf824c3b68d3d2295932c0c0ffffba57035fb46a122d0f7e79d"
+     }
+    ]
+   },
+   {
+    "name": "int-h-refusals",
+    "steps": [
+     {
+      "op": "enroll",
+      "code": "OK",
+      "status": "PROPOSED",
+      "version": 1,
+      "recorded": null,
+      "screen": null,
+      "answer": "adb7d88d8e119c90f88542041917dab87e05d5c4fb85e6f837b1872074e96180",
+      "stored": "5925f75a616c69c86ff9289984cad2df57493a85dc5909e63ec5108ab7484d3a"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "4b73f56b3d9a2af6c22f00053844fb2d66085f71c8a3e9156801e7ba74f9c71b",
+      "stored": "5925f75a616c69c86ff9289984cad2df57493a85dc5909e63ec5108ab7484d3a"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "4b73f56b3d9a2af6c22f00053844fb2d66085f71c8a3e9156801e7ba74f9c71b",
+      "stored": "5925f75a616c69c86ff9289984cad2df57493a85dc5909e63ec5108ab7484d3a"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "4b73f56b3d9a2af6c22f00053844fb2d66085f71c8a3e9156801e7ba74f9c71b",
+      "stored": "5925f75a616c69c86ff9289984cad2df57493a85dc5909e63ec5108ab7484d3a"
+     },
+     {
+      "op": "submit",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 2,
+      "recorded": 0,
+      "screen": null,
+      "answer": "e5721f312cb56fe7a84b85cc9d5a1685f1e1a58c5718c759af3927ffab0e9543",
+      "stored": "9465a81c887cb13544640c6c66a4ee86f6b8c4e82c7b54445ccef70ec2a092c3"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "2d18fb6cf34eb9cc4f380d8679aa3fd4873d9fb73679e0857fbe640b9b8f805c",
+      "stored": "9465a81c887cb13544640c6c66a4ee86f6b8c4e82c7b54445ccef70ec2a092c3"
+     },
+     {
+      "op": "importActivities",
+      "code": "OK",
+      "status": "KEEP",
+      "version": 3,
+      "recorded": 1,
+      "screen": null,
+      "answer": "9f7d73e9244d46d30af71c57c433a78557fc8efbec256c3d0b8781192b5c1006",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "submit",
+      "code": "LIMIT_EXCEEDED",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "85bf692cb4b343eeb8e89f15279437ac854b081963a95d750242f109f4029ef8",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "submit",
+      "code": "CROSS_AUTHOR_CORRECTION",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "8a6245434de43f602056a2e6a27b0c340f8050bacc96a63ff0494b1ed04f9037",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "read",
+      "code": "OK",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "1ad81354ca979f3152ace10ed19ce49d7b9d67a609f72b8474301653a37421b0",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     },
+     {
+      "op": "submit",
+      "code": "CLOCK_BEHIND_RECORD",
+      "status": null,
+      "version": null,
+      "recorded": null,
+      "screen": null,
+      "answer": "6810ec1c3d69b5d0fd593320634f8c66dd946869f00b82bc26949d993aa41365",
+      "stored": "b5b2e04a8df8c1d9af0f299e2fc79d708a20f13eb25488afbd5a28c444445b07"
+     }
+    ]
+   }
+  ],
+  "digest": "d4a853202cd9282333fe8f9975bbfa153ad43512aae634634570d2d30cab282f"
+ }
+}

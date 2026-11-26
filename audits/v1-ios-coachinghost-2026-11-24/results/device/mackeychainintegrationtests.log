@@ -1,0 +1,40 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/MacKeychainIntegrationTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 14:52:16.430.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 14:52:16.431.
+Test Suite 'MacKeychainIntegrationTests' started at 2026-11-26 14:52:16.431.
+Test Case '-[CoachingHostDeviceTests.MacKeychainIntegrationTests testFileStorageMatchesTheKeychainContract]' started.
+Test Case '-[CoachingHostDeviceTests.MacKeychainIntegrationTests testFileStorageMatchesTheKeychainContract]' passed (0.006 seconds).
+Test Case '-[CoachingHostDeviceTests.MacKeychainIntegrationTests testRealKeychainSemanticsInAnIsolatedService]' started.
+<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost/Tests/CoachingHostTests/MacKeychainIntegrationTests.swift:28: -[CoachingHostDeviceTests.MacKeychainIntegrationTests testRealKeychainSemanticsInAnIsolatedService] : Test skipped - macOS only: the iPhone suites use the real Keychain throughout
+Test Case '-[CoachingHostDeviceTests.MacKeychainIntegrationTests testRealKeychainSemanticsInAnIsolatedService]' skipped (0.001 seconds).
+Test Suite 'MacKeychainIntegrationTests' passed at 2026-11-26 14:52:16.438.
+	 Executed 2 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 14:52:16.438.
+	 Executed 2 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.007 (0.008) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 14:52:16.438.
+	 Executed 2 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.007 (0.008) seconds
+2026-11-26 14:52:16.745 xcodebuild[16471:3602808] [MT] IDETestOperationsObserverDebug: 2.005 elapsed -- Testing started completed.
+2026-11-26 14:52:16.745 xcodebuild[16471:3602808] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 14:52:16.745 xcodebuild[16471:3602808] [MT] IDETestOperationsObserverDebug: 2.005 sec, +2.005 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_14-52-14--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

@@ -1,0 +1,44 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseLockedDevice"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 13:49:56.808.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 13:49:56.809.
+Test Suite 'DevicePhaseTests' started at 2026-11-26 13:49:56.809.
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseLockedDevice]' started.
+2026-11-26 13:49:56.814190-0300 CoachingHostLab[17419:4285163] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 13:49:56.955468-0300 CoachingHostLab[17419:4285163] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 13:49:56.980548-0300 CoachingHostLab[17419:4285163] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 13:49:57.094743-0300 CoachingHostLab[17419:4285163] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+CHRESULT lock-wait {"lockTheDeviceNow":true}
+2026-11-26 13:50:32.116628-0300 CoachingHostLab[17419:4285127] [BackgroundTask] Background Task 2 ("ch-locked"), was created over 30 seconds ago. In applications running in the background, this creates a risk of termination. Remember to call UIApplication.endBackgroundTask(_:) for your task in a timely manner to avoid this.
+<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Labs/CoachingHostLab/DeviceTests/DeviceTests.swift:99: -[CoachingHostDeviceTests.DevicePhaseTests testPhaseLockedDevice] : Test skipped - the device was not locked within 300 s
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseLockedDevice]' skipped (314.963 seconds).
+Test Suite 'DevicePhaseTests' passed at 2026-11-26 13:55:11.772.
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 314.963 (314.963) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 13:55:11.772.
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 314.963 (314.964) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 13:55:11.773.
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 314.963 (314.964) seconds
+2026-11-26 13:55:12.098 xcodebuild[19688:3360705] [MT] IDETestOperationsObserverDebug: 317.581 elapsed -- Testing started completed.
+2026-11-26 13:55:12.098 xcodebuild[19688:3360705] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 13:55:12.098 xcodebuild[19688:3360705] [MT] IDETestOperationsObserverDebug: 317.581 sec, +317.581 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_13-49-54--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

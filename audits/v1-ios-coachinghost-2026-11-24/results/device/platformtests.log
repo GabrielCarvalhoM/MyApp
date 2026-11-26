@@ -1,0 +1,103 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/PlatformTests"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 14:52:35.864.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 14:52:35.864.
+Test Suite 'PlatformTests' started at 2026-11-26 14:52:35.864.
+Test Case '-[CoachingHostDeviceTests.PlatformTests testBootRefusesATamperedAssetOrBundle]' started.
+CHRESULT bundle-boot {"loadMs":"42.6","pinned":"c3c4cf981fa3c1ac7014bded55abe210cd5b1344728b40811e0c2d0dd70f29fc","tamperedAsset":"refused","tamperedBundle":"refused"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testBootRefusesATamperedAssetOrBundle]' passed (0.082 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testDeviceActivitySink]' started.
+2026-11-26 14:52:35.949194-0300 CoachingHostLab[17552:4319704] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:36.077931-0300 CoachingHostLab[17552:4319706] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:36.268750-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_d712a01e622c8de2c5211e2466
+2026-11-26 14:52:36.330506-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=2 category=- decision=-
+2026-11-26 14:52:36.392915-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=false code=BEFORE_RECORD_START version=-1 category=- decision=-
+2026-11-26 14:52:36.434510-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=false code=UNKNOWN_SESSION version=-1 category=- decision=-
+2026-11-26 14:52:36.497005-0300 CoachingHostLab[17552:4319706] [boundary] op=review ok=false code=CONFLICT_STALE_VERSION version=-1 category=- decision=-
+2026-11-26 14:52:36.623107-0300 CoachingHostLab[17552:4319706] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_92acdb70041f15964a5a753e62
+2026-11-26 14:52:36.864654-0300 CoachingHostLab[17552:4319706] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
+2026-11-26 14:52:36.866553-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=false code=RECORD_LOST version=-1 category=- decision=-
+2026-11-26 14:52:36.868666-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=-1 category=- decision=-
+CHRESULT device-sink {"beforeRecordStart":"setAsideItem#0","busy":"retryLater","duplicate":"no double credit","persistenceFailure":"retryLater","recordLost":"halted","recorded":"answered","stale":"resolved ~1","unknownSession":"resendUnlinked#0"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testDeviceActivitySink]' passed (0.926 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFailedWriteConfirmsNothingAndProtection]' started.
+2026-11-26 14:52:36.873979-0300 CoachingHostLab[17552:4319708] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:37.001853-0300 CoachingHostLab[17552:4319708] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:37.151160-0300 CoachingHostLab[17552:4319704] [boundary] op=review ok=false code=PERSISTENCE_FAILURE version=-1 category=- decision=-
+2026-11-26 14:52:37.294133-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_34ef0f5fa6bbe7af74238744fa
+CHRESULT store-write-failure {"after":"OK","failed":"PERSISTENCE_FAILURE"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFailedWriteConfirmsNothingAndProtection]' passed (0.448 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFirstLaunchReconciliation]' started.
+2026-11-26 14:52:37.324022-0300 CoachingHostLab[17552:4319704] [boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-26 14:52:37.447014-0300 CoachingHostLab[17552:4319704] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+CHRESULT first-launch {"first":"FRESH_INSTALL_PURGED","second":"NOT_NEEDED"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testFirstLaunchReconciliation]' passed (0.190 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testHmacVectorsAndProductionKey]' started.
+CHRESULT hmac-and-key {"direct":"40","keyBytes":"32","keychainAccessible":"cku","vectors":"40","viaJS":"40"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testHmacVectorsAndProductionKey]' passed (0.085 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSignalsComeAfterTheCommit]' started.
+2026-11-26 14:52:37.597653-0300 CoachingHostLab[17552:4319704] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:37.717866-0300 CoachingHostLab[17552:4319704] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:37.891237-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=2 category=PLAN_KEPT decision=dc_abdc8f60b29ec235d2b3483434
+2026-11-26 14:52:37.970824-0300 CoachingHostLab[17552:4319708] [boundary] op=consent ok=true code=- version=3 category=- decision=-
+2026-11-26 14:52:38.015089-0300 CoachingHostLab[17552:4319708] [boundary] op=erasure ok=true code=- version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSignalsComeAfterTheCommit]' passed (0.423 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSinkWaitsForTheScreen]' started.
+2026-11-26 14:52:38.020935-0300 CoachingHostLab[17552:4319707] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:38.149714-0300 CoachingHostLab[17552:4319707] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:38.302233-0300 CoachingHostLab[17552:4319704] [boundary] op=review ok=true code=- version=2 category=INPUT_NEEDED decision=dc_48783f3476d2221650b1533b33
+2026-11-26 14:52:38.468351-0300 CoachingHostLab[17552:4319707] [boundary] op=review ok=true code=- version=3 category=PLAN_KEPT decision=dc_dd4527d670f0ed1941643e62da
+2026-11-26 14:52:38.630431-0300 CoachingHostLab[17552:4319704] [boundary] op=review ok=true code=- version=4 category=PLAN_KEPT decision=dc_247c0c5f61dc22d4ceb32f0141
+CHRESULT device-sink-screen {"afterScreen":"recorded","first":"answered(version: 2, activities: [IntegrationContracts.ActivityResult(index: 0, activityId"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testSinkWaitsForTheScreen]' passed (0.615 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTimeInZoneIsGated]' started.
+2026-11-26 14:52:38.636085-0300 CoachingHostLab[17552:4319704] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:38.764646-0300 CoachingHostLab[17552:4319704] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTimeInZoneIsGated]' passed (0.179 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTrustedClockD1]' started.
+2026-11-26 14:52:38.815577-0300 CoachingHostLab[17552:4319707] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:38.957604-0300 CoachingHostLab[17552:4319707] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 14:52:39.039819-0300 CoachingHostLab[17552:4319708] [boundary] op=consent ok=true code=- version=2 category=- decision=-
+2026-11-26 14:52:39.099981-0300 CoachingHostLab[17552:4319708] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 14:52:39.100519-0300 CoachingHostLab[17552:4319708] [boundary] host=d1-refused code=CLOCK_AHEAD_OF_REFERENCE
+2026-11-26 14:52:39.231103-0300 CoachingHostLab[17552:4319707] [boundary] op=consent ok=true code=- version=3 category=- decision=-
+2026-11-26 14:52:39.302282-0300 CoachingHostLab[17552:4319708] [boundary] op=review ok=true code=- version=3 category=- decision=-
+2026-11-26 14:52:39.378002-0300 CoachingHostLab[17552:4319708] [boundary] op=consent ok=true code=- version=4 category=- decision=-
+2026-11-26 14:52:39.428407-0300 CoachingHostLab[17552:4319707] [boundary] op=consent ok=false code=CLOCK_BEHIND_RECORD version=-1 category=- decision=-
+2026-11-26 14:52:39.481611-0300 CoachingHostLab[17552:4319707] [boundary] op=consent ok=true code=- version=5 category=- decision=-
+CHRESULT d1 {"behind":"CLOCK_BEHIND_RECORD","plus299":"accepted","plus301":"CLOCK_AHEAD_OF_REFERENCE","reboot":"reference invalidated","sink":"waiting","version":"2"}
+Test Case '-[CoachingHostDeviceTests.PlatformTests testTrustedClockD1]' passed (0.692 seconds).
+Test Case '-[CoachingHostDeviceTests.PlatformTests testUnknownKeyRefRefuses]' started.
+2026-11-26 14:52:39.507914-0300 CoachingHostLab[17552:4319708] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 14:52:39.547229-0300 CoachingHostLab[17552:4319708] [boundary] op=onboard ok=false code=OPERATIONAL_ERROR version=-1 category=- decision=-
+Test Case '-[CoachingHostDeviceTests.PlatformTests testUnknownKeyRefRefuses]' passed (0.042 seconds).
+Test Suite 'PlatformTests' passed at 2026-11-26 14:52:39.549.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 3.683 (3.685) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 14:52:39.549.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 3.683 (3.685) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 14:52:39.549.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 3.683 (3.686) seconds
+2026-11-26 14:52:39.858 xcodebuild[16559:3603463] [MT] IDETestOperationsObserverDebug: 5.885 elapsed -- Testing started completed.
+2026-11-26 14:52:39.858 xcodebuild[16559:3603463] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 14:52:39.858 xcodebuild[16559:3603463] [MT] IDETestOperationsObserverDebug: 5.885 sec, +5.885 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_14-52-33--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
