@@ -141,7 +141,7 @@ struct AppTabs: View {
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
             case .notFeeling: NotFeeling100Flow()
             case .readiness: ReadinessFlow()
-            case .strength(let l): StrengthLogView(session: l.session)
+            case .strength(let l): StrengthLogView(viewModel: StrengthLogViewModel(session: l.session, writer: model.writer, planToday: { [model] in model.plan?.today }))
             case .moving(let s): UnavailableDaySheet(session: s)
             }
         }

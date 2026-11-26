@@ -200,4 +200,67 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["strength-save"].tap()
         XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
     }
+
+    /// #37: a planned strength session records only what the athlete confirmed. Untouched (minutes alone) it cannot be saved; "Fiz como
+    /// prescrito" states every prescribed set.
+    @MainActor
+    func testPlannedStrengthConfirmedAsPrescribed() {
+        let app = openPlannedStrength()
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "não registrada", "no set is pre-filled as done")
+        addStrengthMinutes(app)
+        let save = app.buttons["strength-save"]
+        XCTAssertFalse(save.isEnabled, "minutes alone never report the prescribed sets as done")
+        XCTAssertTrue(el(app, "strength-needs-set").exists)
+        for _ in 0..<8 where !app.buttons["strength-as-prescribed"].isHittable { app.swipeDown() }
+        app.buttons["strength-as-prescribed"].tap()
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada")
+        attach(app, "Execução de força — fiz como prescrito (41)")
+        for _ in 0..<8 where !save.isHittable { app.swipeUp() }
+        XCTAssertTrue(save.isEnabled)
+        XCTAssertEqual(app.buttons["set-dead-bug-0"].value as? String, "registrada")
+        save.tap()
+        XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
+    }
+
+    /// #37: a partial log. One set checked as prescribed, another stated by its repetitions; every other set stays unrecorded.
+    @MainActor
+    func testPlannedStrengthPartialLog() {
+        let app = openPlannedStrength()
+        app.buttons["set-goblet-squat-0"].tap()
+        let reps = app.steppers["reps-goblet-squat-1"].buttons.element(boundBy: 1)
+        for _ in 0..<5 { reps.tap() }
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-goblet-squat-1"].value as? String, "registrada")
+        XCTAssertEqual(app.buttons["set-db-bench-press-0"].value as? String, "não registrada")
+        attach(app, "Execução de força — registro parcial (41)")
+        addStrengthMinutes(app)
+        let save = app.buttons["strength-save"]
+        for _ in 0..<8 where !save.isHittable { app.swipeUp() }
+        XCTAssertTrue(save.isEnabled, "a partial log can be saved")
+        save.tap()
+        XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    private func openPlannedStrength() -> XCUIApplication {
+        let app = launch("first-week")
+        app.buttons["tab-plan"].tap()
+        let row = app.buttons["plan-session-w0-str-d2"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        let start = app.buttons["session-start"]
+        XCTAssertTrue(start.waitForExistence(timeout: 5))
+        start.tap()
+        XCTAssertTrue(el(app, "screen-strength-log").waitForExistence(timeout: 5))
+        return app
+    }
+
+    @MainActor
+    private func addStrengthMinutes(_ app: XCUIApplication) {
+        let minutes = app.steppers["strength-minutes"]
+        for _ in 0..<8 where !minutes.isHittable { app.swipeUp() }
+        let inc = minutes.buttons.element(boundBy: 1)
+        for _ in 0..<6 { inc.tap() }
+    }
 }
