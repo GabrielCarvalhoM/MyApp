@@ -9,11 +9,11 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 
 | | |
 |---|---|
-| Concluídas | #31 Verified · frente C integrada em `claude/v1-ios-integration` (`cbf051f`, PR #42; #4–#13 = Integrated, validação simulador/sintético) · #32.1 (PR #43) e #32.2 (PR #44) na frente C (`0a05d95`) · specs/v1 · gate de 350 linhas · ruleset da integração (PR + `CI`) |
-| Em andamento | nada em execução |
-| Próxima pronta | **#32.3** ViewModels de segurança (`NotFeeling100ViewModel`, `ReadinessViewModel`, ARCHITECTURE §4 #3) — absorve QRE N8 (duplo envio na prontidão) e SSCTR N5/N6 de #39 · depois **#38** (regra SSCTR registrada na issue) |
-| Depois | PR C → integração com #32.1/#32.2 (C está à frente da integração) · #41 · #39 · #37 (precisa da escolha de UX "fiz como prescrito") |
-| Regra nova | `claude/v1-ios-integration` só por PR com `CI` verde (inclusive a orquestração) |
+| Concluídas | C integrada (PR #42) · #32.1/#32.2 na frente C · #31 Verified · orquestração na integração (PR #45) |
+| Em revisão | **PR #50** (A → integração) e **PR #51** (B → integração): revisões independentes READY_WITH_CONDITIONS, sem P0/P1, condições em #49 (A), #47 (decisão) e #48 (B); aguardando CI · **PR #46** (#38 retomada sob bloqueio → C): revisão independente em andamento |
+| Em implementação | #37 (worktree `myapp-v1-c-i37`, simulador RepMile-C-2) · #32.3 (worktree `myapp-v1-c-i32c`, simulador RepMile-C-3) |
+| Próxima | **#16** raiz de composição real (`ios/App/Composition`): proxy para a dependência circular A↔B (`CoachingHost.open(queueControl:)` × `HealthKitIngestor(sink:)`), id de atleta local aleatório (CCP-A-05), linkar CoachingHost e HealthKitIngest no app, entitlement e textos de permissão do HealthKit, modo fixture mantido para `-scenario`; uma instância de `CoachingHost` por atleta (condição de #49) → depois #17, #18, #19 |
+| Simuladores | RepMile-C-SwiftUI (orquestrador), RepMile-C-2 (#37), RepMile-C-3 (#32.3) |
 
 ## Branches e worktrees
 
