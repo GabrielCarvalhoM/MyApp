@@ -43,7 +43,7 @@ function collectGit(cwd) {
     // Measure the most advanced tip: local work not yet pushed is still checked against the ownership matrix.
     const localAhead = local && remote && git(['merge-base', '--is-ancestor', remote, local], { cwd, allowFail: true }).code === 0;
     const tip = localAhead ? local : (remote ?? local);
-    const f = { role: role.id, label: role.label, branch: b, exists: Boolean(tip), published: Boolean(remote) };
+    const f = { role: role.id, label: role.label, branch: b, tip, exists: Boolean(tip), published: Boolean(remote) };
     if (tip) {
       const base = allowlistedBase(tip, cwd);   // same accepted bases as the guard
       const [sha, date, subject] = git(['log', '-1', '--format=%h%x09%cs%x09%s', tip], { cwd }).out.split('\t');
@@ -145,7 +145,7 @@ function render(data) {
   for (const f of fronts) {
     if (!f.exists) continue;
     if (!f.containsBase) alerts.push(`${f.label}: \`${f.branch}\` não contém nenhuma tag de base \`v1-abc-*\``);
-    if (f.ownership?.forbidden || f.ownership?.approval) alerts.push(`${f.label}: ${f.ownership.forbidden} caminho(s) fora da coluna e ${f.ownership.approval} que exigem aprovação (\`node tools/orchestration/guard.mjs --head origin/${f.branch} --branch ${f.branch}\`)`);
+    if (f.ownership?.forbidden || f.ownership?.approval) alerts.push(`${f.label}: ${f.ownership.forbidden} caminho(s) fora da coluna e ${f.ownership.approval} que exigem aprovação — ${f.ownership.violations.map((v) => `\`${v.path}\``).join(', ')} (\`node tools/orchestration/guard.mjs --head ${f.tip} --branch ${f.branch}\`)`);
     if (f.unpushed) alerts.push(`${f.label}: ${f.unpushed} commit(s) local(is) não publicado(s) em \`origin/${f.branch}\``);
     if (f.behindRemote) alerts.push(`${f.label}: a branch local está ${f.behindRemote} commit(s) atrás do remoto`);
     if (f.ci && f.ci.status === 'completed' && f.ci.conclusion !== 'success') alerts.push(`${f.label}: CI ${f.ci.conclusion} — ${f.ci.url}`);
