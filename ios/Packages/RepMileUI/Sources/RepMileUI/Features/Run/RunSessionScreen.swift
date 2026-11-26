@@ -38,12 +38,28 @@ struct RunSessionScreen: View {
             Button(L.t("run.finish")) { finished = recorder.finish() }.accessibilityIdentifier("run-finish-confirm")
             Button(L.t("run.discard"), role: .destructive) { recorder.discard(); dismiss() }
         }
+        // VoiceOver: a gate that arrives while the screen is open is announced (the steps disappear at that moment).
+        .onChange(of: model.runSafetyGate(for: session)) { old, new in
+            if old == nil, let new { AccessibilityNotification.Announcement(Self.gateTitle(new) + ". " + Self.gateMessage(new)).post() }
+        }
         .onAppear {
             recorder.resumeIfNeeded()
             if recorder.state == nil { recorder.start(sessionId: session?.id, sessionDate: session?.date, steps: RecorderStep.steps(of: presentation)) }
             // Killed on the report screen: the finished recording comes back to its report.
             if finished == nil, let f = recorder.finishedRecording { finished = f }
         }
+    }
+
+    /// The banner's title per reason, the same titles Hoje uses; the message never repeats it.
+    static func gateTitle(_ r: NotStartableReason) -> String {
+        switch r {
+        case .outsideV1Scope: L.t("state.outsideScope.title")
+        case .screenRequired: L.t("state.screenRequired.title")
+        default: L.t("state.blocked.title")
+        }
+    }
+    static func gateMessage(_ r: NotStartableReason) -> String {
+        r == .blocked ? L.t("run.safety.keepRecording") : L.t("reason." + r.rawValue) + " " + L.t("run.safety.keepRecording")
     }
 
     private var live: some View {
@@ -61,7 +77,7 @@ struct RunSessionScreen: View {
             }
             .padding(.top, 12)
             if let gate {
-                StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("reason." + gate.rawValue) + " " + L.t("run.safety.keepRecording"))
+                StateBanner(tone: .safety, icon: .pausa, title: Self.gateTitle(gate), message: Self.gateMessage(gate))
                     .padding(.top, 20)
                     .accessibilityIdentifier("run-safety-gate")
             }
@@ -82,7 +98,7 @@ struct RunSessionScreen: View {
                 } else {
                     Text(Fmt.clock(recorder.movingTime)).rmText(.numeroXXL).monospacedDigit().minimumScaleFactor(0.5).lineLimit(1)
                         .accessibilityIdentifier("run-timer")
-                    Text(L.t("run.elapsed")).rmText(.detalhe, RM.Palette.textoSecundario)
+                    Text(L.t("run.elapsed")).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("run-timer-elapsed")
                 }
                 if let i = step?.intensity {
                     HStack(spacing: 12) {
