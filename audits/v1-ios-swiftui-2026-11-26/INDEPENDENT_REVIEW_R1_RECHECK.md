@@ -30,3 +30,13 @@ there; blocks REAL_ATHLETE_READY) · #39 remaining P2/P3 (QRE N4, N6, N8, N10, N
 
 Clinical wording stays INTERIM / CLINICAL_HUMAN_REQUIRED. REAL_ATHLETE_READY = NO. A narrow independent verification of increment 09 is
 required before integration (P1).
+
+## Verification of increment 09 → increment 10
+
+Independent read-only verification of `a15e938..3035841`: items 1–6 FIXED; **NOT_READY** for one P1 regression introduced by the fix of N7:
+with `warningSignScreen = REQUIRED` and the report not kept (reproducible: planned run stopped for a symptom, fixture
+`actions-C1-run-stop-symptom`), the screen banner was no longer shown. Increment 10: the screen-required flag is kept apart from `kept`; not
+kept shows the banner with "Reenviar"/"Sair", kept shows it with "Concluir". New UI test `testSymptomStopAlwaysOffersTheWarningSignScreen`.
+Test hardening: time deadline in `ReloadGateTests` (N3), Gregorian calendar in the day test (N4). XCUITest 34/34, RepMileUI unit 23/23
+([results](results/inc10-screen-required/)). Remaining P3 (overlapping-load ordering test, reported-restore and not-kept+REQUIRED unit tests,
+start briefly disabled during reloads without a hint, `PlanView.today` time base to confirm with A) → #39.

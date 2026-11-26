@@ -27,6 +27,9 @@ struct RunReportView: View {
     @State private var sending = false
     @State private var result: Result?
     @State private var showSigns = false
+    /// The engine asked for the warning-sign screen (`warningSignScreen.status == REQUIRED`). Kept apart from `result`: the instruction stands
+    /// whether or not the report itself was kept ("whatever the plan state", Readings.swift), so a not-kept report still shows it.
+    @State private var screenRequired = false
     enum Result: Equatable { case saved, notKept, failed(String), screenRequired }
 
     var body: some View {
@@ -138,14 +141,19 @@ struct RunReportView: View {
                 .transition(.scale.combined(with: .opacity)).accessibilityIdentifier("report-saved")
         case .notKept?:
             Text(L.t("report.notKept")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("report-not-kept")
+            if screenRequired { screenRequiredBanner }
         case .screenRequired?:
-            StateBanner(tone: .safety, icon: .lista, title: L.t("state.screenRequired.title"), message: L.t("screen.required"),
-                        actionTitle: L.t("state.screenRequired.action")) { showSigns = true }
-                .accessibilityIdentifier("report-screen-required")
+            screenRequiredBanner
         case .failed(let code)?:
             Text(code == "CONFLICT_STALE_VERSION" ? L.t("state.stale.body") : L.t("state.opError.body")).rmText(.detalhe, RM.Palette.negativo)
         case nil: EmptyView()
         }
+    }
+
+    private var screenRequiredBanner: some View {
+        StateBanner(tone: .safety, icon: .lista, title: L.t("state.screenRequired.title"), message: L.t("screen.required"),
+                    actionTitle: L.t("state.screenRequired.action")) { showSigns = true }
+            .accessibilityIdentifier("report-screen-required")
     }
 
     private var canSend: Bool { !sending && result != .saved && result != .screenRequired && (planned || unusual != nil) && (!stopped || stopReason != nil) }
@@ -192,8 +200,10 @@ struct RunReportView: View {
         let id = outcome.answer.recorded?.first
         let kept = id.map { outcome.kept.contains($0) } ?? false
         if kept, let id { recorder.markReported(eventId: id) }
-        // A screen required with the report NOT kept stays resendable (QRE recheck N7): "Concluir" would close the recording and lose it.
-        if kept, outcome.answer.warningSignScreen?.status.raw == "REQUIRED" { withAnimation { result = .screenRequired }; return }
+        // REQUIRED always shows the screen (verification of increment 09, N1). Not kept: the banner plus "Reenviar" / "Sair" (QRE recheck
+        // N7: "Concluir" would close the recording and lose the report); kept: the banner plus "Concluir".
+        screenRequired = outcome.answer.warningSignScreen?.status.raw == "REQUIRED"
+        if kept, screenRequired { withAnimation { result = .screenRequired }; return }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { result = kept ? .saved : .notKept }
     }
 }
