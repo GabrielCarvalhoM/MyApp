@@ -1,0 +1,41 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/DevicePhaseTests/testPhaseCrossProcessWrite"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 12:07:29.936.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:07:29.936.
+Test Suite 'DevicePhaseTests' started at 2026-11-26 12:07:29.936.
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseCrossProcessWrite]' started.
+2026-11-26 12:07:29.941896-0300 CoachingHostLab[17343:4248516] [boundary] host=first-launch-reconciled code=NOTHING_LEFT_OVER
+2026-11-26 12:07:30.084127-0300 CoachingHostLab[17343:4248523] [boundary] op=onboard ok=true code=- version=1 category=OTHER decision=-
+2026-11-26 12:07:30.160594-0300 CoachingHostLab[17343:4248523] [boundary] op=review ok=true code=- version=1 category=- decision=-
+CHRESULT device-xp-write {"declared":"195","pid":"17343"}
+Test Case '-[CoachingHostDeviceTests.DevicePhaseTests testPhaseCrossProcessWrite]' passed (0.248 seconds).
+Test Suite 'DevicePhaseTests' passed at 2026-11-26 12:07:30.185.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.248 (0.248) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:07:30.185.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.248 (0.248) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:07:30.185.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.248 (0.249) seconds
+2026-11-26 12:07:30.512 xcodebuild[25091:3053161] [MT] IDETestOperationsObserverDebug: 2.296 elapsed -- Testing started completed.
+2026-11-26 12:07:30.512 xcodebuild[25091:3053161] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:07:30.512 xcodebuild[25091:3053161] [MT] IDETestOperationsObserverDebug: 2.296 sec, +2.296 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-07-28--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

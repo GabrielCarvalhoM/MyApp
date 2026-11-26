@@ -1,0 +1,38 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project ios/Labs/CoachingHostLab/CoachingHostLab.xcodeproj -scheme CoachingHostLab -configuration Release -destination platform=iOS,id=<UDID> -derivedDataPath <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A DEVELOPMENT_TEAM=<TEAM> ENABLE_TESTABILITY=YES SWIFT_ACTIVE_COMPILATION_CONDITIONS=COACHINGHOST_TESTING "-only-testing:CoachingHostDeviceTests/PerformanceTests/testColdStart"
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = <TEAM>
+    ENABLE_TESTABILITY = YES
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = COACHINGHOST_TESTING
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  IntegrationContracts: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/IntegrationContracts @ local
+  CoachingPresentation: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingPresentation @ local
+  CoachingHost: <HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/Packages/CoachingHost @ local
+
+Test Suite 'Selected tests' started at 2026-11-26 12:08:18.855.
+Test Suite 'CoachingHostDeviceTests.xctest' started at 2026-11-26 12:08:18.856.
+Test Suite 'PerformanceTests' started at 2026-11-26 12:08:18.856.
+Test Case '-[CoachingHostDeviceTests.PerformanceTests testColdStart]' started.
+CHRESULT pf0-cold {"bootMs":48.73833304643631,"evalMs":39.16745901107788,"verifyMs":7.8619590401649475}
+Test Case '-[CoachingHostDeviceTests.PerformanceTests testColdStart]' passed (0.051 seconds).
+Test Suite 'PerformanceTests' passed at 2026-11-26 12:08:18.907.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.051 (0.052) seconds
+Test Suite 'CoachingHostDeviceTests.xctest' passed at 2026-11-26 12:08:18.907.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.051 (0.052) seconds
+Test Suite 'Selected tests' passed at 2026-11-26 12:08:18.908.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.051 (0.052) seconds
+2026-11-26 12:08:19.247 xcodebuild[25417:3055807] [MT] IDETestOperationsObserverDebug: 2.084 elapsed -- Testing started completed.
+2026-11-26 12:08:19.247 xcodebuild[25417:3055807] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-26 12:08:19.247 xcodebuild[25417:3055807] [MT] IDETestOperationsObserverDebug: 2.084 sec, +2.084 sec -- end
+
+Test session results, code coverage, and logs:
+	<HOME>/.codex/worktrees/myapp-v1-ios-coachinghost/MyApp/ios/.build/DerivedData-A/Logs/Test/Test-CoachingHostLab-2026.11.26_12-08-17--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
