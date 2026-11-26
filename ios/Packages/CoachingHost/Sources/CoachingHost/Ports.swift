@@ -109,7 +109,7 @@ extension CoachingHost: CoachingWriting {
     }
 
     func write(_ body: @escaping () -> Write) async -> WriteOutcome {
-        let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; return body() }
+        let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; let w = body(); self.lastAnswerJSON = w.answer.json; return w }
         if let p = w.purge { try? await queueControl?.purge(p) }
         if w.signalConditions { await queueControl?.deliveryConditionsChanged() }
         return w.outcome

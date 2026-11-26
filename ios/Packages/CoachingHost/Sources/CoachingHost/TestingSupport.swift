@@ -1,4 +1,5 @@
 import Foundation
+import CoachingPresentation
 
 /// Test-only reads (SPI): never part of a shared port. They expose opaque ids and versions, never a value.
 extension CoachingHost {
@@ -11,5 +12,14 @@ extension CoachingHost {
     public func versionForTesting() async -> Int? {
         let a: Answer = await onQueue { self.perform("version", clockRule: .read) }
         return (a.object["version"] as? NSNumber)?.intValue
+    }
+    /// Tests only: a review JSON exactly as given (what the Swift types cannot produce, e.g. an unplanned report without observedAt), with an
+    /// optional fixed request id (a retry of the same action after a process death).
+    @_spi(CoachingHostTesting)
+    public func submitRawForTesting(_ reviewJSON: String, requestId: String? = nil, screened: Bool = false) async -> WriteOutcome {
+        await write {
+            if let requestId { let saved = self.idSource; self.idSource = { requestId }; defer { self.idSource = saved }; return self.submitOnQueue(review: reviewJSON, screened: screened) }
+            return self.submitOnQueue(review: reviewJSON, screened: screened)
+        }
     }
 }

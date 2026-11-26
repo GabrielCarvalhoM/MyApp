@@ -15084,6 +15084,9 @@ const api=Object.freeze({
   return out({ok:true,facade:FACADE_VERSION,projections:PROJECTIONS_VERSION,pendingWeek:PENDING_WEEK_VERSION});
  },
  close(){H=null;return out({ok:true});},
+ /** The prelude's host counters (QRE-P0-02): an asset asked for but not bundled, or a host function asked for but not provided, is the loud
+  * signal an equivalence run must end without. Operational counts only. Null outside JavaScriptCore (Node has no prelude). */
+ hostCalls(){const h=typeof __p0==='undefined'?null:__p0;return out(h?{calls:h.calls,misses:h.misses,unsupported:h.unsupported}:null);},
 
  // ---- reads ----
  version:(nowMs)=>withClock(nowMs,()=>{const o=H.it.read({actor:H.actor});return o.ok?{ok:true,version:o.doc.version}:{ok:false,error:o.error,state:stateOfError(o.error)};}),

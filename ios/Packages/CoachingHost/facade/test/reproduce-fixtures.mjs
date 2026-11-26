@@ -255,8 +255,18 @@ const missing=shared.filter(f=>!covered.has(f)),unequal=compared.filter(c=>!c.eq
 // Every answer by its sha256 (UTF-8 of the exact string), every compared fixture by the sha256 of its committed bytes: the replay in
 // JavaScriptCore must give the same string for every call, and, after removing the same facade keys, the same fixture bytes.
 const sha=t=>createHash('sha256').update(t,'utf8').digest('hex');
+// The equivalence rule (handoff §10, RFC-NUMERIC-1): only the Race Forecast's unrounded numbers may differ between V8 and JavaScriptCore. The
+// classifier below (the same source runs in Node here and in JavaScriptCore in the Swift replay) gives, for one answer, the answer without any
+// runForecast block, and the runForecast blocks without their own hashes and with every non-integer number at 9 significant digits.
+const CLASSIFIER=`(function(){const H=new Set(['hash','inputDigest']);
+const strip=v=>Array.isArray(v)?v.map(strip):(v&&typeof v==='object')?Object.fromEntries(Object.entries(v).filter(([k])=>k!=='runForecast').map(([k,x])=>[k,strip(x)])):v;
+const coarse=v=>Array.isArray(v)?v.map(coarse):(v&&typeof v==='object')?Object.fromEntries(Object.entries(v).filter(([k])=>!H.has(k)).map(([k,x])=>[k,coarse(x)])):(typeof v==='number'&&Number.isFinite(v)&&!Number.isInteger(v))?Number(v.toPrecision(9)):v;
+const forecasts=(v,out=[])=>{if(Array.isArray(v))v.forEach(x=>forecasts(x,out));else if(v&&typeof v==='object')for(const [k,x] of Object.entries(v))k==='runForecast'?out.push(coarse(x)):forecasts(x,out);return out;};
+return s=>{const v=JSON.parse(s);return JSON.stringify({sans:JSON.stringify(strip(v)),coarse:JSON.stringify(forecasts(v))});};})()`;
+const classify=(0,eval)(CLASSIFIER);
 const script={generator:'ios/Packages/CoachingHost/facade/test/reproduce-fixtures.mjs',projections:PROJECTIONS_VERSION,key:KEY,
- calls:calls.map(({fn,a,out})=>({fn,a,sha256:sha(out),bytes:Buffer.byteLength(out)})),
+ classifier:CLASSIFIER,
+ calls:calls.map(({fn,a,out})=>{const c=JSON.parse(classify(out));return {fn,a,sha256:sha(out),bytes:Buffer.byteLength(out),sansForecastSha256:sha(c.sans),forecastCoarseSha256:sha(c.coarse)};}),
  fixtures:compared.map(c=>({...c,sha256:sha(fs.readFileSync(path.join(FIX,c.file),'utf8'))})),notReproduced};
 const text=JSON.stringify(script)+'\n';
 const summary={sharedFixtures:shared.length,compared:compared.length,equal:compared.filter(c=>c.equal).length,unequal,notReproduced:notReproduced.map(n=>n.file),missing,calls:calls.length};

@@ -13,7 +13,10 @@ final class TestClock: HostClockSource, @unchecked Sendable {
     let device = DeviceClock()
     init(_ iso: String = "2026-11-14T12:00:00-03:00") { wall = TestClock.ms(iso) }
     static func ms(_ iso: String) -> Double { (ISO8601DateFormatter().date(from: iso)!.timeIntervalSince1970 * 1000) }
-    func set(_ iso: String) { wall = Self.ms(iso) }
+    /// Moves the wall clock as time passing would: a forward move advances the monotonic clock by the same amount (a backward move does not).
+    func set(_ iso: String) { let w = Self.ms(iso); if w > wall { extraNanos += UInt64((w - wall) * 1_000_000) }; wall = w }
+    /// D1 tests only: the wall clock moves and the monotonic clock does not (the device clock set ahead by hand).
+    func setWallOnly(_ ms: Double) { wall = ms }
     func set(day: String, _ time: String = "12:00") { set("\(day)T\(time):00-03:00") }
     func wallMs() -> Double { wall }
     func continuousNanos() -> UInt64 { device.continuousNanos() + extraNanos }
@@ -64,6 +67,8 @@ struct HostFixture {
     let clock: TestClock
     let b: RecordingQueueControl
     let host: CoachingHost
+    /// What B heard while the host opened (the first-launch purge, "available again").
+    var callsAtOpen: [String] = []
     static func make(_ name: String, clock: TestClock = TestClock(), fixtureKeys: Bool = false, keyRef: String? = nil, clean: Bool = true,
                      exposeModules: Bool = false) async throws -> HostFixture {
         if clean { TestEnv.cleanup(name) }
@@ -75,8 +80,9 @@ struct HostFixture {
         host.timezoneOffsetOverride = -180
         let store = host.store, id = host.athleteId
         b.probe = { (NativeStore.versionOf(store.rawData(id)), FileManager.default.fileExists(atPath: store.file(id).path)) }
+        let atOpen = b.calls.map(\.name)
         b.reset()
-        return HostFixture(name: name, clock: clock, b: b, host: host)
+        return HostFixture(name: name, clock: clock, b: b, host: host, callsAtOpen: atOpen)
     }
     /// A new host over the same store and Keychain (a new process would see the same).
     func reopen(clock: TestClock? = nil) async throws -> HostFixture {

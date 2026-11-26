@@ -57,6 +57,12 @@ public final class CoachingHost: @unchecked Sendable {
     var busyRetryDelay: useconds_t = 50_000
     /// Tests only: the plan's fixed offset to state in an intake (the app uses the device's current offset).
     var timezoneOffsetOverride: Int?
+    /// Tests only: the next N versioned calls send a version one behind (to exercise the CONFLICT_STALE_VERSION retry, contract §6.1).
+    var versionSkewForTesting = 0
+    /// Tests only: the request ids the host sent, in order.
+    var sentRequestIds: [String] = []
+    /// Tests only: the last write's answer as the facade returned it.
+    var lastAnswerJSON: String?
 
     // MARK: opening
 
@@ -165,9 +171,10 @@ public final class CoachingHost: @unchecked Sendable {
                     if versioned {
                         let v = try self.runtime.call("version", [nowMs])
                         let vo = (try? JSONSerialization.jsonObject(with: Data(v.utf8)) as? [String: Any]) ?? [:]
-                        fields.append(("expectedVersion", (vo["version"] as? NSNumber).map { String($0.intValue) } ?? "null"))
+                        let skew = self.versionSkewForTesting > 0 ? 1 : 0; if skew > 0 { self.versionSkewForTesting -= 1 }
+                        fields.append(("expectedVersion", (vo["version"] as? NSNumber).map { String($0.intValue - skew) } ?? "null"))
                     }
-                    if let rid { fields.append(("clientRequestId", JSONText.string(rid))) }
+                    if let rid { fields.append(("clientRequestId", JSONText.string(rid))); self.sentRequestIds.append(rid) }
                     let out = args == nil && !versioned && rid == nil ? try self.runtime.call(fn, [nowMs]) : try self.runtime.call(fn, [JSONText.object(fields), nowMs])
                     return Answer(json: out, object: (try? JSONSerialization.jsonObject(with: Data(out.utf8)) as? [String: Any]) ?? [:])
                 }
