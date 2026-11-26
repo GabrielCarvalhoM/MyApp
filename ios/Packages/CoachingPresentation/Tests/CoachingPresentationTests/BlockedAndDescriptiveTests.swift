@@ -105,6 +105,12 @@ final class BlockedAndDescriptiveTests: XCTestCase {
         XCTAssertEqual(e.measuredKm, e.voices.first { $0.channel == "DEVICE" }?.measuredKm); XCTAssertNotNil(e.declaredKm)
         XCTAssertEqual(e.rpe, e.voices.first { $0.channel == "ATHLETE" }?.rpe, "athlete-only facts come from the athlete's voice")
         XCTAssertTrue(e.voices.allSatisfy { two.keeps($0.eventId) }, "both voices of a planned session are kept")
+        // QRE-ABC-01: an athlete's symptom stop against a completed device run stays visible, in the athlete's voice and at the top.
+        let conflict = try XCTUnwrap(try fixture(LoggedEntries.self, "P-logged-conflict").entries.first { !$0.superseded && $0.voices.count == 2 })
+        XCTAssertEqual(conflict.stopReason, "SYMPTOM"); XCTAssertEqual(conflict.response?.recovery, "ADVERSE")
+        let athleteVoice = try XCTUnwrap(conflict.voices.first { $0.channel == "ATHLETE" })
+        XCTAssertEqual(athleteVoice.completed, false); XCTAssertEqual(athleteVoice.stopReason, "SYMPTOM"); XCTAssertEqual(athleteVoice.minutes, 5)
+        XCTAssertEqual(try fixture(BoundaryAnswer.self, "conflict-1-athlete-stop-against-device").warningSignScreen?.status, "REQUIRED")
         let u = try fixture(LoggedEntries.self, "P-logged-unplanned")
         let contested = try XCTUnwrap(u.entries.first { $0.contested != nil })
         XCTAssertEqual(contested.measuredKm, 12.5); XCTAssertEqual(contested.contested?.distanceKm, 7); XCTAssertEqual(contested.contested?.reason, "SIGNAL_LOSS")
@@ -125,6 +131,8 @@ final class BlockedAndDescriptiveTests: XCTestCase {
         struct TimeFile: Decodable { let timeInZones: TimeInZoneReading }
         let gated = try fixture(TimeFile.self, "hr5r-time-in-zone-gated").timeInZones
         XCTAssertEqual(gated.status, "UNAVAILABLE"); XCTAssertEqual(gated.reason, "SERIES_CHANNEL_NOT_REVIEWED"); XCTAssertNil(gated.seconds); XCTAssertFalse(gated.fromAverageHeartRate)
+        let gatedRaw = try Repo.text("ios/Packages/CoachingPresentation/Tests/CoachingPresentationTests/Fixtures/hr5r-time-in-zone-gated.json")
+        XCTAssertFalse(gatedRaw.contains("\"seconds\"") || gatedRaw.contains("\"engine\""), "SSCTR-ABC-S3: the gated answer carries no distribution")
         XCTAssertEqual(try fixture(TimeFile.self, "hr5r-time-in-zone-hold").timeInZones.reason, "HOLD_NO_PRESCRIPTION")
     }
 }

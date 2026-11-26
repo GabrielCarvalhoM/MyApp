@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {athlete,athleteA,ELIG,addDays,U} from '../../../../../CoachingCore/test/v1int-helpers.mjs';
 import {signsFor,exerciseSignsFor,READINESS_SIGNS,CONDITIONS} from '../../../../../CoachingCore/src/v1-f08.mjs';
-import {loggedEntries,keepsReport,weekPlan,warningSignSet,warningSignSets,timeInZones} from '../app-projections.mjs';
+import {loggedEntries,keepsReport,weekPlan,warningSignSet,warningSignSets,timeInZones,timeInZonesForReviewOnly,TIME_IN_ZONE_GATE} from '../app-projections.mjs';
 
 let idSeq=0;const newId=p=>`${p}_${String(++idSeq).padStart(6,'0')}`;
 const RESERVED=['provenance','context','source','sourceHash','canonicalActivityId','athleteId','reportedAt','localDate','fact','inputHashes','parts'];
@@ -28,6 +28,26 @@ test('loggedEntries: exactly the visible rows, no reserved key, corrections and 
  assert.ok(keepsReport(e,r2.recorded[0]));
  // eraseAccount: nothing to read, so nothing to project.
  assert.ok(t.api.eraseAccount({actor:t.actor}).ok);const o=t.it.read({actor:t.actor});assert.equal(o.ok,false);assert.equal(o.error.code,'GONE');
+});
+
+test('two-voice row: athlete facts come from the athlete voice; distances kept apart (SSCTR-ABC-S5)',()=>{
+ const t=athlete({newId,id:'p-voices',weeks:8});t.enroll();const s=t.sessions(0).find(x=>x.sport==='RUN');t.set(s.date,'08:00');
+ assert.ok(t.import([t.watch(s)],{eligibility:ELIG(s.date)}).ok);t.set(s.date,'20:00');const f=t.form(s);
+ assert.ok(t.weekly(s.date,[{...f,actual:{...f.actual,rpe:6,distanceKm:6.5}}]).ok);
+ const [e]=loggedEntries(t.rows()).filter(x=>x.sessionId===s.id);const av=e.voices.find(v=>v.channel==='ATHLETE'),dv=e.voices.find(v=>v.channel==='DEVICE');
+ assert.deepEqual(e.channels,['ATHLETE','DEVICE']);assert.equal(e.rpe,6);assert.equal(e.rpe,av.rpe);assert.deepEqual(e.response,av.response);
+ assert.equal(e.declaredKm,6.5);assert.equal(e.measuredKm,dv.measuredKm);assert.notEqual(e.measuredKm,e.declaredKm);
+});
+
+test('QRE-ABC-01: a symptom stop the athlete reports against a completed device run stays visible',()=>{
+ const t=athlete({newId,id:'p-conflict',weeks:8});t.enroll();const s=t.sessions(0).find(x=>x.sport==='RUN');t.set(s.date,'08:00');
+ assert.ok(t.import([t.watch(s)],{eligibility:ELIG(s.date)}).ok);t.set(s.date,'20:00');const f=t.form(s);
+ const r=t.weekly(s.date,[{...f,actual:{completed:false,minutes:5,rpe:9,stop:{reason:'SYMPTOM'}},response:{...f.response,recovery:'ADVERSE'}}]);assert.ok(r.ok);
+ assert.equal(r.warningSignScreen.status,'REQUIRED');
+ const [e]=loggedEntries(t.rows()).filter(x=>x.sessionId===s.id&&!x.superseded);
+ assert.equal(e.stopReason,'SYMPTOM');assert.equal(e.rpe,9);assert.equal(e.response.recovery,'ADVERSE');
+ const av=e.voices.find(v=>v.channel==='ATHLETE');assert.equal(av.completed,false);assert.equal(av.minutes,5);assert.equal(av.stopReason,'SYMPTOM');
+ assert.ok(e.voices.find(v=>v.channel==='DEVICE').completed);
 });
 
 test('GAP-12 / FND-ABC-01: unplanned reports need observedAt to be kept as sessions; in one request too',()=>{
@@ -57,13 +77,16 @@ test('timeInZones: the engine classifier over the engine zones, gated; never fro
  const series={sensor:'CHEST_STRAP',samples:Array.from({length:121},(_,k)=>({t:k*15,bpm:k<60?120:175}))};
  const gated=timeInZones(readings,series,{durationSeconds:1800});
  assert.equal(gated.status,'UNAVAILABLE');assert.equal(gated.reason,'SERIES_CHANNEL_NOT_REVIEWED');assert.equal(gated.fromAverageHeartRate,false);
- const open=timeInZones(readings,series,{durationSeconds:1800,enabled:true});assert.equal(open.status,'AVAILABLE');
+ assert.deepEqual(Object.keys(gated).sort(),['fromAverageHeartRate','reason','status'],'no distribution leaks under the gate (SSCTR-ABC-S3)');
+ assert.equal(TIME_IN_ZONE_GATE.enabled,false);assert.ok(Object.isFrozen(TIME_IN_ZONE_GATE));
+ assert.equal(timeInZones(readings,series,{durationSeconds:1800,enabled:true}).reason,'SERIES_CHANNEL_NOT_REVIEWED','a caller cannot open the gate');
+ const open=timeInZonesForReviewOnly(readings,series,{durationSeconds:1800});assert.equal(open.status,'AVAILABLE');
  assert.equal(open.seconds.Z1+open.seconds.Z2+open.seconds.Z3+open.seconds.Z4+open.seconds.Z5,open.coveredSeconds);
  // An average alone is not a series; a single sample is not enough; an optical series is classified with its sensor kept.
- assert.equal(timeInZones(readings,{sensor:'CHEST_STRAP',samples:[{t:0,bpm:150}]},{enabled:true}).reason,'INSUFFICIENT_SAMPLES');
- assert.equal(timeInZones(readings,{sensor:'CHEST_STRAP',samples:Array.from({length:31},(_,k)=>({t:k*60,bpm:150}))},{durationSeconds:1800,enabled:true}).reason,'INSUFFICIENT_COVERAGE','gaps are unknown time, never filled');
- assert.equal(timeInZones(readings,{sensor:'UNKNOWN',samples:series.samples},{enabled:true}).reason,'SENSOR_NOT_QUALIFYING');
- assert.equal(timeInZones(null,series,{enabled:true}).reason,'NO_FIVE_ZONE_READING');
+ assert.equal(timeInZonesForReviewOnly(readings,{sensor:'CHEST_STRAP',samples:[{t:0,bpm:150}]}).reason,'INSUFFICIENT_SAMPLES');
+ assert.equal(timeInZonesForReviewOnly(readings,{sensor:'CHEST_STRAP',samples:Array.from({length:31},(_,k)=>({t:k*60,bpm:150}))},{durationSeconds:1800}).reason,'INSUFFICIENT_COVERAGE','gaps are unknown time, never filled');
+ assert.equal(timeInZonesForReviewOnly(readings,{sensor:'UNKNOWN',samples:series.samples}).reason,'SENSOR_NOT_QUALIFYING');
+ assert.equal(timeInZonesForReviewOnly(null,series).reason,'NO_FIVE_ZONE_READING');
 });
 
 test('special population: the engine reads the key at enroll and restart; the key is the only path (GAP-02, FND-ABC-04)',()=>{

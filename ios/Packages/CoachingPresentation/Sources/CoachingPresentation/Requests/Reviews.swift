@@ -58,28 +58,53 @@ public struct WellbeingDeclaration: Encodable, Equatable, Sendable {
     public var sports: [String]?
     public var region: String?
     public var returnSpeed: ReturnSpeed?
-    /// `set` must be the engine's set for `condition`.
+    public enum Invalid: Error, Equatable { case setNotForCondition(expected: String, got: String) }
+    /// `set` must be the engine's set for `condition` (a mismatch throws: fail closed, never a crash: QRE-ABC-09).
     public init(condition: WellbeingCondition, set: WarningSignQuestionSet, intent: WellbeingIntent? = nil, days: Int? = nil, sports: [String]? = nil,
-                region: String? = nil, returnSpeed: ReturnSpeed? = nil) {
-        precondition(set.condition == condition.rawValue, "the warning-sign set must be the engine's set for this condition")
+                region: String? = nil, returnSpeed: ReturnSpeed? = nil) throws {
+        guard set.condition == condition.rawValue else { throw Invalid.setNotForCondition(expected: condition.rawValue, got: set.condition) }
         self.condition = condition; self.warningSigns = SignAnswers(asking: set.warningSigns); self.intent = intent; self.days = days
         self.sports = sports; self.region = region; self.returnSpeed = returnSpeed
     }
 }
 /// The check of a Situation 1 episode: `review.wellbeingCheck` (keys: warningSigns, exerciseResponse, improved, returnSpeed).
+/// QRE-ABC-03: with several open conditions due, the engine asks the union of their signs and `improved` per condition. The signs to ask are then
+/// the ones the engine names in `missingInputs` (`wellbeingCheck.warningSigns.<sign>`, `wellbeingCheck.improved.<CONDITION>`), passed as `asking`.
 public struct WellbeingCheckAnswers: Encodable, Equatable, Sendable {
+    public enum Improved: Encodable, Equatable, Sendable {
+        /// One condition concerned.
+        case single(Bool)
+        /// Several: `{CONDITION: Bool}`, every due one answered.
+        case perCondition([String: Bool])
+        public func encode(to encoder: Encoder) throws {
+            var c = encoder.singleValueContainer()
+            switch self { case .single(let b): try c.encode(b); case .perCondition(let m): try c.encode(m) }
+        }
+    }
     public var warningSigns: SignAnswers
     public var exerciseResponse: SignAnswers
-    public var improved: Bool?
+    public var improved: Improved?
     public var returnSpeed: ReturnSpeed?
-    public init(set: WarningSignQuestionSet, improved: Bool? = nil, returnSpeed: ReturnSpeed? = nil) {
+    public init(set: WarningSignQuestionSet, improved: Improved? = nil, returnSpeed: ReturnSpeed? = nil) {
         warningSigns = SignAnswers(asking: set.warningSigns); exerciseResponse = SignAnswers(asking: set.exerciseSigns); self.improved = improved; self.returnSpeed = returnSpeed
     }
+    /// The signs exactly as the engine asked them (several conditions open).
+    public init(askingWarningSigns w: [String], exerciseSigns x: [String], improved: Improved? = nil, returnSpeed: ReturnSpeed? = nil) {
+        warningSigns = SignAnswers(asking: w); exerciseResponse = SignAnswers(asking: x); self.improved = improved; self.returnSpeed = returnSpeed
+    }
 }
+/// The return speeds the readiness declaration accepts (`readReadiness`: BALANCED or CONSERVATIVE; QRE-ABC-09).
+public enum ReadinessReturnSpeed: String, Codable, CaseIterable, Sendable { case conservative = "CONSERVATIVE", balanced = "BALANCED" }
 /// The readiness declaration after a hold (the ONLY exit of a clinical hold): `review.readiness` (keys: declaredRecovered, warningSigns, sports, returnSpeed).
 public struct ReadinessDeclaration: Encodable, Equatable, Sendable {
     public struct Sports: Encodable, Equatable, Sendable {
-        public struct Run: Encodable, Equatable, Sendable { public var ready: Bool; public init(ready: Bool) { self.ready = ready } }
+        public struct Run: Encodable, Equatable, Sendable {
+            public var ready: Bool
+            /// QRE-ABC-02: asked by the engine when RUN is ready and STRENGTH avoids lower-body work (`readiness.sports.RUN.runningNotRestricted`).
+            /// Nil = not asked (omitted); the form sends it when the engine's `missingInputs` names it.
+            public var runningNotRestricted: Bool?
+            public init(ready: Bool, runningNotRestricted: Bool? = nil) { self.ready = ready; self.runningNotRestricted = runningNotRestricted }
+        }
         public struct Strength: Encodable, Equatable, Sendable {
             public var ready: Bool
             /// `v1-f08.mjs RESTRICTIONS`: AVOID_LOWER_BODY_STRENGTH, AVOID_UPPER_BODY_STRENGTH.
@@ -94,10 +119,11 @@ public struct ReadinessDeclaration: Encodable, Equatable, Sendable {
     public var warningSigns: SignAnswers
     public var sports: Sports
     public var returnSpeed: ReturnSpeed?
-    /// `set` must be the READINESS set (15 signs).
-    public init(declaredRecovered: Bool, set: WarningSignQuestionSet, sports: Sports, returnSpeed: ReturnSpeed? = nil) {
-        precondition(set.condition == "READINESS", "the readiness declaration asks the READINESS set")
-        self.declaredRecovered = declaredRecovered; warningSigns = SignAnswers(asking: set.warningSigns); self.sports = sports; self.returnSpeed = returnSpeed
+    /// `set` must be the READINESS set (15 signs); otherwise it throws (fail closed).
+    public init(declaredRecovered: Bool, set: WarningSignQuestionSet, sports: Sports, returnSpeed: ReadinessReturnSpeed? = nil) throws {
+        guard set.condition == "READINESS" else { throw WellbeingDeclaration.Invalid.setNotForCondition(expected: "READINESS", got: set.condition) }
+        self.returnSpeed = returnSpeed.map { ReturnSpeed(rawValue: $0.rawValue)! }
+        self.declaredRecovered = declaredRecovered; warningSigns = SignAnswers(asking: set.warningSigns); self.sports = sports
     }
 }
 

@@ -21,10 +21,15 @@ final class AdditiveContractTests: XCTestCase {
         XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: []), .deliverByNormalRule)
         XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: [rec("w0-run-d1", "ob_1")]), .deliverLinked(sessionId: "w0-run-d1"))
         XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: [rec(nil, "ob_1")]), .setAside(code: "OVERLAPS_APP_RECORDING"))
-        XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: [rec("w0-run-d1", nil)]), .setAside(code: "OVERLAPS_APP_RECORDING"), "not yet reported: never two runs")
+        XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: [rec("w0-run-d1", nil)]), .holdUntilRecordingSettles(recordingId: "rec-1"), "not yet reported: waits, never lost")
+        XCTAssertEqual(RecordingDedupe.decision(workout: watch, recordings: [rec(nil, nil)]), .holdUntilRecordingSettles(recordingId: "rec-1"))
         let later = DateInterval(start: t0 + 1500, end: t0 + 4000)
         XCTAssertEqual(RecordingDedupe.decision(workout: later, recordings: [rec(nil, "ob_1")]), .deliverByNormalRule, "300 s of 1800 overlap: a different run")
-        XCTAssertTrue(RecordingDedupe.sameRun(DateInterval(start: t0, end: t0 + 100), DateInterval(start: t0 + 50, end: t0 + 1000)))
+        // SSCTR-ABC-S4 c: a 5-minute accidental app recording inside a 60-minute watch run never sets the watch run aside.
+        let short = AppRecordedRunRef(id: "rec-2", sessionId: nil, start: t0 + 600, end: t0 + 900, reportedEventId: "ob_2")
+        XCTAssertEqual(RecordingDedupe.decision(workout: DateInterval(start: t0, end: t0 + 3600), recordings: [short]), .deliverByNormalRule)
+        XCTAssertFalse(RecordingDedupe.sameRun(DateInterval(start: t0, end: t0 + 100), DateInterval(start: t0 + 50, end: t0 + 1000)))
+        XCTAssertTrue(RecordingDedupe.sameRun(DateInterval(start: t0, end: t0 + 1000), DateInterval(start: t0 + 50, end: t0 + 1000)))
         XCTAssertFalse(RecordingDedupe.sameRun(DateInterval(start: t0, end: t0 + 100), DateInterval(start: t0 + 100, end: t0 + 200)))
         // A recording reference carries no coordinate, distance, pace or route: only identity and interval.
         let keys = Set(((try? JSONSerialization.jsonObject(with: JSONEncoder().encode(rec(nil, nil)))) as? [String: Any] ?? [:]).keys)
@@ -43,7 +48,8 @@ final class AdditiveContractTests: XCTestCase {
         let script = """
         import fs from 'node:fs';const {classifySamples}=await import(\(String(reflecting: zonesModule)));
         const s=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
-        const zones=[{zone:'Z1',minBpm:null,maxBpm:123},{zone:'Z2',minBpm:124,maxBpm:153},{zone:'Z3',minBpm:154,maxBpm:169},{zone:'Z4',minBpm:170,maxBpm:184},{zone:'Z5',minBpm:185,maxBpm:null}];
+        // QRE-ABC-08: the zones are the engine's own answer for a 30-year-old (a captured fixture), never a table written here.
+        const zones=JSON.parse(fs.readFileSync(\(String(reflecting: ContractConformanceTests.repo.appendingPathComponent("ios/Packages/CoachingPresentation/Tests/CoachingPresentationTests/Fixtures/hr5r-age30-presentation.json").path)),'utf8')).readings.runCalibration.heartRateFiveZones.zones;
         console.log(JSON.stringify(classifySamples(zones,{sensor:s.sensor,source:s.source,samples:s.samples},{durationSeconds:s.durationSeconds})));
         """
         let scriptURL = dir.appendingPathComponent("c.mjs"); try Data(script.utf8).write(to: scriptURL)

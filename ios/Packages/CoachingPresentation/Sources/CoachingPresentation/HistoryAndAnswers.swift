@@ -174,6 +174,9 @@ public struct LoggedVoice: Decodable, Equatable, Sendable {
     public let measurement: Code?
     public let gpsQuality: Code?
     public let rpe: Double?
+    /// The athlete's stop, in this voice (QRE-ABC-01: a conflicted row shows each voice, never only the top line).
+    public let stopReason: Code?
+    public let exercises: [LoggedExercise]?
     public let response: LoggedResponse?
 }
 public struct LoggedResponse: Decodable, Equatable, Sendable {

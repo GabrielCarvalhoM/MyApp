@@ -153,7 +153,8 @@ public struct HeartRateMeasurement: Decodable, Equatable, Sendable {
     public let isADistribution: Bool
 }
 /// What the integration's `setHeartRateProfile` and `eraseHeartRateProfile` answer (no plan, no decision: the athlete's own maximum and
-/// limits). Both need COACHING consent (CONSENT_REQUIRED otherwise); a refusal names the `fields` to fix.
+/// limits). Setting needs COACHING consent (CONSENT_REQUIRED otherwise); ERASING never does (QRE-HR5R-N2, QRE-ABC-07: front A must not
+/// block an erasure on consent or clock). A refusal names the `fields` to fix.
 public struct HeartRateProfileAnswer: Decodable, Equatable, Sendable {
     public struct Recorded: Decodable, Equatable, Sendable { public let added: [String]; public let unchanged: [String] }
     public let ok: Bool

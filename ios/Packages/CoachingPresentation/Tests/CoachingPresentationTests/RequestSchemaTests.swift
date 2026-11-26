@@ -120,9 +120,9 @@ final class RequestSchemaTests: XCTestCase {
         let cases: [(ReviewRequest, String)] = [
             (ReviewRequest(.sessionReports([o]), eligibility: Self.screen), "WEEKLY_REVIEW"),
             (ReviewRequest(.missedSession(o), eligibility: nil), "MISSED_SESSION"),
-            (ReviewRequest(.notFeeling100(WellbeingDeclaration(condition: .unusualFatigue, set: try set("UNUSUAL_FATIGUE"), intent: .reduceLight, days: 2), reports: []), eligibility: Self.screen), "NOT_FEELING_100"),
+            (ReviewRequest(.notFeeling100(try WellbeingDeclaration(condition: .unusualFatigue, set: try set("UNUSUAL_FATIGUE"), intent: .reduceLight, days: 2), reports: []), eligibility: Self.screen), "NOT_FEELING_100"),
             (ReviewRequest(.wellbeingCheck(WellbeingCheckAnswers(set: try set("MILD_ILLNESS")), reports: []), eligibility: nil), "WELLBEING_CHECK"),
-            (ReviewRequest(.readiness(ReadinessDeclaration(declaredRecovered: true, set: try set("READINESS"), sports: .init(run: .init(ready: true), strength: .init(ready: true, restrictions: []))), reports: []), eligibility: Self.screen), "READINESS_DECLARATION"),
+            (ReviewRequest(.readiness(try ReadinessDeclaration(declaredRecovered: true, set: try set("READINESS"), sports: .init(run: .init(ready: true), strength: .init(ready: true, restrictions: []))), reports: []), eligibility: Self.screen), "READINESS_DECLARATION"),
             (ReviewRequest(.reportBreak(BreakReport(reasonCategory: "TRAVEL", nonclinical: true, startDate: "2026-11-18", endDate: "2026-11-24")), eligibility: Self.screen), "RETURN_AFTER_PAUSE"),
             (ReviewRequest(.unavailableDays(["2026-11-19"]), eligibility: Self.screen), "UNAVAILABLE_DAY"),
             (ReviewRequest(.preferences(volume: ["RUN": .lower], difficulty: nil), eligibility: nil), "PREFERENCE_CHANGE"),
@@ -148,7 +148,7 @@ final class RequestSchemaTests: XCTestCase {
         XCTAssertEqual(sets.map(\.condition), ["MILD_INDISPOSITION", "UNUSUAL_FATIGUE", "MILD_ILLNESS", "MINOR_DISCOMFORT", "NEED_REST", "READINESS"])
         XCTAssertEqual(sets.map(\.warningSigns.count), [15, 13, 15, 9, 9, 15], "9/13/15 by condition; never a fixed number in the UI")
         let fatigue = try XCTUnwrap(sets.first { $0.condition == "UNUSUAL_FATIGUE" }), minor = try XCTUnwrap(sets.first { $0.condition == "MINOR_DISCOMFORT" })
-        var w = WellbeingDeclaration(condition: .minorDiscomfort, set: minor, intent: .reduceLight, days: 2)
+        var w = try WellbeingDeclaration(condition: .minorDiscomfort, set: minor, intent: .reduceLight, days: 2)
         XCTAssertThrowsError(try w.warningSigns.answer("bodyWideAches", false), "bodyWideAches is not asked for MINOR_DISCOMFORT") {
             XCTAssertEqual($0 as? SignAnswers.Invalid, .notAsked("bodyWideAches"))
         }
@@ -157,9 +157,23 @@ final class RequestSchemaTests: XCTestCase {
         let e = try encoded(w)
         XCTAssertTrue(Set(e.keys).isSubset(of: Set(try Self.f08Keys("w"))))
         XCTAssertEqual((e["warningSigns"] as? [String: Bool])?.count, 8, "the unanswered sign is omitted (asked again), never sent as false")
-        XCTAssertTrue(Set(try encoded(WellbeingCheckAnswers(set: fatigue, improved: true)).keys).isSubset(of: Set(try Self.f08Keys("c"))))
-        let r = ReadinessDeclaration(declaredRecovered: true, set: try XCTUnwrap(sets.last), sports: .init(run: .init(ready: true), strength: nil))
-        XCTAssertTrue(Set(try encoded(r).keys).isSubset(of: Set(try Self.f08Keys("r"))))
+        XCTAssertTrue(Set(try encoded(WellbeingCheckAnswers(set: fatigue, improved: .single(true))).keys).isSubset(of: Set(try Self.f08Keys("c"))))
+        let r = try ReadinessDeclaration(declaredRecovered: true, set: try XCTUnwrap(sets.last), sports: .init(run: .init(ready: true, runningNotRestricted: true), strength: .init(ready: true, restrictions: ["AVOID_LOWER_BODY_STRENGTH"])))
+        let re = try encoded(r)
+        XCTAssertTrue(Set(re.keys).isSubset(of: Set(try Self.f08Keys("r"))))
+        // QRE-ABC-02: the nested sports objects use exactly the reader's keys (`unknownKeys(x, s==='RUN' ? [...] : [...])`).
+        let f08src = try Repo.text(Self.f08)
+        XCTAssertTrue(f08src.contains("unknownKeys(x,s==='RUN'?['ready','runningNotRestricted']:['ready','restrictions'])"))
+        let sp = try XCTUnwrap(re["sports"] as? [String: [String: Any]])
+        XCTAssertEqual(Set(sp["RUN"]!.keys), ["ready", "runningNotRestricted"]); XCTAssertEqual(Set(sp["STRENGTH"]!.keys), ["ready", "restrictions"])
+        XCTAssertTrue(f08src.contains("['BALANCED','CONSERVATIVE'].includes(r.returnSpeed)"), "readiness speeds")
+        XCTAssertEqual(Set(ReadinessReturnSpeed.allCases.map(\.rawValue)), ["BALANCED", "CONSERVATIVE"])
+        XCTAssertThrowsError(try ReadinessDeclaration(declaredRecovered: true, set: fatigue, sports: .init(run: nil, strength: nil)), "a wrong set throws, never traps")
+        XCTAssertThrowsError(try WellbeingDeclaration(condition: .mildIllness, set: fatigue))
+        // QRE-ABC-03: improved is one boolean or one per open condition.
+        let multi = WellbeingCheckAnswers(askingWarningSigns: ["feverOrChills"], exerciseSigns: [], improved: .perCondition(["MILD_ILLNESS": true, "UNUSUAL_FATIGUE": false]))
+        XCTAssertEqual(try encoded(multi)["improved"] as? [String: Bool], ["MILD_ILLNESS": true, "UNUSUAL_FATIGUE": false])
+        XCTAssertEqual(try encoded(WellbeingCheckAnswers(set: fatigue, improved: .single(true)))["improved"] as? Bool, true)
         // The vocabulary is the engine's: every sign of every set is one of WARNING_SIGNS / EXERCISE_SIGNS.
         let f08 = try Repo.text(Self.f08)
         for s in sets.flatMap({ $0.warningSigns + $0.exerciseSigns }) { XCTAssertTrue(f08.contains(":'\(s)'"), s) }

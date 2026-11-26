@@ -24,10 +24,14 @@ public enum NotStartableReason: String, Equatable, Sendable, CaseIterable {
     case clockUntrusted = "CLOCK_UNTRUSTED"
     case recordUnavailable = "RECORD_UNAVAILABLE"
     case repertoireExpired = "REPERTOIRE_EXPIRED"
-    /// FND-ABC-04 (safety, fail closed): the athlete's latest intake (a restart) declared a special population or another out-of-scope fact and
-    /// was answered UNSUPPORTED, while the earlier plan stays in force in the record. A keeps a persistent native signal (as SEC-FPV-01) and
-    /// starts nothing until an intake the engine accepts, or the account is erased. Pending SSCTR + Security confirmation; never relaxed by a front.
+    /// FND-ABC-04 (safety, fail closed; SSCTR-ABC-S2): the athlete's latest intake (a restart) was answered UNSUPPORTED — any population reason
+    /// (SPECIAL_POPULATION_OUTSIDE_V1, POPULATION_OUTSIDE_V1_AGE_RANGE) and, for now, any event-scope reason — while the earlier plan stays in force
+    /// in the record. A keeps a persistent native signal (as SEC-FPV-01) and starts nothing until an intake the engine accepts, or the account is
+    /// erased. ASK and INVALID_INPUT do not set it. Never relaxed by a front.
     case outsideV1Scope = "OUTSIDE_V1_SCOPE"
+    /// FND-ABC-04b (safety, fail closed): a restart answered CLINICAL_HUMAN_REQUIRED (a clinical flag declared at restart) leaves the earlier plan
+    /// executable in the record. Same persistent signal and release as `outsideV1Scope`; the athlete is sent to a qualified human (no dose).
+    case clinicalHumanRequired = "CLINICAL_HUMAN_REQUIRED"
 }
 
 /// The app's queue of athlete reports not yet on record (NOT_SYNCED is the app's own state, never the engine's).

@@ -59,8 +59,9 @@ public struct PlannedRunActual: Codable, Equatable, Sendable {
     public var completed: Bool
     public var minutes: Double?
     public var seconds: Double?
-    /// The distance the athlete DECLARES (their own number). A distance the iPhone or a watch measured is never put here (GAP-16).
-    public var distanceKm: Double?
+    /// The distance the athlete DECLARES (their own number; encoded as `distanceKm`). A distance the iPhone or a watch measured is never put
+    /// here (GAP-16): the name says whose number it is (QRE-ABC-10).
+    public var declaredDistanceKm: Double?
     /// 0–10.
     public var rpe: Double?
     /// A stop and its reason. SYMPTOM raises the warning-sign screen (`warningSignScreen: REQUIRED`) for planned runs.
@@ -69,11 +70,12 @@ public struct PlannedRunActual: Codable, Equatable, Sendable {
     public var walkBreaks: Bool?
     /// The athlete contests a distance the device measured for this session (`POOR` / `CORRECTED_MEASUREMENT`).
     public var declared: ContestedDistance?
-    public init(completed: Bool, minutes: Double? = nil, seconds: Double? = nil, distanceKm: Double? = nil, rpe: Double? = nil, stop: RunStop? = nil,
+    public init(completed: Bool, minutes: Double? = nil, seconds: Double? = nil, declaredDistanceKm: Double? = nil, rpe: Double? = nil, stop: RunStop? = nil,
                 conditions: [String]? = nil, walkBreaks: Bool? = nil, declared: ContestedDistance? = nil) {
-        self.completed = completed; self.minutes = minutes; self.seconds = seconds; self.distanceKm = distanceKm; self.rpe = rpe; self.stop = stop
+        self.completed = completed; self.minutes = minutes; self.seconds = seconds; self.declaredDistanceKm = declaredDistanceKm; self.rpe = rpe; self.stop = stop
         self.conditions = conditions; self.walkBreaks = walkBreaks; self.declared = declared
     }
+    enum CodingKeys: String, CodingKey { case completed, minutes, seconds, declaredDistanceKm = "distanceKm", rpe, stop, conditions, walkBreaks, declared }
 }
 public struct RunStop: Codable, Equatable, Sendable {
     public var reason: StopReason
@@ -96,11 +98,13 @@ public struct StrengthActual: Codable, Equatable, Sendable {
 public struct UnplannedRunActual: Codable, Equatable, Sendable {
     public var completed: Bool
     public var minutes: Double
-    public var distanceKm: Double?
+    /// The athlete's own number (encoded as `distanceKm`); never the iPhone's measured distance (GAP-16).
+    public var declaredDistanceKm: Double?
     public var rpe: Double?
-    public init(completed: Bool, minutes: Double, distanceKm: Double? = nil, rpe: Double? = nil) {
-        self.completed = completed; self.minutes = minutes; self.distanceKm = distanceKm; self.rpe = rpe
+    public init(completed: Bool, minutes: Double, declaredDistanceKm: Double? = nil, rpe: Double? = nil) {
+        self.completed = completed; self.minutes = minutes; self.declaredDistanceKm = declaredDistanceKm; self.rpe = rpe
     }
+    enum CodingKeys: String, CodingKey { case completed, minutes, declaredDistanceKm = "distanceKm", rpe }
 }
 
 /// One athlete report, in the observation shape the boundary admits. Build it with the static constructors: each encodes exactly the keys of its

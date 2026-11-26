@@ -38,12 +38,13 @@ public protocol AppRecordingIndex: AnyObject, Sendable {
 /// The one dedupe rule between an app recording and a HealthKit workout (provisional engineering rule, like OPEN-3; reviewed at integration by
 /// SSCTR + Engineering; no sporting meaning).
 public enum RecordingDedupe {
-    /// Two intervals are the same run when their overlap covers at least half of the shorter one.
-    public static let minimumOverlapOfShorter = 0.5
+    /// Two intervals are the same run when their overlap covers at least half of the LONGER one (so it covers both substantially): a short
+    /// accidental app recording inside a long watch run never sets the watch run aside (SSCTR-ABC-S4 c).
+    public static let minimumOverlapOfLonger = 0.5
     public static func sameRun(_ a: DateInterval, _ b: DateInterval) -> Bool {
         guard let o = a.intersection(with: b) else { return false }
-        let shorter = min(a.duration, b.duration)
-        return shorter > 0 && o.duration / shorter >= minimumOverlapOfShorter
+        let longer = max(a.duration, b.duration)
+        return longer > 0 && o.duration / longer >= minimumOverlapOfLonger
     }
     public enum Decision: Equatable, Sendable {
         /// No app recording overlaps: B links by the normal rule (contract §4.3).
@@ -51,16 +52,20 @@ public enum RecordingDedupe {
         /// The app recording was a planned session the athlete reported: deliver the workout linked to THAT session, so the boundary keeps both
         /// voices on one row (O-1) and counts the run once.
         case deliverLinked(sessionId: String)
-        /// The app recording was unplanned (or not yet reported): the workout is set aside with this code and counted (never delivered), so the
-        /// unplanned athlete report and an unlinked device run never make two runs of one.
+        /// The app recording was unplanned and REPORTED: the workout is set aside with this code and counted (never delivered), so the unplanned
+        /// athlete report and an unlinked device run never make two runs of one (the lost measured distance is counted: SSCTR-ABC-S4 b).
         case setAside(code: String)
+        /// The app recording is NOT YET reported (queued, abandoned, discarded): the workout waits and is decided again when the recording's report
+        /// arrives or the recording is discarded (then by the normal rule). Never a permanent set-aside: a run done never disappears (SSCTR-ABC-S4 a).
+        case holdUntilRecordingSettles(recordingId: String)
     }
     public static let overlapsAppRecording = "OVERLAPS_APP_RECORDING"
     public static func decision(workout: DateInterval, recordings: [AppRecordedRunRef]) -> Decision {
         guard let r = recordings.filter({ sameRun($0.interval, workout) }).max(by: { ($0.interval.intersection(with: workout)?.duration ?? 0) < ($1.interval.intersection(with: workout)?.duration ?? 0) }) else {
             return .deliverByNormalRule
         }
-        if let s = r.sessionId, r.reportedEventId != nil { return .deliverLinked(sessionId: s) }
+        guard r.reportedEventId != nil else { return .holdUntilRecordingSettles(recordingId: r.id) }
+        if let s = r.sessionId { return .deliverLinked(sessionId: s) }
         return .setAside(code: overlapsAppRecording)
     }
 }

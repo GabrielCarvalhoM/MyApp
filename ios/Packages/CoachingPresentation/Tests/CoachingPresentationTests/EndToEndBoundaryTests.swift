@@ -70,6 +70,22 @@ final class EndToEndBoundaryTests: XCTestCase {
         XCTAssertEqual(plan.state, .validPlan, "the engine keeps the earlier plan in force: the host gate (FND-ABC-04) is what stops it")
         XCTAssertTrue(plan.week?.sessions.contains { $0.executable } == true)
     }
+    /// FND-ABC-04b: a restart declaring a clinical flag is CLINICAL_HUMAN_REQUIRED and the earlier plan also stays executable: the same gate.
+    /// SSCTR-ABC-S1 C2: the "Não estou 100%" route carries the eligibility screen; a "yes" flag there is CLINICAL_HUMAN_REQUIRED.
+    func testClinicalRestartAndClinicalFlagInTheWellbeingRoute() throws {
+        var a = RequestSchemaTests.answers(special: []); a.startDate = "2026-11-23"; a.athlete.eligibility.assessedAt = "2026-11-20"; a.athlete.eligibility.pain = true
+        let restart = IntakeRequest(answers: a, asOf: "2026-11-20", timezoneOffsetMinutes: -180, learningConsent: true, mode: .syntheticShadowReference)
+        let sets = try signSets(); let set = sets.first { $0.condition == "MINOR_DISCOMFORT" }!
+        var w = try WellbeingDeclaration(condition: .minorDiscomfort, set: set, intent: .reduceLight, days: 2)
+        for s in w.warningSigns.asked { try w.warningSigns.answer(s, false) }
+        let flag = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "2026-11-18", pain: true, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false)
+        let r = try run([Case(name: "restart", steps: [Step(op: "enroll", intake: Self.intake([])), Step(at: "2026-11-20 10:00", op: "restart", intake: restart), Step(op: "plan")]),
+                         Case(name: "route", steps: [Step(op: "enroll", intake: Self.intake([])), Step(at: "2026-11-18 09:00", op: "submit", review: ReviewRequest(.notFeeling100(w, reports: []), eligibility: flag)), Step(op: "plan")])])
+        XCTAssertEqual(try decode(BoundaryAnswer.self, r["restart"]![1]).planOutcome, .clinicalHumanRequired)
+        XCTAssertTrue(try decode(PlanView.self, r["restart"]![2].answer["view"]!).week?.sessions.contains { $0.executable } == true, "pinned: the host gate stops it")
+        XCTAssertEqual(try decode(BoundaryAnswer.self, r["route"]![1]).status, "CLINICAL_HUMAN_REQUIRED")
+        XCTAssertEqual(try decode(PlanView.self, r["route"]![2].answer["view"]!).state, .blocked)
+    }
     static func intakeAt(asOf: String, start: String, special: [SpecialPopulation]) -> IntakeRequest {
         var a = RequestSchemaTests.answers(special: special); a.startDate = start; a.athlete.eligibility.assessedAt = asOf
         return IntakeRequest(answers: a, asOf: asOf, timezoneOffsetMinutes: -180, learningConsent: true, mode: .syntheticShadowReference)
@@ -81,14 +97,16 @@ final class EndToEndBoundaryTests: XCTestCase {
         func set(_ c: String) -> WarningSignQuestionSet { sets.first { $0.condition == c }! }
         let screen = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "2026-11-18", pain: false, persistentPain: false, injury: false,
                                        illness: false, functionalLimitation: false, clinicalConcern: false)
-        var yes = WellbeingDeclaration(condition: .unusualFatigue, set: set("UNUSUAL_FATIGUE"), intent: .reduceLight, days: 2)
+        var yes = try WellbeingDeclaration(condition: .unusualFatigue, set: set("UNUSUAL_FATIGUE"), intent: .reduceLight, days: 2)
         for s in yes.warningSigns.asked { try yes.warningSigns.answer(s, s == "swelling") }
-        var unanswered = WellbeingDeclaration(condition: .minorDiscomfort, set: set("MINOR_DISCOMFORT"), intent: .reduceLight, days: 2)
+        var unanswered = try WellbeingDeclaration(condition: .minorDiscomfort, set: set("MINOR_DISCOMFORT"), intent: .reduceLight, days: 2)
         for s in unanswered.warningSigns.asked.dropFirst() { try unanswered.warningSigns.answer(s, false) }
-        var allNo = WellbeingDeclaration(condition: .minorDiscomfort, set: set("MINOR_DISCOMFORT"), intent: .reduceLight, days: 2)
+        var allNo = try WellbeingDeclaration(condition: .minorDiscomfort, set: set("MINOR_DISCOMFORT"), intent: .reduceLight, days: 2)
         for s in allNo.warningSigns.asked { try allNo.warningSigns.answer(s, false) }
-        var ready = ReadinessDeclaration(declaredRecovered: true, set: set("READINESS"), sports: .init(run: .init(ready: true), strength: .init(ready: true, restrictions: [])))
+        var ready = try ReadinessDeclaration(declaredRecovered: true, set: set("READINESS"), sports: .init(run: .init(ready: true), strength: .init(ready: true, restrictions: [])))
         for s in ready.warningSigns.asked { try ready.warningSigns.answer(s, false) }
+        var readyRestricted = try ReadinessDeclaration(declaredRecovered: true, set: set("READINESS"), sports: .init(run: .init(ready: true, runningNotRestricted: true), strength: .init(ready: true, restrictions: ["AVOID_LOWER_BODY_STRENGTH"])))
+        for s in readyRestricted.warningSigns.asked { try readyRestricted.warningSigns.answer(s, false) }
         let screen2 = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "2026-11-21", pain: false, persistentPain: false, injury: false,
                                         illness: false, functionalLimitation: false, clinicalConcern: false)
         let r = try run([
@@ -98,6 +116,10 @@ final class EndToEndBoundaryTests: XCTestCase {
                                        Step(op: "plan"),
                                        Step(at: "2026-11-21 09:00", op: "submit", review: ReviewRequest(.readiness(ready, reports: []), eligibility: screen2)),
                                        Step(op: "plan")]),
+            Case(name: "restricted", steps: [Step(op: "enroll", intake: Self.intake([])),
+                                             Step(at: "2026-11-18 09:00", op: "submit", review: ReviewRequest(.notFeeling100(yes, reports: []), eligibility: screen)),
+                                             Step(at: "2026-11-21 09:00", op: "submit", review: ReviewRequest(.readiness(readyRestricted, reports: []), eligibility: screen2)),
+                                             Step(op: "plan")]),
             Case(name: "ask", steps: [Step(op: "enroll", intake: Self.intake([])),
                                       Step(at: "2026-11-18 09:00", op: "submit", review: ReviewRequest(.notFeeling100(unanswered, reports: []), eligibility: screen))]),
             Case(name: "keep", steps: [Step(op: "enroll", intake: Self.intake([])),
@@ -111,6 +133,10 @@ final class EndToEndBoundaryTests: XCTestCase {
         XCTAssertEqual(blocked.hold?.exit, "READINESS_DECLARATION")
         XCTAssertTrue(try decode(BoundaryAnswer.self, hold[3]).ok)
         XCTAssertNotEqual(try decode(PlanView.self, hold[4].answer["view"]!).state, .blocked, "the readiness declaration is the exit")
+        // QRE-ABC-02: the readiness exit with a lower-body restriction is reachable from Swift (runningNotRestricted).
+        XCTAssertNotEqual(try decode(BoundaryAnswer.self, r["restricted"]![2]).status, "CLINICAL_HUMAN_REQUIRED")
+        let rv = try decode(PlanView.self, r["restricted"]![3].answer["view"]!)
+        XCTAssertNotEqual(rv.state, .blocked); XCTAssertEqual(rv.sports["STRENGTH"]?.restricted, ["LOWER"], "the engine's own region code")
         let ask = try decode(BoundaryAnswer.self, r["ask"]![1])
         XCTAssertEqual(ask.status, "ASK"); XCTAssertEqual(ask.action, "ASK")
         XCTAssertTrue((r["ask"]![1].answer["decision"]?["missingInputs"]?.strings ?? []).contains("wellbeing.warningSigns.\(set("MINOR_DISCOMFORT").warningSigns[0])"),

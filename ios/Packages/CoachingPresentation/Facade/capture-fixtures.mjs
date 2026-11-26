@@ -119,6 +119,11 @@ const mk=id=>{const t=athlete({newId,id,weeks:12});t.enroll();return t;};
  const d2=addDays(d,1);t.set(d2,'21:00');
  const a3=save('unplanned-3-run-observedAt',t.weekly(d2,[{occurrenceDate:d2,observedAt:d2+'T18:10:00-03:00',actual:{completed:true,minutes:30,sport:'RUN',rpe:3},response:U}]),'unplanned run with observedAt');
  const a4=save('unplanned-6-strength-observedAt',t.weekly(d2,[{occurrenceDate:d2,observedAt:d2+'T20:40:00-03:00',actual:{completed:true,minutes:35,sport:'STRENGTH',exercises:[{id:'goblet-squat',sets:[{reps:8,load:{value:16,unit:'KG',convention:'SINGLE_IMPLEMENT'},rir:3}]}]},response:U}]),'unplanned strength with observedAt: kept');
+ // QRE-ABC-01: the device recorded a completed run; the athlete reports a stop for a symptom on the same session.
+ {const c=athlete({newId,id:'ui-conflict',weeks:12});c.enroll();const cs=c.sessions(0).find(x=>x.sport==='RUN');c.set(cs.date,'08:00');
+  c.import([c.watch(cs)],{eligibility:ELIG(cs.date)});c.set(cs.date,'20:00');const cf=c.form(cs);
+  save('conflict-1-athlete-stop-against-device',c.weekly(cs.date,[{...cf,actual:{completed:false,minutes:5,rpe:9,stop:{reason:'SYMPTOM'}},response:{...cf.response,recovery:'ADVERSE'}}]),'athlete stop for a symptom against a completed device run: screen REQUIRED');
+  proj(c,'P-logged-conflict','projection: both voices, the athlete stop visible');}
  save('unplanned-7-history',t.api.history({actor:t.actor}),'historyView');
  save('unplanned-8-presentation',t.it.presentation({actor:t.actor}),'presentation');
  const e=proj(t,'P-logged-unplanned','projection loggedEntries: unplanned run and strength, a contested distance');
@@ -154,11 +159,14 @@ for(const [name,anchors,age] of cases){
   save('hr5r-stale-answer',t.api.setHeartRateProfile({actor:t.actor,clientRequestId:'hr-4',expectedVersion:v()-1,heartRateProfile:{maxHeartRateBpm:190}}),'stale version: CONFLICT_STALE_VERSION');
   save('hr5r-reuse-answer',t.api.setHeartRateProfile({actor:t.actor,clientRequestId:'hr-1',expectedVersion:v(),heartRateProfile:{maxHeartRateBpm:191}}),'request id reused for another profile: CONFLICT_IDEMPOTENCY_KEY');
   save('hr5r-carried',t.it.carried({actor:t.actor}),'carried records (heartRateProfileRecord)');
-  save('hr5r-erase-answer',t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'hr-5',expectedVersion:v()}),'eraseHeartRateProfile');
-  save('hr5r-after-erase-presentation',t.it.presentation({actor:t.actor}),'after the erasure: back to the age estimate');
+  // QRE-ABC-07: set, revoke, then erase: the erasure is never held back by consent (and erases real rows).
   save('hr5r-consent-revoked',t.api.setConsent({actor:t.actor,purpose:'COACHING',granted:false,expectedVersion:v()}),'coaching consent revoked');
-  save('hr5r-set-without-consent',t.api.setHeartRateProfile({actor:t.actor,clientRequestId:'hr-6',expectedVersion:v(),heartRateProfile:{maxHeartRateBpm:195}}),'set without coaching consent: CONSENT_REQUIRED');
-  save('hr5r-erase-without-consent',t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'hr-7',expectedVersion:v()}),'erase is never held back by consent');}
+  save('hr5r-set-without-consent',t.api.setHeartRateProfile({actor:t.actor,clientRequestId:'hr-6',expectedVersion:v(),heartRateProfile:{maxHeartRateBpm:190}}),'set without coaching consent: CONSENT_REQUIRED');
+  save('hr5r-erase-without-consent',t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'hr-7',expectedVersion:v()}),'erase without consent: the declared maximum and the limits are erased');
+  save('hr5r-after-erase-presentation',t.it.presentation({actor:t.actor}),'after the erasure: back to the age estimate');
+  save('hr5r-consent-granted',t.api.setConsent({actor:t.actor,purpose:'COACHING',granted:true,expectedVersion:v()}),'coaching consent granted again');
+  if(!t.api.setHeartRateProfile({actor:t.actor,clientRequestId:'hr-8',expectedVersion:v(),heartRateProfile:{maxHeartRateBpm:192}}).ok)throw new Error('re-set');
+  save('hr5r-erase-answer',t.api.eraseHeartRateProfile({actor:t.actor,clientRequestId:'hr-9',expectedVersion:v()}),'eraseHeartRateProfile with consent');}
 }
 
 // ---- 5. Special population at onboarding (CHG-UI-2 2.7, GAP-02) ----
