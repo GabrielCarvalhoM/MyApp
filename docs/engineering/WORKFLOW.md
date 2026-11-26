@@ -1,6 +1,7 @@
 # Workflow de entrega contínua (V1)
 
-**Issue → Implementação → Testes → Pull Request → Revisão → Integração → Validação → Concluído.** Cada incremento é pequeno, verificável e
+**Issue → Spec → Implementação → Build → Testes → Revisão independente → Correções → Nova verificação → PR → Integração → Validação → Verified.**
+A spec de cada funcionalidade está em `specs/v1/features/` (índice: `specs/v1/INDEX.md`); critérios de revisão em `specs/v1/quality/`. Cada incremento é pequeno, verificável e
 tem uma issue. Uma sessão pode entregar vários incrementos seguidos; cada um com seus commits, seu PR e seu relatório curto
 ([AGENT_HANDOFF.md](AGENT_HANDOFF.md)).
 

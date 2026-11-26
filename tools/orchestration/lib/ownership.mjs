@@ -20,7 +20,7 @@ export const AREAS = [
     prefixes: ['canon/', 'product/', 'governance/', '.claude/', '.agents/', '.codex/', 'tools/agent-runtime/'],
     exact: ['MISSION_LEDGER.md', 'CURRENT_MISSION.md', 'CLAUDE.md', 'AGENTS.md', '.gitignore'],
   },
-  { id: 'ORCH', label: 'Orquestração (workflow, CI, docs de engenharia)', prefixes: ['.github/', 'docs/engineering/', 'tools/orchestration/', 'audits/v1-engineering-orchestration-2026-11-26/'] },
+  { id: 'ORCH', label: 'Orquestração (workflow, CI, docs de engenharia)', prefixes: ['.github/', 'docs/engineering/', 'tools/orchestration/', 'specs/', 'audits/v1-engineering-orchestration-2026-11-26/'] },
   { id: 'DESIGN', label: 'Figma (registro do alinhamento)', prefixes: ['audits/v1-figma-final-alignment-2026-11-26/'] },
 ];
 

@@ -4,6 +4,7 @@ Leia isto em 2 minutos. O resto você abre quando precisar.
 
 | Preciso de… | Onde está |
 |---|---|
+| **Specs, escopo, arquitetura, retomada** | [`specs/v1/INDEX.md`](../../specs/v1/INDEX.md) · checkpoint [`specs/v1/CONTINUITY.md`](../../specs/v1/CONTINUITY.md) · padrão iOS [`specs/v1/ARCHITECTURE.md`](../../specs/v1/ARCHITECTURE.md) |
 | **Contratos** | `audits/v1-parallel-foundation-2026-11-24/PARALLEL_IMPLEMENTATION_CONTRACT.md` (rev. 2: §10 arquivos, §11 mudança de contrato, §12 pendências, §13 integração); tipos em `ios/Packages/IntegrationContracts` e `ios/Packages/CoachingPresentation` |
 | **Handoff da minha frente** | `audits/v1-abc-foundation-consolidation-2026-11-26/{A_COACHINGHOST,B_HEALTHKIT,C_SWIFTUI}_HANDOFF.md`; ownership por tema: `OWNERSHIP_MATRIX.md` |
 | **Backlog e estado** | Quadro do GitHub Projects "RepMile — Product & Engineering" (campo Status = verdade); `node tools/orchestration/status.mjs` resume tudo |
@@ -31,4 +32,5 @@ node tools/orchestration/board.mjs set 42 --status "In Progress"
 node tools/orchestration/board.mjs evidence 42 "<link do run>" --validation Simulador
 node tools/orchestration/board.mjs create --title "[C] …" --body-file nota.md --type Bug\ Fix --area "iOS Frontend" --front C --priority P1 --release V1
 tools/orchestration/sim.sh all                           # build → simulador → screenshot → testes → manifest.json
+node tools/orchestration/swift-size.mjs                  # limite de 350 linhas por arquivo Swift (legado inventariado só avisa)
 ```

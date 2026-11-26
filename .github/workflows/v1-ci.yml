@@ -76,6 +76,20 @@ jobs:
           GUARD_FORK=0; [ -n "$PR_HEAD_SHA" ] && [ "$HEAD_REPO" != "$THIS_REPO" ] && GUARD_FORK=1
           export GUARD_FORK
           node "$guard_dir/guard.mjs" --head "$head"
+      - name: Swift file size (350 lines; inventoried legacy files reported, not failed)
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          tool_dir=tools/orchestration
+          if [ -n "$PR_BASE_SHA" ] && git cat-file -e "$PR_BASE_SHA:tools/orchestration/swift-size.mjs" 2>/dev/null; then
+            # The PR cannot widen its own legacy list: tool and baseline come from the PR base.
+            mkdir -p "$RUNNER_TEMP/trusted-size"
+            git archive "$PR_BASE_SHA" tools/orchestration | tar -x -C "$RUNNER_TEMP/trusted-size"
+            tool_dir="$RUNNER_TEMP/trusted-size/tools/orchestration"
+          fi
+          head=HEAD; [ -n "$PR_HEAD_SHA" ] && head="$PR_HEAD_SHA"
+          node "$tool_dir/swift-size.mjs" --ref "$head"
       - name: No secrets in the new commits
         env:
           PR_BASE: ${{ github.event.pull_request.base.sha }}

@@ -15,6 +15,7 @@ test('classify follows contract §10', () => {
   assert.equal(classify('CoachingCore/src/x.mjs'), 'CORE');
   assert.equal(classify('CLAUDE.md'), 'GOV');
   assert.equal(classify('.github/workflows/v1-ci.yml'), 'ORCH');
+  assert.equal(classify('specs/v1/INDEX.md'), 'ORCH');
   assert.equal(classify('audits/v1-figma-final-alignment-2026-11-26/X.md'), 'DESIGN');
   assert.equal(classify('audits/v1-hr5-runna-parity-2026-11-25/X.md'), 'AUDIT');
   assert.equal(classify('README.md'), 'OTHER');
