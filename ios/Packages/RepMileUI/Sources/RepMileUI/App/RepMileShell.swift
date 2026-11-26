@@ -41,6 +41,8 @@ struct AppTabs: View {
     @Environment(AppModel.self) private var model
     @State private var tab: AppTab = .today
     @State private var todayPath: [Route] = []
+    @State private var planPath: [Route] = []
+    @State private var moving: PlannedSession?
     @State private var showAdd = false
     @State private var showChanges = false
 
@@ -58,18 +60,23 @@ struct AppTabs: View {
                             .background(RM.Palette.fundoApp)
                             .navigationDestination(for: Route.self, destination: destination)
                     }
-                case .plan: NavigationStack { PreviewScreen(title: L.t("plan.title"), icon: .plano) }
+                case .plan:
+                    NavigationStack(path: $planPath) {
+                        PlanScreen(openSession: { planPath.append(.session($0.id, $0.date)) }, cantThisDay: { moving = $0 })
+                            .navigationDestination(for: Route.self, destination: destination)
+                    }
                 case .history: NavigationStack { PreviewScreen(title: L.t("history.title"), icon: .historico) }
                 case .progress: NavigationStack { PreviewScreen(title: L.t("progress.title"), icon: .progresso) }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            if todayPath.isEmpty || tab != .today {
+            if (tab == .today && todayPath.isEmpty) || (tab == .plan && planPath.isEmpty) || tab == .history || tab == .progress {
                 RMTabBar(selection: $tab, onAdd: { showAdd = true }).padding(.bottom, 8)
             }
         }
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .sheet(isPresented: $showAdd) { PreviewScreen(title: L.t("tab.add"), icon: .adicionar).presentationDetents([.medium]) }
+        .sheet(item: $moving) { UnavailableDaySheet(session: $0) }
         .sheet(isPresented: $showChanges) { PreviewScreen(title: L.t("today.changed.title"), icon: .lista).presentationDetents([.medium]) }
     }
 
@@ -77,8 +84,9 @@ struct AppTabs: View {
         switch r {
         case .profile: PreviewScreen(title: L.t("profile.title"), icon: .ajustes)
         case .session(let id, let date):
-            if let s = model.plan?.week?.sessions.first(where: { $0.id == id && $0.date == date }) {
-                PreviewScreen(title: TodayContent.title(s), icon: Sport(code: s.sport.raw)?.icon ?? .lista)
+            if let s = (model.plan?.week?.sessions ?? []).first(where: { $0.id == id && $0.date == date })
+                ?? model.weeks.flatMap(\.sessions).first(where: { $0.id == id && $0.date == date }) {
+                SessionDetailView(session: s, onStart: { _ in }, onCantThisDay: { moving = $0 })
             }
         }
     }
