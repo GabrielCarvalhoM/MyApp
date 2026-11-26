@@ -40,3 +40,7 @@ kept shows the banner with "Reenviar"/"Sair", kept shows it with "Concluir". New
 Test hardening: time deadline in `ReloadGateTests` (N3), Gregorian calendar in the day test (N4). XCUITest 34/34, RepMileUI unit 23/23
 ([results](results/inc10-screen-required/)). Remaining P3 (overlapping-load ordering test, reported-restore and not-kept+REQUIRED unit tests,
 start briefly disabled during reloads without a hint, `PlanView.today` time base to confirm with A) → #39.
+
+Verification of increment 10: READY_WITH_CONDITIONS. Applied: F1 (P2) the screen-required banner is sticky for the life of the report and
+also shows with "Salvo" or an error; F2 the UI test asserts `report-not-kept`; F3 bounded scroll loops. XCUITest 34/34, unit 23/23.
+F4 (pre-existing P3: a kept + REQUIRED report restored after a kill shows "Salvo" without the banner; the host gate still applies) → #39.

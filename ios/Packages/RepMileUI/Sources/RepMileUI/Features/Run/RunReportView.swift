@@ -139,6 +139,7 @@ struct RunReportView: View {
         case .saved?:
             Label { Text(L.t("report.saved")).rmText(.subtitulo) } icon: { RMIconView(.check, size: 18).foregroundStyle(RM.Palette.positivo) }
                 .transition(.scale.combined(with: .opacity)).accessibilityIdentifier("report-saved")
+            if screenRequired { screenRequiredBanner }
         case .notKept?:
             Text(L.t("report.notKept")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("report-not-kept")
             if screenRequired { screenRequiredBanner }
@@ -146,6 +147,7 @@ struct RunReportView: View {
             screenRequiredBanner
         case .failed(let code)?:
             Text(code == "CONFLICT_STALE_VERSION" ? L.t("state.stale.body") : L.t("state.opError.body")).rmText(.detalhe, RM.Palette.negativo)
+            if screenRequired { screenRequiredBanner }
         case nil: EmptyView()
         }
     }
@@ -202,7 +204,9 @@ struct RunReportView: View {
         if kept, let id { recorder.markReported(eventId: id) }
         // REQUIRED always shows the screen (verification of increment 09, N1). Not kept: the banner plus "Reenviar" / "Sair" (QRE recheck
         // N7: "Concluir" would close the recording and lose the report); kept: the banner plus "Concluir".
-        screenRequired = outcome.answer.warningSignScreen?.status.raw == "REQUIRED"
+        // Sticky for the life of this report (verification of increment 10, F1): an instruction already given still stands when a later
+        // resend, with other values, comes back without it.
+        screenRequired = screenRequired || outcome.answer.warningSignScreen?.status.raw == "REQUIRED"
         if kept, screenRequired { withAnimation { result = .screenRequired }; return }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { result = kept ? .saved : .notKept }
     }

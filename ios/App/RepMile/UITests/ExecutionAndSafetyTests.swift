@@ -51,15 +51,16 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["run-finish-confirm"].firstMatch.tap()
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
         let stopped = app.switches["report-stopped"]
-        while !stopped.isHittable { app.swipeUp() }
+        for _ in 0..<6 where !stopped.isHittable { app.swipeUp() }
         stopped.switches.firstMatch.tap()
         let reason = el(app, "report-stop-reason")
         XCTAssertTrue(reason.waitForExistence(timeout: 3))
         reason.tap()
         app.buttons["Senti um sintoma"].firstMatch.tap()
         let save = app.buttons["report-save"]
-        while !save.isHittable { app.swipeUp() }
+        for _ in 0..<6 where !save.isHittable { app.swipeUp() }
         save.tap()
+        XCTAssertTrue(el(app, "report-not-kept").waitForExistence(timeout: 5), "this capture's recorded id is not in the logged entries")
         let banner = el(app, "report-screen-required")
         XCTAssertTrue(banner.waitForExistence(timeout: 5), "REQUIRED shows the screen whether or not the report was kept")
         XCTAssertFalse(app.buttons["report-done"].exists, "a report that was not kept is not closed by 'Concluir'")
