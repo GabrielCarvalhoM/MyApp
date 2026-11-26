@@ -81,6 +81,23 @@ final class StrengthLogViewModelTests: XCTestCase {
         XCTAssertFalse(vm.actual().completed, "an omitted exercise")
     }
 
+    /// SSCTR recheck of 296696a: a withdrawn set drops its load; stated again, it never re-sends the load typed before.
+    func testWithdrawingASetClearsItsLoad() throws {
+        let vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store))
+        let squat = try exercise(vm, "goblet-squat")
+        vm.toggleSet(squat, 0)
+        vm.setLoad("20", "goblet-squat", 0)
+        vm.toggleSet(squat, 0)
+        XCTAssertEqual(vm.draft("goblet-squat", 0), StrengthLogViewModel.SetDraft(), "unchecked: no reps, no load")
+        vm.toggleSet(squat, 0)
+        XCTAssertEqual(vm.actual().exercises, [LoggedExerciseEntry(id: "goblet-squat", sets: [LoggedSetEntry(reps: 8, load: nil, rir: nil)])])
+        vm.setLoad("22", "goblet-squat", 0)
+        vm.setReps(0, "goblet-squat", 0)
+        XCTAssertEqual(vm.draft("goblet-squat", 0), StrengthLogViewModel.SetDraft(), "stepper to 0: no reps, no load")
+        vm.setReps(6, "goblet-squat", 0)
+        XCTAssertNil(vm.actual().exercises.first?.sets.first?.load)
+    }
+
     /// SSCTR #37b F2: confirm first, then edit. Once any set is stated, "Fiz como prescrito" is no longer offered and cannot overwrite it.
     func testConfirmAsPrescribedNeverOverwritesAStatedSet() throws {
         let vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store))

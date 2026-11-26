@@ -39,10 +39,13 @@ final class StrengthLogViewModel {
 
     func draft(_ id: String, _ i: Int) -> SetDraft? { sets[id].flatMap { $0.indices.contains(i) ? $0[i] : nil } }
 
-    /// The athlete's repetitions for one set. Zero or nothing withdraws the set from the report.
+    /// The athlete's repetitions for one set. Zero or nothing withdraws the set from the report, with its load: a set stated again starts
+    /// with an empty load, never one typed before.
     func setReps(_ reps: Int?, _ id: String, _ i: Int) {
         guard editable, draft(id, i) != nil else { return }
-        sets[id]?[i].reps = reps.flatMap { $0 > 0 ? $0 : nil }
+        let stated = reps.flatMap { $0 > 0 ? $0 : nil }
+        sets[id]?[i].reps = stated
+        if stated == nil { sets[id]?[i].load = "" }
     }
 
     /// A load belongs to a stated set: typing it never states the set (the field stays off until the set is stated).

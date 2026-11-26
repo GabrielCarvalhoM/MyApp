@@ -70,7 +70,8 @@ struct StrengthLogView: View {
 
     private func setRow(_ e: PrescribedExercise, _ i: Int) -> some View {
         let reps = viewModel.draft(e.id, i)?.reps
-        let stated = reps.map { L.f("strength.set.doneReps", "\($0)") } ?? L.t("strength.set.notDone")
+        let stated = reps.map { $0 == 1 ? L.t("strength.set.doneOneRep") : L.f("strength.set.doneReps", "\($0)") } ?? L.t("strength.set.notDone")
+        let name = L.code("exercise", Code(raw: e.id)) ?? e.id
         return HStack(spacing: 10) {
             Text("\(i + 1)").rmText(.rotulo, RM.Palette.textoSecundario).frame(width: 20)
             Button { viewModel.toggleSet(e, i) } label: {
@@ -83,7 +84,7 @@ struct StrengthLogView: View {
             }
             .buttonStyle(PressableStyle())
             .disabled(!viewModel.canToggle(e, i))
-            .accessibilityLabel(L.f("strength.set", "\(i + 1)"))
+            .accessibilityLabel(L.f("strength.set", name, "\(i + 1)"))
             .accessibilityValue(stated)
             .accessibilityIdentifier("set-\(e.id)-\(i)")
             Stepper(value: Binding(get: { reps ?? 0 }, set: { viewModel.setReps($0, e.id, i) }), in: 0...50) {
@@ -91,7 +92,7 @@ struct StrengthLogView: View {
             }
             .frame(width: 140)
             .disabled(!viewModel.editable)
-            .accessibilityLabel(L.f("strength.reps.label", L.code("exercise", Code(raw: e.id)) ?? e.id, "\(i + 1)"))
+            .accessibilityLabel(L.f("strength.reps.label", name, "\(i + 1)"))
             .accessibilityValue(reps.map(String.init) ?? L.t("strength.set.notDone"))
             .accessibilityIdentifier("reps-\(e.id)-\(i)")
             if e.load?.mode.raw != "BODYWEIGHT" {

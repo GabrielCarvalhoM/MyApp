@@ -207,6 +207,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
     func testPlannedStrengthConfirmedAsPrescribed() {
         let app = openPlannedStrength()
         XCTAssertEqual(app.buttons["set-goblet-squat-0"].value as? String, "não registrada", "no set is pre-filled as done")
+        XCTAssertEqual(app.buttons["set-goblet-squat-0"].label, "Agachamento goblet, série 1", "VoiceOver hears which exercise and set")
         addStrengthMinutes(app)
         let save = app.buttons["strength-save"]
         XCTAssertFalse(save.isEnabled, "minutes alone never report the prescribed sets as done")
@@ -239,6 +240,9 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertEqual(app.steppers["reps-db-bench-press-0"].value as? String, "não registrada")
         XCTAssertTrue(app.textFields["load-goblet-squat-1"].isEnabled)
         XCTAssertFalse(app.textFields["load-db-bench-press-0"].isEnabled, "no load before the set is stated")
+        app.steppers["reps-db-bench-press-0"].buttons.element(boundBy: 1).tap()
+        XCTAssertEqual(app.buttons["set-db-bench-press-0"].value as? String, "registrada, 1 repetição", "singular for one")
+        XCTAssertEqual(app.buttons["set-db-bench-press-1"].value as? String, "não registrada")
         attach(app, "Execução de força — registro parcial (41)")
         addStrengthMinutes(app)
         let save = app.buttons["strength-save"]
