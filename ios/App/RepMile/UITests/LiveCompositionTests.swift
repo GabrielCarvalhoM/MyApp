@@ -28,6 +28,38 @@ final class LiveCompositionTests: XCTestCase {
 
     /// NOT_ENROLLED from the real host: onboarding, never the fixture "Hoje", never the operational error, no crash.
     @MainActor
+    /// Waits for `ob-next` to exist and be enabled, taps it, then waits for the next step's own element (as OnboardingTests).
+    @MainActor
+    private func tapNext(_ app: XCUIApplication, expecting next: XCUIElement?, _ step: String) {
+        let button = app.buttons["ob-next"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true AND isEnabled == true"), object: button)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, "ob-next enabled before \(step)")
+        button.tap()
+        if let next { XCTAssertTrue(next.waitForExistence(timeout: 10), "reached \(step)") }
+    }
+
+    /// Picks next month's 15th in the race-date calendar and confirms (as OnboardingTests).
+    @MainActor
+    private func chooseRaceDate(_ app: XCUIApplication) {
+        tapScrolling(app, app.buttons["ob-event-date"])
+        let picker = app.datePickers.firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        let header = picker.buttons["DatePicker.Show"].staticTexts.firstMatch
+        XCTAssertTrue(header.waitForExistence(timeout: 10))
+        let shown = header.label
+        picker.buttons["DatePicker.NextMonth"].tap()
+        let moved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", shown), object: header)
+        XCTAssertEqual(XCTWaiter.wait(for: [moved], timeout: 10), .completed, "the calendar shows the next month")
+        let day = picker.buttons.matching(NSPredicate(format: "label CONTAINS ', 15 de ' AND enabled == true")).firstMatch
+        XCTAssertTrue(day.waitForExistence(timeout: 10))
+        day.tap()
+        let confirm = app.buttons["ob-event-date-confirm"]
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isEnabled == true"), object: confirm)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 10), .completed)
+        confirm.tap()
+        XCTAssertTrue(confirm.waitForNonExistence(timeout: 10), "the calendar closed")
+    }
+
     private func assertOnboarding(_ app: XCUIApplication, _ name: String) {
         XCTAssertTrue(el(app, "screen-onboarding").waitForExistence(timeout: 60), "the real host answers NOT_ENROLLED → onboarding")
         XCTAssertFalse(el(app, "state-operational-error").exists)
@@ -48,16 +80,18 @@ final class LiveCompositionTests: XCTestCase {
     func testRealOnboardingCreatesAPlanThenEraseMakesTheNextLaunchANewAccount() {
         let app = launch()
         assertOnboarding(app, "live — boas-vindas")
-        app.buttons["ob-next"].tap()
         let age = app.textFields["ob-age"]
-        XCTAssertTrue(age.waitForExistence(timeout: 5))
+        tapNext(app, expecting: age, "age")
         age.tap(); age.typeText("32")
-        for _ in 0..<3 { app.buttons["ob-next"].tap() }
-        // Schedule: a 12-week plan, so the default 10K date (today + 84 days) falls inside it. The form's defaults (8 weeks with that same
-        // date) are contradictory, and the real engine answers INVALID_INPUT for them (the fixture writer never checks): an issue for C.
+        // #61: the race date and the plan length are the athlete's choices (no default). A 10K on next month's 15th inside a 12-week plan.
+        tapNext(app, expecting: app.buttons["ob-event-date"], "goals")
+        chooseRaceDate(app)
+        tapNext(app, expecting: app.staticTexts["Sua experiência"], "experience")
+        tapNext(app, expecting: app.staticTexts["Sua semana"], "schedule")
         tapScrolling(app, app.buttons["chip-12"])
-        for _ in 0..<3 { app.buttons["ob-next"].tap() }
-        XCTAssertTrue(app.staticTexts["Cuidados"].waitForExistence(timeout: 5))
+        tapNext(app, expecting: app.staticTexts["O que você tem para treinar força?"], "equipment")
+        tapNext(app, expecting: el(app, "ob-anchor-toggle"), "anchor")
+        tapNext(app, expecting: app.staticTexts["Cuidados"], "care")
         app.buttons["ob-care.none"].tap()
         for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] { tapScrolling(app, app.buttons["eligibility-\(k)-no"]) }
         let confirm = app.switches["eligibility-confirm"]
