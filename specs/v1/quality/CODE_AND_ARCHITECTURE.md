@@ -39,6 +39,8 @@ Critérios que o revisor independente aplica a todo incremento Swift. Arquitetur
 | ~~`RepMileUI/Features/Onboarding/OnboardingFlow.swift`~~ | ~~378~~ → 122 | C | **feito** no #32.1 (PR #43) |
 | `RepMileUI/Features/Session/SessionDetailView.swift` | 354 | C | corrida / força |
 | `CoachingHost/Sources/CoachingHost/Ports.swift` | 370 | A | após a entrega final de A |
+| `CoachingHost/Sources/CoachingHost/CoachingHost.swift` | 354 | A | entrega final `296a435` (anterior à regra na branch de A) |
+| `CoachingHost/Tests/CoachingHostTests/ErasureTests.swift` | 401 | A | idem |
 | `HealthKitIngest/Sources/HealthKitIngest/HealthKitIngestor.swift` | 796 | B | após a entrega final de B |
 | `HealthKitIngest/Tests/HealthKitIngestTests/ThirdPartyImportTests.swift` | 415 | B | após a entrega final de B |
 
