@@ -1,0 +1,25 @@
+# with-device.sh with the swiftui session (CHG-UI-4), 2026-11-26T12:47:29Z, scratch lock dir (not the machine lock)
+1 swiftui holds; another session is refused:
+with-device: the iPhone is in use
+  session=swiftui
+  pid=27960
+  started=2026-11-26T12:47:29Z
+  command=sleep
+  rc=75 (expect 75)
+2 swiftui refused while healthkit holds:
+with-device: the iPhone is in use
+  session=healthkit
+  pid=27965
+  started=2026-11-26T12:47:32Z
+  command=sleep
+  rc=75 (expect 75)
+3 swiftui --wait runs after release:
+RAN_AFTER_WAIT
+  rc=0 (expect 0)
+4 exit code passthrough:
+  rc=7 (expect 7)
+5 bad session:
+usage: tools/device-lock/with-device.sh <coachinghost|healthkit|swiftui|integration> [--wait] -- <command...>
+  rc=64 (expect 64)
+6 status:
+device FREE

@@ -118,11 +118,11 @@ public struct ReadinessDeclaration: Encodable, Equatable, Sendable {
     public var declaredRecovered: Bool
     public var warningSigns: SignAnswers
     public var sports: Sports
-    public var returnSpeed: ReturnSpeed?
+    public var returnSpeed: ReadinessReturnSpeed?
     /// `set` must be the READINESS set (15 signs); otherwise it throws (fail closed).
     public init(declaredRecovered: Bool, set: WarningSignQuestionSet, sports: Sports, returnSpeed: ReadinessReturnSpeed? = nil) throws {
         guard set.condition == "READINESS" else { throw WellbeingDeclaration.Invalid.setNotForCondition(expected: "READINESS", got: set.condition) }
-        self.returnSpeed = returnSpeed.map { ReturnSpeed(rawValue: $0.rawValue)! }
+        self.returnSpeed = returnSpeed
         self.declaredRecovered = declaredRecovered; warningSigns = SignAnswers(asking: set.warningSigns); self.sports = sports
     }
 }

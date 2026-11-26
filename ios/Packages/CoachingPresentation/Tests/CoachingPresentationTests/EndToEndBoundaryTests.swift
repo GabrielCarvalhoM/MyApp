@@ -34,8 +34,9 @@ final class EndToEndBoundaryTests: XCTestCase {
     func decode<T: Decodable>(_ t: T.Type, _ a: AnswerOut) throws -> T { try JSONDecoder().decode(T.self, from: try a.answer.data()) }
     static func intake(_ special: [SpecialPopulation], hr: HeartRateProfileRequest? = nil) -> IntakeRequest { RequestSchemaTests.intake(special: special, hr: hr) }
 
-    /// GAP-02 / CHG-UI-2 2.7: pregnancy and postpartum reach the engine and stop the plan; "none" gives a plan. The runner echoes what it
-    /// received, so a transport that drops the key fails on `received`, not only on the outcome.
+    /// GAP-02 / CHG-UI-2 2.7: pregnancy and postpartum reach the engine and stop the plan; "none" gives a plan. `received` is the runner's echo
+    /// of the JSON Swift produced (it proves the encoding, not the boundary's reading); the proof that the engine read the key is the outcome
+    /// (UNSUPPORTED versus PROPOSED for the same intake without it: Facade/test/projections.test.mjs) (QRE-ABC-10).
     func testSpecialPopulationReachesTheEngineAndBlocksThePlan() throws {
         let r = try run([
             Case(name: "pregnancy", steps: [Step(op: "enroll", intake: Self.intake([.pregnancy])), Step(op: "plan")]),
