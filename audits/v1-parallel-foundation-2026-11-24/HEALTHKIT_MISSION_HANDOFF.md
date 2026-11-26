@@ -1,5 +1,7 @@
 # Handoff da missão B: HealthKit Integration (coleta, normalização, fila e entrega ao CoachingHost)
 
+> **SUPERSEDED como ponto de entrada (2026-11-26).** A missão de consolidação final A+B+C substituiu este handoff por `audits/v1-abc-foundation-consolidation-2026-11-26/B_HEALTHKIT_HANDOFF.md`, que o referencia onde ele continua valendo. Base, comandos de verificação, contratos e ownership deste arquivo valem só onde o novo handoff não os substitui.
+
 ## 1. Objetivo
 
 Construir o `HealthKitIngest`. Ele:

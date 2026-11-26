@@ -1,5 +1,7 @@
 # Handoff da missão C: app SwiftUI definitivo do RepMile V1
 
+> **SUPERSEDED como ponto de entrada (2026-11-26).** A missão de consolidação final A+B+C substituiu este handoff por `audits/v1-abc-foundation-consolidation-2026-11-26/C_SWIFTUI_HANDOFF.md`, que o referencia onde ele continua valendo. Base, comandos de verificação, contratos e ownership deste arquivo valem só onde o novo handoff não os substitui.
+
 **Objetivo.** Construir o app SwiftUI **definitivo** do RepMile a partir das telas aprovadas no Figma:
 - design system;
 - navegação;

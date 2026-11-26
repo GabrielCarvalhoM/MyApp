@@ -1,5 +1,7 @@
 # Handoff da missão A: CoachingHost (integração nativa Swift do CoachingCore V1)
 
+> **SUPERSEDED como ponto de entrada (2026-11-26).** A missão de consolidação final A+B+C substituiu este handoff por `audits/v1-abc-foundation-consolidation-2026-11-26/A_COACHINGHOST_HANDOFF.md`, que o referencia onde ele continua valendo. Base, comandos de verificação, contratos e ownership deste arquivo valem só onde o novo handoff não os substitui.
+
 ## 1. Objetivo
 
 Construir o `CoachingHost`: a camada Swift que carrega o CoachingCore congelado em JavaScriptCore e lhe dá as funções de host, a chave e a âncora no Keychain, o store nativo, o lock entre processos e o relógio confiável. Ela expõe, como valores Swift tipados, cada operação da fronteira existente, inclusive o `DeviceActivitySink` que a frente B vai chamar.

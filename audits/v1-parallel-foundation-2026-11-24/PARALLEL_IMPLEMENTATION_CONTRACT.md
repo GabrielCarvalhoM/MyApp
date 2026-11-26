@@ -1,7 +1,13 @@
-# RepMile V1: contrato de implementação paralela (CoachingHost ∥ HealthKit)
+# RepMile V1: contrato de implementação paralela (CoachingHost ∥ HealthKit ∥ SwiftUI)
 
-**Missão:** consolidação do freeze e preparação para implementação paralela (Founder, 2026-11-24).
-**Estado deste documento:** CONGELADO durante a execução das frentes A e B. Só a missão de integração altera este arquivo (§11).
+**Missão:** consolidação do freeze e preparação para implementação paralela (Founder, 2026-11-24). **Revisão 2:** consolidação final da fundação A+B+C (Founder, 2026-11-26), `audits/v1-abc-foundation-consolidation-2026-11-26/`.
+**Estado deste documento:** REVISÃO 2, CONGELADO durante a execução das frentes A, B e C. Só a missão de integração altera este arquivo (§11).
+
+> **O que a revisão 2 muda** (o resto continua valendo como estava):
+> - a base comum passa a ser a tag **`v1-abc-ready-2026-11-26`**, sobre o CoachingCore com as cinco zonas (FIVE-ZONE-AMENDMENT-2) e a suíte saneada (§1);
+> - a **frente C (SwiftUI)** é admitida: diretórios, dependências, trava do aparelho e aceite (§2, §9, §10, §14, §15);
+> - entram dois contratos compartilhados: o pacote **`ios/Packages/CoachingPresentation`** (A → C: views, requests fechados, portas, projeções da fachada, fixtures) e tipos **aditivos** em `IntegrationContracts` (B → C e B → A: estado da ingestão, série de FC, sinais de exibição, índice das gravações do iPhone);
+> - a matriz de ownership completa por tema está em `audits/v1-abc-foundation-consolidation-2026-11-26/OWNERSHIP_MATRIX.md`; as pendências novas estão na §12.
 **Não é:** um novo freeze, uma reabertura da prescrição, uma aprovação para atletas reais ou para a App Store.
 
 ## 0. Autoridade e fontes
@@ -16,6 +22,9 @@ Este contrato **não substitui** nenhum contrato existente. Ele distribui entre 
 | `audits/v1-final-physical-2026-11-24/NATIVE_OBLIGATIONS_FINAL.md` | obrigações nativas numeradas (1.1–8, N-1..N-5) |
 | `CoachingCore/src/boundary/{admission,integration,api,views,store,inventory,report-voices}.mjs` | as formas reais (lidas para derivar os tipos deste contrato; nenhum byte alterado) |
 | `product/PRODUCT_DECISION_REGISTER.md` DR-117..DR-123 | HealthKit inbound obrigatório na V1, somente leitura; nada falta vira zero ou default |
+| **Rev. 2:** `CoachingCore/v1/HR5_RUNNA_AMENDMENT_V1.json` (REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2) | o runtime em vigor: 91 arquivos, bundle `d087ad51…` (50 módulos, 18 assets), cinco zonas, `setHeartRateProfile`/`eraseHeartRateProfile`, `carriedSeq` |
+| **Rev. 2:** `audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_TEST_POLICY.md` | `npm test` (ativa: 1952/1952/0; 53 históricos) e o portão do runtime `v1san-runtime-integrity` |
+| **Rev. 2:** `ios/Packages/CoachingPresentation`, `audits/v1-hr5-runna-parity-2026-11-25/CONTRACT_DELTA.md`, `audits/v1-ui-functional-reconciliation/` | os tipos A → C, as cinco zonas para Swift, os gaps de UI |
 
 Em conflito, vence a fonte da tabela. Uma lacuna (algo que nenhuma fonte aprova) fica registrada em §4.4 e **não** é preenchida por suposição.
 
@@ -23,21 +32,25 @@ Em conflito, vence a fonte da tabela. Uma lacuna (algo que nenhuma fonte aprova)
 
 | Item | Valor |
 |---|---|
-| Conteúdo validado do motor | `460a9ab` (ligado pelo registro do freeze) |
-| Registro do freeze | `6482749` |
-| Tip publicado da linha do freeze | `a7e2e24` = `origin/claude/v1-cc-final-physical` |
-| Linha de consolidação | `claude/v1-parallel-foundation`, a partir de `a7e2e24` |
-| Commit-base das frentes A e B | o commit marcado pela tag **`v1-parallel-base-2026-11-24`** (hash literal em `CONSOLIDATION_REPORT.md`) |
+| Freeze original (histórico) | `6482749` / tip `a7e2e24`; a primeira base paralela `v1-parallel-base-2026-11-24` = `8d2a7c0` |
+| Runtime em vigor | **FIVE-ZONE-AMENDMENT-2** (`9a88521`, validado no iPhone em `90452b8`), bundle `d087ad51b37dfc4e…` |
+| Suíte saneada | `claude/v1-test-suite-sanitization` `237797c` (SANITIZATION-2 `2a865f8`) |
+| Linha de consolidação | `claude/v1-abc-foundation-consolidation`, a partir de `237797c` |
+| **Commit-base das frentes A, B e C (rev. 2)** | a tag anotada **`v1-abc-ready-2026-11-26`**, no commit de fechamento desta consolidação (`git rev-parse v1-abc-ready-2026-11-26^{commit}`) |
 
-Verificação obrigatória no início e no fim de cada frente:
+Verificação obrigatória no início e no fim de cada frente (rev. 2):
 
 ```bash
-git merge-base --is-ancestor v1-parallel-base-2026-11-24 HEAD          # a base está na história
-node CoachingCore/scripts/v1-final-release-freeze.mjs --check          # exit 0, 87/87
-git diff --stat v1-parallel-base-2026-11-24 -- CoachingCore            # vazio
+git merge-base --is-ancestor v1-abc-ready-2026-11-26 HEAD            # a base está na história
+git diff --stat v1-abc-ready-2026-11-26 -- CoachingCore              # vazio
+(cd CoachingCore && npm test)                                         # ACTIVE SUITE: 1952/1952/0; 53 históricos no ponto declarado
+(cd ios/Packages/IntegrationContracts && swift test)                  # 10 testes, 0 falhas
+(cd ios/Packages/CoachingPresentation && swift test)                  # 29 testes, 0 falhas (inclui frescor das fixtures e a suíte Node da fachada)
 ```
 
-O verificador do freeze também falha se surgir **qualquer** arquivo novo ou modificado sob `CoachingCore/` ("nothing else changed", "no untracked file"). Por isso `CoachingCore/**` inteiro é proibido para A e B.
+- O portão do runtime é `v1san-runtime-integrity` (dentro de `npm test`): ele prende cada byte do runtime à AMENDMENT-2. `npm test` precisa de um clone completo (política de testes históricos §4.3).
+- Os verificadores `v1-final-release-freeze.mjs --check`, `v1-five-zone-amendment.mjs --check` e `v1-hr5-runna-amendment.mjs --check` são **históricos** nesta linha: falham por desenho, só no passo "nothing else changed", nomeando só arquivos declarados (emendas e infraestrutura de testes da suíte saneada). Não são mais o portão de nenhuma frente.
+- `CoachingCore/**` continua **proibido** para A, B e C.
 
 ## 2. Arquitetura aprovada
 
@@ -65,11 +78,24 @@ O verificador do freeze também falha se surgir **qualquer** arquivo novo ou mod
         Persistência: arquivo por atleta + Keychain (A)
 ```
 
-Regras de dependência (verificáveis por `import`):
+Regras de dependência (verificáveis por `import`), rev. 2:
 - `IntegrationContracts` importa só `Foundation`.
-- B importa `IntegrationContracts` e `HealthKit`; **nunca** `JavaScriptCore`, `CryptoKit`, `Security` ou o módulo de A.
-- A importa `IntegrationContracts`, `JavaScriptCore`, `CryptoKit`, `Security`; **nunca** `HealthKit`, `SwiftUI` ou o módulo de B.
-- Só a raiz de composição do app (missão de integração) importa A e B juntos.
+- `CoachingPresentation` importa só `Foundation` e `IntegrationContracts` (uma via; `IntegrationContracts` nunca o importa). Inclui `Facade/app-projections.mjs`, que A liga **sem alteração** no bundle.
+- B importa `IntegrationContracts` e `HealthKit`; **nunca** `JavaScriptCore`, `CryptoKit`, `Security`, `SwiftUI`, `CoachingPresentation` ou o módulo de A.
+- A importa `IntegrationContracts`, `CoachingPresentation`, `JavaScriptCore`, `CryptoKit`, `Security`; **nunca** `HealthKit`, `SwiftUI` ou o módulo de B.
+- C importa `CoachingPresentation`, `IntegrationContracts`, `SwiftUI`, `MapKit`, `WeatherKit`, `StoreKit`, `ActivityKit`, `UserNotifications`; `CoreLocation` **só** dentro de `ios/Packages/RunRecorder`; **nunca** `HealthKit`, `JavaScriptCore`, `CryptoKit`, `Security`, `CoachingHost` ou `HealthKitIngest`.
+- Só a raiz de composição do app (`ios/App/Composition/**`, missão de integração) importa A, B e C juntos.
+
+```
+            C · RepMileUI + RunRecorder + app (fixtures na fase paralela)
+              │ CoachingReading / CoachingWriting / TimeInZoneClassifying (CoachingPresentation)
+              │ HealthIngestStatusSource / HealthSignalSource (IntegrationContracts, de B)
+              │ AppRecordingIndex (IntegrationContracts, implementado por C, lido por B)
+      ┌───────┴──────── composição (integração) ────────┐
+   A · CoachingHost                               B · HealthKitIngest
+   (implementa as portas de leitura/escrita,      (implementa DeviceQueueControl, HealthIngestStatusSource,
+    DeviceActivitySink, TimeInZoneClassifying)     HeartRateSeriesSource, HealthSignalSource)
+```
 
 ## 3. Responsabilidades
 
@@ -238,34 +264,41 @@ Os dois rodam o teste de conformidade do pacote compartilhado (`swift test` em `
 | Permissões HealthKit | só o app de B pede. A nunca pede |
 | Dados do Health no iPhone | são dados reais do Founder. B **não** escreve amostras sintéticas no Health do iPhone sem autorização explícita do Founder; dados sintéticos ficam no Simulator. No aparelho, B lê dados reais autorizados só para validar a leitura, sem enviá-los a CoachingCore (a custódia é `syntheticOnly`), sem logar valores (só contagens e tipos) e sem copiá-los para o repositório |
 | `DEVELOPMENT_TEAM` | só na linha de comando, nunca no `project.pbxproj` (como no harness) |
+| **Rev. 2: frente C** | sessão da trava **`swiftui`** (`with-device.sh swiftui [--wait] -- …`; bateria em `audits/v1-abc-foundation-consolidation-2026-11-26/evidence/device-lock-swiftui.txt`); `-derivedDataPath <worktree>/ios/.build/DerivedData-C`; bundle id de desenvolvimento `fit.vilumo.repmile.dev.app.$(DEVELOPMENT_TEAM)` (o id da loja é decisão do FDR); C não usa Keychain, nunca pede permissão HealthKit; entitlements só de C (Live Activity; WeatherKit se aprovado); localização: `NSLocationWhenInUseUsageDescription` (+ background location só no `RunRecorder`), textos provisórios |
+| **Rev. 2: integração** | sessão `integration`, `DerivedData-INT` |
 
-## 10. Matriz de ownership de arquivos
+## 10. Matriz de ownership de arquivos (rev. 2)
 
-| Caminho | A | B | Integração |
-|---|---|---|---|
-| `ios/Packages/CoachingHost/**` (Swift, fachada JS, cópia do linker, bundle gerado, fixtures copiadas) | **escreve** | proibido | — |
-| `ios/Labs/CoachingHostLab/**` (app host + testes no aparelho) | **escreve** | proibido | — |
-| `audits/v1-ios-coachinghost-2026-11-24/**` (relatório, evidência) | **escreve** | proibido | — |
-| `ios/Packages/HealthKitIngest/**` | proibido | **escreve** | — |
-| `ios/Labs/HealthKitLab/**` | proibido | **escreve** | — |
-| `audits/v1-ios-healthkit-2026-11-24/**` | proibido | **escreve** | — |
-| `ios/Packages/IntegrationContracts/**`, `tools/device-lock/**`, `audits/v1-parallel-foundation-2026-11-24/**` | leitura (congelado) | leitura (congelado) | **escreve** |
-| `CoachingCore/**` | proibido | proibido | só pela regra de exceção pós-freeze |
-| `audits/v1-aif-p0-jsc-2026-11-17/**`, `audits/v1-final-physical-2026-11-24/**`, `audits/v1-integration-boundary-2026-11-23/**` e demais `audits/` existentes | leitura | leitura | leitura |
-| `MISSION_LEDGER.md`, `CURRENT_MISSION.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, `canon/**`, `product/**`, `governance/**` | proibido | proibido | **escreve** |
-| `ios/App/**`, `ios/*.xcworkspace`, qualquer alvo que importe A e B juntos, telas SwiftUI | proibido | proibido | **escreve** |
+| Caminho | A | B | C | Integração |
+|---|---|---|---|---|
+| `ios/Packages/CoachingHost/**` (Swift, fachada JS, cópia do linker, bundle gerado, fixtures copiadas) | **escreve** | proibido | proibido | — |
+| `ios/Labs/CoachingHostLab/**` (app host + testes no aparelho) | **escreve** | proibido | proibido | — |
+| `audits/v1-ios-coachinghost-2026-11-24/**` (relatório, evidência) | **escreve** | proibido | proibido | — |
+| `ios/Packages/HealthKitIngest/**` | proibido | **escreve** | proibido | — |
+| `ios/Labs/HealthKitLab/**` | proibido | **escreve** | proibido | — |
+| `audits/v1-ios-healthkit-2026-11-24/**` | proibido | **escreve** | proibido | — |
+| `ios/Packages/RepMileUI/**` (design system, componentes, telas, view models, provedores de fixture, previews) | proibido | proibido | **escreve** | — |
+| `ios/Packages/RunRecorder/**` (gravador da corrida no iPhone: CoreLocation, cronômetro, pausa, background, arquivo temporário, rota local; sem UI) | proibido | proibido | **escreve** | — |
+| `ios/App/RepMile.xcodeproj`, `ios/App/RepMile/**` (o app; na fase paralela liga só `RepMileUI` + `RunRecorder` + os dois pacotes compartilhados e os provedores de fixture) | proibido | proibido | **escreve** | — |
+| `audits/v1-ios-swiftui-2026-11-26/**` | proibido | proibido | **escreve** | — |
+| `ios/App/Composition/**` (liga `CoachingHost`, `HealthKitIngest` e C reais) e `ios/*.xcworkspace` | proibido | proibido | proibido | **escreve** |
+| `ios/Packages/IntegrationContracts/**`, `ios/Packages/CoachingPresentation/**` (inclui `Facade/`, fixtures), `tools/device-lock/**`, `audits/v1-parallel-foundation-2026-11-24/**`, `audits/v1-abc-foundation-consolidation-2026-11-26/**` | leitura (congelado) | leitura (congelado) | leitura (congelado) | **escreve** |
+| `CoachingCore/**` | proibido | proibido | proibido | só pela regra de exceção pós-freeze (emenda versionada) |
+| `audits/v1-ui-functional-reconciliation/**`, `audits/v1-hr5-runna-parity-2026-11-25/**`, `audits/v1-aif-p0-jsc-2026-11-17/**`, `audits/v1-final-physical-2026-11-24/**`, `audits/v1-integration-boundary-2026-11-23/**` e demais `audits/` existentes | leitura | leitura | leitura | leitura |
+| `MISSION_LEDGER.md`, `CURRENT_MISSION.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, `canon/**`, `product/**`, `governance/**` | proibido | proibido | proibido | **escreve** |
 
-Um arquivo fora desta matriz: a frente só o cria se estiver dentro dos seus diretórios.
+Um arquivo fora desta matriz: a frente só o cria se estiver dentro dos seus diretórios. A matriz por **tema** (GPS, HealthKit, FC, histórico, força, segurança) está em `audits/v1-abc-foundation-consolidation-2026-11-26/OWNERSHIP_MATRIX.md`.
 
-## 11. Mudança de contrato compartilhado
+## 11. Mudança de contrato compartilhado (rev. 2)
 
-Uma frente que precise mudar `IntegrationContracts`, este documento ou a trava do aparelho:
-1. não edita;
-2. escreve a proposta em `audits/<sua-pasta>/CONTRACT_CHANGE_PROPOSALS.md`, com motivo, diff proposto e impacto na outra frente;
-3. segue com um adaptador local no próprio módulo, quando possível, sem mudar a interface consumida pela outra frente;
-4. a missão de integração decide.
+Contratos compartilhados: `IntegrationContracts`, `CoachingPresentation` (tipos, portas, `Facade/app-projections.mjs`, fixtures), este documento, a matriz de ownership e a trava do aparelho. Uma frente que precise mudar um deles:
+1. **não edita** (nem "só um campo opcional");
+2. **propõe** em `audits/<sua-pasta>/CONTRACT_CHANGE_PROPOSALS.md`: id `CCP-<frente>-NN`, motivo, diff exato, impacto em cada outra frente, testes que mudam;
+3. **segue** com um adaptador local no próprio módulo, sem mudar a interface consumida pelas outras;
+4. **a missão de integração decide** e aplica numa linha própria: atualiza o contrato, sobe `CoachingContract.version` (e `PROJECTIONS_VERSION` se a fachada mudou), regenera as fixtures com `Facade/capture-fixtures.mjs`, roda os três `swift test` + `npm test`, publica uma nova tag `v1-abc-base-<n>-<data>`;
+5. **atualização coordenada:** cada frente traz a nova base para a própria branch por `git merge --ff-only` (sem commits próprios) ou por um merge normal (com commits; os caminhos são disjuntos, §10). Nunca rebase, nunca force-push.
 
-Nenhuma sessão faz merge da outra.
+Nenhuma sessão faz merge da outra. Um tipo de view, request, erro, estado de loading/sem permissão/bloqueado, identificador ou fixture que uma frente precise e não exista aqui vira proposta, nunca tipo paralelo.
 
 ## 12. Pendências: quem responde por cada uma
 
@@ -286,11 +319,25 @@ Nenhuma sessão faz merge da outra.
 | C-BC-3 / SSCTR-BC-05 (texto) | — | — | Product/UX + SSCTR | — | aberto |
 | OPEN-1..5, G-1..G-5 | — | — | — | §4.4 | abertos |
 
+| **Rev. 2 · FND-ABC-01** (GAP-12) | dois relatos avulsos do mesmo dia e instante viram uma linha só no motor (o segundo vira "voz" do primeiro, mesmo de outro esporte), e a resposta lista os dois em `recorded` | — | — | exceção pós-freeze se Core + SSCTR quiserem corrigir no motor | contorno no contrato: `observedAt` obrigatório no relato avulso (tipo Swift); "salvo" só por `keepsReport` / `WriteOutcome.kept` |
+| **FND-ABC-02** (SSCTR-CORE-O-1) | o motor não lê `stop` numa corrida sem sessão | — | C leva o sintoma ao fluxo "Não estou 100%" | SSCTR | o tipo avulso não tem `stop` |
+| **FND-ABC-03** | os formulários de `api.mjs` (`logRun`, `logStrength`, `weeklyCheckIn` …) guardam só `completed/minutes/exercises/response` | A envia todo relato por `integration.submit` com `ReviewRequest` | — | — | regra do contrato |
+| **FND-ABC-04** (segurança) | um `restart` que declara gestação/pós-parto é `UNSUPPORTED` e o plano anterior continua executável no registro | A: sinal persistente + `NotStartableReason.outsideV1Scope` | tela de plano indisponível | SSCTR + SEC confirmam; Core decide se muda a fronteira | aberto até A + revisão |
+| **FND-ABC-04b** (segurança) | `restart` com flag clínica → `CLINICAL_HUMAN_REQUIRED` e o plano anterior continua executável | A: o mesmo sinal, `NotStartableReason.clinicalHumanRequired` | tela de encaminhamento a humano | SSCTR + SEC | aberto até A |
+| **SSCTR-ABC-S1 X1** | a rota "Não estou 100%" usada para sintoma em corrida avulsa não pergunta X1 (sinal urgente com exercício) | — | rota com `eligibility` junto | Core + dono clínico G04 | aberto |
+| **FND-ABC-05** | `presentation()` mantém os passos das corridas futuras sob hold (`prescribed:false`) | — | C só usa `PresentationSnapshot.runSession(for:)` (filtra pela view) | — | regra do contrato |
+| **FND-HR5-01** | a custódia recusa `runEvidence` numa revisão; evidência declarada só entra pelo intake (`performanceAnchors`) | — | 71 "registrar prova/teste" depois do cadastro fica `UNSUPPORTED_V1` | Core + SEC (emenda) | aberto |
+| **HR5 concorrência** | corrida entre processos na escrita do perfil cardíaco à mesma versão (risco aceito do V1HR5R; modelado em `Facade/test/hr5-concurrency.test.mjs`) | A: lock por atleta do load ao commit + CAS por bytes; teste de dois processos | — | extensão real (App Groups) | aberto até A |
+| **GAP-16 / DR-121** | gravar a corrida do iPhone no HealthKit | — | — (o gravador é de C; a escrita seria de B) | **FDR + SEC decidem** | default: não grava; a distância do iPhone não chega ao registro |
+| **FND-ABC-06** (contagem dupla) | (a) corrida avulsa **digitada** pelo atleta + treino do relógio no mesmo horário viram duas linhas no motor (a dedupe só cobre gravações do app); (b) gravação avulsa relatada do app dentro de um treino do relógio bem mais longo (sobreposição < 50 % do maior) vai pela regra normal e também vira duas linhas | — | — | Core + SSCTR + B decidem (dedupe de relato manual, ou voz do aparelho na linha avulsa) | aberto; contado por B |
+| **Dedupe em espera** | `holdUntilRecordingSettles`: `AppRecordingIndex` não notifica | — | B reavalia os treinos em espera a cada leitura/`deliveryConditionsChanged()` e quando o índice muda | — | regra do contrato |
+| **SSCTR C10** | canal de série de FC (tempo em zona) | facade `timeInZones` com `enabled:false` | componente oculto | SSCTR + Data | fechado por portão (`SERIES_CHANNEL_NOT_REVIEWED`) |
+
 Nenhuma frente declara fechada uma pendência que dependa de outra coluna.
 
 ## 13. Integração posterior
 
-Missão própria, depois de A e B entregues:
+Missão própria, depois de A, B e C entregues (rev. 2: inclua C em cada passo; a composição em `ios/App/Composition/**` troca os provedores de fixture de C pelas implementações reais de A e B):
 1. Confirmar que `claude/v1-ios-coachinghost` e `claude/v1-ios-healthkit` contêm a base e não tocam arquivos fora da sua coluna: `git diff --name-only v1-parallel-base-2026-11-24..<branch>` contra a §10.
 2. Fazer merge das duas numa branch de integração nova (nunca em `main` sem autorização): a matriz garante zero conflitos de arquivo.
 3. Decidir as `CONTRACT_CHANGE_PROPOSALS.md`.
@@ -319,3 +366,14 @@ Missão própria, depois de A e B entregues:
 - `--check` dá exit 0.
 
 Nenhum dos dois implementa telas, backend ou regra esportiva.
+
+**C está pronto para integração quando** (rev. 2; detalhe em `audits/v1-abc-foundation-consolidation-2026-11-26/C_SWIFTUI_HANDOFF.md`):
+- o app compila e roda no Simulator e no aparelho (pela trava `swiftui`) só com `RepMileUI`, `RunRecorder`, os pacotes compartilhados e os provedores de fixture;
+- cada fixture de `CoachingPresentation` é renderizada por pelo menos uma tela ou preview sem crash, e os estados `BLOCKED`, `NEEDS_INPUT`, `PENDING_CONFIRMATION`, `RETURNING`, `NO_DATA`, `OPERATIONAL_ERROR`, `INTEGRITY_FAILURE` e `unrecognized` têm tela;
+- "Começar" depende só de `Startability`; nenhum passo de corrida vem de fora de `runSession(for:)`; nenhuma zona, sinal ou carga é calculado em Swift;
+- o `RunRecorder` grava, pausa, retoma e recupera depois da morte do processo, com localização simulada, sem mandar coordenada a ninguém;
+- `swift test` dos dois pacotes compartilhados continua verde e `git diff --stat v1-abc-ready-2026-11-26 -- CoachingCore ios/Packages/IntegrationContracts ios/Packages/CoachingPresentation` está vazio.
+
+## 15. Frente C (rev. 2)
+
+C implementa o app iPhone a partir do Figma aprovado (`90oyvXHxxBQAvr1netov7S`, sem redesenho), consumindo **só** os contratos compartilhados e fixtures na fase paralela. C não implementa um segundo CoachingHost, um segundo adaptador HealthKit nem regra esportiva. O gravador da corrida no iPhone é de C, num pacote **sem UI** (`RunRecorder`), e não fala com CoachingCore nem com HealthKit. Handoff: `audits/v1-abc-foundation-consolidation-2026-11-26/C_SWIFTUI_HANDOFF.md`.
