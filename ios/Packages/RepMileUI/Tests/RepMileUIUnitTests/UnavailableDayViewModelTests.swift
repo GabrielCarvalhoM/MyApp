@@ -84,7 +84,8 @@ final class UnavailableDayViewModelTests: XCTestCase {
 
     func testAcceptConfirmsTheProposedDecision() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { nil })
+        let pending = try snapshot("actions-B1b-presentation-pending")
+        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { pending })
         await vm.accept()
         XCTAssertTrue(w.journal.entries.isEmpty, "nothing to accept before a proposal")
         await vm.send()
@@ -112,7 +113,8 @@ final class UnavailableDayViewModelTests: XCTestCase {
     /// A second tap while the confirmation is in flight confirms nothing more.
     func testNoDoubleAccept() async throws {
         let w = SlowAcceptWriter()
-        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { nil })
+        let pending = try snapshot("actions-B1b-presentation-pending")
+        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { pending })
         await vm.send()
         let first = Task { await vm.accept() }
         for _ in 0..<100 where vm.phase != .accepting(decisionId: "dc_000031") { await Task.yield() }

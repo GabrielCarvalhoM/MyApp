@@ -40,7 +40,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
     func testTheCorrectionIsTheAthletesOwnVoice() async throws {
         let e = try entry("P-logged-two-voices")
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = HistoryCorrectionViewModel(entry: e, writer: w)
+        let vm = HistoryCorrectionViewModel(entry: e, writer: w, reload: {})
         vm.startContesting()
         vm.km = "7,4"; vm.reason = .obstructedSky
         await vm.send()
@@ -80,7 +80,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
 
     func testNothingIsSentWithoutAValidDistanceOrBeforeContesting() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: w)
+        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: w, reload: {})
         XCTAssertEqual(vm.phase, .idle)
         vm.km = "7"
         await vm.send()
@@ -101,7 +101,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         XCTAssertFalse(HistoryCorrectionViewModel.saved(WriteOutcome(answer: ok, kept: [], notKept: ["ob_1"])))
         XCTAssertFalse(HistoryCorrectionViewModel.saved(WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: ["ob_1"], notKept: [])))
 
-        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: ScriptedSubmitWriter(FixtureCoachingWriter.unavailable))
+        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: ScriptedSubmitWriter(FixtureCoachingWriter.unavailable), reload: {})
         vm.startContesting(); vm.km = "7"
         var animated = 0
         await vm.send { change in animated += 1; change() }
@@ -111,7 +111,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
 
     func testNoDoubleSubmit() async throws {
         let writer = ScriptedSubmitWriter(try Safety.answer(#"{"ok":true,"recorded":["ob_1"]}"#), delay: .milliseconds(150))
-        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: writer)
+        let vm = HistoryCorrectionViewModel(entry: try entry("P-logged-two-voices"), writer: writer, reload: {})
         vm.startContesting(); vm.km = "7"
         let first = Task { await vm.send() }
         for _ in 0..<100 where writer.journal.entries.isEmpty { await Task.yield() }

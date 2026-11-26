@@ -43,7 +43,9 @@ struct HistoryScreen: View {
         .accessibilityIdentifier("screen-history")
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(item: $selected) { HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, writer: model.writer), title: title($0)) }
+        .sheet(item: $selected) {
+            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, writer: model.writer, reload: { [model] in await model.load() }), title: title($0))
+        }
     }
 
     private var groupedByWeek: [(String, [LoggedEntry])] {

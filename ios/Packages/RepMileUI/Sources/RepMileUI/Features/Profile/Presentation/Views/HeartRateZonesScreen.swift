@@ -41,7 +41,10 @@ struct HeartRateZonesScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .navigationTitle("").navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(RM.Palette.fundoApp, for: .navigationBar)
-        .sheet(item: $editing) { HeartRateProfileEditor(viewModel: HeartRateZonesViewModel(writer: model.writer, mode: $0, current: five), current: five) }
+        .sheet(item: $editing) {
+            HeartRateProfileEditor(viewModel: HeartRateZonesViewModel(writer: model.writer, mode: $0, current: five, reload: { [model] in await model.load() }),
+                                   current: five)
+        }
     }
 
     @ViewBuilder private var content: some View {

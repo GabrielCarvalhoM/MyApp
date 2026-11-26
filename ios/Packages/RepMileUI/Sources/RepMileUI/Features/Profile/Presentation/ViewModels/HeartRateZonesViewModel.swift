@@ -5,6 +5,8 @@ import Observation
 /// Informar a máxima / personalizar limites (Figma 71): the editor's fields and its two writes, `setHeartRateProfile` and
 /// `eraseHeartRateProfile` (never held back by consent). Validation is the engine's: the fields only need whole numbers, and a refusal's
 /// `fields` become the message shown. One write at a time. Made per editor presentation, so every opening starts from the profile in force.
+/// After an `ok` answer the record is read again (`reload`, CODE_AND_ARCHITECTURE §2): the zones screen shows the reference and zones the
+/// engine now holds, never the pre-write ones. A failure reads nothing again.
 @Observable @MainActor
 final class HeartRateZonesViewModel {
     enum Editor: String, Identifiable { case maximum, limits; var id: String { rawValue } }
@@ -35,12 +37,14 @@ final class HeartRateZonesViewModel {
     private(set) var message: Message?
 
     private let writer: CoachingWriting
+    private let reload: @MainActor () async -> Void
     private let hasCopy: (String) -> Bool
 
-    /// The fields start from the athlete's profile in force (`current`); `hasCopy` says whether `hr.error.<field>` has copy.
-    init(writer: CoachingWriting, mode: Editor, current: HeartRateFiveZones?,
+    /// The fields start from the athlete's profile in force (`current`); `reload` is `AppModel.load`; `hasCopy` says whether
+    /// `hr.error.<field>` has copy.
+    init(writer: CoachingWriting, mode: Editor, current: HeartRateFiveZones?, reload: @escaping @MainActor () async -> Void,
          hasCopy: @escaping (String) -> Bool = { L.code("hr.error", Code(raw: $0)) != nil }) {
-        self.writer = writer; self.mode = mode; self.hasCopy = hasCopy
+        self.writer = writer; self.mode = mode; self.reload = reload; self.hasCopy = hasCopy
         if let m = current?.profile?.declaredMaximumBpm { maximum = "\(m)" }
         if let z = current?.profile?.customZoneUpperBpm, z.count == 4 { limits = z.map(String.init) }
     }
@@ -51,15 +55,20 @@ final class HeartRateZonesViewModel {
     func save() async {
         guard activity == .idle, let r = request else { return }
         activity = .saving
-        defer { activity = .idle }
-        message = Self.saveMessage(await writer.setHeartRateProfile(r), hasCopy: hasCopy)
+        await finish(Self.saveMessage(await writer.setHeartRateProfile(r), hasCopy: hasCopy))
     }
 
     func erase() async {
         guard activity == .idle else { return }
         activity = .erasing
-        defer { activity = .idle }
-        message = Self.eraseMessage(await writer.eraseHeartRateProfile())
+        await finish(Self.eraseMessage(await writer.eraseHeartRateProfile()))
+    }
+
+    /// The answer as copy, then, only when it is `ok`, the record read again. The gate opens before the read: the reload is not a write.
+    private func finish(_ m: Message) async {
+        message = m
+        activity = .idle
+        if m.ok { await reload() }
     }
 
     /// Whole numbers only; the range and order are the engine's to judge (its `fields` come back on refusal).

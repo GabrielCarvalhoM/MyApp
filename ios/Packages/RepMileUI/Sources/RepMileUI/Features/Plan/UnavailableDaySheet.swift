@@ -29,6 +29,10 @@ struct UnavailableDaySheet: View {
                     .accessibilityIdentifier("move-send")
             case .proposed, .accepting:
                 Text(L.t("move.proposed")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                if viewModel.proposalUnavailable {
+                    Text(L.t("move.proposal.unavailable")).rmText(.subtitulo).fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("move-proposal-unavailable")
+                }
                 ForEach(viewModel.proposal, id: \.sessionId) { p in
                     HStack {
                         RMIconView(.corrida, size: 16).foregroundStyle(RM.Palette.corrida)

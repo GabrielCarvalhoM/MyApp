@@ -35,6 +35,10 @@ struct ProfileScreen: View {
                             if viewModel.consentDone.contains(p) {
                                 Text(L.t("profile.consent.done")).rmText(.detalhe, RM.Palette.positivo)
                             } else {
+                                if viewModel.consentFailed.contains(p) {
+                                    Text(L.t("profile.consent.failed")).rmText(.detalhe, RM.Palette.negativo).fixedSize(horizontal: false, vertical: true)
+                                        .accessibilityIdentifier("consent-failed-\(p.rawValue)")
+                                }
                                 HStack(spacing: 8) {
                                     SecondaryPillButton(L.t("profile.consent.grant")) { Task { await viewModel.setConsent(p, granted: true) } }
                                     SecondaryPillButton(L.t("profile.consent.revoke")) { Task { await viewModel.setConsent(p, granted: false) } }

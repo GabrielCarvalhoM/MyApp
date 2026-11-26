@@ -29,7 +29,7 @@ final class ProfileViewModelTests: XCTestCase {
         await vm.setConsent(.coaching, granted: false)
         XCTAssertEqual(vm.consentDone, [.coaching])
         XCTAssertEqual(w.calls("setConsent").map(json), [#"{"COACHING":false}"#])
-        XCTAssertEqual(e.log, [], "a consent write reads nothing again and erases nothing")
+        XCTAssertEqual(e.log, ["reload"], "a recorded consent is read again (#58) and erases nothing")
         let refused = viewModel(PrivacyWriter(consentAnswer: FixtureCoachingWriter.unavailable), e)
         await refused.setConsent(.learning, granted: true)
         XCTAssertEqual(refused.consentDone, [], "a refused consent write shows nothing recorded")
