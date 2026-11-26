@@ -56,7 +56,7 @@ Ativas (reversíveis, sem checks exigidos): rulesets que **bloqueiam force-push 
 
 | Branch | Recomendação | Quando |
 |---|---|---|
-| `claude/v1-ios-integration` | exigir o check `CI`, PR e revisão de code owner (`.github/`, `tools/orchestration/`, contratos, CoachingCore) | ao criar a branch (issue I1) |
+| `claude/v1-ios-integration` | **ativo desde 26/11** (ruleset 28186277): PR + check `CI` exigidos, sem force-push/exclusão. Revisão de code owner **não** exigida enquanto #29 (mesma identidade) estiver aberto | — |
 | release (`release/v1*`) | exigir `CI`, PR e revisão; bloquear push direto | ao criar a primeira release |
 | branch padrão | decidir com o fundador (hoje é `r7/decision-authority-closure-base`; não existe `main`) | issue O1 |
 
