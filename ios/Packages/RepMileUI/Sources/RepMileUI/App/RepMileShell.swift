@@ -93,13 +93,8 @@ struct AppTabs: View {
         guard !model.isLoading, runGate == nil else { return }
         runLaunch = Launch(session: nil)
     }
-    /// The gate that stops a live unplanned run (a hold or a persistent host gate). Founder provisional decision (26/11) and SSCTR
-    /// recheck ruling on QRE P1-11: a clinical block, outside V1 scope or a pending symptom assessment; nothing else is added here.
-    private var runGate: NotStartableReason? {
-        if model.plan?.hold != nil || model.plan?.state == .blocked { return .blocked }
-        if let g = model.globalGate, [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired].contains(g) { return g }
-        return nil
-    }
+    /// The gate that stops a live unplanned run (`AppModel.unplannedRunGate`, the same rule that withholds the steps of a run in progress).
+    private var runGate: NotStartableReason? { model.unplannedRunGate }
 
     var body: some View {
         ZStack(alignment: .bottom) {
