@@ -114,6 +114,26 @@ public final class AppModel {
         return nil
     }
 
+    /// The reasons that withhold every prescription from a run, planned or not: a clinical block or hold, outside V1 scope, clinical human
+    /// required, a symptom screen pending (Founder provisional decision 26/11; SSCTR ruling on QRE P1-11). Nothing else is added here: clock,
+    /// record or repertoire reasons only stop a *start*.
+    static let runSafetyReasons: [NotStartableReason] = [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired]
+
+    /// The gate that stops a live unplanned run, and withholds the steps of any run in progress.
+    public var unplannedRunGate: NotStartableReason? {
+        if plan?.hold != nil || plan?.state == .blocked { return .blocked }
+        if let g = globalGate, Self.runSafetyReasons.contains(g) { return g }
+        return nil
+    }
+
+    /// While a run is in progress (also one resumed after a killed process): the safety gate that now applies to it, if any (#38). The
+    /// recording and its measurement continue; only the prescribed steps, targets and countdown are withheld (SSCTR rule).
+    public func runSafetyGate(for session: PlannedSession?) -> NotStartableReason? {
+        if let g = unplannedRunGate { return g }
+        guard let session, case .notStartable(let r) = startability(of: session), Self.runSafetyReasons.contains(r) else { return nil }
+        return r
+    }
+
     public var initials: String {
         athleteName.split(separator: " ").prefix(2).compactMap { $0.first }.map(String.init).joined().uppercased()
     }

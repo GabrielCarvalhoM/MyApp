@@ -93,13 +93,8 @@ struct AppTabs: View {
         guard !model.isLoading, runGate == nil else { return }
         runLaunch = Launch(session: nil)
     }
-    /// The gate that stops a live unplanned run (a hold or a persistent host gate). Founder provisional decision (26/11) and SSCTR
-    /// recheck ruling on QRE P1-11: a clinical block, outside V1 scope or a pending symptom assessment; nothing else is added here.
-    private var runGate: NotStartableReason? {
-        if model.plan?.hold != nil || model.plan?.state == .blocked { return .blocked }
-        if let g = model.globalGate, [.blocked, .outsideV1Scope, .clinicalHumanRequired, .screenRequired].contains(g) { return g }
-        return nil
-    }
+    /// The gate that stops a live unplanned run (`AppModel.unplannedRunGate`, the same rule that withholds the steps of a run in progress).
+    private var runGate: NotStartableReason? { model.unplannedRunGate }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -139,10 +134,12 @@ struct AppTabs: View {
             case .add: AddWorkoutSheet(startRun: { then { startUnplannedRun() } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
                                        runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) }, runPending: model.isLoading)
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
-            case .notFeeling: NotFeeling100Flow()
-            case .readiness: ReadinessFlow()
+            case .notFeeling: NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
+            case .readiness: ReadinessFlow(viewModel: ReadinessViewModel(reader: model.reader, writer: model.writer))
             case .strength(let l): StrengthLogView(viewModel: StrengthLogViewModel(session: l.session, writer: model.writer, planToday: { [model] in model.plan?.today }))
-            case .moving(let s): UnavailableDaySheet(session: s)
+            case .moving(let s):
+                UnavailableDaySheet(viewModel: UnavailableDayViewModel(session: s, writer: model.writer, reload: { [model] in await model.load() },
+                                                                       presentation: { [model] in model.presentation }))
             }
         }
         .fullScreenCover(item: $runLaunch, onDismiss: { recorder.close(); Task { await model.load() } }) { RunSessionScreen(session: $0.session) }
@@ -159,7 +156,11 @@ struct AppTabs: View {
 
     @ViewBuilder private func destination(_ r: Route) -> some View {
         switch r {
-        case .profile: ProfileScreen(openZones: { todayPath.append(.hrZones) })
+        case .profile:
+            ProfileScreen(viewModel: ProfileViewModel(writer: model.writer, reload: { [model] in await model.load() },
+                                                      eraseRecordings: { [recorder] in recorder.eraseAllRecordings() },
+                                                      accountErased: { [model] in await model.accountErased() }),
+                          openZones: { todayPath.append(.hrZones) })
         case .hrZones: HeartRateZonesScreen()
         case .session(let id, let date):
             if let s = (model.plan?.week?.sessions ?? []).first(where: { $0.id == id && $0.date == date })

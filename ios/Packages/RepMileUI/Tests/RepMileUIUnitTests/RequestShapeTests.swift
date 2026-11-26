@@ -52,7 +52,7 @@ final class RequestShapeTests: XCTestCase {
         var answers = Dictionary(uniqueKeysWithValues: set.warningSigns.dropLast().map { ($0, false) })
         answers["feverOrChillsNotAsked"] = true  // not in the set: refused, never sent
         let eligibility = EligibilityScreen(status: nil, assessedAt: "", pain: false, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
-        let r = try XCTUnwrap(NotFeeling100Flow.makeRequest(condition: .minorDiscomfort, set: set, answers: answers, intent: .reduceLight, eligibility: eligibility, today: "2026-11-22"))
+        let r = try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .minorDiscomfort, set: set, answers: answers, intent: .reduceLight, eligibility: eligibility, today: "2026-11-22"))
         let json = try encoded(r)
         XCTAssertEqual(json["kind"] as? String, "NOT_FEELING_100")
         let signs = try XCTUnwrap((json["wellbeing"] as? [String: Any])?["warningSigns"] as? [String: Bool])
@@ -70,25 +70,25 @@ final class RequestShapeTests: XCTestCase {
         let set = try XCTUnwrap(try Repo.store.decode(Sets.self, "P-warning-sign-sets").sets.first { $0.condition == "MILD_ILLNESS" })
         let w = FixtureCoachingWriter(store: Repo.store)
         let allNo = Dictionary(uniqueKeysWithValues: set.warningSigns.map { ($0, false) })
-        let kept = await w.submit(try XCTUnwrap(NotFeeling100Flow.makeRequest(condition: .mildIllness, set: set, answers: allNo, intent: .rest, eligibility: nil, today: "")))
+        let kept = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: allNo, intent: .rest, eligibility: nil, today: "")))
         XCTAssertEqual(kept.answer.status?.raw, "KEEP")
         var fever = allNo; fever["feverOrChills"] = true
-        let blocked = await w.submit(try XCTUnwrap(NotFeeling100Flow.makeRequest(condition: .mildIllness, set: set, answers: fever, intent: .rest, eligibility: nil, today: "")))
+        let blocked = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: fever, intent: .rest, eligibility: nil, today: "")))
         XCTAssertEqual(blocked.answer.status?.raw, "CLINICAL_HUMAN_REQUIRED")
-        let partial = await w.submit(try XCTUnwrap(NotFeeling100Flow.makeRequest(condition: .mildIllness, set: set, answers: [:], intent: .rest, eligibility: nil, today: "")))
+        let partial = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: [:], intent: .rest, eligibility: nil, today: "")))
         XCTAssertNotEqual(partial.answer.status?.raw, "KEEP", "unanswered signs are never read as no")
     }
 
     /// SSCTR review: only KEEP is "the plan stays"; MODIFY says the next sessions changed; unknown fails closed.
     func testNotFeeling100OutcomeReadsTheEngineStatus() throws {
         func answer(_ json: String) throws -> BoundaryAnswer { try JSONDecoder().decode(BoundaryAnswer.self, from: Data(json.utf8)) }
-        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"KEEP"}"#)), .kept)
-        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"MODIFY"}"#)), .modified)
-        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"ASK"}"#)), .needsAnswers)
-        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#)), .blocked)
-        XCTAssertEqual(NotFeeling100Flow.outcome(try answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#)), .failed("SOMETHING_NEW"))
-        XCTAssertEqual(NotFeeling100Flow.outcome(try Repo.store.decode(BoundaryAnswer.self, "actions-D1-notFeeling100-no-sign")), .kept)
-        XCTAssertEqual(NotFeeling100Flow.outcome(try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign")), .blocked)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"KEEP"}"#)), .kept)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"MODIFY"}"#)), .modified)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"ASK"}"#)), .needsAnswers)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#)), .blocked)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#)), .failed("SOMETHING_NEW"))
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try Repo.store.decode(BoundaryAnswer.self, "actions-D1-notFeeling100-no-sign")), .kept)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign")), .blocked)
     }
 
     func testUnplannedStrengthKeptOnlyWithObservedAt() async throws {

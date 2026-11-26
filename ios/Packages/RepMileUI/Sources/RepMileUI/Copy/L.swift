@@ -24,9 +24,9 @@ enum Fmt {
         let f = DateFormatter(); f.calendar = calendar; f.timeZone = utc; f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
         return f.date(from: s)
     }
-    /// The device's local calendar day (used only where no plan-local day exists yet, e.g. onboarding).
-    static func deviceDay(_ d: Date) -> String {
-        let f = DateFormatter(); f.calendar = Calendar(identifier: .gregorian); f.timeZone = .current; f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
+    /// The device's local calendar day (used only where no plan-local day exists yet, e.g. onboarding). `timeZone` is for tests.
+    static func deviceDay(_ d: Date, in timeZone: TimeZone = .current) -> String {
+        let f = DateFormatter(); f.calendar = Calendar(identifier: .gregorian); f.timeZone = timeZone; f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
         return f.string(from: d)
     }
     static func dayString(_ d: Date) -> String {
