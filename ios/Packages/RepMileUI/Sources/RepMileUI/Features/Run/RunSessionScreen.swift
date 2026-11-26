@@ -25,7 +25,9 @@ struct RunSessionScreen: View {
     var body: some View {
         Group {
             if let finished {
-                RunReportView(session: session, recording: finished) { dismiss() }
+                RunReportView(session: session,
+                              viewModel: RunReportViewModel(recording: finished, writer: model.writer, planToday: { [model] in model.plan?.today },
+                                                            markReported: { [recorder] in recorder.markReported(eventId: $0) })) { dismiss() }
             } else {
                 TimelineView(.periodic(from: .now, by: 1)) { _ in live }
             }

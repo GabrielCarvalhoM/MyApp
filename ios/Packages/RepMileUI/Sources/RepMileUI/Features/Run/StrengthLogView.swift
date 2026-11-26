@@ -13,7 +13,7 @@ struct StrengthLogView: View {
     @State private var drafts: [String: [SetDraft]] = [:]
     @State private var minutes: Double?
     @State private var startedAt = Date()
-    @State private var result: RunReportView.Result?
+    @State private var result: RunReportViewModel.Result?
     @State private var sending = false
 
     private var exercises: [PrescribedExercise] { session?.prescription?.exercises ?? [] }
@@ -96,7 +96,7 @@ struct StrengthLogView: View {
 
     private func send() async {
         sending = true; defer { sending = false }
-        let end = RunReportView.instant(Date())
+        let end = RunReportViewModel.instant(Date())
         let obs: AthleteObservation = session.map {
             .plannedStrength(sessionId: $0.id, occurrenceDate: $0.date, observedAt: end, actual: actual(), response: .unknown)
         } ?? .unplannedStrength(occurrenceDate: model.plan?.today ?? Fmt.deviceDay(Date()), observedAt: end, actual: actual(), response: .unknown)
