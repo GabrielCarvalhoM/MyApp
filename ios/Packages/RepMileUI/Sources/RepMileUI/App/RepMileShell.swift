@@ -36,6 +36,12 @@ public struct RepMileShell: View {
             switch model.route {
             case .loading: LoadingSkeleton()
             case .app: AppTabs()
+            case .onboarding:
+                OnboardingFlow(onEnrolled: {
+                    // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
+                    if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
+                    else { Task { await model.load() } }
+                })
             default: StateScreen(route: model.route, primary: {}, retry: { Task { await model.load() } })
             }
         }

@@ -70,10 +70,10 @@ final class NavigationTests: XCTestCase {
 
     @MainActor
     func testRootStates() {
-        for (scenario, id) in [("no-data", "state-onboarding"), ("gone", "state-gone"), ("integrity", "state-integrity"),
+        for (scenario, id) in [("no-data", "screen-onboarding"), ("gone", "state-gone"), ("integrity", "state-integrity"),
                                ("record-lost", "state-record-lost"), ("stale", "state-operational-error")] {
             let app = launch(scenario)
-            XCTAssertTrue(app.otherElements[id].waitForExistence(timeout: 10), scenario)
+            XCTAssertTrue(app.descendants(matching: .any)[id].waitForExistence(timeout: 10), scenario)
             XCTAssertFalse(app.buttons["tab-today"].exists, scenario)
             attach(app, "State — \(scenario)")
             app.terminate()

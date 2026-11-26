@@ -39,7 +39,7 @@ public enum RootRoute: Equatable, Sendable {
 /// The app's single read model: everything the tabs show, read through the shared ports and never copied into a second store (G07).
 @Observable @MainActor
 public final class AppModel {
-    public let reader: CoachingReading
+    public private(set) var reader: CoachingReading
     public let writer: CoachingWriting
     public let health: HealthIngestStatusSource
     public let athleteName: String
@@ -79,6 +79,10 @@ public final class AppModel {
         healthStatus = await health.status()
         route = RootRoute.from(plan: planResult)
     }
+
+    /// Parallel phase only: after an enrolment the composition root hands the reader of the state the engine captured next (A's reader
+    /// simply reads the new record at integration).
+    public func replaceReader(_ r: CoachingReading) async { reader = r; route = .loading; await load() }
 
     /// After a successful `eraseAccount`: nothing of the record stays in memory and the root shows the erased state.
     public func accountErased() async {
