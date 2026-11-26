@@ -137,7 +137,9 @@ struct AppTabs: View {
             case .notFeeling: NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
             case .readiness: ReadinessFlow(viewModel: ReadinessViewModel(reader: model.reader, writer: model.writer))
             case .strength(let l): StrengthLogView(session: l.session)
-            case .moving(let s): UnavailableDaySheet(session: s)
+            case .moving(let s):
+                UnavailableDaySheet(viewModel: UnavailableDayViewModel(session: s, writer: model.writer, reload: { [model] in await model.load() },
+                                                                       presentation: { [model] in model.presentation }))
             }
         }
         .fullScreenCover(item: $runLaunch, onDismiss: { recorder.close(); Task { await model.load() } }) { RunSessionScreen(session: $0.session) }
