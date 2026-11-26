@@ -9,11 +9,13 @@ final class PrivacyWriter: CoachingWriting {
     let delay: Duration
     let consentAnswer: BoundaryAnswer?
     let accountAnswer: BoundaryAnswer?
+    let healthAnswer: BoundaryAnswer?
     let eraseProfileResult: Result<HeartRateProfileAnswer, BoundaryError>?
 
-    init(delay: Duration = .zero, consentAnswer: BoundaryAnswer? = nil, accountAnswer: BoundaryAnswer? = nil,
+    init(delay: Duration = .zero, consentAnswer: BoundaryAnswer? = nil, accountAnswer: BoundaryAnswer? = nil, healthAnswer: BoundaryAnswer? = nil,
          eraseProfileResult: Result<HeartRateProfileAnswer, BoundaryError>? = nil) {
-        self.delay = delay; self.consentAnswer = consentAnswer; self.accountAnswer = accountAnswer; self.eraseProfileResult = eraseProfileResult
+        self.delay = delay; self.consentAnswer = consentAnswer; self.accountAnswer = accountAnswer; self.healthAnswer = healthAnswer
+        self.eraseProfileResult = eraseProfileResult
     }
 
     func calls(_ name: String) -> [Data] { base.journal.entries.filter { $0.call == name }.map(\.json) }
@@ -28,7 +30,7 @@ final class PrivacyWriter: CoachingWriting {
     func eraseHealthFacts(eventIds: [String]) async -> WriteOutcome {
         let out = await base.eraseHealthFacts(eventIds: eventIds)
         await wait()
-        return out
+        return healthAnswer.map { WriteOutcome(answer: $0, kept: [], notKept: []) } ?? out
     }
     func eraseAccount() async -> WriteOutcome {
         let out = await base.eraseAccount()

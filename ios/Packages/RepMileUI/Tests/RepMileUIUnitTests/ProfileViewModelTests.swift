@@ -36,12 +36,15 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(refused.activity, .idle)
     }
 
+    /// While a write is in flight `isWriting` disables every write on screen (erase rows and the dialog's button included); the view model
+    /// still refuses a tap that gets through.
     func testOneWriteAtATime() async {
         let w = PrivacyWriter(delay: .milliseconds(80)), e = Effects()
         let vm = viewModel(w, e)
         let first = Task { await vm.setConsent(.healthSignals, granted: true) }
         for _ in 0..<100 where !vm.isWriting { await Task.yield() }
         XCTAssertEqual(vm.activity, .writing(.consent(.healthSignals)))
+        XCTAssertTrue(vm.isWriting, "the erase rows are disabled: an erasure is never accepted on screen and then dropped")
         await vm.setConsent(.healthSignals, granted: true)
         await vm.setConsent(.coaching, granted: false)
         await vm.erase(.account)
@@ -67,6 +70,16 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(r.log, [], "a refused erasure keeps the recordings and the record on screen")
     }
 
+    func testRefusedAccountErasureCanBeRetried() async {
+        let w = PrivacyWriter(accountAnswer: FixtureCoachingWriter.unavailable), e = Effects()
+        let vm = viewModel(w, e)
+        await vm.erase(.account)
+        XCTAssertEqual(vm.activity, .idle, "a refused erasure leaves the screen writable")
+        await vm.erase(.account)
+        XCTAssertEqual(w.calls("eraseAccount").count, 2, "the retry is sent")
+        XCTAssertEqual(e.log, [])
+    }
+
     func testAccountErasureSentOnceWhileInFlight() async {
         let w = PrivacyWriter(delay: .milliseconds(50)), e = Effects()
         let vm = viewModel(w, e)
@@ -84,6 +97,26 @@ final class ProfileViewModelTests: XCTestCase {
         XCTAssertEqual(w.calls("eraseHealthFacts").map(json), ["[]"])
         XCTAssertEqual(w.calls("eraseAccount").count, 0)
         XCTAssertEqual(e.log, ["reload"], "erasing health facts never erases the account or the recordings")
+    }
+
+    func testHealthErasureOpensTheGateBeforeTheRead() async {
+        let w = PrivacyWriter(), e = Effects()
+        var writingDuringReload: Bool?
+        var vm: ProfileViewModel!
+        vm = ProfileViewModel(writer: w, reload: { writingDuringReload = vm.isWriting; e.log.append("reload") }, eraseRecordings: {},
+                              accountErased: {})
+        await vm.erase(.health)
+        XCTAssertEqual(writingDuringReload, false, "the reload is not a write: the erase rows are enabled again while it runs")
+        XCTAssertEqual(e.log, ["reload"])
+    }
+
+    func testRefusedHealthErasureStillReadsAgain() async {
+        let w = PrivacyWriter(healthAnswer: FixtureCoachingWriter.unavailable), e = Effects()
+        let vm = viewModel(w, e)
+        await vm.erase(.health)
+        XCTAssertEqual(w.calls("eraseHealthFacts").count, 1)
+        XCTAssertEqual(e.log, ["reload"], "as before: the record is read again whatever the answer")
+        XCTAssertEqual(vm.activity, .idle)
     }
 
     func testNoConfirmationErasesNothing() async {

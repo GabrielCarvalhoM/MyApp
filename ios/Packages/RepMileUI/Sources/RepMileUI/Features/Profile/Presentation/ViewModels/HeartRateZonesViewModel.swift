@@ -69,10 +69,12 @@ final class HeartRateZonesViewModel {
         return v.count == 4 ? HeartRateProfileRequest(zoneUpperBpm: .some(v)) : nil
     }
 
-    /// CONSENT_REQUIRED asks for the consent; any other refusal names the first field the copy table has, else the operational error.
+    /// Saved only on an answer that says `ok` (the port does not promise a `.success` is one). CONSENT_REQUIRED asks for the consent; any
+    /// other refusal names the first field the copy table has, else the operational error.
     static func saveMessage(_ result: Result<HeartRateProfileAnswer, BoundaryError>, hasCopy: (String) -> Bool) -> Message {
         switch result {
-        case .success: return .saved
+        case .success(let a) where a.ok: return .saved
+        case .success: return .failed
         case .failure(let e):
             if e.code.raw == "CONSENT_REQUIRED" { return .consentRequired }
             return (e.fields ?? []).first(where: hasCopy).map { .refused(field: $0) } ?? .failed

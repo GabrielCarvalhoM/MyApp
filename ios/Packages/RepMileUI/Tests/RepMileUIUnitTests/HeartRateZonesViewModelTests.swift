@@ -37,6 +37,8 @@ final class HeartRateZonesViewModelTests: XCTestCase {
         let ok = try Repo.store.decode(HeartRateProfileAnswer.self, "hr5r-declared-answer")
         let all: (String) -> Bool = { _ in true }
         XCTAssertEqual(VM.saveMessage(.success(ok), hasCopy: all), .saved)
+        let notOk = try JSONDecoder().decode(HeartRateProfileAnswer.self, from: Data(#"{"ok":false}"#.utf8))
+        XCTAssertEqual(VM.saveMessage(.success(notOk), hasCopy: all), .failed, "a success that is not ok is never \"saved\"")
         XCTAssertEqual(VM.saveMessage(.failure(try Repo.store.error("hr5r-set-without-consent")), hasCopy: all), .consentRequired)
         XCTAssertEqual(VM.saveMessage(.failure(BoundaryError(code: "CONSENT_REQUIRED", fields: ["maxHeartRateBpm.wholeBpm120to230"])), hasCopy: all),
                        .consentRequired, "consent first, whatever the fields")

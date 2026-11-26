@@ -47,7 +47,7 @@ struct ProfileScreen: View {
                         RMDivider()
                     }
                     Button { viewModel.confirm = .health } label: { ChevronRow(title: L.t("profile.eraseHealth"), detail: L.t("profile.eraseHealth.detail")).padding(16) }
-                        .buttonStyle(.plain).accessibilityIdentifier("profile-erase-health")
+                        .buttonStyle(.plain).disabled(viewModel.isWriting).accessibilityIdentifier("profile-erase-health")
                     RMDivider()
                     Button { viewModel.confirm = .account } label: {
                         VStack(alignment: .leading, spacing: 2) {
@@ -56,7 +56,7 @@ struct ProfileScreen: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading).padding(16)
                     }
-                    .buttonStyle(.plain).accessibilityIdentifier("profile-erase-account")
+                    .buttonStyle(.plain).disabled(viewModel.isWriting).accessibilityIdentifier("profile-erase-account")
                 }
                 section(L.t("profile.about")) {
                     VStack(alignment: .leading, spacing: 4) {
@@ -82,6 +82,7 @@ struct ProfileScreen: View {
                 let which = viewModel.confirm
                 Task { await viewModel.erase(which) }
             }
+            .disabled(viewModel.isWriting)
             .accessibilityIdentifier("profile-erase-confirm")
         }
     }

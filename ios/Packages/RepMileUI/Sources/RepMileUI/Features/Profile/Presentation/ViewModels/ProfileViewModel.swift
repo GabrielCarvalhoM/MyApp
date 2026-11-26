@@ -4,7 +4,8 @@ import Observation
 
 /// Perfil e ajustes: the three privacy writes (`setConsent`, `eraseHealthFacts`, `eraseAccount`) and the erase confirmation. Erasing the
 /// account reaches every layer this front owns (the run recordings) and the record (G07); erasing health facts is never readiness. One write
-/// at a time: a tap while a write is in flight does nothing. The view renders `consentDone` / `confirm` and forwards the athlete's taps.
+/// at a time: a tap while a write is in flight does nothing, and the view disables every write (erase rows included) meanwhile, so an
+/// erasure is never accepted on screen and then dropped. The view renders `consentDone` / `confirm` and forwards the athlete's taps.
 @Observable @MainActor
 final class ProfileViewModel {
     enum Confirm: String, Identifiable { case health, account; var id: String { rawValue } }
@@ -48,11 +49,12 @@ final class ProfileViewModel {
         }
     }
 
-    /// The health facts, then the record is read again.
+    /// The health facts, then the record is read again (whatever the answer, as before). The gate opens before the read: the reload is not
+    /// a write and must not hold the screen's writes back.
     private func eraseHealth() async {
         guard begin(.eraseHealth) else { return }
-        defer { activity = .idle }
         _ = await writer.eraseHealthFacts(eventIds: [])
+        activity = .idle
         await reload()
     }
 
