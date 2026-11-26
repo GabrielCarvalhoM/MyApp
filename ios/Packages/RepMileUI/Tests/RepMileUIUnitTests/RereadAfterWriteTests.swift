@@ -111,8 +111,8 @@ final class RereadAfterWriteTests: XCTestCase {
         let row = { model.logged?.entries.first { $0.sessionId == "w0-run-d1" && !$0.superseded } }
         let before = try XCTUnwrap(row())
         XCTAssertTrue(HistoryCorrectionViewModel.canContest(before))
-        let vm = HistoryCorrectionViewModel(entry: before, writer: writer, reload: { await model.load() })
-        vm.startContesting(); vm.km = "7"
+        let vm = HistoryCorrectionViewModel(testing: before, writer: writer, reload: { await model.load() })
+        vm.startContesting(); vm.km = "7"; vm.answerNoneApplies()
         let loads = reader.loads
         await vm.send()
         XCTAssertEqual(vm.phase, .saved)
@@ -125,14 +125,14 @@ final class RereadAfterWriteTests: XCTestCase {
     func testAFailedCorrectionReadsNothingAgainAnOkOneDoes() async throws {
         let e = try XCTUnwrap(try Repo.store.decode(LoggedEntries.self, "P-logged-two-voices").entries.first { $0.sessionId == "w0-run-d1" })
         var reloads = 0
-        let failed = HistoryCorrectionViewModel(entry: e, writer: ScriptedSubmitWriter(FixtureCoachingWriter.unavailable), reload: { reloads += 1 })
-        failed.startContesting(); failed.km = "7"
+        let failed = HistoryCorrectionViewModel(testing: e, writer: ScriptedSubmitWriter(FixtureCoachingWriter.unavailable), reload: { reloads += 1 })
+        failed.startContesting(); failed.km = "7"; failed.answerNoneApplies()
         await failed.send()
         XCTAssertEqual(failed.phase, .notKept)
         XCTAssertEqual(reloads, 0)
         // `ok` but not kept: the write still happened at the port, so the record is read again; the screen says "não mantido".
-        let unkept = HistoryCorrectionViewModel(entry: e, writer: ScriptedSubmitWriter(try Safety.answer(#"{"ok":true,"recorded":["ob_1"]}"#)), reload: { reloads += 1 })
-        unkept.startContesting(); unkept.km = "7"
+        let unkept = HistoryCorrectionViewModel(testing: e, writer: ScriptedSubmitWriter(try Safety.answer(#"{"ok":true,"recorded":["ob_1"]}"#)), reload: { reloads += 1 })
+        unkept.startContesting(); unkept.km = "7"; unkept.answerNoneApplies()
         await unkept.send()
         XCTAssertEqual(unkept.phase, .notKept)
         XCTAssertEqual(reloads, 1)
@@ -149,11 +149,11 @@ final class RereadAfterWriteTests: XCTestCase {
         XCTAssertNil(HistoryCorrectionViewModel.observation(entry: device, distanceKm: 7, reason: .signalLoss), "the device's numbers are never the athlete's")
         let w = FixtureCoachingWriter(store: Repo.store)
         var reloads = 0
-        let vm = HistoryCorrectionViewModel(entry: device, writer: w, reload: { reloads += 1 })
+        let vm = HistoryCorrectionViewModel(testing: device, writer: w, reload: { reloads += 1 })
         XCTAssertFalse(vm.canContest)
         vm.startContesting()
         XCTAssertEqual(vm.phase, .idle, "the form never opens")
-        vm.km = "7"
+        vm.km = "7"; vm.answerNoneApplies()
         await vm.send()
         XCTAssertTrue(w.journal.entries.isEmpty)
         XCTAssertEqual(reloads, 0)
@@ -212,8 +212,8 @@ final class RereadAfterWriteTests: XCTestCase {
         XCTAssertFalse(HistoryCorrectionViewModel.canContest(e))
         XCTAssertNil(HistoryCorrectionViewModel.observation(entry: e, distanceKm: 6, reason: .signalLoss))
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = HistoryCorrectionViewModel(entry: e, writer: w, reload: {})
-        vm.startContesting(); vm.km = "6"
+        let vm = HistoryCorrectionViewModel(testing: e, writer: w, reload: {})
+        vm.startContesting(); vm.km = "6"; vm.answerNoneApplies()
         await vm.send()
         XCTAssertEqual(vm.phase, .idle)
         XCTAssertTrue(w.journal.entries.isEmpty)

@@ -42,8 +42,17 @@ final class HistoryProgressTests: XCTestCase {
         attach(app, "Histórico — vozes do atleta e do relógio")
     }
 
-    /// #58: a kept correction says "salvo" and the history is read again. The fixture reader is static per scenario, so the re-read returns
-    /// the same capture (the uncontested row): that the row then carries the correction and is not offered again is covered by unit tests.
+    @MainActor
+    private func tapScrolling(_ app: XCUIApplication, _ e: XCUIElement) {
+        var tries = 0
+        while !e.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
+        e.tap()
+    }
+
+    /// #58, #59: a kept correction says "salvo" and the history is read again. The correction asks the eligibility screen with it (the engine
+    /// records no report without one): "Enviar correção" stays off until the six flags are answered "não" and confirmed. The fixture reader is
+    /// static per scenario, so the re-read returns the same capture (the uncontested row): that the row then carries the correction and is
+    /// not offered again is covered by unit tests.
     @MainActor
     func testKeptCorrectionIsSaved() {
         let app = launch("today")
@@ -57,7 +66,15 @@ final class HistoryProgressTests: XCTestCase {
         let km = app.textFields["contest-km"]
         XCTAssertTrue(km.waitForExistence(timeout: 5))
         km.tap(); km.typeText("7")
-        app.buttons["contest-send"].tap()
+        let send = app.buttons["contest-send"]
+        XCTAssertFalse(send.isEnabled, "no screen answered: nil is not \"não\"")
+        for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] { tapScrolling(app, app.buttons["eligibility-\(k)-no"]) }
+        XCTAssertFalse(send.isEnabled, "all \"não\" but not confirmed")
+        let confirm = app.switches["eligibility-confirm"]
+        var tries = 0
+        while !confirm.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
+        confirm.switches.firstMatch.exists ? confirm.switches.firstMatch.tap() : confirm.tap()
+        tapScrolling(app, send)
         XCTAssertTrue(app.staticTexts["Salvo no seu histórico."].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["history-contest"].exists, "not offered again on this screen")
         attach(app, "Histórico — correção salva")
