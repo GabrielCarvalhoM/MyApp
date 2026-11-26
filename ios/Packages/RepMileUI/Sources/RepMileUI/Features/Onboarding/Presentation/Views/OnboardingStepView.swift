@@ -6,6 +6,7 @@ import SwiftUI
 struct OnboardingStepView: View {
     let step: OnboardingViewModel.Step
     @Binding var draft: OnboardingDraft
+    @State private var choosingEventDate = false
 
     var body: some View {
         switch step {
@@ -24,7 +25,7 @@ struct OnboardingStepView: View {
             if draft.runGoal == "RACE" {
                 Text(L.t("ob.event.title")).rmText(.titulo)
                 chips(["5K", "10K", "HALF_MARATHON", "MARATHON"], selected: [draft.eventKind], prefix: "event") { draft.eventKind = $0 }
-                DatePicker("", selection: $draft.eventDate, in: Date()..., displayedComponents: .date).labelsHidden().tint(RM.Palette.corrida)
+                eventDateButton
             }
             Text(L.t("ob.strength.title")).rmText(.titulo)
             choices(["RUNNING_SUPPORT", "STRENGTH", "HYPERTROPHY", "MAINTAIN", "GENERAL"], selected: draft.strengthGoal, prefix: "goal.strength") { draft.strengthGoal = $0 }
@@ -53,7 +54,7 @@ struct OnboardingStepView: View {
             Text(L.t("ob.schedule.strengthTurn")).rmText(.rotulo, RM.Palette.textoSecundario)
             chips(["AM", "PM"], selected: [draft.strengthTurn], prefix: "turn.short") { draft.strengthTurn = $0 }
             Text(L.t("ob.weeks")).rmText(.rotulo, RM.Palette.textoSecundario)
-            chips(["4", "8", "12", "16"], selected: ["\(draft.weeks)"], prefix: nil) { draft.weeks = Int($0) ?? 8 }
+            chips(["4", "8", "12", "16"], selected: Set(draft.weeks.map { ["\($0)"] } ?? []), prefix: nil) { draft.weeks = Int($0) }
         case .equipment:
             Text(L.t("ob.equipment.title")).rmText(.manchete)
             chips(["DUMBBELLS", "BENCH", "BARBELL", "RACK", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR"], selected: draft.equipment, prefix: "equipment") { e in
@@ -91,6 +92,22 @@ struct OnboardingStepView: View {
                 RMDivider()
             }
         }
+    }
+
+    /// The race date: none until the athlete picks one (#61); the calendar opens in a sheet and nothing is kept until "Usar esta data".
+    private var eventDateButton: some View {
+        Button { choosingEventDate = true } label: {
+            HStack {
+                Text(L.t("ob.event.date")).rmText(.corpo, RM.Palette.textoSecundario)
+                Spacer()
+                Text(draft.eventDate.map { Fmt.longDay(Fmt.dayString($0)) } ?? L.t("ob.event.date.choose"))
+                    .rmText(.subtitulo, draft.eventDate == nil ? RM.Palette.corrida : RM.Palette.textoPrimario)
+                RMIconView(.chevronDireita, size: 14).foregroundStyle(RM.Palette.textoTerciario)
+            }
+            .padding(14).background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 14))
+        }
+        .buttonStyle(.plain).accessibilityIdentifier("ob-event-date")
+        .sheet(isPresented: $choosingEventDate) { EventDateSheet(initial: draft.eventDate) { draft.eventDate = $0 } }
     }
 
     private func careOption(_ c: OnboardingDraft.Care, _ key: String) -> some View {

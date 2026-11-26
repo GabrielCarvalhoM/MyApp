@@ -3,6 +3,8 @@ import Foundation
 
 /// What the onboarding form collects, turned into the shared `OnboardingAnswers` only (handoff C §4). Safety fields: `specialPopulation` is
 /// always sent (`[]` for "Nenhum destes"; no choice = cannot continue), the eligibility flags stay nil until answered (never false by default).
+/// #61: the plan length and the race date are the athlete's choice, never a starting value (a default pair contradicted itself and the engine
+/// refused it). The other starting values below wait for the sports-science review of which may keep one.
 struct OnboardingDraft: Equatable {
     enum Care: Equatable { case pregnancy, postpartum, noneOfThese }
     /// Typed by the athlete; no default and no clamp: an age outside 18–80 is the engine's to refuse (POPULATION_OUTSIDE_V1_AGE_RANGE).
@@ -10,7 +12,8 @@ struct OnboardingDraft: Equatable {
     var age: Int? { Int(ageText.trimmingCharacters(in: .whitespaces)).flatMap { (1...120).contains($0) ? $0 : nil } }
     var runGoal = "RACE"
     var eventKind = "10K"
-    var eventDate = Calendar.current.date(byAdding: .day, value: 84, to: Date()) ?? Date()
+    /// Chosen by the athlete when the run goal is a race; nil until then (#61).
+    var eventDate: Date?
     var strengthGoal = "RUNNING_SUPPORT"
     var runMonths = 12
     var strengthMonths = 6
@@ -26,7 +29,8 @@ struct OnboardingDraft: Equatable {
     var longRunMinutes = 70
     var runTurn = "AM"
     var strengthTurn = "PM"
-    var weeks = 8
+    /// Chosen by the athlete (4, 8, 12 or 16); nil until then (#61).
+    var weeks: Int?
     var equipment: Set<String> = ["DUMBBELLS", "BENCH"]
     var anchorTime = ""
     var anchorDistance = "10K"
@@ -43,6 +47,9 @@ struct OnboardingDraft: Equatable {
     }
 
     var careAnswered: Bool { care != nil }
+    /// A race needs its date; another run goal has no event to date.
+    var eventAnswered: Bool { runGoal != "RACE" || eventDate != nil }
+    var weeksAnswered: Bool { weeks != nil }
     var eligibilityAnswered: Bool {
         let flags = [eligibility.pain, eligibility.persistentPain, eligibility.injury, eligibility.illness, eligibility.functionalLimitation, eligibility.clinicalConcern]
         return flags.allSatisfy { $0 != nil } && (eligibility.statesAClinicalFlag || eligibility.status == .nonclinicalConfirmed)
@@ -51,14 +58,14 @@ struct OnboardingDraft: Equatable {
 
     /// The shared request. `id` and the dates of the plan-local day come from the host side in integration (A sets the athlete id).
     func answers(athleteId: String, today: String, startDate: String) -> OnboardingAnswers? {
-        guard let care, let age, eligibilityAnswered else { return nil }
+        guard let care, let age, let weeks, eventAnswered, eligibilityAnswered else { return nil }
         var e = eligibility; e.assessedAt = today
         let special: [SpecialPopulation] = care == .pregnancy ? [.pregnancy] : care == .postpartum ? [.postpartum] : []
         var anchors: [PerformanceAnchor] = []
         if hasAnchor, let s = Self.seconds(anchorTime) {
             anchors.append(PerformanceAnchor(kind: "RACE_RESULT", distance: anchorDistance, seconds: s, date: Fmt.dayString(anchorDate), measurement: "GPS"))
         }
-        let event = runGoal == "RACE" ? GoalEvent(kind: eventKind, date: Fmt.dayString(eventDate)) : nil
+        let event = runGoal == "RACE" ? eventDate.map { GoalEvent(kind: eventKind, date: Fmt.dayString($0)) } : nil
         return OnboardingAnswers(
             athlete: AthleteIntake(id: athleteId, ageYears: age, eligibility: e, specialPopulation: special, strengthTrainingMonths: strengthMonths,
                                    runTrainingMonths: runMonths, exerciseRotationPreference: "COACH_DECIDES",

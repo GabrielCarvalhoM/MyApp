@@ -10,7 +10,8 @@ final class OnboardingTests: XCTestCase {
         return try XCTUnwrap(try JSONSerialization.jsonObject(with: e.encode(v)) as? [String: Any])
     }
     func answered(_ care: OnboardingDraft.Care?) -> OnboardingDraft {
-        var d = OnboardingDraft(); d.care = care; d.ageText = "32"
+        // #61: the plan length and the race date are the athlete's choice now (they were starting values).
+        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Fmt.day("2027-01-21")
         d.eligibility = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "", pain: false, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false)
         return d
     }
@@ -50,6 +51,23 @@ final class OnboardingTests: XCTestCase {
         XCTAssertNil(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"), "no age, no request")
         d.ageText = "16"
         XCTAssertEqual(try XCTUnwrap(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30")).athlete.ageYears, 16, "the engine refuses, not the form")
+    }
+
+    /// #61: no starting plan length or race date. Without them nothing is sent; with them the request carries the athlete's choice.
+    func testPlanLengthAndRaceDateAreChosenNeverDefaulted() throws {
+        XCTAssertNil(OnboardingDraft().weeks, "no default plan length")
+        XCTAssertNil(OnboardingDraft().eventDate, "no default race date")
+        var d = answered(.noneOfThese); d.weeks = nil
+        XCTAssertNil(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"), "no plan length, no request")
+        d = answered(.noneOfThese); d.eventDate = nil
+        XCTAssertFalse(d.eventAnswered)
+        XCTAssertNil(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"), "a race without its date is never sent")
+        d.runGoal = "REGULAR"
+        XCTAssertTrue(d.eventAnswered, "another run goal has no event to date")
+        XCTAssertNil(try XCTUnwrap(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30")).athlete.goals.run.event)
+        let a = try XCTUnwrap(answered(.noneOfThese).answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"))
+        XCTAssertEqual(a.weeks, 12)
+        XCTAssertEqual(a.athlete.goals.run.event, GoalEvent(kind: "10K", date: "2027-01-21"))
     }
 
     func testAnchorTimeParsing() {

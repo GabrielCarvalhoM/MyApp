@@ -23,18 +23,54 @@ final class OnboardingUITests: XCTestCase {
         e.tap()
     }
 
+    /// Waits (generously: the host may be loaded) for `ob-next` to exist and be enabled, taps it, then waits for the next step's own element.
+    @MainActor
+    private func tapNext(_ app: XCUIApplication, expecting next: XCUIElement?, _ step: String) {
+        let button = app.buttons["ob-next"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true AND isEnabled == true"), object: button)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, "ob-next enabled before \(step)")
+        button.tap()
+        if let next { XCTAssertTrue(next.waitForExistence(timeout: 10), "reached \(step)") }
+    }
+
     /// Goes to Cuidados; answers the eligibility flags "não" and confirms.
     @MainActor
     private func reachCare(_ app: XCUIApplication) {
         XCTAssertTrue(el(app, "screen-onboarding").waitForExistence(timeout: 10))
         attach(app, "10 — boas-vindas")
-        app.buttons["ob-next"].tap()
+        let age = app.textFields["ob-age"]
+        tapNext(app, expecting: age, "age")
         XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no age typed: cannot continue (never defaulted)")
-        let age = app.textFields["ob-age"]; age.tap(); age.typeText("32")
-        for _ in 0..<6 { app.buttons["ob-next"].tap() }
-        XCTAssertTrue(app.staticTexts["Cuidados"].waitForExistence(timeout: 5))
+        age.tap(); age.typeText("32")
+        // #61: the race date and the plan length are chosen, never defaulted.
+        tapNext(app, expecting: app.buttons["ob-event-date"], "goals")
+        chooseRaceDate(app)
+        tapNext(app, expecting: app.staticTexts["Sua experiência"], "experience")
+        tapNext(app, expecting: app.staticTexts["Sua semana"], "schedule")
+        tapScrolling(app, app.buttons["chip-12"])
+        tapNext(app, expecting: app.staticTexts["O que você tem para treinar força?"], "equipment")
+        tapNext(app, expecting: el(app, "ob-anchor-toggle"), "anchor")
+        tapNext(app, expecting: app.staticTexts["Cuidados"], "care")
         XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no choice: cannot continue")
         attach(app, "10 — Cuidados sem escolha (836:3299)")
+    }
+
+    /// Opens the race-date calendar, moves to next month and picks the 15th (within a 12-week plan from the next Monday), then confirms.
+    @MainActor
+    private func chooseRaceDate(_ app: XCUIApplication) {
+        tapScrolling(app, app.buttons["ob-event-date"])
+        let picker = app.datePickers.firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        // The system calendar's own identifiers (its labels are localised); wait until the header shows the next month.
+        let header = picker.buttons["DatePicker.Show"], shown = header.value as? String
+        picker.buttons["DatePicker.NextMonth"].tap()
+        let moved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value != %@", shown ?? ""), object: header)
+        XCTAssertEqual(XCTWaiter.wait(for: [moved], timeout: 10), .completed, "the calendar shows the next month")
+        let day = picker.buttons.matching(NSPredicate(format: "label CONTAINS ', 15 de ' AND enabled == true")).firstMatch
+        XCTAssertTrue(day.waitForExistence(timeout: 10))
+        day.tap()
+        app.buttons["ob-event-date-confirm"].tap()
+        XCTAssertTrue(app.buttons["ob-event-date-confirm"].waitForNonExistence(timeout: 10), "the calendar closed")
     }
 
     @MainActor
@@ -48,9 +84,9 @@ final class OnboardingUITests: XCTestCase {
 
     @MainActor
     private func consentAndBuild(_ app: XCUIApplication) {
-        app.buttons["ob-next"].tap()
+        tapNext(app, expecting: app.buttons["consent-COACHING-yes"], "consents")
         for p in ["COACHING", "HEALTH_SIGNALS", "LEARNING"] { tapScrolling(app, app.buttons["consent-\(p)-yes"]) }
-        app.buttons["ob-next"].tap()
+        tapNext(app, expecting: nil, "build")
     }
 
     @MainActor
