@@ -1,0 +1,58 @@
+name: Technical Debt
+description: Refatoração, otimização, teste faltante ou infraestrutura.
+title: "[Frente] "
+labels: ["type:tech-debt"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Tipo de trabalho
+      options: [Refactor, Optimization, Test, Infrastructure, Research]
+    validations: { required: true }
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema e custo de não fazer
+    validations: { required: true }
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta e arquivos envolvidos
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      value: |
+        - [ ] comportamento inalterado (testes existentes verdes)
+    validations: { required: true }
+  - type: dropdown
+    id: front
+    attributes:
+      label: Frente responsável
+      options: [A · CoachingHost, B · HealthKit, C · SwiftUI, Design, Integration]
+    validations: { required: true }
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options: [P0 · bloqueia a V1, P1 · necessária para a V1, P2 · importante, P3 · quando houver espaço]
+    validations: { required: true }
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options: [V1, V1.1, V2]
+    validations: { required: true }
+  - type: textarea
+    id: deps
+    attributes:
+      label: Dependências
+      description: Issues (#n), decisões ou entregas de outra frente. "nenhuma" se não houver.
+    validations: { required: true }
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Escopo
+      options:
+        - label: Escopo novo ou decisão de produto (fica em Backlog com `needs:founder-approval` até o fundador aprovar)
