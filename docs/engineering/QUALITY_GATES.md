@@ -22,8 +22,8 @@ um PR de fork executaria código no Mac mini, que tem o iPhone, o Keychain e dad
 - Em PR, o guard roda **a partir do commit base** do PR (o PR não reescreve as regras pelas quais é julgado) e mede o **head do PR**, não o merge com o alvo.
 - A base do diff é a tag mais nova de uma **lista fechada** (`BASE_TAGS` em `lib/ownership.mjs`); criar outra tag `v1-abc-*` não muda a base.
 - Diff com `-z` e `core.quotePath=false`: caminhos com acento são classificados como os outros.
-- **Falha fechada:** branch sem papel na matriz, ou PR de fork (nome de branch não confiável), precisa de aprovação para tocar qualquer caminho que o contrato atribui; diretórios de audit existentes não aceitam nem arquivo novo.
-- **Aprovação** (`governance:approved`) vale só na execução disparada pela aplicação do rótulo; um push posterior roda sem ela. Aprovar = aplicar o rótulo depois do último commit, após a decisão (contrato §11 ou emenda). Fork não pode aplicar rótulo.
+- **Falha fechada:** branch sem papel na matriz, ou PR de fork (nome de branch não confiável), precisa de aprovação para tocar qualquer caminho que o contrato atribui e para mudar qualquer arquivo existente; só pode acrescentar arquivos novos fora da matriz. Instruções e infraestrutura de agentes (`.claude/`, `.agents/`, `tools/agent-runtime/`) contam como governança. Audits existentes (diretórios e arquivos de `audits/`) não aceitam mudança nem arquivo novo.
+- **Aprovação** (`governance:approved`) vale só na execução disparada pela aplicação do rótulo; um push posterior roda sem ela. Aprovar = aplicar o rótulo **por último** (depois do último commit e de qualquer outro evento do PR), após a decisão (contrato §11 ou emenda); qualquer evento seguinte roda sem a aprovação. Fork não pode aplicar rótulo, e PR cuja origem não é este repositório conta como fork.
 - Limite que o repositório não resolve sozinho: o arquivo do workflow vem do próprio PR (comportamento do GitHub). A defesa é a revisão exigida de code owner (`.github/CODEOWNERS`) no ruleset da branch de integração (§4).
 
 ## 2. Gate nativo — Mac mini (Xcode do Mac mini, simulador)

@@ -220,7 +220,7 @@ Criar `claude/v1-ios-integration` a partir da base vigente, com `ios/RepMile.xcw
 
 ### Critérios de aceite
 - [ ] Cada frente integrada passa `guard.mjs` na sua coluna
-- [ ] Ruleset da branch exige o check `CI` e bloqueia force-push e exclusão (sem bloquear as frentes)
+- [ ] Ruleset da branch: check `CI` obrigatório, PR obrigatório, sem force-push e sem exclusão; revisão de code owner e descarte de aprovações obsoletas assim que #29 decidir a identidade dos agentes
 
 ## I2 · [Integração] Portas reais no lugar dos provedores de fixture
 fields: type=Feature; area=iOS Frontend; front=Integration; priority=P1; release=V1; status=Backlog
@@ -336,3 +336,15 @@ deps:
 
 ### Objetivo
 Fora da V1 local (handoff C §9–§10; D1 servidor de tempo, D2 backup, OPEN-5 semana sincronizada). Escopo, fornecedor e privacidade são decisões do fundador.
+
+## O3 · [Integração] Identidade própria para os agentes no GitHub
+fields: type=Infrastructure; area=DevOps; front=Integration; priority=P1; release=V1; status=Backlog; approval=founder
+deps:
+
+### Objetivo
+Hoje os agentes fazem push e abrem PRs com a conta do fundador. O GitHub não deixa o autor aprovar o próprio PR, então a revisão exigida de code owner (a defesa contra um PR que altere o próprio workflow ou o guard) ou fica impossível de cumprir ou precisa de um bypass que os agentes também teriam. Decidir: conta de máquina ou GitHub App para os agentes, com o fundador como code owner.
+
+### Critérios de aceite
+- [ ] Decisão do fundador registrada
+- [ ] Agentes publicam com a identidade nova; o fundador aprova PRs de `.github/`, `tools/orchestration/`, contratos e CoachingCore
+- [ ] Ruleset da branch de integração: check `CI`, PR, revisão de code owner, aprovações obsoletas descartadas

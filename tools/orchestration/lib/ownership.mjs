@@ -16,7 +16,8 @@ export const AREAS = [
   },
   {
     id: 'GOV', label: 'Governança',
-    prefixes: ['canon/', 'product/', 'governance/'],
+    // Agent instructions and agent infrastructure are governance too: editing them steers later agent sessions.
+    prefixes: ['canon/', 'product/', 'governance/', '.claude/', '.agents/', '.codex/', 'tools/agent-runtime/'],
     exact: ['MISSION_LEDGER.md', 'CURRENT_MISSION.md', 'CLAUDE.md', 'AGENTS.md', '.gitignore'],
   },
   { id: 'ORCH', label: 'Orquestração (workflow, CI, docs de engenharia)', prefixes: ['.github/', 'docs/engineering/', 'tools/orchestration/', 'audits/v1-engineering-orchestration-2026-11-26/'] },
@@ -69,7 +70,8 @@ export function roleForBranch(branch) {
 }
 
 // changes: [{ status: 'A'|'M'|'D'|'R'|'C'|'T', path, oldPath? }]
-// auditDirExisted(path) -> true when the path is inside an audits/<dir>/ that already existed at the base (insert-only history).
+// auditDirExisted(path) -> true when the path's top-level audits/ entry (a directory, or a file directly under audits/) already
+// existed at the base: existing audit history is insert-only, new records go to a new directory.
 // Returns { role, results: [{ path, status, area, verdict: 'OK'|'APPROVAL'|'FORBIDDEN', reason }] }
 export function evaluate(changes, roleId, { auditDirExisted = () => false, approved = false } = {}) {
   const rules = roleId ? WRITES[roleId] : null;
@@ -86,8 +88,10 @@ export function evaluate(changes, roleId, { auditDirExisted = () => false, appro
         verdict = 'FORBIDDEN'; reason = 'diretório de audit existente é só leitura (contrato §10); registre num diretório novo';
       } else if (!rules) {
         // Fail closed: no role (unknown branch name, or a fork PR) means nothing the contract assigns may change unapproved.
-        verdict = MATRIX_AREAS.includes(area) ? (approved ? 'OK' : 'APPROVAL') : 'OK';
-        reason = verdict === 'OK' ? '' : `branch sem papel na matriz (ou PR de fork): ${AREAS.find((a) => a.id === area)?.label} exige aprovação`;
+        // Outside the matrix a role-less branch may only add new files; changing or removing existing ones needs approval.
+        const assigned = MATRIX_AREAS.includes(area) || ch.status !== 'A' || p === ch.oldPath;
+        verdict = assigned ? (approved ? 'OK' : 'APPROVAL') : 'OK';
+        reason = verdict === 'OK' ? '' : `branch sem papel na matriz (ou PR de fork): ${AREAS.find((a) => a.id === area)?.label ?? 'arquivo existente fora da matriz'} exige aprovação`;
       } else {
         const effective = area === 'AUDIT' || area === 'OTHER' ? 'OTHER_NEW' : area;
         if (rules.own.includes(effective)) verdict = 'OK';
@@ -124,7 +128,8 @@ export function parseNameStatusZ(text) {
   return out;
 }
 
-export const auditDirOf = (p) => (p.startsWith('audits/') ? p.split('/').slice(0, 2).join('/') + '/' : null);
+// The top-level entry under audits/ that a path belongs to: `audits/<dir>` for nested paths, the file itself for `audits/<file>`.
+export const auditDirOf = (p) => (p.startsWith('audits/') ? p.split('/').slice(0, 2).join('/') : null);
 
 // Tab-separated form, kept for tests and humans.
 export function parseNameStatus(text) {

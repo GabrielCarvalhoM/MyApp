@@ -38,7 +38,7 @@ test('a front may write only its own column', () => {
 });
 
 test('integration: shared contracts, governance and CoachingCore need approval; existing audit directories are read-only', () => {
-  const existed = new Set(['audits/v1-hr5-runna-parity-2026-11-25/']);
+  const existed = new Set(['audits/v1-hr5-runna-parity-2026-11-25']);
   const ch = [{ status: 'M', path: 'ios/Packages/CoachingPresentation/X.swift' }, { status: 'M', path: 'CoachingCore/src/a.mjs' },
     { status: 'A', path: 'ios/App/Composition/Root.swift' }, { status: 'A', path: 'audits/v1-ios-integration-2026-12-01/R.md' },
     { status: 'M', path: 'audits/v1-hr5-runna-parity-2026-11-25/R.md' }, { status: 'A', path: 'ios/Packages/CoachingHost/X.swift' }];
@@ -57,14 +57,28 @@ test('fail closed: a branch without a role (or a fork) needs approval for anythi
   const ch = [{ status: 'M', path: 'CLAUDE.md' }, { status: 'M', path: 'canon/CANONICAL_INDEX.md' }, { status: 'M', path: 'ios/Packages/IntegrationContracts/X.swift' },
     { status: 'A', path: '.github/workflows/evil.yml' }, { status: 'M', path: 'CoachingCore/x' }, { status: 'A', path: 'ios/Packages/RepMileUI/X.swift' },
     { status: 'A', path: 'README.md' }, { status: 'D', path: 'audits/old/x.md' }];
-  const r = evaluate(ch, null, { auditDirExisted: (p) => p.startsWith('audits/old/') });
+  const r = evaluate(ch, null, { auditDirExisted: (p) => auditDirOf(p) === 'audits/old' });
   assert.deepEqual(r.results.map((x) => x.verdict), ['APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'APPROVAL', 'OK', 'FORBIDDEN']);
 });
 
 test('new files inside an existing audit directory are refused (review R1 #6)', () => {
   const r = evaluate([{ status: 'A', path: 'audits/v1-aif-p0-jsc-2026-11-17/INJECTED.md' }, { status: 'A', path: 'audits/v1-ios-integration-2026-12-01/R.md' }],
-    'INT', { auditDirExisted: (p) => auditDirOf(p) === 'audits/v1-aif-p0-jsc-2026-11-17/' });
+    'INT', { auditDirExisted: (p) => auditDirOf(p) === 'audits/v1-aif-p0-jsc-2026-11-17' });
   assert.deepEqual(r.results.map((x) => x.verdict), ['FORBIDDEN', 'OK']);
+});
+
+test('existing files directly under audits/ stay read-only (review R2 NEW-1)', () => {
+  assert.equal(auditDirOf('audits/CLAUDE_CANON_UPDATE_2026-10-10.md'), 'audits/CLAUDE_CANON_UPDATE_2026-10-10.md');
+  const existed = new Set(['audits/CLAUDE_CANON_UPDATE_2026-10-10.md']);
+  const r = evaluate([{ status: 'M', path: 'audits/CLAUDE_CANON_UPDATE_2026-10-10.md' }], 'INT', { auditDirExisted: (p) => existed.has(auditDirOf(p)) });
+  assert.equal(r.results[0].verdict, 'FORBIDDEN');
+});
+
+test('role-less branches: agent instructions are governance; existing files outside the matrix need approval (review R2 NEW-2)', () => {
+  assert.equal(classify('.claude/agents/x.md'), 'GOV');
+  assert.equal(classify('tools/agent-runtime/README.md'), 'GOV');
+  const r = evaluate([{ status: 'M', path: '.claude/agents/x.md' }, { status: 'M', path: 'README.md' }, { status: 'A', path: 'notes/new.md' }], null);
+  assert.deepEqual(r.results.map((x) => x.verdict), ['APPROVAL', 'APPROVAL', 'OK']);
 });
 
 test('NUL-separated diff keeps non-ASCII paths classifiable (review R1 #4)', () => {

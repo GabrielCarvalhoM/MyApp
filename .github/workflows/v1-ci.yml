@@ -72,7 +72,8 @@ jobs:
             echo "::warning::the PR base has no guard yet; running the guard from this PR"
           fi
           head=HEAD; [ -n "$PR_HEAD_SHA" ] && head="$PR_HEAD_SHA"   # the PR's own commits, not the merge with its target
-          GUARD_FORK=0; [ -n "$HEAD_REPO" ] && [ "$HEAD_REPO" != "$THIS_REPO" ] && GUARD_FORK=1
+          # In a PR, anything not proven to come from this repository is a fork (a deleted fork has no head repo).
+          GUARD_FORK=0; [ -n "$PR_HEAD_SHA" ] && [ "$HEAD_REPO" != "$THIS_REPO" ] && GUARD_FORK=1
           export GUARD_FORK
           node "$guard_dir/guard.mjs" --head "$head"
       - name: No secrets in the new commits

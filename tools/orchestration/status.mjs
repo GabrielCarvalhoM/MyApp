@@ -10,7 +10,7 @@ import { parseArgs } from 'node:util';
 import { writeFileSync } from 'node:fs';
 import { ROLES, auditDirOf, evaluate, parseNameStatusZ, summarize } from './lib/ownership.mjs';
 import { allowlistedBase } from './guard.mjs';
-import { git, ghJson, run, repoRoot, refExists, baseTagFor, MissingDependency } from './lib/sh.mjs';
+import { git, ghJson, run, repoRoot, refExists, MissingDependency } from './lib/sh.mjs';
 import { issueState, parseDependencies, parseLinkedIssues, priorityOf, STATE_LABELS } from './lib/states.mjs';
 import { APPROVAL_LABEL, loadConfig, findProject, listItems } from './lib/board.mjs';
 
@@ -45,13 +45,13 @@ function collectGit(cwd) {
     const tip = localAhead ? local : (remote ?? local);
     const f = { role: role.id, label: role.label, branch: b, exists: Boolean(tip), published: Boolean(remote) };
     if (tip) {
-      const base = allowlistedBase(tip, cwd) ?? baseTagFor(tip, cwd);
+      const base = allowlistedBase(tip, cwd);   // same accepted bases as the guard
       const [sha, date, subject] = git(['log', '-1', '--format=%h%x09%cs%x09%s', tip], { cwd }).out.split('\t');
       Object.assign(f, { sha, date, subject, base, containsBase: Boolean(base) });
       if (base) {
         f.aheadOfBase = Number(git(['rev-list', '--count', `${base}..${tip}`], { cwd }).out);
         const changes = parseNameStatusZ(git(['-c', 'core.quotePath=false', 'diff', '-z', '--name-status', '-M', `${base}...${tip}`], { cwd }).out);
-        const auditDirs = new Set(git(['ls-tree', '-d', '--name-only', base, 'audits/'], { cwd }).out.split('\n').filter(Boolean).map((d) => `${d}/`));
+        const auditDirs = new Set(git(['ls-tree', '--name-only', base, 'audits/'], { cwd }).out.split('\n').filter(Boolean));
         const ev = evaluate(changes, role.id, { auditDirExisted: (p) => auditDirs.has(auditDirOf(p)) });
         f.ownership = { ...summarize(ev), violations: ev.results.filter((r) => r.verdict !== 'OK').slice(0, 10) };
       }

@@ -45,9 +45,15 @@ for manifest in ios/Packages/*/Package.swift; do
   if [ $shared -eq 0 ] && ! grep -q '\.macOS(' "$manifest"; then
     command -v xcodebuild >/dev/null || { summary+=("FAIL           $name · iOS-only package and no xcodebuild"); status=1; continue; }
     echo "::group::xcodebuild build $name (generic iOS Simulator)"
-    (cd "$dir" && xcodebuild build -scheme "$name" -destination 'generic/platform=iOS Simulator' -derivedDataPath "$LOGDIR/dd-$name") >"$log" 2>&1; rc=$?
+    # build-for-testing compiles the tests too; a scheme without a test action falls back to build (reported as such).
+    (cd "$dir" && xcodebuild build-for-testing -scheme "$name" -destination 'generic/platform=iOS Simulator' -derivedDataPath "$LOGDIR/dd-$name") >"$log" 2>&1; rc=$?
+    what="tests compiled"
+    if [ $rc -ne 0 ] && grep -qiE 'not (currently )?configured for (the )?test' "$log"; then
+      (cd "$dir" && xcodebuild build -scheme "$name" -destination 'generic/platform=iOS Simulator' -derivedDataPath "$LOGDIR/dd-$name") >"$log" 2>&1; rc=$?
+      what="no test action in the scheme"
+    fi
     tail -20 "$log"; echo "::endgroup::"
-    if [ $rc -eq 0 ]; then summary+=("IOS_BUILD_OK   $name (iOS-only; tests run in sim.sh test)"); else summary+=("FAIL           $name · xcodebuild exit $rc"); status=1; fi
+    if [ $rc -eq 0 ]; then summary+=("IOS_BUILD_OK   $name (iOS-only, $what; tests run in sim.sh test)"); else summary+=("FAIL           $name · xcodebuild exit $rc"); status=1; fi
     continue
   fi
   mode=test; [ $shared -eq 0 ] && mode="$FRONTS"

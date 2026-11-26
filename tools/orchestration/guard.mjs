@@ -37,7 +37,7 @@ function main() {
 
   const role = fork ? null : roleForBranch(branch);
   const changes = parseNameStatusZ(git(['-c', 'core.quotePath=false', 'diff', '-z', '--name-status', '-M', `${base}...${head}`], { cwd }).out);
-  const auditDirs = new Set(git(['ls-tree', '-d', '--name-only', base, 'audits/'], { cwd }).out.split('\n').filter(Boolean).map((d) => `${d}/`));
+  const auditDirs = new Set(git(['ls-tree', '--name-only', base, 'audits/'], { cwd }).out.split('\n').filter(Boolean));
   const evaluation = evaluate(changes, role?.id ?? null, { auditDirExisted: (p) => auditDirs.has(auditDirOf(p)), approved });
   const sum = summarize(evaluation);
   const failed = evaluation.results.filter((r) => r.verdict !== 'OK');
