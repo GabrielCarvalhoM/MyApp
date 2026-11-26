@@ -1,17 +1,14 @@
 import CoachingPresentation
-import RunRecorder
 import SwiftUI
 
 /// Perfil e ajustes (Figma page 70). Account, subscription, sync and feedback depend on the backend and are not in the parallel phase
-/// (handoff §11). Erasing the account reaches every layer this front owns (the run recordings) and the record (`eraseAccount`); erasing
-/// health facts is never readiness.
+/// (handoff §11). The privacy writes and the erase confirmation live in `ProfileViewModel`; this view renders them.
 struct ProfileScreen: View {
     @Environment(AppModel.self) private var model
-    @Environment(RunRecorder.self) private var recorder
+    @State private var viewModel: ProfileViewModel
     var openZones: () -> Void
-    @State private var confirm: Confirm?
-    @State private var consentDone: Set<String> = []
-    enum Confirm: String, Identifiable { case health, account; var id: String { rawValue } }
+
+    init(viewModel: ProfileViewModel, openZones: @escaping () -> Void) { _viewModel = State(initialValue: viewModel); self.openZones = openZones }
 
     var body: some View {
         ScrollView {
@@ -35,23 +32,24 @@ struct ProfileScreen: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(L.t("profile.consent." + p.rawValue)).rmText(.subtitulo)
                             Text(L.t("profile.consent." + p.rawValue + ".detail")).rmText(.detalhe, RM.Palette.textoSecundario)
-                            if consentDone.contains(p.rawValue) {
+                            if viewModel.consentDone.contains(p) {
                                 Text(L.t("profile.consent.done")).rmText(.detalhe, RM.Palette.positivo)
                             } else {
                                 HStack(spacing: 8) {
-                                    SecondaryPillButton(L.t("profile.consent.grant")) { Task { await consent(p, true) } }
-                                    SecondaryPillButton(L.t("profile.consent.revoke")) { Task { await consent(p, false) } }
+                                    SecondaryPillButton(L.t("profile.consent.grant")) { Task { await viewModel.setConsent(p, granted: true) } }
+                                    SecondaryPillButton(L.t("profile.consent.revoke")) { Task { await viewModel.setConsent(p, granted: false) } }
                                         .accessibilityIdentifier("consent-revoke-\(p.rawValue)")
                                 }
+                                .disabled(viewModel.isWriting)
                             }
                         }
                         .padding(16)
                         RMDivider()
                     }
-                    Button { confirm = .health } label: { ChevronRow(title: L.t("profile.eraseHealth"), detail: L.t("profile.eraseHealth.detail")).padding(16) }
+                    Button { viewModel.confirm = .health } label: { ChevronRow(title: L.t("profile.eraseHealth"), detail: L.t("profile.eraseHealth.detail")).padding(16) }
                         .buttonStyle(.plain).accessibilityIdentifier("profile-erase-health")
                     RMDivider()
-                    Button { confirm = .account } label: {
+                    Button { viewModel.confirm = .account } label: {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(L.t("profile.eraseAccount")).rmText(.subtitulo, RM.Palette.negativo)
                             Text(L.t("profile.eraseAccount.detail")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
@@ -78,11 +76,11 @@ struct ProfileScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .navigationTitle(L.t("profile.title")).navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(RM.Palette.fundoApp, for: .navigationBar)
-        .confirmationDialog(confirm == .account ? L.t("profile.eraseAccount.confirm") : L.t("profile.eraseHealth.confirm"),
-                            isPresented: Binding(get: { confirm != nil }, set: { if !$0 { confirm = nil } }), titleVisibility: .visible) {
+        .confirmationDialog(viewModel.confirm == .account ? L.t("profile.eraseAccount.confirm") : L.t("profile.eraseHealth.confirm"),
+                            isPresented: Binding(get: { viewModel.confirm != nil }, set: { if !$0 { viewModel.confirm = nil } }), titleVisibility: .visible) {
             Button(L.t("profile.erase"), role: .destructive) {
-                let which = confirm
-                Task { if which == .account { await eraseAccount() } else { await eraseHealth() } }
+                let which = viewModel.confirm
+                Task { await viewModel.erase(which) }
             }
             .accessibilityIdentifier("profile-erase-confirm")
         }
@@ -94,19 +92,5 @@ struct ProfileScreen: View {
             VStack(alignment: .leading, spacing: 0) { content() }
                 .background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
-    }
-
-    private func consent(_ p: ConsentPurpose, _ granted: Bool) async {
-        let out = await model.writer.setConsent(p, granted: granted)
-        if out.answer.ok { consentDone.insert(p.rawValue) }
-    }
-    private func eraseHealth() async {
-        _ = await model.writer.eraseHealthFacts(eventIds: [])
-        await model.load()
-    }
-    /// G07: the record and this front's own layer (run recordings and their index). B's queue is purged by A's composition root.
-    private func eraseAccount() async {
-        let out = await model.writer.eraseAccount()
-        if out.answer.ok { recorder.eraseAllRecordings(); await model.accountErased() }
     }
 }

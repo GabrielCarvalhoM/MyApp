@@ -154,7 +154,11 @@ struct AppTabs: View {
 
     @ViewBuilder private func destination(_ r: Route) -> some View {
         switch r {
-        case .profile: ProfileScreen(openZones: { todayPath.append(.hrZones) })
+        case .profile:
+            ProfileScreen(viewModel: ProfileViewModel(writer: model.writer, reload: { [model] in await model.load() },
+                                                      eraseRecordings: { [recorder] in recorder.eraseAllRecordings() },
+                                                      accountErased: { [model] in await model.accountErased() }),
+                          openZones: { todayPath.append(.hrZones) })
         case .hrZones: HeartRateZonesScreen()
         case .session(let id, let date):
             if let s = (model.plan?.week?.sessions ?? []).first(where: { $0.id == id && $0.date == date })
