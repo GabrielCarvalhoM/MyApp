@@ -13,7 +13,7 @@ final class RequestShapeTests: XCTestCase {
 
     func testPlannedRunReportCarriesNoDistance() throws {
         let s = try XCTUnwrap(try plan.week?.sessions.first { $0.id == "w0-run-d6" })
-        let obs = RunReportView.makeObservation(planned: (s.id, s.date), today: "2026-11-22", end: Date(timeIntervalSince1970: 1_795_850_000), completed: true,
+        let obs = RunReportViewModel.makeObservation(planned: (s.id, s.date), today: "2026-11-22", end: Date(timeIntervalSince1970: 1_795_850_000), completed: true,
                                                 minutes: 81, rpe: 4, stop: nil, effort: .onTarget)
         let review = try encoded(ReviewRequest(.sessionReports([obs]), eligibility: nil))
         XCTAssertEqual(review["kind"] as? String, "WEEKLY_REVIEW")
@@ -27,14 +27,14 @@ final class RequestShapeTests: XCTestCase {
 
     func testSymptomStopIsReportedAsAStopNotCompleted() throws {
         let s = try XCTUnwrap(try plan.week?.sessions.first { $0.id == "w0-run-d6" })
-        let obs = RunReportView.makeObservation(planned: (s.id, s.date), today: "", end: Date(), completed: true, minutes: 20, rpe: nil, stop: .symptom, effort: .unknown)
+        let obs = RunReportViewModel.makeObservation(planned: (s.id, s.date), today: "", end: Date(), completed: true, minutes: 20, rpe: nil, stop: .symptom, effort: .unknown)
         let a = try XCTUnwrap((try encoded(obs))["actual"] as? [String: Any])
         XCTAssertEqual(a["completed"] as? Bool, false)
         XCTAssertEqual((a["stop"] as? [String: Any])?["reason"] as? String, "SYMPTOM")
     }
 
     func testUnplannedRunHasObservedAtSportAndNoStop() throws {
-        let obs = RunReportView.makeObservation(planned: nil, today: "2026-11-22", end: Date(), completed: true, minutes: 30, rpe: 3, stop: .symptom, effort: .harder)
+        let obs = RunReportViewModel.makeObservation(planned: nil, today: "2026-11-22", end: Date(), completed: true, minutes: 30, rpe: 3, stop: .symptom, effort: .harder)
         let o = try encoded(obs)
         XCTAssertNil(o["sessionId"])
         XCTAssertNotNil(o["observedAt"], "FND-ABC-01: required for an unplanned report")
