@@ -11,7 +11,7 @@ final class OnboardingTests: XCTestCase {
     }
     func answered(_ care: OnboardingDraft.Care?) -> OnboardingDraft {
         // #61: the plan length and the race date are the athlete's choice now (they were starting values).
-        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Fmt.day("2027-01-21")
+        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Calendar.current.date(from: DateComponents(year: 2027, month: 1, day: 21, hour: 12))
         d.eligibility = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "", pain: false, persistentPain: false, injury: false, illness: false, functionalLimitation: false, clinicalConcern: false)
         return d
     }
@@ -68,6 +68,26 @@ final class OnboardingTests: XCTestCase {
         let a = try XCTUnwrap(answered(.noneOfThese).answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30"))
         XCTAssertEqual(a.weeks, 12)
         XCTAssertEqual(a.athlete.goals.run.event, GoalEvent(kind: "10K", date: "2027-01-21"))
+    }
+
+    /// #61b: the race and anchor dates are the local calendar day the athlete picked, whatever the time of day the picker kept.
+    func testRaceAndAnchorDatesAreTheLocalDayPicked() throws {
+        func at(_ zone: String, _ y: Int, _ m: Int, _ day: Int, _ h: Int, _ min: Int = 0) throws -> (Date, TimeZone) {
+            let tz = try XCTUnwrap(TimeZone(identifier: zone))
+            var c = Calendar(identifier: .gregorian); c.timeZone = tz
+            return (try XCTUnwrap(c.date(from: DateComponents(year: y, month: m, day: day, hour: h, minute: min))), tz)
+        }
+        // Brasília 22:00 on 21 Jan is 01:00 UTC on 22 Jan; 23:30 on 5 Nov is 02:30 UTC on 6 Nov.
+        let (race, sp) = try at("America/Sao_Paulo", 2027, 1, 21, 22), (anchor, _) = try at("America/Sao_Paulo", 2026, 11, 5, 23, 30)
+        var d = answered(.noneOfThese); d.eventDate = race; d.hasAnchor = true; d.anchorTime = "50:00"; d.anchorDate = anchor
+        var a = try XCTUnwrap(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30", timeZone: sp))
+        XCTAssertEqual(a.athlete.goals.run.event?.date, "2027-01-21")
+        XCTAssertEqual(a.athlete.performanceAnchors.first?.date, "2026-11-05")
+        // East of UTC: Tokyo 07:00 on 21 Jan is 22:00 UTC on 20 Jan.
+        let (east, tokyo) = try at("Asia/Tokyo", 2027, 1, 21, 7)
+        d.eventDate = east
+        a = try XCTUnwrap(d.answers(athleteId: "a", today: "2026-11-26", startDate: "2026-11-30", timeZone: tokyo))
+        XCTAssertEqual(a.athlete.goals.run.event?.date, "2027-01-21")
     }
 
     func testAnchorTimeParsing() {

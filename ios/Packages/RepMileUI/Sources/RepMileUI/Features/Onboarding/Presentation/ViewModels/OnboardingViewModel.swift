@@ -64,7 +64,7 @@ final class OnboardingViewModel {
         guard phase == .form, isLastStep, canContinue else { return }
         let date = now()
         let today = Fmt.deviceDay(date)
-        let start = Calendar.current.nextDate(after: date, matching: DateComponents(weekday: 2), matchingPolicy: .nextTime).map(Fmt.deviceDay) ?? today
+        let start = Calendar.current.nextDate(after: date, matching: DateComponents(weekday: 2), matchingPolicy: .nextTime).map { Fmt.deviceDay($0) } ?? today
         guard let answers = draft.answers(athleteId: athleteId, today: today, startDate: start) else { return }
         phase = .building
         let out = await writer.onboard(answers, consents: draft.consentsValue)

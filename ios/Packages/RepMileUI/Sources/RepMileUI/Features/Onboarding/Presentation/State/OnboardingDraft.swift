@@ -57,15 +57,17 @@ struct OnboardingDraft: Equatable {
     var consentsAnswered: Bool { ConsentPurpose.allCases.allSatisfy { consents[$0] != nil } }
 
     /// The shared request. `id` and the dates of the plan-local day come from the host side in integration (A sets the athlete id).
-    func answers(athleteId: String, today: String, startDate: String) -> OnboardingAnswers? {
+    /// The race and anchor dates are the device's local calendar day the athlete picked, like `today` and `startDate` (#61b): a pick late
+    /// in the evening is never sent as the next (or, east of UTC, the previous) day. `timeZone` is for tests.
+    func answers(athleteId: String, today: String, startDate: String, timeZone: TimeZone = .current) -> OnboardingAnswers? {
         guard let care, let age, let weeks, eventAnswered, eligibilityAnswered else { return nil }
         var e = eligibility; e.assessedAt = today
         let special: [SpecialPopulation] = care == .pregnancy ? [.pregnancy] : care == .postpartum ? [.postpartum] : []
         var anchors: [PerformanceAnchor] = []
         if hasAnchor, let s = Self.seconds(anchorTime) {
-            anchors.append(PerformanceAnchor(kind: "RACE_RESULT", distance: anchorDistance, seconds: s, date: Fmt.dayString(anchorDate), measurement: "GPS"))
+            anchors.append(PerformanceAnchor(kind: "RACE_RESULT", distance: anchorDistance, seconds: s, date: Fmt.deviceDay(anchorDate, in: timeZone), measurement: "GPS"))
         }
-        let event = runGoal == "RACE" ? eventDate.map { GoalEvent(kind: eventKind, date: Fmt.dayString($0)) } : nil
+        let event = runGoal == "RACE" ? eventDate.map { GoalEvent(kind: eventKind, date: Fmt.deviceDay($0, in: timeZone)) } : nil
         return OnboardingAnswers(
             athlete: AthleteIntake(id: athleteId, ageYears: age, eligibility: e, specialPopulation: special, strengthTrainingMonths: strengthMonths,
                                    runTrainingMonths: runMonths, exerciseRotationPreference: "COACH_DECIDES",

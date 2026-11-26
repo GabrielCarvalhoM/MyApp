@@ -7,7 +7,7 @@ import XCTest
 final class OnboardingViewModelTests: XCTestCase {
     private func answeredDraft(_ care: OnboardingDraft.Care) -> OnboardingDraft {
         // #61: the plan length and the race date are the athlete's choice now (they were starting values).
-        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Fmt.day("2027-01-21")
+        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Calendar.current.date(from: DateComponents(year: 2027, month: 1, day: 21, hour: 12))
         d.eligibility = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "", pain: false, persistentPain: false, injury: false, illness: false,
                                           functionalLimitation: false, clinicalConcern: false)
         for p in ConsentPurpose.allCases { d.consents[p] = p == .coaching }
@@ -100,7 +100,7 @@ final class OnboardingViewModelTests: XCTestCase {
         XCTAssertEqual(vm.requiredNote, "ob.event.date.required")
         vm.next()
         XCTAssertEqual(vm.step, .goals)
-        vm.draft.eventDate = Fmt.day("2027-01-21")
+        vm.draft.eventDate = Calendar.current.date(from: DateComponents(year: 2027, month: 1, day: 21, hour: 12))
         XCTAssertNil(vm.requiredNote)
         while vm.step != .schedule { vm.next() }
         XCTAssertFalse(vm.canContinue, "no plan length")

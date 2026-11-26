@@ -54,7 +54,9 @@ struct OnboardingStepView: View {
             Text(L.t("ob.schedule.strengthTurn")).rmText(.rotulo, RM.Palette.textoSecundario)
             chips(["AM", "PM"], selected: [draft.strengthTurn], prefix: "turn.short") { draft.strengthTurn = $0 }
             Text(L.t("ob.weeks")).rmText(.rotulo, RM.Palette.textoSecundario)
-            chips(["4", "8", "12", "16"], selected: Set(draft.weeks.map { ["\($0)"] } ?? []), prefix: nil) { draft.weeks = Int($0) }
+            FlowChips(items: ["4", "8", "12", "16"].map { ($0, L.f("ob.weeks.value", $0)) }, selected: Set(draft.weeks.map { ["\($0)"] } ?? [])) {
+                draft.weeks = Int($0)
+            }
         case .equipment:
             Text(L.t("ob.equipment.title")).rmText(.manchete)
             chips(["DUMBBELLS", "BENCH", "BARBELL", "RACK", "KETTLEBELL", "MACHINES", "BANDS", "PULL_UP_BAR"], selected: draft.equipment, prefix: "equipment") { e in
@@ -100,7 +102,7 @@ struct OnboardingStepView: View {
             HStack {
                 Text(L.t("ob.event.date")).rmText(.corpo, RM.Palette.textoSecundario)
                 Spacer()
-                Text(draft.eventDate.map { Fmt.longDay(Fmt.dayString($0)) } ?? L.t("ob.event.date.choose"))
+                Text(draft.eventDate.map { Fmt.longDay(Fmt.deviceDay($0)) } ?? L.t("ob.event.date.choose"))
                     .rmText(.subtitulo, draft.eventDate == nil ? RM.Palette.corrida : RM.Palette.textoPrimario)
                 RMIconView(.chevronDireita, size: 14).foregroundStyle(RM.Palette.textoTerciario)
             }

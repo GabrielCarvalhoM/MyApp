@@ -62,14 +62,21 @@ final class OnboardingUITests: XCTestCase {
         let picker = app.datePickers.firstMatch
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
         // The system calendar's own identifiers (its labels are localised); wait until the header shows the next month.
-        let header = picker.buttons["DatePicker.Show"], shown = header.value as? String
+        let header = picker.buttons["DatePicker.Show"].staticTexts.firstMatch  // the month shown, e.g. "novembro de 2026"
+        XCTAssertTrue(header.waitForExistence(timeout: 10))
+        let shown = header.label
+        XCTAssertFalse(shown.isEmpty, "the calendar names the month it shows")
         picker.buttons["DatePicker.NextMonth"].tap()
-        let moved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value != %@", shown ?? ""), object: header)
+        let moved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", shown), object: header)
         XCTAssertEqual(XCTWaiter.wait(for: [moved], timeout: 10), .completed, "the calendar shows the next month")
         let day = picker.buttons.matching(NSPredicate(format: "label CONTAINS ', 15 de ' AND enabled == true")).firstMatch
         XCTAssertTrue(day.waitForExistence(timeout: 10))
+        let confirm = app.buttons["ob-event-date-confirm"]
+        XCTAssertFalse(confirm.isEnabled, "the day the calendar opens on is not a choice")
         day.tap()
-        app.buttons["ob-event-date-confirm"].tap()
+        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isEnabled == true"), object: confirm)
+        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 10), .completed, "a tapped day can be confirmed")
+        confirm.tap()
         XCTAssertTrue(app.buttons["ob-event-date-confirm"].waitForNonExistence(timeout: 10), "the calendar closed")
     }
 
