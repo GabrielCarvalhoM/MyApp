@@ -40,6 +40,33 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(el(app, "report-saved").waitForExistence(timeout: 5))
     }
 
+    /// Verification of increment 09, N1: a stop for a symptom always shows the warning-sign screen, also when the report is not kept
+    /// (fixture `actions-C1-run-stop-symptom`: REQUIRED, recorded id not in the logged entries), and the report stays resendable.
+    @MainActor
+    func testSymptomStopAlwaysOffersTheWarningSignScreen() {
+        let app = launch("today")
+        app.buttons["today-start"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10))
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
+        let stopped = app.switches["report-stopped"]
+        while !stopped.isHittable { app.swipeUp() }
+        stopped.switches.firstMatch.tap()
+        let reason = el(app, "report-stop-reason")
+        XCTAssertTrue(reason.waitForExistence(timeout: 3))
+        reason.tap()
+        app.buttons["Senti um sintoma"].firstMatch.tap()
+        let save = app.buttons["report-save"]
+        while !save.isHittable { app.swipeUp() }
+        save.tap()
+        let banner = el(app, "report-screen-required")
+        XCTAssertTrue(banner.waitForExistence(timeout: 5), "REQUIRED shows the screen whether or not the report was kept")
+        XCTAssertFalse(app.buttons["report-done"].exists, "a report that was not kept is not closed by 'Concluir'")
+        XCTAssertTrue(app.buttons["report-save"].exists, "and stays resendable")
+        attach(app, "Relato — parada por sintoma, triagem exigida")
+    }
+
     @MainActor
     func testUnplannedRunAsksTheSymptomQuestionAndOpensNotFeeling100() {
         let app = launch("today")

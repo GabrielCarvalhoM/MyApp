@@ -32,7 +32,9 @@ final class ReloadGateTests: XCTestCase {
     }
 
     private func waitUntilFrozen(_ health: GatedHealth) async throws {
-        for _ in 0..<10_000 where !health.isWaiting { await Task.yield() }
+        // A time deadline, not a yield count: the fixture reads decode JSON off the main actor (verification N3).
+        let deadline = Date().addingTimeInterval(10)
+        while !health.isWaiting, Date() < deadline { try await Task.sleep(nanoseconds: 1_000_000) }
         XCTAssertTrue(health.isWaiting, "the reload did not reach the health read")
     }
 
@@ -89,7 +91,8 @@ final class ReloadGateTests: XCTestCase {
 
     /// QRE recheck N5: an unplanned run is filed under the day it ended, not the day it is reported.
     func testUnplannedRunDayIsTheDayTheRecordingEnded() throws {
-        let cal = Calendar.current
+        // Gregorian with the device time zone, as `Fmt.deviceDay` (verification N4: `Calendar.current` may be Buddhist or Japanese).
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = .current
         let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 23, hour: 0, minute: 10)))
         let lateRun = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 22, hour: 23, minute: 50)))
         XCTAssertEqual(RunReportView.occurrenceDay(end: lateRun, planToday: "2026-11-23", now: now), "2026-11-22")
