@@ -1,0 +1,14 @@
+# Real engine (CoachingHost.openForTesting, macOS, synthetic) given the onboarding form's DEFAULT answers (age 32, care none, eligibility all no + confirmed, consents yes).
+# 'ui' = the defaults (8 weeks, 10K on today+84 days); 'w12' = the same with 12 weeks (what LiveCompositionTests selects); 'event56' = 8 weeks with the 10K on today+56 days.
+variant=ui today=2026-11-26 start=2026-11-30 event=2027-02-18
+ok=true status=Code(raw: "INVALID_INPUT") enrolled=Optional(false) outcome=invalidInput
+missing=[] reason=Input facts are malformed or contradictory
+error=nil
+variant=w12 today=2026-11-26 start=2026-11-30 event=2027-02-18
+ok=true status=Code(raw: "PROPOSED") enrolled=Optional(true) outcome=planCreated
+missing=[] reason=
+error=nil
+variant=event56 today=2026-11-26 start=2026-11-30 event=2027-01-21
+ok=true status=Code(raw: "PROPOSED") enrolled=Optional(true) outcome=planCreated
+missing=[] reason=
+error=nil
