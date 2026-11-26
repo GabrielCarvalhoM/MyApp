@@ -16,7 +16,7 @@
 | `85af7bd`, `df9b69b` | QRE/Security R1 fixes (QRE-A-01 to 03, 05 to 12) with their tests; CCP-A-01 to 04; the device evidence run again on the final bundle; this report |
 | (directed closing commits, 2026-11-26) | **CCP-A-04 resolved in A** (the native erasure fence, `ErasureTests`), with Core and Security design reviews and a targeted code review, its findings fixed; CCP-A-05/06; **the locked-device phase run on the iPhone (PASS, final code)**; **macOS tests without Keychain dialogs** (`ios/Packages/CoachingHost/KEYCHAIN_TESTING.md`) |
 
-Every changed path is in front A's column (contract §10): 98 files under `ios/Packages/CoachingHost/`, `ios/Labs/CoachingHostLab/` and `audits/v1-ios-coachinghost-2026-11-24/` (`results/mac/gates.log`).
+Every changed path is in front A's column (contract §10): 114 files under `ios/Packages/CoachingHost/`, `ios/Labs/CoachingHostLab/` and `audits/v1-ios-coachinghost-2026-11-24/` (`results/mac/gates.log`).
 
 ## 2. The production bundle
 
