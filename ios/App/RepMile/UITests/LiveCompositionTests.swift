@@ -26,8 +26,6 @@ final class LiveCompositionTests: XCTestCase {
         e.tap()
     }
 
-    /// NOT_ENROLLED from the real host: onboarding, never the fixture "Hoje", never the operational error, no crash.
-    @MainActor
     /// Waits for `ob-next` to exist and be enabled, taps it, then waits for the next step's own element (as OnboardingTests).
     @MainActor
     private func tapNext(_ app: XCUIApplication, expecting next: XCUIElement?, _ step: String) {
@@ -60,6 +58,8 @@ final class LiveCompositionTests: XCTestCase {
         XCTAssertTrue(confirm.waitForNonExistence(timeout: 10), "the calendar closed")
     }
 
+    /// NOT_ENROLLED from the real host: onboarding, never the fixture "Hoje", never the operational error, no crash.
+    @MainActor
     private func assertOnboarding(_ app: XCUIApplication, _ name: String) {
         XCTAssertTrue(el(app, "screen-onboarding").waitForExistence(timeout: 60), "the real host answers NOT_ENROLLED → onboarding")
         XCTAssertFalse(el(app, "state-operational-error").exists)
