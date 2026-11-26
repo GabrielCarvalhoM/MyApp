@@ -6,8 +6,18 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 **Atualizado:** 2026-11-26 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
 ## Pausa
-_Nenhuma pausa ativa._ Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada). Ao pausar, esta seção
-registra data/hora, tarefas e seu estado, commits WIP, processos interrompidos, últimos testes válidos e o próximo passo exato.
+
+**⏸ PAUSA ATIVA desde 2026-11-26 ~18:45 (BRT), pedida pelo fundador.** Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada).
+
+| Tarefa | Estado | Onde | Próximo passo |
+|---|---|---|---|
+| PR #67 C → integração | **aguardando CI** (GitHub) | `claude/v1-ios-integration-c-sync-1` @ `2ea4227` | suíte local válida em `bdec6fe`: `sim.sh` 59/59 + RepMileUI 121/121 (`audits/v1-ios-integration-2026-11-26/results/c-sync-1/`); o merge posterior só trouxe orquestração. Conferir `gh pr checks 67` → merge → `tools/orchestration/viewer.sh` |
+| #59 correção no histórico | **incompleta** (WIP publicado) | `claude/v1-ios-swiftui-i59-correction-engine` @ `289811a`, worktree `myapp-v1-c-i59` | corrigir `testKeptCorrectionIsSaved` (`HistoryProgressTests.swift:78`, espera "Salvo no seu histórico."); `sim.sh all --sim RepMile-C-3`; guard e swift-size; commit final (rascunho em `results/i59-correction-engine/scratch/i59-commit.txt`); PR; revisão SSCTR + QRE. Unit 125/125 e replay ALL PASS já valem para `d5119fd` |
+| #68 elegibilidade vazia nos relatos (P0, novo) | **não iniciada** | — | depois do #59 ou antes, porque sem ela o #59 nunca é oferecido com o motor real |
+| #66 onboarding declarado (P0) | **aguardando o fundador** | issue #66 | confirmar o princípio e então implementar |
+| Demais | nada em execução | — | ordem: #67 merge → #68 → #59 → #66 (se aprovado) → #63 → #49 → #48/#39/#62 |
+
+Processos interrompidos: a suíte de UI do #59 (sim.sh/xcodebuild na RepMile-C-3, parcial, **não conta**). Nenhum agente ativo. Scripts de replay do motor guardados no repositório (`results/i59-correction-engine/scratch/`). Worktrees temporárias que podem ser removidas na retomada: `myapp-v1-c-i37`, `-i58`, `-i61`, `-i32d`, `-i32e`, `-i32c`, `myapp-v1-review-a`, `-review-b`, `myapp-v1-int-i16` (todas sem alterações).
 
 ## Agora
 
