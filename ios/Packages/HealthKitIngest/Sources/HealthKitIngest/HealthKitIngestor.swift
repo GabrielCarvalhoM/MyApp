@@ -133,19 +133,21 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     /// One anchored read (observer notification, launch, a trigger). The anchor is written only together with what the read queued.
     public func readNow() async {
-        await read()
+        await read(waitForRunningRead: false)
         await pump()
     }
 
-    /// Reads until no read is pending. A caller arriving during a read returns only once that read (and the one it asked for) is durable.
-    private func read() async {
+    /// Reads until no read is pending. A caller arriving during a read either asks for one more read and returns at once (A's signals and
+    /// triggers: never wait, since the running read may itself be awaiting A, QRE-B-R2-01), or, for the observer only, returns once that
+    /// read and the one it asked for are durable (its completion handler must not run earlier, QRE-B-08).
+    private func read(waitForRunningRead: Bool) async {
         guard !dead else { return }
         // Contract §6.2 "tenta no próximo gatilho": every trigger retries a host that was unavailable and B's own failed writes (QRE-B-04).
         hostUnavailable = false
         guard retryPendingWrites() else { return }
         if reading {
             readAgain = true
-            await withCheckedContinuation { readWaiters.append($0) }
+            if waitForRunningRead { await withCheckedContinuation { readWaiters.append($0) } }
             return
         }
         reading = true
@@ -531,8 +533,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         var s = QueueState()
         s.generation = state.generation
         if storeUnreadable {
-            // The switch is unknown: off, never on by default (the athlete turns it on again; `disabledInApp` says so).
-            try store.remove()
+            // The switch is unknown: off, never on by default (the athlete turns it on again; `disabledInApp` says so). No `remove()`: the
+            // atomic write below replaces the file, so a crash in between never leaves "no file" (= switch on) behind (QRE-B-R2-02 c).
             s.enabled = false
         } else {
             s.enabled = state.enabled; s.authorizationRequested = state.authorizationRequested
@@ -634,7 +636,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     /// (background-delivery time budget, QRE-B-08). The delivery continues on its own.
     private func observerFired() async {
         log.log(.init(.observerFired))
-        await read()
+        await read(waitForRunningRead: true)
         observerPump = Task { await self.pump() }
     }
     private var observerPump: Task<Void, Never>?

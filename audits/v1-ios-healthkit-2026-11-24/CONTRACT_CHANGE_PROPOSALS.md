@@ -32,4 +32,14 @@ Contract rev. 2 §11. Front B edited none of these files. Each proposal goes on 
 | **Impact** | None on A or C. B deletes `StoredSummary`. |
 | **Tests that change** | None. |
 
+## CCP-B-04: two rules for the A ↔ B ports (no new type)
+
+| | |
+|---|---|
+| **Reason** | Independent review R2 (QRE-B-R2-01, R2-02 a). (1) B calls `DeviceActivitySink.ingestContext()` / `deliver()` from inside its actor. If A awaits `DeviceQueueControl` while one of those calls is pending (for example, a serial queue on A's side held across the await), the two sides can wait on each other. B no longer waits on a running read for A's signals, but the rule belongs to the contract. (2) `purge(_:)` throws when B's file exists but cannot be read yet (before the first unlock) or cannot be written. G07 then depends on A trying again. |
+| **Local adapter (in force)** | (1) `deliveryConditionsChanged()` and `readNow()` never wait for a read that is running; only the observer's completion waits (test `testASignalFromInsideTheHostNeverDeadlocks`). (2) A purge whose write fails fails closed: memory is already purged, nothing is read or sent, and every trigger retries the write. A purge that cannot read a locked file throws and writes nothing. |
+| **Exact diff** | `Ports.swift`, doc comments only: on `DeviceQueueControl`, "A never awaits a `DeviceQueueControl` call while a `DeviceActivitySink` call from B is pending on A's side"; on `purge`, "If it throws (protected data unavailable, write failure), A keeps a durable purge intent and calls `purge` again at the next protected-data-available or launch, until it returns." |
+| **Impact** | A: its purge after `eraseAccount` / `acknowledgeRecordLoss` / first-launch reconciliation needs a retry intent (A already keeps durable signals of this kind, e.g. SEC-FPV-01). B: none. C: none. |
+| **Tests that change** | A: a test that a failed `purge` is retried. B: none (in place). |
+
 No other shared type, port, fixture or the device lock needed a change.

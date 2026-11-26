@@ -171,3 +171,44 @@ final class ReviewRegressionTests: XCTestCase {
         let c = await again.counts(); XCTAssertEqual(c.delivered, 1)
     }
 }
+
+/// Review R2.
+final class ReviewR2RegressionTests: XCTestCase {
+    /// QRE-B-R2-01 (probe N1): A signals B from inside its own `ingestContext()`. A signal never waits for a read that is awaiting A.
+    func testASignalFromInsideTheHostNeverDeadlocks() async throws {
+        final class ReentrantSink: DeviceActivitySink, @unchecked Sendable {
+            let inner = ScriptedSink(); weak var ingestor: HealthKitIngestor?; var signalled = false
+            func ingestContext() async -> IngestContextResult {
+                if !signalled, let i = ingestor { signalled = true; await i.deliveryConditionsChanged() }
+                return await inner.ingestContext()
+            }
+            func deliver(_ d: DeviceDelivery) async -> DeliveryResult { await inner.deliver(d) }
+        }
+        let sink = ReentrantSink(); let rig = Rig(sink: sink)
+        rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
+        let ing = rig.make(); sink.ingestor = ing
+        let done = Task { await ing.start(); return true }
+        let timeout = Task { try await Task.sleep(nanoseconds: 3_000_000_000); done.cancel() }
+        let finished = await done.value; timeout.cancel()
+        XCTAssertTrue(finished)
+        XCTAssertEqual(sink.inner.deliveries.count, 1, "delivered, no deadlock")
+        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled()
+        XCTAssertEqual(sink.inner.deliveries.count, 2, "later reads still work")
+    }
+
+    /// QRE-B-10 (R2 partial): a populated queue file survives a decode/encode round trip byte for byte.
+    func testAPopulatedQueueFileRoundTrips() async throws {
+        let sink = ScriptedSink(context: .ready(.plan([("s1", "2026-11-17")]))); let store = MemoryStore(); let rig = Rig(sink: sink, store: store)
+        sink.answers = [ScriptedSink.recordAll, { _ in .refused(code: "BEFORE_RECORD_START", index: 0, disposition: .setAsideItem) }, { _ in .retryLater(code: "BUSY") }]
+        rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
+        let ing = rig.make(); await ing.start()
+        rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled()
+        rig.reader.add(workout("C", end: at("2026-11-19", "07:45")), workout("S", end: at("2026-11-19", "19:00"), type: WorkoutKind.traditionalStrengthTraining))
+        await rig.reader.fire(); await ing.settled()
+        let bytes = try XCTUnwrap(store.data)
+        let decoded = try JSONDecoder().decode(QueueState.self, from: bytes)
+        XCTAssertFalse(decoded.ledger.isEmpty || decoded.summaries.isEmpty || decoded.inFlight == nil || decoded.items.isEmpty)
+        let e = JSONEncoder(); e.outputFormatting = [.sortedKeys]
+        XCTAssertEqual(try e.encode(decoded), bytes, "no field is lost or reset by the hand-written decoder")
+    }
+}
