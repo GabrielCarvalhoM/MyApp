@@ -36,8 +36,8 @@ struct UnavailableDaySheet: View {
                 StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"))
                     .accessibilityIdentifier("move-needs-input")
                 SecondaryPillButton(L.t("common.close")) { dismiss() }
-            case .clinical:
-                ClinicalRouteBanner(reportKept: false).accessibilityIdentifier("move-blocked")
+            case .clinical(let guidance):
+                ClinicalRouteBanner(reportKept: false, guidance: guidance).accessibilityIdentifier("move-blocked")
                 SecondaryPillButton(L.t("common.close")) { dismiss() }
             case .proposed, .accepting:
                 Text(L.t("move.proposed")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)

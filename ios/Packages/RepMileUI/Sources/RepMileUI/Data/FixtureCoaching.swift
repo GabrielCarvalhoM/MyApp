@@ -125,11 +125,16 @@ public final class FixtureCoachingWriter: CoachingWriting {
         case .missedSession: return answer("10-logRun-missed")
         case .notFeeling100(let w, _):
             if let gate = screenGate(review) { return gate }
+            if let urgent = urgentCapture("nf-urgent-", w.warningSigns.yes) { return answer(urgent) }
             if !w.warningSigns.yes.isEmpty { return answer("actions-F1-notFeeling100-sign") }
             if !w.warningSigns.unanswered.isEmpty { return answer("actions-D3-notFeeling100-no-screen") }
             return answer("actions-D1-notFeeling100-no-sign")
         case .wellbeingCheck: return answer("actions-D1-notFeeling100-no-sign")
-        case .readiness: return screenGate(review, missing: "actions-E2-break-clinical") ?? answer("18-declareReadiness")
+        case .readiness(let r, _):
+            if let gate = screenGate(review, missing: "actions-E2-break-clinical") { return gate }
+            if let urgent = urgentCapture("readiness-urgent-", r.warningSigns.yes) { return answer(urgent) }
+            // A sign "sim" keeps the hold (the engine's answer, captured): never the restart of a declaration with every sign "não".
+            return answer(r.warningSigns.yes.isEmpty ? "18-declareReadiness" : "readiness-sign-gettingWorse")
         case .reportBreak(let b): return answer(b.nonclinical ? "actions-E1-break-nonclinical" : "actions-E2-break-clinical")
         case .unavailableDays: return screenGate(review) ?? answer("actions-B1-unavailable-day")
         case .preferences: return answer(review.eligibility == nil ? "14-setPreferences" : "actions-B3-preferences-with-screen")
@@ -153,6 +158,11 @@ public final class FixtureCoachingWriter: CoachingWriting {
         guard let e = review.eligibility, e.answered, !e.assessedAt.isEmpty else { return answer(missing) }
         return e.statesAClinicalFlag ? answer("actions-E2-break-clinical") : nil
     }
+    /// #73: the engine's answer for a sign "sim" at the URGENT_CARE_ADVISED level, captured per sign (`Captures/`, the real engine). The
+    /// engine gives the higher level when several signs are "sim" (`guidanceOf`), so the capture of any "sim" sign that has one answers;
+    /// which signs are urgent is never listed here, only read from which captures exist.
+    private func urgentCapture(_ prefix: String, _ yes: [String]) -> String? { yes.lazy.map { prefix + $0 }.first(where: store.has) }
+
     public func accept(decisionId: String) async -> WriteOutcome { journal.add("accept", ["decisionId": decisionId]); return answer("actions-B2-accept-unavailable") }
     public func decline(decisionId: String) async -> WriteOutcome { journal.add("decline", ["decisionId": decisionId]); return WriteOutcome(answer: Self.unavailable, kept: [], notKept: []) }
     public func setHeartRateProfile(_ profile: HeartRateProfileRequest) async -> Result<HeartRateProfileAnswer, BoundaryError> {

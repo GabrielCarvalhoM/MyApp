@@ -29,7 +29,7 @@ final class UnavailableDayViewModelTests: XCTestCase {
     /// With the eligibility screen answered "none applies" (#72): these tests pin the move itself (the screen: `EligibilityRestTests`).
     private func viewModel(_ s: PlannedSession, _ w: CoachingWriting, reload: @escaping () async -> Void = {},
                            presentation: @escaping () -> PresentationSnapshot? = { nil }) -> UnavailableDayViewModel {
-        let vm = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: reload, presentation: presentation)
+        let vm = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: reload, presentation: presentation, holdGuidance: { nil })
         vm.eligibility = .testNoneApplies
         return vm
     }

@@ -227,7 +227,7 @@ final class RereadAfterWriteTests: XCTestCase {
         let w = FixtureCoachingWriter(store: Repo.store)
         let empty = try Repo.store.decode(PresentationSnapshot.self, "12-presentation-after-w0")
         XCTAssertNil(empty.pending)
-        let vm = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: {}, presentation: { empty })
+        let vm = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: {}, presentation: { empty }, holdGuidance: { nil })
         vm.eligibility = .testNoneApplies
         XCTAssertFalse(vm.proposalUnavailable, "nothing proposed yet")
         await vm.send()
@@ -241,7 +241,7 @@ final class RereadAfterWriteTests: XCTestCase {
         XCTAssertEqual(vm.phase, .proposed(decisionId: "dc_000031"))
 
         let pending = try Repo.store.decode(PresentationSnapshot.self, "actions-B1b-presentation-pending")
-        let shown = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: {}, presentation: { pending })
+        let shown = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: {}, presentation: { pending }, holdGuidance: { nil })
         shown.eligibility = .testNoneApplies
         await shown.send()
         XCTAssertFalse(shown.proposal.isEmpty)

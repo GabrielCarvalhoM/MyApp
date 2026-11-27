@@ -4,6 +4,8 @@ public enum QueueStoreError: Error, Equatable {
     /// The file exists but cannot be read now (protected data before the first unlock). B never treats this as "empty": it waits.
     case unavailable
     case writeFailed(code: Int32)
+    /// The data-protection class could not be set on the new file: it is never put in place unprotected (the old file stays).
+    case protectionFailed
 }
 
 /// Where B's single state file lives. Production: `FileQueueStore` in Application Support/`HealthKitIngest/`.
@@ -20,8 +22,11 @@ public final class FileQueueStore: QueueStore, @unchecked Sendable {
     public let directory: URL
     private var file: URL { directory.appendingPathComponent("queue.json") }
     private let lock = NSLock()
+    /// Applies the file's data protection (iOS: `completeUntilFirstUserAuthentication`). Injected only by tests, to make it fail.
+    private let protect: @Sendable (String) throws -> Void
 
-    public init(directory: URL) { self.directory = directory }
+    public convenience init(directory: URL) { self.init(directory: directory, protect: { try FileQueueStore.applyProtection($0) }) }
+    init(directory: URL, protect: @escaping @Sendable (String) throws -> Void) { self.directory = directory; self.protect = protect }
 
     /// Application Support/HealthKitIngest/ of the app's own container.
     public static func applicationSupport() throws -> FileQueueStore {
@@ -54,9 +59,8 @@ public final class FileQueueStore: QueueStore, @unchecked Sendable {
         let err = errno
         close(fd)
         guard ok else { unlink(tmp.path); throw QueueStoreError.writeFailed(code: err) }
-        #if os(iOS)
-        try? FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: tmp.path)
-        #endif
+        // Fail closed (QRE-B #48): a file that could not be protected never replaces the current one.
+        do { try protect(tmp.path) } catch { unlink(tmp.path); throw QueueStoreError.protectionFailed }
         guard rename(tmp.path, file.path) == 0 else { let e = errno; unlink(tmp.path); throw QueueStoreError.writeFailed(code: e) }
         let dfd = open(directory.path, O_RDONLY)
         if dfd >= 0 { _ = fsync(dfd); close(dfd) }
@@ -68,6 +72,12 @@ public final class FileQueueStore: QueueStore, @unchecked Sendable {
             let u = directory.appendingPathComponent(name)
             if FileManager.default.fileExists(atPath: u.path) { try FileManager.default.removeItem(at: u) }
         }
+    }
+
+    static func applyProtection(_ path: String) throws {
+        #if os(iOS)
+        try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: path)
+        #endif
     }
 
     private static var protection: [FileAttributeKey: Any]? {

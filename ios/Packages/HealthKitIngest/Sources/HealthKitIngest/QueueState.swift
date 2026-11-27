@@ -52,8 +52,12 @@ struct QueueItem: Codable, Equatable {
     /// Re-sends after a `deliveryConditionsChanged()` that followed a NOT_RECORDED (contract §6.2: the only ones that count).
     var attempts = 0
     var adapterBugStrikes = 0
-    /// Deleted in Apple Health while its delivery was in flight: settled when the answer arrives.
+    /// Deleted in Apple Health while its place on the record was unknown: in flight (settled when the answer arrives), or set aside with
+    /// `mayBeOnRecord` (kept: it may be on the record).
     var deletedWhileInFlight = false
+    /// P3-2: set aside after an answer that does not prove it absent from the record (`retryLater` exhausted: a write may have landed;
+    /// ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a copy is never promoted and sent.
+    var mayBeOnRecord = false
     /// What HealthKit said about where the run came from (nil only in a file written before policy 2).
     var provenance: RunProvenance?
 }
@@ -170,6 +174,9 @@ extension QueueItem {
         attempts = try c.decodeIfPresent(Int.self, forKey: .attempts) ?? 0
         adapterBugStrikes = try c.decodeIfPresent(Int.self, forKey: .adapterBugStrikes) ?? 0
         deletedWhileInFlight = try c.decodeIfPresent(Bool.self, forKey: .deletedWhileInFlight) ?? false
+        // A file written before P3-2 cannot tell an exhausted retryLater from an exhausted NOT_RECORDED: fail closed, it may be on record.
+        mayBeOnRecord = try c.decodeIfPresent(Bool.self, forKey: .mayBeOnRecord)
+            ?? (frozen && [.setAside(code: IngestCode.attemptsExhausted), .setAside(code: HealthKitIngestor.activityLinkedElsewhere)].contains(state))
         provenance = try c.decodeIfPresent(RunProvenance.self, forKey: .provenance)
     }
 }

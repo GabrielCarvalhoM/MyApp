@@ -19,7 +19,7 @@ final class RunReportViewModelTests: XCTestCase {
     /// With the eligibility screen answered "none applies" (#68), so these tests pin the report itself; the screen is pinned in
     /// `ReportEligibilityTests`.
     private func viewModel(_ r: FinishedRecording, _ w: FixtureCoachingWriter, marked: @escaping (String) -> Void = { _ in }) -> RunReportViewModel {
-        let vm = RunReportViewModel(recording: r, writer: w, planToday: { "2026-11-22" }, markReported: marked)
+        let vm = RunReportViewModel(recording: r, writer: w, planToday: { "2026-11-22" }, markReported: marked, holdGuidance: { nil })
         vm.eligibility = .testNoneApplies
         return vm
     }

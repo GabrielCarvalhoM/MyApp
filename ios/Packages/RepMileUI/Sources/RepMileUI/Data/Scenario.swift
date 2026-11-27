@@ -72,6 +72,10 @@ public extension Scenario {
     static let blocked = Scenario(id: "blocked", title: "Bloqueado · sinal de alerta", plan: .file("17-plan-blocked"), allWeeks: .file("17c-sessions-blocked"),
                                   presentation: .file("17b-presentation-blocked"), history: base.history, logged: .file("P-logged-after-w0"),
                                   weekPlan: base.weekPlan, hostGate: .notStartable(.blocked), pendingReports: 0, healthQueued: 0)
+    /// #73: the hold an urgent sign raised (`Captures/plan-blocked-urgent`: hold.guidance URGENT_CARE_ADVISED, the real engine).
+    static let blockedUrgent = Scenario(id: "blocked-urgent", title: "Bloqueado · sinal de alerta urgente", plan: .file("plan-blocked-urgent"),
+                                        allWeeks: .file("17c-sessions-blocked"), presentation: .file("17b-presentation-blocked"), history: base.history,
+                                        logged: .file("P-logged-after-w0"), weekPlan: base.weekPlan, hostGate: .notStartable(.blocked), pendingReports: 0, healthQueued: 0)
     /// An erasure of health facts is never readiness: still BLOCKED.
     static let blockedAfterErase = Scenario(id: "blocked-erase", title: "Bloqueado · depois de apagar dados", plan: .file("actions-F3-plan-after-erase"),
                                             allWeeks: .file("17c-sessions-blocked"), presentation: .file("17b-presentation-blocked"), history: base.history,
@@ -118,7 +122,7 @@ public extension Scenario {
     }
     static let zoneVariants = ["age30", "declared", "custom", "strap-above", "strap-below", "lab", "conflict", "noage", "hold", "optical", "after-erase"]
 
-    static let all: [Scenario] = zoneVariants.map(zones) + [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
+    static let all: [Scenario] = zoneVariants.map(zones) + [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedUrgent, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
                                   .clockUntrusted, .notEnrolled, .accountErased, .staleVersion, .integrityFailure, .recordLost]
 
     static func named(_ id: String?) -> Scenario { all.first { $0.id == id } ?? .today }
