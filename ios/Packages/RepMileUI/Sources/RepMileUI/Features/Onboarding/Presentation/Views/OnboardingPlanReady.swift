@@ -47,7 +47,7 @@ struct OnboardingPlanReadyView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .scrollIndicators(.hidden)
+            .scrollIndicators(.hidden).obScrollAnchor()
             VStack(spacing: 6) {
                 OBPrimaryButton(title: L.t("ob.ready.save"), id: "ob-save", action: save)
                 OBLink(title: L.t("ob.ready.seePlan"), id: "ob-see-plan", action: seePlan)
@@ -66,20 +66,28 @@ struct OnboardingPlanReadyView: View {
     }
 }
 
-/// 32 "Salve o seu plano": the account sheet. No account exists in V1 yet (#28): every way in is held and renders disabled (D18).
+/// 32 "Salve o seu plano": the account sheet. No account exists in V1 yet (#28): every way in is held and renders disabled (D18). Sized to
+/// its content and scrolling at large text, so the legal line is never cut (visual review P2).
 struct OnboardingAccountSheet: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(L.t("ob.account.title")).rmText(.titulo)
-            Text(L.t("ob.account.body")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-            OBPrimaryButton(title: L.t("ob.account.apple"), enabled: false, id: "ob-account-apple") {}.padding(.top, 6)
-            OBSecondaryButton(title: L.t("ob.account.google"), enabled: false, id: "ob-account-google") {}
-            OBSecondaryButton(title: L.t("ob.account.email"), enabled: false, id: "ob-account-email") {}
-            Text(L.t("ob.account.terms")).rmText(.detalhe, RM.Palette.textoTerciario).multilineTextAlignment(.center).frame(maxWidth: .infinity)
-            OBLink(title: L.t("ob.account.signIn"), enabled: false, id: "ob-account-signin") {}
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(L.t("ob.account.title")).rmText(.titulo).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
+                Text(L.t("ob.account.body")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                OBPrimaryButton(title: L.t("ob.account.apple"), enabled: false, outlinedWhenDisabled: true, id: "ob-account-apple") {}.padding(.top, 6)
+                OBSecondaryButton(title: L.t("ob.account.google"), enabled: false, id: "ob-account-google") {}
+                OBSecondaryButton(title: L.t("ob.account.email"), enabled: false, id: "ob-account-email") {}
+                Text(L.t("ob.account.terms")).rmText(.detalhe, RM.Palette.textoTerciario).multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity)
+                OBLink(title: L.t("ob.account.signIn"), enabled: false, id: "ob-account-signin") {}
+            }
+            .padding(.horizontal, RM.Space.gutter).padding(.top, 24).padding(.bottom, 8)
         }
-        .padding(RM.Space.gutter)
-        .background(RM.Palette.fundoElevado.ignoresSafeArea())
+        .scrollBounceBehavior(.basedOnSize)
+        .presentationDetents(typeSize.isAccessibilitySize ? [.large] : [.height(460), .large])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(RM.Palette.fundoElevado)
         .accessibilityElement(children: .contain).accessibilityIdentifier("ob-account")
     }
 }

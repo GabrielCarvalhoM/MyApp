@@ -40,7 +40,7 @@ enum OnboardingDebugSeed {
             d.runDays = [1, 3, 6]; d.strengthDays = [0, 2]; d.longRunDay = 6; d.runMinutes = 50; d.longRunMinutes = 120
             d.recentRunDays = 3; d.recentRunMinutes = 120; d.longestRunMinutes = 50; d.runBand = .sixMonthsToTwoYears; d.hasResult = false
         case "rafa":
-            d.name = "Rafa"; d.runAim = .noRace(.performance); d.raceDay = nil; d.goalMinutes = nil; d.goalSeconds = nil
+            d.name = "Rafa"; d.runAim = .noRace(.regularity); d.raceDay = nil; d.goalMinutes = nil; d.goalSeconds = nil
             d.runDays = [1, 3, 6]; d.strengthDays = [0]; d.longRunDay = 6; d.hasResult = false
         case "marina":
             d.name = "Marina"; d.runAim = .noRace(.startRunning); d.raceDay = nil; d.goalMinutes = nil; d.goalSeconds = nil; d.runStart = .never
@@ -54,6 +54,8 @@ enum OnboardingDebugSeed {
         case "marina-stopped":   // `838:1093`
             d.name = "Marina"; d.runAim = .noRace(.startRunning); d.raceDay = nil; d.goalMinutes = nil; d.goalSeconds = nil; d.runStart = .stopped
             d.recentRunDaysChoice = RecentRunDays.none; d.recentRunDays = nil; d.recentRunMinutes = nil; d.longestRunMinutes = nil; d.runBand = nil; d.hasResult = false
+        case "lucas-off":   // 29 with both optional uses off (the default)
+            d.consentHealthSignals = false; d.consentLearning = false
         case "clinical":
             d.careNone = false; d.care = [.persistentPain]
         default: break
@@ -62,3 +64,4 @@ enum OnboardingDebugSeed {
     }
 }
 #endif
+

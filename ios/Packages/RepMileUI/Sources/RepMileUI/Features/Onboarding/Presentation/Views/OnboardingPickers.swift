@@ -7,6 +7,8 @@ struct OBWheelColumn: View {
     @Binding var selection: Int?
     let label: (Int) -> String
     var unit: String?
+    /// A single-column wheel (18 Idade) keeps the unit next to the number, as the Figma draws "34 anos".
+    var columnWidth: CGFloat?
     let id: String
     @State private var position: Int?
     private let rowHeight: CGFloat = 36
@@ -19,7 +21,7 @@ struct OBWheelColumn: View {
                     ForEach(0...values.count, id: \.self) { i in
                         Text(i == 0 ? "—" : label(values[i - 1])).rmText(.numeroM).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
                             .frame(maxWidth: .infinity, minHeight: rowHeight)
-                            .scrollTransition(.interactive) { c, p in c.opacity(p.isIdentity ? 1 : 0.35).scaleEffect(p.isIdentity ? 1 : 0.86) }
+                            .scrollTransition(.interactive) { c, p in c.opacity(p.isIdentity ? 1 : 0.4 - 0.25 * abs(p.value)).scaleEffect(p.isIdentity ? 1 : 0.86) }
                             .id(i)
                     }
                 }
@@ -29,8 +31,8 @@ struct OBWheelColumn: View {
             .scrollPosition(id: $position, anchor: .center)
             .contentMargins(.vertical, rowHeight * 2, for: .scrollContent)
             .scrollIndicators(.hidden)
-            .frame(height: rowHeight * 5)
-            if let unit { Text(unit).rmText(.detalhe, RM.Palette.textoTerciario) }
+            .frame(width: columnWidth, height: rowHeight * 5)
+            if let unit { Text(unit).rmText(.detalhe, RM.Palette.textoTerciario).lineLimit(1).fixedSize() }
         }
         .onAppear { position = row(of: selection) }
         .onChange(of: position) { _, p in
@@ -136,7 +138,7 @@ struct OBCheckRow: View {
                 }
                 .frame(width: 24, height: 24)
             }
-            .padding(.vertical, 14).contentShape(Rectangle())
+            .padding(.vertical, 9).frame(minHeight: 44).contentShape(Rectangle())   // the Figma's row rhythm, still a 44 pt target
         }
         .buttonStyle(.plain).accessibilityAddTraits(checked ? .isSelected : []).accessibilityIdentifier(id)
     }
@@ -156,7 +158,7 @@ struct OBConsentRow: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             if let isOn {
-                Toggle("", isOn: isOn).labelsHidden().tint(RM.Palette.agora).accessibilityLabel(title).accessibilityIdentifier(id)
+                Toggle(title, isOn: isOn).labelsHidden().toggleStyle(OBToggleStyle()).accessibilityIdentifier(id)
             } else {
                 Text(L.t("ob.data.necessary")).rmText(.detalhe, RM.Palette.textoSecundario)
                     .padding(.horizontal, 10).padding(.vertical, 5).background(RM.Palette.fundoElevado2, in: Capsule())

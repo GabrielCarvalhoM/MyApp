@@ -52,7 +52,7 @@ extension OnboardingFormView {
                     if vm.draft.gymItems.contains(item) { vm.draft.gymItems.remove(item) } else { vm.draft.gymItems.insert(item) }
                 }
                 .padding(.horizontal, RM.Space.gutter).padding(.top, 14)
-                OBFootnote(text: L.t("ob.place.items.note"))
+                if OBCopyDeviation.showConfirmInFirstWorkout { OBFootnote(text: L.t("ob.place.items.note")) }
             }
         case .runPlace:
             OBQuestion(stage: 2, title: L.t("ob.runPlace.title"), subtitle: L.t("ob.runPlace.body"))
@@ -112,7 +112,7 @@ extension OnboardingFormView {
     /// under the sport instead of breaking words (Figma 83 "Texto grande": the layout wraps and stacks).
     private func sportHeader(run: Bool) -> some View {
         let title = HStack(spacing: 8) {
-            Circle().fill(run ? RM.Palette.corrida : RM.Palette.forca).frame(width: 8, height: 8)
+            RoundedRectangle(cornerRadius: 2).fill(run ? RM.Palette.corrida : RM.Palette.forca).frame(width: 4, height: 14)   // the sport bar
             Text(L.t(run ? "ob.sport.run" : "ob.sport.strength")).rmText(.subtitulo).lineLimit(1).fixedSize()
         }
         return ViewThatFits(in: .horizontal) {

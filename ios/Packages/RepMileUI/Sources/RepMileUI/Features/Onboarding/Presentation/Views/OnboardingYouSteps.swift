@@ -22,7 +22,7 @@ extension OnboardingFormView {
             OBQuestion(stage: 3, title: L.t("ob.age.title"))
             // D16 (27/11): the engine decides the 18–80 range; the wheel does not, so an age outside reaches `838:4053`.
             OBWheelCard {
-                OBWheelColumn(values: Array(10...100), selection: $vm.draft.age, label: { "\($0)" }, unit: L.t("ob.unit.years"), id: "ob-age")
+                OBWheelColumn(values: Array(10...100), selection: $vm.draft.age, label: { "\($0)" }, unit: L.t("ob.unit.years"), columnWidth: 88, id: "ob-age")
             }
             .padding(.top, 20)
             OBFootnote(text: L.t("ob.age.note"), icon: .cadeado)

@@ -15,6 +15,19 @@ enum OBText {
     }
     /// "domingo, 20 de dezembro"
     static func weekdayDayMonth(_ day: String) -> String { formatted(day, "EEEEdMMMM") }
+    /// "sáb 24 out" (08 timeline): short weekday, day and short month, without punctuation.
+    static func weekdayDayMonth(short day: String) -> String {
+        [formatted(day, "EEE"), formatted(day, "d"), formatted(day, "MMM")]
+            .map { $0.replacingOccurrences(of: ".", with: "").lowercased(with: Fmt.locale) }.joined(separator: " ")
+    }
+    /// "26 out" (34 eyebrow, 30 and 28 summaries): day and short month, as the Figma writes them.
+    static func dayMonth(short day: String) -> String {
+        [formatted(day, "d"), formatted(day, "MMM")].map { $0.replacingOccurrences(of: ".", with: "").lowercased(with: Fmt.locale) }.joined(separator: " ")
+    }
+    /// "seg, 26 out" (31 period).
+    static func weekdayCommaDayMonth(_ day: String) -> String {
+        formatted(day, "EEE").replacingOccurrences(of: ".", with: "").lowercased(with: Fmt.locale) + ", " + dayMonth(short: day)
+    }
     /// "Domingo, 20 de dezembro" (04 "Leitura da data")
     static func dateReading(_ day: String) -> String { weekdayDayMonth(day).capitalizedFirst }
     /// "14 de fevereiro de 2027"
@@ -55,7 +68,7 @@ enum OBText {
     /// 30 "Objetivo" and the resume row: "10 km em 20 dez e força" (drawn for a race with strength).
     static func goal(_ d: OnboardingDraft) -> String? {
         guard let distance = d.runAim?.race, let day = d.raceDay, d.train == .both else { return nil }
-        return L.f("ob.summary.goal", race(distance), Fmt.shortDate(day))
+        return L.f("ob.summary.goal", race(distance), dayMonth(short: day))
     }
 
     /// 30 "Ponto de partida": "5 km em 21:48" (the cargas part waits for D01).
@@ -76,6 +89,6 @@ enum OBText {
         guard d.hasResult == true, let r = d.resultDistance, let m = d.resultMinutes, let s = d.resultSeconds, let day = d.resultDay,
               let how = d.resultMeasure else { return nil }
         let measure = L.t("ob.resultDetail.\(how.rawValue)").lowercased(with: Fmt.locale)
-        return ([race(r), measure, Fmt.shortDate(day)].joined(separator: " · "), Fmt.clock(Double(m * 60 + s)))
+        return ([race(r), measure, dayMonth(short: day)].joined(separator: " · "), Fmt.clock(Double(m * 60 + s)))
     }
 }

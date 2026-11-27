@@ -102,4 +102,47 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertFalse(app.buttons["ob-build"].isEnabled)
         attach(app, "10 · 29 Seus dados · envio retido (D03)")
     }
+
+    /// VoiceOver labels and reading order of the safety and data screens (visual review evidence): 27, 27b, 29, Retido, 32. The tree of
+    /// each screen is attached (`VoiceOver — …`); the labels a person hears must name every choice and keep the Figma's order.
+    @MainActor
+    func testVoiceOverLabelsOfTheSafetyAndDataScreens() {
+        func tree(_ app: XCUIApplication, _ name: String) -> String {
+            let t = app.debugDescription
+            let a = XCTAttachment(string: t); a.name = "VoiceOver — " + name; a.lifetime = .keepAlways; add(a)
+            return t
+        }
+        func ordered(_ t: String, _ labels: [String], _ what: String) {
+            var from = t.startIndex
+            for l in labels {
+                guard let r = t.range(of: "'" + l, range: from..<t.endIndex) else { return XCTFail("\(what): \"\(l)\" missing or out of order") }
+                from = r.upperBound
+            }
+        }
+        var app = launch(["-onboardingSeed", "clinical", "-onboardingStep", "care", "-onboardingPhase", "form"])
+        XCTAssertTrue(app.staticTexts["Algum destes vale para você hoje?"].waitForExistence(timeout: 10))
+        ordered(tree(app, "27 Cuidados"), ["Etapa 3 de 4 · Você", "Algum destes vale para você hoje?", "Dor hoje ao se movimentar ou treinar",
+                                          "Dor que dura semanas ou piora com o esforço", "Gestação atual ou parto nos últimos 12 meses", "Nenhum destes",
+                                          "Não é avaliação médica", "Continuar"], "27")
+        XCTAssertTrue(app.buttons["ob-care-persistentPain"].isSelected, "the marked sign is announced as selected")
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.buttons["ob-care-confirm"].waitForExistence(timeout: 10))
+        ordered(tree(app, "27b Confirmar"), ["Confirma esta resposta?", "Você marcou dor que dura semanas", "Confirmar resposta", "Revisar respostas"], "27b")
+        app.terminate()
+        app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "dataUse", "-onboardingPhase", "form"])
+        XCTAssertTrue(app.staticTexts["Como seus dados são usados"].waitForExistence(timeout: 10))
+        ordered(tree(app, "29 Seus dados"), ["Como seus dados são usados", "Treino", "Necessário", "Sinais de saúde", "Aprendizado", "Montar meu plano"], "29")
+        XCTAssertEqual(app.switches["ob-consent-LEARNING"].label, "Aprendizado")
+        app.terminate()
+        app = launch(["-onboardingSeed", "clinical", "-onboardingStep", "dataUse", "-onboardingPhase", "held"])
+        XCTAssertTrue(app.staticTexts["Por enquanto, sem treinos prescritos"].waitForExistence(timeout: 10))
+        ordered(tree(app, "Retido por segurança"), ["Retido por segurança", "Por enquanto, sem treinos prescritos", "Procure um profissional de saúde.",
+                                                    "Entendi", "Já posso treinar · declarar"], "Retido")
+        app.terminate()
+        app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "dataUse", "-onboardingPhase", "account", "-afterOnboarding", "lucas-onboarded"])
+        XCTAssertTrue(app.buttons["ob-account-apple"].waitForExistence(timeout: 15))
+        ordered(tree(app, "32 Salvar o plano"), ["Salve o seu plano", "Continuar com a Apple", "Continuar com o Google", "Continuar com e-mail",
+                                                 "Ao continuar", "Já tenho conta · Entrar"], "32")
+        XCTAssertFalse(app.buttons["ob-account-apple"].isEnabled, "announced as dimmed: no account in V1")
+    }
 }

@@ -56,9 +56,9 @@ extension OnboardingFormView {
                 }
             }
             HStack {
-                Text(L.f("ob.goalDone.today", Fmt.weekdayAndDate(vm.today))).rmText(.detalhe, RM.Palette.textoPrimario)
+                Text(L.f("ob.goalDone.today", OBText.weekdayDayMonth(short: vm.today))).rmText(.detalhe, RM.Palette.textoPrimario)
                 Spacer()
-                Text(L.f("ob.goalDone.race", Fmt.weekdayAndDate(race))).rmText(.detalhe, RM.Palette.marco)
+                Text(L.f("ob.goalDone.race", OBText.weekdayDayMonth(short: race))).rmText(.detalhe, RM.Palette.marco)
             }
         }
         .padding(.horizontal, RM.Space.gutter)
@@ -70,7 +70,7 @@ extension OnboardingFormView {
     private var youDone: some View {
         let d = vm.draft
         return VStack(alignment: .leading, spacing: 0) {
-            OBWeekArt(run: d.runDays, strength: d.strengthDays, longRun: d.longRunDay).padding(.top, 24)
+            OBWeekArt(run: d.runDays, strength: d.strengthDays, longRun: d.longRunDay, style: .solid).padding(.top, 24)
             respiroText(stage: 3, title: L.t("ob.youDone.title"), body: nil)
             OBGroup {
                 if let days = d.recentRunDays ?? d.recentRunDaysChoice?.rawValue ?? (d.runStart == .never ? 0 : nil), d.runs {

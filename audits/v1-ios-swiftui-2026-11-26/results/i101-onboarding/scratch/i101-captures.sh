@@ -1,8 +1,10 @@
 #!/bin/bash
 # #101 captures: every onboarding frame state through tools/orchestration/sim.sh run (fixture composition, Debug seeds), dark appearance.
-# Usage (from the front C worktree): i101-captures.sh <sim.sh path> <out dir> [variant ...]   variants: pt en es pt-ax (default: all four)
+# Usage (from the front C worktree): i101-captures.sh <sim.sh path> <out dir> [variant ...]
+#   variants: pt en es pt-ax pt-light (default: all), pt-ax-bottom (large text, scrolled to the end, BOTTOM states only)
+# Each state: name|seed|step|phase|extra launch arguments (space separated).
 set -u
-SIM="$1"; OUT="$2"; shift 2; if [ $# -gt 0 ]; then VARIANTS=("$@"); else VARIANTS=(pt en es pt-ax); fi
+SIM="$1"; OUT="$2"; shift 2; if [ $# -gt 0 ]; then VARIANTS=("$@"); else VARIANTS=(pt en es pt-ax pt-light pt-ax-bottom); fi
 STATES=(
  "01-abertura-835-2069||||"
  "02-o-que-treinar-835-2114|lucas|train|form"
@@ -40,33 +42,52 @@ STATES=(
  "27b-confirmar-838-4148|clinical|care|confirmCare"
  "28-respiro-ponto-de-partida-836-3372|lucas|youDone|form"
  "29-seus-dados-837-999|lucas|dataUse|form"
+ "29-seus-dados-desligados-837-999|lucas-off|dataUse|form"
  "29-envio-retido-D03|rafa|dataUse|form"
  "30-montando-837-1059|lucas|dataUse|building"
+ "30-montando-em-andamento-837-1059|lucas|dataUse|buildingProgress"
  "retomar-838-3918|lucas|longRun|"
  "30-nao-deu-838-3972|lucas|dataUse|notBuilt"
  "30-falta-uma-resposta-838-4011|lucas|dataUse|missing"
  "fora-da-versao-838-4053|lucas|dataUse|outside"
  "retido-por-seguranca-838-3689|clinical|dataUse|held"
- "31-plano-pronto-837-1144|lucas|dataUse|ready"
- "32-salvar-o-plano-837-1323|lucas|dataUse|account"
- "34-primeira-semana-837-1239|lucas|dataUse|firstWeek"
+ "31-plano-pronto-837-1144|lucas|dataUse|ready|-afterOnboarding lucas-onboarded"
+ "32-salvar-o-plano-837-1323|lucas|dataUse|account|-afterOnboarding lucas-onboarded"
+ "34-primeira-semana-837-1239|lucas|dataUse|firstWeek|-afterOnboarding lucas-onboarded"
+)
+BOTTOM=(
+ "09-sua-semana-862-2271|lucas|week|form"
+ "11-duracao-836-546|lucas|duration|form"
+ "12-em-casa-equipamentos-867-2289|home|strengthPlace|form"
+ "23-resultado-recente-836-2994|lucas|result|form"
+ "27-cuidados-836-3299|lucas|care|form"
+ "28-respiro-ponto-de-partida-836-3372|lucas|youDone|form"
+ "31-plano-pronto-837-1144|lucas|dataUse|ready|-afterOnboarding lucas-onboarded"
+ "retido-por-seguranca-838-3689|clinical|dataUse|held"
 )
 for v in "${VARIANTS[@]}"; do
-  case "$v" in pt) LOC=pt_BR; LANG_ARG="(pt-BR)"; CS="";; en) LOC=en_US; LANG_ARG="(en)"; CS="";; es) LOC=es_ES; LANG_ARG="(es)"; CS="";;
+  APP=dark; LIST=("${STATES[@]}"); SCROLL=""
+  case "$v" in pt) LOC=pt_BR; LANG_ARG="(pt-BR)"; CS="";; pt-light) LOC=pt_BR; LANG_ARG="(pt-BR)"; CS=""; APP=light;;
+    pt-ax-bottom) LOC=pt_BR; LANG_ARG="(pt-BR)"; CS="accessibility-large"; LIST=("${BOTTOM[@]}"); SCROLL=1;; en) LOC=en_US; LANG_ARG="(en)"; CS="";; es) LOC=es_ES; LANG_ARG="(es)"; CS="";;
     pt-ax) LOC=pt_BR; LANG_ARG="(pt-BR)"; CS="accessibility-large";; esac
   mkdir -p "$OUT/$v"
-  for s in "${STATES[@]}"; do
-    IFS='|' read -r NAME SEED STEP PHASE <<<"$s"
+  for s in "${LIST[@]}"; do
+    IFS='|' read -r NAME SEED STEP PHASE MORE <<<"$s"
     ARGS=(--arg -scenario --arg no-data --arg -simulatedLocation --arg -AppleLanguages --arg "$LANG_ARG" --arg -AppleLocale --arg "$LOC")
     [ -n "$SEED" ] && ARGS+=(--arg -onboardingSeed --arg "$SEED" --arg -onboardingStep --arg "$STEP")
     [ -n "$PHASE" ] && ARGS+=(--arg -onboardingPhase --arg "$PHASE")
+    for m in ${MORE:-}; do ARGS+=(--arg "$m"); done
+    [ -n "$SCROLL" ] && ARGS+=(--arg -onboardingScroll --arg bottom)
     RUN="$OUT/.runs/$v-$NAME"; rm -rf "$RUN"; mkdir -p "$OUT/.runs"
     EXTRA=(); [ -n "$CS" ] && EXTRA=(--content-size "$CS")
-    "$SIM" run --sim RepMile-C-2 --appearance dark --locale "$LOC" --wait 5 --out "$RUN" --label "i101 $v $NAME" ${EXTRA[@]+"${EXTRA[@]}"} "${ARGS[@]}" > "$RUN.log" 2>&1
+    "$SIM" run --sim RepMile-C-2 --appearance "$APP" --locale "$LOC" --wait 5 --out "$RUN" --label "i101 $v $NAME" ${EXTRA[@]+"${EXTRA[@]}"} "${ARGS[@]}" > "$RUN.log" 2>&1
     rc=$?; PNG=$(ls "$RUN"/screenshot-*.png 2>/dev/null | head -1)
     if [ $rc -eq 0 ] && [ -n "$PNG" ]; then
-      if [ "$v" = pt ]; then cp "$PNG" "$OUT/$v/$NAME.png"; else sips -Z 1311 "$PNG" --out "$OUT/$v/$NAME.png" >/dev/null; fi
+      # PT and PT light: the raw PNG (its hash is the manifest's); the others: a 1311 px JPEG, hashed in SHA256SUMS.
+      if [ "$v" = pt ] || [ "$v" = pt-light ]; then cp "$PNG" "$OUT/$v/$NAME.png"
+      else sips -Z 1311 -s format jpeg -s formatOptions 70 "$PNG" --out "$OUT/$v/$NAME.jpg" >/dev/null; fi
       cp "$RUN/manifest.json" "$OUT/$v/$NAME.manifest.json"; echo "ok $v $NAME"
     else echo "FAIL $v $NAME rc=$rc"; fi
   done
 done
+( cd "$OUT" && find . -name '*.png' -o -name '*.jpg' | grep -v '^./.runs' | sort | xargs shasum -a 256 > SHA256SUMS )

@@ -117,7 +117,7 @@ struct OBCounterRow: View {
     let unit: String
     let id: String
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 4) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).rmText(.subtitulo)
                 if let detail { Text(detail).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true) }
@@ -131,7 +131,7 @@ struct OBCounterRow: View {
             .frame(minWidth: 64)
             round("+", enabled: value.map { $0 < range.upperBound } ?? true) { value = value.map { min(range.upperBound, $0 + step) } ?? range.lowerBound }
         }
-        .padding(.vertical, 12)
+        .padding(.vertical, 8)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title).accessibilityValue(value.map { "\($0) \(unit)" } ?? "—")
         .accessibilityAdjustableAction { dir in
@@ -147,6 +147,7 @@ struct OBCounterRow: View {
         Button(action: action) {
             Text(sign).font(.system(size: 22, weight: .regular)).foregroundStyle(enabled ? RM.Palette.textoPrimario : RM.Palette.textoTerciario)
                 .frame(width: 36, height: 36).background(RM.Palette.fundoElevado2, in: Circle())
+                .frame(width: 44, height: 44).contentShape(Rectangle())   // 44 pt hit area
         }
         .buttonStyle(.plain).disabled(!enabled)
     }
@@ -174,7 +175,8 @@ struct OBSegmented: View {
                 let on = selected == item.id
                 Button { pick(item.id) } label: {
                     Text(item.label).rmText(.rotulo, on ? RM.Palette.agoraSobre : RM.Palette.textoSecundario)
-                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .lineLimit(2).minimumScaleFactor(0.7).multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, minHeight: 36).padding(.horizontal, 2)
                         .background(on ? RM.Palette.agora : .clear, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
                 .buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : []).accessibilityIdentifier("ob-seg-\(item.id)")
@@ -205,5 +207,21 @@ struct OBEffortDots: View {
             if d == .increment { value = min(10, (value ?? 0) + 1) } else if let v = value, v > 1 { value = v - 1 }
         }
         .accessibilityIdentifier("ob-effort")
+    }
+}
+
+/// 29 toggles as the Figma draws them: on is the agora track with the dark knob on the right, off the rail with the grey knob on the left.
+struct OBToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Button { configuration.isOn.toggle() } label: {
+            ZStack(alignment: configuration.isOn ? .trailing : .leading) {
+                Capsule().fill(configuration.isOn ? RM.Palette.agora : RM.Palette.fundoTrilho).frame(width: 51, height: 31)
+                Circle().fill(configuration.isOn ? RM.Palette.agoraSobre : RM.Palette.textoTerciario).frame(width: 25, height: 25).padding(3)
+            }
+            .frame(minWidth: 51, minHeight: 44).contentShape(Rectangle())
+            .animation(.easeInOut(duration: 0.15), value: configuration.isOn)
+        }
+        .buttonStyle(.plain)
+        .accessibilityRepresentation { Toggle(isOn: configuration.$isOn) { configuration.label } }
     }
 }

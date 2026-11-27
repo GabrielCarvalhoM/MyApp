@@ -216,3 +216,30 @@ visível antes de Continuar · D02 decidido pelo fundador (#110): item único, n
 **CCP-ONB-1 (#109) aprovada pelo fundador (27/11):** outro incremento acrescenta os campos ao contrato; as telas que dependem dela seguem
 retidas até lá. **Ainda pendentes (fundador/CCP):** D01, D03 (sem prova), D04-cópia, D05, D07, D08, D09, D10 (turno opcional/por dia), D11, D15, D18
 (cópia de "indisponível"/ambiente de teste), D19, D20 ("Teste", Condições), D21, D22, D24, D25, D26.
+
+---
+
+## 8. Desvios temporários e correções das revisões de #119 (27/11)
+
+**Desvios temporários de cópia** (frases do Figma que o motor contradiz hoje; seguem no `copy.psv` e voltam trocando um interruptor em
+`OBCopyDeviation`, `Presentation/State/OnboardingCopyDeviations.swift`; o texto final é decisão do fundador):
+
+| Tela | Frase do Figma | Interruptor | Por quê |
+|---|---|---|---|
+| 12 `867:2289` | "Não sabe tudo? Você confirma no primeiro treino." | `showConfirmInFirstWorkout = false` | não há confirmação de equipamento no primeiro treino |
+| 25 `838:1187` | "Sem carga conhecida, a primeira semana é uma sessão curta de prática com o peso do corpo. As cargas vêm na semana seguinte." | `showPracticeNoteAlways = false` | só é verdade com exatamente 1 dia de força e equipamento externo (matriz do replay, SSCTR C1); mostrada nesse caso |
+| 27 `836:3299` | "Fica só na sua conta." (chave `ob.care.note.account`) | `showOnlyInYourAccount = false` | não há conta na V1 (#28) |
+
+**Correções** (QRE READY_WITH_CONDITIONS, SSCTR APPROVE_WITH_CONDITIONS, revisão visual NOT_READY):
+- SSCTR C4: depois de CLINICAL_HUMAN_REQUIRED o rascunho fica marcado (`heldForSafety`), retoma em "Retido por segurança", não tem revisão
+  e nunca é reenviado (o replay mostra que o motor matricularia um reenvio com "Nenhum destes"). A saída é a declaração de prontidão (D24).
+- SSCTR C6: "Semana 1: N corridas" conta por papel; uma caminhada opcional (`WALK`) não é corrida.
+- QRE P2-3: apagamento durável do perfil local (marcador pendente; nada é lido nem gravado até a pasta sumir); 31–34 nunca ficam sobre a
+  conta apagada.
+- QRE P3: respiros no "Retomar" pela etapa seguinte; rascunho enviado limpo antes da espera de "Montando"; "Montar meu plano" só com pedido
+  completo; fora do escopo pelo código do motor (idade → 18, população → 27, distância → 03); "Não tenho resultado" limpa o resultado.
+- Visual: folhas 27b e 32 com rolagem e altura pelo conteúdo, véu atrás; 30, Retomar e 32 rolam em texto grande; data de 24 numa folha com
+  "Concluir" (botão de 09b) aberta no dia escolhido; linhas de 27 no ritmo do Figma; interruptor de 29 como no Figma (desligado por padrão);
+  alvos de 44 pt; P3 (ponto de hoje em 01, segundos de 10 em 10 em 05 — em 23 o resultado mantém segundo a segundo, porque é medida do
+  atleta —, "anos" junto do número, barras sólidas em 28, Rafa "Regularidade", datas "sáb 24 out", barra do esporte e coluna do dia com os
+  dois em 09). 31–34 nas capturas leem o registro real de Lucas (`Captures/lucas-*`, datas do Figma: 26 out a 20 dez).

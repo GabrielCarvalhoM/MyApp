@@ -11,7 +11,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {athlete,ELIG,athleteA,CONSENTS} from '../../../../CoachingCore/test/v1int-helpers.mjs';
 import {URGENT_SIGNS} from '../../../../CoachingCore/src/v1-f08.mjs';
-import {warningSignSet} from '../../CoachingPresentation/Facade/app-projections.mjs';
+import {warningSignSet,weekPlan,loggedEntries,PROJECTIONS_VERSION} from '../../CoachingPresentation/Facade/app-projections.mjs';
 
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const OUT=path.resolve(process.argv[2]??path.join(HERE,'../Captures'));fs.mkdirSync(OUT,{recursive:true});
@@ -64,6 +64,22 @@ for(const k of URGENT_SIGNS.filter(k=>ready.warningSigns.includes(k))){const {t,
  const a=save('onboard-clinical',t.api.onboard({actor:t.actor,intake,consents:CONSENTS,clientRequestId:'c101-1'}),
   'onboarding with a clinical sign marked (27 Cuidados): CLINICAL_HUMAN_REQUIRED, not enrolled');
  if(a.status!=='CLINICAL_HUMAN_REQUIRED'||a.enrolled!==false)throw new Error('onboard clinical '+a.status+' '+a.enrolled);}
+
+// 5. #101: Lucas, the Figma's onboarding persona (`837:1144`), as the app sends him (the Swift golden request of OnboardingTests.lucasGolden,
+// built by results/i101-onboarding/scratch/i101-engine-replay.mjs) on Saturday 24 Oct 2026: the record the app reads after "Montar meu plano"
+// (fixture scenario `lucas-onboarded`, screens 31–34).
+{const golden=JSON.parse(fs.readFileSync(path.join(HERE,'../Tests/RepMileUIUnitTests/OnboardingTests.swift'),'utf8').match(/static let lucasGolden = #"(.*?)"#/)[1]);
+ const intake={version:'R6-INTAKE-1',synthetic:true,purpose:'SHADOW_REFERENCE',asOf:'2026-10-24',startDate:golden.startDate,weeks:golden.weeks,timezoneOffsetMinutes:-180,
+  learningConsent:false,athlete:golden.athlete,schedule:golden.schedule};
+ const t=athlete({newId,id:golden.athlete.id,weeks:golden.weeks,start:'2026-10-24T12:00:00-03:00'});
+ const o=t.api.onboard({actor:t.actor,intake,consents:{COACHING:true,HEALTH_SIGNALS:false,LEARNING:false},clientRequestId:'c101-lucas-1'});
+ if(o.status!=='PROPOSED')throw new Error('lucas '+o.status);
+ save('lucas-plan',t.api.plan({actor:t.actor}),'#101 Lucas after onboarding: plan view, week 0 (8 weeks to the 10 km of 20 Dec)');
+ save('lucas-sessions',t.api.sessions({actor:t.actor}),'#101 Lucas after onboarding: every week');
+ save('lucas-presentation',t.it.presentation({actor:t.actor}),'#101 Lucas after onboarding: calibration by the 5 km in 21:48');
+ save('lucas-week-plan',{ok:true,projections:PROJECTIONS_VERSION,...weekPlan(t.doc(),{today:t.api.plan({actor:t.actor}).view.today})},'#101 Lucas: projection weekPlan');
+ const r=t.it.read({actor:t.actor});
+ save('lucas-logged',{ok:true,projections:PROJECTIONS_VERSION,entries:loggedEntries(t.it.visible(r.doc))},'#101 Lucas: nothing logged yet');}
 
 fs.writeFileSync(path.join(OUT,'INDEX.json'),JSON.stringify({generator:'ios/Packages/RepMileUI/Tools/capture-engine.mjs',files:index},null,1)+'\n');
 console.log(`${index.length} captures → ${path.relative(process.cwd(),OUT)||'.'}`);

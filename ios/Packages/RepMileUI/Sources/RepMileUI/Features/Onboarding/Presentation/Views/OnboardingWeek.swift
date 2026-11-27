@@ -15,17 +15,24 @@ enum OBDays {
 /// "Arte · a semana com os dois" (01, 16, 28, 30, 31, 34 and the outcome screens): runs above the line, strength below, the long run taller.
 /// `ghost` is the outlined week of the screens without a plan (`838:4053`, `838:3689`).
 struct OBWeekArt: View {
-    enum Style { case dashed, ghost }
+    enum Style { case dashed, ghost, solid }
     let run: Set<Int>
     let strength: Set<Int>
     var longRun: Int?
     var style: Style = .dashed
     var showsLetters = true
+    /// The dot on the line (01 `835:2085`: today).
+    var todayIndex: Int?
 
     var body: some View {
         VStack(spacing: 10) {
             ZStack {
                 Rectangle().fill(RM.Palette.linhaBase.opacity(0.5)).frame(height: 1)
+                if let todayIndex {
+                    HStack(spacing: 0) {
+                        ForEach(0..<7, id: \.self) { d in Circle().fill(d == todayIndex ? RM.Palette.textoSecundario : .clear).frame(width: 6, height: 6).frame(maxWidth: .infinity) }
+                    }
+                }
                 HStack(spacing: 0) {
                     ForEach(0..<7, id: \.self) { d in
                         VStack(spacing: 8) {
@@ -53,7 +60,12 @@ struct OBWeekArt: View {
         let color = isRun ? RM.Palette.corrida : RM.Palette.forca
         let height: CGFloat = isRun ? (tall ? 70 : 48) : 66
         let radius: CGFloat = isRun ? 15 : 6
-        if on {
+        if on && style == .solid {
+            // 28: what the athlete already does, as solid bars.
+            RoundedRectangle(cornerRadius: radius, style: .continuous)
+                .fill(LinearGradient(colors: [color, color.opacity(0.55)], startPoint: isRun ? .top : .bottom, endPoint: isRun ? .bottom : .top))
+                .frame(width: 30, height: height)
+        } else if on {
             RoundedRectangle(cornerRadius: radius, style: .continuous)
                 .fill(LinearGradient(colors: [color.opacity(style == .ghost ? 0 : 0.35), color.opacity(0.05)], startPoint: isRun ? .bottom : .top, endPoint: isRun ? .top : .bottom))
                 .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous)
@@ -81,6 +93,15 @@ struct OBWeekGrid: View {
             if lifts { row(run: false) }
             HStack(spacing: 0) {
                 ForEach(0..<7, id: \.self) { d in Text(OBDays.letter(d)).rmText(.micro, RM.Palette.textoTerciario).frame(maxWidth: .infinity) }
+            }
+        }
+        .background {
+            // A day with both: the soft column behind it (`862:2271`, Thursday).
+            HStack(spacing: 0) {
+                ForEach(0..<7, id: \.self) { d in
+                    RoundedRectangle(cornerRadius: 10, style: .continuous).fill(runDays.contains(d) && strengthDays.contains(d) ? RM.Palette.fundoElevado : .clear)
+                        .padding(.horizontal, 3).frame(maxWidth: .infinity)
+                }
             }
         }
         .padding(.horizontal, RM.Space.gutter)

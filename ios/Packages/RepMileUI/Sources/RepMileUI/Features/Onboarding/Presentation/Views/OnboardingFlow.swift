@@ -40,12 +40,13 @@ struct OnboardingFlow: View {
             switch vm.phase {
             case .resume: OnboardingResumeView(vm: vm)
             case .form: OnboardingFormView(vm: vm) { build(vm) }
-            case .building: OnboardingBuildingView(draft: vm.draft, animate: !reduceMotion)
+            case .building: OnboardingBuildingView(draft: vm.draft, animate: !reduceMotion, shownAtStart: vm.debugBuildingShown)
             case .ready:
                 OnboardingPlanReadyView(preview: preview(vm), save: { vm.saveThePlan() }, seePlan: finished)
                     .sheet(item: Binding(get: { vm.sheet == .account ? vm.sheet : nil }, set: { if $0 == nil { vm.sheet = nil; withAnimation { vm.accountSheetClosed() } } })) { _ in
-                        OnboardingAccountSheet().presentationDetents([.height(440), .large]).presentationDragIndicator(.visible)
+                        OnboardingAccountSheet()
                     }
+                    .overlay { if vm.sheet == .account { OBSheetDim() } }
             case .firstWeek: OnboardingFirstWeekView(preview: preview(vm), goToday: finished)
             case .outcome(let o):
                 OnboardingOutcomeView(outcome: o, draft: vm.draft, retry: { Task { await vm.retry(minimumDisplay: minimum) } }, review: { withAnimation { vm.review() } })

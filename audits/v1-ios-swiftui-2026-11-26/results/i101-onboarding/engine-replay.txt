@@ -32,5 +32,38 @@
   PASS D02 option ["PREGNANCY"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
   PASS D02 option ["POSTPARTUM"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
   PASS D02 option ["PREGNANCY","POSTPARTUM"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
+=== 4 SSCTR C4: a clinical answer, then the same athlete onboarding again with "Nenhum destes"
+  first: CLINICAL_HUMAN_REQUIRED enrolled=false · resubmitted with "Nenhum destes": PROPOSED enrolled=true
+  PASS the engine keeps no record of the clinical answer at enrolment (CLINICAL_HUMAN_REQUIRED, not enrolled)
+  PASS so a resubmission with other answers WOULD be enrolled: the app must never resend a held draft (OnboardingViewModel: heldForSafety) · status=PROPOSED
+=== 5 SSCTR C1: a never-trained strength athlete, week 1 and week 2 strength, by strength days and equipment
+  1 day(s) × full gym: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@ESTABLISH/db-row@ESTABLISH/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT
+  PASS 1 day(s) × full gym: the 25 note is shown (true) exactly when it is true (true)
+  2 day(s) × full gym: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@ESTABLISH/db-floor-press@ESTABLISH/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@FROM_LOG/db-row@FROM_LOG/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@FROM_LOG/db-floor-press@FROM_LOG/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+  PASS 2 day(s) × full gym: the 25 note is shown (false) exactly when it is true (false)
+  3 day(s) × full gym: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@ESTABLISH/db-floor-press@ESTABLISH/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@FROM_LOG/db-row@FROM_LOG/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@FROM_LOG/db-floor-press@FROM_LOG/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug@BODYWEIGHT/db-calf-raise@ESTABLISH/bird-dog@BODYWEIGHT
+  PASS 3 day(s) × full gym: the 25 note is shown (false) exactly when it is true (false)
+  1 day(s) × dumbbells: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@ESTABLISH/db-row@ESTABLISH/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT
+  PASS 1 day(s) × dumbbells: the 25 note is shown (true) exactly when it is true (true)
+  2 day(s) × dumbbells: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@ESTABLISH/db-floor-press@ESTABLISH/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@FROM_LOG/db-row@FROM_LOG/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@FROM_LOG/db-floor-press@FROM_LOG/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+  PASS 2 day(s) × dumbbells: the 25 note is shown (false) exactly when it is true (false)
+  3 day(s) × dumbbells: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@ESTABLISH/db-floor-press@ESTABLISH/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:goblet-squat@ESTABLISH/db-floor-press@FROM_LOG/db-row@FROM_LOG/db-calf-raise@ESTABLISH/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/db-row@FROM_LOG/db-floor-press@FROM_LOG/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug@BODYWEIGHT/db-calf-raise@ESTABLISH/bird-dog@BODYWEIGHT
+  PASS 3 day(s) × dumbbells: the 25 note is shown (false) exactly when it is true (false)
+  1 day(s) × bodyweight: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:box-squat-bodyweight@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/standing-calf-raise@BODYWEIGHT/dead-bug@BODYWEIGHT
+  PASS 1 day(s) × bodyweight: the 25 note is shown (false) exactly when it is true (false)
+  2 day(s) × bodyweight: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:box-squat-bodyweight@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/standing-calf-raise@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT
+  PASS 2 day(s) × bodyweight: the 25 note is shown (false) exactly when it is true (false)
+  3 day(s) × bodyweight: week 1 = STRENGTH_FULL_A:sit-to-stand@BODYWEIGHT/wall-pushup@BODYWEIGHT/prone-row-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT/dead-bug-practice@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug-practice@BODYWEIGHT/supported-calf-raise@BODYWEIGHT
+             week 2 = STRENGTH_FULL_A:box-squat-bodyweight@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/standing-calf-raise@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_FULL_B:glute-bridge@BODYWEIGHT/incline-push-up@BODYWEIGHT/prone-ytw-raise@BODYWEIGHT/reverse-lunge@BODYWEIGHT/dead-bug@BODYWEIGHT STRENGTH_CORE:dead-bug@BODYWEIGHT/standing-calf-raise@BODYWEIGHT/bird-dog@BODYWEIGHT
+  PASS 3 day(s) × bodyweight: the 25 note is shown (false) exactly when it is true (false)
+  PASS C1 matrix: 1/2/3 strength days × full gym, dumbbells, bodyweight
 
 all checks passed

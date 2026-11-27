@@ -84,7 +84,7 @@ public struct RepMileShell: View {
 
     public var body: some View {
         Group {
-            if model.route == .onboarding || onboardingHeld {
+            if RepMileShell.showsOnboarding(route: model.route, held: onboardingHeld) {
                 onboarding
             } else {
                 switch model.route {
@@ -97,14 +97,27 @@ public struct RepMileShell: View {
         .environment(model)
         .environment(recorder)
         // An account found erased (GONE) erases this front's recordings and the onboarding's local profile too (G07), also when the erasure
-        // happened elsewhere. A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next
-        // open removes the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
+        // happened elsewhere, and leaves 31–34 for the erased state. A failed removal is not lost in the live composition: the rotation leaves
+        // the device erasure pending, and the next open removes the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76); the
+        // onboarding store keeps its own pending marker and loads nothing until its folder is gone (QRE P2-3).
         .onChange(of: model.route) { _, r in
-            if r == .accountErased { try? recorder.eraseAllRecordings(); onboardingStore.erase(); live?.accountErased() }
+            if r == .accountErased { try? recorder.eraseAllRecordings(); RepMileShell.accountErased(onboarding: onboardingStore); onboardingHeld = false; live?.accountErased() }
         }
-        .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
+
+    /// Fixture phase: the scenario read after an accepted intake (Debug `-afterOnboarding <scenario id>`, e.g. `lucas-onboarded`; else the first week).
+    static var afterOnboarding: Scenario {
+        let args = ProcessInfo.processInfo.arguments
+        #if DEBUG
+        if let i = args.firstIndex(of: "-afterOnboarding"), args.indices.contains(i + 1) { return Scenario.named(args[i + 1]) }
+        #endif
+        return .firstWeek
+    }
+
+    /// The onboarding stays on screen from an accepted intake to "Ir para Hoje" (31–34), never over an erased account.
+    static func showsOnboarding(route: RootRoute, held: Bool) -> Bool { route == .onboarding || (held && route != .accountErased) }
+    static func accountErased(onboarding store: OnboardingStoring) { store.erase() }
 
     private var onboarding: some View {
         let store = onboardingStore, writer = model.writer, athleteId = live?.athleteId
@@ -114,7 +127,7 @@ public struct RepMileShell: View {
             // Live: the host reads the new record. Never a fixture reader here.
             if live != nil { Task { await model.load() } }
             // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
-            else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
+            else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: RepMileShell.afterOnboarding, store: store)) } }
             else { Task { await model.load() } }
         }, finished: { onboardingHeld = false })
     }

@@ -18,7 +18,7 @@ struct OBScaffold<Content: View, Actions: View>: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 24)
             }
-            .scrollIndicators(.hidden)
+            .scrollIndicators(.hidden).obScrollAnchor()
             .scrollDismissesKeyboard(.interactively)
             VStack(spacing: 6) { actions }
                 .padding(.horizontal, RM.Space.gutter).padding(.top, 16).padding(.bottom, 8)
@@ -37,13 +37,14 @@ struct OBNavigation: View {
             Button(action: back) {
                 RMIconView(.chevronEsquerda, size: 16).foregroundStyle(RM.Palette.textoPrimario)
                     .frame(width: 36, height: 36).background(RM.Palette.fundoElevado, in: Circle())
+                    .frame(width: 44, height: 44).contentShape(Rectangle())   // 44 pt hit area around the 36 pt circle
             }
             .buttonStyle(.plain).opacity(showsBack ? 1 : 0).disabled(!showsBack)
             .accessibilityLabel(L.t("ob.back")).accessibilityIdentifier("ob-back")
             OBProgress(stage: stage, progress: progress).frame(height: 5)
             Color.clear.frame(width: 36, height: 36)
         }
-        .padding(.horizontal, 16).padding(.top, 4)
+        .padding(.leading, 12).padding(.trailing, 16).padding(.top, 0)
     }
 }
 
@@ -98,6 +99,8 @@ struct OBFootnote: View {
 struct OBPrimaryButton: View {
     let title: String
     var enabled = true
+    /// A held action that the Figma draws as the white pill (32 "Continuar com a Apple"): disabled, its outline kept.
+    var outlinedWhenDisabled = false
     let id: String
     let action: () -> Void
     var body: some View {
@@ -105,6 +108,7 @@ struct OBPrimaryButton: View {
             Text(title).rmText(.botao, enabled ? RM.Palette.agoraSobre : RM.Palette.textoTerciario)
                 .frame(maxWidth: .infinity, minHeight: 52)
                 .background(enabled ? RM.Palette.agora : RM.Palette.fundoElevado, in: Capsule())
+                .overlay(Capsule().strokeBorder(!enabled && outlinedWhenDisabled ? RM.Palette.textoTerciario : .clear, lineWidth: 1))
                 .contentShape(Capsule())
         }
         .buttonStyle(PressableStyle()).disabled(!enabled).accessibilityIdentifier(id)

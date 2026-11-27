@@ -26,6 +26,5 @@ public struct RepMileLaunchScreen: View {
         Group {
             if let kind = Self.stateKind(phase) { StateScreen(kind: kind, primary: {}, retry: retry) } else { LoadingSkeleton() }
         }
-        .preferredColorScheme(.dark)
     }
 }

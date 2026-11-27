@@ -31,7 +31,7 @@ extension OnboardingFormView {
             OBWheelCard {
                 // 10…400 min: the time goals the engine reads (`event.timeGoalMinutes`); kept locally until D07.
                 OBWheelColumn(values: Array(10...400), selection: $vm.draft.goalMinutes, label: { "\($0)" }, unit: L.t("ob.unit.min"), id: "ob-goal-min")
-                OBWheelColumn(values: Array(0...59), selection: $vm.draft.goalSeconds, label: { String(format: "%02d", $0) }, unit: L.t("ob.unit.s"), id: "ob-goal-s")
+                OBWheelColumn(values: Array(stride(from: 0, through: 50, by: 10)), selection: $vm.draft.goalSeconds, label: { String(format: "%02d", $0) }, unit: L.t("ob.unit.s"), id: "ob-goal-s")
             }
             .padding(.top, 20)
             .onChange(of: vm.draft.goalMinutes) { if vm.draft.goalMinutes != nil { vm.draft.goalSkipped = false } }

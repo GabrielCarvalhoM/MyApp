@@ -30,7 +30,9 @@ struct OnboardingPlanPreview: Equatable {
             guard let st = start, let n = OnboardingDraft.days(from: st, to: s.date), (0..<7).contains(n) else { return nil }
             return n
         }
-        runDays = Set(sessions.filter { $0.sport.raw == "RUN" }.compactMap(day))
+        // SSCTR C6: a run is a RUN session that is not a walk (an optional WALK is not a run); counted by role, never by sport alone.
+        let isRun: (PlannedSession) -> Bool = { $0.sport.raw == "RUN" && $0.role.raw != "WALK" }
+        runDays = Set(sessions.filter(isRun).compactMap(day))
         strengthDays = Set(sessions.filter { $0.sport.raw == "STRENGTH" }.compactMap(day))
         longRunDay = sessions.first { $0.sport.raw == "RUN" && $0.role.raw == "LONG" }.flatMap(day)
 
@@ -46,17 +48,17 @@ struct OnboardingPlanPreview: Equatable {
         }
         if let s = start, let last = Self.lastDay(weekPlan: weekPlan, weeks: weeks, start: s) {
             if preparatory {
-                period = L.f("ob.ready.period.prep", Fmt.weekdayAndDate(s), Fmt.weekdayAndDate(last))
+                period = L.f("ob.ready.period.prep", OBText.weekdayCommaDayMonth(s), OBText.weekdayCommaDayMonth(last))
             } else if !phases.isEmpty {
                 var seen: [String] = []
                 for p in phases where !seen.contains(p) { seen.append(p) }
                 let names = seen.map { $0 == "RACE_WEEK" ? L.t("ob.ready.phase.raceWeek") : (L.code("phase", Code(raw: $0)) ?? "").lowercased(with: Fmt.locale) }.filter { !$0.isEmpty }
-                period = L.f("ob.ready.period", Fmt.weekdayAndDate(s), Fmt.weekdayAndDate(last), OBText.list(names))
+                period = L.f("ob.ready.period", OBText.weekdayCommaDayMonth(s), OBText.weekdayCommaDayMonth(last), OBText.list(names))
             }
-            weekRange = L.f("ob.firstWeek.eyebrow", Fmt.shortDate(s), Fmt.shortDate(Self.add(6, to: s) ?? s))
+            weekRange = L.f("ob.firstWeek.eyebrow", OBText.dayMonth(short: s), OBText.dayMonth(short: Self.add(6, to: s) ?? s))
         }
         if !sessions.isEmpty, let s = start {
-            let runs = sessions.filter { $0.sport.raw == "RUN" }.count, lifts = sessions.filter { $0.sport.raw == "STRENGTH" }.count
+            let runs = sessions.filter(isRun).count, lifts = sessions.filter { $0.sport.raw == "STRENGTH" }.count
             weekLine = L.f("ob.ready.week1", OBText.counts(runs: runs, strength: lifts), OBText.onDay(s))
         }
         cards = Self.cards(presentation?.readings?.runCalibration, race: race)

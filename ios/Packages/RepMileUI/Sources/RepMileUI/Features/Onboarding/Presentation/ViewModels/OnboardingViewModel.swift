@@ -30,6 +30,8 @@ final class OnboardingViewModel {
     private(set) var step: OnboardingStep
     var sheet: Sheet?
     var draft = OnboardingDraft()
+    /// Debug captures only (`-onboardingPhase buildingProgress`): the rows of 30 already done. Always nil in release.
+    private(set) var debugBuildingShown: Int?
 
     private let writer: CoachingWriting
     private let store: OnboardingStoring
@@ -203,6 +205,7 @@ extension OnboardingViewModel {
         switch name {
         case "form": phase = .form
         case "building": phase = .building
+        case "buildingProgress": phase = .building; debugBuildingShown = 2
         case "ready": phase = .ready
         case "firstWeek": phase = .firstWeek
         case "account": phase = .ready; sheet = .account

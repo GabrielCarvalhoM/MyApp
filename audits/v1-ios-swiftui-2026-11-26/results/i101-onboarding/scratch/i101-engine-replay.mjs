@@ -109,5 +109,37 @@ console.log('=== 3 outcomes the screens map');
   check(`D02 option ${JSON.stringify(codes)} (flags unanswered): UNSUPPORTED, not enrolled`,x.status==='UNSUPPORTED'&&x.enrolled===false,`status=${x.status}`);
  }}
 
+console.log('=== 4 SSCTR C4: a clinical answer, then the same athlete onboarding again with "Nenhum destes"');
+{const clinical={...lucas,careNone:false,care:['persistentPain']};
+ const t=athlete({newId,id:'i101-c4',start:'2026-10-24T12:00:00-03:00'});
+ const first=t.api.onboard({actor:t.actor,intake:intake(build(clinical,{athleteId:'i101-c4',today:'2026-10-24',start:'2026-10-26'}),'2026-10-24',false),consents:{COACHING:true,HEALTH_SIGNALS:false,LEARNING:false},clientRequestId:'c4-1'});
+ const again=t.api.onboard({actor:t.actor,intake:intake(build(lucas,{athleteId:'i101-c4',today:'2026-10-24',start:'2026-10-26'}),'2026-10-24',false),consents:{COACHING:true,HEALTH_SIGNALS:false,LEARNING:false},clientRequestId:'c4-2'});
+ console.log(`  first: ${first.status} enrolled=${first.enrolled} · resubmitted with "Nenhum destes": ${again.status} enrolled=${again.enrolled}`);
+ check('the engine keeps no record of the clinical answer at enrolment (CLINICAL_HUMAN_REQUIRED, not enrolled)',first.status==='CLINICAL_HUMAN_REQUIRED'&&first.enrolled===false);
+ check('so a resubmission with other answers WOULD be enrolled: the app must never resend a held draft (OnboardingViewModel: heldForSafety)',again.status==='PROPOSED'&&again.enrolled!==false,`status=${again.status}`);}
+
+console.log('=== 5 SSCTR C1: a never-trained strength athlete, week 1 and week 2 strength, by strength days and equipment');
+{const EQ={'full gym':{strengthPlace:'fullGym',gymItems:[]},'dumbbells':{strengthPlace:'home',gymItems:['DUMBBELLS']},'bodyweight':{strengthPlace:'bodyweightOnly',gymItems:[]}};
+ const DAYS={1:[2],2:[0,2],3:[0,2,4]};
+ // The note's two facts: week 1 is bodyweight practice only, and week 2 carries external loads.
+ const bodyweightOnly=ss=>ss.every(x=>(x.prescription?.exercises??[]).every(e=>e.load?.unit==='BODYWEIGHT'));
+ const externalLoads=ss=>ss.some(x=>(x.prescription?.exercises??[]).some(e=>e.load&&e.load.unit!=='BODYWEIGHT'));
+ let row=0;
+ for(const [eqName,eq] of Object.entries(EQ))for(const [n,days] of Object.entries(DAYS)){
+  const d={...lucas,...eq,strengthBand:'never',recentStrengthDays:null,strengthDays:days,runDays:[1,3,5,6].filter(x=>!days.includes(x)||x===3),careNone:true};
+  if(!d.runDays.includes(d.longRunDay))d.longRunDay=d.runDays.at(-1);
+  const a=build(d,{athleteId:'i101-c1-'+(++row),today:'2026-10-24',start:'2026-10-26'});
+  const {t,answer}=onboard('c1-'+row,intake(a,'2026-10-24',false),{asOf:'2026-10-24'});
+  if(answer.status!=='PROPOSED'){check(`C1 ${n} day(s) × ${eqName}: accepted`,false,answer.status);continue;}
+  const w=k=>t.doc().program.weeks[k].sessions.filter(x=>x.sport==='STRENGTH');
+  const w1=w(0),w2=w(1);
+  const describe=ss=>ss.map(x=>x.role+':'+(x.prescription?.exercises??[]).map(e=>e.id+(e.load?.value!=null?`@${e.load.value}${e.load.unit}`:e.load?.mode?`@${e.load.mode}`:'')).join('/')).join(' ');
+  console.log(`  ${n} day(s) × ${eqName}: week 1 = ${describe(w1)}`);
+  console.log(`  ${''.padStart(String(n).length)}          week 2 = ${describe(w2)}`);
+  const note=Number(n)===1&&eqName!=='bodyweight',truth=bodyweightOnly(w1)&&externalLoads(w2);
+  check(`${n} day(s) × ${eqName}: the 25 note is shown (${note}) exactly when it is true (${truth})`,note===truth);
+ }
+ check('C1 matrix: 1/2/3 strength days × full gym, dumbbells, bodyweight',row===9);}
+
 console.log(failures?`\n${failures} FAILED`:'\nall checks passed');
 process.exit(failures?1:0);

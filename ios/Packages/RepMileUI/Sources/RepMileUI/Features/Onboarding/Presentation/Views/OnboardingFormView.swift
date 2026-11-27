@@ -20,8 +20,9 @@ struct OnboardingFormView: View {
             }
         }
         .sheet(item: Binding(get: { vm.sheet == .confirmCare ? vm.sheet : nil }, set: { if $0 == nil, vm.sheet == .confirmCare { vm.sheet = nil } })) { _ in
-            CareConfirmSheet(vm: vm).presentationDetents([.height(360), .large]).presentationDragIndicator(.visible)
+            CareConfirmSheet(vm: vm)
         }
+        .overlay { if vm.sheet == .confirmCare { OBSheetDim() } }
     }
 
     @ViewBuilder private var content: some View {
@@ -65,7 +66,7 @@ struct OnboardingFormView: View {
 
     private var opening: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OBWeekArt(run: [1, 3, 5, 6], strength: [0, 2, 3], longRun: 5).padding(.top, 84)
+            OBWeekArt(run: [1, 3, 5, 6], strength: [0, 2, 3], longRun: 5, todayIndex: 4).padding(.top, 84)
             VStack(alignment: .leading, spacing: 12) {
                 RMLogo()
                 Text(L.t("ob.opening.title")).rmText(.manchete).fixedSize(horizontal: false, vertical: true)
@@ -87,7 +88,7 @@ struct OnboardingFormView: View {
     private var respiro: some View {
         VStack(alignment: .leading, spacing: 0) {
             OBNavigation(stage: vm.step.stage, progress: 1) { withAnimation { vm.back() } }
-            ScrollView { respiroContent.frame(maxWidth: .infinity, alignment: .leading) }.scrollIndicators(.hidden)
+            ScrollView { respiroContent.frame(maxWidth: .infinity, alignment: .leading) }.scrollIndicators(.hidden).obScrollAnchor()
             OBPrimaryButton(title: L.t(vm.step == .goalDone ? "ob.goalDone.next" : vm.step == .routineDone ? "ob.routineDone.next" : "ob.youDone.next"), id: "ob-next") { advance() }
                 .padding(.horizontal, RM.Space.gutter).padding(.vertical, 8)
         }
@@ -102,18 +103,35 @@ struct OnboardingFormView: View {
     }
 }
 
-/// 27b "Confirma esta resposta?" (`838:4148`): the marked signs in the Figma's sentence, then confirm or review.
+/// 27b "Confirma esta resposta?" (`838:4148`): the marked signs in the Figma's sentence, then confirm or review. The text scrolls and both
+/// buttons stay visible at every text size (visual review P1); the sheet's own background covers it to the bottom.
 struct CareConfirmSheet: View {
     @Bindable var vm: OnboardingViewModel
+    @Environment(\.dynamicTypeSize) private var typeSize
     var body: some View {
         let marked = CareItem.allCases.filter { $0.isClinical && vm.draft.care.contains($0) }.map { L.t("ob.care.\($0.rawValue)").lowercased(with: Fmt.locale) }
         VStack(alignment: .leading, spacing: 12) {
-            Text(L.t("ob.careConfirm.title")).rmText(.titulo).padding(.top, 8)
-            Text(L.f("ob.careConfirm.body", OBText.list(marked))).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(L.t("ob.careConfirm.title")).rmText(.titulo).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
+                    Text(L.f("ob.careConfirm.body", OBText.list(marked))).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 20)
+            }
+            .scrollBounceBehavior(.basedOnSize)
             OBPrimaryButton(title: L.t("ob.careConfirm.confirm"), id: "ob-care-confirm") { vm.confirmCare() }
             OBSecondaryButton(title: L.t("ob.careConfirm.review"), id: "ob-care-review") { vm.sheet = nil }
         }
-        .padding(RM.Space.gutter)
-        .background(RM.Palette.fundoElevado.ignoresSafeArea())
+        .padding(.horizontal, RM.Space.gutter).padding(.bottom, 8)
+        .presentationDetents(typeSize.isAccessibilitySize ? [.large] : [.height(360), .large])
+        .presentationDragIndicator(.visible)
+        .presentationBackground(RM.Palette.fundoElevado)
     }
+}
+
+/// The dim behind a sheet, as the Figma draws it under 27b and 32.
+struct OBSheetDim: View {
+    // The app background as a veil (a token, so it follows the appearance: darker in dark, lighter in light).
+    var body: some View { RM.Palette.fundoApp.opacity(0.6).ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true).transition(.opacity) }
 }

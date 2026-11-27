@@ -43,6 +43,33 @@ final class OnboardingPlanPreviewTests: XCTestCase {
         XCTAssertEqual(p.cards.count, 1)
     }
 
+    /// Lucas' own record (`Captures/lucas-*`, the real engine's answer to the app's request): 8 weeks, 4 runs and 3 strength sessions.
+    func testLucasReadsHisOwnPlan() throws {
+        let plan = try Repo.store.decode(PlanView.self, "lucas-plan", at: "view")
+        let p = OnboardingPlanPreview(plan: plan, weekPlan: try Repo.store.decode(WeekPlanProjection.self, "lucas-week-plan"),
+                                      presentation: try Repo.store.decode(PresentationSnapshot.self, "lucas-presentation"), race: .tenK, name: "Lucas")
+        XCTAssertTrue(p.title?.contains("8") == true, p.title ?? "nil")
+        XCTAssertEqual(p.runDays, [1, 3, 5, 6])
+        XCTAssertEqual(p.strengthDays, [0, 2, 3])
+        XCTAssertEqual(p.longRunDay, 5)
+        XCTAssertEqual(p.weekLine, L.f("ob.ready.week1", OBText.counts(runs: 4, strength: 3), OBText.onDay("2026-10-26")))
+        XCTAssertTrue(p.cards.first?.detail?.contains("21:48") == true, p.cards.first?.detail ?? "nil")
+    }
+
+    /// SSCTR C6: an optional walk is not a run (counted by role, never by sport alone).
+    func testAWalkIsNotARun() throws {
+        var root = try XCTUnwrap(try Repo.store.object("lucas-plan")["view"] as? [String: Any])
+        var week = try XCTUnwrap(root["week"] as? [String: Any])
+        var sessions = try XCTUnwrap(week["sessions"] as? [[String: Any]])
+        var walk = try XCTUnwrap(sessions.first { $0["sport"] as? String == "RUN" })
+        walk["id"] = "w0-walk"; walk["role"] = "WALK"; walk["optional"] = true; walk["date"] = "2026-10-30"
+        sessions.append(walk); week["sessions"] = sessions; root["week"] = week
+        let plan = try JSONDecoder().decode(PlanView.self, from: JSONSerialization.data(withJSONObject: root))
+        let p = OnboardingPlanPreview(plan: plan, weekPlan: nil, presentation: nil, race: .tenK, name: "")
+        XCTAssertFalse(p.runDays.contains(4), "Friday's walk draws no run")
+        XCTAssertEqual(p.weekLine, L.f("ob.ready.week1", OBText.counts(runs: 4, strength: 3), OBText.onDay("2026-10-26")))
+    }
+
     func testNothingReadNothingShown() {
         let p = OnboardingPlanPreview(plan: nil, weekPlan: nil, presentation: nil, race: .tenK, name: "")
         XCTAssertNil(p.title); XCTAssertNil(p.period); XCTAssertNil(p.weekLine); XCTAssertTrue(p.cards.isEmpty); XCTAssertTrue(p.runDays.isEmpty)

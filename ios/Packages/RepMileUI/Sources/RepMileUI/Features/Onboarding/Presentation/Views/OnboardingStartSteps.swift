@@ -13,7 +13,8 @@ extension OnboardingFormView {
                     selected: Set([vm.draft.strengthBand?.rawValue].compactMap { $0 })) { vm.draft.strengthBand = TrainingBand(rawValue: $0) }
                 .padding(.horizontal, RM.Space.gutter).padding(.top, 20)
             if vm.draft.strengthBand == .never {
-                OBFootnote(text: L.t("ob.strengthYears.never.note"))
+                // Shown only while true (OBCopyDeviation, SSCTR C1).
+                if OBCopyDeviation.showsPracticeNote(vm.draft) { OBFootnote(text: L.t("ob.strengthYears.never.note")) }
             } else if vm.draft.strengthBand != nil {
                 // "Do Apple Saúde · últimas 4 semanas" is not shown: nothing comes from Apple Health yet (D15).
                 OBGroup {
@@ -97,7 +98,7 @@ extension OnboardingFormView {
         .padding(.top, 20)
         OBOptionCard(title: L.t("ob.care.none"), selected: vm.draft.careNone, id: "ob-care-none") { vm.draft.chooseNoCare() }
             .padding(.horizontal, RM.Space.gutter).padding(.top, 12)
-        OBFootnote(text: L.t("ob.care.note"), icon: .cadeado)
+        OBFootnote(text: OBCopyDeviation.showOnlyInYourAccount ? L.t("ob.care.note") + " " + L.t("ob.care.note.account") : L.t("ob.care.note"), icon: .cadeado)
     }
 
     // MARK: 29 Seus dados
@@ -116,34 +117,40 @@ extension OnboardingFormView {
     }
 }
 
-/// 24 "Quando": the day reads "Domingo, 18 de outubro" (or "—") over the system date picker, which opens on a tap. Days up to today only.
+/// 24 "Quando": the day reads "Domingo, 18 de outubro" (or "—"); a tap opens the system calendar in a sheet, opened on the day already chosen
+/// (else today) and kept only with "Concluir" (Figma 09b's button), so today can be chosen too. Days up to today only.
 struct ResultDayField: View {
     @Binding var day: String?
     let latest: String
+    @State private var choosing = false
     @State private var picked = Date()
 
     var body: some View {
-        ZStack {
-            HStack {
-                Text(day.map(OBText.dateReading) ?? "—").rmText(.subtitulo)
-                Spacer()
+        Button { picked = Self.date(day ?? latest); choosing = true } label: {
+            HStack(spacing: 8) {
+                Text(day.map(OBText.dateReading) ?? "—").rmText(.subtitulo).lineLimit(2).minimumScaleFactor(0.8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 RMIconView(.chevronBaixo, size: 14).foregroundStyle(RM.Palette.textoSecundario)
             }
-            .padding(.horizontal, 14).frame(minHeight: 48)
+            .padding(.horizontal, 14).padding(.vertical, 12).frame(minHeight: 48)
             .background(RM.Palette.fundoElevado2, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .allowsHitTesting(false)
-            DatePicker("", selection: $picked, in: ...(Self.endOfDay(latest)), displayedComponents: .date)
-                .labelsHidden().datePickerStyle(.compact).opacity(0.02).frame(maxWidth: .infinity, minHeight: 48)
-                .accessibilityLabel(L.t("ob.resultDetail.when")).accessibilityValue(day.map(OBText.dateReading) ?? "—")
-                .accessibilityIdentifier("ob-result-day")
         }
-        .onChange(of: picked) { _, d in day = Fmt.deviceDay(d) }
+        .buttonStyle(.plain)
+        .accessibilityLabel(L.t("ob.resultDetail.when")).accessibilityValue(day.map(OBText.dateReading) ?? "—").accessibilityIdentifier("ob-result-day")
+        .sheet(isPresented: $choosing) {
+            VStack(spacing: 12) {
+                DatePicker("", selection: $picked, in: ...Self.date(latest), displayedComponents: .date)
+                    .datePickerStyle(.graphical).labelsHidden().tint(RM.Palette.corrida).accessibilityIdentifier("ob-result-day-picker")
+                OBPrimaryButton(title: L.t("ob.done"), id: "ob-result-day-done") { day = Fmt.deviceDay(picked); choosing = false }
+            }
+            .padding(RM.Space.gutter)
+            .presentationDetents([.large]).presentationBackground(RM.Palette.fundoElevado)
+        }
     }
 
-    private static func endOfDay(_ day: String) -> Date {
-        var c = Calendar.current; c.timeZone = .current
-        let parts = day.split(separator: "-").compactMap { Int($0) }
-        let d = parts.count == 3 ? c.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2], hour: 23, minute: 59)) : nil
-        return d ?? Date()
+    /// Noon of a plan-local day in the device's calendar (a day, never shifted by the time zone).
+    static func date(_ day: String) -> Date {
+        let p = day.split(separator: "-").compactMap { Int($0) }
+        return p.count == 3 ? Calendar.current.date(from: DateComponents(year: p[0], month: p[1], day: p[2], hour: 12)) ?? Date() : Date()
     }
 }

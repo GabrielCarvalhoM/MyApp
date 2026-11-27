@@ -6,6 +6,8 @@ import SwiftUI
 struct OnboardingBuildingView: View {
     let draft: OnboardingDraft
     let animate: Bool
+    /// Debug captures of the in-progress state (`-onboardingPhase buildingProgress`): rows done, the next one loading.
+    var shownAtStart: Int?
     @State private var shown = 0
 
     var body: some View {
@@ -14,10 +16,12 @@ struct OnboardingBuildingView: View {
             .filter { $0.1 != nil }
         VStack(alignment: .leading, spacing: 0) {
             OBNavigation(stage: 4, progress: 0.75, showsBack: false) {}
+            ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
             OBWeekArt(run: draft.runDays, strength: draft.strengthDays, longRun: draft.longRunDay).padding(.top, 28)
             VStack(alignment: .leading, spacing: 8) {
                 Text(L.t("ob.stage.4")).rmText(.micro, RM.Palette.textoTerciario)
-                Text(L.t("ob.building.title")).rmText(.manchete)
+                Text(L.t("ob.building.title")).rmText(.manchete).fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, RM.Space.gutter).padding(.top, 20)
             VStack(alignment: .leading, spacing: 16) {
@@ -32,16 +36,21 @@ struct OnboardingBuildingView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(L.t(row.0)).rmText(.subtitulo, i <= shown ? RM.Palette.textoPrimario : RM.Palette.textoTerciario)
                             Text(row.1 ?? "").rmText(.detalhe, i <= shown ? RM.Palette.textoSecundario : RM.Palette.textoTerciario)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
             }
             .padding(.horizontal, RM.Space.gutter).padding(.top, 20)
             OBFootnote(text: L.t("ob.building.note"))
-            Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .scrollIndicators(.hidden).obScrollAnchor()
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier("ob-building")
         .task {
+            if let shownAtStart { shown = shownAtStart; return }
             guard animate else { shown = rows.count; return }
             for i in 1...max(1, rows.count) { try? await Task.sleep(for: .milliseconds(380)); withAnimation(.easeOut(duration: 0.2)) { shown = i } }
         }
@@ -71,10 +80,11 @@ struct OnboardingOutcomeView: View {
                 OBPrimaryButton(title: L.t("ob.data.build"), enabled: false, id: "ob-build") {}.padding(.horizontal, RM.Space.gutter).padding(.bottom, 8)
             }
             .accessibilityElement(children: .contain).accessibilityIdentifier("ob-missing")
-        case .outsideScope:
-            // Only the age reaches this screen while D02 holds the pregnancy item; its gestation sentence is shown only for that answer.
-            let pregnancy = draft.care.contains(.pregnancyOrPostpartum)
-            frame(art: .ghost, eyebrow: nil, title: "ob.outside.title", body: pregnancy ? [L.t("ob.outside.body")] : [], note: L.t("ob.outside.age"), id: "ob-outside") {
+        case .outsideScope(let scope):
+            // The engine's scope decides the sentences (QRE P3-7): the gestation body only for the special population, the age line only
+            // for the age; an event distance outside V1 gets the title alone (its own sentence is #120's).
+            frame(art: .ghost, eyebrow: nil, title: "ob.outside.title", body: scope == .specialPopulation ? [L.t("ob.outside.body")] : [],
+                  note: scope == .age || scope == .specialPopulation ? L.t("ob.outside.age") : nil, id: "ob-outside") {
                 OBPrimaryButton(title: L.t("ob.outside.ok"), enabled: false, id: "ob-outside-ok") {}
                 OBSecondaryButton(title: L.t("ob.outside.review"), id: "ob-review", action: review)
             }
@@ -121,7 +131,7 @@ struct OnboardingOutcomeView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .scrollIndicators(.hidden)
+            .scrollIndicators(.hidden).obScrollAnchor()
             VStack(spacing: 10) { actions() }.padding(.horizontal, RM.Space.gutter).padding(.vertical, 8)
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier(id)
@@ -133,10 +143,13 @@ struct OnboardingResumeView: View {
     let vm: OnboardingViewModel
 
     var body: some View {
-        let stage = vm.step.stage
+        let point = OnboardingViewModel.resumePoint(for: vm.step)
+        let stage = point.stage
         let name = vm.draft.name.trimmingCharacters(in: .whitespacesAndNewlines)
         VStack(alignment: .leading, spacing: 0) {
-            OBNavigation(stage: stage, progress: vm.stageProgress, showsBack: false) {}
+            OBNavigation(stage: stage, progress: vm.step.isRespiro ? 0 : vm.stageProgress, showsBack: false) {}
+            ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 12) {
                 RMLogo()
                 Text(name.isEmpty ? L.t("ob.resume.title") : L.f("ob.withName", L.t("ob.resume.title"), name)).rmText(.manchete).fixedSize(horizontal: false, vertical: true)
@@ -146,13 +159,17 @@ struct OnboardingResumeView: View {
             OBGroup {
                 ForEach(1...4, id: \.self) { s in
                     if s > 1 { RMDivider() }
-                    let detail: String? = s < stage ? (s == 1 ? OBText.goal(vm.draft) : nil) : s == stage ? L.f("ob.resume.stoppedAt", L.t("ob.stepName.\(vm.step.rawValue)")) : nil
+                    let detail: String? = s < stage ? (s == 1 ? OBText.goal(vm.draft) : nil)
+                        : s == stage ? point.stoppedAt.map { L.f("ob.resume.stoppedAt", L.t("ob.stepName.\($0.rawValue)")) } : nil
                     OBSummaryRow(title: L.t("ob.resume.stage.\(s)"), detail: detail,
                                  value: L.t(s < stage ? "ob.resume.done" : s == stage ? "ob.resume.now" : "ob.resume.missing"), valueStyle: .rotulo, dimmed: s > stage)
                 }
             }
             .padding(.top, 24)
-            Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .scrollIndicators(.hidden).obScrollAnchor()
             VStack(spacing: 6) {
                 OBPrimaryButton(title: L.t("ob.resume.continue"), id: "ob-resume-continue") { withAnimation { vm.resumeWhereStopped() } }
                 OBLink(title: L.t("ob.resume.restart"), id: "ob-resume-restart") { withAnimation { vm.restart() } }

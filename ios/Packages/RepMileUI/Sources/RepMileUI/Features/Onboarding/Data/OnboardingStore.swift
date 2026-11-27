@@ -9,6 +9,8 @@ struct OnboardingSaved: Codable, Equatable, Sendable {
     var draft: OnboardingDraft?
     var step: OnboardingStep?
     var profile: OnboardingProfile?
+    /// The engine answered CLINICAL_HUMAN_REQUIRED to this draft: it resumes on "Retido por segurança" and is never sent again (SSCTR C4).
+    var heldForSafety: Bool? = nil
 }
 
 /// The local-only profile kept after the plan is built. Nothing here has a sporting use.
@@ -37,14 +39,21 @@ protocol OnboardingStoring: AnyObject, Sendable {
     func erase()
 }
 
-/// One JSON file, written atomically with complete-unless-open protection. Small: read and written synchronously by the main actor's callers
-/// at step boundaries only.
+/// One JSON file in its own folder, written atomically with complete-unless-open protection and excluded from backups. Small: read and
+/// written synchronously at step boundaries only. Erasure is durable (QRE P2-3): a pending marker is set first and cleared only once the
+/// folder is gone; while it is set nothing is loaded and nothing is saved, so a later account never inherits an earlier profile.
 final class FileOnboardingStore: OnboardingStoring, @unchecked Sendable {
-    // @unchecked: the URL is immutable and every access goes through `lock`.
+    // @unchecked: the stored values are immutable and every file access goes through `lock`.
+    let directory: URL
     private let url: URL
     private let lock = NSLock()
+    private let defaults: UserDefaults
+    private let remove: @Sendable (URL) throws -> Void
+    private var pendingKey: String { "repmile.onboarding.erasurePending." + directory.path }
 
-    init(directory: URL) { url = directory.appendingPathComponent("onboarding.json") }
+    init(directory: URL, defaults: UserDefaults = .standard, remove: @escaping @Sendable (URL) throws -> Void = { try FileManager.default.removeItem(at: $0) }) {
+        self.directory = directory; url = directory.appendingPathComponent("onboarding.json"); self.defaults = defaults; self.remove = remove
+    }
 
     /// The live composition's place: Application Support, excluded from backups like the other athlete data of the app.
     static var standardDirectory: URL {
@@ -52,25 +61,38 @@ final class FileOnboardingStore: OnboardingStoring, @unchecked Sendable {
         return base.appendingPathComponent("RepMile/Onboarding", isDirectory: true)
     }
 
+    var erasurePending: Bool { defaults.bool(forKey: pendingKey) }
+
     func load() -> OnboardingSaved? {
         lock.lock(); defer { lock.unlock() }
-        guard let data = try? Data(contentsOf: url) else { return nil }
+        guard settlePendingErasure(), let data = try? Data(contentsOf: url) else { return nil }
         return try? JSONDecoder().decode(OnboardingSaved.self, from: data)
     }
 
     func save(_ saved: OnboardingSaved) {
         lock.lock(); defer { lock.unlock() }
-        let dir = url.deletingLastPathComponent()
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        guard settlePendingErasure() else { return }
+        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         var values = URLResourceValues(); values.isExcludedFromBackup = true
-        var d = dir; try? d.setResourceValues(values)
+        var d = directory; try? d.setResourceValues(values)
         guard let data = try? JSONEncoder().encode(saved) else { return }
         try? data.write(to: url, options: [.atomic, .completeFileProtectionUnlessOpen])
     }
 
     func erase() {
         lock.lock(); defer { lock.unlock() }
-        try? FileManager.default.removeItem(at: url)
+        defaults.set(true, forKey: pendingKey)
+        _ = settlePendingErasure()
+    }
+
+    /// Removes the folder when an erasure is pending; true when nothing of an erased account is left.
+    private func settlePendingErasure() -> Bool {
+        guard defaults.bool(forKey: pendingKey) else { return true }
+        if FileManager.default.fileExists(atPath: directory.path) {
+            do { try remove(directory) } catch { return false }
+        }
+        defaults.removeObject(forKey: pendingKey)
+        return true
     }
 }
 

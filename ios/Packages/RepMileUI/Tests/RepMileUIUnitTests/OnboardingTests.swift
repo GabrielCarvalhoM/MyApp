@@ -5,6 +5,7 @@ import XCTest
 /// #101: the Figma onboarding's answers → the shared `OnboardingAnswers` (spec F-ONBOARDING-FIGMA §2, §4, §6). The golden requests below are
 /// what the engine replay (`results/i101-onboarding/scratch/i101-engine-replay.mjs`) sends to the real CoachingCore.
 final class OnboardingTests: XCTestCase {
+    struct NotBuildable: Error {}
     static func encoded(_ v: some Encodable) throws -> String {
         let e = JSONEncoder(); e.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
         return String(decoding: try e.encode(v), as: UTF8.self)
@@ -42,8 +43,11 @@ final class OnboardingTests: XCTestCase {
     }
 
     static func answers(_ d: OnboardingDraft, start: String, today: String) throws -> OnboardingAnswers {
-        guard case .ready(let a) = d.build(athleteId: "i101-athlete", today: today, startDate: start) else {
-            throw XCTSkip("not buildable: \(d.build(athleteId: "i101-athlete", today: today, startDate: start))")
+        // QRE P2-2: a request that cannot be built fails the test, never skips it.
+        let built = d.build(athleteId: "i101-athlete", today: today, startDate: start)
+        guard case .ready(let a) = built else {
+            XCTFail("not buildable: \(built)")
+            throw NotBuildable()
         }
         return a
     }
