@@ -1,0 +1,8 @@
+#83 · the seam is Debug only: a Release build has no isolated case (LiveStores.standard only) and none of its strings
+xcodebuild build -configuration Release (iOS Simulator, RepMile-C-3), commit 28f9d8d3: exit 0
+Release RepMile binary, occurrences of 'isolatedLiveStores': 0
+Release RepMile binary, occurrences of 'uitest-live-': 0
+Release RepMile binary, occurrences of 'uitest-isolated': 0
+Release RepMile binary, occurrences of 'simulateDamagedIdentity': 0
+Debug RepMile binaries, occurrences of 'isolatedLiveStores': 1
+Debug RepMile binaries, occurrences of 'uitest-isolated': 1

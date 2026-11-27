@@ -1,0 +1,55 @@
+#83 · Testes ao vivo independentes do estado anterior do simulador · evidência (somente simulador, RepMile-C-3)
+
+Commit testado: 28f9d8d3 (branch claude/v1-ios-integration-i83-live-isolation, a partir de claude/v1-ios-integration @ 9eb60f05)
+
+ESCOLHA: (c), argumento de lançamento só em Debug, `-isolatedLiveStores <token>`
+  Cada teste do LiveCompositionTests é uma instalação própria. A identidade, o armazenamento do A, a fila do B e as gravações do C ficam
+  em tmp/uitest-live-<token>/ do contêiner do app. Os itens de Keychain do A ficam num serviço próprio,
+  `fit.vilumo.repmile.lab.coachinghost.uitest-isolated`, nunca no serviço de produção. O token é novo em cada setUp, é mantido nos
+  relançamentos do mesmo teste (a mesma instalação) e é trocado de propósito para representar uma reinstalação.
+  Num build Release o enum `LiveStores` só tem o caso `.standard`: o caso isolado, o argumento e o serviço de Keychain não são compilados
+  (release-build-check.txt: 0 ocorrências das strings no binário Release).
+
+POR QUE (c) e não (a) nem (b)
+  (a) desinstalar no sim.sh só limpa os runs feitos pelo sim.sh. Não limpa os runs pelo Xcode, por `xcodebuild test` direto, nem as
+      repetições (retry/iterations), e não deixa um teste independente do outro dentro do mesmo run. Também muda um pipeline usado por
+      todas as frentes (o app deixa de ter estado entre a fase run e a fase test). O sim.sh não foi alterado.
+  (b) apagar a conta no tearDown depende justamente do que pode ter falhado: o app travou, ficou num modal, ainda não terminou a
+      inscrição (nada para apagar pela UI) ou o host não abriu. Um tearDown de UI longo também pode falhar e esconder a falha real.
+  (c) não depende de limpeza: o que um run interrompido deixa fica numa pasta que nenhum teste seguinte lê. A pasta é removida no
+      primeiro lançamento de um token novo, e os itens de Keychain são removidos pela reconciliação de primeira execução do A (#49).
+
+O CAMINHO DE PRIMEIRA EXECUÇÃO / REINSTALAÇÃO (#49) CONTINUA TESTADO, agora em todo run
+  Um token novo é um contêiner novo (sem identidade, sem registro, sem install marker) sobre o mesmo serviço de Keychain, como depois de
+  uma reinstalação: o contêiner some e o Keychain fica. A reconciliação do A roda com sobras reais no Keychain do simulador.
+  Novo teste: testAReinstallKeepsTheKeychainAndTheNextLaunchIsANewAccount. Ele inscreve, troca o token e verifica que o próximo lançamento
+  é uma conta nova (onboarding, nunca o plano anterior, nunca um erro) e que o motor real aceita uma nova inscrição.
+  No log do A, em cada run: 4 × "host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED" (sim-all-run1.txt, sim-all-run2.txt).
+  Limite: a UI não distingue sozinha "a reconciliação removeu as sobras" de "as sobras ficaram". Isso é provado pela linha de log acima,
+  e a lógica é coberta pelos testes do pacote CoachingHost. O caminho padrão (sem o argumento) continua exercitado pela fase run do
+  sim.sh, que lança o app ao vivo nos armazenamentos padrão.
+
+A IDENTIDADE REAL E O KEYCHAIN REAL NÃO SÃO TOCADOS
+  O lançamento isolado nunca lê, lista nem remove o serviço de produção, nem Application Support. Prova: o simulador guardava nos
+  armazenamentos padrão um atleta inscrito pelo run pré-correção interrompido. O sha256 de athlete-identity.json é o mesmo antes e depois
+  de cada run, e o registro do A continua lá (sim-all-run*.txt). Nada disso roda fora do simulador.
+
+PROVA PEDIDA
+  1. Estado sujo (dirty-state.txt):
+     A) o problema como relatado. Os testes ao vivo pré-correção (9eb60f05) foram interrompidos depois da inscrição e deixaram um atleta
+        nos armazenamentos padrão. O run seguinte pré-correção FALHA no primeiro passo ("the real host answers NOT_ENROLLED → onboarding",
+        exit 65), o sintoma do #83.
+     B) uma instalação isolada suja. O teste novo de reinstalação foi interrompido depois da primeira inscrição.
+  2. Com os dois estados sujos, o run 1 passa 93/93, com os 4 testes ao vivo verdes (sim-all-run1.txt).
+  3. `tools/orchestration/sim.sh all --sim RepMile-C-3` duas vezes seguidas: 93/93 e 93/93, 0 falhas e 0 pulados
+     (sim-all-run1.txt, sim-all-run2.txt).
+
+TESTES
+  Alterado: LiveCompositionTests. Os 3 testes existentes agora rodam isolados; 1 teste novo de reinstalação; total de 4.
+  Novos: LiveStoresTests (RepMileCompositionTests), com 4 testes em Debug e 1 teste só para Release (#else).
+  Suite: 88 → 93 casos.
+
+GATES (gates.txt): guard OK (0 proibidos, 0 exigem aprovação); swift-size: 0 acima do limite. O sim.sh não foi alterado, então os testes
+  node de tools/orchestration não são exigidos.
+
+Arquivos: evidence-index.txt, dirty-state.txt, sim-all-run1.txt, sim-all-run2.txt, release-build-check.txt, gates.txt

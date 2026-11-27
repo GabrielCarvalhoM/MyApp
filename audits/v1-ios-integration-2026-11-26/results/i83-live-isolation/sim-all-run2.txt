@@ -1,0 +1,116 @@
+#83 · tools/orchestration/sim.sh all --sim RepMile-C-3 (run 2 of 2, back to back) · target=simulator
+commit: 28f9d8d3147b3c6b7fde43ca3fc91f446579ceec branch=claude/v1-ios-integration-i83-live-isolation uncommittedFiles=0 result=ok generatedAt=2026-11-27T18:03:53.457Z
+simulator: RepMile-C-3 iOS-27-2 9D4ED3A0-D167-42B8-8633-4E96CB93C571 · Xcode 27.2 Build version 27B52
+tests: {"result":"Passed","total":93,"passed":93,"failed":0,"skipped":0,"failures":[]}
+
+== before/after (the app's STANDARD stores still hold the athlete the interrupted pre-fix run enrolled: see dirty-state.txt) ==
+standard identity sha256 before: e6eff92e1b3146b5d5d5c0f5dcee4fd8949f1d19a5293928084bcdefcf8a6ad2
+standard A records before: 1
+sim.sh all exit: 0
+sim: tests Passed · 93/93 passed · 0 failed · 0 skipped
+standard identity sha256 after:  e6eff92e1b3146b5d5d5c0f5dcee4fd8949f1d19a5293928084bcdefcf8a6ad2
+standard A records after: 1
+reconciliation lines:
+   4 host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+
+== A's log during the run (simctl log stream, subsystem fit.vilumo.repmile.coachinghost) ==
+Filtering the log data using "subsystem == "fit.vilumo.repmile.coachinghost" AND composedMessage CONTAINS "first-launch-reconciled""
+2026-11-27 14:53:12.737 I  RepMile[95861:6eb565] [fit.vilumo.repmile.coachinghost:boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-27 14:53:18.856 I  RepMile[95881:6eb66f] [fit.vilumo.repmile.coachinghost:boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-27 14:54:06.815 I  RepMile[96156:6ebfe6] [fit.vilumo.repmile.coachinghost:boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+2026-11-27 14:54:54.590 I  RepMile[96441:6ec82a] [fit.vilumo.repmile.coachinghost:boundary] host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED
+
+== every test case ==
+Passed	EligibilityRestUITests/testARedFlagAloneWithTheScreenReachesTheSafetyPause()	22s
+Passed	EligibilityRestUITests/testBlockedReadinessAsksFifteenSignsAndTheScreenAndReturns()	25s
+Passed	EligibilityRestUITests/testCantThisDayWithAYesShowsTheSafetyPauseAndNoProposal()	13s
+Passed	EligibilityRestUITests/testNotFeeling100AsksTheEngineSignsAndTheScreen()	24s
+Passed	ExecutionAndSafetyTests/testPlannedRunRecordReportAndSave()	19s
+Passed	ExecutionAndSafetyTests/testPlannedStrengthConfirmedAsPrescribed()	43s
+Passed	ExecutionAndSafetyTests/testPlannedStrengthPartialLog()	37s
+Passed	ExecutionAndSafetyTests/testRecordingResumesAfterTheProcessIsKilled()	14s
+Passed	ExecutionAndSafetyTests/testReportCanBeLeftWithoutSaving()	11s
+Passed	ExecutionAndSafetyTests/testResumedRunUnderABlockShowsNoPrescriptionAndCanBeReported()	16s
+Passed	ExecutionAndSafetyTests/testSymptomStopAlwaysOffersTheWarningSignScreen()	25s
+Passed	ExecutionAndSafetyTests/testUnplannedRunAsksTheSymptomQuestionAndOpensNotFeeling100()	26s
+Passed	ExecutionAndSafetyTests/testUnplannedRunIsNotStartedOutsideScopeOrWithAScreenPending()	14s
+Passed	ExecutionAndSafetyTests/testUnplannedRunIsNotStartedUnderAHold()	5s
+Passed	ExecutionAndSafetyTests/testUnplannedStrengthSavedOnlyWhenKept()	16s
+Passed	GuidanceLevelUITests/testANonUrgentSignShowsProfessionalAssessment()	21s
+Passed	GuidanceLevelUITests/testAnUrgentSignShowsUrgentCare()	23s
+Passed	GuidanceLevelUITests/testReadinessWithAnUrgentSignKeepsTheHoldAtUrgentCare()	18s
+Passed	GuidanceLevelUITests/testSessionDetailUnderAnUrgentHoldShowsUrgentCare()	9s
+Passed	GuidanceLevelUITests/testTodayUnderAnUrgentHoldShowsUrgentCare()	6s
+Passed	HistoryProgressTests/testConflictedRowShowsEveryVoice()	8s
+Passed	HistoryProgressTests/testEmptyHistory()	7s
+Passed	HistoryProgressTests/testHistoryKeepsMeasuredDeclaredAndContestedApart()	7s
+Passed	HistoryProgressTests/testKeptCorrectionIsSaved()	25s
+Passed	HistoryProgressTests/testProgressRangeFirstAndPlanScenario()	10s
+Passed	LiveCompositionTests/testADamagedIdentityShowsItsOwnStateWithNoRetry()	14s
+Passed	LiveCompositionTests/testAFreshLaunchShowsOnboardingFromTheRealHost()	5s
+Passed	LiveCompositionTests/testAReinstallKeepsTheKeychainAndTheNextLaunchIsANewAccount()	1min 37s
+Passed	LiveCompositionTests/testRealOnboardingCreatesAPlanThenEraseMakesTheNextLaunchANewAccount()	2min 24s
+Passed	NavigationTests/testBlockedShowsSafetyStateAndNoStart()	5s
+Passed	NavigationTests/testLanguages()	12s
+Passed	NavigationTests/testLargeDynamicType()	7s
+Passed	NavigationTests/testOutsideScopeRestartStartsNothing()	6s
+Passed	NavigationTests/testRootStates()	33s
+Passed	NavigationTests/testScreenRequiredDisablesStartWithReason()	5s
+Passed	NavigationTests/testTabsAndProfileRoundTrip()	11s
+Passed	NavigationTests/testTodayStartsOnlyWhenStartable()	7s
+Passed	OnboardingUITests/testNoneOfTheseBuildsAPlan()	52s
+Passed	OnboardingUITests/testPregnancyShowsPlanUnavailable()	48s
+Passed	PlanAndSessionTests/testBlockedSessionDetailShowsNoStepsOrStart()	8s
+Passed	PlanAndSessionTests/testCantThisDayProposesAndConfirms()	17s
+Passed	PlanAndSessionTests/testCantThisDayWithNoVisibleProposalCannotBeConfirmed()	13s
+Passed	PlanAndSessionTests/testPlanWeekNavigationAndSegments()	11s
+Passed	PlanAndSessionTests/testRunSessionDetailShowsEngineStepsAndStarts()	6s
+Passed	PlanAndSessionTests/testStrengthSessionDetailShowsPrescribedLoadsOnly()	8s
+Passed	ProfileZonesTests/testAgeEstimateZonesMatchTheFixture()	9s
+Passed	ProfileZonesTests/testConflictShowsBothValuesAndNoAgeShowsReason()	19s
+Passed	ProfileZonesTests/testCustomLimitsHaveNoPercentages()	9s
+Passed	ProfileZonesTests/testDeclaredMaximumSavedAndInvalidLimitsRefusedByTheEngine()	27s
+Passed	ProfileZonesTests/testEraseAccountReachesTheErasedState()	11s
+Passed	ProfileZonesTests/testRecordedConsentIsShownWithoutError()	9s
+Passed	ProfileZonesTests/testSavedMaximumReadsTheZonesAgain()	17s
+Passed	ReportEligibilityUITests/testRunReportWaitsForTheScreenAndAYesShowsTheSafetyPause()	15s
+Passed	ReportEligibilityUITests/testStrengthLogWaitsForTheScreenAndAYesShowsTheSafetyPause()	15s
+Passed	AthleteIdentityStoreTests/testAMalformedFileIsAnErrorNotANewAccount()	0,0074s
+Passed	AthleteIdentityStoreTests/testANonJSONFileIsDamagedAndKept()	0,0019s
+Passed	AthleteIdentityStoreTests/testAnOverlongOrControlCharacterIdIsInvalid()	0,00049s
+Passed	AthleteIdentityStoreTests/testAnUnreadableFileIsAnErrorAndKept()	0,0029s
+Passed	AthleteIdentityStoreTests/testIdsComeOnlyFromTheRandomSource()	0,0021s
+Passed	AthleteIdentityStoreTests/testRotationAfterAnErasureIssuesANewIdForTheNextLaunch()	0,0017s
+Passed	AthleteIdentityStoreTests/testRotationIsIdempotentForTheSameErasure()	0,0019s
+Passed	AthleteIdentityStoreTests/testRotationNeverReissuesTheErasedId()	0,0013s
+Passed	AthleteIdentityStoreTests/testTheFirstIdIsRandomBoundedAndDurable()	0,0012s
+Passed	DeviceActivitySinkProxyTests/testACallAfterTheLateBindReachesTheHost()	0,001s
+Passed	DeviceActivitySinkProxyTests/testAReentrantCallWhileACallIsPendingCompletes()	0,0012s
+Passed	DeviceActivitySinkProxyTests/testASecondBindIsRefused()	0,0009s
+Passed	DeviceActivitySinkProxyTests/testBoundForwardsExactlyOnceToTheHost()	0,0009s
+Passed	DeviceActivitySinkProxyTests/testConcurrentCallsAllReachTheHost()	0,00097s
+Passed	DeviceActivitySinkProxyTests/testTheHostIsHeldWeakly()	0,0015s
+Passed	DeviceActivitySinkProxyTests/testUnboundAnswersHostUnavailableAndNothingIsSent()	0,001s
+Passed	LaunchOpenerTests/testAnOpenThatFailedBeforeTheFirstUnlockIsTriedAgainOnTheUnlock()	0,014s
+Passed	LaunchOpenerTests/testAnUnlockDuringARunningAttemptTriesAgainAfterIt()	0,014s
+Passed	LaunchOpenerTests/testItKeepsWaitingUntilAnOpenSucceeds()	0,02s
+Passed	LaunchOpenerTests/testLaunchIsIdempotent()	0,014s
+Passed	LaunchOpenerTests/testRootFirstThenLaunchStillOpensOnce()	0,0073s
+Passed	LaunchOpenerTests/testScenarioArgumentSelectsTheFixtureCompositionInDebug()	0,00055s
+Passed	LaunchOpenerTests/testTheFixtureCompositionOpensNothing()	0,00095s
+Passed	LaunchOpenerTests/testTheRootReusesTheCompositionOpenedAtLaunch()	0,00094s
+Passed	LiveStoresTests/testAMissingOrUnsafeTokenGetsANewFolderNeverTheStandardPlaces()	0,0035s
+Passed	LiveStoresTests/testATokenIsOneFolderOfItsOwnInTheTemporaryDirectory()	0,00086s
+Passed	LiveStoresTests/testTheFirstLaunchOfATokenRemovesEarlierTokensAndARelaunchKeepsItsOwn()	0,0035s
+Passed	LiveStoresTests/testWithoutTheArgumentTheStandardPlaces()	0,00045s
+Passed	PendingErasureTests/testAFailedRemovalThroughCKeepsTheFlagAndBlocksTheOpen()	0,0089s
+Passed	PendingErasureTests/testAFailureAtAnyStepKeepsTheFlagAndTheNextOpenFinishesIt()	0,0038s
+Passed	PendingErasureTests/testAFileWithoutTheFlagStillReads()	0,00075s
+Passed	PendingErasureTests/testARotationLeavesTheErasurePendingUntilItIsDone()	0,0019s
+Passed	PendingErasureTests/testCompleteErasesTheOldAccountsRecordingsThroughCThenClearsTheFlag()	0,0039s
+Passed	PendingErasureTests/testCompleteLeavesTheCurrentAccountsRecordingsAlone()	0,003s
+Passed	PendingErasureTests/testLaunchFailureCodes()	0,00041s
+Passed	PendingErasureTests/testOnlyADamagedIdentityIsShownWithoutRetry()	0,00056s
+Passed	PendingErasureTests/testTheSimulatedDamagedIdentityIsDamagedAndNeverTheRealFolder()	0,00094s
+Passed	SingleOpenTests/testAFailedOpenIsRetried()	0,0012s
+Passed	SingleOpenTests/testConcurrentCallersShareOneOpen()	0,056s
