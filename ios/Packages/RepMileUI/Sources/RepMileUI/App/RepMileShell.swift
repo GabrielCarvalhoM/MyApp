@@ -209,7 +209,7 @@ struct AppTabs: View {
     #if DEBUG
     /// Opens what `-route` names exactly as a tap would: the tab and stacks, then a start through `start(_:)` (the host's gate) or a sheet.
     private func apply(_ route: DebugRoute) {
-        guard runLaunch == nil, sheet == nil else { return }   // a resumed recording comes first
+        guard runLaunch == nil, sheet == nil, DebugRoute.claim() else { return }   // a resumed recording comes first; once per process
         let landing = route.landing(current: model.plan?.week?.sessions ?? [], weeks: model.weeks)
         planSegment = landing.planSegment; todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
         switch route {
@@ -218,10 +218,14 @@ struct AppTabs: View {
             let content = TodayContent.build(plan: plan, logged: model.logged, presentation: model.presentation, weekPlan: model.weekPlan,
                                              paused: [.outsideV1Scope, .clinicalHumanRequired].contains(model.globalGate), startability: model.startability(of:))
             if let next = content.next { start(next.session) }
-        case .sheet(.add): sheet = .add
-        case .sheet(.changes): sheet = .changes
-        case .sheet(.notFeeling): sheet = .notFeeling
-        case .sheet(.readiness): sheet = .readiness
+        case .sheet(let s):
+            guard DebugRoute.opens(s, planBlocked: model.plan?.state == .blocked) else { return }
+            switch s {
+            case .add: sheet = .add
+            case .changes: sheet = .changes
+            case .notFeeling: sheet = .notFeeling
+            case .readiness: sheet = .readiness
+            }
         default: break
         }
     }

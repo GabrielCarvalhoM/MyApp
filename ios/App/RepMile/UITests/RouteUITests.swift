@@ -135,6 +135,18 @@ final class RouteUITests: XCTestCase {
         XCTAssertFalse(element(app, "screen-run").exists)
     }
 
+    /// QRE P2-2: a valid plan with a next session, but the host's clock gate (`.clockUntrusted`): `run` reaches `start(_:)` and `canStart`
+    /// refuses it.
+    @MainActor
+    func testRunUnderTheClockGateStartsNothing() {
+        let app = launch("run", scenario: "clock")
+        XCTAssertTrue(element(app, "screen-today").waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["today-start"].exists, "a next session is offered")
+        XCTAssertFalse(app.buttons["today-start"].isEnabled, "and disabled by the host gate")
+        XCTAssertFalse(element(app, "run-timer").waitForExistence(timeout: 3))
+        XCTAssertFalse(element(app, "screen-run").exists)
+    }
+
     @MainActor
     func testAddSheet() {
         let app = launch("add")
@@ -147,16 +159,41 @@ final class RouteUITests: XCTestCase {
         XCTAssertTrue(element(app, "sheet-changes").waitForExistence(timeout: 10))
     }
 
+    /// Opens on its first question, nothing answered (QRE P3): no condition chosen, nothing to send yet.
     @MainActor
     func testNotFeeling100Flow() {
         let app = launch("not-feeling")
         XCTAssertTrue(element(app, "flow-not-feeling-100").waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["condition-MILD_ILLNESS"].exists, "the condition question, unanswered")
+        XCTAssertFalse(app.buttons["nf-send"].exists, "nothing to send before an answer")
     }
 
+    /// Opens with nothing answered (QRE P3): send off, no "sim"/"não" selected.
     @MainActor
     func testReadinessFlow() {
         let app = launch("readiness", scenario: "blocked")
         XCTAssertTrue(element(app, "flow-readiness").waitForExistence(timeout: 10))
+        let send = app.buttons["readiness-send"]
+        XCTAssertTrue(send.waitForExistence(timeout: 5))
+        XCTAssertFalse(send.isEnabled)
+        for id in ["readiness-recovered-yes", "readiness-recovered-no", "eligibility-pain-yes", "eligibility-pain-no"] where app.buttons[id].exists {
+            XCTAssertFalse(app.buttons[id].isSelected, id)
+        }
         attach(app, "-route readiness (blocked)")
+    }
+
+    /// QRE P2-1: refused as a tap would be. Under a block the changes sheet offers no "Não estou 100%"; outside one, no readiness.
+    @MainActor
+    func testNotFeeling100UnderABlockOpensNothing() {
+        let app = launch("not-feeling", scenario: "blocked")
+        XCTAssertTrue(element(app, "screen-today").waitForExistence(timeout: 10))
+        XCTAssertFalse(element(app, "flow-not-feeling-100").waitForExistence(timeout: 3))
+    }
+
+    @MainActor
+    func testReadinessOutsideABlockOpensNothing() {
+        let app = launch("readiness")
+        XCTAssertTrue(element(app, "screen-today").waitForExistence(timeout: 10))
+        XCTAssertFalse(element(app, "flow-readiness").waitForExistence(timeout: 3))
     }
 }

@@ -50,6 +50,25 @@ enum DebugRoute: Equatable {
     /// This process's destination (read once).
     static let launch: DebugRoute? = parse(ProcessInfo.processInfo.arguments)
 
+    /// Applied at most once per process (QRE P3): the tabs can be rebuilt (a reload, a root route change) and must not open it again.
+    @MainActor private static var applied = false
+    @MainActor static func claim() -> Bool {
+        guard !applied else { return false }
+        applied = true
+        return true
+    }
+
+    /// Whether a sheet route opens, under the same condition a tap has (QRE P2-1): "Algo mudou na sua semana?" (`ChangesSheet`) offers
+    /// "Não estou 100%" only when the plan is not blocked and the readiness declaration only when it is; "+" and the changes sheet are
+    /// always there. A refused route stays inert (Hoje, nothing opened).
+    static func opens(_ sheet: Sheet, planBlocked: Bool) -> Bool {
+        switch sheet {
+        case .add, .changes: true
+        case .notFeeling: !planBlocked
+        case .readiness: planBlocked
+        }
+    }
+
     /// Where the tabs land: the tab, the navigation stacks and the plan segment. Pure: what to push is read from the loaded plan and weeks
     /// only (a session id the fixture does not hold pushes nothing). Starting and sheets are not here: `AppTabs` does them through its own
     /// gated paths.

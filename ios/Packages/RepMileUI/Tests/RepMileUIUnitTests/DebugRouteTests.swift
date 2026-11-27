@@ -28,6 +28,27 @@ final class DebugRouteTests: XCTestCase {
         }
     }
 
+    /// QRE P2-1: a sheet route opens only where a tap could open it (`ChangesSheet`): "Não estou 100%" outside a block, the readiness
+    /// declaration under one; "+" and the changes sheet always.
+    func testSheetRoutesFollowTheTapConditions() {
+        for blocked in [false, true] {
+            XCTAssertTrue(DebugRoute.opens(.add, planBlocked: blocked))
+            XCTAssertTrue(DebugRoute.opens(.changes, planBlocked: blocked))
+        }
+        XCTAssertTrue(DebugRoute.opens(.notFeeling, planBlocked: false))
+        XCTAssertFalse(DebugRoute.opens(.notFeeling, planBlocked: true))
+        XCTAssertTrue(DebugRoute.opens(.readiness, planBlocked: true))
+        XCTAssertFalse(DebugRoute.opens(.readiness, planBlocked: false))
+    }
+
+    /// QRE P3: the route is applied at most once per process (the tabs may be rebuilt by a reload).
+    @MainActor
+    func testTheRouteIsClaimedOnce() {
+        XCTAssertTrue(DebugRoute.claim())
+        XCTAssertFalse(DebugRoute.claim())
+        XCTAssertFalse(DebugRoute.claim())
+    }
+
     /// The tab, stacks and plan segment each destination lands on. Starting and sheets land on Hoje: `AppTabs` opens them by its own paths.
     func testLandings() throws {
         let plan = try Repo.store.decode(PlanView.self, "13-plan-w1", at: "view")
