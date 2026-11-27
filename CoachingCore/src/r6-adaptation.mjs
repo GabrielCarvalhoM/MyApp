@@ -551,30 +551,41 @@ export function evaluateProgram(program,input,options={}){
  if(week&&asOfLocal&&(asOfLocal<week.startDate||asOfLocal>onDate(week.startDate,6)))errors.push('weekIndex/asOf chronology');
  if(errors.length)return finish('HOLD','HOLD','Review contract or chronology failed validation',{errors});
  const el=review.eligibility&&typeof review.eligibility==='object'?review.eligibility:null;
+ // CCP-79 (#79 items 1, 2 and 5; Founder decision on #79, 2026-11-27): the warning signs and exercise-response items this review answers yes are read
+ // before the eligibility screen. A sign answered yes takes its clinical route (signRoute: the higher guidance level of the items answered yes) when
+ // the screen is missing, out of date or not after race day, instead of the ASK for the screen (item 1), and when the screen states a clinical flag,
+ // instead of the flag's default professional assessment (item 2). Either clinical route records the session reports this review carries, as a
+ // standing hold does (CF-OBS-1, recordedFacts): a safety alert never discards the facts of a session (item 5). Without a sign answered yes, every
+ // answer below is the frozen one.
+ const signsYes=[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))],signed=signsYes.length?signRoute(signsYes):null;
+ // V1CIB CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q3: facts are still recorded): on a clinical route, the session reports this review carries are recorded as on
+ // any review (normalized and bound), with the break it declares; nothing is planned. A malformed report keeps the record unchanged (null).
+ const recordedFacts=()=>{
+  if(!(Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))))return null;
+  try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
+   const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
+   return [...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{return null;}
+ };
+ const clinicalGate=reason=>{const recorded=recordedFacts(),extra=signed?{guidance:signed.guidance,warningSigns:signed.warningSigns}:{};
+  return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED',signed?signed.reason:reason,recorded?{...extra,actualLedger:recorded}:keep(extra));};
  // A clinical flag that means yes in any form routes to a human; any other non-boolean flag is asked below (SSCTR R6).
- if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED','A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe',keep({}));
+ if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return clinicalGate('A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe');
  // An assessment date that is not a date is no assessment at all (QRE-R6-05).
  const assessedDay=dayOf(el?.assessedAt);
  if(!el||el.status!=='NONCLINICAL_CONFIRMED'||!assessedDay||dayGap(assessedDay,asOfLocal)<0||dayGap(assessedDay,asOfLocal)>14||CLINICAL_KEYS.some(k=>typeof el[k]!=='boolean'))missing.push('eligibility.currentAssessment');
- if(missing.length)return finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',keep({missingInputs:missing}));
+ if(missing.length)return signed?clinicalGate(null):finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',keep({missingInputs:missing}));
  // After the race, redevelopment needs an eligibility and function check dated on or after race day (SSCTR D04).
  const ph=program.phases,raceDate=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null;
- if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
+ if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return signed?clinicalGate(null):finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
  // V1CIB CF-OBS-1: the reference state's own clinical continuation, else the hold the record holds (the source of truth).
  const guard=previousValidity(program,review,{readiness:readinessOk})??recordHoldGuard(program,review,{readiness:readinessOk});
  // An integrity refusal reads nothing of the review; a standing clinical route or a question still keeps the break it declares.
  // V1CP Fix-Forward cycle (SEC-FFR-02; D5, SSCTR-FF-Q9): while a clinical dependency stands, the items this review answers yes still set the guidance
  // level and the wording (a chest pain reported during a hold advises urgent care), as they do outside a hold.
  if(guard){const yes=guard.status==='CLINICAL_HUMAN_REQUIRED'?[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))]:[],sign=yes.length?signRoute(yes):null;
-  // V1CIB CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q3: facts are still recorded): while a clinical dependency stands, the session reports this review carries are
-  // recorded as on any review (normalized and bound), with the break it declares; nothing is planned. A malformed report keeps the record unchanged.
-  let recorded=null;
-  if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
-   try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
-    const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
-    const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
-    recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
-  }
+  // V1CIB CF-OBS-1: while a clinical dependency stands, the session reports this review carries are recorded (recordedFacts, above); nothing is planned.
+  const recorded=guard.status==='CLINICAL_HUMAN_REQUIRED'?recordedFacts():null;
   return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:recorded?x=>({...x,actualLedger:recorded}):keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});

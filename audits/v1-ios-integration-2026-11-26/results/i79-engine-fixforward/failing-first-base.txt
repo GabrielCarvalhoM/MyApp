@@ -1,0 +1,127 @@
+# CCP-79 failing-first: test/v1ccp79-safety-routes.test.mjs run on the frozen base 6bc43620 (REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 runtime), node v24.19.0.
+# The only edit for the base: screenStatesFlag (new in CCP-79) is read from the module namespace, defaulting to ()=>false, so the file loads.
+✖ CCP-79 item 1: a warning sign answered yes without a current screen takes its clinical route at the level of the signs, never the ASK for the screen (544.462834ms)
+✖ CCP-79 item 1 during a hold: an urgent sign without a screen, in a report of how the athlete feels or a readiness declaration, raises the hold to urgent care (1360.558333ms)
+✖ CCP-79 item 2: an urgent sign with any screen flag answered yes keeps URGENT_CARE_ADVISED; a flag alone keeps the professional assessment (1270.929ms)
+✖ CCP-79 item 3: a later decision never lowers a standing hold's guidance level; a readiness declaration that releases the hold ends it (968.11125ms)
+✖ CCP-79 item 4: past the correction limit a screen flag answered yes is a safety signal, admitted at most safetyExcess beyond the limit and routed (8309.007542ms)
+✖ CCP-79 item 4: statesSafetySignal reads the request's screen exactly as the engine's gate reads a clinical flag (0.19675ms)
+✖ CCP-79 item 5: a clinical route keeps the facts of the session reports sent with it (run, strength, a correction, a sign without a screen) (729.041958ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 0
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13470.718459
+
+✖ failing tests:
+
+test at test/zz-ccp79-failing-first.test.mjs:31:1
+✖ CCP-79 item 1: a warning sign answered yes without a current screen takes its clinical route at the level of the signs, never the ASK for the screen (544.462834ms)
+  AssertionError [ERR_ASSERTION]: chestPainPressureOrTightness
+  + actual - expected
+  
+  + 'ASK'
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'ASK',
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:40:1
+✖ CCP-79 item 1 during a hold: an urgent sign without a screen, in a report of how the athlete feels or a readiness declaration, raises the hold to urgent care (1360.558333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PROFESSIONAL_ASSESSMENT'
+  - 'URGENT_CARE_ADVISED'
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PROFESSIONAL_ASSESSMENT',
+    expected: 'URGENT_CARE_ADVISED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:44:1
+✖ CCP-79 item 2: an urgent sign with any screen flag answered yes keeps URGENT_CARE_ADVISED; a flag alone keeps the professional assessment (1270.929ms)
+  AssertionError [ERR_ASSERTION]: pain
+  + actual - expected
+  
+  + 'PROFESSIONAL_ASSESSMENT'
+  - 'URGENT_CARE_ADVISED'
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROFESSIONAL_ASSESSMENT',
+    expected: 'URGENT_CARE_ADVISED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:51:1
+✖ CCP-79 item 3: a later decision never lowers a standing hold's guidance level; a readiness declaration that releases the hold ends it (968.11125ms)
+  AssertionError [ERR_ASSERTION]: a non-urgent sign answered later
+  + actual - expected
+  
+  + 'PROFESSIONAL_ASSESSMENT'
+  - 'URGENT_CARE_ADVISED'
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROFESSIONAL_ASSESSMENT',
+    expected: 'URGENT_CARE_ADVISED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:59:1
+✖ CCP-79 item 4: past the correction limit a screen flag answered yes is a safety signal, admitted at most safetyExcess beyond the limit and routed (8309.007542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'CLINICAL_HUMAN_REQUIRED'
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'CLINICAL_HUMAN_REQUIRED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:67:1
+✖ CCP-79 item 4: statesSafetySignal reads the request's screen exactly as the engine's gate reads a clinical flag (0.19675ms)
+  AssertionError [ERR_ASSERTION]: pain true
+  
+  false !== true
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/zz-ccp79-failing-first.test.mjs:73:1
+✖ CCP-79 item 5: a clinical route keeps the facts of the session reports sent with it (run, strength, a correction, a sign without a screen) (729.041958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

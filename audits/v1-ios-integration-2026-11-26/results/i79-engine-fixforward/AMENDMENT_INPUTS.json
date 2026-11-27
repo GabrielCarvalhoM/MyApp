@@ -1,0 +1,29 @@
+{
+ "mission": "REPMILE #79 (P0) controlled fix-forward of CoachingCore, CCP-79: Founder decision APROVADO - Opcao A on issue #79 (comment 7227351995, 2026-11-27), item 5 added from #74 (comment 7227437457, recorded on #79 as comment 7227493672)",
+ "ccp": "audits/v1-ios-integration-2026-11-26/results/i79-engine-fixforward/CCP-79.md",
+ "reason": "Five safety answers of the frozen engine were wrong for real athletes (found by the replays of #72, #73 and #96): (1) a warning sign answered yes got ASK when the eligibility screen was missing; (2) an urgent sign with any screen flag yes fell from URGENT_CARE_ADVISED to PROFESSIONAL_ASSESSMENT; (3) a later decision lowered a standing hold's guidance level (views.mjs, the latest decision's level); (4) past correctionsPerReport a screen flag yes was refused LIMIT_EXCEEDED before the screen was read (statesSafetySignal ignored the screen); (5) a screen flag yes discarded the facts of the session reports sent with it. The app cannot compensate: the engine is the single source of the clinical route and its level (SSCTR C6).",
+ "scope": "exclusively the five items; nothing else in the engine changes (the regression suite and the replays show every other answer unchanged)",
+ "rules": {
+  "item1": "a sign answered yes (warning signs and exercise-response items of the wellbeing, check or readiness payload) takes signRoute when the screen is missing, out of date or not on or after race day, instead of ASK; without a sign answered yes the ASK is unchanged",
+  "item2": "with a screen flag yes and a sign answered yes, the route carries the sign route's guidance (the higher level of the items answered yes) and warning signs; a flag alone keeps PROFESSIONAL_ASSESSMENT",
+  "item3": "SSCTR interim rule (pending the human clinical decision on persistence or decay, CLINICAL_HUMAN_REQUIRED): a standing hold's level is the highest level of the decisions since hold.since, never lower than the latest decision's level; a readiness declaration that releases the hold ends it; each decision keeps its own level",
+  "item4": "a clinical flag yes in the request's own eligibility screen is a safety signal for correctionsPerReport and reportsPerDayPerChannel: admitted at most safetyExcess (3) beyond the limit, then refused (the record stays bounded); the device channel is unchanged",
+  "item5": "on the eligibility-flag route and on the new sign route of item 1 the session reports the review carries are recorded (normalized and bound) as a standing hold already records them (CF-OBS-1, PCG-V1CPFF-CFOBS1-r1 Q3); nothing is planned; a review with no screen and no sign answered yes is still asked and records nothing"
+ },
+ "tests": {
+  "suite": "npm test (scripts/suite-active.mjs): see audits/v1-ios-integration-2026-11-26/results/i79-engine-fixforward/ for the run on the final tree",
+  "new": "CoachingCore/test/v1ccp79-safety-routes.test.mjs: 7 tests, each failing first on the frozen runtime (failing-first-base.txt: 0 pass, 7 fail at the defect assertions)",
+  "replay": "replay/ccp79-replay.mjs through the real integration boundary: on the frozen base 7 pass, 26 fail (the defects); on the amended runtime 33 pass, 0 fail",
+  "historical": "no earlier behaviour test fails on this amendment: only the runtime-integrity gate (v1san-runtime-integrity.test.mjs), repointed to this record as HISTORICAL_TEST_POLICY section 4 rule 1 requires; HISTORICAL_TESTS.json keeps its 53 entries"
+ },
+ "reviews": "PENDING at the time of this record: independent SSCTR and QRE reviews are routed by the orchestrator on the pull request; their dispositions are recorded in CCP-79 and the pull request, never in this record. A runtime change asked by a review is a new versioned record, never an edit of this one.",
+ "clinical": "CLINICAL_HUMAN_REQUIRED, not decided here: whether an urgent level persists or decays during a hold (issue #87), the wording of the guidance (INTERIM_PENDING_G04), the definition of normal post-exercise soreness versus clinical pain (#87), and every clinical clearance. The engine never clears a hold except through the athlete's readiness declaration.",
+ "open": [
+  "Independent SSCTR and QRE reviews (orchestrator); governance:approved is applied by the Founder only, after the reviews and the last commit",
+  "Human clinical review #87: persistence or decay of the urgent level; guidance wording (G04)",
+  "Front C follow-ups once merged: the app's interim 'level only rises' display (SSCTR C4.3, #73) is aligned with or removed for this engine rule; the compensations of #72 (screen asked right after the signs) and #96 (clinical route on LIMIT_EXCEEDED) can be revisited",
+  "Device channel: a stored screen flag does not lift the device limits (unchanged; outside the Founder's scope)",
+  "REAL_ATHLETE_READY = NO"
+ ],
+ "validates": "For synthetic athletes only: the five corrected answers of CoachingCore at the bound bytes, the unchanged answer of every other test of the active suite, and the CoachingHost production bundle linked from those bytes. It is not clinical validation, not human or empirical validation, and does not release REAL_ATHLETE_READY."
+}
