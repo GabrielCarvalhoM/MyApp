@@ -1,0 +1,58 @@
+#49 — CoachingHost integration conditions (front A package; integration-owned branch)
+
+Branch claude/v1-ios-integration-i49-coachinghost from claude/v1-ios-integration @ e593496. Only ios/Packages/CoachingHost changed
+(plus this folder). No frozen path touched: CoachingCore, the bundled engine Resources/coachinghost.js, IntegrationContracts,
+CoachingPresentation, tools/device-lock. Out of scope: CCP-A-05 / account layer (#28); CoachingPresentation/.../Intake.swift (frozen).
+
+ITEMS
+P2-1  DONE. SignalStore caches nothing across a write: update and flush run under the athlete's kernel lock, re-read the file, replay
+      the changes not yet on disk, then apply the new one. A pending change is replayed whole only over the file it was decided
+      against; over a file another writer changed, it can only tighten. restart, onboard, submit and eraseHealthFacts hold ONE athlete
+      lock across the signal's mark, the operation and its resolution (underAthleteLock). startability takes one signals snapshot under
+      the lock.
+      Tests: IntegrationConditionsTests.testTwoInstancesNeverEraseTheClinicalScope, testSignalsAndTheirOperationShareOneLockHold,
+      testAStalePendingReleaseNeverClearsANewerSignal.
+P2-2  DONE. PurgeIntent: one file per reason (purge-owed-<REASON>.json, a random token, no data). Fresh install: written before the
+      first-launch marker. Record loss: written before acknowledgeRecordLoss is sent (if it cannot be written, PERSISTENCE_FAILURE and
+      nothing is sent); withdrawn by token, and only for refusals that commit nothing. Sent at every start, before an enrolment's
+      check, after every write and (in a Task) after a delivery; removed only after purge returned, with its token unchanged. An owed
+      intent blocks a new enrolment. No try? purge remains.
+      Tests: testFreshInstallPurgeFailsThenIsRetriedByTheNextWrite, testRecordLossPurgeFailsThenIsRetriedAtTheNextStart.
+P3-4  DONE. deliver sends deliveryConditionsChanged() from a Task (CCP-B-04 rule 1).
+      Test: testDeliverNeverAwaitsBsSignalInsideBsCall (deliver returns while B's signal is held at a gate).
+P3-1  DONE. The account erasure removes AtomicFile temporaries of the athlete's signals and clock files, and tombstone-*.json.tmp.
+      Test: IntegrationFollowUpTests.testErasureRemovesOrphanTemporaries.
+P3-2  DONE. FirstLaunch.reconcile throws FirstLaunch.Incomplete (storeUnlistable, keychainUnavailable, purgeIntentNotDurable) instead
+      of guessing. No marker is written, CoachingHost.open throws (the app's launch screen offers "try again"), and the next open
+      retries. KeychainItems.listAccounts / deleteAllChecked tell "none" apart from "cannot list or delete".
+      Test: testFirstLaunchReconciliationFailsClosed (three causes). purgeIntentNotDurable has no dedicated test.
+P3-5  DONE. ReviewFixTests (formerly line 59, "a || b"): asserts the exact order (signal written, then erasure sent) and each signal.
+      ErasureTests T9 (formerly line 373): no BUSY; the pending answer is HOST_UNAVAILABLE.
+      New tests: testAFolderThatCannotBeListed (listing failure); testPurgeOwedByADeliveryIsSentOutsideBsCall (purge after a
+      delivery); testEraseAccountRetriesTheLock (lock retries); the P3-4 and P2-2 tests (CCP-B-04 rules 1 and 2);
+      testLogSweepCarriesNoPayload (log sweep).
+P3-6  VERIFIED, report only. See p3-6-release-configuration.txt. COACHINGHOST_TESTING is defined only by the package manifest,
+      .when(configuration: .debug). The app project defines no compilation condition and the archive uses Release. A release build
+      of CoachingHost has no openForTesting, TestKeychainFile or test SPI symbol. Note: a Debug app build (Run/Test) does compile
+      them in; they cannot be reached without @_spi.
+
+SIZE
+Ports.swift: 425 -> 345. CoachingHost.swift: 354 -> 294. Startability, the device sink and the erasure section moved to their own
+files. Both are now <= 350, so their entries in tools/orchestration/swift-size-baseline.json (orchestration-owned) can be removed.
+ErasureTests.swift: 401 -> 398.
+
+TESTS (macOS swift test, package): 69 tests, 1 skipped, 0 failures (coachinghost-swift-test.txt). Before: 57 / 1 skipped / 0.
+The skip is the opt-in real-Keychain test (CH_REAL_KEYCHAIN=1). No test reached the login keychain. Everything goes through TestEnv
+and the file storage; the P3-2 test uses its own service in the same file storage. The package has no iOS-simulator test target; its
+iPhone suites (CoachingHostLab) run on a device and were not run.
+
+INDEPENDENT REVIEW (QRE-style, subagent, given the diff of 114d8ea): READY_WITH_CONDITIONS, no P0.
+  P1-1 (separate lock holds; stale replay)            FIXED in f912e5d (single hold + tightening replay; 2 tests)
+  P2-1 (withdraw without token / on any failure)      FIXED (token-checked, only NOT_LOST/GONE/BUSY/HOST_UNAVAILABLE; an owed intent is kept)
+  P2-2 (owed purge blocks enrolment; first refused)   FIXED (settle before the check; distinct message and log line)
+  P3-1 (test called update off the queue)             FIXED
+  P3-2 (nil token settles blindly)                    FIXED (nil never settles)
+  P3-3 (longer queue stalls)                          REDUCED by the single hold; bounded by lockWait. Accepted.
+  P3-4 (temporaries of data-free files)               ACCEPTED (purge-owed, marker, fence hold no data)
+  P3-5 (timing windows, chmod tests under root)       ACCEPTED (5 s windows, generous margins; front tests run on the native gate, not as root)
+  Pre-existing install->athlete lock order in onboard ACCEPTED, noted (bounded by the flock wait; needs two athletes on one install)
