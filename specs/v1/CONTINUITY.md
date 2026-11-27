@@ -10,6 +10,20 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (checkpoint `76e14ce`). Na retomada: PR #67 com CI 4/4 → merge
 `e593496`, viewer atualizado; #59 retomado do WIP `289811a`; #68 iniciado; worktrees temporárias removidas.
 
+## Pendências exatas para a próxima sessão (limite de uso atingido em 27/11, ~20:40 UTC)
+
+1. **Quadro (API do GitHub voltou):** mover #110→Ready, #111→In Review, #21→Ready, #29→Ready, #55→Ready (tirar `needs:founder-approval` antes; as decisões já estão registradas nas issues). Registrar com `decisions.mjs record` as respostas do fundador em #47 (7227432034, B como objetivo, A na alpha), #66 (7227422748, B: aberta até o #101 validado), #74 (7227437457, A). Depois, `decisions.mjs check`.
+2. **PRs #100 (#98) e #115 (#99):** o QRE deu READY_WITH_CONDITIONS nos dois.
+   - **#100:** P2-1 (as rotas de folha precisam das mesmas condições do toque) e P2-2 (teste do `run` com `-scenario clock`).
+   - **#115:** P1-1 (EN/ES inventados → PENDING_TRANSLATION, também nos 5 textos clínicos) e P2-1 (restyle do urgente fora do Hoje; precisa de visual + clínico).
+   - **Visual:** READY_WITH_CONDITIONS no Hoje e NOT_READY no Plano (Dynamic Type P1 → passar ao #102).
+   - **Founder Decision a abrir:** "Entendi" no Hoje, borda de rolagem da tab bar, frase do sinal removida (#87), rótulo "Pausado", relocação da arte de retenção.
+   - Mandar as correções ao agente do #98/#99 (worktree `myapp-v1-c-i99`).
+3. **Agentes que talvez ainda estejam rodando:** #101 onboarding (`myapp-v1-c-i101`), #102 Plano (`myapp-v1-c-i102`, C-3), #79 motor (`myapp-v1-int-i79`), #83 (PR #95, correções do QRE). Ver commits e PRs nas branches antes de relançar.
+4. **Aprovados, ainda sem começar:** #109 CCP-ONB-1, #21 branch padrão (verificar antes), #29 GitHub App (preparar e documentar), #55 RIR (conferir o Figma 41 primeiro), #47 exploração da opção B.
+5. **Governança:** PR #80 (o fundador confere e rotula; nenhum commit novo) e PR #116 (#112, empilhado sobre o #80).
+6. **Eficiência:** o `board.mjs set` relê o quadro inteiro a cada chamada e causou o limite secundário do GitHub; cachear.
+
 ## Agora
 
 | | |

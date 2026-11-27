@@ -24,7 +24,7 @@
 import { parseArgs } from 'node:util';
 import { readFileSync } from 'node:fs';
 import { run, repoRoot } from './lib/sh.mjs';
-import { FOUNDER_DECISION, loadConfig, findProject, listItems } from './lib/board.mjs';
+import { APPROVAL_LABEL, FOUNDER_DECISION, loadConfig, findProject, listItems } from './lib/board.mjs';
 
 export const FOUNDERS = ['GabrielCarvalhoM'];
 export const AGENT_MARKER = '<!-- repmile:agent -->';
@@ -137,8 +137,13 @@ function main() {
     if (!c || !isFounder(c)) throw new Error(`#${n}: o comentário ${id} não é do fundador (ou não existe); não é uma decisão`);
     const hint = classify(c.body);
     if (verdict === 'APPROVED' && hint !== 'APPROVED' && !(values.natural && values.note)) throw new Error(`#${n}: o comentário não começa com APROVADO (dica: ${hint}); use --natural com --note para uma aprovação em linguagem natural inequívoca`);
+    // The Founder's explicit APPROVED/REJECTED comment is the act the `needs:founder-approval` label waits for: clear it, then move the
+    // card, and only then post the record, so a failure never leaves a recorded decision with a stale status.
+    if (values.status && ['APPROVED', 'REJECTED'].includes(verdict)) {
+      run('gh', ['issue', 'edit', String(n), '-R', cfg.repo, '--remove-label', APPROVAL_LABEL], { cwd, allowFail: true });
+      setStatus(n, values.status);
+    }
     postComment(n, recordBody({ comment: id, verdict, option: values.option, note: values.note, author: c.user.login, createdAt: c.created_at }));
-    if (values.status && ['APPROVED', 'REJECTED'].includes(verdict)) setStatus(n, values.status);
     return console.log(`#${n}: comentário ${id} registrado como ${verdict}`);
   }
   if (cmd === 'comment') {
