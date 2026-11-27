@@ -1,0 +1,18 @@
+== git diff --stat 6bc43620..HEAD -- CoachingCore (must be empty)
+== build.sh --twice
+{"sharedFixtures":109,"compared":108,"equal":108,"unequal":[],"notReproduced":["hr5r-carried.json"],"missing":[],"calls":247}
+build.sh: bundle 29c7d9ad4d76a77a47652daae0138d95895497243fddaab769cf6a2e0188581d; manifest checked; fixtures reproduced
+== swift-size
+swift-size: 211 arquivos Swift em HEAD · limite 350 · 0 acima do limite fora do baseline
+== guard (exit 1 without the label: 33 SHARED paths need governance:approved, 0 forbidden; with --approved: exit 0)
+guard: branch=claude/v1-ios-integration-i109-ccp-onb papel=Integração base=v1-abc-ready-2026-11-26 head=HEAD
+guard: 708 caminhos alterados · 675 OK · 33 exigem aprovação · 0 proibidos
+guard: só entra com a decisão registrada (contrato §11 / emenda) e o rótulo `governance:approved` aplicado depois do último commit do PR.
+== swift-packages.sh --fronts=build (exit 0)
+Swift package gate (fronts=build), Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+  BUILD_OK       CoachingHost (tests compiled, run on the native gate)
+  PASS           CoachingPresentation · Executed 38 tests, with 0 failures (0 unexpected) in 10.525 (10.530) seconds
+  BUILD_OK       HealthKitIngest (tests compiled, run on the native gate)
+  PASS           IntegrationContracts · Executed 10 tests, with 0 failures (0 unexpected) in 0.292 (0.295) seconds
+  IOS_BUILD_OK   RepMileUI (iOS-only, tests compiled; tests run in sim.sh test)
+  BUILD_OK       RunRecorder (tests compiled, run on the native gate)
