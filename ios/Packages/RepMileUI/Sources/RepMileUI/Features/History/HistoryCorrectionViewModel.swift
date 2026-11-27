@@ -14,6 +14,10 @@ import Observation
 /// sheet says so (replay `audits/v1-ios-swiftui-2026-11-26/results/i70-correction-followups/`). The screen is dated the plan's day read
 /// again at send time (a sheet left open past the plan's midnight would date it the day before); no day read, nothing sent.
 ///
+/// QRE #96 P1: past the limit the engine refuses the request before it reads the screen (`integration.mjs` admit; its safety exception reads
+/// the observation only), so a "sim" sent with that correction would get no route. The screen alone is then sent (`observations: []`), which
+/// the engine admits and routes to a human (replay §1); if that answer does not route, the sheet shows the clinical copy and "Não estou 100%".
+///
 /// Never offered (#59, fail closed): a row with no ATHLETE voice (its numbers are the device's), with several (which one is the athlete's is
 /// not ours to pick), with a statement of the athlete that cannot be re-sent as stated (a stop or a response outside the shared enumerations:
 /// a correction replaces the report, so dropping it would erase a safety signal), or whose day is not the day the plan in force holds for
@@ -46,6 +50,9 @@ final class HistoryCorrectionViewModel {
     private(set) var limitReached = false
     /// The plan's day could not be read at send time: nothing was sent, the draft is on screen.
     private(set) var dayUnavailable = false
+    /// Past the limit, the screen states a "sim" and sending it alone did not come back routed to a human: the sheet shows the clinical
+    /// copy and "Não estou 100%" (never "nothing changed").
+    private(set) var signUndelivered = false
     /// The answer routes to a qualified human (a flag answered yes here, or a clinical dependency on record), with the engine's guidance
     /// level (#73).
     private(set) var clinicalGuidance: ClinicalGuidance?
@@ -90,23 +97,35 @@ final class HistoryCorrectionViewModel {
 
     /// Sends the correction once: the plan's day is read first (the phase is already `submitting`, so a second tap does nothing), then the
     /// request dated with it. `apply` wraps the change to the result (the view's animation; plain in tests).
+    /// What the athlete stated is taken when they tap (QRE #96 P2): only the date is added after the read, so nothing typed meanwhile is sent.
     func send(applying apply: (_ change: () -> Void) -> Void = { $0() }) async {
-        guard canSend, canContest else { return }
+        guard canSend, canContest, let d = Self.distance(km), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return }
+        let screen = eligibility
         phase = .submitting
         dayUnavailable = false
-        guard let today = await planToday(), let request = request(today: today) else {
+        guard let today = await planToday(), let request = Self.request(obs, eligibility: screen, today: today) else {
             phase = .editing; dayUnavailable = true
             return
         }
-        let out = await writer.submit(request)
+        var out = await writer.submit(request)
+        let limit = Self.correctionLimit(out.answer)
+        if limit, screen.statesAClinicalFlag, let alone = screen.dated(today) {
+            out = await writer.submit(ReviewRequest(.sessionReports([]), eligibility: alone))
+        }
         apply {
             phase = Self.saved(out) ? .saved : .notKept
             screenRequired = screenRequired || (out.answer.ok && out.answer.warningSignScreen?.status.raw == "REQUIRED")
             clinicalGuidance = out.answer.clinicalGuidance(floor: holdGuidance())
-            limitReached = !out.answer.ok && out.answer.error?.code.raw == "LIMIT_EXCEEDED"
+            limitReached = limit
+            signUndelivered = limit && screen.statesAClinicalFlag && clinicalGuidance == nil
         }
         if out.answer.ok { await reload() }
     }
+
+    /// The engine's correction limit for this one-correction request: LIMIT_EXCEEDED on its observation (index 0). The engine also names the
+    /// limit (`limit: correctionsPerReport`), which the shared `BoundaryError` does not decode (a CoachingPresentation change, CCP); the
+    /// other limits a single correction can meet carry no index (request size) or do not apply to a correction (per day, per device).
+    static func correctionLimit(_ a: BoundaryAnswer) -> Bool { !a.ok && a.error?.code.raw == "LIMIT_EXCEEDED" && a.error?.index == 0 }
 
     /// The request exactly as sent on `today` (the plan's day read at send time): the correction and the screen dated that day.
     func request(today: String) -> ReviewRequest? {

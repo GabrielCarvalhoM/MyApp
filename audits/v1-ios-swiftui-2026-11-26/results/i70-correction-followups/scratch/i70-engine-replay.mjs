@@ -2,6 +2,8 @@
 //  1 (minor a) a row already corrected: is a correction of the corrected report (`correctionOf` = the head ATHLETE voice) accepted?
 //  2 (SSCTR P2-4) the copy's claim: what distance does the engine read for a corrected run (the measured one, the athlete's, the smaller)?
 //  3 (minor b) a lone "sim" on the screen (five flags unanswered): does the engine route it as it routes "sim" + five "não", at every site?
+//    QRE #96 P1: past the limit the screen is read after the limit, so a "sim" sent with the correction gets LIMIT_EXCEEDED and no route;
+//    the screen alone (`observations: []`) is then what the app sends.
 //  4 (minor c) a sheet opened before midnight: the plan's day at send time, and what the engine does with a screen dated the day before.
 // Requests are shaped as the Swift view models encode them (HistoryCorrectionViewModel.observation/request, RunReportViewModel,
 // StrengthLogViewModel, NotFeeling100ViewModel, ReadinessViewModel, UnavailableDayViewModel), sent through the real integration boundary
@@ -12,6 +14,7 @@ const {athlete,ELIG}=await import(ROOT+'/CoachingCore/test/v1int-helpers.mjs');
 const {loggedEntries,keepsReport,warningSignSet}=await import(ROOT+'/ios/Packages/CoachingPresentation/Facade/app-projections.mjs');
 const {runHistory}=await import(ROOT+'/CoachingCore/src/v1-run-history.mjs');
 const {LIMITS}=await import(ROOT+'/CoachingCore/src/boundary/admission.mjs');
+const {admitted}=await import(ROOT+'/CoachingCore/src/v1-run-format-index.mjs');
 const V=JSON.parse(fs.readFileSync(ROOT+'/CoachingCore/v1/RUN_FORMATS_V1.json','utf8'));
 let seq=0;const newId=p=>`${p}_${String(++seq).padStart(6,'0')}`;
 const addDay=(d,n=1)=>new Date(Date.parse(d+'T12:00:00Z')+n*86400000).toISOString().slice(0,10);
@@ -82,14 +85,24 @@ console.log('=== 1 (a) a row already corrected is corrected again');
  while(depth<LIMITS.correctionsPerReport){const r=t.submit(request(observation(cur,5+depth/100,'SIGNAL_LOSS'),NONE(today)));if(!kept(t,r)){last=r;break;}depth++;cur=row();last=r;}
  check(`corrections 1..${LIMITS.correctionsPerReport} accepted (reached depth ${depth})`,depth===LIMITS.correctionsPerReport&&kept(t,last));
  const over=t.submit(request(observation(cur,4.9,'SIGNAL_LOSS'),NONE(today)));console.log(`  correction ${depth+1} (no safety signal) →`,ans(over));
- check('past the limit: refused LIMIT_EXCEEDED correctionsPerReport, nothing changed',!over.ok&&over.error?.code==='LIMIT_EXCEEDED'&&row().contested?.distanceKm===cur.contested?.distanceKm);
- console.log(`  LIMITS: correctionsPerReport=${LIMITS.correctionsPerReport} safetyExcess=${LIMITS.safetyExcess}`);}
+ check('past the limit: refused LIMIT_EXCEEDED correctionsPerReport, nothing changed',!over.ok&&over.error?.code==='LIMIT_EXCEEDED'&&over.error?.limit==='correctionsPerReport'&&over.error?.index===0&&row().contested?.distanceKm===cur.contested?.distanceKm);
+ console.log(`  refusal as the app decodes it: ${JSON.stringify(over.error)}`);
+ console.log(`  LIMITS: correctionsPerReport=${LIMITS.correctionsPerReport} safetyExcess=${LIMITS.safetyExcess}`);
+ // QRE #96 P1: a "sim" sent with a correction past the limit. The limit is read at admission, before the screen (integration.mjs admit), and
+ // its safety exception reads the observation only (admission.mjs statesSafetySignal): no clinical route.
+ const overSim=t.submit(request(observation(cur,4.8,'SIGNAL_LOSS'),LONE(today,'pain')));console.log('  past the limit, with a lone "sim" →',ans(overSim),'view',state(t));
+ check('QRE P1: past the limit a "sim" is refused LIMIT_EXCEEDED too, and nothing routes it (plan not BLOCKED)',!overSim.ok&&overSim.error?.code==='LIMIT_EXCEEDED'&&overSim.error?.limit==='correctionsPerReport'&&state(t)!=='BLOCKED');
+ // The screen alone, as the app then sends it (ReviewRequest(.sessionReports([]), eligibility:) encodes observations: []).
+ const screenOnly=t.submit({kind:'WEEKLY_REVIEW',observations:[],eligibility:LONE(today,'pain')});console.log('  then the screen alone (observations []) →',ans(screenOnly),'view',state(t));
+ check('the screen alone is admitted and routes to a human: CLINICAL_HUMAN_REQUIRED, PROFESSIONAL_ASSESSMENT, plan BLOCKED, nothing recorded',
+  screenOnly.ok&&screenOnly.status==='CLINICAL_HUMAN_REQUIRED'&&g(screenOnly)==='PROFESSIONAL_ASSESSMENT'&&state(t)==='BLOCKED'&&(screenOnly.recorded??[]).length===0);
+ check('the row is unchanged (the correction in force stays)',row().contested?.distanceKm===cur.contested?.distanceKm&&athleteVoice(row()).eventId===athleteVoice(cur).eventId);}
 
 console.log('=== 2 (P2-4) the distance the engine reads for a corrected run');
 const history=t=>runHistory({ledger:t.rows(),record:[],athleteId:t.id,tz:t.doc().program.timezoneOffsetMinutes??0},V).runs;
 for(const [label,delta] of [['larger than measured',+3],['smaller than measured',-2]]){
  const {t,s,row}=reported('copy'+delta);const today=addDay(s.date);t.set(today,'09:00');
- const r0=row(),m=r0.measuredKm,before=history(t).find(x=>x.sessionId===s.id);
+ const r0=row(),m=r0.measuredKm,before=history(t).find(x=>x.sessionId===s.id),admBefore=admitted(t.rows(),{athleteId:t.id},V);
  console.log(`  measured ${m} km; history before: referenceKm=${before?.referenceKm} measuredKm=${before?.measuredKm} paceWithheld=${before?.paceWithheld}`);
  const km=Math.round((m+delta)*100)/100;
  const r=t.submit(request(observation(r0,km,'SIGNAL_LOSS'),NONE(today)));
@@ -98,7 +111,11 @@ for(const [label,delta] of [['larger than measured',+3],['smaller than measured'
  check(`${label}: the measured value stays on record (history measuredKm and the DEVICE voice)`,after?.measuredKm===m&&dev(r1)?.measuredKm===m);
  check(`${label}: the history counts the smaller of the two (${Math.min(m,km)} km)`,after?.referenceKm===Math.min(m,km));
  check(`${label}: the correction never raises what the run counts for`,after.referenceKm<=before.referenceKm);
- check(`${label}: the run's pace is no longer a reference (CORRECTED_MEASUREMENT)`,after?.paceWithheld==='CORRECTED_MEASUREMENT');}
+ check(`${label}: the run's pace is no longer a reference (CORRECTED_MEASUREMENT)`,after?.paceWithheld==='CORRECTED_MEASUREMENT');
+ // SSCTR #96 C1: what the calibration of paces reads is the record as admitted (v1-run-format-index.mjs admitted): the corrected run is withheld.
+ const adm=admitted(t.rows(),{athleteId:t.id},V),w=adm.withheld.find(x=>x.sessionId===s.id);console.log(`  admitted().withheld: ${JSON.stringify(adm.withheld)}`);
+ check(`${label}: before the correction the run was not withheld`,!admBefore.withheld.some(x=>x.sessionId===s.id));
+ check(`${label}: the corrected run is withheld from the pace calibration (admitted().withheld, CORRECTED_MEASUREMENT)`,w?.reason==='CORRECTED_MEASUREMENT');}
 for(const reason of ['SIGNAL_LOSS','OBSTRUCTED_SKY','AUTO_PAUSE','DEVICE_RESTART']){const {t,s,row}=reported('reason-'+reason);t.set(addDay(s.date),'09:00');
  const r=t.submit(request(observation(row(),6.5,reason),NONE(addDay(s.date))));const after=history(t).find(x=>x.sessionId===s.id);
  check(`every reason the form offers (${reason}) withholds the pace and counts the smaller`,kept(t,r)&&after?.paceWithheld==='CORRECTED_MEASUREMENT'&&after?.referenceKm===Math.min(6.5,after.measuredKm));}
@@ -108,6 +125,12 @@ function fresh(name){const t=athlete({newId,id:'i70-'+name,weeks:12});const e=t.
  return {t,run:t.sessions(0).find(x=>x.sport==='RUN'),str:t.sessions(0).find(x=>x.sport==='STRENGTH')};}
 const endOf=t=>new Date(t.clock-15*60000).toISOString();
 const NO_SIGNS=c=>Object.fromEntries(warningSignSet(c).warningSigns.map(k=>[k,false]));
+const URGENT={notFeeling100:'chestPainPressureOrTightness',readiness:'breathlessAtRest'};
+const nfReq=(screen,day,urgent)=>({kind:'NOT_FEELING_100',wellbeing:{condition:'MILD_ILLNESS',warningSigns:{...NO_SIGNS('MILD_ILLNESS'),...(urgent?{[URGENT.notFeeling100]:true}:{})},intent:'REST'},eligibility:screen(day)});
+function heldAthlete(name){const {t,run}=fresh(name);t.set(run.date,'20:00');
+ const h=t.submit({kind:'WEEKLY_REVIEW',observations:[{sessionId:run.id,occurrenceDate:run.date,observedAt:endOf(t),actual:{completed:true,minutes:40,rpe:4},response:U}],eligibility:FLAG(run.date,'pain')});
+ if(h.status!=='CLINICAL_HUMAN_REQUIRED')throw new Error('hold '+ans(h));const day=addDay(run.date,3);t.set(day,'09:00');return {t,day};}
+const rdReq=(screen,day,urgent)=>({kind:'READINESS_DECLARATION',readiness:{declaredRecovered:true,warningSigns:{...NO_SIGNS('READINESS'),...(urgent?{[URGENT.readiness]:true}:{})},sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}},eligibility:screen(day)});
 const sites={
  correction:(name,screen)=>{const {t,s,row}=reported(name);const day=addDay(s.date);t.set(day,'09:00');const r0=row();const r=t.submit(request(observation(r0,6,'SIGNAL_LOSS'),screen(day)));
   return {t,r,extra:`contested=${JSON.stringify(row().contested)} headUnchanged=${athleteVoice(row()).eventId===athleteVoice(r0).eventId}`};},
@@ -116,17 +139,16 @@ const sites={
  strengthLog:(name,screen)=>{const {t,str}=fresh(name);t.set(str.date,'20:00');
   const obs={sessionId:str.id,occurrenceDate:str.date,observedAt:endOf(t),actual:{completed:true,minutes:45,exercises:str.prescription.exercises.map(e=>({id:e.id,sets:Array.from({length:e.sets},()=>({reps:e.reps??8}))}))},response:U};
   return {t,r:t.submit({kind:'WEEKLY_REVIEW',observations:[obs],eligibility:screen(str.date)})};},
- notFeeling100:(name,screen)=>{const {t,run}=fresh(name);t.set(run.date,'08:00');
-  return {t,r:t.submit({kind:'NOT_FEELING_100',wellbeing:{condition:'MILD_ILLNESS',warningSigns:NO_SIGNS('MILD_ILLNESS'),intent:'REST'},eligibility:screen(run.date)})};},
- readiness:(name,screen)=>{const {t,run}=fresh(name);t.set(run.date,'20:00');
-  const h=t.submit({kind:'WEEKLY_REVIEW',observations:[{sessionId:run.id,occurrenceDate:run.date,observedAt:endOf(t),actual:{completed:true,minutes:40,rpe:4},response:U}],eligibility:FLAG(run.date,'pain')});
-  if(h.status!=='CLINICAL_HUMAN_REQUIRED')throw new Error('hold '+ans(h));const day=addDay(run.date,3);t.set(day,'09:00');
-  return {t,r:t.submit({kind:'READINESS_DECLARATION',readiness:{declaredRecovered:true,warningSigns:NO_SIGNS('READINESS'),sports:{RUN:{ready:true},STRENGTH:{ready:true,restrictions:[]}}},eligibility:screen(day)})};},
+ notFeeling100:(name,screen)=>{const {t,run}=fresh(name);t.set(run.date,'08:00');return {t,r:t.submit(nfReq(screen,run.date,false))};},
+ 'notFeeling100+urgentSign':(name,screen)=>{const {t,run}=fresh(name);t.set(run.date,'08:00');return {t,r:t.submit(nfReq(screen,run.date,true))};},
+ readiness:(name,screen)=>{const {t,day}=heldAthlete(name);return {t,r:t.submit(rdReq(screen,day,false))};},
+ 'readiness+urgentSign':(name,screen)=>{const {t,day}=heldAthlete(name);return {t,r:t.submit(rdReq(screen,day,true))};},
  unavailableDay:(name,screen)=>{const {t}=fresh(name);const day=t.doc().program.weeks[0].startDate;t.set(day,'08:00');const target=t.sessions(0).find(x=>x.date>day);
   return {t,r:t.submit({kind:'UNAVAILABLE_DAY',changes:{unavailableDates:[target.date]},eligibility:screen(day)})};},
 };
 const shape=({t,r})=>({ok:r.ok,status:r.status,guidance:g(r),recorded:r.recorded?.length??0,state:state(t),pending:!!t.api.status({actor:t.actor}).pending?.decisionId});
-for(const [site,run] of Object.entries(sites))for(const flag of ['pain','illness','clinicalConcern']){
+const FLAGS=['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern'];
+for(const [site,run] of Object.entries(sites))for(const flag of FLAGS){
  const lone=run(`${site}-lone-${flag}`,d=>LONE(d,flag)),full=run(`${site}-full-${flag}`,d=>FLAG(d,flag));
  const a=shape(lone),b=shape(full);
  if(flag==='pain')console.log(`  ${site}: lone "${flag}" → ${ans(lone.r)} view=${a.state}${lone.extra?' '+lone.extra:''} | with five "não" → ${ans(full.r)} view=${b.state}`);

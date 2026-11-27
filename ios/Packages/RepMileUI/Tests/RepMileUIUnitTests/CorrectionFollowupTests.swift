@@ -44,7 +44,7 @@ final class CorrectionFollowupTests: XCTestCase {
     /// Replay 1: past `correctionsPerReport` the engine refuses LIMIT_EXCEEDED and changes nothing: the sheet says why, never "send again".
     func testTheEnginesCorrectionLimitIsShown() async throws {
         var reloads = 0
-        let limit = try Safety.answer(#"{"ok":false,"error":{"code":"LIMIT_EXCEEDED"}}"#)
+        let limit = try Safety.answer(#"{"ok":false,"error":{"code":"LIMIT_EXCEEDED","index":0,"limit":"correctionsPerReport"}}"#)
         let vm = HistoryCorrectionViewModel(testing: try entry("P-logged-unplanned"), writer: ScriptedSubmitWriter(limit), reload: { reloads += 1 })
         vm.startContesting(); vm.km = "6"; vm.answerNoneApplies()
         await vm.send()

@@ -111,7 +111,7 @@ final class HistoryProgressTests: XCTestCase {
         contest.tap()
         XCTAssertTrue(app.textFields["contest-km"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.textFields["contest-km"].value as? String, "Distância (km)", "nothing pre-filled from the earlier correction")
-        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'conta a menor das duas'")).firstMatch.exists)
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'conta pela menor das duas'")).firstMatch.exists)
         XCTAssertFalse(app.staticTexts.containing(NSPredicate(format: "label CONTAINS 'como sua'")).firstMatch.exists, "the old promise is gone")
         attach(app, "Histórico — correção de uma linha já corrigida")
     }
