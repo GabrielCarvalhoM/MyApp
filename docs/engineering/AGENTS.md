@@ -34,13 +34,15 @@ pelo orquestrador, não pelo revisor.
    **Um simulador por agente** (o orquestrador atribui; o `sim.sh` encerra os outros apps do simulador, inclusive o runner de outra
    suíte) e no máximo duas suítes de UI ao mesmo tempo no Mac (`pgrep -fl "xcodebuild.*test"` antes de começar).
    O simulador `RepMile-Fundador` é reservado ao fundador: nenhum agente o usa.
-6. **Segurança esportiva falha fechada:** nil ≠ false, nada pré-respondido, ASK quando falta dado. Nunca inventar métricas, limites ou
+6. **Figma é a especificação de UI/UX** (PRODUCT_SCOPE, "Três autoridades"): nenhuma tela, pergunta, fluxo ou texto fora do Figma
+   aprovado; toda mudança visual cita o nó; falta de campo no motor não autoriza redesenhar — pare e relate. Gate: QUALITY_GATES §2b.
+7. **Segurança esportiva falha fechada:** nil ≠ false, nada pré-respondido, ASK quando falta dado. Nunca inventar métricas, limites ou
    prescrições: elas vêm do motor ou de decisão registrada.
-7. **Privacidade:** [SECURITY_PRIVACY.md](../../specs/v1/quality/SECURITY_PRIVACY.md). Repositório público: nada de segredo nem de dado
+8. **Privacidade:** [SECURITY_PRIVACY.md](../../specs/v1/quality/SECURITY_PRIVACY.md). Repositório público: nada de segredo nem de dado
    real de saúde em código, fixture, log ou screenshot.
-8. **Pausa e retomada:** [WORKFLOW.md §7](WORKFLOW.md#7-pausa-segura-e-retomada). Ao ouvir "PAUSAR", parar num ponto seguro e fazer
+9. **Pausa e retomada:** [WORKFLOW.md §7](WORKFLOW.md#7-pausa-segura-e-retomada). Ao ouvir "PAUSAR", parar num ponto seguro e fazer
    commit de WIP publicado.
-9. **Independência ≠ aprovação humana:** os agentes usam a identidade GitHub do fundador (#29). A revisão de um agente é revisão de
+10. **Independência ≠ aprovação humana:** os agentes usam a identidade GitHub do fundador (#29). A revisão de um agente é revisão de
    contexto independente, nunca aprovação humana ou de code owner.
 
 ## Verificar que os agentes estão disponíveis

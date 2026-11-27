@@ -62,6 +62,7 @@ Mude estado **só** por `node tools/orchestration/board.mjs set <issue> --status
 Objetivo · frente responsável · contexto técnico · arquivos/módulos (na coluna da frente) · critérios de aceite verificáveis ·
 dependências · testes necessários · restrições de segurança quando houver. Os formulários de issue (`.github/ISSUE_TEMPLATE/`: Feature,
 Bug, Technical Debt, Integration Task) pedem exatamente isso. Tarefa pequena não precisa de documento: a issue basta.
+**Tarefa visual:** só fica Ready com o gate de entrada de [QUALITY_GATES §2b](QUALITY_GATES.md#2b-fidelidade-ao-figma-gate-visual-obrigatório-fundador-2711) (nó do Figma, variante, spec, contratos, aceite visual, estados, dependências).
 
 ## 5. Branches e PRs
 

@@ -19,6 +19,10 @@ test('implemented ≠ validated: Verified needs a real validation and evidence',
   assert.match(transitionError('Verified', { validation: 'Não validado', evidence: 'x' }), /Validação/);
   assert.match(transitionError('Verified', { validation: 'Simulador', evidence: ' ' }), /Evidências/);
   assert.equal(transitionError('Verified', { validation: 'iPhone', evidence: 'https://…/manifest.json' }), null);
+  assert.match(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'NOT_VERIFIED' }), /Figma = MATCH/);
+  assert.match(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'MISMATCH' }), /Figma = MATCH/);
+  assert.equal(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'MATCH' }), null);
+  assert.equal(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'Não se aplica' }), null);
   assert.match(transitionError('Integrated', {}), /Integrated exige Evidências/);
   assert.equal(transitionError('Integrated', { evidence: 'PR #89 integrado; sim.sh 86/86' }), null);
 });

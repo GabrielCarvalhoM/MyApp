@@ -21,6 +21,10 @@ export const FIELDS = {
   Release: { type: 'SINGLE_SELECT', options: ['V1', 'V1.1', 'V2'] },
   // "Código implementado" ≠ "funcionalidade validada": this field says where the behaviour was actually observed.
   'Validação': { type: 'SINGLE_SELECT', options: ['Não validado', ...VALIDATED] },
+  // Fidelidade ao Figma aprovado (fundador, 27/11): independente de Status e Validação. Integrado ≠ verificado no Figma.
+  Figma: { type: 'SINGLE_SELECT', options: ['Não se aplica', 'NOT_VERIFIED', 'MATCH', 'MISMATCH', 'APPROVED_DEVIATION'] },
+  // Aprovação do produto pelo fundador (PRODUCT_APPROVED): só o fundador marca; revisão de agente não conta.
+  Produto: { type: 'SINGLE_SELECT', options: ['Não aprovado', 'Aprovado pelo fundador'] },
   'Dependências': { type: 'TEXT' },
   'Evidências': { type: 'TEXT' },
   'Início': { type: 'DATE' },
@@ -29,7 +33,7 @@ export const FIELDS = {
 
 // CLI flag → field name.
 export const FLAG_FIELDS = { status: 'Status', type: 'Tipo', area: 'Área', priority: 'Prioridade', front: 'Frente', release: 'Release',
-  validation: 'Validação', deps: 'Dependências', evidence: 'Evidências', start: 'Início', target: 'Entrega alvo' };
+  validation: 'Validação', figma: 'Figma', product: 'Produto', deps: 'Dependências', evidence: 'Evidências', start: 'Início', target: 'Entrega alvo' };
 
 export const STATUS_LABEL = { Ready: 'status:ready', 'In Progress': 'status:in-progress', Blocked: 'status:blocked',
   'Ready to Integrate': 'status:ready-to-integrate', Integrated: 'status:integrated' };
@@ -52,7 +56,7 @@ export function labelsFor({ type, front, priority, status, approval } = {}) {
 }
 
 // Transition rules (WORKFLOW.md §3). Returns an error string or null.
-export function transitionError(to, { labels = [], validation, evidence } = {}) {
+export function transitionError(to, { labels = [], validation, evidence, figma } = {}) {
   if (!STATUS.includes(to)) return `status desconhecido: ${to} (válidos: ${STATUS.join(', ')})`;
   if (labels.includes(APPROVAL_LABEL) && !['Backlog', 'Blocked'].includes(to)) {
     return `a issue aguarda aprovação do fundador (${APPROVAL_LABEL}); só o fundador remove o rótulo`;
@@ -63,6 +67,8 @@ export function transitionError(to, { labels = [], validation, evidence } = {}) 
   if (to === 'Verified') {
     if (!VALIDATED.includes(validation)) return `Verified exige Validação em ${VALIDATED.join(' / ')} (implementado ≠ validado)`;
     if (!evidence?.trim()) return 'Verified exige Evidências (link do run, manifest.json, screenshot)';
+    // Tela ou fluxo visual: só fecha com a fidelidade ao Figma comprovada (MATCH) ou um desvio aprovado pelo fundador.
+    if (figma && !['Não se aplica', 'MATCH', 'APPROVED_DEVIATION'].includes(figma)) return `Verified exige Figma = MATCH ou APPROVED_DEVIATION (hoje: ${figma})`;
   }
   return null;
 }
@@ -136,7 +142,7 @@ export function setFieldValue({ projectId, itemId, field, def, value }, cwd) {
 
 // Saved views. The API sets name, layout, filter and visible fields; grouping, sorting and the roadmap's date fields are UI-only
 // (ProjectV2View.groupByFields is read-only), so `uiGroupBy` / `uiDates` are printed as the remaining one-click steps.
-const COMMON_FIELDS = ['Title', 'Status', 'Tipo', 'Área', 'Frente', 'Prioridade', 'Release', 'Validação', 'Dependências', 'Evidências'];
+const COMMON_FIELDS = ['Title', 'Status', 'Tipo', 'Área', 'Frente', 'Prioridade', 'Release', 'Validação', 'Figma', 'Produto', 'Dependências', 'Evidências'];
 export const VIEWS = [
   { name: 'Visão Geral', layout: 'BOARD_LAYOUT', filter: '', fields: COMMON_FIELDS },
   { name: 'Por Área', layout: 'TABLE_LAYOUT', filter: '', fields: COMMON_FIELDS, uiGroupBy: 'Área' },

@@ -4,7 +4,7 @@
 //   board.mjs setup [--apply]                       create/align the project, its fields and its repository link (dry-run by default)
 //   board.mjs create --title T --body-file F --type .. --area .. --front .. --priority .. --release .. [--new-scope] [--force-new]
 //   board.mjs add <issue> --type .. --area .. --front .. --priority .. --release .. [--status ..] [--deps ..]
-//   board.mjs set <issue> [--status ..] [--validation ..] [--priority ..] [--release ..] [--deps ..] [--start AAAA-MM-DD] [--target ..]
+//   board.mjs set <issue> [--status ..] [--validation ..] [--figma NOT_VERIFIED|MATCH|MISMATCH|APPROVED_DEVIATION] [--product ..] [--priority ..] [--release ..] [--deps ..] [--start AAAA-MM-DD] [--target ..]
 //   board.mjs evidence <issue> "<link or short text>" [--validation Simulador|iPhone|Dados reais]
 //   board.mjs show <issue>
 //   board.mjs list [--json]
@@ -79,7 +79,7 @@ function fieldUpdates(values) {
 function apply(b, i, updates) {
   const next = { ...i.values, ...updates };
   if (updates.Status) {
-    const err = transitionError(updates.Status, { labels: i.labels, validation: next['Validação'], evidence: next['Evidências'] });
+    const err = transitionError(updates.Status, { labels: i.labels, validation: next['Validação'], evidence: next['Evidências'], figma: next.Figma });
     if (err) throw new Error(`#${i.number}: ${err}`);
   }
   let itemId = i.itemId;
@@ -101,7 +101,7 @@ function apply(b, i, updates) {
 }
 
 const COMMON = { type: { type: 'string' }, area: { type: 'string' }, front: { type: 'string' }, priority: { type: 'string' },
-  release: { type: 'string' }, status: { type: 'string' }, validation: { type: 'string' }, deps: { type: 'string' },
+  release: { type: 'string' }, status: { type: 'string' }, validation: { type: 'string' }, figma: { type: 'string' }, product: { type: 'string' }, deps: { type: 'string' },
   evidence: { type: 'string' }, start: { type: 'string' }, target: { type: 'string' } };
 
 function setup(applyChanges) {
