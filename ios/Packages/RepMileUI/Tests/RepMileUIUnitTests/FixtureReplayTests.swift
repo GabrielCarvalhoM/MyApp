@@ -74,7 +74,9 @@ final class FixtureReplayTests: XCTestCase {
         for d in c.days { for m in d.marks { XCTAssertNil(m.minutes, m.id); XCTAssertTrue(m.details.isEmpty, m.id) } }
         XCTAssertNil(c.body)
         XCTAssertNil(c.next, "a hold offers no next session and no start")
-        XCTAssertEqual(c.heroLead, L.t("today.hero.paused"))
+        // #99 (Figma 72 `805:410`): under a clinical hold the headline is "Sem treino prescrito por enquanto", one tone.
+        XCTAssertEqual(c.heroLead, "")
+        XCTAssertEqual(c.heroRest, L.t("today.hero.held"))
         for s in plan.week?.sessions ?? [] { XCTAssertNil(pres.runSession(for: s), s.id) }
         // FND-ABC-04: the earlier plan stays in force, but a restart outside the V1 scope pauses Hoje the same way.
         let valid = try Repo.store.decode(PlanView.self, "13-plan-w1", at: "view")

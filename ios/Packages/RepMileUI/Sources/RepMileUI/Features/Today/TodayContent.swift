@@ -5,7 +5,8 @@ import Foundation
 /// A pure mapping: it decides no prescription, reason, load, zone or rule; it only selects and formats what the engine and the record hold.
 struct TodayContent: Equatable {
     struct Mark: Equatable, Identifiable {
-        enum Status: Equatable { case done, missed, planned, next }
+        /// `held`: neither done nor reported missed while nothing may start (a clinical hold or a persistent host gate): "em espera" (#99).
+        enum Status: Equatable { case done, missed, planned, next, held }
         let id: String
         let sport: Sport
         let status: Status
@@ -39,6 +40,10 @@ struct TodayContent: Equatable {
     }
 
     let header: String
+    /// Nothing may start (a clinical hold or a persistent host gate): no next session, held marks, the neutral light (#99).
+    let paused: Bool
+    /// When the sign that raised the clinical hold was reported (`hold.since`, device time); nil without a hold or a parseable instant.
+    let signalAt: String?
     let heroLead: String
     let heroRest: String
     let body: String?
@@ -74,7 +79,8 @@ struct TodayContent: Equatable {
         func mark(_ s: PlannedSession, ordinal: Int?) -> Mark? {
             guard let sport = Sport(code: s.sport.raw) else { return nil }
             let done = doneEntry(s)
-            let status: Mark.Status = done != nil ? .done : missedEntry(s) != nil ? .missed : (s.id == nextSession?.id && s.date == nextSession?.date ? .next : .planned)
+            let status: Mark.Status = done != nil ? .done : missedEntry(s) != nil ? .missed : paused ? .held
+                : (s.id == nextSession?.id && s.date == nextSession?.date ? .next : .planned)
             let minutes = done?.minutes ?? (paused ? nil : s.prescription?.durationMinutes)
             var details: [String] = []
             if let p = s.prescription, !paused {
@@ -113,7 +119,11 @@ struct TodayContent: Equatable {
 
         // Hero (the coach's voice: what passed in grey, what matters now in white). Descriptive only, from the plan's own codes.
         let lead: String, rest: String
-        if paused {
+        let clinicalHold = plan.hold != nil || plan.state == .blocked
+        if clinicalHold {
+            // #99 (Figma 72 `805:492` / `805:410`): the headline is the instruction at the engine's level, one tone.
+            lead = ""; rest = L.t(plan.clinicalGuidance == .urgentCare ? "today.hero.urgent.interim" : "today.hero.held")
+        } else if paused {
             lead = L.t("today.hero.paused"); rest = L.t("today.hero.paused.rest")
         } else if todayMarks.count >= 2 {
             lead = todayMarks.allSatisfy { $0.status == .done || $0.status == .missed } ? L.t("today.hero.done") : L.t("today.hero.two")
@@ -147,7 +157,7 @@ struct TodayContent: Equatable {
             ?? L.f("today.week.summary", "\(doneCount)", "\(planned.count)"))
 
         let next = todayMarks.first { $0.status == .next }
-        return TodayContent(header: header, heroLead: lead, heroRest: rest, body: body, weekLabel: weekLabel, days: days, summary: summary, next: next,
+        return TodayContent(header: header, paused: paused, signalAt: plan.hold?.since.flatMap { Fmt.instant($0) }, heroLead: lead, heroRest: rest, body: body, weekLabel: weekLabel, days: days, summary: summary, next: next,
                             startability: next.map { startability($0.session) }, race: race(plan: plan, presentation: presentation, today: today),
                             phaseName: phaseName(plan: plan, weekPlan: weekPlan), phaseWeek: L.f("today.race.week", weekNo, weeksTotal),
                             phases: (weekPlan?.weeks ?? []).map { Phase(id: $0.index, name: L.code("phase", $0.phase), timing: $0.index < plan.weekIndex ? -1 : $0.index == plan.weekIndex ? 0 : 1) })

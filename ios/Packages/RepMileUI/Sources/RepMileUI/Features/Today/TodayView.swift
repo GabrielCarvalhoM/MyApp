@@ -36,18 +36,18 @@ struct TodayView: View {
                     }
                     .padding(.top, 22).padding(.horizontal, 24)
                 }
-                .padding(.bottom, 120)
+                .padding(.bottom, 24)   // the tab bar's own inset clears it (#99 H2)
             }
             .scrollIndicators(.hidden)
-            .background(alignment: .top) { glow(content) }
+            .background(alignment: .top) { RMGlow(color: Self.glowColor(content)) }
             .accessibilityIdentifier("screen-today")
         }
     }
 
-    private func glow(_ c: TodayContent) -> some View {
-        let color = (c.next?.sport ?? c.days.first { $0.isToday }?.marks.first?.sport)?.glow ?? RM.Palette.luzNeutra
-        return RadialGradient(colors: [color, color.opacity(0)], center: .center, startRadius: 0, endRadius: 310)
-            .frame(width: 620, height: 460).offset(y: -270 + 0).allowsHitTesting(false).accessibilityHidden(true)
+    /// The light of the next session's sport; neutral when nothing may start (a hold or a host gate, #99) or nothing is planned today.
+    static func glowColor(_ c: TodayContent) -> Color {
+        guard !c.paused else { return RM.Palette.luzNeutra }
+        return (c.next?.sport ?? c.days.first { $0.isToday }?.marks.first?.sport)?.glow ?? RM.Palette.luzNeutra
     }
 
     private func header(_ c: TodayContent) -> some View {
@@ -64,10 +64,14 @@ struct TodayView: View {
 
     private func hero(_ c: TodayContent) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            (Text(c.heroLead).foregroundColor(RM.Palette.textoTerciario) + Text(c.heroRest.isEmpty ? "" : " " + c.heroRest))
+            if let at = c.signalAt {
+                Text(L.f("today.signal", at)).rmText(.micro, RM.Palette.textoTerciario).accessibilityIdentifier("today-signal")
+            }
+            (Text(c.heroLead).foregroundColor(RM.Palette.textoTerciario) + Text(c.heroLead.isEmpty || c.heroRest.isEmpty ? c.heroRest : " " + c.heroRest))
                 .rmText(.manchete)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityIdentifier("today-headline")
             if let body = c.body { Text(body).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true) }
         }
         .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
@@ -86,13 +90,11 @@ struct TodayView: View {
     @ViewBuilder private func bannerView(_ banner: TodayBanner, _ plan: PlanView) -> some View {
         switch banner {
         case .urgentHold:
-            UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness, announceKey: UrgentCareBanner.key(for: plan))
-                .accessibilityIdentifier("banner-blocked")
+            HoldPanel(plan: plan, guidance: .urgentCare, declareReady: openReadiness)
         case .gate(let gate):
             gateBanner(gate)
         case .state(.blocked):
-            StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
-                        actionTitle: L.t("state.blocked.action"), action: openReadiness)
+            HoldPanel(plan: plan, guidance: plan.clinicalGuidance ?? .professionalAssessment, declareReady: openReadiness)
         case .state(.pendingConfirmation):
             StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
                         actionTitle: L.t("state.pending.action"), action: openChanges)

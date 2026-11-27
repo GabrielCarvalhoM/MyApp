@@ -55,7 +55,8 @@ final class NavigationTests: XCTestCase {
     @MainActor
     func testBlockedShowsSafetyStateAndNoStart() {
         let app = launch("blocked")
-        XCTAssertTrue(app.staticTexts["Treino pausado por segurança"].waitForExistence(timeout: 10))
+        // #99 (Figma 72 `805:410`): the hold's headline is "Sem treino prescrito por enquanto" (was the banner title "Treino pausado…").
+        XCTAssertTrue(app.staticTexts["Sem treino prescrito por enquanto"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.buttons["today-start"].exists)
         attach(app, "Hoje — blocked (17-plan-blocked)")
     }

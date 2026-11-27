@@ -25,3 +25,14 @@ public enum RMIllustration: String, CaseIterable, Sendable {
 
     public var image: Image { Image("traco-" + rawValue, bundle: .module) }
 }
+
+/// "Marca/Repmile · logotipo" (Figma `963:94`, the wordmark of `835:2069`): a template vector, tinted with the primary text colour (so it
+/// follows the appearance), 102 × 14 pt. Read as the app's name.
+struct RMWordmark: View {
+    var body: some View {
+        Image("marca-repmile", bundle: .module).renderingMode(.template).resizable().scaledToFit()
+            .frame(width: 102.386, height: 14)
+            .foregroundStyle(RM.Palette.textoPrimario)
+            .accessibilityLabel(Text(verbatim: "Repmile"))
+    }
+}

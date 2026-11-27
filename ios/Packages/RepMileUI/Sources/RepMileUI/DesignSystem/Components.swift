@@ -41,6 +41,27 @@ public struct PrimaryActionButton: View {
     }
 }
 
+/// Figma "Botões · principal / neutro" (`901:1367`): 52 pt, full width, pill. `.now` is the white primary ("Entendi", "Começar");
+/// `.neutral` the fundo/elevado-2 secondary ("Declarar que estou pronto"). No icon.
+public struct RMButton: View {
+    public enum Kind: Sendable { case now, neutral }
+    let title: String
+    let kind: Kind
+    let action: () -> Void
+    public init(_ title: String, kind: Kind, action: @escaping () -> Void) { self.title = title; self.kind = kind; self.action = action }
+    public var body: some View {
+        Button(action: action) {
+            Text(title).rmText(.botao, kind == .now ? RM.Palette.agoraSobre : RM.Palette.textoPrimario)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16).padding(.vertical, 8)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .background(kind == .now ? RM.Palette.agora : RM.Palette.fundoElevado2, in: Capsule())
+                .contentShape(Capsule())
+        }
+        .buttonStyle(PressableStyle())
+    }
+}
+
 /// Figma secondary pill (46 pt, fundo/elevado-2).
 public struct SecondaryPillButton: View {
     let title: String
@@ -118,7 +139,8 @@ public struct StateBanner: View {
     public init(tone: Tone, icon: RMIcon, title: String, message: String, actionTitle: String? = nil, action: (() -> Void)? = nil) {
         self.tone = tone; self.icon = icon; self.title = title; self.message = message; self.actionTitle = actionTitle; self.action = action
     }
-    var accent: Color { switch tone { case .safety: RM.Palette.negativo; case .neutral: RM.Palette.textoPrimario; case .milestone: RM.Palette.marco } }
+    /// Red stays the urgent level's own (#99, `805:410`): a safety banner is outlined in "agora", neutral, like the hold card.
+    var accent: Color { switch tone { case .safety, .neutral: RM.Palette.textoPrimario; case .milestone: RM.Palette.marco } }
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -126,20 +148,26 @@ public struct StateBanner: View {
                 Text(title).rmText(.subtitulo)
             }
             Text(message).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-            if let actionTitle, let action {
-                Button(action: action) {
-                    Text(actionTitle).rmText(.rotulo, RM.Palette.agoraSobre)
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                        .background(RM.Palette.agora, in: Capsule())
-                }
-                .buttonStyle(PressableStyle())
-            }
+            if let actionTitle, let action { RMButton(actionTitle, kind: .now, action: action) }   // 52 pt (#99)
         }
         .padding(RM.Space.card)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(tone == .safety ? RM.Palette.negativo.opacity(0.4) : .clear, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(tone == .safety ? RM.Palette.agora : .clear, lineWidth: 1.5))
         .accessibilityElement(children: .contain)
+    }
+}
+
+/// "Luz" (Figma ellipse 620 × 460 at (-113, -270)): an elliptical gradient that reaches zero at the ellipse's edge, so it never ends in a
+/// straight cut (#99 H1). Behind the content, decorative.
+struct RMGlow: View {
+    let color: Color
+    var body: some View {
+        EllipticalGradient(colors: [color, color.opacity(0)], center: .center, startRadiusFraction: 0, endRadiusFraction: 0.5)
+            .frame(width: 620, height: 460)
+            .offset(y: -270)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 }
 
@@ -155,5 +183,7 @@ public struct FocusRingAvatar: View {
             Text(initials).rmText(.micro).minimumScaleFactor(0.6).lineLimit(1).frame(width: 22)
         }
         .frame(width: 36, height: 36)
+        .frame(width: 44, height: 44)   // touch area ≥ 44 pt (#99), the ring stays 36
+        .contentShape(Circle())
     }
 }

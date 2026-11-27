@@ -140,7 +140,10 @@ struct AppTabs: View {
     /// The gate that stops a live unplanned run (`AppModel.unplannedRunGate`, the same rule that withholds the steps of a run in progress).
     private var runGate: NotStartableReason? { model.unplannedRunGate }
 
+    private var showsTabBar: Bool { (tab == .today && todayPath.isEmpty) || (tab == .plan && planPath.isEmpty) || tab == .history || tab == .progress }
+
     var body: some View {
+        GeometryReader { geo in
         ZStack(alignment: .bottom) {
             Group {
                 switch tab {
@@ -165,9 +168,15 @@ struct AppTabs: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            if (tab == .today && todayPath.isEmpty) || (tab == .plan && planPath.isEmpty) || tab == .history || tab == .progress {
-                RMTabBar(selection: $tab, onAdd: { sheet = .add }).padding(.bottom, 8)
+            // The content ends above the bar (#99 H2); a pushed screen has no bar and no inset.
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if showsTabBar { Color.clear.frame(height: TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom)) }
             }
+            if showsTabBar {
+                TabBarArea(selection: $tab, onAdd: { sheet = .add }).ignoresSafeArea(.container, edges: .bottom)
+            }
+        }
+        .frame(width: geo.size.width, height: geo.size.height)
         }
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .sheet(item: $sheet, onDismiss: {

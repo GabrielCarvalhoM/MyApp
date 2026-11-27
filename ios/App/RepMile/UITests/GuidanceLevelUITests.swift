@@ -61,13 +61,15 @@ final class GuidanceLevelUITests: XCTestCase {
         attach(app, "73 — sinal não urgente: avaliação profissional")
     }
 
+    /// #99 (Figma 72 `805:492`): on Hoje the urgent instruction is the screen's headline, and the URGENTE card names the emergency line.
     @MainActor
     func testTodayUnderAnUrgentHoldShowsUrgentCare() {
         let app = launch("blocked-urgent")
         let urgent = el(app, "guidance-urgent")
         XCTAssertTrue(urgent.waitForExistence(timeout: 10))
-        XCTAssertTrue(urgent.label.contains(Self.urgentTitle), urgent.label)
-        XCTAssertTrue(app.buttons["Estou pronto para voltar"].exists, "the readiness declaration stays the only exit")
+        XCTAssertTrue(el(app, "today-headline").label.contains("procure atendimento médico urgente"), el(app, "today-headline").label)
+        XCTAssertTrue(urgent.label.contains("número de emergência local"), urgent.label)
+        XCTAssertTrue(app.buttons["hold-declare"].exists, "the readiness declaration stays the only exit")
         attach(app, "73 — Hoje sob retenção urgente")
     }
 
@@ -90,7 +92,7 @@ final class GuidanceLevelUITests: XCTestCase {
     func testReadinessWithAnUrgentSignKeepsTheHoldAtUrgentCare() {
         let app = launch("blocked")
         XCTAssertFalse(el(app, "guidance-urgent").exists, "this hold is at the professional-assessment level")
-        app.buttons["Estou pronto para voltar"].tap()
+        app.buttons["hold-declare"].tap()
         XCTAssertTrue(el(app, "signs-15").waitForExistence(timeout: 5))
         app.buttons["readiness-recovered-yes"].tap()
         let yes = app.buttons["sign-breathlessAtRest-yes"]

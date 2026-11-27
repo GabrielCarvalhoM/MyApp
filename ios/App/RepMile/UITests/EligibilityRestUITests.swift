@@ -70,7 +70,7 @@ final class EligibilityRestUITests: XCTestCase {
     @MainActor
     func testBlockedReadinessAsksFifteenSignsAndTheScreenAndReturns() {
         let app = launch("blocked")
-        app.buttons["Estou pronto para voltar"].tap()
+        app.buttons["hold-declare"].tap()   // #99: "Declarar que estou pronto", the hold's neutral secondary
         XCTAssertTrue(el(app, "signs-15").waitForExistence(timeout: 5))
         app.buttons["readiness-recovered-yes"].tap()
         attach(app, "72 — prontidão, 15 sinais (843:1980)")

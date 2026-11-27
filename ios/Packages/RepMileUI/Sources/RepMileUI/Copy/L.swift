@@ -63,6 +63,19 @@ enum Fmt {
     static func dayNumber(_ s: String) -> String { day(s).map { formatted($0, "d") } ?? "" }
     static func shortDate(_ s: String) -> String { day(s).map { formatted($0, "d MMM") } ?? "" }
     static func weekdayAndDate(_ s: String) -> String { day(s).map { formatted($0, "EEE, d MMM") } ?? "" }
+    /// An engine instant (ISO 8601, e.g. `hold.since`) as the device shows it: "ter, 17 nov · 08:00". Nil when it does not parse (then the
+    /// screen shows no time rather than a made-up one). `timeZone` is for tests.
+    static func instant(_ iso: String, in timeZone: TimeZone = .current) -> String? {
+        let parser = ISO8601DateFormatter(); parser.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let d = parser.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return nil }
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = timeZone
+        func f(_ template: String) -> String {
+            let f = DateFormatter(); f.calendar = cal; f.timeZone = timeZone; f.locale = locale
+            f.setLocalizedDateFormatFromTemplate(template)
+            return f.string(from: d).replacingOccurrences(of: ".", with: "")
+        }
+        return f("EEE, d MMM") + " · " + f("jmm")
+    }
 
     static func number(_ v: Double, fraction: Int = 0) -> String {
         v.formatted(.number.precision(.fractionLength(0...fraction)).locale(locale))

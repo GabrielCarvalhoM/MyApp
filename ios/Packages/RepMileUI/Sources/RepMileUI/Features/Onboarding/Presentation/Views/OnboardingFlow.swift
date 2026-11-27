@@ -24,6 +24,7 @@ struct OnboardingFlow: View {
             }
         }
         .animation(.easeInOut, value: viewModel.phase)
+        .background(alignment: .top) { RMGlow(color: RM.Palette.luzNeutra).ignoresSafeArea() }
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .accessibilityElement(children: .contain).accessibilityIdentifier("screen-onboarding")
     }
@@ -52,9 +53,13 @@ struct OnboardingFlow: View {
             .scrollIndicators(.hidden)
             VStack(spacing: 6) {
                 if let note = viewModel.requiredNote { Text(L.t(note)).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("ob-required") }
-                PrimaryActionButton(step == .welcome ? L.t("ob.start") : step == .consents ? L.t("ob.build") : L.t("ob.next"), icon: .chevronDireita,
-                                    enabled: viewModel.canContinue) { advance() }
-                    .accessibilityIdentifier("ob-next")
+                if step == .welcome {
+                    // Figma "Botão · Começar" (`835:2531`): 52 pt, white, no icon (#99).
+                    RMButton(L.t("ob.start"), kind: .now) { advance() }.accessibilityIdentifier("ob-next")
+                } else {
+                    PrimaryActionButton(step == .consents ? L.t("ob.build") : L.t("ob.next"), icon: .chevronDireita, enabled: viewModel.canContinue) { advance() }
+                        .accessibilityIdentifier("ob-next")
+                }
             }
             .padding(RM.Space.gutter)
         }

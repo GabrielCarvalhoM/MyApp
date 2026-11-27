@@ -6,12 +6,22 @@ struct WeekPanels: View {
     let days: [TodayContent.Day]
     let label: String
     var onSelect: (TodayContent.Mark) -> Void = { _ in }
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    /// Above Large the fixed-geometry graphic would cut its text: the same days, marks and actions in a list that scales (#99 H3).
+    var body: some View {
+        if typeSize > .large {
+            WeekList(days: days, label: label, onSelect: onSelect)
+        } else {
+            panels
+        }
+    }
 
     // Figma geometry (393 pt frame).
     private let height: CGFloat = 340, panelH: CGFloat = 306, baseline: CGFloat = 170
     private let narrow: CGFloat = 40, gap: CGFloat = 4, wide: CGFloat = 190
 
-    var body: some View {
+    private var panels: some View {
         GeometryReader { geo in
             let todayIndex = days.firstIndex { $0.isToday }
             let todayX = (geo.size.width - wide) / 2
@@ -32,8 +42,7 @@ struct WeekPanels: View {
         }
         .frame(height: height)
         .accessibilityElement(children: .contain)
-        // A fixed-geometry graphic: its text stops growing at Large; every mark keeps its full VoiceOver label, and the hero and summary
-        // carry the same information at any size.
+        // A fixed-geometry graphic, shown up to Large only (above, `WeekList`).
         .dynamicTypeSize(...DynamicTypeSize.large)
         .accessibilityElement(children: .contain).accessibilityIdentifier("week-panels")
     }
@@ -84,7 +93,8 @@ struct WeekPanels: View {
         let done = m.status == .done
         return VStack(spacing: 1) {
             if done { RMIconView(.check, size: 12).foregroundStyle(m.sport.onFilled) }
-            if m.status == .missed { RMIconView(.fechar, size: 12).foregroundStyle(RM.Palette.negativo) }
+            if m.status == .held { RMIconView(.pausa, size: 12).foregroundStyle(RM.Palette.textoTerciario) }
+            else if m.status == .missed { RMIconView(.fechar, size: 12).foregroundStyle(RM.Palette.negativo) }
             else if let minutes = m.minutes {
                 Text(Fmt.minutes(minutes)).rmText(.numeroXS, done ? m.sport.onFilled : m.sport.color)
                 Text(L.t("common.min")).rmText(.tab, done ? m.sport.onFilled : m.sport.color)
@@ -95,6 +105,7 @@ struct WeekPanels: View {
         .background {
             let shape = RoundedRectangle(cornerRadius: 10, style: .continuous)
             if done { shape.fill(m.sport.filled) }
+            else if m.status == .held { HeldPill.fill(shape) }
             else if m.status == .missed { shape.fill(RM.Palette.negativoSuave).overlay(shape.strokeBorder(RM.Palette.negativo, lineWidth: 1.5)) }
             else { shape.fill(m.sport.soft).overlay(shape.strokeBorder(m.sport.color, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))) }
         }
@@ -128,16 +139,18 @@ struct WeekPanels: View {
 
     private func card(_ m: TodayContent.Mark) -> some View {
         let filled = m.status == .done || m.status == .next
+        let held = m.status == .held
         let fg = filled ? m.sport.onFilled : RM.Palette.textoPrimario
         let sub = filled ? m.sport.onFilled.opacity(0.9) : RM.Palette.textoSecundario
+        let accent = filled ? m.sport.onFilled : held ? RM.Palette.textoSecundario : m.sport.color
         return VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 6) {
-                RMIconView(m.status == .done ? .check : m.sport.icon, size: 16)
-                if let label = m.ordinalLabel { Text(label).rmText(.micro, filled ? m.sport.onFilled : m.sport.color).lineLimit(1).minimumScaleFactor(0.7) }
+                RMIconView(m.status == .done ? .check : held ? .pausa : m.sport.icon, size: 16)
+                if let label = m.ordinalLabel { Text(label).rmText(.micro, accent).lineLimit(1).minimumScaleFactor(0.7) }
                 Spacer(minLength: 0)
                 if m.status == .next { RMIconView(.play, size: 14) }
             }
-            .foregroundStyle(filled ? m.sport.onFilled : m.sport.color)
+            .foregroundStyle(accent)
             Spacer(minLength: 0)
             VStack(alignment: .leading, spacing: 1) {
                 Text(m.title).rmText(.titulo, fg).lineLimit(1).minimumScaleFactor(0.7)
@@ -148,7 +161,7 @@ struct WeekPanels: View {
         .frame(width: 174, height: 124, alignment: .topLeading)
         .background {
             let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
-            if filled { shape.fill(m.sport.filled) } else {
+            if filled { shape.fill(m.sport.filled) } else if held { HeldPill.fill(shape) } else {
                 shape.fill(m.sport.soft).overlay(shape.strokeBorder(m.sport.color, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3])))
             }
         }
@@ -159,8 +172,15 @@ struct WeekPanels: View {
         let name = Fmt.weekdayName(day.date)
         guard !day.isRest else { return name + ", " + L.t("today.hero.rest") }
         return name + ", " + day.marks.map { m in
-            [m.title, m.minutes.map { L.f("common.minutes", Fmt.minutes($0)) }, m.status == .done ? L.t("today.card.done") : m.status == .missed ? L.t("today.card.missed") : L.t("today.card.planned")]
+            [m.title, m.minutes.map { L.f("common.minutes", Fmt.minutes($0)) }, WeekList.statusText(m.status)]
                 .compactMap { $0 }.joined(separator: " ")
         }.joined(separator: "; ")
+    }
+}
+
+/// A session held while nothing may start (#99, Figma 72 `805:432` "em espera"): grey, dashed, never a sport colour.
+enum HeldPill {
+    static func fill<S: InsettableShape>(_ shape: S) -> some View {
+        shape.fill(RM.Palette.fundoElevado2).overlay(shape.strokeBorder(RM.Palette.textoTerciario, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3])))
     }
 }
