@@ -59,6 +59,7 @@ Outras worktrees (`myapp-p0-ios`, `myapp-v1-abc-foundation`, `myapp-v1-final`, `
 | #32.2 | revisão independente | READY (só P3: animação, 4 testes extras de VM) | P3 anotados |
 
 ## Visualização do fundador (Xcode)
+Simulador **`RepMile-Fundador`** (iPhone 17 Pro, iOS 27.2) é **só do fundador**: nenhum agente usa. O Xcode do fundador compila no DerivedData padrão do Xcode, separado do `ios/.build/DerivedData-*` dos agentes.
 Worktree só de leitura `~/.codex/worktrees/myapp-v1-viewer/MyApp` (destacada, nunca usada por agentes). Abrir
 `~/.codex/worktrees/myapp-v1-viewer/MyApp/ios/App/RepMile.xcodeproj`. Atualizar com `tools/orchestration/viewer.sh` **depois** de cada
 integração validada (CI verde e suíte do simulador no mesmo conteúdo). A worktree original da sessão C (`myapp-v1-ios-swiftui`) está

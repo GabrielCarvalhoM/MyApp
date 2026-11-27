@@ -33,6 +33,7 @@ pelo orquestrador, não pelo revisor.
    Simulador por padrão; iPhone só nos checkpoints de hardware. Teste não executado nunca conta como aprovado.
    **Um simulador por agente** (o orquestrador atribui; o `sim.sh` encerra os outros apps do simulador, inclusive o runner de outra
    suíte) e no máximo duas suítes de UI ao mesmo tempo no Mac (`pgrep -fl "xcodebuild.*test"` antes de começar).
+   O simulador `RepMile-Fundador` é reservado ao fundador: nenhum agente o usa.
 6. **Segurança esportiva falha fechada:** nil ≠ false, nada pré-respondido, ASK quando falta dado. Nunca inventar métricas, limites ou
    prescrições: elas vêm do motor ou de decisão registrada.
 7. **Privacidade:** [SECURITY_PRIVACY.md](../../specs/v1/quality/SECURITY_PRIVACY.md). Repositório público: nada de segredo nem de dado
