@@ -1,0 +1,29 @@
+#85 gates on 1d47f369 (Mac; no simulator, no device)
+
+tools/orchestration/swift-packages.sh --fronts=build  -> exit 0
+Swift package gate (fronts=build), Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+  BUILD_OK       CoachingHost (tests compiled, run on the native gate)
+  PASS           CoachingPresentation · Executed 29 tests, with 0 failures (0 unexpected) in 7.015 (7.019) seconds
+  BUILD_OK       HealthKitIngest (tests compiled, run on the native gate)
+  PASS           IntegrationContracts · Executed 10 tests, with 0 failures (0 unexpected) in 0.154 (0.156) seconds
+  IOS_BUILD_OK   RepMileUI (iOS-only, tests compiled; tests run in sim.sh test)
+  BUILD_OK       RunRecorder (tests compiled, run on the native gate)
+
+xcodebuild -scheme HealthKitIngest -destination generic/platform=iOS build CODE_SIGNING_ALLOWED=NO  -> ** BUILD SUCCEEDED **
+  warnings in HealthKitIngest/Sources: 4, all pre-existing in HealthKitReader.swift:79/85 (NSLock lock/unlock from an async
+  context; Swift 6 mode would make them errors). That file is unchanged since 09ac4dc3; none in a file #85 touched. Open item.
+
+node tools/orchestration/guard.mjs  -> exit 0
+guard: branch=claude/v1-ios-integration-i85-healthkit-resend papel=Integração base=v1-abc-ready-2026-11-26 head=HEAD
+guard: 612 caminhos alterados · 612 OK · 0 exigem aprovação · 0 proibidos
+
+node tools/orchestration/swift-size.mjs  -> exit 0
+  528  legado inventariado  ios/Packages/HealthKitIngest/Sources/HealthKitIngest/HealthKitIngestor.swift
+  398  legado inventariado  ios/Packages/CoachingHost/Tests/CoachingHostTests/ErasureTests.swift
+  345  aviso (>300)         ios/Packages/CoachingHost/Sources/CoachingHost/Ports.swift
+  324  aviso (>300)         ios/Packages/CoachingHost/Tests/CoachingHostTests/PlatformTests.swift
+  316  aviso (>300)         ios/Packages/HealthKitIngest/Tests/HealthKitIngestTests/ThirdPartyImportTests.swift
+swift-size: 198 arquivos Swift em HEAD · limite 350 · 0 acima do limite fora do baseline
+
+Frozen paths (CoachingCore, ios/Packages/IntegrationContracts, ios/Packages/CoachingPresentation, tools/device-lock):
+  git diff 09ac4dc3..HEAD on them: empty. CoachingCore/node_modules installed with npm ci --ignore-scripts (gitignored) for the gate.

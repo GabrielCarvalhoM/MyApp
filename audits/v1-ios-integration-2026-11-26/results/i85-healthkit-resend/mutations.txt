@@ -1,0 +1,96 @@
+#85 mutation checks. Each fix reverted alone in Sources (python replacement), full swift test, Sources restored with git checkout
+and checked clean afterwards. Code commit 6ce7c705 (tests made crash-safe in 1d47f369 before this run).
+
+R1 no re-send at all (reopenDue reopens nothing)
+  -> 12 fail (of 149)
+     ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning
+     ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy
+     ResendAfterRetryLaterTests testASignalOnceTheRoundIsDueSendsItAtOnce
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce
+     ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound
+R2 launch does not re-send (start skips resendAtLaunch)
+  -> 2 fail (of 149)
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning
+R3 a signal before the round is due arms no wake
+  -> 6 fail (of 149)
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce
+     ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound
+R4 rounds unbounded (maxRounds ignored)
+  -> 4 fail (of 149)
+     MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun
+     ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing
+R5 no backoff (round due at once)
+  -> 2 fail (of 149)
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+R6 wait never doubles
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+R7 clock that went back strands the round
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound
+R8 a workout awaiting its round leaves its group (regroup ignores resendDue)
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+R9 deleting a reopened, unsent workout leaves it pending
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+R10 deletion keeps the round (resendDue not cleared)
+  -> 0 fail (of 149)
+R11 answered NOT_RECORDED keeps mayBeOnRecord
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+R12 old file: no rounds inferred
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+O1 over-caution back: every exhausted streak may be on record
+  -> 4 fail (of 149)
+     MayBeOnRecordTests testARefusalOnlyStreakRecordedNothingSoADeletedRunLeavesAndItsCopyIsTheRun
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun
+     ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing
+O2 plain retryLater not marked as possibly landed
+  -> 9 fail (of 149)
+     MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted
+     MayBeOnRecordTests testAFileWrittenBeforeTheFixFailsClosed
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce
+     MayBeOnRecordTests testDeletingARunThatMayBeOnRecordNeverPromotesItsCopy
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+O3 a delivery read back from disk is trusted (decoded false)
+  -> 1 fail (of 149)
+     ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded
+O4 an unwritten answer is not marked
+  -> 1 fail (of 149)
+     ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded
+R13 armResend ignores a deletion in flight (defence in depth)
+  -> 0 fail (of 149)
+R14 awaitsResend ignores a deletion (defence in depth)
+  -> 0 fail (of 149)
+R15 both deletion guards gone (R10 + R14)
+  -> 1 fail (of 149)
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+restored: clean
+restored: clean (git status --porcelain Sources empty after every mutation)
+
+NOTES
+  R10, R13, R14 survive alone by design: a deleted workout is kept from a re-send by two independent guards (merge clears resendDue;
+  awaitsResend/armResend refuse a deleted one). R15 removes both and is caught. R6, R7, R15 were re-run after fixing the
+  totals parser (it missed 'with 1 failure'); every run executed all 149 tests.

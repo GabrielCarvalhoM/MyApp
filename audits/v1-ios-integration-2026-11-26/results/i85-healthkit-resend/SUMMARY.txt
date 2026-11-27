@@ -1,0 +1,54 @@
+#85 - HealthKitIngest: a workout set aside after exhausting retryLater is re-sent (P1, condition before release; from QRE of PR #84, P3-3)
+(front B package; integration-owned branch)
+
+Branch claude/v1-ios-integration-i85-healthkit-resend from claude/v1-ios-integration @ 09ac4dc3. Code commit 6ce7c705, test hardening
+1d47f369. Only ios/Packages/HealthKitIngest changed (plus this folder). Frozen paths untouched: CoachingCore, IntegrationContracts,
+CoachingPresentation, tools/device-lock. No CoachingHost or app composition change (the new configuration field has a default).
+
+CONTRACT CHECK (the brief's stop condition): NOT triggered.
+  IntegrationContracts DeviceActivity.activityId: "Same id, same facts -> DUPLICATE; same id, other sessionId -> ACTIVITY_LINKED_ELSEWHERE".
+  integration.mjs admit(): a known DEVICE activity with the same sessionId and the same factsDigest is pushed to `duplicates`.
+  Replay against the real frozen boundary (replay-same-id-same-facts.mjs, output replay-same-id-same-facts.txt): landed write then
+  re-send under a NEW request id -> DUPLICATE, 1 row; nothing landed -> RECORDED, 1 row; other link -> ACTIVITY_LINKED_ELSEWHERE, 1 row.
+
+WHAT CHANGED
+1. Re-send rounds (new HealthKitIngestor+Resend.swift, 99 lines). An item set aside ATTEMPTS_EXHAUSTED by an exhausted retryLater gets
+   QueueItem.resendDue. deliveryConditionsChanged() and start() reopen it once due (state -> pending, still frozen), so buildDelivery
+   puts the exact frozen bytes (same activityId, link, facts) in a NEW delivery (new deliveryId). A signal that comes before the round
+   is due arms an in-memory wake for it (a launch arms it again). Triggers other than signal and launch (observer, reads) never reopen.
+   Bound: Configuration.resend = ResendPolicy(maxRounds 8, base 900 s, cap 86 400 s): waits 15 min, 30 min, 1 h ... 24 h; each round is
+   at most maxConsecutiveRetryLater sends; after the last round the item stays set aside for good. A due instant further away than the
+   cap (clock went back) counts as due now (still bounded by the rounds).
+2. Double-count guarantees of #48 kept. While a round is to come the item keeps its same-run group (regroup: `resendDue != nil`), so its
+   copies stay consolidated and are never sent with another activityId. mayBeOnRecord is cleared ONLY by an answered NOT_RECORDED (on
+   record, the same id and facts would be DUPLICATE). A refusal of the re-send (e.g. setAsideItem) records nothing NOW but proves nothing
+   about the earlier send: the item stays may-be-on-record and the copies stay consolidated. A workout deleted in Apple Health is never
+   sent again (G-5): merge clears its round, and a reopened-but-unsent one goes back to set aside; DELETED_MAYBE_ON_RECORD still once.
+3. Over-caution QRE noted (InFlight.mayHaveLanded, not stored): a streak made only of refusals with the retryLater disposition
+   (contract: NOTHING recorded) no longer makes the item may-be-on-record. Fail closed: a plain retryLater ("nothing was confirmed"),
+   an answer B could not write, and any delivery read back from disk (a process that died may have sent it) all count as possibly landed.
+   Note: CoachingHost (HostDeviceSink.swift:76) maps BUSY/PERSISTENCE_FAILURE/OPERATIONAL_ERROR to .retryLater(code:), never to
+   .refused(_, _, .retryLater), so in production every exhausted streak is still may-be-on-record; the relaxation applies to the contract
+   case only. The re-send (item 1) is what recovers the run in production.
+4. Queue files written before #85 (no `resends` key): a may-be-on-record ATTEMPTS_EXHAUSTED item that was not deleted gets its rounds, the
+   first due at once (a pre-#48 file may hold an item exhausted by NOT_RECORDED there; re-sending it is safe: DUPLICATE or decided anew).
+5. Log: hki.resendReopened reopened=<n> (counts only). RetryScheduler/TaskRetryScheduler moved to +Resend; HealthKitIngestor.swift
+   534 -> 528 (not grown). Every new or changed file <= 350.
+
+TESTS (macOS swift test, package): 149 tests, 0 failures, 0 skipped, 3 consecutive runs (before: 131).
+  ResendAfterRetryLaterTests (12, new), ResendBoundaryTests (5, new; 2 through the real frozen boundary in Node: landed -> DUPLICATE and
+  one row; nothing landed -> RECORDED and one row; the copy never sent in either). MayBeOnRecordTests: the refusal-only test now asserts
+  the relaxed rule (G1 leaves as DELETED_BEFORE_DELIVERY, S1 is the run, one count), the old assertion moved to a mixed streak (plain
+  retryLater then refusal), and #48's helper runs with maxRounds 0 (its rule alone). healthkitingest-swift-test.txt.
+  Mutation checks: mutations.txt (17 single reverts + 1 combined; each fix caught; R10/R13/R14 are deliberately redundant deletion
+  guards, caught together by R15). Gates: gates.txt. No real health data: synthetic workouts only; logs carry codes and counts only.
+
+OPEN / FOR REVIEW
+- QRE (always). Decision to confirm: re-send rounds 8, 15 min doubling to 24 h (delivery-retry parameters, not a training rule; no SSCTR
+  scope). The waits add up to about 56 h (15 min x 127 + 24 h), each round needing a signal or a launch; after that the run stays set aside ATTEMPTS_EXHAUSTED as before.
+- C's status shows a workout awaiting its round as set aside ATTEMPTS_EXHAUSTED (HealthIngestStatus is in the frozen contract; a distinct
+  "awaiting re-send" status would need CCP). It becomes "awaiting delivery" when reopened.
+- Pre-existing, not changed here: a workout deleted in Apple Health while in flight, whose delivery got a plain retryLater and then a
+  waiting/halted answer, is dropped as DELETED_BEFORE_DELIVERY although the first send may have landed (dropDeletedUnrecorded does not
+  consult InFlight.mayHaveLanded). Narrow (deletion during flight + retryLater + waiting + a copy); candidate follow-up.
+- Pre-existing iOS warnings in HealthKitReader.swift:79/85 (NSLock in async context; errors in Swift 6 mode). File untouched here.
