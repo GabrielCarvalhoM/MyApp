@@ -79,8 +79,10 @@ extension HealthKitIngestor {
                         s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1
                     } else if s.items[i].attempts >= config.maxAttempts {
                         // An answered NOT_RECORDED proves it is not on the record: a copy of the same run may become the run (P3-2). A
-                        // missing result does not (`setAside` keeps it may-be-on-record).
+                        // missing result does not (`setAside` keeps it may-be-on-record), and gets its re-send rounds (R-2): the same id
+                        // and facts settle it, DUPLICATE if it was recorded, otherwise decided as a first send.
                         Self.setAside(&s, i, code: IngestCode.attemptsExhausted)
+                        if answered == nil { armResend(&s, i); if let due = s.items[i].resendDue { scheduleResendWake(at: due) } }
                     } else if signalledSince {
                         s.items[i].attempts += 1; s.items[i].state = .pending
                     } else {
@@ -94,9 +96,16 @@ extension HealthKitIngestor {
             // QRE-B-02: a refusal with the retryLater disposition continues the streak (QRE #84 P3-1: it used to restart it here, so the
             // bound never applied to it); any other refusal breaks it (also below).
             if disposition != .retryLater { s.retryLaterStreak = 0; s.nextRetryAt = nil }
-            // Recheck P3-B: an admission refusal of THIS delivery id proves that no send of it landed (custody replays the stored answer
-            // of a request id it has seen; `admit` runs only for one it has not). Retryable, waiting or halted refusals prove nothing.
-            if [.setAsideItem, .resendUnlinked, .adapterBug].contains(disposition) {
+            // Recheck P3-B / R-1: a setAsideItem or adapterBug refusal of THIS delivery id proves that no send of it landed. Not because
+            // custody replays a request id it has seen: A retries under `<deliveryId>~<n>` after CONFLICT_STALE_VERSION / REQUEST_ID_REUSED
+            // (HostDeviceSink, CoachingHost), so a landed `D~1` is never replayed for `D`. Because those refusals of the SAME frozen bytes
+            // are deterministic: shape, BEFORE_RECORD_START and the request checks would have refused the send that landed too, and the
+            // per-session limit is checked only for a workout the record does not know. resendUnlinked (UNKNOWN_SESSION, SPORT_MISMATCH)
+            // proves nothing: it is checked before the known-workout check, against the CURRENT plan, so a plan change can refuse after a
+            // landed send. Retryable, waiting or halted refusals prove nothing either; another delivery's refusal never clears this one.
+            // R-3, accepted fail-closed trade: a workout still carrying "*" or an older delivery id that such a refusal sets aside stays
+            // may-be-on-record with no round. A visible under-count (its copies stay consolidated), never a double count.
+            if [.setAsideItem, .adapterBug].contains(disposition) {
                 for id in ids { if let i = index(id) { s.items[i].landedIn.removeAll { $0 == flight.deliveryId } } }
             }
             let culprit = at.flatMap { $0 >= 0 && $0 < ids.count ? index(ids[$0]) : nil }

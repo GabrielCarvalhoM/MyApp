@@ -39,6 +39,20 @@ final class LandedInTests: XCTestCase {
         }
     }
 
+    /// R-2: with its attempts used up, the workout whose result was missing gets its re-send round; the same id and facts settle it
+    /// (here DUPLICATE: it had been recorded). Counted once; S1 is never sent.
+    func testAResultMissingIsSettledByItsResendRound() async throws {
+        let (rig, sink) = rig([{ _ in .answered(version: 2, activities: []) }, ScriptedSink.each(.duplicate)]) { $0.maxAttempts = 0 }
+        let ing = rig.make(); await ing.start()
+        XCTAssertNotNil(try stored(rig.store, "G1")?.resendDue)
+        XCTAssertEqual(rig.scheduler.delays, [900])
+        rig.clock.advance(900); await rig.scheduler.runAll()
+        XCTAssertEqual(sent(sink), ["G1", "G1"], "S1 is never sent"); XCTAssertNotEqual(sink.deliveries[0].deliveryId, sink.deliveries.last?.deliveryId)
+        let runs = await ing.importedRuns(since: .distantPast)
+        XCTAssertEqual(runs.first { $0.id == "G1" }?.statusCode, "DUPLICATE"); XCTAssertEqual(runs.first { $0.id == "S1" }?.status, .consolidatedDuplicate)
+        let c = await ing.counts(); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(c.setAside, [:])
+    }
+
     /// The same missing result with attempts left: G1 waits NOT_RECORDED, still possibly landed. Deleted in Apple Health then, it is kept
     /// set aside (never re-sent, G-5), counted once; S1 is never sent. A later admission refusal can never clear an unknown landing.
     func testAResultMissingKeepsADeletedRunThatWaitsForItsResend() async throws {
@@ -89,6 +103,19 @@ final class LandedInTests: XCTestCase {
         XCTAssertEqual(sent(sink), ["G1", "G1", "G1"]); XCTAssertEqual(Set(sink.deliveries.map(\.deliveryId)).count, 2)
         let g1 = try stored(rig.store, "G1"); XCTAssertEqual(g1?.mayBeOnRecord, true); XCTAssertEqual(g1?.landedIn, [sink.deliveries[0].deliveryId])
         await ing.deliveryConditionsChanged()
+        let c = await ing.counts(); XCTAssertEqual(c.setAside, ["INVALID_OBSERVATION": 1]); XCTAssertEqual(c.consolidated, 1)
+    }
+
+    /// R-1: resendUnlinked (UNKNOWN_SESSION) on the same delivery id proves nothing (checked against the current plan, before the
+    /// known-workout check): D1 stays possibly landed, so the next delivery's refusal sets G1 aside may-be-on-record; S1 is never sent.
+    func testAResendUnlinkedRefusalOfTheSameDeliveryNeverClearsIt() async throws {
+        let unknown: Answer = { _ in .refused(code: "UNKNOWN_SESSION", index: 0, disposition: .resendUnlinked) }
+        let (rig, sink) = rig([Self.lost, unknown, Self.invalid])
+        let ing = rig.make(); await ing.start()
+        rig.clock.advance(2); await rig.scheduler.runAll(); await ing.deliveryConditionsChanged()
+        XCTAssertEqual(sent(sink), ["G1", "G1", "G1"]); XCTAssertEqual(Set(sink.deliveries.map(\.deliveryId)).count, 2)
+        XCTAssertEqual(sink.deliveries[1].deliveryId, sink.deliveries[0].deliveryId); XCTAssertNil(sink.deliveries[2].activities[0].sessionId, "re-sent unlinked")
+        let g1 = try stored(rig.store, "G1"); XCTAssertEqual(g1?.mayBeOnRecord, true); XCTAssertEqual(g1?.landedIn, [sink.deliveries[0].deliveryId])
         let c = await ing.counts(); XCTAssertEqual(c.setAside, ["INVALID_OBSERVATION": 1]); XCTAssertEqual(c.consolidated, 1)
     }
 

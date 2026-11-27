@@ -61,10 +61,13 @@ struct QueueItem: Codable, Equatable {
     var mayBeOnRecord = false
     /// #85 (QRE #90 P3-2, recheck P3-B): the deliveries a send of which may have put this workout on the record, by `deliveryId`. Added
     /// by a `retryLater` answer ("nothing was confirmed"), by an answer B could not write, and, at load, by the delivery in flight on disk
-    /// (a process that died may have sent it). An admission refusal of that SAME delivery id removes it: custody would have replayed the
-    /// stored answer of a request that landed (integration.mjs: `admit` runs only for a request id it has not seen); another delivery's
-    /// refusal never does. `landedUnknown` cannot be removed by any refusal: an `ok:true` answer missing this workout's result (the request
-    /// was committed), or a file written without this field. Emptied only by an answered NOT_RECORDED.
+    /// (a process that died may have sent it). A setAsideItem or adapterBug refusal of that SAME delivery id removes it, because those
+    /// refusals of the same frozen bytes are deterministic (they would have refused the send that landed too). Custody's replay is not the
+    /// reason: A retries under `<deliveryId>~<n>` request ids, so a landed `D~1` is not replayed for `D`. A resendUnlinked refusal (checked
+    /// against the current plan), a retryable/waiting/halted one, or another delivery's, never removes it. `landedUnknown` cannot be removed
+    /// by any refusal: an `ok:true` answer missing this workout's result (the request was committed), or a file written without this
+    /// field. Emptied only by an answered NOT_RECORDED. Accepted trade (R-3): a workout still carrying "*" or an older id when a refusal
+    /// sets it aside stays may-be-on-record with no round: a visible under-count, never a double count.
     var landedIn: [String] = []
     static let landedUnknown = "*"
     /// Every set-aside of such a workout, and its deletion in Apple Health, keeps it may-be-on-record.
