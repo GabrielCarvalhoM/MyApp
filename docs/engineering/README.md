@@ -5,6 +5,7 @@ Leia isto em 2 minutos. O resto você abre quando precisar.
 | Preciso de… | Onde está |
 |---|---|
 | **Pausar / retomar ("PAUSAR REPMILE", "RETOMAR REPMILE")** | [WORKFLOW.md §7](WORKFLOW.md#7-pausa-segura-e-retomada) · `tools/orchestration/pause-check.sh` · checkpoint `specs/v1/CONTINUITY.md` → "Pausa" |
+| **Agentes especializados (quem faz o quê, como delegar, como verificar)** | [AGENTS.md](AGENTS.md) · definições em `.claude/agents/` · `node tools/orchestration/agents.mjs [--discover]` |
 | **Specs, escopo, arquitetura, retomada** | [`specs/v1/INDEX.md`](../../specs/v1/INDEX.md) · checkpoint [`specs/v1/CONTINUITY.md`](../../specs/v1/CONTINUITY.md) · padrão iOS [`specs/v1/ARCHITECTURE.md`](../../specs/v1/ARCHITECTURE.md) |
 | **Contratos** | `audits/v1-parallel-foundation-2026-11-24/PARALLEL_IMPLEMENTATION_CONTRACT.md` (rev. 2: §10 arquivos, §11 mudança de contrato, §12 pendências, §13 integração); tipos em `ios/Packages/IntegrationContracts` e `ios/Packages/CoachingPresentation` |
 | **Handoff da minha frente** | `audits/v1-abc-foundation-consolidation-2026-11-26/{A_COACHINGHOST,B_HEALTHKIT,C_SWIFTUI}_HANDOFF.md`; ownership por tema: `OWNERSHIP_MATRIX.md` |
@@ -36,4 +37,5 @@ tools/orchestration/sim.sh all                           # build → simulador �
 node tools/orchestration/swift-size.mjs                  # limite de 350 linhas por arquivo Swift (legado inventariado só avisa)
 tools/orchestration/viewer.sh                            # worktree de visualização do fundador = última integração validada (Xcode)
 tools/orchestration/pause-check.sh                       # seguro desligar? (processos, worktrees sujas, commits só locais)
+node tools/orchestration/agents.mjs --discover            # agentes do projeto válidos e descobertos por uma sessão nova
 ```

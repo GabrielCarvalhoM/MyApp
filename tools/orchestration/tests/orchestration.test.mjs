@@ -97,6 +97,7 @@ test('only allowlisted base tags count (review R1 #3)', () => {
 test('states: blocked wins, an open PR means in review, no label means backlog', () => {
   assert.equal(issueState(['status:blocked', 'status:in-progress'], true), 'BLOCKED');
   assert.equal(issueState(['status:in-progress'], true), 'IN_REVIEW');
+  assert.equal(issueState(['status:founder-decision', 'status:in-progress'], true), 'FOUNDER_DECISION');
   assert.equal(issueState(['status:ready-to-integrate'], true), 'READY_TO_INTEGRATE');
   assert.equal(issueState(['status:ready']), 'READY');
   assert.equal(issueState(['type:feature']), 'BACKLOG');

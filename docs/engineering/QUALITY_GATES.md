@@ -43,6 +43,21 @@ XCTest/XCUITest num `.xcresult` e resume as falhas. O bundle id vem do `Info.pli
 shell: `WAITING_FOR_APP_SHELL`, exit 3, nada é construído. Para guardar evidência num relatório, copie a pasta para o `results/` da
 sua frente.
 
+## 2b. Fidelidade ao Figma (gate visual obrigatório, fundador 27/11)
+
+Compilar, passar nos testes e integrar não tornam uma tela concluída. Estados independentes no quadro: Status (implementado / em revisão /
+integrado), Validação (onde o comportamento foi observado), **Figma** (`NOT_VERIFIED · MATCH · MISMATCH · APPROVED_DEVIATION`) e
+**Produto** (só o fundador aprova). Uma issue visual só vira Verified com Figma = MATCH ou APPROVED_DEVIATION (o `board.mjs` recusa).
+`APPROVED_DEVIATION` exige aprovação explícita do fundador registrada na issue. Matriz única: [specs/v1/FIGMA_MATRIX.md](../../specs/v1/FIGMA_MATRIX.md).
+
+**Antes de implementar uma tela:** nó exato do Figma · variante/estado esperado · spec funcional · contratos de dados · critérios de
+aceite visual · estados de carregamento, erro, vazio e bloqueio · dependências indisponíveis identificadas. Sem isso a tarefa não é Ready.
+
+**Depois de implementar:** build no simulador · tela executada no estado da referência (`sim.sh run --arg -scenario … --arg -route …`)
+· screenshot real · comparação com o nó (`visual.mjs`) · diferenças registradas · correção · revisão independente pelo `visual-ux-reviewer`
+(compara a tela renderizada, não o código) · revalidação · evidência na issue. Nada de screenshot fabricada ou mockup no lugar da captura;
+sem referência confiável, `NOT_VERIFIED`. Vale retroativamente para tudo que a frente C já entregou.
+
 ## 3. iPhone físico
 
 **Simulador é o padrão** (decisão do fundador, 26/11): build, unit, XCUITest, validação visual e integração rodam no iOS Simulator. O iPhone
