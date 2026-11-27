@@ -110,6 +110,8 @@ struct AppTabs: View {
     @State private var afterDismiss: (() -> Void)?
     @State private var runLaunch: Launch?
     @State private var planSegment: PlanScreen.Segment = .week
+    /// Set only by the Debug `-route today/week` (#98).
+    @State private var todayScrollToWeek = false
     #if DEBUG
     /// `-route <destination>` (#98, Debug only): applied once, after a resumed recording had its say.
     var debugRoute: DebugRoute?
@@ -150,7 +152,7 @@ struct AppTabs: View {
                                   openSession: { todayPath.append(.session($0.id, $0.date)) },
                                   startSession: start,
                                   openChanges: { sheet = .changes },
-                                  openReadiness: { sheet = .readiness })
+                                  openReadiness: { sheet = .readiness }, scrollToWeek: todayScrollToWeek)
                             .toolbar(.hidden, for: .navigationBar)
                             .background(RM.Palette.fundoApp)
                             .navigationDestination(for: Route.self, destination: destination)
@@ -211,7 +213,8 @@ struct AppTabs: View {
     private func apply(_ route: DebugRoute) {
         guard runLaunch == nil, sheet == nil, DebugRoute.claim() else { return }   // a resumed recording comes first; once per process
         let landing = route.landing(current: model.plan?.week?.sessions ?? [], weeks: model.weeks)
-        planSegment = landing.planSegment; todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
+        planSegment = landing.planSegment; todayScrollToWeek = landing.todayScrollToWeek
+        todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
         switch route {
         case .run:
             guard let plan = model.plan else { return }

@@ -7,12 +7,13 @@ import Foundation
 /// session starts only through `AppTabs.start(_:)` (the host's gate), a sheet opens its own flow, and nothing is answered or written.
 /// Without the argument nothing changes; the live composition never reads it; a Release build has none of this file (strings check, #98).
 ///
-/// Destinations (Figma screen map): `today`, `plan` (`plan/week`), `plan/month`, `plan/phases`, `session/<fixture session id>`, `history`,
+/// Destinations (Figma screen map): `today`, `today/week` (Hoje scrolled to the week strip), `plan` (`plan/week`), `plan/month`, `plan/phases`, `session/<fixture session id>`, `history`,
 /// `progress`, `profile`, `profile/zones`, `run` (starts today's next session, as "Começar"), `add`, `changes`, `not-feeling`, `readiness`.
 enum DebugRoute: Equatable {
     enum Sheet: String, CaseIterable { case add, changes, notFeeling = "not-feeling", readiness }
 
     case today
+    case todayWeek
     case plan(PlanScreen.Segment)
     case session(id: String)
     case history
@@ -30,6 +31,7 @@ enum DebugRoute: Equatable {
         let value = arguments[i + 1]
         switch value {
         case "today": return .today
+        case "today/week": return .todayWeek
         case "plan", "plan/week": return .plan(.week)
         case "plan/month": return .plan(.month)
         case "plan/phases": return .plan(.phases)
@@ -77,11 +79,13 @@ enum DebugRoute: Equatable {
         var todayPath: [Route] = []
         var planPath: [Route] = []
         var planSegment: PlanScreen.Segment = .week
+        var todayScrollToWeek = false
     }
 
     func landing(current: [PlannedSession], weeks: [Week]) -> Landing {
         switch self {
         case .today, .run, .sheet: return Landing()
+        case .todayWeek: return Landing(todayScrollToWeek: true)
         case .plan(let segment): return Landing(tab: .plan, planSegment: segment)
         case .history: return Landing(tab: .history)
         case .progress: return Landing(tab: .progress)

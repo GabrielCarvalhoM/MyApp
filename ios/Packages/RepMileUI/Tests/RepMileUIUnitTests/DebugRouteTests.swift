@@ -18,7 +18,7 @@ final class DebugRouteTests: XCTestCase {
 
     func testEveryDestinationParses() {
         let expected: [(String, DebugRoute)] = [
-            ("today", .today), ("plan", .plan(.week)), ("plan/week", .plan(.week)), ("plan/month", .plan(.month)), ("plan/phases", .plan(.phases)),
+            ("today", .today), ("today/week", .todayWeek), ("plan", .plan(.week)), ("plan/week", .plan(.week)), ("plan/month", .plan(.month)), ("plan/phases", .plan(.phases)),
             ("session/w0-run-d6", .session(id: "w0-run-d6")), ("history", .history), ("progress", .progress), ("profile", .profile),
             ("profile/zones", .zones), ("run", .run), ("add", .sheet(.add)), ("changes", .sheet(.changes)), ("not-feeling", .sheet(.notFeeling)),
             ("readiness", .sheet(.readiness)),
@@ -57,6 +57,7 @@ final class DebugRouteTests: XCTestCase {
         func land(_ r: DebugRoute) -> DebugRoute.Landing { r.landing(current: current, weeks: weeks) }
 
         XCTAssertEqual(land(.today), .init())
+        XCTAssertEqual(land(.todayWeek), .init(todayScrollToWeek: true))
         XCTAssertEqual(land(.run), .init())
         for s in DebugRoute.Sheet.allCases { XCTAssertEqual(land(.sheet(s)), .init(), s.rawValue) }
         XCTAssertEqual(land(.plan(.week)), .init(tab: .plan, planSegment: .week))

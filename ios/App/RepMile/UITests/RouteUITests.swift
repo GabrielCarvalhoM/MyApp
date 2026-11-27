@@ -52,6 +52,18 @@ final class RouteUITests: XCTestCase {
 
     @MainActor func testToday() { assertTab("today", tab: "today", screen: "screen-today") }
 
+    /// Hoje opened scrolled to the week strip (captures below the fold, #99): the strip is at the top of the screen.
+    @MainActor
+    func testTodayWeekScrollsToTheStrip() {
+        let app = launch("today/week", scenario: "blocked")
+        let strip = element(app, "week-panels")
+        XCTAssertTrue(strip.waitForExistence(timeout: 10))
+        let deadline = Date().addingTimeInterval(5)
+        while strip.frame.minY > 200 && Date() < deadline { usleep(200_000) }
+        XCTAssertLessThan(strip.frame.minY, 200, "the strip is at the top of the screen")
+        attach(app, "-route today/week (blocked)")
+    }
+
     @MainActor
     func testPlanOpensTheWeek() {
         assertTab("plan", tab: "plan", screen: "screen-plan")
