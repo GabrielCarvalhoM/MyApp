@@ -43,12 +43,29 @@ TESTS (macOS swift test, package): 149 tests, 0 failures, 0 skipped, 3 consecuti
   Mutation checks: mutations.txt (17 single reverts + 1 combined; each fix caught; R10/R13/R14 are deliberately redundant deletion
   guards, caught together by R15). Gates: gates.txt. No real health data: synthetic workouts only; logs carry codes and counts only.
 
+QRE REVIEW OF PR #90: READY_WITH_CONDITIONS, no P0/P1/P2; #48's guarantees hold in every path. Fixed in 3dea3686:
+  P3-2  "A send may have landed" is QueueItem.mayHaveLanded, persisted (replaces the per-delivery InFlight.mayHaveLanded of items 3 above).
+        Set by any retryLater answer, by an answer B could not write (memory, written with the next commit that succeeds), and at load for
+        the workouts of the delivery in flight on disk. Cleared only by an answered NOT_RECORDED. A file without it: true for a sent
+        (frozen) workout, false for one never sent (it cannot have landed). Used by setAside (every set-aside of such a workout keeps it
+        may-be-on-record, the exhaustion included), by dropDeletedUnrecorded and by merge.
+  P3-1  dropDeletedUnrecorded no longer drops a workout deleted in flight whose earlier send may have landed (retryLater, then waiting
+        CLOCK_AHEAD_OF_REFERENCE or halted): set aside ATTEMPTS_EXHAUSTED, may-be-on-record, no round, DELETED_MAYBE_ON_RECORD once; its copy
+        is never promoted. Same for one deleted while it waits, pending, for a new delivery (merge). Beyond the brief, same knowledge: a
+        refusal that sets such a workout aside (e.g. setAsideItem after a retryLater) keeps it may-be-on-record.
+        Tests: ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice (real boundary: one row),
+        testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept, testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted,
+        testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup, testAFileWithoutTheFlagFailsClosedForASentRun.
+  P3-3  The wake for a round is scheduled at the set-aside: a due round no longer waits for a signal or a launch (a signal and a launch
+        schedule it again after a lost wake). Test: testADueRoundIsSentWithoutWaitingForASignalOrALaunch (replaces
+        testNoRoundIsSentWithoutASignalOrALaunch).
+  Parameters (delivery-policy owner's decision): maxRounds 12, 15 min doubling to 24 h: about 6.3 days of waits (15 min x 127 + 5 x 24 h).
+        Test: testTheDefaultPolicyCoversAMultiDayOutage.
+  Tests: 155, 0 failures, 0 skipped, 3 runs. Mutations: mutations-qre90.txt (N1-N10 for the new fixes, R/O rows re-run on the new code;
+  every fix caught, redundant guards caught in pairs R15, R16). Gates: gates.txt (top section).
+
 OPEN / FOR REVIEW
-- QRE (always). Decision to confirm: re-send rounds 8, 15 min doubling to 24 h (delivery-retry parameters, not a training rule; no SSCTR
-  scope). The waits add up to about 56 h (15 min x 127 + 24 h), each round needing a signal or a launch; after that the run stays set aside ATTEMPTS_EXHAUSTED as before.
+- QRE recheck of 3dea3686.
 - C's status shows a workout awaiting its round as set aside ATTEMPTS_EXHAUSTED (HealthIngestStatus is in the frozen contract; a distinct
   "awaiting re-send" status would need CCP). It becomes "awaiting delivery" when reopened.
-- Pre-existing, not changed here: a workout deleted in Apple Health while in flight, whose delivery got a plain retryLater and then a
-  waiting/halted answer, is dropped as DELETED_BEFORE_DELIVERY although the first send may have landed (dropDeletedUnrecorded does not
-  consult InFlight.mayHaveLanded). Narrow (deletion during flight + retryLater + waiting + a copy); candidate follow-up.
 - Pre-existing iOS warnings in HealthKitReader.swift:79/85 (NSLock in async context; errors in Swift 6 mode). File untouched here.

@@ -1,9 +1,16 @@
-#85 HealthKitIngest: swift test (macOS, package ios/Packages/HealthKitIngest), 3 consecutive runs on 1d47f369
+#85 HealthKitIngest: swift test (macOS, package ios/Packages/HealthKitIngest)
+
+AFTER THE QRE #90 ROUND, code commit 3dea3686, 3 consecutive runs:
+  run 1: Executed 155 tests, with 0 failures (0 unexpected) in 8.856 (8.871) seconds · skipped: 0
+  run 2: Executed 155 tests, with 0 failures (0 unexpected) in 8.126 (8.141) seconds · skipped: 0
+  run 3: Executed 155 tests, with 0 failures (0 unexpected) in 7.905 (7.921) seconds · skipped: 0
+
+FIRST ROUND, 1d47f369, 3 consecutive runs:
   run 1: Executed 149 tests, with 0 failures (0 unexpected) in 6.844 (6.857) seconds · skipped: 0
   run 2: Executed 149 tests, with 0 failures (0 unexpected) in 6.898 (6.910) seconds · skipped: 0
   run 3: Executed 149 tests, with 0 failures (0 unexpected) in 7.039 (7.053) seconds · skipped: 0
 
-New / changed tests (run 3):
+#85 tests (run 3 after the QRE round):
 MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted passed
 MayBeOnRecordTests testACopyIsPromotedOnlyAfterAnAnswerProvingNothingWasRecorded passed
 MayBeOnRecordTests testACopyOfARunAlreadyOnTheRecordIsNeverSentAfterAReinstall passed
@@ -16,20 +23,26 @@ MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce passed
 MayBeOnRecordTests testDeletingARunThatMayBeOnRecordNeverPromotesItsCopy passed
 ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound passed
 ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain passed
+ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch passed
 ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds passed
 ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning passed
 ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent passed
 ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery passed
 ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy passed
 ResendAfterRetryLaterTests testASignalOnceTheRoundIsDueSendsItAtOnce passed
-ResendAfterRetryLaterTests testNoRoundIsSentWithoutASignalOrALaunch passed
 ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded passed
+ResendAfterRetryLaterTests testTheDefaultPolicyCoversAMultiDayOutage passed
 ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles passed
 ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun passed
 ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded passed
+ResendBoundaryTests testAFileWithoutTheFlagFailsClosedForASentRun passed
 ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce passed
 ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded passed
+ResendBoundaryTests testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted passed
 ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing passed
+ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice passed
+ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept passed
 ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound passed
+ResendBoundaryTests testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup passed
 
-The two ResendBoundaryTests through the real frozen boundary ran in Node (not skipped): v24.19.0.
+The three ResendBoundaryTests through the real frozen boundary ran in Node (not skipped): v24.19.0.
