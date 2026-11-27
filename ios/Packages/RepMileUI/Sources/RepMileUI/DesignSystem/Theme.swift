@@ -1,61 +1,56 @@
 import CoreText
 import SwiftUI
 
-/// Repmile design tokens, read from the Figma collection "Repmile · Cor" (mode A · Sem acento) and the 15 "Repmile/*" text styles
-/// (Figma `90oyvXHxxBQAvr1netov7S`, page 01 `901:109`). Role colours carry meaning and are never used outside their role:
-/// blue = run, orange = strength, white = now, champagne = milestone, lime = done/improved, red = missed/declined.
+/// Repmile design tokens, read from the Figma collection "Repmile · Cor" (`901:109`, both modes: "A · Sem acento" dark and "A · Claro" light;
+/// `RMColorToken`) and the 15 "Repmile/*" text styles (Figma `90oyvXHxxBQAvr1netov7S`). Every colour resolves by the system appearance.
+/// Role colours carry meaning and are never used outside their role: blue = run, orange = strength, agora (white in dark, ink in light) =
+/// now, champagne = milestone, lime = done/improved, red = missed/declined.
 public enum RM {
     public enum Palette {
-        public static let fundoApp = Color(hex: 0x0C0D10)
-        public static let fundoElevado = Color(hex: 0x15171B)
-        public static let fundoElevado2 = Color(hex: 0x1E2126)
-        public static let fundoTrilho = Color(hex: 0x2A2E36)
-        public static let textoPrimario = Color(hex: 0xF3F4F6)
-        public static let textoSecundario = Color(hex: 0xA4A8B1)
-        public static let textoTerciario = Color(hex: 0x7C818B)
-        public static let linhaBase = Color.white.opacity(0.30)
-        public static let linhaDivisor = Color.white.opacity(0.10)
-        public static let agora = Color.white
-        public static let agoraSuave = Color.white.opacity(0.12)
-        public static let agoraSobre = Color(hex: 0x0C0D10)
-        public static let corrida = Color(hex: 0x4B8BFF)
-        public static let corridaCheio = Color(hex: 0x2F6FED)
-        public static let corridaSuave = Color(hex: 0x4B8BFF, opacity: 0x29 / 255)
-        public static let corridaPrevisto = Color(hex: 0x4B8BFF, opacity: 0x6B / 255)
-        public static let corridaSobre = Color.white
-        public static let forca = Color(hex: 0xFF6A2C)
-        public static let forcaSuave = Color(hex: 0xFF6A2C, opacity: 0x29 / 255)
-        public static let forcaPrevisto = Color(hex: 0xFF6A2C, opacity: 0x6B / 255)
-        public static let forcaSobre = Color(hex: 0x1A0D05)
-        public static let acaoCorrida = Color(hex: 0x2F6FED)
-        public static let acaoCorridaTexto = Color.white
-        public static let acaoForca = Color(hex: 0xFF6A2C)
-        public static let acaoForcaTexto = Color(hex: 0x1A0D05)
-        public static let marco = Color(hex: 0xE6D2A8)
-        public static let marcoSuave = Color(hex: 0xE6D2A8, opacity: 0x1F / 255)
+        public static let fundoApp = RMColorToken.fundoApp.color
+        public static let fundoElevado = RMColorToken.fundoElevado.color
+        public static let fundoElevado2 = RMColorToken.fundoElevado2.color
+        public static let fundoTrilho = RMColorToken.fundoTrilho.color
+        public static let textoPrimario = RMColorToken.textoPrimario.color
+        public static let textoSecundario = RMColorToken.textoSecundario.color
+        public static let textoTerciario = RMColorToken.textoTerciario.color
+        public static let linhaBase = RMColorToken.linhaBase.color
+        public static let linhaDivisor = RMColorToken.linhaDivisor.color
+        public static let agora = RMColorToken.agora.color
+        public static let agoraSuave = RMColorToken.agoraSuave.color
+        public static let agoraSobre = RMColorToken.agoraSobre.color
+        public static let corrida = RMColorToken.corrida.color
+        public static let corridaCheio = RMColorToken.corridaCheio.color
+        public static let corridaSuave = RMColorToken.corridaSuave.color
+        public static let corridaPrevisto = RMColorToken.corridaPrevisto.color
+        public static let corridaSobre = RMColorToken.corridaSobre.color
+        public static let forca = RMColorToken.forca.color
+        public static let forcaSuave = RMColorToken.forcaSuave.color
+        public static let forcaPrevisto = RMColorToken.forcaPrevisto.color
+        public static let forcaSobre = RMColorToken.forcaSobre.color
+        public static let acaoCorrida = RMColorToken.acaoCorrida.color
+        public static let acaoCorridaTexto = RMColorToken.acaoCorridaTexto.color
+        public static let acaoForca = RMColorToken.acaoForca.color
+        public static let acaoForcaTexto = RMColorToken.acaoForcaTexto.color
+        public static let marco = RMColorToken.marco.color
+        public static let marcoSuave = RMColorToken.marcoSuave.color
         /// estado/positivo (lime): done, improved.
-        public static let positivo = Color(hex: 0xCFFF04)
-        public static let positivoSuave = Color(hex: 0xCFFF04, opacity: 0x24 / 255)
+        public static let positivo = RMColorToken.positivo.color
+        public static let positivoSuave = RMColorToken.positivoSuave.color
         /// estado/negativo (red): missed, declined.
-        public static let negativo = Color(hex: 0xFF5A5F)
-        public static let negativoSuave = Color(hex: 0xFF5A5F, opacity: 0x24 / 255)
+        public static let negativo = RMColorToken.negativo.color
+        public static let negativoSuave = RMColorToken.negativoSuave.color
         /// zona/1…5: heart-rate zones only.
-        public static let zonas: [Color] = [Color(hex: 0x8A8F98), Color(hex: 0x2EC4D6), Color(hex: 0x45C977), Color(hex: 0xF5B83D), Color(hex: 0xF2566E)]
-        public static let luzCorrida = Color(hex: 0x4B8BFF, opacity: 0x42 / 255)
-        public static let luzForca = Color(hex: 0xFF6A2C, opacity: 0x3D / 255)
-        public static let luzNeutra = Color(hex: 0xFFFFFF, opacity: 0x17 / 255)
-        public static let luzMarco = Color(hex: 0xE6D2A8, opacity: 0x33 / 255)
+        public static let zonas: [Color] = [RMColorToken.zona1, .zona2, .zona3, .zona4, .zona5].map(\.color)
+        public static let luzCorrida = RMColorToken.luzCorrida.color
+        public static let luzForca = RMColorToken.luzForca.color
+        public static let luzNeutra = RMColorToken.luzNeutra.color
+        public static let luzMarco = RMColorToken.luzMarco.color
     }
 
     public enum Space {
         public static let gutter: CGFloat = 20
         public static let card: CGFloat = 20
-    }
-}
-
-extension Color {
-    init(hex: UInt32, opacity: Double = 1) {
-        self.init(.sRGB, red: Double((hex >> 16) & 0xFF) / 255, green: Double((hex >> 8) & 0xFF) / 255, blue: Double(hex & 0xFF) / 255, opacity: opacity)
     }
 }
 
