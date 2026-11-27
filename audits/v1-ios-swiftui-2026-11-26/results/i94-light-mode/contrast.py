@@ -28,6 +28,7 @@ pairs=[(f,b,u) for f,b,u in [
  ("estado/negativo","fundo/app","text"),("estado/negativo","fundo/elevado","text"),
  ("estado/negativo","estado/negativo-suave>fundo/app","text"),("texto/primario","estado/negativo-suave>fundo/app","text"),
  ("corrida","corrida/suave>fundo/elevado","text"),("forca","forca/suave>fundo/elevado","text"),
+ ("corrida","corrida/suave>fundo/elevado-2","text"),("forca","forca/suave>fundo/elevado-2","text"),
  ("corrida/sobre","corrida/cheio","text"),("forca/sobre","forca","text"),
  ("estado/negativo","fundo/app","border"),
  ("zona/1","fundo/elevado","graphic"),("zona/2","fundo/elevado","graphic"),("zona/3","fundo/elevado","graphic"),("zona/4","fundo/elevado","graphic"),("zona/5","fundo/elevado","graphic"),
@@ -44,5 +45,5 @@ for f,b,u in pairs:
     for mode in (0,1):
         bg=bgcol(b,mode); fg=col(f,mode,bg); r.append(ratio(fg,bg))
     need=4.5 if u=="text" else 3.0
-    ok=lambda x: "ok" if x>=need else ("≥3 (texto grande)" if u=="text" and x>=3 else "ABAIXO")
+    ok=lambda x: "ok" if x>=need else ("≥3 (texto grande)" if u=="text" and x>=3 else ("ABAIXO DE 3" if u=="text" else "ABAIXO"))
     print(f"| {f} | {b.replace('>',' sobre ')} | {u} | {r[0]:.2f} | {r[1]:.2f} | escuro {ok(r[0])} · claro {ok(r[1])} |")

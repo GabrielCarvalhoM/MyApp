@@ -34,6 +34,8 @@
 | texto/primario | estado/negativo-suave sobre fundo/app | text | 15.11 | 14.78 | escuro ok · claro ok |
 | corrida | corrida/suave sobre fundo/elevado | text | 4.43 | 4.51 | escuro ≥3 (texto grande) · claro ok |
 | forca | forca/suave sobre fundo/elevado | text | 5.04 | 3.14 | escuro ok · claro ≥3 (texto grande) |
+| corrida | corrida/suave sobre fundo/elevado-2 | text | 3.94 | 3.83 | escuro ≥3 (texto grande) · claro ≥3 (texto grande) |
+| forca | forca/suave sobre fundo/elevado-2 | text | 4.50 | 2.67 | escuro ≥3 (texto grande) · claro ABAIXO DE 3 |
 | corrida/sobre | corrida/cheio | text | 4.55 | 5.36 | escuro ok · claro ok |
 | forca/sobre | forca | text | 6.66 | 5.21 | escuro ok · claro ok |
 | estado/negativo | fundo/app | border | 6.37 | 4.57 | escuro ok · claro ok |
@@ -46,10 +48,15 @@
 | forca/previsto | fundo/elevado | graphic | 2.06 | 1.63 | escuro ABAIXO · claro ABAIXO |
 | linha/base | fundo/app | graphic | 2.65 | 2.12 | escuro ABAIXO · claro ABAIXO |
 
-## Below AA in light: design questions (values not changed; pinned in ContrastTests.belowAA)
+## Below AA in light: design questions (values not changed; pinned in ContrastTests.belowAA, and below 3:1 in belowLargeText)
 - forca as text: on fundo/app 3.32, on fundo/elevado 3.66, on forca/suave over fundo/elevado 3.14 (dark 6.80 / 6.28 / 5.04).
   Where: SessionDetailView strength title (Rótulo 13 pt, sport colour); WeekPanels planned strength minutes (Número XS 11 pt, Tab 10.5 pt)
   and ordinal label (Micro 11 pt). All at least 3:1 (the large-text level), but these are small text.
+- Today column of the week panel (WeekPanels.todayPanel, fundo/elevado-2; QRE #106 P2-1): sport-coloured text on the sport's soft fill
+  over elevado-2 (ordinal label Micro 11 pt, icon, dashed outline of a planned card).
+  forca on forca/suave over fundo/elevado-2: 2.67 in light, BELOW EVEN 3:1, a known design issue pinned in
+  ContrastTests.belowLargeText (dark 4.4996, just under 4.5).
+  corrida on corrida/suave over fundo/elevado-2: 3.83 in light, 3.94 in dark (below AA in both, at least 3:1).
 - estado/negativo on estado/negativo-suave over fundo/app: 3.83 in light (dark 5.45). Where: the urgent banner's label "Treino pausado"
   (Micro 11 pt, UrgentCareBanner). The banner stays unmistakable in light: 2 pt estado/negativo border 4.57:1 against the page, red tint,
   title and body in texto/primario 14.78:1, first VoiceOver element and announced. Only the small red label is below 4.5:1.
@@ -58,6 +65,7 @@
 
 ## Below AA in dark only (existing before #94, unchanged)
 - corrida on corrida/suave over fundo/elevado: 4.43 (light 4.51). Where: planned run minutes in the week panels.
+- forca on forca/suave over fundo/elevado-2: 4.4996 (see the today column above).
 
 ## Graphics below 3:1 (non-text, WCAG 1.4.11)
 - zona/4 on fundo/elevado: 2.95 in light (dark 10.09). Where: the zone 4 bar in HeartRateZonesScreen (the bpm range is also text).

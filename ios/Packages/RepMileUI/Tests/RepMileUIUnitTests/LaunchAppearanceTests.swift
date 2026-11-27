@@ -5,7 +5,7 @@ import XCTest
 
 /// #94: the launch screen's states (loading, operational error, damaged identity) in both appearances. The damaged identity is reached only
 /// by the live composition, so the XCUITests cannot open it: each state is rendered here in light and in dark and its page colour checked.
-/// An `ImageRenderer` ignores `preferredColorScheme`, so a pinned appearance is caught by the source check below and by `AppearanceUITests`.
+/// An `ImageRenderer` ignores `preferredColorScheme`, so a pinned appearance is caught by the source scan below and by `AppearanceUITests`.
 @MainActor
 final class LaunchAppearanceTests: XCTestCase {
     private func render(_ phase: RepMileLaunchScreen.Phase, _ scheme: ColorScheme) throws -> UIImage {
@@ -40,16 +40,27 @@ final class LaunchAppearanceTests: XCTestCase {
         }
     }
 
-    /// The app follows the system appearance: no view of RepMileUI pins one (the Figma has no in-app choice).
-    func testNoViewPinsAColorScheme() throws {
-        let sources = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../../Sources/RepMileUI").standardized
-        let files = try XCTUnwrap(FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil)).compactMap { $0 as? URL }
-            .filter { $0.pathExtension == "swift" }
-        XCTAssertGreaterThan(files.count, 50, "the sources were found at \(sources.path)")
+    /// The app follows the system appearance: no view pins one (the Figma has no in-app choice), and no colour is drawn outside the
+    /// two-mode tokens. Scans RepMileUI's and the app target's sources (QRE #106 P3-3).
+    func testNoViewPinsAnAppearanceOrDrawsARawColour() throws {
+        let here = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        let roots = ["../../Sources/RepMileUI", "../../../../App/RepMile/Sources"].map { here.appendingPathComponent($0).standardized }
+        var files: [URL] = []
+        for root in roots {
+            let found = try XCTUnwrap(FileManager.default.enumerator(at: root, includingPropertiesForKeys: nil), root.path)
+                .compactMap { $0 as? URL }.filter { $0.pathExtension == "swift" }
+            XCTAssertFalse(found.isEmpty, "no sources found at \(root.path)")
+            files += found
+        }
+        XCTAssertGreaterThan(files.count, 50)
+        let pinned = [".preferredColorScheme(", ".colorScheme(.", ".environment(\\.colorScheme", ".toolbarColorScheme(", "overrideUserInterfaceStyle"]
+        let raw = try NSRegularExpression(pattern: #"Color\.(white|black)\b|[(,:]\s*\.(white|black)\b|\b(Color|UIColor)\((red|white|hue|\.sRGB|hex)\b|0x[0-9A-Fa-f]{6,8}\b|#[0-9A-Fa-f]{6}\b"#)
         for file in files {
             let text = try String(contentsOf: file, encoding: .utf8)
-            XCTAssertFalse(text.contains(".preferredColorScheme("), file.lastPathComponent)
-            XCTAssertFalse(text.contains(".colorScheme(."), file.lastPathComponent)
+            for p in pinned { XCTAssertFalse(text.contains(p), "\(file.lastPathComponent) pins an appearance: \(p)") }
+            guard file.lastPathComponent != "PaletteTokens.swift" else { continue }
+            let hits = raw.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap { Range($0.range, in: text).map { String(text[$0]) } }
+            XCTAssertTrue(hits.isEmpty, "\(file.lastPathComponent) draws a raw colour outside the tokens: \(hits)")
         }
     }
 }
