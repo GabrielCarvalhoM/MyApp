@@ -148,6 +148,20 @@ final class OnboardingTests: XCTestCase {
         XCTAssertEqual(TrainingBand.allCases.map(\.months), [0, 1, 6, 24])
     }
 
+    /// The temporary copy switches (spec §8): each sentence shows only while true.
+    func testCopyTheEngineContradictsIsHiddenWhileFalse() {
+        var d = Self.lucas(); d.strengthBand = .never; d.strengthDays = [2]
+        XCTAssertTrue(OBCopyDeviation.showsPracticeNote(d), "1 day with external equipment: true (C1 matrix)")
+        d.strengthDays = [0, 2]
+        XCTAssertFalse(OBCopyDeviation.showsPracticeNote(d), "2 days: week 1 already loads")
+        d.strengthDays = [2]; d.strengthPlace = .bodyweightOnly
+        XCTAssertFalse(OBCopyDeviation.showsPracticeNote(d), "bodyweight only: no loads ever come")
+        XCTAssertTrue(OBCopyDeviation.showsPaceBandPromise(Self.lucas()))
+        d.resultMeasure = .test
+        XCTAssertFalse(OBCopyDeviation.showsPaceBandPromise(d), "a Teste without a method does not calibrate")
+        XCTAssertFalse(OBCopyDeviation.showConfirmInFirstWorkout); XCTAssertFalse(OBCopyDeviation.showOnlyInYourAccount)
+    }
+
     func testEquipmentPresetsAndTurns() {
         var d = Self.lucas()
         XCTAssertEqual(d.equipmentCodes, ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "MACHINES"], "the Figma's stated assumption")

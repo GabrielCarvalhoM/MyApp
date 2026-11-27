@@ -11,6 +11,12 @@ enum OBCopyDeviation {
     /// seguinte." — true only with exactly one strength day and external equipment (SSCTR C1, engine replay matrix); shown then.
     static let showPracticeNoteAlways = false
 
+    /// 23 `836:2994` "Com ele, o plano já começa com faixas de ritmo ao lado do esforço." — a "Teste" without a measurement method does not
+    /// calibrate (SSCTR on CCP-ONB-1): the promise holds for an official race or the track only, so it is hidden once "Teste" is chosen.
+    static let showPaceBandPromiseForTest = false
+
+    static func showsPaceBandPromise(_ d: OnboardingDraft) -> Bool { showPaceBandPromiseForTest || d.resultMeasure != .test }
+
     static func showsPracticeNote(_ d: OnboardingDraft) -> Bool {
         if showPracticeNoteAlways { return true }
         guard d.strengthDays.count == 1, let codes = d.equipmentCodes else { return false }

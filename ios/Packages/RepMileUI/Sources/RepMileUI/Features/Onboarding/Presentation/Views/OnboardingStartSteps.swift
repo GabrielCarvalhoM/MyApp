@@ -31,7 +31,8 @@ extension OnboardingFormView {
     // MARK: 23 (`836:2994`, `838:1143`)
 
     @ViewBuilder private var result: some View {
-        OBQuestion(stage: 3, title: L.t("ob.result.title"), subtitle: vm.draft.hasResult == false ? nil : L.t("ob.result.body"))
+        OBQuestion(stage: 3, title: L.t("ob.result.title"),
+                   subtitle: vm.draft.hasResult == false || !OBCopyDeviation.showsPaceBandPromise(vm.draft) ? nil : L.t("ob.result.body"))
         if vm.draft.hasResult == false {
             VStack(alignment: .leading, spacing: 10) {
                 OBPills(items: [("none", L.t("ob.result.none"))], selected: ["none"]) { _ in }

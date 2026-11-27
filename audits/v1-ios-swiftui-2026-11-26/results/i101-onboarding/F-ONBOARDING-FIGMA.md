@@ -229,6 +229,7 @@ retidas até lá. **Ainda pendentes (fundador/CCP):** D01, D03 (sem prova), D04-
 | 12 `867:2289` | "Não sabe tudo? Você confirma no primeiro treino." | `showConfirmInFirstWorkout = false` | não há confirmação de equipamento no primeiro treino |
 | 25 `838:1187` | "Sem carga conhecida, a primeira semana é uma sessão curta de prática com o peso do corpo. As cargas vêm na semana seguinte." | `showPracticeNoteAlways = false` | só é verdade com exatamente 1 dia de força e equipamento externo (matriz do replay, SSCTR C1); mostrada nesse caso |
 | 27 `836:3299` | "Fica só na sua conta." (chave `ob.care.note.account`) | `showOnlyInYourAccount = false` | não há conta na V1 (#28) |
+| 23 `836:2994` | "Com ele, o plano já começa com faixas de ritmo ao lado do esforço." | `showPaceBandPromiseForTest = false` | um "Teste" sem método de medida não calibra (SSCTR, CCP-ONB-1); escondida só quando "Teste" foi escolhido |
 
 **Correções** (QRE READY_WITH_CONDITIONS, SSCTR APPROVE_WITH_CONDITIONS, revisão visual NOT_READY):
 - SSCTR C4: depois de CLINICAL_HUMAN_REQUIRED o rascunho fica marcado (`heldForSafety`), retoma em "Retido por segurança", não tem revisão
