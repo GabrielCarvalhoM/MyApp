@@ -127,6 +127,8 @@ final class LiveCompositionTests: XCTestCase {
         app.buttons["run-finish-confirm"].firstMatch.tap()
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 10))
         tapScrolling(app, app.buttons["report-unusual-no"])
+        // #68: the report carries a current eligibility screen (the real engine records no athlete report without one).
+        answerReportScreen(app)
         tapScrolling(app, app.buttons["report-save"])
         let saved = el(app, "report-saved"), notKept = el(app, "report-not-kept")
         var waited = 0
