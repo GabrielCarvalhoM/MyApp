@@ -69,7 +69,10 @@ export const exactPattern=title=>'^'+title.replace(/[\\^$.|?*+()[\]{}/]/g,'\\$&'
 // file the record itself binds. A change to the layer is a new record file (a new version), never an edit. The record binds the manifest, the
 // suite scripts, package.json, the record test, every test file holding a successor or an alsoCoveredBy test, the helper modules and audit
 // harness they import, and the verifier scripts they run. Both the active runner and test/v1san-record.test.mjs check it.
-export const LAYER_RECORD='audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_LAYER_RECORD.json';
+// CCP-79 (#79): the layer changed with REPMILE-COACHINGCORE-V1-CCP79-AMENDMENT-3 (the runtime-integrity test repointed), so it is bound by a new
+// record version, REPMILE-COACHINGCORE-V1-TEST-SUITE-SANITIZATION-3; -2 (audits/v1-test-suite-sanitization-2026-11-25/HISTORICAL_LAYER_RECORD.json)
+// is kept unchanged as history.
+export const LAYER_RECORD='audits/v1-ios-integration-2026-11-26/results/i79-engine-fixforward/HISTORICAL_LAYER_RECORD_3.json';
 export const RECORD_TEST={file:'v1san-record.test.mjs',title:'the historical-layer record: written once, never modified, and the layer is the bytes it binds'};
 export const LAYER_CORE=Object.freeze(['CoachingCore/test/HISTORICAL_TESTS.json','CoachingCore/package.json','CoachingCore/scripts/suite-active.mjs','CoachingCore/scripts/suite-historical.mjs','CoachingCore/scripts/suite-manifest.mjs','CoachingCore/test/'+RECORD_TEST.file]);
 const shaFile=f=>createHash('sha256').update(fs.readFileSync(f)).digest('hex');
