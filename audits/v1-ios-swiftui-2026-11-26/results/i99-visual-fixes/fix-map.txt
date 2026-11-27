@@ -1,0 +1,59 @@
+# #99: each finding of the #14 pilot review → the exact Figma node → what changed → the test that pins it
+# Figma 90oyvXHxxBQAvr1netov7S "V1 alinhamento funcional · 26 nov", read-only (create_session; get_design_context 805:492, 805:410,
+# 880:4403, 805:437; get_metadata 880:4257, 889:489, 805:432; get_screenshot 889:489). No use_figma.
+# Scope change (Founder, P0 Figma reconciliation): the onboarding-opening item is dropped; onboarding files are untouched (identical to
+# da0ec00e). Fidelity is not judged here: the visual-ux-reviewer re-reviews the captures in captures/.
+
+BLOCKER · Hoje urgent (no Hoje frame; content frame 805:492 + component 901:1482, orchestrator method 27/11)
+- headline = urgent instruction "Pare agora e procure atendimento médico urgente"       805:516   TodayContent (clinical hold → one-tone headline)
+- card: label "URGENTE" (estado/negativo)                                                 805:519   UrgentCareBanner(underHeadline:) → SafetyCard
+        title "Se for forte ou não passar, ligue para o número de emergência local"      805:520
+        body "O app não faz diagnóstico." (the second sentence of 805:521; the first names the sign, which the view does not carry)
+        card fundo/elevado opaque, outline agora 1.5, radius 20, padding 16/14            805:518
+- "Entendi" primary (agora, 52 pt), first                                                 805:582   HoldPanel, RMButton(.now)  (52 pt: 901:1367)
+- "Declarar que estou pronto" neutral secondary (fundo/elevado-2, 52 pt)                  805:584   HoldPanel, RMButton(.neutral)
+- "Enquanto isso" + held sports rows with padlock + note                                  805:523, 805:524, 805:554
+  tests: HoldTodayTests.testAnUrgentHoldHeadlinesTheUrgentInstruction, testHeldSportsAreTheOnesTheEngineHolds, testEntendiIsRememberedPerHoldOnly;
+         HoldHierarchyUITests.testUrgentHoldHeadlineCardAndActions, testEntendiKeepsTheUrgentLevelAndTheDeclaration,
+         testAccessibilityLargeUrgentHoldKeepsItsHierarchyReachable; GuidanceLevelUITests.testTodayUnderAnUrgentHoldShowsUrgentCare
+
+MAJOR
+- H1 glow cut by a straight line; light through the translucent urgent banner
+  → RMGlow: EllipticalGradient to zero at the edge of the 620 × 460 ellipse ("Luz", radial to 0)   880:4258, 805:411
+  → the urgent card is opaque                                                                         805:518
+  tests: HoldTodayTests.testTheLightIsNeutralWhenNothingMayStart (colour); the edge is visual → captures
+- H2 tab bar over the content
+  → TabBarArea = the Figma "Tab bar" area: 20 pt above the bar, bar 353 × 68, 30 pt to the bottom edge, on the screen's fundo/app;
+    the content ends at the area's top (bottom inset 118 − safe area)                                880:4403 (also 889:635)
+  → no gradient scrim and no hairline: the Figma area has neither (see accepted-differences.txt, open decision 2)
+  tests: HoldTodayTests.testTheContentEndsAboveTheTabBar; HoldHierarchyUITests.testAccessibilityLargeToday… ("Começar" and "Ver o treino"
+         reach a hittable position above the area)
+- H3 week strip does not scale with Dynamic Type
+  → every measure of the strip × the text's growth, up to the large-text frame's × 1.3 (today panel 247, others 52, cards 226 × 161,
+    baseline 221, labels at 413); text inside up to xxxLarge                                       889:515 (889:489 "Texto grande / Hoje")
+  tests: HoldTodayTests.testTheWeekStripScalesWithTheTextUpToTheLargeTextFrame;
+         HoldHierarchyUITests.testAccessibilityLargeTodayScalesTheWeekAndKeepsTheActionsClearOfTheTabBar (today card 226 pt)
+- Blocked (805:410)
+  · hierarchy as urgent: "Entendi" primary / "Declarar que estou pronto" secondary                    805:576, 805:578
+  · headline "Sem treino prescrito por enquanto"                                                      805:449
+  · card "Pare de treinar e procure uma avaliação profissional" + "O app não faz diagnóstico e não avalia lesões."
+    (the second sentence of 805:453)                                                                  805:451, 805:452, 805:453
+  · held sessions as the art's "Em espera" pills: no fill, dashed texto/terciario at 24 %, 1.5 pt    805:436–805:444
+    and the "Pausa" glyph in the held card / bar                                                      805:445, 805:446
+  · rows "Corrida · retida / Força · retida", "Sem prescrição até a sua declaração", padlock         805:456–805:482
+  · banner without red: outline agora 1.5 (also the StateBanner .safety tone)                        805:451
+  · neutral glow                                                                                      805:411 "Luz · neutra"
+  · micro "SINAL INFORMADO · data · hora" from hold.since                                             805:448
+  tests: HoldTodayTests (headline, held marks, held sports, signal time, glow); HoldHierarchyUITests.testProfessionalHoldHeadlineCardAndActions;
+         NavigationTests.testBlockedShowsSafetyStateAndNoStart (headline text); FixtureReplayTests.testBlockedShowsNoPrescription (headline key)
+- Onboarding opening (835:2069): DROPPED by the Founder's scope change; onboarding to be rebuilt frame by frame in a separate issue.
+
+MINOR
+- avatar ring touch area ≥ 44 pt (ring stays 36 pt)                                                  880:4262 (visual unchanged)
+- banner button 52 pt                                                                                 901:1367
+- micro blue text on dashed (~3.9:1): not changed here; to be measured in #94 (light mode owns the palette)
+
+ADDED BY THE ORCHESTRATOR (implementation divergence)
+- urgent banner styling exactly as 805:518: fundo/elevado background, 1.5 pt agora border (was negativo-suave fill, 2 pt negativo border);
+  red only in the "URGENTE" label (805:519). Professional card without red (805:451). Already in place since 0de92610 (SafetyCard); no
+  conflict with the blocker fix. The StateBanner .safety tone is neutral as well (agora 1.5 outline, no red icon).
