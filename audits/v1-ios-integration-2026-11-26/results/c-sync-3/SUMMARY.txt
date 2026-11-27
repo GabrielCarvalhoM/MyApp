@@ -1,6 +1,7 @@
 C sync 3: frente C 5694f658 (#73 PR #86) + bc3fe449 (IDs do pbxproj, PR #88) -> integração 09ac4dc3 (#48 PR #84).
 Merge: conflito no project.pbxproj pela mesma colisão C0/C1 do C sync 2; resolvido mantendo 68A0/68A1 da integração e somando
 73A0-A3 do #73 (mesmas contagens de referência da branch C); 105 objetos, 0 duplicados, 0 indefinidos; plutil OK.
-PR #88 corrigiu os IDs na própria frente C; o merge dele aqui não muda conteúdo em ios/.
+PR #88 corrigiu os IDs na própria frente C; seu merge aqui mantém o pbxproj da integração (contém todos os objetos e entradas
+de lista do lado C; as definições diferentes são só acréscimos da integração) e não muda conteúdo.
 sim.sh all --sim RepMile-INT (app desinstalado antes) em 38c435cd: tests Passed 86/86, 0 failed, 0 skipped
 (ios/.build/sim-runs/20261127T155555Z/manifest.json, target=simulator result=ok). guard 635 OK; swift-size 0 acima do limite.
