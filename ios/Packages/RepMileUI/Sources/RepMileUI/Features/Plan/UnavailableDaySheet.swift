@@ -3,7 +3,8 @@ import SwiftUI
 
 /// "Não posso neste dia" (GAP-09; Figma 30 `593:689` → `597:1542`): the origin day becomes unavailable, the engine proposes, the athlete
 /// confirms. The UI never chooses a destination. The proposal's run sessions come from `presentation().pending`; strength rows of a proposal
-/// are not exposed yet (GAP-08, A's `pendingWeek`). State, the two writes and the re-read live in `UnavailableDayViewModel`; this view renders.
+/// are not exposed yet (GAP-08, A's `pendingWeek`). The request carries the eligibility screen answered here (#72). State, the two writes and
+/// the re-read live in `UnavailableDayViewModel`; this view renders.
 struct UnavailableDaySheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: UnavailableDayViewModel
@@ -13,6 +14,14 @@ struct UnavailableDaySheet: View {
     private var session: PlannedSession { viewModel.session }
 
     var body: some View {
+        ScrollView { content.padding(RM.Space.gutter) }
+            .background(RM.Palette.fundoElevado.ignoresSafeArea())
+            // The screen's six rows do not fit a half sheet.
+            .presentationDetents([.large])
+            .presentationBackground(RM.Palette.fundoElevado)
+    }
+
+    private var content: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text(L.t("session.cantThisDay")).rmText(.titulo)
@@ -22,11 +31,14 @@ struct UnavailableDaySheet: View {
             }
             switch viewModel.phase {
             case .ask, .sending:
-                Text(L.f("move.ask", Fmt.onWeekday(session.date), TodayContent.title(session).lowercased(with: Fmt.locale))).rmText(.corpo, RM.Palette.textoSecundario)
-                    .fixedSize(horizontal: false, vertical: true)
-                Spacer()
-                PrimaryActionButton(L.t("move.send"), icon: .relogio, enabled: viewModel.canSend) { Task { await viewModel.send() } }
-                    .accessibilityIdentifier("move-send")
+                askForm
+            case .needsInput:
+                StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"))
+                    .accessibilityIdentifier("move-needs-input")
+                SecondaryPillButton(L.t("common.close")) { dismiss() }
+            case .clinical:
+                ClinicalRouteBanner(reportKept: false).accessibilityIdentifier("move-blocked")
+                SecondaryPillButton(L.t("common.close")) { dismiss() }
             case .proposed, .accepting:
                 Text(L.t("move.proposed")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
                 if viewModel.proposalUnavailable {
@@ -53,9 +65,16 @@ struct UnavailableDaySheet: View {
                 SecondaryPillButton(L.t("common.close")) { dismiss() }
             }
         }
-        .padding(RM.Space.gutter)
-        .background(RM.Palette.fundoElevado.ignoresSafeArea())
-        .presentationDetents([.medium])
-        .presentationBackground(RM.Palette.fundoElevado)
+    }
+
+    @ViewBuilder private var askForm: some View {
+        @Bindable var vm = viewModel
+        Text(L.f("move.ask", Fmt.onWeekday(session.date), TodayContent.title(session).lowercased(with: Fmt.locale))).rmText(.corpo, RM.Palette.textoSecundario)
+            .fixedSize(horizontal: false, vertical: true)
+        // #72: the engine applies no change without the screen sent with it.
+        EligibilityForm(screen: $vm.eligibility).disabled(viewModel.phase == .sending)
+        Text(L.t("ob.eligibility.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+        PrimaryActionButton(L.t("move.send"), icon: .relogio, enabled: viewModel.canSend) { Task { await viewModel.send() } }
+            .accessibilityIdentifier("move-send")
     }
 }

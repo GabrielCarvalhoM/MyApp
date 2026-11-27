@@ -98,28 +98,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5), "the report has a way out")
     }
 
-    @MainActor
-    func testNotFeeling100AsksTheEngineSignsForTheCondition() {
-        let app = launch("today")
-        el(app, "today-changed").tap()
-        XCTAssertTrue(app.buttons["changes-not-feeling"].waitForExistence(timeout: 5))
-        app.buttons["changes-not-feeling"].tap()
-        XCTAssertTrue(el(app, "flow-not-feeling-100").waitForExistence(timeout: 5))
-        app.buttons["condition-MINOR_DISCOMFORT"].tap()
-        XCTAssertTrue(el(app, "signs-9").waitForExistence(timeout: 5), "MINOR_DISCOMFORT asks 9 signs")
-        attach(app, "72 — 9 sinais (843:1751)")
-        for sign in ["feverOrChills", "chestPainPressureOrTightness", "breathlessAtRest", "palpitationsAtRest", "faintingOrDizziness",
-                     "painThatChangesMovement", "swelling", "injuryFromFallOrImpact", "gettingWorse"] {
-            let b = app.buttons["sign-\(sign)-no"]
-            while !b.isHittable { app.swipeUp() }
-            b.tap()
-        }
-        let intent = app.buttons["intent-REDUCE_LIGHT"]
-        while !intent.isHittable { app.swipeUp() }
-        intent.tap()
-        app.buttons["nf-send"].tap()
-        XCTAssertTrue(el(app, "nf-kept").waitForExistence(timeout: 5))
-    }
+    // "Não estou 100%" from the shell and the readiness declaration: EligibilityRestUITests (#72).
 
     @MainActor
     func testUnplannedRunIsNotStartedUnderAHold() {
@@ -157,19 +136,6 @@ final class ExecutionAndSafetyTests: XCTestCase {
         leave.tap()
         app.buttons["Sair sem salvar"].firstMatch.tap()
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5))
-    }
-
-    @MainActor
-    func testBlockedReadinessAsksFifteenSignsAndReturns() {
-        let app = launch("blocked")
-        app.buttons["Estou pronto para voltar"].tap()
-        XCTAssertTrue(el(app, "signs-15").waitForExistence(timeout: 5))
-        app.buttons["readiness-recovered-yes"].tap()
-        attach(app, "72 — prontidão, 15 sinais (843:1980)")
-        let send = app.buttons["readiness-send"]
-        while !send.isHittable { app.swipeUp() }
-        send.tap()
-        XCTAssertTrue(el(app, "readiness-returning").waitForExistence(timeout: 5))
     }
 
     /// A recording survives a killed process and comes back on screen (handoff C §5).
