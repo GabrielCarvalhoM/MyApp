@@ -188,16 +188,16 @@ struct OBSegmented: View {
 struct OBEffortDots: View {
     @Binding var value: Int?
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 2) {
             ForEach(1...10, id: \.self) { i in
                 Button { value = i } label: {
                     Circle().fill((value ?? 0) >= i ? RM.Palette.corrida : RM.Palette.fundoTrilho)
-                        .frame(width: i == value ? 12 : 8, height: i == value ? 12 : 8).frame(width: 22, height: 32)
+                        .frame(width: i == value ? 12 : 8, height: i == value ? 12 : 8).frame(width: 20, height: 32)
                 }
                 .buttonStyle(.plain)
             }
             Spacer(minLength: 4)
-            Text(value.map { L.f("ob.resultDetail.effortValue", "\($0)") } ?? "—").rmText(.numeroS)
+            Text(value.map { L.f("ob.resultDetail.effortValue", "\($0)") } ?? "—").rmText(.numeroS).lineLimit(1).fixedSize()
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(L.t("ob.resultDetail.effort")).accessibilityValue(value.map { L.f("ob.resultDetail.effortValue", "\($0)") } ?? "—")

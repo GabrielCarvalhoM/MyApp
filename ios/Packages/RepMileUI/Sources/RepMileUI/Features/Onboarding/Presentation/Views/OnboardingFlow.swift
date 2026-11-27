@@ -44,7 +44,7 @@ struct OnboardingFlow: View {
             case .ready:
                 OnboardingPlanReadyView(preview: preview(vm), save: { vm.saveThePlan() }, seePlan: finished)
                     .sheet(item: Binding(get: { vm.sheet == .account ? vm.sheet : nil }, set: { if $0 == nil { vm.sheet = nil; withAnimation { vm.accountSheetClosed() } } })) { _ in
-                        OnboardingAccountSheet().presentationDetents([.medium, .large]).presentationDragIndicator(.visible)
+                        OnboardingAccountSheet().presentationDetents([.height(440), .large]).presentationDragIndicator(.visible)
                     }
             case .firstWeek: OnboardingFirstWeekView(preview: preview(vm), goToday: finished)
             case .outcome(let o):

@@ -20,7 +20,7 @@ struct OnboardingFormView: View {
             }
         }
         .sheet(item: Binding(get: { vm.sheet == .confirmCare ? vm.sheet : nil }, set: { if $0 == nil, vm.sheet == .confirmCare { vm.sheet = nil } })) { _ in
-            CareConfirmSheet(vm: vm).presentationDetents([.medium]).presentationDragIndicator(.visible)
+            CareConfirmSheet(vm: vm).presentationDetents([.height(360), .large]).presentationDragIndicator(.visible)
         }
     }
 
@@ -108,9 +108,8 @@ struct CareConfirmSheet: View {
     var body: some View {
         let marked = CareItem.allCases.filter { $0.isClinical && vm.draft.care.contains($0) }.map { L.t("ob.care.\($0.rawValue)").lowercased(with: Fmt.locale) }
         VStack(alignment: .leading, spacing: 12) {
-            Text(L.t("ob.careConfirm.title")).rmText(.titulo)
+            Text(L.t("ob.careConfirm.title")).rmText(.titulo).padding(.top, 8)
             Text(L.f("ob.careConfirm.body", OBText.list(marked))).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 8)
             OBPrimaryButton(title: L.t("ob.careConfirm.confirm"), id: "ob-care-confirm") { vm.confirmCare() }
             OBSecondaryButton(title: L.t("ob.careConfirm.review"), id: "ob-care-review") { vm.sheet = nil }
         }

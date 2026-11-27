@@ -10,6 +10,7 @@ struct OBWheelColumn: View {
     let id: String
     @State private var position: Int?
     private let rowHeight: CGFloat = 36
+    private func row(of s: Int?) -> Int { s.flatMap { v in values.firstIndex(of: v).map { $0 + 1 } } ?? 0 }
 
     var body: some View {
         HStack(spacing: 6) {
@@ -31,11 +32,13 @@ struct OBWheelColumn: View {
             .frame(height: rowHeight * 5)
             if let unit { Text(unit).rmText(.detalhe, RM.Palette.textoTerciario) }
         }
-        .onAppear { position = selection.flatMap { s in values.firstIndex(of: s).map { $0 + 1 } } ?? 0 }
+        .onAppear { position = row(of: selection) }
         .onChange(of: position) { _, p in
             guard let p else { return }
             selection = p == 0 ? nil : values[min(values.count, p) - 1]
         }
+        // A value set from outside (a resumed draft, the other columns of a date) moves the wheel to it.
+        .onChange(of: selection) { _, s in if position != row(of: s) { position = row(of: s) } }
         .accessibilityElement(children: .ignore)
         .accessibilityValue(selection.map(label) ?? "—")
         .accessibilityAdjustableAction { d in
@@ -102,6 +105,10 @@ struct OBRuler: View {
         .padding(.horizontal, RM.Space.gutter)
         .onAppear { position = selection.flatMap { s in values.firstIndex(of: s).map { $0 + 1 } } ?? 0 }
         .onChange(of: position) { _, p in guard let p else { return }; selection = p == 0 ? nil : values[min(values.count, p) - 1] }
+        .onChange(of: selection) { _, s in
+            let r = s.flatMap { v in values.firstIndex(of: v).map { $0 + 1 } } ?? 0
+            if position != r { position = r }
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title).accessibilityValue(selection.map { label($0) + " " + unit } ?? "—")
         .accessibilityAdjustableAction { d in

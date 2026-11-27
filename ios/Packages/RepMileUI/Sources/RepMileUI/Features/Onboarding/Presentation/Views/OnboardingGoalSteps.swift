@@ -129,13 +129,18 @@ struct RaceDateWheel: View {
     @State private var m: Int?
     @State private var y: Int?
 
+    init(day: String?, startYear: Int, set: @escaping (String?) -> Void) {
+        self.day = day; self.startYear = startYear; self.set = set
+        let (d0, m0, y0) = RaceDateParts.split(day)
+        _d = State(initialValue: d0); _m = State(initialValue: m0); _y = State(initialValue: y0)
+    }
+
     var body: some View {
         OBWheelCard {
             OBWheelColumn(values: Array(1...31), selection: $d, label: { String(format: "%02d", $0) }, id: "ob-race-day")
             OBWheelColumn(values: Array(1...12), selection: $m, label: { Self.month($0) }, id: "ob-race-month")
             OBWheelColumn(values: Array(startYear...(startYear + 2)), selection: $y, label: { "\($0)" }, id: "ob-race-year")
         }
-        .onAppear { (d, m, y) = RaceDateParts.split(day) }
         .onChange(of: [d, m, y]) { set(RaceDateParts.join(d, m, y)) }
     }
 
