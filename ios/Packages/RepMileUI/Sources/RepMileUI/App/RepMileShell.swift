@@ -88,7 +88,6 @@ public struct RepMileShell: View {
         // A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next open removes
         // the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
         .onChange(of: model.route) { _, r in if r == .accountErased { try? recorder.eraseAllRecordings(); live?.accountErased() } }
-        .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
 }

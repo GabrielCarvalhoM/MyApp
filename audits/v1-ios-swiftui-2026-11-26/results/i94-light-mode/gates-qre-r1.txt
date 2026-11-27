@@ -1,0 +1,22 @@
+# Gates after the QRE review of PR #106 (READY_WITH_CONDITIONS), on e25980a0
+Fixed: P2-1 (today-column contrast pairs pinned; forca 2.67:1 in light below 3:1), P3-1 (luz-forca.imageset deleted, unreferenced),
+P3-3 (scan widened to the app target, .environment(\.colorScheme, .toolbarColorScheme(, overrideUserInterfaceStyle, Color.white/black, raw hex).
+Palette values unchanged. No view changed; the asset removed was referenced nowhere.
+
+RepMileUI unit tests: Executed 200 tests, with 0 failures (0 unexpected) in 3.363 (3.454) seconds
+  (200 = 199 + ContrastTests.testTheTodayColumnPairsAsMeasured; the scan test was widened and renamed testNoViewPinsAnAppearanceOrDrawsARawColour)
+  Scan mutation check: Color.white + overrideUserInterfaceStyle in RepMileApp.swift and .toolbarColorScheme( + 0x112233 in Icons.swift → the test failed on both files; reverted.
+
+AppearanceUITests (xcodebuild -only-testing, RepMile-C-3): exit 0
+passed AppearanceUITests.testClinicalBannersInBothAppearances
+passed AppearanceUITests.testMainScreensFollowTheSystemAppearance
+passed AppearanceUITests.testRunScreenFollowsTheSystemAppearance
+passed AppearanceUITests.testStateScreensInBothAppearances
+
+guard:
+guard: branch=claude/v1-ios-swiftui-i94-light-mode papel=C · SwiftUI base=v1-abc-ready-2026-11-26 head=HEAD
+guard: 401 caminhos alterados · 401 OK · 0 exigem aprovação · 0 proibidos
+exit 0
+swift-size:
+swift-size: 127 arquivos Swift em HEAD · limite 350 · 0 acima do limite fora do baseline
+exit 0

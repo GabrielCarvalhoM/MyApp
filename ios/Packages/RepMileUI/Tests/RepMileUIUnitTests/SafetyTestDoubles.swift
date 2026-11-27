@@ -30,20 +30,28 @@ enum Safety {
     }
 }
 
-/// A writer whose `submit` answers one given answer, after an optional delay (a request still in flight), and records every call.
-final class ScriptedSubmitWriter: CoachingWriting {
+/// A writer whose `submit` answers one given answer (or, with `then`, the next answers in order, the last repeated), after an optional
+/// delay (a request still in flight), and records every call.
+final class ScriptedSubmitWriter: CoachingWriting, @unchecked Sendable {
     let answer: BoundaryAnswer
     let delay: Duration
     let journal = RequestJournal()
+    private let lock = NSLock()
+    private var next: [BoundaryAnswer]
 
-    init(_ answer: BoundaryAnswer, delay: Duration = .zero) { self.answer = answer; self.delay = delay }
+    init(_ answer: BoundaryAnswer, then next: [BoundaryAnswer] = [], delay: Duration = .zero) { self.answer = answer; self.next = next; self.delay = delay }
+    private var served = false
 
     private var none: WriteOutcome { WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []) }
 
     func submit(_ review: ReviewRequest) async -> WriteOutcome {
         journal.add("submit", review)
         if delay > .zero { try? await Task.sleep(for: delay) }
-        return WriteOutcome(answer: answer, kept: [], notKept: [])
+        let a: BoundaryAnswer = lock.withLock {
+            guard served, !next.isEmpty else { served = true; return answer }
+            return next.count > 1 ? next.removeFirst() : next[0]
+        }
+        return WriteOutcome(answer: a, kept: [], notKept: [])
     }
     func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome { none }
     func restart(_ answers: OnboardingAnswers) async -> WriteOutcome { none }

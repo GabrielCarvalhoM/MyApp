@@ -102,8 +102,9 @@ final class RereadAfterWriteTests: XCTestCase {
 
     // MARK: History correction
 
-    /// A kept correction: the model is read again, the row now carries the athlete's correction and is not offered again.
-    func testAKeptCorrectionIsReadAgainAndNotOfferedAgain() async throws {
+    /// A kept correction: the model is read again and the row now carries the athlete's correction. The re-read row is offered again (#70:
+    /// the engine admits a correction of the correction in force), naming the ATHLETE voice the re-read row carries.
+    func testAKeptCorrectionIsReadAgainAndOfferedAgainOnTheReadRow() async throws {
         let reader = SwitchableReader(presentation: "12-presentation-after-w0", logged: "P-logged-two-voices")
         let writer = RecordingWriter { if $0 == "submit" { reader.switchTo(logged: "P-logged-unplanned") } }
         let model = Reread.model(reader, writer)
@@ -119,7 +120,9 @@ final class RereadAfterWriteTests: XCTestCase {
         XCTAssertEqual(reader.loads, loads + 1, "read again once")
         let after = try XCTUnwrap(row())
         XCTAssertNotNil(after.contested, "the row shows the correction")
-        XCTAssertFalse(HistoryCorrectionViewModel.canContest(after), "and does not offer it again")
+        XCTAssertTrue(HistoryCorrectionViewModel.canContest(after), "a corrected row is offered again (#70)")
+        let next = try XCTUnwrap(HistoryCorrectionViewModel.observation(entry: after, distanceKm: 6, reason: .signalLoss))
+        XCTAssertEqual(next.correctionOf, HistoryCorrectionViewModel.athleteVoice(after)?.eventId, "names the voice of the row as read again")
     }
 
     func testAFailedCorrectionReadsNothingAgainAnOkOneDoes() async throws {

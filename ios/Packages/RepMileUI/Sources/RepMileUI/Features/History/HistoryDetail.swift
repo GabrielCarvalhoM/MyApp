@@ -4,6 +4,7 @@ import SwiftUI
 /// One history row in full: every voice (each with done, minutes, stop, distances), sets and loads as logged, and the distance correction
 /// (its state and write live in `HistoryCorrectionViewModel`). The correction asks the eligibility screen with it (the engine records no
 /// report without a current one); an answer that asks for the warning-sign screen opens "Não estou 100%" from the banner, as the run report.
+/// #70: the engine's correction limit is said as such (never "send again"), and a plan day that cannot be read at send time keeps the draft.
 struct HistoryDetail: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: HistoryCorrectionViewModel
@@ -66,7 +67,14 @@ struct HistoryDetail: View {
         case .saved, .notKept:
             let sent = viewModel.phase == .saved
             // A clinical route is not "send again" (SSCTR #59 P2-2): only its banner, never an invitation to withdraw the answer.
-            if sent || !viewModel.clinical {
+            if viewModel.signUndelivered {
+                // QRE #96 P1: a "sim" past the limit is never left at "nothing changed".
+                ClinicalRouteBanner(reportKept: false, guidance: .professionalAssessment).accessibilityIdentifier("contest-sign-undelivered")
+                SecondaryPillButton(L.t("nf.title"), icon: .lista) { showSigns = true }.accessibilityIdentifier("contest-not-feeling")
+            } else if viewModel.limitReached && !viewModel.clinical {
+                Text(L.t("history.contest.limit")).rmText(.detalhe, RM.Palette.negativo).fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("contest-limit")
+            } else if sent || !viewModel.clinical {
                 Text(sent ? L.t("report.saved") : L.t("report.notKept")).rmText(.detalhe, sent ? RM.Palette.positivo : RM.Palette.negativo)
             }
             if let g = viewModel.clinicalGuidance {
@@ -81,12 +89,20 @@ struct HistoryDetail: View {
             RMCard {
                 Text(L.t("history.contest.title")).rmText(.subtitulo)
                 Text(L.t("history.contest.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-                TextField(L.t("history.contest.km"), text: $vm.km).keyboardType(.decimalPad).rmText(.numeroS)
-                    .padding(10).background(RM.Palette.fundoElevado2, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("contest-km")
-                Picker("", selection: $vm.reason) { ForEach(DeclaredDistanceReason.allCases, id: \.self) { Text(L.t("reason." + $0.rawValue)).tag($0) } }
-                    .pickerStyle(.menu).tint(RM.Palette.textoPrimario)
-                EligibilityForm(screen: $vm.eligibility)
+                // QRE #96 P2: nothing is edited while the correction is in flight.
+                Group {
+                    TextField(L.t("history.contest.km"), text: $vm.km).keyboardType(.decimalPad).rmText(.numeroS)
+                        .padding(10).background(RM.Palette.fundoElevado2, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("contest-km")
+                    Picker("", selection: $vm.reason) { ForEach(DeclaredDistanceReason.allCases, id: \.self) { Text(L.t("reason." + $0.rawValue)).tag($0) } }
+                        .pickerStyle(.menu).tint(RM.Palette.textoPrimario)
+                    EligibilityForm(screen: $vm.eligibility)
+                }
+                .disabled(viewModel.phase == .submitting)
                 Text(L.t("ob.eligibility.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                if viewModel.dayUnavailable {
+                    Text(L.t("history.contest.noDay")).rmText(.detalhe, RM.Palette.negativo).fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("contest-no-day")
+                }
                 PrimaryActionButton(L.t("history.contest.send"), icon: .check, enabled: viewModel.canSend) { Task { await viewModel.send { change in withAnimation { change() } } } }
                     .accessibilityIdentifier("contest-send")
             }
