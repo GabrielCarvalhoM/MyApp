@@ -139,8 +139,8 @@ public struct StateBanner: View {
     public init(tone: Tone, icon: RMIcon, title: String, message: String, actionTitle: String? = nil, action: (() -> Void)? = nil) {
         self.tone = tone; self.icon = icon; self.title = title; self.message = message; self.actionTitle = actionTitle; self.action = action
     }
-    /// Red stays the urgent level's own (#99): a safety banner is outlined in "agora" (1.5 pt), neutral, as the hold card `805:451`.
-    var accent: Color { switch tone { case .safety, .neutral: RM.Palette.textoPrimario; case .milestone: RM.Palette.marco } }
+    /// The #73 styling, kept where no Figma frame covers the context (QRE P2-1, #99): Hoje's hold uses `SafetyCard` (`805:451`) instead.
+    var accent: Color { switch tone { case .safety: RM.Palette.negativo; case .neutral: RM.Palette.textoPrimario; case .milestone: RM.Palette.marco } }
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
@@ -153,7 +153,7 @@ public struct StateBanner: View {
         .padding(RM.Space.card)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(RM.Palette.fundoElevado, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(tone == .safety ? RM.Palette.agora : .clear, lineWidth: 1.5))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(tone == .safety ? RM.Palette.negativo.opacity(0.4) : .clear, lineWidth: 1))
         .accessibilityElement(children: .contain)
     }
 }

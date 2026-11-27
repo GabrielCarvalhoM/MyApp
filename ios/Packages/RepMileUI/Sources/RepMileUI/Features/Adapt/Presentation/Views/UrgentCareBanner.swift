@@ -2,13 +2,13 @@ import Accessibility
 import CoachingPresentation
 import SwiftUI
 
-/// The engine's URGENT_CARE_ADVISED level (#73), shown distinctly from the professional-assessment card: the "URGENTE" label in
-/// estado/negativo, the only red of a hold (Figma 72 `805:492`, #99). Its copy is INTERIM (CLINICAL_HUMAN_REQUIRED, G04, #87): a
-/// care-seeking level only, never a diagnosis or a treatment. The card is opaque (fundo/elevado, outlined in "agora"), so no light shows
-/// through it (#99 H1).
+/// The engine's URGENT_CARE_ADVISED level (#73), shown distinctly from the professional-assessment banner. Its copy is INTERIM
+/// (CLINICAL_HUMAN_REQUIRED, G04, #87): a care-seeking level only, never a diagnosis or a treatment.
 ///
-/// `underHeadline`: on Hoje the screen's headline is the urgent instruction (#99), and the card names the emergency line and that the app
-/// does not diagnose. Elsewhere (a flow's result, the session, the run) the card carries the instruction itself, as before.
+/// `underHeadline` (Hoje, #99): the screen's headline is the urgent instruction, and the card is Figma `805:518` exactly: opaque
+/// fundo/elevado, 1.5 pt "agora" outline, the "URGENTE" label (`805:519`) its only red, the emergency line and that the app does not
+/// diagnose. Elsewhere (a flow's result, the session, the run) no headline carries the instruction, so the card keeps the #73 styling
+/// (filled safety card, strong red border, the instruction as its title) until a Figma decision covers those contexts (QRE P2-1, #99).
 /// VoiceOver reads it as one element, first in its container, and it is announced when it appears (a result that replaces a form is not
 /// otherwise read until the athlete moves focus). A banner that stands for a hold (Today, session detail, the run screen) passes
 /// `announceKey` (`key(for:)`): that urgent level is announced once, not at every reappearance of the screen; a result banner and the run
@@ -41,6 +41,22 @@ struct UrgentCareBanner: View {
         if underHeadline { return L.t("hold.urgent.body.interim") }
         return L.t(reportKept ? "state.blocked.urgent.body.interim" : "state.blocked.urgent.body.interim.reportNotKept")
     }
+    /// The #73 card, where no headline carries the instruction (unchanged by #99).
+    private var standalone: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                RMIconView(.pausa, size: 18).foregroundStyle(RM.Palette.negativo)
+                Text(L.t("state.blocked.title")).rmText(.micro, RM.Palette.negativo)
+            }
+            Text(title).rmText(.titulo).fixedSize(horizontal: false, vertical: true)
+            Text(message).rmText(.corpo).fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(RM.Space.card)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RM.Palette.negativoSuave, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(RM.Palette.negativo, lineWidth: 2))
+    }
+
     /// What VoiceOver announces: on Hoje the headline's instruction first, so the announcement never lacks it.
     private var spoken: String { (underHeadline ? L.t("today.hero.urgent.interim") + ". " : "") + title + ". " + message }
 
@@ -48,7 +64,9 @@ struct UrgentCareBanner: View {
         // A container around the one combined element, so an identifier a caller puts on the banner (e.g. "session-urgent") never replaces
         // "guidance-urgent".
         VStack(spacing: 0) {
-            SafetyCard(label: L.t("hold.urgent.label"), title: title, message: message, prominent: !underHeadline)
+            Group {
+                if underHeadline { SafetyCard(label: L.t("hold.urgent.label.interim"), title: title, message: message) } else { standalone }
+            }
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("guidance-urgent")
@@ -67,21 +85,18 @@ struct UrgentCareBanner: View {
     }
 }
 
-/// The outlined card of a hold (Figma 72 `805:451` / `805:518`): fundo/elevado, opaque, 1.5 pt "agora" outline, radius 20. An optional micro
-/// label in estado/negativo (only the urgent level has one), the instruction, then the detail. `prominent` keeps the larger type where the
-/// card stands alone (a flow's result, the run screen) and no headline carries the instruction.
+/// The outlined card of a hold on Hoje (Figma 72 `805:451` / `805:518`): fundo/elevado, opaque, 1.5 pt "agora" outline, radius 20. An
+/// optional micro label in estado/negativo (only the urgent level has one), the instruction, then the detail.
 struct SafetyCard: View {
     var label: String?
     let title: String
     let message: String
-    var prominent = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let label { Text(label).rmText(.micro, RM.Palette.negativo) }
-            Text(title).rmText(prominent ? .titulo : .subtitulo).fixedSize(horizontal: false, vertical: true)
-            Text(message).rmText(prominent ? .corpo : .detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-                .padding(.top, prominent ? 4 : 0)
+            Text(title).rmText(.subtitulo).fixedSize(horizontal: false, vertical: true)
+            Text(message).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, 16).padding(.vertical, 14)
         .frame(maxWidth: .infinity, alignment: .leading)

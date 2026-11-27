@@ -59,6 +59,8 @@ struct HoldPanel: View {
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("banner-blocked")
         .onAppear { acknowledged = HoldAcknowledgement.isAcknowledged(key) }
+        // A new hold (another key) while the panel stays on screen asks again (QRE P3).
+        .onChange(of: key) { _, newKey in acknowledged = HoldAcknowledgement.isAcknowledged(newKey) }
     }
 
     private func heldRow(_ sport: Sport) -> some View {
@@ -90,4 +92,6 @@ enum HoldAcknowledgement {
     private static var keys: Set<String> = []
     static func acknowledge(_ key: String) { keys.insert(key) }
     static func isAcknowledged(_ key: String) -> Bool { keys.contains(key) }
+    /// Tests only: a clean slate per test.
+    static func reset() { keys = [] }
 }

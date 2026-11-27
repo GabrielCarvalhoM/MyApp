@@ -8,6 +8,7 @@ import XCTest
 /// `17-plan-blocked`, `13-plan-w1`).
 @MainActor
 final class HoldTodayTests: XCTestCase {
+    override func setUp() async throws { HoldAcknowledgement.reset() }
     private func plan(_ name: String) throws -> PlanView { try Repo.store.decode(PlanView.self, name, at: "view") }
     private func today(_ p: PlanView, paused: Bool = false, gate: NotStartableReason = .blocked) -> TodayContent {
         TodayContent.build(plan: p, logged: nil, presentation: nil, weekPlan: nil, paused: paused) { _ in .notStartable(reason: gate) }
@@ -112,19 +113,30 @@ final class HoldTodayTests: XCTestCase {
         XCTAssertEqual(WeekPanels.scale(bodyScale: 3.1), 1.3, accuracy: 0.0001, "the Figma shows no larger strip")
     }
 
-    /// The #99 copy is in the three languages; the clinical lines are INTERIM (`.interim` keys, final wording in #87).
-    func testTheHoldCopyExistsInTheThreeLanguages() throws {
-        let interim = ["today.hero.urgent.interim", "hold.urgent.title.interim", "hold.urgent.body.interim", "hold.professional.title.interim",
-                       "hold.professional.body.interim"]
-        let plain = ["today.hero.held", "today.signal", "hold.urgent.label", "hold.meanwhile", "hold.sport.RUN", "hold.sport.STRENGTH", "hold.sport.detail",
+    /// The #99 copy (QRE P1-1): pt-BR from the Figma frames; the clinical lines INTERIM (`.interim`, #87); EN/ES PENDING_TRANSLATION, so
+    /// those locales ship the pt-BR text (never a translation invented here) and every key-locale is in `Copy/PENDING_TRANSLATION.txt`.
+    func testTheHoldCopyIsSourcedInPtBRAndPendingInENAndES() throws {
+        let interim = ["today.hero.urgent.interim", "hold.urgent.label.interim", "hold.urgent.title.interim", "hold.urgent.body.interim",
+                       "hold.professional.title.interim", "hold.professional.body.interim"]
+        let plain = ["today.hero.held", "today.signal", "hold.meanwhile", "hold.sport.RUN", "hold.sport.STRENGTH", "hold.sport.detail",
                      "hold.note", "hold.understood", "hold.declare"]
-        for lang in ["pt-BR", "en", "es"] {
+        func table(_ lang: String) throws -> [String: String] {
             let path = try XCTUnwrap(Bundle.module.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: lang), lang)
-            let table = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String], lang)
-            for key in interim + plain { XCTAssertFalse((table[key] ?? "").isEmpty, "\(lang) \(key)") }
-            if lang == "pt-BR" {
-                XCTAssertEqual(table["today.hero.urgent.interim"], "Pare agora e procure atendimento médico urgente")
-                XCTAssertEqual(table["hold.urgent.title.interim"], "Se for forte ou não passar, ligue para o número de emergência local")
+            return try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String], lang)
+        }
+        let pt = try table("pt-BR")
+        XCTAssertEqual(pt["today.hero.urgent.interim"], "Pare agora e procure atendimento médico urgente")
+        XCTAssertEqual(pt["hold.urgent.title.interim"], "Se for forte ou não passar, ligue para o número de emergência local")
+        XCTAssertEqual(pt["hold.urgent.label.interim"], "Urgente")
+        XCTAssertNil(pt["hold.urgent.label"], "renamed: the URGENTE label is clinical wording too")
+        let pendingFile = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../../Copy/PENDING_TRANSLATION.txt").standardized
+        let pending = Set(try String(contentsOf: pendingFile, encoding: .utf8).split(separator: "\n").filter { !$0.hasPrefix("#") }.map(String.init))
+        for lang in ["en", "es"] {
+            let t = try table(lang)
+            for key in interim + plain {
+                XCTAssertFalse((pt[key] ?? "").isEmpty, key)
+                XCTAssertEqual(t[key], pt[key], "\(lang) \(key): pending translation ships the pt-BR text")
+                XCTAssertTrue(pending.contains("\(key)|\(lang)"), "\(key)|\(lang) listed as pending")
             }
         }
     }
