@@ -14,13 +14,13 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 
 | | |
 |---|---|
-| Agentes | **Especialistas versionados em `.claude/agents/`** (registro [docs/engineering/AGENTS.md](../../docs/engineering/AGENTS.md)): `ios-engineer`, `ios-test-engineer`, `integration-engineer`, revisores read-only `quality-reliability-engineer`, `ios-architecture-reviewer`, `visual-ux-reviewer`, e o SSCTR. Validados numa sessão nova (`agents.mjs --discover`; evidência em `audits/v1-engineering-orchestration-2026-11-26/results/agents-restoration/`). **PR #80 → integração aguarda o fundador aplicar `governance:approved`** (o orquestrador não pode aprovar governança). Sessão nova = definições atuais |
-| Integração `claude/v1-ios-integration` | `a093c042` = … + C sync 1 (#67) + #63 (PR #75) + #49 (PR #77). Visualização em `a093c042` |
-| Frente C `claude/v1-ios-swiftui` | `c04ee8c4` = #59 (PR #69) + #68 (PR #71) + #72 (PR #78) |
-| Em andamento | **C sync 2** (`claude/v1-ios-integration-c-sync-2` @ `872a92b7`, worktree `myapp-v1-int-csync2`): merge feito (colisão de IDs do pbxproj resolvida: `ReportEligibilityUITests` → `68A0/68A1`), guard e swift-size OK, `sim.sh all` em RepMile-INT → depois PR · **#73** (P0, nível de orientação do motor): `ios-engineer`, worktree `myapp-v1-c-i73`, sim RepMile-C-2 · **#48** (B P3 + R2-03): `ios-engineer` no pacote de B via integração, worktree `myapp-v1-int-i48`, só macOS |
-| Próximas | revisão QRE (+SSCTR no #73) dos dois · #70, #76, #39, #62, #81 · **#66, #74, #79** aguardam o fundador |
-| Decisões do fundador | **#80 (aplicar `governance:approved`)** · **#79** (descongelar CoachingCore: sinal de alerta preso atrás da triagem, urgência rebaixada; bloqueia REAL_ATHLETE_READY) · #66 · #74 · #47 · #55 · #21 · #29 · nome do serviço do Keychain · `CURRENT_MISSION.md`/`CLAUDE.md` ainda dizem "missão proíbe implementação" (desatualizado em relação à V1) · Figma nomeado · modo claro |
-| Simuladores | RepMile-INT (C sync 2), RepMile-C-2 (#73), RepMile-C-3 (livre) |
+| Agentes | Especialistas versionados em `.claude/agents/` (registro [docs/engineering/AGENTS.md](../../docs/engineering/AGENTS.md)); validados numa sessão nova. **PR #80 → integração aguarda o fundador aplicar `governance:approved`**. Sessão nova = definições atuais |
+| Integração `claude/v1-ios-integration` | `9eb60f05` = … + #63 (PR #75) + #49 (PR #77) + C sync 2 (#59/#68/#72, PR #82) + #48 (PR #84) + C sync 3 (#73, PR #89) + #76 (PR #91). Visualização em `9eb60f05` |
+| Frente C `claude/v1-ios-swiftui` | `da0ec00e` = … + #73 (PR #86) + IDs do pbxproj (PR #88) + caminhos de C do #76 (PR #93, idênticos à integração) |
+| Em andamento | **#85** (reenvio após retryLater; PR #90): QRE READY_WITH_CONDITIONS após 2 re-verificações, R-1/R-2/R-3 conferidos; conteúdo mesclado 88/88 → aguardando CI → merge · **#83** (isolamento dos testes ao vivo): `ios-test-engineer`, worktree `myapp-v1-int-i83`, sim RepMile-C-3 |
+| Próximas | #70 (seguimentos do #59), #39, #62, #81, `saveActive` (C, do review do #76) · condições antes do release: #85 · **REAL_ATHLETE_READY bloqueado por #79, #87** |
+| Decisões do fundador | **#80** (rótulo de governança) · **#79** (descongelar CoachingCore: sinal de alerta atrás da triagem, urgência rebaixada, nível da retenção rebaixado por decisão posterior) · **#87** (texto urgente: revisão clínica humana) · #66 · #74 · Verified para #32/#41/#58/#61 agora ou só depois do iPhone · próximo passo na tela de identidade danificada (e schema mais novo) · `CURRENT_MISSION.md`/`CLAUDE.md` desatualizados · #47 · #55 · #21 · #29 · Keychain · Figma nomeado · modo claro |
+| Simuladores | RepMile-C-3 (#83), RepMile-INT e RepMile-C-2 livres; no máximo 2 suítes de UI ao mesmo tempo; desinstalar o app antes de `sim.sh all` até o #83 entrar |
 
 ## Branches e worktrees
 
@@ -70,6 +70,9 @@ parada em `a8aefa0` e não deve ser usada para ver o app.
 - [ ] #63 background delivery: app suspenso e encerrado pelo seletor → treino no relógio/iPhone → log sem cena: `hki.started` → `hki.backgroundDelivery code=REGISTERED` → `hki.observerFired`; enfileirado sem abrir o app, entregue quando A abrir
 - [ ] #63 antes do primeiro desbloqueio: reiniciar, gravar treino, desbloquear → composição abre sozinha, raiz não fica no erro operacional
 - [ ] #63 tempo: launch em background → `hki.observerFired` com `CoachingHost.open` no caminho; completion handler chamado antes da suspensão (B R2-03, #48)
+- [ ] #48 R2-03: gravar treino com o app suspenso → log `hki.observerFired`, `hki.backgroundWindow code=GRANTED`, entrega, `code=ENDED` (`performExpiringActivity` em background não provado no Mac)
+- [ ] #85: reenvio após falha longa (difícil no aparelho; o essencial está provado contra o motor real em Node) — opcional
+- [ ] #76: tela de identidade danificada e erasure no aparelho (build de desenvolvimento)
 - [ ] #63 Release no aparelho: sem `-scenario`, sem `Fixtures/`, abertura ao vivo
 - [ ] #63 exclusão no aparelho: gravar e relatar corrida → excluir conta → relançar → onboarding sem gravação/relato de volta → novo cadastro
 - [ ] #63 identidade danificada (build de desenvolvimento): `athlete-identity.json` corrompido → erro operacional, log `ACCOUNT_IDENTITY_DAMAGED`, arquivo nunca substituído
