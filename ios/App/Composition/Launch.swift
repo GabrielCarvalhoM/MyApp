@@ -91,6 +91,12 @@ enum LaunchFailure {
     /// The device-side data of an erased account could not be removed yet (G07); the launch does not go on until it is.
     static let erasurePending = "DEVICE_ERASURE_PENDING"
 
+    /// The launch screen's state for a failure code (#76): a damaged identity has its own state, with no "try again" (opening again reads the
+    /// same file, which is never replaced); every other code is the operational error, where trying again can work.
+    enum Shown: Equatable { case retryable(code: String), identityDamaged }
+
+    static func shown(for code: String) -> Shown { code == identityDamaged ? .identityDamaged : .retryable(code: code) }
+
     static func code(for error: Error) -> String {
         switch error {
         case AthleteIdentityStore.Failure.malformed: return identityDamaged
