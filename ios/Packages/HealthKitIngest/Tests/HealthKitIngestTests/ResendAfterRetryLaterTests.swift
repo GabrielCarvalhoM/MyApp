@@ -61,11 +61,25 @@ final class ResendAfterRetryLaterTests: XCTestCase {
         let c = await relaunched.counts(); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(c.consolidated, 1)
     }
 
-    /// Nothing is re-sent without a signal or a launch: the bare passage of time (other triggers included) never reopens it.
-    func testNoRoundIsSentWithoutASignalOrALaunch() async {
+    /// QRE #90 P3-3: the wake is scheduled at the set-aside, so a due round is sent without any signal or launch. Before it is due no
+    /// trigger reopens it, and a wake that fires early only arms the next one.
+    func testADueRoundIsSentWithoutWaitingForASignalOrALaunch() async {
         let (rig, sink, ing) = await exhausted()
-        rig.clock.advance(86_400); await ing.readNow(); await rig.reader.fire(); await ing.settled(); await rig.scheduler.runAll()
-        XCTAssertEqual(sink.deliveries.count, 3)
+        XCTAssertEqual(rig.scheduler.delays, [900], "armed at the set-aside")
+        rig.clock.advance(600); await ing.readNow(); await rig.reader.fire(); await ing.settled(); await rig.scheduler.runAll()
+        XCTAssertEqual(sink.deliveries.count, 3, "not due yet")
+        XCTAssertEqual(rig.scheduler.delays, [300])
+        rig.clock.advance(300); await rig.scheduler.runAll()
+        XCTAssertEqual(sent(sink), ["G1", "G1", "G1", "G1"])
+        let c = await ing.counts(); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(c.consolidated, 1)
+    }
+
+    /// The delivery-policy owner's parameters (QRE #90): 12 rounds, 15 min doubling to 24 h, about 6.3 days of waits in all.
+    func testTheDefaultPolicyCoversAMultiDayOutage() {
+        let p = HealthKitIngestor.ResendPolicy()
+        XCTAssertEqual(p.maxRounds, 12); XCTAssertEqual(p.base, 900); XCTAssertEqual(p.cap, 86_400)
+        let total = (0..<p.maxRounds).map { p.delay(afterRounds: $0) }.reduce(0, +)
+        XCTAssertEqual(total / 86_400, 6.32, accuracy: 0.01)
     }
 
     /// A fault that never clears: `maxRounds` rounds, each a new delivery that exhausts retryLater again, each waiting twice as long
@@ -114,7 +128,7 @@ final class ResendAfterRetryLaterTests: XCTestCase {
         let (rig, sink, ing) = await exhausted(then: [ScriptedSink.each(.notRecorded(reason: "NOT_RECORDED_BY_THIS_DECISION"))]) { $0.maxAttempts = 0 }
         await ing.deliveryConditionsChanged(); rig.clock.advance(900); await rig.scheduler.runAll()
         XCTAssertEqual(sent(sink), ["G1", "G1", "G1", "G1", "S1"])
-        let g1 = try stored(rig, "G1"); XCTAssertEqual(g1?.mayBeOnRecord, false); XCTAssertNil(g1?.resendDue)
+        let g1 = try stored(rig, "G1"); XCTAssertEqual(g1?.mayBeOnRecord, false); XCTAssertEqual(g1?.mayHaveLanded, false); XCTAssertNil(g1?.resendDue)
         let c = await ing.counts(); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(c.consolidated, 0)
     }
 

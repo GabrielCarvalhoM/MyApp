@@ -5,6 +5,8 @@ import IntegrationContracts
 // of its same-run group (its copies are consolidated into it), so before this it was never sent at all: a long PERSISTENCE_FAILURE outage in
 // which nothing landed lost the run. It is now reopened by `deliveryConditionsChanged()` and at launch, once its round is due, and sent with
 // its frozen bytes (same `activityId`, same link, same facts) in a NEW delivery (contract: a new id after any answer that is not retried).
+// QRE #90 P3-3: the wake for a round is scheduled when it is armed (at the set-aside), so a due round never waits for a signal; the wake
+// lives in memory only, and a signal or a launch schedules it again.
 // The boundary settles it (integration.mjs `admit`): same id with the same facts is DUPLICATE when a write landed (it goes to the ledger and
 // counts once); otherwise it is decided as a first send. Nothing here releases the group's copies: only an answered NOT_RECORDED proves the
 // workout absent (+Answers), and a workout whose rounds ran out keeps #48's rule.
@@ -24,9 +26,10 @@ public struct TaskRetryScheduler: RetryScheduler {
 extension HealthKitIngestor {
     /// #85: how often, and how far apart, a workout set aside after exhausting `retryLater` is sent again. Each round may itself exhaust
     /// `retryLater` (at most `maxConsecutiveRetryLater` sends); after `maxRounds` the workout stays set aside for good, so a fault that never
-    /// clears never loops. Delivery-retry parameters only: nothing here is a training rule.
+    /// clears never loops. Delivery-retry parameters only: nothing here is a training rule. 12 rounds, 15 min doubling to 24 h: about 6.3
+    /// days of waits, for a PERSISTENCE_FAILURE lasting several days (delivery-policy owner's decision, QRE #90).
     public struct ResendPolicy: Sendable {
-        public var maxRounds = 8
+        public var maxRounds = 12
         /// The first round is due this long after the set-aside; each next one twice as long, at most `cap` (15 min … 24 h).
         public var base: TimeInterval = 900
         public var cap: TimeInterval = 86_400
@@ -62,7 +65,7 @@ extension HealthKitIngestor {
     }
 
     /// `deliveryConditionsChanged()`: every NOT_RECORDED workout is sent again (attempt counted, contract §6.2), and every re-send round that
-    /// is due (#85). A round not yet due is armed by this signal: it is reopened when due, without waiting for another signal.
+    /// is due (#85). The wake for a round not yet due is scheduled again (it may have been lost with an earlier process).
     func reopenAfterSignal(_ s: inout QueueState) {
         for i in s.items.indices { if case .notRecorded = s.items[i].state { s.items[i].attempts += 1; s.items[i].state = .pending } }
         if let next = reopenDue(&s).next { scheduleResendWake(at: next) }

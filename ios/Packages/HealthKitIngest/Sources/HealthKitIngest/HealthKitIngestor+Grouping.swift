@@ -12,10 +12,11 @@ extension HealthKitIngestor {
         for id in batch.deletedIds {
             if let i = s.items.firstIndex(where: { $0.activityId == id }) {
                 if flying.contains(id) { s.items[i].deletedWhileInFlight = true }
-                else if s.items[i].mayBeOnRecord {
-                    // P3-2: it may be on the record, so it stays the run of its group (its copies are never promoted); counted once.
+                else if s.items[i].mayBeOnRecord || s.items[i].mayHaveLanded {
+                    // P3-2: it may be on the record (#85: also when a send of it may have landed and it waits, pending, for a new
+                    // delivery), so it stays the run of its group (its copies are never promoted); counted once.
                     if !s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedMaybeOnRecord, default: 0] += 1 }
-                    s.items[i].deletedWhileInFlight = true
+                    s.items[i].deletedWhileInFlight = true; s.items[i].mayBeOnRecord = true
                     // #85: a deleted workout is never sent again: a round still to come, or one reopened and not yet sent, ends here.
                     s.items[i].resendDue = nil
                     if s.items[i].state == .pending { s.items[i].state = .setAside(code: IngestCode.attemptsExhausted) }
