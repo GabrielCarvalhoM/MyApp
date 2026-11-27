@@ -1,0 +1,173 @@
+# RepMile #72 engine replay (node v24.19.0, CoachingCore and facade unchanged by this change; base fffefbb). The three athlete write sites #68 left, each request shaped as its Swift view model encodes it.
+# Script: scratch/i72-write-sites.mjs; in-memory store, synthetic athlete; no personal data.
+=== 1 "Não estou 100%" WITHOUT a screen (shell: requireEligibility=false)
+  MILD_ILLNESS, every sign "não", no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MILD_ILLNESS: ASK eligibility.currentAssessment, nothing decided
+  MILD_ILLNESS, "feverOrChills" sim, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MILD_ILLNESS feverOrChills: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MILD_ILLNESS, "chestPainPressureOrTightness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MILD_ILLNESS chestPainPressureOrTightness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MILD_ILLNESS, "breathlessAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MILD_ILLNESS breathlessAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MILD_ILLNESS, "palpitationsAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MILD_ILLNESS palpitationsAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MILD_ILLNESS, "faintingOrDizziness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MILD_ILLNESS faintingOrDizziness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS painThatChangesMovement: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS swelling: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS injuryFromFallOrImpact: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS gettingWorse: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS bodyWideAches: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS exhaustionAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS vomitingDiarrhoeaNauseaOrAbdominalPain: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS moderateOrSevereCough: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS severeHeadache: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MILD_ILLNESS severeNoseOrThroat: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MILD_ILLNESS, only chest pain answered (sim), others unanswered, no intent, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MILD_ILLNESS: a lone red flag, no screen: still ASK eligibility
+  MINOR_DISCOMFORT, every sign "não", no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MINOR_DISCOMFORT: ASK eligibility.currentAssessment, nothing decided
+  MINOR_DISCOMFORT, "feverOrChills" sim, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MINOR_DISCOMFORT feverOrChills: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MINOR_DISCOMFORT, "chestPainPressureOrTightness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MINOR_DISCOMFORT chestPainPressureOrTightness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MINOR_DISCOMFORT, "breathlessAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MINOR_DISCOMFORT breathlessAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MINOR_DISCOMFORT, "palpitationsAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MINOR_DISCOMFORT palpitationsAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MINOR_DISCOMFORT, "faintingOrDizziness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS MINOR_DISCOMFORT faintingOrDizziness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MINOR_DISCOMFORT painThatChangesMovement: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MINOR_DISCOMFORT swelling: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MINOR_DISCOMFORT injuryFromFallOrImpact: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS MINOR_DISCOMFORT gettingWorse: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  MINOR_DISCOMFORT, only chest pain answered (sim), others unanswered, no intent, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MINOR_DISCOMFORT: a lone red flag, no screen: still ASK eligibility
+  NEED_REST, every sign "não", no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS NEED_REST: ASK eligibility.currentAssessment, nothing decided
+  NEED_REST, "feverOrChills" sim, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS NEED_REST feverOrChills: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  NEED_REST, "chestPainPressureOrTightness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS NEED_REST chestPainPressureOrTightness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  NEED_REST, "breathlessAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS NEED_REST breathlessAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  NEED_REST, "palpitationsAtRest" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS NEED_REST palpitationsAtRest: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  NEED_REST, "faintingOrDizziness" sim (URGENT sign), no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS NEED_REST faintingOrDizziness: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS NEED_REST painThatChangesMovement: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS NEED_REST swelling: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS NEED_REST injuryFromFallOrImpact: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  PASS NEED_REST gettingWorse: without a screen the engine ASKs the screen (no clinical route, no guidance)
+  NEED_REST, only chest pain answered (sim), others unanswered, no intent, no screen → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS NEED_REST: a lone red flag, no screen: still ASK eligibility
+=== 2 "Não estou 100%" WITH the screen (as the flow sends it after #72)
+  MILD_ILLNESS, every sign "não", screen none applies → status=KEEP action=KEEP guidance=null recorded=0 missing=[] decisionId=yes | view VALID_PLAN pending=no holdGuidance=-
+  MILD_ILLNESS, "chestPainPressureOrTightness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MILD_ILLNESS chestPainPressureOrTightness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MILD_ILLNESS, "breathlessAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MILD_ILLNESS breathlessAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MILD_ILLNESS, "palpitationsAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MILD_ILLNESS palpitationsAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MILD_ILLNESS, "faintingOrDizziness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MILD_ILLNESS faintingOrDizziness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MILD_ILLNESS, "feverOrChills" sim (not urgent), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS feverOrChills + screen: CLINICAL, PROFESSIONAL_ASSESSMENT
+  MILD_ILLNESS, only chest pain answered (sim), others unanswered, no intent, screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS: a lone urgent sign with the screen routes urgently even with the other signs unanswered
+  MILD_ILLNESS, chest pain sim + screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS chest pain + flag illness: clinical (the level is the engine's: reported below)
+  MILD_ILLNESS, chest pain sim + screen flag "pain" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS chest pain + flag pain: clinical (the level is the engine's: reported below)
+  MILD_ILLNESS, chest pain sim + screen flag "clinicalConcern" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS chest pain + flag clinicalConcern: clinical (the level is the engine's: reported below)
+  MILD_ILLNESS, every sign "não", screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MILD_ILLNESS: a flag sim alone: CLINICAL
+  MILD_ILLNESS, chest pain sim + screen with one flag unanswered → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MILD_ILLNESS: chest pain + incomplete screen: ASK (the app never sends an incomplete screen)
+  MILD_ILLNESS, chest pain sim + screen dated tomorrow → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MILD_ILLNESS: a screen dated after the plan's day: ASK
+  MINOR_DISCOMFORT, every sign "não", screen none applies → status=KEEP action=KEEP guidance=null recorded=0 missing=[] decisionId=yes | view VALID_PLAN pending=no holdGuidance=-
+  MINOR_DISCOMFORT, "chestPainPressureOrTightness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MINOR_DISCOMFORT chestPainPressureOrTightness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MINOR_DISCOMFORT, "breathlessAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MINOR_DISCOMFORT breathlessAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MINOR_DISCOMFORT, "palpitationsAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MINOR_DISCOMFORT palpitationsAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MINOR_DISCOMFORT, "faintingOrDizziness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS MINOR_DISCOMFORT faintingOrDizziness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  MINOR_DISCOMFORT, "feverOrChills" sim (not urgent), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT feverOrChills + screen: CLINICAL, PROFESSIONAL_ASSESSMENT
+  MINOR_DISCOMFORT, only chest pain answered (sim), others unanswered, no intent, screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT: a lone urgent sign with the screen routes urgently even with the other signs unanswered
+  MINOR_DISCOMFORT, chest pain sim + screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT chest pain + flag illness: clinical (the level is the engine's: reported below)
+  MINOR_DISCOMFORT, chest pain sim + screen flag "pain" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT chest pain + flag pain: clinical (the level is the engine's: reported below)
+  MINOR_DISCOMFORT, chest pain sim + screen flag "clinicalConcern" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT chest pain + flag clinicalConcern: clinical (the level is the engine's: reported below)
+  MINOR_DISCOMFORT, every sign "não", screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS MINOR_DISCOMFORT: a flag sim alone: CLINICAL
+  MINOR_DISCOMFORT, chest pain sim + screen with one flag unanswered → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MINOR_DISCOMFORT: chest pain + incomplete screen: ASK (the app never sends an incomplete screen)
+  MINOR_DISCOMFORT, chest pain sim + screen dated tomorrow → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS MINOR_DISCOMFORT: a screen dated after the plan's day: ASK
+  NEED_REST, every sign "não", screen none applies → status=KEEP action=KEEP guidance=null recorded=0 missing=[] decisionId=yes | view VALID_PLAN pending=no holdGuidance=-
+  NEED_REST, "chestPainPressureOrTightness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS NEED_REST chestPainPressureOrTightness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  NEED_REST, "breathlessAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS NEED_REST breathlessAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  NEED_REST, "palpitationsAtRest" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS NEED_REST palpitationsAtRest + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  NEED_REST, "faintingOrDizziness" sim (URGENT), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS NEED_REST faintingOrDizziness + screen: CLINICAL_HUMAN_REQUIRED, URGENT_CARE_ADVISED, plan BLOCKED
+  NEED_REST, "feverOrChills" sim (not urgent), screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST feverOrChills + screen: CLINICAL, PROFESSIONAL_ASSESSMENT
+  NEED_REST, only chest pain answered (sim), others unanswered, no intent, screen none applies → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST: a lone urgent sign with the screen routes urgently even with the other signs unanswered
+  NEED_REST, chest pain sim + screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST chest pain + flag illness: clinical (the level is the engine's: reported below)
+  NEED_REST, chest pain sim + screen flag "pain" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST chest pain + flag pain: clinical (the level is the engine's: reported below)
+  NEED_REST, chest pain sim + screen flag "clinicalConcern" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST chest pain + flag clinicalConcern: clinical (the level is the engine's: reported below)
+  NEED_REST, every sign "não", screen flag "illness" sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes
+  PASS NEED_REST: a flag sim alone: CLINICAL
+  NEED_REST, chest pain sim + screen with one flag unanswered → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS NEED_REST: chest pain + incomplete screen: ASK (the app never sends an incomplete screen)
+  NEED_REST, chest pain sim + screen dated tomorrow → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS NEED_REST: a screen dated after the plan's day: ASK
+=== 3 "Não estou 100%" during a clinical hold
+  hold, chest pain sim, no screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view BLOCKED pending=no holdGuidance=PROFESSIONAL_ASSESSMENT
+  hold, chest pain sim, screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+=== 4 readiness declaration after a clinical hold (ReadinessViewModel)
+  every sign "não", no screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view BLOCKED pending=no holdGuidance=PROFESSIONAL_ASSESSMENT
+  PASS no screen: CLINICAL + eligibility.currentAssessment missing, the hold stands
+  breathless at rest sim (URGENT), no screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view BLOCKED pending=no holdGuidance=PROFESSIONAL_ASSESSMENT
+  PASS urgent sign, no screen: clinical (hold stands); the level is reported
+  every sign "não", screen none applies → status=MODIFY action=READINESS_RESTART guidance=null recorded=0 missing=[] decisionId=yes | view RETURNING pending=no holdGuidance=-
+  PASS screen: the hold is released (MODIFY, READINESS_RESTART)
+  breathless sim, screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=URGENT_CARE_ADVISED recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=URGENT_CARE_ADVISED
+  PASS urgent sign + screen: CLINICAL, URGENT_CARE_ADVISED
+  every sign "não", screen flag pain sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=PROFESSIONAL_ASSESSMENT
+  PASS a flag sim: CLINICAL, the hold stands
+  every sign "não", screen incomplete → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS incomplete screen: the hold stands
+  screen dated tomorrow → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS a screen after the plan's day: the hold stands
+  one sign unanswered, screen → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=["readiness.warningSigns.gettingWorse"] decisionId=yes
+  PASS a sign unanswered: not released
+=== 5 unavailable day (UnavailableDayViewModel)
+  no screen (day 2026-11-17) → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes | view NEEDS_INPUT pending=no holdGuidance=-
+  PASS no screen: ASK eligibility (a decisionId but nothing pending: never a proposal)
+  screen → status=MODIFY action=RESCHEDULE_WITHIN_WEEK guidance=null recorded=0 missing=[] decisionId=yes | view PENDING_CONFIRMATION pending=yes holdGuidance=-
+  PASS screen: MODIFY with a pending decision
+  accept → ok status=undefined | view VALID_PLAN pending=no holdGuidance=-
+  PASS the move is applied once accepted
+  screen flag injury sim → status=CLINICAL_HUMAN_REQUIRED action=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] decisionId=yes | view BLOCKED pending=no holdGuidance=PROFESSIONAL_ASSESSMENT
+  PASS a flag sim: CLINICAL, nothing pending
+  screen dated tomorrow → status=ASK action=ASK guidance=null recorded=0 missing=["eligibility.currentAssessment"] decisionId=yes
+  PASS a future screen: ASK
+=== summary
+  {"nf.none.noScreen.MILD_ILLNESS":"ASK","nf.none.noScreen.MINOR_DISCOMFORT":"ASK","nf.none.noScreen.NEED_REST":"ASK","nf.none.screen.MILD_ILLNESS":"KEEP","nf.urgent.flag.illness.MILD_ILLNESS":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.pain.MILD_ILLNESS":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.clinicalConcern.MILD_ILLNESS":"PROFESSIONAL_ASSESSMENT","nf.urgent.partial.MILD_ILLNESS":"ASK","nf.none.screen.MINOR_DISCOMFORT":"KEEP","nf.urgent.flag.illness.MINOR_DISCOMFORT":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.pain.MINOR_DISCOMFORT":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.clinicalConcern.MINOR_DISCOMFORT":"PROFESSIONAL_ASSESSMENT","nf.urgent.partial.MINOR_DISCOMFORT":"ASK","nf.none.screen.NEED_REST":"KEEP","nf.urgent.flag.illness.NEED_REST":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.pain.NEED_REST":"PROFESSIONAL_ASSESSMENT","nf.urgent.flag.clinicalConcern.NEED_REST":"PROFESSIONAL_ASSESSMENT","nf.urgent.partial.NEED_REST":"ASK","nf.hold.noScreen":"CLINICAL_HUMAN_REQUIRED/PROFESSIONAL_ASSESSMENT","nf.hold.screen":"CLINICAL_HUMAN_REQUIRED/URGENT_CARE_ADVISED","rd.urgent.noScreen":"CLINICAL_HUMAN_REQUIRED/PROFESSIONAL_ASSESSMENT"}
+RESULT: ALL PASS

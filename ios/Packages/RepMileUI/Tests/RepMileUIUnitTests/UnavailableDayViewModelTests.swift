@@ -26,20 +26,27 @@ final class UnavailableDayViewModelTests: XCTestCase {
     }
     private func snapshot(_ name: String) throws -> PresentationSnapshot { try Repo.store.decode(PresentationSnapshot.self, name) }
     private func encoded(_ r: ReviewRequest) throws -> Data { let e = JSONEncoder(); e.outputFormatting = .sortedKeys; return try e.encode(r) }
+    /// With the eligibility screen answered "none applies" (#72): these tests pin the move itself (the screen: `EligibilityRestTests`).
+    private func viewModel(_ s: PlannedSession, _ w: CoachingWriting, reload: @escaping () async -> Void = {},
+                           presentation: @escaping () -> PresentationSnapshot? = { nil }) -> UnavailableDayViewModel {
+        let vm = UnavailableDayViewModel(session: s, writer: w, planToday: { "2026-11-22" }, reload: reload, presentation: presentation)
+        vm.eligibility = .testNoneApplies
+        return vm
+    }
 
-    /// The request is the session's day, unavailable, exactly as the sheet built it before (no destination, no eligibility).
+    /// The request is the session's day, unavailable (no destination), with the screen answered in the sheet, dated the plan's today (#72).
     func testRequestIsTheSessionDayUnavailable() async throws {
         let s = try session
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = UnavailableDayViewModel(session: s, writer: w, reload: {}, presentation: { nil })
+        let vm = viewModel(s, w)
         await vm.send()
         let submits = w.journal.entries.filter { $0.call == "submit" }
         XCTAssertEqual(submits.count, 1)
-        XCTAssertEqual(submits.first?.json, try encoded(ReviewRequest(.unavailableDays([s.date]), eligibility: nil)))
+        XCTAssertEqual(submits.first?.json, try encoded(ReviewRequest(.unavailableDays([s.date]), eligibility: EligibilityScreen.testNoneApplies.dated("2026-11-22"))))
         let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: XCTUnwrap(submits.first?.json)) as? [String: Any])
         XCTAssertEqual(json["kind"] as? String, "UNAVAILABLE_DAY")
         XCTAssertEqual((json["changes"] as? [String: Any])?["unavailableDates"] as? [String], [s.date])
-        XCTAssertNil(json["eligibility"])
+        XCTAssertEqual((json["eligibility"] as? [String: Any])?["status"] as? String, "NONCLINICAL_CONFIRMED")
     }
 
     /// QRE R1 P1-10: the proposal is the one read after the write. The reload runs before `.proposed`, and the rows shown are the
@@ -51,8 +58,8 @@ final class UnavailableDayViewModelTests: XCTestCase {
         var reloads = 0
         var phaseDuringReload: UnavailableDayViewModel.Phase?
         var vm: UnavailableDayViewModel!
-        vm = UnavailableDayViewModel(session: try session, writer: FixtureCoachingWriter(store: Repo.store),
-                                     reload: { reloads += 1; phaseDuringReload = vm.phase; current = after }, presentation: { current })
+        vm = viewModel(try session, FixtureCoachingWriter(store: Repo.store),
+                       reload: { reloads += 1; phaseDuringReload = vm.phase; current = after }, presentation: { current })
         XCTAssertTrue(vm.proposal.isEmpty, "nothing is proposed before the write")
         await vm.send()
         XCTAssertEqual(reloads, 1)
@@ -66,7 +73,7 @@ final class UnavailableDayViewModelTests: XCTestCase {
     func testAFailedWriteIsNotReloadedAndKeepsItsCode() async throws {
         var reloads = 0
         let writer = ScriptedSubmitWriter(try Safety.answer(#"{"ok":false,"error":{"code":"CONFLICT_STALE_VERSION"}}"#))
-        let vm = UnavailableDayViewModel(session: try session, writer: writer, reload: { reloads += 1 }, presentation: { nil })
+        let vm = viewModel(try session, writer, reload: { reloads += 1 })
         await vm.send()
         XCTAssertEqual(vm.phase, .failed("CONFLICT_STALE_VERSION"))
         XCTAssertEqual(reloads, 0)
@@ -76,7 +83,9 @@ final class UnavailableDayViewModelTests: XCTestCase {
 
     func testAnOkAnswerWithoutADecisionFailsClosed() throws {
         XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Safety.answer(#"{"ok":true}"#)), .failed("UNKNOWN"))
-        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Safety.answer(#"{"ok":true,"decisionId":"dc_1"}"#)), .proposed(decisionId: "dc_1"))
+        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Safety.answer(#"{"ok":true,"decisionId":"dc_1"}"#)), .failed("UNKNOWN"),
+                       "a decision id alone is not a proposal (#72: an ASK and a clinical route carry one too)")
+        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Safety.answer(#"{"ok":true,"status":"MODIFY","decisionId":"dc_1"}"#)), .proposed(decisionId: "dc_1"))
         XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Repo.store.decode(BoundaryAnswer.self, "actions-B1-unavailable-day")), .proposed(decisionId: "dc_000031"))
         XCTAssertEqual(UnavailableDayViewModel.phase(afterAccept: try Repo.store.decode(BoundaryAnswer.self, "actions-B2-accept-unavailable")), .accepted)
         XCTAssertEqual(UnavailableDayViewModel.phase(afterAccept: FixtureCoachingWriter.unavailable), .failed("FIXTURE_UNAVAILABLE"))
@@ -85,7 +94,7 @@ final class UnavailableDayViewModelTests: XCTestCase {
     func testAcceptConfirmsTheProposedDecision() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let pending = try snapshot("actions-B1b-presentation-pending")
-        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { pending })
+        let vm = viewModel(try session, w, presentation: { pending })
         await vm.accept()
         XCTAssertTrue(w.journal.entries.isEmpty, "nothing to accept before a proposal")
         await vm.send()
@@ -99,7 +108,7 @@ final class UnavailableDayViewModelTests: XCTestCase {
     /// A second tap while the unavailable day is in flight sends nothing.
     func testNoDoubleSubmit() async throws {
         let writer = ScriptedSubmitWriter(try Repo.store.decode(BoundaryAnswer.self, "actions-B1-unavailable-day"), delay: .milliseconds(150))
-        let vm = UnavailableDayViewModel(session: try session, writer: writer, reload: {}, presentation: { nil })
+        let vm = viewModel(try session, writer)
         let first = Task { await vm.send() }
         for _ in 0..<100 where writer.journal.entries.isEmpty { await Task.yield() }
         XCTAssertEqual(vm.phase, .sending)
@@ -114,7 +123,7 @@ final class UnavailableDayViewModelTests: XCTestCase {
     func testNoDoubleAccept() async throws {
         let w = SlowAcceptWriter()
         let pending = try snapshot("actions-B1b-presentation-pending")
-        let vm = UnavailableDayViewModel(session: try session, writer: w, reload: {}, presentation: { pending })
+        let vm = viewModel(try session, w, presentation: { pending })
         await vm.send()
         let first = Task { await vm.accept() }
         for _ in 0..<100 where vm.phase != .accepting(decisionId: "dc_000031") { await Task.yield() }
