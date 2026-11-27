@@ -64,7 +64,7 @@ struct StrengthLogView: View {
         case .failed: Text(L.t("state.opError.body")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("strength-failed")
         case .editing, .submitting: EmptyView()
         }
-        if viewModel.clinical { ClinicalRouteBanner(reportKept: viewModel.phase == .saved).accessibilityIdentifier("strength-blocked") }
+        if let g = viewModel.clinicalGuidance { ClinicalRouteBanner(reportKept: viewModel.phase == .saved, guidance: g).accessibilityIdentifier("strength-blocked") }
     }
 
     private func exerciseBlock(_ e: PrescribedExercise) -> some View {

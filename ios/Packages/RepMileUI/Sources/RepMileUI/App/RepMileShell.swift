@@ -134,13 +134,17 @@ struct AppTabs: View {
             case .add: AddWorkoutSheet(startRun: { then { startUnplannedRun() } }, logStrength: { then { sheet = .strength(Launch(session: nil)) } },
                                        runBlockedReason: runGate.map { L.t("reason." + $0.rawValue) }, runPending: model.isLoading)
             case .changes: ChangesSheet(notFeeling100: { then { sheet = .notFeeling } }, readiness: { then { sheet = .readiness } }, blocked: model.plan?.state == .blocked)
-            case .notFeeling: NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
-            case .readiness: ReadinessFlow(viewModel: ReadinessViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
-            case .strength(let l): StrengthLogView(viewModel: StrengthLogViewModel(session: l.session, writer: model.writer, planToday: { [model] in model.plan?.today }))
+            case .notFeeling: NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today },
+                                                                                  holdGuidance: { [model] in model.plan?.clinicalGuidance }))
+            case .readiness: ReadinessFlow(viewModel: ReadinessViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today },
+                                                                         holdGuidance: { [model] in model.plan?.clinicalGuidance }))
+            case .strength(let l): StrengthLogView(viewModel: StrengthLogViewModel(session: l.session, writer: model.writer, planToday: { [model] in model.plan?.today },
+                                                                                   holdGuidance: { [model] in model.plan?.clinicalGuidance }))
             case .moving(let s):
                 UnavailableDaySheet(viewModel: UnavailableDayViewModel(session: s, writer: model.writer, planToday: { [model] in model.plan?.today },
                                                                        reload: { [model] in await model.load() },
-                                                                       presentation: { [model] in model.presentation }))
+                                                                       presentation: { [model] in model.presentation },
+                                                                       holdGuidance: { [model] in model.plan?.clinicalGuidance }))
             }
         }
         .fullScreenCover(item: $runLaunch, onDismiss: { recorder.close(); Task { await model.load() } }) { RunSessionScreen(session: $0.session) }

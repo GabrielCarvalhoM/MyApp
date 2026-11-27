@@ -22,6 +22,10 @@ struct SessionDetailView: View {
                 header
                 if !paused, let p = session.prescription {
                     if sport == .run { SessionRunDetail(session: session, prescription: p) } else { SessionStrengthDetail(session: session, prescription: p) }
+                } else if model.plan?.clinicalGuidance == .urgentCare {
+                    // #73: a hold at URGENT_CARE_ADVISED shows its level here too, never only "nothing to start".
+                    UrgentCareBanner(reportKept: true, announceKey: model.plan.map(UrgentCareBanner.key(for:))).padding(.top, 20)
+                        .accessibilityIdentifier("session-urgent")
                 } else {
                     StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("today.hero.paused.rest"))
                         .padding(.top, 20)
