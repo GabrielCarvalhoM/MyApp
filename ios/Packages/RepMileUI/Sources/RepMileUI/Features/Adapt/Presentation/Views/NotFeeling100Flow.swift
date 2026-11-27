@@ -79,7 +79,7 @@ struct NotFeeling100Flow: View {
         case .kept: StateBanner(tone: .neutral, icon: .check, title: L.t("nf.title"), message: L.t("nf.kept")).accessibilityIdentifier("nf-kept")
         case .modified: StateBanner(tone: .neutral, icon: .repetir, title: L.t("nf.title"), message: L.t("nf.modified")).accessibilityIdentifier("nf-modified")
         // The engine records nothing with this route (#72 replay: recorded=0): never "o seu registro continua guardado" (#68's banner).
-        case .blocked: ClinicalRouteBanner(reportKept: false).accessibilityIdentifier("nf-blocked")
+        case .blocked(let guidance): ClinicalRouteBanner(reportKept: false, guidance: guidance).accessibilityIdentifier("nf-blocked")
         case .needsAnswers: needsAnswersBanner
         case .failed(let c): StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.opError.title"), message: c == "CONFLICT_STALE_VERSION" ? L.t("state.stale.body") : L.t("state.opError.body"))
         }

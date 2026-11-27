@@ -186,3 +186,25 @@ struct TodayContent: Equatable {
 extension String {
     var nilIfEmpty: String? { isEmpty ? nil : self }
 }
+
+/// One banner of Today's banner area (#73).
+enum TodayBanner: Equatable {
+    case urgentHold
+    case gate(NotStartableReason)
+    case state(ClientState)
+}
+
+extension TodayContent {
+    /// Today's banners, in order: a hold at URGENT_CARE_ADVISED first and never hidden, not even by a host gate (QRE P3-2); then the host's
+    /// gate; else the plan state's own banner (the urgent banner already stands for a blocked plan).
+    static func banners(plan: PlanView, gate: NotStartableReason?) -> [TodayBanner] {
+        let urgent = plan.clinicalGuidance == .urgentCare
+        var out: [TodayBanner] = urgent ? [.urgentHold] : []
+        if let gate, gate != .blocked {
+            out.append(.gate(gate))
+        } else if !urgent, [ClientState.blocked, .pendingConfirmation, .returning, .needsInput].contains(plan.state) {
+            out.append(.state(plan.state))
+        }
+        return out
+    }
+}

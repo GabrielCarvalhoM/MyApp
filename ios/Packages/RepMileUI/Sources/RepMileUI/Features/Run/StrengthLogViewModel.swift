@@ -27,15 +27,22 @@ final class StrengthLogViewModel {
     private(set) var phase: Phase = .editing
     /// Answered here, for this log only (#68): nothing pre-answered, never an earlier report's screen.
     var eligibility = EligibilityScreen.unanswered
-    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record). Sticky.
-    private(set) var clinical = false
+    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record), with the engine's guidance level
+    /// (#73). Sticky, and the level only rises over resends.
+    /// INTERIM fail-safe (SSCTR, #73): "only rises" is a display rule of this screen alone, never persisted, sent or shown elsewhere. Tied to
+    /// #79/C4 (the engine lowers a hold's level): align or remove it when the engine fix lands.
+    private(set) var clinicalGuidance: ClinicalGuidance?
+    var clinical: Bool { clinicalGuidance != nil }
 
     private let writer: CoachingWriting
     private let planToday: () -> String?
     private let now: () -> Date
+    /// The level of the hold the app holds now (`PlanView.clinicalGuidance`, the engine's): the floor of an answer without a view (#73).
+    private let holdGuidance: () -> ClinicalGuidance?
 
-    init(session: PlannedSession?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init) {
-        self.session = session; self.writer = writer; self.planToday = planToday; self.now = now
+    init(session: PlannedSession?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init,
+         holdGuidance: @escaping () -> ClinicalGuidance?) {
+        self.session = session; self.writer = writer; self.planToday = planToday; self.now = now; self.holdGuidance = holdGuidance
         exercises = session?.prescription?.exercises ?? []
         sets = Dictionary(exercises.map { ($0.id, Array(repeating: SetDraft(), count: max(0, $0.sets))) }, uniquingKeysWith: { first, _ in first })
     }
@@ -130,7 +137,7 @@ final class StrengthLogViewModel {
         phase = .submitting
         let outcome = await writer.submit(request)
         phase = Self.phase(for: outcome)
-        clinical = clinical || outcome.answer.routesToHuman
+        clinicalGuidance = clinicalGuidance.raised(to: outcome.answer.clinicalGuidance(floor: holdGuidance()))
     }
 
     /// The request exactly as sent: the log and the screen answered here, dated the plan's today (never the device's, as #59). Nil until it

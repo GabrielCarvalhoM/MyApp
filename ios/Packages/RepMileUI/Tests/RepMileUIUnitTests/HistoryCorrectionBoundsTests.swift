@@ -42,7 +42,7 @@ final class HistoryCorrectionBoundsTests: XCTestCase {
     func testNoPlanTodayNoRequest() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let e = try entry("P-logged-two-voices")
-        let vm = HistoryCorrectionViewModel(entry: e, sessionDate: e.date, writer: w, planToday: { nil }, reload: {})
+        let vm = HistoryCorrectionViewModel(entry: e, sessionDate: e.date, writer: w, planToday: { nil }, reload: {}, holdGuidance: { nil })
         vm.startContesting(); vm.km = "6"; vm.answerNoneApplies()
         XCTAssertNil(vm.request())
         await vm.send()
