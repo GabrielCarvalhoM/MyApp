@@ -1,0 +1,110 @@
+{
+  "screen": "31-treino-longao",
+  "figma": {
+    "fileKey": "90oyvXHxxBQAvr1netov7S",
+    "nodeId": "643:317",
+    "version": "V1 alinhamento funcional · 26 nov",
+    "frameName": "Treino planejado / Corrida · longão de 80 min",
+    "page": "31 · Treino planejado (551:8)",
+    "size": "393x2269",
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
+    "light": null
+  },
+  "sources": {
+    "screenMap": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-figma-final-alignment-2026-11-26/SWIFTUI_VISUAL_HANDOFF_ADDENDUM.md",
+      "section": "§2"
+    },
+    "acceptance": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-ui-functional-reconciliation/SWIFTUI_IMPLEMENTATION_HANDOFF.md",
+      "section": "§9"
+    },
+    "nodeChangelog": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-figma-final-alignment-2026-11-26/FIGMA_NODE_CHANGELOG.md"
+    },
+    "inventory": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-ui-functional-reconciliation/figma-inventory/"
+    },
+    "note": "Referenced, not copied: these files are on the design branch only."
+  },
+  "requiredConditions": [
+    {
+      "locale": "pt_BR",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "en_US",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "es_ES",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "dark",
+      "contentSize": "extra-extra-extra-large"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "en_US",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "es_ES",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "light",
+      "contentSize": "extra-extra-extra-large"
+    }
+  ],
+  "conditionStatus": [
+    {
+      "appearance": "light",
+      "status": "PENDING_ISSUE_94",
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+    }
+  ],
+  "fixture": {
+    "scenario": "today",
+    "title": "Plano válido · domingo do longão",
+    "source": "ios/Packages/RepMileUI/Sources/RepMileUI/Data/Scenario.swift",
+    "files": {
+      "plan": "13-plan-w1",
+      "allWeeks": "03-sessions",
+      "presentation": "12-presentation-after-w0",
+      "history": "20-history",
+      "logged": "P-logged-two-voices",
+      "weekPlan": "P-week-plan"
+    },
+    "hostGate": "none",
+    "route": "Hoje → 'Ver o treino' (or Plano → Sunday long run) → session detail"
+  },
+  "mapping": {
+    "status": "CLEAR_WITH_NOTE",
+    "note": "Addendum §2 \"31/40 run steps\": runSession(for:) only, fixtures 03-sessions / 04-presentation-after-onboard. Node declared by SessionDetailView.swift. Figma long run is 80 min on Saturday of week 3; the fixture long run is the Sunday of week 1."
+  },
+  "captureBlocker": "NO_CAPTURE_PATH: `sim.sh run` launches the app with only -AppleLanguages/-AppleLocale. The fixture composition needs the `-scenario <id>` launch argument (LaunchMode.of, Debug only), and sim.sh has no option to pass it, so every sim.sh run opens the live composition. This screen is also not the launch screen (it needs a tab change or a push), and sim.sh captures only the screen shown after launch. No hand-made or XCUITest screenshot substitutes for a sim.sh run (VISUAL_VALIDATION.md). Needs: sim.sh --scenario (ORCH) and a launch route to this screen (front C), or an agreed capture path.",
+  "differences": [],
+  "verdict": "PENDING",
+  "reviewedAt": null
+}

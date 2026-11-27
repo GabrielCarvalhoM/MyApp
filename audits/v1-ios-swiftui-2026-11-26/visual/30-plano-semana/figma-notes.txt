@@ -1,0 +1,37 @@
+Figma 90oyvXHxxBQAvr1netov7S · version "V1 alinhamento funcional · 26 nov" · page 30 · Plano (551:7)
+Node 509:115 "Plano / Semana · semana 3, hoje" · frame 393 x 1541 pt (figma.png is a 1x export)
+Source: get_metadata + get_variable_defs (read-only), 2026-11-27.
+
+MAPPING NOTE: the addendum §2 row "30 Week / Phases (596:2125)" names only the Fases frame; the week frame 509:115 is the one the
+implementation declares (PlanScreen.swift header) and the inventory lists first in "Semana a semana". Fixtures of that row: P-week-plan,
+02-plan-w0, 13-plan-w1 (scenario `today` uses 13-plan-w1 + P-week-plan + 03-sessions). The fixture week differs from the Figma's week 3.
+
+LAYOUT (y in pt; side margin 20)
+- 0     Status bar 54. "Luz · neutra" ellipse.
+- 54    "Título" 43: "Plano" (Número L style title, 104 x 34) at x 20; segmented control 204 x 39 at x 169 (Semana selected 78 x 31 on agora/suave, Mês 54, Fases 64; padding 4).
+- 97    "Semana em foco" 61: chevrons 36 x 36 at x 20 / x 337; centred "Semana 3 de 8 · Construção" (Subtítulo) + "9 a 15 de novembro" (Detalhe).
+- 158   "Pista de raia dupla" 178: track 190 x 150 at (20, 28) (outer lane run as a line, inner lane strength as blocks; centre "4 de 7 sessões" in Número M);
+        readout column 106 x 144 at x 230: Corrida "34 de 199 min · hoje soma 45 min", Força "3 de 3 treinos · 120 de 120 min" (values Número M, labels Rótulo with a 22 x 8 colour mark).
+- 336   "Tempo de treino" 54: row "Tempo de treino na semana  2h34 de 5h19" (Número S + Detalhe); progress bar 353 x 6 at y 48 (fundo/trilho + done fill).
+- 390   "Dia a dia" 660: micro label at y 26; day rows 353 x 74 (Qui 120 with two sessions), separated by 1 pt dividers:
+          date column 36 (weekday Micro + day number Número S; today's number in a 30 x 30 "luz do agora" circle),
+          day mark 10 x 46 at x 48 (run above / strength below), sessions column 283 at x 70: title row (icon 16 + Subtítulo, optional "Chave" tag 57 x 23),
+          detail (Detalhe), trailing check 16 / "Próxima" pill 70 x 25 / time-of-day text.
+        Hint row "Toque e segure para mover um treino…" 353 x 50 at y 610 (icon 14 + Detalhe). (GAP-09 text was changed in the alignment: see FIGMA_NODE_CHANGELOG.)
+- 1050  "Fases" 373: card 353 x 357 at (20, 16), padding 20: header "Fases até a prova" + "minutos por semana"; bar chart 313 x 232 (run above / strength below the line,
+        full = done, soft = planned; week labels Tab size); note 36.
+- 1423  Tab bar 118 (bar 353 x 68 at (20, 20)).
+
+TYPE STYLES
+- Repmile/Número L Unbounded Bold 30/34 -2 · Número M Unbounded SemiBold 21/26 -1.5 · Número S Unbounded SemiBold 15/20 -1
+- Repmile/Subtítulo Geist Medium 16/21 -1 · Rótulo Geist Medium 13/17 · Detalhe Geist Regular 13/18 · Micro Geist SemiBold 11/14 tracking 7
+- Repmile/Botão Geist SemiBold 16/20 -1 · Tab Geist Medium 10.5/12
+
+COLOURS (dark)
+- fundo/app #0C0D10 · fundo/elevado #15171B · fundo/elevado-2 #1E2126 · fundo/trilho #2A2E36 · linha/base #FFFFFF4D · linha/divisor #FFFFFF1A
+- texto/primario #F3F4F6 · texto/secundario #A4A8B1 · texto/terciario #7C818B · agora #FFFFFF · agora/suave #FFFFFF1F · agora/sobre #0C0D10
+- corrida #4B8BFF · corrida/previsto #4B8BFF6B · forca #FF6A2C · forca/previsto #FF6A2C6B · estado/positivo #CFFF04 · marco #E6D2A8 · luz/neutra #FFFFFF17
+
+LIGHT REFERENCE (figma-light.png): node 513:2281 "A · Claro · Plano · semana (pista de raia dupla)", 393 x 1437, on page "ZZ · Legado".
+NOT a light rendering of 509:115: a legacy palette-comparison copy made before the 12 nov palette decision, without the content returned
+later. Use only for light-mode colour roles. The file has no light rendering of 509:115.
