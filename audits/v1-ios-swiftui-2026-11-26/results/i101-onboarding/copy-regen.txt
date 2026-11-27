@@ -1,7 +1,8 @@
-# copy.psv regeneration (#101): python3 -I Copy/gen_strings.py
-before: 614 keys (front C @ 856cdf00) · after: 834 keys x 3 languages
+# copy.psv regeneration (#101): python3 -I Copy/gen_strings.py → 835 keys x 3 languages
+before: 614 keys (front C @ 856cdf00) · after: 835 · removed 91 · added 312 (311 ob.* Figma keys + ob.ready.paceRange)
+no key lost: every removed key was checked against Sources (only ob.eligibility.body was still used elsewhere: kept)
 
-## Removed (92): the invented onboarding (ob.* of the 9-step form, incl. ob.equipment.title "O que você tem para treinar força?"), care.*, goal.*, equipment.*
+## Removed (91): the invented 9-step onboarding (incl. ob.equipment.title "O que você tem para treinar força?"), care.*, goal.*, equipment.*
 care.POSTPARTUM
 care.PREGNANCY
 care.none
@@ -42,7 +43,6 @@ ob.clinical.title
 ob.consents.body
 ob.consents.title
 ob.created
-ob.eligibility.body
 ob.equipment.title
 ob.event.date
 ob.event.date.choose
@@ -95,6 +95,6 @@ ob.weeks.value
 ob.welcome.body
 ob.welcome.title
 
-## Kept: ob.back (translated), event.*, turn.*, weekday.*, phase.* (shared)
+## Kept: ob.back, ob.eligibility.body (shared eligibility screens), event.*, turn.*, weekday.*, phase.*
 
-## Added: 313 ob.* keys, pt-BR = Figma 10 text; en and es PENDING_TRANSLATION (repeat pt-BR; the Figma has no onboarding in EN/ES)
+## Added: ob.* keys, pt-BR = the Figma 10 text read on 27/11; en and es PENDING_TRANSLATION (they repeat pt-BR; the Figma has no onboarding in EN/ES)
