@@ -1,0 +1,65 @@
+# #94 contrast (WCAG 2.x) of the text/background pairs the screens use, both modes, on the Figma values (valuesByMode 2026-11-27).
+# Translucent colours composited over their ground. Text AA = 4.5:1 (3:1 large text); graphics/borders = 3:1.
+# Values are the Figma's; pairs below AA are design questions, not changed here. Pinned in ContrastTests.swift.
+
+| texto / elemento | fundo | uso | escuro | claro | AA |
+|---|---|---|---|---|---|
+| texto/primario | fundo/app | text | 17.66 | 17.66 | escuro ok · claro ok |
+| texto/primario | fundo/elevado | text | 16.31 | 19.43 | escuro ok · claro ok |
+| texto/primario | fundo/elevado-2 | text | 14.67 | 16.28 | escuro ok · claro ok |
+| texto/secundario | fundo/app | text | 8.16 | 7.48 | escuro ok · claro ok |
+| texto/secundario | fundo/elevado | text | 7.53 | 8.23 | escuro ok · claro ok |
+| texto/secundario | fundo/elevado-2 | text | 6.78 | 6.90 | escuro ok · claro ok |
+| texto/terciario | fundo/app | text | 4.97 | 4.52 | escuro ok · claro ok |
+| texto/terciario | fundo/elevado | text | 4.59 | 4.97 | escuro ok · claro ok |
+| texto/terciario | fundo/elevado-2 | text | 4.13 | 4.17 | escuro ≥3 (texto grande) · claro ≥3 (texto grande) |
+| agora/sobre | agora | text | 19.43 | 19.43 | escuro ok · claro ok |
+| agora | fundo/app | text | 19.43 | 17.66 | escuro ok · claro ok |
+| agora | agora/suave sobre fundo/elevado | text | 12.62 | 16.45 | escuro ok · claro ok |
+| acao/corrida-texto | acao/corrida | text | 4.55 | 5.36 | escuro ok · claro ok |
+| acao/forca-texto | acao/forca | text | 6.66 | 5.21 | escuro ok · claro ok |
+| corrida/sobre | corrida/cheio | text | 4.55 | 5.36 | escuro ok · claro ok |
+| forca/sobre | forca | text | 6.66 | 5.21 | escuro ok · claro ok |
+| corrida | fundo/app | text | 5.96 | 4.87 | escuro ok · claro ok |
+| corrida | fundo/elevado | text | 5.50 | 5.36 | escuro ok · claro ok |
+| forca | fundo/app | text | 6.80 | 3.32 | escuro ok · claro ≥3 (texto grande) |
+| forca | fundo/elevado | text | 6.28 | 3.66 | escuro ok · claro ≥3 (texto grande) |
+| marco | fundo/app | text | 13.09 | 4.58 | escuro ok · claro ok |
+| marco | fundo/elevado | text | 12.09 | 5.04 | escuro ok · claro ok |
+| estado/positivo | fundo/app | text | 16.62 | 4.64 | escuro ok · claro ok |
+| estado/positivo | fundo/elevado | text | 15.35 | 5.10 | escuro ok · claro ok |
+| estado/negativo | fundo/app | text | 6.37 | 4.57 | escuro ok · claro ok |
+| estado/negativo | fundo/elevado | text | 5.88 | 5.03 | escuro ok · claro ok |
+| estado/negativo | estado/negativo-suave sobre fundo/app | text | 5.45 | 3.83 | escuro ok · claro ≥3 (texto grande) |
+| texto/primario | estado/negativo-suave sobre fundo/app | text | 15.11 | 14.78 | escuro ok · claro ok |
+| corrida | corrida/suave sobre fundo/elevado | text | 4.43 | 4.51 | escuro ≥3 (texto grande) · claro ok |
+| forca | forca/suave sobre fundo/elevado | text | 5.04 | 3.14 | escuro ok · claro ≥3 (texto grande) |
+| corrida/sobre | corrida/cheio | text | 4.55 | 5.36 | escuro ok · claro ok |
+| forca/sobre | forca | text | 6.66 | 5.21 | escuro ok · claro ok |
+| estado/negativo | fundo/app | border | 6.37 | 4.57 | escuro ok · claro ok |
+| zona/1 | fundo/elevado | graphic | 5.52 | 4.97 | escuro ok · claro ok |
+| zona/2 | fundo/elevado | graphic | 8.53 | 3.17 | escuro ok · claro ok |
+| zona/3 | fundo/elevado | graphic | 8.44 | 3.46 | escuro ok · claro ok |
+| zona/4 | fundo/elevado | graphic | 10.09 | 2.95 | escuro ok · claro ABAIXO |
+| zona/5 | fundo/elevado | graphic | 5.41 | 4.48 | escuro ok · claro ok |
+| corrida/previsto | fundo/elevado | graphic | 1.97 | 1.77 | escuro ABAIXO · claro ABAIXO |
+| forca/previsto | fundo/elevado | graphic | 2.06 | 1.63 | escuro ABAIXO · claro ABAIXO |
+| linha/base | fundo/app | graphic | 2.65 | 2.12 | escuro ABAIXO · claro ABAIXO |
+
+## Below AA in light: design questions (values not changed; pinned in ContrastTests.belowAA)
+- forca as text: on fundo/app 3.32, on fundo/elevado 3.66, on forca/suave over fundo/elevado 3.14 (dark 6.80 / 6.28 / 5.04).
+  Where: SessionDetailView strength title (Rótulo 13 pt, sport colour); WeekPanels planned strength minutes (Número XS 11 pt, Tab 10.5 pt)
+  and ordinal label (Micro 11 pt). All at least 3:1 (the large-text level), but these are small text.
+- estado/negativo on estado/negativo-suave over fundo/app: 3.83 in light (dark 5.45). Where: the urgent banner's label "Treino pausado"
+  (Micro 11 pt, UrgentCareBanner). The banner stays unmistakable in light: 2 pt estado/negativo border 4.57:1 against the page, red tint,
+  title and body in texto/primario 14.78:1, first VoiceOver element and announced. Only the small red label is below 4.5:1.
+- texto/terciario on fundo/elevado-2: 4.17 in light, 4.13 in dark (existing in dark). Where: a texto/terciario label on an elevado-2
+  surface (e.g. the disabled primary button, exempt as an inactive control under WCAG 1.4.3; the today column of the week panel).
+
+## Below AA in dark only (existing before #94, unchanged)
+- corrida on corrida/suave over fundo/elevado: 4.43 (light 4.51). Where: planned run minutes in the week panels.
+
+## Graphics below 3:1 (non-text, WCAG 1.4.11)
+- zona/4 on fundo/elevado: 2.95 in light (dark 10.09). Where: the zone 4 bar in HeartRateZonesScreen (the bpm range is also text).
+- corrida/previsto, forca/previsto, linha/base: below 3:1 in both modes, as already in dark (planned fills, the baseline). The planned state
+  is also carried by the dashed stroke in the sport colour and by text.

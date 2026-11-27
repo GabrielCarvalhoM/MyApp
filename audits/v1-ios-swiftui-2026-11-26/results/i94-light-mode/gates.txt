@@ -1,0 +1,28 @@
+# Gates on f5de3d8d (code HEAD of #94; the next commit adds only this evidence folder)
+guard (orchestration worktree's tools/orchestration/guard.mjs; front C lacks tools/orchestration):
+guard: branch=claude/v1-ios-swiftui-i94-light-mode papel=C · SwiftUI base=v1-abc-ready-2026-11-26 head=HEAD
+guard: 365 caminhos alterados · 365 OK · 0 exigem aprovação · 0 proibidos
+exit 0
+
+swift-size:
+swift-size: 127 arquivos Swift em HEAD · limite 350 · 0 acima do limite fora do baseline
+exit 0
+
+RepMileUI unit tests: Executed 199 tests, with 0 failures (0 unexpected) in 2.681 (2.752) seconds
+
+sim.sh all --sim RepMile-C-3 (appearance light, the sim.sh default; app and runner uninstalled first): exit 0
+sim: tests Passed · 54/54 passed · 0 failed · 0 skipped
+evidence: sim-manifest-light.json (ios/.build/sim-runs/20261127T184652Z)
+
+sim.sh test --sim RepMile-C-3 --appearance dark (the existing suite kept in dark): exit 0
+sim: tests Passed · 54/54 passed · 0 failed · 0 skipped
+evidence: sim-manifest-test-dark.json (ios/.build/sim-runs/20261127T190840Z)
+
+sim.sh run --appearance light / dark: sim-run-hoje-light.png, sim-run-hoje-dark.png (manifests sim-manifest-light.json, sim-manifest-run-dark.json)
+
+Illustrations: node ios/Packages/RepMileUI/Tools/illustrations-light.mjs --check
+exit 0
+
+Note (simulator, not the app): once during development, RepMile-C-3 kept rendering light after XCUIDevice set the appearance to dark
+(the simulator's UserInterfaceStyleMode said dark; Settings also rendered light). A reboot of the simulator cleared it, and every run
+since switched both ways live. AppearanceUITests fails loudly in that case (it checks the page colour), it never passes falsely.
