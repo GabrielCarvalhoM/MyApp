@@ -15,11 +15,11 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 | | |
 |---|---|
 | Integração `claude/v1-ios-integration` | `e593496` = orquestração + A (#50) + B (#51) + composição real (#60, #16) + C sync 1 (#67: MVVM #32, #37, #38, #41, #58, #59a, #61). Visualização em `e593496` |
-| Em andamento | **#68** (P0, triagem nos relatos): worktree `myapp-v1-c-i68`, sim RepMile-C-2; mescla a frente C (`e5425f6`) antes da verificação final; PR draft para `claude/v1-ios-swiftui` · **#63** (background delivery): worktree `myapp-v1-int-i63`, sim RepMile-INT, PR para integração · **#49** (condições de A): worktree `myapp-v1-int-i49`, só `swift test` no macOS (keychain de teste), PR para integração |
-| Frente C `claude/v1-ios-swiftui` | `e5425f6` = #59 (PR #69; XCUITest 41/41, unit 130/130, SSCTR APPROVE_WITH_NOTES, P1 do QRE corrigido); seguimentos em #70; CCP-C-06 em #20 |
+| Em andamento | **#72** (P0, triagem em "Não estou 100%", prontidão, dia indisponível): worktree `myapp-v1-c-i72`, sim RepMile-C-2 · **#63** PR #75 (INT, sim 77/77, QRE aplicado): aguardando CI → merge · **#49** (condições de A): worktree `myapp-v1-int-i49`, só `swift test` no macOS |
+| Frente C `claude/v1-ios-swiftui` | `fffefbb` = #59 (PR #69) + #68 (PR #71; XCUITest 43/43, unit 140/140; SSCTR APPROVE_WITH_CONDITIONS); seguimentos #70, #72, #73, #74 (decisão), #76 |
 | Próximas | C → integração (sync 2, com #59 e #68) e teste com motor real na integração · **#66** (P0; aguarda o fundador) · #63 · #49 · #48 · #39 · #62 · CCP-C-05 (#20) |
-| Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
-| Simuladores | RepMile-C-2 (#68), RepMile-INT (#63), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
+| Decisões do fundador | #66 (princípio), #74 (triagem nos relatos), nome do serviço do Keychain (#63 P3-5), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
+| Simuladores | RepMile-C-2 (#72), RepMile-INT (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
 
 ## Branches e worktrees
 
@@ -65,7 +65,13 @@ parada em `a8aefa0` e não deve ser usada para ver o app.
 
 ## Checkpoint de hardware (iPhone, agrupado; pedir ao fundador só quando a lista estiver pronta)
 - [ ] Corrida real com GPS (RunRecorder), pausa, morte do processo e retomada; #38 retomada sob bloqueio (#19)
-- [ ] HealthKit: autorização e leitura real com o build integrado; background delivery com o app fechado (B R2-03)
+- [ ] HealthKit: autorização e leitura real com o build integrado
+- [ ] #63 background delivery: app suspenso e encerrado pelo seletor → treino no relógio/iPhone → log sem cena: `hki.started` → `hki.backgroundDelivery code=REGISTERED` → `hki.observerFired`; enfileirado sem abrir o app, entregue quando A abrir
+- [ ] #63 antes do primeiro desbloqueio: reiniciar, gravar treino, desbloquear → composição abre sozinha, raiz não fica no erro operacional
+- [ ] #63 tempo: launch em background → `hki.observerFired` com `CoachingHost.open` no caminho; completion handler chamado antes da suspensão (B R2-03, #48)
+- [ ] #63 Release no aparelho: sem `-scenario`, sem `Fixtures/`, abertura ao vivo
+- [ ] #63 exclusão no aparelho: gravar e relatar corrida → excluir conta → relançar → onboarding sem gravação/relato de volta → novo cadastro
+- [ ] #63 identidade danificada (build de desenvolvimento): `athlete-identity.json` corrompido → erro operacional, log `ACCOUNT_IDENTITY_DAMAGED`, arquivo nunca substituído
 - [ ] CoachingHost no app integrado: aparelho bloqueado, reinstalação (já provados no lab de A; repetir no app)
 - [ ] Desempenho de scroll e animação; Live Activity (#35)
 
