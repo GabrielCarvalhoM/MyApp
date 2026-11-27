@@ -14,7 +14,9 @@
 // `needs:founder-approval` cannot leave Backlog/Blocked; Verified needs Validação ≠ "Não validado" and Evidências, and closes the
 // issue as completed; `create` refuses a probable duplicate unless --force-new; `--new-scope` marks the issue for founder approval.
 import { parseArgs } from 'node:util';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { run, repoRoot, MissingDependency } from './lib/sh.mjs';
 import {
   APPROVAL_LABEL, FIELDS, FLAG_FIELDS, STATUS, STATUS_LABEL, VIEWS, labelsFor, loadConfig, findProject, loadFields, listItems, graphql,
@@ -25,13 +27,24 @@ import { similarTitles } from './lib/dedupe.mjs';
 let cwd, cfg;
 const gh = (args) => run('gh', args, { cwd }).out;
 
-function board({ required = true } = {}) {
+// Project id and field definitions change only through `setup`; cache them for 10 minutes so a burst of `set`/`evidence` calls does
+// not re-read them every time (GitHub's secondary rate limit was hit on 2026-11-27). `setup` and `views` bypass the cache.
+const CACHE = join(tmpdir(), 'repmile-board-cache.json');
+function board({ required = true, fresh = false } = {}) {
+  if (!fresh) {
+    try {
+      const c = JSON.parse(readFileSync(CACHE, 'utf8'));
+      if (c.number === cfg.number && Date.now() - c.at < 600_000) return c.board;
+    } catch { /* no cache */ }
+  }
   const p = findProject(cfg, cwd);
   if (!p) {
     if (!required) return null;
     throw new Error(`quadro "${cfg.title}" não encontrado para ${cfg.owner}; rode: node tools/orchestration/board.mjs setup --apply`);
   }
-  return { projectId: p.id, number: p.number, url: p.url, fields: loadFields(cfg, p.number, cwd) };
+  const b = { projectId: p.id, number: p.number, url: p.url, fields: loadFields(cfg, p.number, cwd) };
+  try { writeFileSync(CACHE, JSON.stringify({ at: Date.now(), number: p.number, board: b })); } catch { /* cache is optional */ }
+  return b;
 }
 
 const ISSUE_Q = `query($owner:String!,$repo:String!,$n:Int!){repository(owner:$owner,name:$repo){issue(number:$n){id number title url state
@@ -147,7 +160,7 @@ function setup(applyChanges) {
 }
 
 function views(applyChanges) {
-  const b = board();
+  const b = board({ fresh: true });
   const existing = graphql(`query($owner:String!,$number:Int!){user(login:$owner){projectV2(number:$number){views(first:50){nodes{id name layout filter}}}}}`,
     { owner: cfg.owner, number: b.number }, cwd).user.projectV2.views.nodes;
   const ui = [];
