@@ -70,6 +70,23 @@ test('weekPlan: the plan\'s own phases and planned volume, never derived (GAP-07
  assert.equal(w.weeks[0].timing,'CURRENT');assert.equal(w.weeks[1].timing,'AHEAD');
 });
 
+test('CCP-ONB-1 weekPlan.marathon: the plan\'s own marathon decision, never recomputed; null without a marathon or on a malformed record',()=>{
+ const enrol=(id,mut)=>{const t=athlete({newId,id,weeks:16}),i=athleteA({weeks:16,id});i.athlete.goals.run={kind:'RACE',event:{kind:'MARATHON',date:'2027-02-28'}};mut(i);
+  assert.equal(t.it.enroll({actor:t.actor,intake:i,consents:{COACHING:true}}).status,'PROPOSED');return t.doc();};
+ const prep=enrol('p-mar-prep',()=>{}),m=weekPlan(prep).marathon;
+ assert.equal(m.status,'PREPARATORY');assert.equal(m.date,'2027-02-28');
+ assert.deepEqual(m.unmet,prep.program.negotiation.find(n=>n.id==='MARATHON_PREPARATORY_PLAN').unmet,'the disclosure the plan carries');
+ const block=enrol('p-mar-block',i=>{i.athlete.recent={strengthDaysPerWeek:2,runDaysPerWeek:5,runMinutesPerWeek:300,longestRunMinutes:120};i.schedule.runDays=[0,1,3,5,6];i.schedule.longRunMinutes=180;});
+ const pd=m.disclosures;assert.deepEqual(pd.map(d=>d.id),['MARATHON_PREPARATORY_PLAN']);
+ const src=prep.program.negotiation.find(n=>n.id==='MARATHON_PREPARATORY_PLAN');assert.equal(pd[0].detail,src.detail);assert.deepEqual(pd[0].options,src.options);assert.equal(pd[0].blocking,false);
+ const bm=weekPlan(block).marathon;assert.equal(bm.status,'BLOCK');assert.deepEqual(bm.unmet,[]);
+ assert.deepEqual(bm.disclosures.map(d=>d.id),block.program.negotiation.filter(n=>['MARATHON_BLOCK_NOTES','MARATHON_PROJECTION'].includes(n.id)).map(n=>n.id));
+ assert.ok(bm.disclosures.find(d=>d.id==='MARATHON_PROJECTION').projectedLongRunMinutes>0);
+ const t=athlete({newId,id:'p-mar-none',weeks:8});t.enroll();assert.equal(weekPlan(t.doc()).marathon,null);
+ assert.deepEqual(weekPlan(null),{programHash:null,weeks:[],marathon:null});
+ const odd=structuredClone(prep);odd.program.canonical.goals.contextEvent.unmet=[{id:'LONGEST_RUN',value:{x:1},needed:[1,2]},{value:3},null];
+ assert.deepEqual(weekPlan(odd).marathon.unmet,[{id:'LONGEST_RUN',value:null,needed:null}],'an unreadable value is unknown, never guessed');
+});
 test('timeInZones: the engine classifier over the engine zones, gated; never from an average (phase 6.3)',()=>{
  const t=athlete({newId,id:'p-tiz',weeks:8});t.enroll();const readings=t.it.presentation({actor:t.actor}).readings;
  const z=readings.runCalibration.heartRateFiveZones;assert.equal(z.status,'AVAILABLE');

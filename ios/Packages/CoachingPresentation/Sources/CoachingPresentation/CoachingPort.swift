@@ -3,9 +3,9 @@ import Foundation
 /// The version of this shared contract (types, ports, facade projections, fixtures). A change is a coordinated change by the integration mission
 /// (PARALLEL_IMPLEMENTATION_CONTRACT §11); a front that needs one writes a proposal and keeps a local adapter meanwhile.
 public enum CoachingContract {
-    public static let version = "RM-ABC-CONTRACT-1"
+    public static let version = "RM-ABC-CONTRACT-2"
     /// The app-facade projections this contract decodes (`Facade/app-projections.mjs PROJECTIONS_VERSION`).
-    public static let projections = "RM-APP-PROJECTIONS-1"
+    public static let projections = "RM-APP-PROJECTIONS-2"
     /// The engine the fixtures were captured from: REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2, bundle d087ad51.
     public static let engineRecord = "REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2"
 }

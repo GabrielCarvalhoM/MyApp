@@ -37,6 +37,8 @@ public struct RunCalibration: Decodable, Equatable, Sendable {
     public let historicalBest: [RunResult]?
     /// Whether a field test is offered (71 · Teste de campo): status, reason and progress toward calibration. Never required.
     public let assessment: Assessment?
+    /// CCP-ONB-1 (additive): the athlete's time goal beside the current estimate; `nil` = no goal stated (OnboardingFields.swift).
+    public let goal: AthleteGoalReading?
 }
 public struct Assessment: Decodable, Equatable, Sendable {
     public let status: Code

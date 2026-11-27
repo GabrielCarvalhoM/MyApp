@@ -32,8 +32,8 @@ final class FacadeReplayTests: XCTestCase {
         try q.sync {
             rt.install("__chstore", store.jsMembers())
             _ = try rt.evaluate("globalThis.__chIdSeq = 0; globalThis.__fixBytes = (o, s) => { const v = JSON.parse(o); for (const k of JSON.parse(s)) delete v[k]; return JSON.stringify(v, null, 1) + '\\n'; };"
-                                + "globalThis.__wrap = (k, o) => JSON.stringify({ok: true, projections: 'RM-APP-PROJECTIONS-1', [k]: JSON.parse(o)}, null, 1) + '\\n';"
-                                + "globalThis.__sets = a => JSON.stringify({ok: true, projections: 'RM-APP-PROJECTIONS-1', sets: JSON.parse(a).map(x => JSON.parse(x))}, null, 1) + '\\n';")
+                                + "globalThis.__wrap = (k, o) => JSON.stringify({ok: true, projections: 'RM-APP-PROJECTIONS-2', [k]: JSON.parse(o)}, null, 1) + '\\n';"
+                                + "globalThis.__sets = a => JSON.stringify({ok: true, projections: 'RM-APP-PROJECTIONS-2', sets: JSON.parse(a).map(x => JSON.parse(x))}, null, 1) + '\\n';")
             for c in script.calls { outs.append(try rt.call(c.fn, c.a.map(\.any))) }
         }
         let wall = Date().timeIntervalSince(t0)
@@ -93,7 +93,7 @@ final class FacadeReplayTests: XCTestCase {
         case "03-sessions", "17c-sessions-blocked": _ = try j.decode(Weeks.self, from: d)
         case "21-decision": _ = try j.decode(Decision.self, from: d)
         case _ where n.hasSuffix("history"): _ = try j.decode(History.self, from: d)
-        case "P-week-plan": _ = try j.decode(WeekPlanProjection.self, from: d)
+        case _ where n.hasSuffix("week-plan"): _ = try j.decode(WeekPlanProjection.self, from: d)   // P-week-plan, onb-*-week-plan (CCP-ONB-1)
         case _ where n.hasPrefix("P-logged"): _ = try j.decode(LoggedEntries.self, from: d)
         case "P-warning-sign-sets": _ = try j.decode(Sets.self, from: d)
         case _ where n.hasPrefix("hr5r-time-in-zone"): _ = try j.decode(TimeFile.self, from: d)
