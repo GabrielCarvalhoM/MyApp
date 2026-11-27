@@ -111,6 +111,7 @@ public final class FixtureCoachingWriter: CoachingWriting {
         journal.add("submit", review)
         switch review.body {
         case .sessionReports(let reports):
+            if let gate = screenGate(review) { return gate }
             guard let first = reports.first else { return answer("11-weekly-review-w0") }
             switch first.actual {
             case .plannedRun(let a):
@@ -123,19 +124,34 @@ public final class FixtureCoachingWriter: CoachingWriting {
             }
         case .missedSession: return answer("10-logRun-missed")
         case .notFeeling100(let w, _):
+            if let gate = screenGate(review) { return gate }
             if !w.warningSigns.yes.isEmpty { return answer("actions-F1-notFeeling100-sign") }
             if !w.warningSigns.unanswered.isEmpty { return answer("actions-D3-notFeeling100-no-screen") }
             return answer("actions-D1-notFeeling100-no-sign")
         case .wellbeingCheck: return answer("actions-D1-notFeeling100-no-sign")
-        case .readiness: return answer("18-declareReadiness")
+        case .readiness: return screenGate(review, missing: "actions-E2-break-clinical") ?? answer("18-declareReadiness")
         case .reportBreak(let b): return answer(b.nonclinical ? "actions-E1-break-nonclinical" : "actions-E2-break-clinical")
-        case .unavailableDays: return answer("actions-B1-unavailable-day")
+        case .unavailableDays: return screenGate(review) ?? answer("actions-B1-unavailable-day")
         case .preferences: return answer(review.eligibility == nil ? "14-setPreferences" : "actions-B3-preferences-with-screen")
         case .coach: return answer("14-setPreferences")
         case .exerciseSubstitution(let s):
             if s.pain == true { return answer("actions-A3-substitution-pain") }
             return answer(s.reason == .nonclinicalDiscomfortOrPreference ? "actions-A2-substitution-valid-reason" : "actions-A1-substitution-preference")
         }
+    }
+    /// The engine records no athlete report without a current screen sent with it (#68; the fixtures once hid this): a report without an
+    /// answered, dated screen gets the engine's captured ASK for a review without one (`14-setPreferences`: eligibility.currentAssessment,
+    /// nothing recorded), and a flag answered yes the captured clinical route (`actions-E2-break-clinical`: nothing recorded, plan BLOCKED).
+    /// The 14-day window is the engine's; fixture mode only refuses what is missing. A yes with a symptom stop also raises the warning-sign
+    /// screen in the engine (replay 7b); no capture holds both, so fixture mode shows the clinical route alone (the app's handling of both is
+    /// unit-tested from a scripted answer).
+    /// #72: "Não estou 100%", the readiness declaration and the unavailable day pass the same gate first, as in the engine (the screen is read
+    /// before the signs: a red-flag sign without it gets ASK, replay i72). A readiness declaration without it is answered CLINICAL_HUMAN_REQUIRED
+    /// by the engine (the hold stands, `eligibility.currentAssessment` missing); no capture holds that exact answer, so fixture mode answers
+    /// it with the captured clinical route (`missing`), which the readiness screen reads the same way (the hold stands).
+    private func screenGate(_ review: ReviewRequest, missing: String = "14-setPreferences") -> WriteOutcome? {
+        guard let e = review.eligibility, e.answered, !e.assessedAt.isEmpty else { return answer(missing) }
+        return e.statesAClinicalFlag ? answer("actions-E2-break-clinical") : nil
     }
     public func accept(decisionId: String) async -> WriteOutcome { journal.add("accept", ["decisionId": decisionId]); return answer("actions-B2-accept-unavailable") }
     public func decline(decisionId: String) async -> WriteOutcome { journal.add("decline", ["decisionId": decisionId]); return WriteOutcome(answer: Self.unavailable, kept: [], notKept: []) }

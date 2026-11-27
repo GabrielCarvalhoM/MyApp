@@ -1,0 +1,9 @@
+C sync 2: frente C c04ee8c4 (#59 PR #69, #68 PR #71, #72 PR #78) -> integração a093c042 (#63 PR #75, #49 PR #77).
+Merge: conflito no project.pbxproj. Colisão real de IDs: #68 (C) usou CC00000000000000000000C0/C1 para ReportEligibilityUITests;
+#63 (INT) usou os mesmos para Composition/Launch.swift e PendingErasure.swift. O lado C foi renumerado para
+CC00000000000000000068A0/68A1; listas de grupo e build phase unidas; 101 objetos, 0 duplicados, 0 referências indefinidas; plutil OK.
+Interação entre frentes: o teste ao vivo do #63 (LiveCompositionTests.recordARun) salvava o relato sem a triagem que o #68 exige
+-> 80/81. O teste agora responde a triagem (answerReportScreen).
+Isolamento: um teste ao vivo que falha no meio deixa um atleta inscrito no simulador; antes do novo run o app foi desinstalado.
+Resultado no conteúdo final: sim.sh all --sim RepMile-INT -> tests Passed 81/81, 0 failed, 0 skipped
+(ios/.build/sim-runs/20261127T143634Z/manifest.json, target=simulator result=ok). guard 594 OK; swift-size 0 acima do limite.

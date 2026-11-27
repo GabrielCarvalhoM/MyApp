@@ -13,8 +13,9 @@ final class StrengthLogViewModelTests: XCTestCase {
     }
     private let end = Date(timeIntervalSince1970: 1_795_850_000)
 
+    /// The screen answered "none applies" (#68): these tests pin the log itself (the screen: `ReportEligibilityTests`).
     private func viewModel(_ s: PlannedSession?, _ w: FixtureCoachingWriter) -> StrengthLogViewModel {
-        StrengthLogViewModel(session: s, writer: w, planToday: { "2026-11-22" }, now: { [end] in end })
+        let vm = StrengthLogViewModel(session: s, writer: w, planToday: { "2026-11-22" }, now: { [end] in end }); vm.eligibility = .testNoneApplies; return vm
     }
     private func submits(_ w: FixtureCoachingWriter) -> [Data] { w.journal.entries.filter { $0.call == "submit" }.map(\.json) }
     private func exercise(_ vm: StrengthLogViewModel, _ id: String) throws -> PrescribedExercise { try XCTUnwrap(vm.exercises.first { $0.id == id }) }
@@ -204,7 +205,8 @@ final class StrengthLogViewModelTests: XCTestCase {
         let id = try XCTUnwrap(ok.recorded?.first)
         let w = ScriptedWriter([WriteOutcome(answer: ok, kept: [], notKept: [id]), WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []),
                                 WriteOutcome(answer: ok, kept: [id], notKept: [])])
-        let vm = StrengthLogViewModel(session: try session, writer: w, planToday: { nil })
+        let vm = StrengthLogViewModel(session: try session, writer: w, planToday: { "2026-11-22" })
+        vm.eligibility = .testNoneApplies
         vm.minutes = 30
         vm.confirmAsPrescribed()
         await vm.send()

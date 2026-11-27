@@ -68,7 +68,12 @@ final class PlanAndSessionTests: XCTestCase {
         let cant = app.buttons["session-cant-this-day"]
         XCTAssertTrue(cant.waitForExistence(timeout: 10))
         cant.tap()
-        app.buttons["move-send"].tap()
+        let send = app.buttons["move-send"]
+        XCTAssertTrue(send.waitForExistence(timeout: 5))
+        XCTAssertFalse(send.isEnabled, "the day carries the eligibility screen (#72): unanswered, nothing is sent")
+        answerReportScreen(app)
+        scrollToReach(app, send)
+        send.tap()
         let accept = app.buttons["move-accept"]
         XCTAssertTrue(accept.waitForExistence(timeout: 5))
         XCTAssertFalse(app.descendants(matching: .any)["move-proposal-unavailable"].exists, "the proposal's rows are on screen")
@@ -85,7 +90,10 @@ final class PlanAndSessionTests: XCTestCase {
         let cant = app.buttons["session-cant-this-day"]
         XCTAssertTrue(cant.waitForExistence(timeout: 10))
         cant.tap()
-        app.buttons["move-send"].tap()
+        answerReportScreen(app)
+        let send = app.buttons["move-send"]
+        scrollToReach(app, send)
+        send.tap()
         XCTAssertTrue(app.descendants(matching: .any)["move-proposal-unavailable"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["A mudança ainda não está disponível para revisar."].exists)
         let accept = app.buttons["move-accept"]

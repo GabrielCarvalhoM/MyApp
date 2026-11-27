@@ -6,10 +6,12 @@ import XCTest
 /// shape and the status mapping stay pinned by `RequestShapeTests`; this pins the flow around them.
 @MainActor
 final class NotFeeling100ViewModelTests: XCTestCase {
-    private func viewModel(reader: CoachingReading = Safety.reader(), writer: CoachingWriting, eligibility: Bool = false,
-                           planToday: String? = "2026-11-22") -> NotFeeling100ViewModel {
-        NotFeeling100ViewModel(reader: reader, writer: writer, requireEligibility: eligibility, planToday: { planToday },
-                               now: { Date(timeIntervalSince1970: 1_795_850_000) })
+    /// With the eligibility screen answered "none applies" (#72), so these tests pin the flow itself; the screen is pinned in
+    /// `EligibilityRestTests`.
+    private func viewModel(reader: CoachingReading = Safety.reader(), writer: CoachingWriting, planToday: String? = "2026-11-22") -> NotFeeling100ViewModel {
+        let vm = NotFeeling100ViewModel(reader: reader, writer: writer, planToday: { planToday })
+        vm.eligibility = .testNoneApplies
+        return vm
     }
 
     func testChoosingAConditionAsksExactlyTheEngineSet() async throws {
@@ -53,41 +55,27 @@ final class NotFeeling100ViewModelTests: XCTestCase {
         XCTAssertEqual(vm.phase, .answering(.minorDiscomfort, try Safety.set("MINOR_DISCOMFORT")))
     }
 
-    func testUnansweredSignsAreOmittedAndNoEligibilityWhenNotAsked() async throws {
+    func testUnansweredSignsAreOmittedAndTheScreenIsSent() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let vm = viewModel(writer: w)
         await vm.choose(.minorDiscomfort)
         let set = try Safety.set("MINOR_DISCOMFORT")
         for s in set.warningSigns.dropLast() { vm.answers[s] = false }
         vm.answers["notInTheSet"] = true
-        vm.eligibility.pain = false
         vm.intent = .reduceLight
         await vm.send()
         let sent = try XCTUnwrap(try Safety.submits(w.journal).first)
         let signs = try XCTUnwrap((sent["wellbeing"] as? [String: Any])?["warningSigns"] as? [String: Bool])
         XCTAssertEqual(Set(signs.keys), Set(set.warningSigns.dropLast()), "the unanswered sign is omitted, never false; an unasked one is never sent")
-        XCTAssertNil(sent["eligibility"], "the eligibility screen goes only with the entry point that asks it")
-        XCTAssertEqual(vm.phase, .outcome(.needsAnswers), "the engine asks again for the unanswered sign")
-    }
-
-    func testEligibilityIsSentWhenAskedDatedThePlanDay() async throws {
-        let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = viewModel(writer: w, eligibility: true)
-        await vm.choose(.mildIllness)
-        vm.eligibility.injury = false
-        await vm.send()
-        let e = try XCTUnwrap(try Safety.submits(w.journal).first?["eligibility"] as? [String: Any])
-        XCTAssertEqual(e["assessedAt"] as? String, "2026-11-22")
-        XCTAssertEqual(e["injury"] as? Bool, false)
-        XCTAssertNil(e["pain"], "nil = not answered, never false")
-        XCTAssertNil(e["status"])
-
-        let w2 = FixtureCoachingWriter(store: Repo.store)
-        let noPlan = viewModel(writer: w2, eligibility: true, planToday: nil)
-        await noPlan.choose(.mildIllness)
-        await noPlan.send()
-        let e2 = try XCTUnwrap(try Safety.submits(w2.journal).first?["eligibility"] as? [String: Any])
-        XCTAssertEqual(e2["assessedAt"] as? String, Fmt.deviceDay(Date(timeIntervalSince1970: 1_795_850_000)), "no plan loaded: the device day")
+        let e = try XCTUnwrap(sent["eligibility"] as? [String: Any], "every entry point sends the screen (#72)")
+        XCTAssertEqual(e["assessedAt"] as? String, "2026-11-22", "the plan's today")
+        XCTAssertEqual(vm.phase, .needsAnswers(.minorDiscomfort, set), "the engine asks again for the unanswered sign")
+        vm.back()
+        XCTAssertEqual(vm.phase, .answering(.minorDiscomfort, set), "\"Voltar\": the same questions")
+        XCTAssertTrue(Set(set.warningSigns.dropLast()).isSubset(of: Set(vm.answers.keys)), "the answers kept")
+        XCTAssertEqual(vm.intent, .reduceLight)
+        XCTAssertEqual(vm.eligibility, .testNoneApplies, "the screen answered here kept")
+        XCTAssertTrue(vm.canSend)
     }
 
     func testOutcomeIsTheEngineStatus() async throws {
@@ -108,7 +96,8 @@ final class NotFeeling100ViewModelTests: XCTestCase {
             let vm = viewModel(writer: ScriptedSubmitWriter(try Safety.answer(json)))
             await vm.choose(.unusualFatigue)
             await vm.send()
-            XCTAssertEqual(vm.phase, .outcome(expected), json)
+            let set = try Safety.set("UNUSUAL_FATIGUE")
+            XCTAssertEqual(vm.phase, expected == .needsAnswers ? .needsAnswers(.unusualFatigue, set) : .outcome(expected), json)
         }
     }
 
