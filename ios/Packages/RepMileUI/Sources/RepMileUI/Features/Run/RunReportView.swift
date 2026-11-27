@@ -4,7 +4,9 @@ import SwiftUI
 
 /// The athlete's report after a recording (Figma 40 "salvando" → 50 summary). State, rules and the write live in `RunReportViewModel`;
 /// this view renders them. An unplanned run asks "Parou ou sentiu algo fora do normal?" (SSCTR-ABC-S1); "yes" opens "Não estou 100%"
-/// with the eligibility screen at once.
+/// with the eligibility screen at once. Every report asks the eligibility screen itself (#68): "Salvar" stays off until it is answered, and an
+/// answer that routes to a human shows the existing safety state (INTERIM copy) with no "Reenviar" invitation; the form stays editable, so
+/// a mis-tap can be corrected (SSCTR #68 C5).
 struct RunReportView: View {
     @Environment(AppModel.self) private var model
     @Environment(RunRecorder.self) private var recorder
@@ -78,11 +80,17 @@ struct RunReportView: View {
                 } else {
                     unusualQuestion
                 }
+                // Hidden under "Não estou 100%" (its own form has the same identifiers); fixed while the report is on its way.
+                if !viewModel.canClose && !showSigns {
+                    EligibilityForm(screen: $vm.eligibility).disabled(viewModel.sending)
+                    Text(L.t("ob.eligibility.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                }
                 resultView
                 if viewModel.canClose {
                     PrimaryActionButton(L.t("report.done"), icon: .check) { close() }.accessibilityIdentifier("report-done")
                 } else {
-                    PrimaryActionButton(viewModel.result == .notKept ? L.t("report.resend") : L.t("report.save"), icon: .check, enabled: viewModel.canSend) {
+                    PrimaryActionButton(viewModel.result == .notKept && !viewModel.clinical ? L.t("report.resend") : L.t("report.save"), icon: .check,
+                                        enabled: viewModel.canSend) {
                         Task { await viewModel.send() }
                     }
                         .accessibilityIdentifier("report-save")
@@ -133,7 +141,9 @@ struct RunReportView: View {
                 .transition(.scale.combined(with: .opacity)).accessibilityIdentifier("report-saved")
             if viewModel.screenRequired { screenRequiredBanner }
         case .notKept?:
-            Text(L.t("report.notKept")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("report-not-kept")
+            // Routed to a human: the report was not recorded, and nothing here invites a resend.
+            Text(L.t(viewModel.clinical ? "report.clinical.notKept" : "report.notKept")).rmText(.detalhe, RM.Palette.negativo)
+                .accessibilityIdentifier("report-not-kept")
             if viewModel.screenRequired { screenRequiredBanner }
         case .screenRequired?:
             screenRequiredBanner
@@ -142,6 +152,7 @@ struct RunReportView: View {
             if viewModel.screenRequired { screenRequiredBanner }
         case nil: EmptyView()
         }
+        if viewModel.clinical { ClinicalRouteBanner(reportKept: viewModel.canClose).accessibilityIdentifier("report-blocked") }
     }
 
     private var screenRequiredBanner: some View {

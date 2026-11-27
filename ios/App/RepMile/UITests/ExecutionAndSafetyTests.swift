@@ -34,6 +34,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
         app.buttons["report-rpe-4"].tap()
         attach(app, "Relato — corrida planejada")
+        answerReportScreen(app)
         let save = app.buttons["report-save"]
         while !save.isHittable { app.swipeUp() }
         save.tap()
@@ -57,6 +58,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(reason.waitForExistence(timeout: 3))
         reason.tap()
         app.buttons["Senti um sintoma"].firstMatch.tap()
+        answerReportScreen(app)
         let save = app.buttons["report-save"]
         for _ in 0..<6 where !save.isHittable { app.swipeUp() }
         save.tap()
@@ -86,6 +88,8 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["Fechar"].firstMatch.tap()
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5), "closing the flow returns to the report, still to save")
         let save = app.buttons["report-save"]
+        XCTAssertFalse(save.isEnabled, "the report asks its own eligibility screen (#68)")
+        answerReportScreen(app)
         XCTAssertTrue(save.isEnabled)
         while !save.isHittable { app.swipeUp() }
         save.tap()
@@ -223,6 +227,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertFalse(app.buttons["strength-save"].isEnabled, "minutes are the athlete's, never defaulted")
         let inc = app.steppers["strength-minutes"].buttons.element(boundBy: 1)
         for _ in 0..<6 { inc.tap() }
+        answerReportScreen(app)
         app.buttons["strength-save"].tap()
         XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
     }
@@ -245,6 +250,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertEqual(app.steppers["reps-goblet-squat-1"].value as? String, "8", "VoiceOver hears the stated count")
         XCTAssertFalse(app.buttons["strength-as-prescribed"].exists, "offered only while nothing is stated")
         attach(app, "Execução de força — fiz como prescrito (41)")
+        answerReportScreen(app)
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled)
         XCTAssertEqual(app.buttons["set-dead-bug-0"].value as? String, "registrada, 10 repetições")
@@ -271,6 +277,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertEqual(app.buttons["set-db-bench-press-1"].value as? String, "não registrada")
         attach(app, "Execução de força — registro parcial (41)")
         addStrengthMinutes(app)
+        answerReportScreen(app)
         let save = app.buttons["strength-save"]
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled, "a partial log can be saved")
