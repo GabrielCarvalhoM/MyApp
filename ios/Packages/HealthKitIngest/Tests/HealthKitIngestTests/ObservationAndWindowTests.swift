@@ -11,10 +11,10 @@ final class ObservationRaceTests: XCTestCase {
         reader.hold(gate)
         let ing = make(rig, reader)
         let started = Task { await ing.start() }
-        try await eventually { reader.isHolding }
-        XCTAssertTrue(reader.isHolding)
+        try await eventually("the registration held") { reader.isHolding }
         let off = Task { try await ing.setEnabled(false) }
-        try await Task.sleep(nanoseconds: 50_000_000)        // setEnabled(false) runs while the registration is held
+        // setEnabled(false) has written the switch and waits for the registration pass in progress.
+        try await eventually("setEnabled(false) waiting for the pass") { await ing.observationWaiters.count == 1 }
         reader.release()
         await started.value; try await off.value
         return (reader, sink, ing)
@@ -40,11 +40,11 @@ final class ObservationRaceTests: XCTestCase {
         reader.hold(.startObserving)
         let ing = make(rig, reader)
         let started = Task { await ing.start() }
-        try await eventually { reader.isHolding }
+        try await eventually("the registration held") { reader.isHolding }
         let off = Task { try await ing.setEnabled(false) }
-        try await Task.sleep(nanoseconds: 30_000_000)
+        try await eventually("setEnabled(false) waiting") { await ing.observationWaiters.count == 1 }
         let on = Task { try await ing.setEnabled(true) }
-        try await Task.sleep(nanoseconds: 30_000_000)
+        try await eventually("setEnabled(true) waiting") { await ing.observationWaiters.count == 2 }
         reader.release()
         await started.value; try await off.value; try await on.value
         XCTAssertTrue(reader.inner.observing); XCTAssertTrue(reader.inner.backgroundDelivery)
@@ -71,7 +71,7 @@ final class BackgroundWindowTests: XCTestCase {
         inner.holdNext = true
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         await rig.reader.fire(); window.note("completion")    // HealthKit calls the completion handler when `fire` returns
-        try await eventually { inner.isHolding }
+        try await eventually("the delivery held") { inner.isHolding }
         XCTAssertNil(window.at("end1"), "the window stays open while the delivery is in flight")
         inner.release(); await ing.settled()
         let e = window.events
@@ -89,10 +89,10 @@ final class BackgroundWindowTests: XCTestCase {
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make()
         let launch = Task { await ing.start() }
-        try await eventually { inner.isHolding }
+        try await eventually("the launch's delivery held") { inner.isHolding }
         rig.reader.add(workout("B", end: at("2026-11-18", "07:45")))
         await rig.reader.fire()
-        try await Task.sleep(nanoseconds: 30_000_000)
+        try await eventually("the observer's task waiting for the running loop") { await ing.pumpWaiters.count == 1 }
         XCTAssertNil(window.at("end1"))
         inner.release(); await launch.value; await ing.settled()
         XCTAssertEqual(window.events, ["deliver:A", "begin1", "answered:A", "deliver:B", "answered:B", "end1"])

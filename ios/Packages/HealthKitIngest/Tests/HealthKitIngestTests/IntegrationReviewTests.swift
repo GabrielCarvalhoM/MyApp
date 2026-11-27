@@ -64,7 +64,7 @@ final class IntegrationReviewTests: XCTestCase {
         sink.inner.answers = [ScriptedSink.each(.notRecorded(reason: "NOT_RECORDED_BY_THIS_DECISION"))]
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); sink.ingestor = ing
-        await assertFinishes(within: 5, self, "start with a signal inside deliver") { await ing.start() }
+        guard await assertFinishes(within: 5, "start with a signal inside deliver", { await ing.start() }) else { return }
         XCTAssertEqual(sink.inner.deliveries.count, 2, "the NOT_RECORDED answer came after the signal: re-sent at once")
         XCTAssertNotEqual(sink.inner.deliveries[0].deliveryId, sink.inner.deliveries[1].deliveryId)
         let c = await ing.counts(); XCTAssertEqual(c.delivered, 1)
@@ -84,15 +84,19 @@ final class IntegrationReviewTests: XCTestCase {
         sink.inner.answers = [ScriptedSink.each(.notRecorded(reason: "NOT_RECORDED_BY_THIS_DECISION"))]
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); sink.ingestor = ing
-        await assertFinishes(within: 5, self, "start") { await ing.start() }
-        try await eventually { await ing.counts().delivered == 1 }
+        guard await assertFinishes(within: 5, "start", { await ing.start() }) else { return }
+        try await eventually("the re-send") { await ing.counts().delivered == 1 }
         let c = await ing.counts(); XCTAssertEqual(c.delivered, 1); XCTAssertEqual(sink.inner.deliveries.count, 2)
     }
 
-    /// The timeout helper really fails a test whose work never finishes (what `cancel()` in the old R2-01 test could not do).
-    func testTheTimeoutFailsInsteadOfHanging() async {
-        XCTExpectFailure("work that never finishes must fail the test, not hang it")
-        await assertFinishes(within: 0.2, self, "never") { await withCheckedContinuation { (_: CheckedContinuation<Void, Never>) in } }
+    /// The timeout really returns for work that never finishes (what `cancel()` in the old R2-01 test could not do), so `assertFinishes`
+    /// fails and its caller stops instead of hanging.
+    func testTheTimeoutReturnsInsteadOfHanging() async {
+        let start = Date()
+        let finished = await finishes(within: 0.2, "never") { await withCheckedContinuation { (_: CheckedContinuation<Void, Never>) in } }
+        XCTAssertFalse(finished, "the caller is told, so it can stop"); XCTAssertLessThan(Date().timeIntervalSince(start), 2)
+        let quick = await finishes(within: 2, "quick") {}
+        XCTAssertTrue(quick)
     }
 
     // MARK: copies of one run arriving in different reads

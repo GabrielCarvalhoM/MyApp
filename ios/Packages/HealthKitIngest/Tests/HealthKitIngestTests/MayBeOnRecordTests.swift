@@ -85,4 +85,76 @@ final class MayBeOnRecordTests: XCTestCase {
         XCTAssertFalse(node.sent.flatMap(\.activities).contains { $0.activityId == "SA" }, "the copy is never sent")
         XCTAssertEqual(Set(try node.deviceRows().compactMap { $0["activityId"] as? String }), ["HK-A", "HK-B"], "one row per physical run")
     }
+
+    // MARK: QRE #84 P3-1: deleted in Apple Health while in flight
+
+    /// Two sends of G1 answered `answer`; G1 is deleted in Apple Health while the second is in flight.
+    func deletedDuringTheLastSend(_ answer: @escaping (DeviceDelivery) -> DeliveryResult) async throws -> (ScriptedSink, HealthKitIngestor, Rig) {
+        let sink = ScriptedSink(context: .ready(Copies.plan)); var rig = Rig(sink: sink); rig.config.maxConsecutiveRetryLater = 2
+        sink.answers = [answer, answer]
+        rig.reader.add(Copies.g1, Copies.s1)
+        let ing = rig.make(); await ing.start()
+        sink.holdNext = true
+        rig.clock.advance(400)
+        let retry = Task { await rig.scheduler.runAll() }
+        try await eventually("the second send held") { sink.isHolding }
+        rig.reader.delete("G1"); await ing.readNow()
+        sink.release(); await retry.value
+        await ing.deliveryConditionsChanged(); await rig.reader.fire(); await ing.settled()
+        return (sink, ing, rig)
+    }
+
+    /// A refusal with the retryLater disposition exhausts the streak: G1 may be on record, so it is not dropped as "deleted before
+    /// delivery" and S1 is never promoted. Counted once as DELETED_MAYBE_ON_RECORD.
+    func testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord() async throws {
+        let (sink, ing, _) = try await deletedDuringTheLastSend { _ in .refused(code: "BUSY", index: nil, disposition: .retryLater) }
+        XCTAssertEqual(sent(sink), ["G1", "G1"], "S1 is never sent")
+        let c = await ing.counts()
+        XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertNil(c.counters[IngestCode.deletedBeforeDelivery])
+        XCTAssertEqual(c.setAside, [IngestCode.attemptsExhausted: 1]); XCTAssertEqual(c.consolidated, 1)
+    }
+
+    /// The same with a plain retryLater: the set-aside lands on a workout already deleted while in flight, and it is counted.
+    func testASetAsideOnARunDeletedInFlightIsCountedOnce() async throws {
+        let (sink, ing, rig) = try await deletedDuringTheLastSend { _ in .retryLater(code: "OPERATIONAL_ERROR") }
+        XCTAssertEqual(sent(sink), ["G1", "G1"])
+        await ing.readNow(); rig.clock.advance(400); await rig.scheduler.runAll()
+        let c = await ing.counts()
+        XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1, "once, whatever triggers follow"); XCTAssertEqual(c.consolidated, 1)
+    }
+
+    /// ACTIVITY_LINKED_ELSEWHERE on a workout deleted while in flight: kept and counted, the copy never promoted.
+    func testALinkedElsewhereRefusalOfARunDeletedInFlightKeepsIt() async throws {
+        let sink = ScriptedSink(context: .ready(Copies.plan)); let rig = Rig(sink: sink)
+        sink.holdNext = true; sink.answers = [{ _ in .refused(code: "ACTIVITY_LINKED_ELSEWHERE", index: 0, disposition: .setAsideItem) }]
+        rig.reader.add(Copies.g1, Copies.s1)
+        let ing = rig.make()
+        let launch = Task { await ing.start() }
+        try await eventually("the send held") { sink.isHolding }
+        rig.reader.delete("G1"); await ing.readNow()
+        sink.release(); await launch.value
+        await ing.deliveryConditionsChanged()
+        XCTAssertEqual(sent(sink), ["G1"])
+        let c = await ing.counts()
+        XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertNil(c.counters[IngestCode.deletedBeforeDelivery])
+        XCTAssertEqual(c.setAside, ["ACTIVITY_LINKED_ELSEWHERE": 1]); XCTAssertEqual(c.consolidated, 1)
+    }
+
+    // MARK: QRE #84 P3-2: ACTIVITY_LINKED_ELSEWHERE whatever the disposition
+
+    /// Without a usable index (none, or out of range) the refusal goes the adapter-bug way and sets G1 aside on the second strike. The code
+    /// still says G1 is on the record: S1 is never promoted.
+    func testALinkedElsewhereSetAsideByAnyPathMayBeOnRecord() async {
+        for (index, disposition) in [(Int?.none, BoundaryDisposition.adapterBug), (5, .setAsideItem)] {
+            let sink = ScriptedSink(context: .ready(Copies.plan)); let rig = Rig(sink: sink)
+            let refusal: (DeviceDelivery) -> DeliveryResult = { _ in .refused(code: "ACTIVITY_LINKED_ELSEWHERE", index: index, disposition: disposition) }
+            sink.answers = [refusal, refusal]
+            rig.reader.add(Copies.g1, Copies.s1)
+            let ing = rig.make(); await ing.start(); await ing.deliveryConditionsChanged()
+            XCTAssertEqual(sent(sink), ["G1", "G1"], "\(disposition)")
+            let c = await ing.counts(); XCTAssertEqual(c.setAside, ["ACTIVITY_LINKED_ELSEWHERE": 1]); XCTAssertEqual(c.consolidated, 1)
+            let state = try? JSONDecoder().decode(QueueState.self, from: XCTUnwrap((rig.store as? MemoryStore)?.data))
+            XCTAssertEqual(state?.items.first { $0.activityId == "G1" }?.mayBeOnRecord, true)
+        }
+    }
 }

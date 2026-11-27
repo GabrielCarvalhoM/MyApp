@@ -34,9 +34,10 @@ extension HealthKitIngestor {
         s.inFlight = nil
         let ids = flight.activities.map(\.activityId)
         func index(_ id: String) -> Int? { s.items.firstIndex { $0.activityId == id } }
-        /// Nothing was recorded: a workout deleted in Apple Health while in flight now simply leaves the queue.
+        /// Nothing was recorded: a workout deleted in Apple Health while in flight now simply leaves the queue, unless it may be on the
+        /// record (QRE #84 P3-1: e.g. `retryLater` exhausted by a refusal): it stays the run of its group, so its copy is never promoted.
         func dropDeletedUnrecorded() {
-            for id in ids { if let i = index(id), s.items[i].deletedWhileInFlight {
+            for id in ids { if let i = index(id), s.items[i].deletedWhileInFlight, !s.items[i].mayBeOnRecord {
                 s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 } }
         }
         var code: String?
@@ -72,13 +73,13 @@ extension HealthKitIngestor {
             log.log(.init(.deliveryAnswered, counts: Self.outcomeCounts(results), deliveryId: flight.deliveryId))
         case .refused(let c, let at, let disposition):
             code = c
-            s.retryLaterStreak = 0; s.nextRetryAt = nil
+            // QRE-B-02: a refusal with the retryLater disposition continues the streak (QRE #84 P3-1: it used to restart it here, so the
+            // bound never applied to it); any other refusal breaks it (also below).
+            if disposition != .retryLater { s.retryLaterStreak = 0; s.nextRetryAt = nil }
             let culprit = at.flatMap { $0 >= 0 && $0 < ids.count ? index(ids[$0]) : nil }
             switch disposition {
             case .setAsideItem where culprit != nil:
-                s.items[culprit!].state = .setAside(code: c)
-                // P3-2: this refusal records nothing now, but says the workout is ALREADY on the record (linked to another session).
-                if c == Self.activityLinkedElsewhere { s.items[culprit!].mayBeOnRecord = true }
+                Self.setAside(&s, culprit!, code: c)
             case .resendUnlinked where culprit != nil:
                 // Frozen unlinked for good: the boundary refused the link (UNKNOWN_SESSION, SPORT_MISMATCH).
                 s.items[culprit!].activity = s.items[culprit!].activity.unlinked()
@@ -95,7 +96,7 @@ extension HealthKitIngestor {
                 if ids.count > 1 { chunkLimit = max(1, ids.count / 2) }
                 else if let i = index(ids[0]) {
                     s.items[i].adapterBugStrikes += 1
-                    if s.items[i].adapterBugStrikes >= 2 { s.items[i].state = .setAside(code: c) }
+                    if s.items[i].adapterBugStrikes >= 2 { Self.setAside(&s, i, code: c) }
                 }
             }
             if s.inFlight == nil { dropDeletedUnrecorded() }
@@ -130,12 +131,22 @@ extension HealthKitIngestor {
             // P3-2: `retryLater` never proves that nothing was written ("or a write that landed is replayed", `DeviceDelivery`). These
             // workouts may be on the record: each stays the run of its group, so a copy of it is never promoted and sent as a second run.
             for a in flight.activities { if let i = s.items.firstIndex(where: { $0.activityId == a.activityId }) {
-                s.items[i].state = .setAside(code: IngestCode.attemptsExhausted); s.items[i].mayBeOnRecord = true } }
+                Self.setAside(&s, i, code: IngestCode.attemptsExhausted, mayBeOnRecord: true) } }
             s.inFlight = nil; s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
             return
         }
         let delay = min(config.backoffCap, config.backoffBase * pow(2, Double(s.retryLaterStreak - 1)))
         s.nextRetryAt = clock().addingTimeInterval(delay)
+    }
+
+    /// Every set-aside of a sent workout after a boundary answer. ACTIVITY_LINKED_ELSEWHERE, whatever the disposition that carried it,
+    /// records nothing now but says the workout is ALREADY on the record (linked to another session): it may be on record (P3-2, QRE #84
+    /// P3-2). A workout deleted in Apple Health while in flight that turns out to be possibly on record is counted once (QRE #84 P3-1).
+    static func setAside(_ s: inout QueueState, _ i: Int, code: String, mayBeOnRecord: Bool = false) {
+        s.items[i].state = .setAside(code: code)
+        guard mayBeOnRecord || code == activityLinkedElsewhere, !s.items[i].mayBeOnRecord else { return }
+        s.items[i].mayBeOnRecord = true
+        if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedMaybeOnRecord, default: 0] += 1 }
     }
 
     func scheduleRetry(at: Date) {

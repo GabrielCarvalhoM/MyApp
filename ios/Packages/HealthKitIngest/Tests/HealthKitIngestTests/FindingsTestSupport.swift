@@ -5,16 +5,34 @@ import IntegrationContracts
 
 // Doubles for the #48 findings (P3-2, P3-3, P3-4, QueueStore, QRE-B-R2-03). Synthetic only: no Apple Health data, no value is logged.
 
-/// Fails the test, instead of hanging the run, when `work` does not finish in time. `XCTestExpectation` times out on its own; a cancelled
-/// task blocked on a continuation never would (the R2-01 test used to rely on `cancel()`, which unblocks nothing).
-func assertFinishes(within seconds: TimeInterval, _ test: XCTestCase, _ what: String, _ work: @escaping @Sendable () async -> Void) async {
-    let done = XCTestExpectation(description: what)
-    Task { await work(); done.fulfill() }
-    await test.fulfillment(of: [done], timeout: seconds)
+/// Fails the test, instead of hanging the run, when `work` does not finish in time, and says so: the caller stops on `false` (a deadlocked
+/// `work` stays blocked; nothing after it may wait on it). `XCTestExpectation` times out on its own; a cancelled task blocked on a
+/// continuation never would (the R2-01 test used to rely on `cancel()`, which unblocks nothing).
+@discardableResult
+func assertFinishes(within seconds: TimeInterval, _ what: String, file: StaticString = #filePath, line: UInt = #line,
+                    _ work: @escaping @Sendable () async -> Void) async -> Bool {
+    guard await finishes(within: seconds, what, work) else {
+        XCTFail("\(what): did not finish within \(seconds) s (deadlock?)", file: file, line: line)
+        return false
+    }
+    return true
 }
 
-func eventually(_ condition: @Sendable () async -> Bool) async throws {
+/// Whether `work` finished in time, without failing the test (the waiter times out on its own, whatever `work` is blocked on).
+func finishes(within seconds: TimeInterval, _ what: String, _ work: @escaping @Sendable () async -> Void) async -> Bool {
+    let done = XCTestExpectation(description: what)
+    Task { await work(); done.fulfill() }
+    return await XCTWaiter().fulfillment(of: [done], timeout: seconds) == .completed
+}
+
+struct TimedOut: Error, CustomStringConvertible { let what: String; var description: String { "timed out waiting for \(what)" } }
+
+/// Waits for an observable condition (never a fixed sleep standing for one) and throws, failing the test, when it does not hold in 2 s.
+func eventually(_ what: String = "condition", file: StaticString = #filePath, line: UInt = #line,
+                _ condition: @Sendable () async -> Bool) async throws {
     for _ in 0..<400 { if await condition() { return }; try await Task.sleep(nanoseconds: 5_000_000) }
+    XCTFail("timed out waiting for \(what)", file: file, line: line)
+    throw TimedOut(what: what)
 }
 
 /// A background window that records, in order, when it was asked for and released, next to the test's own events.
