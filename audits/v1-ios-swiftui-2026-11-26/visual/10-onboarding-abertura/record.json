@@ -7,8 +7,11 @@
     "frameName": "Onboarding / 01 Abertura",
     "page": "10 · Onboarding (551:5)",
     "size": "393x852",
-    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
-    "light": null
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId) at its maximum: get_screenshot does not upscale (maxDimension only caps), so the export is 1x (393 px wide) while app captures are 3x (1206 px). No read-only path to a 3x export was available. Layout spec: figma-notes.txt.",
+    "light": {
+      "status": "PENDING_ISSUE_94",
+      "reference": "the dark frame (figma.png) with the \"A · Claro\" values of the colour variables (all 44 tokens, read with valuesByMode by the orchestrator); no V1 screen frame exists in light, so there is no figma-light.png. The legacy ZZ \"A · Claro\" frames are not references."
+    }
   },
   "sources": {
     "screenMap": {
@@ -81,7 +84,7 @@
     {
       "appearance": "light",
       "status": "PENDING_ISSUE_94",
-      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)). Capture after #94 lands; reference = dark frame with the A · Claro palette."
     }
   ],
   "fixture": {

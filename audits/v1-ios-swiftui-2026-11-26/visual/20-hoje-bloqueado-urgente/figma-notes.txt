@@ -6,6 +6,9 @@ MAPPING CAVEAT: the Figma has an urgent frame, but not on Hoje. There is no Hoje
 in scenario `blocked-urgent` (UrgentCareBanner, #73). This 72 frame is the nearest reference for the urgent content and the URGENT label.
 It is a pushed screen (back chevron, no tab bar). The Hoje urgent banner itself has no Figma reference.
 
+METHOD (orchestrator, 2026-11-27): urgent on Hoje has no screen frame; judged against component + content frame:
+this frame (805:492) plus the page-02 component 901:1482 (figma-component.png, notes in figma-component-notes.txt) and the tokens.
+
 LAYOUT (y in pt)
 - 0     Status bar 54. "Luz · neutra" ellipse.
 - 54    Navigation 40 (back 36 x 36 at x 16; centred title "Não estou 100%").
@@ -19,4 +22,6 @@ LAYOUT (y in pt)
 
 TYPE STYLES: as 805:410 (Manchete, Subtítulo, Detalhe, Micro, Botão).
 COLOURS (dark): as 805:410 plus estado/negativo #FF5A5F (the URGENTE label).
-LIGHT REFERENCE: none for this node.
+LIGHT REFERENCE (method, orchestrator 2026-11-27): no V1 screen frame exists in light. The colour variables carry "A · Claro" values
+for all 44 tokens (read with valuesByMode); the light reference is this dark frame with the light palette. No figma-light.png. The
+legacy ZZ "A · Claro" frames (513:1441, 513:2281) are NOT references. Light conditions stay pending until #94 lands.

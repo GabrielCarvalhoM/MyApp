@@ -7,8 +7,22 @@
     "frameName": "Adaptações / Não estou 100% · sinal urgente, procurar atendimento",
     "page": "72 · Adaptações e recuperação (551:15)",
     "size": "393x944",
-    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
-    "light": null
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId) at its maximum: get_screenshot does not upscale (maxDimension only caps), so the export is 1x (393 px wide) while app captures are 3x (1206 px). No read-only path to a 3x export was available. Layout spec: figma-notes.txt.",
+    "light": {
+      "status": "PENDING_ISSUE_94",
+      "reference": "the dark frame (figma.png) with the \"A · Claro\" values of the colour variables (all 44 tokens, read with valuesByMode by the orchestrator); no V1 screen frame exists in light, so there is no figma-light.png. The legacy ZZ \"A · Claro\" frames are not references."
+    },
+    "component": {
+      "nodeId": "901:1482",
+      "frameName": "Aviso com ação e lista com check",
+      "page": "02 · Componentes (551:4)",
+      "file": "figma-component.png",
+      "notes": "figma-component-notes.txt",
+      "related": {
+        "nodeId": "901:1367",
+        "frameName": "Botões · principal, da modalidade, neutro, de risco e desligado"
+      }
+    }
   },
   "sources": {
     "screenMap": {
@@ -81,7 +95,7 @@
     {
       "appearance": "light",
       "status": "PENDING_ISSUE_94",
-      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)). Capture after #94 lands; reference = dark frame with the A · Claro palette."
     }
   ],
   "fixture": {
@@ -97,13 +111,20 @@
       "weekPlan": "P-week-plan"
     },
     "hostGate": "notStartable(.blocked)",
-    "route": "Hoje tab (UrgentCareBanner, #73)"
+    "route": "Hoje tab (UrgentCareBanner, #73)",
+    "launchArgs": [
+      "-scenario",
+      "blocked-urgent"
+    ]
   },
   "mapping": {
-    "status": "NO_HOJE_REFERENCE",
-    "note": "The Figma has an urgent frame (72 805:492) but no Hoje frame with the urgent-care banner. The urgent banner on Hoje has no Figma reference; 805:492 is recorded as the nearest reference for the urgent content and label only."
+    "status": "NO_SCREEN_FRAME_METHOD",
+    "method": "Orchestrator decision 2026-11-27: where the Figma has no frame for a state, the reference is the state content frame plus the banner/state component and tokens from page 02 · Componentes.",
+    "contentFrame": "805:492 (figma.png)",
+    "component": "901:1482 (figma-component.png)",
+    "note": "Urgent on Hoje: no screen frame; judged against component + content frame. The Figma has the urgent content frame 805:492 (72) but no Hoje frame with the urgent-care banner (#73), and page 02 has no urgent variant of the Aviso: the urgent treatment (outlined card, URGENTE label in estado/negativo) comes from 805:492 only."
   },
-  "captureBlocker": "NO_CAPTURE_PATH: `sim.sh run` launches the app with only -AppleLanguages/-AppleLocale. The fixture composition needs the `-scenario <id>` launch argument (LaunchMode.of, Debug only), and sim.sh has no option to pass it, so every sim.sh run opens the live composition. (Hoje is the fixture launch screen, so only --scenario is missing for this one.) No hand-made or XCUITest screenshot substitutes for a sim.sh run (VISUAL_VALIDATION.md). Needs: sim.sh --scenario (ORCH) and a launch route to this screen (front C), or an agreed capture path.",
+  "captureBlocker": null,
   "differences": [],
   "verdict": "PENDING",
   "reviewedAt": null

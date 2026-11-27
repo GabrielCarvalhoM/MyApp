@@ -7,13 +7,10 @@
     "frameName": "Plano / Semana · semana 3, hoje",
     "page": "30 · Plano (551:7)",
     "size": "393x1541",
-    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId) at its maximum: get_screenshot does not upscale (maxDimension only caps), so the export is 1x (393 px wide) while app captures are 3x (1206 px). No read-only path to a 3x export was available. Layout spec: figma-notes.txt.",
     "light": {
-      "file": "figma-light.png",
-      "nodeId": "513:2281",
-      "page": "ZZ · Legado",
-      "frameName": "A · Claro · Plano · semana (pista de raia dupla)",
-      "caveat": "Legacy palette-comparison copy, not a light rendering of 509:115 and without the later content. Colour roles only."
+      "status": "PENDING_ISSUE_94",
+      "reference": "the dark frame (figma.png) with the \"A · Claro\" values of the colour variables (all 44 tokens, read with valuesByMode by the orchestrator); no V1 screen frame exists in light, so there is no figma-light.png. The legacy ZZ \"A · Claro\" frames are not references."
     }
   },
   "sources": {
@@ -87,7 +84,7 @@
     {
       "appearance": "light",
       "status": "PENDING_ISSUE_94",
-      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)). Capture after #94 lands; reference = dark frame with the A · Claro palette."
     }
   ],
   "fixture": {
@@ -109,7 +106,7 @@
     "status": "CLEAR_WITH_NOTE",
     "note": "Addendum §2 \"30 Week / Phases\" names 596:2125 (Fases) and the fixtures P-week-plan, 02-plan-w0, 13-plan-w1; the week frame 509:115 is the one PlanScreen.swift declares. Fixture week differs from Figma week 3 (handoff §8)."
   },
-  "captureBlocker": "NO_CAPTURE_PATH: `sim.sh run` launches the app with only -AppleLanguages/-AppleLocale. The fixture composition needs the `-scenario <id>` launch argument (LaunchMode.of, Debug only), and sim.sh has no option to pass it, so every sim.sh run opens the live composition. This screen is also not the launch screen (it needs a tab change or a push), and sim.sh captures only the screen shown after launch. No hand-made or XCUITest screenshot substitutes for a sim.sh run (VISUAL_VALIDATION.md). Needs: sim.sh --scenario (ORCH) and a launch route to this screen (front C), or an agreed capture path.",
+  "captureBlocker": "NO_ROUTE: sim.sh --arg now passes -scenario (orchestration, 2026-11-27), but sim.sh captures only the screen shown after launch, and this screen needs a tab change (Plano) or a push (Treino). Blocked until the app has a Debug launch argument that opens a tab or a session (routed by the orchestrator). No XCUITest or hand-made screenshot substitutes for a sim.sh run.",
   "differences": [],
   "verdict": "PENDING",
   "reviewedAt": null

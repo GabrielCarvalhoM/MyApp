@@ -7,13 +7,10 @@
     "frameName": "Hoje / Dia duplo · manhã · sem relógio (sem sono e VFC)",
     "page": "20 · Hoje (551:6)",
     "size": "393x1434",
-    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId) at its maximum: get_screenshot does not upscale (maxDimension only caps), so the export is 1x (393 px wide) while app captures are 3x (1206 px). No read-only path to a 3x export was available. Layout spec: figma-notes.txt.",
     "light": {
-      "file": "figma-light.png",
-      "nodeId": "513:1441",
-      "page": "ZZ · Legado",
-      "frameName": "A · Claro · Hoje · dia duplo (força feita, corrida à noite)",
-      "caveat": "Legacy palette-comparison copy of an older Hoje frame, not a light rendering of 880:4257 and without the later content. Colour roles only."
+      "status": "PENDING_ISSUE_94",
+      "reference": "the dark frame (figma.png) with the \"A · Claro\" values of the colour variables (all 44 tokens, read with valuesByMode by the orchestrator); no V1 screen frame exists in light, so there is no figma-light.png. The legacy ZZ \"A · Claro\" frames are not references."
     }
   },
   "sources": {
@@ -87,7 +84,7 @@
     {
       "appearance": "light",
       "status": "PENDING_ISSUE_94",
-      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)). Capture after #94 lands; reference = dark frame with the A · Claro palette."
     }
   ],
   "fixture": {
@@ -103,13 +100,17 @@
       "weekPlan": "P-week-plan"
     },
     "hostGate": "none",
-    "route": "Hoje tab (launch screen of the fixture composition)"
+    "route": "Hoje tab (launch screen of the fixture composition)",
+    "launchArgs": [
+      "-scenario",
+      "today"
+    ]
   },
   "mapping": {
     "status": "UNCLEAR",
     "note": "The addendum §2 has no Hoje row. Node taken from the implementation header (TodayView.swift) and the inventory. The `today` scenario is week 1, Sunday, one long run; the frame is week 3, Thursday, a double day. No Hoje frame shows a single-run day in the V1 data set (572:1379, the long-run day, is tagged FUTURO)."
   },
-  "captureBlocker": "NO_CAPTURE_PATH: `sim.sh run` launches the app with only -AppleLanguages/-AppleLocale. The fixture composition needs the `-scenario <id>` launch argument (LaunchMode.of, Debug only), and sim.sh has no option to pass it, so every sim.sh run opens the live composition. (Hoje is the fixture launch screen, so only --scenario is missing for this one.) No hand-made or XCUITest screenshot substitutes for a sim.sh run (VISUAL_VALIDATION.md). Needs: sim.sh --scenario (ORCH) and a launch route to this screen (front C), or an agreed capture path.",
+  "captureBlocker": null,
   "differences": [],
   "verdict": "PENDING",
   "reviewedAt": null
