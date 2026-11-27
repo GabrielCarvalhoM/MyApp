@@ -1,0 +1,24 @@
+#85 mutation checks for the SECOND QRE #90 RECHECK (code commit 0f2e573d). Each fix reverted alone in Sources, full swift test (165),
+Sources restored with git checkout and checked clean afterwards. B1 and B3 re-run because the set of clearing refusals changed.
+
+X1 R-1 reverted: resendUnlinked clears the delivery id again
+  -> 1 fail (of 165)
+     LandedInTests testAResendUnlinkedRefusalOfTheSameDeliveryNeverClearsIt
+X2 R-2 reverted: a missing result with attempts used up gets no round
+  -> 1 fail (of 165)
+     LandedInTests testAResultMissingIsSettledByItsResendRound
+X3 R-2: its round armed but no wake scheduled
+  -> 1 fail (of 165)
+     LandedInTests testAResultMissingIsSettledByItsResendRound
+B1 P3-B reverted: an admission refusal of the same delivery clears nothing
+  -> 2 fail (of 165)
+     LandedInTests testARefusalOfTheSameDeliveryProvesItNeverLanded
+     LandedInTests testARelaunchedDeliveryRefusedUnderItsOwnIdNeverLanded
+B3 P3-B: any refusal disposition clears (waiting, retryLater, halted, resendUnlinked)
+  -> 5 fail (of 165)
+     LandedInTests testAResendUnlinkedRefusalOfTheSameDeliveryNeverClearsIt
+     LandedInTests testAWaitingRefusalOfTheSameDeliveryNeverClearsIt
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded
+     ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded
+restored: clean

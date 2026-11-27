@@ -1,3 +1,23 @@
+#85 gates AFTER THE SECOND QRE #90 RECHECK on 0f2e573d (Mac; no simulator, no device)
+
+tools/orchestration/swift-packages.sh --fronts=build  -> exit 0
+Swift package gate (fronts=build), Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+  BUILD_OK       CoachingHost (tests compiled, run on the native gate)
+  PASS           CoachingPresentation · Executed 29 tests, with 0 failures (0 unexpected) in 6.741 (6.744) seconds
+  BUILD_OK       HealthKitIngest (tests compiled, run on the native gate)
+  PASS           IntegrationContracts · Executed 10 tests, with 0 failures (0 unexpected) in 0.143 (0.147) seconds
+  IOS_BUILD_OK   RepMileUI (iOS-only, tests compiled; tests run in sim.sh test)
+  BUILD_OK       RunRecorder (tests compiled, run on the native gate)
+
+node tools/orchestration/guard.mjs  -> exit 0
+guard: 621 caminhos alterados · 621 OK · 0 exigem aprovação · 0 proibidos
+
+node tools/orchestration/swift-size.mjs  -> exit 0
+swift-size: 199 arquivos Swift em HEAD · limite 350 · 0 acima do limite fora do baseline  (HealthKitIngestor.swift 528; +Answers 212; QueueState 216)
+
+Frozen paths: git diff 09ac4dc3..HEAD on CoachingCore, IntegrationContracts, CoachingPresentation, tools/device-lock: empty.
+
+================ QRE #90 RECHECK ================
 #85 gates AFTER THE QRE #90 RECHECK on 6de78ca9 (Mac; no simulator, no device)
 
 tools/orchestration/swift-packages.sh --fronts=build  -> exit 0

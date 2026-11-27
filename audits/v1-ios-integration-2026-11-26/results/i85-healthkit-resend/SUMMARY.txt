@@ -86,8 +86,23 @@ QRE RECHECK OF PR #90 (8d3d7cc7): READY_WITH_CONDITIONS. Fixed in d7892a71 + 6de
   #48's guarantees: the whole earlier suite passes unchanged (MayBeOnRecordTests 10/10, the real-boundary tests included).
   Tests: 163, 0 failures, 0 skipped, 3 runs. Mutations: mutations-qre90-recheck.txt (A1-A4, B1-B7, G1-G4; every fix caught).
 
+SECOND QRE RECHECK OF PR #90: READY_WITH_CONDITIONS, no P0-P2, every deletion path counted exactly once. Fixed in 0f2e573d:
+  R-1   Only setAsideItem and adapterBug refusals of the same delivery id clear it; resendUnlinked (UNKNOWN_SESSION, SPORT_MISMATCH) no
+        longer does: it is checked before the known-workout check, against the CURRENT plan, so a plan change can refuse after a landed
+        send. The comments now give the real reason clearing is safe: those admission refusals of the same frozen bytes are
+        deterministic (they would have refused the send that landed). Custody's replay is not the reason: A retries under
+        <deliveryId>~<n> request ids after CONFLICT_STALE_VERSION / REQUEST_ID_REUSED, so a landed D~1 is not replayed for D.
+        Test: testAResendUnlinkedRefusalOfTheSameDeliveryNeverClearsIt.
+  R-2   A workout whose result was missing from an ok:true answer, with its attempts used up, gets its re-send rounds and the wake;
+        DUPLICATE or RECORDED settles it. Test: testAResultMissingIsSettledByItsResendRound (DUPLICATE, counted once, copy never sent).
+  R-3   ACCEPTED FAIL-CLOSED TRADE (also in the code, +Answers refused branch and QueueItem.landedIn): a workout still carrying "*"
+        (unknown landing) or an older delivery id when a later admission refusal sets it aside stays may-be-on-record with no re-send
+        round. Its copies stay consolidated: a visible under-count (ATTEMPTS_EXHAUSTED / the refusal code, DELETED_MAYBE_ON_RECORD when
+        deleted), never a double count.
+  Tests: 165, 0 failures, 0 skipped, 3 runs. Mutations: mutations-qre90-recheck2.txt (X1-X3 for R-1/R-2, B1/B3 re-run; all caught).
+
 OPEN / FOR REVIEW
-- QRE recheck of d7892a71 + 6de78ca9.
+- QRE recheck of 0f2e573d.
 - C's status shows a workout awaiting its round as set aside ATTEMPTS_EXHAUSTED (HealthIngestStatus is in the frozen contract; a distinct
   "awaiting re-send" status would need CCP). It becomes "awaiting delivery" when reopened.
 - Pre-existing iOS warnings in HealthKitReader.swift:79/85 (NSLock in async context; errors in Swift 6 mode). File untouched here.
