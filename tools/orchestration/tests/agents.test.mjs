@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { checkAgent, checkRepo, list, parseFrontmatter } from '../agents.mjs';
@@ -31,7 +31,10 @@ test('reviewers need a closed allow-list of reading tools', () => {
   assert.match(qre('tools: Read, Write').join(), /read-only \(pode usar Write\)/);
   assert.match(qre('tools: Read, mcp__claude_ai_Figma__use_figma').join(), /pode usar mcp__claude_ai_Figma__use_figma/);
   assert.match(qre('tools: Read, mcp__claude_ai_Supabase__execute_sql').join(), /execute_sql/);
-  assert.deepEqual(qre('tools: Read, mcp__plugin_figma_figma__get_screenshot'), []);
+  assert.deepEqual(qre('tools: Read, mcp__plugin_figma_figma__get_screenshot, mcp__plugin_figma_figma__create_session'), []);
+  assert.match(qre('tools: Read, mcp__evil__use_figma__get_metadata').join(), /pode usar mcp__evil/);
+  assert.match(qre('tools: []').join(), /lista fechada/);
+  assert.match(qre('tools: ,').join(), /lista fechada/);
   assert.match(qre('tools: Read\npermissionMode: bypassPermissions').join(), /permissionMode bypassPermissions/);
 });
 
@@ -56,6 +59,8 @@ test('a machine-private path is rejected (Windows or a home-directory agent syst
   assert.match(checkAgent('a/x.md', agent(`name: x\n${desc}`, 'Open /Users/someone/Documents/x')).join(), /caminho privado/);
   assert.match(checkAgent('a/x.md', agent(`name: x\n${desc}`, 'See ~/.claude/agent-system/README.md')).join(), /caminho privado/);
   assert.match(checkAgent('a/x.md', agent(`name: x\n${desc}`, 'D:/tools/x')).join(), /caminho privado/);
+  for (const b of ['file:///Users/someone/x', 'Path:/Users/someone/x', 'See $HOME/.claude/agent-system/x'])
+    assert.match(checkAgent('a/x.md', agent(`name: x\n${desc}`, b)).join(), /caminho privado/, b);
   assert.deepEqual(checkAgent('a/x.md', agent(`name: x\n${desc}`, 'Read docs/engineering/AGENTS.md and ~/.codex/worktrees are fine')), []);
 });
 
@@ -70,6 +75,7 @@ test('repository errors: missing reviewer, unlisted agent, private path in an en
   assert.match(e, /quality-reliability-engineer.md: revisor obrigatório ausente/);
   assert.match(e, /não lista ios-engineer/);
   assert.match(e, /CLAUDE.md: referência operacional/);
+  rmSync(root, { recursive: true, force: true });
 });
 
 test('this repository: every agent is valid, reviewers exist and are listed in the registry', () => {

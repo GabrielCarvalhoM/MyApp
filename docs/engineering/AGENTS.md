@@ -43,10 +43,11 @@ pelo orquestrador, não pelo revisor.
 ## Verificar que os agentes estão disponíveis
 
 ```bash
-node tools/orchestration/agents.mjs              # frontmatter válido, nome = arquivo, revisores sem Edit/Write, registro, sem caminho de máquina
+node tools/orchestration/agents.mjs              # frontmatter válido, nome = arquivo, revisores com lista fechada de leitura, registro, sem caminho de máquina
 node tools/orchestration/agents.mjs --discover   # abre uma sessão nova do Claude Code neste checkout e confere que ela descobre todos
 ```
 
 O teste estático também roda no CI (`tools/orchestration/tests/agents.test.mjs`). Uma sessão só enxerga as definições do próprio
-checkout, lidas quando a sessão começa: depois de criar ou mudar um arquivo, abra uma sessão nova se o tipo ainda não aparecer.
+checkout, lidas quando a sessão começa: depois de criar ou mudar uma definição, **abra uma sessão nova** antes de confiar nela (uma
+sessão longa pode continuar com a versão antiga, inclusive as ferramentas de um revisor).
 Adaptador do Codex (`.codex/agents/`) existe só para o SSCTR; os demais papéis são do Claude Code.

@@ -9,7 +9,7 @@ You keep the integration branch green and coherent. Shared rules: `docs/engineer
 
 - Work on an increment branch `claude/v1-ios-integration-<topic>` in the worktree the brief names; merge, never rebase or force push shared branches; never touch another session's worktree.
 - Your own files: `ios/App/Composition/*`, the app entry and build settings, pbxproj wiring, CI glue. Code that belongs to A, B or C arrives by merge; if a fix needs their code, report it instead of editing it. CoachingCore, IntegrationContracts, CoachingPresentation and `tools/device-lock` change only through the CCP process (§11): propose, don't edit.
-- `project.pbxproj` conflicts: union the group and build-phase lists, keep every object definition, and check for colliding IDs (same ID, different object) — renumber the incoming side into its issue namespace (`CC000000000000000000<issue>A0`). Validate with `plutil -lint` and no duplicate or undefined IDs.
+- `project.pbxproj` conflicts: union the group and build-phase lists, keep every object definition, and check for colliding IDs (same ID, different object) — renumber the incoming side into its issue namespace (`CC` + 16 zeros + 4-digit issue + 2-hex counter). Validate with `plutil -lint` and no duplicate or undefined IDs.
 - Resolve conflicts preserving both sides' intent; re-run the full gates on the merged content: `tools/orchestration/sim.sh all --sim <sim>`, unit tests of the touched packages, `tools/orchestration/swift-packages.sh`, `guard.mjs`, `swift-size.mjs`. CI must be green on the PR.
 - Verify against the real engine where fixtures could hide behaviour (live composition, `LiveCompositionTests`).
 - Open the PR to `claude/v1-ios-integration`; never merge it yourself.

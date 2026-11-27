@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Project specialist agents (docs/engineering/AGENTS.md). Static checks of `.claude/agents/*.md`, and a live discovery check.
 //
-//   node tools/orchestration/agents.mjs            static: frontmatter, names, read-only reviewers, registry, no Windows paths
+//   node tools/orchestration/agents.mjs            static: frontmatter, names, reviewers' closed allow-lists, registry, no machine paths
 //   node tools/orchestration/agents.mjs --discover also starts a fresh headless Claude Code session here and compares the agent
 //                                                  types it discovers with the files (uses the CLI; costs one short session)
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -18,13 +18,14 @@ export const KNOWN_KEYS = new Set(['name', 'description', 'tools', 'disallowedTo
 export const REQUIRED_REVIEWERS = ['quality-reliability-engineer', 'ios-architecture-reviewer', 'visual-ux-reviewer'];
 export const GOVERNED = ['sports-science-concurrent-training-reviewer'];
 export const READ_TOOLS = new Set(['Read', 'Grep', 'Glob', 'Bash', 'WebFetch', 'WebSearch']);
-// Read-only MCP tools: Figma reads only (screenshot, design context, metadata).
-export const READ_MCP = /^mcp__[A-Za-z0-9_]*[Ff]igma[A-Za-z0-9_]*__(get_screenshot|get_design_context|get_metadata)$/;
+// Read-only MCP tools, pinned to the two Figma server names this project sees (plugin and claude.ai connector): reads only,
+// plus create_session, which the Figma server requires before any file read.
+export const READ_MCP = /^mcp__(plugin_figma_figma|claude_ai_Figma)__(create_session|get_screenshot|get_design_context|get_metadata)$/;
 export const isReviewer = (name) => REQUIRED_REVIEWERS.includes(name) || (/-reviewer$/.test(name) && !GOVERNED.includes(name));
 // Entry points that steer every session must not depend on a machine-private path.
 export const ENTRY_POINTS = ['CLAUDE.md', 'AGENTS.md', 'docs/engineering/AGENTS.md'];
 // Any absolute path into a user's home or a drive letter, or the old home-directory agent system.
-const MACHINE_PATH = /(^|[\s`'"(=])([A-Za-z]:[\\/]|\/Users\/[^/\s]+|\/home\/[^/\s]+|~\/\.(claude|codex)\/agent-system)/m;
+const MACHINE_PATH = /(^|[\s`'"(=:/])([A-Za-z]:[\\/]|\/Users\/[^/\s]+|\/home\/[^/\s]+|(~|\$HOME|\$\{HOME\})\/\.(claude|codex)\/agent-system)/m;
 
 export function parseFrontmatter(raw) {
   const text = raw.replace(/\r\n/g, '\n');
@@ -57,7 +58,7 @@ export function checkAgent(file, text) {
   for (const k of Object.keys(fields)) if (!KNOWN_KEYS.has(k)) errors.push(`${file}: chave desconhecida "${k}"`);
   if (!body.trim()) errors.push(`${file}: corpo vazio`);
   if (isReviewer(stem)) {
-    if (!fields.tools) errors.push(`${file}: revisor precisa de lista fechada \`tools:\` (sem ela herda todas as ferramentas, MCP de escrita inclusive)`);
+    if (!fields.tools || list(fields.tools).length === 0) errors.push(`${file}: revisor precisa de lista fechada \`tools:\` (sem ela herda todas as ferramentas, MCP de escrita inclusive)`);
     else {
       const bad = list(fields.tools).filter((t) => !READ_TOOLS.has(t) && !READ_MCP.test(t));
       if (bad.length) errors.push(`${file}: revisor precisa ser read-only (pode usar ${bad.join(', ')})`);

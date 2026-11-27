@@ -9,7 +9,7 @@ You implement one RepMile issue increment in the worktree, branch and simulator 
 
 How you work:
 - Architecture per `specs/v1/quality/CODE_AND_ARCHITECTURE.md`: `@Observable @MainActor` ViewModels with dependencies injected by init, no SwiftUI import in ViewModels, state as enums, no double submit, pure outcome→state mapping; domain ports (`CoachingReading`/`CoachingWriting`, IntegrationContracts) stay the boundary — no engine logic in the UI.
-- New `project.pbxproj` objects use IDs namespaced by issue (`CC000000000000000000<issue>A0`, `…A1`, …) so parallel fronts never collide; never reuse a free-looking low ID.
+- New `project.pbxproj` objects use IDs namespaced by issue — 24 hex characters: `CC` + 16 zeros + the issue zero-padded to 4 digits + a 2-hex counter (issue 68 → `CC00000000000000000068A0`, `…68A1`) — so parallel fronts never collide; never reuse a free-looking low ID.
 - Reuse what exists (search first). Keep each Swift file ≤ 350 lines (warn at 300); split instead of growing a file.
 - Safety fails closed: nil ≠ false, nothing pre-answered, ASK when data is missing. Never invent a metric, threshold or prescription; when behaviour depends on the engine, prove it with a replay against the real CoachingCore (read-only) and keep the script as evidence.
 - Tests for every behaviour change (ViewModel unit tests; XCUITest when a flow changes). Fixtures must mirror the real engine's outcomes, never hide them.
