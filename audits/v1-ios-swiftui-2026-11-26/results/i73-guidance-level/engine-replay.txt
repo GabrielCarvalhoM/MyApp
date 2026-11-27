@@ -1,0 +1,75 @@
+# RepMile #73 engine replay (v24.19.0; CoachingCore, CoachingPresentation unchanged; base c04ee8c4). Script: scratch/i73-guidance.mjs; in-memory store, synthetic athlete; no personal data.
+=== 1 "Não estou 100%": urgent sign + complete screen (each condition, each urgent sign it asks)
+  PASS MILD_ILLNESS chestPainPressureOrTightness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MILD_ILLNESS breathlessAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MILD_ILLNESS palpitationsAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MILD_ILLNESS faintingOrDizziness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MILD_ILLNESS: chest pain alone (others unanswered, no intent) + screen: app blocked(URGENT)
+  PASS MINOR_DISCOMFORT chestPainPressureOrTightness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MINOR_DISCOMFORT breathlessAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MINOR_DISCOMFORT palpitationsAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MINOR_DISCOMFORT faintingOrDizziness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS MINOR_DISCOMFORT: chest pain alone (others unanswered, no intent) + screen: app blocked(URGENT)
+  PASS NEED_REST chestPainPressureOrTightness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS NEED_REST breathlessAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS NEED_REST palpitationsAtRest: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS NEED_REST faintingOrDizziness: engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS NEED_REST: chest pain alone (others unanswered, no intent) + screen: app blocked(URGENT)
+=== 2 "Não estou 100%": non-urgent sign + complete screen
+  PASS MILD_ILLNESS feverOrChills: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS painThatChangesMovement: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS swelling: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS injuryFromFallOrImpact: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS gettingWorse: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS bodyWideAches: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS exhaustionAtRest: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS vomitingDiarrhoeaNauseaOrAbdominalPain: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS moderateOrSevereCough: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS severeHeadache: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS severeNoseOrThroat: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MILD_ILLNESS: feverOrChills + breathless at rest: engine URGENT_CARE_ADVISED, app blocked(URGENT) (the higher level)
+  PASS MINOR_DISCOMFORT feverOrChills: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MINOR_DISCOMFORT painThatChangesMovement: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MINOR_DISCOMFORT swelling: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MINOR_DISCOMFORT injuryFromFallOrImpact: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MINOR_DISCOMFORT gettingWorse: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS MINOR_DISCOMFORT: feverOrChills + breathless at rest: engine URGENT_CARE_ADVISED, app blocked(URGENT) (the higher level)
+  PASS NEED_REST feverOrChills: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS NEED_REST painThatChangesMovement: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS NEED_REST swelling: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS NEED_REST injuryFromFallOrImpact: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS NEED_REST gettingWorse: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  PASS NEED_REST: feverOrChills + breathless at rest: engine URGENT_CARE_ADVISED, app blocked(URGENT) (the higher level)
+=== 3 "Não estou 100%" during a hold, urgent sign
+  PASS hold + chest pain + screen (the app always sends it): engine URGENT_CARE_ADVISED, app blocked(URGENT), Today URGENT
+  PASS hold + chest pain WITHOUT a screen (never sent by the app since #72): engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL) = the engine's
+=== 4 readiness declaration during a hold
+  PASS chestPainPressureOrTightness + screen: engine URGENT_CARE_ADVISED, app stillBlocked(URGENT)
+  PASS breathlessAtRest + screen: engine URGENT_CARE_ADVISED, app stillBlocked(URGENT)
+  PASS palpitationsAtRest + screen: engine URGENT_CARE_ADVISED, app stillBlocked(URGENT)
+  PASS faintingOrDizziness + screen: engine URGENT_CARE_ADVISED, app stillBlocked(URGENT)
+  PASS gettingWorse + screen: engine PROFESSIONAL_ASSESSMENT, app stillBlocked(PROFESSIONAL)
+  PASS urgent hold, every sign "não" + screen: app returning
+=== 5 residuals of the engine (#79): the app shows the engine's level, never a level it did not give
+  PASS chest pain + screen flag "illness" sim: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL)
+  urgent hold, then fever + screen: engine PROFESSIONAL_ASSESSMENT, app blocked(PROFESSIONAL), hold.guidance now PROFESSIONAL_ASSESSMENT → Today PROFESSIONAL
+=== 6 report and unavailable day under a hold
+  urgent hold, a run report (screen none applies): status CLINICAL_HUMAN_REQUIRED, engine PROFESSIONAL_ASSESSMENT, app PROFESSIONAL
+  PASS run report, screen flag injury sim: app PROFESSIONAL
+=== table
+| Case | Engine level (decision) | App shows | Note |
+|---|---|---|---|
+| NF MILD_ILLNESS, chestPainPressureOrTightness sim, screen complete | URGENT_CARE_ADVISED | blocked(URGENT) |  |
+| Today / session detail after it (plan view) | URGENT_CARE_ADVISED (hold) | banner URGENT |  |
+| NF MILD_ILLNESS, feverOrChills sim, screen complete | PROFESSIONAL_ASSESSMENT | blocked(PROFESSIONAL) |  |
+| NF MILD_ILLNESS, feverOrChills + breathlessAtRest sim, screen complete | URGENT_CARE_ADVISED | blocked(URGENT) |  |
+| NF during a hold, chest pain sim, screen complete | URGENT_CARE_ADVISED | blocked(URGENT) |  |
+| NF during a hold, chest pain sim, NO screen (not sent by the app) | PROFESSIONAL_ASSESSMENT | blocked(PROFESSIONAL) | engine residual #79 |
+| Readiness during a hold, breathlessAtRest sim, screen complete | URGENT_CARE_ADVISED | stillBlocked(URGENT) |  |
+| Readiness during a hold, gettingWorse sim, screen complete | PROFESSIONAL_ASSESSMENT | stillBlocked(PROFESSIONAL) |  |
+| Readiness during an urgent hold, every sign não, screen complete | - | returning |  |
+| NF, chest pain sim + screen flag illness sim | PROFESSIONAL_ASSESSMENT | blocked(PROFESSIONAL) | engine residual #79 (F2) |
+| Urgent hold, then NF fever sim + screen | PROFESSIONAL_ASSESSMENT; hold.guidance becomes PROFESSIONAL_ASSESSMENT | blocked(PROFESSIONAL); Today PROFESSIONAL | engine: the hold takes the latest decision's level (views.mjs:58), reported to #79 |
+| Urgent hold, then a run report (screen none applies) | CLINICAL_HUMAN_REQUIRED PROFESSIONAL_ASSESSMENT; hold PROFESSIONAL_ASSESSMENT | banner PROFESSIONAL |  |
+| Run report, screen flag injury sim | PROFESSIONAL_ASSESSMENT | banner PROFESSIONAL |  |
+RESULT: ALL PASS
