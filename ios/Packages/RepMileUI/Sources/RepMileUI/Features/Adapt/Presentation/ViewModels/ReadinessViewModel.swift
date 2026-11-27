@@ -19,10 +19,11 @@ final class ReadinessViewModel {
         /// The engine asked for more (ASK / NEEDS_INPUT); "Voltar" returns to the form with the answers kept.
         case needsAnswers(WarningSignQuestionSet)
         case returning
-        case stillBlocked
+        /// The hold stands, at the engine's guidance level (#73).
+        case stillBlocked(ClinicalGuidance)
     }
     /// What an engine answer means for this screen.
-    enum Reply: Equatable { case needsAnswers, returning, stillBlocked }
+    enum Reply: Equatable { case needsAnswers, returning, stillBlocked(ClinicalGuidance) }
 
     private(set) var phase: Phase = .loading
     /// Only the asked signs; an unanswered one stays absent.
@@ -37,9 +38,12 @@ final class ReadinessViewModel {
     private let reader: CoachingReading
     private let writer: CoachingWriting
     private let planToday: () -> String?
+    /// The level of the hold this declaration answers (the plan view the app holds): shown when the answer carries none of its own.
+    private let holdGuidance: () -> ClinicalGuidance?
 
-    init(reader: CoachingReading, writer: CoachingWriting, planToday: @escaping () -> String?) {
-        self.reader = reader; self.writer = writer; self.planToday = planToday
+    init(reader: CoachingReading, writer: CoachingWriting, planToday: @escaping () -> String?,
+         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+        self.reader = reader; self.writer = writer; self.planToday = planToday; self.holdGuidance = holdGuidance
     }
 
     var questionSet: WarningSignQuestionSet? {
@@ -70,10 +74,10 @@ final class ReadinessViewModel {
         phase = .submitting(set)
         let out = await writer.submit(request)
         apply {
-            switch Self.reply(for: out.answer) {
+            switch Self.reply(for: out.answer, holdGuidance: holdGuidance()) {
             case .needsAnswers: phase = .needsAnswers(set)
             case .returning: phase = .returning
-            case .stillBlocked: phase = .stillBlocked
+            case .stillBlocked(let g): phase = .stillBlocked(g)
             }
         }
     }
@@ -94,9 +98,12 @@ final class ReadinessViewModel {
         return ReviewRequest(.readiness(decl, reports: []), eligibility: screen)
     }
 
-    /// The engine's answer: ASK first; returning only when the engine restarts training; anything else keeps the hold (fail closed).
-    static func reply(for a: BoundaryAnswer) -> Reply {
+    /// The engine's answer: ASK first; returning only when the engine restarts training; anything else keeps the hold (fail closed), at the
+    /// level of the answer's clinical route, else of the hold in the answer's view, else (an answer without a view: nothing changed) of the
+    /// hold the declaration answered; none of them is the professional-assessment level.
+    static func reply(for a: BoundaryAnswer, holdGuidance: ClinicalGuidance? = nil) -> Reply {
         if a.status?.raw == "ASK" || a.view?.state == .needsInput { return .needsAnswers }
-        return a.ok && (a.action?.raw == "READINESS_RESTART" || a.view?.state == .returning) ? .returning : .stillBlocked
+        if a.ok && (a.action?.raw == "READINESS_RESTART" || a.view?.state == .returning) { return .returning }
+        return .stillBlocked(a.clinicalGuidance ?? a.view?.clinicalGuidance ?? holdGuidance ?? .professionalAssessment)
     }
 }

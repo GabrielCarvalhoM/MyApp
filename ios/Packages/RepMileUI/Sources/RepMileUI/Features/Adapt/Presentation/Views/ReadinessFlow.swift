@@ -18,8 +18,10 @@ struct ReadinessFlow: View {
                         StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("nf.needsAnswers"))
                             .accessibilityIdentifier("readiness-needs-answers")
                         SecondaryPillButton(L.t("ob.back")) { viewModel.back() }
-                    case .returning, .stillBlocked:
-                        result(returning: viewModel.phase == .returning)
+                    case .returning:
+                        result(stillBlocked: nil)
+                    case .stillBlocked(let guidance):
+                        result(stillBlocked: guidance)
                     case .answering(let set), .submitting(let set):
                         form(set)
                     case .loading:
@@ -36,13 +38,14 @@ struct ReadinessFlow: View {
         .accessibilityElement(children: .contain).accessibilityIdentifier("flow-readiness")
     }
 
-    @ViewBuilder private func result(returning done: Bool) -> some View {
-        // A declaration that keeps the hold is not recorded as a release: #68's banner without "o seu registro continua guardado".
-        if done {
+    /// `stillBlocked` nil: the engine restarted training. A declaration that keeps the hold is not recorded as a release: #68's banner without
+    /// "o seu registro continua guardado", at the engine's guidance level (#73).
+    @ViewBuilder private func result(stillBlocked guidance: ClinicalGuidance?) -> some View {
+        if let guidance {
+            ClinicalRouteBanner(reportKept: false, guidance: guidance).accessibilityIdentifier("readiness-still-blocked")
+        } else {
             StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
                 .accessibilityIdentifier("readiness-returning")
-        } else {
-            ClinicalRouteBanner(reportKept: false).accessibilityIdentifier("readiness-still-blocked")
         }
         SecondaryPillButton(L.t("common.close")) { dismiss() }
     }

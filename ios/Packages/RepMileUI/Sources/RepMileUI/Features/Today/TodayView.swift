@@ -79,6 +79,9 @@ struct TodayView: View {
                 gateBanner(gate)
             } else {
                 switch plan.state {
+                case .blocked where plan.clinicalGuidance == .urgentCare:
+                    // #73: the hold's URGENT_CARE_ADVISED level, distinct from the professional-assessment banner below.
+                    UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness).accessibilityIdentifier("banner-blocked")
                 case .blocked:
                     StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
                                 actionTitle: L.t("state.blocked.action"), action: openReadiness)

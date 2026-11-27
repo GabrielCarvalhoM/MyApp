@@ -27,8 +27,10 @@ final class StrengthLogViewModel {
     private(set) var phase: Phase = .editing
     /// Answered here, for this log only (#68): nothing pre-answered, never an earlier report's screen.
     var eligibility = EligibilityScreen.unanswered
-    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record). Sticky.
-    private(set) var clinical = false
+    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record), with the engine's guidance level
+    /// (#73). Sticky, and the level only rises over resends.
+    private(set) var clinicalGuidance: ClinicalGuidance?
+    var clinical: Bool { clinicalGuidance != nil }
 
     private let writer: CoachingWriting
     private let planToday: () -> String?
@@ -130,7 +132,7 @@ final class StrengthLogViewModel {
         phase = .submitting
         let outcome = await writer.submit(request)
         phase = Self.phase(for: outcome)
-        clinical = clinical || outcome.answer.routesToHuman
+        clinicalGuidance = clinicalGuidance.raised(to: outcome.answer.clinicalGuidance)
     }
 
     /// The request exactly as sent: the log and the screen answered here, dated the plan's today (never the device's, as #59). Nil until it

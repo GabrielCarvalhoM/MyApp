@@ -6,7 +6,9 @@ import XCTest
 enum Repo {
     static let fixtures = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
         .appendingPathComponent("../../../CoachingPresentation/Tests/CoachingPresentationTests/Fixtures").standardized
-    static let store = FixtureStore(directory: fixtures)
+    /// Front C's own engine captures (#73, `RepMileUI/Tools/capture-engine.mjs`), bundled by the app as `Captures`.
+    static let captures = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../../Captures").standardized
+    static let store = FixtureStore(directory: fixtures, more: [captures])
 }
 
 @MainActor

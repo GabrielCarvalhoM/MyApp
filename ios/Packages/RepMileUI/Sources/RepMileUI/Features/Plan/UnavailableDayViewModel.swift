@@ -18,8 +18,9 @@ final class UnavailableDayViewModel {
         /// The engine asked for more (ASK / NEEDS_INPUT): nothing changed. The form sent everything it can ask (the day and an answered
         /// screen), so it is not offered again: resending the same request would get the same question.
         case needsInput
-        /// The answer routes to a qualified human (a flag answered yes, or a clinical dependency on record): nothing moves.
-        case clinical
+        /// The answer routes to a qualified human (a flag answered yes, or a clinical dependency on record): nothing moves. The engine's
+        /// guidance level (#73).
+        case clinical(ClinicalGuidance)
         case proposed(decisionId: String)
         /// The confirmation is in flight: a second tap does nothing.
         case accepting(decisionId: String)
@@ -82,7 +83,7 @@ final class UnavailableDayViewModel {
     /// with nothing of these fails closed.
     static func phase(afterSubmit a: BoundaryAnswer) -> Phase {
         guard a.ok else { return .failed(a.error?.code.raw ?? "UNKNOWN") }
-        if a.routesToHuman { return .clinical }
+        if let g = a.clinicalGuidance { return .clinical(g) }
         if a.status?.raw == "ASK" || a.view?.state == .needsInput { return .needsInput }
         if let id = a.view?.pending?.decisionId ?? (a.status?.raw == "MODIFY" ? a.decisionId : nil) { return .proposed(decisionId: id) }
         return .failed("UNKNOWN")

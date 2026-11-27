@@ -81,7 +81,7 @@ final class NotFeeling100ViewModelTests: XCTestCase {
     func testOutcomeIsTheEngineStatus() async throws {
         let set = try Safety.set("MILD_ILLNESS")
         let allNo = Dictionary(uniqueKeysWithValues: set.warningSigns.map { ($0, false) })
-        for (answers, expected) in [(allNo, NotFeeling100ViewModel.Outcome.kept), (allNo.merging(["feverOrChills": true]) { $1 }, .blocked)] {
+        for (answers, expected) in [(allNo, NotFeeling100ViewModel.Outcome.kept), (allNo.merging(["feverOrChills": true]) { $1 }, .blocked(.professionalAssessment))] {
             let vm = viewModel(writer: FixtureCoachingWriter(store: Repo.store))
             await vm.choose(.mildIllness)
             vm.answers = answers; vm.intent = .rest
@@ -90,7 +90,7 @@ final class NotFeeling100ViewModelTests: XCTestCase {
         }
         for (json, expected) in [(#"{"ok":true,"status":"MODIFY"}"#, NotFeeling100ViewModel.Outcome.modified),
                                  (#"{"ok":true,"status":"ASK"}"#, .needsAnswers),
-                                 (#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#, .blocked),
+                                 (#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#, .blocked(.professionalAssessment)),
                                  (#"{"ok":true}"#, .failed("UNRECOGNIZED")),
                                  (#"{"ok":false,"error":{"code":"CONFLICT_STALE_VERSION"}}"#, .failed("CONFLICT_STALE_VERSION"))] {
             let vm = viewModel(writer: ScriptedSubmitWriter(try Safety.answer(json)))

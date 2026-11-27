@@ -75,13 +75,13 @@ final class ReadinessViewModelTests: XCTestCase {
         let cases: [(BoundaryAnswer, ReadinessViewModel.Reply, String)] = [
             (try Repo.store.decode(BoundaryAnswer.self, "18-declareReadiness"), .returning, "18"),
             (try Repo.store.decode(BoundaryAnswer.self, "actions-D3-notFeeling100-no-screen"), .needsAnswers, "ASK + NEEDS_INPUT"),
-            (try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign"), .stillBlocked, "clinical"),
+            (try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign"), .stillBlocked(.professionalAssessment), "clinical"),
             (try Safety.answer(#"{"ok":true,"status":"ASK"}"#), .needsAnswers, "ASK"),
             (try Safety.answer(#"{"ok":true,"status":"MODIFY","action":"READINESS_RESTART"}"#), .returning, "restart"),
-            (try Safety.answer(#"{"ok":true,"status":"MODIFY"}"#), .stillBlocked, "no restart"),
-            (try Safety.answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#), .stillBlocked, "unknown"),
-            (try Safety.answer(#"{"ok":false,"action":"READINESS_RESTART","error":{"code":"BUSY"}}"#), .stillBlocked, "not ok"),
-            (FixtureCoachingWriter.unavailable, .stillBlocked, "unavailable"),
+            (try Safety.answer(#"{"ok":true,"status":"MODIFY"}"#), .stillBlocked(.professionalAssessment), "no restart"),
+            (try Safety.answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#), .stillBlocked(.professionalAssessment), "unknown"),
+            (try Safety.answer(#"{"ok":false,"action":"READINESS_RESTART","error":{"code":"BUSY"}}"#), .stillBlocked(.professionalAssessment), "not ok"),
+            (FixtureCoachingWriter.unavailable, .stillBlocked(.professionalAssessment), "unavailable"),
         ]
         for (answer, expected, name) in cases { XCTAssertEqual(ReadinessViewModel.reply(for: answer), expected, name) }
     }
@@ -130,6 +130,6 @@ final class ReadinessViewModelTests: XCTestCase {
         let vm = await loaded(FixtureCoachingWriter(store: Safety.emptyStore))
         vm.recovered = true
         await vm.send()
-        XCTAssertEqual(vm.phase, .stillBlocked)
+        XCTAssertEqual(vm.phase, .stillBlocked(.professionalAssessment))
     }
 }

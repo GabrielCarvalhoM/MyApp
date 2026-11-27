@@ -28,8 +28,10 @@ final class RunReportViewModel {
     /// The engine asked for the warning-sign screen (`warningSignScreen.status == REQUIRED`). Apart from `result` and sticky for the life of
     /// this report: the instruction stands whether or not the report was kept, and after a later resend without it (increments 10, 10b).
     private(set) var screenRequired = false
-    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record). Sticky like `screenRequired`.
-    private(set) var clinical = false
+    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record), with the engine's guidance level
+    /// (#73). Sticky like `screenRequired`, and the level only rises over resends.
+    private(set) var clinicalGuidance: ClinicalGuidance?
+    var clinical: Bool { clinicalGuidance != nil }
 
     let recording: FinishedRecording
     private let writer: CoachingWriting
@@ -58,10 +60,10 @@ final class RunReportViewModel {
         guard canSend, let request = request() else { return }
         sending = true; defer { sending = false }
         let outcome = await writer.submit(request)
-        let next = Self.result(for: outcome, screenRequiredBefore: screenRequired, clinicalBefore: clinical)
+        let next = Self.result(for: outcome, screenRequiredBefore: screenRequired, clinicalBefore: clinicalGuidance)
         if case .kept(let id) = next.kept { markReported(id) }
         screenRequired = next.screenRequired
-        clinical = next.clinical
+        clinicalGuidance = next.clinical
         result = next.result
     }
 
@@ -75,13 +77,13 @@ final class RunReportViewModel {
 
     /// `WriteOutcome` → what the report shows. Pure: tested without UI.
     enum Kept: Equatable { case kept(String), notKept }
-    static func result(for outcome: WriteOutcome, screenRequiredBefore: Bool, clinicalBefore: Bool = false)
-        -> (result: Result, screenRequired: Bool, clinical: Bool, kept: Kept) {
+    static func result(for outcome: WriteOutcome, screenRequiredBefore: Bool, clinicalBefore: ClinicalGuidance? = nil)
+        -> (result: Result, screenRequired: Bool, clinical: ClinicalGuidance?, kept: Kept) {
         guard outcome.answer.ok else { return (.failed(outcome.answer.error?.code.raw ?? "UNKNOWN"), screenRequiredBefore, clinicalBefore, .notKept) }
         let id = outcome.answer.recorded?.first
         let kept = id.flatMap { outcome.kept.contains($0) ? Kept.kept($0) : nil } ?? .notKept
         let required = screenRequiredBefore || outcome.answer.warningSignScreen?.status.raw == "REQUIRED"
-        let clinical = clinicalBefore || outcome.answer.routesToHuman
+        let clinical = clinicalBefore.raised(to: outcome.answer.clinicalGuidance)
         switch (kept, required) {
         case (.kept, true): return (.screenRequired, true, clinical, kept)
         case (.kept, false): return (.saved, false, clinical, kept)

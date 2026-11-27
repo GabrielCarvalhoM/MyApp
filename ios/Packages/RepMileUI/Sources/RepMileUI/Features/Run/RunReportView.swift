@@ -151,7 +151,7 @@ struct RunReportView: View {
             if viewModel.screenRequired { screenRequiredBanner }
         case nil: EmptyView()
         }
-        if viewModel.clinical { ClinicalRouteBanner(reportKept: viewModel.canClose).accessibilityIdentifier("report-blocked") }
+        if let g = viewModel.clinicalGuidance { ClinicalRouteBanner(reportKept: viewModel.canClose, guidance: g).accessibilityIdentifier("report-blocked") }
     }
 
     private var screenRequiredBanner: some View {

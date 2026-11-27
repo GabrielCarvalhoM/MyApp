@@ -45,7 +45,7 @@ final class EligibilityRestTests: XCTestCase {
         vm.answers["chestPainPressureOrTightness"] = true
         vm.eligibility = .testNoneApplies
         await vm.send()
-        XCTAssertEqual(vm.phase, .outcome(.blocked))
+        XCTAssertEqual(vm.phase, .outcome(.blocked(.urgentCare)), "#73: the engine's level for chest pain (Captures/nf-urgent-*)")
         let sent = try XCTUnwrap(try Safety.submits(w.journal).first)
         XCTAssertEqual((sent["wellbeing"] as? [String: Any])?["warningSigns"] as? [String: Bool], ["chestPainPressureOrTightness": true],
                        "only the answered sign; the others stay unanswered, never false")
@@ -72,7 +72,7 @@ final class EligibilityRestTests: XCTestCase {
         answerAllButConfirmation(&vm.eligibility); vm.eligibility.illness = true
         XCTAssertTrue(vm.canSend, "a yes is an answer: the engine routes it, the app does not judge it")
         await vm.send()
-        XCTAssertEqual(vm.phase, .outcome(.blocked))
+        XCTAssertEqual(vm.phase, .outcome(.blocked(.professionalAssessment)))
         let e = try XCTUnwrap(try Safety.submits(w.journal).first?["eligibility"] as? [String: Any])
         XCTAssertEqual(e["illness"] as? Bool, true)
         XCTAssertNil(e["status"], "never confirmed nonclinical alongside a yes")
@@ -102,7 +102,7 @@ final class EligibilityRestTests: XCTestCase {
             XCTAssertEqual(NotFeeling100ViewModel.outcome(out.answer), .needsAnswers, "ASK eligibility.currentAssessment, no clinical route")
         }
         let routed = await w.submit(ReviewRequest(.notFeeling100(decl, reports: []), eligibility: EligibilityScreen.testNoneApplies.dated("2026-11-22")))
-        XCTAssertEqual(NotFeeling100ViewModel.outcome(routed.answer), .blocked)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(routed.answer), .blocked(.urgentCare))
     }
 
     // MARK: Readiness
@@ -160,7 +160,7 @@ final class EligibilityRestTests: XCTestCase {
         let yes = await readiness(w)
         yes.recovered = true; answerAllButConfirmation(&yes.eligibility); yes.eligibility.pain = true
         await yes.send()
-        XCTAssertEqual(yes.phase, .stillBlocked, "a flag yes keeps the hold")
+        XCTAssertEqual(yes.phase, .stillBlocked(.professionalAssessment), "a flag yes keeps the hold")
         XCTAssertEqual((try Safety.submits(w.journal).first?["eligibility"] as? [String: Any])?["pain"] as? Bool, true)
     }
 
@@ -178,7 +178,7 @@ final class EligibilityRestTests: XCTestCase {
         let w = FixtureCoachingWriter(store: Repo.store)
         let decl = try ReadinessDeclaration(declaredRecovered: true, set: try Safety.set("READINESS"), sports: .init(run: .init(ready: true), strength: nil))
         let out = await w.submit(ReviewRequest(.readiness(decl, reports: []), eligibility: nil))
-        XCTAssertEqual(ReadinessViewModel.reply(for: out.answer), .stillBlocked)
+        XCTAssertEqual(ReadinessViewModel.reply(for: out.answer), .stillBlocked(.professionalAssessment))
     }
 
     // MARK: Unavailable day
@@ -213,7 +213,7 @@ final class EligibilityRestTests: XCTestCase {
         XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: ask), .needsInput)
         let clinical = try Repo.store.decode(BoundaryAnswer.self, "actions-E2-break-clinical")
         XCTAssertNotNil(clinical.decisionId)
-        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: clinical), .clinical)
+        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: clinical), .clinical(.professionalAssessment))
         XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Repo.store.decode(BoundaryAnswer.self, "actions-B1-unavailable-day")), .proposed(decisionId: "dc_000031"))
         XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: try Safety.answer(#"{"ok":true,"status":"KEEP","decisionId":"dc_1"}"#)), .failed("UNKNOWN"))
     }
@@ -228,7 +228,7 @@ final class EligibilityRestTests: XCTestCase {
         }
         let flagged = await w.submit(ReviewRequest(.unavailableDays([s.date]), eligibility: {
             var e = EligibilityScreen.testNoneApplies; e.status = nil; e.pain = true; return e.dated("2026-11-22") }()))
-        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: flagged.answer), .clinical)
+        XCTAssertEqual(UnavailableDayViewModel.phase(afterSubmit: flagged.answer), .clinical(.professionalAssessment))
     }
 
     func testAQuestionEndsTheRequestAndAClinicalRouteMovesNothing() async throws {
@@ -244,7 +244,7 @@ final class EligibilityRestTests: XCTestCase {
         let yes = try unavailable(w, reload: { reloads += 1 })
         answerAllButConfirmation(&yes.eligibility); yes.eligibility.injury = true
         await yes.send()
-        XCTAssertEqual(yes.phase, .clinical)
+        XCTAssertEqual(yes.phase, .clinical(.professionalAssessment))
         XCTAssertFalse(yes.canAccept)
         await yes.accept()
         XCTAssertTrue(w.journal.entries.filter { $0.call == "accept" }.isEmpty, "nothing to confirm")

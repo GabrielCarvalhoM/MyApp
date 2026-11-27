@@ -13,7 +13,8 @@ import Observation
 /// the screen right after them, and no other answer gates the send.
 @Observable @MainActor
 final class NotFeeling100ViewModel {
-    enum Outcome: Equatable { case kept, modified, blocked, needsAnswers, failed(String) }
+    /// `blocked` carries the engine's guidance level of the clinical route (#73: URGENT_CARE_ADVISED is shown as such, never lowered).
+    enum Outcome: Equatable { case kept, modified, blocked(ClinicalGuidance), needsAnswers, failed(String) }
     enum Phase: Equatable {
         case choosingCondition
         /// The condition chosen and the exact set the engine returned for it.
@@ -106,7 +107,7 @@ final class NotFeeling100ViewModel {
     /// The engine's answer, read without guessing: only KEEP is "the plan stays"; an unknown status fails closed.
     static func outcome(_ a: BoundaryAnswer) -> Outcome {
         guard a.ok else { return .failed(a.error?.code.raw ?? "UNKNOWN") }
-        if a.routesToHuman { return .blocked }
+        if let g = a.clinicalGuidance { return .blocked(g) }
         switch a.status?.raw {
         case "ASK": return .needsAnswers
         case "KEEP": return .kept

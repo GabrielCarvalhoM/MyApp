@@ -69,9 +69,8 @@ struct HistoryDetail: View {
             if sent || !viewModel.clinical {
                 Text(sent ? L.t("report.saved") : L.t("report.notKept")).rmText(.detalhe, sent ? RM.Palette.positivo : RM.Palette.negativo)
             }
-            if viewModel.clinical {
-                StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"))
-                    .accessibilityIdentifier("contest-blocked")
+            if let g = viewModel.clinicalGuidance {
+                ClinicalRouteBanner(reportKept: true, guidance: g).accessibilityIdentifier("contest-blocked")
             }
             if viewModel.screenRequired {
                 StateBanner(tone: .safety, icon: .lista, title: L.t("state.screenRequired.title"), message: L.t("screen.required"),

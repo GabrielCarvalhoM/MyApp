@@ -37,8 +37,10 @@ final class HistoryCorrectionViewModel {
     var eligibility = EligibilityScreen(status: nil, assessedAt: "", pain: nil, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
     /// The engine asked for the warning-sign screen (a stop for a symptom, re-sent with the correction, raises it again). Sticky.
     private(set) var screenRequired = false
-    /// The answer routes to a qualified human (a flag answered yes here, or a clinical dependency on record).
-    private(set) var clinical = false
+    /// The answer routes to a qualified human (a flag answered yes here, or a clinical dependency on record), with the engine's guidance
+    /// level (#73).
+    private(set) var clinicalGuidance: ClinicalGuidance?
+    var clinical: Bool { clinicalGuidance != nil }
 
     let entry: LoggedEntry
     /// The date the plan in force holds for the row's session (nil when it holds none).
@@ -80,7 +82,7 @@ final class HistoryCorrectionViewModel {
         apply {
             phase = Self.saved(out) ? .saved : .notKept
             screenRequired = screenRequired || (out.answer.ok && out.answer.warningSignScreen?.status.raw == "REQUIRED")
-            clinical = out.answer.routesToHuman
+            clinicalGuidance = out.answer.clinicalGuidance
         }
         if out.answer.ok { await reload() }
     }
