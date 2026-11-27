@@ -31,6 +31,8 @@ pelo orquestrador, não pelo revisor.
    (aviso em 300), `node tools/orchestration/swift-size.mjs`.
 5. **Testes e revisão:** [TESTING_AND_REVIEW.md](../../specs/v1/quality/TESTING_AND_REVIEW.md), [QUALITY_GATES.md](QUALITY_GATES.md).
    Simulador por padrão; iPhone só nos checkpoints de hardware. Teste não executado nunca conta como aprovado.
+   **Um simulador por agente** (o orquestrador atribui; o `sim.sh` encerra os outros apps do simulador, inclusive o runner de outra
+   suíte) e no máximo duas suítes de UI ao mesmo tempo no Mac (`pgrep -fl "xcodebuild.*test"` antes de começar).
 6. **Segurança esportiva falha fechada:** nil ≠ false, nada pré-respondido, ASK quando falta dado. Nunca inventar métricas, limites ou
    prescrições: elas vêm do motor ou de decisão registrada.
 7. **Privacidade:** [SECURITY_PRIVACY.md](../../specs/v1/quality/SECURITY_PRIVACY.md). Repositório público: nada de segredo nem de dado
