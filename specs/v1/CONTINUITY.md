@@ -3,7 +3,7 @@
 Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia isto, rode `node tools/orchestration/status.mjs`, siga
 "Próxima ação". Não depende do histórico de conversas.
 
-**Atualizado:** 2026-11-27 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
+**Atualizado:** 2026-11-27 (tarde) (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
 ## Pausa
 
@@ -14,12 +14,13 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 
 | | |
 |---|---|
-| Integração `claude/v1-ios-integration` | `e593496` = orquestração + A (#50) + B (#51) + composição real (#60, #16) + C sync 1 (#67: MVVM #32, #37, #38, #41, #58, #59a, #61). Visualização em `e593496` |
-| Em andamento | **#72** (P0, triagem em "Não estou 100%", prontidão, dia indisponível): worktree `myapp-v1-c-i72`, sim RepMile-C-2 · **#63** PR #75 (INT, sim 77/77, QRE aplicado): aguardando CI → merge · **#49** (condições de A): worktree `myapp-v1-int-i49`, só `swift test` no macOS |
-| Frente C `claude/v1-ios-swiftui` | `fffefbb` = #59 (PR #69) + #68 (PR #71; XCUITest 43/43, unit 140/140; SSCTR APPROVE_WITH_CONDITIONS); seguimentos #70, #72, #73, #74 (decisão), #76 |
-| Próximas | C → integração (sync 2, com #59 e #68) e teste com motor real na integração · **#66** (P0; aguarda o fundador) · #63 · #49 · #48 · #39 · #62 · CCP-C-05 (#20) |
-| Decisões do fundador | #66 (princípio), #74 (triagem nos relatos), nome do serviço do Keychain (#63 P3-5), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
-| Simuladores | RepMile-C-2 (#72), RepMile-INT (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
+| Agentes | **Especialistas versionados em `.claude/agents/`** (registro [docs/engineering/AGENTS.md](../../docs/engineering/AGENTS.md)): `ios-engineer`, `ios-test-engineer`, `integration-engineer`, revisores read-only `quality-reliability-engineer`, `ios-architecture-reviewer`, `visual-ux-reviewer`, e o SSCTR. Validados numa sessão nova (`agents.mjs --discover`; evidência em `audits/v1-engineering-orchestration-2026-11-26/results/agents-restoration/`). **PR #80 → integração aguarda o fundador aplicar `governance:approved`** (o orquestrador não pode aprovar governança). Sessão nova = definições atuais |
+| Integração `claude/v1-ios-integration` | `a093c042` = … + C sync 1 (#67) + #63 (PR #75) + #49 (PR #77). Visualização em `a093c042` |
+| Frente C `claude/v1-ios-swiftui` | `c04ee8c4` = #59 (PR #69) + #68 (PR #71) + #72 (PR #78) |
+| Em andamento | **C sync 2** (`claude/v1-ios-integration-c-sync-2` @ `872a92b7`, worktree `myapp-v1-int-csync2`): merge feito (colisão de IDs do pbxproj resolvida: `ReportEligibilityUITests` → `68A0/68A1`), guard e swift-size OK, `sim.sh all` em RepMile-INT → depois PR · **#73** (P0, nível de orientação do motor): `ios-engineer`, worktree `myapp-v1-c-i73`, sim RepMile-C-2 · **#48** (B P3 + R2-03): `ios-engineer` no pacote de B via integração, worktree `myapp-v1-int-i48`, só macOS |
+| Próximas | revisão QRE (+SSCTR no #73) dos dois · #70, #76, #39, #62, #81 · **#66, #74, #79** aguardam o fundador |
+| Decisões do fundador | **#80 (aplicar `governance:approved`)** · **#79** (descongelar CoachingCore: sinal de alerta preso atrás da triagem, urgência rebaixada; bloqueia REAL_ATHLETE_READY) · #66 · #74 · #47 · #55 · #21 · #29 · nome do serviço do Keychain · `CURRENT_MISSION.md`/`CLAUDE.md` ainda dizem "missão proíbe implementação" (desatualizado em relação à V1) · Figma nomeado · modo claro |
+| Simuladores | RepMile-INT (C sync 2), RepMile-C-2 (#73), RepMile-C-3 (livre) |
 
 ## Branches e worktrees
 
