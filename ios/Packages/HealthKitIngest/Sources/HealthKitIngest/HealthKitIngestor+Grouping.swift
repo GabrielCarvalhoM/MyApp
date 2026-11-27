@@ -19,7 +19,8 @@ extension HealthKitIngestor {
                     s.items[i].deletedWhileInFlight = true; s.items[i].mayBeOnRecord = true
                     // #85: a deleted workout is never sent again: a round still to come, or one reopened and not yet sent, ends here.
                     s.items[i].resendDue = nil
-                    if s.items[i].state == .pending { s.items[i].state = .setAside(code: IngestCode.attemptsExhausted) }
+                    // (Recheck: also one left NOT_RECORDED by a result missing from an ok:true answer, which is re-sent otherwise.)
+                    if case .setAside = s.items[i].state {} else { s.items[i].state = .setAside(code: IngestCode.attemptsExhausted) }
                 }
                 else { s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 }
             } else if s.ledger[id] != nil {

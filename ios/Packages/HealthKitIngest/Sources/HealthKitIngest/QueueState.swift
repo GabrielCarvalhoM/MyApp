@@ -59,11 +59,16 @@ struct QueueItem: Codable, Equatable {
     /// `mayHaveLanded`; ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a copy is never
     /// promoted and sent. Cleared only by an answered NOT_RECORDED (#85: on record, the same id and facts would be DUPLICATE).
     var mayBeOnRecord = false
-    /// #85 (QRE #90 P3-2): a send of this workout may have landed on the record. Set by a `retryLater` answer ("nothing was confirmed"),
-    /// by an answer B could not write, and, at load, for every workout of the delivery in flight on disk (a process that died may have sent
-    /// it). Cleared only by an answered NOT_RECORDED. Refusals and `hostUnavailable` record nothing and leave it as it is. Every set-aside
-    /// of such a workout, and its deletion in Apple Health, keeps it may-be-on-record.
-    var mayHaveLanded = false
+    /// #85 (QRE #90 P3-2, recheck P3-B): the deliveries a send of which may have put this workout on the record, by `deliveryId`. Added
+    /// by a `retryLater` answer ("nothing was confirmed"), by an answer B could not write, and, at load, by the delivery in flight on disk
+    /// (a process that died may have sent it). An admission refusal of that SAME delivery id removes it: custody would have replayed the
+    /// stored answer of a request that landed (integration.mjs: `admit` runs only for a request id it has not seen); another delivery's
+    /// refusal never does. `landedUnknown` cannot be removed by any refusal: an `ok:true` answer missing this workout's result (the request
+    /// was committed), or a file written without this field. Emptied only by an answered NOT_RECORDED.
+    var landedIn: [String] = []
+    static let landedUnknown = "*"
+    /// Every set-aside of such a workout, and its deletion in Apple Health, keeps it may-be-on-record.
+    var mayHaveLanded: Bool { !landedIn.isEmpty }
     /// #85: set aside after its delivery exhausted `retryLater` (a fault of the moment, not an answer), with a re-send round still to come:
     /// the earliest instant of that round. Reopened then by `deliveryConditionsChanged()` or a launch, with the same frozen bytes in a NEW
     /// delivery (same id, same facts: DUPLICATE if a write landed, otherwise the boundary decides). nil: no round to come.
@@ -173,11 +178,13 @@ extension QueueState {
         nextRetryAt = try c.decodeIfPresent(Date.self, forKey: .nextRetryAt)
         // #85: the delivery in flight on disk may have been sent by a process that died before writing its answer.
         let flying = Set(inFlight?.activities.map(\.activityId) ?? [])
-        for i in items.indices where flying.contains(items[i].activityId) { items[i].mayHaveLanded = true }
+        for i in items.indices where flying.contains(items[i].activityId) { items[i].noteMayHaveLanded(in: inFlight!.deliveryId) }
     }
 }
 
 extension QueueItem {
+    mutating func noteMayHaveLanded(in deliveryId: String) { if !landedIn.contains(deliveryId) { landedIn.append(deliveryId) } }
+
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         activityId = try c.decode(String.self, forKey: .activityId)
@@ -196,8 +203,9 @@ extension QueueItem {
         // #85: a file written before #85 has no `resends`. Its ATTEMPTS_EXHAUSTED item that may be on record was set aside by an exhausted
         // retryLater (or, before P3-2, possibly by NOT_RECORDED answers): it gets its re-send rounds, the first one due at once. Re-sending
         // it is safe either way: the same id with the same facts is DUPLICATE when on record.
-        // #85: a file without `mayHaveLanded` fails closed for a workout that was sent (frozen); one never sent cannot have landed.
-        mayHaveLanded = try c.decodeIfPresent(Bool.self, forKey: .mayHaveLanded) ?? frozen
+        // #85: a file without `landedIn` fails closed for a workout that was sent (frozen): landed in an unknown delivery, which no
+        // refusal can clear. One never sent cannot have landed.
+        landedIn = try c.decodeIfPresent([String].self, forKey: .landedIn) ?? (frozen ? [QueueItem.landedUnknown] : [])
         resends = try c.decodeIfPresent(Int.self, forKey: .resends) ?? 0
         resendDue = try c.decodeIfPresent(Date.self, forKey: .resendDue)
         if !c.contains(.resends), mayBeOnRecord, !deletedWhileInFlight, state == .setAside(code: IngestCode.attemptsExhausted) { resendDue = .distantPast }

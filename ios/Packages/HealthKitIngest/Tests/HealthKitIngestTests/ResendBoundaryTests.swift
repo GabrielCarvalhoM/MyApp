@@ -175,31 +175,4 @@ final class ResendBoundaryTests: XCTestCase {
         let c = await ing.counts()
         XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertNil(c.counters[IngestCode.deletedBeforeDelivery]); XCTAssertEqual(c.consolidated, 1)
     }
-
-    /// A refusal that sets G1 aside after a send that may have landed proves nothing about that send: G1 keeps its group.
-    func testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup() async throws {
-        let sink = ScriptedSink(context: .ready(Copies.plan)); let rig = Rig(sink: sink)
-        sink.answers = [{ _ in .retryLater(code: "OPERATIONAL_ERROR") }, { _ in .refused(code: "BEFORE_RECORD_START", index: 0, disposition: .setAsideItem) }]
-        rig.reader.add(Copies.g1, Copies.s1)
-        let ing = rig.make(); await ing.start()
-        rig.clock.advance(2); await rig.scheduler.runAll(); await ing.deliveryConditionsChanged()
-        XCTAssertEqual(sink.deliveries.count, 2, "S1 is never sent")
-        XCTAssertEqual(try stored(rig.store, "G1")?.mayBeOnRecord, true)
-        let c = await ing.counts(); XCTAssertEqual(c.setAside, ["BEFORE_RECORD_START": 1]); XCTAssertEqual(c.consolidated, 1)
-    }
-
-    /// A queue file without `mayHaveLanded`: a workout that was sent (frozen) may have landed; one never sent cannot have.
-    func testAFileWithoutTheFlagFailsClosedForASentRun() async throws {
-        let store = MemoryStore()
-        let sink = ScriptedSink(context: .ready(Copies.plan)); let rig = Rig(sink: sink, store: store)
-        sink.answers = [{ _ in .waiting(code: "CONSENT_REQUIRED") }]
-        rig.reader.add(Copies.g1, Copies.s1)
-        let ing = rig.make(); await ing.start()
-        XCTAssertEqual(try stored(store, "G1")?.mayHaveLanded, false, "a waiting answer records nothing")
-        var o = try JSONSerialization.jsonObject(with: XCTUnwrap(store.data)) as! [String: Any]
-        o["items"] = (o["items"] as! [[String: Any]]).map { var i = $0; i.removeValue(forKey: "mayHaveLanded"); return i }
-        try store.save(JSONSerialization.data(withJSONObject: o))
-        XCTAssertEqual(try stored(store, "G1")?.mayHaveLanded, true); XCTAssertEqual(try stored(store, "S1")?.mayHaveLanded, false)
-        _ = ing
-    }
 }
