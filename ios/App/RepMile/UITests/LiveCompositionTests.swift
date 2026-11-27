@@ -169,6 +169,27 @@ final class LiveCompositionTests: XCTestCase {
         attach(app, "live — conta apagada (\(label))")
     }
 
+    /// #76: a damaged identity file shows its own state, with no "try again", through the live composition's real failure path
+    /// (`AthleteIdentityStore.Failure.malformed` → `ACCOUNT_IDENTITY_DAMAGED`). `-simulateDamagedIdentity` (Debug) points the composition at a
+    /// damaged file written for this launch in the temporary folder; the real identity file is neither read nor touched, so nothing of this
+    /// test stays on the simulator.
+    @MainActor
+    func testADamagedIdentityShowsItsOwnStateWithNoRetry() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-simulateDamagedIdentity", "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launch()
+        XCTAssertTrue(el(app, "state-identity-damaged").waitForExistence(timeout: 30), "the damaged-identity state")
+        XCTAssertTrue(app.staticTexts["Não conseguimos abrir sua conta neste aparelho"].exists)
+        XCTAssertFalse(el(app, "state-retry").exists, "no try again: opening again reads the same file")
+        XCTAssertFalse(el(app, "state-operational-error").exists)
+        XCTAssertFalse(app.buttons["tab-today"].exists)
+        attach(app, "live — identidade danificada, sem tentar de novo")
+        // Still that state a moment later (nothing re-opens it into another state).
+        XCTAssertFalse(el(app, "state-retry").waitForExistence(timeout: 3))
+        XCTAssertTrue(el(app, "state-identity-damaged").exists)
+        app.terminate()
+    }
+
     /// The first real journey (#17) and the erasure end to end (#63 P3-6), synthetic answers: the real engine builds the plan, a run is
     /// recorded by the live recorder into the real recordings store (see `recordARun`: before week 1 the report is not kept, so the recording
     /// ends discarded by C itself; the G07 erasure of C's store with a recording still in it is proven by `PendingErasureTests`, not here),

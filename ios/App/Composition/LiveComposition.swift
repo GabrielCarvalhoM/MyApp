@@ -48,12 +48,6 @@ final class LiveComposition {
     /// unlock if that fails. Nothing for the fixture composition.
     static func launch(_ mode: LaunchMode) { opener.launch(mode) }
 
-    /// Application Support/RunRecorder: the folder `RecordingStore.standard()` uses (C). Erased here only after a rotation; the index check
-    /// in `make` catches a drift between the two.
-    private static func recordingsDirectory() -> URL {
-        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("RunRecorder", isDirectory: true)
-    }
-
     private init(athleteId: String, host: CoachingHost, ingestor: HealthKitIngestor, reader: HealthKitReader, recordings: RecordingStore,
                  recorder: RunRecorder, sink: DeviceActivitySinkProxy, identity: AthleteIdentityStore) {
         self.athleteId = athleteId; self.host = host; self.ingestor = ingestor; self.reader = reader; self.recordings = recordings
@@ -63,9 +57,10 @@ final class LiveComposition {
     }
 
     private static func make() async throws -> LiveComposition {
-        let identity = try AthleteIdentityStore.standard()
+        let identity = try identityStore()
         let athleteId = try identity.current()
-        let recordings = try await PendingErasure.complete(identity: identity, directory: recordingsDirectory(), openStore: { RecordingStore.standard() },
+        // After a rotation: C's own store erases its folder (it alone knows where it is, #76) and its own index must answer nothing.
+        let recordings = try await PendingErasure.complete(identity: identity, openStore: { RecordingStore.standard() }, erase: { try $0.eraseAll() },
                                                            isEmpty: { await $0.recordings(overlapping: PendingErasure.everything).isEmpty })
         let recorder = RunRecorder(source: locationSource(), store: recordings)
         let sink = DeviceActivitySinkProxy()
@@ -79,6 +74,16 @@ final class LiveComposition {
                                 sink: sink, identity: identity)
         c.startIngest()
         return c
+    }
+
+    /// The athlete identity. Debug builds only: `-simulateDamagedIdentity` reads a damaged identity file written for this launch in the temporary
+    /// folder (`AthleteIdentityStore.damagedForUITests`), so a UI test sees the real failure path (`ACCOUNT_IDENTITY_DAMAGED`) while the real
+    /// identity file is neither read nor touched.
+    private static func identityStore() throws -> AthleteIdentityStore {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-simulateDamagedIdentity") { return try AthleteIdentityStore.damagedForUITests() }
+        #endif
+        return try AthleteIdentityStore.standard()
     }
 
     /// CoreLocation. Debug builds only: `-simulatedLocation` scripts the location (no permission prompt) so a live UI journey can record a

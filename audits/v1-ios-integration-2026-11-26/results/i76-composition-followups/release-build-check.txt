@@ -1,0 +1,10 @@
+Release build (simulator, xcodebuild -configuration Release, RepMile-C-2) of 78f42b31: BUILD SUCCEEDED.
+strings -a RepMile.app/RepMile (Release):
+  -simulateDamagedIdentity  0   (Debug-only seam, #76)
+  uitest-damaged-identity   0
+  -scenario                 0   (fixture composition, Debug only, #63 P3-3)
+  ACCOUNT_IDENTITY_DAMAGED  2   (the code itself, expected)
+  -simulatedLocation        2   (pre-existing: RepMileShell.makeRecorder in RepMileUI is not under #if DEBUG; unreachable in Release
+                                 because the live root never builds the fixture shell; not changed by #76, open item)
+Control: the Debug build's RepMile.debug.dylib contains -simulateDamagedIdentity (1), so the search finds the string when it exists.
+No Fixtures/ folder in the Release RepMile.app.

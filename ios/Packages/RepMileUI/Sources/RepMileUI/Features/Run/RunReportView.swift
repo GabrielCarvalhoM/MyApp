@@ -105,7 +105,8 @@ struct RunReportView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.7), value: viewModel.result)
         // Closing "Não estou 100%" returns to the report (still to save or resend); it never closes the run screen.
         .sheet(isPresented: $showSigns) {
-            NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today }))
+            NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { [model] in model.plan?.today },
+                                                                holdGuidance: { [model] in model.plan?.clinicalGuidance }))
         }
         .confirmationDialog(L.t("report.leave.confirm"), isPresented: $confirmLeave, titleVisibility: .visible) {
             Button(L.t("report.leave"), role: .destructive) { recorder.discard(); close() }
@@ -151,7 +152,7 @@ struct RunReportView: View {
             if viewModel.screenRequired { screenRequiredBanner }
         case nil: EmptyView()
         }
-        if viewModel.clinical { ClinicalRouteBanner(reportKept: viewModel.canClose).accessibilityIdentifier("report-blocked") }
+        if let g = viewModel.clinicalGuidance { ClinicalRouteBanner(reportKept: viewModel.canClose, guidance: g).accessibilityIdentifier("report-blocked") }
     }
 
     private var screenRequiredBanner: some View {

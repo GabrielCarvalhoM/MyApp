@@ -4,7 +4,8 @@ import SwiftUI
 import UIKit
 
 /// The app root without `-scenario`: the loading state while the live composition opens (`CoachingHost.open`), the shell once it is open, and
-/// the operational-error state, with "try again", when it could not open. Never a crash, never a fixture.
+/// the operational-error state, with "try again", when it could not open; a damaged identity has its own state with no "try again" and no
+/// re-open on unlock (#76: opening again reads the same file, which is never replaced). Never a crash, never a fixture.
 ///
 /// The composition is the one the app delegate opened at launch (#63 P2-1): `LiveComposition.open()` returns that same instance. When the
 /// open failed before the first unlock, the next unlock opens again by itself.
@@ -20,8 +21,13 @@ struct LiveRoot: View {
         case .ready(let c):
             RepMileShell(model: c.model, recorder: c.recorder, live: RepMileShell.Live(athleteId: c.athleteId, accountErased: { c.accountErased() }))
         case .failed(let code):
-            RepMileLaunchScreen(phase: .failed(code: code), retry: { phase = .opening })
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)) { _ in phase = .opening }
+            switch LaunchFailure.shown(for: code) {
+            case .identityDamaged:
+                RepMileLaunchScreen(phase: .identityDamaged)
+            case .retryable(let code):
+                RepMileLaunchScreen(phase: .failed(code: code), retry: { phase = .opening })
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)) { _ in phase = .opening }
+            }
         }
     }
 

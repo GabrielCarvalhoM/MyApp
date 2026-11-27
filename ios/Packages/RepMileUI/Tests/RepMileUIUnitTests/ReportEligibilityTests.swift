@@ -28,10 +28,10 @@ final class ReportEligibilityTests: XCTestCase {
         get throws { try XCTUnwrap(try Repo.store.decode(PlanView.self, "02-plan-w0", at: "view").week?.sessions.first { $0.id == "w0-str-d2" }) }
     }
     private func run(_ w: CoachingWriting, today: String? = "2026-11-22", marked: @escaping (String) -> Void = { _ in }) -> RunReportViewModel {
-        RunReportViewModel(recording: recording, writer: w, planToday: { today }, markReported: marked, now: { [end] in end })
+        RunReportViewModel(recording: recording, writer: w, planToday: { today }, markReported: marked, now: { [end] in end }, holdGuidance: { nil })
     }
     private func strength(_ w: CoachingWriting) throws -> StrengthLogViewModel {
-        let vm = StrengthLogViewModel(session: try strengthSession, writer: w, planToday: { "2026-11-22" }, now: { [end] in end })
+        let vm = StrengthLogViewModel(session: try strengthSession, writer: w, planToday: { "2026-11-22" }, now: { [end] in end }, holdGuidance: { nil })
         vm.minutes = 40; vm.confirmAsPrescribed()
         return vm
     }
@@ -83,7 +83,7 @@ final class ReportEligibilityTests: XCTestCase {
         vm.eligibility = .testNoneApplies
         XCTAssertNil(vm.request())
         XCTAssertFalse(vm.canSend)
-        let log = StrengthLogViewModel(session: try strengthSession, writer: w, planToday: { nil }, now: { [end] in end })
+        let log = StrengthLogViewModel(session: try strengthSession, writer: w, planToday: { nil }, now: { [end] in end }, holdGuidance: { nil })
         log.minutes = 40; log.confirmAsPrescribed(); log.eligibility = .testNoneApplies
         XCTAssertNil(log.request())
         XCTAssertFalse(log.canSend)
@@ -127,14 +127,14 @@ final class ReportEligibilityTests: XCTestCase {
         let clinical = try Repo.store.decode(BoundaryAnswer.self, "actions-E2-break-clinical")
         let r = RunReportViewModel.result(for: WriteOutcome(answer: clinical, kept: [], notKept: []), screenRequiredBefore: false)
         XCTAssertEqual(r.result, .notKept)
-        XCTAssertTrue(r.clinical)
+        XCTAssertEqual(r.clinical, .professionalAssessment)
         let ok = try Repo.store.decode(BoundaryAnswer.self, "07-athlete-run-form")
         let id = try XCTUnwrap(ok.recorded?.first)
-        XCTAssertFalse(RunReportViewModel.result(for: WriteOutcome(answer: ok, kept: [id], notKept: []), screenRequiredBefore: false).clinical)
-        XCTAssertTrue(RunReportViewModel.result(for: WriteOutcome(answer: ok, kept: [id], notKept: []), screenRequiredBefore: false, clinicalBefore: true).clinical,
+        XCTAssertNil(RunReportViewModel.result(for: WriteOutcome(answer: ok, kept: [id], notKept: []), screenRequiredBefore: false).clinical)
+        XCTAssertNotNil(RunReportViewModel.result(for: WriteOutcome(answer: ok, kept: [id], notKept: []), screenRequiredBefore: false, clinicalBefore: .professionalAssessment).clinical,
                       "sticky: a route already shown is not hidden by a later answer")
-        XCTAssertTrue(RunReportViewModel.result(for: WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []), screenRequiredBefore: false,
-                                                clinicalBefore: true).clinical)
+        XCTAssertNotNil(RunReportViewModel.result(for: WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []), screenRequiredBefore: false,
+                                                  clinicalBefore: .professionalAssessment).clinical)
         XCTAssertFalse(FixtureCoachingWriter.unavailable.routesToHuman, "an error is no route")
     }
 

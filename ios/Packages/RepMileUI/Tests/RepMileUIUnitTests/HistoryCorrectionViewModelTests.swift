@@ -6,7 +6,7 @@ import XCTest
 extension HistoryCorrectionViewModel {
     static let testToday = "2026-11-18"
     convenience init(testing entry: LoggedEntry, writer: CoachingWriting, reload: @escaping @MainActor () async -> Void) {
-        self.init(entry: entry, sessionDate: entry.date, writer: writer, planToday: { HistoryCorrectionViewModel.testToday }, reload: reload)
+        self.init(entry: entry, sessionDate: entry.date, writer: writer, planToday: { HistoryCorrectionViewModel.testToday }, reload: reload, holdGuidance: { nil })
     }
     /// The athlete answers "não" to the six flags and confirms none applies.
     func answerNoneApplies() {
@@ -73,7 +73,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         // A row on another day than the plan holds for its session (the device's day), or a session the plan does not hold: not offered.
         for date in ["2026-11-18", nil] as [String?] {
             let w = FixtureCoachingWriter(store: Repo.store)
-            let vm = HistoryCorrectionViewModel(entry: e, sessionDate: date, writer: w, planToday: { "2026-11-18" }, reload: {})
+            let vm = HistoryCorrectionViewModel(entry: e, sessionDate: date, writer: w, planToday: { "2026-11-18" }, reload: {}, holdGuidance: { nil })
             XCTAssertTrue(HistoryCorrectionViewModel.canContest(e))
             XCTAssertFalse(vm.canContest, String(describing: date))
             vm.startContesting(); vm.km = "6"; vm.answerNoneApplies()
