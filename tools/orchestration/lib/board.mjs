@@ -57,6 +57,9 @@ export function transitionError(to, { labels = [], validation, evidence } = {}) 
   if (labels.includes(APPROVAL_LABEL) && !['Backlog', 'Blocked'].includes(to)) {
     return `a issue aguarda aprovação do fundador (${APPROVAL_LABEL}); só o fundador remove o rótulo`;
   }
+  // Integrated = on the integration branch, not yet validated where it matters; it still needs the evidence of what was proven
+  // (CI run, simulator manifest). Record it first: `board.mjs evidence <n> "<link>"`, then the status.
+  if (to === 'Integrated' && !evidence?.trim()) return 'Integrated exige Evidências (PR integrado, CI, manifest do simulador): rode `board.mjs evidence` antes';
   if (to === 'Verified') {
     if (!VALIDATED.includes(validation)) return `Verified exige Validação em ${VALIDATED.join(' / ')} (implementado ≠ validado)`;
     if (!evidence?.trim()) return 'Verified exige Evidências (link do run, manifest.json, screenshot)';

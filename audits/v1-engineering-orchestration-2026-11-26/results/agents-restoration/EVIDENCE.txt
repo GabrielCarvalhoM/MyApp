@@ -1,0 +1,32 @@
+Restauração da arquitetura agêntica no Mac (fundador, 2026-11-27). Evidência de descoberta e delegação.
+
+1. Auditoria
+- Antes: .claude/agents/ tinha só o SSCTR. CLAUDE.md e AGENTS.md apontavam para um sistema global em caminho do Windows
+  (agent-system v1.5.0: 12 agentes, 17 skills), inexistente neste Mac. Uma sessão nova descobria:
+  claude, Explore, general-purpose, Plan, sports-science-concurrent-training-reviewer, statusline-setup, web-fetch.
+- Os arquivos originais não estão em nenhum recurso acessível; os registros do repositório guardam só os nomes
+  (chief, product-engineer, engineering-systems-architect, quality-reliability-engineer, integration-release-engineer,
+  security-privacy-abuse-architect, ui-experience-designer, product-ux-architect, data-analytics-experimentation-architect,
+  ai-systems-agent-experience-architect, research-evidence-strategist, product-constitution-governance).
+
+2. Descoberta (sessão nova, `node tools/orchestration/agents.mjs --discover`)
+- 13 tipos: claude, Explore, general-purpose, integration-engineer, ios-architecture-reviewer, ios-engineer,
+  ios-test-engineer, Plan, quality-reliability-engineer, sports-science-concurrent-training-reviewer, statusline-setup,
+  visual-ux-reviewer, web-fetch.
+
+3. Delegação explícita (sessão nova, claude -p, só leitura)
+- ios-engineer: identificou a própria definição, leu docs/engineering/AGENTS.md, rodou swift-size, propôs divisão
+  MVVM do maior arquivo; ferramentas Edit/Write/Bash/Read, sem Agent; nenhuma alteração.
+- quality-reliability-engineer: revisão real de d54e7357 → READY_WITH_CONDITIONS (P1-1: revisores herdavam MCP de
+  escrita). Corrigido em 19a0aeb9; recheck (delegado pela sessão do orquestrador) → P1/P2 corrigidos; P3 aplicados em
+  139cf23c. HEAD da worktree revisada inalterado depois da revisão.
+
+4. Ferramentas efetivas dos revisores (sessão nova, autodeclaradas, 0 chamadas de ferramenta)
+- quality-reliability-engineer: Read, Bash
+- ios-architecture-reviewer: Read, Bash
+- visual-ux-reviewer: Read, Bash, mcp__claude_ai_Figma__{create_session,get_screenshot,get_design_context,get_metadata}
+- Nenhum com Edit, Write, Agent, ToolSearch, Notion, Supabase, Claude Docs ou Figma de escrita.
+- Grep/Glob listados mas não fornecidos por este runtime (a própria sessão não os tinha); busca via Bash.
+- Limite: lista autodeclarada pelos agentes, não verificação independente do harness.
+
+5. Testes: node --test tools/orchestration/tests/*.test.mjs → 36/36; node tools/orchestration/agents.mjs → AGENTS: OK.

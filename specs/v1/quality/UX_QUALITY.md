@@ -1,8 +1,8 @@
 # Fidelidade visual, acessibilidade, desempenho e motion
 
 ## 1. Fidelidade ao Figma
-- Autoridade: Figma `90oyvXHxxBQAvr1netov7S` na versão nomeada do fundador ("V1 alinhamento funcional · 26 nov" — **ainda não salva**,
-  ver PRODUCT_SCOPE §4). Mapa tela → nó → contrato → fixture: `audits/v1-figma-final-alignment-2026-11-26/SWIFTUI_VISUAL_HANDOFF_ADDENDUM.md`.
+- Autoridade: Figma `90oyvXHxxBQAvr1netov7S`, versão "V1 alinhamento funcional · 26 nov", **aprovada pelo fundador em 27/11** como referência
+  visual da V1. Mapa tela → nó → contrato → fixture: `audits/v1-figma-final-alignment-2026-11-26/SWIFTUI_VISUAL_HANDOFF_ADDENDUM.md`.
 - Procedimento e ferramenta: [docs/engineering/VISUAL_VALIDATION.md](../../../docs/engineering/VISUAL_VALIDATION.md) (`visual.mjs`, `sim.sh`).
 - Nenhuma tela é declarada fiel sem captura real comparada com o nó. Tags `[FUTURO]` e `[V1: oculto até …]` são respeitadas.
 

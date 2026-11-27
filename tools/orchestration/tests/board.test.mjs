@@ -19,7 +19,8 @@ test('implemented ≠ validated: Verified needs a real validation and evidence',
   assert.match(transitionError('Verified', { validation: 'Não validado', evidence: 'x' }), /Validação/);
   assert.match(transitionError('Verified', { validation: 'Simulador', evidence: ' ' }), /Evidências/);
   assert.equal(transitionError('Verified', { validation: 'iPhone', evidence: 'https://…/manifest.json' }), null);
-  assert.equal(transitionError('Integrated', {}), null);
+  assert.match(transitionError('Integrated', {}), /Integrated exige Evidências/);
+  assert.equal(transitionError('Integrated', { evidence: 'PR #89 integrado; sim.sh 86/86' }), null);
 });
 
 test('new scope waits for the founder: only Backlog or Blocked', () => {

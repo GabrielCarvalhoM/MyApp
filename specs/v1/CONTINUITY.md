@@ -3,24 +3,24 @@
 Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia isto, rode `node tools/orchestration/status.mjs`, siga
 "Próxima ação". Não depende do histórico de conversas.
 
-**Atualizado:** 2026-11-26 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
+**Atualizado:** 2026-11-27 (tarde) (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
 ## Pausa
-_Nenhuma pausa ativa._ Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada). Ao pausar, esta seção
-registra data/hora, tarefas e seu estado, commits WIP, processos interrompidos, últimos testes válidos e o próximo passo exato.
+
+Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (checkpoint `76e14ce`). Na retomada: PR #67 com CI 4/4 → merge
+`e593496`, viewer atualizado; #59 retomado do WIP `289811a`; #68 iniciado; worktrees temporárias removidas.
 
 ## Agora
 
 | | |
 |---|---|
-| Integração `claude/v1-ios-integration` | `7255221` = orquestração + A (#50) + B (#51) + C até `24c9096` (#42) + composição real (#60, #16). Visualização em `7255221` |
-| Frente C `claude/v1-ios-swiftui` | `5a4872a`: #32.1–32.3, #32.5–32.8, #38, #41 (todos revisados); **à frente da integração**, falta o PR C → integração |
-| Em merge | **#61** (PR #64): ponta mesclada `210d567` em teste (RepMile-INT); revisão QRE + verificação do #61b READY |
-| Em verificação | **#58/#59** (PR #65, `a3c56f6`): verificação SSCTR + QRE do #59b em andamento |
-| Aguardando | **#37** (PR #53, `3454551`): condições aplicadas; entra depois do #61, com nova suíte (o 35/36 era o teste instável de onboarding, corrigido no #61) |
-| Próximas | PR C → integração (com #37/#58/#59/#61) e tirar o contorno `chip-12` do teste ao vivo · **#66** (P0, onboarding declarado; aguarda o fundador confirmar o princípio) · #63 (background delivery) · #49 (condições de A) · #48 (P3 de B) · #39 · #62 |
-| Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
-| Simuladores | RepMile-INT (#61 merge/integração), RepMile-C-2 (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
+| Agentes | Especialistas versionados em `.claude/agents/` (registro [docs/engineering/AGENTS.md](../../docs/engineering/AGENTS.md)); validados numa sessão nova. **PR #80 → integração aguarda o fundador aplicar `governance:approved`**. Sessão nova = definições atuais |
+| Integração `claude/v1-ios-integration` | `9eb60f05` = … + #63 (PR #75) + #49 (PR #77) + C sync 2 (#59/#68/#72, PR #82) + #48 (PR #84) + C sync 3 (#73, PR #89) + #76 (PR #91). Visualização em `9eb60f05` |
+| Frente C `claude/v1-ios-swiftui` | `da0ec00e` = … + #73 (PR #86) + IDs do pbxproj (PR #88) + caminhos de C do #76 (PR #93, idênticos à integração) |
+| Em andamento | **#85** (reenvio após retryLater; PR #90): QRE READY_WITH_CONDITIONS após 2 re-verificações, R-1/R-2/R-3 conferidos; conteúdo mesclado 88/88 → aguardando CI → merge · **#83** (isolamento dos testes ao vivo): `ios-test-engineer`, worktree `myapp-v1-int-i83`, sim RepMile-C-3 |
+| Próximas | #70 (seguimentos do #59), #39, #62, #81, `saveActive` (C, do review do #76) · condições antes do release: #85 · **REAL_ATHLETE_READY bloqueado por #79, #87** |
+| Decisões do fundador | **#80** (rótulo de governança) · **#79** (descongelar CoachingCore: sinal de alerta atrás da triagem, urgência rebaixada, nível da retenção rebaixado por decisão posterior) · **#87** (texto urgente: revisão clínica humana) · #66 · #74 · Verified para #32/#41/#58/#61 agora ou só depois do iPhone · próximo passo na tela de identidade danificada (e schema mais novo) · `CURRENT_MISSION.md`/`CLAUDE.md` desatualizados · #47 · #55 · #21 · #29 · Keychain · Figma nomeado · modo claro |
+| Simuladores | RepMile-C-3 (#83), RepMile-INT e RepMile-C-2 livres; no máximo 2 suítes de UI ao mesmo tempo; desinstalar o app antes de `sim.sh all` até o #83 entrar |
 
 ## Branches e worktrees
 
@@ -66,7 +66,16 @@ parada em `a8aefa0` e não deve ser usada para ver o app.
 
 ## Checkpoint de hardware (iPhone, agrupado; pedir ao fundador só quando a lista estiver pronta)
 - [ ] Corrida real com GPS (RunRecorder), pausa, morte do processo e retomada; #38 retomada sob bloqueio (#19)
-- [ ] HealthKit: autorização e leitura real com o build integrado; background delivery com o app fechado (B R2-03)
+- [ ] HealthKit: autorização e leitura real com o build integrado
+- [ ] #63 background delivery: app suspenso e encerrado pelo seletor → treino no relógio/iPhone → log sem cena: `hki.started` → `hki.backgroundDelivery code=REGISTERED` → `hki.observerFired`; enfileirado sem abrir o app, entregue quando A abrir
+- [ ] #63 antes do primeiro desbloqueio: reiniciar, gravar treino, desbloquear → composição abre sozinha, raiz não fica no erro operacional
+- [ ] #63 tempo: launch em background → `hki.observerFired` com `CoachingHost.open` no caminho; completion handler chamado antes da suspensão (B R2-03, #48)
+- [ ] #48 R2-03: gravar treino com o app suspenso → log `hki.observerFired`, `hki.backgroundWindow code=GRANTED`, entrega, `code=ENDED` (`performExpiringActivity` em background não provado no Mac)
+- [ ] #85: reenvio após falha longa (difícil no aparelho; o essencial está provado contra o motor real em Node) — opcional
+- [ ] #76: tela de identidade danificada e erasure no aparelho (build de desenvolvimento)
+- [ ] #63 Release no aparelho: sem `-scenario`, sem `Fixtures/`, abertura ao vivo
+- [ ] #63 exclusão no aparelho: gravar e relatar corrida → excluir conta → relançar → onboarding sem gravação/relato de volta → novo cadastro
+- [ ] #63 identidade danificada (build de desenvolvimento): `athlete-identity.json` corrompido → erro operacional, log `ACCOUNT_IDENTITY_DAMAGED`, arquivo nunca substituído
 - [ ] CoachingHost no app integrado: aparelho bloqueado, reinstalação (já provados no lab de A; repetir no app)
 - [ ] Desempenho de scroll e animação; Live Activity (#35)
 
