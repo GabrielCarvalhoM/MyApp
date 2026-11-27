@@ -6,7 +6,9 @@ import Observation
 /// (`CoachingWriting.submit`). Nothing is reported as done unless the athlete says so (#37): a prescribed set enters the report only once
 /// the athlete states it, by "Fiz como prescrito", by the set's own check or by giving its repetitions; a set nobody stated is absent,
 /// never imputed from the prescription. The load starts empty (GAP-10) and is sent only as typed (KG, the prescription's convention); no
-/// RIR is asked, so none is stated. Minutes are typed by the athlete. "Salvo" only after `WriteOutcome.kept` (GAP-12).
+/// RIR is asked, so none is stated. Minutes are typed by the athlete. "Salvo" only after `WriteOutcome.kept` (GAP-12). It carries the
+/// eligibility screen the athlete answers in the log (#68: the engine records no athlete report without a current one; see
+/// `EligibilityScreen.unanswered`).
 @Observable @MainActor
 final class StrengthLogViewModel {
     enum Phase: Equatable { case editing, submitting, saved, notKept, failed(String) }
@@ -23,6 +25,10 @@ final class StrengthLogViewModel {
     private(set) var sets: [String: [SetDraft]]
     var minutes: Double?
     private(set) var phase: Phase = .editing
+    /// Answered here, for this log only (#68): nothing pre-answered, never an earlier report's screen.
+    var eligibility = EligibilityScreen.unanswered
+    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record). Sticky.
+    private(set) var clinical = false
 
     private let writer: CoachingWriting
     private let planToday: () -> String?
@@ -82,7 +88,8 @@ final class StrengthLogViewModel {
 
     /// Minutes are always the athlete's. A planned session also needs at least one stated set (an untouched form sends nothing); a planned
     /// session presented without exercises has no set to state, so it fails closed: never sendable on minutes alone.
-    var canSend: Bool { editable && (minutes ?? 0) > 0 && (session == nil || statedSetCount > 0) }
+    var canSend: Bool { editable && (minutes ?? 0) > 0 && (session == nil || statedSetCount > 0) && eligibility.answered
+        && planToday() != nil }
 
     /// Session completion as the contract reads it (CoachingCore `bindObservations`: `completed && setsOk`, `setsOk` = sets done >= planned
     /// sets): every prescribed set stated; an omitted exercise or a missing set keeps it false. Repetitions do NOT enter it: a reps shortfall
@@ -119,10 +126,18 @@ final class StrengthLogViewModel {
 
     /// One write at a time: a second call while submitting, or after the report is kept, does nothing.
     func send() async {
-        guard canSend else { return }
+        guard canSend, let request = request() else { return }
         phase = .submitting
-        let outcome = await writer.submit(ReviewRequest(.sessionReports([observation()]), eligibility: nil))
+        let outcome = await writer.submit(request)
         phase = Self.phase(for: outcome)
+        clinical = clinical || outcome.answer.routesToHuman
+    }
+
+    /// The request exactly as sent: the log and the screen answered here, dated the plan's today (never the device's, as #59). Nil until it
+    /// is answered, and while no plan gives the day (the draft waits).
+    func request() -> ReviewRequest? {
+        guard let today = planToday(), let screen = eligibility.dated(today) else { return nil }
+        return ReviewRequest(.sessionReports([observation()]), eligibility: screen)
     }
 
     /// `WriteOutcome` → what the form shows. Pure: tested without UI. An engine error is shown with its code, never as saved.

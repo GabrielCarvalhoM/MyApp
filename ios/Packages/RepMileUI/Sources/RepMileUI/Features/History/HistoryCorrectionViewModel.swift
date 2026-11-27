@@ -80,7 +80,7 @@ final class HistoryCorrectionViewModel {
         apply {
             phase = Self.saved(out) ? .saved : .notKept
             screenRequired = screenRequired || (out.answer.ok && out.answer.warningSignScreen?.status.raw == "REQUIRED")
-            clinical = out.answer.ok && (out.answer.status?.raw == "CLINICAL_HUMAN_REQUIRED" || out.answer.view?.state == .blocked)
+            clinical = out.answer.routesToHuman
         }
         if out.answer.ok { await reload() }
     }
@@ -97,11 +97,9 @@ final class HistoryCorrectionViewModel {
         return ReviewRequest(.sessionReports([obs]), eligibility: e)
     }
 
-    /// Every flag answered, and either one answered yes (the engine routes it to a human) or the athlete confirmed none applies (onboarding's rule).
-    static func answered(_ e: EligibilityScreen) -> Bool {
-        [e.pain, e.persistentPain, e.injury, e.illness, e.functionalLimitation, e.clinicalConcern].allSatisfy { $0 != nil }
-            && (e.statesAClinicalFlag || e.status == .nonclinicalConfirmed)
-    }
+    /// Every flag answered, and either one answered yes (the engine routes it to a human) or the athlete confirmed none applies: the one rule
+    /// every athlete screen uses (`EligibilityScreen.answered`, #68).
+    static func answered(_ e: EligibilityScreen) -> Bool { e.answered }
 
     /// A planned run the device measured, that the athlete reported (exactly one ATHLETE voice, #59, re-sendable as stated) and nobody contested yet.
     static func canContest(_ e: LoggedEntry) -> Bool {

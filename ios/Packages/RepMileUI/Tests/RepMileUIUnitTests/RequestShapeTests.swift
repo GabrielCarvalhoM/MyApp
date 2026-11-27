@@ -94,7 +94,8 @@ final class RequestShapeTests: XCTestCase {
     func testUnplannedStrengthKeptOnlyWithObservedAt() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let actual = StrengthActual(completed: true, minutes: 30, exercises: [])
-        let withAt = await w.submit(ReviewRequest(.sessionReports([.unplannedStrength(occurrenceDate: "2026-11-22", observedAt: "2026-11-22T10:00:00-03:00", actual: actual, response: .unknown)]), eligibility: nil))
+        let withAt = await w.submit(ReviewRequest(.sessionReports([.unplannedStrength(occurrenceDate: "2026-11-22", observedAt: "2026-11-22T10:00:00-03:00", actual: actual, response: .unknown)]),
+                                                     eligibility: EligibilityScreen.testNoneApplies.dated("2026-11-22")))
         XCTAssertFalse(withAt.kept.isEmpty, "GAP-12: saved only when the record keeps it")
     }
 }

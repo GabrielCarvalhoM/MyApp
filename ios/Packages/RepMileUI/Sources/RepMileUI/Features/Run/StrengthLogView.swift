@@ -4,7 +4,8 @@ import SwiftUI
 /// Execução de força (Figma page 41) and "Força avulsa". State, rules and the write live in `StrengthLogViewModel`; this view renders
 /// them. Every set starts unstated (#37): the athlete confirms "Fiz como prescrito", checks a set as prescribed or gives its repetitions;
 /// only those sets are recorded. The load field starts EMPTY: no suggested number in the session (GAP-10); the prescribed mode (establish,
-/// bodyweight…) is shown as context.
+/// bodyweight…) is shown as context. The log asks the eligibility screen itself (#68); an answer that routes to a human shows the existing
+/// safety state (INTERIM copy) with no "Reenviar" invitation; the form stays editable, so a mis-tap can be corrected (SSCTR #68 C5).
 struct StrengthLogView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: StrengthLogViewModel
@@ -32,11 +33,15 @@ struct StrengthLogView: View {
                     }
                     .disabled(!viewModel.editable)
                     .accessibilityIdentifier("strength-minutes")
+                    if viewModel.editable {
+                        EligibilityForm(screen: $vm.eligibility)
+                        Text(L.t("ob.eligibility.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                    }
                     resultView
                     if !viewModel.exercises.isEmpty, viewModel.statedSetCount == 0 {
                         Text(L.t("strength.needsSet")).rmText(.detalhe, RM.Palette.textoSecundario).accessibilityIdentifier("strength-needs-set")
                     }
-                    PrimaryActionButton(viewModel.phase == .notKept ? L.t("report.resend") : L.t("report.save"), icon: .check, fill: RM.Palette.acaoForca,
+                    PrimaryActionButton(viewModel.phase == .notKept && !viewModel.clinical ? L.t("report.resend") : L.t("report.save"), icon: .check, fill: RM.Palette.acaoForca,
                                         textColor: RM.Palette.acaoForcaTexto, enabled: viewModel.canSend) { Task { await viewModel.send() } }
                         .accessibilityIdentifier("strength-save")
                     if viewModel.phase == .saved { SecondaryPillButton(L.t("common.close")) { dismiss() } }
@@ -54,10 +59,12 @@ struct StrengthLogView: View {
     @ViewBuilder private var resultView: some View {
         switch viewModel.phase {
         case .saved: Label { Text(L.t("report.saved")).rmText(.subtitulo) } icon: { RMIconView(.check, size: 18).foregroundStyle(RM.Palette.positivo) }.accessibilityIdentifier("strength-saved")
-        case .notKept: Text(L.t("report.notKept")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("strength-not-kept")
+        case .notKept:
+            Text(L.t(viewModel.clinical ? "report.clinical.notKept" : "report.notKept")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("strength-not-kept")
         case .failed: Text(L.t("state.opError.body")).rmText(.detalhe, RM.Palette.negativo).accessibilityIdentifier("strength-failed")
         case .editing, .submitting: EmptyView()
         }
+        if viewModel.clinical { ClinicalRouteBanner(reportKept: viewModel.phase == .saved).accessibilityIdentifier("strength-blocked") }
     }
 
     private func exerciseBlock(_ e: PrescribedExercise) -> some View {
