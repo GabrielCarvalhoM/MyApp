@@ -5,7 +5,8 @@ import RunRecorder
 
 /// The athlete's report after a recording: what the athlete states and its one write (`CoachingWriting.submit`). It carries only completed,
 /// minutes, RPE, a stop (planned runs only) and the response; a distance the iPhone measured never enters it (GAP-16). "Salvo" only after
-/// `WriteOutcome.kept` (GAP-12).
+/// `WriteOutcome.kept` (GAP-12). It carries the eligibility screen the athlete answers in the report (#68: the engine records no athlete
+/// report without a current one; see `EligibilityScreen.unanswered`).
 @Observable @MainActor
 final class RunReportViewModel {
     enum Result: Equatable { case saved, notKept, failed(String), screenRequired }
@@ -19,12 +20,16 @@ final class RunReportViewModel {
     var effort: EffortResponse = .unknown
     /// "Parou ou sentiu algo fora do normal?" (unplanned runs, SSCTR-ABC-S1): no answer is not "no".
     var unusual: Bool?
+    /// Answered here, for this report only (#68): nothing pre-answered, never an earlier report's screen.
+    var eligibility = EligibilityScreen.unanswered
 
     private(set) var sending = false
     private(set) var result: Result?
     /// The engine asked for the warning-sign screen (`warningSignScreen.status == REQUIRED`). Apart from `result` and sticky for the life of
     /// this report: the instruction stands whether or not the report was kept, and after a later resend without it (increments 10, 10b).
     private(set) var screenRequired = false
+    /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record). Sticky like `screenRequired`.
+    private(set) var clinical = false
 
     let recording: FinishedRecording
     private let writer: CoachingWriting
@@ -46,29 +51,41 @@ final class RunReportViewModel {
     /// "Concluir" closes the report only once it is kept; a report that was not kept stays resendable (QRE recheck N7).
     var canClose: Bool { result == .saved || result == .screenRequired }
 
-    var canSend: Bool { !sending && !canClose && (planned || unusual != nil) && (!stopped || stopReason != nil) }
+    var canSend: Bool { !sending && !canClose && (planned || unusual != nil) && (!stopped || stopReason != nil) && eligibility.answered
+        && planToday() != nil }
 
     func send() async {
-        guard canSend else { return }
+        guard canSend, let request = request() else { return }
         sending = true; defer { sending = false }
-        let outcome = await writer.submit(ReviewRequest(.sessionReports([observation()]), eligibility: nil))
-        let next = Self.result(for: outcome, screenRequiredBefore: screenRequired)
+        let outcome = await writer.submit(request)
+        let next = Self.result(for: outcome, screenRequiredBefore: screenRequired, clinicalBefore: clinical)
         if case .kept(let id) = next.kept { markReported(id) }
         screenRequired = next.screenRequired
+        clinical = next.clinical
         result = next.result
+    }
+
+    /// The request exactly as sent: the athlete's report and the screen answered here, dated the plan's today (never the device's, as #59:
+    /// the engine reads the screen against the plan's local day, and a device day ahead of it is a future screen, ASK). Nil until it is
+    /// answered, and while no plan gives the day (the draft waits).
+    func request() -> ReviewRequest? {
+        guard let today = planToday(), let screen = eligibility.dated(today) else { return nil }
+        return ReviewRequest(.sessionReports([observation()]), eligibility: screen)
     }
 
     /// `WriteOutcome` → what the report shows. Pure: tested without UI.
     enum Kept: Equatable { case kept(String), notKept }
-    static func result(for outcome: WriteOutcome, screenRequiredBefore: Bool) -> (result: Result, screenRequired: Bool, kept: Kept) {
-        guard outcome.answer.ok else { return (.failed(outcome.answer.error?.code.raw ?? "UNKNOWN"), screenRequiredBefore, .notKept) }
+    static func result(for outcome: WriteOutcome, screenRequiredBefore: Bool, clinicalBefore: Bool = false)
+        -> (result: Result, screenRequired: Bool, clinical: Bool, kept: Kept) {
+        guard outcome.answer.ok else { return (.failed(outcome.answer.error?.code.raw ?? "UNKNOWN"), screenRequiredBefore, clinicalBefore, .notKept) }
         let id = outcome.answer.recorded?.first
         let kept = id.flatMap { outcome.kept.contains($0) ? Kept.kept($0) : nil } ?? .notKept
         let required = screenRequiredBefore || outcome.answer.warningSignScreen?.status.raw == "REQUIRED"
+        let clinical = clinicalBefore || outcome.answer.routesToHuman
         switch (kept, required) {
-        case (.kept, true): return (.screenRequired, true, kept)
-        case (.kept, false): return (.saved, false, kept)
-        case (.notKept, _): return (.notKept, required, kept)
+        case (.kept, true): return (.screenRequired, true, clinical, kept)
+        case (.kept, false): return (.saved, false, clinical, kept)
+        case (.notKept, _): return (.notKept, required, clinical, kept)
         }
     }
 

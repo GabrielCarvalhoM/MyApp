@@ -73,3 +73,13 @@ struct EligibilityForm: View {
         }
     }
 }
+
+/// The answer routed a report to a qualified human (#68): the existing blocked state and its INTERIM copy (no new clinical wording). When
+/// this report was not recorded, the INTERIM text without its "your record is kept" clause, which would read as this report being kept.
+struct ClinicalRouteBanner: View {
+    let reportKept: Bool
+    var body: some View {
+        StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"),
+                    message: L.t(reportKept ? "state.blocked.body.interim" : "state.blocked.body.interim.reportNotKept"))
+    }
+}

@@ -34,6 +34,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5))
         app.buttons["report-rpe-4"].tap()
         attach(app, "Relato — corrida planejada")
+        answerReportScreen(app)
         let save = app.buttons["report-save"]
         while !save.isHittable { app.swipeUp() }
         save.tap()
@@ -57,6 +58,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(reason.waitForExistence(timeout: 3))
         reason.tap()
         app.buttons["Senti um sintoma"].firstMatch.tap()
+        answerReportScreen(app)
         let save = app.buttons["report-save"]
         for _ in 0..<6 where !save.isHittable { app.swipeUp() }
         save.tap()
@@ -86,6 +88,8 @@ final class ExecutionAndSafetyTests: XCTestCase {
         app.buttons["Fechar"].firstMatch.tap()
         XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 5), "closing the flow returns to the report, still to save")
         let save = app.buttons["report-save"]
+        XCTAssertFalse(save.isEnabled, "the report asks its own eligibility screen (#68)")
+        answerReportScreen(app)
         XCTAssertTrue(save.isEnabled)
         while !save.isHittable { app.swipeUp() }
         save.tap()
@@ -94,28 +98,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5), "the report has a way out")
     }
 
-    @MainActor
-    func testNotFeeling100AsksTheEngineSignsForTheCondition() {
-        let app = launch("today")
-        el(app, "today-changed").tap()
-        XCTAssertTrue(app.buttons["changes-not-feeling"].waitForExistence(timeout: 5))
-        app.buttons["changes-not-feeling"].tap()
-        XCTAssertTrue(el(app, "flow-not-feeling-100").waitForExistence(timeout: 5))
-        app.buttons["condition-MINOR_DISCOMFORT"].tap()
-        XCTAssertTrue(el(app, "signs-9").waitForExistence(timeout: 5), "MINOR_DISCOMFORT asks 9 signs")
-        attach(app, "72 — 9 sinais (843:1751)")
-        for sign in ["feverOrChills", "chestPainPressureOrTightness", "breathlessAtRest", "palpitationsAtRest", "faintingOrDizziness",
-                     "painThatChangesMovement", "swelling", "injuryFromFallOrImpact", "gettingWorse"] {
-            let b = app.buttons["sign-\(sign)-no"]
-            while !b.isHittable { app.swipeUp() }
-            b.tap()
-        }
-        let intent = app.buttons["intent-REDUCE_LIGHT"]
-        while !intent.isHittable { app.swipeUp() }
-        intent.tap()
-        app.buttons["nf-send"].tap()
-        XCTAssertTrue(el(app, "nf-kept").waitForExistence(timeout: 5))
-    }
+    // "Não estou 100%" from the shell and the readiness declaration: EligibilityRestUITests (#72).
 
     @MainActor
     func testUnplannedRunIsNotStartedUnderAHold() {
@@ -153,19 +136,6 @@ final class ExecutionAndSafetyTests: XCTestCase {
         leave.tap()
         app.buttons["Sair sem salvar"].firstMatch.tap()
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 5))
-    }
-
-    @MainActor
-    func testBlockedReadinessAsksFifteenSignsAndReturns() {
-        let app = launch("blocked")
-        app.buttons["Estou pronto para voltar"].tap()
-        XCTAssertTrue(el(app, "signs-15").waitForExistence(timeout: 5))
-        app.buttons["readiness-recovered-yes"].tap()
-        attach(app, "72 — prontidão, 15 sinais (843:1980)")
-        let send = app.buttons["readiness-send"]
-        while !send.isHittable { app.swipeUp() }
-        send.tap()
-        XCTAssertTrue(el(app, "readiness-returning").waitForExistence(timeout: 5))
     }
 
     /// A recording survives a killed process and comes back on screen (handoff C §5).
@@ -223,6 +193,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertFalse(app.buttons["strength-save"].isEnabled, "minutes are the athlete's, never defaulted")
         let inc = app.steppers["strength-minutes"].buttons.element(boundBy: 1)
         for _ in 0..<6 { inc.tap() }
+        answerReportScreen(app)
         app.buttons["strength-save"].tap()
         XCTAssertTrue(el(app, "strength-saved").waitForExistence(timeout: 5))
     }
@@ -245,6 +216,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertEqual(app.steppers["reps-goblet-squat-1"].value as? String, "8", "VoiceOver hears the stated count")
         XCTAssertFalse(app.buttons["strength-as-prescribed"].exists, "offered only while nothing is stated")
         attach(app, "Execução de força — fiz como prescrito (41)")
+        answerReportScreen(app)
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled)
         XCTAssertEqual(app.buttons["set-dead-bug-0"].value as? String, "registrada, 10 repetições")
@@ -271,6 +243,7 @@ final class ExecutionAndSafetyTests: XCTestCase {
         XCTAssertEqual(app.buttons["set-db-bench-press-1"].value as? String, "não registrada")
         attach(app, "Execução de força — registro parcial (41)")
         addStrengthMinutes(app)
+        answerReportScreen(app)
         let save = app.buttons["strength-save"]
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled, "a partial log can be saved")

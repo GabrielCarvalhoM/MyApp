@@ -1,0 +1,60 @@
+# RepMile #68 engine replay (node v24.19.0, CoachingCore and facade unchanged by this change; HEAD d750b3f). Every RepMileUI athlete write site, request shaped as its Swift view model encodes it.
+# Script: scratch/i68-write-sites.mjs; in-memory store, synthetic athlete; no personal data.
+=== 1 run report, planned (RunReportViewModel)
+  eligibility nil → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS nil: ASK eligibility.currentAssessment, nothing recorded
+  screen today (all no) → ok status=KEEP recorded=1 missing=[] view=-
+  PASS screen dated today: recorded
+  PASS the ATHLETE voice exists afterwards
+=== 2 run report, unplanned (RunReportViewModel)
+  nil → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS nil: ASK, nothing recorded
+  screen → ok status=KEEP recorded=1 missing=[] view=-
+  PASS screen: recorded
+=== 3 strength log, planned (StrengthLogViewModel)
+  nil → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS nil: ASK, nothing recorded
+  screen → ok status=KEEP recorded=1 missing=[] view=-
+  PASS screen: recorded
+=== 4 strength log, unplanned (StrengthLogViewModel)
+  nil → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS nil: ASK, nothing recorded
+  screen → ok status=KEEP recorded=1 missing=[] view=-
+  PASS screen: recorded
+=== 5 unavailable day (UnavailableDayViewModel)
+  nil (day 2026-11-17) → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=- pending= true
+  view after: NEEDS_INPUT pending: null
+  PASS nil: classified (recorded below)
+  screen → ok status=MODIFY recorded=0 missing=[] view=-
+=== 6 "Não estou 100%" from the shell (NotFeeling100ViewModel requireEligibility=false)
+  nil → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  screen → ok status=ASK recorded=0 missing=["wellbeing.warningSigns.gettingWorse","wellbeing.warningSigns.bodyWideAches","wellbeing.warningSigns.exhaustionAtRest","wellbeing.warningSigns.vomitingDiarrhoeaNauseaOrAbdominalPain","wellbeing.warningSigns.moderateOrSevereCough","wellbeing.warningSigns.severeHeadache","wellbeing.warningSigns.severeNoseOrThroat"] view=-
+=== 7 readiness declaration (ReadinessViewModel) after a clinical hold
+  run report with a flag "sim" → ok status=CLINICAL_HUMAN_REQUIRED recorded=0 missing=[] view=- state= BLOCKED
+  PASS a "yes" flag: CLINICAL_HUMAN_REQUIRED, the report not recorded, the plan view BLOCKED
+  readiness nil → ok status=CLINICAL_HUMAN_REQUIRED recorded=0 missing=["eligibility.currentAssessment"] view=- state= BLOCKED
+  readiness with screen → ok status=CLINICAL_HUMAN_REQUIRED recorded=0 missing=["readiness.warningSigns.gettingWorse","readiness.warningSigns.bodyWideAches","readiness.warningSigns.exhaustionAtRest","readiness.warningSigns.vomitingDiarrhoeaNauseaOrAbdominalPain","readiness.warningSigns.moderateOrSevereCough","readiness.warningSigns.severeHeadache","readiness.warningSigns.severeNoseOrThroat"] view=- action= CLINICAL_HUMAN_REQUIRED state= BLOCKED
+=== 7b symptom stop + a flag "sim" in the same report (FixtureCoaching gate order)
+  stop SYMPTOM + pain "sim" → ok status=CLINICAL_HUMAN_REQUIRED recorded=0 missing=[] view=- warningSignScreen= REQUIRED state= BLOCKED
+  PASS CLINICAL_HUMAN_REQUIRED, nothing recorded, plan BLOCKED, AND the warning-sign screen REQUIRED (the app shows both; no capture holds both, so fixture mode shows the clinical route only)
+=== 8 window and reuse (the athlete channel never carries a screen on record)
+  screen alone → ok status=KEEP recorded=0 missing=[] view=-
+  same day, report without screen → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS a screen answered earlier the same day is not reused for the athlete's report (ASK)
+  screen assessed 0 day(s) before → ok status=KEEP recorded=1 missing=[] view=-
+  PASS assessedAt 0 days before: recorded
+  screen assessed 14 day(s) before → ok status=KEEP recorded=1 missing=[] view=-
+  PASS assessedAt 14 days before: recorded
+  screen assessed 15 day(s) before → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS assessedAt 15 days before: ASK
+  screen dated tomorrow → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS a screen dated after the report day: ASK
+  one flag null → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS a flag left null (nil ≠ false): ASK
+  all no, not confirmed → ok status=ASK recorded=0 missing=["eligibility.currentAssessment"] view=-
+  PASS six "não" without NONCLINICAL_CONFIRMED: ASK
+=== summary
+  UNAVAILABLE_DAY nil → {"status":"ASK","missing":["eligibility.currentAssessment"]} | with screen → {"status":"MODIFY"}
+  NOT_FEELING_100 nil → {"status":"ASK","missing":["eligibility.currentAssessment"]}
+  READINESS_DECLARATION nil → {"status":"CLINICAL_HUMAN_REQUIRED","missing":["eligibility.currentAssessment"]}
+RESULT: ALL PASS

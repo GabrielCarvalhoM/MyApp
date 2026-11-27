@@ -51,8 +51,9 @@ final class RequestShapeTests: XCTestCase {
         let set = try XCTUnwrap(sets.first { $0.condition == "MINOR_DISCOMFORT" })
         var answers = Dictionary(uniqueKeysWithValues: set.warningSigns.dropLast().map { ($0, false) })
         answers["feverOrChillsNotAsked"] = true  // not in the set: refused, never sent
-        let eligibility = EligibilityScreen(status: nil, assessedAt: "", pain: false, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
-        let r = try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .minorDiscomfort, set: set, answers: answers, intent: .reduceLight, eligibility: eligibility, today: "2026-11-22"))
+        var screen = EligibilityScreen.testNoneApplies; screen.injury = true; screen.status = nil
+        let r = try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .minorDiscomfort, set: set, answers: answers, intent: .reduceLight,
+                                                                 screen: try XCTUnwrap(screen.dated("2026-11-22"))))
         let json = try encoded(r)
         XCTAssertEqual(json["kind"] as? String, "NOT_FEELING_100")
         let signs = try XCTUnwrap((json["wellbeing"] as? [String: Any])?["warningSigns"] as? [String: Bool])
@@ -61,8 +62,8 @@ final class RequestShapeTests: XCTestCase {
         let e = try XCTUnwrap(json["eligibility"] as? [String: Any])
         XCTAssertEqual(e["assessedAt"] as? String, "2026-11-22")
         XCTAssertEqual(e["pain"] as? Bool, false)
-        XCTAssertNil(e["injury"], "nil = not answered, never false")
-        XCTAssertNil(e["status"], "no nonclinical confirmation was given")
+        XCTAssertEqual(e["injury"] as? Bool, true)
+        XCTAssertNil(e["status"], "never confirmed nonclinical alongside a yes")
     }
 
     func testWriterRoutesNotFeelingBySigns() async throws {
@@ -70,12 +71,13 @@ final class RequestShapeTests: XCTestCase {
         let set = try XCTUnwrap(try Repo.store.decode(Sets.self, "P-warning-sign-sets").sets.first { $0.condition == "MILD_ILLNESS" })
         let w = FixtureCoachingWriter(store: Repo.store)
         let allNo = Dictionary(uniqueKeysWithValues: set.warningSigns.map { ($0, false) })
-        let kept = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: allNo, intent: .rest, eligibility: nil, today: "")))
+        let screen = try XCTUnwrap(EligibilityScreen.testNoneApplies.dated("2026-11-22"))
+        let kept = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: allNo, intent: .rest, screen: screen)))
         XCTAssertEqual(kept.answer.status?.raw, "KEEP")
         var fever = allNo; fever["feverOrChills"] = true
-        let blocked = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: fever, intent: .rest, eligibility: nil, today: "")))
+        let blocked = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: fever, intent: .rest, screen: screen)))
         XCTAssertEqual(blocked.answer.status?.raw, "CLINICAL_HUMAN_REQUIRED")
-        let partial = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: [:], intent: .rest, eligibility: nil, today: "")))
+        let partial = await w.submit(try XCTUnwrap(NotFeeling100ViewModel.makeRequest(condition: .mildIllness, set: set, answers: [:], intent: .rest, screen: screen)))
         XCTAssertNotEqual(partial.answer.status?.raw, "KEEP", "unanswered signs are never read as no")
     }
 
@@ -94,7 +96,8 @@ final class RequestShapeTests: XCTestCase {
     func testUnplannedStrengthKeptOnlyWithObservedAt() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let actual = StrengthActual(completed: true, minutes: 30, exercises: [])
-        let withAt = await w.submit(ReviewRequest(.sessionReports([.unplannedStrength(occurrenceDate: "2026-11-22", observedAt: "2026-11-22T10:00:00-03:00", actual: actual, response: .unknown)]), eligibility: nil))
+        let withAt = await w.submit(ReviewRequest(.sessionReports([.unplannedStrength(occurrenceDate: "2026-11-22", observedAt: "2026-11-22T10:00:00-03:00", actual: actual, response: .unknown)]),
+                                                     eligibility: EligibilityScreen.testNoneApplies.dated("2026-11-22")))
         XCTAssertFalse(withAt.kept.isEmpty, "GAP-12: saved only when the record keeps it")
     }
 }

@@ -16,8 +16,12 @@ final class RunReportViewModelTests: XCTestCase {
                                  local: LocalMeasurement(distanceMetres: nil, splitsSeconds: [], route: []))
     }
 
+    /// With the eligibility screen answered "none applies" (#68), so these tests pin the report itself; the screen is pinned in
+    /// `ReportEligibilityTests`.
     private func viewModel(_ r: FinishedRecording, _ w: FixtureCoachingWriter, marked: @escaping (String) -> Void = { _ in }) -> RunReportViewModel {
-        RunReportViewModel(recording: r, writer: w, planToday: { "2026-11-22" }, markReported: marked)
+        let vm = RunReportViewModel(recording: r, writer: w, planToday: { "2026-11-22" }, markReported: marked)
+        vm.eligibility = .testNoneApplies
+        return vm
     }
 
     private func submits(_ w: FixtureCoachingWriter) -> Int { w.journal.entries.filter { $0.call == "submit" }.count }
