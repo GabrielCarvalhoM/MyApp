@@ -151,7 +151,8 @@ struct AppTabs: View {
                                   openSession: { todayPath.append(.session($0.id, $0.date)) },
                                   startSession: start,
                                   openChanges: { sheet = .changes },
-                                  openReadiness: { sheet = .readiness }, scrollToWeek: todayScrollToWeek)
+                                  openReadiness: { sheet = .readiness }, scrollToWeek: todayScrollToWeek,
+                                  scrolledToWeek: { todayScrollToWeek = false })
                             .toolbar(.hidden, for: .navigationBar)
                             .background(RM.Palette.fundoApp)
                             .navigationDestination(for: Route.self, destination: destination)

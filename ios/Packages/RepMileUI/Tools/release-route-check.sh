@@ -27,7 +27,8 @@ for config in Release Debug; do
   echo "$config build: BUILD SUCCEEDED · binaries: $(for b in "${bins[@]}"; do printf '%s ' "${b#$app/}"; done)"
   echo "  '-route' strings: $route · 'DebugRoute' strings: $type"
   if [ "$config" = Release ] && { [ "$route" -ne 0 ] || [ "$type" -ne 0 ]; }; then fail=1; fi
-  if [ "$config" = Debug ] && [ "$route" -eq 0 ]; then echo "Debug binary lacks '-route': the check would not detect it"; fail=1; fi
+  # The Debug build must show both, or a zero in Release proves nothing (QRE P3): the type name above all, the load-bearing one.
+  if [ "$config" = Debug ] && { [ "$route" -eq 0 ] || [ "$type" -eq 0 ]; }; then echo "Debug binaries lack '-route' or 'DebugRoute': the check would not detect it"; fail=1; fi
 done
 [ $fail -eq 0 ] && echo "result: -route absent in Release, present in Debug" || echo "result: FAILED"
 exit $fail

@@ -62,6 +62,12 @@ final class RouteUITests: XCTestCase {
         while strip.frame.minY > 200 && Date() < deadline { usleep(200_000) }
         XCTAssertLessThan(strip.frame.minY, 200, "the strip is at the top of the screen")
         attach(app, "-route today/week (blocked)")
+        // Once only (QRE P3): back on Hoje from another tab, it opens at the top.
+        app.buttons["tab-plan"].tap()
+        XCTAssertTrue(element(app, "screen-plan").waitForExistence(timeout: 5))
+        app.buttons["tab-today"].tap()
+        XCTAssertTrue(app.buttons["open-profile"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["open-profile"].isHittable, "Hoje opens at the top again")
     }
 
     @MainActor

@@ -12,6 +12,8 @@ struct TodayView: View {
     var openReadiness: () -> Void
     /// Opens scrolled to the week strip (the Debug `-route today/week` of #98, for captures below the fold). False in every other launch.
     var scrollToWeek = false
+    /// Called once the scroll is done, so the owner clears `scrollToWeek` (a later return to Hoje opens at the top, QRE P3).
+    var scrolledToWeek: () -> Void = {}
 
     var body: some View {
         if let plan = model.plan {
@@ -45,7 +47,11 @@ struct TodayView: View {
             .scrollIndicators(.hidden)
             .background(alignment: .top) { glow(content) }
             .accessibilityIdentifier("screen-today")
-            .task(id: scrollToWeek) { if scrollToWeek { proxy.scrollTo(Self.weekAnchor, anchor: .top) } }
+            .task(id: scrollToWeek) {
+                guard scrollToWeek else { return }
+                proxy.scrollTo(Self.weekAnchor, anchor: .top)
+                scrolledToWeek()
+            }
             }
         }
     }
