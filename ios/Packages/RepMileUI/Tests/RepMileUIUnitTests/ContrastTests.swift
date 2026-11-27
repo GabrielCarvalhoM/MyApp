@@ -4,7 +4,7 @@ import XCTest
 
 /// #94 · WCAG 2.x contrast of the text/background pairs the screens use, in both modes. A translucent colour is composited over what it
 /// sits on. Values are the Figma's; a pair below AA is a design question, never fixed here by changing a value: the known ones are pinned
-/// so a new one fails and the open ones stay visible (evidence: `results/i94-light-mode/contrast.md`).
+/// so a new one fails and the open ones stay visible (evidence: `audits/v1-ios-swiftui-2026-11-26/results/i94-light-mode/contrast.txt`).
 final class ContrastTests: XCTestCase {
     enum Mode: CaseIterable { case dark, light }
 
