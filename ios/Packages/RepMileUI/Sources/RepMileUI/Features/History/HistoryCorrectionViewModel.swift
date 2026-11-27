@@ -9,6 +9,15 @@ import Observation
 /// screen, `r6-adaptation.mjs` eligibility.currentAssessment; it is never assumed). "Salvo" only when the record keeps what the answer
 /// recorded (GAP-12). After an `ok` answer the record is read again (`reload`, CODE_AND_ARCHITECTURE §2).
 ///
+/// #70: a row already corrected is offered again. The engine admits a correction of the correction in force (`correctionOf` = the head
+/// ATHLETE voice, which the re-read row carries), up to `correctionsPerReport` (16) per report; past it, it refuses LIMIT_EXCEEDED and the
+/// sheet says so (replay `audits/v1-ios-swiftui-2026-11-26/results/i70-correction-followups/`). The screen is dated the plan's day read
+/// again at send time (a sheet left open past the plan's midnight would date it the day before); no day read, nothing sent.
+///
+/// QRE #96 P1: past the limit the engine refuses the request before it reads the screen (`integration.mjs` admit; its safety exception reads
+/// the observation only), so a "sim" sent with that correction would get no route. The screen alone is then sent (`observations: []`), which
+/// the engine admits and routes to a human (replay §1); if that answer does not route, the sheet shows the clinical copy and "Não estou 100%".
+///
 /// Never offered (#59, fail closed): a row with no ATHLETE voice (its numbers are the device's), with several (which one is the athlete's is
 /// not ours to pick), with a statement of the athlete that cannot be re-sent as stated (a stop or a response outside the shared enumerations:
 /// a correction replaces the report, so dropping it would erase a safety signal), or whose day is not the day the plan in force holds for
@@ -37,6 +46,13 @@ final class HistoryCorrectionViewModel {
     var eligibility = EligibilityScreen(status: nil, assessedAt: "", pain: nil, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
     /// The engine asked for the warning-sign screen (a stop for a symptom, re-sent with the correction, raises it again). Sticky.
     private(set) var screenRequired = false
+    /// The engine refused the correction because the report reached its correction limit (LIMIT_EXCEEDED): nothing changed.
+    private(set) var limitReached = false
+    /// The plan's day could not be read at send time: nothing was sent, the draft is on screen.
+    private(set) var dayUnavailable = false
+    /// Past the limit, the screen states a "sim" and sending it alone did not come back routed to a human: the sheet shows the clinical
+    /// copy and "Não estou 100%" (never "nothing changed").
+    private(set) var signUndelivered = false
     /// The answer routes to a qualified human (a flag answered yes here, or a clinical dependency on record), with the engine's guidance
     /// level (#73).
     private(set) var clinicalGuidance: ClinicalGuidance?
@@ -46,13 +62,14 @@ final class HistoryCorrectionViewModel {
     /// The date the plan in force holds for the row's session (nil when it holds none).
     let sessionDate: String?
     private let writer: CoachingWriting
-    private let planToday: () -> String?
+    private let planToday: @MainActor () async -> String?
     private let reload: @MainActor () async -> Void
     /// The level of the hold the app holds now (`PlanView.clinicalGuidance`, the engine's): the floor of an answer without a view (#73).
     private let holdGuidance: () -> ClinicalGuidance?
 
-    /// `reload` is `AppModel.load`; `planToday` the plan's own today (the screen's date; no plan, no correction).
-    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping @MainActor () async -> Void,
+    /// `reload` is `AppModel.load`; `planToday` reads the plan's own today when the correction is sent (the screen's date; no plan day, no
+    /// correction): never the device's day, and never the day the sheet was opened.
+    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping @MainActor () async -> String?, reload: @escaping @MainActor () async -> Void,
          holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.entry = entry; self.sessionDate = sessionDate; self.writer = writer; self.planToday = planToday; self.reload = reload
         self.holdGuidance = holdGuidance
@@ -78,22 +95,41 @@ final class HistoryCorrectionViewModel {
     /// Opens the form, only on a row that can be contested.
     func startContesting() { if phase == .idle, canContest { phase = .editing } }
 
-    /// Sends the correction once. `apply` wraps the change to the result (the view's animation; plain in tests).
+    /// Sends the correction once: the plan's day is read first (the phase is already `submitting`, so a second tap does nothing), then the
+    /// request dated with it. `apply` wraps the change to the result (the view's animation; plain in tests).
+    /// What the athlete stated is taken when they tap (QRE #96 P2): only the date is added after the read, so nothing typed meanwhile is sent.
     func send(applying apply: (_ change: () -> Void) -> Void = { $0() }) async {
-        guard canSend, canContest, let request = request() else { return }
+        guard canSend, canContest, let d = Self.distance(km), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return }
+        let screen = eligibility
         phase = .submitting
-        let out = await writer.submit(request)
+        dayUnavailable = false
+        guard let today = await planToday(), let request = Self.request(obs, eligibility: screen, today: today) else {
+            phase = .editing; dayUnavailable = true
+            return
+        }
+        var out = await writer.submit(request)
+        let limit = Self.correctionLimit(out.answer)
+        if limit, screen.statesAClinicalFlag, let alone = screen.dated(today) {
+            out = await writer.submit(ReviewRequest(.sessionReports([]), eligibility: alone))
+        }
         apply {
             phase = Self.saved(out) ? .saved : .notKept
             screenRequired = screenRequired || (out.answer.ok && out.answer.warningSignScreen?.status.raw == "REQUIRED")
             clinicalGuidance = out.answer.clinicalGuidance(floor: holdGuidance())
+            limitReached = limit
+            signUndelivered = limit && screen.statesAClinicalFlag && clinicalGuidance == nil
         }
         if out.answer.ok { await reload() }
     }
 
-    /// The request exactly as sent: the correction and the screen, dated the plan's today (never the device's: no plan, no request).
-    func request() -> ReviewRequest? {
-        guard let d = Self.distance(km), let today = planToday(), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return nil }
+    /// The engine's correction limit for this one-correction request: LIMIT_EXCEEDED on its observation (index 0). The engine also names the
+    /// limit (`limit: correctionsPerReport`), which the shared `BoundaryError` does not decode (a CoachingPresentation change, CCP); the
+    /// other limits a single correction can meet carry no index (request size) or do not apply to a correction (per day, per device).
+    static func correctionLimit(_ a: BoundaryAnswer) -> Bool { !a.ok && a.error?.code.raw == "LIMIT_EXCEEDED" && a.error?.index == 0 }
+
+    /// The request exactly as sent on `today` (the plan's day read at send time): the correction and the screen dated that day.
+    func request(today: String) -> ReviewRequest? {
+        guard let d = Self.distance(km), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return nil }
         return Self.request(obs, eligibility: eligibility, today: today)
     }
 
@@ -103,13 +139,14 @@ final class HistoryCorrectionViewModel {
         return ReviewRequest(.sessionReports([obs]), eligibility: e)
     }
 
-    /// Every flag answered, and either one answered yes (the engine routes it to a human) or the athlete confirmed none applies: the one rule
-    /// every athlete screen uses (`EligibilityScreen.answered`, #68).
+    /// A flag answered yes (the engine routes it to a human at once, the other flags unanswered), or every flag answered and the athlete
+    /// confirmed none applies: the one rule every athlete screen uses (`EligibilityScreen.answered`, #68, #70).
     static func answered(_ e: EligibilityScreen) -> Bool { e.answered }
 
-    /// A planned run the device measured, that the athlete reported (exactly one ATHLETE voice, #59, re-sendable as stated) and nobody contested yet.
+    /// A planned run the device measured, that the athlete reported (exactly one ATHLETE voice, #59, re-sendable as stated). A row already
+    /// contested is offered again (#70): its ATHLETE voice is the correction in force, which the next correction names.
     static func canContest(_ e: LoggedEntry) -> Bool {
-        e.sessionId != nil && e.measuredKm != nil && e.contested == nil && e.sport?.raw == "RUN" && athleteVoice(e).flatMap(statement) != nil
+        e.sessionId != nil && e.measuredKm != nil && e.sport?.raw == "RUN" && athleteVoice(e).flatMap(statement) != nil
     }
 
     /// The athlete's own voice of the row: the one ATHLETE voice, else none (no voice, or several that the UI must not choose between).

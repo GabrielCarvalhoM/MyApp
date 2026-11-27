@@ -44,7 +44,7 @@ struct HistoryScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .sheet(item: $selected) {
-            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, sessionDate: HistoryCorrectionViewModel.sessionDate(of: $0, in: model.weeks), writer: model.writer, planToday: { [model] in model.plan?.today },
+            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, sessionDate: HistoryCorrectionViewModel.sessionDate(of: $0, in: model.weeks), writer: model.writer, planToday: { [model] in await model.planDayNow() },
                                                                 reload: { [model] in await model.load() }, holdGuidance: { [model] in model.plan?.clinicalGuidance }),
                           title: title($0),
                           signs: { [model] in NotFeeling100ViewModel(reader: model.reader, writer: model.writer, planToday: { model.plan?.today },

@@ -102,6 +102,10 @@ public final class AppModel {
         route = .accountErased
     }
 
+    /// The plan's own today read now, not the last load's (#70): a write dated with it never carries the day a sheet was opened. Nil when
+    /// the plan cannot be read (then nothing is dated, nothing is sent).
+    public func planDayNow() async -> String? { try? await reader.plan(week: nil).get().today }
+
     public func startability(of session: PlannedSession) -> Startability { startability[session.id] ?? .notStartable(reason: .notExecutable) }
 
     /// Whether `session` may start now: the host said `.startable` and no read is in flight.

@@ -10,13 +10,15 @@ final class SwitchableReader: CoachingReading, @unchecked Sendable {
     private var presentationName: String
     private var loggedName: String
     private var reads = 0
+    /// The plan's today the next `plan` reads give (the plan's midnight passing), nil for the scenario's own.
+    private var planToday: String?
 
     init(scenario: Scenario = .today, presentation: String, logged: String) {
         base = FixtureCoachingReader(scenario: scenario, store: Repo.store); presentationName = presentation; loggedName = logged
     }
 
-    func switchTo(presentation: String? = nil, logged: String? = nil) {
-        lock.withLock { if let presentation { presentationName = presentation }; if let logged { loggedName = logged } }
+    func switchTo(presentation: String? = nil, logged: String? = nil, planToday: String? = nil) {
+        lock.withLock { if let presentation { presentationName = presentation }; if let logged { loggedName = logged }; if let planToday { self.planToday = planToday } }
     }
     /// How many times the presentation was read (one per `AppModel.load()`).
     var loads: Int { lock.withLock { reads } }
@@ -29,7 +31,13 @@ final class SwitchableReader: CoachingReading, @unchecked Sendable {
         let name = lock.withLock { loggedName }
         do { return .success(try Repo.store.decode(LoggedEntries.self, name)) } catch { return .failure(BoundaryError(code: "FIXTURE_UNREADABLE")) }
     }
-    func plan(week: Int?) async -> Result<PlanView, BoundaryError> { await base.plan(week: week) }
+    func plan(week: Int?) async -> Result<PlanView, BoundaryError> {
+        guard let day = lock.withLock({ planToday }) else { return await base.plan(week: week) }
+        var view = (try? Repo.store.object("13-plan-w1")["view"] as? [String: Any]) ?? [:]
+        view["today"] = day
+        do { return .success(try JSONDecoder().decode(PlanView.self, from: JSONSerialization.data(withJSONObject: view))) }
+        catch { return .failure(BoundaryError(code: "FIXTURE_UNREADABLE")) }
+    }
     func allWeeks() async -> Result<[Week], BoundaryError> { await base.allWeeks() }
     func history() async -> Result<HistoryView, BoundaryError> { await base.history() }
     func decision(id: String) async -> Result<DecisionDetail, BoundaryError> { await base.decision(id: id) }
