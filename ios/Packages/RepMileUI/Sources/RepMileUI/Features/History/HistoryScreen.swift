@@ -44,7 +44,7 @@ struct HistoryScreen: View {
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .sheet(item: $selected) {
-            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, sessionDate: sessionDate($0), writer: model.writer, planToday: { [model] in model.plan?.today },
+            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, sessionDate: HistoryCorrectionViewModel.sessionDate(of: $0, in: model.weeks), writer: model.writer, planToday: { [model] in model.plan?.today },
                                                                 reload: { [model] in await model.load() }),
                           title: title($0),
                           signs: { [model] in NotFeeling100ViewModel(reader: model.reader, writer: model.writer, requireEligibility: true, planToday: { model.plan?.today }) })
@@ -63,14 +63,6 @@ struct HistoryScreen: View {
             if let i = groups.firstIndex(where: { $0.0 == label }) { groups[i].1.append(e) } else { groups.append((label, [e])) }
         }
         return groups
-    }
-
-    /// The date the plan in force holds for the row's session (the day the athlete's report of it stated): nil when it holds no such
-    /// session, or more than one date for it.
-    func sessionDate(_ e: LoggedEntry) -> String? {
-        guard let id = e.sessionId else { return nil }
-        let dates = Set(model.weeks.flatMap(\.sessions).filter { $0.id == id }.map(\.date))
-        return dates.count == 1 ? dates.first : nil
     }
 
     func title(_ e: LoggedEntry) -> String {

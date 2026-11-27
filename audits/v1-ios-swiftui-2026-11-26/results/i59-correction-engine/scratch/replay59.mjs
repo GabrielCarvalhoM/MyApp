@@ -1,5 +1,9 @@
+// SUPERSEDED discovery replica (kept as evidence of how #59 was found). Its correction() is the PRE-#59 builder: it copies the row's observedAt
+// and silently drops an UNSTATED stop. The replica of the final code is i59-engine-replay.mjs.
 // Read-only replay of RepMile #59 correction against the real engine (in-memory store). Writes nothing to the checkout.
-const ROOT=process.argv[2];
+// The discovery path, one script: node replay59.mjs <repo root> [--correctionOf] [--eligibility] [--stop]
+//   none: the pre-#59 request (ALREADY_REPORTED) · --correctionOf: named, no screen (ASK) · both: recorded · --stop: an unstated stop (UNSTATED).
+const ROOT=process.argv[2];const FLAGS=new Set(process.argv.slice(3));
 const {athlete,ELIG}=await import(ROOT+'/CoachingCore/test/v1int-helpers.mjs');
 const {loggedEntries}=await import(ROOT+'/ios/Packages/CoachingPresentation/Facade/app-projections.mjs');
 let seq=0;const newId=p=>`${p}_${String(++seq).padStart(6,'0')}`;
@@ -20,18 +24,20 @@ const show=(label,t,sid)=>{
  const raw=t.live(sid);for(const r of raw)console.log(label,'raw',JSON.stringify({observedAt:r.observedAt,actual:r.actual,partial:r.partial,sq:r.provenance?.sourceQuality,parts:Object.fromEntries(Object.entries(r.provenance?.parts??{}).map(([k,p])=>[k,{sq:p.sourceQuality,observedAt:p.observedAt,minutes:p.actual?.minutes,declared:p.actual?.declared}]))}));
  return e[0];
 };
-function scenario(name,{athleteFirst,athleteMinutes,deviceMinutes}){
+function scenario(name,{athleteFirst,athleteMinutes,deviceMinutes,stop}){
  console.log('=== '+name);
  const t=athlete({newId,id:'r59-'+name,weeks:12});t.enroll();
  const s=t.sessions(0).find(x=>x.sport==='RUN');console.log('planned minutes',s.prescription?.durationMinutes,'date',s.date);
  const dev=()=>{t.set(s.date,'08:00');const w=t.watch(s,{actual:deviceMinutes!=null?{minutes:deviceMinutes}:{}});console.log('import',JSON.stringify(t.import([w],{eligibility:ELIG(s.date)})?.ok));};
- const ath=()=>{t.set(s.date,athleteFirst?'08:30':'20:00');const f=t.form(s,{actual:athleteMinutes!=null?{minutes:athleteMinutes}:{}});console.log('form',JSON.stringify(f.actual));const r=t.weekly(s.date,[f]);console.log('athlete report ok',r?.ok,r?.error?.code??'');};
+ const ath=()=>{t.set(s.date,athleteFirst?'08:30':'20:00');const f=t.form(s,{actual:{...(athleteMinutes!=null?{minutes:athleteMinutes}:{}),...(stop?{completed:false,minutes:20,stop:{}}:{})}});console.log('form',JSON.stringify(f.actual));const r=t.weekly(s.date,[f]);console.log('athlete report ok',r?.ok,r?.error?.code??'');};
  if(athleteFirst){ath();dev();}else{dev();ath();}
  const before=show('before',t,s.id);
  const obs=correction(before,6);console.log('correction',JSON.stringify(obs));
  t.set(nextDay(s.date),'09:00');
- const r=t.submit({kind:'WEEKLY_REVIEW',observations:[obs]});console.log('correction answer ok',r?.ok,r?.error?.code??'',JSON.stringify(r?.recorded??null));
+ if(FLAGS.has('--correctionOf'))obs.correctionOf=before.voices.find(v=>v.channel==='ATHLETE').eventId;
+ const r=t.submit({kind:'WEEKLY_REVIEW',...(FLAGS.has('--eligibility')?{eligibility:ELIG(nextDay(s.date))}:{}),observations:[obs]});console.log('correction answer ok',r?.ok,r?.error?.code??'',JSON.stringify(r?.recorded??null),r?.status??'');
  show('after',t,s.id);
 }
 scenario('A-device-first',{athleteFirst:false});
-scenario('B-athlete-first-38v40',{athleteFirst:true,athleteMinutes:38,deviceMinutes:40});
+if(FLAGS.has('--stop'))scenario('C-athlete-stop-unstated',{athleteFirst:false,stop:true});
+else scenario('B-athlete-first-38v40',{athleteFirst:true,athleteMinutes:38,deviceMinutes:40});

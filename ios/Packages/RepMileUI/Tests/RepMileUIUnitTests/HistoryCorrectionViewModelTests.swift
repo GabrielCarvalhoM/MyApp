@@ -34,7 +34,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         XCTAssertFalse(try entries("P-logged-unplanned").filter { $0.sessionId == nil }.contains(where: HistoryCorrectionViewModel.canContest), "unplanned")
     }
 
-    /// The exact request: the athlete's own voice (completed, minutes, RPE, responses) with the declared distance, naming the voice's event id,
+    /// The exact request: the athlete's own voice (completed, minutes, their declared distance, RPE, responses) with the contested distance, naming the voice's event id,
     /// the row's day and no instant, and the screen dated the plan's today. The #59 engine replay sends these bytes.
     func testTheCorrectionNamesTheAthletesReportAndCarriesTheScreen() async throws {
         let e = try entry("P-logged-two-voices")
@@ -47,7 +47,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         XCTAssertEqual(submits.count, 1)
         let golden = #"{"eligibility":{"assessedAt":"2026-11-18","clinicalConcern":false,"functionalLimitation":false,"illness":false,"injury":false,"#
             + #""pain":false,"persistentPain":false,"status":"NONCLINICAL_CONFIRMED"},"kind":"WEEKLY_REVIEW","observations":[{"actual":{"completed":true,"#
-            + #""declared":{"distanceKm":7.4,"reason":"OBSTRUCTED_SKY"},"minutes":40,"rpe":4},"correctionOf":"ob_4074beafc9803b0fb18e52ff4a","#
+            + #""declared":{"distanceKm":7.4,"reason":"OBSTRUCTED_SKY"},"distanceKm":7.06,"minutes":40,"rpe":4},"correctionOf":"ob_4074beafc9803b0fb18e52ff4a","#
             + #""occurrenceDate":"2026-11-17","response":{"effort":"ON_TARGET","nextDayFunction":"NORMAL","performance":"COMPATIBLE","recovery":"COMPATIBLE"},"#
             + #""sessionId":"w0-run-d1"}]}"#
         XCTAssertEqual(String(decoding: try XCTUnwrap(submits.first?.json), as: UTF8.self), golden)
@@ -58,7 +58,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         XCTAssertNotEqual(o["correctionOf"] as? String, e.voices.first { $0.channel.raw == "DEVICE" }?.eventId)
         let actual = try XCTUnwrap(o["actual"] as? [String: Any])
         XCTAssertEqual(actual["rpe"] as? Double, 4, "the athlete's RPE, not the device's (none)")
-        XCTAssertNil(actual["distanceKm"], "the measured distance is never re-sent as the athlete's")
+        XCTAssertEqual(actual["distanceKm"] as? Double, athlete.declaredKm, "the athlete's own declared distance is re-sent as theirs (QRE #59 P1)")
         XCTAssertEqual((request["eligibility"] as? [String: Any])?["assessedAt"] as? String, HistoryCorrectionViewModel.testToday)
     }
 
@@ -150,11 +150,20 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
     func testTheAnswersSafetyStatesAreShown() async throws {
         let route = try Safety.answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED","recorded":[]}"#)
         let clinical = HistoryCorrectionViewModel(testing: try entry("P-logged-two-voices"), writer: ScriptedSubmitWriter(route), reload: {})
-        clinical.startContesting(); clinical.km = "7"; clinical.answerNoneApplies(); clinical.eligibility.pain = true
+        clinical.startContesting(); clinical.km = "7"; clinical.answerNoneApplies()
+        clinical.eligibility.pain = true; clinical.eligibility.status = nil   // as EligibilityForm leaves it: a "sim" clears the confirmation
         await clinical.send()
         XCTAssertEqual(clinical.phase, .notKept)
         XCTAssertTrue(clinical.clinical)
         XCTAssertFalse(clinical.screenRequired)
+
+        // A clinical dependency on record (the plan view BLOCKED, no status of its own): the same route.
+        let blocked = try Repo.store.decode(BoundaryAnswer.self, "actions-F2-eraseHealthFacts")
+        XCTAssertNil(blocked.status); XCTAssertEqual(blocked.view?.state, .blocked)
+        let held = HistoryCorrectionViewModel(testing: try entry("P-logged-two-voices"), writer: ScriptedSubmitWriter(blocked), reload: {})
+        held.startContesting(); held.km = "7"; held.answerNoneApplies()
+        await held.send()
+        XCTAssertTrue(held.clinical)
 
         let required = try Safety.answer(#"{"ok":true,"status":"KEEP","recorded":["ob_1"],"warningSignScreen":{"status":"REQUIRED","reason":"RUN_STOPPED_FOR_A_SYMPTOM"}}"#)
         let symptom = HistoryCorrectionViewModel(testing: try entry("P-logged-conflict"), writer: ScriptedSubmitWriter(required), reload: {})

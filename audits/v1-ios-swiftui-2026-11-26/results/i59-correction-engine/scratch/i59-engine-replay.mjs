@@ -22,7 +22,7 @@ function statement(v){const r=v.response??{},out={response:{}};
 const canContestStatic=e=>e.sessionId!=null&&e.measuredKm!=null&&e.contested==null&&e.sport==='RUN'&&!!athleteVoice(e)&&!!statement(athleteVoice(e));
 const canContest=(e,sessionDate)=>canContestStatic(e)&&sessionDate===e.date;
 function observation(e,km,reason){const mine=athleteVoice(e);if(e.sessionId==null||!mine)return null;const said=statement(mine);if(!said)return null;
- const actual={completed:mine.completed,...(mine.minutes!=null?{minutes:mine.minutes}:{}),...(mine.rpe!=null?{rpe:mine.rpe}:{}),...(said.stop?{stop:said.stop}:{}),declared:{distanceKm:km,reason}};
+ const actual={completed:mine.completed,...(mine.minutes!=null?{minutes:mine.minutes}:{}),...(mine.declaredKm!=null?{distanceKm:mine.declaredKm}:{}),...(mine.rpe!=null?{rpe:mine.rpe}:{}),...(said.stop?{stop:said.stop}:{}),declared:{distanceKm:km,reason}};
  return {sessionId:e.sessionId,occurrenceDate:e.date,actual,response:said.response,correctionOf:mine.eventId};}
 const NONE_APPLIES={status:'NONCLINICAL_CONFIRMED',pain:false,persistentPain:false,injury:false,illness:false,functionalLimitation:false,clinicalConcern:false};
 const request=(obs,screen,today)=>({kind:'WEEKLY_REVIEW',observations:[obs],eligibility:{...screen,assessedAt:today}});
@@ -44,12 +44,12 @@ function journey(name,{form,screenAtForm=true,screen=NONE_APPLIES,edit,legacy}){
  t.set(s.date,'08:00');const w=t.watch(s);const imp=t.import([w]);console.log(`  device import: ok=${imp.ok} recorded=${imp.recorded?.length??0}`);
  // RunReportViewModel.makeObservation (planned): sessionId, the session's date, the recording's end instant, the athlete's statements.
  t.set(s.date,'20:00');const end=new Date(t.clock-15*60000).toISOString();
- const f={sessionId:s.id,occurrenceDate:s.date,observedAt:end,actual:{completed:form.completed&&!form.stop,minutes:form.minutes,rpe:form.rpe,...(form.stop?{stop:{reason:form.stop}}:{})},
+ const f={sessionId:s.id,occurrenceDate:s.date,observedAt:end,actual:{completed:form.completed&&!form.stop,minutes:form.minutes,...(form.distanceKm!=null?{distanceKm:form.distanceKm}:{}),rpe:form.rpe,...(form.stop?{stop:{reason:form.stop}}:{})},
   response:{performance:'UNKNOWN',recovery:'UNKNOWN',effort:form.effort??'UNKNOWN',nextDayFunction:'UNKNOWN'}};
  const r1=t.submit({kind:'WEEKLY_REVIEW',observations:[f],...(screenAtForm?{eligibility:{...NONE_APPLIES,assessedAt:s.date}}:{})});
  console.log(`  athlete form (eligibility ${screenAtForm?'answered':'nil'}): ok=${r1.ok} status=${r1.status} recorded=${r1.recorded?.length??0} missing=${JSON.stringify(r1.decision?.missingInputs??[])} warningSignScreen=${r1.warningSignScreen?.status}`);
  let before=loggedEntries(t.rows()).find(x=>x.sessionId===s.id&&!x.superseded);if(edit)edit(before);const partsBefore=JSON.parse(JSON.stringify(t.live(s.id)[0]?.provenance?.parts??{}));
- const voices=e=>JSON.stringify(e.voices.map(v=>({ch:v.channel,completed:v.completed,minutes:v.minutes,km:v.measuredKm??undefined,stop:v.stopReason??undefined})));
+ const voices=e=>JSON.stringify(e.voices.map(v=>({ch:v.channel,completed:v.completed,minutes:v.minutes,km:v.measuredKm??undefined,declaredKm:v.declaredKm??undefined,stop:v.stopReason??undefined})));
  console.log(`  row before: completed=${before.completed} minutes=${before.minutes} measuredKm=${before.measuredKm} contested=${JSON.stringify(before.contested)} voices=${voices(before)}`);
  const offered=canContest(before,planDate.get(s.id));console.log(`  correction offered: ${offered}`);
  if(!offered)return {t,s,before,offered,partsBefore};
@@ -80,6 +80,14 @@ const kept=(x)=>x.r.ok&&(x.r.recorded??[]).some(id=>keepsReport(x.rows,id));
  const ap=x.parts[x.r.recorded[0]],dp=x.parts[dev(x.after).eventId];
  check('the athlete part\'s instant is not the device\'s',ap&&dp&&ap.observedAt!==dp.observedAt);
  check('not offered again (contested)',!canContestStatic(x.after));}
+
+{const x=journey('A2 the athlete declared a distance in the report',{form:{completed:true,minutes:40,rpe:4,distanceKm:7.5,effort:'ON_TARGET'}});
+ check('offered',x.offered);
+ check('the athlete\'s declared distance is re-sent as theirs (distanceKm)',x.req.observations[0].actual.distanceKm===athleteVoice(x.before).declaredKm&&athleteVoice(x.before).declaredKm===7.5);
+ check('recorded and kept',kept(x));
+ check('the athlete voice still states its own 7.5 km',athleteVoice(x.after)?.declaredKm===7.5);
+ check('contested present = 6 km',x.after.contested?.distanceKm===6);
+ check('DEVICE voice intact',JSON.stringify(dev(x.after))===JSON.stringify(dev(x.before)));}
 
 {const x=journey('B symptom stop, correction re-sends it',{form:{completed:false,minutes:5,rpe:9,stop:'SYMPTOM',effort:'HARDER'}});
  check('offered',x.offered);
