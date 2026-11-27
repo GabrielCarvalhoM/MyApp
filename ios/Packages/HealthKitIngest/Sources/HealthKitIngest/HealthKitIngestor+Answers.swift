@@ -2,7 +2,8 @@ import Foundation
 import IntegrationContracts
 
 // How B acts on A's answer to a delivery (contract §6.2) and runs its delivery loop. Moved out of `HealthKitIngestor.swift`; changed only
-// where QRE-B P3-2 (set-asides that may be on the record) and QRE-B-R2-03 (a caller that waits for the loop) needed it, as marked.
+// where QRE-B P3-2 (set-asides that may be on the record), QRE-B-R2-03 (a caller that waits for the loop) and #85 (re-sends after an
+// exhausted retryLater; a delivery that may have landed) needed it, as marked.
 
 extension HealthKitIngestor {
     /// The boundary code of a refusal that says the workout is already on the record, linked to another session.
@@ -58,6 +59,9 @@ extension HealthKitIngestor {
                     if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1 }
                     s.items.remove(at: i)
                 case .notRecorded(let reason):
+                    // #85: an answered NOT_RECORDED proves the workout absent from the record (on record, the same id and facts would be
+                    // DUPLICATE): no earlier send of it landed, so a re-sent workout no longer holds its group on that account.
+                    s.items[i].mayBeOnRecord = false
                     if s.items[i].deletedWhileInFlight {
                         s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1
                     } else if s.items[i].attempts >= config.maxAttempts {
@@ -105,8 +109,10 @@ extension HealthKitIngestor {
         case .halted(let c):
             code = c; if !signalledSince { s.block = .halted(code: c) }; dropDeletedUnrecorded()
         case .retryLater(let c):
-            code = c; s.inFlight = flight
-            retryLater(&s, flight, code: c)
+            // #85: "nothing was confirmed": this send may have landed.
+            var f = flight; f.mayHaveLanded = true
+            code = c; s.inFlight = f
+            retryLater(&s, f, code: c)
         case .hostUnavailable:
             code = HostCode.hostUnavailable
             s.inFlight = flight
@@ -120,7 +126,8 @@ extension HealthKitIngestor {
         do { try commit(s) } catch {
             // The answer could not be written: the in-flight delivery stays on disk and is re-sent with the same id (custody replays its
             // stored answer: QRE-B-15, one extra round trip at most). Nothing is sent until a write succeeds; every trigger retries.
-            writeFailed = true
+            // #85: the unwritten answer may have been a landed write.
+            writeFailed = true; state.inFlight?.mayHaveLanded = true
         }
     }
 
@@ -130,8 +137,11 @@ extension HealthKitIngestor {
         if s.retryLaterStreak >= config.maxConsecutiveRetryLater {
             // P3-2: `retryLater` never proves that nothing was written ("or a write that landed is replayed", `DeviceDelivery`). These
             // workouts may be on the record: each stays the run of its group, so a copy of it is never promoted and sent as a second run.
+            // #85: unless every send of this delivery was refused (contract: a refusal records NOTHING; `InFlight.mayHaveLanded`). Either
+            // way each workout gets its bounded re-send rounds (+Resend), and holds its group while one is to come.
             for a in flight.activities { if let i = s.items.firstIndex(where: { $0.activityId == a.activityId }) {
-                Self.setAside(&s, i, code: IngestCode.attemptsExhausted, mayBeOnRecord: true) } }
+                Self.setAside(&s, i, code: IngestCode.attemptsExhausted, mayBeOnRecord: flight.mayHaveLanded)
+                armResend(&s, i) } }
             s.inFlight = nil; s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
             return
         }

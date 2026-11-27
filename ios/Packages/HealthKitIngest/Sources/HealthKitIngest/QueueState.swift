@@ -55,9 +55,16 @@ struct QueueItem: Codable, Equatable {
     /// Deleted in Apple Health while its place on the record was unknown: in flight (settled when the answer arrives), or set aside with
     /// `mayBeOnRecord` (kept: it may be on the record).
     var deletedWhileInFlight = false
-    /// P3-2: set aside after an answer that does not prove it absent from the record (`retryLater` exhausted: a write may have landed;
-    /// ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a copy is never promoted and sent.
+    /// P3-2: set aside after an answer that does not prove it absent from the record (`retryLater` exhausted after a send that may have
+    /// landed, #85 `InFlight.mayHaveLanded`; ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a
+    /// copy is never promoted and sent. Cleared only by an answered NOT_RECORDED of a re-send (#85: on record, it would be DUPLICATE).
     var mayBeOnRecord = false
+    /// #85: set aside after its delivery exhausted `retryLater` (a fault of the moment, not an answer), with a re-send round still to come:
+    /// the earliest instant of that round. Reopened then by `deliveryConditionsChanged()` or a launch, with the same frozen bytes in a NEW
+    /// delivery (same id, same facts: DUPLICATE if a write landed, otherwise the boundary decides). nil: no round to come.
+    var resendDue: Date?
+    /// #85: the re-send rounds already reopened (bounded by `ResendPolicy.maxRounds`).
+    var resends = 0
     /// What HealthKit said about where the run came from (nil only in a file written before policy 2).
     var provenance: RunProvenance?
 }
@@ -95,6 +102,12 @@ struct InFlight: Codable, Equatable {
     let deliveryId: String
     let activities: [DeviceActivity]
     let generation: Int
+    /// #85 (over-caution of P3-2): a send of this delivery may have landed on the record. False while every answer to it said nothing was
+    /// recorded (a refusal, even with the retryLater disposition, or `hostUnavailable`); true after a `retryLater` answer ("nothing was
+    /// confirmed"), after an answer B could not write, and for every delivery read back from disk (a process that died may have sent it and
+    /// never written the answer). Never stored: decoding always says true (fail closed).
+    var mayHaveLanded = false
+    enum CodingKeys: String, CodingKey { case deliveryId, activities, generation }
 }
 
 enum QueueBlock: Codable, Equatable {
@@ -178,5 +191,21 @@ extension QueueItem {
         mayBeOnRecord = try c.decodeIfPresent(Bool.self, forKey: .mayBeOnRecord)
             ?? (frozen && [.setAside(code: IngestCode.attemptsExhausted), .setAside(code: HealthKitIngestor.activityLinkedElsewhere)].contains(state))
         provenance = try c.decodeIfPresent(RunProvenance.self, forKey: .provenance)
+        // #85: a file written before #85 has no `resends`. Its ATTEMPTS_EXHAUSTED item that may be on record was set aside by an exhausted
+        // retryLater (or, before P3-2, possibly by NOT_RECORDED answers): it gets its re-send rounds, the first one due at once. Re-sending
+        // it is safe either way: the same id with the same facts is DUPLICATE when on record.
+        resends = try c.decodeIfPresent(Int.self, forKey: .resends) ?? 0
+        resendDue = try c.decodeIfPresent(Date.self, forKey: .resendDue)
+        if !c.contains(.resends), mayBeOnRecord, !deletedWhileInFlight, state == .setAside(code: IngestCode.attemptsExhausted) { resendDue = .distantPast }
+    }
+}
+
+extension InFlight {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        deliveryId = try c.decode(String.self, forKey: .deliveryId)
+        activities = try c.decode([DeviceActivity].self, forKey: .activities)
+        generation = try c.decode(Int.self, forKey: .generation)
+        mayHaveLanded = true
     }
 }
