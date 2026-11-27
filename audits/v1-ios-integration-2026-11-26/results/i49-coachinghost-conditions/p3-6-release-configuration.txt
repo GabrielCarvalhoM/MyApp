@@ -1,0 +1,35 @@
+# P3-6: COACHINGHOST_TESTING is not defined in a Release build (2026-11-27)
+
+## Package manifest (ios/Packages/CoachingHost/Package.swift)
+  18:        // COACHINGHOST_TESTING (debug only, and the lab's device build on its command line) compiles the test SPI (QRE-A-09) and the test-only
+  23:                swiftSettings: [.define("COACHINGHOST_TESTING", .when(configuration: .debug))]),
+  26:                          swiftSettings: [.define("COACHINGHOST_TESTING", .when(configuration: .debug))]),
+
+## App project: occurrences of COACHINGHOST_TESTING
+  project.pbxproj: 0
+  RepMile.xcscheme: 0
+
+## App configurations and scheme actions
+     4 name = Debug; };
+     4 name = Release; };
+  <TestAction buildConfiguration="Debug"
+  <LaunchAction buildConfiguration="Debug"
+  <ProfileAction buildConfiguration="Release"
+  <AnalyzeAction buildConfiguration="Debug"
+  <ArchiveAction buildConfiguration="Release"
+
+## xcodebuild -showBuildSettings -target RepMile (compilation conditions / flags)
+  [Release]
+    CONFIGURATION = Release
+  [Debug]
+    CONFIGURATION = Debug
+
+## swift build -c release --product CoachingHost (macOS, scratch build), symbols of CoachingHost.o
+  total symbols: 3997
+  openForTesting / TestKeychainFile / TestingSupport SPI: 0
+  internal, non-SPI test hooks present in every build (pre-existing, module-internal, not settable from outside):
+    direct field offset for CoachingHost.CoachingHost.versionSkewForTesting : Swift.Int
+    direct field offset for CoachingHost.KeychainAnchor.failReadsForTesting : Swift.Bool
+    direct field offset for CoachingHost.KeychainIntegrityKey.failEraseForTesting : Swift.Bool
+    direct field offset for CoachingHost.NativeStore.failErasureForTesting : Swift.Bool
+    variable initialization expression of CoachingHost.CoachingHost.versionSkewForTesting : Swift.Int

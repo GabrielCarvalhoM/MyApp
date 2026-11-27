@@ -19,16 +19,32 @@ public enum FirstLaunch {
     }
     static let markerName = "install-marker.json"
 
-    static func reconcile(root: URL, store: NativeStore, keychain: KeychainItems) -> Outcome {
+    /// #49 P3-2: the reconciliation could not complete. Nothing is guessed and the marker is not written: `CoachingHost.open` throws (fail
+    /// closed: no operation runs over an install whose leftovers are unknown) and the next open tries again.
+    public enum Incomplete: Error, Equatable {
+        /// The store folder cannot be listed: whether a record exists is unknown (never "none", never "one").
+        case storeUnlistable
+        /// The Keychain items cannot be listed or one cannot be removed (e.g. before the first unlock): a leftover key or anchor would stay.
+        case keychainUnavailable
+        /// The durable intent to purge B (`PurgeIntent`) cannot be written.
+        case purgeIntentNotDurable
+    }
+
+    /// `owePurge` writes the durable fresh-install purge intent; it runs before the marker, so a death between the two re-runs the whole step.
+    static func reconcile(root: URL, store: NativeStore, keychain: KeychainItems, owePurge: () -> Bool) throws -> Outcome {
         let marker = root.appendingPathComponent(markerName)
         if FileManager.default.fileExists(atPath: marker.path) { return .notNeeded }
+        guard let names = store.names() else { throw Incomplete.storeUnlistable }
         let outcome: Outcome
-        if store.hasAnyRecord() { outcome = .markerWrittenOverExistingRecord }
+        if names.contains(where: { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") }) { outcome = .markerWrittenOverExistingRecord }
         else {
-            let removed = keychain.deleteAll()
+            guard let removed = keychain.deleteAllChecked() else { throw Incomplete.keychainUnavailable }
+            guard owePurge() else { throw Incomplete.purgeIntentNotDurable }
             HostLog.host("first-launch-reconciled", code: removed > 0 ? "KEYCHAIN_LEFTOVERS_REMOVED" : "NOTHING_LEFT_OVER")
             outcome = .freshInstallPurged
         }
+        // A marker that cannot be written only repeats this step at the next launch, which is idempotent (nothing is left to remove, or a
+        // record now exists and nothing is removed).
         let body = "{\"installedAt\":\"\(ISO8601DateFormatter().string(from: Date()))\",\"outcome\":\"\(outcome.rawValue)\"}"
         try? AtomicFile.write(Data(body.utf8), to: marker)
         return outcome

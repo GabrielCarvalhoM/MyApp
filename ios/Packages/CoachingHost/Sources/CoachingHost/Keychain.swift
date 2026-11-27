@@ -86,23 +86,35 @@ struct KeychainItems {
         return SecItemDelete(base(account) as CFDictionary)
     }
 
-    /// Every account of this service under this prefix (the first-launch reconciliation and account erasure).
-    func accounts() -> [String] {
-        let all: [String]
+    /// Every account of this service under this prefix (account erasure, tests). A listing that fails reads as none: see `listAccounts`.
+    func accounts() -> [String] { listAccounts() ?? [] }
+
+    /// #49 P3-2: the accounts, or nil when they cannot be listed (e.g. the Keychain is unavailable before the first unlock). Never "none" on
+    /// a failure.
+    func listAccounts() -> [String]? {
         #if COACHINGHOST_TESTING
-        if case .file(let d) = storage { return TestKeychainFile(root: d, service: service).accounts().filter { $0.hasPrefix(prefix) }.map { String($0.dropFirst(prefix.count)) } }
+        if case .file(let d) = storage { return TestKeychainFile(root: d, service: service).accountsChecked()?.filter { $0.hasPrefix(prefix) }.map { String($0.dropFirst(prefix.count)) } }
         #endif
         let q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
                                 kSecReturnAttributes as String: true, kSecMatchLimit as String: kSecMatchLimitAll]
         var out: CFTypeRef?
-        guard SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess, let items = out as? [[String: Any]] else { return [] }
-        all = items.compactMap { $0[kSecAttrAccount as String] as? String }
+        let st = SecItemCopyMatching(q as CFDictionary, &out)
+        if st == errSecItemNotFound { return [] }
+        guard st == errSecSuccess, let items = out as? [[String: Any]] else { return nil }
+        let all = items.compactMap { $0[kSecAttrAccount as String] as? String }
         return all.filter { $0.hasPrefix(prefix) }.map { String($0.dropFirst(prefix.count)) }
     }
 
-    /// Removes every item of this service under this prefix. Returns how many were removed.
+    /// Removes every item of this service under this prefix. Returns how many were listed (tests and cleanup; unchecked).
     @discardableResult
     func deleteAll() -> Int { let a = accounts(); for x in a { delete(x) }; return a.count }
+
+    /// #49 P3-2: the same, checked: nil when the items cannot be listed or one of them cannot be removed.
+    func deleteAllChecked() -> Int? {
+        guard let a = listAccounts() else { return nil }
+        for x in a { let st = delete(x); if st != errSecSuccess && st != errSecItemNotFound { return nil } }
+        return a.count
+    }
 
     /// The accessibility class an item was stored with (nil off iOS, in the test file storage, or if unreadable).
     func accessible(_ account: String) -> String? {
