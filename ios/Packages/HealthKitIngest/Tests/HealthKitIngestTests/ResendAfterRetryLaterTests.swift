@@ -35,6 +35,7 @@ final class ResendAfterRetryLaterTests: XCTestCase {
         XCTAssertEqual(rig.scheduler.delays, [900])
         rig.clock.advance(900); await rig.scheduler.runAll()
         XCTAssertEqual(sent(sink), ["G1", "G1", "G1", "G1"], "S1 is never sent")
+        guard sink.deliveries.count == 4 else { return }
         let resent = sink.deliveries[3]
         XCTAssertNotEqual(resent.deliveryId, sink.deliveries[0].deliveryId, "a NEW delivery")
         XCTAssertEqual(resent.activities, sink.deliveries[0].activities, "the same frozen bytes: same activityId, link and facts")

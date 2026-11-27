@@ -38,7 +38,7 @@ final class ResendBoundaryTests: XCTestCase {
         await ing.deliveryConditionsChanged(); rig.clock.advance(900); await rig.scheduler.runAll()
         XCTAssertEqual(sink.delivered.map { $0.activities.map(\.activityId) }, [["HK-A"], ["HK-A"], ["HK-A"], ["HK-A"]], "the copy is never sent")
         XCTAssertEqual(Set(sink.delivered.map(\.deliveryId)).count, 2, "the retried delivery, then ONE new delivery")
-        XCTAssertEqual(sink.delivered[3].activities, sink.delivered[0].activities)
+        XCTAssertEqual(sink.delivered.last?.activities, sink.delivered.first?.activities)
         return (node, sink, ing)
     }
 
