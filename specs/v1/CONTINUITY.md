@@ -14,13 +14,13 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 
 | | |
 |---|---|
-| Agentes | Especialistas versionados em `.claude/agents/` (registro [docs/engineering/AGENTS.md](../../docs/engineering/AGENTS.md)); validados numa sessão nova. **PR #80 → integração aguarda o fundador aplicar `governance:approved`**. Sessão nova = definições atuais |
-| Integração `claude/v1-ios-integration` | `9eb60f05` = … + #63 (PR #75) + #49 (PR #77) + C sync 2 (#59/#68/#72, PR #82) + #48 (PR #84) + C sync 3 (#73, PR #89) + #76 (PR #91). Visualização em `9eb60f05` |
-| Frente C `claude/v1-ios-swiftui` | `da0ec00e` = … + #73 (PR #86) + IDs do pbxproj (PR #88) + caminhos de C do #76 (PR #93, idênticos à integração) |
-| Em andamento | **#85** (reenvio após retryLater; PR #90): QRE READY_WITH_CONDITIONS após 2 re-verificações, R-1/R-2/R-3 conferidos; conteúdo mesclado 88/88 → aguardando CI → merge · **#83** (isolamento dos testes ao vivo): `ios-test-engineer`, worktree `myapp-v1-int-i83`, sim RepMile-C-3 |
-| Próximas | #70 (seguimentos do #59), #39, #62, #81, `saveActive` (C, do review do #76) · condições antes do release: #85 · **REAL_ATHLETE_READY bloqueado por #79, #87** |
-| Decisões do fundador | **#80** (rótulo de governança) · **#79** (descongelar CoachingCore: sinal de alerta atrás da triagem, urgência rebaixada, nível da retenção rebaixado por decisão posterior) · **#87** (texto urgente: revisão clínica humana) · #66 · #74 · Verified para #32/#41/#58/#61 agora ou só depois do iPhone · próximo passo na tela de identidade danificada (e schema mais novo) · `CURRENT_MISSION.md`/`CLAUDE.md` desatualizados · #47 · #55 · #21 · #29 · Keychain · Figma nomeado · modo claro |
-| Simuladores | RepMile-C-3 (#83), RepMile-INT e RepMile-C-2 livres; no máximo 2 suítes de UI ao mesmo tempo; desinstalar o app antes de `sim.sh all` até o #83 entrar |
+| **Missão P0 (fundador, 27/11)** | **Reconciliação Figma × SwiftUI.** O Figma é a especificação de UI/UX; o CoachingCore, a autoridade esportiva; `specs/v1/` faz a ponte (PRODUCT_SCOPE "Três autoridades"). Gate visual obrigatório (QUALITY_GATES §2b), campos **Figma** e **Produto** no quadro. #14 é a reconciliação integral e bloqueia a aprovação das jornadas. Subtarefas: #101 onboarding (P0), #99 Hoje (P0), #102 Plano/detalhes, #103 Execução/conclusão, #104 Histórico/Progresso, #105 Perfil e secundários. Suspensão: nenhuma tela ou fluxo novo fora do Figma |
+| Em andamento | **Matriz** `specs/v1/FIGMA_MATRIX.md` (`ios-test-engineer`, worktree `myapp-v1-orch-matrix`, sem simulador) · **#101** onboarding (`ios-engineer`, `myapp-v1-c-i101`; fase A spec sem simulador, depois C-2) · **#98/#99** (`ios-engineer`, `myapp-v1-c-i99`, sim INT) · **#94** modo claro (C-3, 44 cores lidas de `valuesByMode`) · **#83** PR #95 (correções do QRE, sim C-2) |
+| Integração | `6bc43620` (#85 por último). Frente C `856cdf00` (#70, #92 à frente da integração) → C sync 4 depois de #94/#98/#99 |
+| Agentes | `.claude/agents/` validados numa sessão nova; **PR #80 aguarda o fundador aplicar `governance:approved`** |
+| Decisões do fundador | #80 rótulo · **#79** (descongelar CoachingCore: sinal de alerta atrás da triagem, urgência rebaixada, nível da retenção rebaixado, limite de correções ignora a triagem) · **#87** texto urgente (revisão clínica) · #66 · #74 · Verified para #32/#41/#58/#61 · próximo passo na tela de identidade danificada · `CURRENT_MISSION.md`/`CLAUDE.md` desatualizados · conflitos Figma × motor que a matriz e o #101 levantarem |
+| Simuladores | RepMile-INT (#98/#99), RepMile-C-2 (#83, depois #101), RepMile-C-3 (#94), **RepMile-Fundador só do fundador**; um simulador por agente; no máximo 2 suítes de UI |
+| Erros meus registrados | branch `claude/v1-ios-integration-i14-visual-pilot` abandonada (merge+revert; nunca mesclar); C-2 atribuída em dobro (corrigido) |
 
 ## Branches e worktrees
 
