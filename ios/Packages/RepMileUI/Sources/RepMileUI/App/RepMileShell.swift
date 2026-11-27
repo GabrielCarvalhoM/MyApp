@@ -64,7 +64,13 @@ public struct RepMileShell: View {
         Group {
             switch model.route {
             case .loading: LoadingSkeleton()
-            case .app: AppTabs()
+            case .app:
+                #if DEBUG
+                // `-route` (#98): the fixture composition only; the live composition never opens a Debug route.
+                AppTabs(debugRoute: live == nil ? DebugRoute.launch : nil)
+                #else
+                AppTabs()
+                #endif
             case .onboarding:
                 OnboardingFlow(viewModel: live.map { OnboardingViewModel(writer: model.writer, athleteId: $0.athleteId) } ?? OnboardingViewModel(writer: model.writer), onEnrolled: {
                     // Live: the host reads the new record. Never a fixture reader here.
@@ -103,6 +109,11 @@ struct AppTabs: View {
     /// What to present once the current sheet is gone (one presentation at a time: a sheet opening a flow or the run cover).
     @State private var afterDismiss: (() -> Void)?
     @State private var runLaunch: Launch?
+    @State private var planSegment: PlanScreen.Segment = .week
+    #if DEBUG
+    /// `-route <destination>` (#98, Debug only): applied once, after a resumed recording had its say.
+    var debugRoute: DebugRoute?
+    #endif
 
     struct Launch: Identifiable { let id = UUID(); let session: PlannedSession? }
     enum Sheet: Identifiable {
@@ -146,7 +157,7 @@ struct AppTabs: View {
                     }
                 case .plan:
                     NavigationStack(path: $planPath) {
-                        PlanScreen(openSession: { planPath.append(.session($0.id, $0.date)) }, cantThisDay: { sheet = .moving($0) })
+                        PlanScreen(segment: planSegment, openSession: { planPath.append(.session($0.id, $0.date)) }, cantThisDay: { sheet = .moving($0) })
                             .navigationDestination(for: Route.self, destination: destination)
                     }
                 case .history: NavigationStack { HistoryScreen() }
@@ -190,7 +201,31 @@ struct AppTabs: View {
                 runLaunch = Launch(session: all.first { $0.id == st.sessionId && $0.date == st.sessionDate })
             }
         }
+        #if DEBUG
+        .task { if let debugRoute { apply(debugRoute) } }
+        #endif
     }
+
+    #if DEBUG
+    /// Opens what `-route` names exactly as a tap would: the tab and stacks, then a start through `start(_:)` (the host's gate) or a sheet.
+    private func apply(_ route: DebugRoute) {
+        guard runLaunch == nil, sheet == nil else { return }   // a resumed recording comes first
+        let landing = route.landing(current: model.plan?.week?.sessions ?? [], weeks: model.weeks)
+        planSegment = landing.planSegment; todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
+        switch route {
+        case .run:
+            guard let plan = model.plan else { return }
+            let content = TodayContent.build(plan: plan, logged: model.logged, presentation: model.presentation, weekPlan: model.weekPlan,
+                                             paused: [.outsideV1Scope, .clinicalHumanRequired].contains(model.globalGate), startability: model.startability(of:))
+            if let next = content.next { start(next.session) }
+        case .sheet(.add): sheet = .add
+        case .sheet(.changes): sheet = .changes
+        case .sheet(.notFeeling): sheet = .notFeeling
+        case .sheet(.readiness): sheet = .readiness
+        default: break
+        }
+    }
+    #endif
 
     @ViewBuilder private func destination(_ r: Route) -> some View {
         switch r {

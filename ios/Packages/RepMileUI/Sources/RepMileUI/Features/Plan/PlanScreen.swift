@@ -6,10 +6,15 @@ import SwiftUI
 struct PlanScreen: View {
     enum Segment: String, CaseIterable { case week, month, phases }
     @Environment(AppModel.self) private var model
-    @State private var segment: Segment = .week
+    @State private var segment: Segment
     @State private var weekIndex: Int?
     var openSession: (PlannedSession) -> Void
     var cantThisDay: (PlannedSession) -> Void
+
+    /// `segment`: the segment shown first (Semana; the Debug `-route plan/…` of #98 may open another).
+    init(segment: Segment = .week, openSession: @escaping (PlannedSession) -> Void, cantThisDay: @escaping (PlannedSession) -> Void) {
+        _segment = State(initialValue: segment); self.openSession = openSession; self.cantThisDay = cantThisDay
+    }
 
     private var current: Int { weekIndex ?? model.plan?.weekIndex ?? 0 }
     private var week: Week? {
