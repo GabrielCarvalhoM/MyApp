@@ -11,7 +11,8 @@ enum BuildHold: String, CaseIterable, Sendable {
     /// 21 iniciante "Já corri e parei" with 1–3 days in 21b: minutes and the longest run are unknown and the contract requires them (SSCTR
     /// 27/11: never zero-filled).
     case beginnerRecent = "D12"
-    /// One item, "Gestação atual ou parto nos últimos 12 meses", two engine codes.
+    /// One item, "Gestação atual ou parto nos últimos 12 meses": never encoded as PREGNANCY or POSTPARTUM, either would be a false record
+    /// (Founder #110). Held until CCP-ONB-1 (#109) carries a combined or unspecified condition.
     case pregnancyCode = "D02"
     /// 24 "Teste": no evidence kind and measurement decided.
     case testMeasure = "D20"

@@ -151,7 +151,7 @@ longRunDay, runTurn, strengthTurn}` (todos obrigatórios); `weeks` (4/8/12/16); 
 Nome (17), altura e peso (19), onde corre (13), o que usa na corrida (14), e — enquanto D07/D08/D11/D01/D20 estiverem abertas — meta de tempo,
 prioridade, treinador, cargas conhecidas e condições do resultado.
 
-- **Armazenamento:** arquivo local do app (`Application Support/RepMile/onboarding-profile.json`, proteção `completeUnlessOpen`), nunca enviado
+- **Armazenamento:** arquivo local do app (`Application Support/RepMile/Onboarding/onboarding.json`, proteção `completeUnlessOpen`, fora do backup; no modo fixture, uma pasta temporária por execução de teste), nunca enviado
   ao motor, a B, a log, a analytics ou a rede. Nenhum uso esportivo inventado (altura e peso: "Não definem cargas nem ritmos.").
 - **Rascunho do cadastro:** o mesmo armazenamento guarda as respostas ainda não enviadas ("Suas respostas ficam neste iPhone"), para
   `838:3918` Retomar; apagado ao "Recomeçar" e depois de um envio aceito (as respostas enviadas vivem no registro do motor).
@@ -166,7 +166,7 @@ prioridade, treinador, cargas conhecidas e condições do resultado.
 | # | Conflito | Opções | Impacto |
 |---|---|---|---|
 | D01 | 26 Cargas conhecidas: `AthleteIntake` não tem `knownExercises`; o texto diz "Entram como ponto de partida" | (a) CCP acrescenta `knownExercises` (id do catálogo, séries, reps, RIR, carga+unidade+convenção, `observedAt`) — o motor já lê; (b) tela fica fora até a CCP; (c) guardar local e não prometer (exige outro texto: não permitido) | Sem (a), a prévia 31 "Força com as suas cargas" e o respiro 28 "7 cargas" não podem ser verdadeiros. Implementação: a tela não entra até decidir |
-| D02 | 27 "Gestação atual ou parto nos últimos 12 meses" é um item; o motor tem `PREGNANCY` e `POSTPARTUM` | (a) enviar `[PREGNANCY]`; (b) enviar os dois; (c) o Figma separa em dois itens; (d) CCP de um código combinado | Resultado do motor idêntico (UNSUPPORTED). Só a verdade do registro muda. Provisório até decidir: (a) não é implementado sem resposta |
+| D02 | 27 "Gestação atual ou parto nos últimos 12 meses" é um item; o motor tem `PREGNANCY` e `POSTPARTUM` | **Decidido (fundador, #110):** o item fica único como no Figma e NUNCA é codificado como `PREGNANCY` nem `POSTPARTUM` (registro falso); a condição combinada ou não especificada entra na CCP-ONB-1 (#109) | Até a CCP: o item aparece e o envio fica retido para essa resposta (`BuildHold.pregnancyCode`) |
 | D03 | O Figma não pergunta a duração do plano; o contrato exige `weeks` | Com prova: menor de 4/8/12/16 que cobre a data (é o que o Figma escreve: "8 semanas até lá", "16 semanas até a maratona"). Sem prova (Rafa "12 semanas", Marina "8 semanas"): (a) CCP torna `weeks` opcional (o motor assume 12); (b) valor fixo por objetivo (inventado); (c) perguntar (tela nova: proibido) | Sem prova, nenhum valor pode ser enviado sem decisão. Com prova: implementado como derivação |
 | D04 | Prova a menos de 7 dias do início: o motor recusa; o Figma não desenha | (a) mesmo erro inline de 04 com outra frase (texto novo); (b) deixar o motor responder `INVALID_INPUT` → D27 | — |
 | D05 | "Só força"/"Só corrida": o contrato exige `runMinutes`, `longRunMinutes`, `longRunDay`, `runTurn` (ou os de força) mesmo sem dias da modalidade; o motor rejeita `longRunDay` fora dos `runDays` | (a) CCP torna os campos da modalidade não escolhida opcionais; (b) enviar valores sentinela (inventado; e `longRunDay` dá erro) | "Só força" nunca gera plano hoje. Implementação: as duas opções aparecem; o envio fica bloqueado até a decisão |
@@ -192,3 +192,27 @@ prioridade, treinador, cargas conhecidas e condições do resultado.
 | D25 | 31 critérios do bloco de maratona (6 de 6, "O bloco pede 90 min") não chegam por nenhuma porta | CCP de leitura do `contextEvent.unmet` | Variantes `838:1478`/`838:1568` só com os cartões que têm fonte |
 | D26 | 34 "Três decisões do treinador" sem fonte em PT | CCP/porta de explicação | Tela 34 sem a lista |
 | D27 | `INVALID_INPUT` (#61) não tem frame | Desenho ou mapear para `838:4011`/`838:3972` | Hoje há tela inventada; mantida só até decidir |
+
+---
+
+## 7. Decisões recebidas em 27/11 e como foram aplicadas
+
+**Engenharia (coordenador):** D16 o motor decide a faixa de idade (roda de 10 a 100; `838:3819` inalcançável; `838:4053` mostra só a frase
+de idade quando não há gestação marcada) · D17 rodas, réguas e contadores começam em "—" e só valem depois de tocados · D13 limite inferior
+· D23 frases impossíveis com o motor local não aparecem ("Foi uma falha de conexão do nosso lado.", "Se você sair do app, a montagem
+continua.") — não aplicabilidade técnica, não redesenho · D27/D04 `INVALID_INPUT` e falhas → `838:3972`; resposta que falta → `838:4011`
+(a pergunta de dia compartilhado segue retida, D10); prova a menos de 7 dias: o motor recusa (`INVALID_INPUT`, provado no replay) →
+`838:3972` · D10 Manhã → AM, Tarde/Noite → PM, turno exigido só em 09; 09b retida ("Ajustar um dia" desabilitado) · D03 com prova as
+semanas vêm da data; sem prova o envio fica retido · D05 opções visíveis, envio retido · D01/D07/D08/D11/D20/D25/D26/D15: tela cuja cópia
+seria falsa fica fora (07 Prioridade, 15 Treinador, 26 Cargas, linha de veredito de 31, "Três decisões" de 34, efeito de "Conectar o Apple
+Saúde"); 05 Meta e 24 Condições guardadas só localmente (a cópia não promete efeito) · D18 UI de 32 desenhada, ações retidas e
+desabilitadas; 33 Assinar fora (sem preço aprovado, sem cobrança) · EN/ES PENDING_TRANSLATION.
+
+**SSCTR (27/11):** D06 "Começar a correr" → `GENERAL` · D12 "Nunca corri" = zeros e meses 0, dias de força vêm de 25; "Já corri e parei"
+= meses 0, dias de 21b, minutos/maior corrida 0 só com "Nenhum", 1–3 dias retém o envio (sem zero inventado); "Corro hoje" = contadores de
+21 e 22 · D13 1/6/24 é código de faixa, nunca mostrado · D14 prédio/casa sem item: Continuar desabilitado; o texto de academia completa fica
+visível antes de Continuar · D02 decidido pelo fundador (#110): item único, nunca `PREGNANCY`/`POSTPARTUM`; envio retido para essa resposta até a CCP-ONB-1 (#109).
+
+**CCP-ONB-1 (#109) aprovada pelo fundador (27/11):** outro incremento acrescenta os campos ao contrato; as telas que dependem dela seguem
+retidas até lá. **Ainda pendentes (fundador/CCP):** D01, D03 (sem prova), D04-cópia, D05, D07, D08, D09, D10 (turno opcional/por dia), D11, D15, D18
+(cópia de "indisponível"/ambiente de teste), D19, D20 ("Teste", Condições), D21, D22, D24, D25, D26.

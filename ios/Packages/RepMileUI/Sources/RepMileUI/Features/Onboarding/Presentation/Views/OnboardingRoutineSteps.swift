@@ -108,24 +108,31 @@ extension OnboardingFormView {
         }
     }
 
-    /// "● Corrida   Manhã Tarde Noite": the sport and its turn (D10 interim: Manhã → AM, Tarde and Noite → PM).
+    /// "● Corrida   Manhã Tarde Noite": the sport and its turn (D10 interim: Manhã → AM, Tarde and Noite → PM). With large text the turns move
+    /// under the sport instead of breaking words (Figma 83 "Texto grande": the layout wraps and stacks).
     private func sportHeader(run: Bool) -> some View {
-        let selected = run ? vm.draft.runTurn : vm.draft.strengthTurn
-        return HStack(spacing: 8) {
+        let title = HStack(spacing: 8) {
             Circle().fill(run ? RM.Palette.corrida : RM.Palette.forca).frame(width: 8, height: 8)
-            Text(L.t(run ? "ob.sport.run" : "ob.sport.strength")).rmText(.subtitulo)
-            Spacer()
-            ForEach(DayTurn.allCases, id: \.self) { t in
-                let on = selected == t
-                Button { if run { vm.draft.runTurn = t } else { vm.draft.strengthTurn = t } } label: {
-                    Text(L.t("ob.turn.\(t.rawValue)")).rmText(.rotulo, on ? RM.Palette.agoraSobre : RM.Palette.textoPrimario)
-                        .padding(.horizontal, 12).padding(.vertical, 9)
-                        .background(on ? RM.Palette.agora : RM.Palette.fundoElevado, in: Capsule())
-                }
-                .buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : [])
-                .accessibilityIdentifier("ob-turn-\(run ? "run" : "strength")-\(t.rawValue)")
-            }
+            Text(L.t(run ? "ob.sport.run" : "ob.sport.strength")).rmText(.subtitulo).lineLimit(1).fixedSize()
+        }
+        return ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) { title; Spacer(minLength: 8); turns(run: run) }
+            VStack(alignment: .leading, spacing: 10) { title; HStack(spacing: 8) { turns(run: run) } }
         }
         .padding(.horizontal, RM.Space.gutter)
+    }
+
+    @ViewBuilder private func turns(run: Bool) -> some View {
+        let selected = run ? vm.draft.runTurn : vm.draft.strengthTurn
+        ForEach(DayTurn.allCases, id: \.self) { t in
+            let on = selected == t
+            Button { if run { vm.draft.runTurn = t } else { vm.draft.strengthTurn = t } } label: {
+                Text(L.t("ob.turn.\(t.rawValue)")).rmText(.rotulo, on ? RM.Palette.agoraSobre : RM.Palette.textoPrimario).lineLimit(1).fixedSize()
+                    .padding(.horizontal, 12).padding(.vertical, 9)
+                    .background(on ? RM.Palette.agora : RM.Palette.fundoElevado, in: Capsule())
+            }
+            .buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : [])
+            .accessibilityIdentifier("ob-turn-\(run ? "run" : "strength")-\(t.rawValue)")
+        }
     }
 }
