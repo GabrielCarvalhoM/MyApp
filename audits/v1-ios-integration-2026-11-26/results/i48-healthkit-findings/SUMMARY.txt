@@ -43,10 +43,10 @@ P3-4  DONE.
 SIZE
 HealthKitIngestor.swift 796 -> 534 (still legacy baseline): merge/grouping, answers/pump and observation moved to
 HealthKitIngestor+Grouping.swift (126), +Answers.swift (156), +Observation.swift (75); BackgroundWindow.swift (105) is new.
-ThirdPartyImportTests.swift 415 -> 316: SameRunRuleTests moved to SameRunRuleTests.swift (139). It is now <= 350, so its entry in
-tools/orchestration/swift-size-baseline.json (orchestration-owned) can be removed. Every new file <= 350.
+ThirdPartyImportTests.swift 415 -> 316: SameRunRuleTests moved to SameRunRuleTests.swift (139); its entry is removed from
+tools/orchestration/swift-size-baseline.json (b4c5d3fb). Every new file <= 350.
 
-TESTS (macOS swift test, package): 127 tests, 0 failures, 1 expected failure (the timeout self-test). Before: 101.
+TESTS (macOS swift test, package): 131 tests, 0 failures, 3 consecutive runs (after the QRE round). Before: 101.
 healthkitingest-swift-test.txt. Mutation checks and iOS builds: builds-and-mutations.txt. Gates: gates.txt.
 No Keychain is used by this package. No real health data: every workout is synthetic; logs carry codes and counts only.
 The package has no iOS-only test target (HealthKitReader runs only in ios/Labs/HealthKitLab, not run here).
@@ -55,3 +55,17 @@ OPEN / FOR THE HARDWARE CHECKPOINT
 - R2-03 on an iPhone: a workout recorded with RepMile suspended -> hki.observerFired, hki.backgroundWindow code=GRANTED, the delivery,
   hki.backgroundWindow code=ENDED, before suspension. performExpiringActivity's behaviour in an app in background is not proven here.
 - Behaviour change to note: a launch with the switch off now calls stopObserving and disableBackgroundDelivery (idempotent).
+
+QRE REVIEW OF PR #84: READY_WITH_CONDITIONS, no P0/P1/P2. Fixed in b4c5d3fb:
+  P3-1  dropDeletedUnrecorded keeps a mayBeOnRecord item; a set-aside that makes a run deleted in flight possibly-on-record counts
+        DELETED_MAYBE_ON_RECORD once (HealthKitIngestor.setAside). The path needed a second fix: a refusal with the retryLater
+        disposition reset the streak at the top of `.refused`, so it never reached the bound (QRE-B-02's own exemption below says it
+        should count); it now continues the streak.
+        Tests: testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord, testASetAsideOnARunDeletedInFlightIsCountedOnce,
+        testALinkedElsewhereRefusalOfARunDeletedInFlightKeepsIt.
+  P3-2  Every set-aside with ACTIVITY_LINKED_ELSEWHERE marks mayBeOnRecord, whatever the disposition (adapter-bug path; no index or an
+        out-of-range one). Test: testALinkedElsewhereSetAsideByAnyPathMayBeOnRecord.
+  P3-4  assertFinishes returns Bool (via finishes(within:)); the R2-01 and CCP-B-04 tests `guard` on it and stop on a timeout.
+        eventually fails and throws on timeout. The observation and window race tests wait on observationWaiters / pumpWaiters, no
+        fixed sleep. Self-test: testTheTimeoutReturnsInsteadOfHanging.
+  P3-3  (an exhausted item is never re-sent even when nothing landed): not done here; follow-up issue by the orchestrator.

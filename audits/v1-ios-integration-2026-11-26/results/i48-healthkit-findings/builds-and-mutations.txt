@@ -19,4 +19,11 @@ MUTATION CHECKS (each fix reverted alone in a copy of Sources, full `swift test`
   M6 pump does not wait for a running loop (R2-03)        -> 1 fail: testTheWindowLastsUntilARunningDeliveryLoopHasEnded
   M7 protection back to `try?` (QueueStore)               -> 1 fail: testAFileThatCannotBeProtectedNeverReplacesTheCurrentOne
   M8 legacy decode defaults to false (P3-2, old files)    -> 1 fail: testAFileWrittenBeforeTheFixFailsClosed
-  Timeout helper: testTheTimeoutFailsInsteadOfHanging records the expected failure (XCTExpectFailure) after 0.2 s, instead of hanging.
+
+AFTER THE QRE ROUND (code commit b4c5d3fb): HealthKitIngest generic/platform=iOS BUILD SUCCEEDED.
+  N1 dropDeletedUnrecorded ignores mayBeOnRecord (P3-1)        -> 2 fail: testARefusalThatExhaustsRetryLaterNeverDrops...,
+                                                                  testALinkedElsewhereRefusalOfARunDeletedInFlightKeepsIt
+  N2 no count when a set-aside lands on a deleted-in-flight run -> 3 fail: the three P3-1 tests
+  N3 ACTIVITY_LINKED_ELSEWHERE marked only on setAsideItem (P3-2) -> 1 fail: testALinkedElsewhereSetAsideByAnyPathMayBeOnRecord
+  N4 a retryLater refusal restarts the streak again             -> 1 fail: testARefusalThatExhaustsRetryLaterNeverDrops...
+  Timeout helper: testTheTimeoutReturnsInsteadOfHanging, finishes(within: 0.2) on never-finishing work returns false in < 2 s.
