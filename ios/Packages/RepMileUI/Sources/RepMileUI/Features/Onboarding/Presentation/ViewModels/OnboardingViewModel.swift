@@ -19,7 +19,7 @@ final class OnboardingViewModel {
     }
     /// The engine's answer, as the Figma draws it.
     enum Outcome: Equatable {
-        case outsideScope                 // `838:4053`
+        case outsideScope(OutsideScope)   // `838:4053`, with the engine's scope (QRE P3-7)
         case heldForSafety                // `838:3689`
         case missingAnswer([String])      // `838:4011`, with the engine's missing inputs
         case notBuilt                     // `838:3972`: INVALID_INPUT and operational failures (engineering decision D27/D23, 27/11)
@@ -38,7 +38,12 @@ final class OnboardingViewModel {
 
     init(writer: CoachingWriting, store: OnboardingStoring, athleteId: String = "synthetic-athlete", now: @escaping () -> Date = Date.init) {
         self.writer = writer; self.store = store; self.athleteId = athleteId; self.now = now
-        if let saved = store.load(), let d = saved.draft, let s = saved.step, s != .opening {
+        let saved = store.load()
+        if saved?.heldForSafety == true {
+            // SSCTR C4: after CLINICAL_HUMAN_REQUIRED the athlete resumes on "Retido por segurança", never on an editable form that could
+            // be sent again with other answers. The readiness-declaration path (D24) is what lifts it, not a new onboarding.
+            draft = saved?.draft ?? OnboardingDraft(); step = .dataUse; phase = .outcome(.heldForSafety)
+        } else if let d = saved?.draft, let s = saved?.step, s != .opening {
             draft = d; step = s; phase = .resume
         } else {
             step = .opening; phase = .form
@@ -75,10 +80,19 @@ final class OnboardingViewModel {
         case .raceDate: draft.answered(.raceDate) && !raceBeyondPlan
         // D19: a half or a full marathon needs hours, which the drawn wheel (min/s) cannot hold; held until the design answers.
         case .result: draft.answered(.result) && (draft.hasResult == false || ![.half, .marathon].contains(draft.resultDistance))
-        case .dataUse: phase == .form && holds.isEmpty
+        // QRE P3-6: "Montar meu plano" opens only when the request can actually be built.
+        case .dataUse: phase == .form && buildable
         default: draft.answered(step)
         }
     }
+
+    /// The request is complete and no decision holds it.
+    var buildable: Bool {
+        if case .ready = draft.build(athleteId: athleteId, today: today, startDate: startDay) { return true }
+        return false
+    }
+
+    private var isHeldForSafety: Bool { store.load()?.heldForSafety == true }
 
     func next() {
         guard phase == .form, step != .dataUse, canContinue else { return }
@@ -110,7 +124,11 @@ final class OnboardingViewModel {
         case .goalTime: draft.goalSkipped = true; draft.goalMinutes = nil; draft.goalSeconds = nil
         case .bodySize: draft.bodySizeSkipped = true; draft.heightCm = nil; draft.weightKg = nil
         case .appleHealth: draft.appleHealthAnswered = true
-        case .result: draft.hasResult = false; return
+        case .result:
+            // "Não tenho resultado recente": no detail of a result stays behind (QRE P3-9), the local conditions included.
+            draft.hasResult = false; draft.resultDistance = nil; draft.resultMinutes = nil; draft.resultSeconds = nil; draft.resultDay = nil
+            draft.resultMeasure = nil; draft.resultEffort = nil; draft.resultTolerated = nil; draft.resultConditions = nil
+            return
         default: return
         }
         next()
@@ -126,7 +144,7 @@ final class OnboardingViewModel {
 
     func resumeWhereStopped() { guard phase == .resume else { return }; phase = .form }
     /// "Recomeçar": the unsent answers are erased from this iPhone.
-    func restart() { store.erase(); draft = OnboardingDraft(); step = .opening; phase = .form }
+    func restart() { guard phase == .resume else { return }; store.erase(); draft = OnboardingDraft(); step = .opening; phase = .form }
     func persist() {
         guard phase == .form || phase == .building else { return }
         store.save(OnboardingSaved(draft: draft, step: step, profile: store.load()?.profile))
@@ -137,26 +155,20 @@ final class OnboardingViewModel {
     /// Sends the intake once. A second call while building or after an outcome does nothing (no double enrolment). `minimumDisplay` keeps
     /// "Montando seu plano" readable (0 in tests).
     func submit(minimumDisplay: Duration = .zero) async {
-        guard phase == .form, step == .dataUse, case .ready(let answers) = draft.build(athleteId: athleteId, today: today, startDate: startDay)
-        else { return }
+        guard phase == .form, step == .dataUse, !isHeldForSafety,
+              case .ready(let answers) = draft.build(athleteId: athleteId, today: today, startDate: startDay) else { return }
         persist()
         phase = .building
         let out = await writer.onboard(answers, consents: draft.consents)
-        if minimumDisplay > .zero { try? await Task.sleep(for: minimumDisplay) }
-        phase = Self.phase(for: out.answer.planOutcome)
-        // Accepted: the record holds the answers now; only the local profile stays.
-        if phase == .ready { store.save(OnboardingSaved(draft: nil, step: nil, profile: OnboardingProfile(draft))) }
-    }
-
-    /// The screen the Figma draws for each engine outcome (pure).
-    static func phase(for outcome: PlanOutcome) -> Phase {
-        switch outcome {
-        case .planCreated: .ready
-        case .outsideV1Scope: .outcome(.outsideScope)
-        case .clinicalHumanRequired: .outcome(.heldForSafety)
-        case .needsInput(let fields): .outcome(.missingAnswer(fields))
-        case .invalidInput, .failed, .unrecognized: .outcome(.notBuilt)
+        let next = Self.phase(for: out.answer.planOutcome)
+        // Stored before the minimum display (QRE P3-5): a kill during "Montando" never brings the sent draft back as unsent.
+        switch next {
+        case .ready: store.save(OnboardingSaved(draft: nil, step: nil, profile: OnboardingProfile(draft)))   // the record holds the answers now
+        case .outcome(.heldForSafety): store.save(OnboardingSaved(draft: draft, step: .dataUse, profile: store.load()?.profile, heldForSafety: true))
+        default: break
         }
+        if minimumDisplay > .zero { try? await Task.sleep(for: minimumDisplay) }
+        phase = next
     }
 
     /// "Tentar de novo" (`838:3972`): the same answers, sent again (still once at a time).
@@ -166,33 +178,13 @@ final class OnboardingViewModel {
         await submit(minimumDisplay: minimumDisplay)
     }
 
-    /// "Revisar respostas" / "Revisar resposta" / the back of `838:4011`: back to the form, answers kept.
+    /// "Revisar respostas" / "Revisar resposta" / the back of `838:4011`: back to the form, answers kept. Never from "Retido por
+    /// segurança" (SSCTR C4): that screen has no review and the held draft is never sent again.
     func review() {
-        guard case .outcome(let o) = phase else { return }
+        guard case .outcome(let o) = phase, o != .heldForSafety else { return }
         phase = .form
-        switch o {
-        case .outsideScope, .heldForSafety: step = .care
-        case .missingAnswer(let fields): step = Self.step(asking: fields, in: flow) ?? .dataUse
-        case .notBuilt: step = .train
-        }
+        step = Self.reviewStep(for: o, in: flow)
         persist()
-    }
-
-    /// Where the form asks a field the engine named (display routing only: the engine decided what is missing).
-    static func step(asking fields: [String], in flow: [OnboardingStep]) -> OnboardingStep? {
-        let named: [OnboardingStep] = fields.flatMap { f -> [OnboardingStep] in
-            if f.hasPrefix("athlete.event") || f.hasPrefix("event.") { return [.raceDate] }
-            if f.hasPrefix("schedule.longRunDay") { return [.longRun] }
-            if f.hasPrefix("schedule.") && f.hasSuffix("Minutes") { return [.duration] }
-            if f.hasPrefix("schedule.") { return [.week] }
-            if f.hasPrefix("recent.") { return [.runNow, .strengthYears] }
-            if f.hasSuffix("TrainingMonths") { return [.runYears, .strengthYears] }
-            if f.contains("ageEligibility") || f.contains("ageYears") { return [.age] }
-            if f.contains("eligibility") { return [.care] }
-            if f.contains("equipment") { return [.strengthPlace] }
-            return []
-        }
-        return flow.first(where: named.contains)
     }
 
     // MARK: after the plan (31 → 32 → 34)
@@ -217,7 +209,7 @@ extension OnboardingViewModel {
         case "confirmCare": phase = .form; step = .care; sheet = .confirmCare
         case "notBuilt": phase = .outcome(.notBuilt)
         case "missing": phase = .outcome(.missingAnswer([]))
-        case "outside": phase = .outcome(.outsideScope)
+        case "outside": phase = .outcome(.outsideScope(.age))
         case "held": phase = .outcome(.heldForSafety)
         default: break
         }
