@@ -13,6 +13,11 @@ import Observation
 /// not ours to pick), with a statement of the athlete that cannot be re-sent as stated (a stop or a response outside the shared enumerations:
 /// a correction replaces the report, so dropping it would erase a safety signal), or whose day is not the day the plan in force holds for
 /// its session (the report's day is the athlete's, and the row's may be the device's).
+///
+/// Known limits (shared projection, not ours to change): `LoggedVoice` carries no `seconds`, `conditions` or `walkBreaks`, so a report that
+/// stated them would lose them on correction and this cannot detect it (no V1 athlete form sends them; a unit test fails if the run form
+/// starts to). The corrected report has the day's precision only (no `observedAt`): the athlete part's own instant is not projected (a
+/// contract change).
 @Observable @MainActor
 final class HistoryCorrectionViewModel {
     enum Phase: Equatable {
@@ -40,17 +45,29 @@ final class HistoryCorrectionViewModel {
     let sessionDate: String?
     private let writer: CoachingWriting
     private let planToday: () -> String?
-    private let now: () -> Date
     private let reload: @MainActor () async -> Void
 
-    /// `reload` is `AppModel.load`; `planToday` the plan's own today (the screen's date).
-    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init,
-         reload: @escaping @MainActor () async -> Void) {
-        self.entry = entry; self.sessionDate = sessionDate; self.writer = writer; self.planToday = planToday; self.now = now; self.reload = reload
+    /// `reload` is `AppModel.load`; `planToday` the plan's own today (the screen's date; no plan, no correction).
+    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping @MainActor () async -> Void) {
+        self.entry = entry; self.sessionDate = sessionDate; self.writer = writer; self.planToday = planToday; self.reload = reload
     }
 
     var canContest: Bool { Self.canContest(entry) && sessionDate == entry.date }
-    var canSend: Bool { phase == .editing && Self.distance(km) != nil && Self.answered(eligibility) }
+    var canSend: Bool { phase == .editing && Self.usable(Self.distance(km)) && Self.answered(eligibility) }
+
+    /// The date the plan in force holds for a row's session (the day the athlete's report of it stated): nil when it holds no such session,
+    /// or more than one date for it.
+    static func sessionDate(of e: LoggedEntry, in weeks: [Week]) -> String? {
+        guard let id = e.sessionId else { return nil }
+        let dates = Set(weeks.flatMap(\.sessions).filter { $0.id == id }.map(\.date))
+        return dates.count == 1 ? dates.first : nil
+    }
+
+    /// A distance the engine will read (SSCTR #59 P2-1): within the bounds it reads a declared distance in (0.01–300 km, `RUN_FORMATS_V1.json`
+    /// `runDistanceKmMax`, `v1-run-history.mjs` distanceFacts). Outside them "Salvo" would show a correction the engine ignores, and the row
+    /// could not be contested again. No pace check: the engine applies its pace window to measured distances only, and the athlete's minutes
+    /// may cover less than the recording (a conflicted row).
+    static func usable(_ km: Double?) -> Bool { km.map { $0 >= 0.01 && $0 <= 300 } ?? false }
 
     /// Opens the form, only on a row that can be contested.
     func startContesting() { if phase == .idle, canContest { phase = .editing } }
@@ -68,10 +85,10 @@ final class HistoryCorrectionViewModel {
         if out.answer.ok { await reload() }
     }
 
-    /// The request exactly as sent: the correction and the screen, dated the plan's today.
+    /// The request exactly as sent: the correction and the screen, dated the plan's today (never the device's: no plan, no request).
     func request() -> ReviewRequest? {
-        guard let d = Self.distance(km), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return nil }
-        return Self.request(obs, eligibility: eligibility, today: planToday() ?? Fmt.deviceDay(now()))
+        guard let d = Self.distance(km), let today = planToday(), let obs = Self.observation(entry: entry, distanceKm: d, reason: reason) else { return nil }
+        return Self.request(obs, eligibility: eligibility, today: today)
     }
 
     static func request(_ obs: AthleteObservation, eligibility: EligibilityScreen, today: String) -> ReviewRequest? {
@@ -116,15 +133,16 @@ final class HistoryCorrectionViewModel {
         return .some(v)
     }
 
-    /// The correction of the athlete's own report: their voice (completed, minutes, RPE, stop, responses) with the declared distance, naming
-    /// that voice's event id. Nothing the athlete did not state: a response the voice lacks is `.unknown`, minutes it lacks stay absent (never
+    /// The correction of the athlete's own report: their voice (completed, minutes, their own declared distance, RPE, stop, responses) with
+    /// the contested distance added, naming that voice's event id. A correction replaces the report in force, so what the voice stated is
+    /// re-sent as stated (QRE #59 P1: their declared distance stays theirs; the engine reads the contest first). Nothing the athlete did not state: a response the voice lacks is `.unknown`, minutes it lacks stay absent (never
     /// the row's, which may be the device's). The day is the row's, which `canContest` holds to the plan's day for the session (what the
     /// athlete's report stated); no `observedAt` is sent, because the voice does not carry the athlete's own instant and the row's may be the
     /// device's (the engine then reads the report at the end of that day). No single, re-sendable athlete voice, no observation (#59).
     static func observation(entry: LoggedEntry, distanceKm: Double, reason: DeclaredDistanceReason) -> AthleteObservation? {
         guard let id = entry.sessionId, let mine = athleteVoice(entry), let said = statement(mine) else { return nil }
         return AthleteObservation.plannedRun(sessionId: id, occurrenceDate: entry.date, observedAt: nil,
-                                             actual: PlannedRunActual(completed: mine.completed, minutes: mine.minutes, rpe: mine.rpe, stop: said.stop,
+                                             actual: PlannedRunActual(completed: mine.completed, minutes: mine.minutes, declaredDistanceKm: mine.declaredKm, rpe: mine.rpe, stop: said.stop,
                                                                       declared: ContestedDistance(distanceKm: distanceKm, reason: reason)),
                                              response: said.response)
             .correcting(eventId: mine.eventId)

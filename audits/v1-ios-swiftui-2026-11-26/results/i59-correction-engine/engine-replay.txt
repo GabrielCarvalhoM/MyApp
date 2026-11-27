@@ -1,5 +1,5 @@
-# RepMile #59 engine replay (node v24, CoachingCore and facade at base 7bdc06d, unchanged by this commit). Request built as the C · #59 HistoryCorrectionViewModel builds it.
-# Script: scratchpad i59-engine-replay.mjs (adapted from the reviewer's replay59*.mjs), in-memory store, synthetic athlete; no personal data.
+# RepMile #59 engine replay (v24.19.0, CoachingCore and facade at base 7bdc06d, unchanged by this branch). Request built as the C · #59 HistoryCorrectionViewModel builds it (after the QRE/SSCTR review fixes).
+# Script: scratch/i59-engine-replay.mjs <repo root>; in-memory store, synthetic athlete; no personal data.
 === 0 replica == Swift golden (fixture P-logged-two-voices, 7,4 km OBSTRUCTED_SKY, plan today 2026-11-18)
   PASS the JS replica encodes exactly the Swift golden request
 === A completed run, correction
@@ -21,6 +21,20 @@
   PASS the ATHLETE voice is the correction
   PASS the athlete part's instant is not the device's
   PASS not offered again (contested)
+=== A2 the athlete declared a distance in the report
+  device import: ok=true recorded=1
+  athlete form (eligibility answered): ok=true status=KEEP recorded=1 missing=[] warningSignScreen=NOT_RAISED_BY_THIS_EXTENSION
+  row before: completed=true minutes=40 measuredKm=7.06 contested=null voices=[{"ch":"DEVICE","completed":true,"minutes":40,"km":7.06},{"ch":"ATHLETE","completed":true,"minutes":40,"declaredKm":7.5}]
+  correction offered: true
+  sent: {"kind":"WEEKLY_REVIEW","observations":[{"sessionId":"w0-run-d1","occurrenceDate":"2026-11-17","actual":{"completed":true,"minutes":40,"distanceKm":7.5,"rpe":4,"declared":{"distanceKm":6,"reason":"SIGNAL_LOSS"}},"response":{"performance":"UNKNOWN","recovery":"UNKNOWN","effort":"ON_TARGET","nextDayFunction":"UNKNOWN"},"correctionOf":"<ATHLETE voice eventId>"}],"eligibility":{"status":"NONCLINICAL_CONFIRMED","pain":false,"persistentPain":false,"injury":false,"illness":false,"functionalLimitation":false,"clinicalConcern":false,"assessedAt":"2026-11-18"}}
+  answer: ok=true status=KEEP recorded=1 notRecorded=[] warningSignScreen=NOT_RAISED_BY_THIS_EXTENSION
+  row after: completed=true minutes=40 measuredKm=7.06 contested={"distanceKm":6,"reason":"SIGNAL_LOSS"} voices=[{"ch":"ATHLETE","completed":true,"minutes":40,"declaredKm":7.5},{"ch":"DEVICE","completed":true,"minutes":40,"km":7.06}]
+  PASS offered
+  PASS the athlete's declared distance is re-sent as theirs (distanceKm)
+  PASS recorded and kept
+  PASS the athlete voice still states its own 7.5 km
+  PASS contested present = 6 km
+  PASS DEVICE voice intact
 === B symptom stop, correction re-sends it
   device import: ok=true recorded=1
   athlete form (eligibility answered): ok=true status=KEEP recorded=1 missing=[] warningSignScreen=REQUIRED

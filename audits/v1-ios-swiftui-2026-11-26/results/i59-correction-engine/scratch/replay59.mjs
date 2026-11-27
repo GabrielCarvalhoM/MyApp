@@ -1,3 +1,5 @@
+// SUPERSEDED discovery replica (kept as evidence of how #59 was found). Its correction() is the PRE-#59 builder: it copies the row's observedAt
+// and silently drops an UNSTATED stop. The replica of the final code is i59-engine-replay.mjs.
 // Read-only replay of RepMile #59 correction against the real engine (in-memory store). Writes nothing to the checkout.
 // The discovery path, one script: node replay59.mjs <repo root> [--correctionOf] [--eligibility] [--stop]
 //   none: the pre-#59 request (ALREADY_REPORTED) · --correctionOf: named, no screen (ASK) · both: recorded · --stop: an unstated stop (UNSTATED).

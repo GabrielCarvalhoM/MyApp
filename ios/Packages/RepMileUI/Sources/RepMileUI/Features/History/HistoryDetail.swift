@@ -65,7 +65,10 @@ struct HistoryDetail: View {
         switch viewModel.phase {
         case .saved, .notKept:
             let sent = viewModel.phase == .saved
-            Text(sent ? L.t("report.saved") : L.t("report.notKept")).rmText(.detalhe, sent ? RM.Palette.positivo : RM.Palette.negativo)
+            // A clinical route is not "send again" (SSCTR #59 P2-2): only its banner, never an invitation to withdraw the answer.
+            if sent || !viewModel.clinical {
+                Text(sent ? L.t("report.saved") : L.t("report.notKept")).rmText(.detalhe, sent ? RM.Palette.positivo : RM.Palette.negativo)
+            }
             if viewModel.clinical {
                 StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"))
                     .accessibilityIdentifier("contest-blocked")
