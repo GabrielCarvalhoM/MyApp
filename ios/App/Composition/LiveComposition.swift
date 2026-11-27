@@ -34,6 +34,11 @@ final class LiveComposition {
     private let reader: HealthKitReader
     private let sink: DeviceActivitySinkProxy
     private let identity: AthleteIdentityStore
+    #if DEBUG
+    /// Debug, isolated launches only (`-isolatedLiveStores`, #83 review P2-1): A's first-launch reconciliation as the live root shows it to a
+    /// UI test (`LiveStores.reconciliationProbe`). Nil for a standard launch.
+    private(set) var reconciliationProbe: String?
+    #endif
 
     private static let opener = LaunchOpener<LiveComposition> { try await make() }
     /// Hosts opened in this process: never more than one (#49 P2-1). `SingleOpen` guarantees it; this makes a regression stop the process.
@@ -68,12 +73,21 @@ final class LiveComposition {
         let sink = DeviceActivitySinkProxy()
         let reader = HealthKitReader()
         let ingestor = HealthKitIngestor(reader: reader, sink: sink, recordings: recordings, store: try stores.queue())
+        #if DEBUG
+        let keychainBefore = stores.isolatedKeychainItems()
+        #endif
         let host = try await CoachingHost.open(stores.host(athleteId), queueControl: ingestor, clock: DeviceClock())
         hostsOpened += 1
         precondition(hostsOpened == 1, "one CoachingHost per athlete per process")
         guard sink.bind(host) else { preconditionFailure("one CoachingHost per process") }
         let c = LiveComposition(athleteId: athleteId, host: host, ingestor: ingestor, reader: reader, recordings: recordings, recorder: recorder,
                                 sink: sink, identity: identity)
+        #if DEBUG
+        if stores != .standard {
+            c.reconciliationProbe = LiveStores.reconciliationProbe(outcome: host.reconciliation.rawValue, before: keychainBefore,
+                                                                   after: stores.isolatedKeychainItems())
+        }
+        #endif
         c.startIngest()
         return c
     }
@@ -111,30 +125,5 @@ final class LiveComposition {
     /// write is not lost: the next launch reads `GONE` for the same id and rotates again.
     func accountErased() {
         _ = try? identity.rotate(from: athleteId)
-    }
-}
-
-/// The stores of A, B and C for `LiveStores` (the folders and the identity are in `Launch.swift`, which the composition unit tests compile).
-extension LiveStores {
-    #if DEBUG
-    /// Never A's production service (`CoachingHost.keychainService`): an isolated launch only ever lists or removes what an isolated launch
-    /// wrote, and its first-launch reconciliation (#49) removes the items the previous isolated install left, as after a reinstall.
-    static let isolatedKeychainService = CoachingHost.keychainService + ".uitest-isolated"
-    #endif
-
-    func recordings() -> RecordingStore { isolatedFolder("RunRecorder").map { RecordingStore(directory: $0) } ?? RecordingStore.standard() }
-
-    func queue() throws -> FileQueueStore {
-        if let dir = isolatedFolder("HealthKitIngest") { return FileQueueStore(directory: dir) }
-        return try FileQueueStore.applicationSupport()
-    }
-
-    func host(_ athleteId: String) -> CoachingHost.Configuration {
-        #if DEBUG
-        if let dir = isolatedFolder("CoachingHost") {
-            return CoachingHost.Configuration(athleteId: athleteId, root: dir, keychainService: Self.isolatedKeychainService)
-        }
-        #endif
-        return CoachingHost.Configuration(athleteId: athleteId)
     }
 }

@@ -25,8 +25,8 @@ enum LaunchMode: Equatable {
 /// a Keychain service of their own (`LiveStores.isolatedKeychainService`), so a live UI test never meets what an earlier run left (an enrolled
 /// athlete after a test that failed half way) and never reads or touches the standard identity, store or Keychain items. The same token is
 /// the same install across relaunches. A new token is a new install whose Keychain is not new, as after a reinstall: A's first-launch
-/// reconciliation (#49) runs and removes what the previous isolated install left. A token that is missing or not `[A-Za-z0-9-]{1,64}`
-/// gets a new folder for that launch, never the standard places.
+/// reconciliation (#49) runs and removes what the previous isolated install left. A token that is missing, starts with `-` (the next
+/// argument) or is not `[A-Za-z0-9-]{1,64}` gets a new folder for that launch, never the standard places.
 enum LiveStores: Equatable {
     case standard
     #if DEBUG
@@ -42,7 +42,9 @@ enum LiveStores: Equatable {
         #if DEBUG
         guard let i = arguments.firstIndex(of: argument) else { return .standard }
         let token = arguments.indices.contains(i + 1) ? arguments[i + 1] : ""
-        let valid = (1...64).contains(token.count) && token.unicodeScalars.allSatisfy { ($0.isASCII && CharacterSet.alphanumerics.contains($0)) || $0 == "-" }
+        // A token never starts with "-": that is the next launch argument, not a token (it would make every such launch share one folder).
+        let valid = (1...64).contains(token.count) && !token.hasPrefix("-")
+            && token.unicodeScalars.allSatisfy { ($0.isASCII && CharacterSet.alphanumerics.contains($0)) || $0 == "-" }
         return .isolated(temporary.appendingPathComponent(folderPrefix + (valid ? token : newName()), isDirectory: true))
         #else
         return .standard

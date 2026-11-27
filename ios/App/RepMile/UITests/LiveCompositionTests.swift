@@ -197,21 +197,48 @@ final class LiveCompositionTests: XCTestCase {
         app.terminate()
     }
 
-    /// #49 through the live composition, as after a reinstall: the app's container goes, its Keychain items stay. The first install enrols
-    /// (A's record, and its integrity key and anchor in the Keychain) and is left as it is, as a deleted app leaves it; the next launch is a new
-    /// install (a new token: no identity, no record, no install marker) over the same Keychain service. A's first-launch reconciliation
-    /// removes those leftovers (`host=first-launch-reconciled code=KEYCHAIN_LEFTOVERS_REMOVED` in A's log), and the athlete meets onboarding:
-    /// a new account, never the first install's plan, never an error. The real engine then accepts a new enrolment and Hoje reads it.
+    /// A's first-launch reconciliation for this launch, from the Debug marker an isolated launch shows (`debug-host-reconciliation`):
+    /// `<outcome> leftovers=<A's items in the Keychain before it opened> remaining=<of those, still there with the same bytes after>`.
     @MainActor
-    func testAReinstallKeepsTheKeychainAndTheNextLaunchIsANewAccount() {
+    private func reconciliation(_ app: XCUIApplication) -> (outcome: String, leftovers: Int, remaining: Int) {
+        let probe = app.staticTexts["debug-host-reconciliation"]
+        XCTAssertTrue(probe.waitForExistence(timeout: 30), "the Debug reconciliation marker")
+        let parts = probe.label.split(separator: " ").map(String.init)
+        func value(_ key: String) -> Int { parts.first { $0.hasPrefix(key + "=") }.flatMap { Int($0.dropFirst(key.count + 1)) } ?? -1 }
+        return (parts.first ?? "", value("leftovers"), value("remaining"))
+    }
+
+    /// #49 through the live composition, as after a reinstall: the app's container goes, its Keychain items stay. The first install enrols
+    /// (A's record, and its integrity key and the athlete's anchor in the Keychain); a relaunch of that install reconciles nothing and opens
+    /// on Hoje. The next launch is a new install (a new token: no identity, no record, no install marker) over the same Keychain service:
+    /// A's first-launch reconciliation reports `FRESH_INSTALL_PURGED`, found the first install's items (leftovers > 0) and none of them is
+    /// still there once A has opened (remaining = 0). The athlete meets onboarding, never an error, and the real engine accepts a new
+    /// enrolment. What it does not prove: that a leftover would have harmed the new account (its anchors are per athlete, never read by a
+    /// new id); it proves the cleanup itself, which a broken removal fails.
+    @MainActor
+    func testAReinstallRemovesThePreviousInstallsKeychainItemsAndStartsANewAccount() {
         let first = launch()
         assertOnboarding(first, "live — primeira instalação")
+        XCTAssertEqual(reconciliation(first).outcome, "FRESH_INSTALL_PURGED", "a new install reconciles")
         enroll(first, "primeira instalação")
         first.terminate()
+
+        let relaunched = launch()
+        XCTAssertTrue(relaunched.buttons["tab-today"].waitForExistence(timeout: 60), "the same install keeps its athlete")
+        XCTAssertFalse(el(relaunched, "state-operational-error").exists)
+        let same = reconciliation(relaunched)
+        XCTAssertEqual(same.outcome, "NOT_NEEDED", "a relaunch of the same install reconciles nothing")
+        XCTAssertGreaterThan(same.leftovers, 0, "the enrolled install has its items in the Keychain")
+        relaunched.terminate()
 
         install = UUID().uuidString
         let reinstalled = launch()
         assertOnboarding(reinstalled, "live — reinstalação, Keychain mantido")
+        let r = reconciliation(reinstalled)
+        XCTAssertEqual(r.outcome, "FRESH_INSTALL_PURGED", "the reinstall reconciles")
+        XCTAssertGreaterThan(r.leftovers, 0, "the first install's Keychain items were still there before A opened")
+        XCTAssertEqual(r.remaining, 0, "none of them is left once A has opened")
+        attach(reinstalled, "live — reinstalação: \(r.outcome) leftovers=\(r.leftovers) remaining=\(r.remaining)")
         enroll(reinstalled, "depois da reinstalação")
         reinstalled.terminate()
     }

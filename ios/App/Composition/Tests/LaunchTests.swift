@@ -1,4 +1,7 @@
+import CoachingHost
+import HealthKitIngest
 import IntegrationContracts
+@testable import RunRecorder
 import XCTest
 
 /// #63: the composition is opened at launch (also a background launch with no scene), the root reuses that one instance, an open that failed
@@ -170,6 +173,17 @@ final class LiveStoresTests: XCTestCase {
         XCTAssertEqual(try LiveStores.standard.identity().directory, try AthleteIdentityStore.standard().directory)
     }
 
+    /// #83 review P3-1: without the argument, each front's own standard place and A's production Keychain service.
+    func testTheStandardBranchesAreEachFrontsStandardPlaceAndAsProductionService() throws {
+        let stores = LiveStores.of([], temporary: tmp)
+        XCTAssertEqual(stores.recordings().directory, RecordingStore.standardDirectory)
+        XCTAssertEqual(try stores.queue().directory, try FileQueueStore.applicationSupport().directory)
+        let host = stores.host("rm1-0123")
+        XCTAssertEqual(host.athleteId, "rm1-0123")
+        XCTAssertEqual(host.root, CoachingHost.defaultRoot())
+        XCTAssertEqual(host.keychainService, CoachingHost.keychainService)
+    }
+
     #if DEBUG
     func testATokenIsOneFolderOfItsOwnInTheTemporaryDirectory() throws {
         let stores = LiveStores.of(["RepMile", "-isolatedLiveStores", "run-1A", "-simulatedLocation"], temporary: tmp)
@@ -186,10 +200,38 @@ final class LiveStoresTests: XCTestCase {
 
     func testAMissingOrUnsafeTokenGetsANewFolderNeverTheStandardPlaces() {
         for args in [["-isolatedLiveStores"], ["-isolatedLiveStores", ""], ["-isolatedLiveStores", "../up"], ["-isolatedLiveStores", "a/b"],
-                     ["-isolatedLiveStores", ".hidden"], ["-isolatedLiveStores", "é"], ["-isolatedLiveStores", String(repeating: "a", count: 65)]] {
+                     ["-isolatedLiveStores", ".hidden"], ["-isolatedLiveStores", "é"], ["-isolatedLiveStores", String(repeating: "a", count: 65)],
+                     // #83 review P3-3: the next launch argument is not a token (every such launch would share one folder).
+                     ["-isolatedLiveStores", "-simulatedLocation", "-AppleLanguages", "(pt-BR)"], ["-isolatedLiveStores", "-"]] {
             XCTAssertEqual(LiveStores.of(args, temporary: tmp, newName: { "fresh" }),
                            .isolated(tmp.appendingPathComponent("uitest-live-fresh", isDirectory: true)), "\(args)")
         }
+    }
+
+    /// The isolated branches: under the token's folder, A's items under a service that is never the production one.
+    func testTheIsolatedBranchesStayInTheTokensFolderAndService() throws {
+        let stores = LiveStores.of(["-isolatedLiveStores", "run-2"], temporary: tmp)
+        let root = tmp.appendingPathComponent("uitest-live-run-2", isDirectory: true)
+        XCTAssertEqual(stores.recordings().directory, root.appendingPathComponent("RunRecorder", isDirectory: true))
+        XCTAssertEqual(try stores.queue().directory, root.appendingPathComponent("HealthKitIngest", isDirectory: true))
+        let host = stores.host("rm1-0123")
+        XCTAssertEqual(host.root, root.appendingPathComponent("CoachingHost", isDirectory: true))
+        XCTAssertEqual(host.keychainService, "fit.vilumo.repmile.lab.coachinghost.uitest-isolated")
+        XCTAssertNotEqual(host.keychainService, CoachingHost.keychainService)
+        XCTAssertNil(LiveStores.standard.isolatedKeychainItems(), "a standard launch never lists a Keychain service")
+    }
+
+    /// #83 review P2-1: what the reinstall UI test reads. Only items still there with the same bytes are leftovers that remain.
+    func testTheReconciliationProbeCountsLeftoversAndWhatRemainsOfThem() {
+        let key = Data([1]), anchor = Data([2]), newKey = Data([3])
+        XCTAssertEqual(LiveStores.reconciliationProbe(outcome: "FRESH_INSTALL_PURGED", before: ["key": key, "anchor.a": anchor], after: [:]),
+                       "FRESH_INSTALL_PURGED leftovers=2 remaining=0")
+        XCTAssertEqual(LiveStores.reconciliationProbe(outcome: "FRESH_INSTALL_PURGED", before: ["key": key, "anchor.a": anchor], after: ["key": newKey]),
+                       "FRESH_INSTALL_PURGED leftovers=2 remaining=0", "a key A wrote after the cleanup is not a leftover")
+        XCTAssertEqual(LiveStores.reconciliationProbe(outcome: "FRESH_INSTALL_PURGED", before: ["key": key, "anchor.a": anchor], after: ["anchor.a": anchor]),
+                       "FRESH_INSTALL_PURGED leftovers=2 remaining=1")
+        XCTAssertEqual(LiveStores.reconciliationProbe(outcome: "NOT_NEEDED", before: ["key": key], after: ["key": key]), "NOT_NEEDED leftovers=1 remaining=1")
+        XCTAssertEqual(LiveStores.reconciliationProbe(outcome: "FRESH_INSTALL_PURGED", before: nil, after: [:]), "FRESH_INSTALL_PURGED KEYCHAIN_UNLISTABLE")
     }
 
     func testTheFirstLaunchOfATokenRemovesEarlierTokensAndARelaunchKeepsItsOwn() throws {

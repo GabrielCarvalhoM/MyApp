@@ -20,6 +20,9 @@ struct LiveRoot: View {
             RepMileLaunchScreen(phase: .opening, retry: {}).task { await open() }
         case .ready(let c):
             RepMileShell(model: c.model, recorder: c.recorder, live: RepMileShell.Live(athleteId: c.athleteId, accountErased: { c.accountErased() }))
+            #if DEBUG
+                .overlay(alignment: .bottomLeading) { ReconciliationProbe(text: c.reconciliationProbe) }
+            #endif
         case .failed(let code):
             switch LaunchFailure.shown(for: code) {
             case .identityDamaged:
@@ -41,3 +44,16 @@ struct LiveRoot: View {
         }
     }
 }
+
+#if DEBUG
+/// Debug, isolated live launches only (#83 review P2-1): A's first-launch reconciliation for a UI test (`debug-host-reconciliation`), in
+/// a 1-point text nobody sees or touches. Nothing for a standard launch; not compiled in Release.
+private struct ReconciliationProbe: View {
+    let text: String?
+    var body: some View {
+        if let text {
+            Text(verbatim: text).font(.system(size: 1)).opacity(0.02).allowsHitTesting(false).accessibilityIdentifier("debug-host-reconciliation")
+        }
+    }
+}
+#endif
