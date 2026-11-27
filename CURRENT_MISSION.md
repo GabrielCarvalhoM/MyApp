@@ -1,4 +1,28 @@
-# CURRENT_MISSION — Product Truth / Legacy Experience separation
+# CURRENT_MISSION
+
+## ACTIVE — RepMile V1 implementation (Founder, 2026-11-26 / 2026-11-27)
+
+**IMPLEMENTATION_AUTHORIZED = YES (V1, within the limits below) · REAL_ATHLETE_READY = NO.** This section is the active mission. Every
+section below it is a historical record of earlier missions: it is preserved as provenance and is **not** an active instruction where it
+contradicts this section (for example "IMPLEMENTATION_AUTHORIZED = NO", "FIGMA_EDITS_AUTHORIZED = NO", "pre-implementation").
+
+**Authorities** (`specs/v1/PRODUCT_SCOPE.md`, "Três autoridades"): the Figma `90oyvXHxxBQAvr1netov7S`, version "V1 alinhamento funcional ·
+26 nov", is the UI/UX specification; the frozen CoachingCore is the sporting authority (changes only by CCP with explicit Founder approval,
+e.g. #79); `specs/v1/` bridges them. Canon and Product Truth (`canon/CANONICAL_INDEX.md`) remain binding for product, domain, privacy and
+business.
+
+**Scope and work:** the V1 iOS app (SwiftUI, MVVM + Clean Architecture) over the native CoachingCore, HealthKit and RunRecorder, per
+`specs/v1/` and the backlog on the GitHub Projects board "RepMile — Product & Engineering". Workflow, gates and agents:
+`docs/engineering/README.md`, `WORKFLOW.md` (incl. §7 pause/resume and §8 Founder Decision), `QUALITY_GATES.md` (incl. §2b visual gate),
+`AGENTS.md`. Checkpoint: `specs/v1/CONTINUITY.md`.
+
+**Founder-only decisions** go to the Founder Decision column and are answered in issue comments; silence is never approval. Not authorized
+by this mission: App Store publication, real charging, deleting real data, weakening safety protections, merging PR #30, changing frozen
+sporting contracts without an approved CCP, or declaring REAL_ATHLETE_READY.
+
+---
+
+## HISTORICAL — Product Truth / Legacy Experience separation (2026-10-22)
 
 <!-- EXP_CLOSURE_METADATA_START: EXP-CLOSE-r1 -->
 **Chief closure — 2026-10-22: COMPLETE_DOCUMENTARY_DECONTAMINATION.** Documentary authority formalization EXP-AUTH-r1 passed both independent gates and Chief consolidation. See [final disposition](audits/experience-decontamination-2026-10-22/FINAL_DISPOSITION.md). EXP-CLOSE-r1 records completion metadata only; the author-submission status below is retained history. Frozen review hashes and separate final closure hashes remain distinguishable.

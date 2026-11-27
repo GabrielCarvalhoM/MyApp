@@ -8,7 +8,7 @@ Read `CURRENT_MISSION.md` → `canon/CANONICAL_INDEX.md` authority filter → `p
 
 Product/domain, behavioral agency, evidence, privacy and business truth remain binding. Old experience architecture and visual prescriptions lose active authority even where embedded in the thesis, scope or domain specifications. Read all sources through the scoped authority filter; no legacy MUST/lock can override the current Founder decision.
 
-The independent new Figma is **NEW EXPERIENCE CANDIDATE / ACTIVE DESIGN EXPLORATION**; identity/link have not been supplied. It owns candidate experience architecture within Product Truth. It becomes final Experience/Design Source of Truth only after reconciliation, audit and explicit promotion. This documentary mission does not authorize editing either Figma.
+**Current (Founder, 2026-11-26/27):** the Figma `90oyvXHxxBQAvr1netov7S`, version "V1 alinhamento funcional · 26 nov", is the **approved UI/UX specification of the V1**. Changes to it go only through an exploration page and a Founder Decision (`docs/engineering/WORKFLOW.md` §8); agents never edit canonical frames. The earlier "candidate / no Figma edits" status of this paragraph is historical (2026-10-22).
 
 ## Project
 This repository contains the new clean-room Vilumo Fit project.
@@ -34,7 +34,7 @@ The active mission is defined in:
 `CURRENT_MISSION.md`
 Read it before starting or continuing material work.
 The mission defines the current objective, allowed work, prohibited work, completion state and hard stop.
-Implementation is permitted only when a future Founder-authorized `CURRENT_MISSION.md` explicitly allows it; the current mission prohibits implementation.
+**Implementation of the V1 is authorized** by the Founder (2026-11-26, "Autonomous Engineering System V1"; 2026-11-27 reconciliation and Founder Decision governance). The active mission is the first section of `CURRENT_MISSION.md`; the operational entry point is `docs/engineering/README.md`.
 
 ## Clean-Room Visual References
 The Founder may explicitly provide new visual references for their stated purpose. Previously approved references and visual directions are historical and do not automatically constrain the independent candidate.
@@ -58,7 +58,7 @@ Do not silently make Founder-owned strategic or subjective decisions.
 
 Read the current SSCTR follow-up in `CURRENT_MISSION.md`, then `governance/agents/sports-science-reviewer/CONSTITUTION.md`, `.agents/skills/sports-science-review/SKILL.md` and local `registry.json`. The project native adapter is `.claude/agents/sports-science-concurrent-training-reviewer.md`; Codex shares the same constitution/skill through its local TOML adapter. Chief must call this role for training-policy change, G01–G04, material Run/Strength Intelligence, interference/adaptation, recovery/load/readiness claims, taper/deload, substitution or any rule affecting prescribed training; do not call it for pixels or pure editorial work.
 
-Authority is PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for sufficiently supported bounded nonclinical internal sporting decisions, superseding only human-only reviewer eligibility for that subset. Clinical judgment remains CLINICAL_HUMAN_REQUIRED; unknown eligibility is ASK, not clinical clearance or assumed disease. No real credentials, human/empirical validation, runtime sovereignty, blanket G01–G04 closure or automatic Product Truth publication. Existing competent governance gates still apply; prescriptive approvals enter future funded-human revalidation with no AI veto. Inherit model/tools/permissions, no specialist delegation/global state/access expansion; report actual native availability and any permitted explicit default-instance fallback honestly. This mission permits no Figma edits or runtime implementation. See `audits/sports-science-agent-2026-10-23/TASK_CONTRACT.md` for versions and review ownership.
+Authority is PROVISIONAL_INTERNAL_DOMAIN_AUTHORITY for sufficiently supported bounded nonclinical internal sporting decisions, superseding only human-only reviewer eligibility for that subset. Clinical judgment remains CLINICAL_HUMAN_REQUIRED; unknown eligibility is ASK, not clinical clearance or assumed disease. No real credentials, human/empirical validation, runtime sovereignty, blanket G01–G04 closure or automatic Product Truth publication. Existing competent governance gates still apply; prescriptive approvals enter future funded-human revalidation with no AI veto. Inherit model/tools/permissions, no specialist delegation/global state/access expansion; report actual native availability and any permitted explicit default-instance fallback honestly. (The 2026-10-23 restriction on Figma edits and implementation was for that mission; the current V1 mission supersedes it.) See `audits/sports-science-agent-2026-10-23/TASK_CONTRACT.md` for versions and review ownership.
 <!-- SSCTR_AUTHORITY_END: SSCTR-AUTH-r1 -->
 
 ## Long missions: agent execution runtime (2026-10-31)
