@@ -9201,6 +9201,77 @@
         "An adverse event or runtime inconsistency",
         "Funded qualified-human revalidation (may maintain, modify or revoke without AI veto)"
       ]
+    },
+    {
+      "queue_id": "HQ-CCPONB-SSCTR-LOADHINT",
+      "decision_id": "SSCTR-CCPONB-2026-11-27-R1",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "scope": "SSCTR-CCPONB-2026-11-27-R1, ruling 4 (CCP-ONB-1, PR #121, #109)",
+        "runtimeBaseline": "Reviewed: branch `claude/v1-ios-integration-i109-ccp-onb` @ 0d504672, 2026-11-27 (as the record states); runtime freeze id not stated by reviewer",
+        "policySha256": "not stated by reviewer",
+        "catalogSha256": "not stated by reviewer",
+        "artifact": "audits/v1-ios-integration-2026-11-26/results/i109-ccp-onb/SSCTR_REVIEW.md",
+        "artifact_revision": "SSCTR_REVIEW.md sha256 f9b38705fb34ecf3178376f25c16101eac457a6596c6dbd41f2996163dc3f7ca (the reviewer's report verbatim; record id assigned by Chief)"
+      },
+      "approved_scope": "Ruling 4 (verbatim): **Known loads as hints: acceptable (SUPPORTED_WITH_LIMITS).** Today every listed exercise is set by effort in week 1, at most 2 sets with an RIR floor; the week-1 row says the earlier load \"is a starting hint only\"; a logged load within one increment of the hint is adopted without the usual second confirmation. Proposed screen 26 copy: \"Suas cargas entram como referência. Na primeira semana cada exercício é ajustado pelo esforço; a carga que você registrar perto da sua referência já passa a valer.\" Remove \"Sem carga conhecida, o exercício fica a estabelecer…\". Screen 31: \"Força com as suas cargas\" → \"Força a partir das suas cargas, ajustada pelo esforço na semana 1\". The screen must not imply \"4 × 5 · sobravam 3\" is prescribed. Load convention comes from the catalogue; \"Stiff com barra\" → `barbell-rdl` (hinge hint only). A known-dose start would need new questions (recent, tolerated, within 28 days) but no engine change: Founder decision + SSCTR wording review.",
+      "conditions": [
+        "Proposed screen 26 copy: \"Suas cargas entram como referência. Na primeira semana cada exercício é ajustado pelo esforço; a carga que você registrar perto da sua referência já passa a valer.\" Remove \"Sem carga conhecida, o exercício fica a estabelecer…\".",
+        "Screen 31: \"Força com as suas cargas\" → \"Força a partir das suas cargas, ajustada pelo esforço na semana 1\".",
+        "The screen must not imply \"4 × 5 · sobravam 3\" is prescribed.",
+        "Load convention comes from the catalogue; \"Stiff com barra\" → `barbell-rdl` (hinge hint only).",
+        "A known-dose start would need new questions (recent, tolerated, within 28 days) but no engine change: Founder decision + SSCTR wording review."
+      ],
+      "approval_date": "2026-11-27",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "linked": [
+        "#109 (CCP-ONB-1)",
+        "PR #121",
+        "#120 (copy)",
+        "#123 (engine hardening)"
+      ],
+      "re_review_triggers": [
+        "any engine amendment",
+        "any change to the encoding",
+        "any Figma change to screens 07, 09b, 23, 24, 26, 27 or 31"
+      ]
+    },
+    {
+      "queue_id": "HQ-CCPONB-SSCTR-TURN",
+      "decision_id": "SSCTR-CCPONB-2026-11-27-R1",
+      "decision_revision": "r1",
+      "target": {
+        "project": "MyApp / Vilumo Fit",
+        "scope": "SSCTR-CCPONB-2026-11-27-R1, ruling 2 (CCP-ONB-1, PR #121, #109)",
+        "runtimeBaseline": "Reviewed: branch `claude/v1-ios-integration-i109-ccp-onb` @ 0d504672, 2026-11-27 (as the record states); runtime freeze id not stated by reviewer",
+        "policySha256": "not stated by reviewer",
+        "catalogSha256": "not stated by reviewer",
+        "artifact": "audits/v1-ios-integration-2026-11-26/results/i109-ccp-onb/SSCTR_REVIEW.md",
+        "artifact_revision": "SSCTR_REVIEW.md sha256 f9b38705fb34ecf3178376f25c16101eac457a6596c6dbd41f2996163dc3f7ca (the reviewer's report verbatim; record id assigned by Chief)"
+      },
+      "approved_scope": "Ruling 2 (verbatim): **Per-day shift (09b): no amendment for V1.** Send per-sport shifts only when per-day answers reduce to exactly one shift per sport; never by majority; otherwise keep 09b disabled or collapse it into the per-sport shift. Absent shift is the conservative case. Per-day modelling is a fidelity improvement, not safety (Robineau, Petré): V2 Founder decision + SSCTR review.",
+      "conditions": [
+        "Send per-sport shifts only when per-day answers reduce to exactly one shift per sport; never by majority; otherwise keep 09b disabled or collapse it into the per-sport shift.",
+        "Per-day modelling is a fidelity improvement, not safety (Robineau, Petré): V2 Founder decision + SSCTR review."
+      ],
+      "approval_date": "2026-11-27",
+      "state": "QUEUED_FOR_FUNDED_HUMAN_REVALIDATION",
+      "owner": "Chief / Founder",
+      "human_review": null,
+      "linked": [
+        "#109 (CCP-ONB-1)",
+        "PR #121",
+        "#120 (copy)",
+        "#123 (engine hardening)"
+      ],
+      "re_review_triggers": [
+        "any engine amendment",
+        "any change to the encoding",
+        "any Figma change to screens 07, 09b, 23, 24, 26, 27 or 31"
+      ]
     }
   ],
   "current_addendum": {
@@ -9621,6 +9692,26 @@
     ],
     "unit": "The SSCTR-proposed R7-D Phase 3.3 recheck item, bound to R7D-FREEZE-4; no generated-workout rows",
     "ownerNormalized": "Every field verbatim from the SSCTR proposal except queue_id (without \"(proposed)\"), the runtime named in target (left to the coordinator by the proposal) and owner (Chief / Founder, as the queue policy requires)",
+    "fundingStateUnchanged": true,
+    "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
+  },
+  "ccponb_queue_addendum": {
+    "revision": "CCPONB-HRQ-20261127-r1",
+    "previousItems": 235,
+    "addedItems": 2,
+    "ccponbItems": [
+      "HQ-CCPONB-SSCTR-LOADHINT",
+      "HQ-CCPONB-SSCTR-TURN"
+    ],
+    "sources": [
+      {
+        "file": "audits/v1-ios-integration-2026-11-26/results/i109-ccp-onb/SSCTR_REVIEW.md",
+        "sha256": "f9b38705fb34ecf3178376f25c16101eac457a6596c6dbd41f2996163dc3f7ca",
+        "recordId": "SSCTR-CCPONB-2026-11-27-R1"
+      }
+    ],
+    "unit": "The two SSCTR-proposed CCP-ONB-1 entries (PR #121, #109); no generated-workout rows",
+    "ownerNormalized": "approved_scope, conditions (sentences of the ruling) and re_review_triggers quoted verbatim from the record; fields the record does not supply say \"not stated by reviewer\"; owner Chief / Founder, as the queue policy requires; record id assigned by Chief (the reviewer was read-only and assigned none)",
     "fundingStateUnchanged": true,
     "authority": "A qualified human may maintain, modify or revoke without AI veto; clinical care never waits for funding"
   }

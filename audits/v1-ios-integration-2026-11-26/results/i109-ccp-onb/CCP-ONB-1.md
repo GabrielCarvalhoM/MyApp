@@ -139,7 +139,9 @@ autorização continua com B, só com consentimento explícito; nenhum campo nov
 
 - **Antes** de `onboard` e de `restart`, C lê `OnboardingAnswers.hold`. Se não for `nil`, não chama a porta e mostra o estado específico:
   - `.specialPopulationNotStated(.pregnancyOrPostpartumUnspecified)` → Cuidados, item "Gestação atual ou parto nos últimos 12 meses" marcado
-    sem sinal clínico: o envio fica retido (#110, `BuildHold.pregnancyCode`), com a cópia já prevista para esse estado;
+    sem sinal clínico: o envio fica retido (#110, `BuildHold.pregnancyCode`) e C mostra a tela específica de fora do escopo da V1 (SSCTR 1a:
+    sem sugerir que exercício é inseguro, sem diagnóstico, sem dose substituta; 1b: a resposta do item 7 sobrevive a uma retenção clínica e a
+    um novo cadastro; cópia em #120);
   - `.specialPopulationNotStated(.notAnswered)` → Cuidados com a caixa sem resposta: volta a Cuidados (só ocorre sem sinal marcado);
   - `.raceWithoutWeeks` → a data da prova (04): as semanas vêm da data (D03).
 - C **nunca** mostra o `.failed("INVALID_REQUEST")` genérico por causa de um `hold`: essa resposta do host (e agora do `FixtureCoachingWriter`,
@@ -149,7 +151,39 @@ autorização continua com B, só com consentimento explícito; nenhum campo nov
 - `FixtureCoachingWriter` (RepMileUI, editado nesta branch de integração a pedido do coordenador): `hold` → INVALID_REQUEST como o host;
   `restart` agora também recusa um sinal clínico (como `onboard`). Teste `FixtureHoldTests` (roda no simulador, `sim.sh test`).
 
+## 9. Decisões SSCTR sobre os sete itens abertos (SSCTR-CCPONB-2026-11-27-R1)
+
+Veredito: **APPROVE_WITH_CONDITIONS**; nenhum dos sete itens precisa de emenda de motor na V1. Registro integral: `SSCTR_REVIEW.md` (relatório do
+revisor, literal; id do registro atribuído pelo Chief, porque o revisor era só leitura). Os itens 2 e 4 entraram na fila de revalidação humana
+financiada (`reviews/provisional-sports-science/2026-10-23/HUMAN_REVALIDATION_QUEUE.json`, 235 → 237: HQ-CCPONB-SSCTR-TURN, HQ-CCPONB-SSCTR-LOADHINT,
+`QUEUED_FOR_FUNDED_HUMAN_REVALIDATION`). Citação literal, com a numeração do revisor:
+
+1. **Combined pregnancy/postpartum item, and "not answered" with no clinical sign: hold the send. Correct V1 behaviour.** No amendment for V1.
+   - Why the hold is needed: as the UI really encodes it (flags 1–6 absent), the frozen engine returns ASK; if the athlete then answers "no" to all six, PROPOSED.
+   - Why it stays closed today: a code not among the four is ignored (engine fails open); Swift cannot emit such a code, and the encoder throws on the hold. "Not answered" without a sign arises only when decoding an intake that lacks the key, and it is held.
+   - Conditions: (a) C checks `answers.hold` before sending and shows a specific out-of-V1-scope screen (host A today returns `.failed("INVALID_REQUEST")`, which would land on the generic failure screen); the scope screen must not suggest exercise is unsafe, must not diagnose and must not substitute a dose. (b) The item-7 answer survives a clinical hold and any later re-onboarding.
+   - Individual prescription in pregnancy/postpartum is OUT_OF_SCOPE_CLINICAL; excluding it from V1 is Founder scope.
+   - Recommended hardening (Founder decision on frozen code; owners Core + SEC + SSCTR): a combined or unknown code should give UNSUPPORTED (fail closed). → Founder Decision #123.
+2. **Per-day shift (09b): no amendment for V1.** Send per-sport shifts only when per-day answers reduce to exactly one shift per sport; never by majority; otherwise keep 09b disabled or collapse it into the per-sport shift. Absent shift is the conservative case. Per-day modelling is a fidelity improvement, not safety (Robineau, Petré): V2 Founder decision + SSCTR review.
+3. **"Calor ou subida": no amendment.** Preferred: Founder/design split into "Calor" and "Subida". Interim: never pick one code, never send both (evidence record is append-only; a false condition would persist). A result marked "Calor ou subida" must not be sent as comparable: keep it local, copy says it does not calibrate paces.
+4. **Known loads as hints: acceptable (SUPPORTED_WITH_LIMITS).** Today every listed exercise is set by effort in week 1, at most 2 sets with an RIR floor; the week-1 row says the earlier load "is a starting hint only"; a logged load within one increment of the hint is adopted without the usual second confirmation. Proposed screen 26 copy: "Suas cargas entram como referência. Na primeira semana cada exercício é ajustado pelo esforço; a carga que você registrar perto da sua referência já passa a valer." Remove "Sem carga conhecida, o exercício fica a estabelecer…". Screen 31: "Força com as suas cargas" → "Força a partir das suas cargas, ajustada pelo esforço na semana 1". The screen must not imply "4 × 5 · sobravam 3" is prescribed. Load convention comes from the catalogue; "Stiff com barra" → `barbell-rdl` (hinge hint only). A known-dose start would need new questions (recent, tolerated, within 28 days) but no engine change: Founder decision + SSCTR wording review.
+5. **"Teste" without a measurement: screen 23's "faixas de ritmo" claim is false for it.** No amendment. Add a follow-up "Como cronometrou: relógio com GPS / cronômetro / esteira" → GPS / MANUAL / TREADMILL (probe: GPS → MODERATE tier; MANUAL and TREADMILL → LOW with wider bands). Never default to MANUAL. Until then, the pace-band promise applies only to an official race or track.
+6. **"Equilíbrio" with a real tie: ASK is correct.** No amendment. On a real tie the athlete's preference is the right tie-breaker. UI asks "qual fica mais descansado neste bloco" with costs shown; never picks automatically; says the answer is stored and decides later ties, or shows it in Perfil. Screen 07 copy must describe tie-breaking, not general protection.
+7. **Time goal outside 10–400 min dropped silently.** No amendment; low risk (goal never sets intensity). Client limits the field to 10–400 min (D19 also needs an hours wheel for half/full marathon), never sends out-of-range, gives an explicit message. Screen 31 shows the comparison only when `RunCalibration.goal` is not nil.
+
+**Donos (literal, do registro):**
+
+- C (UI) and QRE: 1a/1b, 2, 3 interim, 5 interim, 6 UI, 7; enforce derived `weeks` whenever there is a race, or test it.
+- Product/UX copy and Founder: screens 07, 23, 26, 31 and the scope screen (→ #120).
+- Founder / design: splitting the item in 3; the follow-up question in 5; known-dose questions in 4.
+- Founder (frozen code): item-1 hardening amendment (#123); per-day shifts in V2.
+- Integration (record fixes): the `runTrainingMonths` row; exercise-selection effect of known loads; tie-break-only meaning of `temporaryPreference`.
+- Data/Privacy: sets, reps and RIR collected and never used.
+- Outside this PR: screen 24 "sem dor: Não" only sets `tolerated:false`; screen 27 asks about current pain next.
+
+Estas decisões prevalecem sobre a coluna "Dono" da tabela do §4 onde divergem. Gatilhos de reexame: ver "Validade da aprovação SSCTR" (§X).
+
 ## 7. Revisões pendentes
 
-SSCTR (§2 linhas de cargas, recentes, "Teste", "Equilíbrio"; §X.2; §X.3) e QRE (contrato, §X.1, §X.2) roteadas pelo orquestrador. Rótulo
+QRE: READY_WITH_CONDITIONS (P3 1–6 aplicados nesta branch). SSCTR: APPROVE_WITH_CONDITIONS (§9; correções do registro aplicadas). Rótulo
 `governance:approved` nos caminhos SHARED: só o Founder aplica.
