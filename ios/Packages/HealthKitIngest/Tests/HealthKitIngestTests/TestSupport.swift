@@ -231,14 +231,16 @@ struct Rig {
     let clock = Clock(t0)
     let sink: DeviceActivitySink
     let index: FakeRecordingIndex?
+    /// Records every background window (QRE-B-R2-03); never the system's.
+    let window: RecordingWindow
     var config = HealthKitIngestor.Configuration()
 
-    init(sink: DeviceActivitySink, store: QueueStore = MemoryStore(), index: FakeRecordingIndex? = nil) {
-        self.sink = sink; self.store = store; self.index = index
+    init(sink: DeviceActivitySink, store: QueueStore = MemoryStore(), index: FakeRecordingIndex? = nil, window: RecordingWindow = RecordingWindow()) {
+        self.sink = sink; self.store = store; self.index = index; self.window = window
     }
-    func make(reader: ScriptedReader? = nil) -> HealthKitIngestor {
+    func make(reader: HealthReading? = nil) -> HealthKitIngestor {
         HealthKitIngestor(reader: reader ?? self.reader, sink: sink, recordings: index, store: store, log: log, clock: clock.get,
-                          scheduler: scheduler, configuration: config)
+                          scheduler: scheduler, configuration: config, backgroundWindow: window)
     }
 }
 

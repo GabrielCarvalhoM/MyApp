@@ -44,37 +44,46 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         public init() {}
     }
 
-    private let reader: HealthReading
-    private let sink: DeviceActivitySink
-    private let recordings: AppRecordingIndex?
-    private let store: QueueStore
-    private let log: IngestLogSink
-    private let clock: @Sendable () -> Date
-    private let scheduler: RetryScheduler
-    private let config: Configuration
+    // Internal, not private: the actor's extensions (`HealthKitIngestor+*.swift`) share them. Nothing outside the module sees them.
+    let reader: HealthReading
+    let sink: DeviceActivitySink
+    let recordings: AppRecordingIndex?
+    let store: QueueStore
+    let log: IngestLogSink
+    let clock: @Sendable () -> Date
+    let scheduler: RetryScheduler
+    let config: Configuration
+    /// QRE-B-R2-03: keeps the process running while an observer notification's delivery is under way.
+    let backgroundWindow: BackgroundWindow
 
-    private var state = QueueState()
-    private var loaded = false
+    var state = QueueState()
+    var loaded = false
     /// The queue file could not be decoded: fail closed, never overwritten; only `purge` clears it.
-    private var storeUnreadable = false
+    var storeUnreadable = false
     /// HealthKit answered `errorDatabaseInaccessible` (device locked): reads wait for `protectedDataDidBecomeAvailable`.
-    private var healthLocked = false
-    private var hostUnavailable = false
+    var healthLocked = false
+    var hostUnavailable = false
     /// QRE-B-04: B could not write an answer or a signal. Nothing is sent until a write succeeds again (retried on every trigger).
-    private var writeFailed = false
+    var writeFailed = false
     /// QRE-B-05: a purge whose durable write failed. Memory already holds the purged state; nothing is read or sent, and every trigger
     /// retries the write, until it is on disk.
-    private var purgePending: QueuePurgeReason?
+    var purgePending: QueuePurgeReason?
     /// QRE-B-03: advanced by every `deliveryConditionsChanged()`. The answer to a delivery sent before the latest signal cannot park the
     /// queue (that signal may be exactly what the answer was waiting for).
-    private var conditionsEpoch = 0
-    private var contextUnavailableCode: String?
-    private var lastRetryCode: String?
-    private var chunkLimit = DeliveryLimits.activitiesPerDelivery
-    private var pumping = false, pumpAgain = false
-    private var reading = false, readAgain = false
-    private var observing = false
-    private var retryScheduled = false
+    var conditionsEpoch = 0
+    var contextUnavailableCode: String?
+    var lastRetryCode: String?
+    var chunkLimit = DeliveryLimits.activitiesPerDelivery
+    var pumping = false, pumpAgain = false
+    var pumpWaiters: [CheckedContinuation<Void, Never>] = []
+    var reading = false, readAgain = false
+    var readWaiters: [CheckedContinuation<Void, Never>] = []
+    /// The observer is registered (`syncObservation` keeps it, and background delivery, in line with the athlete's switch).
+    var observing = false
+    var syncingObservation = false, syncObservationAgain = false
+    var observationWaiters: [CheckedContinuation<Void, Never>] = []
+    var observerPump: Task<Void, Never>?
+    var retryScheduled = false
 
     /// Test hook: the process "dies" after the host answered a delivery and before B wrote the answer (handoff §7 item 5).
     var dieAfterDeliverBeforeApply = false
@@ -82,18 +91,19 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     public init(reader: HealthReading, sink: DeviceActivitySink, recordings: AppRecordingIndex?, store: QueueStore,
                 log: IngestLogSink = OSIngestLog(), clock: @escaping @Sendable () -> Date = { Date() },
-                scheduler: RetryScheduler = TaskRetryScheduler(), configuration: Configuration = Configuration()) {
+                scheduler: RetryScheduler = TaskRetryScheduler(), configuration: Configuration = Configuration(),
+                backgroundWindow: BackgroundWindow = ProcessBackgroundWindow()) {
         self.reader = reader; self.sink = sink; self.recordings = recordings; self.store = store; self.log = log
-        self.clock = clock; self.scheduler = scheduler; self.config = configuration
+        self.clock = clock; self.scheduler = scheduler; self.config = configuration; self.backgroundWindow = backgroundWindow
     }
 
     // MARK: - Lifecycle
 
-    /// At launch: load the queue, register the observer and background delivery (if enabled), read, and re-decide held workouts.
+    /// At launch: load the queue, bring the observer and background delivery in line with the switch, read, and re-decide held workouts.
     public func start() async {
         guard ensureLoaded() else { return }
         log.log(.init(.started, counts: ["queued": state.items.count, "inFlight": state.inFlight?.activities.count ?? 0]))
-        if state.enabled { await startObserving() }
+        await syncObservation()
         await readNow()
     }
 
@@ -104,24 +114,19 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         var s = state; s.authorizationRequested = true
         try commit(s)
         log.log(.init(.authorizationRequested))
-        if state.enabled { await startObserving() }
+        await syncObservation()
         await readNow()
     }
 
-    /// The athlete's switch inside RepMile (the only revocation B can observe). Off: the observer stops and background delivery is disabled;
-    /// nothing is read or sent. The data stays until `purge`.
+    /// The athlete's switch inside RepMile (the only revocation B can observe). Off: the observer stops and background delivery is disabled
+    /// (also when the switch is turned off while they are being registered, QRE-B P3-3); nothing is read or sent. The data stays until `purge`.
     public func setEnabled(_ on: Bool) async throws {
         guard ensureLoaded() else { throw HealthReadError.protectedDataUnavailable }
         var s = state; s.enabled = on
         try commit(s)
         log.log(.init(.enabledChanged, code: on ? "ON" : "OFF"))
-        if on {
-            await startObserving()
-            await readNow()
-        } else {
-            await reader.stopObserving(); observing = false
-            try? await reader.setBackgroundDelivery(false)
-        }
+        await syncObservation()
+        if on { await readNow() }
     }
 
     /// `UIApplication.protectedDataDidBecomeAvailableNotification` (wired by the app): resume reading and sending, nothing lost.
@@ -142,7 +147,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     /// Reads until no read is pending. A caller arriving during a read either asks for one more read and returns at once (A's signals and
     /// triggers: never wait, since the running read may itself be awaiting A, QRE-B-R2-01), or, for the observer only, returns once that
     /// read and the one it asked for are durable (its completion handler must not run earlier, QRE-B-08).
-    private func read(waitForRunningRead: Bool) async {
+    func read(waitForRunningRead: Bool) async {
         guard !dead else { return }
         // Contract §6.2 "tenta no próximo gatilho": every trigger retries a host that was unavailable and B's own failed writes (QRE-B-04).
         hostUnavailable = false
@@ -158,10 +163,9 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         let waiters = readWaiters; readWaiters = []
         for w in waiters { w.resume() }
     }
-    private var readWaiters: [CheckedContinuation<Void, Never>] = []
 
     /// A pending purge or a failed write is written again before anything else happens. False while it still cannot be written.
-    private func retryPendingWrites() -> Bool {
+    func retryPendingWrites() -> Bool {
         guard loaded, purgePending != nil || writeFailed else { return true }
         do {
             try commit(state)
@@ -171,7 +175,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         } catch { return false }
     }
 
-    private func readOnce() async {
+    func readOnce() async {
         guard ensureLoaded(), state.enabled, !storeUnreadable, purgePending == nil else { return }
         let gen = state.generation
         let ctxResult = await sink.ingestContext()
@@ -223,68 +227,16 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         }
     }
 
-    private func noteReadError(_ code: String) {
+    func noteReadError(_ code: String) {
         log.log(.init(.readFailed, code: code))
         var s = state; s.lastReadError = code
-        try? commit(s)
-    }
-
-    /// Adds what the read returned. A workout B already knows (queued, delivered, excluded, summarized) is not added twice.
-    private func merge(_ batch: WorkoutReadBatch, into s: inout QueueState) -> [String: Int] {
-        var counts: [String: Int] = [:]
-        let flying = Set(s.inFlight?.activities.map(\.activityId) ?? [])
-        for id in batch.deletedIds {
-            if let i = s.items.firstIndex(where: { $0.activityId == id }) {
-                if flying.contains(id) { s.items[i].deletedWhileInFlight = true }
-                else { s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 }
-            } else if s.ledger[id] != nil {
-                // G-5: nothing is sent in V1; the session link stays (one workout per session prevents a second link).
-                s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1
-            }
-            s.summaries.removeAll { $0.id == id }
-            s.enteredRuns.removeAll { $0.id == id }
-            s.rescanIds.removeAll { $0 == id }
-            s.excluded.removeValue(forKey: id)
-            counts["deleted", default: 0] += 1
-        }
-        let known = Set(s.items.map(\.activityId)).union(s.ledger.keys).union(s.excluded.keys)
-        var types = Set(s.receivedTypes)
-        for w in batch.added.sorted(by: { ($0.end, $0.id) < ($1.end, $1.id) }) where !known.contains(w.id) {
-            switch WorkoutNormalizer.select(w) {
-            case .device:
-                let a = WorkoutNormalizer.activity(w)
-                s.items.append(QueueItem(activityId: w.id, start: w.start, end: w.end, activity: a, provenance: RunProvenance(w)))
-                types.insert("RUN_WORKOUT")
-                if a.actual.distanceKm != nil { types.insert("DISTANCE") }
-                if w.hasRoute { types.insert("ROUTE_PRESENCE") }
-                counts["added", default: 0] += 1
-            case .excludedRun(let reason):
-                s.excluded[w.id] = reason
-                if reason == IngestCode.userEntered {
-                    s.enteredRuns.append(StoredEnteredRun(id: w.id, start: w.start, end: w.end, durationSeconds: w.durationSeconds, provenance: RunProvenance(w)))
-                }
-                counts[reason, default: 0] += 1
-            case .nonRun(let reason):
-                s.excluded[w.id] = reason
-                s.summaries.append(StoredSummary(WorkoutNormalizer.summary(w)))
-                types.insert("NON_RUN_WORKOUT")
-                counts[reason, default: 0] += 1
-            }
-        }
-        s.receivedTypes = types.sorted()
-        return counts
+        // Status only: when even this write fails, the status still says so (it is written with the next commit).
+        do { try commit(s) } catch { state.lastReadError = code }
     }
 
     // MARK: - Delivering
 
-    func pump() async {
-        if pumping { pumpAgain = true; return }
-        pumping = true
-        repeat { pumpAgain = false; await drain() } while pumpAgain && !dead
-        pumping = false
-    }
-
-    private func drain() async {
+    func drain() async {
         while !dead, ensureLoaded(), !storeUnreadable, purgePending == nil, !writeFailed, state.enabled, state.block == nil, !hostUnavailable {
             if let at = state.nextRetryAt, at > clock() { scheduleRetry(at: at); return }
             let gen = state.generation
@@ -311,7 +263,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     /// Picks the next chunk (≤ 32, ascending end date), decides dedupe and links for workouts never sent, freezes the bytes and writes the
     /// in-flight delivery durably BEFORE sending it.
-    private func buildDelivery(_ gen: Int) async -> InFlight? {
+    func buildDelivery(_ gen: Int) async -> InFlight? {
         let ctxResult = await sink.ingestContext()
         guard gen == state.generation, !dead, state.inFlight == nil else { return nil }
         guard case .ready(let ctx) = ctxResult else {
@@ -407,194 +359,6 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     private func setAsideForAppRecording(_ s: inout QueueState, _ i: Int, code: String, measured: Bool) {
         s.items[i].state = .setAside(code: code)
         if measured { s.counters[IngestCode.measuredDistanceLostToAppRecording, default: 0] += 1 }
-    }
-
-    /// Contract §4.3: link only when the workout's plan-local day has exactly one RUN session, exactly one workout, and no workout was ever
-    /// linked to that session. Session ids repeat across plans, so a session already linked (in any plan) stays unlinkable: never a guess.
-    static func normalLink(_ item: QueueItem, ctx: IngestContext, in s: QueueState) -> String? {
-        let day = BoundaryInstant.day(item.end, offsetMinutes: ctx.timezoneOffsetMinutes)
-        let sessions = ctx.runSessions.filter { $0.day == day }
-        guard sessions.count == 1 else { return nil }
-        // A workout consolidated into another one is the same run, not a second candidate (`SameRunRule`).
-        let onDay = s.items.filter { !Self.isConsolidated($0.state) && BoundaryInstant.day($0.end, offsetMinutes: ctx.timezoneOffsetMinutes) == day }.count
-            + s.ledger.values.filter { BoundaryInstant.day($0.end, offsetMinutes: ctx.timezoneOffsetMinutes) == day }.count
-        guard onDay == 1 else { return nil }
-        let sid = sessions[0].sessionId
-        return linkTaken(sid, in: s) ? nil : sid
-    }
-
-    static func linkTaken(_ sid: String, in s: QueueState) -> Bool {
-        s.ledger.values.contains { $0.sessionId == sid } || s.items.contains { $0.frozen && $0.activity.sessionId == sid }
-    }
-
-    private static func isOpen(_ st: ItemState) -> Bool {
-        switch st { case .pending, .held: return true; case .notRecorded, .setAside, .sameRunAs, .reconcile: return false }
-    }
-    private static func isConsolidated(_ st: ItemState) -> Bool { if case .sameRunAs = st { return true }; return false }
-
-    /// `SameRunRule` over everything B holds: every queued workout (except set-aside ones, which are never sent) and every delivered one.
-    /// Applied on every write, so the decisions always follow the current facts (a deletion, a new copy, a delivery).
-    static func regroup(_ s: inout QueueState) {
-        var facts: [SameRunRule.Facts] = []
-        var ids = Set<String>()
-        for it in s.items {
-            // A run set aside because the athlete's reported app recording already counts it IS on record: it stays the run of its group,
-            // so its copies are consolidated into it (QRE-B-O1-01). Any other set-aside item is never sent and leaves the groups.
-            var countedByRecording = false
-            if case .setAside(let c) = it.state { guard c == RecordingDedupe.overlapsAppRecording else { continue }; countedByRecording = true }
-            ids.insert(it.activityId)
-            facts.append(.init(id: it.activityId, start: it.start, end: it.end, minutes: it.activity.actual.minutes, distanceKm: it.activity.actual.distanceKm,
-                               quality: it.activity.sourceQuality, sourceBundleId: it.provenance?.sourceBundleId ?? "",
-                               syncIdentifier: it.provenance?.syncIdentifier, syncVersion: it.provenance?.syncVersion, fixed: it.frozen || countedByRecording))
-        }
-        for (id, e) in s.ledger where !ids.contains(id) {
-            let start = e.start ?? e.activity.actual.minutes.map { e.end.addingTimeInterval(-$0 * 60) } ?? e.end
-            facts.append(.init(id: id, start: start, end: e.end, minutes: e.activity.actual.minutes, distanceKm: e.activity.actual.distanceKm,
-                               quality: e.activity.sourceQuality, sourceBundleId: e.provenance?.sourceBundleId ?? "",
-                               syncIdentifier: e.provenance?.syncIdentifier, syncVersion: e.provenance?.syncVersion, fixed: true))
-        }
-        let decisions = SameRunRule.decide(facts)
-        for i in s.items.indices where !s.items[i].frozen {
-            guard let d = decisions[s.items[i].activityId] else { continue }
-            switch s.items[i].state { case .setAside, .notRecorded: continue; default: break }
-            switch d {
-            case .deliver:
-                switch s.items[i].state { case .sameRunAs, .reconcile: s.items[i].state = .pending; default: break }
-            case .duplicateOf(let r): s.items[i].state = .sameRunAs(activityId: r)
-            case .reconcile(let c, let g): s.items[i].state = .reconcile(code: c, group: g)
-            }
-        }
-    }
-    static func regrouped(_ s: QueueState) -> QueueState { var c = s; regroup(&c); return c }
-    static func sameRunCounts(_ s: QueueState) -> (consolidated: Int, reconcile: Int) {
-        var c = 0, r = 0
-        for i in s.items { switch i.state { case .sameRunAs: c += 1; case .reconcile: r += 1; default: break } }
-        return (c, r)
-    }
-    private static func byEnd(_ a: QueueItem, _ b: QueueItem) -> Bool { (a.end, a.activityId) < (b.end, b.activityId) }
-
-    /// Contract §6.2, every row.
-    /// `signalledSince`: A called `deliveryConditionsChanged()` while this delivery was in flight (QRE-B-03). A waiting, halted or
-    /// hostUnavailable answer then does not park the queue, and a NOT_RECORDED workout counts as already signalled: it is re-sent at once
-    /// in a new delivery (attempt counted), never left for a signal that already came.
-    private func apply(_ result: DeliveryResult, to flight: InFlight, signalledSince: Bool) {
-        var s = state
-        s.inFlight = nil
-        let ids = flight.activities.map(\.activityId)
-        func index(_ id: String) -> Int? { s.items.firstIndex { $0.activityId == id } }
-        /// Nothing was recorded: a workout deleted in Apple Health while in flight now simply leaves the queue.
-        func dropDeletedUnrecorded() {
-            for id in ids { if let i = index(id), s.items[i].deletedWhileInFlight {
-                s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 } }
-        }
-        var code: String?
-        switch result {
-        case .answered(_, let results):
-            s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
-            chunkLimit = DeliveryLimits.activitiesPerDelivery
-            let byIndex = Dictionary(results.map { ($0.index, $0) }, uniquingKeysWith: { a, _ in a })
-            for (k, a) in flight.activities.enumerated() {
-                guard let i = index(a.activityId) else { continue }
-                let r = byIndex[k].flatMap { $0.activityId == a.activityId ? $0.outcome : nil } ?? .notRecorded(reason: "RESULT_MISSING")
-                switch r {
-                case .recorded, .duplicate:
-                    var eventId: String?; if case .recorded(let e) = r { eventId = e }
-                    s.ledger[a.activityId] = LedgerEntry(eventId: eventId, outcome: eventId == nil ? "DUPLICATE" : "RECORDED", sessionId: a.sessionId,
-                                                         digest: WorkoutNormalizer.digest(a), end: s.items[i].end, activity: a,
-                                                         start: s.items[i].start, provenance: s.items[i].provenance)
-                    if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1 }
-                    s.items.remove(at: i)
-                case .notRecorded(let reason):
-                    if s.items[i].deletedWhileInFlight {
-                        s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1
-                    } else if s.items[i].attempts >= config.maxAttempts {
-                        s.items[i].state = .setAside(code: IngestCode.attemptsExhausted)
-                    } else if signalledSince {
-                        s.items[i].attempts += 1; s.items[i].state = .pending
-                    } else {
-                        s.items[i].state = .notRecorded(reason: reason)
-                    }
-                }
-            }
-            log.log(.init(.deliveryAnswered, counts: Self.outcomeCounts(results), deliveryId: flight.deliveryId))
-        case .refused(let c, let at, let disposition):
-            code = c
-            s.retryLaterStreak = 0; s.nextRetryAt = nil
-            let culprit = at.flatMap { $0 >= 0 && $0 < ids.count ? index(ids[$0]) : nil }
-            switch disposition {
-            case .setAsideItem where culprit != nil:
-                s.items[culprit!].state = .setAside(code: c)
-            case .resendUnlinked where culprit != nil:
-                // Frozen unlinked for good: the boundary refused the link (UNKNOWN_SESSION, SPORT_MISMATCH).
-                s.items[culprit!].activity = s.items[culprit!].activity.unlinked()
-            case .waiting:
-                if !signalledSince { s.block = .waiting(code: c) }
-            case .halted:
-                if !signalledSince { s.block = .halted(code: c) }
-            case .retryLater:
-                s.inFlight = flight
-                retryLater(&s, flight, code: c)
-            default:
-                // adapterBug (or a per-item disposition without a usable index): log the code only, split, and set aside on repetition.
-                log.log(.init(.adapterBug, code: c, deliveryId: flight.deliveryId))
-                if ids.count > 1 { chunkLimit = max(1, ids.count / 2) }
-                else if let i = index(ids[0]) {
-                    s.items[i].adapterBugStrikes += 1
-                    if s.items[i].adapterBugStrikes >= 2 { s.items[i].state = .setAside(code: c) }
-                }
-            }
-            if s.inFlight == nil { dropDeletedUnrecorded() }
-        case .waiting(let c):
-            code = c; if !signalledSince { s.block = .waiting(code: c) }; dropDeletedUnrecorded()
-        case .halted(let c):
-            code = c; if !signalledSince { s.block = .halted(code: c) }; dropDeletedUnrecorded()
-        case .retryLater(let c):
-            code = c; s.inFlight = flight
-            retryLater(&s, flight, code: c)
-        case .hostUnavailable:
-            code = HostCode.hostUnavailable
-            s.inFlight = flight
-            if !signalledSince { hostUnavailable = true }
-        }
-        // QRE-B-02: only CONSECUTIVE retryLater answers count; any other answer breaks the streak.
-        if case .retryLater = result {} else if case .refused(_, _, .retryLater) = result {} else {
-            s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
-        }
-        if case .answered = result {} else { log.log(.init(.deliveryAnswered, code: code, deliveryId: flight.deliveryId)) }
-        do { try commit(s) } catch {
-            // The answer could not be written: the in-flight delivery stays on disk and is re-sent with the same id (custody replays its
-            // stored answer: QRE-B-15, one extra round trip at most). Nothing is sent until a write succeeds; every trigger retries.
-            writeFailed = true
-        }
-    }
-
-    private func retryLater(_ s: inout QueueState, _ flight: InFlight, code: String) {
-        s.retryLaterStreak += 1
-        lastRetryCode = code
-        if s.retryLaterStreak >= config.maxConsecutiveRetryLater {
-            for a in flight.activities { if let i = s.items.firstIndex(where: { $0.activityId == a.activityId }) {
-                s.items[i].state = .setAside(code: IngestCode.attemptsExhausted) } }
-            s.inFlight = nil; s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
-            return
-        }
-        let delay = min(config.backoffCap, config.backoffBase * pow(2, Double(s.retryLaterStreak - 1)))
-        s.nextRetryAt = clock().addingTimeInterval(delay)
-    }
-
-    private func scheduleRetry(at: Date) {
-        guard !retryScheduled else { return }
-        retryScheduled = true
-        scheduler.schedule(after: at.timeIntervalSince(clock())) { [weak self] in await self?.retryFired() }
-    }
-    private func retryFired() async { retryScheduled = false; await pump() }
-
-    private static func outcomeCounts(_ results: [ActivityResult]) -> [String: Int] {
-        var c: [String: Int] = [:]
-        for r in results {
-            switch r.outcome { case .recorded: c["RECORDED", default: 0] += 1; case .duplicate: c["DUPLICATE", default: 0] += 1
-            case .notRecorded(let why): c["NOT_RECORDED:" + why, default: 0] += 1 }
-        }
-        return c
     }
 
     // MARK: - DeviceQueueControl (A → B)
@@ -723,7 +487,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
 
     // MARK: - Persistence
 
-    private func ensureLoaded() -> Bool {
+    func ensureLoaded() -> Bool {
         if loaded { return true }
         if storeUnreadable { return false }
         do {
@@ -751,39 +515,13 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         }
     }
 
-    private func commit(_ s: QueueState) throws {
+    func commit(_ s: QueueState) throws {
         var s = s
         Self.regroup(&s)
         let e = JSONEncoder(); e.outputFormatting = [.sortedKeys]
         try store.save(try e.encode(s))
         state = s
     }
-
-    private func startObserving() async {
-        guard !observing else { return }
-        do {
-            try await reader.startObserving { [weak self] in
-                guard let self else { return }
-                await self.observerFired()
-            }
-            observing = true
-        } catch let e as HealthReadError { noteReadError(e.code) } catch { noteReadError("OBSERVER_FAILED") }
-        // Registration only: an observed background wake-up is a separate fact (BACKGROUND_DELIVERY_ON_DEVICE), never inferred from this.
-        do { try await reader.setBackgroundDelivery(true); log.log(.init(.backgroundDelivery, code: "REGISTERED")) }
-        catch let e as HealthReadError { log.log(.init(.backgroundDelivery, code: e.code)); noteReadError(e.code) }
-        catch { log.log(.init(.backgroundDelivery, code: "BACKGROUND_DELIVERY_FAILED")); noteReadError("BACKGROUND_DELIVERY_FAILED") }
-    }
-
-    /// The observer's completion handler runs when this returns: after the read is durably queued, not after the delivery to A
-    /// (background-delivery time budget, QRE-B-08). The delivery continues on its own.
-    private func observerFired() async {
-        log.log(.init(.observerFired))
-        await read(waitForRunningRead: true)
-        observerPump = Task { await self.pump() }
-    }
-    private var observerPump: Task<Void, Never>?
-    /// Tests: waits for the delivery an observer notification started.
-    func settled() async { while let t = observerPump { observerPump = nil; await t.value } }
 
     /// The plan-local midnight of `day` (`YYYY-MM-DD`): the start of the read window (the anchor starts at the enrolment day).
     static func startOfDay(_ day: String, offsetMinutes: Int) -> Date {

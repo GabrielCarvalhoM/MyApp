@@ -101,6 +101,9 @@ public enum IngestCode {
     /// G-5: a workout deleted in Apple Health after it was delivered (nothing is sent in V1, only counted), or before (it leaves the queue).
     public static let deletedAfterDelivery = "DELETED_AFTER_DELIVERY"
     public static let deletedBeforeDelivery = "DELETED_BEFORE_DELIVERY"
+    /// P3-2: a workout deleted in Apple Health while it may be on the record (set aside after an answer that does not prove it absent). It
+    /// stays in B's file as the run of its group, so no copy of it is promoted; nothing is sent (G-5). Counted once.
+    public static let deletedMaybeOnRecord = "DELETED_MAYBE_ON_RECORD"
     /// SSCTR-ABC-S4 b: a workout set aside as the same run as an app recording, whose measured distance therefore does not reach the record.
     public static let measuredDistanceLostToAppRecording = "MEASURED_DISTANCE_LOST_TO_APP_RECORDING"
     /// FND-ABC-06 (b): a workout delivered by the normal rule although a REPORTED app recording overlaps it below the same-run threshold
