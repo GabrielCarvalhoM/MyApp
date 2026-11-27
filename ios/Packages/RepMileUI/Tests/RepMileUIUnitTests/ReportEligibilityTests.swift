@@ -75,10 +75,20 @@ final class ReportEligibilityTests: XCTestCase {
         for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] { XCTAssertEqual(e[k] as? Bool, false, k) }
     }
 
-    func testWithoutThePlansTodayTheScreenIsDatedTheDevicesDay() throws {
-        let vm = run(FixtureCoachingWriter(store: Repo.store), today: nil)
+    /// As #59: the screen is dated the plan's day only (the engine reads it against the plan's local day; a device day ahead of it is a
+    /// future screen, ASK, replay 8). Without the plan's day nothing is sent and the draft waits.
+    func testWithoutThePlansTodayNothingIsSent() async throws {
+        let w = FixtureCoachingWriter(store: Repo.store)
+        let vm = run(w, today: nil)
         vm.eligibility = .testNoneApplies
-        XCTAssertEqual(try XCTUnwrap(vm.request()?.eligibility).assessedAt, Fmt.deviceDay(end))
+        XCTAssertNil(vm.request())
+        XCTAssertFalse(vm.canSend)
+        let log = StrengthLogViewModel(session: try strengthSession, writer: w, planToday: { nil }, now: { [end] in end })
+        log.minutes = 40; log.confirmAsPrescribed(); log.eligibility = .testNoneApplies
+        XCTAssertNil(log.request())
+        XCTAssertFalse(log.canSend)
+        await vm.send(); await log.send()
+        XCTAssertEqual(submits(w.journal), 0)
     }
 
     func testEachReportAsksAgainNeverReusingAnEarlierScreen() async throws {

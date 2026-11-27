@@ -18,7 +18,7 @@ extension EligibilityScreen {
         [pain, persistentPain, injury, illness, functionalLimitation, clinicalConcern].allSatisfy { $0 != nil } && (statesAClinicalFlag || status == .nonclinicalConfirmed)
     }
 
-    /// The screen as sent, dated `day` (the plan's today, else the device's); nil while it is not answered.
+    /// The screen as sent, dated `day` (the plan's today: never the device's, which can be a day ahead of the plan's); nil while it is not answered.
     func dated(_ day: String) -> EligibilityScreen? {
         guard answered else { return nil }
         var e = self; e.assessedAt = day

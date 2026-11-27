@@ -88,7 +88,8 @@ final class StrengthLogViewModel {
 
     /// Minutes are always the athlete's. A planned session also needs at least one stated set (an untouched form sends nothing); a planned
     /// session presented without exercises has no set to state, so it fails closed: never sendable on minutes alone.
-    var canSend: Bool { editable && (minutes ?? 0) > 0 && (session == nil || statedSetCount > 0) && eligibility.answered }
+    var canSend: Bool { editable && (minutes ?? 0) > 0 && (session == nil || statedSetCount > 0) && eligibility.answered
+        && planToday() != nil }
 
     /// Session completion as the contract reads it (CoachingCore `bindObservations`: `completed && setsOk`, `setsOk` = sets done >= planned
     /// sets): every prescribed set stated; an omitted exercise or a missing set keeps it false. Repetitions do NOT enter it: a reps shortfall
@@ -132,9 +133,10 @@ final class StrengthLogViewModel {
         clinical = clinical || outcome.answer.routesToHuman
     }
 
-    /// The request exactly as sent: the log and the screen answered here, dated the plan's today. Nil until it is answered.
+    /// The request exactly as sent: the log and the screen answered here, dated the plan's today (never the device's, as #59). Nil until it
+    /// is answered, and while no plan gives the day (the draft waits).
     func request() -> ReviewRequest? {
-        guard let screen = eligibility.dated(planToday() ?? Fmt.deviceDay(now())) else { return nil }
+        guard let today = planToday(), let screen = eligibility.dated(today) else { return nil }
         return ReviewRequest(.sessionReports([observation()]), eligibility: screen)
     }
 

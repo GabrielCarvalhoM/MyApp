@@ -205,7 +205,7 @@ final class StrengthLogViewModelTests: XCTestCase {
         let id = try XCTUnwrap(ok.recorded?.first)
         let w = ScriptedWriter([WriteOutcome(answer: ok, kept: [], notKept: [id]), WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []),
                                 WriteOutcome(answer: ok, kept: [id], notKept: [])])
-        let vm = StrengthLogViewModel(session: try session, writer: w, planToday: { nil })
+        let vm = StrengthLogViewModel(session: try session, writer: w, planToday: { "2026-11-22" })
         vm.eligibility = .testNoneApplies
         vm.minutes = 30
         vm.confirmAsPrescribed()

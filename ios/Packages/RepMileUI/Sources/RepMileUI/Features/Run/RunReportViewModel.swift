@@ -51,7 +51,8 @@ final class RunReportViewModel {
     /// "Concluir" closes the report only once it is kept; a report that was not kept stays resendable (QRE recheck N7).
     var canClose: Bool { result == .saved || result == .screenRequired }
 
-    var canSend: Bool { !sending && !canClose && (planned || unusual != nil) && (!stopped || stopReason != nil) && eligibility.answered }
+    var canSend: Bool { !sending && !canClose && (planned || unusual != nil) && (!stopped || stopReason != nil) && eligibility.answered
+        && planToday() != nil }
 
     func send() async {
         guard canSend, let request = request() else { return }
@@ -64,9 +65,11 @@ final class RunReportViewModel {
         result = next.result
     }
 
-    /// The request exactly as sent: the athlete's report and the screen answered here, dated the plan's today. Nil until it is answered.
+    /// The request exactly as sent: the athlete's report and the screen answered here, dated the plan's today (never the device's, as #59:
+    /// the engine reads the screen against the plan's local day, and a device day ahead of it is a future screen, ASK). Nil until it is
+    /// answered, and while no plan gives the day (the draft waits).
     func request() -> ReviewRequest? {
-        guard let screen = eligibility.dated(planToday() ?? Fmt.deviceDay(now())) else { return nil }
+        guard let today = planToday(), let screen = eligibility.dated(today) else { return nil }
         return ReviewRequest(.sessionReports([observation()]), eligibility: screen)
     }
 
