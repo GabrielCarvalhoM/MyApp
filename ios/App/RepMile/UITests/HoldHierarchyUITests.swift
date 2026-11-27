@@ -20,20 +20,9 @@ final class HoldHierarchyUITests: XCTestCase {
     private func attach(_ app: XCUIApplication, _ name: String) {
         let a = XCTAttachment(screenshot: app.screenshot()); a.name = name; a.lifetime = .keepAlways; add(a)
     }
-    /// Scrolls until `e` is hittable and clear of the tab bar (above its top edge).
     @MainActor
     private func reach(_ app: XCUIApplication, _ e: XCUIElement, file: StaticString = #filePath, line: UInt = #line) {
-        let bar = app.buttons["tab-today"]
-        // The tab bar area (`880:4403`) starts 20 pt above the bar's capsule, which is 10 pt above its tab buttons.
-        func clear() -> Bool { e.exists && e.isHittable && (!bar.exists || e.frame.maxY <= bar.frame.minY - 30) }
-        var tries = 0
-        while !clear() && tries < 16 {
-            // A short drag (a fling could carry the element past the top).
-            let window = app.windows.firstMatch
-            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.62)).press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.42)))
-            tries += 1
-        }
-        XCTAssertTrue(clear(), "\(e) reachable above the tab bar", file: file, line: line)
+        XCTAssertTrue(scrollClearOfTabBar(app, e), "\(e) reachable above the tab bar", file: file, line: line)
     }
 
     @MainActor
@@ -126,5 +115,23 @@ final class HoldHierarchyUITests: XCTestCase {
         reach(app, app.buttons["hold-declare"])
         XCTAssertLessThan(app.buttons["hold-understood"].frame.minY, app.buttons["hold-declare"].frame.minY)
         attach(app, "99 — Hoje urgente, accessibility-large")
+    }
+}
+
+extension XCTestCase {
+    /// #99: scrolls (short drags; a fling could carry the element past the top) until `e` is hittable and above the tab bar area
+    /// (Figma `880:4403`: it starts 20 pt above the bar's capsule, which is 10 pt above its tab buttons; 2 pt of tolerance for the last row,
+    /// which ends exactly there). True when it got there.
+    @MainActor @discardableResult
+    func scrollClearOfTabBar(_ app: XCUIApplication, _ e: XCUIElement) -> Bool {
+        let bar = app.buttons["tab-today"]
+        func clear() -> Bool { e.exists && e.isHittable && (!bar.exists || e.frame.maxY <= bar.frame.minY - 28) }
+        var tries = 0
+        while !clear() && tries < 16 {
+            let window = app.windows.firstMatch
+            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.62)).press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.42)))
+            tries += 1
+        }
+        return clear()
     }
 }

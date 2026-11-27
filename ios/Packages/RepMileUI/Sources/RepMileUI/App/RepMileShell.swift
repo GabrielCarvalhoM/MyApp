@@ -154,6 +154,7 @@ struct AppTabs: View {
                                   startSession: start,
                                   openChanges: { sheet = .changes },
                                   openReadiness: { sheet = .readiness })
+                            .tabBarInset(TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom))
                             .toolbar(.hidden, for: .navigationBar)
                             .background(RM.Palette.fundoApp)
                             .navigationDestination(for: Route.self, destination: destination)
@@ -161,17 +162,14 @@ struct AppTabs: View {
                 case .plan:
                     NavigationStack(path: $planPath) {
                         PlanScreen(segment: planSegment, openSession: { planPath.append(.session($0.id, $0.date)) }, cantThisDay: { sheet = .moving($0) })
+                            .tabBarInset(TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom))
                             .navigationDestination(for: Route.self, destination: destination)
                     }
-                case .history: NavigationStack { HistoryScreen() }
-                case .progress: NavigationStack { ProgressScreen() }
+                case .history: NavigationStack { HistoryScreen().tabBarInset(TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom)) }
+                case .progress: NavigationStack { ProgressScreen().tabBarInset(TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom)) }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            // The content ends above the bar (#99 H2); a pushed screen has no bar and no inset.
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                if showsTabBar { Color.clear.frame(height: TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom)) }
-            }
             if showsTabBar {
                 TabBarArea(selection: $tab, onAdd: { sheet = .add }).ignoresSafeArea(.container, edges: .bottom)
             }

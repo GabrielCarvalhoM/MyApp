@@ -23,6 +23,7 @@ final class GuidanceLevelUITests: XCTestCase {
     }
     @MainActor
     private func sendNotFeeling(_ app: XCUIApplication, sign: String) {
+        XCTAssertTrue(scrollClearOfTabBar(app, el(app, "today-changed")), "#99: above the tab bar area (880:4403)")
         el(app, "today-changed").tap()
         XCTAssertTrue(app.buttons["changes-not-feeling"].waitForExistence(timeout: 5))
         app.buttons["changes-not-feeling"].tap()

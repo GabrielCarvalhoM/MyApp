@@ -77,3 +77,11 @@ struct TabBarArea: View {
             .background(RM.Palette.fundoApp)
     }
 }
+
+extension View {
+    /// The bottom inset of a tab's root screen (#99 H2): its scroll content ends at the tab bar area's top (`880:4403`). Applied inside the
+    /// tab's NavigationStack (an inset outside it does not reach the scroll view); a pushed screen has no bar and gets none.
+    func tabBarInset(_ height: CGFloat) -> some View {
+        safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: height).allowsHitTesting(false) }
+    }
+}
