@@ -3,34 +3,22 @@
 Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia isto, rode `node tools/orchestration/status.mjs`, siga
 "Próxima ação". Não depende do histórico de conversas.
 
-**Atualizado:** 2026-11-26 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
+**Atualizado:** 2026-11-27 (sessão Engineering Orchestrator, worktree `~/.codex/worktrees/myapp-v1-engineering-orchestration/MyApp`).
 
 ## Pausa
 
-**⏸ PAUSA ATIVA desde 2026-11-26 ~18:45 (BRT), pedida pelo fundador.** Protocolo: [WORKFLOW.md §7](../../docs/engineering/WORKFLOW.md#7-pausa-segura-e-retomada).
-
-| Tarefa | Estado | Onde | Próximo passo |
-|---|---|---|---|
-| PR #67 C → integração | **aguardando CI** (GitHub) | `claude/v1-ios-integration-c-sync-1` @ `2ea4227` | suíte local válida em `bdec6fe`: `sim.sh` 59/59 + RepMileUI 121/121 (`audits/v1-ios-integration-2026-11-26/results/c-sync-1/`); o merge posterior só trouxe orquestração. Conferir `gh pr checks 67` → merge → `tools/orchestration/viewer.sh` |
-| #59 correção no histórico | **incompleta** (WIP publicado) | `claude/v1-ios-swiftui-i59-correction-engine` @ `289811a`, worktree `myapp-v1-c-i59` | corrigir `testKeptCorrectionIsSaved` (`HistoryProgressTests.swift:78`, espera "Salvo no seu histórico."); `sim.sh all --sim RepMile-C-3`; guard e swift-size; commit final (rascunho em `results/i59-correction-engine/scratch/i59-commit.txt`); PR; revisão SSCTR + QRE. Unit 125/125 e replay ALL PASS já valem para `d5119fd` |
-| #68 elegibilidade vazia nos relatos (P0, novo) | **não iniciada** | — | depois do #59 ou antes, porque sem ela o #59 nunca é oferecido com o motor real |
-| #66 onboarding declarado (P0) | **aguardando o fundador** | issue #66 | confirmar o princípio e então implementar |
-| Demais | nada em execução | — | ordem: #67 merge → #68 → #59 → #66 (se aprovado) → #63 → #49 → #48/#39/#62 |
-
-Processos interrompidos: a suíte de UI do #59 (sim.sh/xcodebuild na RepMile-C-3, parcial, **não conta**). Nenhum agente ativo. Scripts de replay do motor guardados no repositório (`results/i59-correction-engine/scratch/`). Worktrees temporárias que podem ser removidas na retomada: `myapp-v1-c-i37`, `-i58`, `-i61`, `-i32d`, `-i32e`, `-i32c`, `myapp-v1-review-a`, `-review-b`, `myapp-v1-int-i16` (todas sem alterações).
+Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (checkpoint `76e14ce`). Na retomada: PR #67 com CI 4/4 → merge
+`e593496`, viewer atualizado; #59 retomado do WIP `289811a`; #68 iniciado; worktrees temporárias removidas.
 
 ## Agora
 
 | | |
 |---|---|
-| Integração `claude/v1-ios-integration` | `7255221` = orquestração + A (#50) + B (#51) + C até `24c9096` (#42) + composição real (#60, #16). Visualização em `7255221` |
-| Frente C `claude/v1-ios-swiftui` | `5a4872a`: #32.1–32.3, #32.5–32.8, #38, #41 (todos revisados); **à frente da integração**, falta o PR C → integração |
-| Em merge | **#61** (PR #64): ponta mesclada `210d567` em teste (RepMile-INT); revisão QRE + verificação do #61b READY |
-| Em verificação | **#58/#59** (PR #65, `a3c56f6`): verificação SSCTR + QRE do #59b em andamento |
-| Aguardando | **#37** (PR #53, `3454551`): condições aplicadas; entra depois do #61, com nova suíte (o 35/36 era o teste instável de onboarding, corrigido no #61) |
-| Próximas | PR C → integração (com #37/#58/#59/#61) e tirar o contorno `chip-12` do teste ao vivo · **#66** (P0, onboarding declarado; aguarda o fundador confirmar o princípio) · #63 (background delivery) · #49 (condições de A) · #48 (P3 de B) · #39 · #62 |
+| Integração `claude/v1-ios-integration` | `e593496` = orquestração + A (#50) + B (#51) + composição real (#60, #16) + C sync 1 (#67: MVVM #32, #37, #38, #41, #58, #59a, #61). Visualização em `e593496` |
+| Em andamento | **#59** (correção no histórico): worktree `myapp-v1-c-i59`, sim RepMile-C-3; falta teste de UI, suíte, PR, SSCTR+QRE · **#68** (P0, triagem nos relatos): worktree `myapp-v1-c-i68`, branch `claude/v1-ios-swiftui-i68-report-eligibility` (de `289811a`), sim RepMile-C-2; PR draft para `claude/v1-ios-swiftui`, rebase após o #59 |
+| Próximas | C → integração (sync 2, com #59 e #68) e teste com motor real na integração · **#66** (P0; aguarda o fundador) · #63 · #49 · #48 · #39 · #62 · CCP-C-05 (#20) |
 | Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
-| Simuladores | RepMile-INT (#61 merge/integração), RepMile-C-2 (livre), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
+| Simuladores | RepMile-C-3 (#59), RepMile-C-2 (#68), RepMile-INT (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
 
 ## Branches e worktrees
 
