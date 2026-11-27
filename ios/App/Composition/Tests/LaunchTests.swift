@@ -157,3 +157,62 @@ final class LaunchOpenerTests: XCTestCase {
         #endif
     }
 }
+
+/// #83: `-isolatedLiveStores <token>` (Debug only) gives the live UI tests stores of their own; without it, and in every Release build, the
+/// live composition uses the standard places.
+final class LiveStoresTests: XCTestCase {
+    private let tmp = URL(fileURLWithPath: "/tmp-of-the-test", isDirectory: true)
+
+    func testWithoutTheArgumentTheStandardPlaces() throws {
+        XCTAssertEqual(LiveStores.of([], temporary: tmp), .standard)
+        XCTAssertEqual(LiveStores.of(["RepMile", "-simulatedLocation", "-AppleLanguages", "(pt-BR)"], temporary: tmp), .standard)
+        XCTAssertNil(LiveStores.standard.isolatedFolder("CoachingHost"))
+        XCTAssertEqual(try LiveStores.standard.identity().directory, try AthleteIdentityStore.standard().directory)
+    }
+
+    #if DEBUG
+    func testATokenIsOneFolderOfItsOwnInTheTemporaryDirectory() throws {
+        let stores = LiveStores.of(["RepMile", "-isolatedLiveStores", "run-1A", "-simulatedLocation"], temporary: tmp)
+        let root = tmp.appendingPathComponent("uitest-live-run-1A", isDirectory: true)
+        XCTAssertEqual(stores, .isolated(root))
+        XCTAssertEqual(LiveStores.of(["-isolatedLiveStores", "run-1A"], temporary: tmp), stores, "the same token is the same install")
+        for name in ["RepMileAccount", "CoachingHost", "HealthKitIngest", "RunRecorder"] {
+            XCTAssertEqual(stores.isolatedFolder(name), root.appendingPathComponent(name, isDirectory: true))
+        }
+        let identity = try stores.identity().directory
+        XCTAssertEqual(identity, root.appendingPathComponent("RepMileAccount", isDirectory: true))
+        XCTAssertNotEqual(identity.standardizedFileURL, try AthleteIdentityStore.standard().directory.standardizedFileURL)
+    }
+
+    func testAMissingOrUnsafeTokenGetsANewFolderNeverTheStandardPlaces() {
+        for args in [["-isolatedLiveStores"], ["-isolatedLiveStores", ""], ["-isolatedLiveStores", "../up"], ["-isolatedLiveStores", "a/b"],
+                     ["-isolatedLiveStores", ".hidden"], ["-isolatedLiveStores", "é"], ["-isolatedLiveStores", String(repeating: "a", count: 65)]] {
+            XCTAssertEqual(LiveStores.of(args, temporary: tmp, newName: { "fresh" }),
+                           .isolated(tmp.appendingPathComponent("uitest-live-fresh", isDirectory: true)), "\(args)")
+        }
+    }
+
+    func testTheFirstLaunchOfATokenRemovesEarlierTokensAndARelaunchKeepsItsOwn() throws {
+        let parent = FileManager.default.temporaryDirectory.appendingPathComponent("live-stores-" + UUID().uuidString, isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: parent) }
+        let old = parent.appendingPathComponent("uitest-live-old", isDirectory: true), other = parent.appendingPathComponent("something-else")
+        try FileManager.default.createDirectory(at: old, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: other, withIntermediateDirectories: true)
+
+        let stores = LiveStores.of(["-isolatedLiveStores", "new"], temporary: parent)
+        try stores.prepare()
+        let root = parent.appendingPathComponent("uitest-live-new", isDirectory: true)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: root.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: old.path), "an earlier token's folder")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: other.path), "nothing else in the folder")
+
+        let id = try stores.identity().current()
+        try LiveStores.of(["-isolatedLiveStores", "new"], temporary: parent).prepare()
+        XCTAssertEqual(try stores.identity().current(), id, "a relaunch with the same token is the same install")
+    }
+    #else
+    func testAReleaseBuildIgnoresTheArgument() {
+        XCTAssertEqual(LiveStores.of(["-isolatedLiveStores", "run-1"], temporary: tmp), .standard)
+    }
+    #endif
+}

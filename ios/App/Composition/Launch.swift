@@ -18,6 +18,64 @@ enum LaunchMode: Equatable {
     static let current = of(ProcessInfo.processInfo.arguments)
 }
 
+/// Where the live composition keeps the athlete's device data: the identity, A's store and Keychain items, B's queue, C's recordings.
+///
+/// `standard` is the only case a Release build has: Application Support of the app's own container and A's production Keychain service.
+/// Debug builds only (#83): `-isolatedLiveStores <token>` puts all of it in a folder of its own in the temporary directory, and A's items under
+/// a Keychain service of their own (`LiveStores.isolatedKeychainService`), so a live UI test never meets what an earlier run left (an enrolled
+/// athlete after a test that failed half way) and never reads or touches the standard identity, store or Keychain items. The same token is
+/// the same install across relaunches. A new token is a new install whose Keychain is not new, as after a reinstall: A's first-launch
+/// reconciliation (#49) runs and removes what the previous isolated install left. A token that is missing or not `[A-Za-z0-9-]{1,64}`
+/// gets a new folder for that launch, never the standard places.
+enum LiveStores: Equatable {
+    case standard
+    #if DEBUG
+    case isolated(URL)
+
+    static let argument = "-isolatedLiveStores"
+    static let folderPrefix = "uitest-live-"
+    #endif
+
+    static let current = of(ProcessInfo.processInfo.arguments, temporary: FileManager.default.temporaryDirectory)
+
+    static func of(_ arguments: [String], temporary: URL, newName: () -> String = { UUID().uuidString }) -> LiveStores {
+        #if DEBUG
+        guard let i = arguments.firstIndex(of: argument) else { return .standard }
+        let token = arguments.indices.contains(i + 1) ? arguments[i + 1] : ""
+        let valid = (1...64).contains(token.count) && token.unicodeScalars.allSatisfy { ($0.isASCII && CharacterSet.alphanumerics.contains($0)) || $0 == "-" }
+        return .isolated(temporary.appendingPathComponent(folderPrefix + (valid ? token : newName()), isDirectory: true))
+        #else
+        return .standard
+        #endif
+    }
+
+    /// Before anything is opened. Isolated, at the first launch of a token: the folders of earlier tokens are removed (the temporary directory
+    /// stays bounded) and this one is created; a relaunch with the same token keeps everything. Standard: nothing.
+    func prepare() throws {
+        #if DEBUG
+        guard case .isolated(let root) = self, !FileManager.default.fileExists(atPath: root.path) else { return }
+        let parent = root.deletingLastPathComponent()
+        for name in (try? FileManager.default.contentsOfDirectory(atPath: parent.path)) ?? [] where name.hasPrefix(Self.folderPrefix) {
+            try? FileManager.default.removeItem(at: parent.appendingPathComponent(name, isDirectory: true))
+        }
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        #endif
+    }
+
+    /// One store's folder in an isolated launch (`RepMileAccount`, `CoachingHost`, `HealthKitIngest`, `RunRecorder`); nil: its standard place.
+    func isolatedFolder(_ store: String) -> URL? {
+        #if DEBUG
+        if case .isolated(let root) = self { return root.appendingPathComponent(store, isDirectory: true) }
+        #endif
+        return nil
+    }
+
+    func identity() throws -> AthleteIdentityStore {
+        if let dir = isolatedFolder("RepMileAccount") { return AthleteIdentityStore(directory: dir) }
+        return try AthleteIdentityStore.standard()
+    }
+}
+
 /// The one way the process opens its live composition (#63 P2-1), whoever asks first: the app delegate at launch (also a background launch
 /// by HealthKit, when no SwiftUI scene is connected) or the SwiftUI root. Both go through the same `SingleOpen`, so they get the same instance
 /// and the composition is built once per process (exactly one `CoachingHost` per athlete per process, #49 P2-1).

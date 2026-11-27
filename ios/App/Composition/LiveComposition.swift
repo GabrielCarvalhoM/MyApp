@@ -57,16 +57,18 @@ final class LiveComposition {
     }
 
     private static func make() async throws -> LiveComposition {
-        let identity = try identityStore()
+        let stores = LiveStores.current
+        try stores.prepare()
+        let identity = try identityStore(stores)
         let athleteId = try identity.current()
         // After a rotation: C's own store erases its folder (it alone knows where it is, #76) and its own index must answer nothing.
-        let recordings = try await PendingErasure.complete(identity: identity, openStore: { RecordingStore.standard() }, erase: { try $0.eraseAll() },
+        let recordings = try await PendingErasure.complete(identity: identity, openStore: { stores.recordings() }, erase: { try $0.eraseAll() },
                                                            isEmpty: { await $0.recordings(overlapping: PendingErasure.everything).isEmpty })
         let recorder = RunRecorder(source: locationSource(), store: recordings)
         let sink = DeviceActivitySinkProxy()
         let reader = HealthKitReader()
-        let ingestor = HealthKitIngestor(reader: reader, sink: sink, recordings: recordings, store: try FileQueueStore.applicationSupport())
-        let host = try await CoachingHost.open(CoachingHost.Configuration(athleteId: athleteId), queueControl: ingestor, clock: DeviceClock())
+        let ingestor = HealthKitIngestor(reader: reader, sink: sink, recordings: recordings, store: try stores.queue())
+        let host = try await CoachingHost.open(stores.host(athleteId), queueControl: ingestor, clock: DeviceClock())
         hostsOpened += 1
         precondition(hostsOpened == 1, "one CoachingHost per athlete per process")
         guard sink.bind(host) else { preconditionFailure("one CoachingHost per process") }
@@ -79,11 +81,11 @@ final class LiveComposition {
     /// The athlete identity. Debug builds only: `-simulateDamagedIdentity` reads a damaged identity file written for this launch in the temporary
     /// folder (`AthleteIdentityStore.damagedForUITests`), so a UI test sees the real failure path (`ACCOUNT_IDENTITY_DAMAGED`) while the real
     /// identity file is neither read nor touched.
-    private static func identityStore() throws -> AthleteIdentityStore {
+    private static func identityStore(_ stores: LiveStores) throws -> AthleteIdentityStore {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-simulateDamagedIdentity") { return try AthleteIdentityStore.damagedForUITests() }
         #endif
-        return try AthleteIdentityStore.standard()
+        return try stores.identity()
     }
 
     /// CoreLocation. Debug builds only: `-simulatedLocation` scripts the location (no permission prompt) so a live UI journey can record a
@@ -109,5 +111,30 @@ final class LiveComposition {
     /// write is not lost: the next launch reads `GONE` for the same id and rotates again.
     func accountErased() {
         _ = try? identity.rotate(from: athleteId)
+    }
+}
+
+/// The stores of A, B and C for `LiveStores` (the folders and the identity are in `Launch.swift`, which the composition unit tests compile).
+extension LiveStores {
+    #if DEBUG
+    /// Never A's production service (`CoachingHost.keychainService`): an isolated launch only ever lists or removes what an isolated launch
+    /// wrote, and its first-launch reconciliation (#49) removes the items the previous isolated install left, as after a reinstall.
+    static let isolatedKeychainService = CoachingHost.keychainService + ".uitest-isolated"
+    #endif
+
+    func recordings() -> RecordingStore { isolatedFolder("RunRecorder").map { RecordingStore(directory: $0) } ?? RecordingStore.standard() }
+
+    func queue() throws -> FileQueueStore {
+        if let dir = isolatedFolder("HealthKitIngest") { return FileQueueStore(directory: dir) }
+        return try FileQueueStore.applicationSupport()
+    }
+
+    func host(_ athleteId: String) -> CoachingHost.Configuration {
+        #if DEBUG
+        if let dir = isolatedFolder("CoachingHost") {
+            return CoachingHost.Configuration(athleteId: athleteId, root: dir, keychainService: Self.isolatedKeychainService)
+        }
+        #endif
+        return CoachingHost.Configuration(athleteId: athleteId)
     }
 }
