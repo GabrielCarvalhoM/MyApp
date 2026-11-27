@@ -11,14 +11,9 @@ struct OnboardingStepView: View {
     var body: some View {
         switch step {
         case .welcome:
-            // Figma `835:2069` (#99): the week strip, the wordmark, the V1 headline and body. "Já tenho conta" is not shown: there is no
-            // account layer in V1 yet (#28), and a link with no destination would be worse (accepted difference).
-            WeekStripArt().padding(.horizontal, -RM.Space.gutter).padding(.top, 64)
-            VStack(alignment: .leading, spacing: 10) {
-                RMWordmark()
-                Text(L.t("ob.welcome.title")).rmText(.manchete).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
-                Text(L.t("ob.welcome.body")).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-            }
+            RMIllustration.caderno.image.resizable().scaledToFit().frame(maxHeight: 260).frame(maxWidth: .infinity).accessibilityHidden(true)
+            Text(L.t("ob.welcome.title")).rmText(.manchete)
+            Text(L.t("ob.welcome.body")).rmText(.corpo, RM.Palette.textoSecundario)
         case .age:
             Text(L.t("ob.age.title")).rmText(.manchete)
             TextField(L.t("ob.age.placeholder"), text: $draft.ageText).keyboardType(.numberPad).rmText(.numeroL)

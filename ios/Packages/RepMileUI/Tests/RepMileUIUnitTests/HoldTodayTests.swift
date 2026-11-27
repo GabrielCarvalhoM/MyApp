@@ -4,7 +4,8 @@ import XCTest
 @testable import RepMileUI
 
 /// #99: Hoje under a clinical hold (Figma 72 `805:492` urgent, `805:410` professional), the held week marks, the neutral light, the tab bar's
-/// inset and the onboarding strip. Replays the real engine's captures (`plan-blocked-urgent`, `17-plan-blocked`, `13-plan-w1`).
+/// inset (`880:4403`) and the large-text scale of the week strip (`889:515`). Replays the real engine's captures (`plan-blocked-urgent`,
+/// `17-plan-blocked`, `13-plan-w1`).
 @MainActor
 final class HoldTodayTests: XCTestCase {
     private func plan(_ name: String) throws -> PlanView { try Repo.store.decode(PlanView.self, name, at: "view") }
@@ -93,19 +94,22 @@ final class HoldTodayTests: XCTestCase {
         XCTAssertFalse(HoldAcknowledgement.isAcknowledged(b), "another hold asks again")
     }
 
-    // MARK: tab bar, onboarding strip, copy
+    // MARK: tab bar, large text, copy
 
     func testTheContentEndsAboveTheTabBar() {
-        // 30 pt from the bottom edge + 68 pt bar + 12 pt clearance = 110 pt from the bottom, of which the safe area already gives its own.
-        XCTAssertEqual(TabBarArea.contentInset(safeBottom: 34), 76)
-        XCTAssertEqual(TabBarArea.contentInset(safeBottom: 0), 110)
+        // Figma `880:4403`: the 118 pt area = 20 pt above the bar + 68 pt bar + 30 pt to the bottom edge; the safe area gives part of it.
+        XCTAssertEqual(TabBarArea.contentInset(safeBottom: 34), 84)
+        XCTAssertEqual(TabBarArea.contentInset(safeBottom: 0), 118)
         XCTAssertEqual(TabBarArea.contentInset(safeBottom: 200), 0)
     }
 
-    func testTheStripInitialsAreMondayFirst() {
-        XCTAssertEqual(WeekStripArt.initials(locale: Locale(identifier: "pt-BR")), ["S", "T", "Q", "Q", "S", "S", "D"])
-        XCTAssertEqual(WeekStripArt.initials(locale: Locale(identifier: "en")), ["M", "T", "W", "T", "F", "S", "S"])
-        XCTAssertEqual(WeekStripArt.pills.filter { $0.day == WeekStripArt.restDay }, [], "Friday rests")
+    /// Figma `889:515` (body +30 %): the strip's geometry follows the text up to × 1.3, never below × 1.
+    func testTheWeekStripScalesWithTheTextUpToTheLargeTextFrame() {
+        XCTAssertEqual(WeekPanels.scale(bodyScale: 1), 1)
+        XCTAssertEqual(WeekPanels.scale(bodyScale: 0.82), 1, "smaller text keeps the base geometry")
+        XCTAssertEqual(WeekPanels.scale(bodyScale: 1.12), 1.12, accuracy: 0.0001)
+        XCTAssertEqual(WeekPanels.scale(bodyScale: 1.3), 1.3, accuracy: 0.0001)
+        XCTAssertEqual(WeekPanels.scale(bodyScale: 3.1), 1.3, accuracy: 0.0001, "the Figma shows no larger strip")
     }
 
     /// The #99 copy is in the three languages; the clinical lines are INTERIM (`.interim` keys, final wording in #87).
@@ -113,7 +117,7 @@ final class HoldTodayTests: XCTestCase {
         let interim = ["today.hero.urgent.interim", "hold.urgent.title.interim", "hold.urgent.body.interim", "hold.professional.title.interim",
                        "hold.professional.body.interim"]
         let plain = ["today.hero.held", "today.signal", "hold.urgent.label", "hold.meanwhile", "hold.sport.RUN", "hold.sport.STRENGTH", "hold.sport.detail",
-                     "hold.note", "hold.understood", "hold.declare", "ob.welcome.title", "ob.welcome.body"]
+                     "hold.note", "hold.understood", "hold.declare"]
         for lang in ["pt-BR", "en", "es"] {
             let path = try XCTUnwrap(Bundle.module.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: lang), lang)
             let table = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String], lang)
@@ -121,7 +125,6 @@ final class HoldTodayTests: XCTestCase {
             if lang == "pt-BR" {
                 XCTAssertEqual(table["today.hero.urgent.interim"], "Pare agora e procure atendimento médico urgente")
                 XCTAssertEqual(table["hold.urgent.title.interim"], "Se for forte ou não passar, ligue para o número de emergência local")
-                XCTAssertEqual(table["ob.welcome.title"], "Corrida e força na mesma semana")
             }
         }
     }

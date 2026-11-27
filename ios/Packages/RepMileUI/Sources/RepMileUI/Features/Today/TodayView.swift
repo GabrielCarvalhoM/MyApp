@@ -36,7 +36,6 @@ struct TodayView: View {
                     }
                     .padding(.top, 22).padding(.horizontal, 24)
                 }
-                .padding(.bottom, 24)   // the tab bar's own inset clears it (#99 H2)
             }
             .scrollIndicators(.hidden)
             .background(alignment: .top) { RMGlow(color: Self.glowColor(content)) }
@@ -64,7 +63,7 @@ struct TodayView: View {
 
     private func hero(_ c: TodayContent) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            if let at = c.signalAt {
+            if let at = c.signalAt {   // Figma `805:448` "Sinal informado · …"
                 Text(L.f("today.signal", at)).rmText(.micro, RM.Palette.textoTerciario).accessibilityIdentifier("today-signal")
             }
             (Text(c.heroLead).foregroundColor(RM.Palette.textoTerciario) + Text(c.heroLead.isEmpty || c.heroRest.isEmpty ? c.heroRest : " " + c.heroRest))

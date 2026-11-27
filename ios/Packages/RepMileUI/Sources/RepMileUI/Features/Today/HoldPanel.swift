@@ -1,13 +1,16 @@
 import CoachingPresentation
 import SwiftUI
 
-/// Hoje under a clinical hold (#99; Figma 72 `805:410` professional assessment, `805:492` urgent care). The screen's headline already carries
-/// the instruction (`TodayContent`); this panel holds the card, the sports the engine holds, and the two actions in the Figma's order:
-/// "Entendi" is the primary, "Declarar que estou pronto" a neutral secondary (fundo/elevado-2, 52 pt). The readiness declaration stays the
-/// only way out of the hold and is always offered; nothing here starts, answers or writes anything.
+/// Hoje under a clinical hold (#99; Figma 72 `805:410` professional assessment, `805:492` urgent care; no Hoje frame exists for these states,
+/// so the content frames are the reference, per the orchestrator's method of 27/11). The headline (`805:449` / `805:516`) is
+/// `TodayContent`'s; this panel holds the card (`805:451` / `805:518`), "Enquanto isso" with the sports the engine holds (`805:455`,
+/// `805:456`), the note (`805:486`) and the actions (`805:575` / `805:581`): "Entendi" the primary (`805:576`), "Declarar que estou
+/// pronto" a neutral secondary (`805:578`, fundo/elevado-2, 52 pt). The readiness declaration stays the only way out of the hold and is
+/// always offered; nothing here starts, answers or writes anything.
 ///
 /// "Entendi" acknowledges the instruction for this hold (in memory, per hold key): its button goes, the card, the headline and the
-/// declaration stay. It never hides the urgent level.
+/// declaration stay. It never hides the urgent level. (In the Figma it closes the pushed "Não estou 100%" screen; Hoje has nothing to
+/// close: this meaning is an open decision reported in #99.)
 struct HoldPanel: View {
     let plan: PlanView
     let guidance: ClinicalGuidance

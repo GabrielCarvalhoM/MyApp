@@ -2,8 +2,8 @@ import XCTest
 
 /// #99, the visual review of the #14 pilot: Hoje under a clinical hold has the Figma's action hierarchy (`805:492` urgent, `805:410`
 /// professional): the instruction is the headline, "Entendi" is the primary and comes first, "Declarar que estou pronto" a neutral secondary,
-/// both 52 pt; nothing starts. At large Dynamic Type (`accessibility-large`) the week becomes a list, the actions stay reachable and the tab
-/// bar never covers them.
+/// both 52 pt; nothing starts. At large Dynamic Type (`accessibility-large`) the week strip grows as the Figma's large-text frame
+/// (`889:515`, × 1.3), the actions stay reachable and the tab bar (`880:4403`) never covers them.
 final class HoldHierarchyUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
@@ -24,8 +24,8 @@ final class HoldHierarchyUITests: XCTestCase {
     @MainActor
     private func reach(_ app: XCUIApplication, _ e: XCUIElement, file: StaticString = #filePath, line: UInt = #line) {
         let bar = app.buttons["tab-today"]
-        // The bar's capsule is 10 pt above its tab buttons.
-        func clear() -> Bool { e.exists && e.isHittable && (!bar.exists || e.frame.maxY <= bar.frame.minY - 10) }
+        // The tab bar area (`880:4403`) starts 20 pt above the bar's capsule, which is 10 pt above its tab buttons.
+        func clear() -> Bool { e.exists && e.isHittable && (!bar.exists || e.frame.maxY <= bar.frame.minY - 30) }
         var tries = 0
         while !clear() && tries < 16 {
             // A short drag (a fling could carry the element past the top).
@@ -103,11 +103,13 @@ final class HoldHierarchyUITests: XCTestCase {
     // MARK: accessibility-large
 
     @MainActor
-    func testAccessibilityLargeTodayListsTheWeekAndKeepsTheActionsClearOfTheTabBar() {
+    func testAccessibilityLargeTodayScalesTheWeekAndKeepsTheActionsClearOfTheTabBar() {
         let app = launch("today", extra: Self.accessibilityLarge)
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 10))
-        XCTAssertTrue(el(app, "week-list").exists, "the week scales as a list")
-        XCTAssertFalse(el(app, "week-panels").exists)
+        XCTAssertTrue(el(app, "week-panels").exists)
+        let card = app.buttons["today-card-w0-run-d6"]
+        XCTAssertTrue(card.exists)
+        XCTAssertEqual(card.frame.width, 174 * 1.3, accuracy: 2, "today's card at the large-text frame's 226 pt (889:544)")
         reach(app, app.buttons["today-start"])
         reach(app, app.buttons["today-view-session"])
         attach(app, "99 — Hoje, accessibility-large")

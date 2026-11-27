@@ -23,7 +23,6 @@ struct ProgressScreen: View {
                 strength
             }
             .padding(.horizontal, RM.Space.gutter)
-            .padding(.bottom, 24)   // the tab bar's own inset clears it (#99 H2)
         }
         .scrollIndicators(.hidden)
         .accessibilityIdentifier("screen-progress")

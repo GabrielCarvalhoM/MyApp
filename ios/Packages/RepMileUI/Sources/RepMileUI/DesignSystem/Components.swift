@@ -139,7 +139,7 @@ public struct StateBanner: View {
     public init(tone: Tone, icon: RMIcon, title: String, message: String, actionTitle: String? = nil, action: (() -> Void)? = nil) {
         self.tone = tone; self.icon = icon; self.title = title; self.message = message; self.actionTitle = actionTitle; self.action = action
     }
-    /// Red stays the urgent level's own (#99, `805:410`): a safety banner is outlined in "agora", neutral, like the hold card.
+    /// Red stays the urgent level's own (#99): a safety banner is outlined in "agora" (1.5 pt), neutral, as the hold card `805:451`.
     var accent: Color { switch tone { case .safety, .neutral: RM.Palette.textoPrimario; case .milestone: RM.Palette.marco } }
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -148,7 +148,7 @@ public struct StateBanner: View {
                 Text(title).rmText(.subtitulo)
             }
             Text(message).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-            if let actionTitle, let action { RMButton(actionTitle, kind: .now, action: action) }   // 52 pt (#99)
+            if let actionTitle, let action { RMButton(actionTitle, kind: .now, action: action) }   // 52 pt (#99, `901:1367`)
         }
         .padding(RM.Space.card)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -158,7 +158,7 @@ public struct StateBanner: View {
     }
 }
 
-/// "Luz" (Figma ellipse 620 × 460 at (-113, -270)): an elliptical gradient that reaches zero at the ellipse's edge, so it never ends in a
+/// "Luz" (Figma `880:4258` / `805:411`, ellipse 620 × 460 at (-113, -270), a radial fill to 0 at its edge): an elliptical gradient that reaches zero at the ellipse's edge, so it never ends in a
 /// straight cut (#99 H1). Behind the content, decorative.
 struct RMGlow: View {
     let color: Color
@@ -183,7 +183,7 @@ public struct FocusRingAvatar: View {
             Text(initials).rmText(.micro).minimumScaleFactor(0.6).lineLimit(1).frame(width: 22)
         }
         .frame(width: 36, height: 36)
-        .frame(width: 44, height: 44)   // touch area ≥ 44 pt (#99), the ring stays 36
+        .frame(width: 44, height: 44)   // touch area ≥ 44 pt (#99); the ring stays `880:4262`'s 36 pt
         .contentShape(Circle())
     }
 }
