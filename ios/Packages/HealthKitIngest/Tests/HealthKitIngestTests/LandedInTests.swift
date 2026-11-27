@@ -155,4 +155,16 @@ final class LandedInTests: XCTestCase {
         let c = await ing.counts()
         XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertNil(c.counters[IngestCode.deletedBeforeDelivery]); XCTAssertEqual(c.consolidated, 1)
     }
+
+    /// `setAside` counts a deletion DELETED_MAYBE_ON_RECORD once, when the workout is first set aside, whatever sets it aside again
+    /// (no current path does: a guard for future ones).
+    func testASetAsideCountsADeletionOnce() {
+        var s = QueueState()
+        var item = QueueItem(activityId: "G1", start: Copies.g1.start, end: Copies.g1.end, activity: WorkoutNormalizer.activity(Copies.g1))
+        item.frozen = true; item.deletedWhileInFlight = true; item.noteMayHaveLanded(in: "D1")
+        s.items = [item]
+        HealthKitIngestor.setAside(&s, 0, code: IngestCode.attemptsExhausted)
+        HealthKitIngestor.setAside(&s, 0, code: "INVALID_OBSERVATION")
+        XCTAssertEqual(s.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertEqual(s.items[0].mayBeOnRecord, true); XCTAssertNil(s.items[0].resendDue)
+    }
 }
