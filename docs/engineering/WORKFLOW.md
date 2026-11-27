@@ -40,7 +40,7 @@ validada", que é a distinção que o quadro precisa preservar.
 | Blocked | não avança; a issue diz o quê (Dependências) | quem encontrou o bloqueio |
 | In Review | PR aberto (não rascunho) com `Issue: #n` | a frente, ao abrir o PR |
 | Ready to Integrate | revisão independente passou, CI verde, `guard.mjs` limpo | o orquestrador, com o veredito do revisor |
-| Integrated | está na branch de integração; **ainda não validado** | a integração |
+| Integrated | está na branch de integração; **ainda não validado onde importa** (o campo Validação diz o que já foi provado, por exemplo Simulador); exige Evidências | a integração |
 | Verified | validado onde importa, com evidência; a issue é fechada como concluída | quem validou (o comando exige Validação ≠ "Não validado" e Evidências) |
 
 Mude estado **só** por `node tools/orchestration/board.mjs set <issue> --status "<Status>"`. O comando escreve o campo e o rótulo
