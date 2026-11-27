@@ -18,7 +18,8 @@ public struct RMIconView: View {
     }
 }
 
-/// Line-art illustrations (Figma `Traço/*`), used in empty states and onboarding. Not tinted: lime is part of the drawing.
+/// Line-art illustrations (Figma `Traço/*`), used in empty states and onboarding. Not tinted: each has a light ("A · Claro") and a dark
+/// variant in the asset catalog, its colours mapped variable by variable (`Tools/illustrations-light.mjs`).
 public enum RMIllustration: String, CaseIterable, Sendable {
     case bandeira, bolsa, caderno, calendario, mapa, pistaNoite = "pista-noite", pranchetaLapis = "prancheta-lapis", prancheta
     case quadroSemana = "quadro-semana", relogioPulso = "relogio-pulso", relogio
