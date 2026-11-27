@@ -34,6 +34,11 @@ final class LiveComposition {
     private let reader: HealthKitReader
     private let sink: DeviceActivitySinkProxy
     private let identity: AthleteIdentityStore
+    #if DEBUG
+    /// Debug, isolated launches only (`-isolatedLiveStores`, #83 review P2-1): A's first-launch reconciliation as the live root shows it to a
+    /// UI test (`LiveStores.reconciliationProbe`). Nil for a standard launch.
+    private(set) var reconciliationProbe: String?
+    #endif
 
     private static let opener = LaunchOpener<LiveComposition> { try await make() }
     /// Hosts opened in this process: never more than one (#49 P2-1). `SingleOpen` guarantees it; this makes a regression stop the process.
@@ -57,21 +62,32 @@ final class LiveComposition {
     }
 
     private static func make() async throws -> LiveComposition {
-        let identity = try identityStore()
+        let stores = LiveStores.current
+        try stores.prepare()
+        let identity = try identityStore(stores)
         let athleteId = try identity.current()
         // After a rotation: C's own store erases its folder (it alone knows where it is, #76) and its own index must answer nothing.
-        let recordings = try await PendingErasure.complete(identity: identity, openStore: { RecordingStore.standard() }, erase: { try $0.eraseAll() },
+        let recordings = try await PendingErasure.complete(identity: identity, openStore: { stores.recordings() }, erase: { try $0.eraseAll() },
                                                            isEmpty: { await $0.recordings(overlapping: PendingErasure.everything).isEmpty })
         let recorder = RunRecorder(source: locationSource(), store: recordings)
         let sink = DeviceActivitySinkProxy()
         let reader = HealthKitReader()
-        let ingestor = HealthKitIngestor(reader: reader, sink: sink, recordings: recordings, store: try FileQueueStore.applicationSupport())
-        let host = try await CoachingHost.open(CoachingHost.Configuration(athleteId: athleteId), queueControl: ingestor, clock: DeviceClock())
+        let ingestor = HealthKitIngestor(reader: reader, sink: sink, recordings: recordings, store: try stores.queue())
+        #if DEBUG
+        let keychainBefore = stores.isolatedKeychainItems()
+        #endif
+        let host = try await CoachingHost.open(stores.host(athleteId), queueControl: ingestor, clock: DeviceClock())
         hostsOpened += 1
         precondition(hostsOpened == 1, "one CoachingHost per athlete per process")
         guard sink.bind(host) else { preconditionFailure("one CoachingHost per process") }
         let c = LiveComposition(athleteId: athleteId, host: host, ingestor: ingestor, reader: reader, recordings: recordings, recorder: recorder,
                                 sink: sink, identity: identity)
+        #if DEBUG
+        if stores != .standard {
+            c.reconciliationProbe = LiveStores.reconciliationProbe(outcome: host.reconciliation.rawValue, before: keychainBefore,
+                                                                   after: stores.isolatedKeychainItems())
+        }
+        #endif
         c.startIngest()
         return c
     }
@@ -79,11 +95,11 @@ final class LiveComposition {
     /// The athlete identity. Debug builds only: `-simulateDamagedIdentity` reads a damaged identity file written for this launch in the temporary
     /// folder (`AthleteIdentityStore.damagedForUITests`), so a UI test sees the real failure path (`ACCOUNT_IDENTITY_DAMAGED`) while the real
     /// identity file is neither read nor touched.
-    private static func identityStore() throws -> AthleteIdentityStore {
+    private static func identityStore(_ stores: LiveStores) throws -> AthleteIdentityStore {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-simulateDamagedIdentity") { return try AthleteIdentityStore.damagedForUITests() }
         #endif
-        return try AthleteIdentityStore.standard()
+        return try stores.identity()
     }
 
     /// CoreLocation. Debug builds only: `-simulatedLocation` scripts the location (no permission prompt) so a live UI journey can record a

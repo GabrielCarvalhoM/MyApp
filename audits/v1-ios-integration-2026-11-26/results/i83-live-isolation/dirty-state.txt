@@ -1,0 +1,36 @@
+#83 · dirty states left on RepMile-C-3 before the two runs (simulator only)
+
+A) the issue as reported: the PRE-FIX LiveCompositionTests (9eb60f05, no isolation; app built from 28f9d8d3 into a separate
+   DerivedData, so the app is the same and only the test file is the old one), journey test interrupted (SIGINT to that xcodebuild
+   only) as soon as A's record existed in the standard stores; then the next pre-fix run of the first live test.
+
+== step 1: pre-fix journey test, interrupted once A's record exists (standard stores) ==
+sex 27 nov 2026 17:20:51 UTC
+record seen: 1 after 51s; interrupting xcodebuild (pid 81859)
+== standard stores left behind (container data, simulator) ==
+./CoachingHost/athlete-2423c4a50f0086b681c8f57525a2ee31.json
+./CoachingHost/athlete-2423c4a50f0086b681c8f57525a2ee31.lock
+./CoachingHost/athlete-install.lock
+./CoachingHost/clock-2423c4a50f0086b681c8f57525a2ee31.json
+./CoachingHost/install-marker.json
+./HealthKitIngest/queue.json
+./RepMileAccount/athlete-identity.json
+identity sha256: e6eff92e1b3146b5d5d5c0f5dcee4fd8949f1d19a5293928084bcdefcf8a6ad2
+== step 2: the next PRE-FIX run of the first live test (expected to FAIL: the app opens already enrolled) ==
+pre-fix next run exit: 65
+/Users/gabrieldecarvalhomaciel/.codex/worktrees/myapp-v1-int-i83/MyApp/ios/App/RepMile/UITests/LiveCompositionTests.swift:65: error: -[RepMileUITests.LiveCompositionTests testAFreshLaunchShowsOnboardingFromTheRealHost] : XCTAssertTrue failed - the real host answers NOT_ENROLLED → onboarding
+Test Case '-[RepMileUITests.LiveCompositionTests testAFreshLaunchShowsOnboardingFromTheRealHost]' failed (65.576 seconds).
+** TEST EXECUTE FAILED **
+
+B) a dirty ISOLATED install: the FIXED reinstall test interrupted after its first enrolment (record + A's Keychain items under the
+   isolated service left behind). Everything it wrote is under the app's tmp/uitest-live-<token>; nothing in the standard stores.
+
+isolated record seen: 1 after 44s; interrupting xcodebuild (pid 83958)
+== isolated install left behind (container tmp) ==
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/CoachingHost/athlete-5225da883dff6cfbdd489371548fc0cd.json
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/CoachingHost/athlete-5225da883dff6cfbdd489371548fc0cd.lock
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/CoachingHost/athlete-install.lock
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/CoachingHost/clock-5225da883dff6cfbdd489371548fc0cd.json
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/CoachingHost/install-marker.json
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/HealthKitIngest/queue.json
+./uitest-live-FA94337E-D2CC-4567-BED4-C804C262AE67/RepMileAccount/athlete-identity.json
