@@ -1,0 +1,62 @@
+#85 HealthKitIngest: swift test (macOS, package ios/Packages/HealthKitIngest)
+
+AFTER THE SECOND QRE #90 RECHECK, code commit 0f2e573d, 3 consecutive runs:
+  run 1: Executed 165 tests, with 0 failures (0 unexpected) in 7.172 (7.185) seconds · skipped: 0
+  run 2: Executed 165 tests, with 0 failures (0 unexpected) in 7.000 (7.014) seconds · skipped: 0
+  run 3: Executed 165 tests, with 0 failures (0 unexpected) in 7.194 (7.208) seconds · skipped: 0
+  New: LandedInTests testAResendUnlinkedRefusalOfTheSameDeliveryNeverClearsIt (R-1), testAResultMissingIsSettledByItsResendRound (R-2).
+
+AFTER THE QRE #90 RECHECK, code commit 6de78ca9, 3 consecutive runs:
+  run 1: Executed 163 tests, with 0 failures (0 unexpected) in 7.749 (7.763) seconds · skipped: 0
+  run 2: Executed 163 tests, with 0 failures (0 unexpected) in 7.427 (7.442) seconds · skipped: 0
+  run 3: Executed 163 tests, with 0 failures (0 unexpected) in 7.446 (7.459) seconds · skipped: 0
+  New: LandedInTests (10). Removed (superseded by P3-B): ResendBoundaryTests testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup,
+  testAFileWithoutTheFlagFailsClosedForASentRun (now LandedInTests testARefusalOfTheSameDeliveryProvesItNeverLanded / ...OfAnotherDelivery...,
+  testAFileWithoutLandedInFailsClosedAndNoRefusalClearsIt).
+
+AFTER THE QRE #90 ROUND, code commit 3dea3686, 3 consecutive runs:
+  run 1: Executed 155 tests, with 0 failures (0 unexpected) in 8.856 (8.871) seconds · skipped: 0
+  run 2: Executed 155 tests, with 0 failures (0 unexpected) in 8.126 (8.141) seconds · skipped: 0
+  run 3: Executed 155 tests, with 0 failures (0 unexpected) in 7.905 (7.921) seconds · skipped: 0
+
+FIRST ROUND, 1d47f369, 3 consecutive runs:
+  run 1: Executed 149 tests, with 0 failures (0 unexpected) in 6.844 (6.857) seconds · skipped: 0
+  run 2: Executed 149 tests, with 0 failures (0 unexpected) in 6.898 (6.910) seconds · skipped: 0
+  run 3: Executed 149 tests, with 0 failures (0 unexpected) in 7.039 (7.053) seconds · skipped: 0
+
+#85 tests (run 3 after the QRE round):
+MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted passed
+MayBeOnRecordTests testACopyIsPromotedOnlyAfterAnAnswerProvingNothingWasRecorded passed
+MayBeOnRecordTests testACopyOfARunAlreadyOnTheRecordIsNeverSentAfterAReinstall passed
+MayBeOnRecordTests testAFileWrittenBeforeTheFixFailsClosed passed
+MayBeOnRecordTests testALinkedElsewhereRefusalOfARunDeletedInFlightKeepsIt passed
+MayBeOnRecordTests testALinkedElsewhereSetAsideByAnyPathMayBeOnRecord passed
+MayBeOnRecordTests testARefusalOnlyStreakRecordedNothingSoADeletedRunLeavesAndItsCopyIsTheRun passed
+MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord passed
+MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce passed
+MayBeOnRecordTests testDeletingARunThatMayBeOnRecordNeverPromotesItsCopy passed
+ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound passed
+ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain passed
+ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch passed
+ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds passed
+ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning passed
+ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent passed
+ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery passed
+ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy passed
+ResendAfterRetryLaterTests testASignalOnceTheRoundIsDueSendsItAtOnce passed
+ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded passed
+ResendAfterRetryLaterTests testTheDefaultPolicyCoversAMultiDayOutage passed
+ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles passed
+ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun passed
+ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded passed
+ResendBoundaryTests testAFileWithoutTheFlagFailsClosedForASentRun passed
+ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce passed
+ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded passed
+ResendBoundaryTests testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted passed
+ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing passed
+ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice passed
+ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept passed
+ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound passed
+ResendBoundaryTests testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup passed
+
+The three ResendBoundaryTests through the real frozen boundary ran in Node (not skipped): v24.19.0.

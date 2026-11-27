@@ -55,9 +55,29 @@ struct QueueItem: Codable, Equatable {
     /// Deleted in Apple Health while its place on the record was unknown: in flight (settled when the answer arrives), or set aside with
     /// `mayBeOnRecord` (kept: it may be on the record).
     var deletedWhileInFlight = false
-    /// P3-2: set aside after an answer that does not prove it absent from the record (`retryLater` exhausted: a write may have landed;
-    /// ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a copy is never promoted and sent.
+    /// P3-2: set aside after an answer that does not prove it absent from the record (set aside after a send that may have landed,
+    /// `mayHaveLanded`; ACTIVITY_LINKED_ELSEWHERE: it is on the record). It stays the run of its same-run group, so a copy is never
+    /// promoted and sent. Cleared only by an answered NOT_RECORDED (#85: on record, the same id and facts would be DUPLICATE).
     var mayBeOnRecord = false
+    /// #85 (QRE #90 P3-2, recheck P3-B): the deliveries a send of which may have put this workout on the record, by `deliveryId`. Added
+    /// by a `retryLater` answer ("nothing was confirmed"), by an answer B could not write, and, at load, by the delivery in flight on disk
+    /// (a process that died may have sent it). A setAsideItem or adapterBug refusal of that SAME delivery id removes it, because those
+    /// refusals of the same frozen bytes are deterministic (they would have refused the send that landed too). Custody's replay is not the
+    /// reason: A retries under `<deliveryId>~<n>` request ids, so a landed `D~1` is not replayed for `D`. A resendUnlinked refusal (checked
+    /// against the current plan), a retryable/waiting/halted one, or another delivery's, never removes it. `landedUnknown` cannot be removed
+    /// by any refusal: an `ok:true` answer missing this workout's result (the request was committed), or a file written without this
+    /// field. Emptied only by an answered NOT_RECORDED. Accepted trade (R-3): a workout still carrying "*" or an older id when a refusal
+    /// sets it aside stays may-be-on-record with no round: a visible under-count, never a double count.
+    var landedIn: [String] = []
+    static let landedUnknown = "*"
+    /// Every set-aside of such a workout, and its deletion in Apple Health, keeps it may-be-on-record.
+    var mayHaveLanded: Bool { !landedIn.isEmpty }
+    /// #85: set aside after its delivery exhausted `retryLater` (a fault of the moment, not an answer), with a re-send round still to come:
+    /// the earliest instant of that round. Reopened then by `deliveryConditionsChanged()` or a launch, with the same frozen bytes in a NEW
+    /// delivery (same id, same facts: DUPLICATE if a write landed, otherwise the boundary decides). nil: no round to come.
+    var resendDue: Date?
+    /// #85: the re-send rounds already reopened (bounded by `ResendPolicy.maxRounds`).
+    var resends = 0
     /// What HealthKit said about where the run came from (nil only in a file written before policy 2).
     var provenance: RunProvenance?
 }
@@ -159,10 +179,15 @@ extension QueueState {
         receivedTypes = try c.decodeIfPresent([String].self, forKey: .receivedTypes) ?? []
         retryLaterStreak = try c.decodeIfPresent(Int.self, forKey: .retryLaterStreak) ?? 0
         nextRetryAt = try c.decodeIfPresent(Date.self, forKey: .nextRetryAt)
+        // #85: the delivery in flight on disk may have been sent by a process that died before writing its answer.
+        let flying = Set(inFlight?.activities.map(\.activityId) ?? [])
+        for i in items.indices where flying.contains(items[i].activityId) { items[i].noteMayHaveLanded(in: inFlight!.deliveryId) }
     }
 }
 
 extension QueueItem {
+    mutating func noteMayHaveLanded(in deliveryId: String) { if !landedIn.contains(deliveryId) { landedIn.append(deliveryId) } }
+
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         activityId = try c.decode(String.self, forKey: .activityId)
@@ -178,5 +203,14 @@ extension QueueItem {
         mayBeOnRecord = try c.decodeIfPresent(Bool.self, forKey: .mayBeOnRecord)
             ?? (frozen && [.setAside(code: IngestCode.attemptsExhausted), .setAside(code: HealthKitIngestor.activityLinkedElsewhere)].contains(state))
         provenance = try c.decodeIfPresent(RunProvenance.self, forKey: .provenance)
+        // #85: a file written before #85 has no `resends`. Its ATTEMPTS_EXHAUSTED item that may be on record was set aside by an exhausted
+        // retryLater (or, before P3-2, possibly by NOT_RECORDED answers): it gets its re-send rounds, the first one due at once. Re-sending
+        // it is safe either way: the same id with the same facts is DUPLICATE when on record.
+        // #85: a file without `landedIn` fails closed for a workout that was sent (frozen): landed in an unknown delivery, which no
+        // refusal can clear. One never sent cannot have landed.
+        landedIn = try c.decodeIfPresent([String].self, forKey: .landedIn) ?? (frozen ? [QueueItem.landedUnknown] : [])
+        resends = try c.decodeIfPresent(Int.self, forKey: .resends) ?? 0
+        resendDue = try c.decodeIfPresent(Date.self, forKey: .resendDue)
+        if !c.contains(.resends), mayBeOnRecord, !deletedWhileInFlight, state == .setAside(code: IngestCode.attemptsExhausted) { resendDue = .distantPast }
     }
 }

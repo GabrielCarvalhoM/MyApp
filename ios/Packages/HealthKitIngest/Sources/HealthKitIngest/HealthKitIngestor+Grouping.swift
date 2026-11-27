@@ -12,10 +12,15 @@ extension HealthKitIngestor {
         for id in batch.deletedIds {
             if let i = s.items.firstIndex(where: { $0.activityId == id }) {
                 if flying.contains(id) { s.items[i].deletedWhileInFlight = true }
-                else if s.items[i].mayBeOnRecord {
-                    // P3-2: it may be on the record, so it stays the run of its group (its copies are never promoted); counted once.
+                else if s.items[i].mayBeOnRecord || s.items[i].mayHaveLanded {
+                    // P3-2: it may be on the record (#85: also when a send of it may have landed and it waits, pending, for a new
+                    // delivery), so it stays the run of its group (its copies are never promoted); counted once.
                     if !s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedMaybeOnRecord, default: 0] += 1 }
-                    s.items[i].deletedWhileInFlight = true
+                    s.items[i].deletedWhileInFlight = true; s.items[i].mayBeOnRecord = true
+                    // #85: a deleted workout is never sent again: a round still to come, or one reopened and not yet sent, ends here.
+                    s.items[i].resendDue = nil
+                    // (Recheck: also one left NOT_RECORDED by a result missing from an ok:true answer, which is re-sent otherwise.)
+                    if case .setAside = s.items[i].state {} else { s.items[i].state = .setAside(code: IngestCode.attemptsExhausted) }
                 }
                 else { s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 }
             } else if s.ledger[id] != nil {
@@ -87,10 +92,11 @@ extension HealthKitIngestor {
         for it in s.items {
             // A set-aside run that IS, or may be, on record stays the run of its group, so its copies are consolidated into it and never
             // promoted: the athlete's reported app recording already counts it (QRE-B-O1-01), or the answer that set it aside does not prove
-            // it absent from the record (P3-2: `mayBeOnRecord`). Any other set-aside item is certainly not on record and leaves the groups.
+            // it absent from the record (P3-2: `mayBeOnRecord`), or it is to be sent again (#85: `resendDue`, its copies wait for that
+            // answer). Any other set-aside item is certainly not on record and leaves the groups.
             var keepsItsGroup = false
             if case .setAside(let c) = it.state {
-                guard c == RecordingDedupe.overlapsAppRecording || it.mayBeOnRecord else { continue }
+                guard c == RecordingDedupe.overlapsAppRecording || it.mayBeOnRecord || it.resendDue != nil else { continue }
                 keepsItsGroup = true
             }
             ids.insert(it.activityId)

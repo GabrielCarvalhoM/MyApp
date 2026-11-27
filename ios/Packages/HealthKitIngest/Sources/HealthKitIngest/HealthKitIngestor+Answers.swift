@@ -2,7 +2,8 @@ import Foundation
 import IntegrationContracts
 
 // How B acts on A's answer to a delivery (contract §6.2) and runs its delivery loop. Moved out of `HealthKitIngestor.swift`; changed only
-// where QRE-B P3-2 (set-asides that may be on the record) and QRE-B-R2-03 (a caller that waits for the loop) needed it, as marked.
+// where QRE-B P3-2 (set-asides that may be on the record), QRE-B-R2-03 (a caller that waits for the loop) and #85 (re-sends after an
+// exhausted retryLater; a delivery that may have landed) needed it, as marked.
 
 extension HealthKitIngestor {
     /// The boundary code of a refusal that says the workout is already on the record, linked to another session.
@@ -34,10 +35,18 @@ extension HealthKitIngestor {
         s.inFlight = nil
         let ids = flight.activities.map(\.activityId)
         func index(_ id: String) -> Int? { s.items.firstIndex { $0.activityId == id } }
-        /// Nothing was recorded: a workout deleted in Apple Health while in flight now simply leaves the queue, unless it may be on the
-        /// record (QRE #84 P3-1: e.g. `retryLater` exhausted by a refusal): it stays the run of its group, so its copy is never promoted.
+        /// Nothing was recorded by this answer: a workout deleted in Apple Health while in flight now simply leaves the queue, unless it
+        /// may be on the record (QRE #84 P3-1: e.g. `retryLater` exhausted by a refusal): it stays the run of its group, so its copy is never
+        /// promoted. QRE #90 P3-1: also when an EARLIER send of it may have landed (a retryLater, then e.g. CLOCK_AHEAD_OF_REFERENCE): it is
+        /// kept set aside ATTEMPTS_EXHAUSTED and may-be-on-record, with no re-send (deleted, G-5), counted once DELETED_MAYBE_ON_RECORD.
+        /// Recheck: one already may-be-on-record (a re-sent workout) is set aside too, never left pending to be sent again (G-5); one this
+        /// answer already set aside keeps its code.
         func dropDeletedUnrecorded() {
-            for id in ids { if let i = index(id), s.items[i].deletedWhileInFlight, !s.items[i].mayBeOnRecord {
+            for id in ids { if let i = index(id), s.items[i].deletedWhileInFlight {
+                if s.items[i].mayBeOnRecord || s.items[i].mayHaveLanded {
+                    if case .setAside = s.items[i].state {} else { Self.setAside(&s, i, code: IngestCode.attemptsExhausted) }
+                    continue
+                }
                 s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1 } }
         }
         var code: String?
@@ -48,7 +57,8 @@ extension HealthKitIngestor {
             let byIndex = Dictionary(results.map { ($0.index, $0) }, uniquingKeysWith: { a, _ in a })
             for (k, a) in flight.activities.enumerated() {
                 guard let i = index(a.activityId) else { continue }
-                let r = byIndex[k].flatMap { $0.activityId == a.activityId ? $0.outcome : nil } ?? .notRecorded(reason: "RESULT_MISSING")
+                let answered = byIndex[k].flatMap { $0.activityId == a.activityId ? $0.outcome : nil }
+                let r = answered ?? .notRecorded(reason: "RESULT_MISSING")
                 switch r {
                 case .recorded, .duplicate:
                     var eventId: String?; if case .recorded(let e) = r { eventId = e }
@@ -58,11 +68,21 @@ extension HealthKitIngestor {
                     if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedAfterDelivery, default: 0] += 1 }
                     s.items.remove(at: i)
                 case .notRecorded(let reason):
+                    // #85: an answered NOT_RECORDED proves the workout absent from the record (on record, the same id and facts would be
+                    // DUPLICATE): no earlier send of it landed, so a re-sent workout no longer holds its group on that account.
+                    // Recheck P3-A: a result MISSING from an `ok:true` answer proves nothing: the request was committed, so this workout
+                    // may have been recorded by it.
+                    if answered == nil { s.items[i].noteMayHaveLanded(in: QueueItem.landedUnknown) }
+                    else { s.items[i].mayBeOnRecord = false; s.items[i].landedIn = [] }
                     if s.items[i].deletedWhileInFlight {
+                        if s.items[i].mayBeOnRecord || s.items[i].mayHaveLanded { Self.setAside(&s, i, code: IngestCode.attemptsExhausted); continue }
                         s.items.remove(at: i); s.counters[IngestCode.deletedBeforeDelivery, default: 0] += 1
                     } else if s.items[i].attempts >= config.maxAttempts {
-                        // An answered NOT_RECORDED proves it is not on the record: a copy of the same run may become the run (P3-2).
-                        s.items[i].state = .setAside(code: IngestCode.attemptsExhausted)
+                        // An answered NOT_RECORDED proves it is not on the record: a copy of the same run may become the run (P3-2). A
+                        // missing result does not (`setAside` keeps it may-be-on-record), and gets its re-send rounds (R-2): the same id
+                        // and facts settle it, DUPLICATE if it was recorded, otherwise decided as a first send.
+                        Self.setAside(&s, i, code: IngestCode.attemptsExhausted)
+                        if answered == nil { armResend(&s, i); if let due = s.items[i].resendDue { scheduleResendWake(at: due) } }
                     } else if signalledSince {
                         s.items[i].attempts += 1; s.items[i].state = .pending
                     } else {
@@ -76,6 +96,18 @@ extension HealthKitIngestor {
             // QRE-B-02: a refusal with the retryLater disposition continues the streak (QRE #84 P3-1: it used to restart it here, so the
             // bound never applied to it); any other refusal breaks it (also below).
             if disposition != .retryLater { s.retryLaterStreak = 0; s.nextRetryAt = nil }
+            // Recheck P3-B / R-1: a setAsideItem or adapterBug refusal of THIS delivery id proves that no send of it landed. Not because
+            // custody replays a request id it has seen: A retries under `<deliveryId>~<n>` after CONFLICT_STALE_VERSION / REQUEST_ID_REUSED
+            // (HostDeviceSink, CoachingHost), so a landed `D~1` is never replayed for `D`. Because those refusals of the SAME frozen bytes
+            // are deterministic: shape, BEFORE_RECORD_START and the request checks would have refused the send that landed too, and the
+            // per-session limit is checked only for a workout the record does not know. resendUnlinked (UNKNOWN_SESSION, SPORT_MISMATCH)
+            // proves nothing: it is checked before the known-workout check, against the CURRENT plan, so a plan change can refuse after a
+            // landed send. Retryable, waiting or halted refusals prove nothing either; another delivery's refusal never clears this one.
+            // R-3, accepted fail-closed trade: a workout still carrying "*" or an older delivery id that such a refusal sets aside stays
+            // may-be-on-record with no round. A visible under-count (its copies stay consolidated), never a double count.
+            if [.setAsideItem, .adapterBug].contains(disposition) {
+                for id in ids { if let i = index(id) { s.items[i].landedIn.removeAll { $0 == flight.deliveryId } } }
+            }
             let culprit = at.flatMap { $0 >= 0 && $0 < ids.count ? index(ids[$0]) : nil }
             switch disposition {
             case .setAsideItem where culprit != nil:
@@ -105,6 +137,8 @@ extension HealthKitIngestor {
         case .halted(let c):
             code = c; if !signalledSince { s.block = .halted(code: c) }; dropDeletedUnrecorded()
         case .retryLater(let c):
+            // #85: "nothing was confirmed": this send may have landed.
+            for id in ids { if let i = index(id) { s.items[i].noteMayHaveLanded(in: flight.deliveryId) } }
             code = c; s.inFlight = flight
             retryLater(&s, flight, code: c)
         case .hostUnavailable:
@@ -120,7 +154,9 @@ extension HealthKitIngestor {
         do { try commit(s) } catch {
             // The answer could not be written: the in-flight delivery stays on disk and is re-sent with the same id (custody replays its
             // stored answer: QRE-B-15, one extra round trip at most). Nothing is sent until a write succeeds; every trigger retries.
+            // #85: the unwritten answer may have been a landed write (kept in memory; written with the next commit that succeeds).
             writeFailed = true
+            for id in ids { if let i = state.items.firstIndex(where: { $0.activityId == id }) { state.items[i].noteMayHaveLanded(in: flight.deliveryId) } }
         }
     }
 
@@ -130,8 +166,13 @@ extension HealthKitIngestor {
         if s.retryLaterStreak >= config.maxConsecutiveRetryLater {
             // P3-2: `retryLater` never proves that nothing was written ("or a write that landed is replayed", `DeviceDelivery`). These
             // workouts may be on the record: each stays the run of its group, so a copy of it is never promoted and sent as a second run.
+            // #85: unless no send of it ever landed (only refusals, which record NOTHING: `QueueItem.mayHaveLanded`, applied by
+            // `setAside`). Either way each workout gets its bounded re-send rounds (+Resend), holds its group while one is to come, and the
+            // wake for its round is scheduled now (QRE #90 P3-3: a due round never waits for a signal or a launch).
             for a in flight.activities { if let i = s.items.firstIndex(where: { $0.activityId == a.activityId }) {
-                Self.setAside(&s, i, code: IngestCode.attemptsExhausted, mayBeOnRecord: true) } }
+                Self.setAside(&s, i, code: IngestCode.attemptsExhausted)
+                armResend(&s, i)
+                if let due = s.items[i].resendDue { scheduleResendWake(at: due) } } }
             s.inFlight = nil; s.retryLaterStreak = 0; s.nextRetryAt = nil; lastRetryCode = nil
             return
         }
@@ -141,12 +182,16 @@ extension HealthKitIngestor {
 
     /// Every set-aside of a sent workout after a boundary answer. ACTIVITY_LINKED_ELSEWHERE, whatever the disposition that carried it,
     /// records nothing now but says the workout is ALREADY on the record (linked to another session): it may be on record (P3-2, QRE #84
-    /// P3-2). A workout deleted in Apple Health while in flight that turns out to be possibly on record is counted once (QRE #84 P3-1).
+    /// P3-2). So does any set-aside of a workout a send of which may have landed (#85 `mayHaveLanded`: a refusal now proves nothing about
+    /// that earlier send). A workout deleted in Apple Health while in flight that is, or stays, possibly on record is counted once, when it
+    /// is set aside (QRE #84 P3-1; a re-sent workout already may-be-on-record included), and is never sent again (no round, G-5).
     static func setAside(_ s: inout QueueState, _ i: Int, code: String, mayBeOnRecord: Bool = false) {
+        var wasSetAside = false; if case .setAside = s.items[i].state { wasSetAside = true }
         s.items[i].state = .setAside(code: code)
-        guard mayBeOnRecord || code == activityLinkedElsewhere, !s.items[i].mayBeOnRecord else { return }
-        s.items[i].mayBeOnRecord = true
-        if s.items[i].deletedWhileInFlight { s.counters[IngestCode.deletedMaybeOnRecord, default: 0] += 1 }
+        if mayBeOnRecord || code == activityLinkedElsewhere || s.items[i].mayHaveLanded { s.items[i].mayBeOnRecord = true }
+        guard s.items[i].deletedWhileInFlight else { return }
+        s.items[i].resendDue = nil
+        if s.items[i].mayBeOnRecord && !wasSetAside { s.counters[IngestCode.deletedMaybeOnRecord, default: 0] += 1 }
     }
 
     func scheduleRetry(at: Date) {

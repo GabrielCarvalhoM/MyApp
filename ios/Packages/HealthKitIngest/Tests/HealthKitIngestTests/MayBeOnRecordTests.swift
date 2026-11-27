@@ -7,9 +7,11 @@ import IntegrationContracts
 final class MayBeOnRecordTests: XCTestCase {
     func sent(_ sink: ScriptedSink) -> [String] { sink.deliveries.flatMap(\.activities).map(\.activityId) }
 
-    /// G1 is chosen; three consecutive retryLater set it aside ATTEMPTS_EXHAUSTED. A write may have landed: S1 is never sent.
+    /// G1 is chosen; three consecutive retryLater set it aside ATTEMPTS_EXHAUSTED. A write may have landed: S1 is never sent. #85: with
+    /// its re-send rounds used up (`maxRounds = 0`), #48's rule alone (the rounds themselves: ResendAfterRetryLaterTests).
     func exhaustedByRetryLater() async -> (Rig, ScriptedSink, HealthKitIngestor) {
         let sink = ScriptedSink(context: .ready(Copies.plan)); var rig = Rig(sink: sink); rig.config.maxConsecutiveRetryLater = 3
+        rig.config.resend.maxRounds = 0
         sink.answers = (0..<3).map { _ in { _ in .retryLater(code: "PERSISTENCE_FAILURE") } }
         rig.reader.add(Copies.g1, Copies.s1)
         let ing = rig.make(); await ing.start()
@@ -88,10 +90,11 @@ final class MayBeOnRecordTests: XCTestCase {
 
     // MARK: QRE #84 P3-1: deleted in Apple Health while in flight
 
-    /// Two sends of G1 answered `answer`; G1 is deleted in Apple Health while the second is in flight.
-    func deletedDuringTheLastSend(_ answer: @escaping (DeviceDelivery) -> DeliveryResult) async throws -> (ScriptedSink, HealthKitIngestor, Rig) {
+    /// Two sends of G1 answered `answer` (the first one `first`, when given); G1 is deleted in Apple Health while the second is in flight.
+    func deletedDuringTheLastSend(first: ((DeviceDelivery) -> DeliveryResult)? = nil, _ answer: @escaping (DeviceDelivery) -> DeliveryResult)
+        async throws -> (ScriptedSink, HealthKitIngestor, Rig) {
         let sink = ScriptedSink(context: .ready(Copies.plan)); var rig = Rig(sink: sink); rig.config.maxConsecutiveRetryLater = 2
-        sink.answers = [answer, answer]
+        sink.answers = [first ?? answer, answer]
         rig.reader.add(Copies.g1, Copies.s1)
         let ing = rig.make(); await ing.start()
         sink.holdNext = true
@@ -104,10 +107,21 @@ final class MayBeOnRecordTests: XCTestCase {
         return (sink, ing, rig)
     }
 
-    /// A refusal with the retryLater disposition exhausts the streak: G1 may be on record, so it is not dropped as "deleted before
-    /// delivery" and S1 is never promoted. Counted once as DELETED_MAYBE_ON_RECORD.
-    func testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord() async throws {
+    /// #85 (the over-caution QRE noted): a streak made only of refusals with the retryLater disposition recorded NOTHING (contract), so G1
+    /// is not on the record: deleted while in flight, it leaves as "deleted before delivery" and S1 is the run (one count).
+    func testARefusalOnlyStreakRecordedNothingSoADeletedRunLeavesAndItsCopyIsTheRun() async throws {
         let (sink, ing, _) = try await deletedDuringTheLastSend { _ in .refused(code: "BUSY", index: nil, disposition: .retryLater) }
+        XCTAssertEqual(sent(sink), ["G1", "G1", "S1"])
+        let c = await ing.counts()
+        XCTAssertEqual(c.counters[IngestCode.deletedBeforeDelivery], 1); XCTAssertNil(c.counters[IngestCode.deletedMaybeOnRecord])
+        XCTAssertEqual(c.setAside, [:]); XCTAssertEqual(c.consolidated, 0); XCTAssertEqual(c.delivered, 1)
+    }
+
+    /// A refusal that exhausts a streak which began with a plain retryLater ("nothing was confirmed"): G1 may be on record, so it is not
+    /// dropped as "deleted before delivery" and S1 is never promoted. Counted once as DELETED_MAYBE_ON_RECORD.
+    func testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord() async throws {
+        let (sink, ing, _) = try await deletedDuringTheLastSend(first: { _ in .retryLater(code: "PERSISTENCE_FAILURE") }) { _ in
+            .refused(code: "BUSY", index: nil, disposition: .retryLater) }
         XCTAssertEqual(sent(sink), ["G1", "G1"], "S1 is never sent")
         let c = await ing.counts()
         XCTAssertEqual(c.counters[IngestCode.deletedMaybeOnRecord], 1); XCTAssertNil(c.counters[IngestCode.deletedBeforeDelivery])

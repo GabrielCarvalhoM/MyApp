@@ -1,17 +1,6 @@
 import Foundation
 import IntegrationContracts
 
-/// Waits before a `retryLater` re-send (bounded exponential backoff, contract §6.2). Injected so tests control time.
-public protocol RetryScheduler: Sendable {
-    func schedule(after seconds: TimeInterval, _ work: @escaping @Sendable () async -> Void)
-}
-public struct TaskRetryScheduler: RetryScheduler {
-    public init() {}
-    public func schedule(after seconds: TimeInterval, _ work: @escaping @Sendable () async -> Void) {
-        Task { try? await Task.sleep(nanoseconds: UInt64(max(0, seconds) * 1_000_000_000)); await work() }
-    }
-}
-
 /// Counts by queue state, for the app's own NOT_SYNCED state (handoff §4 item 13). Codes and counts only, never a payload.
 public struct IngestCounts: Equatable, Sendable {
     public let pending: Int
@@ -41,6 +30,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         public var maxConsecutiveRetryLater = 8
         public var backoffBase: TimeInterval = 2
         public var backoffCap: TimeInterval = 300
+        /// #85: the bounded re-sends of a workout set aside after exhausting `retryLater` (`HealthKitIngestor+Resend.swift`).
+        public var resend = ResendPolicy()
         public init() {}
     }
 
@@ -84,6 +75,8 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     var observationWaiters: [CheckedContinuation<Void, Never>] = []
     var observerPump: Task<Void, Never>?
     var retryScheduled = false
+    /// #85: the re-send wake already scheduled (in memory only: a launch arms it again).
+    var resendWakeAt: Date?
 
     /// Test hook: the process "dies" after the host answered a delivery and before B wrote the answer (handoff §7 item 5).
     var dieAfterDeliverBeforeApply = false
@@ -103,6 +96,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
     public func start() async {
         guard ensureLoaded() else { return }
         log.log(.init(.started, counts: ["queued": state.items.count, "inFlight": state.inFlight?.activities.count ?? 0]))
+        resendAtLaunch()
         await syncObservation()
         await readNow()
     }
@@ -368,7 +362,7 @@ public actor HealthKitIngestor: DeviceQueueControl, HealthIngestStatusSource {
         conditionsEpoch += 1
         var s = state
         s.block = nil
-        for i in s.items.indices { if case .notRecorded = s.items[i].state { s.items[i].attempts += 1; s.items[i].state = .pending } }
+        reopenAfterSignal(&s)
         hostUnavailable = false
         // A signal is never lost to a failed write (QRE-B-04): memory takes it now; the write is retried on the next trigger.
         do { try commit(s) } catch { state = s; writeFailed = true }

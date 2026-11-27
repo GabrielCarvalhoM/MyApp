@@ -1,0 +1,142 @@
+#85 mutation checks AFTER THE QRE #90 ROUND (code commit 3dea3686). Each fix reverted alone in Sources (python replacement), full
+swift test (155), Sources restored with git checkout and checked clean afterwards. First-round results: mutations.txt.
+
+R1 no re-send at all (reopenDue reopens nothing)
+  -> 13 fail (of 155)
+     ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+     ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning
+     ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy
+     ResendAfterRetryLaterTests testASignalOnceTheRoundIsDueSendsItAtOnce
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce
+     ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound
+R2 launch does not re-send (start skips resendAtLaunch)
+  -> 2 fail (of 155)
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testALaunchSendsARoundThatCameDueWhileTheAppWasNotRunning
+R3 a signal before the round is due schedules no wake
+  -> 0 fail (of 155)
+R4 rounds unbounded (maxRounds ignored)
+  -> 4 fail (of 155)
+     MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun
+     ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing
+R5 no backoff (round due at once)
+  -> 5 fail (of 155)
+     QueueTests testConsecutiveRetryLaterAreBounded
+     ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheDefaultPolicyCoversAMultiDayOutage
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+R6 wait never doubles
+  -> 2 fail (of 155)
+     ResendAfterRetryLaterTests testTheDefaultPolicyCoversAMultiDayOutage
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+R7 clock that went back strands the round
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testAClockThatWentBackNeverStrandsTheRound
+R8 a workout awaiting its round leaves its group (regroup ignores resendDue)
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+R9 deleting a reopened, unsent workout leaves it pending
+  -> 2 fail (of 155)
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+     ResendBoundaryTests testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted
+R10 deletion keeps the round (merge does not clear resendDue)
+  -> 0 fail (of 155)
+R11 answered NOT_RECORDED keeps mayBeOnRecord
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+R12 old file: no rounds inferred
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+R13 armResend ignores a deletion in flight (defence in depth)
+  -> 0 fail (of 155)
+R14 awaitsResend ignores a deletion (defence in depth)
+  -> 0 fail (of 155)
+R15 both deletion guards gone (R10 + R14)
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+O1 over-caution back: every exhausted streak may be on record
+  -> 4 fail (of 155)
+     MayBeOnRecordTests testARefusalOnlyStreakRecordedNothingSoADeletedRunLeavesAndItsCopyIsTheRun
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testWithNoRoundLeftARefusalOnlyStreakLetsTheCopyBeTheRun
+     ResendBoundaryTests testARefusalOnlyStreakInOneProcessRecordedNothing
+R16 both wakes gone (R3 + N9)
+  -> 7 fail (of 155)
+     ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+     ResendAfterRetryLaterTests testAnExhaustedRunIsSentAgainWithItsFrozenBytesInANewDelivery
+     ResendAfterRetryLaterTests testTheCopyWaitsForTheAnswerToTheRoundEvenWhenNothingLanded
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testALandedWriteIsSettledAsDuplicateAndCountedOnce
+     ResendBoundaryTests testARunNothingOfWhichLandedIsRecordedByTheRound
+N1 QRE90-P3-1 dropDeletedUnrecorded ignores mayHaveLanded
+  -> 2 fail (of 155)
+     ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice
+     ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept
+N2 QRE90-P3-1 merge removes a pending deleted workout that may have landed
+  -> 1 fail (of 155)
+     ResendBoundaryTests testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted
+N3 QRE90-P3-2 setAside ignores mayHaveLanded
+  -> 13 fail (of 155)
+     MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted
+     MayBeOnRecordTests testAFileWrittenBeforeTheFixFailsClosed
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce
+     MayBeOnRecordTests testDeletingARunThatMayBeOnRecordNeverPromotesItsCopy
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded
+     ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice
+     ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept
+     ResendBoundaryTests testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup
+     ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded
+N4 QRE90-P3-2 a retryLater answer does not mark the workouts
+  -> 14 fail (of 155)
+     MayBeOnRecordTests testACopyIsNeverPromotedAfterRetryLaterIsExhausted
+     MayBeOnRecordTests testAFileWrittenBeforeTheFixFailsClosed
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce
+     MayBeOnRecordTests testDeletingARunThatMayBeOnRecordNeverPromotesItsCopy
+     ResendAfterRetryLaterTests testADeletedRunIsNeverSentAgain
+     ResendAfterRetryLaterTests testAFileWrittenBeforeThisFixGetsItsRounds
+     ResendAfterRetryLaterTests testARefusalOfTheRoundNeverReleasesTheCopy
+     ResendAfterRetryLaterTests testTheRoundsAreBoundedAndTheirWaitDoubles
+     ResendBoundaryTests testAPendingRunASendOfWhichMayHaveLandedIsKeptWhenDeleted
+     ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice
+     ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept
+     ResendBoundaryTests testASetAsideAfterASendThatMayHaveLandedKeepsItsGroup
+     ReviewR2RegressionTests testAPopulatedQueueFileRoundTrips
+N5 QRE90-P3-2 load does not mark the delivery in flight
+  -> 1 fail (of 155)
+     ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded
+N6 QRE90-P3-2 an unwritten answer is not marked
+  -> 1 fail (of 155)
+     ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded
+N7 QRE90-P3-2 old file: absent flag read as false
+  -> 1 fail (of 155)
+     ResendBoundaryTests testAFileWithoutTheFlagFailsClosedForASentRun
+N8 QRE90-P3-2 answered NOT_RECORDED keeps mayHaveLanded
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testAnAnsweredNotRecordedOfTheRoundProvesItAbsent
+N9 QRE90-P3-3 no wake at the set-aside
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testADueRoundIsSentWithoutWaitingForASignalOrALaunch
+N10 default maxRounds back to 8
+  -> 1 fail (of 155)
+     ResendAfterRetryLaterTests testTheDefaultPolicyCoversAMultiDayOutage
+restored: clean (git status --porcelain Sources empty after every mutation)
+
+NOTES
+  Redundant by design, each caught together with its pair: R10/R13/R14 (deletion guards; R15), R3 (the wake scheduled at a signal,
+  redundant in one process since P3-3 schedules it at the set-aside; it re-arms after a lost wake; R16 = R3 + N9).
