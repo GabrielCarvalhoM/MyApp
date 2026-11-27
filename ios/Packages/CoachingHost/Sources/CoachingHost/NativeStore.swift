@@ -47,14 +47,8 @@ final class NativeStore {
     func tomb(_ s: String) -> URL { dir.appendingPathComponent("tombstone-\(Self.name(s)).json") }
     static func digest(_ data: Data) -> String { EngineRuntime.hex(SHA256.hash(data: data)) }
 
-    /// Whether any athlete record exists in this store (the first-launch reconciliation).
     /// The folder's names; nil when it cannot be listed (code review R1 #3: a failed listing is "unknown", never "empty").
     func names() -> [String]? { try? FileManager.default.contentsOfDirectory(atPath: dir.path) }
-    /// Whether any athlete record exists. An unlistable folder counts as "yes" (nothing is removed on that guess).
-    func hasAnyRecord() -> Bool {
-        guard let n = names() else { return true }
-        return n.contains { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") }
-    }
     /// The install-wide lock (CCP-A-04, code review R1 #1): the key removal and an enrolment's check-and-seal never interleave.
     static let installTag = "install"
 
@@ -146,10 +140,11 @@ final class NativeStore {
     func setRaw(_ id: String, _ text: String) { try? atomicWrite(Data(text.utf8), to: file(id)) }
     func tombstone(_ s: String, _ text: String) throws { try atomicWrite(Data(text.utf8), to: tomb(s)) }
     func tombstoneOf(_ s: String) -> String? { try? String(contentsOf: tomb(s), encoding: .utf8) }
-    /// Removes every custody tombstone file (only once the key that named them is gone: `CoachingHost.completeErasure`). True when none is left.
+    /// Removes every custody tombstone file (only once the key that named them is gone: `CoachingHost.completeErasure`), and the `.tmp` of
+    /// a tombstone write that died before its rename (#49 P3-1). True when none is left.
     func removeTombstones() -> Bool {
         guard let all = self.names() else { return false }
-        let names = all.filter { $0.hasPrefix("tombstone-") && $0.hasSuffix(".json") }
+        let names = all.filter { $0.hasPrefix("tombstone-") && ($0.hasSuffix(".json") || $0.hasSuffix(".json.tmp")) }
         for n in names { try? FileManager.default.removeItem(at: dir.appendingPathComponent(n)) }
         return names.allSatisfy { !FileManager.default.fileExists(atPath: dir.appendingPathComponent($0).path) }
     }

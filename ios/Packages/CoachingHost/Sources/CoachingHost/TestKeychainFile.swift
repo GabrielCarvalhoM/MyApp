@@ -47,8 +47,12 @@ struct TestKeychainFile {
         if unlink(file(account).path) == 0 { return errSecSuccess }
         return errno == ENOENT ? errSecItemNotFound : errSecIO
     }
-    func accounts() -> [String] {
-        ((try? FileManager.default.contentsOfDirectory(atPath: dir.path)) ?? []).filter { $0.hasSuffix(".item") }.compactMap { Self.unhex(String($0.dropLast(5))) }
+    func accounts() -> [String] { accountsChecked() ?? [] }
+    /// nil when the folder exists but cannot be listed (as the Keychain answers when it is unavailable); none when it does not exist yet.
+    func accountsChecked() -> [String]? {
+        guard FileManager.default.fileExists(atPath: dir.path) else { return [] }
+        guard let names = try? FileManager.default.contentsOfDirectory(atPath: dir.path) else { return nil }
+        return names.filter { $0.hasSuffix(".item") }.compactMap { Self.unhex(String($0.dropLast(5))) }
     }
 }
 #endif

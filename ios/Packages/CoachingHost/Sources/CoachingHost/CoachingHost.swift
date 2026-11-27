@@ -56,6 +56,8 @@ public final class CoachingHost: @unchecked Sendable {
     var servingErasure = false
     /// Erasures whose native side is done and whose B purge has not returned yet (fence NATIVE_DONE).
     var purgeOwed: Set<String> = []
+    /// CCP-B-04 rule 2 (#49 P2-2): the durable purges of B owed for the fresh install and an acknowledged record loss.
+    let purgeIntent: PurgeIntent
     private(set) var runtime: EngineRuntime!
     private let keyRef: String
     public let queueControl: DeviceQueueControl?
@@ -79,6 +81,8 @@ public final class CoachingHost: @unchecked Sendable {
     var sentRequestIds: [String] = []
     /// Tests only: the last write's answer as the facade returned it.
     var lastAnswerJSON: String?
+    /// Tests only (#49 review P1-1): called with the function's name when a `perform` returns (to probe the athlete's lock there).
+    var afterPerformForTesting: ((String) -> Void)?
 
     // MARK: opening
 
@@ -128,14 +132,19 @@ public final class CoachingHost: @unchecked Sendable {
         self.clock = TrustedClock(source: clock, file: Self.clockFile(configuration.root, tag))
         signals = SignalStore(file: Self.signalsFile(configuration.root, tag))
         fence = ErasureFence(dir: configuration.root)
-        let f = fence
+        purgeIntent = PurgeIntent(dir: configuration.root)
+        let f = fence, s = store, id = configuration.athleteId
         self.clock.erased = { f.state(tag) != nil }; signals.erased = { f.state(tag) != nil }
+        // #49 P2-1: every read-modify-write of the signals file runs under the athlete's kernel lock, over the file as it is now.
+        signals.withLock = { body in try s.withLock(id) { body() } }
         self.queueControl = queueControl
     }
 
     private func start(testMode: Bool, exposeModules: Bool) async throws {
         let outcome: FirstLaunch.Outcome = try await onQueue {
-            let r = FirstLaunch.reconcile(root: self.configuration.root, store: self.store, keychain: self.keychain)
+            // #49 P3-2: a reconciliation that cannot complete throws (fail closed): the host does not open, and the next open retries it.
+            let r = try FirstLaunch.reconcile(root: self.configuration.root, store: self.store, keychain: self.keychain,
+                                              owePurge: { self.owePurge(.freshInstall) })
             // CCP-A-04 F4: an erasure left REQUESTED (a process death, a failed removal) is completed before anything else runs.
             self.fenceScanUnknown = true
             self.completePendingErasures()
@@ -149,8 +158,8 @@ public final class CoachingHost: @unchecked Sendable {
             return r
         }
         reconciliation = outcome
-        // Contract §4.2/§6.1: purge after the reconciliation is done (A's side first), then "the host is available again".
-        if outcome == .freshInstallPurged { try? await queueControl?.purge(.freshInstall) }
+        // Contract §4.2/§6.1: purge after the reconciliation is done (A's side first), then "the host is available again". The fresh-install
+        // purge is a durable intent written before the marker (#49 P2-2): sent here and, until it returns, at every start and write.
         await settleOwedPurge(nil, includeRequested: true)
         await queueControl?.deliveryConditionsChanged()
     }
@@ -244,6 +253,7 @@ public final class CoachingHost: @unchecked Sendable {
             if a.code == "BUSY", busy < 3 { busy += 1; usleep(busyRetryDelay); continue }
             if a.code == "CLOCK_BEHIND_RECORD" { conditionsWaitOnClock = true }
             if a.ok && clockRule != .read && lastPerformTrusted && a.object["replayed"] as? Bool != true { clock.recordWrite(atMs: nowMs) }
+            if testing { afterPerformForTesting?(fn) }
             return a
         }
     }
@@ -253,76 +263,6 @@ public final class CoachingHost: @unchecked Sendable {
         // QRE-A-01: only a committed operation that ran on a trusted clock ends a clock refusal (an exempt one under a clock ahead does not).
         guard a.ok, lastPerformTrusted, conditionsWaitOnClock else { return false }
         conditionsWaitOnClock = false; return true
-    }
-
-    // MARK: account erasure (CCP-A-04, 6.3)
-
-    static func clockFile(_ root: URL, _ tag: String) -> URL { root.appendingPathComponent("clock-\(tag).json") }
-    static func signalsFile(_ root: URL, _ tag: String) -> URL { root.appendingPathComponent("signals-\(tag).json") }
-
-    /// Whether the custody must see a tombstone for this host's athlete now (the store adapter's `tombstoneOf`). Only this host's own tag.
-    var fencedOnQueue: Bool { !servingErasure && fence.state(tag) != nil }
-
-    /// The answer a fenced athlete gets on the one path that does not reach the custody's tombstone (`acknowledgeRecordLoss`), in the
-    /// custody's own shape and words (Security R1 F3).
-    static func gone() -> Answer {
-        let j = #"{"ok":false,"error":{"code":"GONE","message":"This account was erased; nothing is accepted for it"}}"#
-        return Answer(json: j, object: (try? JSONSerialization.jsonObject(with: Data(j.utf8)) as? [String: Any]) ?? [:])
-    }
-
-    /// B's purge for erasures whose native side is done (fence NATIVE_DONE, read again from disk) or for `reason`; at start also for
-    /// erasures still REQUESTED (Security R1 F2a, code review R1 #5a: B must not keep the erased athlete's queue while A completes). A fence
-    /// becomes ERASED only once the purge returned; a failure leaves it owed, re-sent at the next start or write. Without a B, nothing is owed.
-    func settleOwedPurge(_ reason: QueuePurgeReason?, includeRequested: Bool = false) async {
-        let (owed, requested): (Set<String>, Bool) = await onQueue {
-            self.purgeOwed.formUnion(self.fence.tags(.nativeDone) ?? [])
-            return (self.purgeOwed, includeRequested && !(self.fence.tags(.requested) ?? ["?"]).isEmpty)
-        }
-        guard reason != nil || !owed.isEmpty || requested else { return }
-        if let q = queueControl {
-            do { try await q.purge(reason ?? .accountErased) } catch { HostLog.host("purge-failed", code: "PURGE_OWED"); return }
-        }
-        await onQueue { for t in owed where self.fence.state(t) == .nativeDone && self.fence.set(t, .erased) { self.purgeOwed.remove(t) } }
-    }
-
-    /// The native side of an account erasure, by tag alone, under ONE hold of that athlete's lock (code review R1 #4): the record and its
-    /// `.tmp`, the anchor, the side files and, under the install lock and only when no athlete record exists, the integrity key and the
-    /// custody tombstones it named. Each removal is checked; only then is the fence NATIVE_DONE. True when complete.
-    @discardableResult
-    func completeErasure(tag t: String) -> Bool {
-        dispatchPrecondition(condition: .onQueue(queue))
-        guard ErasureFence.isTag(t), !fence.isUnreadable(t) else { pendingErasures.insert(t); return false }
-        let root = configuration.root
-        let ok: Bool = (try? store.withLock(tag: t) { () throws -> Bool in
-            var ok = store.eraseFiles(tag: t)
-            let st = keychain.delete(KeychainAnchor.account(tag: t)); ok = ok && (st == errSecSuccess || st == errSecItemNotFound)
-            if t == tag { signals.erase(); clock.erase() }
-            for u in [Self.signalsFile(root, t), Self.clockFile(root, t)] { try? FileManager.default.removeItem(at: u); if FileManager.default.fileExists(atPath: u.path) { ok = false } }
-            // The integrity key is per install (NATIVE 1.5) and V1 enrols one athlete per install (`onboard` refuses a second one under the same
-            // install lock; Security R1 F1). It goes with the athlete's record (6.3) unless another athlete's record still needs it (an install
-            // from before that rule, or a folder that cannot be listed: kept, and the erasure stays pending).
-            if ok, let k = productionKey {
-                ok = try store.withLock(tag: NativeStore.installTag) { () -> Bool in
-                    guard let names = store.names() else { return false }
-                    if names.contains(where: { $0.hasPrefix("athlete-") && $0.hasSuffix(".json") }) { return true }
-                    // Security R1 F5: every custody tombstone file was named under a key that is now gone, so none can be found again; the
-                    // fence is what refuses the erased id. They are removed, with the time they held.
-                    return k.erase() && store.removeTombstones()
-                }
-            }
-            return ok && fence.set(t, .nativeDone)
-        }) ?? false
-        if ok { pendingErasures.remove(t); purgeOwed.insert(t) } else { pendingErasures.insert(t); HostLog.host("erasure-incomplete", code: "PERSISTENCE_FAILURE") }
-        return ok
-    }
-
-    /// Completes every erasure left REQUESTED (read again from disk: another instance or process may have started or finished one).
-    func completePendingErasures() {
-        if let r = fence.tags(.requested) { fenceScanUnknown = false; pendingErasures.formUnion(r) } else { fenceScanUnknown = true }
-        for t in pendingErasures.sorted() {
-            if fence.state(t) != .requested { pendingErasures.remove(t); continue }
-            completeErasure(tag: t)
-        }
     }
 
     // MARK: decoding

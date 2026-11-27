@@ -19,6 +19,12 @@ struct HostSignals: Codable, Equatable {
     var warningSignsAsked = false
 
     enum Scope: String, Codable, Equatable { case outsideV1Scope = "OUTSIDE_V1_SCOPE", clinicalHumanRequired = "CLINICAL_HUMAN_REQUIRED" }
+    /// `change` applied, keeping every signal at least as strict as it is now (a set signal stays set; a scope is replaced, never cleared).
+    func tightened(by change: (inout HostSignals) -> Void) -> HostSignals {
+        var n = self; change(&n)
+        return HostSignals(screenRequiredAfterErasure: screenRequiredAfterErasure || n.screenRequiredAfterErasure, scope: n.scope ?? scope,
+                           pendingIntake: pendingIntake || n.pendingIntake, warningSignsAsked: warningSignsAsked || n.warningSignsAsked)
+    }
     /// In memory only, while the file cannot be read (QRE-A-08: never written to disk as a fact).
     static let failClosed = HostSignals(screenRequiredAfterErasure: true, scope: nil, pendingIntake: true, warningSignsAsked: true)
 
@@ -35,16 +41,27 @@ struct HostSignals: Codable, Equatable {
     }
 }
 
-/// The signals file of one athlete. Every change is written atomically and its result checked: if it cannot be written, the stricter state
-/// stays in memory (`dirty`) and `startability` answers `recordUnavailable` until a write succeeds (QRE-A-02). An unreadable file is never
+/// The signals file of one athlete. Every change is written atomically and its result checked: if it cannot be written, the change stays
+/// pending in memory (`dirty`) and `startability` answers `recordUnavailable` until a write succeeds (QRE-A-02). An unreadable file is never
 /// overwritten with a guess (QRE-A-08): it stays `unreadable` (startability `recordUnavailable`) until it can be read again.
+///
+/// #49 P2-1 (FND-ABC-04/04b): nothing is cached across a write. Each change, and each `flush`, runs under the athlete's kernel lock
+/// (`withLock`, set by the host): the file is read again, the changes not yet on disk are applied over it, then this one, and the result is
+/// written. Another instance or process writing an unrelated signal meanwhile is never overwritten by a stale copy (a `scope` stays). A
+/// pending change is replayed whole only over the file it was decided against; over a file another writer changed since, it can only
+/// tighten (review P1-1: a stale release never clears a newer, stricter signal).
 final class SignalStore {
     let file: URL
     private(set) var current: HostSignals
     private(set) var unreadable = false
-    private(set) var dirty = false
+    /// The changes made in memory that are not on disk yet, in order; replayed over the file as read at the next write.
+    private struct Change { let apply: (inout HostSignals) -> Void; let base: HostSignals? }
+    private var pending: [Change] = []
+    var dirty: Bool { !pending.isEmpty }
     /// Tests only: returns false to make the next writes fail.
     var writeHook: (() -> Bool)?
+    /// The athlete's lock around a read-modify-write of the file (the host's `NativeStore.withLock`; re-entrant on the engine queue).
+    var withLock: (() -> Void) throws -> Void = { $0() }
 
     init(file: URL) {
         self.file = file
@@ -61,35 +78,51 @@ final class SignalStore {
     }
 
     private func persist() -> Bool {
-        if writeHook?() == false { dirty = true; return false }
+        if writeHook?() == false { return false }
         // CCP-A-04: nothing is written for an erased athlete; a write racing an erasure in another process is taken back out (the erasure
         // writes its fence before it removes this file).
-        if erased() { dirty = false; return true }
-        guard let d = try? JSONEncoder().encode(current) else { dirty = true; return false }
-        do { try AtomicFile.write(d, to: file); dirty = false } catch { dirty = true; return false }
+        if erased() { pending = []; return true }
+        guard let d = try? JSONEncoder().encode(current) else { return false }
+        do { try AtomicFile.write(d, to: file) } catch { return false }
+        pending = []
         if erased() { try? FileManager.default.removeItem(at: file) }
         return true
     }
     /// Whether this athlete is behind an erasure fence (set by the host).
     var erased: () -> Bool = { false }
 
-    /// Applies a change. Returns whether it is durable.
-    @discardableResult
-    func update(_ f: (inout HostSignals) -> Void) -> Bool {
-        if unreadable { reload() }
-        var s = current; f(&s)
-        if unreadable { current = s; dirty = true; return false }     // memory only: never write over a file that cannot be read
-        guard s != current || dirty else { return true }
+    /// Under the lock: the file as it is now, the pending changes, then `f`. Returns whether the result is on disk.
+    private func applyLocked(_ f: ((inout HostSignals) -> Void)?) -> Bool {
+        reload()
+        if let f { pending.append(Change(apply: f, base: unreadable ? nil : current)) }
+        if unreadable { return false }        // memory only (fail closed): never write over a file that cannot be read
+        let disk = current
+        var s = disk
+        for c in pending { if c.base == disk { c.apply(&s) } else { s = s.tightened(by: c.apply) } }
         current = s
+        if s == disk { pending = []; return true }
         return persist()
     }
 
-    /// Retries a write that failed earlier. Returns whether the signals on disk are the ones in memory.
+    /// Applies a change. Returns whether it is durable.
     @discardableResult
-    func flush() -> Bool {
-        if unreadable { reload(); if unreadable { return false } }
-        return dirty ? persist() : true
+    func update(_ f: @escaping (inout HostSignals) -> Void) -> Bool {
+        var ok = false
+        do { try withLock { ok = self.applyLocked(f) } } catch {
+            // The lock cannot be had (another process holds it past the wait; the folder is unavailable): memory only, fail closed.
+            pending.append(Change(apply: f, base: nil)); if !unreadable { f(&current) }
+            return false
+        }
+        return ok
     }
 
-    func erase() { current = HostSignals(); unreadable = false; dirty = false; try? FileManager.default.removeItem(at: file) }
+    /// Reads the file again under the lock and retries a write that failed earlier. Returns whether the signals on disk are the ones in memory.
+    @discardableResult
+    func flush() -> Bool {
+        var ok = false
+        do { try withLock { ok = self.applyLocked(nil) } } catch { return false }
+        return ok
+    }
+
+    func erase() { current = HostSignals(); unreadable = false; pending = []; try? FileManager.default.removeItem(at: file) }
 }

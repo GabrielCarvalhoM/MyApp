@@ -54,9 +54,18 @@ final class ReviewFixTests: XCTestCase {
         let e = await g.host.eraseHealthFacts(eventIds: ["any"])
         XCTAssertEqual(e.answer.error?.code, "PERSISTENCE_FAILURE", "no erasure without its signal on disk first")
         g.host.signals.writeHook = nil
-        _ = await g.host.eraseHealthFacts(eventIds: ["unknown-id"])
+        // #49 P3-5: the exact order: the signal is on disk, then the erasure is sent (the boundary's telemetry of it). The earlier attempt's
+        // signal, kept in memory when its write failed, is written with it and never withdrawn (fail closed), so it stays set.
+        var order: [String] = []
+        g.host.signals.writeHook = { order.append("signal-written"); return true }
+        HostLog.tap = { if $0.contains("\"op\":\"erasure\"") { order.append("erasure-sent") } }
+        let refusedErasure = await g.host.eraseHealthFacts(eventIds: ["unknown-id"])
+        HostLog.tap = nil; g.host.signals.writeHook = nil
+        XCTAssertEqual(refusedErasure.answer.error?.code.raw, "NOT_FOUND")
+        XCTAssertEqual(order, ["signal-written", "erasure-sent"], "durable before it is sent")
         let h = try await g.reopen()
-        XCTAssertTrue(h.host.signals.current.screenRequiredAfterErasure || h.host.signals.current.pendingIntake, "durable")
+        XCTAssertTrue(h.host.signals.current.screenRequiredAfterErasure, "the erasure's signal is on disk")
+        XCTAssertTrue(h.host.signals.current.pendingIntake, "the unresolved restart is still in flight")
         TestEnv.cleanup("qre02")
     }
 
@@ -100,7 +109,7 @@ final class ReviewFixTests: XCTestCase {
     func testEraseAccountWithoutARecordErasesTheNativeSide() async throws {
         let f = try await HostFixture.make("qre06")
         _ = await f.host.onboard(Athlete.answers(special: [.pregnancy]), consents: Athlete.all)
-        f.host.signals.update { $0.scope = .clinicalHumanRequired }
+        _ = await f.host.onQueue { f.host.signals.update { $0.scope = .clinicalHumanRequired } }    // on the engine queue (it takes the lock)
         XCTAssertTrue(FileManager.default.fileExists(atPath: f.host.signals.file.path))
         XCTAssertEqual(f.b.calls, [], "a refused onboarding enrols nothing: B is not told")
         let e = await f.host.eraseAccount()

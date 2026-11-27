@@ -220,7 +220,7 @@ final class ErasureTests: XCTestCase {
     /// Security R1 F2a: B's purge failing leaves it owed (fence NATIVE_DONE) and re-sent at the next start.
     func testPurgeFailureIsOwed() async throws {
         final class FailingB: DeviceQueueControl, @unchecked Sendable {
-            var fail = true; var purges = 0
+            var fail = false; var purges = 0
             func deliveryConditionsChanged() async {}
             func purge(_ reason: QueuePurgeReason) async throws { purges += 1; if fail { throw NSError(domain: "b", code: 1) } }
         }
@@ -230,14 +230,14 @@ final class ErasureTests: XCTestCase {
                                                       queueControl: b, clock: TestClock(), testKeychainDirectory: TestEnv.keychainDirectory)
         h.timezoneOffsetOverride = -180
         _ = await h.onboard(Athlete.answers(), consents: Athlete.all)
+        b.fail = true      // B worked at the first open (an owed fresh-install purge blocks an enrolment, #49 P2-2); now it fails
         let e = await h.eraseAccount()
         XCTAssertTrue(e.answer.ok)
         XCTAssertEqual(h.fence.state(h.tag), .nativeDone, "the purge did not return: owed")
         b.fail = false
         let h2 = try await CoachingHost.openForTesting(.init(athleteId: "athlete-er-purge", root: TestEnv.rootNoClean("er-purge")), keychainPrefix: TestEnv.prefix("er-purge"),
                                                        queueControl: b, clock: TestClock(), testKeychainDirectory: TestEnv.keychainDirectory)
-        // 1: the fresh-install purge of the first open; 2: the erasure's (failed); 3: the owed one, re-sent at the next start.
-        XCTAssertEqual(h2.fence.state(h2.tag), .erased); XCTAssertEqual(b.purges, 3)
+        XCTAssertEqual(h2.fence.state(h2.tag), .erased); XCTAssertEqual(b.purges, 3, "fresh install; the erasure's (failed); re-sent at the next start")
         // Code review R1 #5c: while a purge is owed, no new athlete enrols (B must be purged before a new athlete's data reaches it).
         let x = try await CoachingHost.openForTesting(.init(athleteId: "athlete-er-purge-2", root: TestEnv.rootNoClean("er-purge")), keychainPrefix: TestEnv.prefix("er-purge"),
                                                       queueControl: b, clock: TestClock(), testKeychainDirectory: TestEnv.keychainDirectory)
@@ -251,14 +251,11 @@ final class ErasureTests: XCTestCase {
         y.timezoneOffsetOverride = -180
         let refused = await y.onboard(Athlete.answers(), consents: Athlete.all)
         XCTAssertEqual(refused.answer.error?.code.raw, HostCode.hostUnavailable, "an owed purge blocks a new enrolment")
-        // B works again: the next write's wrapper (after its own refusal, since the purge was still owed at its check) settles the purge,
-        // and the enrolment after that goes through.
+        // B works again: the enrolment first settles what is owed (#49 review P2-2), then goes through.
         b.fail = false
         let second = await y.onboard(Athlete.answers(), consents: Athlete.all)
-        XCTAssertEqual(second.answer.error?.code.raw, HostCode.hostUnavailable)
-        XCTAssertEqual(x.fence.state(x.tag), .erased, "settled after that write")
-        let third = await y.onboard(Athlete.answers(), consents: Athlete.all)
-        XCTAssertEqual(third.answer.planOutcome, .planCreated)
+        XCTAssertEqual(x.fence.state(x.tag), .erased, "settled before the enrolment's check")
+        XCTAssertEqual(second.answer.planOutcome, .planCreated)
         TestEnv.cleanup("er-purge")
     }
 
@@ -369,8 +366,8 @@ final class ErasureTests: XCTestCase {
         #if os(macOS)
         p.close()
         #endif
-        // Under heavy contention the erasure may wait out the lock (BUSY): its fence is already REQUESTED, so the next operation completes it.
-        XCTAssertTrue(c.answer.ok || c.answer.error?.code == "BUSY", "\(String(describing: c.answer.error?.code))")
+        // Contention: the erasure may wait out the lock 3 times, then answers it is pending (never BUSY, #49 P3-5); the next operation completes it.
+        XCTAssertTrue(c.answer.ok || c.answer.error?.code.raw == HostCode.hostUnavailable, "\(String(describing: c.answer.error?.code))")
         for w in [a, d] { XCTAssertTrue(w.answer.ok || ["GONE", "BUSY"].contains(w.answer.error?.code.raw ?? "-"), "\(String(describing: w.answer.error?.code))") }
         // Refusals that write nothing are allowed under contention: BUSY (B retries later) and, for the second process whose fixed clock is
         // behind the in-process writes, CLOCK_BEHIND_RECORD.

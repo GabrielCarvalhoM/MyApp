@@ -44,49 +44,6 @@ extension CoachingHost: CoachingReading {
         await onQueue { PendingReports(count: self.inFlightWritesCount, oldestQueuedAt: nil) }
     }
 
-    /// A handoff §4 item 10 and 18a: `executable && !SEC-FPV-01 && !screen pending && trusted clock && R7-B0 valid && !outside scope`. The engine's
-    /// view says whether the session is executable; the host adds the native rules. Fail closed: anything unreadable is not startable.
-    public func startability(sessionId: String) async -> Startability {
-        await onQueue { self.startabilityOnQueue(sessionId) }
-    }
-
-    func startabilityOnQueue(_ sessionId: String) -> Startability {
-        dispatchPrecondition(condition: .onQueue(queue))
-        // QRE-A-02/08: signals that are not durable, unreadable, or a restart whose outcome was never resolved: nothing starts.
-        signals.flush()
-        if signals.unreadable || signals.dirty || signals.current.pendingIntake { return .notStartable(reason: .recordUnavailable) }
-        // FND-ABC-04 / 04b first: a refused or clinical restart leaves the earlier plan executable in the record.
-        switch signals.current.scope {
-        case .outsideV1Scope: return .notStartable(reason: .outsideV1Scope)
-        case .clinicalHumanRequired: return .notStartable(reason: .clinicalHumanRequired)
-        case nil: break
-        }
-        let planA = perform("plan", [("week", "null")], clockRule: .read)
-        guard planA.ok, let view = Self.result(planA, PlanView.self, key: "view").value else { return .notStartable(reason: .recordUnavailable) }
-        if case .unrecognized = view.state { return .notStartable(reason: .recordUnavailable) }
-        if view.state == .blocked || view.hold != nil { return .notStartable(reason: .blocked) }
-        struct Weeks: Decodable { let weeks: [Week?] }
-        let weeksA = perform("sessions", clockRule: .read)
-        guard let weeks = Self.result(weeksA, Weeks.self).value else { return .notStartable(reason: .recordUnavailable) }
-        guard let session = weeks.weeks.compactMap({ $0 }).flatMap(\.sessions).first(where: { $0.id == sessionId }) else { return .notStartable(reason: .notExecutable) }
-        if session.projected { return .notStartable(reason: .projected) }
-        if !session.executable { return .notStartable(reason: .notExecutable) }
-        if signals.current.screenRequiredAfterErasure || signals.current.warningSignsAsked { return .notStartable(reason: .screenRequired) }
-        let presA = perform("presentation", clockRule: .read)
-        guard let pres = Self.result(presA, PresentationSnapshot.self).value else { return .notStartable(reason: .recordUnavailable) }
-        if pres.readings?.warningSignScreen?.status == "REQUIRED" { return .notStartable(reason: .screenRequired) }
-        if view.question?.missingInputs.contains(where: Self.asksWarningSigns) == true { return .notStartable(reason: .screenRequired) }
-        if case .aheadOfReference = clock.check() { return .notStartable(reason: .clockUntrusted) }
-        let rep = (try? runtime.call("repertoire", [JSONText.object([("today", JSONText.string(view.today))])])).flatMap { try? JSONSerialization.jsonObject(with: Data($0.utf8)) as? [String: Any] }
-        if rep?["valid"] as? Bool != true { return .notStartable(reason: .repertoireExpired) }
-        return .startable
-    }
-
-    static func asksWarningSigns(_ input: String) -> Bool {
-        input.hasPrefix("wellbeing.warningSigns") || input.hasPrefix("wellbeingCheck.warningSigns") || input.hasPrefix("readiness.warningSigns")
-            || input.hasPrefix("wellbeingCheck.improved") || input.hasPrefix("wellbeingCheck.exerciseResponse")
-    }
-
     var inFlightWritesCount: Int { inFlightWritesValue }
 }
 
@@ -103,6 +60,7 @@ extension CoachingHost: CoachingWriting {
         let answer: Answer
         let outcome: WriteOutcome
         var signalConditions = false
+        /// Only `.accountErased` (the fence carries it); every other purge is a durable `PurgeIntent` (#49 P2-2).
         var purge: QueuePurgeReason? = nil
     }
 
@@ -112,8 +70,9 @@ extension CoachingHost: CoachingWriting {
 
     func write(_ body: @escaping () -> Write) async -> WriteOutcome {
         let w: Write = await onQueue { self.inFlightWritesValue += 1; defer { self.inFlightWritesValue -= 1 }; let w = body(); if self.testing { self.lastAnswerJSON = w.answer.json }; return w }
-        // CCP-A-04: an account erasure's purge, or one still owed by an earlier erasure (fence NATIVE_DONE), marks the fence ERASED once it returns.
-        if let p = w.purge, p != .accountErased { try? await queueControl?.purge(p); await settleOwedPurge(nil) } else { await settleOwedPurge(w.purge) }
+        // CCP-A-04 / CCP-B-04 rule 2: every purge owed (an intent, an account erasure's, one still owed by an earlier erasure) is sent; each
+        // is settled only once it returns.
+        await settleOwedPurge(w.purge)
         if w.signalConditions { await queueControl?.deliveryConditionsChanged() }
         return w.outcome
     }
@@ -134,17 +93,23 @@ extension CoachingHost: CoachingWriting {
 
     public func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome {
         let intake = intake(answers, learning: consents.learning)
+        await settleOwedPurge(nil)          // #49 review P2-2: an owed purge B can take now never refuses this enrolment
         return await write {
             guard let i = try? JSONText.encode(intake), let c = try? JSONText.encode(consents) else { return self.invalid() }
+            return self.underAthleteLock {
             // CCP-A-04 (Security R1 F1, code review R1 #1/#5c): the enrolment's checks and its seal run under the athlete's lock and then the
             // install lock, the same order as an erasure's key removal, so the two never interleave. Nothing is enrolled while any erasure is
-            // incomplete or its B purge is owed (that purge must reach B before a new athlete's data does), nor beside another athlete's record
+            // incomplete or a B purge is owed (that purge must reach B before a new athlete's data does; #49 P2-2: also a fresh-install or
+            // record-loss purge), nor beside another athlete's record
             // (the integrity key is per install, NATIVE 1.5, and an erasure removes it, 6.3).
             var a = Self.hostFailure("BUSY", "Another process holds this record")
             do {
                 try self.store.withLock(self.athleteId) { try self.store.withLock(tag: NativeStore.installTag) {
                     if self.fence.state(self.tag) == nil, (self.fence.tags(.requested) ?? ["?"]).isEmpty == false || (self.fence.tags(.nativeDone) ?? ["?"]).isEmpty == false {
                         a = Self.hostFailure(HostCode.hostUnavailable, "An account erasure is still completing on this install; try again")
+                    } else if self.fence.state(self.tag) == nil, !self.purgeIntent.owed().isEmpty {
+                        HostLog.host("enrolment-waits-for-purge", code: "PURGE_OWED")
+                        a = Self.hostFailure(HostCode.hostUnavailable, "The device queue has not been cleared yet; try again")
                     } else if self.fence.state(self.tag) == nil, self.store.hasRecord(otherThan: self.tag) {
                         a = Self.hostFailure("ANOTHER_ATHLETE_ON_THIS_INSTALL", "Another athlete is enrolled on this install")
                     } else {
@@ -160,6 +125,7 @@ extension CoachingHost: CoachingWriting {
             }
             if self.takeClockRecovery(a) { w.signalConditions = true }
             return w
+            }
         }
     }
 
@@ -170,6 +136,7 @@ extension CoachingHost: CoachingWriting {
             guard let i = try? JSONText.encode(intake) else { return self.invalid() }
             // QRE-A-02: the restart is marked in flight, durably, BEFORE it is sent; if that cannot be written, nothing is sent.
             // CCP-A-04 F5: no side file is recreated for an erased athlete (the custody answers GONE).
+            return self.underAthleteLock {
             if self.fencedOnQueue { let a = self.perform("restart", [("intake", i)], versioned: true, clockRule: .bounded); return Write(answer: a, outcome: self.outcome(a)) }
             guard self.signals.update({ $0.pendingIntake = true }) else { return self.notDurable() }
             let a = self.perform("restart", [("intake", i)], versioned: true, clockRule: .bounded)
@@ -178,7 +145,20 @@ extension CoachingHost: CoachingWriting {
             else { self.signals.update { $0.pendingIntake = false } }      // refused before the engine: nothing changed
             if self.takeClockRecovery(a) { w.signalConditions = true }
             return w
+            }
         }
+    }
+
+    /// #49 review P1-1: ONE hold of the athlete's lock across a safety signal's mark, the operation it guards and its resolution, so no other
+    /// instance or process commits in between (the lock is re-entrant: `perform` and `signals` run inside it). Retried as `perform` retries BUSY.
+    func underAthleteLock(_ body: () -> Write) -> Write {
+        for attempt in 0..<3 {
+            do { return try store.withLock(athleteId) { body() } }
+            catch NativeStore.StoreError.busy { if attempt < 2 { usleep(busyRetryDelay) } }
+            catch { let a = Self.hostFailure(HostCode.hostUnavailable, "The record cannot be opened now"); return Write(answer: a, outcome: outcome(a)) }
+        }
+        let a = Self.hostFailure("BUSY", "Another process holds this record")
+        return Write(answer: a, outcome: outcome(a))
     }
 
     /// FND-ABC-04 / 04b: the persistent scope signal, from the engine's own outcome of the intake.
@@ -222,6 +202,9 @@ extension CoachingHost: CoachingWriting {
 
     /// Every athlete review through `integration.submit` (FND-ABC-03). `screened`: the review carries `eligibility` (a new screen).
     func submitOnQueue(review json: String, screened: Bool, answersSigns: Bool = false) -> Write {
+        underAthleteLock { submitLocked(review: json, screened: screened, answersSigns: answersSigns) }
+    }
+    private func submitLocked(review json: String, screened: Bool, answersSigns: Bool) -> Write {
         let a = perform("submit", [("review", json)], versioned: true, requestId: idSource(), clockRule: .bounded)
         var w = Write(answer: a, outcome: outcome(a))
         if a.ok {
@@ -275,15 +258,17 @@ extension CoachingHost: CoachingWriting {
         await write {
             guard let ids = try? JSONText.encode(eventIds) else { return self.invalid() }
             // SEC-FPV-01 / N-3: after ANY erasure, no session starts until a new screen is recorded. Set durably BEFORE the erasure is sent
-            // (QRE-A-02); withdrawn only if the erasure was refused and the signal was not set before.
+            // (QRE-A-02); withdrawn only if the erasure was refused and the signal was not set before. All under one hold (review P1-1).
+            return self.underAthleteLock {
             if self.fencedOnQueue {      // CCP-A-04 F5
                 let a = self.perform("eraseHealthFacts", [("eventIds", ids)], versioned: true, clockRule: .exempt); return Write(answer: a, outcome: self.outcome(a))
             }
-            let before = self.signals.current.screenRequiredAfterErasure
-            guard self.signals.update({ $0.screenRequiredAfterErasure = true }) else { return self.notDurable() }
+            var before = false        // #49 P2-1: read under the lock, from the file as it is now
+            guard self.signals.update({ before = $0.screenRequiredAfterErasure; $0.screenRequiredAfterErasure = true }) else { return self.notDurable() }
             let a = self.perform("eraseHealthFacts", [("eventIds", ids)], versioned: true, clockRule: .exempt)
             if !a.ok && !before { self.signals.update { $0.screenRequiredAfterErasure = false } }
             return Write(answer: a, outcome: self.outcome(a))
+            }
         }
     }
 
@@ -341,85 +326,20 @@ extension CoachingHost: CoachingWriting {
         await write {
             // Security R1 F3: the one boundary path that does not consult the tombstone refuses an erased athlete as the custody would.
             if self.fencedOnQueue { let g = Self.gone(); return Write(answer: g, outcome: self.outcome(g)) }
-            let a = self.perform("acknowledgeRecordLoss", clockRule: .exempt)
-            var w = Write(answer: a, outcome: self.outcome(a))
-            if a.ok { w.purge = .recordLossAcknowledged }
-            return w
-        }
-    }
-}
-
-// MARK: - TimeInZoneClassifying
-
-extension CoachingHost: TimeInZoneClassifying {
-    /// The facade's `timeInZones` (the engine classifier over the current five-zone reading) behind the shared gate (`enabled:false` until
-    /// SSCTR C10). Never a Swift zone table.
-    public func timeInZones(_ series: HeartRateSeries) async -> TimeInZoneReading {
-        let a: Answer = await onQueue {
-            guard let s = try? JSONText.encode(series) else { return Self.hostFailure("INVALID_REQUEST", "series") }
-            return self.perform("timeInZones", [("series", s), ("durationSeconds", String(series.durationSeconds))], clockRule: .read)
-        }
-        if let r = Self.decode(TimeInZoneReading.self, a.data) { return r }
-        let reason = Self.boundaryError(a).code.raw
-        return Self.decode(TimeInZoneReading.self, Data("{\"status\":\"UNAVAILABLE\",\"reason\":\(JSONText.string(reason)),\"fromAverageHeartRate\":false}".utf8))!
-    }
-}
-
-// MARK: - DeviceActivitySink
-
-extension CoachingHost: DeviceActivitySink {
-    public func ingestContext() async -> IngestContextResult {
-        let a: Answer = await onQueue { self.perform("ingestContext", clockRule: .read) }
-        guard a.ok, let day = a.object["recordStartDay"] as? String, let tz = (a.object["timezoneOffsetMinutes"] as? NSNumber)?.intValue,
-              let v = (a.object["version"] as? NSNumber)?.intValue, let runs = a.object["runSessions"] as? [[String: Any]] else {
-            return .unavailable(code: a.code ?? HostCode.hostUnavailable)
-        }
-        return .ready(IngestContext(recordStartDay: day, timezoneOffsetMinutes: tz,
-                                    runSessions: runs.compactMap { r in (r["sessionId"] as? String).flatMap { s in (r["day"] as? String).map { PlannedRunSession(sessionId: s, day: $0) } } },
-                                    version: v))
-    }
-
-    /// Contract §4.1 item 1 and §6.1: `importActivities` with the authenticated actor, `clientRequestId = deliveryId` (`<deliveryId>~<n>` after a
-    /// stale version or a reused id, at most 3), the current version; BUSY retried with the same id at most 3 times, then `retryLater`; D1 refuses
-    /// before custody (`waiting`). Exactly one `DeliveryResult`; never throws.
-    public func deliver(_ delivery: DeviceDelivery) async -> DeliveryResult {
-        let r: (DeliveryResult, Bool) = await onQueue {
-            guard let acts = try? JSONText.encode(delivery.activities) else { return (.refused(code: "INVALID_REQUEST", index: nil, disposition: .adapterBug), false) }
-            var n = 0
-            let saved = self.idSource
-            self.idSource = { n += 1; return "\(delivery.deliveryId)~\(n)" }
-            defer { self.idSource = saved }
-            let a = self.perform("importActivities", [("activities", acts)], versioned: true, requestId: delivery.deliveryId, clockRule: .bounded)
-            return (Self.deliveryResult(a), self.takeClockRecovery(a))
-        }
-        if r.1 { await queueControl?.deliveryConditionsChanged() }
-        // Code review R1 #5b: an erasure completed during this delivery owes B a purge; it is sent outside B's call (never re-entering it).
-        if await onQueue({ !self.purgeOwed.isEmpty }) { Task { await self.settleOwedPurge(nil) } }
-        return r.0
-    }
-
-    static func deliveryResult(_ a: Answer) -> DeliveryResult {
-        if a.ok, let v = (a.object["version"] as? NSNumber)?.intValue {
-            let items = (a.object["activities"] as? [[String: Any]] ?? []).compactMap { x -> ActivityResult? in
-                guard let i = (x["index"] as? NSNumber)?.intValue, let id = x["activityId"] as? String, let o = x["outcome"] as? String else { return nil }
-                let outcome: ActivityOutcome
-                switch o {
-                case "RECORDED": outcome = .recorded(eventId: x["eventId"] as? String ?? "")
-                case "DUPLICATE": outcome = .duplicate
-                default: outcome = .notRecorded(reason: x["reason"] as? String ?? o)
-                }
-                return ActivityResult(index: i, activityId: id, outcome: outcome)
+            // #49 P2-2 (CCP-B-04 rule 2): B's purge is owed durably BEFORE the acknowledgement is sent; if that cannot be written, nothing is
+            // sent. Withdrawn only for a refusal known to commit nothing, and only if the file is still the one this call wrote (review P2-1):
+            // any other answer keeps it (a spurious purge is harmless).
+            // An intent already owed (an earlier acknowledgement whose purge has not returned) is kept as it is and never withdrawn.
+            var token: String?
+            if !self.purgeIntent.isOwed(.recordLossAcknowledged) {
+                guard let t = self.owePurgeToken(.recordLossAcknowledged) else { return self.notDurable() }
+                token = t
             }
-            return .answered(version: v, activities: items)
-        }
-        let e = a.object["error"] as? [String: Any], code = e?["code"] as? String ?? "OPERATIONAL_ERROR", index = (e?["index"] as? NSNumber)?.intValue
-        if code == HostCode.clockAheadOfReference { return .waiting(code: code) }
-        if code == "HOST_NOT_OPEN" || code == HostCode.hostUnavailable { return .hostUnavailable }
-        switch BoundaryDisposition.of(code: code, index: index) {
-        case .waiting: return .waiting(code: code)
-        case .retryLater: return .retryLater(code: code)
-        case .halted: return .halted(code: code)
-        case let d: return .refused(code: code, index: index, disposition: d)
+            let a = self.perform("acknowledgeRecordLoss", clockRule: .exempt)
+            if let token, !a.ok, ["NOT_LOST", "GONE", "BUSY", HostCode.hostUnavailable].contains(a.code ?? "") {
+                _ = try? self.store.withLock(tag: NativeStore.installTag) { self.purgeIntent.withdraw(.recordLossAcknowledged, token: token) }
+            }
+            return Write(answer: a, outcome: self.outcome(a))
         }
     }
 }
