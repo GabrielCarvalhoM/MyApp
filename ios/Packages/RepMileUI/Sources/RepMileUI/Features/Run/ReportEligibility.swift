@@ -12,10 +12,16 @@ extension EligibilityScreen {
         EligibilityScreen(status: nil, assessedAt: "", pain: nil, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
     }
 
-    /// Every flag answered, and either one answered yes (the engine routes it to a human) or the athlete confirmed none applies (the rule of
-    /// onboarding and of the history correction, #59).
+    /// A flag answered yes, or every flag answered and the athlete confirmed none applies.
+    ///
+    /// #70 (the #72 rule: a red flag never waits for answers the engine does not need): the engine routes a flag answered yes to a qualified
+    /// human before it reads anything else of the screen (`r6-adaptation.mjs`: the clinical flags first, then the current-assessment check),
+    /// so a lone "sim" with the five others unanswered gets the same answer as "sim" with five "não" at every athlete write site (status,
+    /// guidance, nothing recorded, plan state; replay `audits/v1-ios-swiftui-2026-11-26/results/i70-correction-followups/`). Without a yes,
+    /// nothing changes: every flag answered and confirmed, nil ≠ false. Onboarding keeps its own rule (`OnboardingDraft`, the intake path).
     var answered: Bool {
-        [pain, persistentPain, injury, illness, functionalLimitation, clinicalConcern].allSatisfy { $0 != nil } && (statesAClinicalFlag || status == .nonclinicalConfirmed)
+        statesAClinicalFlag
+            || [pain, persistentPain, injury, illness, functionalLimitation, clinicalConcern].allSatisfy { $0 != nil } && status == .nonclinicalConfirmed
     }
 
     /// The screen as sent, dated `day` (the plan's today: never the device's, which can be a day ahead of the plan's); nil while it is not answered.

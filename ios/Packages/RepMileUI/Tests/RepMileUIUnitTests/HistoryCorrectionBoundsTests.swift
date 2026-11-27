@@ -38,16 +38,20 @@ final class HistoryCorrectionBoundsTests: XCTestCase {
         for typed in ["0,01", "6", "7,4", "300"] { vm.km = typed; XCTAssertTrue(vm.canSend, typed) }
     }
 
-    /// The screen is dated the plan's today, never the device's: no plan, no request (QRE #59 P3).
+    /// The screen is dated the plan's today, never the device's: no plan day read at send time, nothing sent, the draft stays and says why
+    /// (QRE #59 P3, #70).
     func testNoPlanTodayNoRequest() async throws {
         let w = FixtureCoachingWriter(store: Repo.store)
         let e = try entry("P-logged-two-voices")
         let vm = HistoryCorrectionViewModel(entry: e, sessionDate: e.date, writer: w, planToday: { nil }, reload: {}, holdGuidance: { nil })
         vm.startContesting(); vm.km = "6"; vm.answerNoneApplies()
-        XCTAssertNil(vm.request())
+        XCTAssertFalse(vm.dayUnavailable)
         await vm.send()
         XCTAssertEqual(vm.phase, .editing)
+        XCTAssertTrue(vm.dayUnavailable, "the sheet says nothing was sent")
+        XCTAssertEqual(vm.km, "6", "the draft is kept")
         XCTAssertTrue(w.journal.entries.isEmpty)
+        XCTAssertNotEqual(L.t("history.contest.noDay"), "history.contest.noDay")
     }
 
     /// The day the plan in force holds for the row's session (what `HistoryScreen` passes): none for an unplanned row, a session the plan

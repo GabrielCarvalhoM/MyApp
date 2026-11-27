@@ -26,9 +26,9 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
     private func object(_ d: Data) throws -> [String: Any] { try XCTUnwrap(try JSONSerialization.jsonObject(with: d) as? [String: Any]) }
     private func encoded(_ v: some Encodable) throws -> Data { let e = JSONEncoder(); e.outputFormatting = .sortedKeys; return try e.encode(v) }
 
-    func testOnlyAMeasuredUncontestedPlannedRunCanBeContested() throws {
+    func testOnlyAMeasuredPlannedRunTheAthleteReportedCanBeContested() throws {
         XCTAssertTrue(HistoryCorrectionViewModel.canContest(try entry("P-logged-two-voices")))
-        XCTAssertFalse(HistoryCorrectionViewModel.canContest(try entry("P-logged-unplanned")), "already contested")
+        XCTAssertTrue(HistoryCorrectionViewModel.canContest(try entry("P-logged-unplanned")), "already contested: offered again (#70)")
         XCTAssertFalse(HistoryCorrectionViewModel.canContest(try entry("P-logged-after-w0", "w0-run-d5")), "nothing measured")
         XCTAssertFalse(HistoryCorrectionViewModel.canContest(try entry("P-logged-after-w0", "w0-str-d2")), "strength")
         XCTAssertFalse(try entries("P-logged-unplanned").filter { $0.sessionId == nil }.contains(where: HistoryCorrectionViewModel.canContest), "unplanned")
@@ -142,7 +142,7 @@ final class HistoryCorrectionViewModelTests: XCTestCase {
         // A flag answered "sim" is the athlete's statement: sent as stated (no confirmation), the engine routes it to a human.
         vm.eligibility.pain = true
         XCTAssertTrue(vm.canSend)
-        let e = try XCTUnwrap(vm.request()?.eligibility)
+        let e = try XCTUnwrap(vm.request(today: HistoryCorrectionViewModel.testToday)?.eligibility)
         XCTAssertEqual(e.pain, true); XCTAssertNil(e.status); XCTAssertEqual(e.assessedAt, HistoryCorrectionViewModel.testToday)
     }
 
