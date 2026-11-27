@@ -71,6 +71,17 @@ app envia. Na base congelada: **7 passam, 26 falham** (`replay-base.txt`). Na em
   PROFESSIONAL_ASSESSMENT.
 - **Mudança:** a rota do flag carrega o nível e os sinais do `signRoute` quando há sinal "sim" (o maior nível entre os itens "sim"). Um flag
   sozinho continua PROFESSIONAL_ASSESSMENT.
+- **#124** ("um sinal urgente vence a triagem") é este mesmo defeito. A matriz dele virou teste de regressão:
+  `test/v1ccp79-i124-matrix.test.mjs`. São 4 fluxos (notFeeling100, declareReadiness, wellbeingCheck, weeklyCheckIn com check) × 3 triagens
+  (tudo não / um sim / vários sim) × 7 sinais (nenhum, W7, W2, W3, W4, W5, X1), ou seja, 84 células:
+  - triagem "sim" + sinal urgente → URGENT_CARE_ADVISED com o sinal nomeado (40 células);
+  - triagem "sim" + W7 → PROFESSIONAL_ASSESSMENT com o motivo do sinal (8 células);
+  - sem sinal ou triagem toda "não" → resposta inteira byte a byte igual à da base (36 células, digests em `test/v1ccp79-i124-base-digests.json`).
+
+  Na base congelada, as 48 células corrigidas falham (`failing-first-i124-base.txt`).
+- **Notas (fora do escopo, não mudadas):**
+  - declareReadiness com X1 e triagem toda "não" pede `readiness.unrecognized`: X1 não está em `READINESS_SIGNS`, e o app nunca o envia ali.
+  - weeklyCheckIn ignora o check fora de um episódio (KEEP); o app nunca chama weeklyCheckIn.
 
 ### Item 3 — nível da retenção rebaixado por decisão posterior
 
@@ -106,11 +117,12 @@ app envia. Na base congelada: **7 passam, 26 falham** (`replay-base.txt`). Na em
 | Gate | Resultado | Arquivo |
 |---|---|---|
 | Testes novos, primeiro falhando | `test/v1ccp79-safety-routes.test.mjs` na base congelada: **0 passam, 7 falham** nas asserções do defeito | `failing-first-base.txt` |
+| Matriz do #124, primeiro falhando | `test/v1ccp79-i124-matrix.test.mjs` na base: os testes das 40 + 8 células corrigidas falham; os das 36 inalteradas passam | `failing-first-i124-base.txt` |
 | `npm test` (suíte ativa oficial), base `6bc4362` | 1952 ativos, 1952 passam; 53/53 históricos falham onde declarado | `suite-base.txt` |
-| `npm test` no HEAD (`4dc3dd9`) | **1959 ativos, 1959 passam, 0 falham** (os 1952 + 7 novos); 53/53 históricos falham onde declarado; nada pulado | `suite-final.txt` |
+| `npm test` no HEAD | **1963 ativos, 1963 passam, 0 falham** (os 1952 + 7 do CCP-79 + 4 da matriz do #124); 53/53 históricos falham onde declarado; nada pulado | `suite-final.txt` |
 | `npm run test:historical` | **53/53** passam no commit a que pertencem (16 commits) | `historical-run.txt` |
 | Replay pela fronteira | base 7/33; emenda 33/33 | `replay-base.txt`, `replay-amended.txt` |
-| Verificador da emenda 3 | 91/91, bundle como registrado | `amendment-3-check.txt` |
+| Verificador da emenda 3 | 91/91, bundle como registrado (em `4dc3dd9`). Depois, os dois arquivos de teste do #124 aparecem no passo "nothing else changed" como infraestrutura de teste não declarada. O registro é escrito uma vez, e o teste de integridade aceita exatamente essa classe (HISTORICAL_TEST_POLICY §4 regra 3). | `amendment-3-check.txt` |
 | CoachingHost `build.sh --twice` | determinístico; manifesto checado contra a emenda 3; 98/98 fixtures compartilhadas iguais; `facade-calls.json` inalterado | `coachinghost-build.txt` |
 | CoachingHost `swift test` (macOS, keychain de arquivo de teste, nunca o login keychain) | **69 testes, 0 falhas**, 1 pulado (o teste opt-in do Keychain real, por desenho) | `coachinghost-swift-test.txt` |
 | IntegrationContracts / CoachingPresentation `swift test` | 10/10 e 29/29, 0 pulados | — |

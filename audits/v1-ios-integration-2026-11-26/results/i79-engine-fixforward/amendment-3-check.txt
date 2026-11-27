@@ -1,3 +1,5 @@
+# node CoachingCore/scripts/v1-ccp79-amendment.mjs --check, run twice:
+## at 4dc3dd9 (before the #124 matrix test):
 REPMILE-COACHINGCORE-V1-FINAL-RELEASE-FREEZE: its record is byte-identical to 6482749 (not rewritten)
 REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-1: its record is byte-identical to bec39c5 (not rewritten)
 REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2: its record is byte-identical to 9a88521 (not rewritten)
@@ -15,3 +17,6 @@ V1X-RUN-HR-FIVE-ZONE enabling state unchanged (ENABLED)
 production bundle cdd812dc46aa8370: 47 CoachingCore modules equal to the bound sources, 18 assets equal to the bound data files, pinned in BundlePin.swift
 REPMILE-COACHINGCORE-V1-CCP79-AMENDMENT-3: 91/91 consumed files byte-identical; production bundle cdd812dc46aa8370 as recorded; 4 amended files over REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2, their diffs as recorded
 exit 0
+## at 877cb9ac, with the #124 matrix test files committed (test infrastructure the written-once record does not declare; v1san-runtime-integrity accepts exactly this class):
+CHANGED and not declared: CoachingCore/test/v1ccp79-i124-base-digests.json, CoachingCore/test/v1ccp79-i124-matrix.test.mjs
+exit 1

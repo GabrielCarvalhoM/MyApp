@@ -1,0 +1,49 @@
+# #124 matrix (test/v1ccp79-i124-matrix.test.mjs, unedited) on the frozen base 6bc43620, node v24.19.0: the 40 urgent cells and the 8 W7 cells fail; the 36 unchanged cells pass (they are the base's own answers).
+✔ #124 matrix: 84 cells, 4 flows x 3 screenings x 7 signs (0.318209ms)
+✖ #124 / CCP-79 item 2: screening Yes (one or several) with an urgent sign (W2-W5, X1) advises urgent care and names the sign, in every flow (40 cells) (1.322958ms)
+✖ #124: screening Yes with a non-urgent sign (W7 swelling) keeps the professional assessment, with the sign named and its own reason (8 cells) (0.324125ms)
+✔ #124: with no sign, or with screening all No, every answer is byte-identical to the frozen base (36 cells) (0.726875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3940.204083
+
+✖ failing tests:
+
+test at test/v1ccp79-i124-matrix.test.mjs:52:1
+✖ #124 / CCP-79 item 2: screening Yes (one or several) with an urgent sign (W2-W5, X1) advises urgent care and names the sign, in every flow (40 cells) (1.322958ms)
+  AssertionError [ERR_ASSERTION]: notFeeling100|one|W2
+  + actual - expected
+  
+  + 'PROFESSIONAL_ASSESSMENT'
+  - 'URGENT_CARE_ADVISED'
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'PROFESSIONAL_ASSESSMENT',
+    expected: 'URGENT_CARE_ADVISED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/v1ccp79-i124-matrix.test.mjs:57:1
+✖ #124: screening Yes with a non-urgent sign (W7 swelling) keeps the professional assessment, with the sign named and its own reason (8 cells) (0.324125ms)
+  AssertionError [ERR_ASSERTION]: notFeeling100|one|W7
+  + actual - expected
+  
+  + undefined
+  - [
+  -   'swelling'
+  - ]
+  
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: [ 'swelling' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
