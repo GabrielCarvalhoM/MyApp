@@ -187,10 +187,8 @@ final class ReviewR2RegressionTests: XCTestCase {
         let sink = ReentrantSink(); let rig = Rig(sink: sink)
         rig.reader.add(workout("A", end: at("2026-11-17", "07:45")))
         let ing = rig.make(); sink.ingestor = ing
-        let done = Task { await ing.start(); return true }
-        let timeout = Task { try await Task.sleep(nanoseconds: 3_000_000_000); done.cancel() }
-        let finished = await done.value; timeout.cancel()
-        XCTAssertTrue(finished)
+        // A real timeout (#48 P3-4): a deadlock fails the test after 5 s; `cancel()` on a task blocked on a continuation unblocked nothing.
+        await assertFinishes(within: 5, self, "start with a signal inside ingestContext") { await ing.start() }
         XCTAssertEqual(sink.inner.deliveries.count, 1, "delivered, no deadlock")
         rig.reader.add(workout("B", end: at("2026-11-18", "07:45"))); await rig.reader.fire(); await ing.settled()
         XCTAssertEqual(sink.inner.deliveries.count, 2, "later reads still work")
