@@ -1,14 +1,16 @@
 import XCTest
 
-/// Onboarding (10) on the dedicated simulator, from the NOT_ENROLLED state.
+/// Onboarding (Figma 10 `551:5`, #101) on the dedicated simulator, from the NOT_ENROLLED state. The answers of a Figma persona are seeded
+/// with the Debug-only `-onboardingSeed` (fixture composition); the journeys then tap through the real screens.
 final class OnboardingUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
     @MainActor
-    private func launch() -> XCUIApplication {
+    private func launch(_ extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-scenario", "no-data", "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        app.launchArguments = ["-scenario", "no-data", "-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"] + extra
         app.launch()
+        XCTAssertTrue(app.descendants(matching: .any)["screen-onboarding"].waitForExistence(timeout: 15))
         return app
     }
     @MainActor private func el(_ app: XCUIApplication, _ id: String) -> XCUIElement { app.descendants(matching: .any)[id] }
@@ -17,109 +19,87 @@ final class OnboardingUITests: XCTestCase {
         let a = XCTAttachment(screenshot: app.screenshot()); a.name = name; a.lifetime = .keepAlways; add(a)
     }
     @MainActor
-    private func tapScrolling(_ app: XCUIApplication, _ e: XCUIElement) {
-        var tries = 0
-        while !e.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
-        e.tap()
+    private func waitEnabled(_ e: XCUIElement, _ enabled: Bool = true, _ what: String) {
+        let p = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true AND isEnabled == %@", NSNumber(value: enabled)), object: e)
+        XCTAssertEqual(XCTWaiter.wait(for: [p], timeout: 10), .completed, what)
     }
 
-    /// Waits (generously: the host may be loaded) for `ob-next` to exist and be enabled, taps it, then waits for the next step's own element.
+    /// 01 → 02 → 03 → 04: nothing is pre-answered; Continuar opens only with an answer; "Já tenho conta" is held (no account in V1, D18).
     @MainActor
-    private func tapNext(_ app: XCUIApplication, expecting next: XCUIElement?, _ step: String) {
-        let button = app.buttons["ob-next"]
-        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true AND isEnabled == true"), object: button)
-        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, "ob-next enabled before \(step)")
-        button.tap()
-        if let next { XCTAssertTrue(next.waitForExistence(timeout: 10), "reached \(step)") }
-    }
-
-    /// Goes to Cuidados; answers the eligibility flags "não" and confirms.
-    @MainActor
-    private func reachCare(_ app: XCUIApplication) {
-        XCTAssertTrue(el(app, "screen-onboarding").waitForExistence(timeout: 10))
-        attach(app, "10 — boas-vindas")
-        let age = app.textFields["ob-age"]
-        tapNext(app, expecting: age, "age")
-        XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no age typed: cannot continue (never defaulted)")
-        age.tap(); age.typeText("32")
-        // #61: the race date and the plan length are chosen, never defaulted.
-        tapNext(app, expecting: app.buttons["ob-event-date"], "goals")
-        chooseRaceDate(app)
-        tapNext(app, expecting: app.staticTexts["Sua experiência"], "experience")
-        tapNext(app, expecting: app.staticTexts["Sua semana"], "schedule")
-        tapScrolling(app, app.buttons["chip-12"])
-        tapNext(app, expecting: app.staticTexts["O que você tem para treinar força?"], "equipment")
-        tapNext(app, expecting: el(app, "ob-anchor-toggle"), "anchor")
-        tapNext(app, expecting: app.staticTexts["Cuidados"], "care")
-        XCTAssertFalse(app.buttons["ob-next"].isEnabled, "no choice: cannot continue")
-        attach(app, "10 — Cuidados sem escolha (836:3299)")
-    }
-
-    /// Opens the race-date calendar, moves to next month and picks the 15th (within a 12-week plan from the next Monday), then confirms.
-    @MainActor
-    private func chooseRaceDate(_ app: XCUIApplication) {
-        tapScrolling(app, app.buttons["ob-event-date"])
-        let picker = app.datePickers.firstMatch
-        XCTAssertTrue(picker.waitForExistence(timeout: 10))
-        // The system calendar's own identifiers (its labels are localised); wait until the header shows the next month.
-        let header = picker.buttons["DatePicker.Show"].staticTexts.firstMatch  // the month shown, e.g. "novembro de 2026"
-        XCTAssertTrue(header.waitForExistence(timeout: 10))
-        let shown = header.label
-        XCTAssertFalse(shown.isEmpty, "the calendar names the month it shows")
-        picker.buttons["DatePicker.NextMonth"].tap()
-        let moved = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", shown), object: header)
-        XCTAssertEqual(XCTWaiter.wait(for: [moved], timeout: 10), .completed, "the calendar shows the next month")
-        let day = picker.buttons.matching(NSPredicate(format: "label CONTAINS ', 15 de ' AND enabled == true")).firstMatch
-        XCTAssertTrue(day.waitForExistence(timeout: 10))
-        let confirm = app.buttons["ob-event-date-confirm"]
-        XCTAssertFalse(confirm.isEnabled, "the day the calendar opens on is not a choice")
-        day.tap()
-        let enabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isEnabled == true"), object: confirm)
-        XCTAssertEqual(XCTWaiter.wait(for: [enabled], timeout: 10), .completed, "a tapped day can be confirmed")
-        confirm.tap()
-        XCTAssertTrue(app.buttons["ob-event-date-confirm"].waitForNonExistence(timeout: 10), "the calendar closed")
-    }
-
-    @MainActor
-    private func answerEligibility(_ app: XCUIApplication) {
-        for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] { tapScrolling(app, app.buttons["eligibility-\(k)-no"]) }
-        let confirm = app.switches["eligibility-confirm"]
-        var tries = 0
-        while !confirm.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
-        confirm.switches.firstMatch.exists ? confirm.switches.firstMatch.tap() : confirm.tap()
-    }
-
-    @MainActor
-    private func consentAndBuild(_ app: XCUIApplication) {
-        tapNext(app, expecting: app.buttons["consent-COACHING-yes"], "consents")
-        for p in ["COACHING", "HEALTH_SIGNALS", "LEARNING"] { tapScrolling(app, app.buttons["consent-\(p)-yes"]) }
-        tapNext(app, expecting: nil, "build")
-    }
-
-    @MainActor
-    func testNoneOfTheseBuildsAPlan() {
+    func testTheFirstQuestionsWaitForAnAnswer() {
         let app = launch()
-        reachCare(app)
-        app.buttons["ob-care.none"].tap()
-        answerEligibility(app)
-        XCTAssertTrue(app.buttons["ob-next"].isEnabled)
-        consentAndBuild(app)
-        XCTAssertTrue(el(app, "ob-created").waitForExistence(timeout: 10))
-        app.buttons["ob-open"].tap()
-        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 10))
-        attach(app, "Hoje — depois do cadastro (véspera da semana 1)")
+        XCTAssertTrue(app.staticTexts["Corrida e força na mesma semana"].exists)
+        XCTAssertFalse(app.buttons["ob-have-account"].isEnabled, "no account exists yet")
+        attach(app, "10 · 01 Abertura (835:2069)")
+        app.buttons["ob-start"].tap()
+        XCTAssertTrue(app.staticTexts["O que você quer treinar?"].waitForExistence(timeout: 10))
+        waitEnabled(app.buttons["ob-next"], false, "02: no choice, no Continuar")
+        el(app, "ob-train-both").tap()
+        waitEnabled(app.buttons["ob-next"], true, "02 answered")
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.staticTexts["O que você busca na corrida?"].waitForExistence(timeout: 10))
+        waitEnabled(app.buttons["ob-next"], false, "03: no choice")
+        app.buttons["ob-pill-10K"].tap()
+        waitEnabled(app.buttons["ob-next"], true, "03 answered")
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.staticTexts["Quando é a prova?"].waitForExistence(timeout: 10))
+        waitEnabled(app.buttons["ob-next"], false, "04: the wheel starts at —, no date chosen")
+        XCTAssertFalse(app.staticTexts["O que você tem para treinar força?"].exists, "the invented screen is gone")
     }
 
+    /// Lucas (`837:1144`): from the unsent answers on this iPhone (`838:3918`) to Hoje, through 29 → 30 → 31 → 32 → 34.
     @MainActor
-    func testPregnancyShowsPlanUnavailable() {
-        let app = launch()
-        reachCare(app)
-        app.buttons["ob-care.PREGNANCY"].tap()
-        answerEligibility(app)
-        consentAndBuild(app)
-        XCTAssertTrue(app.staticTexts["Plano indisponível"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.staticTexts["Sinal informado no cadastro"].exists || app.staticTexts["SINAL INFORMADO NO CADASTRO"].exists)
+    func testLucasBuildsThePlanAndReachesToday() {
+        let app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "dataUse"])
+        XCTAssertTrue(app.buttons["ob-resume-continue"].waitForExistence(timeout: 10), "838:3918 Retomar")
+        attach(app, "10 · Retomar o cadastro (838:3918)")
+        app.buttons["ob-resume-continue"].tap()
+        XCTAssertTrue(app.staticTexts["Como seus dados são usados"].waitForExistence(timeout: 10))
+        app.buttons["ob-build"].tap()
+        XCTAssertTrue(app.buttons["ob-save"].waitForExistence(timeout: 20), "31 Plano pronto")
+        attach(app, "10 · 31 Plano pronto (837:1144)")
+        app.buttons["ob-save"].tap()
+        XCTAssertTrue(app.buttons["ob-account-apple"].waitForExistence(timeout: 10), "32 folha de conta")
+        XCTAssertFalse(app.buttons["ob-account-apple"].isEnabled, "no account behind it (#28, D18)")
+        attach(app, "10 · 32 Salvar o plano (837:1323)")
+        app.swipeDown(velocity: .fast)
+        XCTAssertTrue(app.buttons["ob-go-today"].waitForExistence(timeout: 10), "34 Primeira semana")
+        app.buttons["ob-go-today"].tap()
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 15))
+        attach(app, "Hoje — depois do cadastro")
+    }
+
+    /// 27 → 27b: a marked sign is confirmed or reviewed; the real engine's answer (`Captures/onboard-clinical`) is "Retido por segurança".
+    @MainActor
+    func testAMarkedSignIsConfirmedThenHeld() {
+        let app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "care", "-onboardingPhase", "form"])
+        XCTAssertTrue(app.staticTexts["Algum destes vale para você hoje?"].waitForExistence(timeout: 10))
+        el(app, "ob-care-persistentPain").tap()
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.buttons["ob-care-confirm"].waitForExistence(timeout: 10), "27b")
+        attach(app, "10 · 27b Confirmar a resposta (838:4148)")
+        app.buttons["ob-care-review"].tap()
+        XCTAssertTrue(app.buttons["ob-care-confirm"].waitForNonExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Algum destes vale para você hoje?"].exists, "review stays on Cuidados")
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.buttons["ob-care-confirm"].waitForExistence(timeout: 10))
+        app.buttons["ob-care-confirm"].tap()
+        XCTAssertTrue(app.staticTexts["O plano parte do que você já faz"].waitForExistence(timeout: 10), "28 respiro")
+        app.buttons["ob-next"].tap()
+        XCTAssertTrue(app.buttons["ob-build"].waitForExistence(timeout: 10))
+        app.buttons["ob-build"].tap()
+        XCTAssertTrue(app.staticTexts["Por enquanto, sem treinos prescritos"].waitForExistence(timeout: 20), "838:3689")
+        XCTAssertFalse(app.buttons["ob-held-declare"].isEnabled, "no record to declare on (D24)")
         XCTAssertFalse(app.buttons["tab-today"].exists)
-        attach(app, "81 — plano indisponível · sinal informado no cadastro (838:4053)")
+        attach(app, "10 · Retido por segurança (838:3689)")
+    }
+
+    /// An open decision holds the send (Rafa: no race, so no plan length, D03): "Montar meu plano" stays disabled, nothing is sent.
+    @MainActor
+    func testAHeldPersonaCannotBuild() {
+        let app = launch(["-onboardingSeed", "rafa", "-onboardingStep", "dataUse", "-onboardingPhase", "form"])
+        XCTAssertTrue(app.buttons["ob-build"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["ob-build"].isEnabled)
+        attach(app, "10 · 29 Seus dados · envio retido (D03)")
     }
 }

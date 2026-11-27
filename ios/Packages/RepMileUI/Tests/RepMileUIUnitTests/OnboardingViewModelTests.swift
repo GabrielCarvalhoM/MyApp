@@ -2,161 +2,220 @@ import CoachingPresentation
 import XCTest
 @testable import RepMileUI
 
-/// #32 increment 1: the onboarding state and its write live in `OnboardingViewModel`; the behaviour is the one the UI tests already pin.
+/// #101: the onboarding flow's state, its one write and the screen each engine answer leads to (spec F-ONBOARDING-FIGMA §1, §3).
 @MainActor
 final class OnboardingViewModelTests: XCTestCase {
-    private func answeredDraft(_ care: OnboardingDraft.Care) -> OnboardingDraft {
-        // #61: the plan length and the race date are the athlete's choice now (they were starting values).
-        var d = OnboardingDraft(); d.care = care; d.ageText = "32"; d.weeks = 12; d.eventDate = Calendar.current.date(from: DateComponents(year: 2027, month: 1, day: 21, hour: 12))
-        d.eligibility = EligibilityScreen(status: .nonclinicalConfirmed, assessedAt: "", pain: false, persistentPain: false, injury: false, illness: false,
-                                          functionalLimitation: false, clinicalConcern: false)
-        for p in ConsentPurpose.allCases { d.consents[p] = p == .coaching }
-        return d
-    }
+    /// Saturday 24 Oct 2026 at noon: the plan starts on Monday 26 Oct (Figma 08).
+    private let saturday: () -> Date = { Calendar.current.date(from: DateComponents(year: 2026, month: 10, day: 24, hour: 12)) ?? Date() }
 
-    /// Walks every step with a fully answered draft, as the athlete would.
-    private func atLastStep(_ care: OnboardingDraft.Care, writer: CoachingWriting) -> OnboardingViewModel {
-        let vm = OnboardingViewModel(writer: writer)
-        vm.draft = answeredDraft(care)
-        while !vm.isLastStep { let before = vm.step; vm.next(); XCTAssertNotEqual(vm.step, before, "stuck at \(before)") }
-        return vm
+    private func vm(_ writer: CoachingWriting = FixtureCoachingWriter(store: Repo.store), store: OnboardingStoring = MemoryOnboardingStore()) -> OnboardingViewModel {
+        OnboardingViewModel(writer: writer, store: store, athleteId: "i101-athlete", now: saturday)
     }
-
     private func onboardCalls(_ w: FixtureCoachingWriter) -> Int { w.journal.entries.filter { $0.call == "onboard" }.count }
 
-    func testAStepWithoutItsAnswerCannotBeLeft() {
-        let vm = OnboardingViewModel(writer: FixtureCoachingWriter(store: Repo.store))
-        vm.next()
-        XCTAssertEqual(vm.step, .age)
-        XCTAssertFalse(vm.canContinue, "no age, no default")
-        vm.next()
-        XCTAssertEqual(vm.step, .age)
-        vm.draft.ageText = "41"
-        XCTAssertTrue(vm.canContinue)
-        vm.next()
-        XCTAssertEqual(vm.step, .goals)
-        vm.back()
-        XCTAssertEqual(vm.step, .age)
+    /// Walks every screen with Lucas' answers, as the athlete would.
+    private func atDataUse(_ d: OnboardingDraft = OnboardingTests.lucas(), writer: CoachingWriting = FixtureCoachingWriter(store: Repo.store),
+                           store: OnboardingStoring = MemoryOnboardingStore()) -> OnboardingViewModel {
+        let m = vm(writer, store: store)
+        m.draft = d
+        while m.step != .dataUse {
+            let before = m.step
+            m.next()
+            if m.sheet == .confirmCare { m.confirmCare() }
+            XCTAssertNotEqual(m.step, before, "stuck at \(before)")
+            if m.step == before { break }
+        }
+        return m
     }
 
-    func testCareStepNeedsTheChoiceAndEveryEligibilityFlag() {
-        let vm = OnboardingViewModel(writer: FixtureCoachingWriter(store: Repo.store))
-        vm.draft = answeredDraft(.noneOfThese)
-        while vm.step != .care { vm.next() }
-        vm.draft.care = nil
-        XCTAssertFalse(vm.canContinue)
-        vm.draft.care = .noneOfThese
-        vm.draft.eligibility.illness = nil
-        XCTAssertFalse(vm.canContinue, "an unanswered flag is never read as false")
+    func testAnUnansweredScreenCannotBeLeft() {
+        let m = vm()
+        XCTAssertEqual(m.step, .opening)
+        m.next()
+        XCTAssertEqual(m.step, .train)
+        XCTAssertFalse(m.canContinue, "nothing chosen")
+        m.next()
+        XCTAssertEqual(m.step, .train)
+        m.draft.choose(train: .both)
+        m.next()
+        XCTAssertEqual(m.step, .runAim)
+        m.back()
+        XCTAssertEqual(m.step, .train)
     }
 
-    func testSubmitSendsOnceAndShowsTheEngineOutcome() async {
-        let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = atLastStep(.noneOfThese, writer: w)
-        await vm.submit()
-        XCTAssertEqual(vm.phase, .outcome(.planCreated))
-        await vm.submit()
-        XCTAssertEqual(onboardCalls(w), 1, "a second tap after the outcome does not enrol again")
+    func testTheStartIsTheNextMondayAndARaceBeyondSixteenWeeksBlocks() {
+        let m = vm()
+        XCTAssertEqual(m.startDay, "2026-10-26")
+        m.draft = OnboardingTests.lucas()
+        XCTAssertEqual(m.planWeeks, 8)
+        m.draft.raceDay = "2027-03-07"
+        XCTAssertTrue(m.raceBeyondPlan)
+        while m.step != .raceDate { m.next() }
+        XCTAssertFalse(m.canContinue, "`838:3864`: Continuar disabled")
+        m.continueWithoutRace()
+        XCTAssertEqual(m.step, .runAim)
+        XCTAssertNil(m.draft.raceDay)
+        XCTAssertNil(m.draft.runAim, "the athlete chooses again")
+    }
+
+    /// 27b: a clinical sign is confirmed before continuing; "Revisar respostas" stays on Cuidados.
+    func testAMarkedSignAsksForConfirmation() {
+        var d = OnboardingTests.lucas(); d.toggleCare(.injury)
+        let m = vm(); m.draft = d
+        while m.step != .care { m.next() }
+        m.next()
+        XCTAssertEqual(m.sheet, .confirmCare)
+        XCTAssertEqual(m.step, .care)
+        m.sheet = nil
+        XCTAssertEqual(m.step, .care, "review: the answers stay")
+        m.next(); m.confirmCare()
+        XCTAssertEqual(m.step, .youDone)
+    }
+
+    func testSubmitSendsOnceAndShowsThePlan() async {
+        let w = FixtureCoachingWriter(store: Repo.store), store = MemoryOnboardingStore()
+        let m = atDataUse(writer: w, store: store)
+        XCTAssertTrue(m.canContinue)
+        await m.submit()
+        XCTAssertEqual(m.phase, .ready)
+        await m.submit()
+        XCTAssertEqual(onboardCalls(w), 1, "no second enrolment")
+        XCTAssertNil(store.load()?.draft, "the record holds the answers now")
+        XCTAssertEqual(store.load()?.profile?.name, "Lucas", "the local-only profile stays")
+        XCTAssertEqual(store.load()?.profile?.heightCm, 178)
     }
 
     func testTwoTapsWhileBuildingEnrolOnce() async {
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = atLastStep(.noneOfThese, writer: w)
-        async let first: Void = vm.submit(minimumDisplay: .milliseconds(50))
-        async let second: Void = vm.submit(minimumDisplay: .milliseconds(50))
+        let m = atDataUse(writer: w)
+        async let first: Void = m.submit(minimumDisplay: .milliseconds(50))
+        async let second: Void = m.submit(minimumDisplay: .milliseconds(50))
         _ = await (first, second)
         XCTAssertEqual(onboardCalls(w), 1)
-        XCTAssertEqual(vm.phase, .outcome(.planCreated))
+        XCTAssertEqual(m.phase, .ready)
     }
 
-    func testSubmitBeforeTheLastStepSendsNothing() async {
+    /// An open decision holds the send: "Montar meu plano" is disabled and nothing reaches the engine (Rafa: no race, D03).
+    func testAHeldDraftSendsNothing() async {
+        var d = OnboardingTests.lucas(); d.choose(aim: .noRace(.performance))
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = OnboardingViewModel(writer: w)
-        vm.draft = answeredDraft(.noneOfThese)
-        await vm.submit()
+        let m = atDataUse(d, writer: w)
+        XCTAssertFalse(m.canContinue)
+        XCTAssertEqual(m.holds, [.noRaceWeeks])
+        await m.submit()
         XCTAssertEqual(onboardCalls(w), 0)
-        XCTAssertEqual(vm.phase, .form)
+        XCTAssertEqual(m.phase, .form)
     }
 
-    func testOutsideScopeThenReviewReturnsToCareWithTheAnswersKept() async {
-        let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = atLastStep(.pregnancy, writer: w)
-        await vm.submit()
-        guard case .outcome(.outsideV1Scope) = vm.phase else { return XCTFail("pregnancy must be outside the V1 scope, got \(vm.phase)") }
-        vm.reviewCare()
-        XCTAssertEqual(vm.phase, .form)
-        XCTAssertEqual(vm.step, .care)
-        XCTAssertEqual(vm.draft.care, .pregnancy)
-        XCTAssertEqual(vm.draft.ageText, "32")
+    /// The screen the Figma draws for each engine outcome (engineering decisions D27/D23, 27/11): INVALID_INPUT and failures → `838:3972`.
+    func testEachOutcomeLeadsToItsFrame() {
+        XCTAssertEqual(OnboardingViewModel.phase(for: .planCreated), .ready)
+        XCTAssertEqual(OnboardingViewModel.phase(for: .outsideV1Scope(reason: nil)), .outcome(.outsideScope))
+        XCTAssertEqual(OnboardingViewModel.phase(for: .clinicalHumanRequired), .outcome(.heldForSafety))
+        XCTAssertEqual(OnboardingViewModel.phase(for: .needsInput(["athlete.event.date"])), .outcome(.missingAnswer(["athlete.event.date"])))
+        XCTAssertEqual(OnboardingViewModel.phase(for: .invalidInput), .outcome(.notBuilt))
+        XCTAssertEqual(OnboardingViewModel.phase(for: .failed("BUSY")), .outcome(.notBuilt))
+        XCTAssertEqual(OnboardingViewModel.phase(for: .unrecognized("NEW")), .outcome(.notBuilt), "fail closed: never a plan")
     }
 
-    /// #61: the goals step needs the race date and the schedule step the plan length; neither is a starting value.
-    func testRaceDateAndPlanLengthMustBeChosenToContinue() async {
-        let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = OnboardingViewModel(writer: w)
-        vm.draft = answeredDraft(.noneOfThese); vm.draft.eventDate = nil; vm.draft.weeks = nil
-        while vm.step != .goals { vm.next() }
-        XCTAssertFalse(vm.canContinue, "a race without its date")
-        XCTAssertEqual(vm.requiredNote, "ob.event.date.required")
-        vm.next()
-        XCTAssertEqual(vm.step, .goals)
-        vm.draft.eventDate = Calendar.current.date(from: DateComponents(year: 2027, month: 1, day: 21, hour: 12))
-        XCTAssertNil(vm.requiredNote)
-        while vm.step != .schedule { vm.next() }
-        XCTAssertFalse(vm.canContinue, "no plan length")
-        XCTAssertEqual(vm.requiredNote, "ob.weeks.required")
-        vm.next()
-        XCTAssertEqual(vm.step, .schedule)
-        vm.draft.weeks = 8
-        XCTAssertTrue(vm.canContinue)
-        while !vm.isLastStep { vm.next() }
-        vm.draft.weeks = nil
-        await vm.submit()
-        XCTAssertEqual(onboardCalls(w), 0, "unset plan length: nothing is sent")
-        XCTAssertEqual(vm.phase, .form)
+    func testRetryAndReviewKeepTheAnswers() async throws {
+        let json = #"{"ok":true,"status":"INVALID_INPUT","missingInputs":[],"errors":["event.withinHorizonAndNotImmediate"],"enrolled":false}"#
+        let w = ScriptedOnboardWriter(try Safety.answer(json))
+        let m = atDataUse(writer: w)
+        await m.submit()
+        XCTAssertEqual(m.phase, .outcome(.notBuilt))
+        await m.retry()
+        XCTAssertEqual(w.calls, 2, "Tentar de novo sends the same answers again")
+        m.review()
+        XCTAssertEqual(m.phase, .form)
+        XCTAssertEqual(m.step, .train)
+        XCTAssertEqual(m.draft, OnboardingTests.lucas(), "answers kept")
     }
 
-    /// #61: INVALID_INPUT is its own state ("Algumas respostas não combinam entre si"), never the missing-answer one.
-    func testInvalidInputIsShownAsSuch() async throws {
-        let json = #"{"ok":true,"status":"INVALID_INPUT","missingInputs":[],"errors":["event.withinHorizonAndNotImmediate"],"reason":"Input facts are malformed or contradictory","enrolled":false}"#
-        let vm = atLastStep(.noneOfThese, writer: ScriptedOnboardWriter(try Safety.answer(json)))
-        await vm.submit()
-        XCTAssertEqual(vm.phase, .outcome(.invalidInput))
-        // `errors` is not decoded by BoundaryAnswer yet: no step is named, the review starts at the first question.
-        XCTAssertEqual(vm.reviewSteps, [])
-        vm.reviewAnswers()
-        XCTAssertEqual(vm.phase, .form)
-        XCTAssertEqual(vm.step, .age)
-        XCTAssertEqual(vm.draft.weeks, 12, "answers kept")
+    func testMissingAnswersReturnToTheirStep() async throws {
+        let json = #"{"ok":true,"status":"ASK","missingInputs":["schedule.runMinutes"],"enrolled":false}"#
+        let m = atDataUse(writer: ScriptedOnboardWriter(try Safety.answer(json)))
+        await m.submit()
+        XCTAssertEqual(m.phase, .outcome(.missingAnswer(["schedule.runMinutes"])))
+        m.review()
+        XCTAssertEqual(m.step, .duration)
+        let flow = OnboardingStep.flow(for: OnboardingTests.lucas())
+        XCTAssertEqual(OnboardingViewModel.step(asking: ["athlete.event.date"], in: flow), .raceDate)
+        XCTAssertEqual(OnboardingViewModel.step(asking: ["athlete.eligibility.currentNonclinicalAssessment"], in: flow), .care)
+        XCTAssertNil(OnboardingViewModel.step(asking: ["asOf/startDate"], in: flow), "host-set fields are not the athlete's to fix")
     }
 
-    func testNeedsInputStaysTheMissingAnswerState() async throws {
-        let json = #"{"ok":true,"status":"ASK","missingInputs":["athlete.event.date"],"errors":[],"enrolled":false}"#
-        let vm = atLastStep(.noneOfThese, writer: ScriptedOnboardWriter(try Safety.answer(json)))
-        await vm.submit()
-        XCTAssertEqual(vm.phase, .outcome(.needsInput(["athlete.event.date"])))
-        XCTAssertEqual(vm.reviewSteps, [])
-        vm.returnToForm()
-        XCTAssertEqual(vm.phase, .form)
-        XCTAssertEqual(vm.step, .consents, "as before: back to the form where the athlete was")
+    /// The real engine's answer to a marked sign (`Captures/onboard-clinical`, replayed by the fixture writer): retido por segurança.
+    func testAClinicalSignIsHeldForSafety() async {
+        var d = OnboardingTests.lucas(); d.toggleCare(.persistentPain)
+        let m = atDataUse(d)
+        await m.submit()
+        XCTAssertEqual(m.phase, .outcome(.heldForSafety))
     }
 
-    /// Display routing only: each engine field code to the step that asks it, in step order.
-    func testEngineFieldsMapToTheStepsThatAskThem() {
-        XCTAssertEqual(OnboardingViewModel.steps(asking: ["event.withinHorizonAndNotImmediate"]), [.goals, .schedule])
-        XCTAssertEqual(OnboardingViewModel.steps(asking: ["weeks.4/8/12/16"]), [.schedule])
-        XCTAssertEqual(OnboardingViewModel.steps(asking: ["athlete.equipment", "schedule.longRunDay.mustBeChosenRunDay", "recent.runMinutesPerWeek"]),
-                       [.experience, .schedule, .equipment])
-        XCTAssertEqual(OnboardingViewModel.steps(asking: ["asOf/startDate", "timezoneOffsetMinutes"]), [], "host-set fields are not the athlete's to fix")
+    func testOutsideScopeAndHeldReviewTheCareAnswer() async throws {
+        for (json, outcome) in [(#"{"ok":true,"status":"UNSUPPORTED","enrolled":false}"#, OnboardingViewModel.Outcome.outsideScope),
+                                (#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED","enrolled":false}"#, .heldForSafety)] {
+            let m = atDataUse(writer: ScriptedOnboardWriter(try Safety.answer(json)))
+            await m.submit()
+            XCTAssertEqual(m.phase, .outcome(outcome))
+            m.review()
+            XCTAssertEqual(m.step, .care)
+        }
+    }
+
+    /// `838:4219` / `838:3918`: unsent answers stay on this iPhone and the flow resumes where it stopped; "Recomeçar" erases them.
+    func testUnsentAnswersResume() {
+        let store = MemoryOnboardingStore()
+        let m = vm(store: store)
+        m.next(); m.draft.choose(train: .both); m.next()
+        XCTAssertEqual(store.load()?.step, .runAim)
+        let again = vm(store: store)
+        XCTAssertEqual(again.phase, .resume)
+        XCTAssertEqual(again.draft.train, .both)
+        again.resumeWhereStopped()
+        XCTAssertEqual(again.phase, .form)
+        XCTAssertEqual(again.step, .runAim)
+        again.restart()
+        XCTAssertNil(store.load())
+        XCTAssertEqual(again.step, .opening)
+        XCTAssertEqual(vm(store: store).phase, .form)
+    }
+
+    /// 32 has no account behind it (D18): closing it is the alpha path to 34.
+    func testTheAccountSheetLeadsToTheFirstWeek() async {
+        let m = atDataUse()
+        await m.submit()
+        m.saveThePlan()
+        XCTAssertEqual(m.sheet, .account)
+        m.sheet = nil; m.accountSheetClosed()
+        XCTAssertEqual(m.phase, .firstWeek)
+    }
+
+    func testTheSkipsAnswerTheirStep() {
+        let m = vm(); m.draft = OnboardingTests.lucas(); m.draft.goalMinutes = nil; m.draft.goalSeconds = nil
+        while m.step != .goalTime { m.next() }
+        XCTAssertFalse(m.canContinue)
+        m.skip()
+        XCTAssertTrue(m.draft.goalSkipped)
+        XCTAssertEqual(m.step, .strengthAim)
+        m.draft.hasResult = nil; m.draft.resultMinutes = nil
+        while m.step != .result { m.next() }
+        m.skip()
+        XCTAssertEqual(m.draft.hasResult, false)
+        XCTAssertEqual(m.step, .result, "23 shows its \"não tenho\" variant first")
+        m.draft.hasResult = true; m.draft.resultDistance = .half; m.draft.resultMinutes = 50; m.draft.resultSeconds = 0
+        XCTAssertFalse(m.canContinue, "D19: a half needs hours the wheel does not have")
     }
 }
 
-/// A writer whose `onboard` answers one given answer.
-private final class ScriptedOnboardWriter: CoachingWriting {
+/// A writer whose `onboard` answers one given answer and counts the calls.
+final class ScriptedOnboardWriter: CoachingWriting, @unchecked Sendable {
     let answer: BoundaryAnswer
+    private(set) var calls = 0
     init(_ answer: BoundaryAnswer) { self.answer = answer }
     private var none: WriteOutcome { WriteOutcome(answer: FixtureCoachingWriter.unavailable, kept: [], notKept: []) }
-    func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome { WriteOutcome(answer: answer, kept: [], notKept: []) }
+    func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome { calls += 1; return WriteOutcome(answer: answer, kept: [], notKept: []) }
     func restart(_ answers: OnboardingAnswers) async -> WriteOutcome { none }
     func submit(_ review: ReviewRequest) async -> WriteOutcome { none }
     func accept(decisionId: String) async -> WriteOutcome { none }

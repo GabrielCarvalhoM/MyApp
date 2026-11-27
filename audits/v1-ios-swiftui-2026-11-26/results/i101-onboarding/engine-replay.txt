@@ -1,0 +1,36 @@
+=== 0 replica == Swift golden (OnboardingTests.lucasGolden)
+  PASS the JS replica encodes exactly the Swift golden answers
+=== 1 personas the onboarding sends today
+  lucas: status=PROPOSED enrolled=true weeks=8 phases=ESTABLISHMENT,BUILD,SPECIFIC,TAPER,RACE_WEEK
+    week 1: 2026-10-26 STRENGTH STRENGTH_LOWER | 2026-10-27 RUN EASY | 2026-10-28 STRENGTH STRENGTH_UPPER | 2026-10-29 RUN EASY | 2026-10-29 STRENGTH STRENGTH_FULL_B | 2026-10-31 RUN LONG | 2026-11-01 RUN EASY
+  PASS lucas: accepted (PROPOSED, enrolled) · ""
+  PASS lucas: plan of 8 weeks
+  PASS lucas: calibrated by the 5 km result (31 "Ritmos calibrados") · CALIBRATED
+  PASS lucas: a 10 km estimate exists (31 "Capacidade atual nos 10 km")
+  marathon: status=PROPOSED enrolled=true weeks=16 phases=ESTABLISHMENT,BUILD,CONSOLIDATION,SPECIFIC,TAPER,RACE_WEEK
+    week 1: 2026-11-09 RUN EASY | 2026-11-10 RUN EASY | 2026-11-11 STRENGTH STRENGTH_FULL_A | 2026-11-12 RUN EASY | 2026-11-13 RUN EASY | 2026-11-15 RUN LONG
+  PASS marathon: accepted (PROPOSED, enrolled) · ""
+  PASS marathon: plan of 16 weeks
+  PASS marathon with every criterion: a race-shaped plan (specific/taper/race week)
+  marathon-prep: status=PROPOSED enrolled=true weeks=16 phases=ESTABLISHMENT,DEVELOPMENT,CONSOLIDATION
+    week 1: 2026-11-09 STRENGTH STRENGTH_FULL_A | 2026-11-10 RUN EASY | 2026-11-11 STRENGTH STRENGTH_FULL_B | 2026-11-12 RUN EASY | 2026-11-15 RUN LONG
+  PASS marathon-prep: accepted (PROPOSED, enrolled) · ""
+  PASS marathon-prep: plan of 16 weeks
+  PASS marathon without the base: the preparatory plan (no specific, taper or race week)
+=== 2 personas held by D03 (no plan length without a race): weeks=12 is a REPLAY ASSUMPTION (the engine default), never sent by the app
+  rafa: run goal=PERFORMANCE recent={"longestRunMinutes":80,"runDaysPerWeek":4,"runMinutesPerWeek":200,"strengthDaysPerWeek":3} status=PROPOSED
+    week 1: 2026-11-09 STRENGTH STRENGTH_FULL_A | 2026-11-10 RUN EASY | 2026-11-12 RUN EASY | 2026-11-15 RUN LONG
+  PASS rafa: accepted once weeks is given · ""
+  marina: run goal=GENERAL recent={"longestRunMinutes":0,"runDaysPerWeek":0,"runMinutesPerWeek":0,"strengthDaysPerWeek":0} status=PROPOSED
+    week 1: 2026-11-10 RUN WALK_JOG | 2026-11-11 STRENGTH STRENGTH_FULL_A | 2026-11-12 RUN WALK_JOG | 2026-11-14 RUN WALK_JOG
+  PASS marina: accepted once weeks is given · ""
+  PASS marina (never trained, bodyweight): week-1 strength has no external load (25 note "prática com o peso do corpo") · STRENGTH_FULL_A:sit-to-stand/wall-pushup/prone-row-practice
+=== 3 outcomes the screens map
+  PASS a marked sign: CLINICAL_HUMAN_REQUIRED (→ 838:3689) · status=CLINICAL_HUMAN_REQUIRED enrolled=false
+  PASS age 16: UNSUPPORTED, not enrolled (D16 → 838:4053) · status=UNSUPPORTED
+  PASS a race 4 days after the start: INVALID_INPUT (D04 → 838:3972) · status=INVALID_INPUT
+  PASS D02 option ["PREGNANCY"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
+  PASS D02 option ["POSTPARTUM"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
+  PASS D02 option ["PREGNANCY","POSTPARTUM"] (flags unanswered): UNSUPPORTED, not enrolled · status=UNSUPPORTED
+
+all checks passed

@@ -93,8 +93,8 @@ public final class FixtureCoachingWriter: CoachingWriting {
 
     public func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome {
         journal.add("onboard", answers)
-        // No capture exists for a clinical flag at enrolment: an honest failure, never a plan.
-        if answers.athlete.eligibility.statesAClinicalFlag { return WriteOutcome(answer: Self.unavailable, kept: [], notKept: []) }
+        // #101: the real engine's answer to a clinical sign at enrolment (`Captures/onboard-clinical`): CLINICAL_HUMAN_REQUIRED, no record.
+        if answers.athlete.eligibility.statesAClinicalFlag { return answer("onboard-clinical") }
         let special = answers.athlete.specialPopulation
         if special.contains(.pregnancy) { return answer("special-pregnancy-onboard") }
         if special.contains(.postpartum) { return answer("special-postpartum-onboard") }

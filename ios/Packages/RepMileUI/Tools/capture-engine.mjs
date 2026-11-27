@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {athlete,ELIG} from '../../../../CoachingCore/test/v1int-helpers.mjs';
+import {athlete,ELIG,athleteA,CONSENTS} from '../../../../CoachingCore/test/v1int-helpers.mjs';
 import {URGENT_SIGNS} from '../../../../CoachingCore/src/v1-f08.mjs';
 import {warningSignSet} from '../../CoachingPresentation/Facade/app-projections.mjs';
 
@@ -56,6 +56,14 @@ for(const k of URGENT_SIGNS.filter(k=>ready.warningSigns.includes(k))){const {t,
  const a=save('readiness-sign-'+k,hostAnswer(t,t.submit(rd({...allNo(ready.warningSigns),[k]:true},ELIG(day)))),
   `readiness during a hold, ${k} yes, screen none applies: CLINICAL_HUMAN_REQUIRED, PROFESSIONAL_ASSESSMENT, the hold stands`);
  if(level(a)!=='PROFESSIONAL_ASSESSMENT')throw new Error('readiness '+k+' '+level(a));}
+
+// 4. #101: onboarding with a clinical sign marked on 27 Cuidados (persistentPain yes, the other flags unanswered, as the checklist sends them):
+// the answer the host facade returns for `onboard` (api.mjs), no record written.
+{const t=athlete({newId,id:'c101-onboard-clinical',weeks:12});const intake=athleteA({weeks:12,id:'c101-onboard-clinical'});
+ intake.athlete.eligibility={assessedAt:intake.asOf,persistentPain:true};
+ const a=save('onboard-clinical',t.api.onboard({actor:t.actor,intake,consents:CONSENTS,clientRequestId:'c101-1'}),
+  'onboarding with a clinical sign marked (27 Cuidados): CLINICAL_HUMAN_REQUIRED, not enrolled');
+ if(a.status!=='CLINICAL_HUMAN_REQUIRED'||a.enrolled!==false)throw new Error('onboard clinical '+a.status+' '+a.enrolled);}
 
 fs.writeFileSync(path.join(OUT,'INDEX.json'),JSON.stringify({generator:'ios/Packages/RepMileUI/Tools/capture-engine.mjs',files:index},null,1)+'\n');
 console.log(`${index.length} captures → ${path.relative(process.cwd(),OUT)||'.'}`);

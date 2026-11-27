@@ -20,6 +20,10 @@ public struct RepMileShell: View {
     @State private var recorder: RunRecorder
     /// nil: the fixture composition (`-scenario`). Set: the live composition, which never swaps in a fixture reader.
     private let live: Live?
+    /// The onboarding's local store (spec F-ONBOARDING-FIGMA §5): Application Support in the live composition, a fixture folder otherwise.
+    private let onboardingStore: OnboardingStoring
+    /// True from an accepted intake until the athlete leaves 31–34 (the record already routes to the app).
+    @State private var onboardingHeld = false
 
     /// The fixture composition's recorder (`-scenario`, Debug only; the live composition passes its own). CoreLocation on a device; a
     /// scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
@@ -51,39 +55,68 @@ public struct RepMileShell: View {
                                               health: FixtureHealthIngestStatus(queued: chosen.healthQueued), athleteName: "Lucas Andrade"))
         _recorder = State(initialValue: RepMileShell.makeRecorder())
         live = nil
+        onboardingStore = RepMileShell.fixtureOnboardingStore()
     }
 
-    public init(model: AppModel) { RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: RepMileShell.makeRecorder()); live = nil }
+    public init(model: AppModel) {
+        RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: RepMileShell.makeRecorder()); live = nil
+        onboardingStore = RepMileShell.fixtureOnboardingStore()
+    }
+
+    /// Fixture launches never touch the live onboarding store. UI tests (`-simulatedLocation`) get one per launch; `-onboardingStore <name>`
+    /// reuses one on purpose (a relaunch that must resume, `838:3918`).
+    @MainActor static func fixtureOnboardingStore(arguments: [String] = ProcessInfo.processInfo.arguments) -> OnboardingStoring {
+        let named = arguments.firstIndex(of: "-onboardingStore").flatMap { arguments.indices.contains($0 + 1) ? arguments[$0 + 1] : nil }
+        let name = named.flatMap { $0.isEmpty || $0.contains("/") || $0.hasPrefix(".") ? nil : $0 }
+            ?? (arguments.contains("-simulatedLocation") ? UUID().uuidString : "device")
+        let store = FileOnboardingStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("fixture-onboarding-" + name, isDirectory: true))
+        #if DEBUG
+        OnboardingDebugSeed.apply(arguments: arguments, to: store)
+        #endif
+        return store
+    }
 
     /// The live composition: the recorder is the composition's (its `RecordingStore` is also front B's `AppRecordingIndex`).
     public init(model: AppModel, recorder: RunRecorder, live: Live) {
         RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: recorder); self.live = live
+        onboardingStore = FileOnboardingStore(directory: FileOnboardingStore.standardDirectory)
     }
 
     public var body: some View {
         Group {
-            switch model.route {
-            case .loading: LoadingSkeleton()
-            case .app: AppTabs()
-            case .onboarding:
-                OnboardingFlow(viewModel: live.map { OnboardingViewModel(writer: model.writer, athleteId: $0.athleteId) } ?? OnboardingViewModel(writer: model.writer), onEnrolled: {
-                    // Live: the host reads the new record. Never a fixture reader here.
-                    if live != nil { Task { await model.load() } }
-                    // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
-                    else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
-                    else { Task { await model.load() } }
-                })
-            default: StateScreen(route: model.route, primary: {}, retry: { Task { await model.load() } })
+            if model.route == .onboarding || onboardingHeld {
+                onboarding
+            } else {
+                switch model.route {
+                case .loading: LoadingSkeleton()
+                case .app: AppTabs()
+                default: StateScreen(route: model.route, primary: {}, retry: { Task { await model.load() } })
+                }
             }
         }
         .environment(model)
         .environment(recorder)
-        // An account found erased (GONE) erases this front's recordings too (G07), also when the erasure happened elsewhere.
-        // A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next open removes
-        // the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
-        .onChange(of: model.route) { _, r in if r == .accountErased { try? recorder.eraseAllRecordings(); live?.accountErased() } }
+        // An account found erased (GONE) erases this front's recordings and the onboarding's local profile too (G07), also when the erasure
+        // happened elsewhere. A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next
+        // open removes the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
+        .onChange(of: model.route) { _, r in
+            if r == .accountErased { try? recorder.eraseAllRecordings(); onboardingStore.erase(); live?.accountErased() }
+        }
         .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
+    }
+
+    private var onboarding: some View {
+        let store = onboardingStore, writer = model.writer, athleteId = live?.athleteId
+        return OnboardingFlow(make: { athleteId.map { OnboardingViewModel(writer: writer, store: store, athleteId: $0) } ?? OnboardingViewModel(writer: writer, store: store) },
+                              enrolled: {
+            onboardingHeld = true
+            // Live: the host reads the new record. Never a fixture reader here.
+            if live != nil { Task { await model.load() } }
+            // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
+            else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
+            else { Task { await model.load() } }
+        }, finished: { onboardingHeld = false })
     }
 }
 

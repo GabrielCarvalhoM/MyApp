@@ -134,8 +134,9 @@ final class GuidanceLevelTests: XCTestCase {
     func testEveryCaptureOfFrontCDecodes() throws {
         let index = try JSONSerialization.jsonObject(with: Data(contentsOf: Repo.captures.appendingPathComponent("INDEX.json"))) as? [String: Any]
         let files = try XCTUnwrap(index?["files"] as? [[String: Any]]).compactMap { ($0["file"] as? String)?.replacingOccurrences(of: ".json", with: "") }
-        XCTAssertEqual(files.count, 10)
-        for name in files where name != "plan-blocked-urgent" { XCTAssertNotNil(try capture(name).clinicalGuidance, name) }
+        XCTAssertEqual(files.count, 11)
+        // #101 added `onboard-clinical` (an enrolment refused for a sign: no decision, so no guidance level), like the plan view, not a decision.
+        for name in files where name != "plan-blocked-urgent" && name != "onboard-clinical" { XCTAssertNotNil(try capture(name).clinicalGuidance, name) }
     }
 
     // A plan view JSON with a hold at `hold` and a last decision (id, level).

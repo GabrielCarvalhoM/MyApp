@@ -1,84 +1,157 @@
 import CoachingPresentation
 import Foundation
 
-/// What the onboarding form collects, turned into the shared `OnboardingAnswers` only (handoff C §4). Safety fields: `specialPopulation` is
-/// always sent (`[]` for "Nenhum destes"; no choice = cannot continue), the eligibility flags stay nil until answered (never false by default).
-/// #61: the plan length and the race date are the athlete's choice, never a starting value (a default pair contradicted itself and the engine
-/// refused it). The other starting values below wait for the sports-science review of which may keep one.
-struct OnboardingDraft: Equatable {
-    enum Care: Equatable { case pregnancy, postpartum, noneOfThese }
-    /// Typed by the athlete; no default and no clamp: an age outside 18–80 is the engine's to refuse (POPULATION_OUTSIDE_V1_AGE_RANGE).
-    var ageText = ""
-    var age: Int? { Int(ageText.trimmingCharacters(in: .whitespaces)).flatMap { (1...120).contains($0) ? $0 : nil } }
-    var runGoal = "RACE"
-    var eventKind = "10K"
-    /// Chosen by the athlete when the run goal is a race; nil until then (#61).
-    var eventDate: Date?
-    var strengthGoal = "RUNNING_SUPPORT"
-    var runMonths = 12
-    var strengthMonths = 6
-    var runDaysPerWeek = 3
-    var runMinutesPerWeek = 120
-    var longestRun = 50
-    var strengthDaysPerWeek = 2
-    var runDays: Set<Int> = [1, 3, 5]
-    var strengthDays: Set<Int> = [0, 3]
-    var longRunDay = 5
-    var runMinutes = 40
-    var strengthMinutes = 40
-    var longRunMinutes = 70
-    var runTurn = "AM"
-    var strengthTurn = "PM"
-    /// Chosen by the athlete (4, 8, 12 or 16); nil until then (#61).
-    var weeks: Int?
-    var equipment: Set<String> = ["DUMBBELLS", "BENCH"]
-    var anchorTime = ""
-    var anchorDistance = "10K"
-    var anchorDate = Calendar.current.date(byAdding: .day, value: -21, to: Date()) ?? Date()
-    var hasAnchor = false
-    var care: Care?
-    var eligibility = EligibilityScreen(status: nil, assessedAt: "", pain: nil, persistentPain: nil, injury: nil, illness: nil, functionalLimitation: nil, clinicalConcern: nil)
-    var consents: [ConsentPurpose: Bool] = [:]
+/// What the onboarding has collected so far (Figma 10). Every answer starts unanswered (nil, empty or false): nothing is pre-answered, a
+/// wheel or a counter shows "—" until the athlete touches it (D17). Codable so the unsent answers stay on this iPhone ("Suas respostas ficam
+/// neste iPhone", `838:4219`) and the flow resumes where it stopped (`838:3918`). Turned into the shared `OnboardingAnswers` only by
+/// `OnboardingDraft+Answers`.
+struct OnboardingDraft: Codable, Equatable, Sendable {
+    // Etapa 1 · Objetivo
+    var train: TrainChoice?
+    var runAim: RunAim?
+    /// The race day the athlete picked, as a local calendar day (#61b): `YYYY-MM-DD`.
+    var raceDay: String?
+    /// 05 "Tem um tempo em mente?": local only (D07). `goalSkipped` = "Seguir sem meta".
+    var goalMinutes: Int?
+    var goalSeconds: Int?
+    var goalSkipped = false
+    var strengthAim: StrengthAim?
 
-    static func seconds(_ s: String) -> Double? {
-        let parts = s.split(separator: ":").compactMap { Double($0) }
-        guard (2...3).contains(parts.count), parts.count == s.split(separator: ":").count else { return nil }
-        return parts.reduce(0) { $0 * 60 + $1 }
-    }
+    // Etapa 2 · Rotina (days: 0 = Monday … 6 = Sunday, the engine's convention)
+    var runDays: Set<Int> = []
+    var strengthDays: Set<Int> = []
+    var runTurn: DayTurn?
+    var strengthTurn: DayTurn?
+    var longRunDay: Int?
+    var runMinutes: Int?
+    var longRunMinutes: Int?
+    var strengthMinutes: Int?
+    var strengthPlace: StrengthPlace?
+    var gymItems: Set<GymItem> = []
+    var runPlaces: Set<RunPlace> = []
+    var runDevice: RunDevice?
 
-    var careAnswered: Bool { care != nil }
-    /// A race needs its date; another run goal has no event to date.
-    var eventAnswered: Bool { runGoal != "RACE" || eventDate != nil }
-    var weeksAnswered: Bool { weeks != nil }
-    var eligibilityAnswered: Bool {
-        let flags = [eligibility.pain, eligibility.persistentPain, eligibility.injury, eligibility.illness, eligibility.functionalLimitation, eligibility.clinicalConcern]
-        return flags.allSatisfy { $0 != nil } && (eligibility.statesAClinicalFlag || eligibility.status == .nonclinicalConfirmed)
-    }
-    var consentsAnswered: Bool { ConsentPurpose.allCases.allSatisfy { consents[$0] != nil } }
+    // Etapa 3 · Você
+    var name = ""
+    var age: Int?
+    var heightCm: Int?
+    var weightKg: Int?
+    var bodySizeSkipped = false
+    /// 20: "Agora não" chosen (connecting is unavailable: D15).
+    var appleHealthAnswered = false
+    var runStart: RunStart?
+    var recentRunDaysChoice: RecentRunDays?
+    var recentRunDays: Int?
+    var recentRunMinutes: Int?
+    var longestRunMinutes: Int?
+    var runBand: TrainingBand?
+    /// 23: nil until answered; false = "Não tenho resultado recente".
+    var hasResult: Bool?
+    var resultDistance: RaceDistance?
+    var resultMinutes: Int?
+    var resultSeconds: Int?
+    var resultDay: String?
+    var resultMeasure: ResultMeasure?
+    var resultEffort: Int?
+    var resultTolerated: Bool?
+    var resultConditions: ResultConditions?
+    var strengthBand: TrainingBand?
+    var recentStrengthDays: Int?
+    var care: Set<CareItem> = []
+    var careNone = false
 
-    /// The shared request. `id` and the dates of the plan-local day come from the host side in integration (A sets the athlete id).
-    /// The race and anchor dates are the device's local calendar day the athlete picked, like `today` and `startDate` (#61b): a pick late
-    /// in the evening is never sent as the next (or, east of UTC, the previous) day. `timeZone` is for tests.
-    func answers(athleteId: String, today: String, startDate: String, timeZone: TimeZone = .current) -> OnboardingAnswers? {
-        guard let care, let age, let weeks, eventAnswered, eligibilityAnswered else { return nil }
-        var e = eligibility; e.assessedAt = today
-        let special: [SpecialPopulation] = care == .pregnancy ? [.pregnancy] : care == .postpartum ? [.postpartum] : []
-        var anchors: [PerformanceAnchor] = []
-        if hasAnchor, let s = Self.seconds(anchorTime) {
-            anchors.append(PerformanceAnchor(kind: "RACE_RESULT", distance: anchorDistance, seconds: s, date: Fmt.deviceDay(anchorDate, in: timeZone), measurement: "GPS"))
+    // Etapa 4 · Seu plano (the "Treino" use is necessary: sent as granted when the athlete builds the plan)
+    var consentHealthSignals = false
+    var consentLearning = false
+
+    var runs: Bool { train?.runs ?? false }
+    var lifts: Bool { train?.lifts ?? false }
+
+    /// What "Academia completa", the chips or "Só peso do corpo" send (catalogue codes).
+    var equipmentCodes: [String]? {
+        switch strengthPlace {
+        case nil: nil
+        case .fullGym: StrengthPlace.fullGymEquipment.map(\.rawValue)
+        case .buildingGym, .home: gymItems.map(\.rawValue).sorted()
+        case .bodyweightOnly: ["BODYWEIGHT"]
         }
-        let event = runGoal == "RACE" ? eventDate.map { GoalEvent(kind: eventKind, date: Fmt.deviceDay($0, in: timeZone)) } : nil
-        return OnboardingAnswers(
-            athlete: AthleteIntake(id: athleteId, ageYears: age, eligibility: e, specialPopulation: special, strengthTrainingMonths: strengthMonths,
-                                   runTrainingMonths: runMonths, exerciseRotationPreference: "COACH_DECIDES",
-                                   goals: IntakeGoals(run: RunGoal(kind: runGoal, event: event), strength: strengthGoal), equipment: equipment.sorted(),
-                                   recent: RecentTraining(strengthDaysPerWeek: strengthDaysPerWeek, runDaysPerWeek: runDaysPerWeek, runMinutesPerWeek: runMinutesPerWeek,
-                                                          longestRunMinutes: longestRun),
-                                   performanceAnchors: anchors),
-            schedule: TrainingSchedule(strengthDays: strengthDays.sorted(), strengthMinutes: strengthMinutes, runDays: runDays.sorted(), runMinutes: runMinutes,
-                                       longRunMinutes: longRunMinutes, longRunDay: longRunDay, runTurn: runTurn, strengthTurn: strengthTurn),
-            weeks: weeks, startDate: startDate)
     }
 
-    var consentsValue: Consents { Consents(coaching: consents[.coaching] ?? false, healthSignals: consents[.healthSignals] ?? false, learning: consents[.learning] ?? false) }
+    /// Whether the step has the answer it asks for. Respiros and optional screens are always answered.
+    func answered(_ step: OnboardingStep) -> Bool {
+        switch step {
+        case .opening, .goalDone, .routineDone, .youDone, .name, .dataUse: true
+        case .train: train != nil
+        case .runAim: runAim != nil
+        case .raceDate: raceDay != nil
+        case .goalTime: goalSkipped || (goalMinutes != nil && goalSeconds != nil)
+        case .strengthAim: strengthAim != nil
+        case .week: train != nil && (!runs || (!runDays.isEmpty && runTurn != nil)) && (!lifts || (!strengthDays.isEmpty && strengthTurn != nil))
+        case .longRun: longRunDay.map(runDays.contains) ?? false
+        case .duration: train != nil && (!runs || (runMinutes != nil && longRunMinutes != nil)) && (!lifts || strengthMinutes != nil)
+        case .strengthPlace: strengthPlace != nil && (strengthPlace?.asksEquipment != true || !gymItems.isEmpty)
+        case .runPlace: !runPlaces.isEmpty
+        case .runDevice: runDevice != nil
+        case .age: age != nil
+        case .bodySize: bodySizeSkipped || (heightCm != nil && weightKg != nil)
+        case .appleHealth: appleHealthAnswered
+        case .runStart: runStart != nil
+        case .runRecentDays: recentRunDaysChoice != nil
+        case .runNow: recentRunDays != nil && recentRunMinutes != nil && longestRunMinutes != nil
+        case .runYears: runBand != nil
+        case .result: hasResult == false || (resultDistance != nil && resultMinutes != nil && resultSeconds != nil)
+        case .resultDetail: resultDay != nil && resultMeasure != nil && resultEffort != nil && resultTolerated != nil && resultConditions != nil
+        case .strengthYears: strengthBand != nil && (strengthBand == .never || recentStrengthDays != nil)
+        case .care: careNone || !care.isEmpty
+        }
+    }
+
+    /// 27: "Nenhum destes" is exclusive with every item.
+    mutating func toggleCare(_ item: CareItem) {
+        careNone = false
+        if care.contains(item) { care.remove(item) } else { care.insert(item) }
+    }
+    mutating func chooseNoCare() { care = []; careNone = true }
+
+    /// 09: a day toggled for a sport; the long-run day follows the run days (it must be one of them).
+    mutating func toggle(day: Int, run: Bool) {
+        if run {
+            if runDays.contains(day) { runDays.remove(day) } else { runDays.insert(day) }
+            if let l = longRunDay, !runDays.contains(l) { longRunDay = nil }
+        } else {
+            if strengthDays.contains(day) { strengthDays.remove(day) } else { strengthDays.insert(day) }
+        }
+    }
+
+    /// 02: a new choice drops the answers of the sport no longer trained (they would otherwise be sent).
+    mutating func choose(train t: TrainChoice) {
+        train = t
+        if !t.runs {
+            runAim = nil; raceDay = nil; goalMinutes = nil; goalSeconds = nil; goalSkipped = false
+            runDays = []; runTurn = nil; longRunDay = nil; runMinutes = nil; longRunMinutes = nil; runPlaces = []; runDevice = nil
+            runStart = nil; recentRunDaysChoice = nil; recentRunDays = nil; recentRunMinutes = nil; longestRunMinutes = nil; runBand = nil
+            hasResult = nil
+        }
+        if !t.lifts {
+            strengthAim = nil; strengthDays = []; strengthTurn = nil; strengthMinutes = nil; strengthPlace = nil; gymItems = []
+            strengthBand = nil; recentStrengthDays = nil
+        }
+    }
+
+    /// 03: a race needs its date; another aim drops the race answers.
+    mutating func choose(aim: RunAim) {
+        if aim.race == nil { raceDay = nil; goalMinutes = nil; goalSeconds = nil; goalSkipped = false }
+        if aim != .noRace(.startRunning) { runStart = nil; recentRunDaysChoice = nil }
+        else if runAim != aim { recentRunDays = nil; recentRunMinutes = nil; longestRunMinutes = nil; runBand = nil }
+        runAim = aim
+    }
+
+    /// 21 iniciante (SSCTR 27/11): "Nunca corri" ends the running questions; "Já corri e parei" asks 21b; "Corro hoje" asks 21 and 22. The
+    /// answers of a branch no longer taken are dropped, so they are never sent.
+    mutating func choose(start: RunStart) {
+        runStart = start
+        if start != .stopped { recentRunDaysChoice = nil }
+        if start != .current { recentRunDays = nil; recentRunMinutes = nil; longestRunMinutes = nil; runBand = nil }
+        if start == .never { hasResult = nil }
+    }
 }
