@@ -51,6 +51,6 @@ Integração direta com Garmin, COROS ou Polar · Crew social complexo · qualqu
 | #25 | Contagem dupla: corrida digitada × treino do relógio | dedupe B | ver F12 |
 | #26 | Altura e peso no onboarding | 1 etapa do onboarding | tela mantida, anotada |
 | #27 | Excluir relato / remover importado | ações em 50/81 | V2 |
-| Figma | Salvar a versão nomeada "V1 alinhamento funcional · 26 nov" | validação visual formal (#14) | compara com o estado atual do arquivo, registrando a data |
+| Figma | ~~Salvar a versão nomeada~~ **Decidido (fundador, 27/11):** a versão "V1 alinhamento funcional · 26 nov" é a referência visual aprovada da V1 | validação visual formal (#14) liberada | a comparação usa o arquivo pelo MCP (estado atual), com a data da captura em cada registro; editar o Figma durante a validação exige avisar |
 | — | Modo claro na V1? | F01/F02 | app em dark |
 | QRE P1-11 | Corrida avulsa sob gate | — | **decidido provisoriamente pelo fundador (26/11)**: não inicia sob bloqueio clínico, fora do escopo ou triagem pendente; SSCTR confirmou a implementação |
