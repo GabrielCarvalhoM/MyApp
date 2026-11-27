@@ -11,27 +11,38 @@ import { fileURLToPath } from 'node:url';
 
 // Frontmatter keys Claude Code accepts for subagents (keep in step with the installed version's docs).
 export const KNOWN_KEYS = new Set(['name', 'description', 'tools', 'disallowedTools', 'model', 'color', 'effort', 'permissionMode', 'skills', 'memory', 'hooks', 'mcpServers', 'maxTurns', 'background', 'isolation', 'initialPrompt']);
-// Reviewers judge work they did not write: they must not be able to edit it.
-export const READ_ONLY = ['quality-reliability-engineer', 'ios-architecture-reviewer', 'visual-ux-reviewer'];
-export const WRITE_TOOLS = ['Edit', 'Write', 'NotebookEdit'];
+// Reviewers judge work they did not write. They must declare an allow-list (`tools:`) of reading tools only: without it they
+// would inherit every tool of the session, MCP write tools included. Bash is the accepted residual (instruction-governed; the
+// orchestrator checks the worktree is unchanged after each review). Any `*-reviewer` is a reviewer, except SSCTR, which is
+// governed by its own constitution (governance/agents/sports-science-reviewer/).
+export const REQUIRED_REVIEWERS = ['quality-reliability-engineer', 'ios-architecture-reviewer', 'visual-ux-reviewer'];
+export const GOVERNED = ['sports-science-concurrent-training-reviewer'];
+export const READ_TOOLS = new Set(['Read', 'Grep', 'Glob', 'Bash', 'WebFetch', 'WebSearch']);
+// Read-only MCP tools: Figma reads only (screenshot, design context, metadata).
+export const READ_MCP = /^mcp__[A-Za-z0-9_]*[Ff]igma[A-Za-z0-9_]*__(get_screenshot|get_design_context|get_metadata)$/;
+export const isReviewer = (name) => REQUIRED_REVIEWERS.includes(name) || (/-reviewer$/.test(name) && !GOVERNED.includes(name));
 // Entry points that steer every session must not depend on a machine-private path.
 export const ENTRY_POINTS = ['CLAUDE.md', 'AGENTS.md', 'docs/engineering/AGENTS.md'];
-const MACHINE_PATH = /[A-Za-z]:[\\/]+Users[\\/]|\/Users\/[^/\s]+\/\.(claude|codex)\/agent-system/;
+// Any absolute path into a user's home or a drive letter, or the old home-directory agent system.
+const MACHINE_PATH = /(^|[\s`'"(=])([A-Za-z]:[\\/]|\/Users\/[^/\s]+|\/home\/[^/\s]+|~\/\.(claude|codex)\/agent-system)/m;
 
-export function parseFrontmatter(text) {
+export function parseFrontmatter(raw) {
+  const text = raw.replace(/\r\n/g, '\n');
   const m = /^---\n([\s\S]*?)\n---\n/.exec(text);
   if (!m) return null;
   const fields = {};
   for (const line of m[1].split('\n')) {
     if (!line.trim()) continue;
     const kv = /^([A-Za-z][A-Za-z0-9_-]*):\s*(.*)$/.exec(line);
-    if (!kv) return { error: `linha inválida no frontmatter: ${line}` };
-    fields[kv[1]] = kv[2].trim();
+    if (!kv) return { error: `linha inválida no frontmatter (use uma linha por chave): ${line}` };
+    fields[kv[1]] = unquote(kv[2].trim());
   }
   return { fields, body: text.slice(m[0].length) };
 }
 
-const list = (v) => (v ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+const unquote = (v) => v.replace(/^(['"])(.*)\1$/, '$2');
+// Accepts `a, b`, `"a, b"`, `[a, b]` and `['a', "b"]`.
+export const list = (v) => unquote((v ?? '').trim()).replace(/^\[(.*)\]$/, '$1').split(',').map((x) => unquote(x.trim())).filter(Boolean);
 
 export function checkAgent(file, text) {
   const errors = [];
@@ -45,11 +56,13 @@ export function checkAgent(file, text) {
   if (!fields.description || fields.description.length < 40) errors.push(`${file}: description ausente ou curta demais para o roteamento`);
   for (const k of Object.keys(fields)) if (!KNOWN_KEYS.has(k)) errors.push(`${file}: chave desconhecida "${k}"`);
   if (!body.trim()) errors.push(`${file}: corpo vazio`);
-  if (READ_ONLY.includes(stem)) {
-    const denied = list(fields.disallowedTools);
-    const allowed = fields.tools ? list(fields.tools) : null;
-    const canWrite = WRITE_TOOLS.filter((t) => (allowed ? allowed.includes(t) : !denied.includes(t)));
-    if (canWrite.length) errors.push(`${file}: revisor precisa ser read-only (pode usar ${canWrite.join(', ')})`);
+  if (isReviewer(stem)) {
+    if (!fields.tools) errors.push(`${file}: revisor precisa de lista fechada \`tools:\` (sem ela herda todas as ferramentas, MCP de escrita inclusive)`);
+    else {
+      const bad = list(fields.tools).filter((t) => !READ_TOOLS.has(t) && !READ_MCP.test(t));
+      if (bad.length) errors.push(`${file}: revisor precisa ser read-only (pode usar ${bad.join(', ')})`);
+    }
+    if (fields.permissionMode && !['default', 'plan'].includes(fields.permissionMode)) errors.push(`${file}: revisor não pode usar permissionMode ${fields.permissionMode}`);
   }
   if (MACHINE_PATH.test(text)) errors.push(`${file}: caminho privado de uma máquina`);
   return errors;
@@ -59,7 +72,7 @@ export function checkRepo(root) {
   const dir = join(root, '.claude/agents');
   const files = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.md')).sort() : [];
   const errors = files.flatMap((f) => checkAgent(`.claude/agents/${f}`, readFileSync(join(dir, f), 'utf8')));
-  for (const r of READ_ONLY) if (!files.includes(`${r}.md`)) errors.push(`.claude/agents/${r}.md: revisor obrigatório ausente`);
+  for (const r of REQUIRED_REVIEWERS) if (!files.includes(`${r}.md`)) errors.push(`.claude/agents/${r}.md: revisor obrigatório ausente`);
   const registryPath = join(root, 'docs/engineering/AGENTS.md');
   const registry = existsSync(registryPath) ? readFileSync(registryPath, 'utf8') : '';
   for (const f of files) if (!registry.includes(`\`${basename(f, '.md')}\``)) errors.push(`docs/engineering/AGENTS.md: não lista ${basename(f, '.md')}`);
@@ -71,8 +84,10 @@ export function checkRepo(root) {
 }
 
 function discover(root) {
+  // A runtime mission variable would make the child bootstrap a mission (CLAUDE.md); the probe must be a plain session.
+  const { AGENT_RUNTIME_MISSION, ...env } = process.env;
   const r = spawnSync('claude', ['-p', 'Reply with the single word OK.', '--output-format', 'stream-json', '--verbose', '--max-turns', '1'],
-    { cwd: root, encoding: 'utf8', timeout: 180_000 });
+    { cwd: root, env, encoding: 'utf8', timeout: 180_000 });
   if (r.error) return { error: `claude CLI indisponível: ${r.error.message}` };
   for (const line of (r.stdout ?? '').split('\n')) {
     try {

@@ -39,7 +39,7 @@ validada", que é a distinção que o quadro precisa preservar.
 | In Progress | alguém está implementando | a frente |
 | Blocked | não avança; a issue diz o quê (Dependências) | quem encontrou o bloqueio |
 | In Review | PR aberto (não rascunho) com `Issue: #n` | a frente, ao abrir o PR |
-| Ready to Integrate | revisão independente passou, CI verde, `guard.mjs` limpo | o revisor |
+| Ready to Integrate | revisão independente passou, CI verde, `guard.mjs` limpo | o orquestrador, com o veredito do revisor |
 | Integrated | está na branch de integração; **ainda não validado** | a integração |
 | Verified | validado onde importa, com evidência; a issue é fechada como concluída | quem validou (o comando exige Validação ≠ "Não validado" e Evidências) |
 

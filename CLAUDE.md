@@ -48,7 +48,7 @@ Existence in the repository does not make an artifact canonical.
 Do not create parallel sources of truth.
 
 ## Founder Authority
-Escalate Founder-owned decisions through the installed agent system.
+Escalate Founder-owned decisions through the board (`needs:founder-approval`, docs/engineering/WORKFLOW.md) and the orchestrator's grouped report.
 Do not ask the Founder questions that a competent specialist has authority to resolve.
 Do not silently make Founder-owned strategic or subjective decisions.
 

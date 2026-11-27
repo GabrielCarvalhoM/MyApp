@@ -11,7 +11,7 @@ This repository is the new clean-room Vilumo Fit project.
 - Do not recover, inspect, infer from or reuse previous Vilumo projects, documentation, Figma, code, backlogs, contracts or historical decisions unless the Founder explicitly authorizes the specific input. Absence of information is not permission to recover legacy context.
 - Founder-provided visual references are isolated inputs for their stated purpose. A screenshot or Design System fragment does not authorize investigating its original product or Figma. Visual reference != Product Truth.
 - Keep canonical, working, evidence, audit, exploration and discarded artifacts distinct. Do not create parallel sources of truth or place project state in the global agent installation.
-- Escalate Founder-owned strategic or subjective decisions through the installed system. Specialists resolve decisions within their authority; do not ask the Founder to do their work or silently decide reserved matters.
+- Escalate Founder-owned strategic or subjective decisions through the board (`needs:founder-approval`, `docs/engineering/WORKFLOW.md`). Specialists resolve decisions within their authority; do not ask the Founder to do their work or silently decide reserved matters.
 - Implementation is allowed only when `CURRENT_MISSION.md` explicitly authorizes it under a future Founder instruction. The current PRE-IMPLEMENTATION mission authorizes no product implementation.
 
 `CLAUDE.md` is the companion entry point for Claude; both runtimes use this same mission and Canon.

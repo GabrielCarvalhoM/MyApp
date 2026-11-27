@@ -10,10 +10,15 @@ integra o resultado. Quem implementa nunca aprova a própria entrega; quem revis
 | `ios-engineer` | implementação SwiftUI, MVVM + Clean, ViewModels, casos de uso, repositórios, serviços, injeção de dependência; os testes do próprio incremento | sim | todo incremento de código iOS (frente C, ou A/B quando a issue for de A/B) |
 | `ios-test-engineer` | XCTest, XCUITest, fixtures, mocks, jornadas no simulador, testes contra o motor real | sim (só testes e fixtures) | jornadas ponta a ponta (#18), testes instáveis, cobertura que falta |
 | `integration-engineer` | contratos A/B/C, composição, merges, PRs, CI, validação ponta a ponta | sim | sync entre frentes, composição (`ios/App/Composition`), CI |
-| `quality-reliability-engineer` (QRE) | revisão independente: bugs, concorrência, persistência, segurança, privacidade, regressões | **não** | todo incremento funcional, antes do merge |
-| `ios-architecture-reviewer` | camadas, modularidade, testabilidade, limite de 350 linhas | **não** | refatorações, módulos novos ou mudanças de estrutura; dispensável em correção pequena |
-| `visual-ux-reviewer` | Figma × screenshots reais do simulador, acessibilidade, fidelidade | **não** | telas novas ou alteradas |
-| `sports-science-concurrent-training-reviewer` (SSCTR) | ciência do treino; autoridade provisória e limites em `governance/agents/sports-science-reviewer/` | **não** | qualquer regra que mude o treino prescrito, prontidão, carga ou segurança esportiva |
+| `quality-reliability-engineer` (QRE) | revisão independente: bugs, concorrência, persistência, segurança, privacidade, regressões, mapeamento de segurança falha fechada na UI | **não**¹ | todo incremento funcional, antes do merge |
+| `ios-architecture-reviewer` | camadas, modularidade, testabilidade, limite de 350 linhas | **não**¹ | refatorações, módulos novos ou mudanças de estrutura; dispensável em correção pequena |
+| `visual-ux-reviewer` | Figma × screenshots reais do simulador, acessibilidade, fidelidade | **não**¹ (Figma só leitura) | telas novas ou alteradas |
+| `sports-science-concurrent-training-reviewer` (SSCTR) | ciência do treino; autoridade provisória e limites em `governance/agents/sports-science-reviewer/` | só os próprios registros de revisão; ferramentas herdadas pela constituição; nunca edita o que revisa | qualquer regra que mude o treino prescrito, prontidão, carga, recuperação ou progressão. Clínico continua CLINICAL_HUMAN_REQUIRED |
+
+¹ Os revisores têm lista fechada de ferramentas (Read, Grep, Glob, Bash; o visual também tem leitura do Figma), sem Edit/Write nem MCP
+de escrita. O Bash é o resíduo: serve só para ler e rodar checagens, por instrução. Depois de cada revisão o orquestrador confere
+`git status --porcelain` limpo e HEAD inalterado na worktree revisada. Estados do quadro (por exemplo "Ready to Integrate") são aplicados
+pelo orquestrador, não pelo revisor.
 
 ## Regras que todos seguem (fontes, não cópias)
 
