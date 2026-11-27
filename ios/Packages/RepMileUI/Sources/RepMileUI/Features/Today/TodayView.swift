@@ -74,27 +74,36 @@ struct TodayView: View {
     }
 
     @ViewBuilder private func banner(_ plan: PlanView) -> some View {
-        Group {
-            if let gate = model.globalGate, gate != .blocked {
-                gateBanner(gate)
-            } else {
-                switch plan.state {
-                case .blocked:
-                    StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
-                                actionTitle: L.t("state.blocked.action"), action: openReadiness)
-                case .pendingConfirmation:
-                    StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
-                                actionTitle: L.t("state.pending.action"), action: openChanges)
-                case .returning:
-                    StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
-                case .needsInput:
-                    StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
-                                actionTitle: L.t("state.needsInput.action"), action: openChanges)
-                default: EmptyView()
-                }
+        let banners = TodayContent.banners(plan: plan, gate: model.globalGate)
+        if !banners.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(Array(banners.enumerated()), id: \.offset) { _, b in bannerView(b, plan) }
             }
+            .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
         }
-        .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
+    }
+
+    @ViewBuilder private func bannerView(_ banner: TodayBanner, _ plan: PlanView) -> some View {
+        switch banner {
+        case .urgentHold:
+            UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness, announceKey: UrgentCareBanner.key(for: plan))
+                .accessibilityIdentifier("banner-blocked")
+        case .gate(let gate):
+            gateBanner(gate)
+        case .state(.blocked):
+            StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
+                        actionTitle: L.t("state.blocked.action"), action: openReadiness)
+        case .state(.pendingConfirmation):
+            StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
+                        actionTitle: L.t("state.pending.action"), action: openChanges)
+        case .state(.returning):
+            StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
+        case .state(.needsInput):
+            StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
+                        actionTitle: L.t("state.needsInput.action"), action: openChanges)
+        case .state:
+            EmptyView()
+        }
     }
 
     @ViewBuilder private func gateBanner(_ gate: NotStartableReason) -> some View {

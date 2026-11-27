@@ -87,10 +87,10 @@ final class RequestShapeTests: XCTestCase {
         XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"KEEP"}"#)), .kept)
         XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"MODIFY"}"#)), .modified)
         XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"ASK"}"#)), .needsAnswers)
-        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#)), .blocked)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}"#)), .blocked(.professionalAssessment))
         XCTAssertEqual(NotFeeling100ViewModel.outcome(try answer(#"{"ok":true,"status":"SOMETHING_NEW"}"#)), .failed("SOMETHING_NEW"))
         XCTAssertEqual(NotFeeling100ViewModel.outcome(try Repo.store.decode(BoundaryAnswer.self, "actions-D1-notFeeling100-no-sign")), .kept)
-        XCTAssertEqual(NotFeeling100ViewModel.outcome(try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign")), .blocked)
+        XCTAssertEqual(NotFeeling100ViewModel.outcome(try Repo.store.decode(BoundaryAnswer.self, "16-notFeeling100-sign")), .blocked(.professionalAssessment))
     }
 
     func testUnplannedStrengthKeptOnlyWithObservedAt() async throws {
