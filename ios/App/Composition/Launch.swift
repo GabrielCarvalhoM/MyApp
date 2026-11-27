@@ -24,7 +24,9 @@ enum LaunchMode: Equatable {
 ///
 /// A launch-time open that fails (typically before the first unlock: the athlete id and A's store are protected until then) is tried again on
 /// every `protectedDataDidBecomeAvailable` until one succeeds. The observer is registered before the first attempt, so an unlock that lands
-/// between a failure and the registration is never missed. The fixture composition never opens anything here (no HealthKit, no host).
+/// between a failure and the registration is never missed; an unlock that lands while an attempt is still running (it would only join that
+/// attempt, which started locked) makes one more attempt once that one has failed. The fixture composition never opens anything here (no
+/// HealthKit, no host).
 @MainActor
 final class LaunchOpener<Value: AnyObject> {
     private let once = SingleOpen<Value>()
@@ -32,6 +34,8 @@ final class LaunchOpener<Value: AnyObject> {
     private let center: NotificationCenter
     private let unlocked: Notification.Name
     private var waiting: NSObjectProtocol?
+    private var attempting = false
+    private var unlockedDuringAttempt = false
     private(set) var launched = false
 
     init(center: NotificationCenter = .default, unlocked: Notification.Name = UIApplication.protectedDataDidBecomeAvailableNotification,
@@ -47,7 +51,7 @@ final class LaunchOpener<Value: AnyObject> {
         guard mode == .live, !launched else { return }
         launched = true
         waiting = center.addObserver(forName: unlocked, object: nil, queue: .main) { [weak self] _ in
-            Task { @MainActor [weak self] in await self?.attempt() }
+            Task { @MainActor [weak self] in self?.didUnlock() }
         }
         Task { await attempt() }
     }
@@ -55,14 +59,26 @@ final class LaunchOpener<Value: AnyObject> {
     /// True while a launch-time open has not succeeded yet (the unlock observer is registered).
     var isWaitingForUnlock: Bool { waiting != nil }
 
-    private func attempt() async {
+    private func didUnlock() {
         guard waiting != nil else { return }
-        do {
-            _ = try await open()
-            if let w = waiting { center.removeObserver(w); waiting = nil }
-        } catch {
-            // Kept waiting: the next unlock tries again. The root shows its own state (and its own "try again") meanwhile.
+        if attempting { unlockedDuringAttempt = true } else { Task { await attempt() } }
+    }
+
+    private func attempt() async {
+        guard waiting != nil, !attempting else { return }
+        attempting = true
+        while true {
+            unlockedDuringAttempt = false
+            do {
+                _ = try await open()
+                if let w = waiting { center.removeObserver(w); waiting = nil }
+                break
+            } catch {
+                // Kept waiting for the next unlock, unless one already came while this attempt ran. The root shows its own state meanwhile.
+                if !unlockedDuringAttempt { break }
+            }
         }
+        attempting = false
     }
 }
 

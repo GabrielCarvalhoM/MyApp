@@ -1,4 +1,5 @@
 import RepMileUI
+import os
 import SwiftUI
 import UIKit
 
@@ -10,6 +11,7 @@ import UIKit
 struct LiveRoot: View {
     private enum Phase { case opening, ready(LiveComposition), failed(code: String) }
     @State private var phase: Phase = .opening
+    private static let log = Logger(subsystem: "fit.vilumo.repmile", category: "composition")
 
     var body: some View {
         switch phase {
@@ -26,6 +28,10 @@ struct LiveRoot: View {
     private func open() async {
         do { phase = .ready(try await LiveComposition.open()) }
         // A code only (#63 P3-2: a damaged identity has its own, `LaunchFailure`).
-        catch { phase = .failed(code: LaunchFailure.code(for: error)) }
+        catch {
+            let code = LaunchFailure.code(for: error)
+            Self.log.error("live composition did not open: \(code, privacy: .public)")
+            phase = .failed(code: code)
+        }
     }
 }

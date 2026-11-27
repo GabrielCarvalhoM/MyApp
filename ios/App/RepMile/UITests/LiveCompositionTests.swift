@@ -168,11 +168,12 @@ final class LiveCompositionTests: XCTestCase {
     }
 
     /// The first real journey (#17) and the erasure end to end (#63 P3-6), synthetic answers: the real engine builds the plan, a run is
-    /// recorded into the real recordings store and reported (see `recordARun`), the account is erased. The next launch is a new athlete id (CCP-A-05) and
-    /// starts at onboarding; it opens only after the erased account's recordings are known gone (the composition's pending erasure checks
-    /// C's index, #63 P3-1), and nothing of the old run comes back. Then the athlete enrols AGAIN on the same install: the real host accepts
-    /// the new id (A's purge of the erased account is done; no ANOTHER_ATHLETE_ON_THIS_INSTALL), and Hoje opens. The second account is
-    /// erased too, so the simulator ends as it started (no record).
+    /// recorded by the live recorder into the real recordings store (see `recordARun`: before week 1 the report is not kept, so the recording
+    /// ends discarded by C itself; the G07 erasure of C's store with a recording still in it is proven by `PendingErasureTests`, not here),
+    /// the account is erased. The next launch is a new athlete id (CCP-A-05) and starts at onboarding; the composition's pending erasure
+    /// runs and checks C's index before it opens (#63 P3-1). Then the athlete enrols AGAIN on the same install: the real host accepts the
+    /// new id (A's purge of the erased account is done; no ANOTHER_ATHLETE_ON_THIS_INSTALL), and Hoje opens with nothing of a recording.
+    /// The second account is erased too, so the simulator ends as it started (no record).
     @MainActor
     func testRealOnboardingCreatesAPlanThenEraseMakesTheNextLaunchANewAccount() {
         let app = launch()
@@ -184,11 +185,10 @@ final class LiveCompositionTests: XCTestCase {
 
         let again = launch()
         assertOnboarding(again, "live — nova conta depois da exclusão")
-        XCTAssertFalse(el(again, "run-timer").exists, "no recording of the erased account comes back")
-        XCTAssertFalse(el(again, "screen-report").exists)
         enroll(again, "nova conta no mesmo aparelho")
-        XCTAssertFalse(el(again, "run-timer").exists)
-        XCTAssertFalse(el(again, "screen-report").exists)
+        // Nothing of a recording comes back on Hoje (the shell restores one on appear): absent for a while, not just at one instant.
+        XCTAssertFalse(el(again, "screen-report").waitForExistence(timeout: 5), "no report of a recording comes back")
+        XCTAssertFalse(el(again, "run-timer").exists, "no recording comes back")
         eraseAccount(again, "nova conta")
         again.terminate()
 

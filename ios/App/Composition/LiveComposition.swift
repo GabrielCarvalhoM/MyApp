@@ -65,13 +65,8 @@ final class LiveComposition {
     private static func make() async throws -> LiveComposition {
         let identity = try AthleteIdentityStore.standard()
         let athleteId = try identity.current()
-        let erasurePending = try identity.isDeviceErasurePending()
-        if erasurePending { try PendingErasure.erase(recordingsDirectory()) }
-        let recordings = RecordingStore.standard()
-        if erasurePending {
-            guard await recordings.recordings(overlapping: PendingErasure.everything).isEmpty else { throw PendingErasure.Failure.notErased }
-            try identity.deviceErasureDone()
-        }
+        let recordings = try await PendingErasure.complete(identity: identity, directory: recordingsDirectory(), openStore: { RecordingStore.standard() },
+                                                           isEmpty: { await $0.recordings(overlapping: PendingErasure.everything).isEmpty })
         let recorder = RunRecorder(source: locationSource(), store: recordings)
         let sink = DeviceActivitySinkProxy()
         let reader = HealthKitReader()

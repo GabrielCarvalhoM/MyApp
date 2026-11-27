@@ -16,6 +16,20 @@ enum PendingErasure {
         guard !fileManager.fileExists(atPath: directory.path) else { throw Failure.notErased }
     }
 
+    /// The sequence the composition runs at every open, before front C's store is used: when the identity says an erasure is pending,
+    /// remove `directory`, build the store (`openStore`, which recreates its folder), check through the store's own index that nothing is
+    /// left (`isEmpty`), and only then clear the flag. A crash or a failure at any step leaves the flag set, so the next open does it all
+    /// again; a failure throws and the composition does not open.
+    static func complete<Store>(identity: AthleteIdentityStore, directory: URL, openStore: () -> Store,
+                                isEmpty: (Store) async -> Bool, fileManager: FileManager = .default) async throws -> Store {
+        guard try identity.isDeviceErasurePending() else { return openStore() }
+        try erase(directory, fileManager: fileManager)
+        let store = openStore()
+        guard await isEmpty(store) else { throw Failure.notErased }
+        try identity.deviceErasureDone()
+        return store
+    }
+
     /// Every instant, for a query of the recordings index that must come back empty.
     static let everything = DateInterval(start: .distantPast, end: .distantFuture)
 }
