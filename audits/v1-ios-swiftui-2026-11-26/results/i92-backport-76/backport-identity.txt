@@ -1,0 +1,28 @@
+# Backport identity on 42e45087
+source: origin/claude/v1-ios-integration @ 9eb60f05 (contains #76 code commit 78f42b31)
+front C base: bc3fe449 (= origin/claude/v1-ios-swiftui); merge-base with integration: bc3fe449 (C has not diverged on these paths)
+method: git checkout origin/claude/v1-ios-integration -- ios/Packages/RunRecorder ios/Packages/RepMileUI (no merge)
+
+$ git diff origin/claude/v1-ios-integration --stat -- ios/Packages/RunRecorder ios/Packages/RepMileUI
+(empty: byte-identical)
+
+$ git diff bc3fe449 --stat
+ ios/Packages/RepMileUI/Copy/copy.psv               |  2 +
+ .../RepMileUI/App/RepMileLaunchScreen.swift        | 31 ++++++++
+ .../Sources/RepMileUI/App/RepMileShell.swift       | 57 ++++++++++---
+ .../RepMileUI/Features/States/StateScreen.swift    | 80 +++++++++++++------
+ .../Resources/en.lproj/Localizable.strings         |  2 +
+ .../Resources/es.lproj/Localizable.strings         |  2 +
+ .../Resources/pt-BR.lproj/Localizable.strings      |  2 +
+ .../RepMileUIUnitTests/LaunchStateTests.swift      | 93 ++++++++++++++++++++++
+ .../Sources/RunRecorder/RecordingStore.swift       | 26 ++++--
+ .../Sources/RunRecorder/RunRecorder.swift          |  5 +-
+ .../Tests/RunRecorderTests/RunRecorderTests.swift  | 73 ++++++++++++++++-
+ 11 files changed, 328 insertions(+), 45 deletions(-)
+
+integration commits on these paths since bc3fe449 (non-merge):
+78f42b31 Integration · #76: damaged identity has its own state (no retry), fixture recordings apart from the live store, RunRecorder owns its folder
+8ab54136 Integration · #16: live composition root (CoachingHost + HealthKitIngest + RunRecorder)
+8ab54136 (#16) parts carried: RepMileLaunchScreen.swift (new in C), RepMileShell.Live + init(model:recorder:live:) (additive)
+
+callers outside the two packages on front C of eraseAllRecordings/eraseAll/RecordingStore.standard/RepMileLaunchScreen: none (git grep)
