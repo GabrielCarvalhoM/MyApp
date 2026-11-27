@@ -9,7 +9,7 @@ final class ReadinessViewModelTests: XCTestCase {
     /// Loaded, with the eligibility screen answered "none applies" and every sign "não" (#72): these tests pin the declaration itself (the
     /// screen and the sign gate: `EligibilityRestTests`).
     private func loaded(_ writer: CoachingWriting) async -> ReadinessViewModel {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: writer, planToday: { "2026-11-22" })
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: writer, planToday: { "2026-11-22" }, holdGuidance: { nil })
         vm.eligibility = .testNoneApplies
         await vm.load()
         vm.answers = Dictionary(uniqueKeysWithValues: (vm.questionSet?.warningSigns ?? []).map { ($0, false) })
@@ -17,7 +17,7 @@ final class ReadinessViewModelTests: XCTestCase {
     }
 
     func testLoadsExactlyTheEngineReadinessSet() async throws {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" }, holdGuidance: { nil })
         XCTAssertEqual(vm.phase, .loading)
         await vm.load()
         let set = try Safety.set("READINESS")
@@ -29,7 +29,7 @@ final class ReadinessViewModelTests: XCTestCase {
 
     func testTheSetIsReadOnceAndAnswersSurviveAReappearance() async throws {
         let reader = DelayedSignReader(delays: [:])
-        let vm = ReadinessViewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
+        let vm = ReadinessViewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" }, holdGuidance: { nil })
         await vm.load()
         vm.recovered = true; vm.eligibility.pain = false
         await vm.load()
@@ -116,7 +116,7 @@ final class ReadinessViewModelTests: XCTestCase {
 
     func testAFailedReadLeavesNothingToAnswer() async {
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = ReadinessViewModel(reader: Safety.reader(Safety.emptyStore), writer: w, planToday: { "2026-11-22" })
+        let vm = ReadinessViewModel(reader: Safety.reader(Safety.emptyStore), writer: w, planToday: { "2026-11-22" }, holdGuidance: { nil })
         await vm.load()
         XCTAssertEqual(vm.phase, .loading)
         XCTAssertNil(vm.questionSet)

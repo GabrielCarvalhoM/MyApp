@@ -41,7 +41,7 @@ final class UnavailableDayViewModel {
     private let holdGuidance: () -> ClinicalGuidance?
 
     init(session: PlannedSession, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping () async -> Void,
-         presentation: @escaping () -> PresentationSnapshot?, holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+         presentation: @escaping () -> PresentationSnapshot?, holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.session = session; self.writer = writer; self.planToday = planToday; self.reload = reload; self.presentation = presentation
         self.holdGuidance = holdGuidance
     }

@@ -39,12 +39,11 @@ struct RunSessionScreen: View {
             Button(L.t("run.finish")) { finished = recorder.finish() }.accessibilityIdentifier("run-finish-confirm")
             Button(L.t("run.discard"), role: .destructive) { recorder.discard(); dismiss() }
         }
-        // VoiceOver: a gate that arrives while the screen is open is announced (the steps disappear at that moment).
+        // VoiceOver: a gate that arrives while the screen is open is announced (the steps disappear at that moment). An urgent hold is
+        // announced by its own banner, once (QRE P3-b).
         .onChange(of: model.runSafetyGate(for: session)) { old, new in
-            guard old == nil, let new else { return }
-            let urgent = new == .blocked && model.plan?.clinicalGuidance == .urgentCare
-            AccessibilityNotification.Announcement(urgent ? L.t("state.blocked.urgent.title.interim") + ". " + L.t("state.blocked.urgent.body.interim")
-                                                          : Self.gateTitle(new) + ". " + Self.gateMessage(new)).post()
+            guard old == nil, let new, !(new == .blocked && model.plan?.clinicalGuidance == .urgentCare) else { return }
+            AccessibilityNotification.Announcement(Self.gateTitle(new) + ". " + Self.gateMessage(new)).post()
         }
         .onAppear {
             recorder.resumeIfNeeded()
@@ -80,9 +79,9 @@ struct RunSessionScreen: View {
                 LocationChip(state: recorder.location)
             }
             .padding(.top, 12)
-            if let gate, gate == .blocked, let plan = model.plan, plan.clinicalGuidance == .urgentCare {
+            if let gate, gate == .blocked, model.plan?.clinicalGuidance == .urgentCare {
                 // #73 (QRE P3-3): a hold at URGENT_CARE_ADVISED shows its existing INTERIM text, never "a gravação continua".
-                UrgentCareBanner(reportKept: true, announceKey: UrgentCareBanner.key(for: plan))
+                UrgentCareBanner(reportKept: true)
                     .padding(.top, 20)
                     .accessibilityIdentifier("run-safety-gate")
             } else if let gate {

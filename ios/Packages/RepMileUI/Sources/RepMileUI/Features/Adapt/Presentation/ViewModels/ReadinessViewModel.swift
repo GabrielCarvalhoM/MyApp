@@ -42,7 +42,7 @@ final class ReadinessViewModel {
     private let holdGuidance: () -> ClinicalGuidance?
 
     init(reader: CoachingReading, writer: CoachingWriting, planToday: @escaping () -> String?,
-         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+         holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.reader = reader; self.writer = writer; self.planToday = planToday; self.holdGuidance = holdGuidance
     }
 

@@ -30,6 +30,8 @@ final class RunReportViewModel {
     private(set) var screenRequired = false
     /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record), with the engine's guidance level
     /// (#73). Sticky like `screenRequired`, and the level only rises over resends.
+    /// INTERIM fail-safe (SSCTR, #73): "only rises" is a display rule of this screen alone, never persisted, sent or shown elsewhere. Tied to
+    /// #79/C4 (the engine lowers a hold's level): align or remove it when the engine fix lands.
     private(set) var clinicalGuidance: ClinicalGuidance?
     var clinical: Bool { clinicalGuidance != nil }
 
@@ -45,7 +47,7 @@ final class RunReportViewModel {
     var planned: Bool { recording.ref.sessionId != nil }
 
     init(recording: FinishedRecording, writer: CoachingWriting, planToday: @escaping () -> String?, markReported: @escaping (String) -> Void,
-         now: @escaping () -> Date = Date.init, holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+         now: @escaping () -> Date = Date.init, holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.recording = recording; self.writer = writer; self.planToday = planToday; self.markReported = markReported; self.now = now
         self.holdGuidance = holdGuidance
         minutes = max(1, recording.movingMinutes.rounded())

@@ -41,7 +41,7 @@ final class NotFeeling100ViewModel {
     /// The condition last tapped whose set is still loading.
     @ObservationIgnored private var pendingCondition: WellbeingCondition?
 
-    init(reader: CoachingReading, writer: CoachingWriting, planToday: @escaping () -> String?, holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+    init(reader: CoachingReading, writer: CoachingWriting, planToday: @escaping () -> String?, holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.reader = reader; self.writer = writer; self.planToday = planToday; self.holdGuidance = holdGuidance
     }
 

@@ -146,6 +146,8 @@ final class GuidanceFloorTests: XCTestCase {
 /// A writer whose `submit` answers the given answers in order (the last one repeats).
 final class SequencedWriter: CoachingWriting {
     private let answers: [BoundaryAnswer]
+    /// Every submitted request, encoded (sorted keys).
+    let journal = RequestJournal()
     private let rest = ScriptedSubmitWriter(FixtureCoachingWriter.unavailable)
     private let lock = NSLock()
     /// Only read and written under `lock`.
@@ -154,6 +156,7 @@ final class SequencedWriter: CoachingWriting {
     init(_ answers: [BoundaryAnswer]) { self.answers = answers }
 
     func submit(_ review: ReviewRequest) async -> WriteOutcome {
+        journal.add("submit", review)
         let n = lock.withLock { () -> Int in count += 1; return count - 1 }
         return WriteOutcome(answer: answers[min(n, answers.count - 1)], kept: [], notKept: [])
     }

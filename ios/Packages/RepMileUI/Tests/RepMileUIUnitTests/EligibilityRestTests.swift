@@ -19,7 +19,7 @@ final class EligibilityRestTests: XCTestCase {
     // MARK: "Não estou 100%"
 
     private func notFeeling(_ w: CoachingWriting, today: String? = "2026-11-22") -> NotFeeling100ViewModel {
-        NotFeeling100ViewModel(reader: Safety.reader(), writer: w, planToday: { today })
+        NotFeeling100ViewModel(reader: Safety.reader(), writer: w, planToday: { today }, holdGuidance: { nil })
     }
 
     func testNotFeelingWaitsForTheScreenOnly() async throws {
@@ -109,7 +109,7 @@ final class EligibilityRestTests: XCTestCase {
 
     /// Loaded, every one of the 15 signs "não" (the sign gate is pinned in `testReadinessAnswersEverySignUnlessOneIsYes`).
     private func readiness(_ w: CoachingWriting, today: String? = "2026-11-22") async -> ReadinessViewModel {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: w, planToday: { today })
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: w, planToday: { today }, holdGuidance: { nil })
         await vm.load()
         vm.answers = Dictionary(uniqueKeysWithValues: (vm.questionSet?.warningSigns ?? []).map { ($0, false) })
         return vm
@@ -185,7 +185,7 @@ final class EligibilityRestTests: XCTestCase {
 
     private func unavailable(_ w: CoachingWriting, today: String? = "2026-11-22", reload: @escaping () async -> Void = {}) throws -> UnavailableDayViewModel {
         UnavailableDayViewModel(session: try runSession, writer: w, planToday: { today }, reload: reload,
-                                presentation: { try? Repo.store.decode(PresentationSnapshot.self, "actions-B1b-presentation-pending") })
+                                presentation: { try? Repo.store.decode(PresentationSnapshot.self, "actions-B1b-presentation-pending") }, holdGuidance: { nil })
     }
 
     func testUnavailableDayWaitsForTheScreenAndCarriesIt() async throws {

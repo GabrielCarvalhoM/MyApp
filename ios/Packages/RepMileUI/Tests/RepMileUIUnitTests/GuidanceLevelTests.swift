@@ -84,7 +84,7 @@ final class GuidanceLevelTests: XCTestCase {
     func testNotFeelingWithAnUrgentSignShowsTheUrgentRoute() async throws {
         for sign in Self.urgentSigns {
             let w = FixtureCoachingWriter(store: Repo.store)
-            let vm = NotFeeling100ViewModel(reader: Safety.reader(), writer: w, planToday: { "2026-11-22" })
+            let vm = NotFeeling100ViewModel(reader: Safety.reader(), writer: w, planToday: { "2026-11-22" }, holdGuidance: { nil })
             await vm.choose(.mildIllness)
             vm.answers = ["feverOrChills": true, sign: true]
             vm.eligibility = .testNoneApplies
@@ -94,7 +94,7 @@ final class GuidanceLevelTests: XCTestCase {
     }
 
     func testReadinessKeepsTheHoldAtItsLevel() async throws {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" }, holdGuidance: { nil })
         await vm.load()
         let signs = try XCTUnwrap(vm.questionSet?.warningSigns)
         vm.recovered = true; vm.eligibility = .testNoneApplies
@@ -102,7 +102,7 @@ final class GuidanceLevelTests: XCTestCase {
         await vm.send()
         XCTAssertEqual(vm.phase, .stillBlocked(.urgentCare))
 
-        let other = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
+        let other = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" }, holdGuidance: { nil })
         await other.load()
         other.recovered = true; other.eligibility = .testNoneApplies
         other.answers = Dictionary(uniqueKeysWithValues: signs.map { ($0, $0 == "severeHeadache") })

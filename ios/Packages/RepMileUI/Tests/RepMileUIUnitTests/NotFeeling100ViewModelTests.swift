@@ -9,7 +9,7 @@ final class NotFeeling100ViewModelTests: XCTestCase {
     /// With the eligibility screen answered "none applies" (#72), so these tests pin the flow itself; the screen is pinned in
     /// `EligibilityRestTests`.
     private func viewModel(reader: CoachingReading = Safety.reader(), writer: CoachingWriting, planToday: String? = "2026-11-22") -> NotFeeling100ViewModel {
-        let vm = NotFeeling100ViewModel(reader: reader, writer: writer, planToday: { planToday })
+        let vm = NotFeeling100ViewModel(reader: reader, writer: writer, planToday: { planToday }, holdGuidance: { nil })
         vm.eligibility = .testNoneApplies
         return vm
     }

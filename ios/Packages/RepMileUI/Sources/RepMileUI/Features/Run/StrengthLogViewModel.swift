@@ -29,6 +29,8 @@ final class StrengthLogViewModel {
     var eligibility = EligibilityScreen.unanswered
     /// The answer routed to a qualified human (a flag answered yes, or a clinical dependency on record), with the engine's guidance level
     /// (#73). Sticky, and the level only rises over resends.
+    /// INTERIM fail-safe (SSCTR, #73): "only rises" is a display rule of this screen alone, never persisted, sent or shown elsewhere. Tied to
+    /// #79/C4 (the engine lowers a hold's level): align or remove it when the engine fix lands.
     private(set) var clinicalGuidance: ClinicalGuidance?
     var clinical: Bool { clinicalGuidance != nil }
 
@@ -39,7 +41,7 @@ final class StrengthLogViewModel {
     private let holdGuidance: () -> ClinicalGuidance?
 
     init(session: PlannedSession?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init,
-         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+         holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.session = session; self.writer = writer; self.planToday = planToday; self.now = now; self.holdGuidance = holdGuidance
         exercises = session?.prescription?.exercises ?? []
         sets = Dictionary(exercises.map { ($0.id, Array(repeating: SetDraft(), count: max(0, $0.sets))) }, uniquingKeysWith: { first, _ in first })

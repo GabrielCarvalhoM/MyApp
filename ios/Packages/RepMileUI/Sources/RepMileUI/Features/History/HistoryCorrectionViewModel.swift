@@ -53,7 +53,7 @@ final class HistoryCorrectionViewModel {
 
     /// `reload` is `AppModel.load`; `planToday` the plan's own today (the screen's date; no plan, no correction).
     init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping @MainActor () async -> Void,
-         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+         holdGuidance: @escaping () -> ClinicalGuidance?) {
         self.entry = entry; self.sessionDate = sessionDate; self.writer = writer; self.planToday = planToday; self.reload = reload
         self.holdGuidance = holdGuidance
     }

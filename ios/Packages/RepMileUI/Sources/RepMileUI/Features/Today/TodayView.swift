@@ -74,35 +74,35 @@ struct TodayView: View {
     }
 
     @ViewBuilder private func banner(_ plan: PlanView) -> some View {
-        let urgent = plan.clinicalGuidance == .urgentCare
-        let gate = model.globalGate.flatMap { $0 == .blocked ? nil : $0 }
-        if urgent || gate != nil || [.blocked, .pendingConfirmation, .returning, .needsInput].contains(plan.state) {
+        let banners = TodayContent.banners(plan: plan, gate: model.globalGate)
+        if !banners.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
-                // #73: a hold at URGENT_CARE_ADVISED comes first and is never hidden, not even by a host gate (QRE P3-2).
-                if urgent {
-                    UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness, announceKey: UrgentCareBanner.key(for: plan))
-                        .accessibilityIdentifier("banner-blocked")
-                }
-                if let gate {
-                    gateBanner(gate)
-                } else if !urgent {
-                    switch plan.state {
-                    case .blocked:
-                        StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
-                                    actionTitle: L.t("state.blocked.action"), action: openReadiness)
-                    case .pendingConfirmation:
-                        StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
-                                    actionTitle: L.t("state.pending.action"), action: openChanges)
-                    case .returning:
-                        StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
-                    case .needsInput:
-                        StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
-                                    actionTitle: L.t("state.needsInput.action"), action: openChanges)
-                    default: EmptyView()
-                    }
-                }
+                ForEach(Array(banners.enumerated()), id: \.offset) { _, b in bannerView(b, plan) }
             }
             .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
+        }
+    }
+
+    @ViewBuilder private func bannerView(_ banner: TodayBanner, _ plan: PlanView) -> some View {
+        switch banner {
+        case .urgentHold:
+            UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness, announceKey: UrgentCareBanner.key(for: plan))
+                .accessibilityIdentifier("banner-blocked")
+        case .gate(let gate):
+            gateBanner(gate)
+        case .state(.blocked):
+            StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
+                        actionTitle: L.t("state.blocked.action"), action: openReadiness)
+        case .state(.pendingConfirmation):
+            StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
+                        actionTitle: L.t("state.pending.action"), action: openChanges)
+        case .state(.returning):
+            StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
+        case .state(.needsInput):
+            StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
+                        actionTitle: L.t("state.needsInput.action"), action: openChanges)
+        case .state:
+            EmptyView()
         }
     }
 
