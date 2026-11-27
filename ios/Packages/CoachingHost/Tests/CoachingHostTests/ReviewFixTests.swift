@@ -109,7 +109,7 @@ final class ReviewFixTests: XCTestCase {
     func testEraseAccountWithoutARecordErasesTheNativeSide() async throws {
         let f = try await HostFixture.make("qre06")
         _ = await f.host.onboard(Athlete.answers(special: [.pregnancy]), consents: Athlete.all)
-        f.host.signals.update { $0.scope = .clinicalHumanRequired }
+        _ = await f.host.onQueue { f.host.signals.update { $0.scope = .clinicalHumanRequired } }    // on the engine queue (it takes the lock)
         XCTAssertTrue(FileManager.default.fileExists(atPath: f.host.signals.file.path))
         XCTAssertEqual(f.b.calls, [], "a refused onboarding enrols nothing: B is not told")
         let e = await f.host.eraseAccount()

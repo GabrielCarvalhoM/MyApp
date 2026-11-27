@@ -95,7 +95,7 @@ final class IntegrationConditionsTests: XCTestCase {
     }
 
     /// P2-2: the fresh-install purge is a durable intent written before the marker. B fails: it stays owed, blocks a new enrolment, and is
-    /// retried after each write; once B works, the write after it settles it, and the enrolment goes through.
+    /// retried before and after each enrolment; once B works, the next enrolment settles it first and goes through.
     func testFreshInstallPurgeFailsThenIsRetriedByTheNextWrite() async throws {
         let name = "i49-p22-fresh", b = GatedQueueControl()
         b.failPurges = true
@@ -105,13 +105,12 @@ final class IntegrationConditionsTests: XCTestCase {
         XCTAssertEqual(b.calls, ["purge:FRESH_INSTALL!", "deliveryConditionsChanged"])
         let refused = await h.onboard(Athlete.answers(), consents: Athlete.all)
         XCTAssertEqual(refused.answer.error?.code.raw, HostCode.hostUnavailable, "no enrolment while B still holds a queue it was told to drop")
-        XCTAssertEqual(b.calls.last, "purge:FRESH_INSTALL!", "retried after the write")
+        XCTAssertEqual(b.calls.filter { $0.hasPrefix("purge") }.count, 3, "retried before and after that enrolment")
         b.failPurges = false
-        _ = await h.onboard(Athlete.answers(), consents: Athlete.all)          // refused at its check; its wrapper settles the purge
-        XCTAssertFalse(h.purgeIntent.isOwed(.freshInstall))
         let o = await h.onboard(Athlete.answers(), consents: Athlete.all)
-        XCTAssertEqual(o.answer.planOutcome, .planCreated)
-        XCTAssertEqual(b.calls.filter { $0.hasPrefix("purge") }, ["purge:FRESH_INSTALL!", "purge:FRESH_INSTALL!", "purge:FRESH_INSTALL"])
+        XCTAssertEqual(o.answer.planOutcome, .planCreated, "settled first, then enrolled")
+        XCTAssertFalse(h.purgeIntent.isOwed(.freshInstall))
+        XCTAssertEqual(b.calls.filter { $0.hasPrefix("purge") }, ["purge:FRESH_INSTALL!", "purge:FRESH_INSTALL!", "purge:FRESH_INSTALL!", "purge:FRESH_INSTALL"])
         emit("i49-p2-2-fresh", ["purges": b.calls.filter { $0.hasPrefix("purge") }])
         TestEnv.cleanup(name)
     }
@@ -143,6 +142,51 @@ final class IntegrationConditionsTests: XCTestCase {
         XCTAssertFalse(h2.purgeIntent.isOwed(.recordLossAcknowledged))
         emit("i49-p2-2-loss", ["notLost": "withdrawn", "intentNotDurable": "PERSISTENCE_FAILURE", "failed": "owed", "nextStart": "settled"])
         TestEnv.cleanup(name)
+    }
+
+    /// Review P1-1: a safety signal's mark, the operation it guards and its resolution are ONE hold of the athlete's lock. Probed when each
+    /// operation's `perform` returns (between the operation and its resolution): another holder cannot take the lock there.
+    func testSignalsAndTheirOperationShareOneLockHold() async throws {
+        let f = try await HostFixture.make("i49-hold")
+        let lockPath = f.host.store.lockFile(f.host.athleteId).path
+        var probed: [String: Bool] = [:]
+        f.host.afterPerformForTesting = { fn in
+            let fd = Darwin.open(lockPath, O_CREAT | O_RDWR, 0o600); defer { close(fd) }
+            let free = flock(fd, LOCK_EX | LOCK_NB) == 0; if free { flock(fd, LOCK_UN) }
+            probed[fn] = !free
+        }
+        _ = await f.host.onboard(Athlete.answers(), consents: Athlete.all)
+        f.clock.set(day: "2026-11-17", "19:00")
+        _ = await f.host.submit(ReviewRequest(.sessionReports([]), eligibility: Athlete.screen("2026-11-17")))
+        _ = await f.host.eraseHealthFacts(eventIds: ["no-such-event"])
+        f.clock.set(day: "2026-11-20", "10:00")
+        _ = await f.host.restart(Athlete.answers(start: "2026-11-23", assessedAt: "2026-11-20", pain: true))
+        f.host.afterPerformForTesting = nil
+        XCTAssertEqual(probed, ["onboard": true, "submit": true, "eraseHealthFacts": true, "restart": true], "held between the operation and its signals")
+        emit("i49-review-p1-1-hold", probed.mapValues { "\($0)" })
+        TestEnv.cleanup("i49-hold")
+    }
+
+    /// Review P1-1: a change left pending (its write failed) is replayed whole only over the file it was decided against. Over a file another
+    /// writer changed since, it only tightens: a stale release never clears a newer, stricter signal.
+    func testAStalePendingReleaseNeverClearsANewerSignal() throws {
+        TestEnv.cleanup("i49-replay")
+        let dir = TestEnv.root("i49-replay"); try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let file = dir.appendingPathComponent("signals.json")
+        let a = SignalStore(file: file), b = SignalStore(file: file)
+        XCTAssertTrue(a.update { $0.pendingIntake = true })
+        a.writeHook = { false }
+        XCTAssertFalse(a.update { $0.pendingIntake = false; $0.scope = nil })      // a release, not durable: pending
+        XCTAssertTrue(b.update { $0.scope = .clinicalHumanRequired })               // another writer, later, stricter
+        a.writeHook = nil
+        XCTAssertTrue(a.flush())
+        let disk = try JSONDecoder().decode(HostSignals.self, from: Data(contentsOf: file))
+        XCTAssertEqual(disk, HostSignals(scope: .clinicalHumanRequired, pendingIntake: true), "the stale release tightened nothing away")
+        // Over an unchanged file the pending change is replayed whole.
+        a.writeHook = { false }; XCTAssertFalse(a.update { $0.pendingIntake = false }); a.writeHook = nil
+        XCTAssertTrue(a.flush())
+        XCTAssertFalse(try JSONDecoder().decode(HostSignals.self, from: Data(contentsOf: file)).pendingIntake)
+        TestEnv.cleanup("i49-replay")
     }
 
     /// P3-4 (CCP-B-04 rule 1): a delivery that ends a clock refusal tells B, but never awaits B inside B's own pending call: `deliver`

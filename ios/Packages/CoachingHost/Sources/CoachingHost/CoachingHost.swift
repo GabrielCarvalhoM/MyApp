@@ -81,6 +81,8 @@ public final class CoachingHost: @unchecked Sendable {
     var sentRequestIds: [String] = []
     /// Tests only: the last write's answer as the facade returned it.
     var lastAnswerJSON: String?
+    /// Tests only (#49 review P1-1): called with the function's name when a `perform` returns (to probe the athlete's lock there).
+    var afterPerformForTesting: ((String) -> Void)?
 
     // MARK: opening
 
@@ -251,6 +253,7 @@ public final class CoachingHost: @unchecked Sendable {
             if a.code == "BUSY", busy < 3 { busy += 1; usleep(busyRetryDelay); continue }
             if a.code == "CLOCK_BEHIND_RECORD" { conditionsWaitOnClock = true }
             if a.ok && clockRule != .read && lastPerformTrusted && a.object["replayed"] as? Bool != true { clock.recordWrite(atMs: nowMs) }
+            if testing { afterPerformForTesting?(fn) }
             return a
         }
     }

@@ -19,6 +19,12 @@ struct HostSignals: Codable, Equatable {
     var warningSignsAsked = false
 
     enum Scope: String, Codable, Equatable { case outsideV1Scope = "OUTSIDE_V1_SCOPE", clinicalHumanRequired = "CLINICAL_HUMAN_REQUIRED" }
+    /// `change` applied, keeping every signal at least as strict as it is now (a set signal stays set; a scope is replaced, never cleared).
+    func tightened(by change: (inout HostSignals) -> Void) -> HostSignals {
+        var n = self; change(&n)
+        return HostSignals(screenRequiredAfterErasure: screenRequiredAfterErasure || n.screenRequiredAfterErasure, scope: n.scope ?? scope,
+                           pendingIntake: pendingIntake || n.pendingIntake, warningSignsAsked: warningSignsAsked || n.warningSignsAsked)
+    }
     /// In memory only, while the file cannot be read (QRE-A-08: never written to disk as a fact).
     static let failClosed = HostSignals(screenRequiredAfterErasure: true, scope: nil, pendingIntake: true, warningSignsAsked: true)
 
@@ -41,13 +47,16 @@ struct HostSignals: Codable, Equatable {
 ///
 /// #49 P2-1 (FND-ABC-04/04b): nothing is cached across a write. Each change, and each `flush`, runs under the athlete's kernel lock
 /// (`withLock`, set by the host): the file is read again, the changes not yet on disk are applied over it, then this one, and the result is
-/// written. Another instance or process writing an unrelated signal meanwhile is never overwritten by a stale copy (a `scope` stays).
+/// written. Another instance or process writing an unrelated signal meanwhile is never overwritten by a stale copy (a `scope` stays). A
+/// pending change is replayed whole only over the file it was decided against; over a file another writer changed since, it can only
+/// tighten (review P1-1: a stale release never clears a newer, stricter signal).
 final class SignalStore {
     let file: URL
     private(set) var current: HostSignals
     private(set) var unreadable = false
     /// The changes made in memory that are not on disk yet, in order; replayed over the file as read at the next write.
-    private var pending: [(inout HostSignals) -> Void] = []
+    private struct Change { let apply: (inout HostSignals) -> Void; let base: HostSignals? }
+    private var pending: [Change] = []
     var dirty: Bool { !pending.isEmpty }
     /// Tests only: returns false to make the next writes fail.
     var writeHook: (() -> Bool)?
@@ -85,10 +94,11 @@ final class SignalStore {
     /// Under the lock: the file as it is now, the pending changes, then `f`. Returns whether the result is on disk.
     private func applyLocked(_ f: ((inout HostSignals) -> Void)?) -> Bool {
         reload()
-        if let f { pending.append(f) }
+        if let f { pending.append(Change(apply: f, base: unreadable ? nil : current)) }
         if unreadable { return false }        // memory only (fail closed): never write over a file that cannot be read
         let disk = current
-        var s = disk; for p in pending { p(&s) }
+        var s = disk
+        for c in pending { if c.base == disk { c.apply(&s) } else { s = s.tightened(by: c.apply) } }
         current = s
         if s == disk { pending = []; return true }
         return persist()
@@ -100,7 +110,7 @@ final class SignalStore {
         var ok = false
         do { try withLock { ok = self.applyLocked(f) } } catch {
             // The lock cannot be had (another process holds it past the wait; the folder is unavailable): memory only, fail closed.
-            pending.append(f); if !unreadable { f(&current) }
+            pending.append(Change(apply: f, base: nil)); if !unreadable { f(&current) }
             return false
         }
         return ok

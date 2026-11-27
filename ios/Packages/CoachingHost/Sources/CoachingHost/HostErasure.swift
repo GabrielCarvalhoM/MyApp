@@ -43,9 +43,11 @@ extension CoachingHost {
     /// Whether B is owed any purge now (an intent, or an erasure whose native side is done). On the engine queue.
     var purgeIsOwedOnQueue: Bool { !purgeOwed.isEmpty || !purgeIntent.owed().isEmpty }
 
-    /// Records the durable intent to purge B for `reason`, under the install lock. True when it is on disk (or already was).
-    func owePurge(_ reason: QueuePurgeReason) -> Bool {
-        (try? store.withLock(tag: NativeStore.installTag) { purgeIntent.add(reason) }) ?? false
+    /// Records the durable intent to purge B for `reason`, under the install lock. True when it is on disk.
+    func owePurge(_ reason: QueuePurgeReason) -> Bool { owePurgeToken(reason) != nil }
+    /// The same; the token written (to withdraw exactly this intent), nil when it is not durable.
+    func owePurgeToken(_ reason: QueuePurgeReason) -> String? {
+        (try? store.withLock(tag: NativeStore.installTag) { purgeIntent.add(reason) }) ?? nil
     }
 
     /// The native side of an account erasure, by tag alone, under ONE hold of that athlete's lock (code review R1 #4): the record and its
@@ -126,23 +128,24 @@ final class PurgeIntent {
         [QueuePurgeReason.freshInstall, .recordLossAcknowledged].filter(isOwed).map { Owed(reason: $0, token: token($0)) }
     }
 
-    /// Writes the intent (a new token). Under the install lock. True when it is durable.
-    func add(_ r: QueuePurgeReason) -> Bool {
-        if writeHook?() == false { return false }
+    /// Writes the intent (a new token). Under the install lock. Returns the file's content when it is durable, nil otherwise.
+    func add(_ r: QueuePurgeReason) -> String? {
+        if writeHook?() == false { return nil }
         let body = "{\"token\":\"\(UUID().uuidString)\"}"
-        do { try AtomicFile.write(Data(body.utf8), to: file(r)); return true } catch { return false }
+        do { try AtomicFile.write(Data(body.utf8), to: file(r)); return body } catch { return nil }
     }
 
     /// After `purge(owed.reason)` returned: removes the intent if it is still the one sent. Under the install lock. True when it is gone.
     @discardableResult
     func settle(_ o: Owed) -> Bool {
         guard isOwed(o.reason) else { return true }
-        guard token(o.reason) == o.token else { return false }
+        // A token that could not be read (at the snapshot or now) proves nothing: kept, sent again later (review P3-2).
+        guard let sent = o.token, token(o.reason) == sent else { return false }
         try? FileManager.default.removeItem(at: file(o.reason))
         return !isOwed(o.reason)
     }
 
-    /// Withdraws an intent this operation wrote for an event that did not happen (a refused acknowledgement). A failure leaves a harmless
-    /// spurious purge owed.
-    func withdraw(_ r: QueuePurgeReason) { try? FileManager.default.removeItem(at: file(r)) }
+    /// Withdraws the intent this operation wrote (`token`) for an event that did not happen (a refusal that committed nothing), under the
+    /// install lock. An intent written again meanwhile is kept; a failure leaves a harmless spurious purge owed.
+    func withdraw(_ r: QueuePurgeReason, token t: String) { if token(r) == t { try? FileManager.default.removeItem(at: file(r)) } }
 }

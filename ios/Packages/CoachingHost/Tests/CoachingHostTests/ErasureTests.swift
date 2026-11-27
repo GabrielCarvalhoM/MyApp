@@ -251,14 +251,11 @@ final class ErasureTests: XCTestCase {
         y.timezoneOffsetOverride = -180
         let refused = await y.onboard(Athlete.answers(), consents: Athlete.all)
         XCTAssertEqual(refused.answer.error?.code.raw, HostCode.hostUnavailable, "an owed purge blocks a new enrolment")
-        // B works again: the next write's wrapper (after its own refusal, since the purge was still owed at its check) settles the purge,
-        // and the enrolment after that goes through.
+        // B works again: the enrolment first settles what is owed (#49 review P2-2), then goes through.
         b.fail = false
         let second = await y.onboard(Athlete.answers(), consents: Athlete.all)
-        XCTAssertEqual(second.answer.error?.code.raw, HostCode.hostUnavailable)
-        XCTAssertEqual(x.fence.state(x.tag), .erased, "settled after that write")
-        let third = await y.onboard(Athlete.answers(), consents: Athlete.all)
-        XCTAssertEqual(third.answer.planOutcome, .planCreated)
+        XCTAssertEqual(x.fence.state(x.tag), .erased, "settled before the enrolment's check")
+        XCTAssertEqual(second.answer.planOutcome, .planCreated)
         TestEnv.cleanup("er-purge")
     }
 
