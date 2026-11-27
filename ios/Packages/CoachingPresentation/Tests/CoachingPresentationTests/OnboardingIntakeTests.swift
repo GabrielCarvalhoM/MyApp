@@ -90,6 +90,29 @@ final class OnboardingIntakeTests: XCTestCase {
         XCTAssertEqual(try JSONDecoder().decode(AthleteIntake.self, from: j), RequestSchemaTests.answers().athlete, "round trip")
     }
 
+    /// QRE P3 (PR #121): the hand-written coding of `AthleteIntake` drops nothing. Every stored property but `specialPopulationNotStated` (not an
+    /// engine key) has a CodingKey, and a fully populated intake encodes every one of them; a property added later without a key fails here.
+    func testAthleteIntakeCodingCoversEveryStoredProperty() throws {
+        var a = RequestSchemaTests.answers().athlete
+        a.pause = IntakePause(reasonCategory: "TRAVEL", nonclinical: true, weeks: 2)
+        a.knownExercises = [KnownExercise(id: "back-squat", sets: 4, reps: 5, rir: 3, load: LoggedLoadEntry(value: 90, unit: .kg, convention: .total))]
+        a.coaching = IntakeCoaching(profile: .balanced)
+        let stored = Set(Mirror(reflecting: a).children.compactMap(\.label)).subtracting(["specialPopulationNotStated"])
+        XCTAssertEqual(stored, Set(AthleteIntake.CodingKeys.allCases.map(\.rawValue)), "a stored property without a CodingKey, or a key without a property")
+        XCTAssertEqual(Set(try encoded(a).keys), stored, "a fully populated intake encodes every property")
+        XCTAssertEqual(try JSONDecoder().decode(AthleteIntake.self, from: JSONEncoder().encode(a)), a, "round trip")
+    }
+
+    /// D03 (QRE P3, PR #121): a race always sends its weeks; a clinical flag still reaches the engine (it is screened first, nothing enrolled).
+    func testRaceWithoutWeeksIsHeld() throws {
+        var a = RequestSchemaTests.answers(); a.weeks = nil
+        XCTAssertEqual(a.hold, .raceWithoutWeeks)
+        XCTAssertThrowsError(try JSONEncoder().encode(OnboardingEngineReplayTests.intake(a))) { XCTAssertEqual($0 as? IntakeHold, .raceWithoutWeeks) }
+        a.athlete.goals.run = RunGoal(kind: "PERFORMANCE"); XCTAssertNil(a.hold, "no race: the engine's 12 weeks")
+        var c = RequestSchemaTests.answers(); c.weeks = nil; c.athlete.eligibility.injury = true
+        XCTAssertNil(c.hold); XCTAssertNil(try encoded(OnboardingEngineReplayTests.intake(c))["weeks"])
+    }
+
     /// The new words are the frozen engine's, read from its bytes.
     func testNewEnumerationsAreTheFrozenOnes() throws {
         XCTAssertEqual(CoachProfile.allCases.map(\.rawValue), try RequestSchemaTests.list(Repo.text("CoachingCore/src/v1-coaching.mjs"), "COACH_PROFILES"))

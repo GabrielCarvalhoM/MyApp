@@ -57,6 +57,7 @@ public struct AthleteIntake: Codable, Equatable, Sendable {
     /// the combined item "Gestação atual ou parto nos últimos 12 meses". `specialPopulation` is then `[]` and its key is OMITTED (never "none"),
     /// and the intake encodes only when a clinical flag is stated: the engine screens it first (CLINICAL_HUMAN_REQUIRED, nothing enrolled).
     /// Otherwise encoding throws `IntakeHold` and nothing is sent. `nil` (default): `specialPopulation` is the athlete's answer.
+    /// Not preserved by decoding: an intake without the key always decodes as `.notAnswered` (`SpecialPopulationGap`).
     public var specialPopulationNotStated: SpecialPopulationGap? = nil
     /// Months of regular training per sport (Figma 22, 25: the lower bound of the band, D13). CCP-ONB-1: `nil` (omitted) when the flow did not
     /// ask it — the sport the athlete does not train ("Só força" / "Só corrida"); never 0 for "not asked" (0 is "Nunca treinei" / "Nunca corri").
@@ -233,6 +234,7 @@ public struct IntakeRequest: Encodable, Equatable, Sendable {
     }
     enum CodingKeys: String, CodingKey { case version, synthetic, purpose, asOf, startDate, weeks, timezoneOffsetMinutes, learningConsent, athlete, schedule, heartRateProfile }
     public func encode(to encoder: Encoder) throws {
+        if let h = answers.hold { throw h }       // CCP-ONB-1: a held intake is never sent (OnboardingFields.swift `IntakeHold`)
         var c = encoder.container(keyedBy: CodingKeys.self)
         try c.encode(Self.intakeVersion, forKey: .version)
         switch mode { case .syntheticShadowReference: try c.encode(true, forKey: .synthetic); try c.encode("SHADOW_REFERENCE", forKey: .purpose) }

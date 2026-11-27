@@ -176,6 +176,7 @@ final class OnboardingEngineReplayTests: XCTestCase {
         ("no-race-no-weeks", with { $0.athlete.goals.run = RunGoal(kind: "REGULAR"); $0.weeks = nil }),
         ("combined-item", with { $0.athlete.specialPopulationNotStated = .pregnancyOrPostpartumUnspecified }),
         ("box-not-answered", with { $0.athlete.specialPopulationNotStated = .notAnswered }),
+        ("race-no-weeks", with { $0.weeks = nil }),
     ]
     static var clinicalCases: [Case] {
         signs.flatMap { sign, key in heldDrafts.map { draft, a in
@@ -186,7 +187,7 @@ final class OnboardingEngineReplayTests: XCTestCase {
         } }
     }
     func testEveryClinicalSignReachesTheEngineFromEveryHeldDraft() throws {
-        let cases = Self.clinicalCases; XCTAssertEqual(cases.count, 30)
+        let cases = Self.clinicalCases; XCTAssertEqual(cases.count, 36)
         let r = try Self.run(cases, evidence: "clinical")
         for c in cases {
             let a = try XCTUnwrap(r[c.name], c.name)

@@ -106,6 +106,9 @@ public enum CriterionValue: Decodable, Equatable, Sendable {
 
 /// Why no special-population code is stated. The frozen engine reads an absent or empty list as "none" and has no word for either case
 /// (an unknown code is ignored and a plan is made), so neither is ever encoded as a code; see `AthleteIntake.specialPopulationNotStated`.
+/// The kind is NOT on the wire: both encode as the same omitted key, so decoding an intake without the key always gives `.notAnswered`
+/// (fail closed: never "none"); a decoded `.pregnancyOrPostpartumUnspecified` cannot be told apart and is not restored. C keeps the kind in its
+/// own draft, never from a decoded intake.
 public enum SpecialPopulationGap: String, Codable, CaseIterable, Sendable {
     /// The Cuidados item left unmarked while another item is marked: not an answer, never "none".
     case notAnswered
@@ -116,18 +119,27 @@ public enum SpecialPopulationGap: String, Codable, CaseIterable, Sendable {
 public enum IntakeHold: Error, Equatable, Sendable {
     /// No special-population code and no clinical flag: the engine would read "none" and plan.
     case specialPopulationNotStated(SpecialPopulationGap)
+    /// D03 (QRE P3, PR #121): a race always sends its plan length, derived from the race date; without it the engine would plan its own 12
+    /// weeks around a nearer race.
+    case raceWithoutWeeks
 }
 extension OnboardingAnswers {
     /// Why these answers cannot be sent, or `nil`. A stated clinical flag always reaches the engine (it screens it before any other field,
     /// `r6-intake.mjs` status order), whatever else is missing: single sport, no race and the combined Cuidados item are all expressible.
-    public var hold: IntakeHold? { athlete.hold }
+    /// C checks it BEFORE `onboard` / `restart` and shows the specific state (Cuidados: the combined item or the unmarked box; a race: its date),
+    /// never the host's generic failure: the host answers a held intake with INVALID_REQUEST and sends nothing.
+    public var hold: IntakeHold? {
+        if let h = athlete.hold { return h }
+        if athlete.goals.run.event != nil, weeks == nil, !athlete.eligibility.statesAClinicalFlag { return .raceWithoutWeeks }
+        return nil
+    }
 }
 extension AthleteIntake {
     public var hold: IntakeHold? {
         guard let gap = specialPopulationNotStated, !eligibility.statesAClinicalFlag else { return nil }
         return .specialPopulationNotStated(gap)
     }
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case id, ageYears, eligibility, specialPopulation, strengthTrainingMonths, runTrainingMonths, exerciseRotationPreference, goals, equipment, recent,
              performanceAnchors, pause, knownExercises, coaching
     }
