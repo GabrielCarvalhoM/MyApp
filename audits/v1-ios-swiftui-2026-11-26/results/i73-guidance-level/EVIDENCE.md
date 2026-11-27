@@ -1,7 +1,6 @@
 # #73: every clinical surface shows the engine's guidance level (evidence)
 
-Branch `claude/v1-ios-swiftui-i73-guidance` from `claude/v1-ios-swiftui` @ c04ee8c4 (#72, PR #78). Verified HEAD dd877b2a (code); this folder is
-committed after it. CoachingCore, IntegrationContracts and CoachingPresentation are unchanged (frozen). Simulator only: RepMile-C-2. Synthetic
+Branch `claude/v1-ios-swiftui-i73-guidance` from `claude/v1-ios-swiftui` @ c04ee8c4 (#72, PR #78). Code verified first at dd877b2a, then at aef06b9e after the review fixes (below); this folder is committed after it. CoachingCore, IntegrationContracts and CoachingPresentation are unchanged (frozen). Simulator only: RepMile-C-2. Synthetic
 data only.
 
 ## Where the level is in the frozen port
@@ -99,3 +98,28 @@ Front C now has its own captures:
   the plan view the host appends. If that read fails (`viewError`), a clinical answer carries no level: the app shows the
   professional-assessment copy (readiness: the level of the hold it answered). Proposal: `BoundaryAnswer.decision: DecisionSummary?` (or
   `guidance: Guidance?`), read-only, additive.
+
+## Review fixes (QRE READY_WITH_CONDITIONS, SSCTR APPROVE_WITH_CONDITIONS), verified at aef06b9e
+- P2-1 / SSCTR C1: the readiness reply is the highest of the answer's route, its view's hold and, without a view (`viewError`), the hold the
+  declaration answered. `{"ok":true,"status":"CLINICAL_HUMAN_REQUIRED"}` under an urgent hold gives `.stillBlocked(.urgentCare)`; before,
+  the `??` chain stopped at the professional-assessment default.
+- P2-2: `BoundaryAnswer.clinicalGuidance(floor:)` applies the same floor to "Não estou 100%", the strength log, the unavailable day, the run
+  report and the history correction. The floor is `model.plan?.clinicalGuidance`, the engine's own hold level, wired at every construction
+  site (`RepMileShell`, `RunReportView`, `RunSessionScreen`, `HistoryScreen`). It counts only when the answer carries no view: an answer
+  with a view is the engine's current word.
+- SSCTR C3: an unknown non-null level code is reported as a contract violation (`ContractViolations`, os.Logger, field and code only, once
+  per process). It is still shown at the professional-assessment level.
+- P3-1: a cancelled announcement is not posted. A hold banner (Today, session detail, run screen) is announced once per hold, keyed on
+  `hold.since`, else the last decision.
+- P3-2: on Today the urgent hold comes first and is never hidden by a host gate banner (the gate banner follows it).
+- P3-3: the live run screen under an urgent hold shows the existing urgent INTERIM text instead of "a gravação continua" (no new copy).
+- P3-4: tests for the urgent level in the strength log (never lowered over a resend), the unavailable day, the history correction (urgent
+  only through `view.hold`) and the session detail (XCUITest).
+- Out of scope, tracked elsewhere: the hold lowered by a later decision (#79), the CCP to decode `decision.guidance` (#20), the final urgent
+  wording (#87). There is no app-side "highest since hold.since" rule.
+
+Gates on aef06b9e:
+- RepMileUI unit tests: 178/178, 0 failures (`unit-tests.txt`; 11 new in `GuidanceFloorTests`).
+- `sim.sh all --sim RepMile-C-2`: 50/50 XCUITest, 0 skipped, 0 uncommitted files (`sim-manifest.json`, `xcuitest.txt`).
+- `guard.mjs` (role C): 338 paths OK, 0 need approval, 0 forbidden.
+- `swift-size.mjs`: 0 files above 350.
