@@ -2,12 +2,14 @@
 //   BACKLOG             open issue, no status label
 //   READY               status:ready
 //   IN_PROGRESS         status:in-progress
+//   FOUNDER_DECISION    status:founder-decision (waiting for a Founder product decision; not a technical block)
 //   BLOCKED             status:blocked          (wins over every other label)
 //   IN_REVIEW           derived: an open, non-draft PR names the issue ("Issue: #n")
 //   READY_TO_INTEGRATE  status:ready-to-integrate (reviewed + gates green; set by the reviewer)
 //   INTEGRATED          status:integrated       (merged into the integration branch)
 //   VERIFIED            the issue is closed as completed after the validation it asks for
 export const STATE_LABELS = {
+  'status:founder-decision': 'FOUNDER_DECISION',
   'status:blocked': 'BLOCKED',
   'status:integrated': 'INTEGRATED',
   'status:ready-to-integrate': 'READY_TO_INTEGRATE',
@@ -17,6 +19,7 @@ export const STATE_LABELS = {
 
 export function issueState(labelNames, hasOpenPr = false) {
   const has = (l) => labelNames.includes(l);
+  if (has('status:founder-decision')) return 'FOUNDER_DECISION';
   if (has('status:blocked')) return 'BLOCKED';
   if (has('status:integrated')) return 'INTEGRATED';
   if (has('status:ready-to-integrate')) return 'READY_TO_INTEGRATE';

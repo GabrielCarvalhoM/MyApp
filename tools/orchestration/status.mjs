@@ -14,7 +14,7 @@ import { git, ghJson, run, repoRoot, refExists, MissingDependency } from './lib/
 import { issueState, parseDependencies, parseLinkedIssues, priorityOf, STATE_LABELS } from './lib/states.mjs';
 import { APPROVAL_LABEL, loadConfig, findProject, listItems } from './lib/board.mjs';
 
-const BOARD_STATE = { Backlog: 'BACKLOG', Ready: 'READY', 'In Progress': 'IN_PROGRESS', Blocked: 'BLOCKED', 'In Review': 'IN_REVIEW',
+const BOARD_STATE = { Backlog: 'BACKLOG', 'Founder Decision': 'FOUNDER_DECISION', Ready: 'READY', 'In Progress': 'IN_PROGRESS', Blocked: 'BLOCKED', 'In Review': 'IN_REVIEW',
   'Ready to Integrate': 'READY_TO_INTEGRATE', Integrated: 'INTEGRATED', Verified: 'VERIFIED' };
 
 const { values } = parseArgs({
@@ -159,7 +159,7 @@ function render(data) {
   if (gh) {
     const by = (s) => gh.issues.filter((i) => i.state === s);
     L.push('## Resumo', '');
-    L.push(`- Repositório \`${gh.repo}\` · ${gh.prs.length} PR(s) aberto(s) · ${by('IN_PROGRESS').length} em andamento · ${by('IN_REVIEW').length} em revisão · ${by('READY_TO_INTEGRATE').length} prontas para integrar · ${by('BLOCKED').length} bloqueada(s) · ${by('READY').length} prontas · ${by('BACKLOG').length} no backlog · ${gh.verifiedThisWeek.length} verificada(s) nos últimos 7 dias`);
+    L.push(`- Repositório \`${gh.repo}\` · ${gh.prs.length} PR(s) aberto(s) · ${by('IN_PROGRESS').length} em andamento · ${by('IN_REVIEW').length} em revisão · ${by('READY_TO_INTEGRATE').length} prontas para integrar · ${by('BLOCKED').length} bloqueada(s) · **${by('FOUNDER_DECISION').length} aguardando o fundador** · ${by('READY').length} prontas · ${by('BACKLOG').length} no backlog · ${gh.verifiedThisWeek.length} verificada(s) nos últimos 7 dias`);
     L.push(`- Quadro: ${gh.board?.url ? `${gh.board.url} (${gh.board.items} itens; estado lido do campo Status)` : `indisponível — ${gh.board?.error ?? 'ainda não criado'}; estado lido dos rótulos status:*`}`);
     L.push(`- Alertas: ${alerts.length || 'nenhum'}`, '');
   }
@@ -188,6 +188,7 @@ function render(data) {
       L.push('');
     };
     const sorted = (s) => gh.issues.filter((i) => i.state === s).sort((a, b) => a.priority - b.priority || a.number - b.number);
+    section('Founder Decision — aguardando o fundador (responda comentando a issue)', sorted('FOUNDER_DECISION'));
     section('Em andamento', sorted('IN_PROGRESS'));
     section('Em revisão', sorted('IN_REVIEW'), (i) => (i.pr ? ` · PR #${i.pr}` : ''));
     section('Prontas para integrar', sorted('READY_TO_INTEGRATE'));

@@ -4,7 +4,7 @@
 //   board.mjs setup [--apply]                       create/align the project, its fields and its repository link (dry-run by default)
 //   board.mjs create --title T --body-file F --type .. --area .. --front .. --priority .. --release .. [--new-scope] [--force-new]
 //   board.mjs add <issue> --type .. --area .. --front .. --priority .. --release .. [--status ..] [--deps ..]
-//   board.mjs set <issue> [--status ..] [--validation ..] [--priority ..] [--release ..] [--deps ..] [--start AAAA-MM-DD] [--target ..]
+//   board.mjs set <issue> [--status ..] [--validation ..] [--figma NOT_VERIFIED|MATCH|MISMATCH|APPROVED_DEVIATION] [--product ..] [--priority ..] [--release ..] [--deps ..] [--start AAAA-MM-DD] [--target ..]
 //   board.mjs evidence <issue> "<link or short text>" [--validation Simulador|iPhone|Dados reais]
 //   board.mjs show <issue>
 //   board.mjs list [--json]
@@ -79,7 +79,7 @@ function fieldUpdates(values) {
 function apply(b, i, updates) {
   const next = { ...i.values, ...updates };
   if (updates.Status) {
-    const err = transitionError(updates.Status, { labels: i.labels, validation: next['Validação'], evidence: next['Evidências'] });
+    const err = transitionError(updates.Status, { labels: i.labels, validation: next['Validação'], evidence: next['Evidências'], figma: next.Figma });
     if (err) throw new Error(`#${i.number}: ${err}`);
   }
   let itemId = i.itemId;
@@ -101,7 +101,7 @@ function apply(b, i, updates) {
 }
 
 const COMMON = { type: { type: 'string' }, area: { type: 'string' }, front: { type: 'string' }, priority: { type: 'string' },
-  release: { type: 'string' }, status: { type: 'string' }, validation: { type: 'string' }, deps: { type: 'string' },
+  release: { type: 'string' }, status: { type: 'string' }, validation: { type: 'string' }, figma: { type: 'string' }, product: { type: 'string' }, deps: { type: 'string' },
   evidence: { type: 'string' }, start: { type: 'string' }, target: { type: 'string' } };
 
 function setup(applyChanges) {
@@ -124,7 +124,14 @@ function setup(applyChanges) {
       if (aligned) continue;
       say(`alinhar as opções de ${name}: ${def.options.join(', ')}`);
       if (applyChanges) {
-        const opts = def.options.map((o) => `{name:${JSON.stringify(o)},color:GRAY,description:""}`).join(',');
+        // Pass every existing option's id (and keep its colour/description): without the id GitHub recreates the option and
+        // every item loses its value for this field (proved on a throwaway project, 2026-11-27).
+        const cur = graphql(`query($id:ID!){node(id:$id){... on ProjectV2SingleSelectField{options{id name color description}}}}`, { id: have.id }, cwd).node.options;
+        const byName = Object.fromEntries(cur.map((o) => [o.name, o]));
+        const color = (o) => byName[o]?.color ?? (def.colors?.[o] ?? 'GRAY');
+        const opts = def.options.map((o) => `{${byName[o] ? `id:${JSON.stringify(byName[o].id)},` : ''}name:${JSON.stringify(o)},color:${color(o)},description:${JSON.stringify(byName[o]?.description ?? def.descriptions?.[o] ?? '')}}`).join(',');
+        const dropped = cur.filter((o) => !def.options.includes(o.name)).map((o) => o.name);
+        if (dropped.length) throw new Error(`${name}: as opções ${dropped.join(', ')} existem no quadro e não na configuração; removê-las apagaria valores. Ajuste a configuração.`);
         graphql(`mutation{updateProjectV2Field(input:{fieldId:${JSON.stringify(have.id)},singleSelectOptions:[${opts}]}){projectV2Field{... on ProjectV2SingleSelectField{id}}}}`, {}, cwd);
       }
     } else if (!have) {
@@ -205,7 +212,7 @@ function main() {
     if (!n || !text) throw new Error('uso: board.mjs evidence <issue> "<link ou texto curto>" [--validation …]');
     const b = board();
     const i = issue(n, b);
-    gh(['issue', 'comment', String(i.number), '-R', cfg.repo, '--body', `**Evidência**${values.validation ? ` (${values.validation})` : ''}: ${text}`]);
+    gh(['issue', 'comment', String(i.number), '-R', cfg.repo, '--body', `<!-- repmile:agent -->\n**Evidência**${values.validation ? ` (${values.validation})` : ''}: ${text}`]);
     const joined = [i.values['Evidências'], text].filter(Boolean).join(' · ');
     const updates = { 'Evidências': joined.length > 1000 ? `${joined.slice(0, 960)} … (ver comentários da issue)` : joined };
     if (values.validation) { const e = validateValue('Validação', values.validation); if (e) throw new Error(e); updates['Validação'] = values.validation; }

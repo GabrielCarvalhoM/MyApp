@@ -12,14 +12,19 @@ test('the board fields are the founder’s list (plus Integrated and Validação
   assert.deepEqual(FIELDS.Prioridade.options, ['P0', 'P1', 'P2', 'P3']);
   assert.deepEqual(FIELDS.Frente.options, ['A', 'B', 'C', 'Design', 'Integration']);
   assert.deepEqual(FIELDS.Release.options, ['V1', 'V1.1', 'V2']);
-  assert.deepEqual(FIELDS.Status.options, ['Backlog', 'Ready', 'In Progress', 'Blocked', 'In Review', 'Ready to Integrate', 'Integrated', 'Verified']);
+  assert.deepEqual(FIELDS.Status.options, ['Backlog', 'Founder Decision', 'Ready', 'In Progress', 'Blocked', 'In Review', 'Ready to Integrate', 'Integrated', 'Verified']);
 });
 
 test('implemented ≠ validated: Verified needs a real validation and evidence', () => {
   assert.match(transitionError('Verified', { validation: 'Não validado', evidence: 'x' }), /Validação/);
   assert.match(transitionError('Verified', { validation: 'Simulador', evidence: ' ' }), /Evidências/);
   assert.equal(transitionError('Verified', { validation: 'iPhone', evidence: 'https://…/manifest.json' }), null);
-  assert.equal(transitionError('Integrated', {}), null);
+  assert.match(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'NOT_VERIFIED' }), /Figma = MATCH/);
+  assert.match(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'MISMATCH' }), /Figma = MATCH/);
+  assert.equal(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'MATCH' }), null);
+  assert.equal(transitionError('Verified', { validation: 'Simulador', evidence: 'x', figma: 'Não se aplica' }), null);
+  assert.match(transitionError('Integrated', {}), /Integrated exige Evidências/);
+  assert.equal(transitionError('Integrated', { evidence: 'PR #89 integrado; sim.sh 86/86' }), null);
 });
 
 test('new scope waits for the founder: only Backlog or Blocked', () => {
@@ -27,6 +32,8 @@ test('new scope waits for the founder: only Backlog or Blocked', () => {
   assert.match(transitionError('Ready', { labels }), /fundador/);
   assert.match(transitionError('In Progress', { labels }), /fundador/);
   assert.equal(transitionError('Blocked', { labels }), null);
+  assert.equal(transitionError('Founder Decision', { labels }), null);
+  assert.equal(labelsFor({ status: 'Founder Decision' }).includes('status:founder-decision'), true);
   assert.match(transitionError('Done', {}), /desconhecido/);
 });
 

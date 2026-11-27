@@ -22,6 +22,7 @@
 #   --session A|B|C|INT   DerivedData-<session> (default from the branch: C on claude/v1-ios-swiftui*, INT otherwise)
 #   --out <dir>           evidence directory (default ios/.build/sim-runs/<UTC timestamp>, gitignored)
 #   --label <text>        free label kept in the manifest (e.g. the screen or issue)
+#   --arg <value>         extra launch argument for the app, repeatable, recorded in the manifest (e.g. --arg -scenario --arg today)
 #
 # Exit: 0 ok · 1 build/launch/test failure · 2 usage or missing dependency · 3 WAITING_FOR_APP_SHELL
 set -uo pipefail
@@ -33,11 +34,13 @@ CMD="${1:-}"; [ -n "$CMD" ] && shift
 case "$CMD" in detect|doctor|build|run|test|all) ;; *) sed -n '2,26p' "$0" >&2; exit 2;; esac
 
 PROJECT="" SCHEME="" SIM_NAME="${SIM_DEVICE:-}" APPEARANCE=light LOCALE=pt_BR WAIT=8 SESSION="" OUT="" LABEL="" CONTENT_SIZE=""
+LAUNCH_ARGS=()
 while [ $# -gt 0 ]; do
   case "$1" in
     --project) PROJECT="$2"; shift 2;; --scheme) SCHEME="$2"; shift 2;; --sim) SIM_NAME="$2"; shift 2;;
     --appearance) APPEARANCE="$2"; shift 2;; --locale) LOCALE="$2"; shift 2;; --wait) WAIT="$2"; shift 2;;
     --session) SESSION="$2"; shift 2;; --out) OUT="$2"; shift 2;; --label) LABEL="$2"; shift 2;; --content-size) CONTENT_SIZE="$2"; shift 2;;
+    --arg) [ $# -ge 2 ] || die "--arg needs a value" 2; LAUNCH_ARGS+=("$2"); shift 2;;
     *) die "unknown option $1" 2;;
   esac
 done
@@ -104,13 +107,13 @@ write_manifest() {
   [ -n "${UDID:-}" ] && xcrun simctl status_bar "$UDID" clear >/dev/null 2>&1
   M_CMD="$CMD" M_RESULT="$RESULT" M_LABEL="$LABEL" M_BRANCH="$(git rev-parse --abbrev-ref HEAD)" M_COMMIT="$(git rev-parse HEAD)" \
   M_DIRTY="$(git status --porcelain | wc -l | tr -d ' ')" M_PROJECT="$PROJECT" M_SCHEME="$SCHEME" M_SIM="$SIM_PICKED" M_RT="$RUNTIME" \
-  M_UDID="$UDID" M_XCODE="$XCODE" M_APP="$APPEARANCE" M_LOCALE="$LOCALE" M_BUNDLE="$BUNDLE_ID" M_OUT="$OUT" M_TESTS="$TEST_SUMMARY" M_SIZE="$CONTENT_SIZE" \
+  M_UDID="$UDID" M_XCODE="$XCODE" M_APP="$APPEARANCE" M_LOCALE="$LOCALE" M_BUNDLE="$BUNDLE_ID" M_OUT="$OUT" M_TESTS="$TEST_SUMMARY" M_SIZE="$CONTENT_SIZE" M_ARGS="$(printf '%s\n' "${LAUNCH_ARGS[@]+"${LAUNCH_ARGS[@]}"}")" \
   node -e '
     const e=process.env, fs=require("fs"), crypto=require("crypto");
     const sha=(f)=>crypto.createHash("sha256").update(fs.readFileSync(e.M_OUT+"/"+f)).digest("hex");
     const m={target:"simulator",command:e.M_CMD,result:e.M_RESULT,label:e.M_LABEL||null,generatedAt:new Date().toISOString(),
       git:{branch:e.M_BRANCH,commit:e.M_COMMIT,uncommittedFiles:Number(e.M_DIRTY)},project:e.M_PROJECT,scheme:e.M_SCHEME,
-      simulator:{name:e.M_SIM,runtime:e.M_RT,udid:e.M_UDID},xcode:e.M_XCODE,appearance:e.M_APP,locale:e.M_LOCALE,contentSize:e.M_SIZE||"default",
+      simulator:{name:e.M_SIM,runtime:e.M_RT,udid:e.M_UDID},xcode:e.M_XCODE,appearance:e.M_APP,locale:e.M_LOCALE,contentSize:e.M_SIZE||"default",launchArgs:(e.M_ARGS||"").split("\n").filter(Boolean),
       bundleId:e.M_BUNDLE||null,artifacts:fs.readdirSync(e.M_OUT).filter(f=>f!=="manifest.json").sort(),
       screenshots:Object.fromEntries(fs.readdirSync(e.M_OUT).filter(f=>f.endsWith(".png")).map(f=>[f,sha(f)])),
       tests:e.M_TESTS?JSON.parse(e.M_TESTS):null};
@@ -159,7 +162,7 @@ run_app() {
     let j={};try{j=JSON.parse(require("fs").readFileSync(0,"utf8"))}catch{}
     console.log(Object.entries(j).filter(([k,v])=>v.ApplicationType==="User"&&k!==process.argv[1]).map(([k])=>k).join("\n"))' "$BUNDLE_ID")"
   while IFS= read -r other; do [ -n "$other" ] && xcrun simctl terminate "$UDID" "$other" >/dev/null 2>&1; done <<<"$others"
-  if ! xcrun simctl launch "$UDID" "$BUNDLE_ID" -AppleLanguages "($lang)" -AppleLocale "$LOCALE" >"$OUT/launch.txt" 2>&1; then
+  if ! xcrun simctl launch "$UDID" "$BUNDLE_ID" -AppleLanguages "($lang)" -AppleLocale "$LOCALE" ${LAUNCH_ARGS[@]+"${LAUNCH_ARGS[@]}"} >"$OUT/launch.txt" 2>&1; then
     kill "$logpid" 2>/dev/null; cat "$OUT/launch.txt" >&2; RESULT=launch_failed; exit 1
   fi
   sleep "$WAIT"
