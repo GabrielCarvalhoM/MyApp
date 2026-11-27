@@ -2,7 +2,7 @@
 # RepMile CoachingHost (front A): the production bundle and its proofs, from the repository root. Adapted from the HR5R native build
 # (audits/v1-hr5-runna-parity-2026-11-25/native/build.sh): here the linker copy (build/link.mjs) writes only into this package, so no redirect
 # preload is needed. Steps: link the facade entry (50 modules, 18 assets, export gate), check the manifest against
-# REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 (build/check-manifest.mjs), pin the bundle sha into Swift (BundlePin.swift: verified at boot),
+# the amendment in force, REPMILE-COACHINGCORE-V1-CCP79-AMENDMENT-3 (build/check-manifest.mjs), pin the bundle sha into Swift (BundlePin.swift: verified at boot),
 # check the equivalence fixtures are the HR5R copies byte for byte, and reproduce the shared fixtures through the facade (facade-calls.json).
 # Deterministic: `build.sh --twice` fails if a second run changes anything tracked.
 set -eu

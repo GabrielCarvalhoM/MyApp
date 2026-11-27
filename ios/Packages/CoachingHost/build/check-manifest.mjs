@@ -1,6 +1,6 @@
 // RepMile CoachingHost: acceptance rule 1 of the production bundle (SWIFTUI_BACKEND_HANDOFF §2, A handoff §4 item 1 and §7 test 1).
 // The bundle's build manifest must list exactly: every CoachingCore module the HR5R validated bundle (d087ad51, AMENDMENT-2) links, each at the
-// sha256 REPMILE-COACHINGCORE-V1-FIVE-ZONE-AMENDMENT-2 binds; the shared app-projections.mjs at the bytes of the shared contract; and this
+// sha256 the amendment in force binds (REPMILE-COACHINGCORE-V1-CCP79-AMENDMENT-3 since CCP-79, #79; the module set is unchanged); the shared app-projections.mjs at the bytes of the shared contract; and this
 // package's own facade files. Every asset at the sha256 the amendment binds. The export gate must report 0 mismatches. Anything else fails.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +9,7 @@ import {fileURLToPath} from 'node:url';
 const HERE=path.dirname(fileURLToPath(import.meta.url)),ROOT=path.resolve(HERE,'..'),REPO=path.resolve(ROOT,'..','..','..');
 const read=f=>fs.readFileSync(path.join(REPO,f));
 const sha=b=>createHash('sha256').update(b).digest('hex');
-const am=JSON.parse(read('CoachingCore/v1/HR5_RUNNA_AMENDMENT_V1.json'));
+const am=JSON.parse(read('CoachingCore/v1/CCP79_SAFETY_AMENDMENT_V1.json'));
 const built=JSON.parse(fs.readFileSync(path.join(ROOT,'Sources/CoachingHost/Resources/build-manifest.json'),'utf8'));
 const assets=JSON.parse(fs.readFileSync(path.join(ROOT,'Sources/CoachingHost/Resources/assets-manifest.json'),'utf8'));
 const hr5r=JSON.parse(read('audits/v1-hr5-runna-parity-2026-11-25/native/ios/Sources/P0Host/Resources/build-manifest.json'));

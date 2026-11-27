@@ -203,9 +203,10 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
  const factsDigest=o=>hmac(`${INTEGRATION_SCHEMA}|facts|`+(canonical({sessionId:o.sessionId??null,observedAt:o.observedAt??null,occurrenceDate:o.occurrenceDate??null,actual:o.actual,response:o.response??null})??'null'));
  /**
   * Admission of a request's reports against the record: authorship, correction chains, duplicates and the per-session/day bounds.
-  * Returns {observations, metas, duplicates} or a refusal. `doc` is the verified custody document, `origins` the sealed origins map.
+  * Returns {observations, metas, duplicates} or a refusal. `doc` is the verified custody document, `origins` the sealed origins map,
+  * `screen` the eligibility screen of the athlete's own request (CCP-79).
   */
- function admit(channel,list,doc,origins){
+ function admit(channel,list,doc,origins,screen=null){
   const tz=doc.program.timezoneOffsetMinutes??0,sessions=new Map(doc.program.weeks.flatMap(w=>w.sessions).map(s=>[s.id,s]));
   const all={...origins},succ=new Map(),out=[],metas=[],duplicates=[],of=[];
   for(const [id,m] of Object.entries(all))if(m.of)succ.set(m.of,id);
@@ -245,7 +246,7 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
     if((m.s??null)!==(o.sessionId??null))return {refusal:{code:'CORRECTION_SESSION_MISMATCH',index:i,field:'sessionId'}};
     if(channel===CHANNELS.DEVICE&&m.act!==o.activityId)return {refusal:{code:'CORRECTION_ACTIVITY_MISMATCH',index:i,field:'activityId'}};
     // SEC-INT-07: past the limit only a correction that states a safety signal is admitted, at most safetyExcess more.
-    {const depth=depthOf(correctionOf)+1;if(depth>LIMITS.correctionsPerReport&&!(statesSafetySignal(o)&&depth<=MAX_CHAIN))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};}
+    {const depth=depthOf(correctionOf)+1;if(depth>LIMITS.correctionsPerReport&&!(statesSafetySignal(o,screen)&&depth<=MAX_CHAIN))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};}
    }else{
     if(channel===CHANNELS.ATHLETE&&o.sessionId!==undefined){const mine=Object.entries(all).find(([,m])=>m.ch==='A'&&m.s===o.sessionId);
      if(mine){const head=headOf(mine[0]);
@@ -256,7 +257,7 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
     const day=dayOf(o),ch=channel===CHANNELS.ATHLETE?'A':'D';
     // SEC-INT-07: past the limit only a report that states a safety signal is admitted, at most safetyExcess more.
     {const n=day?Object.values(all).filter(m=>m.ch===ch&&!m.of&&m.day===day).length:0;
-     if(day&&n>=LIMITS.reportsPerDayPerChannel&&!(statesSafetySignal(o)&&n<LIMITS.reportsPerDayPerChannel+LIMITS.safetyExcess))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};}
+     if(day&&n>=LIMITS.reportsPerDayPerChannel&&!(statesSafetySignal(o,screen)&&n<LIMITS.reportsPerDayPerChannel+LIMITS.safetyExcess))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};}
    }
    const built=build(channel,o,{at:op.at,correctionOf});
    const voice=checkReportVoice(channel,built);if(!voice.ok)return {refusal:{code:voice.code,index:i,fields:voice.errors}};
@@ -287,7 +288,8 @@ export function createIntegration({store,key,clock=()=>Date.now(),anchor=null,en
    const at=Date.parse(seen.at),kept=list.map((x,i)=>[x,i]).filter(([,i])=>!seen.dup.includes(i));
    a={observations:kept.map(([x],k)=>build(channel,x,{at,correctionOf:seen.of[k]})),metas:[],duplicates:seen.dup};
   }else{
-   a=admit(channel,list,o.doc,op.loaded?.origins??{});
+   // CCP-79 (#79 item 4): the athlete's own screen in this request is read with each report against the limits (statesSafetySignal).
+   a=admit(channel,list,o.doc,op.loaded?.origins??{},channel===CHANNELS.ATHLETE?rv.eligibility??null:null);
    if(a.refusal){const {code,...rest}=a.refusal;return {...fail(code,'A report of this request is not admitted; nothing was recorded',rest),safetyFields:safetyFieldsOf(rv)};}
    // Only duplicates and nothing else said (no screen, no report of how the athlete feels): nothing to decide, nothing written.
    // (A screen equal to the one on record says nothing new either.)

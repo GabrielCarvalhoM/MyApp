@@ -1,0 +1,16 @@
+# npm test (scripts/suite-active.mjs) on the CCP-79 tree with the #124 matrix test (REPMILE-COACHINGCORE-V1-CCP79-AMENDMENT-3 runtime), node v24.19.0, full clone.
+
+ACTIVE SUITE: 1963 active tests, 1963 pass, 0 fail. HISTORICAL (test/HISTORICAL_TESTS.json): 53/53 fail on this tree at their declared assertion; each is verified green at its own commit by `npm run test:historical` (not run here). node reported 2024 entries, 8 of them files without tests (helpers).
+exit 0
+# CCP-79 tests (v1ccp79-safety-routes, v1ccp79-i124-matrix):
+✔ #124 matrix: 84 cells, 4 flows x 3 screenings x 7 signs (0.346791ms)
+✔ #124 / CCP-79 item 2: screening Yes (one or several) with an urgent sign (W2-W5, X1) advises urgent care and names the sign, in every flow (40 cells) (0.5375ms)
+✔ #124: screening Yes with a non-urgent sign (W7 swelling) keeps the professional assessment, with the sign named and its own reason (8 cells) (0.162834ms)
+✔ #124: with no sign, or with screening all No, every answer is byte-identical to the frozen base (36 cells) (0.816542ms)
+✔ CCP-79 item 1: a warning sign answered yes without a current screen takes its clinical route at the level of the signs, never the ASK for the screen (3351.493708ms)
+✔ CCP-79 item 1 during a hold: an urgent sign without a screen, in a report of how the athlete feels or a readiness declaration, raises the hold to urgent care (2721.670708ms)
+✔ CCP-79 item 2: an urgent sign with any screen flag answered yes keeps URGENT_CARE_ADVISED; a flag alone keeps the professional assessment (2481.197292ms)
+✔ CCP-79 item 3: a later decision never lowers a standing hold's guidance level; a readiness declaration that releases the hold ends it (1934.113666ms)
+✔ CCP-79 item 4: past the correction limit a screen flag answered yes is a safety signal, admitted at most safetyExcess beyond the limit and routed (7490.499125ms)
+✔ CCP-79 item 4: statesSafetySignal reads the request's screen exactly as the engine's gate reads a clinical flag (0.753917ms)
+✔ CCP-79 item 5: a clinical route keeps the facts of the session reports sent with it (run, strength, a correction, a sign without a screen) (2482.080125ms)

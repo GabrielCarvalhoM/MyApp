@@ -1,0 +1,30 @@
+# CoachingHost swift test on macOS (4dc3dd93), test file keychain storage (TestEnv.keychainDirectory), CH_REAL_KEYCHAIN unset: the login keychain is never touched. The 1 skipped test is the opt-in real-Keychain test (KEYCHAIN_TESTING.md).
+Test Suite 'AnchorTests' passed at 2026-11-27 17:54:18.389.
+Test Suite 'CrossProcessTests' passed at 2026-11-27 17:55:53.594.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 95.204 (95.205) seconds
+Test Suite 'EquivalenceTests' passed at 2026-11-27 17:58:52.525.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 178.915 (178.930) seconds
+Test Suite 'ErasureTests' passed at 2026-11-27 17:58:59.238.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 6.710 (6.713) seconds
+Test Suite 'FacadeReplayTests' passed at 2026-11-27 17:59:17.554.
+Test Suite 'IntegrationConditionsTests' passed at 2026-11-27 17:59:19.725.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 2.169 (2.170) seconds
+Test Suite 'IntegrationFollowUpTests' passed at 2026-11-27 17:59:21.800.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 2.075 (2.075) seconds
+Test Suite 'MacKeychainIntegrationTests' passed at 2026-11-27 17:59:21.810.
+	 Executed 2 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.010 (0.010) seconds
+Test Suite 'PlatformTests' passed at 2026-11-27 17:59:26.593.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 4.782 (4.784) seconds
+Test Suite 'PortTests' passed at 2026-11-27 17:59:34.469.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 7.875 (7.875) seconds
+Test Suite 'ReviewFixTests' passed at 2026-11-27 17:59:36.662.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.192 (2.193) seconds
+Test Suite 'SmokeTests' passed at 2026-11-27 17:59:36.918.
+Test Suite 'CoachingHostTests.xctest' passed at 2026-11-27 17:59:36.918.
+	 Executed 69 tests, with 1 test skipped and 0 failures (0 unexpected) in 319.448 (319.473) seconds
+Test Suite 'All tests' passed at 2026-11-27 17:59:36.918.
+	 Executed 69 tests, with 1 test skipped and 0 failures (0 unexpected) in 319.448 (319.476) seconds
+exit 0
+# Before ae96e84 (check-manifest still reading amendment-2), only PlatformTests.testManifestIsTheAmendment failed (2 assertions), by design:
+/Users/gabrieldecarvalhomaciel/.codex/worktrees/myapp-v1-int-i79/MyApp/ios/Packages/CoachingHost/Tests/CoachingHostTests/PlatformTests.swift:52: error: -[CoachingHostTests.PlatformTests testManifestIsTheAmendment] : XCTAssertEqual failed: ("1") is not equal to ("0")
+	 Executed 69 tests, with 1 test skipped and 2 failures (0 unexpected) in 168.343 (168.350) seconds

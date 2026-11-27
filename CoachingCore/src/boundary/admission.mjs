@@ -4,6 +4,7 @@
 // response, a correction's target) can be silently lost here: a refused request records nothing and is answered with what to fix.
 // The limits are multiples of measured legitimate shapes (scratch measure on 2026-11-23, three synthetic plans, 112 run and 54 strength
 // reports: a run report 300 B, depth 2; a strength report 1,434 B, depth 7, arrays of 5, 6 keys per object; at most 6 sessions a week).
+import {isYes} from '../r6-clinical.mjs';
 export const ADMISSION_VERSION='V1INT-ADMISSION-1';
 export const LIMITS=Object.freeze({
  /** One observation as JSON text: ~11x the largest strength report measured; room for ~150 laps of a run. */
@@ -88,7 +89,13 @@ export function safetyFieldsOf(x){
 };
 /** The review kinds that are themselves safety content (F08 and a declared break). */
 /** V1 blocker closure (SEC-INT-07): whether an observation states a safety signal (what `safetyFieldsOf` names of an observation). */
-export const statesSafetySignal=o=>{if(!isObj(o))return false;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};return present(a.stop)&&a.stop!==null&&a.stop!==false||r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED';};
+/** CCP-79 (#79 item 4; Founder decision on #79, 2026-11-27): the eligibility screen the athlete sends with the request states a clinical flag (any flag
+ * that means yes in any form, or a clinical status), read exactly as the engine's eligibility gate reads it (r6-adaptation, CLINICAL_KEYS and isYes). */
+const SCREEN_FLAGS=Object.freeze(['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern']);
+export const screenStatesFlag=el=>isObj(el)&&(SCREEN_FLAGS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status));
+/** `screen`: the eligibility screen of the athlete's own request (CCP-79 item 4: a flag answered yes there is a safety signal too, so an honest "yes"
+ * past a limit still reaches the clinical route, at most safetyExcess beyond it). */
+export const statesSafetySignal=(o,screen=null)=>{if(screenStatesFlag(screen))return true;if(!isObj(o))return false;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};return present(a.stop)&&a.stop!==null&&a.stop!==false||r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED';};
 export const SAFETY_KINDS=Object.freeze(['NOT_FEELING_100','WELLBEING_CHECK','READINESS_DECLARATION','RETURN_AFTER_PAUSE']);
 /** The intake of a first plan or a restart: its size and structure (cycle 1, SEC-INT-05). Returns null or a refusal. */
 export function intakeError(intake){

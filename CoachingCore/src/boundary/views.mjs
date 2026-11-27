@@ -32,6 +32,17 @@ function sportState(program,w,day,sport){
  const state=marks.some(a=>a.phase==='WINDOW'||a.phase==='WAIT')?'REDUCED':returning?'RETURNING':'ACTIVE';
  return {programmed:true,state,...(restricted.length?{restricted}:{})};
 }
+/** CCP-79 (#79 item 3; Founder decision on #79, 2026-11-27; SSCTR interim rule until a human clinician decides persistence or decay of an urgent level,
+ * CLINICAL_HUMAN_REQUIRED): the guidance level of a standing hold is the highest level of the decisions made since the hold began (`since`, its oldest
+ * standing row), and never lower than the level of the latest decision that has one (what the frozen view read). A later decision, whether or not it
+ * asked the warning signs again, never lowers it; only a readiness declaration that releases the hold ends it (the hold is then no longer standing). */
+const LEVEL_RANK=Object.freeze({PROFESSIONAL_ASSESSMENT:1,URGENT_CARE_ADVISED:2});
+function holdGuidance(decisions,since){
+ const latest=[...decisions].reverse().find(d=>d.guidance),from=typeof since==='string'?Date.parse(since):NaN;
+ const inHold=Number.isFinite(from)?decisions.filter(d=>d.guidance&&Number.isFinite(Date.parse(d.at))&&Date.parse(d.at)>=from):[];
+ let best=latest??null;for(const d of inHold)if((LEVEL_RANK[d.guidance.level]??0)>(LEVEL_RANK[best?.guidance?.level]??0))best=d;
+ return best?.guidance??{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'};
+}
 /**
  * The plan view: the top-level state, the per-sport states, the hold (from the record, the source of truth), a change waiting for confirmation, an
  * open question, and the sessions of a week with `executable` (the app may start them) and `projected` (shown for context only). While a hold stands
@@ -55,7 +66,7 @@ export function planView(doc,{nowMs,week=null}={}){
   return {id:s.id,date:s.date,sport:s.sport,role:s.role,turn:s.turn??null,optional:!!s.optional,status:s.status??(live(s)?'PLANNED':'REST'),executable:canRun,projected:!!pendingQuestion&&ahead,
    prescription:blocked?null:s.prescription??null,explanation:blocked?null:s.explanation??null,...(s.ownEvent?{ownEvent:true,coachRecommendation:s.coachRecommendation??null}:{})};
  });
- const guidance=blocked?([...doc.decisions].reverse().find(d=>d.guidance)?.guidance??{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}):null;
+ const guidance=blocked?holdGuidance(doc.decisions,holds[0]?.declaredAt??null):null;
  return {state,version:doc.version,programHash:p.hash,today,weekIndex:w,weeks:p.weeks.length,sports,
   hold:blocked?{clinical:true,since:holds[0]?.declaredAt??null,guidance,exit:'READINESS_DECLARATION'}:null,
   pending:doc.pending?{decisionId:doc.pending.decisionId,kind:'CHANGE_WAITING_CONFIRMATION',change:doc.pending.kind??'REQUESTED_CHANGE'}:null,

@@ -5575,30 +5575,41 @@ function evaluateProgram(program,input,options={}){
  if(week&&asOfLocal&&(asOfLocal<week.startDate||asOfLocal>onDate(week.startDate,6)))errors.push('weekIndex/asOf chronology');
  if(errors.length)return finish('HOLD','HOLD','Review contract or chronology failed validation',{errors});
  const el=review.eligibility&&typeof review.eligibility==='object'?review.eligibility:null;
+ // CCP-79 (#79 items 1, 2 and 5; Founder decision on #79, 2026-11-27): the warning signs and exercise-response items this review answers yes are read
+ // before the eligibility screen. A sign answered yes takes its clinical route (signRoute: the higher guidance level of the items answered yes) when
+ // the screen is missing, out of date or not after race day, instead of the ASK for the screen (item 1), and when the screen states a clinical flag,
+ // instead of the flag's default professional assessment (item 2). Either clinical route records the session reports this review carries, as a
+ // standing hold does (CF-OBS-1, recordedFacts): a safety alert never discards the facts of a session (item 5). Without a sign answered yes, every
+ // answer below is the frozen one.
+ const signsYes=[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))],signed=signsYes.length?signRoute(signsYes):null;
+ // V1CIB CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q3: facts are still recorded): on a clinical route, the session reports this review carries are recorded as on
+ // any review (normalized and bound), with the break it declares; nothing is planned. A malformed report keeps the record unchanged (null).
+ const recordedFacts=()=>{
+  if(!(Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))))return null;
+  try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
+   const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
+   const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
+   return [...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{return null;}
+ };
+ const clinicalGate=reason=>{const recorded=recordedFacts(),extra=signed?{guidance:signed.guidance,warningSigns:signed.warningSigns}:{};
+  return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED',signed?signed.reason:reason,recorded?{...extra,actualLedger:recorded}:keep(extra));};
  // A clinical flag that means yes in any form routes to a human; any other non-boolean flag is asked below (SSCTR R6).
- if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return finish('CLINICAL_HUMAN_REQUIRED','CLINICAL_HUMAN_REQUIRED','A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe',keep({}));
+ if(el&&(CLINICAL_KEYS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status)))return clinicalGate('A current clinical flag routes to qualified human assessment; no dependent prescription or return recipe');
  // An assessment date that is not a date is no assessment at all (QRE-R6-05).
  const assessedDay=dayOf(el?.assessedAt);
  if(!el||el.status!=='NONCLINICAL_CONFIRMED'||!assessedDay||dayGap(assessedDay,asOfLocal)<0||dayGap(assessedDay,asOfLocal)>14||CLINICAL_KEYS.some(k=>typeof el[k]!=='boolean'))missing.push('eligibility.currentAssessment');
- if(missing.length)return finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',keep({missingInputs:missing}));
+ if(missing.length)return signed?clinicalGate(null):finish('ASK','ASK','Current eligibility must be assessed; unknown is neither clearance nor illness',keep({missingInputs:missing}));
  // After the race, redevelopment needs an eligibility and function check dated on or after race day (SSCTR D04).
  const ph=program.phases,raceDate=Number.isInteger(ph?.raceWeek)?onDate(program.startDate,ph.raceWeek*7+ph.raceDay):null;
- if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
+ if(raceDate&&asOfLocal>=raceDate&&(['RACE_WEEK','POST_EVENT'].includes(ph.phases[w])||ph.phases[w+1]==='NEXT_BLOCK')&&dayGap(raceDate,assessedDay)<0)return signed?clinicalGate(null):finish('ASK','ASK','After the race, an eligibility and function check dated on or after race day is needed before the next steps',keep({missingInputs:['eligibility.assessedOnOrAfterRace']}));
  // V1CIB CF-OBS-1: the reference state's own clinical continuation, else the hold the record holds (the source of truth).
  const guard=previousValidity(program,review,{readiness:readinessOk})??recordHoldGuard(program,review,{readiness:readinessOk});
  // An integrity refusal reads nothing of the review; a standing clinical route or a question still keeps the break it declares.
  // V1CP Fix-Forward cycle (SEC-FFR-02; D5, SSCTR-FF-Q9): while a clinical dependency stands, the items this review answers yes still set the guidance
  // level and the wording (a chest pain reported during a hold advises urgent care), as they do outside a hold.
  if(guard){const yes=guard.status==='CLINICAL_HUMAN_REQUIRED'?[...new Set([review.wellbeing,review.wellbeingCheck,review.readiness].flatMap(signsYesIn))]:[],sign=yes.length?signRoute(yes):null;
-  // V1CIB CF-OBS-1 (PCG-V1CPFF-CFOBS1-r1 Q3: facts are still recorded): while a clinical dependency stands, the session reports this review carries are
-  // recorded as on any review (normalized and bound), with the break it declares; nothing is planned. A malformed report keeps the record unchanged.
-  let recorded=null;
-  if(guard.status==='CLINICAL_HUMAN_REQUIRED'&&Array.isArray(review.observations)&&review.observations.length&&(review.actualLedger==null||Array.isArray(review.actualLedger))){
-   try{const prior=Array.isArray(review.actualLedger)?clone(review.actualLedger.filter(o=>!isDeclaration(o)&&!isF08Fact(o))):[];
-    const n=normalizeObservations(review.observations,{incoming:true,athleteId:program.athleteId,asOf,prior,maximumAgeDays:36500,futureSkewSeconds:authority.policy.operational.learning.futureClockSkewSeconds,timezoneOffsetMinutes:tz,loadIncrements:{...authority.policy.operational.strength.smallestIncrement,SINGLE_IMPLEMENT:incrementFor(authority.policy.operational.strength,'SINGLE_IMPLEMENT'),MACHINE_STACK:incrementFor(authority.policy.operational.strength,'MACHINE_STACK')},recordArrival:true});
-    const {bound,unbound}=bindObservations(program,n.accepted,authority.policy.operational.hybrid,authority.policy,options[READS_COMPLETION]);
-    recorded=[...bound,...unbound,...n.supersededRows,...clone(carriedAll),...clone(f08Carried),...(declared?[declared]:[])];}catch{recorded=null;}
-  }
+  // V1CIB CF-OBS-1: while a clinical dependency stands, the session reports this review carries are recorded (recordedFacts, above); nothing is planned.
+  const recorded=guard.status==='CLINICAL_HUMAN_REQUIRED'?recordedFacts():null;
   return finish(guard.status,guard.status,sign?sign.reason:guard.reason,(guard.status==='HOLD'?x=>x:recorded?x=>({...x,actualLedger:recorded}):keep)({missingInputs:guard.missingInputs??[],...(sign?{guidance:sign.guidance,warningSigns:sign.warningSigns}:{})}));}
  if(review.observations!==undefined&&review.observations!==null&&!Array.isArray(review.observations))return finish('HOLD','HOLD','Observations must be a list of execution reports',{errors:['observations.array']});
  if(review.actualLedger!==undefined&&review.actualLedger!==null&&!Array.isArray(review.actualLedger))return finish('HOLD','HOLD','The completed-work ledger must be a list',{errors:['actualLedger.array']});
@@ -13922,7 +13933,7 @@ const READINGS=['runSessions','runFormat','runCalibration','runForecast','paceIn
 // CoachingCore/src/boundary/admission.mjs
 __def(43, function (__exports) {
 'use strict';
-
+const {isYes} = __req(11);
 Object.defineProperties(__exports, {
   "ADMISSION_VERSION": { enumerable: true, get: () => ADMISSION_VERSION },
   "BOUNDARY_OWNED": { enumerable: true, get: () => BOUNDARY_OWNED },
@@ -13936,6 +13947,7 @@ Object.defineProperties(__exports, {
   "refuse": { enumerable: true, get: () => refuse },
   "requestError": { enumerable: true, get: () => requestError },
   "safetyFieldsOf": { enumerable: true, get: () => safetyFieldsOf },
+  "screenStatesFlag": { enumerable: true, get: () => screenStatesFlag },
   "statesSafetySignal": { enumerable: true, get: () => statesSafetySignal },
   "structureError": { enumerable: true, get: () => structureError },
   "utf8Length": { enumerable: true, get: () => utf8Length }
@@ -13946,6 +13958,7 @@ Object.defineProperties(__exports, {
 // response, a correction's target) can be silently lost here: a refused request records nothing and is answered with what to fix.
 // The limits are multiples of measured legitimate shapes (scratch measure on 2026-11-23, three synthetic plans, 112 run and 54 strength
 // reports: a run report 300 B, depth 2; a strength report 1,434 B, depth 7, arrays of 5, 6 keys per object; at most 6 sessions a week).
+
 const ADMISSION_VERSION='V1INT-ADMISSION-1';
 const LIMITS=Object.freeze({
  /** One observation as JSON text: ~11x the largest strength report measured; room for ~150 laps of a run. */
@@ -14030,7 +14043,13 @@ function safetyFieldsOf(x){
 };
 /** The review kinds that are themselves safety content (F08 and a declared break). */
 /** V1 blocker closure (SEC-INT-07): whether an observation states a safety signal (what `safetyFieldsOf` names of an observation). */
-const statesSafetySignal=o=>{if(!isObj(o))return false;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};return present(a.stop)&&a.stop!==null&&a.stop!==false||r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED';};
+/** CCP-79 (#79 item 4; Founder decision on #79, 2026-11-27): the eligibility screen the athlete sends with the request states a clinical flag (any flag
+ * that means yes in any form, or a clinical status), read exactly as the engine's eligibility gate reads it (r6-adaptation, CLINICAL_KEYS and isYes). */
+const SCREEN_FLAGS=Object.freeze(['pain','persistentPain','injury','illness','functionalLimitation','clinicalConcern']);
+const screenStatesFlag=el=>isObj(el)&&(SCREEN_FLAGS.some(k=>isYes(el[k]))||['CLINICAL','PAIN_OR_INJURY'].includes(typeof el.status==='string'?el.status.trim().toUpperCase():el.status));
+/** `screen`: the eligibility screen of the athlete's own request (CCP-79 item 4: a flag answered yes there is a safety signal too, so an honest "yes"
+ * past a limit still reaches the clinical route, at most safetyExcess beyond it). */
+const statesSafetySignal=(o,screen=null)=>{if(screenStatesFlag(screen))return true;if(!isObj(o))return false;const a=isObj(o.actual)?o.actual:{},r=isObj(o.response)?o.response:{};return present(a.stop)&&a.stop!==null&&a.stop!==false||r.recovery==='ADVERSE'||r.nextDayFunction==='IMPAIRED';};
 const SAFETY_KINDS=Object.freeze(['NOT_FEELING_100','WELLBEING_CHECK','READINESS_DECLARATION','RETURN_AFTER_PAUSE']);
 /** The intake of a first plan or a restart: its size and structure (cycle 1, SEC-INT-05). Returns null or a refusal. */
 function intakeError(intake){
@@ -14301,9 +14320,10 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
  const factsDigest=o=>hmac(`${INTEGRATION_SCHEMA}|facts|`+(canonical({sessionId:o.sessionId??null,observedAt:o.observedAt??null,occurrenceDate:o.occurrenceDate??null,actual:o.actual,response:o.response??null})??'null'));
  /**
   * Admission of a request's reports against the record: authorship, correction chains, duplicates and the per-session/day bounds.
-  * Returns {observations, metas, duplicates} or a refusal. `doc` is the verified custody document, `origins` the sealed origins map.
+  * Returns {observations, metas, duplicates} or a refusal. `doc` is the verified custody document, `origins` the sealed origins map,
+  * `screen` the eligibility screen of the athlete's own request (CCP-79).
   */
- function admit(channel,list,doc,origins){
+ function admit(channel,list,doc,origins,screen=null){
   const tz=doc.program.timezoneOffsetMinutes??0,sessions=new Map(doc.program.weeks.flatMap(w=>w.sessions).map(s=>[s.id,s]));
   const all={...origins},succ=new Map(),out=[],metas=[],duplicates=[],of=[];
   for(const [id,m] of Object.entries(all))if(m.of)succ.set(m.of,id);
@@ -14343,7 +14363,7 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
     if((m.s??null)!==(o.sessionId??null))return {refusal:{code:'CORRECTION_SESSION_MISMATCH',index:i,field:'sessionId'}};
     if(channel===CHANNELS.DEVICE&&m.act!==o.activityId)return {refusal:{code:'CORRECTION_ACTIVITY_MISMATCH',index:i,field:'activityId'}};
     // SEC-INT-07: past the limit only a correction that states a safety signal is admitted, at most safetyExcess more.
-    {const depth=depthOf(correctionOf)+1;if(depth>LIMITS.correctionsPerReport&&!(statesSafetySignal(o)&&depth<=MAX_CHAIN))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};}
+    {const depth=depthOf(correctionOf)+1;if(depth>LIMITS.correctionsPerReport&&!(statesSafetySignal(o,screen)&&depth<=MAX_CHAIN))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'correctionsPerReport'}};}
    }else{
     if(channel===CHANNELS.ATHLETE&&o.sessionId!==undefined){const mine=Object.entries(all).find(([,m])=>m.ch==='A'&&m.s===o.sessionId);
      if(mine){const head=headOf(mine[0]);
@@ -14354,7 +14374,7 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
     const day=dayOf(o),ch=channel===CHANNELS.ATHLETE?'A':'D';
     // SEC-INT-07: past the limit only a report that states a safety signal is admitted, at most safetyExcess more.
     {const n=day?Object.values(all).filter(m=>m.ch===ch&&!m.of&&m.day===day).length:0;
-     if(day&&n>=LIMITS.reportsPerDayPerChannel&&!(statesSafetySignal(o)&&n<LIMITS.reportsPerDayPerChannel+LIMITS.safetyExcess))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};}
+     if(day&&n>=LIMITS.reportsPerDayPerChannel&&!(statesSafetySignal(o,screen)&&n<LIMITS.reportsPerDayPerChannel+LIMITS.safetyExcess))return {refusal:{code:'LIMIT_EXCEEDED',index:i,limit:'reportsPerDayPerChannel'}};}
    }
    const built=build(channel,o,{at:op.at,correctionOf});
    const voice=checkReportVoice(channel,built);if(!voice.ok)return {refusal:{code:voice.code,index:i,fields:voice.errors}};
@@ -14385,7 +14405,8 @@ function createIntegration({store,key,clock=()=>Date.now(),anchor=null,engine=CO
    const at=Date.parse(seen.at),kept=list.map((x,i)=>[x,i]).filter(([,i])=>!seen.dup.includes(i));
    a={observations:kept.map(([x],k)=>build(channel,x,{at,correctionOf:seen.of[k]})),metas:[],duplicates:seen.dup};
   }else{
-   a=admit(channel,list,o.doc,op.loaded?.origins??{});
+   // CCP-79 (#79 item 4): the athlete's own screen in this request is read with each report against the limits (statesSafetySignal).
+   a=admit(channel,list,o.doc,op.loaded?.origins??{},channel===CHANNELS.ATHLETE?rv.eligibility??null:null);
    if(a.refusal){const {code,...rest}=a.refusal;return {...fail(code,'A report of this request is not admitted; nothing was recorded',rest),safetyFields:safetyFieldsOf(rv)};}
    // Only duplicates and nothing else said (no screen, no report of how the athlete feels): nothing to decide, nothing written.
    // (A screen equal to the one on record says nothing new either.)
@@ -14560,6 +14581,17 @@ function sportState(program,w,day,sport){
  const state=marks.some(a=>a.phase==='WINDOW'||a.phase==='WAIT')?'REDUCED':returning?'RETURNING':'ACTIVE';
  return {programmed:true,state,...(restricted.length?{restricted}:{})};
 }
+/** CCP-79 (#79 item 3; Founder decision on #79, 2026-11-27; SSCTR interim rule until a human clinician decides persistence or decay of an urgent level,
+ * CLINICAL_HUMAN_REQUIRED): the guidance level of a standing hold is the highest level of the decisions made since the hold began (`since`, its oldest
+ * standing row), and never lower than the level of the latest decision that has one (what the frozen view read). A later decision, whether or not it
+ * asked the warning signs again, never lowers it; only a readiness declaration that releases the hold ends it (the hold is then no longer standing). */
+const LEVEL_RANK=Object.freeze({PROFESSIONAL_ASSESSMENT:1,URGENT_CARE_ADVISED:2});
+function holdGuidance(decisions,since){
+ const latest=[...decisions].reverse().find(d=>d.guidance),from=typeof since==='string'?Date.parse(since):NaN;
+ const inHold=Number.isFinite(from)?decisions.filter(d=>d.guidance&&Number.isFinite(Date.parse(d.at))&&Date.parse(d.at)>=from):[];
+ let best=latest??null;for(const d of inHold)if((LEVEL_RANK[d.guidance.level]??0)>(LEVEL_RANK[best?.guidance?.level]??0))best=d;
+ return best?.guidance??{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'};
+}
 /**
  * The plan view: the top-level state, the per-sport states, the hold (from the record, the source of truth), a change waiting for confirmation, an
  * open question, and the sessions of a week with `executable` (the app may start them) and `projected` (shown for context only). While a hold stands
@@ -14583,7 +14615,7 @@ function planView(doc,{nowMs,week=null}={}){
   return {id:s.id,date:s.date,sport:s.sport,role:s.role,turn:s.turn??null,optional:!!s.optional,status:s.status??(live(s)?'PLANNED':'REST'),executable:canRun,projected:!!pendingQuestion&&ahead,
    prescription:blocked?null:s.prescription??null,explanation:blocked?null:s.explanation??null,...(s.ownEvent?{ownEvent:true,coachRecommendation:s.coachRecommendation??null}:{})};
  });
- const guidance=blocked?([...doc.decisions].reverse().find(d=>d.guidance)?.guidance??{level:'PROFESSIONAL_ASSESSMENT',wordingStatus:'INTERIM_PENDING_G04'}):null;
+ const guidance=blocked?holdGuidance(doc.decisions,holds[0]?.declaredAt??null):null;
  return {state,version:doc.version,programHash:p.hash,today,weekIndex:w,weeks:p.weeks.length,sports,
   hold:blocked?{clinical:true,since:holds[0]?.declaredAt??null,guidance,exit:'READINESS_DECLARATION'}:null,
   pending:doc.pending?{decisionId:doc.pending.decisionId,kind:'CHANGE_WAITING_CONFIRMATION',change:doc.pending.kind??'REQUESTED_CHANGE'}:null,
