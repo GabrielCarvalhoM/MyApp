@@ -16,11 +16,10 @@ Do not recover or reuse previous Vilumo projects, documentation, Figma, code, ba
 Absence of information is not permission to recover legacy context.
 
 ## Agent System
-Use the globally installed agent architecture.
-Entry point: `C:/Users/carva/.claude/agent-system/README.md`; discover available Agent Contracts through its registry.
-The Chief / Orchestrator coordinates work and routes tasks to specialist agents according to their Agent Contracts.
-Do not reconstruct or duplicate the agent methodology inside this repository.
-The global agent system owns routing, ownership, execution proportionality, review depth, worker != judge, escalation/de-escalation, research activation, gates and stop conditions.
+Project specialist agents are versioned in `.claude/agents/`; registry, routing and shared rules: `docs/engineering/AGENTS.md` (Founder, 2026-11-27).
+The main session is the Chief / Orchestrator: it routes each task to the specialist whose role fits, writes the brief and integrates the result.
+Worker != judge: an implementer never approves its own work; a reviewer never edits what it reviews. An agent's review is an independent-context review, not human approval.
+The former global agent system at a Windows-only path is not available on macOS and is not a dependency; records that cite it are historical.
 
 ## Product Canon
 Canonical product authority begins at:
