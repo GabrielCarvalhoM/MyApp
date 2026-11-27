@@ -10,30 +10,16 @@ Retomar com: **"Continue o desenvolvimento do RepMile de onde parou."** Leia ist
 Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (checkpoint `76e14ce`). Na retomada: PR #67 com CI 4/4 → merge
 `e593496`, viewer atualizado; #59 retomado do WIP `289811a`; #68 iniciado; worktrees temporárias removidas.
 
-## Pendências exatas para a próxima sessão (limite de uso atingido em 27/11, ~20:40 UTC)
-
-1. **Quadro (API do GitHub voltou):** mover #110→Ready, #111→In Review, #21→Ready, #29→Ready, #55→Ready (tirar `needs:founder-approval` antes; as decisões já estão registradas nas issues). Registrar com `decisions.mjs record` as respostas do fundador em #47 (7227432034, B como objetivo, A na alpha), #66 (7227422748, B: aberta até o #101 validado), #74 (7227437457, A). Depois, `decisions.mjs check`.
-2. **PRs #100 (#98) e #115 (#99):** o QRE deu READY_WITH_CONDITIONS nos dois.
-   - **#100:** P2-1 (as rotas de folha precisam das mesmas condições do toque) e P2-2 (teste do `run` com `-scenario clock`).
-   - **#115:** P1-1 (EN/ES inventados → PENDING_TRANSLATION, também nos 5 textos clínicos) e P2-1 (restyle do urgente fora do Hoje; precisa de visual + clínico).
-   - **Visual:** READY_WITH_CONDITIONS no Hoje e NOT_READY no Plano (Dynamic Type P1 → passar ao #102).
-   - **Founder Decision a abrir:** "Entendi" no Hoje, borda de rolagem da tab bar, frase do sinal removida (#87), rótulo "Pausado", relocação da arte de retenção.
-   - Mandar as correções ao agente do #98/#99 (worktree `myapp-v1-c-i99`).
-3. **Agentes que talvez ainda estejam rodando:** #101 onboarding (`myapp-v1-c-i101`), #102 Plano (`myapp-v1-c-i102`, C-3), #79 motor (`myapp-v1-int-i79`), #83 (PR #95, correções do QRE). Ver commits e PRs nas branches antes de relançar.
-4. **Aprovados, ainda sem começar:** #109 CCP-ONB-1, #21 branch padrão (verificar antes), #29 GitHub App (preparar e documentar), #55 RIR (conferir o Figma 41 primeiro), #47 exploração da opção B.
-5. **Governança:** PR #80 (o fundador confere e rotula; nenhum commit novo) e PR #116 (#112, empilhado sobre o #80).
-6. **Eficiência:** o `board.mjs set` relê o quadro inteiro a cada chamada e causou o limite secundário do GitHub; cachear.
-
 ## Agora
 
 | | |
 |---|---|
-| **Founder Decision** | Coluna no quadro, visão "Founder Decision", rótulo `status:founder-decision`. Processo: [WORKFLOW §8](../../docs/engineering/WORKFLOW.md). **Na retomada e entre lotes: `node tools/orchestration/decisions.mjs check`** (comentários do fundador depois do marcador de abertura; `record` grava na própria issue, de forma idempotente). Na fila: #21, #29, #47, #55, #66, #74, #79, #87, #109 (CCP-ONB-1), #110 (Cuidados), #111 (rótulo do PR #80), #112 (CURRENT_MISSION). Teste ponta a ponta: #108 (fechada), evidência em `audits/v1-engineering-orchestration-2026-11-26/results/founder-decision-queue/E2E.txt` |
-| Explorações no Figma | Em produção por uma sessão nova com `ui-design-explorer` (a definição nova só aparece em sessão nova): `EXPLORAÇÃO — #101 — Lacunas do onboarding`, `#14 — Estados de segurança sem frame`, `#107 — Contraste no modo claro`. Quando prontas → cards Founder Decision com links |
-| Reconciliação P0 | Matriz `specs/v1/FIGMA_MATRIX.md` (607 linhas; 0 MATCH) · causas em `specs/v1/quality/FIGMA_DIVERGENCE_CAUSES.md` · gate QUALITY_GATES §2b · #14 é o marco central; subtarefas #101 (onboarding, em implementação), #99 (Hoje), #102–#105 |
-| Em andamento | **#101** onboarding (`ios-engineer`, `myapp-v1-c-i101`; decisões SSCTR D06/D12/D13/D14 aplicadas; partes que dependem de CCP ou de lacuna de design ficam retidas) · **#98/#99** (INT) · **#83** PR #95 (correções do QRE, C-2) |
-| Integração / frente C | integração `6bc43620`; frente C `7932c133` (#70, #92, #94 à frente da integração) → C sync 4 quando #98/#99 entrarem |
-| Simuladores | INT (#98/#99), C-2 (#83, depois #101), C-3 livre, **RepMile-Fundador só do fundador** |
+| **Founder Decision** | Fila vazia (27/11, ~21:10 UTC). Decididas: #79 A, #109 A, #110 A, #111 A (o fundador rotula o PR #80; nenhum commit novo no #80), #112 A (PR #116), #21 A, #29 B (GitHub App), #55 B, #47 B como objetivo (A na alpha), #66 B (aberta até o #101 validado), #74 A, #87 AJUSTAR (**sem orçamento para revisor clínico humano: mitigação com critérios técnicos**), #107 B+A, #113 consolidada, #114 consolidada. `decisions.mjs check` na retomada e entre lotes |
+| Figma | Promoção ao canônico em andamento (sessão nova, `ui-design-explorer` em modo promoção, histórico de versão antes): #107 (tokens claros + papel de texto), #113 (lacunas do onboarding; D18 como variantes alpha/teste), #114 (estados de segurança). As páginas de exploração só são apagadas depois de conferir a promoção |
+| Em andamento | **#101** onboarding (C-2 depois do #83) · **#102** Plano (C-3; inclui o Dynamic Type do Plano) · **#79** motor (C-SwiftUI) · **#83** PR #95 correções do QRE (C-2) · **#98/#99** PRs #100/#115 correções do QRE (P1 EN/ES PENDING_TRANSLATION; urgente forte fora do Hoje), sim INT |
+| Aprovado, a iniciar | #109 CCP-ONB-1 · #87 mitigação clínica (10 critérios) · #21 branch padrão (verificar antes) · #29 GitHub App · #55 RIR (conferir o Figma 41) · #47 exploração da opção B · nova exploração do #99 ("Entendi" no Hoje, borda de rolagem da tab bar, frase do sinal, rótulo "Pausado", arte de retenção, urgente fora do Hoje) |
+| Governança | PR #80 e PR #116 aguardam o rótulo do fundador |
+| Simuladores | INT (#99), C-2 (#83 → #101), C-3 (#102), C-SwiftUI (#79), **RepMile-Fundador só do fundador** |
 
 ## Branches e worktrees
 
