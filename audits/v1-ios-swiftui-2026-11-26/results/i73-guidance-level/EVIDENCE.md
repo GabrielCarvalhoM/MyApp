@@ -1,6 +1,6 @@
 # #73: every clinical surface shows the engine's guidance level (evidence)
 
-Branch `claude/v1-ios-swiftui-i73-guidance` from `claude/v1-ios-swiftui` @ c04ee8c4 (#72, PR #78). Code verified first at dd877b2a, then at aef06b9e after the review fixes (below); this folder is committed after it. CoachingCore, IntegrationContracts and CoachingPresentation are unchanged (frozen). Simulator only: RepMile-C-2. Synthetic
+Branch `claude/v1-ios-swiftui-i73-guidance` from `claude/v1-ios-swiftui` @ c04ee8c4 (#72, PR #78). Code verified at dd877b2a, at aef06b9e after the review fixes and at 07337d21 after the recheck (below); this folder is committed after it. CoachingCore, IntegrationContracts and CoachingPresentation are unchanged (frozen). Simulator only: RepMile-C-2. Synthetic
 data only.
 
 ## Where the level is in the frozen port
@@ -122,4 +122,25 @@ Gates on aef06b9e:
 - RepMileUI unit tests: 178/178, 0 failures (`unit-tests.txt`; 11 new in `GuidanceFloorTests`).
 - `sim.sh all --sim RepMile-C-2`: 50/50 XCUITest, 0 skipped, 0 uncommitted files (`sim-manifest.json`, `xcuitest.txt`).
 - `guard.mjs` (role C): 338 paths OK, 0 need approval, 0 forbidden.
+- `swift-size.mjs`: 0 files above 350.
+
+## QRE recheck (READY_WITH_CONDITIONS) and SSCTR conditions on the rising level, verified at 07337d21
+- P3-a: `holdGuidance` is a required parameter of the six clinical view models; the tests pass `{ nil }` explicitly. A new construction
+  site cannot silently go without the floor.
+- P3-b: the run screen announces an urgent hold once, through its banner. The gate-change announcement skips the urgent case.
+- P3-c: the announcement key is `hold.since` plus the decision that set the urgent level (the last decision, when it carries
+  URGENT_CARE_ADVISED), else "standing". A hold that goes urgent, then professional (#79), then urgent again is announced again.
+- P3-d: tested in `GuidanceRecheckTests`:
+  - Today's order (`TodayContent.banners`): the urgent hold first, the host gate below it;
+  - announce-once (`UrgentCareBanner.claimAnnouncement`);
+  - readiness with a view at professional and an urgent floor: the view wins.
+- SSCTR C1: the "only rises" level of the run report and strength log is labelled in both view models as an INTERIM display fail-safe,
+  tied to #79/C4: align or remove when the engine fix lands.
+- SSCTR C2: tested that the raised level is never persisted (a new screen starts with none), never sent in a request (no guidance or level
+  in the encoded submits) and never reaches Today or the plan view (the app's plan keeps the engine's professional level).
+
+Gates on 07337d21:
+- RepMileUI unit tests: 183/183, 0 failures (`unit-tests.txt`).
+- `sim.sh all --sim RepMile-C-2`: 50/50 XCUITest, 0 skipped, 0 uncommitted files (`sim-manifest.json`, `xcuitest.txt`).
+- `guard.mjs` (role C): 339 paths OK, 0 need approval, 0 forbidden.
 - `swift-size.mjs`: 0 files above 350.
