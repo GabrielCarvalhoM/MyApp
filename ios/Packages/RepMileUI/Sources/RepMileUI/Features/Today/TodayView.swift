@@ -10,12 +10,17 @@ struct TodayView: View {
     var startSession: (PlannedSession) -> Void
     var openChanges: () -> Void
     var openReadiness: () -> Void
+    /// Opens scrolled to the week strip (the Debug `-route today/week` of #98, for captures below the fold). False in every other launch.
+    var scrollToWeek = false
+    /// Called once the scroll is done, so the owner clears `scrollToWeek` (a later return to Hoje opens at the top, QRE P3).
+    var scrolledToWeek: () -> Void = {}
 
     var body: some View {
         if let plan = model.plan {
             let content = TodayContent.build(plan: plan, logged: model.logged, presentation: model.presentation, weekPlan: model.weekPlan,
                                              paused: [.outsideV1Scope, .clinicalHumanRequired].contains(model.globalGate),
                                              startability: model.startability(of:))
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     header(content)
@@ -23,6 +28,7 @@ struct TodayView: View {
                     banner(plan)
                     WeekPanels(days: content.days, label: content.weekLabel) { openSession($0.session) }
                         .padding(.top, 22)
+                        .id(Self.weekAnchor)
                     if let s = content.summary {
                         Text(s).rmText(.detalhe, RM.Palette.textoSecundario).multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity).padding(.top, 6).padding(.horizontal, RM.Space.gutter)
@@ -41,8 +47,16 @@ struct TodayView: View {
             .scrollIndicators(.hidden)
             .background(alignment: .top) { glow(content) }
             .accessibilityIdentifier("screen-today")
+            .task(id: scrollToWeek) {
+                guard scrollToWeek else { return }
+                proxy.scrollTo(Self.weekAnchor, anchor: .top)
+                scrolledToWeek()
+            }
+            }
         }
     }
+
+    private static let weekAnchor = "today-week-strip"
 
     private func glow(_ c: TodayContent) -> some View {
         let color = (c.next?.sport ?? c.days.first { $0.isToday }?.marks.first?.sport)?.glow ?? RM.Palette.luzNeutra
