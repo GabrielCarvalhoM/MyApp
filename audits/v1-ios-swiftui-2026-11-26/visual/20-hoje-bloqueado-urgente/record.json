@@ -1,0 +1,110 @@
+{
+  "screen": "20-hoje-bloqueado-urgente",
+  "figma": {
+    "fileKey": "90oyvXHxxBQAvr1netov7S",
+    "nodeId": "805:492",
+    "version": "V1 alinhamento funcional · 26 nov",
+    "frameName": "Adaptações / Não estou 100% · sinal urgente, procurar atendimento",
+    "page": "72 · Adaptações e recuperação (551:15)",
+    "size": "393x944",
+    "export": "figma.png via Figma MCP get_screenshot (fileKey + nodeId), 1x (393 px wide); app captures are 3x (1206 px). Layout spec: figma-notes.txt.",
+    "light": null
+  },
+  "sources": {
+    "screenMap": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-figma-final-alignment-2026-11-26/SWIFTUI_VISUAL_HANDOFF_ADDENDUM.md",
+      "section": "§2"
+    },
+    "acceptance": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-ui-functional-reconciliation/SWIFTUI_IMPLEMENTATION_HANDOFF.md",
+      "section": "§9"
+    },
+    "nodeChangelog": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-figma-final-alignment-2026-11-26/FIGMA_NODE_CHANGELOG.md"
+    },
+    "inventory": {
+      "branch": "origin/claude/v1-figma-final-alignment",
+      "commit": "26ec95f5",
+      "path": "audits/v1-ui-functional-reconciliation/figma-inventory/"
+    },
+    "note": "Referenced, not copied: these files are on the design branch only."
+  },
+  "requiredConditions": [
+    {
+      "locale": "pt_BR",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "en_US",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "es_ES",
+      "appearance": "dark",
+      "contentSize": "default"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "dark",
+      "contentSize": "extra-extra-extra-large"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "en_US",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "es_ES",
+      "appearance": "light",
+      "contentSize": "default"
+    },
+    {
+      "locale": "pt_BR",
+      "appearance": "light",
+      "contentSize": "extra-extra-extra-large"
+    }
+  ],
+  "conditionStatus": [
+    {
+      "appearance": "light",
+      "status": "PENDING_ISSUE_94",
+      "reason": "Required: the Founder decided the V1 has light mode (#94, in implementation on front C). Not captured: the app is dark-only today (RepMileShell sets .preferredColorScheme(.dark)), so a light capture would show the dark UI. Capture after #94 lands."
+    }
+  ],
+  "fixture": {
+    "scenario": "blocked-urgent",
+    "title": "Bloqueado · sinal de alerta urgente",
+    "source": "ios/Packages/RepMileUI/Sources/RepMileUI/Data/Scenario.swift",
+    "files": {
+      "plan": "plan-blocked-urgent",
+      "allWeeks": "17c-sessions-blocked",
+      "presentation": "17b-presentation-blocked",
+      "history": "20-history",
+      "logged": "P-logged-after-w0",
+      "weekPlan": "P-week-plan"
+    },
+    "hostGate": "notStartable(.blocked)",
+    "route": "Hoje tab (UrgentCareBanner, #73)"
+  },
+  "mapping": {
+    "status": "NO_HOJE_REFERENCE",
+    "note": "The Figma has an urgent frame (72 805:492) but no Hoje frame with the urgent-care banner. The urgent banner on Hoje has no Figma reference; 805:492 is recorded as the nearest reference for the urgent content and label only."
+  },
+  "captureBlocker": "NO_CAPTURE_PATH: `sim.sh run` launches the app with only -AppleLanguages/-AppleLocale. The fixture composition needs the `-scenario <id>` launch argument (LaunchMode.of, Debug only), and sim.sh has no option to pass it, so every sim.sh run opens the live composition. (Hoje is the fixture launch screen, so only --scenario is missing for this one.) No hand-made or XCUITest screenshot substitutes for a sim.sh run (VISUAL_VALIDATION.md). Needs: sim.sh --scenario (ORCH) and a launch route to this screen (front C), or an agreed capture path.",
+  "differences": [],
+  "verdict": "PENDING",
+  "reviewedAt": null
+}

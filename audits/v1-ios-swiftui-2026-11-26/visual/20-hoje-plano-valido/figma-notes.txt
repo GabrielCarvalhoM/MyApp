@@ -1,0 +1,45 @@
+Figma 90oyvXHxxBQAvr1netov7S · version "V1 alinhamento funcional · 26 nov" · page 20 · Hoje (551:6)
+Node 880:4257 "Hoje / Dia duplo · manhã · sem relógio (sem sono e VFC)" · frame 393 x 1434 pt (figma.png is a 1x export; the inventory listed
+1456 pt, the frame is 1434 pt in this version)
+Source: get_metadata + get_variable_defs (read-only), 2026-11-27.
+
+MAPPING CAVEAT: SWIFTUI_VISUAL_HANDOFF_ADDENDUM.md §2 has no Hoje row. This node is the reference the implementation declares
+(TodayView.swift header). Scenario `today` is a different day (week 1, Sunday long run, one session) from this frame (week 3, Thursday,
+double day, strength first). Handoff §8: the Figma numbers are not copied into fixtures, so text and values will differ by design;
+§9.2: absent data variants close the space. No Hoje frame shows a single-run day without sleep/HRV except 572:675 (limiar, with sleep/HRV
+removed by annotation) and 572:1379 (long run after a short night, tagged FUTURO).
+
+LAYOUT (y in pt; side margin 20, content width 353)
+- 0     Status bar 54. Background light "Luz · forca" ellipse 620 x 460 at (-113, -270) (orange glow: the next session is strength).
+- 54    "Data e perfil" 42: micro label "QUINTA · 12 NOV · SEMANA 3 DE 8" at (20, 17); avatar ring 36 x 36 at x 337 (initials "LA").
+- 96    "Manchete" 168: headline 353 x 66 at y 16 (Manchete, 2 lines; the done part in texto/terciario, the rest in texto/primario);
+        coach line 353 x 44 at y 94 (Corpo); weather row 142 x 18 at y 150 (FUTURE/not in V1 per GAP-17 annotations).
+- 264   "Semana em painéis" 362: panels 40 pt wide for other days, today panel 190 x 306 at x 102; baseline at y 170 (run above, strength below);
+        done blocks 32 pt wide with check + minutes (Número XS + "min"); planned blocks dashed; rest marker 28 x 28 circle;
+        today's two cards 174 x 124: run card (planned) above, strength card (next, with halo 182 x 132 and play icon) below;
+        caption "HOJE · DIA DUPLO" at y 14; day names at y 318 (Rótulo; today "Qui 12" in texto/primario).
+- 626   Week summary line 24 (Detalhe, centred): "3 de 7 sessões feitas · descanso planejado na sexta".
+- 650   "Ação" 126: primary "Começar corpo inteiro" 353 x 56 (acao/forca #FF6A2C, label acao/forca-texto, play icon 18);
+        two secondary buttons 172.5 x 46 with 8 pt gap at y 80 ("Por que nessa ordem?", "Ver o treino").
+- 776   "Prova" 403: card 353 x 375 at (20, 28), padding 20: header row (icon + "Prova de 10 km · dom, 20 dez", "38 dias" in marco);
+        estimate "43:30–48:45" (Número L) + caption; range bar 313 x 6 with goal tick; note 36; divider; phase row; phase track 40; note 36.
+- 1179  Row "3ª semana seguida no plano" 63 (title Subtítulo + detail, chevron 18) — inset 24.
+- 1242  Row "Algo mudou na sua semana?" 74 with a divider above — inset 24.
+- 1316  Tab bar area 118: tab bar 353 x 68 at (20, 20).
+
+TYPE STYLES
+- Repmile/Manchete Geist Medium 28/33 -2.5 · Repmile/Corpo Geist Regular 15/22 -0.5 · Repmile/Título Geist SemiBold 20/25 -1.5
+- Repmile/Subtítulo Geist Medium 16/21 -1 · Repmile/Rótulo Geist Medium 13/17 · Repmile/Detalhe Geist Regular 13/18
+- Repmile/Micro Geist SemiBold 11/14 tracking 7 · Repmile/Botão Geist SemiBold 16/20 -1 · Repmile/Tab Geist Medium 10.5/12
+- Repmile/Número L Unbounded Bold 30/34 -2 · Repmile/Número XS Unbounded SemiBold 11/14
+
+COLOURS (dark)
+- fundo/app #0C0D10 · fundo/elevado #15171B · fundo/elevado-2 #1E2126 · fundo/trilho #2A2E36 · linha/base #FFFFFF4D · linha/divisor #FFFFFF1A
+- texto/primario #F3F4F6 · texto/secundario #A4A8B1 · texto/terciario #7C818B · agora #FFFFFF · agora/suave #FFFFFF1F · agora/sobre #0C0D10
+- corrida #4B8BFF · corrida/cheio #2F6FED · corrida/suave #4B8BFF29 · corrida/sobre #FFFFFF
+- forca #FF6A2C · forca/sobre #1A0D05 · acao/forca #FF6A2C · acao/forca-texto #1A0D05 · luz/forca #FF6A2C3D → luz/forca-fim #FF6A2C00 · marco #E6D2A8
+
+LIGHT REFERENCE (figma-light.png): node 513:1441 "A · Claro · Hoje · dia duplo (força feita, corrida à noite)", 393 x 1115, on page
+"ZZ · Legado". NOT a light rendering of 880:4257: it is a legacy palette-comparison copy of an older Hoje frame (508:69), made before the
+12 nov palette decision; the Legado note says these copies "não receberam o conteúdo devolvido depois". Use it only for light-mode colour
+roles, never for layout or copy. The file has no light rendering of 880:4257.
