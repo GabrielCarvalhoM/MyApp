@@ -13,12 +13,9 @@ final class StrengthLogViewModelTests: XCTestCase {
     }
     private let end = Date(timeIntervalSince1970: 1_795_850_000)
 
-    /// With the eligibility screen answered "none applies" (#68), so these tests pin the log itself; the screen is pinned in
-    /// `ReportEligibilityTests`.
+    /// The screen answered "none applies" (#68): these tests pin the log itself (the screen: `ReportEligibilityTests`).
     private func viewModel(_ s: PlannedSession?, _ w: FixtureCoachingWriter) -> StrengthLogViewModel {
-        let vm = StrengthLogViewModel(session: s, writer: w, planToday: { "2026-11-22" }, now: { [end] in end })
-        vm.eligibility = .testNoneApplies
-        return vm
+        let vm = StrengthLogViewModel(session: s, writer: w, planToday: { "2026-11-22" }, now: { [end] in end }); vm.eligibility = .testNoneApplies; return vm
     }
     private func submits(_ w: FixtureCoachingWriter) -> [Data] { w.journal.entries.filter { $0.call == "submit" }.map(\.json) }
     private func exercise(_ vm: StrengthLogViewModel, _ id: String) throws -> PrescribedExercise { try XCTUnwrap(vm.exercises.first { $0.id == id }) }
