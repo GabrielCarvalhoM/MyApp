@@ -110,6 +110,8 @@ struct AppTabs: View {
     @State private var afterDismiss: (() -> Void)?
     @State private var runLaunch: Launch?
     @State private var planSegment: PlanScreen.Segment = .week
+    /// Set only by the Debug `-route today/week` (#98).
+    @State private var todayScrollToWeek = false
     #if DEBUG
     /// `-route <destination>` (#98, Debug only): applied once, after a resumed recording had its say.
     var debugRoute: DebugRoute?
@@ -153,7 +155,7 @@ struct AppTabs: View {
                                   openSession: { todayPath.append(.session($0.id, $0.date)) },
                                   startSession: start,
                                   openChanges: { sheet = .changes },
-                                  openReadiness: { sheet = .readiness })
+                                  openReadiness: { sheet = .readiness }, scrollToWeek: todayScrollToWeek)
                             .tabBarInset(TabBarArea.contentInset(safeBottom: geo.safeAreaInsets.bottom))
                             .toolbar(.hidden, for: .navigationBar)
                             .background(RM.Palette.fundoApp)
@@ -216,19 +218,24 @@ struct AppTabs: View {
     #if DEBUG
     /// Opens what `-route` names exactly as a tap would: the tab and stacks, then a start through `start(_:)` (the host's gate) or a sheet.
     private func apply(_ route: DebugRoute) {
-        guard runLaunch == nil, sheet == nil else { return }   // a resumed recording comes first
+        guard runLaunch == nil, sheet == nil, DebugRoute.claim() else { return }   // a resumed recording comes first; once per process
         let landing = route.landing(current: model.plan?.week?.sessions ?? [], weeks: model.weeks)
-        planSegment = landing.planSegment; todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
+        planSegment = landing.planSegment; todayScrollToWeek = landing.todayScrollToWeek
+        todayPath = landing.todayPath; planPath = landing.planPath; tab = landing.tab
         switch route {
         case .run:
             guard let plan = model.plan else { return }
             let content = TodayContent.build(plan: plan, logged: model.logged, presentation: model.presentation, weekPlan: model.weekPlan,
                                              paused: [.outsideV1Scope, .clinicalHumanRequired].contains(model.globalGate), startability: model.startability(of:))
             if let next = content.next { start(next.session) }
-        case .sheet(.add): sheet = .add
-        case .sheet(.changes): sheet = .changes
-        case .sheet(.notFeeling): sheet = .notFeeling
-        case .sheet(.readiness): sheet = .readiness
+        case .sheet(let s):
+            guard DebugRoute.opens(s, planBlocked: model.plan?.state == .blocked) else { return }
+            switch s {
+            case .add: sheet = .add
+            case .changes: sheet = .changes
+            case .notFeeling: sheet = .notFeeling
+            case .readiness: sheet = .readiness
+            }
         default: break
         }
     }

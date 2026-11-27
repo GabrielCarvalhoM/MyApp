@@ -7,12 +7,13 @@ import Foundation
 /// session starts only through `AppTabs.start(_:)` (the host's gate), a sheet opens its own flow, and nothing is answered or written.
 /// Without the argument nothing changes; the live composition never reads it; a Release build has none of this file (strings check, #98).
 ///
-/// Destinations (Figma screen map): `today`, `plan` (`plan/week`), `plan/month`, `plan/phases`, `session/<fixture session id>`, `history`,
+/// Destinations (Figma screen map): `today`, `today/week` (Hoje scrolled to the week strip), `plan` (`plan/week`), `plan/month`, `plan/phases`, `session/<fixture session id>`, `history`,
 /// `progress`, `profile`, `profile/zones`, `run` (starts today's next session, as "Começar"), `add`, `changes`, `not-feeling`, `readiness`.
 enum DebugRoute: Equatable {
     enum Sheet: String, CaseIterable { case add, changes, notFeeling = "not-feeling", readiness }
 
     case today
+    case todayWeek
     case plan(PlanScreen.Segment)
     case session(id: String)
     case history
@@ -30,6 +31,7 @@ enum DebugRoute: Equatable {
         let value = arguments[i + 1]
         switch value {
         case "today": return .today
+        case "today/week": return .todayWeek
         case "plan", "plan/week": return .plan(.week)
         case "plan/month": return .plan(.month)
         case "plan/phases": return .plan(.phases)
@@ -50,6 +52,25 @@ enum DebugRoute: Equatable {
     /// This process's destination (read once).
     static let launch: DebugRoute? = parse(ProcessInfo.processInfo.arguments)
 
+    /// Applied at most once per process (QRE P3): the tabs can be rebuilt (a reload, a root route change) and must not open it again.
+    @MainActor private static var applied = false
+    @MainActor static func claim() -> Bool {
+        guard !applied else { return false }
+        applied = true
+        return true
+    }
+
+    /// Whether a sheet route opens, under the same condition a tap has (QRE P2-1): "Algo mudou na sua semana?" (`ChangesSheet`) offers
+    /// "Não estou 100%" only when the plan is not blocked and the readiness declaration only when it is; "+" and the changes sheet are
+    /// always there. A refused route stays inert (Hoje, nothing opened).
+    static func opens(_ sheet: Sheet, planBlocked: Bool) -> Bool {
+        switch sheet {
+        case .add, .changes: true
+        case .notFeeling: !planBlocked
+        case .readiness: planBlocked
+        }
+    }
+
     /// Where the tabs land: the tab, the navigation stacks and the plan segment. Pure: what to push is read from the loaded plan and weeks
     /// only (a session id the fixture does not hold pushes nothing). Starting and sheets are not here: `AppTabs` does them through its own
     /// gated paths.
@@ -58,11 +79,13 @@ enum DebugRoute: Equatable {
         var todayPath: [Route] = []
         var planPath: [Route] = []
         var planSegment: PlanScreen.Segment = .week
+        var todayScrollToWeek = false
     }
 
     func landing(current: [PlannedSession], weeks: [Week]) -> Landing {
         switch self {
         case .today, .run, .sheet: return Landing()
+        case .todayWeek: return Landing(todayScrollToWeek: true)
         case .plan(let segment): return Landing(tab: .plan, planSegment: segment)
         case .history: return Landing(tab: .history)
         case .progress: return Landing(tab: .progress)

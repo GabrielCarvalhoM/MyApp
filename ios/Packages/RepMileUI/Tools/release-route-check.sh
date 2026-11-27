@@ -2,6 +2,8 @@
 # #98: the Debug-only `-route` launch argument is absent from a Release build. Two checks, one build:
 #   1. conditional compilation: the app builds in Release, so no Release code refers to `DebugRoute` (the whole file is `#if DEBUG`);
 #   2. strings check (as #63): the Release app binary holds neither the argument nor the type, while the Debug binary does.
+#      The type-name count ('DebugRoute', from the Swift metadata) is the load-bearing check: it proves the code is compiled out. The
+#      '-route' literal alone could be absent for other reasons (an optimiser folding it, another spelling).
 # Simulator only. Usage: ios/Packages/RepMileUI/Tools/release-route-check.sh [<simulator udid>]   Exit 0 = absent in Release.
 set -uo pipefail
 ROOT="$(git rev-parse --show-toplevel)" || exit 2

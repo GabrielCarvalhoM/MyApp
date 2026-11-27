@@ -18,7 +18,7 @@ final class DebugRouteTests: XCTestCase {
 
     func testEveryDestinationParses() {
         let expected: [(String, DebugRoute)] = [
-            ("today", .today), ("plan", .plan(.week)), ("plan/week", .plan(.week)), ("plan/month", .plan(.month)), ("plan/phases", .plan(.phases)),
+            ("today", .today), ("today/week", .todayWeek), ("plan", .plan(.week)), ("plan/week", .plan(.week)), ("plan/month", .plan(.month)), ("plan/phases", .plan(.phases)),
             ("session/w0-run-d6", .session(id: "w0-run-d6")), ("history", .history), ("progress", .progress), ("profile", .profile),
             ("profile/zones", .zones), ("run", .run), ("add", .sheet(.add)), ("changes", .sheet(.changes)), ("not-feeling", .sheet(.notFeeling)),
             ("readiness", .sheet(.readiness)),
@@ -26,6 +26,27 @@ final class DebugRouteTests: XCTestCase {
         for (value, route) in expected {
             XCTAssertEqual(DebugRoute.parse(["-scenario", "today", "-route", value, "-AppleLanguages", "(pt-BR)"]), route, value)
         }
+    }
+
+    /// QRE P2-1: a sheet route opens only where a tap could open it (`ChangesSheet`): "Não estou 100%" outside a block, the readiness
+    /// declaration under one; "+" and the changes sheet always.
+    func testSheetRoutesFollowTheTapConditions() {
+        for blocked in [false, true] {
+            XCTAssertTrue(DebugRoute.opens(.add, planBlocked: blocked))
+            XCTAssertTrue(DebugRoute.opens(.changes, planBlocked: blocked))
+        }
+        XCTAssertTrue(DebugRoute.opens(.notFeeling, planBlocked: false))
+        XCTAssertFalse(DebugRoute.opens(.notFeeling, planBlocked: true))
+        XCTAssertTrue(DebugRoute.opens(.readiness, planBlocked: true))
+        XCTAssertFalse(DebugRoute.opens(.readiness, planBlocked: false))
+    }
+
+    /// QRE P3: the route is applied at most once per process (the tabs may be rebuilt by a reload).
+    @MainActor
+    func testTheRouteIsClaimedOnce() {
+        XCTAssertTrue(DebugRoute.claim())
+        XCTAssertFalse(DebugRoute.claim())
+        XCTAssertFalse(DebugRoute.claim())
     }
 
     /// The tab, stacks and plan segment each destination lands on. Starting and sheets land on Hoje: `AppTabs` opens them by its own paths.
@@ -36,6 +57,7 @@ final class DebugRouteTests: XCTestCase {
         func land(_ r: DebugRoute) -> DebugRoute.Landing { r.landing(current: current, weeks: weeks) }
 
         XCTAssertEqual(land(.today), .init())
+        XCTAssertEqual(land(.todayWeek), .init(todayScrollToWeek: true))
         XCTAssertEqual(land(.run), .init())
         for s in DebugRoute.Sheet.allCases { XCTAssertEqual(land(.sheet(s)), .init(), s.rawValue) }
         XCTAssertEqual(land(.plan(.week)), .init(tab: .plan, planSegment: .week))
