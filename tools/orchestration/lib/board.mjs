@@ -8,12 +8,15 @@ import { run } from './sh.mjs';
 export const CONFIG_PATH = fileURLToPath(new URL('../board.json', import.meta.url));
 export const loadConfig = () => JSON.parse(readFileSync(CONFIG_PATH, 'utf8'));
 
-export const STATUS = ['Backlog', 'Ready', 'In Progress', 'Blocked', 'In Review', 'Ready to Integrate', 'Integrated', 'Verified'];
+// "Founder Decision" (fundador, 27/11): espera por decisão humana de produto, distinta de Blocked (impedimento técnico/operacional).
+export const FOUNDER_DECISION = 'Founder Decision';
+export const STATUS = ['Backlog', FOUNDER_DECISION, 'Ready', 'In Progress', 'Blocked', 'In Review', 'Ready to Integrate', 'Integrated', 'Verified'];
 export const VALIDATED = ['Simulador', 'iPhone', 'Dados reais'];
 
 // Field name → definition. Single-select options are in board order.
 export const FIELDS = {
-  Status: { type: 'SINGLE_SELECT', builtin: true, options: STATUS },
+  Status: { type: 'SINGLE_SELECT', builtin: true, options: STATUS, colors: { [FOUNDER_DECISION]: 'PURPLE' },
+    descriptions: { [FOUNDER_DECISION]: 'Aguardando decisão do fundador; responda comentando a issue (APROVADO / AJUSTAR / REJEITADO / DÚVIDA)' } },
   Tipo: { type: 'SINGLE_SELECT', options: ['Feature', 'Bug Fix', 'Refactor', 'Optimization', 'Test', 'Design', 'Infrastructure', 'Research'] },
   'Área': { type: 'SINGLE_SELECT', options: ['iOS Frontend', 'Backend', 'CoachingCore', 'HealthKit', 'RunRecorder', 'Strength', 'UX/UI', 'DevOps'] },
   Prioridade: { type: 'SINGLE_SELECT', options: ['P0', 'P1', 'P2', 'P3'] },
@@ -35,7 +38,7 @@ export const FIELDS = {
 export const FLAG_FIELDS = { status: 'Status', type: 'Tipo', area: 'Área', priority: 'Prioridade', front: 'Frente', release: 'Release',
   validation: 'Validação', figma: 'Figma', product: 'Produto', deps: 'Dependências', evidence: 'Evidências', start: 'Início', target: 'Entrega alvo' };
 
-export const STATUS_LABEL = { Ready: 'status:ready', 'In Progress': 'status:in-progress', Blocked: 'status:blocked',
+export const STATUS_LABEL = { [FOUNDER_DECISION]: 'status:founder-decision', Ready: 'status:ready', 'In Progress': 'status:in-progress', Blocked: 'status:blocked',
   'Ready to Integrate': 'status:ready-to-integrate', Integrated: 'status:integrated' };
 export const APPROVAL_LABEL = 'needs:founder-approval';
 
@@ -58,7 +61,7 @@ export function labelsFor({ type, front, priority, status, approval } = {}) {
 // Transition rules (WORKFLOW.md §3). Returns an error string or null.
 export function transitionError(to, { labels = [], validation, evidence, figma } = {}) {
   if (!STATUS.includes(to)) return `status desconhecido: ${to} (válidos: ${STATUS.join(', ')})`;
-  if (labels.includes(APPROVAL_LABEL) && !['Backlog', 'Blocked'].includes(to)) {
+  if (labels.includes(APPROVAL_LABEL) && !['Backlog', 'Blocked', FOUNDER_DECISION].includes(to)) {
     return `a issue aguarda aprovação do fundador (${APPROVAL_LABEL}); só o fundador remove o rótulo`;
   }
   // Integrated = on the integration branch, not yet validated where it matters; it still needs the evidence of what was proven
@@ -151,4 +154,5 @@ export const VIEWS = [
   { name: 'Bugs & Fixes', layout: 'TABLE_LAYOUT', filter: 'tipo:"Bug Fix"', fields: COMMON_FIELDS, uiGroupBy: 'Status' },
   { name: 'Roadmap', layout: 'ROADMAP_LAYOUT', filter: '-status:Verified', fields: ['Title', 'Status', 'Release', 'Frente', 'Início', 'Entrega alvo'], uiGroupBy: 'Release', uiDates: ['Início', 'Entrega alvo'] },
   { name: 'Bloqueios', layout: 'TABLE_LAYOUT', filter: 'status:Blocked', fields: COMMON_FIELDS, uiGroupBy: 'Frente' },
+  { name: 'Founder Decision', layout: 'TABLE_LAYOUT', filter: 'status:"Founder Decision"', fields: COMMON_FIELDS },
 ];

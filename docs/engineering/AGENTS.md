@@ -13,6 +13,7 @@ integra o resultado. Quem implementa nunca aprova a própria entrega; quem revis
 | `quality-reliability-engineer` (QRE) | revisão independente: bugs, concorrência, persistência, segurança, privacidade, regressões, mapeamento de segurança falha fechada na UI | **não**¹ | todo incremento funcional, antes do merge |
 | `ios-architecture-reviewer` | camadas, modularidade, testabilidade, limite de 350 linhas | **não**¹ | refatorações, módulos novos ou mudanças de estrutura; dispensável em correção pequena |
 | `visual-ux-reviewer` | Figma × screenshots reais do simulador, acessibilidade, fidelidade | **não**¹ (Figma só leitura) | telas novas ou alteradas |
+| `ui-design-explorer` | explorações visuais no Figma para Founder Decision (página `EXPLORAÇÃO — #… — …`), só com o design system; nunca toca frames canônicos | só a página de exploração no Figma | lacuna de design ou incompatibilidade real que muda a experiência (WORKFLOW §8) |
 | `sports-science-concurrent-training-reviewer` (SSCTR) | ciência do treino; autoridade provisória e limites em `governance/agents/sports-science-reviewer/` | só os próprios registros de revisão; ferramentas herdadas pela constituição; nunca edita o que revisa | qualquer regra que mude o treino prescrito, prontidão, carga, recuperação ou progressão. Clínico continua CLINICAL_HUMAN_REQUIRED |
 
 ¹ Os revisores têm lista fechada de ferramentas (Read, Grep, Glob, Bash; o visual também tem leitura do Figma), sem Edit/Write nem MCP
@@ -36,6 +37,8 @@ pelo orquestrador, não pelo revisor.
    O simulador `RepMile-Fundador` é reservado ao fundador: nenhum agente o usa.
 6. **Figma é a especificação de UI/UX** (PRODUCT_SCOPE, "Três autoridades"): nenhuma tela, pergunta, fluxo ou texto fora do Figma
    aprovado; toda mudança visual cita o nó; falta de campo no motor não autoriza redesenhar — pare e relate. Gate: QUALITY_GATES §2b.
+   Mudança de experiência só por exploração + Founder Decision ([WORKFLOW §8](WORKFLOW.md#8-founder-decision-decisões-do-fundador-assíncronas-pelo-github)); agentes nunca registram aprovação nem comentam numa
+   issue em Founder Decision fora de `decisions.mjs`.
 7. **Segurança esportiva falha fechada:** nil ≠ false, nada pré-respondido, ASK quando falta dado. Nunca inventar métricas, limites ou
    prescrições: elas vêm do motor ou de decisão registrada.
 8. **Privacidade:** [SECURITY_PRIVACY.md](../../specs/v1/quality/SECURITY_PRIVACY.md). Repositório público: nada de segredo nem de dado
