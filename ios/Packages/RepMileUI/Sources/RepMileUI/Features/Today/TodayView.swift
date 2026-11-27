@@ -74,30 +74,36 @@ struct TodayView: View {
     }
 
     @ViewBuilder private func banner(_ plan: PlanView) -> some View {
-        Group {
-            if let gate = model.globalGate, gate != .blocked {
-                gateBanner(gate)
-            } else {
-                switch plan.state {
-                case .blocked where plan.clinicalGuidance == .urgentCare:
-                    // #73: the hold's URGENT_CARE_ADVISED level, distinct from the professional-assessment banner below.
-                    UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness).accessibilityIdentifier("banner-blocked")
-                case .blocked:
-                    StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
-                                actionTitle: L.t("state.blocked.action"), action: openReadiness)
-                case .pendingConfirmation:
-                    StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
-                                actionTitle: L.t("state.pending.action"), action: openChanges)
-                case .returning:
-                    StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
-                case .needsInput:
-                    StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
-                                actionTitle: L.t("state.needsInput.action"), action: openChanges)
-                default: EmptyView()
+        let urgent = plan.clinicalGuidance == .urgentCare
+        let gate = model.globalGate.flatMap { $0 == .blocked ? nil : $0 }
+        if urgent || gate != nil || [.blocked, .pendingConfirmation, .returning, .needsInput].contains(plan.state) {
+            VStack(alignment: .leading, spacing: 12) {
+                // #73: a hold at URGENT_CARE_ADVISED comes first and is never hidden, not even by a host gate (QRE P3-2).
+                if urgent {
+                    UrgentCareBanner(reportKept: true, actionTitle: L.t("state.blocked.action"), action: openReadiness, announceKey: UrgentCareBanner.key(for: plan))
+                        .accessibilityIdentifier("banner-blocked")
+                }
+                if let gate {
+                    gateBanner(gate)
+                } else if !urgent {
+                    switch plan.state {
+                    case .blocked:
+                        StateBanner(tone: .safety, icon: .pausa, title: L.t("state.blocked.title"), message: L.t("state.blocked.body.interim"),
+                                    actionTitle: L.t("state.blocked.action"), action: openReadiness)
+                    case .pendingConfirmation:
+                        StateBanner(tone: .milestone, icon: .marco, title: L.t("state.pending.title"), message: L.t("state.pending.body"),
+                                    actionTitle: L.t("state.pending.action"), action: openChanges)
+                    case .returning:
+                        StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
+                    case .needsInput:
+                        StateBanner(tone: .neutral, icon: .lista, title: L.t("state.needsInput.title"), message: L.t("state.needsInput.body"),
+                                    actionTitle: L.t("state.needsInput.action"), action: openChanges)
+                    default: EmptyView()
+                    }
                 }
             }
+            .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
         }
-        .padding(.top, 16).padding(.horizontal, RM.Space.gutter)
     }
 
     @ViewBuilder private func gateBanner(_ gate: NotStartableReason) -> some View {

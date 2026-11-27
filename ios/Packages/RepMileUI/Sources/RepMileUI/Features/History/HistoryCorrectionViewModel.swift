@@ -48,10 +48,14 @@ final class HistoryCorrectionViewModel {
     private let writer: CoachingWriting
     private let planToday: () -> String?
     private let reload: @MainActor () async -> Void
+    /// The level of the hold the app holds now (`PlanView.clinicalGuidance`, the engine's): the floor of an answer without a view (#73).
+    private let holdGuidance: () -> ClinicalGuidance?
 
     /// `reload` is `AppModel.load`; `planToday` the plan's own today (the screen's date; no plan, no correction).
-    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping @MainActor () async -> Void) {
+    init(entry: LoggedEntry, sessionDate: String?, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping @MainActor () async -> Void,
+         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
         self.entry = entry; self.sessionDate = sessionDate; self.writer = writer; self.planToday = planToday; self.reload = reload
+        self.holdGuidance = holdGuidance
     }
 
     var canContest: Bool { Self.canContest(entry) && sessionDate == entry.date }
@@ -82,7 +86,7 @@ final class HistoryCorrectionViewModel {
         apply {
             phase = Self.saved(out) ? .saved : .notKept
             screenRequired = screenRequired || (out.answer.ok && out.answer.warningSignScreen?.status.raw == "REQUIRED")
-            clinicalGuidance = out.answer.clinicalGuidance
+            clinicalGuidance = out.answer.clinicalGuidance(floor: holdGuidance())
         }
         if out.answer.ok { await reload() }
     }

@@ -99,11 +99,12 @@ final class ReadinessViewModel {
     }
 
     /// The engine's answer: ASK first; returning only when the engine restarts training; anything else keeps the hold (fail closed), at the
-    /// level of the answer's clinical route, else of the hold in the answer's view, else (an answer without a view: nothing changed) of the
-    /// hold the declaration answered; none of them is the professional-assessment level.
+    /// highest of: the answer's clinical route, the hold in the answer's view and, for an answer without a view (nothing changed, or a
+    /// `viewError`), the hold the declaration answered. None of them is the professional-assessment level (QRE P2-1, SSCTR C1).
     static func reply(for a: BoundaryAnswer, holdGuidance: ClinicalGuidance? = nil) -> Reply {
         if a.status?.raw == "ASK" || a.view?.state == .needsInput { return .needsAnswers }
         if a.ok && (a.action?.raw == "READINESS_RESTART" || a.view?.state == .returning) { return .returning }
-        return .stillBlocked(a.clinicalGuidance ?? a.view?.clinicalGuidance ?? holdGuidance ?? .professionalAssessment)
+        return .stillBlocked(ClinicalGuidance.professionalAssessment.raised(to: a.clinicalGuidance(floor: holdGuidance))
+            .raised(to: a.view?.clinicalGuidance).raised(to: a.view == nil ? holdGuidance : nil))
     }
 }

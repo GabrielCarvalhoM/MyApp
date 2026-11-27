@@ -37,10 +37,13 @@ final class UnavailableDayViewModel {
     private let planToday: () -> String?
     private let reload: () async -> Void
     private let presentation: () -> PresentationSnapshot?
+    /// The level of the hold the app holds now (`PlanView.clinicalGuidance`, the engine's): the floor of an answer without a view (#73).
+    private let holdGuidance: () -> ClinicalGuidance?
 
     init(session: PlannedSession, writer: CoachingWriting, planToday: @escaping () -> String?, reload: @escaping () async -> Void,
-         presentation: @escaping () -> PresentationSnapshot?) {
+         presentation: @escaping () -> PresentationSnapshot?, holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
         self.session = session; self.writer = writer; self.planToday = planToday; self.reload = reload; self.presentation = presentation
+        self.holdGuidance = holdGuidance
     }
 
     /// On the form, with the screen answered and the plan's day known.
@@ -56,7 +59,7 @@ final class UnavailableDayViewModel {
     func send() async {
         guard canSend, let request = request() else { return }
         phase = .sending
-        let next = Self.phase(afterSubmit: await writer.submit(request).answer)
+        let next = Self.phase(afterSubmit: await writer.submit(request).answer, floor: holdGuidance())
         if case .proposed = next { await reload() }  // the proposal's run sessions are read after the write, never the pre-write presentation
         phase = next
     }
@@ -81,9 +84,9 @@ final class UnavailableDayViewModel {
     /// The engine's answer to the unavailable day. Pure. A clinical route first, then a question; a proposal only as a pending decision (the
     /// view's, else the decision of a MODIFY answer): a decision id alone is not one (an ASK and a clinical route carry one too). An `ok`
     /// with nothing of these fails closed.
-    static func phase(afterSubmit a: BoundaryAnswer) -> Phase {
+    static func phase(afterSubmit a: BoundaryAnswer, floor: ClinicalGuidance? = nil) -> Phase {
         guard a.ok else { return .failed(a.error?.code.raw ?? "UNKNOWN") }
-        if let g = a.clinicalGuidance { return .clinical(g) }
+        if let g = a.clinicalGuidance(floor: floor) { return .clinical(g) }
         if a.status?.raw == "ASK" || a.view?.state == .needsInput { return .needsInput }
         if let id = a.view?.pending?.decisionId ?? (a.status?.raw == "MODIFY" ? a.decisionId : nil) { return .proposed(decisionId: id) }
         return .failed("UNKNOWN")

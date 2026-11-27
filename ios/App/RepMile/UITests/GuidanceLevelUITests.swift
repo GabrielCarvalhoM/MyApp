@@ -71,6 +71,21 @@ final class GuidanceLevelUITests: XCTestCase {
         attach(app, "73 — Hoje sob retenção urgente")
     }
 
+    /// QRE P3-4: the session detail under an urgent hold shows the urgent level, never only "nothing to start".
+    @MainActor
+    func testSessionDetailUnderAnUrgentHoldShowsUrgentCare() {
+        let app = launch("blocked-urgent")
+        app.buttons["tab-plan"].tap()
+        let row = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'plan-session-'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.tap()
+        XCTAssertTrue(el(app, "screen-session").waitForExistence(timeout: 5))
+        XCTAssertTrue(el(app, "session-urgent").waitForExistence(timeout: 5))
+        XCTAssertTrue(el(app, "guidance-urgent").label.contains(Self.urgentTitle))
+        XCTAssertFalse(app.buttons["session-start"].exists)
+        attach(app, "73 — detalhe da sessão sob retenção urgente")
+    }
+
     @MainActor
     func testReadinessWithAnUrgentSignKeepsTheHoldAtUrgentCare() {
         let app = launch("blocked")

@@ -35,9 +35,12 @@ final class StrengthLogViewModel {
     private let writer: CoachingWriting
     private let planToday: () -> String?
     private let now: () -> Date
+    /// The level of the hold the app holds now (`PlanView.clinicalGuidance`, the engine's): the floor of an answer without a view (#73).
+    private let holdGuidance: () -> ClinicalGuidance?
 
-    init(session: PlannedSession?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init) {
-        self.session = session; self.writer = writer; self.planToday = planToday; self.now = now
+    init(session: PlannedSession?, writer: CoachingWriting, planToday: @escaping () -> String?, now: @escaping () -> Date = Date.init,
+         holdGuidance: @escaping () -> ClinicalGuidance? = { nil }) {
+        self.session = session; self.writer = writer; self.planToday = planToday; self.now = now; self.holdGuidance = holdGuidance
         exercises = session?.prescription?.exercises ?? []
         sets = Dictionary(exercises.map { ($0.id, Array(repeating: SetDraft(), count: max(0, $0.sets))) }, uniquingKeysWith: { first, _ in first })
     }
@@ -132,7 +135,7 @@ final class StrengthLogViewModel {
         phase = .submitting
         let outcome = await writer.submit(request)
         phase = Self.phase(for: outcome)
-        clinicalGuidance = clinicalGuidance.raised(to: outcome.answer.clinicalGuidance)
+        clinicalGuidance = clinicalGuidance.raised(to: outcome.answer.clinicalGuidance(floor: holdGuidance()))
     }
 
     /// The request exactly as sent: the log and the screen answered here, dated the plan's today (never the device's, as #59). Nil until it

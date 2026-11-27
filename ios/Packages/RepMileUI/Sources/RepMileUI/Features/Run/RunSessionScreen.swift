@@ -27,7 +27,8 @@ struct RunSessionScreen: View {
             if let finished {
                 RunReportView(session: session,
                               viewModel: RunReportViewModel(recording: finished, writer: model.writer, planToday: { [model] in model.plan?.today },
-                                                            markReported: { [recorder] in recorder.markReported(eventId: $0) })) { dismiss() }
+                                                            markReported: { [recorder] in recorder.markReported(eventId: $0) },
+                                                            holdGuidance: { [model] in model.plan?.clinicalGuidance })) { dismiss() }
             } else {
                 TimelineView(.periodic(from: .now, by: 1)) { _ in live }
             }
@@ -40,7 +41,10 @@ struct RunSessionScreen: View {
         }
         // VoiceOver: a gate that arrives while the screen is open is announced (the steps disappear at that moment).
         .onChange(of: model.runSafetyGate(for: session)) { old, new in
-            if old == nil, let new { AccessibilityNotification.Announcement(Self.gateTitle(new) + ". " + Self.gateMessage(new)).post() }
+            guard old == nil, let new else { return }
+            let urgent = new == .blocked && model.plan?.clinicalGuidance == .urgentCare
+            AccessibilityNotification.Announcement(urgent ? L.t("state.blocked.urgent.title.interim") + ". " + L.t("state.blocked.urgent.body.interim")
+                                                          : Self.gateTitle(new) + ". " + Self.gateMessage(new)).post()
         }
         .onAppear {
             recorder.resumeIfNeeded()
@@ -76,7 +80,12 @@ struct RunSessionScreen: View {
                 LocationChip(state: recorder.location)
             }
             .padding(.top, 12)
-            if let gate {
+            if let gate, gate == .blocked, let plan = model.plan, plan.clinicalGuidance == .urgentCare {
+                // #73 (QRE P3-3): a hold at URGENT_CARE_ADVISED shows its existing INTERIM text, never "a gravação continua".
+                UrgentCareBanner(reportKept: true, announceKey: UrgentCareBanner.key(for: plan))
+                    .padding(.top, 20)
+                    .accessibilityIdentifier("run-safety-gate")
+            } else if let gate {
                 StateBanner(tone: .safety, icon: .pausa, title: Self.gateTitle(gate), message: Self.gateMessage(gate))
                     .padding(.top, 20)
                     .accessibilityIdentifier("run-safety-gate")
