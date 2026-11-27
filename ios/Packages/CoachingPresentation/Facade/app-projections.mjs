@@ -1,4 +1,5 @@
-// RepMile V1 shared app-facade projections (ABC foundation consolidation, 2026-11-26; CHG-UI-2 items 2.1, 2.2, 2.4 and the time-in-zone port).
+// RepMile V1 shared app-facade projections (ABC foundation consolidation, 2026-11-26; CHG-UI-2 items 2.1, 2.2, 2.4 and the time-in-zone port;
+// CCP-ONB-1, #109, 2026-11-27: `weekPlan().marathon`, RM-APP-PROJECTIONS-2).
 //
 // What this is: read-only application code over what the frozen boundary already returns (`integration.read` / `integration.visible`,
 // `integration.presentation`) and re-exports of frozen engine functions. Front A links this file VERBATIM into its production bundle, beside its
@@ -11,7 +12,7 @@
 import {signsFor,exerciseSignsFor,READINESS_SIGNS,CONDITIONS,intentsFor,WARNING_SIGNS,EXERCISE_SIGNS} from '../../../../CoachingCore/src/v1-f08.mjs';
 import {classifySamples} from '../../../../CoachingCore/src/v1-heart-rate-zones.mjs';
 
-export const PROJECTIONS_VERSION='RM-APP-PROJECTIONS-1';
+export const PROJECTIONS_VERSION='RM-APP-PROJECTIONS-2';
 const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
 const num=v=>typeof v==='number'&&Number.isFinite(v)?v:null;
 const str=v=>typeof v==='string'&&v.length?v:null;
@@ -79,11 +80,31 @@ export const keepsReport=(entries,eventId)=>entries.some(e=>e.eventId===eventId|
  * week, past, or ahead. Phases are codes (copy by code in C); a field the plan does not hold is null, never derived from the sessions.
  */
 export function weekPlan(doc,{today}={}){
- const p=doc?.program;if(!isObj(p)||!Array.isArray(p.weeks))return {programHash:null,weeks:[]};
+ const p=doc?.program;if(!isObj(p)||!Array.isArray(p.weeks))return {programHash:null,weeks:[],marathon:null};
  const end=d=>new Date(Date.parse(d+'T00:00:00Z')+6*864e5).toISOString().slice(0,10);
  return {programHash:str(p.hash),startDate:str(p.startDate),weeks:p.weeks.map((w,index)=>({index,startDate:str(w.startDate),phase:str(w.phase),
   plannedRunMinutes:num(w.plannedRunMinutes),plannedStrengthSets:num(w.plannedStrengthSets),
-  timing:!str(today)||!str(w.startDate)?null:today<w.startDate?'AHEAD':today>end(w.startDate)?'PAST':'CURRENT'}))};
+  timing:!str(today)||!str(w.startDate)?null:today<w.startDate?'AHEAD':today>end(w.startDate)?'PAST':'CURRENT'})),marathon:marathonOf(p)};
+}
+/**
+ * CCP-ONB-1 (read side, Figma 31 `838:1478` / `838:1568`): how the engine planned a marathon goal, read from the plan as the record holds it.
+ * BLOCK: the plan's run goal is the marathon event (every eligibility criterion held). PREPARATORY: the intake kept the marathon as context and
+ * listed the criteria not met (`canonical.goals.contextEvent.unmet`, the same list the plan's MARATHON_PREPARATORY_PLAN disclosure carries).
+ * Nothing is recomputed: no criterion is evaluated here, and the met criteria are not listed because the engine does not list them.
+ */
+const criterionValue=v=>typeof v==='number'&&Number.isFinite(v)||typeof v==='string'||typeof v==='boolean'?v:Array.isArray(v)&&v.every(x=>typeof x==='string')?[...v]:null;
+// SSCTR C5 (PR #119 review): the plan's own marathon disclosures, verbatim (MARATHON_PREPARATORY_PLAN: not a preparation for the date given, no date
+// promised, 7 days without training after racing anyway, the alternatives; MARATHON_BLOCK_NOTES; MARATHON_PROJECTION): id, engine text, options.
+const MARATHON_DISCLOSURES=Object.freeze({BLOCK:['MARATHON_BLOCK_NOTES','MARATHON_PROJECTION'],PREPARATORY:['MARATHON_PREPARATORY_PLAN']});
+const disclosuresOf=(p,status)=>(Array.isArray(p.negotiation)?p.negotiation:[]).filter(n=>isObj(n)&&MARATHON_DISCLOSURES[status].includes(n.id)).map(n=>({id:n.id,
+ blocking:n.blocking===true,detail:str(n.detail),options:Array.isArray(n.options)?n.options.filter(o=>str(o)):[],...(num(n.projectedLongRunMinutes)!==null?{projectedLongRunMinutes:n.projectedLongRunMinutes}:{})}));
+function marathonOf(p){
+ const ev=p.goal?.run?.event,ctx=p.canonical?.goals?.contextEvent;
+ if(isObj(ev)&&ev.kind==='MARATHON')return {status:'BLOCK',date:str(ev.date),unmet:[],disclosures:disclosuresOf(p,'BLOCK')};
+ if(isObj(ctx)&&ctx.kind==='MARATHON'&&ctx.preparatory===true)return {status:'PREPARATORY',date:str(ctx.date),
+  unmet:(Array.isArray(ctx.unmet)?ctx.unmet:[]).filter(u=>isObj(u)&&str(u.id)).map(u=>({id:u.id,value:criterionValue(u.value),needed:criterionValue(u.needed)})),
+  disclosures:disclosuresOf(p,'PREPARATORY')};
+ return null;
 }
 
 /**

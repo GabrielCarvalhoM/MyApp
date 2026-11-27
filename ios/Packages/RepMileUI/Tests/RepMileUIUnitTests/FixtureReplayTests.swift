@@ -16,8 +16,8 @@ final class FixtureReplayTests: XCTestCase {
     /// Handoff C §8.1: every fixture of INDEX.json is read by the port that serves it, without failure.
     func testEveryIndexedFixtureDecodesThroughItsPort() throws {
         let files = try Repo.store.indexedFiles()
-        XCTAssertEqual(Set(files).count, 99)
-        XCTAssertEqual(files.count, 100, "INDEX.json lists hr5r-declared-presentation twice (generator output, not edited here)")
+        XCTAssertEqual(Set(files).count, 109, "99 + the 10 onb-* fixtures of CCP-ONB-1 (#109)")
+        XCTAssertEqual(files.count, 110, "INDEX.json lists hr5r-declared-presentation twice (generator output, not edited here)")
         for name in files {
             let obj = try Repo.store.object(name)
             if obj["ok"] as? Bool == false {

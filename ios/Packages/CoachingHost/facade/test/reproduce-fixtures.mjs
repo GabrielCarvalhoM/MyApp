@@ -248,6 +248,21 @@ for(const [name,sp] of [['special-pregnancy',['PREGNANCY']],['special-postpartum
 {const parts=[...CONDITIONS,'READINESS'].map(c=>call('warningSignSet',JSON.stringify({condition:c})));
  saveBuilt('P-warning-sign-sets',{ok:true,projections:PROJECTIONS_VERSION,sets:parts.map(p=>p.v)},parts.map(p=>p.i));}
 
+// ---- 7. CCP-ONB-1 (#109): the onboarding fields and the plan-ready readings ----
+{const onb=(name,mut,reads)=>{const t=athlete({id:name,weeks:8}),i=athleteA({weeks:8,id:name});mut(i);
+  save(name+'-onboard',t.enroll(i),'raw');
+  if(reads.includes('weekPlan'))save(name+'-week-plan',t.f('weekPlan'));
+  if(reads.includes('presentation'))save(name+'-presentation',t.presentation());
+  if(reads.includes('plan'))save(name+'-plan',t.api.plan());};
+ const marathon=i=>{i.weeks=16;i.athlete.goals.run={kind:'RACE',event:{kind:'MARATHON',date:'2027-02-28'}};};
+ onb('onb-marathon-preparatory',marathon,['weekPlan']);
+ onb('onb-marathon-block',i=>{marathon(i);i.athlete.recent={strengthDaysPerWeek:2,runDaysPerWeek:5,runMinutesPerWeek:300,longestRunMinutes:120};i.schedule.runDays=[0,1,3,5,6];i.schedule.longRunMinutes=180;},['weekPlan']);
+ onb('onb-time-goal',i=>{i.athlete.goals.run.event.timeGoalMinutes=44.5;},['presentation']);
+ onb('onb-every-field',i=>{i.athlete.knownExercises=[{id:'back-squat',sets:4,reps:5,rir:3,load:{value:90,unit:'KG',convention:'TOTAL'}}];i.athlete.coaching={profile:'CONSERVATIVE'};
+  i.schedule.temporaryPreference='RUN';delete i.schedule.runTurn;delete i.schedule.strengthTurn;i.schedule.sameTurnConfirmed=true;i.athlete.performanceAnchors[0].conditions=[];},['plan']);
+ onb('onb-only-strength',i=>{i.athlete.goals={run:{kind:'NONE'},strength:'STRENGTH'};delete i.athlete.runTrainingMonths;i.athlete.recent={strengthDaysPerWeek:2};i.athlete.performanceAnchors=[];
+  i.schedule={strengthDays:[1,3,5],strengthMinutes:45,runDays:[],strengthTurn:'PM'};delete i.weeks;},['plan']);}
+
 // ---- result ----
 const shared=fs.readdirSync(FIX).filter(f=>f.endsWith('.json')&&f!=='INDEX.json').sort();
 const covered=new Set([...compared.map(c=>c.file),...notReproduced.map(n=>n.file)]);

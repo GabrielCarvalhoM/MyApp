@@ -91,10 +91,22 @@ public final class FixtureCoachingWriter: CoachingWriting {
         return try! JSONDecoder().decode(BoundaryAnswer.self, from: Data(json.utf8))
     }()
 
+    /// CCP-ONB-1 (QRE P3, PR #121): a held intake (`OnboardingAnswers.hold`) is answered as the real host answers it — INVALID_REQUEST, nothing
+    /// sent (the host cannot encode it) — so a screen that forgot to check `hold` first fails the same way here as on the device.
+    static let invalidRequest: BoundaryAnswer = {
+        let json = #"{"ok":false,"error":{"code":"INVALID_REQUEST","message":"The request could not be encoded"},"state":"OPERATIONAL_ERROR"}"#
+        return try! JSONDecoder().decode(BoundaryAnswer.self, from: Data(json.utf8))
+    }()
+    /// Held intake, then clinical flag (no capture exists for one: an honest failure, never a plan), for enrolment and restart alike.
+    private func refusal(_ answers: OnboardingAnswers) -> WriteOutcome? {
+        if answers.hold != nil { return WriteOutcome(answer: Self.invalidRequest, kept: [], notKept: []) }
+        if answers.athlete.eligibility.statesAClinicalFlag { return WriteOutcome(answer: Self.unavailable, kept: [], notKept: []) }
+        return nil
+    }
+
     public func onboard(_ answers: OnboardingAnswers, consents: Consents) async -> WriteOutcome {
         journal.add("onboard", answers)
-        // No capture exists for a clinical flag at enrolment: an honest failure, never a plan.
-        if answers.athlete.eligibility.statesAClinicalFlag { return WriteOutcome(answer: Self.unavailable, kept: [], notKept: []) }
+        if let r = refusal(answers) { return r }
         let special = answers.athlete.specialPopulation
         if special.contains(.pregnancy) { return answer("special-pregnancy-onboard") }
         if special.contains(.postpartum) { return answer("special-postpartum-onboard") }
@@ -102,6 +114,7 @@ public final class FixtureCoachingWriter: CoachingWriting {
     }
     public func restart(_ answers: OnboardingAnswers) async -> WriteOutcome {
         journal.add("restart", answers)
+        if let r = refusal(answers) { return r }
         let special = answers.athlete.specialPopulation
         if special.contains(.pregnancy) { return answer("special-pregnancy-onboard") }
         if special.contains(.postpartum) { return answer("special-postpartum-onboard") }

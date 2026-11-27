@@ -1,0 +1,11 @@
+import XCTest
+@testable import CoachingPresentation
+final class ZZBaselineDump: XCTestCase {
+    func testDump() throws {
+        let e = JSONEncoder(); e.outputFormatting = [.sortedKeys]
+        struct All: Encodable { let base: IntakeRequest; let pregnancy: IntakeRequest; let hr: IntakeRequest }
+        let all = All(base: RequestSchemaTests.intake(), pregnancy: RequestSchemaTests.intake(special: [.pregnancy]),
+                      hr: RequestSchemaTests.intake(hr: HeartRateProfileRequest(maxHeartRateBpm: .some(195))))
+        try e.encode(all).write(to: URL(fileURLWithPath: ProcessInfo.processInfo.environment["BASELINE_OUT"]!))
+    }
+}

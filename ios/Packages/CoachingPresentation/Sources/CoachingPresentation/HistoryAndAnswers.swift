@@ -206,6 +206,8 @@ public struct WeekPlanProjection: Decodable, Equatable, Sendable {
     public let programHash: String?
     public let startDate: String?
     public let weeks: [WeekPlanEntry]
+    /// CCP-ONB-1 (RM-APP-PROJECTIONS-2, additive): how the engine planned a marathon goal; `nil` = no marathon goal, or an earlier projection.
+    public let marathon: MarathonPlanReading?
 }
 public struct WeekPlanEntry: Decodable, Equatable, Sendable {
     public let index: Int

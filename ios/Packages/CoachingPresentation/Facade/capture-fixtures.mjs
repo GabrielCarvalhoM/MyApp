@@ -179,5 +179,22 @@ for(const [name,sp] of [['special-pregnancy',['PREGNANCY']],['special-postpartum
 // ---- 6. The warning-sign sets (CHG-UI-2 2.4, GAP-03) ----
 save('P-warning-sign-sets',{ok:true,projections:PROJECTIONS_VERSION,sets:warningSignSets()},'the signs the engine asks, per condition (9/13/15) and for readiness (15)');
 
+// ---- 7. CCP-ONB-1 (#109): the onboarding fields the engine reads, and the readings of the plan-ready screen (Figma 31) ----
+// The intakes are athlete A's (the shape the Swift contract encodes) with the new optional fields; nothing else changes.
+{const onb=(name,mut,what,reads)=>{const t=athlete({newId,id:name,weeks:8}),i=athleteA({weeks:8,id:name});mut(i);
+  save(name+'-onboard',t.it.enroll({actor:t.actor,intake:i,consents:{COACHING:true,HEALTH_SIGNALS:true,LEARNING:true}}),'enroll: '+what);
+  if(reads.includes('weekPlan'))save(name+'-week-plan',{ok:true,projections:PROJECTIONS_VERSION,...weekPlan(t.doc(),{today:t.api.plan({actor:t.actor}).view.today})},'projection weekPlan: '+what);
+  if(reads.includes('presentation'))save(name+'-presentation',t.it.presentation({actor:t.actor}),'presentation: '+what);
+  if(reads.includes('plan'))save(name+'-plan',t.api.plan({actor:t.actor}),'plan view: '+what);};
+ const marathon=i=>{i.weeks=16;i.athlete.goals.run={kind:'RACE',event:{kind:'MARATHON',date:'2027-02-28'}};};
+ onb('onb-marathon-preparatory',marathon,'marathon goal, criteria not met (preparatory plan)',['weekPlan']);
+ onb('onb-marathon-block',i=>{marathon(i);i.athlete.recent={strengthDaysPerWeek:2,runDaysPerWeek:5,runMinutesPerWeek:300,longestRunMinutes:120};i.schedule.runDays=[0,1,3,5,6];i.schedule.longRunMinutes=180;},'marathon goal, every criterion met (block)',['weekPlan']);
+ onb('onb-time-goal',i=>{i.athlete.goals.run.event.timeGoalMinutes=44.5;},'10K with a 44:30 time goal (readings.runCalibration.goal)',['presentation']);
+ onb('onb-every-field',i=>{i.athlete.knownExercises=[{id:'back-squat',sets:4,reps:5,rir:3,load:{value:90,unit:'KG',convention:'TOTAL'}}];i.athlete.coaching={profile:'CONSERVATIVE'};
+  i.schedule.temporaryPreference='RUN';delete i.schedule.runTurn;delete i.schedule.strengthTurn;i.schedule.sameTurnConfirmed=true;i.athlete.performanceAnchors[0].conditions=[];},
+  'known load, coach, priority, shifts not answered with the shared day confirmed, normal conditions',['plan']);
+ onb('onb-only-strength',i=>{i.athlete.goals={run:{kind:'NONE'},strength:'STRENGTH'};delete i.athlete.runTrainingMonths;i.athlete.recent={strengthDaysPerWeek:2};i.athlete.performanceAnchors=[];
+  i.schedule={strengthDays:[1,3,5],strengthMinutes:45,runDays:[],strengthTurn:'PM'};delete i.weeks;},'"Só força": no run field, no plan length',['plan']);}
+
 fs.writeFileSync(path.join(OUT,'INDEX.json'),JSON.stringify({generator:'ios/Packages/CoachingPresentation/Facade/capture-fixtures.mjs',projections:PROJECTIONS_VERSION,files:index},null,1)+'\n');
 console.log(JSON.stringify({out:OUT,files:index.length}));

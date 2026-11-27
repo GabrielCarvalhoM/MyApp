@@ -1,0 +1,14 @@
+Regeneration of baseline-intakes-before-ccp.json from the pre-CCP commit (QRE P3, PR #121), 2026-11-27.
+
+  git worktree add --detach <scratch>/wt-6bc43620 6bc43620
+  cp baseline-dump-test.swift.txt <scratch>/wt-6bc43620/ios/Packages/CoachingPresentation/Tests/CoachingPresentationTests/ZZBaselineDump.swift
+  cd <scratch>/wt-6bc43620/ios/Packages/CoachingPresentation
+  BASELINE_OUT=<scratch>/baseline-regenerated.json swift test --filter ZZBaselineDump
+  cmp <scratch>/baseline-regenerated.json baseline-intakes-before-ccp.json        # no output: identical
+  git worktree remove --force <scratch>/wt-6bc43620
+
+Result: ZZBaselineDump passed; cmp identical.
+sha256 regenerated: ac550fe485ba37287a17e03e88cf77ce75d6a68cde9608ea6e9f1b5af7cf9915
+sha256 committed:   ac550fe485ba37287a17e03e88cf77ce75d6a68cde9608ea6e9f1b5af7cf9915
+The dump test is the same one that produced the committed file before the change (encodes RequestSchemaTests.intake() base, pregnancy, hr
+with sorted keys); it exists only in the disposable worktree, never in the repository's test target.
