@@ -64,8 +64,30 @@ QRE REVIEW OF PR #90: READY_WITH_CONDITIONS, no P0/P1/P2; #48's guarantees hold 
   Tests: 155, 0 failures, 0 skipped, 3 runs. Mutations: mutations-qre90.txt (N1-N10 for the new fixes, R/O rows re-run on the new code;
   every fix caught, redundant guards caught in pairs R15, R16). Gates: gates.txt (top section).
 
+QRE RECHECK OF PR #90 (8d3d7cc7): READY_WITH_CONDITIONS. Fixed in d7892a71 + 6de78ca9:
+  P3-A  A result missing from (or naming another workout in) an ok:true answer no longer clears mayBeOnRecord / mayHaveLanded: the
+        request was committed, so the workout may be on record. It is marked landed in an unknown delivery; only a real NOT_RECORDED from
+        the answer clears the flags. Its exhaustion goes through setAside (may-be-on-record); deleted, in flight or while it waits, it is
+        kept set aside and counted once. Tests: testAResultMissingFromAnOkAnswerMayHaveLanded, ...KeepsADeletedRunThatWaitsForItsResend,
+        testAResultMissingForARunDeletedInFlightKeepsIt.
+  P3-B  QueueItem.landedIn (replaces the Bool; mayHaveLanded = !landedIn.isEmpty): the delivery ids a send of which may have landed.
+        An admission refusal (setAsideItem, resendUnlinked, adapterBug) of the SAME delivery id removes that id: custody replays the
+        stored answer of a request id it has seen, and  runs only for one it has not. Another delivery's refusal, and
+        retryLater/waiting/halted refusals (BUSY, A's own CLOCK_AHEAD_OF_REFERENCE before custody), remove nothing. "*" (unknown) is
+        never removed by a refusal: a missing result, or a file without the field (a sent workout fails closed). So retryLater then
+        INVALID_OBSERVATION on the same delivery id lets the valid copy be the run (one count).
+        Tests: testARefusalOfTheSameDeliveryProvesItNeverLanded, testARefusalOfAnotherDeliveryNeverClearsIt,
+        testAWaitingRefusalOfTheSameDeliveryNeverClearsIt, testARelaunchedDeliveryRefusedUnderItsOwnIdNeverLanded,
+        testAFileWithoutLandedInFailsClosedAndNoRefusalClearsIt.
+  Found while doing it (G-5, introduced by #85's re-sends): a re-sent workout (already may-be-on-record) deleted while in flight and
+        answered waiting/halted was left pending and would have been sent again. It is now set aside and counted once
+        (testAReSentRunDeletedInFlightIsNeverSentAgain). setAside counts DELETED_MAYBE_ON_RECORD when the workout is first set aside
+        (testASetAsideCountsADeletionOnce); merge also sets aside a deleted workout left NOT_RECORDED by a missing result.
+  #48's guarantees: the whole earlier suite passes unchanged (MayBeOnRecordTests 10/10, the real-boundary tests included).
+  Tests: 163, 0 failures, 0 skipped, 3 runs. Mutations: mutations-qre90-recheck.txt (A1-A4, B1-B7, G1-G4; every fix caught).
+
 OPEN / FOR REVIEW
-- QRE recheck of 3dea3686.
+- QRE recheck of d7892a71 + 6de78ca9.
 - C's status shows a workout awaiting its round as set aside ATTEMPTS_EXHAUSTED (HealthIngestStatus is in the frozen contract; a distinct
   "awaiting re-send" status would need CCP). It becomes "awaiting delivery" when reopened.
 - Pre-existing iOS warnings in HealthKitReader.swift:79/85 (NSLock in async context; errors in Swift 6 mode). File untouched here.

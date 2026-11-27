@@ -1,0 +1,72 @@
+#85 mutation checks for the QRE #90 RECHECK (code commits d7892a71 + 6de78ca9). Each fix reverted alone in Sources, full swift test,
+Sources restored with git checkout and checked clean afterwards. Earlier rounds: mutations.txt, mutations-qre90.txt.
+
+A1 P3-A reverted: a missing result clears the flags
+  -> 3 fail (of 162)
+     LandedInTests testAResultMissingForARunDeletedInFlightKeepsIt
+     LandedInTests testAResultMissingFromAnOkAnswerMayHaveLanded
+     LandedInTests testAResultMissingKeepsADeletedRunThatWaitsForItsResend
+A2 P3-A: a missing result neither clears nor marks
+  -> 3 fail (of 162)
+     LandedInTests testAResultMissingForARunDeletedInFlightKeepsIt
+     LandedInTests testAResultMissingFromAnOkAnswerMayHaveLanded
+     LandedInTests testAResultMissingKeepsADeletedRunThatWaitsForItsResend
+A3 P3-A: exhaustion after a missing result set aside directly (old)
+  -> 1 fail (of 162)
+     LandedInTests testAResultMissingFromAnOkAnswerMayHaveLanded
+A4 P3-A: a deleted workout with a missing result is removed
+  -> 1 fail (of 162)
+     LandedInTests testAResultMissingForARunDeletedInFlightKeepsIt
+B1 P3-B reverted: an admission refusal of the same delivery clears nothing
+  -> 2 fail (of 162)
+     LandedInTests testARefusalOfTheSameDeliveryProvesItNeverLanded
+     LandedInTests testARelaunchedDeliveryRefusedUnderItsOwnIdNeverLanded
+B2 P3-B: a refusal clears every delivery, not only its own
+  -> 2 fail (of 162)
+     LandedInTests testARefusalOfAnotherDeliveryNeverClearsIt
+     LandedInTests testAWaitingRefusalOfTheSameDeliveryNeverClearsIt
+B3 P3-B: any refusal disposition clears (waiting, retryLater, halted)
+  -> 4 fail (of 162)
+     LandedInTests testAWaitingRefusalOfTheSameDeliveryNeverClearsIt
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     ResendBoundaryTests testADeliveryReadBackFromDiskMayHaveLanded
+     ResendBoundaryTests testAnAnswerThatCouldNotBeWrittenMayHaveLanded
+B4 P3-B: a refusal clears even an unknown landing
+  -> 3 fail (of 162)
+     LandedInTests testAFileWithoutLandedInFailsClosedAndNoRefusalClearsIt
+     LandedInTests testARefusalOfAnotherDeliveryNeverClearsIt
+     LandedInTests testAWaitingRefusalOfTheSameDeliveryNeverClearsIt
+B5 P3-B: load marks an unknown landing instead of the delivery id
+  -> 2 fail (of 162)
+     LandedInTests testARelaunchedDeliveryRefusedUnderItsOwnIdNeverLanded
+     ReviewR2RegressionTests testAPopulatedQueueFileRoundTrips
+B6 P3-B: a retryLater answer marks an unknown landing
+  -> 3 fail (of 162)
+     LandedInTests testARefusalOfAnotherDeliveryNeverClearsIt
+     LandedInTests testARefusalOfTheSameDeliveryProvesItNeverLanded
+     ReviewR2RegressionTests testAPopulatedQueueFileRoundTrips
+B7 P3-B: a file without landedIn is read as never landed
+  -> 1 fail (of 162)
+     LandedInTests testAFileWithoutLandedInFailsClosedAndNoRefusalClearsIt
+G1 a re-sent workout deleted in flight is left pending (waiting/halted)
+  -> 1 fail (of 162)
+     LandedInTests testAReSentRunDeletedInFlightIsNeverSentAgain
+G2 merge leaves a deleted NOT_RECORDED workout that may have landed as it is
+  -> 1 fail (of 162)
+     LandedInTests testAResultMissingKeepsADeletedRunThatWaitsForItsResend
+G3 setAside counts a deletion again when the workout was already set aside
+  -> 1 fail (of 163)
+     LandedInTests testASetAsideCountsADeletionOnce
+G4 setAside never counts a deletion
+  -> 7 fail (of 162)
+     LandedInTests testAReSentRunDeletedInFlightIsNeverSentAgain
+     LandedInTests testAResultMissingForARunDeletedInFlightKeepsIt
+     MayBeOnRecordTests testALinkedElsewhereRefusalOfARunDeletedInFlightKeepsIt
+     MayBeOnRecordTests testARefusalThatExhaustsRetryLaterNeverDropsADeletedRunThatMayBeOnRecord
+     MayBeOnRecordTests testASetAsideOnARunDeletedInFlightIsCountedOnce
+     ResendBoundaryTests testARunDeletedAfterALandedWriteIsNeverCountedTwice
+     ResendBoundaryTests testARunDeletedInFlightAfterASendThatMayHaveLandedIsKept
+restored: clean (git status --porcelain Sources empty after every mutation)
+
+NOTE  G3 first survived (162 tests): no current path sets aside a workout already set aside. testASetAsideCountsADeletionOnce (6de78ca9)
+      pins the count-once guard; G3 re-run on 163 tests above.
