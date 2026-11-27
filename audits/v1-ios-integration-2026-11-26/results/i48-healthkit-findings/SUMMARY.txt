@@ -1,0 +1,57 @@
+#48 - HealthKitIngest integration-review findings P3-2, P3-3, P3-4, QueueStore.swift:58, and B R2-03 (from #63)
+(front B package; integration-owned branch)
+
+Branch claude/v1-ios-integration-i48-healthkit from claude/v1-ios-integration @ a093c042. Code commit 56e87465. Only
+ios/Packages/HealthKitIngest changed (plus this folder). Frozen paths untouched: CoachingCore, IntegrationContracts,
+CoachingPresentation, tools/device-lock. No CoachingHost or app composition change was needed (the new init parameter has a default).
+
+ITEMS
+P3-2  DONE. QueueItem.mayBeOnRecord: set when an item is set aside after an answer that does not prove it absent from the record:
+      retryLater exhausted (DeviceDelivery: "a write that landed is replayed") and ACTIVITY_LINKED_ELSEWHERE (it IS on the record).
+      regroup keeps such an item as the fixed run of its same-run group (like OVERLAPS_APP_RECORDING), so a copy is never promoted and
+      sent with a new activityId. A copy is promoted only after an answered NOT_RECORDED (attempts exhausted) or a whole refusal
+      ("NOTHING was recorded"). Also closed: deleting such an item in Apple Health used to remove it and promote its copy; it now stays
+      (counted once as DELETED_MAYBE_ON_RECORD). A queue file without the field fails closed: a frozen ATTEMPTS_EXHAUSTED or
+      ACTIVITY_LINKED_ELSEWHERE item is read as may-be-on-record.
+      Tests: MayBeOnRecordTests (5, one through the real frozen boundary in Node).
+P3-3  DONE. syncObservation: one registration pass at a time; a caller arriving during a pass asks for another and waits for it, so
+      setEnabled(false) returns only when the observer and background delivery are off; the switch is re-checked after every await.
+      start and requestAuthorization use it too, so a launch with the switch off disables what a crash may have left registered.
+      setBackgroundDelivery(false) failures are now logged (code only) instead of `try?`.
+      Tests: ObservationRaceTests (4: off during startObserving, off during enableBackgroundDelivery, off then on, launch repair).
+R2-03 DONE (code); DEVICE CHECK OPEN. observerFired asks for a background window before it returns (the HKObserverQuery completion
+      handler runs when it returns) and the delivery task holds it until the delivery loop it joins has ended, including a loop
+      already running (pump(waitForRunning:)). Production window: ProcessInfo.performExpiringActivity (Foundation; B imports no UI
+      framework); begin waits for the system's first answer at most 1 s. Released at once when the loop parks on a retry timer.
+      Logged: hki.backgroundWindow code=GRANTED|REFUSED|UNCONFIRMED, then ENDED|EXPIRED. Nothing depends on the window for
+      correctness: an interrupted delivery stays durable in flight and is re-sent with the same id.
+      Tests: BackgroundWindowTests (3, ordering against the completion), ProcessBackgroundWindowTests (5, scripted system).
+QueueStore.swift:58 DONE. A data-protection failure on the temporary file deletes it and throws QueueStoreError.protectionFailed; the
+      current file is never replaced by an unprotected one. Related: noteReadError kept its status code only on disk (`try?`); when that
+      write fails the status now still shows it (e.g. QUEUE_WRITE_FAILED).
+      Test: IntegrationReviewTests.testAFileThatCannotBeProtectedNeverReplacesTheCurrentOne.
+P3-4  DONE.
+      (a) R2-02 b/c: testAnUndecodableFileIsNeverOverwrittenAndItsPurgeLeavesTheSwitchOff, testPurgingAnUndecodableFileNeverRemovesItFirst.
+      (b) R2-01 real timeout: assertFinishes (XCTestExpectation) replaces the cancel() that unblocked nothing;
+          testTheTimeoutFailsInsteadOfHanging proves it fails instead of hanging.
+      (c) Exact limits: SameRunRuleTests.testEveryLimitAtItsExactEdge (3-min floor 10/13 vs 13.01 and 7/6.99 vs 10; crossover 27/26.99
+          vs 30; 10 % at 33.33/33.34 and 66.66/66.67; distance 5.555/5.556; touching 60 s / 60.5 s; half overlap +-1 s).
+      (d) Different reads: testCopiesArrivingInDifferentReadsChooseTheSameRun (one read, two reads, reversed: same run),
+          testACopyArrivingInALaterReadAfterTheFirstWasSentIsConsolidated.
+      (e) CCP-B-04: testASignalAwaitedInsideDeliverNeverDeadlocks (A breaks rule 1), testASignalSentFromATaskInsideDeliverIsNeverLost.
+
+SIZE
+HealthKitIngestor.swift 796 -> 534 (still legacy baseline): merge/grouping, answers/pump and observation moved to
+HealthKitIngestor+Grouping.swift (126), +Answers.swift (156), +Observation.swift (75); BackgroundWindow.swift (105) is new.
+ThirdPartyImportTests.swift 415 -> 316: SameRunRuleTests moved to SameRunRuleTests.swift (139). It is now <= 350, so its entry in
+tools/orchestration/swift-size-baseline.json (orchestration-owned) can be removed. Every new file <= 350.
+
+TESTS (macOS swift test, package): 127 tests, 0 failures, 1 expected failure (the timeout self-test). Before: 101.
+healthkitingest-swift-test.txt. Mutation checks and iOS builds: builds-and-mutations.txt. Gates: gates.txt.
+No Keychain is used by this package. No real health data: every workout is synthetic; logs carry codes and counts only.
+The package has no iOS-only test target (HealthKitReader runs only in ios/Labs/HealthKitLab, not run here).
+
+OPEN / FOR THE HARDWARE CHECKPOINT
+- R2-03 on an iPhone: a workout recorded with RepMile suspended -> hki.observerFired, hki.backgroundWindow code=GRANTED, the delivery,
+  hki.backgroundWindow code=ENDED, before suspension. performExpiringActivity's behaviour in an app in background is not proven here.
+- Behaviour change to note: a launch with the switch off now calls stopObserving and disableBackgroundDelivery (idempotent).
