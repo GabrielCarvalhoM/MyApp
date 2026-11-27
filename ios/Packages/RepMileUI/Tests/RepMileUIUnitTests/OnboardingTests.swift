@@ -87,6 +87,11 @@ final class OnboardingTests: XCTestCase {
             XCTAssertFalse(d.answered(step), "\(step) starts unanswered")
         }
         XCTAssertEqual(d.consents, Consents(coaching: true, healthSignals: false, learning: false))
+        // PR #121 review: no starting months (the old form began at 12 and 6, a sporting default): nil until 22 and 25 are answered.
+        XCTAssertNil(d.runBand); XCTAssertNil(d.strengthBand); XCTAssertNil(d.runTrainingMonths)
+        var started = Self.lucas(); started.runBand = nil; started.strengthBand = nil
+        XCTAssertNil(started.runTrainingMonths)
+        XCTAssertEqual(started.build(athleteId: "a", today: "2026-10-24", startDate: "2026-10-26"), .incomplete, "nothing is sent without them")
         XCTAssertEqual(d.build(athleteId: "a", today: "2026-10-24", startDate: "2026-10-26"), .held([.singleSport]))
     }
 
