@@ -35,9 +35,9 @@ Critérios que o revisor independente aplica a todo incremento Swift. Arquitetur
 
 | Legado (26/11) | Linhas | Frente | Divisão planejada |
 |---|---|---|---|
-| `RepMileUI/Features/Plan/PlanScreen.swift` | 395 | C | semana / mês / fases em arquivos próprios |
+| ~~`RepMileUI/Features/Plan/PlanScreen.swift`~~ | ~~395~~ → 163 | C | **feito** no #41 (PR #57) |
 | ~~`RepMileUI/Features/Onboarding/OnboardingFlow.swift`~~ | ~~378~~ → 122 | C | **feito** no #32.1 (PR #43) |
-| `RepMileUI/Features/Session/SessionDetailView.swift` | 354 | C | corrida / força |
+| ~~`RepMileUI/Features/Session/SessionDetailView.swift`~~ | ~~354~~ → 117 | C | **feito** no #41 (PR #57) |
 | `CoachingHost/Sources/CoachingHost/Ports.swift` | 370 | A | após a entrega final de A |
 | `CoachingHost/Sources/CoachingHost/CoachingHost.swift` | 354 | A | entrega final `296a435` (anterior à regra na branch de A) |
 | `CoachingHost/Tests/CoachingHostTests/ErasureTests.swift` | 401 | A | idem |

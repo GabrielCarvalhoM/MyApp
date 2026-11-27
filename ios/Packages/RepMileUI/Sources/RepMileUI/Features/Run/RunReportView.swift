@@ -6,6 +6,7 @@ import SwiftUI
 /// this view renders them. An unplanned run asks "Parou ou sentiu algo fora do normal?" (SSCTR-ABC-S1); "yes" opens "Não estou 100%"
 /// with the eligibility screen at once.
 struct RunReportView: View {
+    @Environment(AppModel.self) private var model
     @Environment(RunRecorder.self) private var recorder
     /// For the title only. Whether the report is planned comes from the recording itself.
     let session: PlannedSession?
@@ -95,7 +96,10 @@ struct RunReportView: View {
         .scrollIndicators(.hidden)
         .animation(.spring(response: 0.4, dampingFraction: 0.7), value: viewModel.result)
         // Closing "Não estou 100%" returns to the report (still to save or resend); it never closes the run screen.
-        .sheet(isPresented: $showSigns) { NotFeeling100Flow(requireEligibility: true) }
+        .sheet(isPresented: $showSigns) {
+            NotFeeling100Flow(viewModel: NotFeeling100ViewModel(reader: model.reader, writer: model.writer, requireEligibility: true,
+                                                                planToday: { [model] in model.plan?.today }))
+        }
         .confirmationDialog(L.t("report.leave.confirm"), isPresented: $confirmLeave, titleVisibility: .visible) {
             Button(L.t("report.leave"), role: .destructive) { recorder.discard(); close() }
         }

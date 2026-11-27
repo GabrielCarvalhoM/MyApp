@@ -43,7 +43,9 @@ struct HistoryScreen: View {
         .accessibilityIdentifier("screen-history")
         .background(RM.Palette.fundoApp.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(item: $selected) { HistoryDetail(entry: $0, title: title($0)) }
+        .sheet(item: $selected) {
+            HistoryDetail(viewModel: HistoryCorrectionViewModel(entry: $0, writer: model.writer, reload: { [model] in await model.load() }), title: title($0))
+        }
     }
 
     private var groupedByWeek: [(String, [LoggedEntry])] {
@@ -109,16 +111,16 @@ struct HistoryRow: View {
     }
 }
 
-/// One history row in full: every voice (each with done, minutes, stop, distances), sets and loads as logged, and the distance correction.
+/// One history row in full: every voice (each with done, minutes, stop, distances), sets and loads as logged, and the distance correction
+/// (its state and write live in `HistoryCorrectionViewModel`).
 struct HistoryDetail: View {
-    @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
-    let entry: LoggedEntry
+    @State private var viewModel: HistoryCorrectionViewModel
     let title: String
-    @State private var contesting = false
-    @State private var km = ""
-    @State private var reason: DeclaredDistanceReason = .signalLoss
-    @State private var sent: Bool?
+
+    init(viewModel: HistoryCorrectionViewModel, title: String) { _viewModel = State(initialValue: viewModel); self.title = title }
+
+    private var entry: LoggedEntry { viewModel.entry }
 
     var body: some View {
         NavigationStack {
@@ -137,7 +139,7 @@ struct HistoryDetail: View {
                             }
                         }
                     }
-                    if canContest { contestBlock }
+                    if viewModel.canContest { contestBlock }
                 }
                 .padding(RM.Space.gutter)
             }
@@ -161,42 +163,26 @@ struct HistoryDetail: View {
         .accessibilityIdentifier("history-voice-\(v.channel.raw)")
     }
 
-    /// A planned run the device measured: the athlete may contest the distance (NATIVE 7.5, `actual.declared`).
-    private var canContest: Bool { entry.sessionId != nil && entry.measuredKm != nil && entry.contested == nil && entry.sport?.raw == "RUN" }
-
     @ViewBuilder private var contestBlock: some View {
-        if let sent {
+        @Bindable var vm = viewModel
+        switch viewModel.phase {
+        case .saved, .notKept:
+            let sent = viewModel.phase == .saved
             Text(sent ? L.t("report.saved") : L.t("report.notKept")).rmText(.detalhe, sent ? RM.Palette.positivo : RM.Palette.negativo)
-        } else if contesting {
+        case .editing, .submitting:
             RMCard {
                 Text(L.t("history.contest.title")).rmText(.subtitulo)
                 Text(L.t("history.contest.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
-                TextField(L.t("history.contest.km"), text: $km).keyboardType(.decimalPad).rmText(.numeroS)
+                TextField(L.t("history.contest.km"), text: $vm.km).keyboardType(.decimalPad).rmText(.numeroS)
                     .padding(10).background(RM.Palette.fundoElevado2, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("contest-km")
-                Picker("", selection: $reason) { ForEach(DeclaredDistanceReason.allCases, id: \.self) { Text(L.t("reason." + $0.rawValue)).tag($0) } }
+                Picker("", selection: $vm.reason) { ForEach(DeclaredDistanceReason.allCases, id: \.self) { Text(L.t("reason." + $0.rawValue)).tag($0) } }
                     .pickerStyle(.menu).tint(RM.Palette.textoPrimario)
-                PrimaryActionButton(L.t("history.contest.send"), icon: .check, enabled: Double(km.replacingOccurrences(of: ",", with: ".")) != nil) { Task { await contest() } }
+                PrimaryActionButton(L.t("history.contest.send"), icon: .check, enabled: viewModel.canSend) { Task { await viewModel.send { change in withAnimation { change() } } } }
                     .accessibilityIdentifier("contest-send")
             }
-        } else {
-            SecondaryPillButton(L.t("history.contest"), icon: .gps) { contesting = true }.accessibilityIdentifier("history-contest")
+        case .idle:
+            SecondaryPillButton(L.t("history.contest"), icon: .gps) { viewModel.startContesting() }.accessibilityIdentifier("history-contest")
         }
-    }
-
-    private func contest() async {
-        guard let id = entry.sessionId, let d = Double(km.replacingOccurrences(of: ",", with: ".")) else { return }
-        let mine = entry.voices.first { $0.channel.raw == "ATHLETE" }
-        let response = SessionResponse(performance: PerformanceResponse(rawValue: mine?.response?.performance?.raw ?? "") ?? .unknown,
-                                       recovery: RecoveryResponse(rawValue: mine?.response?.recovery?.raw ?? "") ?? .unknown,
-                                       effort: EffortResponse(rawValue: mine?.response?.effort?.raw ?? "") ?? .unknown,
-                                       nextDayFunction: NextDayFunctionResponse(rawValue: mine?.response?.nextDayFunction?.raw ?? "") ?? .unknown)
-        let obs = AthleteObservation.plannedRun(sessionId: id, occurrenceDate: entry.date, observedAt: entry.observedAt,
-                                                actual: PlannedRunActual(completed: mine?.completed ?? entry.completed, minutes: mine?.minutes ?? entry.minutes, rpe: mine?.rpe,
-                                                                         stop: mine?.stopReason.flatMap { StopReason(rawValue: $0.raw) }.map(RunStop.init(reason:)),
-                                                                         declared: ContestedDistance(distanceKm: d, reason: reason)),
-                                                response: response)
-        let out = await model.writer.submit(ReviewRequest(.sessionReports([obs]), eligibility: nil))
-        withAnimation { sent = out.answer.ok && !(out.answer.recorded ?? []).filter(out.kept.contains).isEmpty }
     }
 }
 
