@@ -1,0 +1,25 @@
+#76 composition follow-ups (from #63): evidence. SIMULATOR ONLY (RepMile-C-2, iOS 27.2, Xcode 27.2). Nothing ran on a device.
+Code under test: 78f42b31 (branch claude/v1-ios-integration-i76-composition-followups, base claude/v1-ios-integration @ 283bc780).
+The app was uninstalled from RepMile-C-2 before the run.
+
+sim-all-manifest.json, sim-all-test-summary.json, sim-all-test-cases.txt, screenshot-RepMile-C-2-pt_BR-light.png
+  tools/orchestration/sim.sh all --sim RepMile-C-2: 83/83 passed, 0 failed, 0 skipped (35 composition unit + 48 UI),
+  manifest commit 78f42b31, uncommittedFiles=0, target=simulator result=ok.
+  New: LiveCompositionTests.testADamagedIdentityShowsItsOwnStateWithNoRetry (XCUITest, Debug -simulateDamagedIdentity);
+  PendingErasureTests (9) now over front C's real RecordingStore (RunRecorder linked into RepMileCompositionTests).
+screenshot-identity-damaged-pt_BR.png
+  Attachment of that XCUITest: the damaged-identity state, pt-BR, no "try again".
+repmileui-unit-tests.txt
+  xcodebuild test -scheme RepMileUI on RepMile-C-2: 161/161 (LaunchStateTests 7 new). Run on the working tree that was committed as
+  78f42b31 unchanged.
+runrecorder-tests.txt
+  swift test (ios/Packages/RunRecorder, macOS): 14/14 (RecordingStoreErasureTests 4 new: filled folder, recorder erase, failed removal,
+  standardDirectory read-only).
+release-build-check.txt
+  Release build: the Debug seam -simulateDamagedIdentity is not in the binary.
+gates.txt
+  guard.mjs (INT) and swift-size.mjs on 78f42b31.
+
+Copy pipeline: python3 -I Copy/gen_strings.py regenerated the three Localizable.strings with additions only (609 keys x 3). Before #76,
+regenerating would have dropped two keys present only in the generated files (state.blocked.body.interim.reportNotKept,
+report.clinical.notKept, both used by the UI); they were put back in copy.psv with their existing wording, unchanged.
