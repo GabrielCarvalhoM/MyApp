@@ -6,18 +6,40 @@ import SwiftUI
 /// The app root. In the parallel phase it composes the fixture providers (front C); at integration the composition root passes front A's
 /// CoachingHost and front B's adapter instead, and nothing below changes.
 public struct RepMileShell: View {
-    @State private var model: AppModel
-    @State private var recorder: RunRecorder = RepMileShell.makeRecorder()
+    /// What the production composition root (`ios/App/Composition`, #16) hands the shell besides the model: the athlete id the host was
+    /// opened with (the intake carries it) and the hook run once the account is known erased (the next launch is a new account, CCP-A-05).
+    public struct Live {
+        public let athleteId: String
+        public let accountErased: @MainActor () -> Void
+        public init(athleteId: String, accountErased: @escaping @MainActor () -> Void) {
+            self.athleteId = athleteId; self.accountErased = accountErased
+        }
+    }
 
-    /// CoreLocation on a device; a scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
+    @State private var model: AppModel
+    @State private var recorder: RunRecorder
+    /// nil: the fixture composition (`-scenario`). Set: the live composition, which never swaps in a fixture reader.
+    private let live: Live?
+
+    /// The fixture composition's recorder (`-scenario`, Debug only; the live composition passes its own). CoreLocation on a device; a
+    /// scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
     @MainActor static func makeRecorder() -> RunRecorder {
-        let simulated = ProcessInfo.processInfo.arguments.contains("-simulatedLocation")
-        let source: LocationSource = simulated ? SimulatedLocationSource(state: .noSignal) : CoreLocationSource()
-        // UI tests: a store per launch, so one journey's recording never resumes in the next (`-recordingStore <name>` reuses one on purpose).
         let args = ProcessInfo.processInfo.arguments
-        let name = args.firstIndex(of: "-recordingStore").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } ?? UUID().uuidString
-        let store = simulated ? RecordingStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("uitest-recordings-" + name)) : RecordingStore.standard()
+        let simulated = args.contains("-simulatedLocation")
+        let source: LocationSource = simulated ? SimulatedLocationSource(state: .noSignal) : CoreLocationSource()
+        let store = RecordingStore(directory: fixtureRecordingsDirectory(arguments: args, simulated: simulated, temporary: FileManager.default.temporaryDirectory))
         return RunRecorder(source: source, store: store)
+    }
+
+    /// Where the fixture composition keeps its recordings: never the live `RecordingStore.standardDirectory` (#76), so a fixture launch can
+    /// neither show nor erase the athlete's real recordings, nor leave one that the live composition would then index. UI tests
+    /// (`-simulatedLocation`): a store per launch, so one journey's recording never resumes in the next; `-recordingStore <name>` reuses one
+    /// on purpose (a relaunch that must resume). CoreLocation: one fixture store kept across launches, as before, still not the live one.
+    static func fixtureRecordingsDirectory(arguments: [String], simulated: Bool, temporary: URL,
+                                           newName: () -> String = { UUID().uuidString }) -> URL {
+        let named = arguments.firstIndex(of: "-recordingStore").flatMap { arguments.indices.contains($0 + 1) ? arguments[$0 + 1] : nil }
+        let name = named.flatMap { $0.isEmpty || $0.contains("/") || $0.hasPrefix(".") ? nil : $0 } ?? (simulated ? newName() : "device")
+        return temporary.appendingPathComponent("fixture-recordings-" + name, isDirectory: true)
     }
 
     /// Parallel-phase composition: replay the bundled CoachingCore captures for `scenario` (launch argument `-scenario <id>`).
@@ -27,9 +49,16 @@ public struct RepMileShell: View {
         let chosen = Scenario.named(scenario ?? UserDefaults.standard.string(forKey: "scenario"))
         _model = State(initialValue: AppModel(reader: FixtureCoachingReader(scenario: chosen, store: store), writer: FixtureCoachingWriter(store: store),
                                               health: FixtureHealthIngestStatus(queued: chosen.healthQueued), athleteName: "Lucas Andrade"))
+        _recorder = State(initialValue: RepMileShell.makeRecorder())
+        live = nil
     }
 
-    public init(model: AppModel) { RMFonts.register(); _model = State(initialValue: model) }
+    public init(model: AppModel) { RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: RepMileShell.makeRecorder()); live = nil }
+
+    /// The live composition: the recorder is the composition's (its `RecordingStore` is also front B's `AppRecordingIndex`).
+    public init(model: AppModel, recorder: RunRecorder, live: Live) {
+        RMFonts.register(); _model = State(initialValue: model); _recorder = State(initialValue: recorder); self.live = live
+    }
 
     public var body: some View {
         Group {
@@ -37,9 +66,11 @@ public struct RepMileShell: View {
             case .loading: LoadingSkeleton()
             case .app: AppTabs()
             case .onboarding:
-                OnboardingFlow(viewModel: OnboardingViewModel(writer: model.writer), onEnrolled: {
+                OnboardingFlow(viewModel: live.map { OnboardingViewModel(writer: model.writer, athleteId: $0.athleteId) } ?? OnboardingViewModel(writer: model.writer), onEnrolled: {
+                    // Live: the host reads the new record. Never a fixture reader here.
+                    if live != nil { Task { await model.load() } }
                     // Fixture phase: the state the engine answered after an accepted intake (`special-none-plan`, the first week).
-                    if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
+                    else if let store = FixtureStore.bundled { Task { await model.replaceReader(FixtureCoachingReader(scenario: .firstWeek, store: store)) } }
                     else { Task { await model.load() } }
                 })
             default: StateScreen(route: model.route, primary: {}, retry: { Task { await model.load() } })
@@ -48,7 +79,9 @@ public struct RepMileShell: View {
         .environment(model)
         .environment(recorder)
         // An account found erased (GONE) erases this front's recordings too (G07), also when the erasure happened elsewhere.
-        .onChange(of: model.route) { _, r in if r == .accountErased { recorder.eraseAllRecordings() } }
+        // A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next open removes
+        // the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
+        .onChange(of: model.route) { _, r in if r == .accountErased { try? recorder.eraseAllRecordings(); live?.accountErased() } }
         .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
@@ -163,7 +196,7 @@ struct AppTabs: View {
         switch r {
         case .profile:
             ProfileScreen(viewModel: ProfileViewModel(writer: model.writer, reload: { [model] in await model.load() },
-                                                      eraseRecordings: { [recorder] in recorder.eraseAllRecordings() },
+                                                      eraseRecordings: { [recorder] in try? recorder.eraseAllRecordings() },
                                                       accountErased: { [model] in await model.accountErased() }),
                           openZones: { todayPath.append(.hrZones) })
         case .hrZones: HeartRateZonesScreen()
