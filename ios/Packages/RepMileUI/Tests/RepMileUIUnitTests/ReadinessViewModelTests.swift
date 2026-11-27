@@ -6,14 +6,18 @@ import XCTest
 /// "De volta" only on READINESS_RESTART / RETURNING; anything else keeps the hold (fail closed).
 @MainActor
 final class ReadinessViewModelTests: XCTestCase {
+    /// Loaded, with the eligibility screen answered "none applies" and every sign "não" (#72): these tests pin the declaration itself (the
+    /// screen and the sign gate: `EligibilityRestTests`).
     private func loaded(_ writer: CoachingWriting) async -> ReadinessViewModel {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: writer)
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: writer, planToday: { "2026-11-22" })
+        vm.eligibility = .testNoneApplies
         await vm.load()
+        vm.answers = Dictionary(uniqueKeysWithValues: (vm.questionSet?.warningSigns ?? []).map { ($0, false) })
         return vm
     }
 
     func testLoadsExactlyTheEngineReadinessSet() async throws {
-        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store))
+        let vm = ReadinessViewModel(reader: Safety.reader(), writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
         XCTAssertEqual(vm.phase, .loading)
         await vm.load()
         let set = try Safety.set("READINESS")
@@ -25,11 +29,12 @@ final class ReadinessViewModelTests: XCTestCase {
 
     func testTheSetIsReadOnceAndAnswersSurviveAReappearance() async throws {
         let reader = DelayedSignReader(delays: [:])
-        let vm = ReadinessViewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store))
+        let vm = ReadinessViewModel(reader: reader, writer: FixtureCoachingWriter(store: Repo.store), planToday: { "2026-11-22" })
         await vm.load()
-        vm.recovered = true
+        vm.recovered = true; vm.eligibility.pain = false
         await vm.load()
         XCTAssertEqual(reader.journal.entries.count, 1)
+        XCTAssertEqual(vm.eligibility.pain, false)
         XCTAssertEqual(vm.phase, .answering(try Safety.set("READINESS")))
         XCTAssertEqual(vm.recovered, true)
     }
@@ -48,9 +53,12 @@ final class ReadinessViewModelTests: XCTestCase {
         let w = FixtureCoachingWriter(store: Repo.store)
         let vm = await loaded(w)
         let set = try Safety.set("READINESS")
+        vm.answers = [:]
         for s in set.warningSigns.dropLast() { vm.answers[s] = false }
         vm.answers["notInTheSet"] = true
         vm.recovered = true; vm.run = true
+        // A "sim" sends at once, the last sign unanswered (#72: otherwise every sign is answered first).
+        vm.answers[set.warningSigns[0]] = true
         await vm.send()
         let sent = try XCTUnwrap(try Safety.submits(w.journal).first)
         let readiness = try XCTUnwrap(sent["readiness"] as? [String: Any])
@@ -60,8 +68,7 @@ final class ReadinessViewModelTests: XCTestCase {
         let sports = try XCTUnwrap(readiness["sports"] as? [String: [String: Any]])
         XCTAssertEqual(sports["RUN"]?["ready"] as? Bool, true)
         XCTAssertEqual(sports["STRENGTH"]?["ready"] as? Bool, false)
-        XCTAssertNil(sent["eligibility"])
-        XCTAssertEqual(vm.phase, .returning, "the capture restarts training (READINESS_RESTART, RETURNING)")
+        XCTAssertEqual((sent["eligibility"] as? [String: Any])?["assessedAt"] as? String, "2026-11-22", "the screen goes with it (#72)")
     }
 
     func testReplyReadsTheEngineAnswer() throws {
@@ -83,14 +90,15 @@ final class ReadinessViewModelTests: XCTestCase {
         let w = ScriptedSubmitWriter(try Safety.answer(#"{"ok":true,"status":"ASK"}"#))
         let vm = await loaded(w)
         let set = try Safety.set("READINESS")
-        vm.recovered = true; vm.answers[set.warningSigns[0]] = false
+        vm.recovered = true
+        let answers = vm.answers
         await vm.send()
         XCTAssertEqual(vm.phase, .needsAnswers(set))
         XCTAssertNil(vm.questionSet)
         vm.back()
         XCTAssertEqual(vm.phase, .answering(set))
         XCTAssertEqual(vm.recovered, true)
-        XCTAssertEqual(vm.answers, [set.warningSigns[0]: false])
+        XCTAssertEqual(vm.answers, answers)
     }
 
     func testTwoTapsWhileSendingWriteOnce() async throws {
@@ -108,7 +116,7 @@ final class ReadinessViewModelTests: XCTestCase {
 
     func testAFailedReadLeavesNothingToAnswer() async {
         let w = FixtureCoachingWriter(store: Repo.store)
-        let vm = ReadinessViewModel(reader: Safety.reader(Safety.emptyStore), writer: w)
+        let vm = ReadinessViewModel(reader: Safety.reader(Safety.emptyStore), writer: w, planToday: { "2026-11-22" })
         await vm.load()
         XCTAssertEqual(vm.phase, .loading)
         XCTAssertNil(vm.questionSet)

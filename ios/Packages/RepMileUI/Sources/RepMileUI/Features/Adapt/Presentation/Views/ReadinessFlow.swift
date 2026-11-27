@@ -1,8 +1,8 @@
 import CoachingPresentation
 import SwiftUI
 
-/// The readiness declaration (the only exit of a clinical hold): the READINESS set (15 signs), "recovered", and sport by sport. State, the read
-/// of the set and the write live in `ReadinessViewModel`; this view renders them.
+/// The readiness declaration (the only exit of a clinical hold): the READINESS set (15 signs), "recovered", sport by sport, and the eligibility
+/// screen (#72). State, the read of the set and the write live in `ReadinessViewModel`; this view renders them.
 struct ReadinessFlow: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: ReadinessViewModel
@@ -37,10 +37,13 @@ struct ReadinessFlow: View {
     }
 
     @ViewBuilder private func result(returning done: Bool) -> some View {
-        StateBanner(tone: done ? .neutral : .safety, icon: done ? .repetir : .pausa,
-                    title: done ? L.t("state.returning.title") : L.t("state.blocked.title"),
-                    message: done ? L.t("state.returning.body") : L.t("state.blocked.body.interim"))
-            .accessibilityIdentifier(done ? "readiness-returning" : "readiness-still-blocked")
+        // A declaration that keeps the hold is not recorded as a release: #68's banner without "o seu registro continua guardado".
+        if done {
+            StateBanner(tone: .neutral, icon: .repetir, title: L.t("state.returning.title"), message: L.t("state.returning.body"))
+                .accessibilityIdentifier("readiness-returning")
+        } else {
+            ClinicalRouteBanner(reportKept: false).accessibilityIdentifier("readiness-still-blocked")
+        }
         SecondaryPillButton(L.t("common.close")) { dismiss() }
     }
 
@@ -53,6 +56,9 @@ struct ReadinessFlow: View {
         SignQuestionnaire(title: L.t("signs.title"), signs: set.warningSigns, answers: $vm.answers)
         Toggle(isOn: $vm.run) { Text(L.t("readiness.run")).rmText(.corpo) }.tint(RM.Palette.corrida)
         Toggle(isOn: $vm.strength) { Text(L.t("readiness.strength")).rmText(.corpo) }.tint(RM.Palette.forca)
+        // #72: the engine releases no hold without the screen sent with the declaration.
+        EligibilityForm(screen: $vm.eligibility).disabled(viewModel.phase != .answering(set))
+        Text(L.t("ob.eligibility.body")).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
         Text(L.t("readiness.note.interim")).rmText(.detalhe, RM.Palette.textoSecundario)
         // Off while the one request is in flight (no second declaration).
         PrimaryActionButton(L.t("nf.send"), icon: .check, enabled: viewModel.canSend) {
