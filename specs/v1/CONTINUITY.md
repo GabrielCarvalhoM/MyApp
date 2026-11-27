@@ -14,13 +14,12 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 
 | | |
 |---|---|
-| **Missão P0 (fundador, 27/11)** | **Reconciliação Figma × SwiftUI.** O Figma é a especificação de UI/UX; o CoachingCore, a autoridade esportiva; `specs/v1/` faz a ponte (PRODUCT_SCOPE "Três autoridades"). Gate visual obrigatório (QUALITY_GATES §2b), campos **Figma** e **Produto** no quadro. #14 é a reconciliação integral e bloqueia a aprovação das jornadas. Subtarefas: #101 onboarding (P0), #99 Hoje (P0), #102 Plano/detalhes, #103 Execução/conclusão, #104 Histórico/Progresso, #105 Perfil e secundários. Suspensão: nenhuma tela ou fluxo novo fora do Figma |
-| Em andamento | **Matriz** `specs/v1/FIGMA_MATRIX.md` (`ios-test-engineer`, worktree `myapp-v1-orch-matrix`, sem simulador) · **#101** onboarding (`ios-engineer`, `myapp-v1-c-i101`; fase A spec sem simulador, depois C-2) · **#98/#99** (`ios-engineer`, `myapp-v1-c-i99`, sim INT) · **#94** modo claro (C-3, 44 cores lidas de `valuesByMode`) · **#83** PR #95 (correções do QRE, sim C-2) |
-| Integração | `6bc43620` (#85 por último). Frente C `856cdf00` (#70, #92 à frente da integração) → C sync 4 depois de #94/#98/#99 |
-| Agentes | `.claude/agents/` validados numa sessão nova; **PR #80 aguarda o fundador aplicar `governance:approved`** |
-| Decisões do fundador | #80 rótulo · **#79** (descongelar CoachingCore: sinal de alerta atrás da triagem, urgência rebaixada, nível da retenção rebaixado, limite de correções ignora a triagem) · **#87** texto urgente (revisão clínica) · #66 · #74 · Verified para #32/#41/#58/#61 · próximo passo na tela de identidade danificada · `CURRENT_MISSION.md`/`CLAUDE.md` desatualizados · conflitos Figma × motor que a matriz e o #101 levantarem |
-| Simuladores | RepMile-INT (#98/#99), RepMile-C-2 (#83, depois #101), RepMile-C-3 (#94), **RepMile-Fundador só do fundador**; um simulador por agente; no máximo 2 suítes de UI |
-| Erros meus registrados | branch `claude/v1-ios-integration-i14-visual-pilot` abandonada (merge+revert; nunca mesclar); C-2 atribuída em dobro (corrigido) |
+| **Founder Decision** | Coluna no quadro, visão "Founder Decision", rótulo `status:founder-decision`. Processo: [WORKFLOW §8](../../docs/engineering/WORKFLOW.md). **Na retomada e entre lotes: `node tools/orchestration/decisions.mjs check`** (comentários do fundador depois do marcador de abertura; `record` grava na própria issue, de forma idempotente). Na fila: #21, #29, #47, #55, #66, #74, #79, #87, #109 (CCP-ONB-1), #110 (Cuidados), #111 (rótulo do PR #80), #112 (CURRENT_MISSION). Teste ponta a ponta: #108 (fechada), evidência em `audits/v1-engineering-orchestration-2026-11-26/results/founder-decision-queue/E2E.txt` |
+| Explorações no Figma | Em produção por uma sessão nova com `ui-design-explorer` (a definição nova só aparece em sessão nova): `EXPLORAÇÃO — #101 — Lacunas do onboarding`, `#14 — Estados de segurança sem frame`, `#107 — Contraste no modo claro`. Quando prontas → cards Founder Decision com links |
+| Reconciliação P0 | Matriz `specs/v1/FIGMA_MATRIX.md` (607 linhas; 0 MATCH) · causas em `specs/v1/quality/FIGMA_DIVERGENCE_CAUSES.md` · gate QUALITY_GATES §2b · #14 é o marco central; subtarefas #101 (onboarding, em implementação), #99 (Hoje), #102–#105 |
+| Em andamento | **#101** onboarding (`ios-engineer`, `myapp-v1-c-i101`; decisões SSCTR D06/D12/D13/D14 aplicadas; partes que dependem de CCP ou de lacuna de design ficam retidas) · **#98/#99** (INT) · **#83** PR #95 (correções do QRE, C-2) |
+| Integração / frente C | integração `6bc43620`; frente C `7932c133` (#70, #92, #94 à frente da integração) → C sync 4 quando #98/#99 entrarem |
+| Simuladores | INT (#98/#99), C-2 (#83, depois #101), C-3 livre, **RepMile-Fundador só do fundador** |
 
 ## Branches e worktrees
 
