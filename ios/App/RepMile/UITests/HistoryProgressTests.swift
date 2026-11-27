@@ -42,12 +42,23 @@ final class HistoryProgressTests: XCTestCase {
         attach(app, "Histórico — vozes do atleta e do relógio")
     }
 
+    /// Scrolls until `e` lies whole in the band the athlete sees: below the sheet's navigation bar and above the keyboard. "Hittable" alone
+    /// is not enough: a swipe can leave a row under the inline bar, which then takes the tap (the answer is never given).
     @MainActor
-    private func tapScrolling(_ app: XCUIApplication, _ e: XCUIElement) {
+    private func reveal(_ app: XCUIApplication, _ e: XCUIElement) {
+        func band() -> (top: CGFloat, bottom: CGFloat) {
+            let bar = app.navigationBars.firstMatch, keys = app.keyboards.firstMatch
+            return (bar.exists ? bar.frame.maxY : app.frame.minY, keys.exists ? keys.frame.minY : app.frame.maxY)
+        }
         var tries = 0
-        while !e.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
-        e.tap()
+        while tries < 10 {
+            let (top, bottom) = band()
+            if e.isHittable && e.frame.minY >= top && e.frame.maxY <= bottom { break }
+            if e.exists && e.frame.minY < top { app.swipeDown(velocity: .slow) } else { app.swipeUp(velocity: .slow) }
+            tries += 1
+        }
     }
+    @MainActor private func tapVisible(_ app: XCUIApplication, _ e: XCUIElement) { reveal(app, e); e.tap() }
 
     /// #58, #59: a kept correction says "salvo" and the history is read again. The correction asks the eligibility screen with it (the engine
     /// records no report without one): "Enviar correção" stays off until the six flags are answered "não" and confirmed. The fixture reader is
@@ -68,13 +79,18 @@ final class HistoryProgressTests: XCTestCase {
         km.tap(); km.typeText("7")
         let send = app.buttons["contest-send"]
         XCTAssertFalse(send.isEnabled, "no screen answered: nil is not \"não\"")
-        for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] { tapScrolling(app, app.buttons["eligibility-\(k)-no"]) }
+        for k in ["pain", "persistentPain", "injury", "illness", "functionalLimitation", "clinicalConcern"] {
+            let no = app.buttons["eligibility-\(k)-no"]
+            tapVisible(app, no)
+            XCTAssertTrue(no.isSelected, "\(k) answered \"não\"")
+        }
         XCTAssertFalse(send.isEnabled, "all \"não\" but not confirmed")
         let confirm = app.switches["eligibility-confirm"]
-        var tries = 0
-        while !confirm.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
-        confirm.switches.firstMatch.exists ? confirm.switches.firstMatch.tap() : confirm.tap()
-        tapScrolling(app, send)
+        reveal(app, confirm)
+        confirm.switches.firstMatch.tap()   // the switch itself, not the label beside it
+        XCTAssertEqual(confirm.value as? String, "1", "the athlete confirmed none applies")
+        XCTAssertTrue(send.isEnabled, "answered and confirmed")
+        tapVisible(app, send)
         XCTAssertTrue(app.staticTexts["Salvo no seu histórico."].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["history-contest"].exists, "not offered again on this screen")
         attach(app, "Histórico — correção salva")
