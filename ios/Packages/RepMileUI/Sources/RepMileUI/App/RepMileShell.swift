@@ -21,15 +21,25 @@ public struct RepMileShell: View {
     /// nil: the fixture composition (`-scenario`). Set: the live composition, which never swaps in a fixture reader.
     private let live: Live?
 
-    /// CoreLocation on a device; a scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
+    /// The fixture composition's recorder (`-scenario`, Debug only; the live composition passes its own). CoreLocation on a device; a
+    /// scripted source for UI tests (`-simulatedLocation`), so no permission prompt blocks a journey.
     @MainActor static func makeRecorder() -> RunRecorder {
-        let simulated = ProcessInfo.processInfo.arguments.contains("-simulatedLocation")
-        let source: LocationSource = simulated ? SimulatedLocationSource(state: .noSignal) : CoreLocationSource()
-        // UI tests: a store per launch, so one journey's recording never resumes in the next (`-recordingStore <name>` reuses one on purpose).
         let args = ProcessInfo.processInfo.arguments
-        let name = args.firstIndex(of: "-recordingStore").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } ?? UUID().uuidString
-        let store = simulated ? RecordingStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("uitest-recordings-" + name)) : RecordingStore.standard()
+        let simulated = args.contains("-simulatedLocation")
+        let source: LocationSource = simulated ? SimulatedLocationSource(state: .noSignal) : CoreLocationSource()
+        let store = RecordingStore(directory: fixtureRecordingsDirectory(arguments: args, simulated: simulated, temporary: FileManager.default.temporaryDirectory))
         return RunRecorder(source: source, store: store)
+    }
+
+    /// Where the fixture composition keeps its recordings: never the live `RecordingStore.standardDirectory` (#76), so a fixture launch can
+    /// neither show nor erase the athlete's real recordings, nor leave one that the live composition would then index. UI tests
+    /// (`-simulatedLocation`): a store per launch, so one journey's recording never resumes in the next; `-recordingStore <name>` reuses one
+    /// on purpose (a relaunch that must resume). CoreLocation: one fixture store kept across launches, as before, still not the live one.
+    static func fixtureRecordingsDirectory(arguments: [String], simulated: Bool, temporary: URL,
+                                           newName: () -> String = { UUID().uuidString }) -> URL {
+        let named = arguments.firstIndex(of: "-recordingStore").flatMap { arguments.indices.contains($0 + 1) ? arguments[$0 + 1] : nil }
+        let name = named.flatMap { $0.isEmpty || $0.contains("/") || $0.hasPrefix(".") ? nil : $0 } ?? (simulated ? newName() : "device")
+        return temporary.appendingPathComponent("fixture-recordings-" + name, isDirectory: true)
     }
 
     /// Parallel-phase composition: replay the bundled CoachingCore captures for `scenario` (launch argument `-scenario <id>`).
@@ -69,7 +79,9 @@ public struct RepMileShell: View {
         .environment(model)
         .environment(recorder)
         // An account found erased (GONE) erases this front's recordings too (G07), also when the erasure happened elsewhere.
-        .onChange(of: model.route) { _, r in if r == .accountErased { recorder.eraseAllRecordings(); live?.accountErased() } }
+        // A failed removal is not lost in the live composition: the rotation leaves the device erasure pending, and the next open removes
+        // the folder or does not open (`DEVICE_ERASURE_PENDING`, #63 P3-1, #76).
+        .onChange(of: model.route) { _, r in if r == .accountErased { try? recorder.eraseAllRecordings(); live?.accountErased() } }
         .preferredColorScheme(.dark)
         .task { if model.route == .loading { await model.load() } }
     }
@@ -180,7 +192,7 @@ struct AppTabs: View {
         switch r {
         case .profile:
             ProfileScreen(viewModel: ProfileViewModel(writer: model.writer, reload: { [model] in await model.load() },
-                                                      eraseRecordings: { [recorder] in recorder.eraseAllRecordings() },
+                                                      eraseRecordings: { [recorder] in try? recorder.eraseAllRecordings() },
                                                       accountErased: { [model] in await model.accountErased() }),
                           openZones: { todayPath.append(.hrZones) })
         case .hrZones: HeartRateZonesScreen()

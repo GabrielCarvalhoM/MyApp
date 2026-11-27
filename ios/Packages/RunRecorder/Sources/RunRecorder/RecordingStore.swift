@@ -12,9 +12,14 @@ public final class RecordingStore: AppRecordingIndex, @unchecked Sendable {
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
 
-    /// Application Support/RunRecorder (excluded from backup: a recording belongs to this device).
+    /// Application Support/RunRecorder: the one place the app's own recordings live (#76: written here only, never again elsewhere).
+    public static var standardDirectory: URL {
+        FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("RunRecorder", isDirectory: true)
+    }
+
+    /// The store at `standardDirectory` (excluded from backup: a recording belongs to this device).
     public static func standard() -> RecordingStore {
-        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("RunRecorder", isDirectory: true)
+        let base = standardDirectory
         let store = RecordingStore(directory: base)
         var url = base; var values = URLResourceValues(); values.isExcludedFromBackup = true; try? url.setResourceValues(values)
         return store
@@ -69,11 +74,20 @@ public final class RecordingStore: AppRecordingIndex, @unchecked Sendable {
         lock.withLock { readIndex().filter { $0.interval.intersects(interval) } }
     }
 
-    /// Account erasure: every recording, the index and the active file.
-    public func eraseAll() {
+    /// An erasure that did not remove everything: something of a recording may still be on the device.
+    public enum ErasureError: Error, Equatable { case notErased }
+
+    /// Account erasure (G07): every recording, the index and the active file. Throws `ErasureError.notErased` when the folder could not be
+    /// removed or is still there afterwards (#76: a failure is reported, never swallowed). A folder that does not exist is already erased.
+    /// The folder is then recreated empty, so the store keeps working; a failed recreation is not an erasure failure (nothing is left).
+    public func eraseAll() throws {
         lock.lock(); defer { lock.unlock() }
-        try? FileManager.default.removeItem(at: directory)
-        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let fm = FileManager.default
+        if fm.fileExists(atPath: directory.path) {
+            do { try fm.removeItem(at: directory) } catch { throw ErasureError.notErased }
+        }
+        guard !fm.fileExists(atPath: directory.path) else { throw ErasureError.notErased }
+        try? fm.createDirectory(at: directory, withIntermediateDirectories: true)
         var url = directory; var values = URLResourceValues(); values.isExcludedFromBackup = true; try? url.setResourceValues(values)
     }
 }

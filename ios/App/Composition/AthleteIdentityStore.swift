@@ -38,6 +38,18 @@ final class AthleteIdentityStore: @unchecked Sendable {
         return AthleteIdentityStore(directory: base.appendingPathComponent("RepMileAccount", isDirectory: true))
     }
 
+    #if DEBUG
+    /// Debug builds only (`-simulateDamagedIdentity`, #76): a store over a new folder in the temporary directory holding an identity file that
+    /// is not one this code wrote. Never the real folder: the real identity file is neither read nor replaced.
+    static func damagedForUITests() throws -> AthleteIdentityStore {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("uitest-damaged-identity-" + UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let store = AthleteIdentityStore(directory: dir)
+        try Data("not an identity".utf8).write(to: store.file)
+        return store
+    }
+    #endif
+
     /// 128 bits from the system's cryptographically secure generator.
     static func systemRandom128() -> [UInt8] {
         var g = SystemRandomNumberGenerator()

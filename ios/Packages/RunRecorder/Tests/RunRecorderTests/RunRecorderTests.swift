@@ -149,15 +149,84 @@ final class RunRecorderTests: XCTestCase {
         XCTAssertNil(r.measuredMetres)
     }
 
-    func testDiscardAndEraseAll() async {
+    func testDiscardAndEraseAll() async throws {
         let clock = TestClock(), store = RecordingStore(directory: dir)
         let r = RunRecorder(source: SimulatedLocationSource(), store: store, clock: clock)
         r.start(sessionId: nil, sessionDate: nil, steps: steps)
         r.discard()
         XCTAssertNil(store.loadActive())
         r.start(sessionId: nil, sessionDate: nil, steps: steps); clock.advance(60); r.finish()
-        store.eraseAll()
+        try store.eraseAll()
         let none = await store.recordings(overlapping: DateInterval(start: .distantPast, end: .distantFuture))
         XCTAssertTrue(none.isEmpty)
+    }
+}
+
+/// #76: the erasure reports a failure (the composition keeps "erasure pending" and does not open), and the store's folder is written in one
+/// place only (`standardDirectory`).
+@MainActor
+final class RecordingStoreErasureTests: XCTestCase {
+    var dir: URL!
+    override func setUp() { dir = FileManager.default.temporaryDirectory.appendingPathComponent("rr-erase-\(UUID().uuidString)") }
+    override func tearDown() {
+        try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: dir.path)
+        try? FileManager.default.removeItem(at: dir)
+    }
+    let everything = DateInterval(start: .distantPast, end: .distantFuture)
+
+    /// A store holding a finished (indexed) recording, a running one in the active file, and a stray file.
+    private func filled() async -> (RecordingStore, RunRecorder) {
+        let clock = TestClock(), store = RecordingStore(directory: dir)
+        let r = RunRecorder(source: SimulatedLocationSource(), store: store, clock: clock)
+        r.start(sessionId: nil, sessionDate: nil, steps: [RecorderStep(kind: "STEADY", target: .seconds(600))]); clock.advance(120); r.finish()
+        r.close()
+        r.start(sessionId: nil, sessionDate: nil, steps: [RecorderStep(kind: "STEADY", target: .seconds(600))]); clock.advance(30)
+        try? Data("{}".utf8).write(to: dir.appendingPathComponent("stray.json"))
+        let indexed = await store.recordings(overlapping: everything)
+        XCTAssertEqual(indexed.count, 1)
+        XCTAssertNotNil(store.loadActive())
+        return (store, r)
+    }
+
+    func testEraseAllEmptiesAFilledFolderAndTheStoreKeepsWorking() async throws {
+        let (store, _) = await filled()
+        try store.eraseAll()
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: dir.path), [], "the folder is recreated empty")
+        let none = await store.recordings(overlapping: everything)
+        XCTAssertTrue(none.isEmpty)
+        XCTAssertNil(store.loadActive())
+        XCTAssertNoThrow(try store.eraseAll(), "erasing an empty store is fine")
+        try FileManager.default.removeItem(at: dir)
+        XCTAssertNoThrow(try store.eraseAll(), "a missing folder is already erased")
+    }
+
+    func testTheRecorderEraseDropsTheRunInMemoryAndOnDisk() async throws {
+        let (store, r) = await filled()
+        try r.eraseAllRecordings()
+        XCTAssertNil(r.state)
+        XCTAssertNil(store.loadActive())
+        let none = await store.recordings(overlapping: everything)
+        XCTAssertTrue(none.isEmpty)
+    }
+
+    /// A removal that fails throws, and nothing claims it is erased: the index still answers what is left.
+    func testAFailedRemovalThrows() async throws {
+        let (store, r) = await filled()
+        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: dir.path)
+        XCTAssertThrowsError(try store.eraseAll()) { XCTAssertEqual($0 as? RecordingStore.ErasureError, .notErased) }
+        XCTAssertThrowsError(try r.eraseAllRecordings()) { XCTAssertEqual($0 as? RecordingStore.ErasureError, .notErased) }
+        XCTAssertNil(r.state, "the recording in memory is dropped either way")
+        let left = await store.recordings(overlapping: everything)
+        XCTAssertFalse(left.isEmpty, "a failed erasure is visible through the index")
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: dir.path)
+        try store.eraseAll()
+        let none = await store.recordings(overlapping: everything)
+        XCTAssertTrue(none.isEmpty, "the next erasure finishes it")
+    }
+
+    /// Read only: `standard()` would create the folder on the machine running the tests.
+    func testTheStandardDirectoryIsApplicationSupportRunRecorder() {
+        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        XCTAssertEqual(RecordingStore.standardDirectory.standardizedFileURL, support.appendingPathComponent("RunRecorder", isDirectory: true).standardizedFileURL)
     }
 }
