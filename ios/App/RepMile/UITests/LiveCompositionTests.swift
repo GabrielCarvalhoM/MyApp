@@ -2,7 +2,7 @@ import XCTest
 
 /// The live composition (#16): launched WITHOUT `-scenario`, the app opens the real CoachingHost (A) and HealthKitIngestor (B) and the
 /// RunRecorder (C). Synthetic data only (the engine runs in its synthetic shadow mode). Needs a simulator where the app holds no record:
-/// `xcrun simctl uninstall RepMile-C-2 fit.vilumo.repmile.dev.app.simulator` before the run. The journey test leaves it that way again
+/// `xcrun simctl uninstall <simulator> fit.vilumo.repmile.dev.app.simulator` before the run. The journey test leaves it that way again
 /// (it erases the account it created, and the next launch is a new account).
 final class LiveCompositionTests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
@@ -10,7 +10,8 @@ final class LiveCompositionTests: XCTestCase {
     @MainActor
     private func launch() -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
+        // `-simulatedLocation` (Debug): scripted location in the live composition, so a run records with no permission prompt (#63 P3-6).
+        app.launchArguments = ["-simulatedLocation", "-AppleLanguages", "(pt-BR)", "-AppleLocale", "pt_BR"]
         app.launch()
         return app
     }
@@ -74,12 +75,9 @@ final class LiveCompositionTests: XCTestCase {
         assertOnboarding(app, "live — primeira abertura (NOT_ENROLLED)")
     }
 
-    /// The first real journey (#17), synthetic answers: the real engine builds the plan ("ob-created"), then Hoje reads the new record from
-    /// the same host. Then the account is erased; the next launch is a new athlete id (CCP-A-05) and starts at onboarding again.
+    /// Real onboarding with synthetic answers until the real engine built the plan and Hoje reads it from the same host.
     @MainActor
-    func testRealOnboardingCreatesAPlanThenEraseMakesTheNextLaunchANewAccount() {
-        let app = launch()
-        assertOnboarding(app, "live — boas-vindas")
+    private func enroll(_ app: XCUIApplication, _ label: String) {
         let age = app.textFields["ob-age"]
         tapNext(app, expecting: age, "age")
         age.tap(); age.typeText("32")
@@ -103,27 +101,98 @@ final class LiveCompositionTests: XCTestCase {
         for p in ["COACHING", "HEALTH_SIGNALS", "LEARNING"] { tapScrolling(app, app.buttons["consent-\(p)-yes"]) }
         app.buttons["ob-next"].tap()
 
-        XCTAssertTrue(el(app, "ob-created").waitForExistence(timeout: 60), "the real engine created the plan")
-        attach(app, "live — plano criado pelo motor real")
+        XCTAssertTrue(el(app, "ob-created").waitForExistence(timeout: 60), "the real engine created the plan (\(label))")
+        XCTAssertFalse(el(app, "state-operational-error").exists)
+        attach(app, "live — plano criado pelo motor real (\(label))")
         app.buttons["ob-open"].tap()
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 30))
         XCTAssertTrue(el(app, "screen-today").waitForExistence(timeout: 10))
         XCTAssertFalse(el(app, "state-operational-error").exists)
-        attach(app, "live — Hoje depois do cadastro real")
+        attach(app, "live — Hoje depois do cadastro real (\(label))")
+    }
 
-        // Erase the account it created (G07 through A, B purged by A): the erased state, then a new account at the next launch.
+    /// An unplanned run recorded by the live composition's recorder into the REAL `RecordingStore` (scripted location, `-simulatedLocation`),
+    /// finished and reported to the real host. Before week 1 the real engine answers that it was not kept as a separate session, so the report
+    /// stays open (resendable); the process is killed there and the finished recording comes back from the real store at the next launch.
+    /// Leaving without saving then discards it (C's own discard). Returns the relaunched app.
+    @MainActor
+    private func recordARun(_ app: XCUIApplication) -> XCUIApplication {
+        app.buttons["tab-add"].tap()
+        XCTAssertTrue(app.buttons["add-run-now"].waitForExistence(timeout: 10))
+        app.buttons["add-run-now"].tap()
+        XCTAssertTrue(el(app, "run-timer").waitForExistence(timeout: 10), "a recording started")
+        app.buttons["run-pause"].tap()
+        XCTAssertTrue(app.staticTexts["Pausado"].waitForExistence(timeout: 5))
+        app.buttons["run-finish"].tap()
+        app.buttons["run-finish-confirm"].firstMatch.tap()
+        XCTAssertTrue(el(app, "screen-report").waitForExistence(timeout: 10))
+        tapScrolling(app, app.buttons["report-unusual-no"])
+        tapScrolling(app, app.buttons["report-save"])
+        let saved = el(app, "report-saved"), notKept = el(app, "report-not-kept")
+        var waited = 0
+        while !saved.exists && !notKept.exists && waited < 30 { _ = notKept.waitForExistence(timeout: 1); waited += 1 }
+        XCTAssertTrue(saved.exists || notKept.exists, "the real host answered the report")
+        attach(app, "live — corrida gravada e relatada")
+        if saved.exists {
+            tapScrolling(app, app.buttons["report-done"])
+            XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 10))
+            return app
+        }
+        app.terminate()
+        let again = launch()
+        XCTAssertTrue(el(again, "screen-report").waitForExistence(timeout: 60), "the finished recording came back from the real store")
+        XCTAssertFalse(el(again, "state-operational-error").exists)
+        attach(again, "live — gravação de volta depois de matar o processo")
+        tapScrolling(again, again.buttons["report-leave"])
+        // The dialog's own button (the report's button has the same label).
+        let leave = again.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", "Sair sem salvar", "report-leave")).firstMatch
+        XCTAssertTrue(leave.waitForExistence(timeout: 10))
+        leave.tap()
+        XCTAssertTrue(el(again, "screen-report").waitForNonExistence(timeout: 10), "the report closed")
+        XCTAssertTrue(again.buttons["tab-today"].waitForExistence(timeout: 10))
+        return again
+    }
+
+    /// Profile → erase the account (G07 through A, B purged by A, C's recordings by the shell) → the erased state.
+    @MainActor
+    private func eraseAccount(_ app: XCUIApplication, _ label: String) {
         app.buttons["open-profile"].tap()
         let erase = app.buttons["profile-erase-account"]
         XCTAssertTrue(erase.waitForExistence(timeout: 10))
-        tries = 0
+        var tries = 0
         while !erase.isHittable && tries < 8 { app.swipeUp(); tries += 1 }
         erase.tap()
         app.buttons["profile-erase-confirm"].firstMatch.tap()
         XCTAssertTrue(el(app, "state-gone").waitForExistence(timeout: 30))
-        attach(app, "live — conta apagada")
-        app.terminate()
+        attach(app, "live — conta apagada (\(label))")
+    }
+
+    /// The first real journey (#17) and the erasure end to end (#63 P3-6), synthetic answers: the real engine builds the plan, a run is
+    /// recorded by the live recorder into the real recordings store (see `recordARun`: before week 1 the report is not kept, so the recording
+    /// ends discarded by C itself; the G07 erasure of C's store with a recording still in it is proven by `PendingErasureTests`, not here),
+    /// the account is erased. The next launch is a new athlete id (CCP-A-05) and starts at onboarding; the composition's pending erasure
+    /// runs and checks C's index before it opens (#63 P3-1). Then the athlete enrols AGAIN on the same install: the real host accepts the
+    /// new id (A's purge of the erased account is done; no ANOTHER_ATHLETE_ON_THIS_INSTALL), and Hoje opens with nothing of a recording.
+    /// The second account is erased too, so the simulator ends as it started (no record).
+    @MainActor
+    func testRealOnboardingCreatesAPlanThenEraseMakesTheNextLaunchANewAccount() {
+        let app = launch()
+        assertOnboarding(app, "live — boas-vindas")
+        enroll(app, "primeira conta")
+        let afterRun = recordARun(app)
+        eraseAccount(afterRun, "primeira conta")
+        afterRun.terminate()
 
         let again = launch()
         assertOnboarding(again, "live — nova conta depois da exclusão")
+        enroll(again, "nova conta no mesmo aparelho")
+        // Nothing of a recording comes back on Hoje (the shell restores one on appear): absent for a while, not just at one instant.
+        XCTAssertFalse(el(again, "screen-report").waitForExistence(timeout: 5), "no report of a recording comes back")
+        XCTAssertFalse(el(again, "run-timer").exists, "no recording comes back")
+        eraseAccount(again, "nova conta")
+        again.terminate()
+
+        let last = launch()
+        assertOnboarding(last, "live — terceira abertura, sem registro")
     }
 }
