@@ -1,0 +1,20 @@
+#63 background delivery and composition hardening: evidence (SIMULATOR ONLY, RepMile-INT, iOS 27.2, Xcode 27.2)
+Code under test: a268662 (branch claude/v1-ios-integration-i63-background, base claude/v1-ios-integration @ e593496).
+Nothing here was run on a device; none of it shows background delivery working on a device.
+
+sim-all-*.json, sim-all-test-cases.txt, screenshot-*.png
+  tools/orchestration/sim.sh all --sim RepMile-INT: 77/77 passed (34 composition unit + 43 UI, LiveCompositionTests 2/2).
+  manifest uncommittedFiles=1 is this untracked evidence folder at run time; the code was committed.
+composition-unit-tests.txt
+  RepMileCompositionTests 34/34, three consecutive runs (third run listed).
+launch-log-excerpt.txt
+  Live launch: hki.started, HKObserverQuery executed, hki.backgroundDelivery code=REGISTERED from the launch-time open
+  (no HealthKit authorization on the simulator, so the query then stops with "Authorization not determined").
+release-build-check.txt
+  Release build (simulator): builds; no Fixtures/ in RepMile.app; no "-scenario" string in the binary.
+gates.txt
+  guard.mjs (INT) 546/546 OK, 0 approval, 0 forbidden; swift-size.mjs limit 350, 0 over outside baseline.
+
+Limit of the UI journey (P3-6): before week 1 the real engine answers "not kept" to an unplanned-run report and the report's
+only exit discards the recording, so the UI journey never erases C's store while it still holds a recording; that case is proven
+by PendingErasureTests (filled folder, failure or crash between steps). B's queue is not observable in the simulator UI.

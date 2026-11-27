@@ -47,23 +47,40 @@ final class AthleteIdentityStore: @unchecked Sendable {
     /// The current athlete id; on the first call of an install, a new one, written durably before it is returned.
     func current() throws -> String {
         lock.lock(); defer { lock.unlock() }
-        if let id = try read() { return id }
+        if let s = try read() { return s.athleteId }
         let id = mint()
-        try write(id)
+        try write(Stored(athleteId: id))
         return id
     }
 
     /// After the account `erased` is known erased (a successful `eraseAccount`, or `GONE` read for it): a new id replaces it in one atomic
     /// rename, so there is never a moment with no identity. A no-op when the stored id is already another one (a second signal for the same
     /// erasure). Returns the id the next launch opens with.
+    ///
+    /// The new id is written with "device erasure pending" in the same write (#63 P3-1): the next open removes the erased account's device
+    /// data (`PendingErasure`) before anything reads it, and clears the flag only then.
     @discardableResult
     func rotate(from erased: String) throws -> String {
         lock.lock(); defer { lock.unlock() }
-        if let id = try read(), id != erased { return id }
+        if let s = try read(), s.athleteId != erased { return s.athleteId }
         var id = mint()
         while id == erased { id = mint() }
-        try write(id)
+        try write(Stored(athleteId: id, erasurePending: true))
         return id
+    }
+
+    /// True after a rotation until `deviceErasureDone()`. A file written before #63 has no flag: false.
+    func isDeviceErasurePending() throws -> Bool {
+        lock.lock(); defer { lock.unlock() }
+        return try read()?.erasurePending == true
+    }
+
+    /// The erased account's device data is known gone: the flag is cleared, the id is unchanged.
+    func deviceErasureDone() throws {
+        lock.lock(); defer { lock.unlock() }
+        guard var s = try read(), s.erasurePending == true else { return }
+        s.erasurePending = nil
+        try write(s)
     }
 
     static func isValid(_ id: String) -> Bool {
@@ -72,7 +89,12 @@ final class AthleteIdentityStore: @unchecked Sendable {
 
     // MARK: file
 
-    private struct Stored: Codable { var schema: Int; var athleteId: String }
+    /// Schema 1. `erasurePending` is optional so a file written before #63 still reads (absent = false); it is omitted when not set.
+    private struct Stored: Codable {
+        var schema = 1
+        var athleteId: String
+        var erasurePending: Bool?
+    }
 
     private func mint() -> String {
         let bytes = random()
@@ -80,19 +102,19 @@ final class AthleteIdentityStore: @unchecked Sendable {
         return Self.prefix + bytes.map { String(format: "%02x", $0) }.joined()
     }
 
-    private func read() throws -> String? {
+    private func read() throws -> Stored? {
         guard FileManager.default.fileExists(atPath: file.path) else { return nil }
         guard let data = try? Data(contentsOf: file) else { throw Failure.unreadable }
         guard let s = try? JSONDecoder().decode(Stored.self, from: data), s.schema == 1, Self.isValid(s.athleteId) else { throw Failure.malformed }
-        return s.athleteId
+        return s
     }
 
-    private func write(_ id: String) throws {
-        guard Self.isValid(id) else { throw Failure.writeFailed }
+    private func write(_ s: Stored) throws {
+        guard Self.isValid(s.athleteId) else { throw Failure.writeFailed }
         do {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             var dir = directory; var rv = URLResourceValues(); rv.isExcludedFromBackup = true; try? dir.setResourceValues(rv)
-            try Self.durableWrite(try JSONEncoder().encode(Stored(schema: 1, athleteId: id)), to: file)
+            try Self.durableWrite(try JSONEncoder().encode(s), to: file)
         } catch { throw Failure.writeFailed }
     }
 

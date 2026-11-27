@@ -1,3 +1,4 @@
+import IntegrationContracts
 import XCTest
 
 /// The local athlete identity (CCP-A-05) and its rotation after an erasure, and the once-per-process open (#49 P2-1).
@@ -72,6 +73,34 @@ final class AthleteIdentityStoreTests: XCTestCase {
         XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).current()) { XCTAssertEqual($0 as? AthleteIdentityStore.Failure, .malformed) }
         XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).rotate(from: "x"))
         XCTAssertEqual(try Data(contentsOf: file), junk, "never overwritten")
+    }
+
+    /// #63 P3-2: bytes that are not JSON at all are a damaged identity, never replaced, with their own launch code.
+    func testANonJSONFileIsDamagedAndKept() throws {
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let junk = Data([0xFF, 0x00, 0x7B, 0x13, 0x37])
+        try junk.write(to: file)
+        XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).current()) {
+            XCTAssertEqual($0 as? AthleteIdentityStore.Failure, .malformed)
+            XCTAssertEqual(LaunchFailure.code(for: $0), LaunchFailure.identityDamaged)
+        }
+        XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).isDeviceErasurePending())
+        XCTAssertEqual(try Data(contentsOf: file), junk, "never overwritten")
+    }
+
+    /// #63 P3-2: a file that is there but cannot be read now (before the first unlock) is "unreadable", retryable, and never replaced.
+    func testAnUnreadableFileIsAnErrorAndKept() throws {
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let id = try AthleteIdentityStore(directory: dir).current()
+        try FileManager.default.setAttributes([.posixPermissions: 0o000], ofItemAtPath: file.path)
+        defer { try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path) }
+        XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).current()) {
+            XCTAssertEqual($0 as? AthleteIdentityStore.Failure, .unreadable)
+            XCTAssertEqual(LaunchFailure.code(for: $0), HostCode.hostUnavailable, "the next unlock can open it")
+        }
+        XCTAssertThrowsError(try AthleteIdentityStore(directory: dir).rotate(from: id))
+        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
+        XCTAssertEqual(try AthleteIdentityStore(directory: dir).current(), id, "the same id once readable again")
     }
 
     func testAnOverlongOrControlCharacterIdIsInvalid() {
