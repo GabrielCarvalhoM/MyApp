@@ -1,4 +1,6 @@
-# RepMileUI unit tests on 49f30539 (xcodebuild test -scheme RepMileUI, RepMile-C-2)
+# RepMileUI unit tests (xcodebuild test -scheme RepMileUI, RepMile-C-2)
+# Full run: the tree of 3e0e1ddb except one test string (CorrectionReviewFixTests.limit gained the engine's "message" key afterwards);
+# that suite was then re-run alone on the final string (below). No further full run: RepMile-C-2 was handed to #83 (coordinator).
 passed CorrectionFollowupTests.testACorrectedRowIsCorrectedAgainNamingTheCorrectionInForce
 passed CorrectionFollowupTests.testALoneSimIsSentAsStatedOnTheCorrection
 passed CorrectionFollowupTests.testALoneSimIsSentAtEveryOtherSite
@@ -6,6 +8,13 @@ passed CorrectionFollowupTests.testNoDoubleSubmitWhileThePlansDayIsRead
 passed CorrectionFollowupTests.testTheEnginesCorrectionLimitIsShown
 passed CorrectionFollowupTests.testTheScreenIsDatedThePlansDayReadAtSendTime
 passed CorrectionFollowupTests.testTheSharedRuleWithAndWithoutASim
+passed CorrectionReviewFixTests.testALoneSimOmitsTheUnansweredFlagsAtTheReportSites
+passed CorrectionReviewFixTests.testASimPastTheLimitIsSentAloneAndRoutesToAHuman
+passed CorrectionReviewFixTests.testASimPastTheLimitThatIsNotRoutedShowsTheClinicalCopy
+passed CorrectionReviewFixTests.testEditsWhileThePlansDayIsReadAreNotSent
+passed CorrectionReviewFixTests.testOnlyTheCorrectionsOwnLimitIsTheLimit
+passed CorrectionReviewFixTests.testTheModelDatesTheScreenWithThePlansDayAtSendTime
+passed CorrectionReviewFixTests.testWithoutASimTheLimitIsTheLimitAlone
 passed EligibilityRestTests.testAFlagYesOnTheScreenIsSentAndRoutesToAHuman
 passed EligibilityRestTests.testAQuestionEndsTheRequestAndAClinicalRouteMovesNothing
 passed EligibilityRestTests.testARedFlagAloneIsSentWithTheScreenAndShowsTheClinicalRoute
@@ -196,4 +205,14 @@ passed UnavailableDayViewModelTests.testNoDoubleSubmit
 passed UnavailableDayViewModelTests.testRequestIsTheSessionDayUnavailable
 passed UnavailableDayViewModelTests.testTheProposalShownIsTheOneReadAfterTheWrite
 passed ZoneBarTests.testBarFractionsOnTheNinetyToMaximumAxis
-	 Executed 197 tests, with 0 failures (0 unexpected) in 2.411 (2.469) seconds
+	 Executed 204 tests, with 0 failures (0 unexpected) in 2.700 (2.774) seconds
+
+# CorrectionReviewFixTests alone on 3e0e1ddb's final text
+passed CorrectionReviewFixTests.testALoneSimOmitsTheUnansweredFlagsAtTheReportSites
+passed CorrectionReviewFixTests.testASimPastTheLimitIsSentAloneAndRoutesToAHuman
+passed CorrectionReviewFixTests.testASimPastTheLimitThatIsNotRoutedShowsTheClinicalCopy
+passed CorrectionReviewFixTests.testEditsWhileThePlansDayIsReadAreNotSent
+passed CorrectionReviewFixTests.testOnlyTheCorrectionsOwnLimitIsTheLimit
+passed CorrectionReviewFixTests.testTheModelDatesTheScreenWithThePlansDayAtSendTime
+passed CorrectionReviewFixTests.testWithoutASimTheLimitIsTheLimitAlone
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.218 (0.230) seconds

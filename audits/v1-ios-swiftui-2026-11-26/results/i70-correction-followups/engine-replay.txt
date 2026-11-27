@@ -1,4 +1,4 @@
-# node audits/v1-ios-swiftui-2026-11-26/results/i70-correction-followups/scratch/i70-engine-replay.mjs <repo root>  (HEAD 49f30539, CoachingCore read-only, in-memory store, synthetic athlete)
+# node audits/v1-ios-swiftui-2026-11-26/results/i70-correction-followups/scratch/i70-engine-replay.mjs <repo root>  (HEAD 3e0e1ddb, CoachingCore read-only, in-memory store, synthetic athlete)
 === 0 replica == Swift golden (HistoryCorrectionViewModelTests, unchanged by #70)
   PASS the JS replica encodes exactly the Swift golden request
 === 1 (a) a row already corrected is corrected again
@@ -17,7 +17,13 @@
   PASS corrections 1..16 accepted (reached depth 16)
   correction 17 (no safety signal) → refused LIMIT_EXCEEDED
   PASS past the limit: refused LIMIT_EXCEEDED correctionsPerReport, nothing changed
+  refusal as the app decodes it: {"code":"LIMIT_EXCEEDED","message":"A report of this request is not admitted; nothing was recorded","index":0,"limit":"correctionsPerReport"}
   LIMITS: correctionsPerReport=16 safetyExcess=3
+  past the limit, with a lone "sim" → refused LIMIT_EXCEEDED view VALID_PLAN
+  PASS QRE P1: past the limit a "sim" is refused LIMIT_EXCEEDED too, and nothing routes it (plan not BLOCKED)
+  then the screen alone (observations []) → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view BLOCKED
+  PASS the screen alone is admitted and routes to a human: CLINICAL_HUMAN_REQUIRED, PROFESSIONAL_ASSESSMENT, plan BLOCKED, nothing recorded
+  PASS the row is unchanged (the correction in force stays)
 === 2 (P2-4) the distance the engine reads for a corrected run
   measured 7.06 km; history before: referenceKm=7.06 measuredKm=7.06 paceWithheld=null
   corrected to 10.06 km (larger than measured) → ok status=KEEP guidance=null recorded=1 missing=[]; history after: referenceKm=7.06 measuredKm=7.06 declaredKm=10.06 quality=POOR paceWithheld=CORRECTED_MEASUREMENT
@@ -25,12 +31,18 @@
   PASS larger than measured: the history counts the smaller of the two (7.06 km)
   PASS larger than measured: the correction never raises what the run counts for
   PASS larger than measured: the run's pace is no longer a reference (CORRECTED_MEASUREMENT)
+  admitted().withheld: [{"sessionId":"w0-run-d1","eventId":"ob_4074beafc9803b0fb18e52ff4a","reason":"CORRECTED_MEASUREMENT"}]
+  PASS larger than measured: before the correction the run was not withheld
+  PASS larger than measured: the corrected run is withheld from the pace calibration (admitted().withheld, CORRECTED_MEASUREMENT)
   measured 7.06 km; history before: referenceKm=7.06 measuredKm=7.06 paceWithheld=null
   corrected to 5.06 km (smaller than measured) → ok status=KEEP guidance=null recorded=1 missing=[]; history after: referenceKm=5.06 measuredKm=7.06 declaredKm=5.06 quality=POOR paceWithheld=CORRECTED_MEASUREMENT
   PASS smaller than measured: the measured value stays on record (history measuredKm and the DEVICE voice)
   PASS smaller than measured: the history counts the smaller of the two (5.06 km)
   PASS smaller than measured: the correction never raises what the run counts for
   PASS smaller than measured: the run's pace is no longer a reference (CORRECTED_MEASUREMENT)
+  admitted().withheld: [{"sessionId":"w0-run-d1","eventId":"ob_4074beafc9803b0fb18e52ff4a","reason":"CORRECTED_MEASUREMENT"}]
+  PASS smaller than measured: before the correction the run was not withheld
+  PASS smaller than measured: the corrected run is withheld from the pace calibration (admitted().withheld, CORRECTED_MEASUREMENT)
   PASS every reason the form offers (SIGNAL_LOSS) withholds the pace and counts the smaller
   PASS every reason the form offers (OBSTRUCTED_SKY) withholds the pace and counts the smaller
   PASS every reason the form offers (AUTO_PAUSE) withholds the pace and counts the smaller
@@ -39,43 +51,105 @@
   correction: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED contested=null headUnchanged=true | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS correction pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS correction pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS correction persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS correction persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS correction injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS correction injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS correction illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS correction illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS correction functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS correction functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS correction clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS correction clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   runReport: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS runReport pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS runReport pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS runReport persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS runReport persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS runReport injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS runReport injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS runReport illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS runReport illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS runReport functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS runReport functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS runReport clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS runReport clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   strengthLog: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS strengthLog pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS strengthLog pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS strengthLog persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS strengthLog persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS strengthLog injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS strengthLog injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS strengthLog illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS strengthLog illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS strengthLog functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS strengthLog functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS strengthLog clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS strengthLog clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   notFeeling100: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS notFeeling100 pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS notFeeling100 pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100 persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100 persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100 injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100 injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS notFeeling100 illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS notFeeling100 illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100 functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100 functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS notFeeling100 clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS notFeeling100 clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  notFeeling100+urgentSign: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
+  PASS notFeeling100+urgentSign pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100+urgentSign persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100+urgentSign injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100+urgentSign illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100+urgentSign functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS notFeeling100+urgentSign clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS notFeeling100+urgentSign clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   readiness: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS readiness pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS readiness pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS readiness illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS readiness illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS readiness clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS readiness clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  readiness+urgentSign: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
+  PASS readiness+urgentSign pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness+urgentSign persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness+urgentSign injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness+urgentSign illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness+urgentSign functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS readiness+urgentSign clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS readiness+urgentSign clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   unavailableDay: lone "pain" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED | with five "não" → ok status=CLINICAL_HUMAN_REQUIRED guidance=PROFESSIONAL_ASSESSMENT recorded=0 missing=[] view=BLOCKED
   PASS unavailableDay pain: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS unavailableDay pain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS unavailableDay persistentPain: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS unavailableDay persistentPain: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS unavailableDay injury: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS unavailableDay injury: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS unavailableDay illness: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS unavailableDay illness: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
+  PASS unavailableDay functionalLimitation: lone "sim" is CLINICAL_HUMAN_REQUIRED
+  PASS unavailableDay functionalLimitation: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
   PASS unavailableDay clinicalConcern: lone "sim" is CLINICAL_HUMAN_REQUIRED
   PASS unavailableDay clinicalConcern: same answer as "sim" + five "não" (status, guidance, recorded, plan state, pending)
 === 4 (c) the sheet opened before midnight, sent after it
