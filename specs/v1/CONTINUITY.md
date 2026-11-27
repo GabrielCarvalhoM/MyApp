@@ -15,10 +15,11 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 | | |
 |---|---|
 | Integração `claude/v1-ios-integration` | `e593496` = orquestração + A (#50) + B (#51) + composição real (#60, #16) + C sync 1 (#67: MVVM #32, #37, #38, #41, #58, #59a, #61). Visualização em `e593496` |
-| Em andamento | **#59** (correção no histórico): worktree `myapp-v1-c-i59`, sim RepMile-C-3; falta teste de UI, suíte, PR, SSCTR+QRE · **#68** (P0, triagem nos relatos): worktree `myapp-v1-c-i68`, branch `claude/v1-ios-swiftui-i68-report-eligibility` (de `289811a`), sim RepMile-C-2; PR draft para `claude/v1-ios-swiftui`, rebase após o #59 |
+| Em andamento | **#68** (P0, triagem nos relatos): worktree `myapp-v1-c-i68`, sim RepMile-C-2; mescla a frente C (`e5425f6`) antes da verificação final; PR draft para `claude/v1-ios-swiftui` · **#63** (background delivery): worktree `myapp-v1-int-i63`, sim RepMile-INT, PR para integração · **#49** (condições de A): worktree `myapp-v1-int-i49`, só `swift test` no macOS (keychain de teste), PR para integração |
+| Frente C `claude/v1-ios-swiftui` | `e5425f6` = #59 (PR #69; XCUITest 41/41, unit 130/130, SSCTR APPROVE_WITH_NOTES, P1 do QRE corrigido); seguimentos em #70; CCP-C-06 em #20 |
 | Próximas | C → integração (sync 2, com #59 e #68) e teste com motor real na integração · **#66** (P0; aguarda o fundador) · #63 · #49 · #48 · #39 · #62 · CCP-C-05 (#20) |
 | Decisões do fundador | #66 (princípio), #47 (reconciliação), #55 (RIR), #21, #29, versão nomeada do Figma, modo claro, background delivery (mantido salvo objeção) |
-| Simuladores | RepMile-C-3 (#59), RepMile-C-2 (#68), RepMile-INT (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
+| Simuladores | RepMile-C-2 (#68), RepMile-INT (#63), RepMile-C-3 (livre), RepMile-C-SwiftUI (livre); no máximo 2 suítes de UI ao mesmo tempo |
 
 ## Branches e worktrees
 
