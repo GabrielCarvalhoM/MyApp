@@ -72,7 +72,7 @@ QRE RECHECK OF PR #90 (8d3d7cc7): READY_WITH_CONDITIONS. Fixed in d7892a71 + 6de
         testAResultMissingForARunDeletedInFlightKeepsIt.
   P3-B  QueueItem.landedIn (replaces the Bool; mayHaveLanded = !landedIn.isEmpty): the delivery ids a send of which may have landed.
         An admission refusal (setAsideItem, resendUnlinked, adapterBug) of the SAME delivery id removes that id: custody replays the
-        stored answer of a request id it has seen, and  runs only for one it has not. Another delivery's refusal, and
+        stored answer of a request id it has seen, and admit() runs only for one it has not. Another delivery's refusal, and
         retryLater/waiting/halted refusals (BUSY, A's own CLOCK_AHEAD_OF_REFERENCE before custody), remove nothing. "*" (unknown) is
         never removed by a refusal: a missing result, or a file without the field (a sent workout fails closed). So retryLater then
         INVALID_OBSERVATION on the same delivery id lets the valid copy be the run (one count).
