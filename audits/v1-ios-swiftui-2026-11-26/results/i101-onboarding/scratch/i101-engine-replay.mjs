@@ -5,6 +5,7 @@
 // 2. The personas held by an open decision (Rafa and Marina: no plan length without a race, D03) are replayed ONLY to show what the held field
 //    changes: with `weeks` given as the engine's own default (12, an assumption marked here, never sent by the app) they are accepted.
 // 3. The safety and scope outcomes the onboarding maps (clinical sign, age outside 18–80, race under 7 days) and the D02 encodings.
+// 6. D22 (#113): the 06 per-aim lines against the strength the engine prescribes for each aim (Lucas, weeks 2, 4, 7).
 // 4. Copy checks the screens rely on: the week-1 strength of a never-trained athlete (25 Marina note), the full-gym preset.
 import fs from 'node:fs';
 const ROOT=process.argv[2];
@@ -28,7 +29,7 @@ function build(d,{athleteId,today,start,weeksOverride=null}){
  else if(startRunning&&d.runStart==='stopped')recent=d.recentRunDaysChoice===0?{longestRunMinutes:0,runDaysPerWeek:0,runMinutesPerWeek:0,strengthDaysPerWeek:sd}:null;
  else recent={longestRunMinutes:d.longestRunMinutes,runDaysPerWeek:d.recentRunDays,runMinutesPerWeek:d.recentRunMinutes,strengthDaysPerWeek:sd};
  const KIND={officialRace:'RACE_RESULT',track:'TIME_TRIAL'},MEAS={officialRace:'OFFICIAL',track:'TRACK'};
- const anchors=d.hasResult?[{date:d.resultDay,distance:d.resultDistance,kind:KIND[d.resultMeasure],measurement:MEAS[d.resultMeasure],rpe:d.resultEffort,seconds:d.resultMinutes*60+d.resultSeconds,tolerated:d.resultTolerated}]:[];
+ const anchors=d.hasResult?[{date:d.resultDay,distance:d.resultDistance,kind:KIND[d.resultMeasure],measurement:MEAS[d.resultMeasure],rpe:d.resultEffort,seconds:(['HALF_MARATHON','MARATHON'].includes(d.resultDistance)?d.resultHours*3600:0)+d.resultMinutes*60+d.resultSeconds,tolerated:d.resultTolerated}]:[];
  const race=d.runAim?.race;
  const run=race?{event:{date:d.raceDay,kind:race},kind:'RACE'}:{kind:{startRunning:'GENERAL',regularity:'REGULAR',performance:'PERFORMANCE'}[d.runAim?.noRace]};
  const weeks=race?planWeeks(start,d.raceDay):weeksOverride;
@@ -140,6 +141,24 @@ console.log('=== 5 SSCTR C1: a never-trained strength athlete, week 1 and week 2
   check(`${n} day(s) × ${eqName}: the 25 note is shown (${note}) exactly when it is true (${truth})`,note===truth);
  }
  check('C1 matrix: 1/2/3 strength days × full gym, dumbbells, bodyweight',row===9);}
+
+console.log('=== 6 D22: the 06 line of each strength aim against the engine (Lucas, weeks 2, 4, 7)');
+{const M={};
+ for(const aim of ['STRENGTH','HYPERTROPHY','GENERAL','MAINTAIN']){
+  const a=build({...lucas,strengthAim:aim},{athleteId:'i101-d22-'+aim,today:'2026-10-24',start:'2026-10-26'});
+  const {t,answer}=onboard('d22-'+aim,intake(a,'2026-10-24',false),{asOf:'2026-10-24'});
+  check(`${aim}: accepted`,answer.status==='PROPOSED',answer.status);
+  M[aim]=[1,3,6].map(k=>{const ss=t.doc().program.weeks[k].sessions.filter(x=>x.sport==='STRENGTH');const ex=ss.flatMap(x=>x.prescription.exercises);
+   const per={};for(const e of ex)per[e.pattern]=(per[e.pattern]||0)+e.sets;
+   return {total:ex.reduce((s,e)=>s+e.sets,0),rir:ex.map(e=>e.rir),regions:new Set(ex.map(e=>e.region)),modes:new Set(ss.map(x=>x.prescription.goalMode)),per};});
+  M[aim].forEach((w,i)=>console.log(`  ${aim} week ${[2,4,7][i]}: ${w.total} sets · rir ${[...new Set(w.rir)].join('/')} · ${[...w.modes].join()} · ${JSON.stringify(w.per)}`));
+ }
+ const all=(aim,f)=>M[aim].every(f),i3=[0,1,2];
+ check('Hipertrofia "mais séries por músculo": more weekly sets than Geral and Manutenção every week',i3.every(i=>M.HYPERTROPHY[i].total>M.GENERAL[i].total&&M.HYPERTROPHY[i].total>M.MAINTAIN[i].total));
+ check('Hipertrofia "sempre sobrando algumas repetições": every set keeps reps in reserve (rir >= 2)',all('HYPERTROPHY',w=>w.rir.every(r=>r>=2)));
+ console.log('  note for SSCTR: against Força the weekly total is equal and the extra sets go to smaller muscles (PUSH/PULL 6 vs 8)');
+ check('Geral "o corpo todo": lower body, core and upper body every week',all('GENERAL',w=>['LOWER','CORE','UPPER'].every(r=>w.regions.has(r))));
+ check('Manutenção "o suficiente para manter": HOLD mode and never more sets than Geral',all('MAINTAIN',w=>w.modes.has('HOLD')&&w.modes.size===1)&&i3.every(i=>M.MAINTAIN[i].total<=M.GENERAL[i].total));}
 
 console.log(failures?`\n${failures} FAILED`:'\nall checks passed');
 process.exit(failures?1:0);

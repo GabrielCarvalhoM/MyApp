@@ -25,7 +25,7 @@ final class OnboardingViewModel {
         case missingAnswer([String])      // `838:4011`, with the engine's missing inputs
         case notBuilt                     // `838:3972`: INVALID_INPUT and operational failures (engineering decision D27/D23, 27/11)
     }
-    enum Sheet: String, Identifiable { case confirmCare, leave, account; var id: String { rawValue } }
+    enum Sheet: String, Identifiable { case confirmCare, account; var id: String { rawValue } }
 
     private(set) var phase: Phase
     private(set) var step: OnboardingStep
@@ -146,7 +146,7 @@ final class OnboardingViewModel {
         draft.raceDay = nil; draft.runAim = nil; step = .runAim; persist()
     }
 
-    // MARK: resume and leave (`838:3918`, `838:4219`)
+    // MARK: resume and leave (`838:3918`; the leave sheet `838:4219` is unused, D21 A)
 
     func resumeWhereStopped() { guard phase == .resume else { return }; phase = .form }
     /// D21 A (#113): × on 02–29 and on "Falta uma resposta" goes straight to `838:3918`, the answers kept (nothing is lost, so no

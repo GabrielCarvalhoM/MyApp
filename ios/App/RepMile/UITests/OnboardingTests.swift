@@ -97,6 +97,22 @@ final class OnboardingUITests: XCTestCase {
         attach(app, "10 · Retido por segurança (838:3689)")
     }
 
+    /// D21 A (#113): the × of a question goes straight to "Continue de onde parou" (`838:3918`) with no sheet; "Continuar de onde
+    /// parei" comes back to the same question with its answer.
+    @MainActor
+    func testCloseGoesStraightToResume() {
+        let app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "duration", "-onboardingPhase", "form"])
+        XCTAssertTrue(app.buttons["ob-close"].waitForExistence(timeout: 10))
+        attach(app, "10 · 12 com × (D21)")
+        app.buttons["ob-close"].tap()
+        XCTAssertTrue(app.buttons["ob-resume-continue"].waitForExistence(timeout: 10), "838:3918, no confirmation sheet")
+        XCTAssertFalse(app.sheets.firstMatch.exists)
+        attach(app, "10 · Retomar depois do × (838:3918)")
+        app.buttons["ob-resume-continue"].tap()
+        XCTAssertTrue(app.buttons["ob-close"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["ob-next"].isEnabled, "the answer kept")
+    }
+
     /// An open decision holds the send (Rafa: no race, so no plan length, D03): "Montar meu plano" stays disabled, nothing is sent.
     @MainActor
     func testAHeldPersonaCannotBuild() {
