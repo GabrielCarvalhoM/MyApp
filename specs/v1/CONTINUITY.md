@@ -12,14 +12,16 @@ Sem pausa ativa. Última pausa: 26/11 ~18:45 → retomada em 27/11 ~09:30 (check
 
 ## Agora
 
+Checkpoint de 27/11 (limite de uso).
+
 | | |
 |---|---|
-| **Founder Decision** | Fila vazia (27/11, ~21:10 UTC). Decididas: #79 A, #109 A, #110 A, #111 A (o fundador rotula o PR #80; nenhum commit novo no #80), #112 A (PR #116), #21 A, #29 B (GitHub App), #55 B, #47 B como objetivo (A na alpha), #66 B (aberta até o #101 validado), #74 A, #87 AJUSTAR (**sem orçamento para revisor clínico humano: mitigação com critérios técnicos**), #107 B+A, #113 consolidada, #114 consolidada. `decisions.mjs check` na retomada e entre lotes |
-| Figma | Promoção ao canônico em andamento (sessão nova, `ui-design-explorer` em modo promoção, histórico de versão antes): #107 (tokens claros + papel de texto), #113 (lacunas do onboarding; D18 como variantes alpha/teste), #114 (estados de segurança). As páginas de exploração só são apagadas depois de conferir a promoção |
-| Em andamento | **#101** onboarding (C-2 depois do #83) · **#102** Plano (C-3; inclui o Dynamic Type do Plano) · **#79** motor (C-SwiftUI) · **#83** PR #95 correções do QRE (C-2) · **#98/#99** PRs #100/#115 correções do QRE (P1 EN/ES PENDING_TRANSLATION; urgente forte fora do Hoje), sim INT |
-| Aprovado, a iniciar | #109 CCP-ONB-1 · #87 mitigação clínica (10 critérios) · #21 branch padrão (verificar antes) · #29 GitHub App · #55 RIR (conferir o Figma 41) · #47 exploração da opção B · nova exploração do #99 ("Entendi" no Hoje, borda de rolagem da tab bar, frase do sinal, rótulo "Pausado", arte de retenção, urgente fora do Hoje) |
-| Governança | PR #80 e PR #116 aguardam o rótulo do fundador |
-| Simuladores | INT (#99), C-2 (#83 → #101), C-3 (#102), C-SwiftUI (#79), **RepMile-Fundador só do fundador** |
+| **Founder Decision** | **#120** (13 textos do onboarding; recomendações no card), **#114 A6** (botões; recomendação B), **#123** (motor: código desconhecido; recomendação A). #124 retirado por engano meu: já coberto pelo #79 (CCP-79 item 2, PR #117). Rodar `decisions.mjs check` na retomada |
+| Figma | Promoções #107/#113/#114 feitas, corrigidas e reverificadas (`audits/v1-engineering-orchestration-2026-11-26/results/figma-promotions-2026-11-27/`). Em andamento (a14e686): 1499:2640, eixo do "Mapa híbrido", reclonar "Seg 9" em 1608:23, conferir os `reactions` do D21, medir branco sobre forca e dourado/verde no claro, apagar as páginas 1128:1126 e 1128:23 |
+| PRs prontos, aguardam o fundador | **#121** (#109 CCP-ONB-1): aguarda o rótulo `governance:approved`. PR #80 e PR #116: aguardam rótulo |
+| Em andamento | **#101** PR #119: condições QRE/SSCTR/visual + nós do #113 + SSCTR CCP-ONB-1; contagem de fixtures 99/100 → 109/110 depois do #121 · **#100/#115**: merge da base (#70, #94), P1 urgente EN/ES · **#79** PR #117 + matriz de 84 casos do #124 · **#83** PR #95 · **#102** Plano |
+| Depois | Merge do #100 e do #115 após a reverificação do QRE → sync C 4 → #14 · implementação SwiftUI de #107/#114 · #87 mitigação · #21, #29, #55, #47 · exploração dos itens do #99 · #122 |
+| Simuladores | INT (#99), C-2 (#83 → #101), C-3 (#102), C-SwiftUI (#79), B-HealthKit (livre), **RepMile-Fundador só do fundador** |
 
 ## Branches e worktrees
 
