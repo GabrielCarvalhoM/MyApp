@@ -1,0 +1,72 @@
+name: Feature
+description: Funcionalidade ou capacidade nova (com ou sem código ainda).
+title: "[Frente] "
+labels: ["type:feature"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: O que muda para o atleta ou para o sistema, em 1–3 frases.
+    validations: { required: true }
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto técnico e requisitos
+      description: Contrato, handoff, nó do Figma, módulos/arquivos envolvidos (caminhos da sua coluna, contrato §10).
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      description: Verificáveis. Diga o que é "implementado" e o que é "validado" (simulador, iPhone, dados reais).
+      value: |
+        - [ ] 
+    validations: { required: true }
+  - type: textarea
+    id: tests
+    attributes:
+      label: Testes necessários
+      description: Comandos exatos (npm test, swift test, sim.sh test, with-device.sh …).
+    validations: { required: true }
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Subtarefas
+      value: |
+        - [ ] 
+  - type: textarea
+    id: security
+    attributes:
+      label: Restrições de segurança e privacidade
+      description: Dados de saúde, Keychain, HealthKit, logs, syntheticOnly. "nenhuma" se não houver.
+  - type: dropdown
+    id: front
+    attributes:
+      label: Frente responsável
+      options: [A · CoachingHost, B · HealthKit, C · SwiftUI, Design, Integration]
+    validations: { required: true }
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options: [P0 · bloqueia a V1, P1 · necessária para a V1, P2 · importante, P3 · quando houver espaço]
+    validations: { required: true }
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options: [V1, V1.1, V2]
+    validations: { required: true }
+  - type: textarea
+    id: deps
+    attributes:
+      label: Dependências
+      description: Issues (#n), decisões ou entregas de outra frente. "nenhuma" se não houver.
+    validations: { required: true }
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Escopo
+      options:
+        - label: Escopo novo ou decisão de produto (fica em Backlog com `needs:founder-approval` até o fundador aprovar)

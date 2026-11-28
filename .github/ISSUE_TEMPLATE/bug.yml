@@ -1,0 +1,67 @@
+name: Bug
+description: Comportamento errado observado (build, teste, simulador, iPhone).
+title: "[Frente] "
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: O que acontece
+      description: Observado × esperado. Sem dados de saúde reais.
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: Como reproduzir
+      description: Branch, commit, comando, simulador/iPhone, fixture.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências
+      description: Link do run de CI, log curto, manifest.json do sim.sh, screenshot.
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      value: |
+        - [ ] teste de regressão que falha antes e passa depois
+    validations: { required: true }
+  - type: dropdown
+    id: security
+    attributes:
+      label: Afeta segurança, privacidade ou dados de saúde?
+      description: Se sim, não é dívida técnica; é P0 até a revisão de segurança dizer o contrário.
+      options: [Não, Sim]
+    validations: { required: true }
+  - type: dropdown
+    id: front
+    attributes:
+      label: Frente responsável
+      options: [A · CoachingHost, B · HealthKit, C · SwiftUI, Design, Integration]
+    validations: { required: true }
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options: [P0 · bloqueia a V1, P1 · necessária para a V1, P2 · importante, P3 · quando houver espaço]
+    validations: { required: true }
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options: [V1, V1.1, V2]
+    validations: { required: true }
+  - type: textarea
+    id: deps
+    attributes:
+      label: Dependências
+      description: Issues (#n), decisões ou entregas de outra frente. "nenhuma" se não houver.
+    validations: { required: true }
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Escopo
+      options:
+        - label: Escopo novo ou decisão de produto (fica em Backlog com `needs:founder-approval` até o fundador aprovar)

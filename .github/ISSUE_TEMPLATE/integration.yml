@@ -1,0 +1,60 @@
+name: Integration Task
+description: Integrar entregas de frentes, decidir uma proposta de contrato (CCP) ou validar fim a fim.
+title: "[Integração] "
+labels: ["type:integration", "area:integration"]
+body:
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Entregas integradas
+      description: Branch@commit ou PR de cada frente; CCP-* a decidir.
+    validations: { required: true }
+  - type: textarea
+    id: contracts
+    attributes:
+      label: Contratos impactados
+      description: IntegrationContracts, CoachingPresentation, CoachingCore, contrato paralelo, trava do aparelho. Mudança segue o contrato §11.
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de aceite
+      value: |
+        - [ ] guard.mjs sem violações
+        - [ ] npm test + swift-packages.sh verdes
+        - [ ] jornada validada (simulador / iPhone pela trava)
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências esperadas
+  - type: dropdown
+    id: front
+    attributes:
+      label: Frente responsável
+      options: [A · CoachingHost, B · HealthKit, C · SwiftUI, Design, Integration]
+    validations: { required: true }
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      options: [P0 · bloqueia a V1, P1 · necessária para a V1, P2 · importante, P3 · quando houver espaço]
+    validations: { required: true }
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options: [V1, V1.1, V2]
+    validations: { required: true }
+  - type: textarea
+    id: deps
+    attributes:
+      label: Dependências
+      description: Issues (#n), decisões ou entregas de outra frente. "nenhuma" se não houver.
+    validations: { required: true }
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Escopo
+      options:
+        - label: Escopo novo ou decisão de produto (fica em Backlog com `needs:founder-approval` até o fundador aprovar)
