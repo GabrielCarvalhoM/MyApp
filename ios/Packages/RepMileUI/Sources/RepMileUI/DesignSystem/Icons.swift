@@ -5,6 +5,8 @@ public enum RMIcon: String, CaseIterable, Sendable {
     case corrida, forca, descanso, prova, hoje, plano, historico, progresso
     case chevronDireita = "chevron-direita", chevronEsquerda = "chevron-esquerda", chevronBaixo = "chevron-baixo", chevronCima = "chevron-cima"
     case play, pausa, check, cadeado, voz, compartilhar, mais, fechar, repetir, lista, ajustes, relogio, marco, gps, adicionar, coroa
+    /// Figma `Ícone/hibrido` (run and strength together: onboarding 02, 07, 09).
+    case hibrido
 
     public var image: Image { Image("icone-" + rawValue, bundle: .module).renderingMode(.template) }
 }
@@ -25,4 +27,13 @@ public enum RMIllustration: String, CaseIterable, Sendable {
     case quadroSemana = "quadro-semana", relogioPulso = "relogio-pulso", relogio
 
     public var image: Image { Image("traco-" + rawValue, bundle: .module) }
+}
+
+/// Figma `Marca/Repmile · logotipo` (`963:94`): Unbounded Black with the 52° cut; the colour follows the main text.
+public struct RMLogo: View {
+    public init() {}
+    public var body: some View {
+        Image("marca-repmile", bundle: .module).renderingMode(.template).resizable().scaledToFit()
+            .frame(width: 102, height: 14).foregroundStyle(RM.Palette.textoPrimario).accessibilityLabel("Repmile")
+    }
 }

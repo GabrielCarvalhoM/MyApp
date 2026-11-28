@@ -65,6 +65,11 @@ public extension Scenario {
                                           presentation: .file("12-presentation-after-w0"), history: base.history, logged: .file("P-logged-conflict"),
                                           weekPlan: base.weekPlan, hostGate: .none, pendingReports: 0, healthQueued: 0)
     /// The eve of the first week (plan created, nothing logged yet).
+    /// #101: Lucas (`837:1144`) right after the onboarding, read from the real engine's record (`Captures/lucas-*`): 8 weeks to the 10 km of
+    /// Sunday 20 Dec, calibrated by the 5 km in 21:48, 3 strength days. Screens 31–34 in the fixture composition.
+    static let lucasOnboarded = Scenario(id: "lucas-onboarded", title: "Cadastro · Lucas, 8 semanas até os 10 km", plan: .file("lucas-plan"), allWeeks: .file("lucas-sessions"),
+                                         presentation: .file("lucas-presentation"), history: base.history, logged: .file("lucas-logged"),
+                                         weekPlan: .file("lucas-week-plan"), hostGate: .none, pendingReports: 0, healthQueued: 0)
     static let firstWeek = Scenario(id: "first-week", title: "Plano criado · véspera da semana 1", plan: .file("02-plan-w0"), allWeeks: base.allWeeks,
                                     presentation: .file("04-presentation-after-onboard"), history: base.history, logged: .file("P-logged-two-voices"),
                                     weekPlan: base.weekPlan, hostGate: .none, pendingReports: 0, healthQueued: 0)
@@ -122,7 +127,7 @@ public extension Scenario {
     }
     static let zoneVariants = ["age30", "declared", "custom", "strap-above", "strap-below", "lab", "conflict", "noage", "hold", "optical", "after-erase"]
 
-    static let all: [Scenario] = zoneVariants.map(zones) + [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .blocked, .blockedUrgent, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
+    static let all: [Scenario] = zoneVariants.map(zones) + [.today, .weekDone, .historyUnplanned, .historyConflict, .firstWeek, .lucasOnboarded, .blocked, .blockedUrgent, .blockedAfterErase, .returning, .pending, .screenRequired, .restartOutsideScope,
                                   .clockUntrusted, .notEnrolled, .accountErased, .staleVersion, .integrityFailure, .recordLost]
 
     static func named(_ id: String?) -> Scenario { all.first { $0.id == id } ?? .today }
