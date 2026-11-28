@@ -12,8 +12,9 @@ final class OnboardingViewModel {
         case form
         /// 30 "Montando seu plano": the write is in flight (one at a time).
         case building
-        /// 31 Plano pronto, then 34 Primeira semana.
+        /// 31 Plano pronto, 33 Assinar (build de teste, D18 A), then 34 Primeira semana.
         case ready
+        case subscribe
         case firstWeek
         case outcome(Outcome)
     }
@@ -65,7 +66,12 @@ final class OnboardingViewModel {
     var today: String { Fmt.deviceDay(now()) }
 
     /// 04: the race day picked is beyond the longest plan (`838:3864`).
-    var raceBeyondPlan: Bool { draft.raceDay != nil && planWeeks == nil }
+    var raceBeyondPlan: Bool { draft.raceDay != nil && planWeeks == nil && !raceTooClose }
+    /// 04 `1491:8266`: before the start, or under 7 days from it for a 5 km, 10 km or half marathon (the marathon exception: preparatory plan).
+    var raceTooClose: Bool {
+        guard let d = draft.raceDay, let gap = OnboardingDraft.days(from: startDay, to: d) else { return false }
+        return gap < 0 || (gap < OnboardingDraft.minimumDaysToRace && draft.runAim?.race != .marathon)
+    }
     var planWeeks: Int? { draft.raceDay.flatMap { OnboardingDraft.planWeeks(start: startDay, race: $0) } }
 
     /// How full the current stage's segment is, 0…1 (a respiro closes it).
@@ -79,9 +85,7 @@ final class OnboardingViewModel {
 
     var canContinue: Bool {
         switch step {
-        case .raceDate: draft.answered(.raceDate) && !raceBeyondPlan
-        // D19: a half or a full marathon needs hours, which the drawn wheel (min/s) cannot hold; held until the design answers.
-        case .result: draft.answered(.result) && (draft.hasResult == false || ![.half, .marathon].contains(draft.resultDistance))
+        case .raceDate: draft.answered(.raceDate) && !raceBeyondPlan && !raceTooClose
         // QRE P3-6: "Montar meu plano" opens only when the request can actually be built.
         case .dataUse: phase == .form && buildable
         default: draft.answered(step)
@@ -128,7 +132,7 @@ final class OnboardingViewModel {
         case .appleHealth: draft.appleHealthAnswered = true
         case .result:
             // "Não tenho resultado recente": no detail of a result stays behind (QRE P3-9), the local conditions included.
-            draft.hasResult = false; draft.resultDistance = nil; draft.resultMinutes = nil; draft.resultSeconds = nil; draft.resultDay = nil
+            draft.hasResult = false; draft.resultDistance = nil; draft.resultHours = nil; draft.resultMinutes = nil; draft.resultSeconds = nil; draft.resultDay = nil
             draft.resultMeasure = nil; draft.resultEffort = nil; draft.resultTolerated = nil; draft.resultConditions = nil
             return
         default: return
@@ -145,6 +149,15 @@ final class OnboardingViewModel {
     // MARK: resume and leave (`838:3918`, `838:4219`)
 
     func resumeWhereStopped() { guard phase == .resume else { return }; phase = .form }
+    /// D21 A (#113): × on 02–29 and on "Falta uma resposta" goes straight to `838:3918`, the answers kept (nothing is lost, so no
+    /// confirmation: the Founder's condition).
+    func leaveToResume() {
+        switch phase {
+        case .form: persist(); sheet = nil; phase = .resume
+        case .outcome(.missingAnswer): phase = .resume
+        default: return
+        }
+    }
     /// "Recomeçar": the unsent answers are erased from this iPhone.
     func restart() { guard phase == .resume else { return }; store.erase(); draft = OnboardingDraft(); step = .opening; phase = .form }
     func persist() {
@@ -193,9 +206,10 @@ final class OnboardingViewModel {
 
     /// 31 "Salvar meu plano" → 32 (folha de conta).
     func saveThePlan() { guard phase == .ready else { return }; sheet = .account }
-    /// 32 has no account behind it (#28, D18: its actions are held). Closing it is the alpha path to the first week (Founder 27/11, "Alpha
-    /// local": a temporary technical path, not an approved journey).
-    func accountSheetClosed() { if phase == .ready { phase = .firstWeek } }
+    /// 32 alpha local (`1491:8743`, D18 conta B): "Continuar neste iPhone" → 33 build de teste (`1491:8865`).
+    func continueOnThisIPhone() { guard phase == .ready, sheet == .account else { return }; sheet = nil; phase = .subscribe }
+    /// 33 build de teste: "Continuar no teste, sem cobrança" or × → 34. Nothing is bought, nothing is charged.
+    func subscriptionDone() { guard phase == .subscribe else { return }; phase = .firstWeek }
 }
 
 #if DEBUG
@@ -209,6 +223,7 @@ extension OnboardingViewModel {
         case "ready": phase = .ready
         case "firstWeek": phase = .firstWeek
         case "account": phase = .ready; sheet = .account
+        case "subscribe": phase = .subscribe
         case "confirmCare": phase = .form; step = .care; sheet = .confirmCare
         case "notBuilt": phase = .outcome(.notBuilt)
         case "missing": phase = .outcome(.missingAnswer([]))

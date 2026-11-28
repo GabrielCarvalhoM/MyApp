@@ -48,6 +48,8 @@ struct OnboardingDraft: Codable, Equatable, Sendable {
     /// 23: nil until answered; false = "Não tenho resultado recente".
     var hasResult: Bool?
     var resultDistance: RaceDistance?
+    /// D19 A (`1491:8444`): hours for the half marathon and the marathon only.
+    var resultHours: Int?
     var resultMinutes: Int?
     var resultSeconds: Int?
     var resultDay: String?
@@ -99,7 +101,8 @@ struct OnboardingDraft: Codable, Equatable, Sendable {
         case .runRecentDays: recentRunDaysChoice != nil
         case .runNow: recentRunDays != nil && recentRunMinutes != nil && longestRunMinutes != nil
         case .runYears: runBand != nil
-        case .result: hasResult == false || (resultDistance != nil && resultMinutes != nil && resultSeconds != nil)
+        case .result: hasResult == false || (resultDistance != nil && resultMinutes != nil && resultSeconds != nil
+                                             && (resultDistance?.hasHours != true || resultHours != nil))
         case .resultDetail: resultDay != nil && resultMeasure != nil && resultEffort != nil && resultTolerated != nil && resultConditions != nil
         case .strengthYears: strengthBand != nil && (strengthBand == .never || recentStrengthDays != nil)
         case .care: careNone || !care.isEmpty
@@ -144,6 +147,19 @@ struct OnboardingDraft: Codable, Equatable, Sendable {
         if aim != .noRace(.startRunning) { runStart = nil; recentRunDaysChoice = nil }
         else if runAim != aim { recentRunDays = nil; recentRunMinutes = nil; longestRunMinutes = nil; runBand = nil }
         runAim = aim
+    }
+
+    /// The result's time in seconds (h:min:s for the half and the marathon, min:s otherwise).
+    var resultTotalSeconds: Int? {
+        guard let d = resultDistance, let m = resultMinutes, let s = resultSeconds else { return nil }
+        if d.hasHours { guard let h = resultHours else { return nil }; return h * 3600 + m * 60 + s }
+        return m * 60 + s
+    }
+
+    /// 23: another distance changes the wheel's columns and clears it (D19 A); nothing is carried over.
+    mutating func choose(resultDistance d: RaceDistance) {
+        if resultDistance != d { resultHours = nil; resultMinutes = nil; resultSeconds = nil }
+        resultDistance = d; hasResult = true
     }
 
     /// 21 iniciante (SSCTR 27/11): "Nunca corri" ends the running questions; "Já corri e parei" asks 21b; "Corro hoje" asks 21 and 22. The

@@ -33,8 +33,8 @@ enum OnboardingStep: String, Codable, CaseIterable, Sendable {
         var s: [OnboardingStep] = [.opening, .train]
         if runs { s.append(.runAim); if d.runAim?.race != nil { s += [.raceDate, .goalTime] } }
         if lifts { s.append(.strengthAim) }
-        // 08 is drawn for a race only (D09): without a race the stage closes on its last question.
-        if d.runAim?.race != nil && runs { s.append(.goalDone) }
+        // 08 closes the stage with or without a race (D09 A: `835:2475`, `1491:8326`, `1491:8385`).
+        s.append(.goalDone)
         s.append(.week)
         if runs { s.append(.longRun) }
         s.append(.duration)

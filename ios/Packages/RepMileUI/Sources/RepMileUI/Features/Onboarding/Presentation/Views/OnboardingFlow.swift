@@ -28,7 +28,7 @@ struct OnboardingFlow: View {
             #if DEBUG
             if let p = OnboardingDebugSeed.phase(arguments: ProcessInfo.processInfo.arguments) {
                 vm.debugShow(p)
-                if [.ready, .firstWeek].contains(vm.phase) { enrolled() }
+                if [.ready, .subscribe, .firstWeek].contains(vm.phase) { enrolled() }
             }
             #endif
             viewModel = vm
@@ -43,13 +43,16 @@ struct OnboardingFlow: View {
             case .building: OnboardingBuildingView(draft: vm.draft, animate: !reduceMotion, shownAtStart: vm.debugBuildingShown)
             case .ready:
                 OnboardingPlanReadyView(preview: preview(vm), save: { vm.saveThePlan() }, seePlan: finished)
-                    .sheet(item: Binding(get: { vm.sheet == .account ? vm.sheet : nil }, set: { if $0 == nil { vm.sheet = nil; withAnimation { vm.accountSheetClosed() } } })) { _ in
-                        OnboardingAccountSheet()
+                    .sheet(item: Binding(get: { vm.sheet == .account ? vm.sheet : nil }, set: { if $0 == nil { vm.sheet = nil } })) { _ in
+                        // D18 conta B: the alpha-local sheet while no account exists (#28); the canonical `837:1323` when it does.
+                        if OBBuild.accountAvailable { OnboardingAccountSheet() } else { OnboardingAlphaAccountSheet { withAnimation { vm.continueOnThisIPhone() } } }
                     }
                     .overlay { if vm.sheet == .account { OBSheetDim() } }
+            case .subscribe: OnboardingTestSubscriptionView(preview: preview(vm), race: vm.draft.runAim?.race, raceDay: vm.draft.raceDay) { withAnimation { vm.subscriptionDone() } }
             case .firstWeek: OnboardingFirstWeekView(preview: preview(vm), goToday: finished)
             case .outcome(let o):
-                OnboardingOutcomeView(outcome: o, draft: vm.draft, retry: { Task { await vm.retry(minimumDisplay: minimum) } }, review: { withAnimation { vm.review() } })
+                OnboardingOutcomeView(outcome: o, draft: vm.draft, retry: { Task { await vm.retry(minimumDisplay: minimum) } }, review: { withAnimation { vm.review() } },
+                                      leave: { withAnimation { vm.leaveToResume() } })
             }
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: vm.phase)

@@ -18,6 +18,9 @@ struct OnboardingPlanPreview: Equatable {
     var strengthDays: Set<Int> = []
     var longRunDay: Int?
     var weekLine: String?
+    /// "4 corridas e 3 de força" (33 build de teste) and the plan's length in weeks.
+    var weekCounts: String?
+    var weeks: Int?
     var weekRange: String?
     var cards: [Card] = []
     var preparatory = false
@@ -40,6 +43,7 @@ struct OnboardingPlanPreview: Equatable {
         let raceShaped = phases.contains { ["SPECIFIC", "TAPER", "RACE_WEEK"].contains($0) }
         preparatory = race == .marathon && !phases.isEmpty && !raceShaped
         let weeks = plan?.weeks ?? weekPlan?.weeks.count
+        self.weeks = weeks
         let named: (String) -> String = { t in name.isEmpty ? t : L.f("ob.withName", t, name) }
         if preparatory {
             title = L.t("ob.ready.title.prep")
@@ -59,6 +63,7 @@ struct OnboardingPlanPreview: Equatable {
         }
         if !sessions.isEmpty, let s = start {
             let runs = sessions.filter(isRun).count, lifts = sessions.filter { $0.sport.raw == "STRENGTH" }.count
+            weekCounts = OBText.counts(runs: runs, strength: lifts)
             weekLine = L.f("ob.ready.week1", OBText.counts(runs: runs, strength: lifts), OBText.onDay(s))
         }
         cards = Self.cards(presentation?.readings?.runCalibration, race: race)

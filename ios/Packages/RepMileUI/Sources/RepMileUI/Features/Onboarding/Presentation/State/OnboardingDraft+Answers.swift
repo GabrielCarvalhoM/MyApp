@@ -42,6 +42,16 @@ extension OnboardingDraft {
         return planLengths.first { gap < $0 * 7 }
     }
 
+    /// D04 A (`1491:8266`): a 5 km, 10 km or half marathon needs at least 7 days from the plan's start (the engine's
+    /// `event.withinHorizonAndNotImmediate`; a marathon closer is the preparatory plan, never an error). Repeated here until the host gives
+    /// the minimum and maximum race days (the frame's Dev Mode note; open item of #101).
+    static let minimumDaysToRace = 7
+
+    static func firstRaceDay(start: String) -> String? {
+        guard let s = Fmt.day(start), let d = Fmt.calendar.date(byAdding: .day, value: minimumDaysToRace, to: s) else { return nil }
+        return Fmt.dayString(d)
+    }
+
     /// The last race day a plan from `start` can hold (`838:3864` "Escolha uma data até …").
     static func lastRaceDay(start: String) -> String? {
         guard let s = Fmt.day(start), let last = Fmt.calendar.date(byAdding: .day, value: (planLengths.last ?? 16) * 7 - 1, to: s) else { return nil }
@@ -99,9 +109,9 @@ extension OnboardingDraft {
     var anchors: [PerformanceAnchor]? {
         // "Nunca corri" is not asked for a result (23 is not in its flow): no anchor, truthfully.
         guard hasResult == true else { return hasResult == false || runStart == .never ? [] : nil }
-        guard let d = resultDistance, let m = resultMinutes, let s = resultSeconds, let day = resultDay, let measure = resultMeasure,
+        guard let d = resultDistance, let total = resultTotalSeconds, let day = resultDay, let measure = resultMeasure,
               let kind = measure.kind, let effort = resultEffort, let tolerated = resultTolerated else { return nil }
-        return [PerformanceAnchor(kind: kind, distance: d.rawValue, seconds: Double(m * 60 + s), date: day, measurement: measure.measurement,
+        return [PerformanceAnchor(kind: kind, distance: d.rawValue, seconds: Double(total), date: day, measurement: measure.measurement,
                                   rpe: Double(effort), tolerated: tolerated)]
     }
 

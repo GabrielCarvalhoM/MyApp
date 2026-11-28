@@ -61,8 +61,11 @@ final class OnboardingUITests: XCTestCase {
         app.buttons["ob-save"].tap()
         XCTAssertTrue(app.buttons["ob-account-apple"].waitForExistence(timeout: 10), "32 folha de conta")
         XCTAssertFalse(app.buttons["ob-account-apple"].isEnabled, "no account behind it (#28, D18)")
-        attach(app, "10 · 32 Salvar o plano (837:1323)")
-        app.swipeDown(velocity: .fast)
+        attach(app, "10 · 32 Salvar o plano · alpha local (1491:8743)")
+        app.buttons["ob-continue-here"].tap()
+        XCTAssertTrue(app.buttons["ob-test-continue"].waitForExistence(timeout: 10), "33 build de teste")
+        attach(app, "10 · 33 Assinar · build de teste (1491:8865)")
+        app.buttons["ob-test-continue"].tap()
         XCTAssertTrue(app.buttons["ob-go-today"].waitForExistence(timeout: 10), "34 Primeira semana")
         app.buttons["ob-go-today"].tap()
         XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 15))
@@ -141,8 +144,8 @@ final class OnboardingUITests: XCTestCase {
         app.terminate()
         app = launch(["-onboardingSeed", "lucas", "-onboardingStep", "dataUse", "-onboardingPhase", "account", "-afterOnboarding", "lucas-onboarded"])
         XCTAssertTrue(app.buttons["ob-account-apple"].waitForExistence(timeout: 15))
-        ordered(tree(app, "32 Salvar o plano"), ["Salve o seu plano", "Continuar com a Apple", "Continuar com o Google", "Continuar com e-mail",
-                                                 "Ao continuar", "Já tenho conta · Entrar"], "32")
+        ordered(tree(app, "32 Salvar o plano · alpha local"), ["Seu plano está salvo neste iPhone", "Continuar com a Apple", "Continuar com o Google",
+                                                               "Continuar com e-mail", "Continuar neste iPhone", "Já tenho conta · indisponível nesta versão"], "32")
         XCTAssertFalse(app.buttons["ob-account-apple"].isEnabled, "announced as dimmed: no account in V1")
     }
 }

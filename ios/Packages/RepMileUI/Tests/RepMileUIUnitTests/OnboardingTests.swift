@@ -162,6 +162,16 @@ final class OnboardingTests: XCTestCase {
         XCTAssertFalse(OBCopyDeviation.showConfirmInFirstWorkout); XCTAssertFalse(OBCopyDeviation.showOnlyInYourAccount)
     }
 
+    /// D22 A (#113): one line per strength aim (06) and the 27b sentence for one, two, or three or more signs (INTERIM, #87).
+    func testPerOptionHelpersAndSignSentences() {
+        for a in StrengthAim.allCases { XCTAssertNotEqual(L.t("ob.strengthAim.\(a.rawValue).note"), "ob.strengthAim.\(a.rawValue).note") }
+        let one = CareConfirmSheet.sentence([.injury]), two = CareConfirmSheet.sentence([.pain, .injury]), many = CareConfirmSheet.sentence([.pain, .injury, .illness])
+        XCTAssertTrue(one.contains(L.t("ob.careConfirm.item.injury")))
+        XCTAssertTrue(two.contains(L.t("ob.careConfirm.item.pain")) && two.contains(L.t("ob.careConfirm.item.injury")))
+        XCTAssertTrue(many.contains("3"))
+        XCTAssertFalse(many.contains(L.t("ob.careConfirm.item.pain")))
+    }
+
     func testEquipmentPresetsAndTurns() {
         var d = Self.lucas()
         XCTAssertEqual(d.equipmentCodes, ["BARBELL", "RACK", "BENCH", "DUMBBELLS", "MACHINES"], "the Figma's stated assumption")
@@ -195,7 +205,8 @@ final class OnboardingTests: XCTestCase {
         XCTAssertFalse(OnboardingStep.flow(for: d).contains { [.runAim, .longRun, .runPlace, .runNow, .result].contains($0) })
         d = Self.lucas(); d.choose(aim: .noRace(.startRunning)); d.choose(start: .never)
         let marina = OnboardingStep.flow(for: d)
-        XCTAssertTrue(marina.contains(.runStart)); XCTAssertFalse(marina.contains(.runNow)); XCTAssertFalse(marina.contains(.result)); XCTAssertFalse(marina.contains(.goalDone))
+        XCTAssertTrue(marina.contains(.runStart)); XCTAssertFalse(marina.contains(.runNow)); XCTAssertFalse(marina.contains(.result))
+        XCTAssertTrue(marina.contains(.goalDone), "D09 A: 08 closes stage 1 without a race too")
         d.choose(start: .stopped)
         XCTAssertTrue(OnboardingStep.flow(for: d).contains(.runRecentDays))
     }

@@ -41,8 +41,9 @@ extension OnboardingFormView {
             OBPills(items: StrengthAim.allCases.map { ($0.rawValue, L.t("ob.strengthAim.\($0.rawValue)")) },
                     selected: Set([vm.draft.strengthAim?.rawValue].compactMap { $0 })) { vm.draft.strengthAim = StrengthAim(rawValue: $0) }
                 .padding(.horizontal, RM.Space.gutter).padding(.top, 20)
-            // The Figma writes the line for "Força" only (D22): the other aims show none.
-            if vm.draft.strengthAim == .strength { OBFootnote(text: L.t("ob.strengthAim.STRENGTH.note")) }
+            // D22 A (#113, Dev Mode note of `835:2349`, example `1491:8511`): one line per aim. The three new lines await the SSCTR check
+            // the note asks for (they describe what the plan does).
+            if let aim = vm.draft.strengthAim { OBFootnote(text: L.t("ob.strengthAim.\(aim.rawValue).note")) }
         default: EmptyView()
         }
     }
@@ -69,13 +70,17 @@ extension OnboardingFormView {
             OBQuestion(stage: 1, title: L.t("ob.raceDate.title"))
             RaceDateWheel(day: vm.draft.raceDay, startYear: Int(vm.today.prefix(4)) ?? 2026) { vm.draft.raceDay = $0 }
                 .padding(.top, 20)
-            if let day = vm.draft.raceDay, vm.raceBeyondPlan {
+            if let day = vm.draft.raceDay, vm.raceBeyondPlan || vm.raceTooClose {
+                // `838:3864` beyond 16 weeks; `1491:8266` under 7 days (D04 A).
+                let title = vm.raceTooClose ? L.t("ob.raceDate.tooClose.title") : L.t("ob.raceDate.beyond.title")
+                let body = vm.raceTooClose
+                    ? L.f("ob.raceDate.tooClose.body", OBText.onDay(vm.startDay), OBText.dayMonthLong(OnboardingDraft.firstRaceDay(start: vm.startDay) ?? day))
+                    : L.f("ob.raceDate.beyond.body", OBText.dayMonthYear(OnboardingDraft.lastRaceDay(start: vm.startDay) ?? day))
                 HStack(alignment: .top, spacing: 12) {
                     RMIconView(.fechar, size: 16).foregroundStyle(RM.Palette.negativo).padding(.top, 2)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(L.t("ob.raceDate.beyond.title")).rmText(.subtitulo)
-                        Text(L.f("ob.raceDate.beyond.body", OBText.dayMonthYear(OnboardingDraft.lastRaceDay(start: vm.startDay) ?? day)))
-                            .rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                        Text(title).rmText(.subtitulo).fixedSize(horizontal: false, vertical: true)
+                        Text(body).rmText(.detalhe, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .padding(16).frame(maxWidth: .infinity, alignment: .leading)

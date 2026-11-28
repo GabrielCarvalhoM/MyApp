@@ -12,7 +12,8 @@ struct OnboardingFormView: View {
             case .opening: opening
             case .goalDone, .routineDone, .youDone: respiro
             default:
-                OBScaffold(stage: vm.step.stage, progress: vm.stageProgress, back: { withAnimation(.easeInOut(duration: 0.25)) { vm.back() } }) {
+                OBScaffold(stage: vm.step.stage, progress: vm.stageProgress, back: { withAnimation(.easeInOut(duration: 0.25)) { vm.back() } },
+                           close: { withAnimation { vm.leaveToResume() } }) {
                     content
                 } actions: {
                     actions
@@ -43,7 +44,7 @@ struct OnboardingFormView: View {
             OBPrimaryButton(title: L.t("ob.data.build"), enabled: vm.canContinue, id: "ob-build", action: build)
         case .raceDate:
             OBPrimaryButton(title: L.t("ob.continue"), enabled: vm.canContinue, id: "ob-next", action: advance)
-            if vm.raceBeyondPlan { OBLink(title: L.t("ob.raceDate.withoutRace"), id: "ob-without-race") { withAnimation { vm.continueWithoutRace() } } }
+            if vm.raceBeyondPlan || vm.raceTooClose { OBLink(title: L.t("ob.raceDate.withoutRace"), id: "ob-without-race") { withAnimation { vm.continueWithoutRace() } } }
         case .goalTime:
             OBPrimaryButton(title: L.t("ob.continue"), enabled: vm.canContinue, id: "ob-next", action: advance)
             OBLink(title: L.t("ob.goal.skip"), id: "ob-skip") { withAnimation { vm.skip() } }
@@ -87,7 +88,7 @@ struct OnboardingFormView: View {
 
     private var respiro: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OBNavigation(stage: vm.step.stage, progress: 1) { withAnimation { vm.back() } }
+            OBNavigation(stage: vm.step.stage, progress: 1, back: { withAnimation { vm.back() } }, close: { withAnimation { vm.leaveToResume() } })
             ScrollView { respiroContent.frame(maxWidth: .infinity, alignment: .leading) }.scrollIndicators(.hidden).obScrollAnchor()
             OBPrimaryButton(title: L.t(vm.step == .goalDone ? "ob.goalDone.next" : vm.step == .routineDone ? "ob.routineDone.next" : "ob.youDone.next"), id: "ob-next") { advance() }
                 .padding(.horizontal, RM.Space.gutter).padding(.vertical, 8)
@@ -109,12 +110,12 @@ struct CareConfirmSheet: View {
     @Bindable var vm: OnboardingViewModel
     @Environment(\.dynamicTypeSize) private var typeSize
     var body: some View {
-        let marked = CareItem.allCases.filter { $0.isClinical && vm.draft.care.contains($0) }.map { L.t("ob.care.\($0.rawValue)").lowercased(with: Fmt.locale) }
+        let body = Self.sentence(CareItem.allCases.filter { $0.isClinical && vm.draft.care.contains($0) })
         VStack(alignment: .leading, spacing: 12) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(L.t("ob.careConfirm.title")).rmText(.titulo).fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
-                    Text(L.f("ob.careConfirm.body", OBText.list(marked))).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
+                    Text(body).rmText(.corpo, RM.Palette.textoSecundario).fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 20)
@@ -130,8 +131,17 @@ struct CareConfirmSheet: View {
     }
 }
 
+extension CareConfirmSheet {
+    /// D22 A (#113, Dev Mode note of `838:4148`, example `1491:8556`; INTERIM · CLINICAL_HUMAN_REQUIRED, #87): one sign names it, two name
+    /// both, three or more give the count.
+    static func sentence(_ marked: [CareItem]) -> String {
+        let names = marked.map { L.t("ob.careConfirm.item.\($0.rawValue)") }
+        return names.count >= 3 ? L.f("ob.careConfirm.many", "\(names.count)") : L.f("ob.careConfirm.body", OBText.list(names))
+    }
+}
+
 /// The dim behind a sheet, as the Figma draws it under 27b and 32.
 struct OBSheetDim: View {
     // The app background as a veil (a token, so it follows the appearance: darker in dark, lighter in light).
-    var body: some View { RM.Palette.fundoApp.opacity(0.6).ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true).transition(.opacity) }
+    var body: some View { RM.Palette.fundoApp.opacity(0.72).ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true).transition(.opacity) }
 }

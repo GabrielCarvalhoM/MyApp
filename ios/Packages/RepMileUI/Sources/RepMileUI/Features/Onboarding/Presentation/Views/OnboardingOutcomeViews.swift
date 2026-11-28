@@ -62,6 +62,7 @@ struct OnboardingOutcomeView: View {
     let draft: OnboardingDraft
     let retry: () -> Void
     let review: () -> Void
+    var leave: () -> Void = {}
 
     var body: some View {
         switch outcome {
@@ -72,7 +73,7 @@ struct OnboardingOutcomeView: View {
             }
         case .missingAnswer:
             VStack(alignment: .leading, spacing: 0) {
-                OBNavigation(stage: 4, progress: 0.75, back: review)
+                OBNavigation(stage: 4, progress: 0.75, back: review, close: leave)
                 OBQuestion(stage: 4, title: L.t("ob.missing.title"))
                 // The shared-day question drawn here waits for D10; the engine's other missing answers are asked on their own step (back).
                 OBFootnote(text: L.t("ob.missing.note"))

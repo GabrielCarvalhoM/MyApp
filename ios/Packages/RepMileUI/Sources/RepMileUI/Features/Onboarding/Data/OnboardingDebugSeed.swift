@@ -54,6 +54,18 @@ enum OnboardingDebugSeed {
         case "marina-stopped":   // `838:1093`
             d.name = "Marina"; d.runAim = .noRace(.startRunning); d.raceDay = nil; d.goalMinutes = nil; d.goalSeconds = nil; d.runStart = .stopped
             d.recentRunDaysChoice = RecentRunDays.none; d.recentRunDays = nil; d.recentRunMinutes = nil; d.longestRunMinutes = nil; d.runBand = nil; d.hasResult = false
+        case "too-close":   // `1491:8266`
+            d.raceDay = day(4, from: start)
+        case "strength-only":   // `1491:8385`
+            d.choose(train: .strengthOnly); d.strengthAim = .hypertrophy
+        case "rafa-hypertrophy":   // `1491:8326`
+            d.name = "Rafa"; d.runAim = .noRace(.regularity); d.raceDay = nil; d.strengthAim = .hypertrophy
+        case "half-result":   // `1491:8444`
+            d.choose(resultDistance: .half); d.resultHours = 1; d.resultMinutes = 52; d.resultSeconds = 30
+        case "hypertrophy":   // `1491:8511`
+            d.strengthAim = .hypertrophy
+        case "clinical-injury":   // `1491:8556`
+            d.careNone = false; d.care = [.injury]
         case "lucas-off":   // 29 with both optional uses off (the default)
             d.consentHealthSignals = false; d.consentLearning = false
         case "clinical":

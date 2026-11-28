@@ -13,6 +13,8 @@ enum TrainChoice: String, Codable, CaseIterable, Sendable {
 /// 03 "Uma prova" (`835:2188`): the engine's event kinds (`r6-intake.mjs` EVENTS).
 enum RaceDistance: String, Codable, CaseIterable, Sendable {
     case fiveK = "5K", tenK = "10K", half = "HALF_MARATHON", marathon = "MARATHON"
+    /// 23 (D19 A, `1491:8444`): h:min:s for the half and the marathon; min:s for 5 and 10 km (10 km minutes may pass 59).
+    var hasHours: Bool { self == .half || self == .marathon }
 }
 
 /// 03 "Sem prova": the engine's RUN_GOALS words.

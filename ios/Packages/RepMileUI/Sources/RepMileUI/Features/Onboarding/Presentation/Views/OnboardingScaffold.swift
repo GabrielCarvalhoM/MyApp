@@ -7,12 +7,14 @@ struct OBScaffold<Content: View, Actions: View>: View {
     let progress: Double
     var showsBack = true
     let back: () -> Void
+    /// D21 A (#113): the × of every frame 02–29 goes straight to "Retomar o cadastro", the answers kept.
+    var close: (() -> Void)?
     @ViewBuilder let content: Content
     @ViewBuilder let actions: Actions
 
     var body: some View {
         VStack(spacing: 0) {
-            if stage > 0 { OBNavigation(stage: stage, progress: progress, showsBack: showsBack, back: back) }
+            if stage > 0 { OBNavigation(stage: stage, progress: progress, showsBack: showsBack, back: back, close: close) }
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) { content }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,6 +34,7 @@ struct OBNavigation: View {
     let progress: Double
     var showsBack = true
     let back: () -> Void
+    var close: (() -> Void)?
     var body: some View {
         HStack(spacing: 14) {
             Button(action: back) {
@@ -42,9 +45,18 @@ struct OBNavigation: View {
             .buttonStyle(.plain).opacity(showsBack ? 1 : 0).disabled(!showsBack)
             .accessibilityLabel(L.t("ob.back")).accessibilityIdentifier("ob-back")
             OBProgress(stage: stage, progress: progress).frame(height: 5)
-            Color.clear.frame(width: 36, height: 36)
+            if let close {
+                Button(action: close) {
+                    RMIconView(.fechar, size: 16).foregroundStyle(RM.Palette.textoPrimario)
+                        .frame(width: 36, height: 36).background(RM.Palette.fundoElevado, in: Circle())
+                        .frame(width: 44, height: 44).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityLabel(L.t("ob.close")).accessibilityIdentifier("ob-close")
+            } else {
+                Color.clear.frame(width: 44, height: 44)
+            }
         }
-        .padding(.leading, 12).padding(.trailing, 16).padding(.top, 0)
+        .padding(.horizontal, 12).padding(.top, 0)
     }
 }
 
@@ -101,12 +113,14 @@ struct OBPrimaryButton: View {
     var enabled = true
     /// A held action that the Figma draws as the white pill (32 "Continuar com a Apple"): disabled, its outline kept.
     var outlinedWhenDisabled = false
+    /// 52 pt (Figma "Botão · Continuar"); 56 pt in the sheets (`1491:8743`).
+    var height: CGFloat = 52
     let id: String
     let action: () -> Void
     var body: some View {
         Button(action: action) {
             Text(title).rmText(.botao, enabled ? RM.Palette.agoraSobre : RM.Palette.textoTerciario)
-                .frame(maxWidth: .infinity, minHeight: 52)
+                .frame(maxWidth: .infinity, minHeight: height)
                 .background(enabled ? RM.Palette.agora : RM.Palette.fundoElevado, in: Capsule())
                 .overlay(Capsule().strokeBorder(!enabled && outlinedWhenDisabled ? RM.Palette.textoTerciario : .clear, lineWidth: 1))
                 .contentShape(Capsule())

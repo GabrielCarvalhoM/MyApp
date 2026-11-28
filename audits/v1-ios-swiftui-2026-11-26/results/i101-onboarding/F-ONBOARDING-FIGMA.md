@@ -244,3 +244,19 @@ retidas até lá. **Ainda pendentes (fundador/CCP):** D01, D03 (sem prova), D04-
   alvos de 44 pt; P3 (ponto de hoje em 01, segundos de 10 em 10 em 05 — em 23 o resultado mantém segundo a segundo, porque é medida do
   atleta —, "anos" junto do número, barras sólidas em 28, Rafa "Regularidade", datas "sáb 24 out", barra do esporte e coluna do dia com os
   dois em 09). 31–34 nas capturas leem o registro real de Lucas (`Captures/lucas-*`, datas do Figma: 26 out a 20 dez).
+
+---
+
+## 9. #113 promovido ao Figma canônico (27/11) e como foi implementado
+
+| Decisão | Nó | Implementação |
+|---|---|---|
+| D04 A | `1491:8266` | 04 bloqueia prova antes do início ou a menos de 7 dias dele (5 km, 10 km, meia); maratona é exceção (plano preparatório). Aviso, Continuar desabilitado, "Seguir sem prova por enquanto". **Aberto:** a nota do frame pede que as datas mínima e máxima venham do motor ou do host; até essa porta existir, o Swift repete as duas (7 dias, 16 semanas) |
+| D09 A | `1491:8326`, `1491:8385` | 08 sempre fecha a etapa 1; sem prova: rótulos de 03 e 06, "sem data de prova", sem número de semanas |
+| D19 A | `1491:8444` | 23 com coluna de horas na meia e na maratona; 10 km com minutos acima de 59; trocar a distância limpa a roda; envio em segundos |
+| D21 A | × em 02–29, `838:4011` | × vai direto a `838:3918` (Retomar) com as respostas guardadas; sem folha de confirmação (nada se perde); `838:4219` não é usada |
+| D22 A | notas de `835:2349` e `838:4148`; `1491:8511`, `1491:8556` | uma linha por objetivo de força (as três novas aguardam a conferência do SSCTR pedida na nota); 27b com a frase do sinal (1), dos dois (2) ou a contagem (3+), INTERIM (#87) |
+| D24 A | `1491:8646` | **Bloqueado.** O motor responde CLINICAL_HUMAN_REQUIRED no cadastro com `enrolled: false` e não guarda registro (replay: um reenvio com "Nenhum destes" seria matriculado). Sem registro retido, "Hoje · retido" e "Declarar" não têm o que ler nem onde declarar, e a frase "Refazer o cadastro… ou trocar de aparelho não muda este estado" seria falsa com uma marca só local. "Entendi" e "Declarar" seguem desabilitados até o host persistir a retenção (CCP) |
+| D14 B | `867:2288` | "O plano conta com barra e anilhas, rack, banco, halteres e máquinas." |
+| D18 conta B | `1491:8743` | sem serviço de conta (`OBBuild.accountAvailable = false`), 32 é a variante alpha local: "Continuar neste iPhone" → 33 |
+| D18 assinatura A | `1491:8865` | 33 build de teste: selo, "a definir", nenhuma oferta, nada comprado; "Continuar no teste, sem cobrança" ou × → 34. "Termos de uso" e "Privacidade" sem link (não há documento) |

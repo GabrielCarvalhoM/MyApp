@@ -256,14 +256,52 @@ final class OnboardingViewModelTests: XCTestCase {
         XCTAssertEqual(vm(store: store).phase, .form)
     }
 
-    /// 32 has no account behind it (D18): closing it is the alpha path to 34.
-    func testTheAccountSheetLeadsToTheFirstWeek() async {
+    /// D18 (#113): 31 → 32 alpha local → "Continuar neste iPhone" → 33 build de teste → 34. Closing 32 stays on 31.
+    func testTheAlphaPathToTheFirstWeek() async {
         let m = atDataUse()
         await m.submit()
         m.saveThePlan()
         XCTAssertEqual(m.sheet, .account)
-        m.sheet = nil; m.accountSheetClosed()
+        m.sheet = nil
+        XCTAssertEqual(m.phase, .ready, "closing the sheet keeps 31")
+        m.saveThePlan(); m.continueOnThisIPhone()
+        XCTAssertEqual(m.phase, .subscribe)
+        XCTAssertNil(m.sheet)
+        m.subscriptionDone()
         XCTAssertEqual(m.phase, .firstWeek)
+        XCTAssertFalse(OBBuild.accountAvailable, "no account service in V1 yet (#28)")
+    }
+
+    /// D21 A (#113): × goes straight to "Retomar o cadastro", the answers kept; no confirmation (nothing is lost).
+    func testCloseGoesStraightToResumeKeepingTheAnswers() {
+        let store = MemoryOnboardingStore()
+        let m = vm(store: store); m.draft = OnboardingTests.lucas()
+        while m.step != .week { m.next() }
+        m.leaveToResume()
+        XCTAssertEqual(m.phase, .resume)
+        XCTAssertNil(m.sheet)
+        XCTAssertEqual(store.load()?.step, .week)
+        XCTAssertEqual(store.load()?.draft, OnboardingTests.lucas())
+        m.resumeWhereStopped()
+        XCTAssertEqual(m.step, .week)
+    }
+
+    /// D04 A (`1491:8266`): under 7 days from the start blocks 04 for 5 km/10 km/half; a marathon closer is the preparatory plan.
+    func testARaceTooCloseBlocksExceptTheMarathon() {
+        let m = vm(); m.draft = OnboardingTests.lucas()
+        m.draft.raceDay = "2026-10-30"
+        XCTAssertTrue(m.raceTooClose)
+        XCTAssertFalse(m.raceBeyondPlan)
+        while m.step != .raceDate { m.next() }
+        XCTAssertFalse(m.canContinue)
+        m.draft.raceDay = "2026-11-02"
+        XCTAssertFalse(m.raceTooClose, "from 2 November (the Figma's example)")
+        XCTAssertTrue(m.canContinue)
+        m.draft.choose(aim: .race(.marathon)); m.draft.raceDay = "2026-10-30"
+        XCTAssertFalse(m.raceTooClose, "the marathon exception")
+        m.draft.raceDay = "2026-10-20"
+        XCTAssertTrue(m.raceTooClose, "a day before the start is never a race day")
+        XCTAssertEqual(OnboardingDraft.firstRaceDay(start: "2026-10-26"), "2026-11-02")
     }
 
     func testTheSkipsAnswerTheirStep() {
@@ -281,7 +319,12 @@ final class OnboardingViewModelTests: XCTestCase {
         XCTAssertNil(m.draft.resultConditions, "QRE P3-9: nothing of a result stays behind")
         XCTAssertNil(m.draft.resultMeasure)
         XCTAssertEqual(m.step, .result, "23 shows its \"não tenho\" variant first")
-        m.draft.hasResult = true; m.draft.resultDistance = .half; m.draft.resultMinutes = 50; m.draft.resultSeconds = 0
-        XCTAssertFalse(m.canContinue, "D19: a half needs hours the wheel does not have")
+        m.draft.choose(resultDistance: .half); m.draft.resultMinutes = 52; m.draft.resultSeconds = 30
+        XCTAssertFalse(m.canContinue, "D19 A: a half needs its hours column")
+        m.draft.resultHours = 1
+        XCTAssertTrue(m.canContinue)
+        XCTAssertEqual(m.draft.resultTotalSeconds, 6750)
+        m.draft.choose(resultDistance: .tenK)
+        XCTAssertNil(m.draft.resultMinutes, "another distance clears the wheel")
     }
 }

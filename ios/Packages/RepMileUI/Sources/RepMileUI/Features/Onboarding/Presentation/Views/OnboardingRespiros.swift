@@ -29,7 +29,11 @@ extension OnboardingFormView {
     // MARK: 08
 
     @ViewBuilder private var goalDone: some View {
-        if let race = vm.draft.runAim?.race, let day = vm.draft.raceDay, let weeks = vm.planWeeks {
+        if vm.draft.runs, vm.draft.runAim?.race == nil || vm.planWeeks == nil {
+            goalDoneWithoutRace
+        } else if !vm.draft.runs {
+            goalDoneWithoutRace
+        } else if let race = vm.draft.runAim?.race, let day = vm.draft.raceDay, let weeks = vm.planWeeks {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(spacing: 2) {
                     Text("\(weeks)").rmText(.numeroXL)
@@ -41,6 +45,39 @@ extension OnboardingFormView {
                 respiroText(stage: 1, title: [.fiveK, .tenK].contains(race) ? L.f("ob.goalDone.title", "\(weeks)", OBText.race(race)) : nil,
                             body: L.f("ob.goalDone.body", OBText.onDay(day), OBText.onDay(vm.startDay)))
             }
+        }
+    }
+
+    /// 08 without a race (D09 A, `1491:8326` running + strength, `1491:8385` strength only): the answers of 03 and 06, no weeks (D03).
+    private var goalDoneWithoutRace: some View {
+        let d = vm.draft
+        let strength = d.strengthAim.map { L.t("ob.strengthAim.\($0.rawValue)").lowercased(with: Fmt.locale) }
+        let run: String? = { if case .noRace(let a)? = d.runAim, a != .startRunning { return L.t("ob.noRace.\(a.rawValue)") }; return nil }()
+        let title: String? = {
+            if d.runAim == .noRace(.startRunning) { return strength.map { L.f("ob.goalDone.noRace.startRunningStrength", $0) } ?? L.t("ob.noRace.startRunning") }
+            switch (run, strength, d.runs) {
+            case (let r?, let s?, _): return L.f("ob.goalDone.noRace.runStrength", r, s)
+            case (let r?, nil, _): return L.f("ob.goalDone.noRace.run", r)
+            case (nil, let s?, false): return L.f("ob.goalDone.noRace.strength", s.capitalizedFirst)
+            default: return nil
+            }
+        }()
+        let lead = !d.runs ? L.t("ob.train.strengthOnly.detail") : !d.lifts ? L.t("ob.train.runOnly.detail") : L.t("ob.goalDone.noRace.body")
+        return VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 8) {
+                ZStack(alignment: .leading) {
+                    Rectangle().fill(RM.Palette.textoTerciario).frame(height: 1)
+                    Circle().fill(RM.Palette.agora).frame(width: 12, height: 12).overlay(Circle().stroke(RM.Palette.fundoApp, lineWidth: 3))
+                }
+                HStack {
+                    Text(L.f("ob.goalDone.today", OBText.weekdayDayMonth(short: vm.today))).rmText(.detalhe, RM.Palette.textoPrimario)
+                    Spacer()
+                    Text(L.t("ob.goalDone.noRaceDate")).rmText(.detalhe, RM.Palette.textoTerciario)
+                }
+            }
+            .padding(.horizontal, RM.Space.gutter).padding(.top, 120)
+            .accessibilityElement(children: .combine)
+            respiroText(stage: 1, title: title, body: lead + " " + L.f("ob.goalDone.firstWorkout", OBText.onDay(vm.startDay)))
         }
     }
 

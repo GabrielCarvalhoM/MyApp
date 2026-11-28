@@ -30,6 +30,8 @@ enum OBText {
     }
     /// "Domingo, 20 de dezembro" (04 "Leitura da data")
     static func dateReading(_ day: String) -> String { weekdayDayMonth(day).capitalizedFirst }
+    /// "2 de novembro" (04 `1491:8266`)
+    static func dayMonthLong(_ day: String) -> String { formatted(day, "dMMMM") }
     /// "14 de fevereiro de 2027"
     static func dayMonthYear(_ day: String) -> String { formatted(day, "dMMMMy") }
     /// "no domingo, 20 de dezembro" / "na segunda, 26 de outubro"
@@ -73,8 +75,8 @@ enum OBText {
 
     /// 30 "Ponto de partida": "5 km em 21:48" (the cargas part waits for D01).
     static func start(_ d: OnboardingDraft) -> String? {
-        guard d.hasResult == true, let r = d.resultDistance, let m = d.resultMinutes, let s = d.resultSeconds else { return nil }
-        return L.f("ob.summary.start", race(r), Fmt.clock(Double(m * 60 + s)))
+        guard d.hasResult == true, let r = d.resultDistance, let total = d.resultTotalSeconds else { return nil }
+        return L.f("ob.summary.start", race(r), Fmt.clock(Double(total)))
     }
 
     /// 30 "Seus dias": "Corrida ter, qui, sáb e dom; força seg, qua e qui".
@@ -86,9 +88,9 @@ enum OBText {
 
     /// 28 "Resultado recente": "5 km · prova oficial · 18 out" and "21:48".
     static func result(_ d: OnboardingDraft) -> (detail: String, value: String)? {
-        guard d.hasResult == true, let r = d.resultDistance, let m = d.resultMinutes, let s = d.resultSeconds, let day = d.resultDay,
+        guard d.hasResult == true, let r = d.resultDistance, let total = d.resultTotalSeconds, let day = d.resultDay,
               let how = d.resultMeasure else { return nil }
         let measure = L.t("ob.resultDetail.\(how.rawValue)").lowercased(with: Fmt.locale)
-        return ([race(r), measure, dayMonth(short: day)].joined(separator: " · "), Fmt.clock(Double(m * 60 + s)))
+        return ([race(r), measure, dayMonth(short: day)].joined(separator: " · "), Fmt.clock(Double(total)))
     }
 }

@@ -43,13 +43,17 @@ extension OnboardingFormView {
         } else {
             OBPills(items: RaceDistance.allCases.map { ($0.rawValue, L.t("ob.race.\($0.rawValue)")) },
                     selected: Set([vm.draft.resultDistance?.rawValue].compactMap { $0 })) { id in
-                vm.draft.resultDistance = RaceDistance(rawValue: id); vm.draft.hasResult = true
+                if let d = RaceDistance(rawValue: id) { vm.draft.choose(resultDistance: d) }
             }
             .padding(.horizontal, RM.Space.gutter).padding(.top, 20)
+            // D19 A (`1491:8444`): h:min:s for the half and the marathon; min:s otherwise (10 km minutes may pass 59). Each column starts at "—".
+            let hours = vm.draft.resultDistance?.hasHours == true
             OBWheelCard {
-                OBWheelColumn(values: Array(0...59), selection: $vm.draft.resultMinutes, label: { "\($0)" }, unit: L.t("ob.unit.min"), id: "ob-result-min")
+                if hours { OBWheelColumn(values: Array(0...7), selection: $vm.draft.resultHours, label: { "\($0)" }, unit: L.t("ob.unit.h"), id: "ob-result-h") }
+                OBWheelColumn(values: Array(0...(hours ? 59 : 119)), selection: $vm.draft.resultMinutes, label: { "\($0)" }, unit: L.t("ob.unit.min"), id: "ob-result-min")
                 OBWheelColumn(values: Array(0...59), selection: $vm.draft.resultSeconds, label: { String(format: "%02d", $0) }, unit: L.t("ob.unit.s"), id: "ob-result-s")
             }
+            .id(vm.draft.resultDistance)   // a new distance rebuilds the wheel from "—"
             .padding(.top, 16)
             .onChange(of: [vm.draft.resultMinutes, vm.draft.resultSeconds]) { if vm.draft.resultMinutes != nil { vm.draft.hasResult = true } }
         }
